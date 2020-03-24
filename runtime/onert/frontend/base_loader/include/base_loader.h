@@ -27,6 +27,7 @@
 #include <memory>
 #include <fstream>
 #include <limits>
+#include <iostream>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -161,9 +162,9 @@ protected:
   void loadRange(const Operator *op, ir::Graph &subg);
 
 protected:
-  char *_base;
-  // Buffer for loading (if needed)
-  // Reference on loadable subgraphs
+  unsigned char *_base;
+  int32_t _pagesize;
+  // Reference on loadable Graph
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
   // Maps Tensor indices to onert Operands.
@@ -197,13 +198,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
 
   auto size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
+  _pagesize = getpagesize();
 
-  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
-
-  // _buffer.resize(size);
-  // stream.read(_buffer.data(), size);
-
-  // stream.close();
+  _base = static_cast<unsigned char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
 
   _verifier =
       std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
@@ -323,11 +320,35 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
 
+  std::cout << "Tensor : " << tensor->buffer() << std::endl;
   // Constant tensors are indicated by non-empty data.
   const auto *data = _model->buffers()->Get(tensor->buffer())->data();
+
   if (data != nullptr)
   {
     auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
+
+    int32_t offset_start = const_cast<unsigned char *>(data->data()) - _base;
+    int32_t offset_end = offset_start + data->size();
+
+    int32_t aligned_start =
+        offset_start % _pagesize == 0 ? offset_start : ((offset_start / _pagesize) + 1) * _pagesize;
+    int32_t aligned_end =
+        offset_end % _pagesize == 0 ? offset_end : ((offset_end / _pagesize) - 1) * _pagesize;
+
+    std::cout << "Offset start(" << offset_start << "," << aligned_start << ")" << std::endl;
+    std::cout << "Offset end(" << offset_end << "," << aligned_end << ")" << std::endl;
+
+    if (aligned_end > aligned_start)
+    {
+      int32_t size = aligned_end - aligned_start;
+      std::cout << "munmap(" << (void *)(_base + aligned_start) << "," << size << ")" << std::endl;
+      if (munmap(_base + aligned_start, size) == -1)
+      {
+        std::cout << "munmap failed" << std::endl;
+      }
+    }
+
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
