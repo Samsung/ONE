@@ -27,11 +27,11 @@
 #include <memory>
 #include <fstream>
 #include <limits>
-#include <iostream>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <util/logging.h>
 
 namespace onert
 {
@@ -61,7 +61,10 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs) : _subgraphs(subgs), _model{nullptr} {}
+  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
+      : _base(nullptr), _pagesize(0), _subgraphs(subgs), _model{nullptr}
+  {
+  }
 
   /**
    * @brief Load a model from file
@@ -162,7 +165,9 @@ protected:
   void loadRange(const Operator *op, ir::Graph &subg);
 
 protected:
+  // base address for mapped region for loading (if needed)
   unsigned char *_base;
+  // Memory page size
   int32_t _pagesize;
   // Reference on loadable Graph
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
@@ -176,20 +181,6 @@ protected:
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
 {
-  // std::ifstream stream(file_path, std::fstream::in | std::fstream::binary);
-
-  // if (!stream)
-  // {
-  //   std::string msg = "Failed to open file `";
-  //   msg += file_path;
-  //   msg += "`";
-  //   throw std::runtime_error{msg};
-  // }
-
-  // stream.seekg(0, stream.end);
-  // auto size = stream.tellg();
-  // stream.seekg(0, stream.beg);
-
   int fd = open(file_path, O_RDONLY);
   if (fd < 0)
   {
@@ -200,10 +191,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   lseek(fd, 0, SEEK_SET);
   _pagesize = getpagesize();
 
+  // Map model file into memory region
   _base = static_cast<unsigned char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
 
-  _verifier =
-      std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
 }
@@ -320,7 +311,6 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
 
-  std::cout << "Tensor : " << tensor->buffer() << std::endl;
   // Constant tensors are indicated by non-empty data.
   const auto *data = _model->buffers()->Get(tensor->buffer())->data();
 
@@ -328,24 +318,26 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   {
     auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
 
-    int32_t offset_start = const_cast<unsigned char *>(data->data()) - _base;
-    int32_t offset_end = offset_start + data->size();
+    // Calculate offset from base address of mapped region
+    int32_t unaligned_offset_start = const_cast<unsigned char *>(data->data()) - _base;
+    int32_t unaligned_offset_end = unaligned_offset_start + data->size();
 
-    int32_t aligned_start =
-        offset_start % _pagesize == 0 ? offset_start : ((offset_start / _pagesize) + 1) * _pagesize;
-    int32_t aligned_end =
-        offset_end % _pagesize == 0 ? offset_end : ((offset_end / _pagesize) - 1) * _pagesize;
+    // Calculated aligned offset from base address of mapped region
+    // munmap accepts memory address which is a multiple of the pagesize
+    int32_t aligned_offset_start = unaligned_offset_start % _pagesize == 0
+                                       ? unaligned_offset_start
+                                       : ((unaligned_offset_start / _pagesize) + 1) * _pagesize;
+    int32_t aligned_offset_end = unaligned_offset_end % _pagesize == 0
+                                     ? unaligned_offset_end
+                                     : ((unaligned_offset_end / _pagesize) - 1) * _pagesize;
 
-    std::cout << "Offset start(" << offset_start << "," << aligned_start << ")" << std::endl;
-    std::cout << "Offset end(" << offset_end << "," << aligned_end << ")" << std::endl;
-
-    if (aligned_end > aligned_start)
+    int32_t size = aligned_offset_end - aligned_offset_start;
+    if (size > 0)
     {
-      int32_t size = aligned_end - aligned_start;
-      std::cout << "munmap(" << (void *)(_base + aligned_start) << "," << size << ")" << std::endl;
-      if (munmap(_base + aligned_start, size) == -1)
+      // Unmap mapped region for CachedData
+      if (munmap(_base + aligned_offset_start, size) == -1)
       {
-        std::cout << "munmap failed" << std::endl;
+        VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
       }
     }
 
