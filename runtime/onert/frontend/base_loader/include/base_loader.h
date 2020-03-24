@@ -62,7 +62,7 @@ public:
    * @param graph reference on subgraphs
    */
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-      : _base{nullptr}, _subgraphs(subgs), _model{nullptr}
+      : _base{nullptr}, _pagesize(getpagesize()), _subgraphs(subgs), _model{nullptr}
   {
   }
 
@@ -81,6 +81,7 @@ protected:
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
+  void deallocateMmappedArea(uint8_t *ptr, size_t size);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -170,7 +171,9 @@ protected:
 
 protected:
   // Base address for mapped region for loading (if needed)
-  char *_base;
+  uint8_t *_base;
+  // Memory page size
+  int32_t _pagesize;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -198,7 +201,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   int size = file_stat.st_size;
 
   // Map model file into memory region
-  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
+  _base = static_cast<uint8_t *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
   if (_base == MAP_FAILED)
   {
     close(fd);
@@ -209,11 +212,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
 
   loadModel();
 
-  // Unmap mapped region for model file
-  if (munmap(_base, size) == -1)
-  {
-    VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
-  }
   close(fd);
 }
 
@@ -268,6 +266,31 @@ ir::OperandIndex
 BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::deallocateMmappedArea(uint8_t *ptr,
+                                                                                 size_t size)
+{
+  // Calculate offset from base address of mapped region
+  ptrdiff_t unaligned_offset_start = ptr - _base;
+  ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
+
+  // Calculated aligned offset from base address of mapped region
+  // munmap accepts memory address which is a multiple of the pagesize
+  ptrdiff_t aligned_offset_start =
+      ((unaligned_offset_start + (_pagesize - 1)) / _pagesize) * _pagesize;
+  ptrdiff_t aligned_offset_end = (unaligned_offset_end / _pagesize) * _pagesize;
+
+  ptrdiff_t area_size = aligned_offset_end - aligned_offset_start;
+  if (area_size > 0)
+  {
+    // Unmap mapped region for CachedData
+    if (munmap(_base + aligned_offset_start, area_size) == -1)
+    {
+      VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
+    }
+  }
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -334,6 +357,7 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   if (data != nullptr)
   {
     auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
+    deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
