@@ -27,6 +27,11 @@
 #include <memory>
 #include <fstream>
 #include <limits>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <util/logging.h>
 
 namespace onert
 {
@@ -56,7 +61,10 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs) : _subgraphs(subgs), _model{nullptr} {}
+  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
+      : _base{nullptr}, _subgraphs(subgs), _model{nullptr}
+  {
+  }
 
   /**
    * @brief Load a model from file
@@ -67,7 +75,6 @@ public:
 
 protected:
   ~BaseLoader() = default;
-
   void loadModel();
 
   // Helper functions
@@ -161,8 +168,8 @@ protected:
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
 
 protected:
-  // Buffer for loading (if needed)
-  std::vector<char> _buffer;
+  // Base address for mapped region for loading (if needed)
+  char *_base;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -175,30 +182,32 @@ protected:
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
 {
-  std::ifstream stream(file_path, std::fstream::in | std::fstream::binary);
-
-  if (!stream)
+  int fd = open(file_path, O_RDONLY);
+  if (fd < 0)
   {
-    std::string msg = "Failed to open file `";
-    msg += file_path;
-    msg += "`";
-    throw std::runtime_error{msg};
+    throw std::runtime_error("Failed to open file " + std::string(file_path));
   }
 
-  stream.seekg(0, stream.end);
-  auto size = stream.tellg();
-  stream.seekg(0, stream.beg);
+  struct stat file_stat;
+  if (fstat(fd, &file_stat) != 0)
+  {
+    throw std::runtime_error("Fstat failed or file " + std::string(file_path) +
+                             " is not a regular file");
+  }
+  int size = file_stat.st_size;
 
-  _buffer.resize(size);
-  stream.read(_buffer.data(), size);
+  // Map model file into memory region
+  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
 
-  stream.close();
-
-  // Prepare verifier
-  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_buffer.data()),
-                                         _buffer.size());
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
+
+  // Unmap mapped region for model file
+  if (munmap(_base, size) == -1)
+  {
+    VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
+  }
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -1899,7 +1908,7 @@ template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
-  _model = LoaderDomain::GetModel(_buffer.data());
+  _model = LoaderDomain::GetModel(_base);
   // Version unused
   // const auto version = _model->version();
   // Description unused
