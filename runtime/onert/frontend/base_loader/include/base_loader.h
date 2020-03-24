@@ -27,6 +27,10 @@
 #include <memory>
 #include <fstream>
 #include <limits>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 namespace onert
 {
@@ -157,8 +161,8 @@ protected:
   void loadRange(const Operator *op, ir::Graph &subg);
 
 protected:
+  char *_base;
   // Buffer for loading (if needed)
-  std::vector<char> _buffer;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -171,28 +175,38 @@ protected:
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
 {
-  std::ifstream stream(file_path, std::fstream::in | std::fstream::binary);
+  // std::ifstream stream(file_path, std::fstream::in | std::fstream::binary);
 
-  if (!stream)
+  // if (!stream)
+  // {
+  //   std::string msg = "Failed to open file `";
+  //   msg += file_path;
+  //   msg += "`";
+  //   throw std::runtime_error{msg};
+  // }
+
+  // stream.seekg(0, stream.end);
+  // auto size = stream.tellg();
+  // stream.seekg(0, stream.beg);
+
+  int fd = open(file_path, O_RDONLY);
+  if (fd < 0)
   {
-    std::string msg = "Failed to open file `";
-    msg += file_path;
-    msg += "`";
-    throw std::runtime_error{msg};
+    throw std::runtime_error("Failed to open file " + std::string(file_path));
   }
 
-  stream.seekg(0, stream.end);
-  auto size = stream.tellg();
-  stream.seekg(0, stream.beg);
+  auto size = lseek(fd, 0, SEEK_END);
+  lseek(fd, 0, SEEK_SET);
 
-  _buffer.resize(size);
-  stream.read(_buffer.data(), size);
+  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
 
-  stream.close();
+  // _buffer.resize(size);
+  // stream.read(_buffer.data(), size);
 
-  // Prepare verifier
-  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_buffer.data()),
-                                         _buffer.size());
+  // stream.close();
+
+  _verifier =
+      std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
 }
@@ -1810,7 +1824,7 @@ template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
-  _model = LoaderDomain::GetModel(_buffer.data());
+  _model = LoaderDomain::GetModel(_base);
   // Version unused
   // const auto version = _model->version();
   // Description unused
