@@ -74,6 +74,7 @@ option(BUILD_BOOST "Build boost source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" ON)
 option(BUILD_GTEST "Download and build Google Test" ON)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
+option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 
 #
 ## Default sample build configuration
