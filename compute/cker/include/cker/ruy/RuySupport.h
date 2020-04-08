@@ -19,10 +19,11 @@
 #define __NNFW_CKER_RUY_RUY_SUPPORT_H__
 
 #include <ruy/context.h>
+#include "cker/Types.h"
 
 namespace
 {
-const int kDefaultNumThreadpoolThreads = 1;
+const int kDefaultNumThreadpoolThreads = 4;
 }
 
 namespace nnfw
@@ -65,7 +66,47 @@ private:
 inline ruy::Context *GetRuyContext()
 {
   auto &ctx = RuyContext::GetRuyContext();
-  return ctx.ruy_context.get();
+  return ctx.ruy_context();
+}
+
+template <typename Scalar, typename DataPointer>
+void MakeRuyMatrix(const MatrixParams<Scalar> &params, DataPointer data_ptr,
+                   ruy::Matrix<Scalar> *dst)
+{
+  dst->layout.rows = params.rows;
+  dst->layout.cols = params.cols;
+  if (params.order == Order::kColMajor)
+  {
+    dst->layout.order = ruy::Order::kColMajor;
+    dst->layout.stride = params.rows;
+  }
+  else
+  {
+    dst->layout.order = ruy::Order::kRowMajor;
+    dst->layout.stride = params.cols;
+  }
+  // Note that ruy::Matrix::data is a ConstCheckingPtr, not a plain pointer.
+  // It does care whether we assign to it a Scalar* or a const Scalar*.
+  dst->data = data_ptr;
+  dst->zero_point = params.zero_point;
+  dst->cacheable = params.cacheable;
+}
+
+template <typename GemmParamsType, typename RuySpecType>
+void MakeRuySpec(const GemmParamsType &params, RuySpecType *ruy_spec)
+{
+  // This validation has already been performed by the Gemm API entry point,
+  // but it doesn't hurt to test specifically this again here, where it's
+  // being used.
+  ValidateGemmParams(params);
+
+  ruy_spec->multiplier_fixedpoint = params.multiplier_fixedpoint;
+  ruy_spec->multiplier_exponent = params.multiplier_exponent;
+  ruy_spec->multiplier_fixedpoint_perchannel = params.multiplier_fixedpoint_perchannel;
+  ruy_spec->multiplier_exponent_perchannel = params.multiplier_exponent_perchannel;
+  ruy_spec->bias = params.bias;
+  ruy_spec->clamp_min = params.clamp_min;
+  ruy_spec->clamp_max = params.clamp_max;
 }
 
 } // namespace ruy_support

@@ -18,7 +18,12 @@
 #ifndef __NNFW_CKER_NEON_TENSOR_UTILS_H__
 #define __NNFW_CKER_NEON_TENSOR_UTILS_H__
 
+#include <ruy/path.h>
+#include <ruy/ruy.h>
+#include "cker/Types.h"
 #include "cker/neon/neon_check.h"
+#include "cker/ruy/RuySupport.h"
+#include "util/logging.h"
 
 #include <cassert>
 #include <cmath>
@@ -78,6 +83,95 @@ bool NeonIsZeroVector(const float *vector, int v_size)
       return false;
   }
   return true;
+}
+
+void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
+                        const int8_t *input_to_gate_weights, int32_t n_batch, int32_t n_input,
+                        int32_t n_output, int32_t, int32_t *scratch)
+{
+  VERBOSE("NeonCpuBackendGemm") << std::endl;
+
+  MatrixParams<int8_t> lhs_params;
+  lhs_params.order = Order::kRowMajor;
+  lhs_params.rows = n_output;
+  lhs_params.cols = n_input;
+  lhs_params.cacheable = true;
+
+  MatrixParams<int8_t> rhs_params;
+  rhs_params.order = Order::kColMajor;
+  rhs_params.rows = n_input;
+  rhs_params.cols = n_batch;
+
+  MatrixParams<int32_t> dst_params;
+  dst_params.order = Order::kColMajor;
+  dst_params.rows = n_output;
+  dst_params.cols = n_batch;
+
+  GemmParams<int32_t, int32_t> gemm_params;
+  if (bias)
+  {
+    gemm_params.bias = bias;
+  }
+
+  // Below code is from tflite::cpu_backend_gemm::detail::GemmImplUsingRuy
+  ruy::Context *ruy_context = ruy_support::GetRuyContext();
+
+  ruy::Matrix<int8_t> ruy_lhs;
+  ruy::Matrix<int8_t> ruy_rhs;
+  ruy::Matrix<int32_t> ruy_dst;
+  ruy_support::MakeRuyMatrix(lhs_params, input_to_gate_weights, &ruy_lhs);
+  ruy_support::MakeRuyMatrix(rhs_params, input, &ruy_rhs);
+  ruy_support::MakeRuyMatrix(dst_params, scratch, &ruy_dst);
+
+  ruy::BasicSpec<int32_t, int32_t> ruy_spec;
+  ruy_support::MakeRuySpec(gemm_params, &ruy_spec);
+
+  constexpr ruy::Path kRuyPath = ruy::kAllPaths;
+  ruy::Mul<kRuyPath>(ruy_lhs, ruy_rhs, ruy_spec, ruy_context, &ruy_dst);
+}
+
+void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, const int m_rows,
+                                             const int m_cols, const int8_t *__restrict__ vectors,
+                                             const float *scaling_factors, int n_batch,
+                                             int32_t *scratch, float *__restrict__ result,
+                                             int result_stride)
+{
+  if (m_rows % 4 == 0 && result_stride == 1)
+  {
+    VERBOSE("NeonTensorUtils") << "Rows is multiplies of 4" << std::endl;
+    const int32_t *bias = static_cast<const int32_t *>(nullptr);
+    NeonCpuBackendGemm(vectors, bias, matrix, n_batch, m_cols, m_rows,
+                       /*output_zp =*/0, scratch);
+
+    // Multiply by float scaling factors and write to result
+    const int total_size = n_batch * m_rows;
+    int i = 0;
+    for (; i <= total_size - 8; i += 8, result += 8 * result_stride)
+    {
+      const float batch_scaling_factor0 = scaling_factors[i / m_rows];
+      const float batch_scaling_factor1 = scaling_factors[(i + 4) / m_rows];
+      const float32x4_t scaling_factor0 = vdupq_n_f32(batch_scaling_factor0);
+      const float32x4_t scaling_factor1 = vdupq_n_f32(batch_scaling_factor1);
+      const int32x4_t scratch_val0 = vld1q_s32(scratch + i);
+      const int32x4_t scratch_val1 = vld1q_s32(scratch + i + 4);
+      const float32x4_t float_val0 = vcvtq_f32_s32(scratch_val0);
+      const float32x4_t float_val1 = vcvtq_f32_s32(scratch_val1);
+      const float32x4_t result0 = vmlaq_f32(vld1q_f32(result), float_val0, scaling_factor0);
+      const float32x4_t result1 =
+          vmlaq_f32(vld1q_f32(result + 4 * result_stride), float_val1, scaling_factor1);
+      vst1q_f32(result, result0);
+      vst1q_f32(result + 4 * result_stride, result1);
+    }
+    scratch += i;
+    for (; i < total_size; i++, result += result_stride)
+    {
+      const float batch_scaling_factor = scaling_factors[i / m_rows];
+      int32_t x = *(scratch++);
+      *result += x * batch_scaling_factor;
+    }
+    return;
+  }
+  VERBOSE("NeonTensorUtils") << "Rows is not multiplies of 4" << std::endl;
 }
 
 void NeonSymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values,

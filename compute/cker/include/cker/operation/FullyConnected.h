@@ -139,7 +139,8 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
 inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape &input_shape,
                                  const float *input_data, const Shape &filter_shape,
                                  const int8_t *filter_data, const Shape &, const float *bias_data,
-                                 const Shape &, float *output_data, FCTempArena &temp_arena)
+                                 const Shape &output_shape, float *output_data,
+                                 FCTempArena &temp_arena)
 {
   int total_input_size = input_shape.FlatSize();
   const int input_size = filter_shape.Dims(1);
@@ -172,9 +173,12 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   }
 
 // Compute output += weight * quantized_input
-#ifdef TFLITE_WITH_RUY_GEMV
+#ifdef USE_RUY_GEMV
+  auto output_size = output_shape.FlatSize();
+  temp_arena.accum_scratch.resize(output_size);
+  int32_t *scratch = temp_arena.accum_scratch.data();
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
-                                      scaling_factors_ptr, batch_size, accum_scratch, output_data,
+                                      scaling_factors_ptr, batch_size, scratch, output_data,
                                       /*result_stride=*/1);
 #else
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,

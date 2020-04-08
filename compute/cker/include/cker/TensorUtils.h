@@ -70,6 +70,15 @@ void MatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_
                    result, result_stride);
 }
 
+void MatrixBatchVectorMultiplyAccumulate(const int8_t *matrix, const int m_rows, const int m_cols,
+                                         const int8_t *vectors, const float *scaling_factors,
+                                         int n_batch, int32_t *scratch, float *result,
+                                         int result_stride)
+{
+  NEON_OR_PORTABLE(MatrixBatchVectorMultiplyAccumulate, matrix, m_rows, m_cols, vectors,
+                   scaling_factors, n_batch, scratch, result, result_stride);
+}
+
 void ZeroVector(float *vector, int v_size) { PortableZeroVector(vector, v_size); }
 
 } // namespace cker
