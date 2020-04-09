@@ -61,7 +61,7 @@ static onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
 }
 
 nnfw_session::nnfw_session()
-    : _graph{nullptr}, _execution{nullptr},
+    : _primary_subgraph{nullptr}, _execution{nullptr},
       _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()},
       _source{std::make_unique<onert::util::GeneralConfigSource>()}
 {
@@ -98,18 +98,18 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     auto model_type = model_types[0].asString(); // first model's type
     if (model_type == "tflite")
     {
-      _graph = onert::tflite_loader::loadModel(model_file_path.c_str());
+      _primary_subgraph = onert::tflite_loader::loadModel(model_file_path.c_str());
     }
     else if (model_type == "circle")
     {
-      _graph = onert::circle_loader::loadModel(model_file_path.c_str());
+      _primary_subgraph = onert::circle_loader::loadModel(model_file_path.c_str());
     }
     else
     {
       std::cerr << "Unsupported model type in MANIFEST" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _graph->bindKernelBuilder(_kernel_registry->getBuilder());
+    _primary_subgraph->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
   {
@@ -117,14 +117,14 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
 
-  _compiler = std::make_unique<onert::compiler::Compiler>(_graph);
+  _compiler = std::make_unique<onert::compiler::Compiler>(_primary_subgraph);
 
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::prepare()
 {
-  if (!_graph || _graph->isBuildingPhase())
+  if (!_primary_subgraph || _primary_subgraph->isBuildingPhase())
   {
     std::cerr << "Error during model prepare : "
               << "prepare should be run after load_model" << std::endl;
@@ -224,7 +224,7 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
       std::cerr << "Error during nnfw_session::input_size, number is null pointer." << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    *number = _graph->getInputs().size();
+    *number = _primary_subgraph->getInputs().size();
   }
   catch (const std::exception &e)
   {
@@ -243,7 +243,7 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
       std::cerr << "Error during nnfw_session::output_size, number is null pointer." << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    *number = _graph->getOutputs().size();
+    *number = _primary_subgraph->getOutputs().size();
   }
   catch (const std::exception &e)
   {
@@ -333,20 +333,20 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    if (index >= _graph->getInputs().size())
+    if (index >= _primary_subgraph->getInputs().size())
     {
       std::cerr << "Error during nnfw_session::input_tensorinfo, index is out of range."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    auto opidx = _graph->getInputs().at(index);
-    auto shape = _graph->operands().at(opidx).shape();
+    auto opidx = _primary_subgraph->getInputs().at(index);
+    auto shape = _primary_subgraph->operands().at(opidx).shape();
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
       ti->dims[j] = shape.dim(j);
     }
-    ti->dtype = datatype_to_nnfw_dtype(_graph->operands().at(opidx).typeInfo().type());
+    ti->dtype = datatype_to_nnfw_dtype(_primary_subgraph->operands().at(opidx).typeInfo().type());
   }
   catch (const std::exception &e)
   {
@@ -366,20 +366,20 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    if (index >= _graph->getOutputs().size())
+    if (index >= _primary_subgraph->getOutputs().size())
     {
       std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    auto opidx = _graph->getOutputs().at(index);
-    auto shape = _graph->operands().at(opidx).shape();
+    auto opidx = _primary_subgraph->getOutputs().at(index);
+    auto shape = _primary_subgraph->operands().at(opidx).shape();
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
       ti->dims[j] = shape.dim(j);
     }
-    ti->dtype = datatype_to_nnfw_dtype(_graph->operands().at(opidx).typeInfo().type());
+    ti->dtype = datatype_to_nnfw_dtype(_primary_subgraph->operands().at(opidx).typeInfo().type());
   }
   catch (const std::exception &e)
   {
