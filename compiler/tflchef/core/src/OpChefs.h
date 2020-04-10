@@ -38,6 +38,7 @@
 #include "Op/Pad.h"
 #include "Op/ReLU.h"
 #include "Op/ReLU6.h"
+#include "Op/Rsqrt.h"
 #include "Op/Reshape.h"
 #include "Op/Shape.h"
 #include "Op/Softmax.h"
