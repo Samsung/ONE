@@ -19,6 +19,5 @@ list(APPEND RUY_INCLUDES "${RuySource_DIR}")
 
 add_library(ruy STATIC ${RUY_SRCS})
 target_include_directories(ruy SYSTEM PUBLIC ${RUY_INCLUDES})
+target_compile_options(ruy PRIVATE -O3)
 set_property(TARGET ruy PROPERTY POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-

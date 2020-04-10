@@ -31,7 +31,7 @@ namespace cker
 class FCTempArena
 {
 public:
-  FCTempArena(void) : prepared(false), input_quantized(), scaling_factors()
+  FCTempArena(void) : prepared(false), input_quantized(), scaling_factors(), accum_scratch()
   {
     // DO NOTHING
   }
@@ -51,6 +51,7 @@ public:
   bool prepared;
   std::vector<int8_t> input_quantized;
   std::vector<float> scaling_factors;
+  std::vector<int32_t> accum_scratch;
 };
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
@@ -170,10 +171,16 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
     scaling_factors_ptr[b] *= params.weights_scale;
   }
 
-  // Compute output += weight * quantized_input
+// Compute output += weight * quantized_input
+#ifdef TFLITE_WITH_RUY_GEMV
+  MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
+                                      scaling_factors_ptr, batch_size, accum_scratch, output_data,
+                                      /*result_stride=*/1);
+#else
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, output_data,
                                       /*result_stride=*/1);
+#endif
 
   // Apply activation function to floats.
   ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
