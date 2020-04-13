@@ -1,0 +1,8 @@
+set(LIB_NEURUN_BACKEND_ACL_COMMON neurun_backend_acl_common)
+set(LIB_NEURUN_BACKEND_CPU_COMMON neurun_backend_cpu_common)
+
+add_subdirectory(cpu)
+add_subdirectory(cpu_common)
+add_subdirectory(acl_cl)
+add_subdirectory(acl_neon)
+add_subdirectory(acl_common)

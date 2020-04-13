@@ -1,0 +1,2 @@
+input, placeholder:0, TF_FLOAT, [1, 7, 7, 1]
+output, maxpool:0, TF_FLOAT, [1, 7, 7, 2]

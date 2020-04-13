@@ -1,0 +1,20 @@
+layer {
+  name: "data"
+  type: "Input"
+  top: "lhs"
+  top: "rhs"
+  input_param {
+    shape: { dim: 1 dim: 3 dim: 16 dim: 16 }
+    shape: { dim: 1 dim: 3 dim: 16 dim: 16 }
+  }
+}
+layer {
+  name: "sum"
+  type: "Eltwise"
+  bottom: "lhs"
+  bottom: "rhs"
+  top: "sum"
+  eltwise_param {
+    operation: SUM
+  }
+}

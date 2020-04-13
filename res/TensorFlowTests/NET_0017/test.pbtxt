@@ -1,0 +1,61 @@
+# HOW TO GENERATE:
+#
+#  import tensorflow as tf
+#  value = tf.placeholder(dtype=tf.float32, shape=[1, 8, 8, 1], name='placeholder')
+#  output = tf.nn.avg_pool(value, [1, 8, 8, 1], [1, 1, 1, 1], 'VALID', name='avgpool2d')
+#  tf.get_default_graph().as_graph_def()
+#
+# NOTE 1. The output shape is 1x1x1x1
+#
+# >>> tf.graph_util.tensor_shape_from_node_def_name(tf.get_default_graph(), 'avgpool2d')
+# TensorShape([Dimension(1), Dimension(1), Dimension(1), Dimension(1)])
+#
+# NOTE 2. This test corresponds to the last AvgPool node inception v3 2018.04.27.
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 8 }
+        dim { size: 8 }
+        dim { size: 1 }
+      }
+    }
+  }
+}
+node {
+  name: "avgpool2d"
+  op: "AvgPool"
+  input: "placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list { i: 1 i: 8 i: 8 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}

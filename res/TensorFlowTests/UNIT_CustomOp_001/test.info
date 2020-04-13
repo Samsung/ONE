@@ -1,0 +1,2 @@
+input,  input_00:0,      TF_FLOAT,   [10]
+output, FillFrom:0,      TF_FLOAT,   [10]

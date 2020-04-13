@@ -1,0 +1,37 @@
+#ifndef CIRCLE_NODE
+#error "Define CIRCLE_NODE"
+#endif // CIRCLE_NODE
+
+//
+// PLEASE SORT NODE DECLS IN ALPHABETICAL ORDER
+//
+CIRCLE_NODE(ADD, luci::CircleAdd)
+CIRCLE_NODE(ARG_MAX, luci::CircleArgMax)
+CIRCLE_NODE(AVERAGE_POOL_2D, luci::CircleAveragePool2D)
+CIRCLE_NODE(CONCATENATION, luci::CircleConcatenation)
+CIRCLE_NODE(CONST, luci::CircleConst)
+CIRCLE_NODE(CONV_2D, luci::CircleConv2D)
+CIRCLE_NODE(DEPTHWISE_CONV_2D, luci::CircleDepthwiseConv2D)
+CIRCLE_NODE(DIV, luci::CircleDiv)
+CIRCLE_NODE(FULLY_CONNECTED, luci::CircleFullyConnected)
+CIRCLE_NODE(MAXIMUM, luci::CircleMaximum)
+CIRCLE_NODE(MAX_POOL_2D, luci::CircleMaxPool2D)
+CIRCLE_NODE(MEAN, luci::CircleMean)
+CIRCLE_NODE(MUL, luci::CircleMul)
+CIRCLE_NODE(PAD, luci::CirclePad)
+CIRCLE_NODE(RELU, luci::CircleRelu)
+CIRCLE_NODE(RELU6, luci::CircleRelu6)
+CIRCLE_NODE(RESHAPE, luci::CircleReshape)
+CIRCLE_NODE(RSQRT, luci::CircleRsqrt)
+// TODO TFLSoftmax
+CIRCLE_NODE(SQRT, luci::CircleSqrt)
+CIRCLE_NODE(SQUARED_DIFFERENCE, luci::CircleSquaredDifference)
+CIRCLE_NODE(SUB, luci::CircleSub)
+// TODO TFLTanh
+CIRCLE_NODE(TRANSPOSE, luci::CircleTranspose)
+CIRCLE_NODE(TRANSPOSE_CONV, luci::CircleTransposeConv)
+// Circle Only
+CIRCLE_NODE(INSTANCE_NORM, luci::CircleInstanceNorm)
+// Virtual node(s)
+CIRCLE_NODE(CIRCLEINPUT, luci::CircleInput)
+CIRCLE_NODE(CIRCLEOUTPUT, luci::CircleOutput)

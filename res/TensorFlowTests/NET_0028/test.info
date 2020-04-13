@@ -1,0 +1,3 @@
+# This is a slim version of Instance Normalizartion
+input,  Input:0,  TF_FLOAT,  [1, 8, 6, 12]
+output, Relu:0,   TF_FLOAT,  [1, 8, 6, 12]

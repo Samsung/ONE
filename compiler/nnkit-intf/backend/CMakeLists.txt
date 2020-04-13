@@ -1,0 +1,4 @@
+add_library(nnkit_intf_backend INTERFACE)
+target_include_directories(nnkit_intf_backend INTERFACE include)
+target_link_libraries(nnkit_intf_backend INTERFACE nnkit_intf_tensor)
+target_link_libraries(nnkit_intf_backend INTERFACE nnkit_intf_cmdline)

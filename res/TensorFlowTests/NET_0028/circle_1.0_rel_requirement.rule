@@ -1,0 +1,6 @@
+# tf2circle-dredd-pbtxt-test against Instance Norm fusion
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1  # 1 means verification is OK
+
+RULE    "ALL_OP_COUNT"            $(all_op_count) '=' 1
+RULE    "OP_COUNT_INSTANCE_NORM"  $(op_count INSTANCE_NORM) '=' 1

@@ -1,0 +1,10 @@
+add_subdirectory(log)
+add_subdirectory(lang)
+add_subdirectory(service)
+add_subdirectory(pass)
+add_subdirectory(logex)
+add_subdirectory(import)
+add_subdirectory(export)
+add_subdirectory(tester)
+
+add_subdirectory(tests)

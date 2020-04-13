@@ -1,0 +1,87 @@
+#!/bin/bash
+
+set -e
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+command_exists() {
+  if [ "$#" -le 0 ]; then
+    return 1
+  fi
+  command -v "$@" > /dev/null 2>&1
+}
+
+usage()
+{
+  echo "Usage: tf2nnpkg --info <path/to/info> --graphdef <path/to/pb> -o <path/to/nnpkg/directory>"
+  exit 0
+}
+
+USE_TF2CIRCLE=0
+
+# Parse command-line arguments
+#
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--help')
+      usage
+      ;;
+    '--info')
+      export INFO_FILE="$2"
+      shift 2
+      ;;
+    '--graphdef')
+      export GRAPHDEF_FILE="$2"
+      shift 2
+      ;;
+    '-o')
+      export OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    '--use-tf2circle')
+      USE_TF2CIRCLE=1
+      shift 1
+      ;;
+    *)
+      echo "${CUR}"
+      shift
+      ;;
+  esac
+done
+
+if [ -z ${GRAPHDEF_FILE} ] || [ ! -e ${GRAPHDEF_FILE} ]; then
+  echo "pb is not found. Please check --graphdef is correct."
+  exit 2
+fi
+
+if [ -z ${INFO_FILE} ] || [ ! -e ${INFO_FILE} ]; then
+  echo "info is not found. Please check --info is correct."
+  exit 2
+fi
+
+FILE_BASE=$(basename ${GRAPHDEF_FILE})
+MODEL_NAME="${FILE_BASE%.*}"
+
+if [[ ${USE_TF2CIRCLE} -eq 0 ]]; then
+  export flatc=$(which flatc)
+  export tflite_schema="${ROOT}/res/tflite_schema.fbs"
+  export circle_schema="${ROOT}/res/circle_schema.fbs"
+
+  if ! command_exists $flatc; then
+    echo "Please make sure flatc is in path"
+    exit 2
+  fi
+fi
+
+TMPDIR=$(mktemp -d)
+trap "{ rm -rf $TMPDIR; }" EXIT
+
+if [[ ${USE_TF2CIRCLE} -eq 0 ]]; then
+  "${ROOT}/bin/tf2tflite" "${INFO_FILE}" "${GRAPHDEF_FILE}" "${TMPDIR}/${MODEL_NAME}.tflite"
+  "${ROOT}/bin/tflite2circle.sh" -o "${TMPDIR}" "${TMPDIR}/${MODEL_NAME}.tflite"
+else
+  "${ROOT}/bin/tf2circle" "${INFO_FILE}" "${GRAPHDEF_FILE}" "${TMPDIR}/${MODEL_NAME}.circle"
+fi
+"${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"

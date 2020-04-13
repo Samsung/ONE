@@ -1,0 +1,7 @@
+# The number of final concat node should be 3
+input,  Placeholder:0,  TF_FLOAT,  [1, 2, 3, 1]
+input,  Placeholder_1:0,  TF_FLOAT,  [1, 2, 3, 1]
+input,  Placeholder_2:0,  TF_FLOAT,  [1, 2, 3, 2]
+input,  Placeholder_3:0,  TF_FLOAT,  [1, 2, 3, 2]
+input,  Placeholder_4:0,  TF_FLOAT,  [1, 2, 3, 2]
+output, concat_3:0,   TF_FLOAT,  [1, 4, 6, 2]

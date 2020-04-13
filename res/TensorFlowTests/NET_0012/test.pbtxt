@@ -1,0 +1,52 @@
+# Network with dynamic reshape which has resolvable wildcard dimension
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 6 }
+      }
+    }
+  }
+}
+node {
+  name: "shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_INT32 }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim { size: 2 }
+        }
+        int_val: -1
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "reshape"
+  op: "Reshape"
+  input: "placeholder"
+  input: "shape"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tshape"
+    value { type: DT_INT32 }
+  }
+}

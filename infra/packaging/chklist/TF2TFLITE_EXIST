@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function prepare()
+{
+  export QUESTION="Is there tf2tflite?"
+}
+
+function run()
+{
+  if [[ -f "${NNAS_INSTALL_PREFIX}/bin/tf2tflite" ]]; then
+    export PASSED=1
+  fi
+}

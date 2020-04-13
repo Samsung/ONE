@@ -1,0 +1,2 @@
+input,  ifm:0,  TF_FLOAT,  [1, 8, 6, 3]
+output, ofm:0,  TF_FLOAT,  [1, 18, 14, 2]

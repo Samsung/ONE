@@ -1,0 +1,260 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "CircleTensorExporter.h"
+
+#include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Service/CircleTypeInference.h>
+#include <luci/Service/CircleShapeInference.h>
+#include <luci/Log.h>
+
+#include <loco/IR/Algorithm.h>
+#include <loco/IR/CanonicalNode.h>
+#include <loco/IR/CanonicalNodeVisitor.h>
+#include <loco/IR/DataTypeTraits.h>
+#include <oops/InternalExn.h>
+
+using namespace circle;
+using namespace flatbuffers;
+
+namespace
+{
+
+using namespace luci;
+
+class CircleTensoInfo
+{
+public:
+  CircleTensoInfo() = default;
+
+public:
+  void name(const std::string &name) { _name = name; }
+  const std::string &name(void) const { return _name; }
+
+public:
+  const circle::TensorType &dtype(void) const { return _dtype; }
+  void dtype(const circle::TensorType &dtype) { _dtype = dtype; }
+
+  const ShapeDescription &shape(void) const { return _shape; }
+  void shape(const ShapeDescription &shape) { _shape = shape; }
+
+public:
+  luci::CircleConst *content(void) const { return _content; }
+  void content(luci::CircleConst *c) { _content = c; }
+
+  luci::CircleQuantParam *quantparam(void) const { return _quantparam; }
+  void quantparam(luci::CircleQuantParam *qp) { _quantparam = qp; }
+
+private:
+  std::string _name;
+
+  circle::TensorType _dtype;
+  ShapeDescription _shape;
+
+  luci::CircleConst *_content = nullptr;
+  luci::CircleQuantParam *_quantparam = nullptr;
+};
+
+using CircleTensorContext = std::vector<CircleTensoInfo>;
+
+struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
+{
+  // Input is Virtual but does produce a Tensor
+  // Output is Virtual that does not produce any Tensor
+  bool visit(luci::CircleOutput *) final { return true; }
+
+  // Return false by default
+  bool visit(luci::CircleNode *) final { return false; }
+};
+
+void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
+{
+  LOGGER(l);
+
+  auto isNoOp = [](loco::Node *node) {
+    if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+    {
+      NoOpDetector d;
+      return circle_node->accept(&d);
+    }
+    return false;
+  };
+
+  if (isNoOp(node))
+  {
+    set_tensor_index(node, get_tensor_index(node->arg(0)));
+    return;
+  }
+
+  auto tensor_index = static_cast<CircleTensorIndex>(ctx.size());
+  // TODO Use Graph-level metadata for Input & Output
+  // auto tensor_name = "t_" + std::to_string(tensor_index);
+  std::string tensor_name = node->name();
+  if (tensor_name.empty())
+    tensor_name = "t_" + std::to_string(tensor_index);
+  INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
+
+  CircleTensoInfo tensor_info;
+
+  tensor_info.name(tensor_name);
+  tensor_info.dtype(TypeInference::get(node));
+  tensor_info.shape(ShapeInference::get(node));
+
+  tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
+  tensor_info.quantparam(node->quantparam());
+
+  set_tensor_index(node, tensor_index);
+
+  ctx.emplace_back(tensor_info);
+}
+
+} // namespace
+
+namespace
+{
+
+flatbuffers::Offset<Vector<int32_t>> encodeShape(FlatBufferBuilder &builder,
+                                                 const ShapeDescription &shape)
+{
+  assert(shape._rank_known && "unknown number of dimensions is not supported");
+  return builder.CreateVector(shape._dims);
+}
+
+flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder)
+{
+  return CreateBuffer(builder);
+}
+
+template <typename NodeT>
+flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, NodeT *)
+{
+  return CreateBuffer(builder);
+}
+
+template <loco::DataType DT>
+flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &builder,
+                                                          luci::CircleConst *c)
+{
+  using NativeType = typename loco::DataTypeImpl<DT>::Type;
+
+  std::vector<NativeType> raw_data;
+  const uint32_t size = c->size<DT>();
+  raw_data.reserve(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    raw_data.push_back(c->at<DT>(i));
+  }
+  const size_t raw_size = size * sizeof(NativeType);
+  auto array_offset = builder.CreateVector(reinterpret_cast<uint8_t *>(raw_data.data()), raw_size);
+  return CreateBuffer(builder, array_offset);
+}
+
+template <>
+flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, luci::CircleConst *c)
+{
+  // TODO use switch
+  if (c->dtype() == loco::DataType::FLOAT32)
+  {
+    return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
+  }
+  else if (c->dtype() == loco::DataType::S32)
+  {
+    return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
+  }
+  else if (c->dtype() == loco::DataType::U8)
+  {
+    return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
+  }
+
+  INTERNAL_EXN_V("Unsupported datatype", oops::to_uint32(c->dtype()));
+}
+
+flatbuffers::Offset<circle::QuantizationParameters>
+encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam *quantparam)
+{
+  if (quantparam == nullptr)
+    return 0;
+
+  flatbuffers::Offset<flatbuffers::Vector<float>> min;
+  flatbuffers::Offset<flatbuffers::Vector<float>> max;
+  flatbuffers::Offset<flatbuffers::Vector<float>> scale;
+  flatbuffers::Offset<flatbuffers::Vector<int64_t>> zero_point;
+  if (quantparam->min.size() && quantparam->max.size())
+  {
+    min = builder.CreateVector(quantparam->min);
+    max = builder.CreateVector(quantparam->max);
+  }
+  if (quantparam->scale.size() && quantparam->zerop.size())
+  {
+    scale = builder.CreateVector(quantparam->scale);
+    zero_point = builder.CreateVector(quantparam->zerop);
+  }
+  return circle::CreateQuantizationParameters(builder, min, max, scale, zero_point);
+}
+
+void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
+                           SerializedModelData &gd)
+{
+  // Create and register output tensor shape
+  auto shape_offset = encodeShape(builder, info.shape());
+
+  // encode and register output tensor buffer
+  auto buffer =
+      info.content() == nullptr ? encodeOpBuffer(builder) : encodeOpBuffer(builder, info.content());
+
+  auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
+
+  auto buffer_id = static_cast<uint32_t>(gd._buffers.size());
+  gd._buffers.push_back(buffer);
+
+  auto name_offset = builder.CreateString(info.name());
+  auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
+                                    quantparam, /*is_variable*/ false);
+  gd._tensors.push_back(tensor_offset);
+}
+
+} // namespace
+
+namespace luci
+{
+
+void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, SerializedModelData &gd)
+{
+  CircleTensorContext tensor_ctx;
+
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  {
+    CircleNode *circle_node = dynamic_cast<luci::CircleNode *>(node);
+    allocateCircleTensor(circle_node, tensor_ctx);
+  }
+
+  // add one empty buffer
+  //   note: this follows TFLite
+  //   note: there's a comment in tflite fbs file
+  //   - Note the 0th entry of this array must be an empty buffer (sentinel).
+  //   - This is a convention so that tensors without a buffer can provide 0 as
+  //   - their buffer.
+  auto buffer = encodeOpBuffer(builder);
+  gd._buffers.push_back(buffer);
+
+  for (const auto &tensor_info : tensor_ctx)
+  {
+    exportOpDefinedTensor(tensor_info, builder, gd);
+  }
+}
+
+} // namespace luci

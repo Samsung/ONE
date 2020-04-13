@@ -1,0 +1,18 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  filler { tag: "constant" arg: "3.5" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Sqrt"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

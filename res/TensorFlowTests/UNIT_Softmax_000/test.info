@@ -1,0 +1,2 @@
+input,  Placeholder:0, TF_FLOAT, [2]
+output, Softmax:0,     TF_FLOAT, [2]

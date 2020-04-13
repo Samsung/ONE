@@ -1,0 +1,67 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+SET(fw_name "tflite-native")
+
+PROJECT(${fw_name})
+SET(PREFIX ${CMAKE_INSTALL_PREFIX})
+SET(LIB ${LIB_PATH})
+SET(LIBDIR ${PREFIX}/${LIB_PATH})
+
+SET(INC_DIR include)
+INCLUDE_DIRECTORIES(${INC_DIR})
+
+INCLUDE(FindPkgConfig)
+
+SET(COMMON_DEPS "tensorflow-lite")
+SET(PC_DEPS "capi-base-common")
+
+IF (TIZEN)
+	MESSAGE("Building for Tizen")
+	SET(TIZEN_DEPS "dlog")
+	PKG_CHECK_MODULES(${fw_name} REQUIRED ${COMMON_DEPS} ${TIZEN_DEPS})
+	ADD_DEFINITIONS("-D__TIZEN__")
+ELSE ()
+	MESSAGE("Building for Linux")
+	PKG_CHECK_MODULES(${fw_name} REQUIRED ${COMMON_DEPS})
+ENDIF ()
+
+FOREACH(flag ${${fw_name}_CFLAGS})
+    SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
+ENDFOREACH(flag)
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CXXFLAGS} -fPIC -Wall -Werror")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall")
+SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
+
+ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
+
+SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIBDIR}")
+
+aux_source_directory(src SOURCES)
+ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
+
+TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
+
+SET_TARGET_PROPERTIES(${fw_name}
+     PROPERTIES
+     VERSION ${FULLVER}
+     SOVERSION ${MAJORVER}
+     CLEAN_DIRECT_OUTPUT 1
+)
+
+INSTALL(TARGETS ${fw_name} DESTINATION ${LIB})
+INSTALL(
+        DIRECTORY ${INC_DIR}/ DESTINATION include/
+        FILES_MATCHING
+        PATTERN "${INC_DIR}/*.h"
+        )
+
+SET(PC_NAME ${fw_name})
+SET(PC_REQUIRED ${pc_dependents})
+SET(PC_LDFLAGS -l${fw_name})
+
+CONFIGURE_FILE(
+    ${fw_name}.pc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc
+    @ONLY
+)
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIB}/pkgconfig)

@@ -1,0 +1,2 @@
+input,  Placeholder:0, TF_FLOAT, [1, 4, 4, 3]
+output, Squeeze:0,     TF_FLOAT, [4, 4, 3]

@@ -1,0 +1,4 @@
+add
+average_pool_2d/aligned
+depthwise_conv_2d_no_fuse
+transpose_conv

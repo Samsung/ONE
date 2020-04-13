@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function prepare()
+{
+  export QUESTION="Is it possible to run tf2tflite?"
+}
+
+function run()
+{
+  if [[ $(ldd -r "${NNAS_INSTALL_PREFIX}/bin/tf2tflite" | grep '^undefined' | wc -l) -eq 0 ]]; then
+    export PASSED=1
+  fi
+}

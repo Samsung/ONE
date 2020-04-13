@@ -1,0 +1,32 @@
+node {
+  name: "const/int32"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+        }
+        int_val: 1
+        int_val: 2
+        int_val: 3
+        int_val: 4
+        int_val: 5
+        int_val: 6
+      }
+    }
+  }
+}

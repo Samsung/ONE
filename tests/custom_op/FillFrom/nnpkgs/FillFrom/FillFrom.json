@@ -1,0 +1,115 @@
+{
+  version: 3,
+  operator_codes: [
+    {
+      builtin_code: "CUSTOM",
+      custom_code: "FillFrom",
+      version: 1
+    }
+  ],
+  subgraphs: [
+    {
+      tensors: [
+        {
+          shape: [
+            10
+          ],
+          type: "FLOAT32",
+          buffer: 1,
+          name: "t_0",
+          is_variable: false
+        },
+        {
+          shape: [
+            10
+          ],
+          type: "FLOAT32",
+          buffer: 2,
+          name: "t_1",
+          is_variable: false
+        },
+        {
+          shape: [
+            10
+          ],
+          type: "FLOAT32",
+          buffer: 3,
+          name: "t_2",
+          is_variable: false
+        }
+      ],
+      inputs: [
+        0
+      ],
+      outputs: [
+        1
+      ],
+      operators: [
+        {
+          opcode_index: 0,
+          inputs: [
+            0
+          ],
+          outputs: [
+            1
+          ],
+          builtin_options_type: 0,
+          custom_options: [
+            105,
+            100,
+            120,
+            0,
+            118,
+            97,
+            108,
+            0,
+            2,
+            9,
+            6,
+            0,
+            3,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            205,
+            204,
+            140,
+            63,
+            6,
+            14,
+            10,
+            38,
+            1
+          ],
+          custom_options_format: "FLEXBUFFERS"
+        }
+      ]
+    }
+  ],
+  description: "nnpackage",
+  buffers: [
+    {
+    },
+    {
+    },
+    {
+    },
+    {
+    }
+  ],
+  metadata_buffer: [
+
+  ]
+}

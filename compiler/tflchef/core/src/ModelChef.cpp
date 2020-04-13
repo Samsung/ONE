@@ -1,0 +1,502 @@
+/*
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "tflchef/ModelChef.h"
+#include "Arguments.h"
+
+#include "Convert.h"
+
+#include "DataChef.h"
+#include "DataChefs.h"
+
+#include "OpChef.h"
+#include "OpChefs.h"
+
+#include "Dataset.h"
+
+#include <iterator>
+#include <map>
+#include <string>
+#include <vector>
+
+#include <cassert>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <stdexcept>
+
+namespace
+{
+
+template <typename InputIt> class RangedArguments : public Arguments
+{
+public:
+  RangedArguments(InputIt beg, InputIt end) : _beg{beg}, _end{end}
+  {
+    // DO NOTHING
+  }
+
+public:
+  uint32_t count(void) const override { return _end - _beg; }
+
+public:
+  const std::string &value(uint32_t n) const override { return *(_beg + n); }
+
+private:
+  InputIt _beg;
+  InputIt _end;
+};
+
+template <typename InputIt> RangedArguments<InputIt> ranged_arguments(InputIt beg, InputIt end)
+{
+  return RangedArguments<InputIt>{beg, end};
+}
+
+} // namespace
+
+namespace
+{
+
+template <typename T> std::vector<T> as_vector(const ::google::protobuf::RepeatedPtrField<T> &field)
+{
+  std::vector<T> res;
+  for (const auto &elem : field)
+  {
+    res.emplace_back(elem);
+  }
+  return res;
+}
+
+template <typename T> Dataset<T> as_dataset(const ::google::protobuf::RepeatedPtrField<T> &field)
+{
+  return Dataset<T>(as_vector<T>(field));
+}
+
+} // namespace
+
+namespace
+{
+
+template <typename T> using Dims = std::vector<T>;
+
+Dims<int32_t> as_dims(const tflchef::TensorShape &shape)
+{
+  std::vector<int32_t> res;
+
+  for (auto &dim : shape.dim())
+  {
+    res.emplace_back(static_cast<int32_t>(dim));
+  }
+
+  return res;
+}
+
+int32_t element_count(const Dims<int32_t> &dims)
+{
+  return std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<int32_t>());
+}
+
+} // namespace
+
+namespace
+{
+
+class GeneratedModelImpl final : public tflchef::GeneratedModel::Impl
+{
+public:
+  GeneratedModelImpl(std::unique_ptr<flatbuffers::FlatBufferBuilder> &&builder)
+      : _builder{std::move(builder)}
+  {
+    // DO NOTHING
+  }
+
+public:
+  const char *base(void) const override
+  {
+    // Return the base address of generated flatbuffer model
+    return reinterpret_cast<const char *>(_builder->GetBufferPointer());
+  }
+
+public:
+  size_t size(void) const override
+  {
+    // Return the size of generated flatbuffer model
+    return _builder->GetSize();
+  }
+
+private:
+  std::unique_ptr<flatbuffers::FlatBufferBuilder> _builder;
+};
+
+} // namespace
+
+namespace
+{
+
+template <typename T> class Registry
+{
+public:
+  void add(const std::string &name, std::unique_ptr<T> &&entry)
+  {
+    _content[name] = std::move(entry);
+  }
+
+  const T &lookup(const std::string &name) const { return *(_content.at(name)); }
+
+private:
+  std::map<std::string, std::unique_ptr<T>> _content;
+};
+
+struct DataChefRegistry final : public Registry<DataChefFactory>
+{
+};
+
+DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
+{
+  static DataChefRegistry s32;
+  static DataChefRegistry fp32;
+  static DataChefRegistry u8;
+
+  switch (type)
+  {
+    case tflchef::INT32:
+      return s32;
+    case tflchef::FLOAT32:
+      return fp32;
+    case tflchef::UINT8:
+      return u8;
+    default:
+      break;
+  }
+
+  throw std::runtime_error{"Unknown tensor type"};
+}
+
+struct OpChefRegistry final : public Registry<OpChefFactory>
+{
+};
+
+OpChefRegistry &op_chef_registry(void)
+{
+  static OpChefRegistry registry;
+  return registry;
+}
+
+// @brief This will prepare a set of unique operator codes in the mode recipe
+std::set<tflite::BuiltinOperator> gather_opcode_set(const ::tflchef::ModelRecipe &model_recipe)
+{
+  std::set<tflite::BuiltinOperator> opcode_set;
+  for (const auto &operation : model_recipe.operation())
+  {
+    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+    opcode_set.insert(op_chef->code());
+  }
+  return opcode_set;
+}
+
+} // namespace
+
+namespace tflchef
+{
+
+/**
+ * @brief Generate a (in-memory) TensorFlow Lite model from a given model recipe
+ */
+GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
+{
+// Initialize Op Chef Registry
+#define OP_CHEF(NAME, FACTORY_CLASS) \
+  op_chef_registry().add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
+#include "OpChef.def"
+#undef OP_CHEF
+
+// Initialize Data Chef Registry
+#define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \
+  data_chef_registry(::tflchef::TYPE)        \
+      .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
+#include "DataChef.def"
+#undef DATA_CHEF
+
+  // Tensor Name -> Tensor ID mapping
+  std::map<std::string, int32_t> symbol_table;
+
+  auto lookup = [&symbol_table](const std::string &name) { return symbol_table.at(name); };
+
+  //
+  // Create FlatBufferBuilder
+  //
+  auto flatbuffer_builder =
+      std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
+
+  // Operand-related
+  std::vector<flatbuffers::Offset<::tflite::Buffer>> buffer_vec;
+  std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
+
+  // Operation-related
+  std::vector<flatbuffers::Offset<::tflite::OperatorCode>> code_vec;
+  std::vector<flatbuffers::Offset<::tflite::Operator>> operator_vec;
+
+  // Create OperatorCode
+  std::set<tflite::BuiltinOperator> opcode_set = gather_opcode_set(model_recipe);
+  for (auto opcode : opcode_set)
+  {
+    tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
+    code_builder.add_builtin_code(opcode);
+    auto code = code_builder.Finish();
+    // Update OperatorCode vector
+    code_vec.emplace_back(code);
+  }
+
+  // Create an Empty Buffer
+  //
+  // Buffer 0 SHOULD be an empty buffer in TensorFlow Lite model file
+  // (Please refer to the comment for Tensor.buffer field in schema)
+  {
+    tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+    buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+
+  // Create buffer(s) 1~n(I) for input(s)
+  const auto size_input = model_recipe.input_size();
+  for (int ci = 0; ci < size_input; ++ci)
+  {
+    {
+      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+      buffer_vec.emplace_back(buffer_builder.Finish());
+    }
+  }
+  // Create buffer(s) n(I)+1~n(I)+n(O) for output(s)
+  const auto size_output = model_recipe.output_size();
+  for (int co = 0; co < size_output; ++co)
+  {
+    {
+      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+      buffer_vec.emplace_back(buffer_builder.Finish());
+    }
+  }
+
+  auto input_names = as_dataset(model_recipe.input()).vectorize();
+  auto output_names = as_dataset(model_recipe.output()).vectorize();
+
+  for (const auto &operand : model_recipe.operand())
+  {
+    assert(operand.has_name());
+
+    assert(operand.has_type());
+    assert(operand.has_shape());
+
+    std::vector<int32_t> dims = as_dims(operand.shape());
+
+    auto shape = flatbuffer_builder->CreateVector(dims);
+    auto name = flatbuffer_builder->CreateString(operand.name());
+
+    int32_t buffer_index = 0;
+
+    // Create Buffer if filler is specified
+    if (operand.has_filler())
+    {
+      const auto &filler = operand.filler();
+
+      assert(filler.has_tag());
+
+      auto args = ranged_arguments(filler.arg().begin(), filler.arg().end());
+      auto chef = data_chef_registry(operand.type()).lookup(filler.tag()).create(args);
+
+      assert(chef != nullptr);
+
+      // Create Data
+      auto data_vec = chef->generate(element_count(dims));
+      auto data = flatbuffer_builder->CreateVector(data_vec);
+
+      // Create Buffer
+      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+      buffer_builder.add_data(data);
+      auto buffer = buffer_builder.Finish();
+
+      // Update Buffer Index & Vector
+      buffer_index = buffer_vec.size();
+      buffer_vec.emplace_back(buffer);
+    }
+    else
+    {
+      // if this is input or output, assign to that buffer_index
+      int idx = 0;
+      for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
+      {
+        if (*it == operand.name())
+        {
+          buffer_index = 1 + idx; // input is from 1
+          break;
+        }
+      }
+      if (buffer_index == 0)
+      {
+        idx = 0;
+        for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
+        {
+          if (*it == operand.name())
+          {
+            buffer_index = 1 + size_input + idx; // output is from 1 + size_input
+            break;
+          }
+        }
+      }
+    }
+
+    flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
+
+    // Create QuantizationParameters if quant is specified
+    if (operand.has_quant())
+    {
+      const auto &quant = operand.quant();
+
+      // Create each parameters
+      // NOTE if some parameters are not given, those will be set to default value
+      std::vector<float> quant_max_vec(quant.max_size());
+      std::vector<float> quant_min_vec(quant.min_size());
+      std::vector<float> quant_scale_vec(quant.scale_size());
+      std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
+
+      for (uint32_t i = 0; i < quant.max_size(); ++i)
+        quant_max_vec.at(i) = quant.max(i);
+      for (uint32_t i = 0; i < quant.min_size(); ++i)
+        quant_min_vec.at(i) = quant.min(i);
+      for (uint32_t i = 0; i < quant.scale_size(); ++i)
+        quant_scale_vec.at(i) = quant.scale(i);
+      for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
+        quant_zero_point_vec.at(i) = quant.zero_point(i);
+
+      auto quant_max = flatbuffer_builder->CreateVector(quant_max_vec);
+      auto quant_min = flatbuffer_builder->CreateVector(quant_min_vec);
+      auto quant_scale = flatbuffer_builder->CreateVector(quant_scale_vec);
+      auto quant_zero_point = flatbuffer_builder->CreateVector(quant_zero_point_vec);
+
+      // Create QuantizationParameters
+      tflite::QuantizationParametersBuilder quant_builder{*flatbuffer_builder};
+      quant_builder.add_max(quant_max);
+      quant_builder.add_min(quant_min);
+      quant_builder.add_scale(quant_scale);
+      quant_builder.add_zero_point(quant_zero_point);
+
+      // Update QuantizationParameters Index
+      quant_index = quant_builder.Finish();
+    }
+
+    // Create Tensor
+    tflite::TensorBuilder tensor_builder{*flatbuffer_builder};
+
+    tensor_builder.add_shape(shape);
+    tensor_builder.add_type(as_tflite_tensortype(operand.type()));
+    tensor_builder.add_buffer(buffer_index);
+    tensor_builder.add_name(name);
+    if (operand.has_quant())
+      tensor_builder.add_quantization(quant_index);
+
+    // Append!
+    tensor_vec.emplace_back(tensor_builder.Finish());
+
+    // Update Tensor Name -> Tensor Index Map
+    int32_t tensor_index = symbol_table.size();
+    const auto &tensor_name = operand.name();
+
+    symbol_table[tensor_name] = tensor_index;
+  }
+
+  // Create Operator
+  for (const auto &operation : model_recipe.operation())
+  {
+    assert(operation.has_type());
+
+    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+
+    // Create 'inputs'
+    std::vector<int32_t> input_vec = as_dataset(operation.input()).map(lookup).vectorize();
+    auto inputs = flatbuffer_builder->CreateVector(input_vec);
+
+    // Create 'outputs'
+    std::vector<int32_t> output_vec = as_dataset(operation.output()).map(lookup).vectorize();
+    auto outputs = flatbuffer_builder->CreateVector(output_vec);
+
+    // Create Option
+    auto options = op_chef->value(*flatbuffer_builder);
+
+    // Create Operator
+    tflite::OperatorBuilder op_builder{*flatbuffer_builder};
+
+    // Get operator code index from opcode_set with assumption, order of
+    // opcode_set is same as that of code_vec
+    auto op_it = opcode_set.find(op_chef->code());
+    assert(op_it != opcode_set.end());
+    uint32_t opcode_index = std::distance(opcode_set.begin(), op_it);
+
+    op_builder.add_opcode_index(opcode_index);
+    op_builder.add_inputs(inputs);
+    op_builder.add_outputs(outputs);
+    op_builder.add_builtin_options_type(op_chef->type());
+    op_builder.add_builtin_options(options);
+
+    // Append Operator
+    operator_vec.emplace_back(op_builder.Finish());
+  }
+
+  // Create network input/output vector
+  std::vector<int32_t> input_vec = as_dataset(model_recipe.input()).map(lookup).vectorize();
+  std::vector<int32_t> output_vec = as_dataset(model_recipe.output()).map(lookup).vectorize();
+
+  // Create "SubGraph" arguments
+  auto tensors = flatbuffer_builder->CreateVector(tensor_vec);
+  auto inputs = flatbuffer_builder->CreateVector(input_vec);
+  auto outputs = flatbuffer_builder->CreateVector(output_vec);
+  auto operators = flatbuffer_builder->CreateVector(operator_vec);
+
+  // Create "SubGraph"
+  std::vector<flatbuffers::Offset<::tflite::SubGraph>> subgraph_vec;
+
+  tflite::SubGraphBuilder subgraph_builder{*flatbuffer_builder};
+
+  subgraph_builder.add_tensors(tensors);
+  subgraph_builder.add_inputs(inputs);
+  subgraph_builder.add_outputs(outputs);
+  subgraph_builder.add_operators(operators);
+
+  subgraph_vec.emplace_back(subgraph_builder.Finish());
+
+  // Create "Model" arguments
+  auto buffers = flatbuffer_builder->CreateVector(buffer_vec);
+  auto operator_codes = flatbuffer_builder->CreateVector(code_vec);
+  auto subgraphs = flatbuffer_builder->CreateVector(subgraph_vec);
+  auto description = flatbuffer_builder->CreateString("Generated by tflchef");
+
+  // Create "Model"
+  tflite::ModelBuilder model_builder{*flatbuffer_builder};
+
+  model_builder.add_version(3);
+  model_builder.add_operator_codes(operator_codes);
+  model_builder.add_subgraphs(subgraphs);
+  model_builder.add_description(description);
+  model_builder.add_buffers(buffers);
+
+  auto model = model_builder.Finish();
+
+  // Finalize
+  ::tflite::FinishModelBuffer(*flatbuffer_builder, model);
+
+  // Return "GenerateModel"
+  return GeneratedModel{
+      std::unique_ptr<GeneratedModelImpl>(new GeneratedModelImpl(std::move(flatbuffer_builder)))};
+}
+
+} // namespace tflchef

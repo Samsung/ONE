@@ -1,0 +1,18 @@
+#!/bin/bash
+
+import "build.configuration"
+
+pushd ${NNAS_PROJECT_PATH} > /dev/null
+
+# Modify Doxyfile for custom config
+#   OUTPUT_DIRECTORY: Use workspace for doxygen html storage
+#                     Generated html is in ${NNAS_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}/doxygen/html/
+#   EXCLUDE: Exclude custom workspace
+mkdir -p ${BUILD_WORKSPACE_RPATH}/doxygen
+cp infra/doxygen/Doxyfile ${BUILD_WORKSPACE_RPATH}/doxygen/Doxyfile
+echo "OUTPUT_DIRECTORY = ${BUILD_WORKSPACE_RPATH}/doxygen" >> ${BUILD_WORKSPACE_RPATH}/doxygen/Doxyfile
+echo "EXCLUDE += ${BUILD_WORKSPACE_RPATH}" >> ${BUILD_WORKSPACE_RPATH}/doxygen/Doxyfile
+
+doxygen ${BUILD_WORKSPACE_RPATH}/doxygen/Doxyfile
+
+popd > /dev/null

@@ -1,0 +1,78 @@
+node {
+  name: "val_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 3
+          }
+        }
+        float_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "val_2"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 5
+          }
+          dim {
+            size: 3
+          }
+        }
+        float_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "pack_0"
+  op: "Pack"
+  input: "val_1"
+  input: "val_2"
+  attr {
+    key: "N"
+    value {
+      i: 2
+    }
+  }
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "axis"
+    value {
+      i: 2
+    }
+  }
+}

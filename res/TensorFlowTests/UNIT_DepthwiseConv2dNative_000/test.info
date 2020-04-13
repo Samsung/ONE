@@ -1,0 +1,2 @@
+input, input:0,  TF_FLOAT,   [1, 11, 7, 3]
+output, DepthwiseConv2dNative:0,  TF_FLOAT,   [1, 6, 4, 12]

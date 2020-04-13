@@ -1,0 +1,38 @@
+# test case discussed in https://github.sec.samsung.net/STAR/nnfw/issues/5607
+node {
+  name: "input_00"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 10
+        }
+      }
+    }
+  }
+}
+node {
+  name: "FillFrom"
+  op: "FillFrom"
+  input: "input_00"
+  attr {
+    key: "idx"
+    value {
+      i: 3
+    }
+  }
+  attr {
+    key: "val"
+    value {
+      f: 1.1
+    }
+  }
+}

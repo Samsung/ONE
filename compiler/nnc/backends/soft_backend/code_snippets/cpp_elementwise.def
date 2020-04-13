@@ -1,0 +1,273 @@
+/* Copyright 2018 The TensorFlow Authors. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
+
+// TODO(ycling): Refactoring. Remove BroadcastLogical and use the more
+// generalized and efficient BroadcastBinaryFunction.
+//
+// Also appears to duplicte MinimumMaximum.
+//
+// R: Result type. T1: Input 1 type. T2: Input 2 type.
+template <typename R, typename T1, typename T2>
+inline void BroadcastBinaryFunction4DSlow(
+  const RuntimeShape& unextended_input1_shape, const T1* input1_data,
+  const RuntimeShape& unextended_input2_shape, const T2* input2_data,
+  const RuntimeShape& unextended_output_shape, R* output_data,
+  R (* func)(T1, T2)) {
+  TFLITE_DCHECK_LE(unextended_input1_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_LE(unextended_input2_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_LE(unextended_output_shape.DimensionsCount(), 4);
+  const RuntimeShape output_shape =
+    RuntimeShape::ExtendedShape(4, unextended_output_shape);
+
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(unextended_input1_shape,
+                                      unextended_input2_shape, &desc1, &desc2);
+
+  for (int b = 0; b < output_shape.Dims(0); ++b) {
+    for (int y = 0; y < output_shape.Dims(1); ++y) {
+      for (int x = 0; x < output_shape.Dims(2); ++x) {
+        for (int c = 0; c < output_shape.Dims(3); ++c) {
+          auto out_idx = Offset(output_shape, b, y, x, c);
+          auto in1_idx = SubscriptToIndex(desc1, b, y, x, c);
+          auto in2_idx = SubscriptToIndex(desc2, b, y, x, c);
+          auto in1_val = input1_data[in1_idx];
+          auto in2_val = input2_data[in2_idx];
+          output_data[out_idx] = func(in1_val, in2_val);
+        }
+      }
+    }
+  }
+}
+
+// R: Result type. T1: Input 1 type. T2: Input 2 type.
+// TODO(renjieliu): Refactor other binary functions to use this one.
+template <typename R, typename T1, typename T2>
+inline void BinaryFunction(const RuntimeShape& input1_shape,
+                           const T1* input1_data,
+                           const RuntimeShape& input2_shape,
+                           const T2* input2_data,
+                           const RuntimeShape& output_shape, R* output_data,
+                           R (* func)(T1, T2)) {
+  const int flat_size =
+    MatchingFlatSize(input1_shape, input2_shape, output_shape);
+  for (int i = 0; i < flat_size; ++i) {
+    output_data[i] = func(input1_data[i], input2_data[i]);
+  }
+}
+
+struct Sub {
+  static inline void Sub_(const float* input1_data, const float* input2_data,
+                          float* output_data, const int size) {
+    int i = 0;
+#ifdef USE_NEON
+    for (; i <= size - 16; i += 16) {
+      auto a10 = vld1q_f32(input1_data + i);
+      auto a11 = vld1q_f32(input1_data + i + 4);
+      auto a12 = vld1q_f32(input1_data + i + 8);
+      auto a13 = vld1q_f32(input1_data + i + 12);
+      auto a20 = vld1q_f32(input2_data + i);
+      auto a21 = vld1q_f32(input2_data + i + 4);
+      auto a22 = vld1q_f32(input2_data + i + 8);
+      auto a23 = vld1q_f32(input2_data + i + 12);
+      auto x0 = vsubq_f32(a10, a20);
+      auto x1 = vsubq_f32(a11, a21);
+      auto x2 = vsubq_f32(a12, a22);
+      auto x3 = vsubq_f32(a13, a23);
+      vst1q_f32(output_data + i, x0);
+      vst1q_f32(output_data + i + 4, x1);
+      vst1q_f32(output_data + i + 8, x2);
+      vst1q_f32(output_data + i + 12, x3);
+    }
+    for (; i <= size - 4; i += 4) {
+      auto a1 = vld1q_f32(input1_data + i);
+      auto a2 = vld1q_f32(input2_data + i);
+      auto x = vsubq_f32(a1, a2);
+      vst1q_f32(output_data + i, x);
+    }
+#endif  // NEON
+
+    for (; i < size; i++) {
+      output_data[i] = input1_data[i] - input2_data[i];
+    }
+  }
+
+  static inline void Call(
+    const float* input1_data, const RuntimeShape& in1_shape,
+    const float* input2_data, const RuntimeShape& in2_shape,
+    float* output_data, const RuntimeShape& out_shape) {
+    if (in1_shape != in2_shape) {
+      BroadcastBinaryFunction4DSlow<float, float, float>(
+        in1_shape, input1_data,
+        in2_shape, input2_data,
+        out_shape, output_data,
+        [](float a, float b) { return a - b; }
+      );
+    } else {
+      Sub_(input1_data, input2_data, output_data, out_shape.FlatSize());
+    }
+  }
+};
+
+struct Add {
+  static inline void Add_(const float* input1_data, const float* input2_data,
+                          float* output_data, const int size) {
+    int i = 0;
+#ifdef USE_NEON
+    for (; i <= size - 16; i += 16) {
+      auto a10 = vld1q_f32(input1_data + i);
+      auto a11 = vld1q_f32(input1_data + i + 4);
+      auto a12 = vld1q_f32(input1_data + i + 8);
+      auto a13 = vld1q_f32(input1_data + i + 12);
+      auto a20 = vld1q_f32(input2_data + i);
+      auto a21 = vld1q_f32(input2_data + i + 4);
+      auto a22 = vld1q_f32(input2_data + i + 8);
+      auto a23 = vld1q_f32(input2_data + i + 12);
+      auto x0 = vaddq_f32(a10, a20);
+      auto x1 = vaddq_f32(a11, a21);
+      auto x2 = vaddq_f32(a12, a22);
+      auto x3 = vaddq_f32(a13, a23);
+      vst1q_f32(output_data + i, x0);
+      vst1q_f32(output_data + i + 4, x1);
+      vst1q_f32(output_data + i + 8, x2);
+      vst1q_f32(output_data + i + 12, x3);
+    }
+    for (; i <= size - 4; i += 4) {
+      auto a1 = vld1q_f32(input1_data + i);
+      auto a2 = vld1q_f32(input2_data + i);
+      auto x = vaddq_f32(a1, a2);
+      vst1q_f32(output_data + i, x);
+    }
+#endif  // NEON
+
+    for (; i < size; i++) {
+      output_data[i] = input1_data[i] + input2_data[i];
+    }
+  }
+
+  static inline void Call(
+    const float* input1_data, const RuntimeShape& in1_shape,
+    const float* input2_data, const RuntimeShape& in2_shape,
+    float* output_data, const RuntimeShape& out_shape) {
+    if (in1_shape != in2_shape) {
+      BroadcastBinaryFunction4DSlow<float, float, float>(
+        in1_shape, input1_data,
+        in2_shape, input2_data,
+        out_shape, output_data,
+        [](float a, float b) { return a + b; }
+      );
+    } else {
+      Add_(input1_data, input2_data, output_data, out_shape.FlatSize());
+    }
+  }
+};
+
+struct Max {
+  static inline void Call(
+    const float* input1_data, const RuntimeShape& in1_shape,
+    const float* input2_data, const RuntimeShape& in2_shape,
+    float* output_data, const RuntimeShape& out_shape) {
+    if (in1_shape != in2_shape) {
+      BroadcastBinaryFunction4DSlow<float, float, float>(
+        in1_shape, input1_data,
+        in2_shape, input2_data,
+        out_shape, output_data,
+        [](float a, float b) { return std::max(a, b); }
+      );
+    } else {
+      auto input1 = MapAsVector(input1_data, in1_shape.FlatSize());
+      auto input2 = MapAsVector(input2_data, in2_shape.FlatSize());
+      auto output = MapAsVector(output_data, out_shape.FlatSize());
+      output = input1.cwiseMax(input2);
+    }
+  }
+};
+
+struct Mul {
+  static inline void Call(const float* input1_data, const RuntimeShape& in1_shape,
+                          const float* input2_data, const RuntimeShape& in2_shape,
+                          float* output_data, const RuntimeShape& out_shape) {
+    if (in1_shape != in2_shape) {
+      BroadcastBinaryFunction4DSlow<float, float, float>(
+        in1_shape, input1_data,
+        in2_shape, input2_data,
+        out_shape, output_data,
+        [](float a, float b) { return a * b; });
+    } else {
+      Mul_(input1_data, input2_data, output_data, out_shape.FlatSize());
+    }
+  }
+
+  static inline void Mul_(const float* input1_data, const float* input2_data,
+                          float* output_data, const int size) {
+
+    int i = 0;
+#ifdef USE_NEON
+    for (; i <= size - 16; i += 16) {
+      auto a10 = vld1q_f32(input1_data + i);
+      auto a11 = vld1q_f32(input1_data + i + 4);
+      auto a12 = vld1q_f32(input1_data + i + 8);
+      auto a13 = vld1q_f32(input1_data + i + 12);
+      auto a20 = vld1q_f32(input2_data + i);
+      auto a21 = vld1q_f32(input2_data + i + 4);
+      auto a22 = vld1q_f32(input2_data + i + 8);
+      auto a23 = vld1q_f32(input2_data + i + 12);
+      auto x0 = vmulq_f32(a10, a20);
+      auto x1 = vmulq_f32(a11, a21);
+      auto x2 = vmulq_f32(a12, a22);
+      auto x3 = vmulq_f32(a13, a23);
+
+      vst1q_f32(output_data + i, x0);
+      vst1q_f32(output_data + i + 4, x1);
+      vst1q_f32(output_data + i + 8, x2);
+      vst1q_f32(output_data + i + 12, x3);
+    }
+    for (; i <= size - 4; i += 4) {
+      auto a1 = vld1q_f32(input1_data + i);
+      auto a2 = vld1q_f32(input2_data + i);
+      auto x = vmulq_f32(a1, a2);
+
+      vst1q_f32(output_data + i, x);
+    }
+#endif  // NEON
+
+    for (; i < size; i++) {
+      output_data[i] = input1_data[i] * input2_data[i];
+    }
+  }
+};
+
+//TODO maybe move to a separate file since everything else here is extracted from TF Lite
+//23.11.2018
+struct Div {
+  static inline void Call(
+    const float* input1_data, const RuntimeShape& in1_shape,
+    const float* input2_data, const RuntimeShape& in2_shape,
+    float* output_data, const RuntimeShape& out_shape) {
+    if (in1_shape != in2_shape) {
+      BroadcastBinaryFunction4DSlow<float, float, float>(
+        in1_shape, input1_data,
+        in2_shape, input2_data,
+        out_shape, output_data,
+        [](float a, float b) { return a / b; }
+      );
+    } else {
+      auto input1 = MapAsVector(input1_data, in1_shape.FlatSize());
+      auto input2 = MapAsVector(input2_data, in2_shape.FlatSize());
+      auto output = MapAsVector(output_data, out_shape.FlatSize());
+      output = input1.cwiseQuotient(input2);
+    }
+  }
+};

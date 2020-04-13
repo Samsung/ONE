@@ -1,0 +1,2 @@
+input,  Placeholder:0,   TF_FLOAT,   [2, 3]
+output, as_rsqrt:0,      TF_FLOAT,   [2, 3]

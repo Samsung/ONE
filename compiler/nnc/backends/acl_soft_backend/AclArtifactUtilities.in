@@ -1,0 +1,29 @@
+static void initializeTensor(arm_compute::CLTensor& tensor, const arm_compute::TensorShape& ts) {
+  arm_compute::TensorInfo ti(ts, arm_compute::Format::F32);
+  tensor.allocator()->init(ti);
+}
+
+static void fillTensor(arm_compute::CLTensor& tensor, float scalar) {
+  tensor.map();
+  arm_compute::Window window;
+  window.use_tensor_dimensions(tensor.info()->tensor_shape());
+  arm_compute::Iterator iter(&tensor, window);
+  arm_compute::execute_window_loop(window, [&scalar, &iter](const arm_compute::Coordinates&) {
+    memcpy(iter.ptr(), &scalar, sizeof(float));
+  }, iter);
+
+  tensor.unmap();
+}
+
+static void deserializeTensor(std::istream& par_in, arm_compute::CLTensor& tensor) {
+  tensor.map();
+
+  arm_compute::Window window;
+  window.use_tensor_dimensions(tensor.info()->tensor_shape());
+  arm_compute::Iterator iter(&tensor, window);
+  arm_compute::execute_window_loop(window, [&par_in, &iter](const arm_compute::Coordinates&) {
+      par_in.read(reinterpret_cast<char*>(iter.ptr()), sizeof(float));
+    }, iter);
+
+  tensor.unmap();
+}

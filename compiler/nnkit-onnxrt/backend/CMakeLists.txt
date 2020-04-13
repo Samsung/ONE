@@ -1,0 +1,3 @@
+add_library(nnkit_onnx_backend SHARED Backend.cpp)
+target_link_libraries(nnkit_onnx_backend nnkit_support_onnx)
+target_link_libraries(nnkit_onnx_backend stdex)

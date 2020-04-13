@@ -1,0 +1,5 @@
+# this has two inputs and two outputs. Let's make our code to handle multiple inputs and outputs.
+input,   input_1:0,    TF_FLOAT,   [2, 2]
+input,   input_2:0,    TF_FLOAT,   [2, 2]
+output,  output_1:0,   TF_FLOAT,   [2, 2]
+output,  output_2:0,   TF_FLOAT,   [2, 2]

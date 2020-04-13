@@ -1,0 +1,30 @@
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+# TODO enable tests
+#file(GLOB_RECURSE TESTS "src/*.test.cpp")
+#list(REMOVE_ITEM SOURCES ${TESTS})
+
+add_library(luci_export SHARED ${SOURCES})
+target_include_directories(luci_export PRIVATE src)
+target_include_directories(luci_export PUBLIC include)
+target_link_libraries(luci_export PRIVATE luci_lang)
+target_link_libraries(luci_export PRIVATE luci_service)
+target_link_libraries(luci_export PRIVATE luci_pass)
+target_link_libraries(luci_export PRIVATE mio_circle)
+target_link_libraries(luci_export PRIVATE stdex)
+target_link_libraries(luci_export PRIVATE luci_log)
+target_link_libraries(luci_export PRIVATE luci_logex)
+target_link_libraries(luci_export PRIVATE nncc_common)
+target_link_libraries(luci_export PRIVATE locop)
+target_link_libraries(luci_export PRIVATE oops)
+install(TARGETS luci_export DESTINATION lib)
+
+#if(NOT ENABLE_TEST)
+#  return()
+#endif(NOT ENABLE_TEST)
+#
+#nnas_find_package(GTest REQUIRED)
+#
+#GTest_AddTest(luci_export_test ${TESTS})
+#target_include_directories(luci_export_test PRIVATE src)
+#target_link_libraries(luci_export_test luci_export)
+#target_link_libraries(luci_export_test oops)

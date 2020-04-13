@@ -1,0 +1,72 @@
+name: "residual"
+layer {
+  name: "input"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 3
+      dim: 31
+      dim: 31
+    }
+  }
+}
+layer {
+  name: "MaxPool2dBackward4"
+  type: "Pooling"
+  bottom: "data"
+  top: "MaxPool2dBackward4"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 1
+  }
+}
+layer {
+  name: "ConvNdBackward5"
+  type: "Convolution"
+  bottom: "MaxPool2dBackward4"
+  top: "ConvNdBackward5"
+  convolution_param {
+    num_output: 5
+    pad_h: 1
+    pad_w: 1
+    kernel_h: 3
+    kernel_w: 3
+    stride: 1
+    bias_term: false
+  }
+}
+layer {
+  name: "ThresholdBackward7"
+  type: "ReLU"
+  bottom: "ConvNdBackward5"
+  top: "ConvNdBackward5"
+}
+layer {
+  name: "ConvNdBackward8"
+  type: "Convolution"
+  bottom: "ConvNdBackward5"
+  top: "ConvNdBackward8"
+  convolution_param {
+    num_output: 3
+    pad_h: 1
+    pad_w: 1
+    kernel_h: 3
+    kernel_w: 3
+    stride: 1
+    bias_term: false
+  }
+}
+layer {
+  name: "AddBackward11"
+  type: "Eltwise"
+  bottom: "ConvNdBackward8"
+  bottom: "MaxPool2dBackward4"
+  top: "AddBackward11"
+  eltwise_param {
+    operation: SUM
+  }
+}

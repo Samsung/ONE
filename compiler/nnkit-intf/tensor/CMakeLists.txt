@@ -1,0 +1,3 @@
+add_library(nnkit_intf_tensor INTERFACE)
+target_include_directories(nnkit_intf_tensor INTERFACE include)
+target_link_libraries(nnkit_intf_tensor INTERFACE angkor)

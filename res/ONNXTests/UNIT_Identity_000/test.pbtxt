@@ -1,0 +1,47 @@
+# This testcase is compatible with ONNX 1.4.1 or newer
+ir_version: 4
+
+opset_import {
+  version: 9
+}
+
+graph {
+  name: "Identity_000"
+
+  node {
+    input: "input"
+    output: "output"
+    name: "identity_node"
+    op_type: "Identity"
+  }
+
+  input {
+    name: "input"
+    type {
+      tensor_type {
+        elem_type: 1 # FLOAT type
+        shape {
+          dim { dim_value: 1 }
+          dim { dim_value: 2 }
+          dim { dim_value: 1 }
+          dim { dim_value: 2 }
+        }
+      }
+    }
+  }
+
+  output {
+    name: "output"
+    type {
+      tensor_type {
+        elem_type: 1 # FLOAT type
+        shape {
+          dim { dim_value: 1 }
+          dim { dim_value: 2 }
+          dim { dim_value: 1 }
+          dim { dim_value: 2 }
+        }
+      }
+    }
+  }
+}

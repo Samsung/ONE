@@ -1,0 +1,11 @@
+#!/bin/bash
+
+import "build.configuration"
+
+if [[ ! -d "${BUILD_PATH}" ]]; then
+  echo "'${BUILD_PATH}' does not exist. Please run 'configure' first"
+  exit 255
+fi
+
+cd ${BUILD_PATH}
+make install

@@ -1,0 +1,17 @@
+# aarch64 android cmake options
+#
+option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
+# NOTE BUILD_ANDROID_TFLITE(JNI lib) is disabled due to BuiltinOpResolver issue.
+# tensorflow-lite does not build BuiltinOpResolver but JNI lib need it
+# Related Issue : #1403
+option(BUILD_ANDROID_TFLITE "Enable android support for TensorFlow Lite" ON)
+option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" ON)
+option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
+# Need boost library
+option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" OFF)
+option(BUILD_NNPACKAGE_RUN "Build nnpackge_run" OFF)
+option(BUILD_TFLITE_RUN "Build tflite-run" OFF)
+option(BUILD_TFLITE_LOADER_TEST_TOOL "Build tflite loader testing tool" OFF)
+option(BUILD_LOGGING "Build logging runtime" OFF)
+
+option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)

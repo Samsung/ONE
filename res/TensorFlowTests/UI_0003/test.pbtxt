@@ -1,0 +1,22 @@
+node {
+  name: "relu1"
+  op: "Relu"
+  input: "Placeholder"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "relu2"
+  op: "Relu"
+  input: "relu1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}

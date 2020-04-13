@@ -1,0 +1,7 @@
+nnc_add_unit_test(nnc_cpu_cpp_backend_ops_test CPPOperations.cpp)
+optional_target_link_libraries(nnc_cpu_cpp_backend_ops_test mir_interpreter mir soft_backend_cpp)
+target_include_directories(nnc_cpu_cpp_backend_ops_test PRIVATE ${NNC_SOFT_BACKEND_DIR})
+
+nnc_add_unit_test(nnc_cpu_cpp_backend_general_test Generator.cpp CPPHeaderTypes.cpp ModelAnalyzer.cpp)
+optional_target_link_libraries(nnc_cpu_cpp_backend_general_test mir soft_backend_cpp)
+target_include_directories(nnc_cpu_cpp_backend_general_test PRIVATE ${NNC_SOFT_BACKEND_DIR})

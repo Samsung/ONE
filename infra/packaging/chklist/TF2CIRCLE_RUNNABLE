@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function prepare()
+{
+  export QUESTION="Is it possible to run tf2circle?"
+}
+
+function run()
+{
+  BIN="${NNAS_INSTALL_PREFIX}/bin/tf2circle"
+  if [[ -f "${BIN}" ]]; then
+    if [[ $(ldd -r "${BIN}" | grep '^undefined' | wc -l) -eq 0 ]]; then
+      export PASSED=1
+    fi
+  fi
+}

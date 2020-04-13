@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Test suite: ${ARCHIVE_PATH}/coverage-suite.tar.gz
+# NNPackage test suite: ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz (optional)
+
+set -eo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
+CheckTestPrepared
+
+NNAS_WORKSPACE=${NNAS_WORKSPACE:-build}
+if [[ -z "${ARCHIVE_PATH}" ]]; then
+  ARCHIVE_PATH=${NNAS_WORKSPACE}/archive
+  echo "Default archive directory including nncc package and resources: ${ARCHIVE_PATH}"
+fi
+
+pushd $ROOT_PATH > /dev/null
+
+tar -zxf ${ARCHIVE_PATH}/coverage-suite.tar.gz -C ./
+
+if [[ ! -e $ROOT_PATH/tests/scripts/build_path_depth.txt ]]; then
+  echo "Cannot find prefix strip file"
+  exit 1
+fi
+export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/tests/scripts/build_path_depth.txt`
+
+./infra/scripts/test_arm_neurun_acl_cl.sh
+./infra/scripts/test_arm_neurun_acl_neon.sh
+./infra/scripts/test_arm_neurun_cpu.sh
+
+# Enable all logs (mixed backend)
+TENSOR_LOGGING=trace_log.txt NEURUN_LOG_ENABLE=1 GRAPH_DOT_DUMP=1 ./infra/scripts/test_arm_neurun_mixed.sh
+# Enable trace event (acl_cl default backend)
+export TRACE_FILEPATH=trace.json
+TFLiteModelVerification "acl_cl" "tests/scripts/list/neurun_frameworktest_list.armv7l.acl_cl.txt" "report/acl_cl/trace"
+unset TRACE_FILEPATH
+
+# Interpreter
+./infra/scripts/test_neurun_interp.sh
+
+# nnpackage test suite
+if [[ -e ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz ]]; then
+  tar -zxf ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz -C ./
+  ./infra/scripts/test_arm_nnpkg.sh
+fi
+
+# Pack coverage test data: coverage-data.tar.gz
+find Product -type f \( -iname *.gcda -or -iname *.gcno \) > include_lists.txt
+tar -zcf ${ARCHIVE_PATH}/coverage-data.tar.gz -T include_lists.txt
+rm -rf include_lists.txt
+
+popd > /dev/null

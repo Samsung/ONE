@@ -1,0 +1,133 @@
+syntax = "proto2";
+
+package tflchef;
+
+// This enum value corresponds to TensorType in TensorFlow Lite schema
+enum TensorType {
+  FLOAT32 = 0;
+  INT32 = 2;
+  UINT8 = 3;
+  INT64 = 4;
+}
+
+message TensorShape {
+  repeated uint32 dim = 3;
+}
+
+message TensorFiller {
+  optional string tag = 1;
+  repeated string arg = 2;
+}
+
+message TensorQuantization {
+  repeated float min = 1;
+  repeated float max = 2;
+  repeated float scale = 3;
+  repeated int64 zero_point = 4;
+}
+
+message Operand {
+  optional string name = 1;
+  optional TensorType type = 2;
+  optional TensorShape shape = 3;
+  optional TensorFiller filler = 4;
+  optional TensorQuantization quant = 5;
+}
+
+// This enum value corresponds to Padding in TensorFlow Lite schema
+enum Padding {
+  SAME = 0;
+  VALID = 1;
+}
+
+// This enum value corresponds to ActivationFunctionType in TensorFlow Lite schema
+enum Activation {
+  NONE = 0;
+  RELU = 1;
+  RELU6 = 3;
+}
+
+message Conv2DOptions
+{
+  optional Padding padding = 1 [default = VALID];
+  optional int32 stride_w = 2 [default = 1];
+  optional int32 stride_h = 3 [default = 1];
+  optional Activation activation = 4 [default = NONE];
+}
+
+message Pool2DOptions {
+  optional Padding padding = 1 [default = VALID];
+  optional int32 stride_w = 2 [default = 1];
+  optional int32 stride_h = 3 [default = 1];
+  optional int32 filter_width = 4 [default = 1];
+  optional int32 filter_height = 5 [ default = 1];
+  optional Activation activation = 6 [default = NONE];
+}
+
+message ConcatenationOptions {
+  optional int32 axis = 1 [default = 0];
+  optional Activation activation = 2 [default = NONE];
+}
+
+message ReshapeOptions {
+  repeated int32 new_shape = 1;
+}
+
+message DepthwiseConv2DOptions
+{
+  optional Padding padding = 1 [default = VALID];
+  optional int32 stride_w = 2 [default = 1];
+  optional int32 stride_h = 3 [default = 1];
+  optional int32 depth_multiplier = 4 [default = 1];
+  optional Activation activation = 5 [default = NONE];
+}
+
+message SubOptions {
+  optional Activation activation = 1 [default = NONE];
+}
+
+message DivOptions {
+  optional Activation activation = 1 [default = NONE];
+}
+
+message FullyConnectedOptions {
+  optional Activation activation = 1 [default = NONE];
+}
+
+message AddOptions {
+  optional Activation activation = 1 [default = NONE];
+}
+
+message ArgMaxOptions {
+  optional TensorType output_type = 1 [default = INT64];
+}
+
+message PadOptions {
+  // None
+}
+
+message Operation {
+  optional string type = 1;
+  repeated string input = 2;
+  repeated string output = 3;
+
+  optional Conv2DOptions conv2d_options = 100;
+  optional Pool2DOptions averagepool2d_options = 101;
+  optional ConcatenationOptions concatenation_options = 102;
+  optional Pool2DOptions maxpool2d_options = 103;
+  optional ReshapeOptions reshape_options = 104;
+  optional DepthwiseConv2DOptions depthwiseconv2d_options = 105;
+  optional SubOptions sub_options = 106;
+  optional DivOptions div_options = 107;
+  optional FullyConnectedOptions fullyconnected_options = 108;
+  optional AddOptions add_options = 109;
+  optional ArgMaxOptions argmax_options = 110;
+  optional PadOptions pad_options = 111;
+}
+
+message ModelRecipe {
+  repeated Operand operand = 1;
+  repeated Operation operation = 2;
+  repeated string input = 3;
+  repeated string output = 4;
+}

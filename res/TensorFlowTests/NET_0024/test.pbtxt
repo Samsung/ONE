@@ -1,0 +1,76 @@
+# This example intentionally declares "snd" node before "fst" node
+node {
+  name: "snd"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 3 }
+        dim { size: 1 }
+        dim { size: 1 }
+      }
+    }
+  }
+}
+node {
+  name: "fst"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 6 }
+        dim { size: 1 }
+        dim { size: 1 }
+      }
+    }
+  }
+}
+node {
+  name: "axis"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_INT32 }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape { }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "out"
+  op: "ConcatV2"
+  input: "fst"
+  input: "snd"
+  input: "axis"
+  attr {
+    key: "N"
+    value { i: 2 }
+  }
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tidx"
+    value { type: DT_INT32 }
+  }
+}

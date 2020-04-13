@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFLiteSharpTest", "TFLiteSharpTest\TFLiteSharpTest.csproj", "{D35A178F-9EF3-4B07-9E53-A91AA7A030B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFLiteSharp", "..\TFLiteSharp\TFLiteSharp\TFLiteSharp.csproj", "{C06BC425-9BC3-43C7-A9D3-E12849E0C129}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D35A178F-9EF3-4B07-9E53-A91AA7A030B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35A178F-9EF3-4B07-9E53-A91AA7A030B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35A178F-9EF3-4B07-9E53-A91AA7A030B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35A178F-9EF3-4B07-9E53-A91AA7A030B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C06BC425-9BC3-43C7-A9D3-E12849E0C129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C06BC425-9BC3-43C7-A9D3-E12849E0C129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C06BC425-9BC3-43C7-A9D3-E12849E0C129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C06BC425-9BC3-43C7-A9D3-E12849E0C129}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F946511-2BE4-40A5-A48C-A5684C62755D}
+	EndGlobalSection
+EndGlobal

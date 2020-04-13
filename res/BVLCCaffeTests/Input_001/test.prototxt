@@ -1,0 +1,12 @@
+layer {
+  name: "data1"
+  type: "Input"
+  top: "data1"
+  input_param { shape: { dim: 1 dim: 3 dim: 15 dim: 15 } }
+}
+layer {
+  name: "data2"
+  type: "Input"
+  top: "data2"
+  input_param { shape: { dim: 1 dim: 3 dim: 15 dim: 15 } }
+}

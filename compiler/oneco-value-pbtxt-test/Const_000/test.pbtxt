@@ -1,0 +1,52 @@
+# Latest IR_VERSION of 1.4.1 version is 4
+# https://github.com/onnx/onnx/blob/rel-1.4.1/onnx/onnx.proto3
+ir_version: 4
+
+# Opset version of IR_VERSION 4 is 9
+# https://github.com/onnx/onnx/blob/rel-1.4.1/onnx/defs/operator_sets.h
+opset_import {
+  version: 9
+}
+
+graph {
+  name: "Const_000"
+
+  node {
+    name: "const_node"
+    output: "output:0"
+    op_type: "Constant"
+    attribute {
+      name: "const/value"
+      t {
+        dims: 2
+        dims: 3
+        data_type: 1 # FLOAT type
+        float_data: 1.1
+        float_data: 2.2
+        float_data: 3.3
+        float_data: 4.4
+        float_data: 5.5
+        float_data: 6.6
+        name: "const_tensor"
+      }
+      type: TENSOR
+    }
+  }
+
+  output {
+    name: "output:0"
+    type {
+      tensor_type {
+        elem_type: 1 # FLOAT type
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+}

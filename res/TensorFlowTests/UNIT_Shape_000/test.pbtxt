@@ -1,0 +1,41 @@
+# Simple Shape network
+node {
+  name: "Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "Shape"
+  op: "Shape"
+  input: "Const"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "out_type"
+    value { type: DT_INT32 }
+  }
+}

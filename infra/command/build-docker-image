@@ -1,0 +1,50 @@
+#!/bin/bash
+
+function Usage()
+{
+  echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
+  echo ""
+  echo "Options:"
+  echo "      --extension               dockerfile extension in infra/docker"
+  echo "Options can use as docker build option:"
+  docker build --help
+}
+
+DOCKER_FILE_RPATH_BASE="infra/docker/Dockerfile"
+DOCKER_BUILD_ARGS=()
+DOCKER_FILE_RPATH=${DOCKER_FILE_RPATH_BASE}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnas}
+
+while [[ $# -gt 0 ]]
+do
+  arg="$1"
+  # Handle argument for this script
+  # Set default docker image name, tag
+  case $arg in
+    -h|--help|help)
+      Usage
+      exit 1
+      ;;
+    --extension)
+      DOCKER_FILE_RPATH="${DOCKER_FILE_RPATH_BASE}.$2"
+      shift
+      shift
+      ;;
+    -t|--tag)
+      DOCKER_IMAGE_NAME="$2"
+      shift
+      shift
+      ;;
+    *)
+      DOCKER_BUILD_ARGS+=(${1})
+      shift
+      ;;
+  esac
+done
+
+DOCKER_BUILD_ARGS+=("-t ${DOCKER_IMAGE_NAME}")
+
+docker build --build-arg http_proxy="${http_proxy}" \
+  --build-arg https_proxy="${https_proxy}" \
+  ${DOCKER_BUILD_ARGS[@]} \
+  - < ${NNAS_PROJECT_PATH}/${DOCKER_FILE_RPATH}

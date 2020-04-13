@@ -1,0 +1,20 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 10 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 10 }
+}
+operation {
+  type: "Reshape"
+  reshape_options {
+    new_shape: 10
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -1,0 +1,7 @@
+<manifest>
+  <assign>
+  </assign>
+  <request>
+    <domain name="_"/>
+  </request>
+</manifest>

@@ -1,0 +1,129 @@
+# A simple network that includes constant foldable subgraph
+# (note: [] indicates shape, () indicates real value)
+#
+#       input1 (const) -- relu -+     placeholder --+
+#       (-1, 1)          (0, 1) |       shape [2]   |
+#                               |                   |
+#               input2 (const) -+-- concat -------- concat_out
+#               (2, 3)          |   (0, 1, 2, 3)    |
+#                               |                   |
+#                  axis (const)-+-------------------+
+#
+#  will be the following after constant folding:
+#
+#                                           Pull --+
+#                                      shape [2]   |
+#                                                  |
+#                                  ConstGen------- TensorConcat -- Push
+#                                  (0, 1, 2, 3)      shape [6]
+#
+node {
+  name: "input1"
+  op: "Const"
+  attr {
+    key: "dtype" value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape { dim { size: 2 } }
+        float_val: -1
+        float_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "relu"
+  op: "Relu"
+  input: "input1"
+  attr { key: "T" value { type: DT_FLOAT } }
+}
+node {
+  name: "input2"
+  op: "Const"
+  attr {
+    key: "dtype" value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape { dim { size: 2 } }
+        float_val: 2
+        float_val: 3
+      }
+    }
+  }
+}
+node {
+  name: "axis"
+  op: "Const"
+  attr { key: "dtype" value { type: DT_INT32 } }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape { }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "concat"
+  op: "ConcatV2"
+  input: "relu"
+  input: "input2"
+  input: "axis"
+  attr {
+    key: "N"
+    value { i: 2 }
+  }
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tidx"
+    value { type: DT_INT32 }
+  }
+}
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype" value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 2 }
+      }
+    }
+  }
+}
+node {
+  name: "concat_out"
+  op: "ConcatV2"
+  input: "concat"
+  input: "placeholder"
+  input: "axis"
+  attr {
+    key: "N"
+    value { i: 2 }
+  }
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tidx"
+    value { type: DT_INT32 }
+  }
+}

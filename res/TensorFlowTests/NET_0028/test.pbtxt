@@ -1,0 +1,373 @@
+node {
+  name: "Input"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 8
+        }
+        dim {
+          size: 6
+        }
+        dim {
+          size: 12
+        }
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/beta"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 12
+          }
+        }
+        float_val: 1.97139931
+        float_val: 1.45169675
+        float_val: 1.2031461
+        float_val: 0.287978739
+        float_val: 0.161815107
+        float_val: -0.281398058
+        float_val: 2.70276475
+        float_val: -0.166961521
+        float_val: 0.266388983
+        float_val: 0.890943348
+        float_val: -0.279832929
+        float_val: 1.82808423
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/beta/read"
+  op: "Identity"
+  input: "InstanceNorm/beta"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@InstanceNorm/beta"
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/gamma"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 12
+          }
+        }
+        float_val: 0.574708045
+        float_val: 0.387735426
+        float_val: 0.899499536
+        float_val: 0.484296113
+        float_val: 2.35850787
+        float_val: 1.06661248
+        float_val: 0.343602151
+        float_val: 2.27582788
+        float_val: 1.14559281
+        float_val: 0.690169275
+        float_val: 1.20440173
+        float_val: 0.350952208
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/gamma/read"
+  op: "Identity"
+  input: "InstanceNorm/gamma"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@InstanceNorm/gamma"
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/mean/reduction_indices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        int_val: 1
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/mean"
+  op: "Mean"
+  input: "Input"
+  input: "InstanceNorm/moments/mean/reduction_indices"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/StopGradient"
+  op: "StopGradient"
+  input: "InstanceNorm/moments/mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/SquaredDifference"
+  op: "SquaredDifference"
+  input: "Input"
+  input: "InstanceNorm/moments/StopGradient"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/variance/reduction_indices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        int_val: 1
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/moments/variance"
+  op: "Mean"
+  input: "InstanceNorm/moments/SquaredDifference"
+  input: "InstanceNorm/moments/variance/reduction_indices"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/add/y"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.001
+      }
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/add"
+  op: "Add"
+  input: "InstanceNorm/moments/variance"
+  input: "InstanceNorm/instancenorm/add/y"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/Rsqrt"
+  op: "Rsqrt"
+  input: "InstanceNorm/instancenorm/add"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/mul"
+  op: "Mul"
+  input: "InstanceNorm/instancenorm/Rsqrt"
+  input: "InstanceNorm/gamma/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/mul_1"
+  op: "Mul"
+  input: "Input"
+  input: "InstanceNorm/instancenorm/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/mul_2"
+  op: "Mul"
+  input: "InstanceNorm/moments/mean"
+  input: "InstanceNorm/instancenorm/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/sub"
+  op: "Sub"
+  input: "InstanceNorm/beta/read"
+  input: "InstanceNorm/instancenorm/mul_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InstanceNorm/instancenorm/add_1"
+  op: "Add"
+  input: "InstanceNorm/instancenorm/mul_1"
+  input: "InstanceNorm/instancenorm/sub"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "Relu"
+  op: "Relu"
+  input: "InstanceNorm/instancenorm/add_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}

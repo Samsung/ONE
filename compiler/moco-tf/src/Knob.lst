@@ -1,0 +1,39 @@
+#ifndef KNOB_BOOL
+#error "KNOB_BOOL is not defined"
+#endif // KNOB_BOOL
+
+// KNOB_BOOL(NAME, DEFAULT_VALUE, DESCRIPTION)
+
+// TensorFlow dialect transforms
+KNOB_BOOL(FuseBinaryIntoPreceding, true, Fuse Binary node to preceding node)
+KNOB_BOOL(ResolveFusedBatchNorm, true, Enable ResolveFusedBatchNorm transform)
+KNOB_BOOL(ResolveConstantShape, true, Replace determined TFShape to TFConst)
+KNOB_BOOL(ResolveReshapeWildcardDim, true, Resolve wildcard dimension in TFReshape node)
+KNOB_BOOL(ResolveSquaredDifference, true, Resolve SquaredDifference node)
+KNOB_BOOL(RemoveTFIdentityNode, true, Enable RemoveTFIdentityNode optimization)
+KNOB_BOOL(SqueezeReduceNode, true, Insert TFSqueeze if ReduceNode do not keep dimensions)
+// Constant folding
+KNOB_BOOL(ConstantFoldAdd, false, Constant fold for Add node)
+KNOB_BOOL(ConstantFoldMul, false, Constant fold for Mul node)
+KNOB_BOOL(ConstantFoldPack, false, Constant fold for Pack node)
+KNOB_BOOL(ConstantFoldStridedSlice, false, Constant fold for StridedSlice node)
+
+// Canonicalization
+KNOB_BOOL(CanonicalizeBiasAdd, true, Enable Canonicalize for BiasAdd node)
+KNOB_BOOL(CanonicalizeConst, true, Enable Canonicalize for Const node)
+KNOB_BOOL(CanonicalizeConv2D, true, Enable Canonicalize for Conv2D node)
+
+// Canonical transforms
+KNOB_BOOL(ConstantFolding, true, Enable constant-folding optimization)
+KNOB_BOOL(RemoveForwardNode, true, Enable RemoveForwardNode optimization)
+KNOB_BOOL(ReorderDecode, true, Enable ReorderDecode optimization)
+// BEG: These knobs are valid only when ReorderDecode is enabled
+KNOB_BOOL(ReorderDecodeReLU, true, Reorder FeatureDecode-ReLU)
+KNOB_BOOL(ReorderDecodeTensorBiasAdd, true, Reorder FeatureDecode-TensorBiasAdd)
+// END
+KNOB_BOOL(SimplifyDomainConversion, true, Enable SimplifyDomainConversion optimization)
+KNOB_BOOL(ResolveDuplicateReshape, true, Resolve duplicated Reshape nodes)
+KNOB_BOOL(ResolveRedundantReshape, true, Resolve redundant Reshape node)
+
+// Graph transformations
+KNOB_BOOL(RemoveDeadNode, true, Enable RemoveDeadNode optimization)

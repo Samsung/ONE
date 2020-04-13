@@ -1,0 +1,4 @@
+# TODO add tests like the following:
+# Add(NET_0030 RULE circle_1.0_rel_requirement.rule)  # Concat
+Add(NET_0028 RULE circle_1.0_rel_requirement.rule)  # Instance Norm
+Add(UNIT_SquaredDifference_000 RULE circle.rule)

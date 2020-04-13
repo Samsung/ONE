@@ -1,0 +1,66 @@
+# Latest IR_VERSION of 1.4.1 version is 4
+# https://github.com/onnx/onnx/blob/rel-1.4.1/onnx/onnx.proto3
+ir_version: 4
+
+# Opset version of IR_VERSION 4 is 9
+# https://github.com/onnx/onnx/blob/rel-1.4.1/onnx/defs/operator_sets.h
+opset_import {
+  version: 9
+}
+
+graph {
+  name: "Identity_000"
+
+  node {
+    input: "input:0"
+    output: "output:0"
+    name: "identity_node"
+    op_type: "Identity"
+  }
+
+  input {
+    name: "input:0"
+    type {
+      tensor_type {
+        elem_type: 1 # FLOAT type
+        shape {
+          dim {
+            dim_value: 1
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 1
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+
+  output {
+    name: "output:0"
+    type {
+      tensor_type {
+        elem_type: 1 # FLOAT type
+        shape {
+          dim {
+            dim_value: 1
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 1
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+}

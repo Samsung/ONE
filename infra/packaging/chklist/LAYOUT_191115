@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Check whether the package has the following layout:
+#
+# bin/
+#   model2nnpkg.sh
+#   tf2circle
+#   tf2nnpkg
+#   tf2tflite
+#   tflite2circle.sh
+#   tflitejson2circlejson.py
+# lib/
+#   libexo.so
+#   liblocoex_customop.so
+#   libloco.so
+#   libmoco_import.so
+#   libmoco_lang.so
+#   libmoco_log.so
+#   libmoco_pass.so
+#   libmoco_service.so
+#   libmoco_support.so
+#   libmoco_tf_frontend.so
+# res/
+#   circle_schema.fbs
+#   tflite_schema.fbs
+
+function prepare()
+{
+  export QUESTION="Is compatible with the 2019/11/15 layout?"
+}
+
+function run()
+{
+  # The result of running "find . -print | sort | tr -d '\n\0'" from the expected package
+  EXPECTED="."
+  EXPECTED+="./bin./bin/model2nnpkg.sh./bin/tf2circle./bin/tf2nnpkg./bin/tf2tflite./bin/tflite2circle.sh"
+  EXPECTED+="./bin/tflitejson2circlejson.py./lib./lib/libexo.so./lib/liblocoex_customop.so./lib/libloco.so"
+  EXPECTED+="./lib/libmoco_import.so./lib/libmoco_lang.so./lib/libmoco_log.so./lib/libmoco_pass.so"
+  EXPECTED+="./lib/libmoco_service.so./lib/libmoco_support.so./lib/libmoco_tf_frontend.so./res"
+  EXPECTED+="./res/circle_schema.fbs./res/tflite_schema.fbs"
+
+  OBTAINED=$(cd "${NNAS_INSTALL_PREFIX}" && find . -print | sort | tr -d '\n\0')
+
+  if [[ "${OBTAINED}" = "${EXPECTED}" ]]; then
+    export PASSED=1
+  fi
+}

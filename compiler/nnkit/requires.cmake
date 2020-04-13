@@ -1,0 +1,8 @@
+require("angkor")
+require("nnkit-intf")
+require("nnkit-misc")
+require("nnkit-caffe")
+require("nnkit-tflite")
+require("nnkit-tf")
+require("nnkit-mocotf")
+require("nnkit-onnxrt")

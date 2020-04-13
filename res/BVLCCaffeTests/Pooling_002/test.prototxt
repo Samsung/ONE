@@ -1,0 +1,16 @@
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param { shape: { dim: 1 dim: 3 dim: 16 dim: 16 } }
+}
+layer {
+  name: "pool"
+  type: "Pooling"
+  bottom: "data"
+  top: "pool"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+  }
+}

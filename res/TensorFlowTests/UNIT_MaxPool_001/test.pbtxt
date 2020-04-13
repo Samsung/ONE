@@ -1,0 +1,48 @@
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 4 }
+        dim { size: 4 }
+        dim { size: 1 }
+      }
+    }
+  }
+}
+node {
+  name: "maxpool2d"
+  op: "MaxPool"
+  input: "placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list { i: 1 i: 2 i: 2 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}

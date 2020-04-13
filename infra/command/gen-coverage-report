@@ -1,0 +1,79 @@
+#!/bin/bash
+
+import "build.configuration"
+
+BUILD_WORKSPACE_PATH="${NNAS_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+
+LCOV_PATH=$(command -v lcov)
+GENHTML_PATH=$(command -v genhtml)
+
+if [[ -z "${LCOV_PATH}" ]]; then
+  echo "ERROR: 'lcov' is not found"
+  exit 255
+fi
+
+if [[ -z "${GENHTML_PATH}" ]]; then
+  echo "ERROR: 'genhtml' is not found"
+  exit 255
+fi
+
+if [[ -z "${GCOV_PATH}" ]]; then
+  GCOV_PATH=$(command -v gcov)
+  if [[ -z "${GCOV_PATH}" ]]; then
+    echo "ERROR: 'gcov' is not found"
+    exit 255
+  fi
+fi
+
+OUTPUT_TAG="${NNAS_COVERAGE:-coverage}"
+OUTPUT_PATH="${NNAS_COVERAGE_PATH:-${NNAS_PROJECT_PATH}/${OUTPUT_TAG}}"
+
+if [[ -e "${OUTPUT_PATH}" ]]; then
+  echo "ERROR: '${OUTPUT_PATH}' already exists"
+  exit 255
+fi
+
+mkdir -p "${OUTPUT_PATH}"
+
+RAW_BASE_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.base.raw.info"
+RAW_TEST_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.test.raw.info"
+RAW_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.raw.info"
+EXTRACTED_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.extracted.info"
+EXCLUDED_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.excluded.info"
+COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.info"
+HTML_PATH="${OUTPUT_PATH}/html"
+
+CANDIDATES=()
+SRC_PREFIX=${SRC_PREFIX:-${NNAS_PROJECT_PATH}}
+
+for CANDIDATE in "$@";
+do
+  CANDIDATES+=("${SRC_PREFIX}/${CANDIDATE}/*")
+done
+
+# Capture initial zero coverage data
+"${LCOV_PATH}" -c -i -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} -o "${RAW_BASE_COVERAGE_INFO_PATH}"
+
+# Capture tests coverage data
+"${LCOV_PATH}" -c -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} -o "${RAW_TEST_COVERAGE_INFO_PATH}"
+
+# Append zero coverage data and tests coverage data
+"${LCOV_PATH}" -o "${RAW_COVERAGE_INFO_PATH}" \
+    -a "${RAW_BASE_COVERAGE_INFO_PATH}" \
+    -a "${RAW_TEST_COVERAGE_INFO_PATH}"
+
+# Extract data for particular pathes
+"${LCOV_PATH}" -e "${RAW_COVERAGE_INFO_PATH}" -o "${EXTRACTED_COVERAGE_INFO_PATH}" \
+  "${CANDIDATES[@]}"
+
+# Exclude *.test.cpp files from coverage report
+"${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
+  '*.test.cpp'
+
+# Final coverage data
+cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}
+
+# Gen html
+"${GENHTML_PATH}" "${EXCLUDED_COVERAGE_INFO_PATH}" \
+  --prefix "${NNAS_PROJECT_PATH}" \
+  --output-directory "${HTML_PATH}"

@@ -1,0 +1,50 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler { tag: "gaussian" arg: "0.0" arg: "1.0" }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "gaussian" arg: "0.0" arg: "1.0" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+}
+operand {
+  name: "arr"
+  type: FLOAT32
+  shape { dim: 1 dim: 9 }
+}
+operand {
+  name: "shape"
+  type: INT32
+  shape { dim: 2 }
+  filler { tag: "explicit" arg: "-1" arg: "9" }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options { padding: VALID stride_w: 1 stride_h: 1 activation: RELU6 }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+operation {
+  type: "Reshape"
+  input: "ofm"
+  input: "shape"
+  output: "arr"
+  reshape_options { new_shape: [-1, 9] }
+}
+input: "ifm"
+output: "arr"

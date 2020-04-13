@@ -1,0 +1,2 @@
+input,  not_existing_input:0,  TF_FLOAT,  [1, 2]
+output, relu:0,  TF_FLOAT,  [1, 2]

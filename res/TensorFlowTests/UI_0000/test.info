@@ -1,0 +1,2 @@
+input,  input:0,  TF_FLOAT,  [1, 5, 5, 3]
+output, InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu:0,  TF_FLOAT,  [1, 2, 2, 4]

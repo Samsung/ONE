@@ -1,0 +1,2 @@
+input,  placeholder:0, TF_FLOAT, [1, 8, 8, 1]
+output, avgpool2d:0,   TF_FLOAT, [1, 1, 1, 1]

@@ -1,0 +1,149 @@
+# A simple network that has "Concat" in between feature operations.
+#
+#   Placeholder -+-> MaxPool2D -+-> Concat -> MaxPool2D
+#                |              |
+#                +-> MaxPool2D -+
+#
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 } # N
+        dim { size: 7 } # H
+        dim { size: 7 } # W
+        dim { size: 1 } # C
+      }
+    }
+  }
+}
+node {
+  name: "maxpool_1"
+  op: "MaxPool"
+  input: "placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}
+node {
+  name: "maxpool_2"
+  op: "MaxPool"
+  input: "placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}
+node {
+  name: "axis"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_INT32  }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape { }
+        int_val: 3
+      }
+    }
+  }
+}
+node {
+  name: "concat"
+  op: "ConcatV2"
+  input: "maxpool_1"
+  input: "maxpool_2"
+  input: "axis"
+  attr {
+    key: "N"
+    value { i: 2 }
+  }
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tidx"
+    value { type: DT_INT32 }
+  }
+}
+node {
+  name: "maxpool"
+  op: "MaxPool"
+  input: "concat"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "ksize"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}

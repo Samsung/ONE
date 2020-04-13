@@ -1,0 +1,19 @@
+# model
+model = Model()
+i1 = Input("op1", "TENSOR_INT32", "{4}") # a vector of input
+k = Int32Scalar("k", 2)
+i2 = Output("op2", "TENSOR_INT32", "{2}") # values of output
+i3 = Output("op3", "TENSOR_INT32", "{2}") # indexes of output
+model = model.Operation("TOPK_V2", i1, k).To([i2, i3])
+
+# Example 1. Input in operand 0,
+input0 = {i1: # input 0
+          [50000, 40000, 41000, 60000]}
+
+output0 = {i2: # output 0
+           [60000, 50000],
+           i3: # output 1
+           [3, 0]}
+
+# Instantiate an example
+Example((input0, output0))

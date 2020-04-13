@@ -1,0 +1,48 @@
+#ifndef TENSORFLOW_NODE
+#error "Define TENSORFLOW_NODE"
+#endif // TENSORFLOW_NODE
+
+//
+// PLEASE SORT NODE DECLS IN ALPHABETICAL ORDER
+//
+// Naming rule: Follow names in TensorFlow C++ source
+// ex) for AvgPool, tensorflow/core/ops/nn_ops.cc
+//    REGISTER_OP("AvgPool")     <-- OPCODE: AvgPool. Prefix `TF` for CLASS name
+//        .Input("value: T")     <-- Input name is 'value'
+//
+
+// TENSORFLOW_NODE(OPCODE, CLASS)
+TENSORFLOW_NODE(Add, TFAdd)
+TENSORFLOW_NODE(AvgPool, TFAvgPool)
+TENSORFLOW_NODE(BiasAdd, TFBiasAdd)
+TENSORFLOW_NODE(ConcatV2, TFConcatV2)
+TENSORFLOW_NODE(Const, TFConst)
+TENSORFLOW_NODE(Conv2D, TFConv2D)
+TENSORFLOW_NODE(Conv2DBackpropInput, TFConv2DBackpropInput)
+TENSORFLOW_NODE(DepthwiseConv2dNative, TFDepthwiseConv2dNative)
+TENSORFLOW_NODE(FakeQuantWithMinMaxVars, TFFakeQuantWithMinMaxVars)
+TENSORFLOW_NODE(FusedBatchNorm, TFFusedBatchNorm)
+TENSORFLOW_NODE(Identity, TFIdentity)
+TENSORFLOW_NODE(Maximum, TFMaximum)
+TENSORFLOW_NODE(MaxPool, TFMaxPool)
+TENSORFLOW_NODE(Mean, TFMean)
+TENSORFLOW_NODE(Mul, TFMul)
+TENSORFLOW_NODE(Pack, TFPack)
+TENSORFLOW_NODE(Pad, TFPad)
+TENSORFLOW_NODE(Placeholder, TFPlaceholder)
+TENSORFLOW_NODE(RealDiv, TFRealDiv)
+TENSORFLOW_NODE(Relu, TFRelu)
+TENSORFLOW_NODE(Relu6, TFRelu6)
+TENSORFLOW_NODE(Reshape, TFReshape)
+TENSORFLOW_NODE(Rsqrt, TFRsqrt)
+TENSORFLOW_NODE(Shape, TFShape)
+TENSORFLOW_NODE(Softmax, TFSoftmax)
+TENSORFLOW_NODE(Sqrt, TFSqrt)
+TENSORFLOW_NODE(SquaredDifference, TFSquaredDifference)
+TENSORFLOW_NODE(Squeeze, TFSqueeze)
+TENSORFLOW_NODE(StopGradient, TFStopGradient)
+TENSORFLOW_NODE(StridedSlice, TFStridedSlice)
+TENSORFLOW_NODE(Sub, TFSub)
+TENSORFLOW_NODE(Tanh, TFTanh)
+// For virtual node(s)
+TENSORFLOW_NODE(TFPush, TFPush)

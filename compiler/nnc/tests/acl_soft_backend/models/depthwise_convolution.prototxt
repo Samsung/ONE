@@ -1,0 +1,35 @@
+name: "DEPTHCONVNET"
+layer {
+  name: "input"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 3
+      dim: 4
+      dim: 8
+    }
+  }
+}
+layer {
+  name: "conv2_1/dw"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv2_1/dw"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}

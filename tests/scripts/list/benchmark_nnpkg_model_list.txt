@@ -1,0 +1,16 @@
+densenet
+inception_resnet_v2
+inception_v3
+inception_v3_quant
+inception_v4
+inception_v4_299_quant
+inceptionv3_non_slim_2015
+inceptionv3_slim_2016
+mnasnet_1.3_224
+mobilenet_v1_1.0_224
+mobilenet_v1_1.0_224_quant
+mobilenet_v2_1.0_224
+mobilenet_v2_1.0_224_quant
+multi_person_mobilenet_v1_075_float
+resnet_v2_101
+squeezenet

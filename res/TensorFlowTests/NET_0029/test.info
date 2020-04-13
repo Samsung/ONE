@@ -1,0 +1,5 @@
+input,  Placeholder:0,  TF_FLOAT,  [1, 2, 3, 1]
+input,  Placeholder_1:0,  TF_FLOAT,  [1, 2, 3, 1]
+input,  Placeholder_2:0,  TF_FLOAT,  [1, 2, 3, 1]
+input,  Placeholder_3:0,  TF_FLOAT,  [1, 2, 3, 1]
+output, concat_2:0,   TF_FLOAT,  [1, 2, 3, 4]

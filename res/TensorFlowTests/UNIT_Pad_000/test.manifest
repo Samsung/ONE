@@ -1,0 +1,8 @@
+SUMMARY: A simple network that has Constant mode Pad with default value(constant_values=0)
+
+# HOW TO GENERATE:
+#  import tensorflow as tf
+#  input = tf.placeholder(tf.float32, shape=[1,3,4,4], name="input")
+#  paddings = tf.constant([[0,0],[0,0],[2,2],[1,1]])
+#  pad_const = tf.pad(input, paddings, "CONSTANT")
+#  tf.get_default_graph().as_graph_def()

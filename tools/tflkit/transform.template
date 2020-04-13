@@ -1,0 +1,5 @@
+GRAPHDEF_PATH=
+TRANSFORM_PATH=
+INPUT=
+OUTPUT=
+TRANSFORM_OPTIONS="strip_unused_nodes remove_nodes(op=Identity, op=CheckNumerics) fold_constants(ignore_errors=true) fold_batch_norms"

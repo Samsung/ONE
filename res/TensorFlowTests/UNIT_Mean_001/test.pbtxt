@@ -1,0 +1,68 @@
+# Reference Python code:
+#
+# import tensorflow as tf
+#
+# inp = tf.placeholder(tf.float32, [1,3,3,2])
+# mean = tf.math.reduce_mean(inp, keepdims=False, axis=[1,2])
+#
+# print(tf.get_default_graph().as_graph_def())
+#
+# WARNING! Below GraphDef is modified to make it easy to read
+node {
+  name: "Placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 3 }
+        dim { size: 3 }
+        dim { size: 2 }
+      }
+    }
+  }
+}
+node {
+  name: "Mean/reduction_indices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_INT32 }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim { size: 2 }
+        }
+        int_val: 1
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "Mean"
+  op: "Mean"
+  input: "Placeholder"
+  input: "Mean/reduction_indices"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tidx"
+    value { type: DT_INT32 }
+  }
+  attr {
+    key: "keep_dims"
+    value { b: false }
+  }
+}

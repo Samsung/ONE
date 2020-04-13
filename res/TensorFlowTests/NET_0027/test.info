@@ -1,0 +1,3 @@
+# This is a slim version of first 10 nodes in inception v3 (from Placeholder to MaxPool2D)
+input,  input:0,  TF_FLOAT,  [1, 15, 15, 3]
+output, InceptionV3/InceptionV3/MaxPool_3a_3x3/MaxPool:0,  TF_FLOAT,  [1, 2, 2, 5]

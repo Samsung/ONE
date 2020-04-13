@@ -1,0 +1,4 @@
+add_library(enco_intf_frontend INTERFACE)
+target_include_directories(enco_intf_frontend INTERFACE include)
+target_link_libraries(enco_intf_frontend INTERFACE coco_core)
+target_link_libraries(enco_intf_frontend INTERFACE coco_generic)

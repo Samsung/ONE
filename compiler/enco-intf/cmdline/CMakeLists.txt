@@ -1,0 +1,2 @@
+add_library(enco_intf_cmdline INTERFACE)
+target_include_directories(enco_intf_cmdline INTERFACE include)

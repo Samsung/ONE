@@ -1,0 +1,1 @@
+SUMMARY: Small network that extracts second, third value of input vector with StridedSlice operator, doubles it and reconstruct it with Pack operator.

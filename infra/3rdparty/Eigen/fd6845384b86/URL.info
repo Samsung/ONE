@@ -1,0 +1,3 @@
+This URL originates from TensorFlow 1.12
+
+Please check https://github.com/tensorflow/tensorflow/blob/v1.12.0/tensorflow/workspace.bzl#L121

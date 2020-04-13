@@ -1,0 +1,85 @@
+/*
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <gtest/gtest.h>
+
+#include "ir/Graph.h"
+#include "ir/verifier/Verifier.h"
+#include "memory"
+#include "../MockNode.h"
+
+#include <typeindex>
+
+namespace
+{
+
+using IndexSet = neurun::ir::OperandIndexSequence;
+using Mock = neurun_test::ir::SimpleMock;
+
+} // namespace anonymous
+
+TEST(graph_operand_usedef, usedef_test)
+{
+  neurun::ir::Graph graph;
+  neurun::ir::verifier::DAGChecker verifier;
+
+  neurun::ir::Shape shape(3);
+  neurun::ir::TypeInfo type{neurun::ir::DataType::INT32};
+
+  // Model Input/Output
+  auto input_operand = graph.addOperand(shape, type);
+  auto output_operand = graph.addOperand(shape, type);
+
+  graph.addInput(input_operand);
+  graph.addOutput(output_operand);
+
+  // MockNode1
+  auto operand_index1 = graph.addOperand(shape, type);
+  auto mocknode_index1 =
+      graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index1}));
+
+  // MockNode2
+  auto operand_index2 = graph.addOperand(shape, type);
+  auto mocknode_index2 =
+      graph.addOperation(std::make_unique<Mock>(IndexSet{input_operand}, IndexSet{operand_index2}));
+
+  // MockNode3(two input)
+  auto multiinput_index = graph.addOperation(
+      std::make_unique<Mock>(IndexSet{operand_index1, operand_index2}, IndexSet{output_operand}));
+
+  graph.finishBuilding();
+
+  ASSERT_EQ(verifier.verify(graph), true);
+
+  // Check def
+  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(mocknode_index1), true);
+  ASSERT_EQ(graph.operands().at(operand_index2).getDef().contains(mocknode_index2), true);
+  ASSERT_EQ(graph.operands().at(output_operand).getDef().contains(multiinput_index), true);
+
+  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(mocknode_index2), false);
+  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(multiinput_index), false);
+
+  // Check use
+  ASSERT_EQ(graph.operands().at(input_operand).getUses().contains(mocknode_index1), true);
+  ASSERT_EQ(graph.operands().at(input_operand).getUses().contains(mocknode_index2), true);
+  ASSERT_EQ(graph.operands().at(input_operand).getUses().contains(multiinput_index), false);
+  ASSERT_EQ(graph.operands().at(operand_index1).getUses().contains(multiinput_index), true);
+  ASSERT_EQ(graph.operands().at(operand_index2).getUses().contains(multiinput_index), true);
+
+  ASSERT_EQ(graph.operands().at(input_operand).getUses().size(), 2);
+  ASSERT_EQ(graph.operands().at(operand_index1).getUses().size(), 1);
+  ASSERT_EQ(graph.operands().at(output_operand).getUses().size(), 0);
+}

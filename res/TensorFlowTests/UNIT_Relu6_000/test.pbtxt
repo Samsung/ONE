@@ -1,0 +1,30 @@
+node {
+  name: "Placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 4 }
+        dim { size: 4 }
+        dim { size: 3 }
+      }
+    }
+  }
+}
+node {
+  name: "Relu6"
+  op: "Relu6"
+  input: "Placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+}

@@ -1,0 +1,66 @@
+node {
+  name: "ifm"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 5 }
+        dim { size: 5 }
+        dim { size: 3 }
+      }
+    }
+  }
+}
+node {
+  name: "ker"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 2 }
+          dim { size: 2 }
+          dim { size: 3 }
+          dim { size: 2 }
+        }
+        float_val: 1.1
+      }
+    }
+  }
+}
+node {
+  name: "ofm"
+  op: "Conv2D"
+  input: "ifm"
+  input: "ker"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+#ifndef STMT
+#error STMT is should be defined before including this file
+#endif
+
+// STMT(Tag)
+STMT(Push)

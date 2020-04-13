@@ -1,0 +1,160 @@
+# Small Conv2D-BiasAdd-Conv2D network
+node {
+  name: "in"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 } # N
+        dim { size: 5 } # H
+        dim { size: 5 } # W
+        dim { size: 3 } # C
+      }
+    }
+  }
+}
+node {
+  name: "ker"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 2 } # H
+          dim { size: 2 } # W
+          dim { size: 3 } # I
+          dim { size: 2 } # O
+        }
+        float_val: 1.1
+      }
+    }
+  }
+}
+node {
+  name: "conv"
+  op: "Conv2D"
+  input: "in"
+  input: "ker"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}
+node {
+  name: "bias"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 2 }
+        }
+        float_val: 1.1
+      }
+    }
+  }
+}
+node {
+  name: "badd"
+  op: "BiasAdd"
+  input: "conv"
+  input: "bias"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+}
+node {
+  name: "ker1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 1 } # H
+          dim { size: 1 } # W
+          dim { size: 2 } # I
+          dim { size: 5 } # O
+        }
+        float_val: 1.1
+      }
+    }
+  }
+}
+node {
+  name: "out"
+  op: "Conv2D"
+  input: "badd"
+  input: "ker1"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+}

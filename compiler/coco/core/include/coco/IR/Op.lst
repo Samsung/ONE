@@ -1,0 +1,19 @@
+#ifndef OP
+#error OP should be defined before including this file
+#endif // OP
+
+// OP(Name)
+
+OP(Load)
+OP(Conv2D)
+OP(MaxPool2D)
+OP(AvgPool2D)
+OP(PadF)
+OP(ReLU)
+OP(ReLU6)
+OP(Add)
+OP(Sqrt)
+OP(Sub)
+OP(Mul)
+OP(Div)
+OP(ConcatF)

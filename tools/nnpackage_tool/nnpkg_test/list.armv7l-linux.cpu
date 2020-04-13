@@ -1,0 +1,17 @@
+NET_000[0-4,6-9]
+NET_001[0-3,6-9]
+NET_002[0-2,4-7,9]
+NET_003[0-9]
+NET_004[0-9]
+UNIT_Add_*
+UNIT_AvgPool_*
+UNIT_ConcatV2_*
+UNIT_Conv2D_*
+UNIT_DepthwiseConv2dNative_*
+UNIT_MaxPool_*
+UNIT_Mul_*
+UNIT_Pad_*
+UNIT_Reshape_*
+UNIT_Softmax_*
+UNIT_Squeeze_*
+UNIT_Sub_*

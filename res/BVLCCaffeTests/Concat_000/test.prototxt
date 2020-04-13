@@ -1,0 +1,23 @@
+layer {
+  name: "data"
+  type: "Input"
+  top: "data1"
+  top: "data2"
+  top: "data3"
+  top: "data4"
+  input_param {
+    shape: { dim: 1 dim: 1 dim: 4 dim: 4 }
+    shape: { dim: 1 dim: 2 dim: 4 dim: 4 }
+    shape: { dim: 1 dim: 3 dim: 4 dim: 4 }
+    shape: { dim: 1 dim: 4 dim: 4 dim: 4 }
+  }
+}
+layer {
+  name: "concat"
+  type: "Concat"
+  bottom: "data1"
+  bottom: "data2"
+  bottom: "data3"
+  bottom: "data4"
+  top: "concat"
+}

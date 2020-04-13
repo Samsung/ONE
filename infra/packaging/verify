@@ -1,0 +1,82 @@
+#!/bin/bash
+
+#
+# HOW TO USE
+#
+#  ./nnas verify-package [CHECK 1] [CHECK 2] ... [CHECK N]
+#
+# REQUIRE: N >= 1
+#
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ -z "${NNAS_PROJECT_PATH}" ]]; then
+  echo "ERROR: NNAS_PROJECT_PATH is not specified"
+  exit 255
+fi
+
+CHECKLIST=()
+
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--prefix')
+      NNAS_INSTALL_PREFIX="$2"
+      shift 2
+      ;;
+    *)
+      if [[ ! -f "${SCRIPT_PATH}/chklist/$CUR" ]]; then
+        echo "ERROR: '${CUR}' is invalid"
+        # TODO Show supported checks
+        exit 255
+      fi
+
+      CHECKLIST+=("${CUR}")
+      shift 1
+      ;;
+  esac
+done
+
+# Q. Is it better to have the default value for NNAS_INSTALL_PREFIX?
+# TODO Show USAGE
+# TODO Use a proper exitcode on error (http://tldp.org/LDP/abs/html/exitcodes.html)
+if [[ -z "${NNAS_INSTALL_PREFIX}" ]]; then
+  echo "ERROR: --prefix is not specified"
+  exit 255
+fi
+
+if [[ ${#CHECKLIST[@]} -eq 0 ]]; then
+  echo "ERROR: Check is not specified"
+  exit 255
+fi
+
+EXITCODE=0
+
+for CHECK_NAME in ${CHECKLIST[@]}; do
+  source "${SCRIPT_PATH}/chklist/${CHECK_NAME}"
+
+  prepare
+
+  echo -n "${QUESTION}"
+
+  PASSED=0
+
+  run
+
+  if [[ ${PASSED} -ne 0 ]]; then
+    ANSWER="Yes"
+  else
+    ANSWER="No"
+    # Reference: https://www.tldp.org/LDP/abs/html/exitcodes.html
+    EXITCODE=1
+  fi
+
+  echo " - ${ANSWER}"
+done
+
+if [[ ${EXITCODE} -ne 0 ]]; then
+  echo
+  echo "FAIL"
+fi
+
+exit ${EXITCODE}

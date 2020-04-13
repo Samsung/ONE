@@ -1,0 +1,116 @@
+/* Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
+
+inline int NodeOffset(int b, int h, int w, int height, int width) {
+  return (b * height + h) * width + w;
+}
+
+inline void AveragePool(const float* input_data, const Dims<4>& input_dims,
+                        int stride_width, int stride_height, int pad_width,
+                        int pad_height, int kwidth, int kheight,
+                        float* output_data,
+                        const Dims<4>& output_dims,
+                        bool include_pad) {
+
+  const int batches = MatchingArraySize(input_dims, 3, output_dims, 3);
+  const int input_height = ArraySize(input_dims, 2);
+  const int input_width = ArraySize(input_dims, 1);
+  const int output_height = ArraySize(output_dims, 2);
+  const int output_width = ArraySize(output_dims, 1);
+  MatchingArraySize(input_dims, 0, output_dims, 0);
+
+  // TODO(benoitjacob) make this a proper reference impl without Eigen!
+  const auto in_mat = MapAsMatrixWithFirstDimAsRows(input_data, input_dims);
+  auto out_mat = MapAsMatrixWithFirstDimAsRows(output_data, output_dims);
+  // TODO(benoitjacob) get rid of the dynamic memory allocation here!
+  Eigen::VectorXf out_count(out_mat.cols());
+  out_count.setZero();
+  // Prefill the output to 0.
+  out_mat.setZero();
+  for (int b = 0; b < batches; ++b) {
+    for (int h = 0; h < input_height; ++h) {
+      for (int w = 0; w < input_width; ++w) {
+        // (h_start, h_end) * (w_start, w_end) is the range that the input
+        // vector projects to.
+        int hpad = h + pad_height;
+        int wpad = w + pad_width;
+        int h_start =
+            (hpad < kheight) ? 0 : (hpad - kheight) / stride_height + 1;
+        int h_end = std::min(hpad / stride_height + 1, output_height);
+        int w_start = (wpad < kwidth) ? 0 : (wpad - kwidth) / stride_width + 1;
+        int w_end = std::min(wpad / stride_width + 1, output_width);
+        // compute elementwise sum
+        for (int ph = h_start; ph < h_end; ++ph) {
+          for (int pw = w_start; pw < w_end; ++pw) {
+            int out_offset = NodeOffset(b, ph, pw, output_height, output_width);
+            out_mat.col(out_offset) +=
+                in_mat.col(NodeOffset(b, h, w, input_height, input_width));
+            out_count(out_offset)++;
+          }
+        }
+      }
+    }
+  }
+  // Divide the output by the actual number of elements being averaged over
+  TFLITE_DCHECK_GT(out_count.minCoeff(), 0);
+  if (include_pad) {
+    out_mat.array() /= kheight * kwidth;
+  } else {
+    out_mat.array().rowwise() /= out_count.transpose().array();
+  }
+}
+
+inline void MaxPool(const float* input_data, const Dims<4>& input_dims,
+                    int stride_width, int stride_height, int pad_width,
+                    int pad_height, int kwidth, int kheight,
+                    float* output_data, const Dims<4>& output_dims) {
+
+  const int batches = MatchingArraySize(input_dims, 3, output_dims, 3);
+  const int input_height = ArraySize(input_dims, 2);
+  const int input_width = ArraySize(input_dims, 1);
+  const int output_height = ArraySize(output_dims, 2);
+  const int output_width = ArraySize(output_dims, 1);
+  MatchingArraySize(input_dims, 0, output_dims, 0);
+
+  const auto in_mat = MapAsMatrixWithFirstDimAsRows(input_data, input_dims);
+  auto out_mat = MapAsMatrixWithFirstDimAsRows(output_data, output_dims);
+  // Prefill the output to minimum representable float value
+  out_mat.setConstant(std::numeric_limits<float>::lowest());
+  for (int b = 0; b < batches; ++b) {
+    for (int h = 0; h < input_height; ++h) {
+      for (int w = 0; w < input_width; ++w) {
+        // (h_start, h_end) * (w_start, w_end) is the range that the input
+        // vector projects to.
+        int hpad = h + pad_height;
+        int wpad = w + pad_width;
+        int h_start =
+            (hpad < kheight) ? 0 : (hpad - kheight) / stride_height + 1;
+        int h_end = std::min(hpad / stride_height + 1, output_height);
+        int w_start = (wpad < kwidth) ? 0 : (wpad - kwidth) / stride_width + 1;
+        int w_end = std::min(wpad / stride_width + 1, output_width);
+        // compute elementwise sum
+        for (int ph = h_start; ph < h_end; ++ph) {
+          for (int pw = w_start; pw < w_end; ++pw) {
+            int out_offset = NodeOffset(b, ph, pw, output_height, output_width);
+            out_mat.col(out_offset) =
+                out_mat.col(out_offset)
+                    .cwiseMax(in_mat.col(
+                        NodeOffset(b, h, w, input_height, input_width)));
+          }
+        }
+      }
+    }
+  }
+}

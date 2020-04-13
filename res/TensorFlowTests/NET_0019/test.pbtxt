@@ -1,0 +1,89 @@
+# HOW TO GENERATE:
+#
+#  import tensorflow as tf
+#  I = 4
+#  O = 6
+#  ifm = tf.placeholder(dtype=tf.float32, shape=[1, 7, 7, I], name='ifm')
+#  ker = tf.constant(dtype=tf.float32, shape=[3, 3, I, O], name='ker', value=1.1)
+#  ofm = tf.nn.conv2d(input=ifm, filter=ker, strides=[1, 2, 2, 1], padding='VALID', name='ofm')
+#  tf.get_default_graph().as_graph_def()
+#
+# NOTE 1. The output shape is 1x3x3x6
+#
+# >>> tf.graph_util.tensor_shape_from_node_def_name(tf.get_default_graph(), 'ofm')
+# TensorShape([Dimension(1), Dimension(3), Dimension(3), Dimension(6)])
+#
+# NOTE 2. This test corresponds to "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D" node
+#
+node {
+  name: "ifm"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 7 }
+        dim { size: 7 }
+        dim { size: 4 }
+      }
+    }
+  }
+}
+node {
+  name: "ker"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 3 }
+          dim { size: 3 }
+          dim { size: 4 }
+          dim { size: 6 }
+        }
+        float_val: 1.1
+      }
+    }
+  }
+}
+node {
+  name: "ofm"
+  op: "Conv2D"
+  input: "ifm"
+  input: "ker"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list { i: 1 i: 1 i: 1 i: 1 }
+    }
+  }
+  attr {
+    key: "padding"
+    value { s: "VALID" }
+  }
+  attr {
+    key: "strides"
+    value {
+      list { i: 1 i: 2 i: 2 i: 1 }
+    }
+  }
+}

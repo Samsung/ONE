@@ -1,0 +1,24 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 5 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 5 }
+}
+operation {
+  type: "AveragePool2D"
+  averagepool2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    filter_width: 3
+    filter_height: 3
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

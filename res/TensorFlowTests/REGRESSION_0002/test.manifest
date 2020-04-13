@@ -1,0 +1,1 @@
+SUMMARY: Conv2d without dilation attribute is correct according documentation and should be compiled

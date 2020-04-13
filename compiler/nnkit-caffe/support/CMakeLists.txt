@@ -1,0 +1,4 @@
+add_library(nnkit_support_caffe INTERFACE)
+target_include_directories(nnkit_support_caffe INTERFACE include)
+target_link_libraries(nnkit_support_caffe INTERFACE nnkit_intf_backend)
+target_link_libraries(nnkit_support_caffe INTERFACE caffe)

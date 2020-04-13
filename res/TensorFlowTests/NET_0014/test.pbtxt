@@ -1,0 +1,106 @@
+# Mock of the Epilogue, using ReLU instead of Softmax
+node {
+  name: "placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 2 }
+        dim { size: 1 }
+        dim { size: 1 }
+        dim { size: 3 }
+      }
+    }
+  }
+}
+node {
+  name: "squeeze"
+  op: "Squeeze"
+  input: "placeholder"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "squeeze_dims"
+    value {
+      list { i: 1 i: 2 }
+    }
+  }
+}
+node {
+  name: "Reshape/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_INT32 }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim { size: 2 }
+        }
+        int_val: -1
+        int_val: 3
+      }
+    }
+  }
+}
+node {
+  name: "reshape_1"
+  op: "Reshape"
+  input: "squeeze"
+  input: "Reshape/shape"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tshape"
+    value { type: DT_INT32 }
+  }
+}
+node {
+  name: "relu"
+  op: "Relu"
+  input: "reshape_1"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+}
+node {
+  name: "shape"
+  op: "Shape"
+  input: "squeeze"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "out_type"
+    value { type: DT_INT32 }
+  }
+}
+node {
+  name: "reshape_2"
+  op: "Reshape"
+  input: "relu"
+  input: "shape"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "Tshape"
+    value { type: DT_INT32 }
+  }
+}

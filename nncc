@@ -1,0 +1,43 @@
+#!/bin/bash
+
+NNCC_SCRIPT_RPATH="scripts"
+NNCC_COMMAND_RPATH="infra/nncc/command"
+
+NNCC_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NNCC_SCRIPT_PATH="${NNCC_PROJECT_PATH}/${NNCC_SCRIPT_RPATH}"
+
+function Usage()
+{
+  echo "Usage: $0 [COMMAND] ..."
+  echo "Command:"
+  for file in "$NNCC_COMMAND_RPATH"/*;
+  do
+    echo "  $(basename "$file")"
+  done
+}
+
+# Get command from command-line
+COMMAND=$1; shift
+
+if [[ -z "${COMMAND}" ]]; then
+  Usage
+  exit 255
+fi
+
+COMMAND_FILE="${NNCC_PROJECT_PATH}/${NNCC_COMMAND_RPATH}/${COMMAND}"
+
+if [[ ! -f "${COMMAND_FILE}" ]]; then
+  echo "ERROR: '${COMMAND}' is not supported"
+  Usage
+  exit 255
+fi
+
+export NNCC_PROJECT_PATH
+export NNCC_SCRIPT_PATH
+
+function import()
+{
+  source "${NNCC_PROJECT_PATH}/infra/nncc/config/$1"
+}
+
+source "${COMMAND_FILE}" "$@"

@@ -1,0 +1,3 @@
+# This is a slim version of first 7 nodes in inception v3 (from Placeholder to the second ReLU)
+input,  input:0,  TF_FLOAT,  [1, 9, 9, 3]
+output, InceptionV3/InceptionV3/Conv2d_2a_3x3/Relu:0,  TF_FLOAT,  [1, 2, 2, 4]

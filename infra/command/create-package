@@ -1,0 +1,3 @@
+#!/bin/bash
+
+source "${NNAS_PROJECT_PATH}/infra/packaging/build"

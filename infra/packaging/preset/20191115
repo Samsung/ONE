@@ -1,0 +1,49 @@
+#!/bin/bash
+
+function preset_configure()
+{
+  REQUIRED_UNITS=()
+  # Common Libraries
+  REQUIRED_UNITS+=("angkor" "bino" "cwrap" "fipe" "pepper-str" "pepper-strcast" "pp" "stdex")
+  REQUIRED_UNITS+=("oops" "pepper-assert")
+  # Hermes Logging Framework
+  REQUIRED_UNITS+=("hermes" "hermes-std")
+  # loco IR and related utilities
+  REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
+  # loco IR extension: Custom Op Support
+  REQUIRED_UNITS+=("locoex-customop")
+  # TensorFlow Libraries
+  REQUIRED_UNITS+=("tfinfo" "plier-tf")
+  # TensorFlow GraphDef I/O
+  REQUIRED_UNITS+=("mio-tf")
+  # TensorFlow Frontend (.pb/.pbtxt -> loco.caninical)
+  REQUIRED_UNITS+=("moco-log" "moco" "moco-tf")
+  # TensorFlow Lite/Circle Backend (loco.canonical -> .tflite, loco.circle -> .circle)
+  REQUIRED_UNITS+=("exo")
+  # Tools
+  REQUIRED_UNITS+=("tf2tflite" "tf2circle")
+
+  # TODO Use "nncc configure" and "nncc build"
+  cmake \
+    -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}" \
+    -DCMAKE_BUILD_TYPE=release \
+    -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
+    ${EXTRA_OPTIONS[@]} \
+    "${NNAS_PROJECT_PATH}/infra/nncc"
+}
+
+function preset_install()
+{
+  install -t "${NNPKG_INSTALL_PREFIX}/bin" -D \
+    "${NNAS_PROJECT_PATH}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh" \
+    "${NNAS_PROJECT_PATH}/tools/nnpackage_tool/tflite2circle/tflite2circle.sh" \
+    "${NNAS_PROJECT_PATH}/tools/nnpackage_tool/tflite2circle/tflitejson2circlejson.py"
+
+  install -T -m 644 -D \
+    "${SCRIPT_PATH}/res/tflite_schema.fbs" "${NNPKG_INSTALL_PREFIX}/res/tflite_schema.fbs"
+  install -T -m 644 -D \
+    "${NNAS_PROJECT_PATH}/nnpackage/schema/circle_schema.fbs" "${NNPKG_INSTALL_PREFIX}/res/circle_schema.fbs"
+
+  # Install tf2nnpkg
+  install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
+}

@@ -1,0 +1,7 @@
+# To check tf2circle's result has Squared Difference Op, not divided into Sub and Div.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "SQUARED_DIFF_EXIST"      $(op_count SQUARED_DIFFERENCE) '=' 1
+RULE    "NO_SUB_EXIST"            $(op_count SUB) '=' 0
+RULE    "NO_MUL_EXIST"            $(op_count MUL) '=' 0

@@ -1,0 +1,6 @@
+# Console-based tool (tflchef)
+add_subdirectory(console)
+# File-based tool (tflchef-file)
+add_subdirectory(file)
+# Reverse tool to generate recipe from tflite (tflchef-reverse)
+add_subdirectory(reverse)

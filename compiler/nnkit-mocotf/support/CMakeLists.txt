@@ -1,0 +1,13 @@
+file(GLOB_RECURSE TF_SOURCES "src/*.cpp")
+
+add_library(nnkit_support_moco_tf STATIC ${TF_SOURCES})
+
+set_target_properties(nnkit_support_moco_tf PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_include_directories(nnkit_support_moco_tf PUBLIC include)
+target_link_libraries(nnkit_support_moco_tf angkor)
+target_link_libraries(nnkit_support_moco_tf nnkit_intf_backend)
+target_link_libraries(nnkit_support_moco_tf nnkit_support_tftestinfo)
+target_link_libraries(nnkit_support_moco_tf locomotiv)
+target_link_libraries(nnkit_support_moco_tf moco_tf_frontend)
+target_link_libraries(nnkit_support_moco_tf loco)
+target_link_libraries(nnkit_support_moco_tf stdex)

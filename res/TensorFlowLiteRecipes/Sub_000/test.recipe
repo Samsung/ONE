@@ -1,0 +1,27 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim:2 dim:3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim:2 dim:3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim:2 dim:3 }
+}
+operation {
+  type: "Sub"
+  sub_options {
+    activation: 0
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"

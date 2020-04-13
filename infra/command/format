@@ -1,0 +1,246 @@
+#!/bin/bash
+
+INVALID_EXIT=0
+FILES_TO_CHECK=()
+DIRECTORIES_TO_BE_TESTED=()
+DIRECTORIES_NOT_TO_BE_TESTED=()
+CLANG_FORMAT_CANDIDATES=()
+PATCH_FILE=format.patch
+
+function Usage()
+{
+  echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS] [<file> ...]"
+  echo "If no arguments are specified, it formats all nnas codes"
+  echo "If <file>s are given, it reformats the files"
+  echo ""
+  echo "Options:"
+  echo "     --clang-format       clang format bin (default: clang-format-3.9, clang-format)"
+}
+
+while [[ $# -gt 0 ]]
+do
+  arg="$1"
+  case $arg in
+    -h|--help|help)
+      Usage
+      exit 0
+      ;;
+    --clang-format)
+      CLANG_FORMAT_CANDIDATES=($2)
+      shift 2
+      ;;
+    *)
+      DIRECTORIES_TO_BE_TESTED+=($1)
+      shift
+      ;;
+  esac
+done
+
+function pushd () {
+  command pushd "$@" > /dev/null
+}
+
+function popd () {
+  command popd "$@" > /dev/null
+}
+
+function command_exists() {
+  command -v $1 > /dev/null 2>&1
+}
+
+function check_newline() {
+  # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
+  if [[ ${#FILES_TO_CHECK} -ne 0 ]]; then
+    CRCHECK=$(file ${FILES_TO_CHECK} | grep 'with CR')
+  fi
+  FILES_TO_FIX=($(echo "$CRCHECK" | grep "with CRLF line" | cut -d':' -f1))
+  for f in ${FILES_TO_FIX[@]}; do
+    tr -d '\r' < $f > $f.fixed && cat $f.fixed > $f && rm $f.fixed
+  done
+  FILES_TO_FIX=($(echo "${CRCHECK}" | grep "with CR line" | cut -d':' -f1))
+  for f in ${FILES_TO_FIX[@]}; do
+    tr '\r' '\n' < $f > $f.fixed && cat $f.fixed > $f && rm $f.fixed
+  done
+  # Check no new line at end of file
+  for f in ${FILES_TO_CHECK[@]}; do
+    if diff /dev/null "$f" | tail -1 | grep '^\\ No newline' > /dev/null; then
+      echo >> "$f"
+    fi
+  done
+}
+
+function check_permission() {
+  # Check all files except script
+  FILES_TO_CHECK_PERMISSION=()
+  for f in ${FILES_TO_CHECK[@]}; do
+    # Manually ignore permission checking
+    if [[ ${f} == !(nnas|nnfw|nncc|*.sh|*.py) ]]; then
+      FILES_TO_CHECK_PERMISSION+=("${f}")
+    fi
+  done
+
+  if [[ ${#FILES_TO_CHECK_PERMISSION} -eq 0 ]]; then
+    return
+  fi
+  for FILE_TO_CHECK in ${FILES_TO_CHECK_PERMISSION[@]}; do
+    RESULT=$(stat -c '%A' ${FILE_TO_CHECK} | grep 'x')
+    if [ "${RESULT}" != "" ]; then
+      chmod a-x ${FILE_TO_CHECK}
+    fi
+  done
+}
+
+function check_cpp_files() {
+  if [[ ${__Check_CPP} -eq 0 ]]; then
+    echo "[SKIPPED] C/C++ check is skipped"
+    return
+  fi
+
+  CLANG_FORMAT_CANDIDATES+=("clang-format-3.9")
+  CLANG_FORMAT_CANDIDATES+=("clang-format")
+
+  for CLANG_FORMAT_CANDIDATE in ${CLANG_FORMAT_CANDIDATES[@]}; do
+    if command_exists ${CLANG_FORMAT_CANDIDATE} ; then
+      CLANG_FORMAT="${CLANG_FORMAT_CANDIDATE}"
+      break
+    fi
+  done
+
+  if [[ -z ${CLANG_FORMAT}  ]]; then
+    echo "[ERROR] clang-format is unavailable"
+    echo
+    echo "Please install clang-format before running format check"
+    exit 1
+  fi
+
+  # Check c++ files
+  FILES_TO_CHECK_CPP=()
+  for f in ${FILES_TO_CHECK[@]}; do
+    # Manually ignore style checking
+    if [[ ${f} == +(*/NeuralNetworks.h|*/NeuralNetworksExtensions.h) ]]; then
+      continue
+    fi
+
+    # File extension to check
+    if [[ ${f} == +(*.h|*.hpp|*.cpp|*.cc|*.c|*.cl) ]]; then
+      FILES_TO_CHECK_CPP+=("${f}")
+    fi
+  done
+
+  # Skip by '.FORMATDENY' file
+  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
+    FILES_TO_CHECK_CPP=(${FILES_TO_CHECK_CPP[*]/$s*/})
+  done
+
+  if [[ ${#FILES_TO_CHECK_CPP} -ne 0 ]]; then
+    ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
+    EXIT_CODE=$?
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+      INVALID_EXIT=${EXIT_CODE}
+    fi
+  fi
+}
+
+function check_python_files() {
+  if [[ ${__Check_PYTHON} -eq 0 ]]; then
+    echo "[SKIPPED] Python check is skipped"
+    return
+  fi
+
+  if ! command_exists yapf; then
+    echo "[ERROR] yapf is unavailable"
+    echo "       Please install yapf."
+    exit 1
+  fi
+
+  # Check python files
+  FILES_TO_CHECK_PYTHON=()
+  for f in ${FILES_TO_CHECK[@]}; do
+    # File extension to check
+    if [[ ${f} == *.py ]]; then
+      FILES_TO_CHECK_PYTHON+=("${f}")
+    fi
+  done
+  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
+    skip=${s#'.'/}/
+    FILES_TO_CHECK_PYTHON=(${FILES_TO_CHECK_PYTHON[*]/$skip*/})
+  done
+
+  if [[ ${#FILES_TO_CHECK_PYTHON} -ne 0 ]]; then
+    yapf -i --style='{based_on_style: pep8, column_limit: 90}' ${FILES_TO_CHECK_PYTHON[@]}
+    EXIT_CODE=$?
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+      INVALID_EXIT=${EXIT_CODE}
+    fi
+  fi
+}
+
+pushd ${NNAS_PROJECT_PATH}
+
+if [[ -n "$(git diff)" ]] && { [[ "${CHECK_DIFF_ONLY}" != "1" ]] || [[ "${CHECK_STAGED_ONLY}" != "1" ]]; }; then
+  echo "[WARNING] Commit all the changes before running format check"
+  echo "          ${PATCH_FILE} file will contain unstaged files"
+fi
+
+__Check_CPP=${CHECK_CPP:-"1"}
+__Check_PYTHON=${CHECK_PYTHON:-"1"}
+
+FILES_TO_CHECK=$(git ls-files -c --exclude-standard ${DIRECTORIES_TO_BE_TESTED[@]})
+if [[ "${CHECK_DIFF_ONLY}" = "1" ]]; then
+  MASTER_EXIST=$(git rev-parse --verify master)
+  CURRENT_BRANCH=$(git branch | grep \* | cut -d ' ' -f2-)
+  DIFF_COMMITS=`git log --graph --oneline master..HEAD | wc -l`
+  if [[ -z "${MASTER_EXIST}" ]]; then
+    echo "Cannot found local master branch"
+  elif [[ "${CURRENT_BRANCH}" = "master" ]]; then
+    echo "Current branch is master"
+  else
+    if [[ "${CHECK_STAGED_ONLY}" = "1" ]]; then
+      FILES_TO_CHECK=$(git diff --staged --name-only --diff-filter=d)
+    else
+      FILES_TO_CHECK=$(git diff --name-only --diff-filter=d HEAD~${DIFF_COMMITS})
+    fi
+  fi
+fi
+
+for DIR_NOT_TO_BE_TESTED in $(git ls-files -co --exclude-standard '*/.FORMATDENY'); do
+  DIRECTORIES_NOT_TO_BE_TESTED+=($(dirname "${DIR_NOT_TO_BE_TESTED}"))
+done
+
+check_newline
+check_permission
+check_cpp_files
+check_python_files
+
+if [[ "${CHECK_DIFF_ONLY}" = "1" ]] && [[ "${CHECK_STAGED_ONLY}" = "1" ]]; then
+  if [[ ! -z "${FILES_TO_CHECK}" ]]; then
+    DIFF=$(git diff ${FILES_TO_CHECK} | tee ${PATCH_FILE})
+  fi
+else
+  DIFF=$(git diff | tee ${PATCH_FILE})
+fi
+
+popd
+
+if [[ -z "${CRCHECK}" ]] && [[ ! -n "${DIFF}" ]] && [[ ${INVALID_EXIT} -eq 0 ]]; then
+  echo "[PASSED] Format checker succeed."
+  return
+fi
+
+# Something went wrong
+
+if [[ ! -z "${CRCHECK}" ]]; then
+  echo "[FAILED] Please use LF for newline for following files."
+  echo "${CRCHECK}"
+fi
+
+if [[ -s ${PATCH_FILE} ]]; then
+  echo "[FAILED] Format checker failed and update code to follow convention."
+  echo "         You can find changes in ${PATCH_FILE}"
+fi
+
+if [[ ${INVALID_EXIT} -ne 0 ]]; then
+  echo "[[FAILED] Invalid format checker exit."
+fi
+
+exit 1

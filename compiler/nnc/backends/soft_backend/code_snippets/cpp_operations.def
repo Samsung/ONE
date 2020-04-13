@@ -1,0 +1,647 @@
+/*
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#include <string>
+#include <cstdint>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstring>
+
+using namespace std;
+
+#define UNUSED(x) ((void)(x))
+
+static_assert(numeric_limits<float>::is_iec559, "Unsupported float type");
+
+void readParameters(char *&data, size_t &len, const string &path,
+                    uint32_t expectedVersion, uint32_t expectedHash)
+{
+  static_assert(sizeof(expectedVersion) == params::VERSION_LEN, "version length mismatch");
+  static_assert(sizeof(expectedHash) == params::HASH_LEN, "hash length mismatch");
+  int fd;
+  struct stat st;
+  fd = open(path.c_str(), O_RDONLY);
+  assert(fd != -1);
+
+  // gather file info
+  int statRes = fstat(fd, &st);
+  assert(statRes != -1);
+  UNUSED(statRes);
+  len = static_cast<size_t>(st.st_size);
+  assert(len >= params::HEADER_LEN);
+
+  // check magic correctness
+  char magic[params::MAGIC_LEN + 1] = {};
+  ssize_t magic_len = read(fd, magic, params::MAGIC_LEN);
+  assert(magic_len == params::MAGIC_LEN);
+  UNUSED(magic_len);
+  assert(strncmp(magic, params::MAGIC, params::MAGIC_LEN) == 0);
+  UNUSED(magic);
+
+  // checkversion correctness
+  decltype(expectedVersion) version;
+  ssize_t version_len = read(fd, &version, sizeof(version));
+  assert(version_len == sizeof(version));
+  UNUSED(version_len);
+  assert(version == expectedVersion);
+  UNUSED(version);
+
+  // check hash correctness
+  decltype(expectedHash) hash;
+  ssize_t hash_len = read(fd, &hash, sizeof(hash));
+  assert(hash_len == sizeof(hash));
+  UNUSED(hash_len);
+  assert(hash == expectedHash);
+  UNUSED(hash);
+
+  data = static_cast<char *>(mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0));
+  int is_error = close(fd);
+  assert(!is_error &&  "Can not close file!");
+  UNUSED(is_error);
+}
+
+void releaseParameters(char *data, size_t len)
+{
+  int res = munmap(data, len);
+  assert(res == 0);
+  UNUSED(res);
+}
+
+template <int rank>
+size_t volume(Dims<rank> d)
+{
+  size_t v = 1;
+  for (int i = 0; i < rank; ++i)
+  {
+    v *= d.sizes[i];
+  }
+  return v;
+}
+
+RuntimeShape shapeToRuntimeShape(const Shape& s) {
+  const int rank = static_cast<int>(s.getDims());
+  RuntimeShape sh(rank);
+  for (int i = 0; i < rank; i++) {
+    sh.SetDim(i, static_cast<int32_t>(s[i]));
+  }
+  return sh;
+}
+
+Dims<4> shapeToDims(const Shape &s)
+{
+  Dims<4> dims;
+  const int rank = static_cast<int>(s.getDims());
+  assert(rank >= 1 && rank <= 4);
+  int stride = 1;
+  for (int i = 0; i < rank; ++i)
+  {
+    dims.sizes[i] = static_cast<int>(s[rank - 1 - i]);
+    dims.strides[i] = stride;
+    stride *= s[rank - 1 - i];
+  }
+  for (int i = rank; i < 4; ++i)
+  {
+    dims.sizes[i] = 1;
+    dims.strides[i] = stride;
+  }
+  return dims;
+}
+
+template <class T>
+static inline T deserializeT(const char *&buf)
+{
+  T v;
+  const char *end = buf + sizeof(T);
+  copy(buf, end, reinterpret_cast<char *>(&v));
+  buf = end;
+  return v;
+}
+
+static inline Shape deserializeShape(const char *&buf)
+{
+  Shape s;
+  int32_t rank = deserializeT<int32_t>(buf);
+  s.setDims(rank);
+  for (int i = 0; i < rank; ++i)
+  {
+    s[i] = deserializeT<int32_t>(buf);
+  }
+  return s;
+}
+
+static inline vector<int32_t> deserializeStrides(const char *&buf)
+{
+  vector<int32_t> strides;
+  const int num_strides = deserializeT<int>(buf);
+  for (int i = 0; i < num_strides; ++i) {
+    strides.emplace_back(deserializeT<int32_t>(buf));
+  }
+  return strides;
+}
+
+__attribute__((unused))
+static bool isAddrAligned(const void *data, int alignment)
+{
+  return (reinterpret_cast<uintptr_t>(data) % alignment) == 0;
+}
+
+static inline Tensor deserializeTensor(const char*& buf)
+{
+  int32_t d_type = deserializeT<int32_t>(buf);
+  assert(d_type == 1 && "Unknown data type");
+  int32_t element_size = deserializeT<int32_t>(buf);
+  assert(element_size == 4 && "Unsupported element size");
+  Shape shape = deserializeShape(buf);
+  const float* data = reinterpret_cast<const float*>(buf);
+  assert(isAddrAligned(data, 4));
+  Tensor tensor(shape, const_cast<float*>(data));
+  buf += element_size * shape.getNumElems();
+  return tensor;
+}
+
+// This operation takes as input multiple tensors, at least 2, likely less then 7
+// parameter pack provides generalization for all possible number of inputs
+template <class ...Args>
+void concat(Tensor &out, const char *params, const Args &...inputs)
+{
+  const float *input[] = {inputs.getData()...};
+  Dims<4> input_d[] = {shapeToDims(inputs.getShape())...};
+  int axis = deserializeT<int32_t>(params);
+  Shape out_s = deserializeShape(params);
+  // because inner functions accepts axis in reverse order
+  axis = static_cast<int>(out_s.getDims()) - 1 - axis;
+  int inputs_count = sizeof(input)/sizeof(input[0]);
+
+  out.reshape(out_s);
+
+  Concatenation(axis,
+                input, input_d, inputs_count,
+                out.getData(), shapeToDims(out.getShape()));
+}
+
+void conv2d(Tensor& out, const char* params, const Tensor& input, const Tensor& kernel,
+            Tensor& temporary) {
+  const vector<int32_t> strides = deserializeStrides(params);
+  const Shape pads = deserializeShape(params);
+  const Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  assert(strides.size() == 2);
+  const auto stride_h = static_cast<int16>(strides[0]);
+  const auto stride_w = static_cast<int16>(strides[1]);
+
+  assert(pads.getDims() == 2);
+  const auto pad_h = static_cast<int16>(pads[0]);
+  const auto pad_w = static_cast<int16>(pads[1]);
+
+  const Shape& kernel_shape = kernel.getShape();
+  const Shape im2col_shape{out_shape[0], out_shape[1], out_shape[2],
+                           kernel_shape[1] * kernel_shape[2] * kernel_shape[3]};
+
+  float* im2col_data = nullptr;
+  if (stride_w != 1 || stride_h != 1 || kernel_shape[1] != 1 || kernel_shape[2] != 1) {
+    im2col_data = temporary.getData();
+  }
+
+  const ConvParams conv_params{{pad_w, pad_h}, stride_w, stride_h};
+  Conv(conv_params,
+       shapeToRuntimeShape(input.getShape()), input.getData(),
+       shapeToRuntimeShape(kernel_shape), kernel.getData(),
+       shapeToRuntimeShape(out_shape), out.getData(),
+       shapeToRuntimeShape(im2col_shape), im2col_data);
+}
+
+void convTransposed2d(Tensor& out, const char* params, const Tensor& input, const Tensor& kernel,
+                      Tensor& temporary) {
+  const vector<int32_t> strides = deserializeStrides(params);
+  const Shape pads = deserializeShape(params);
+  const Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  assert(strides.size() == 2);
+  const auto stride_h = static_cast<int16>(strides[0]);
+  const auto stride_w = static_cast<int16>(strides[1]);
+
+  assert(pads.getDims() == 2);
+  const auto pad_h = static_cast<int16>(pads[0]);
+  const auto pad_w = static_cast<int16>(pads[1]);
+
+  const RuntimeShape input_rt_shape = shapeToRuntimeShape(input.getShape());
+  const RuntimeShape out_rt_shape = shapeToRuntimeShape(out_shape);
+
+  // Transpose the kernel from HWOI to OHWI format.
+  const Shape& kernel_shape = kernel.getShape();
+  const RuntimeShape kernel_rt_shape = {static_cast<int>(kernel_shape[2]),
+                                  static_cast<int>(kernel_shape[0]),
+                                  static_cast<int>(kernel_shape[1]),
+                                  static_cast<int>(kernel_shape[3])};
+  unique_ptr<float[]> kernel_data(new float[kernel_rt_shape.FlatSize()]);
+  TransposeParams transpose_params{4, {2, 0, 1, 3}};
+  Transpose(transpose_params,
+            shapeToRuntimeShape(kernel_shape), kernel.getData(),
+            kernel_rt_shape, kernel_data.get());
+
+  const int32 kernel_height = kernel_rt_shape.Dims(1);
+  const int32 kernel_width = kernel_rt_shape.Dims(2);
+
+  const RuntimeShape im2col_shape{out_rt_shape.Dims(0),
+                                  out_rt_shape.Dims(1),
+                                  out_rt_shape.Dims(2),
+                                  input_rt_shape.Dims(3) * kernel_width * kernel_height};
+
+  ConvParams conv_params{{pad_w, pad_h}, stride_w, stride_h};
+
+  TransposeConv(conv_params,
+                input_rt_shape, input.getData(),
+                kernel_rt_shape, kernel_data.get(),
+                out_rt_shape, out.getData(),
+                im2col_shape, temporary.getData());
+}
+
+void depthwiseConv2d(Tensor& out, const char* params, const Tensor& input, const Tensor& kernel) {
+  const vector<int32_t> strides = deserializeStrides(params);
+  const Shape pads = deserializeShape(params);
+  const Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  assert(strides.size() == 2);
+  const auto stride_h = static_cast<int16>(strides[0]);
+  const auto stride_w = static_cast<int16>(strides[1]);
+
+  assert(pads.getDims() == 2);
+  const auto pad_h = static_cast<int16>(pads[0]);
+  const auto pad_w = static_cast<int16>(pads[1]);
+
+  const RuntimeShape input_dims = shapeToRuntimeShape(input.getShape());
+  const RuntimeShape kernel_dims = shapeToRuntimeShape(kernel.getShape());
+  const RuntimeShape out_dims = shapeToRuntimeShape(out_shape);
+
+  const auto depth_multiplier = static_cast<int16>(out_dims.Dims(3) / input_dims.Dims(3));
+  assert(out_dims.Dims(3) % input_dims.Dims(3) == 0);
+
+  // Reshape kernel -- squash zeroth and first dimensions.
+  const int output_channels = kernel_dims.Dims(3) * kernel_dims.Dims(2);
+  assert(output_channels == out_dims.Dims(3));
+  const int kernel_w = kernel_dims.Dims(1);
+  const int kernel_h = kernel_dims.Dims(0);
+  const RuntimeShape kernel_rt_shape = {1, kernel_h, kernel_w, output_channels};
+
+  const DepthwiseParams depthwise_conv_params = {{pad_w, pad_h}, stride_w,
+                                           stride_h, 1, 1,
+                                           depth_multiplier};
+
+  // TODO Fusing bias into depthwise conv is close to a no-op due to the nature of the operation
+  // consider doing that
+  DepthwiseConv(depthwise_conv_params,
+                input_dims, input.getData(),
+                kernel_rt_shape, kernel.getData(),
+                out_dims, out.getData());
+}
+
+void softmax(Tensor &out, const char *params, const Tensor &in)
+{
+  const float *input = in.getData();
+  Dims<4> input_d = shapeToDims(in.getShape());
+  float beta = 1;
+  int32_t axis = deserializeT<int32_t>(params);
+  assert(axis == in.getShape().getDims() - 1);
+  UNUSED(axis);
+
+  out.reshape(in.getShape());
+
+  Softmax(input, input_d, beta, out.getData(), input_d);
+}
+
+void avgPool(Tensor &out, const char *params, const Tensor &in)
+{
+  const float *input = in.getData();
+  Dims<4> input_d = shapeToDims(in.getShape());
+  Shape window = deserializeShape(params);
+  vector<int32_t> strides = deserializeStrides(params);
+  Shape pads = deserializeShape(params);
+  bool include_pad = deserializeT<int32_t>(params);
+  Shape out_s = deserializeShape(params);
+
+  assert(window.getDims() == 2);
+  const int window_w = static_cast<int>(window[1]);
+  const int window_h = static_cast<int>(window[0]);
+  assert(strides.size() == 2);
+  const int stride_w = static_cast<int>(strides[1]);
+  const int stride_h = static_cast<int>(strides[0]);
+  assert(pads.getDims() == 2);
+  const int pad_w = static_cast<int>(pads[1]);
+  const int pad_h = static_cast<int>(pads[0]);
+
+  out.reshape(out_s);
+
+  Dims<4> out_d = shapeToDims(out_s);
+
+  AveragePool(input, input_d,
+              stride_w, stride_h,
+              pad_w, pad_h,
+              window_w, window_h,
+              out.getData(), out_d,
+              include_pad);
+}
+
+void maxPool(Tensor &out, const char *params, const Tensor &in)
+{
+  const float *input = in.getData();
+  Dims<4> input_d = shapeToDims(in.getShape());
+  Shape window = deserializeShape(params);
+  vector<int32_t> strides = deserializeStrides(params);
+  Shape pads = deserializeShape(params);
+  Shape out_s = deserializeShape(params);
+
+  assert(window.getDims() == 2);
+  const int window_w = static_cast<int>(window[1]);
+  const int window_h = static_cast<int>(window[0]);
+  assert(strides.size() == 2);
+  const int stride_w = static_cast<int>(strides[1]);
+  const int stride_h = static_cast<int>(strides[0]);
+  assert(pads.getDims() == 2);
+  const int pad_w = static_cast<int>(pads[1]);
+  const int pad_h = static_cast<int>(pads[0]);
+
+  out.reshape(out_s);
+
+  Dims<4> out_d = shapeToDims(out_s);
+
+  MaxPool(input, input_d,
+          stride_w, stride_h,
+          pad_w, pad_h,
+          window_w, window_h,
+          out.getData(), out_d);
+}
+
+void fullConnect(Tensor& out, const char* params, const Tensor& in, const Tensor& w) {
+  Shape out_s = deserializeShape(params);
+  out.reshape(out_s);
+
+  FullyConnected(in.getData(), shapeToDims(in.getShape()),
+                 w.getData(), shapeToDims(w.getShape()),
+                 out.getData(), shapeToDims(out_s));
+}
+
+/**
+ * @brief Resize assuming tflite axis order (NHWC)
+ */
+void resize(Tensor& out, const char* params, const Tensor& in) {
+  // The Tensorflow version of this op allows resize on the width and height
+  // axis only.
+  const float* input = in.getData();
+  assert(in.getShape().getDims() == 4 && "Should be a 4d tensor");
+  RuntimeShape in_shape = shapeToRuntimeShape(in.getShape());
+  Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  assert(out_shape.getDims() == 4 && "Should be a 4d tensor");
+  RuntimeShape out_runtime = shapeToRuntimeShape(out_shape);
+  assert(out_shape[0] == in_shape.Dims(0) && out_shape[3] == in_shape.Dims(3) &&
+         "Resize is unly supported over hight and width");
+
+  ResizeNearestNeighbor<float>(
+    in_shape, input,
+    static_cast<int>(out_shape[1]), static_cast<int>(out_shape[2]),
+    out_runtime, out.getData());
+}
+
+void cappedRelu(Tensor &out, const char *params, const Tensor &in)
+{
+  const float *input = in.getData();
+  Dims<4> input_d = shapeToDims(in.getShape());
+  float cap = deserializeT<float>(params);
+
+  out.reshape(in.getShape());
+
+  CappedRelu(input, input_d, cap, out.getData(), input_d);
+}
+
+void slice(Tensor& out, const char* params, const Tensor& in) {
+  Shape starts = deserializeShape(params);
+  Shape sizes = deserializeShape(params);
+  Shape out_s = deserializeShape(params);
+
+  out.reshape(out_s);
+  SliceParams slice_params;
+  slice_params.begin_count = static_cast<uint8>(starts.getDims());
+  slice_params.size_count = static_cast<uint8>(sizes.getDims());
+
+  assert(slice_params.begin_count <= 4);
+  assert(slice_params.size_count <= 4);
+  assert(starts.getDims() == sizes.getDims());
+
+  for (int i = 0; i < slice_params.begin_count; i++) {
+    slice_params.begin[i] = static_cast<int32>(starts[i]);
+    slice_params.size[i] = static_cast<int32>(sizes[i]);
+  }
+  Slice(
+    slice_params,
+    shapeToRuntimeShape(in.getShape()), in.getData(),
+    shapeToRuntimeShape(out_s), out.getData()
+  );
+}
+
+void relu(Tensor &out, const char *params, const Tensor &in)
+{
+  const float *input = in.getData();
+  Dims<4> input_d = shapeToDims(in.getShape());
+
+  out.reshape(in.getShape());
+
+  Relu(input, input_d, out.getData(), input_d);
+}
+
+void sigmoid(Tensor& out, const char* params, const Tensor& in) {
+  out.reshape(in.getShape());
+  Logistic(shapeToRuntimeShape(in.getShape()), in.getData(),
+           shapeToRuntimeShape(out.getShape()), out.getData());
+}
+
+void elu(Tensor &out, const char* params, const Tensor& in) {
+  const float* input = in.getData();
+  const Dims<4> inp_d = shapeToDims(in.getShape());
+
+  const float alpha = deserializeT<float>(params);
+  out.reshape(in.getShape());
+
+  ELU(input, inp_d, alpha, out.getData(), inp_d);
+}
+
+void tanhActivation(Tensor &out, const char* params, const Tensor& in) {
+  UNUSED(params);
+  const float* input = in.getData();
+  const Dims<4> inp_d = shapeToDims(in.getShape());
+
+  out.reshape(in.getShape());
+
+  float* output = out.getData();
+  const Dims<4> out_d = shapeToDims(in.getShape());
+  Tanh(input, inp_d, output, out_d);
+}
+
+template <typename F>
+void ElementWise(Tensor &out, const char *params, const Tensor &lhs, const Tensor &rhs)
+{
+  const float *lhs_data = lhs.getData();
+  const float *rhs_data = rhs.getData();
+
+  const Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  F::Call(lhs_data, shapeToRuntimeShape(lhs.getShape()),
+          rhs_data, shapeToRuntimeShape(rhs.getShape()),
+          out.getData(), shapeToRuntimeShape(out_shape));
+}
+
+// TODO refactor tflite's code for this op
+void reshape(Tensor& out, const char* params, const Tensor& in) {
+  Shape out_s = deserializeShape(params);
+  assert(out_s.getNumElems() == in.getShape().getNumElems());
+
+  out.reshape(out_s);
+  out.fillData(in.getData(), in.getShape().getNumElems());
+}
+
+void reduceMean(Tensor& out, const char* params, const Tensor& in) {
+  Shape tmp_reduction_dims = deserializeShape(params);
+  bool keep_dims = static_cast<bool>(deserializeT<int32_t>(params));
+  Shape out_s = deserializeShape(params);
+  out.reshape(out_s);
+
+  const int32_t rank_inp = static_cast<int32_t>(in.getShape().getDims());
+  const int32_t rank_out = static_cast<int32_t>(out_s.getDims());
+  const int32_t rank_axis = static_cast<int32_t>(tmp_reduction_dims.getDims());
+
+
+  int32_t in_dim[8];
+  int32_t tmp_index[8]; // input iterator storage
+  assert(rank_inp < 8);
+  for (int i = 0; i < rank_inp; i++) {
+    in_dim[i] = static_cast<int32_t>(in.getShape()[i]);
+  }
+  int32_t out_dim[8];
+  assert(rank_out <= 8);
+  for (int i = 0; i < rank_out; i++) {
+    out_dim[i] = static_cast<int32_t>(out.getShape()[i]);
+  }
+  int32_t axis[8];
+  int32_t resolved_axis[8]; // in case there are negative or duplicate indexes
+  assert(rank_axis <= 8);
+  for (int i = 0; i < rank_axis; i++) {
+    axis[i] = static_cast<int32_t>(tmp_reduction_dims[i]);
+  }
+
+  float* temp_sum = new float[out_s.getNumElems()];
+
+  bool succ = Mean(
+    in.getData(), in_dim, rank_inp,
+    out.getData(), out_dim, rank_out,
+    axis, rank_axis, keep_dims,
+    tmp_index, resolved_axis, temp_sum
+  );
+  assert(succ && "Mean failed!");
+  delete[] temp_sum;
+}
+
+void pad(Tensor& out, const char* params, const Tensor& in) {
+  const float* input = in.getData();
+  const Dims<4> input_dims = shapeToDims(in.getShape());
+
+  // deserialize output shape
+  Shape output_shape = deserializeShape(params);
+
+  // deserialize number of dimensions
+  const int32_t num_dim = deserializeT<int32_t>(params);
+
+  // deserialize paddings
+  std::vector<int> left_paddings, right_paddings;
+  for(int i = 0; i < num_dim; i++) {
+    left_paddings.push_back(deserializeT<int32_t>(params));
+    right_paddings.push_back(deserializeT<int32_t>(params));
+  }
+  for(int i = num_dim; i < 4; i++) {
+    left_paddings.push_back(0);
+    right_paddings.push_back(0);
+  }
+
+  out.reshape(output_shape);
+
+  float* output = out.getData();
+  const Dims<4> output_dims = shapeToDims(out.getShape());
+
+  Pad(input, input_dims, left_paddings, right_paddings, output, output_dims);
+}
+
+void sqrtFN(Tensor& out, const char* params, const Tensor& in) {
+  const float* input = in.getData();
+  const Dims<4> inp_d = shapeToDims(in.getShape());
+  // no params to deserialize
+
+  out.reshape(in.getShape());
+  Sqrt(input, inp_d, out.getData());
+}
+
+void absFN(Tensor &out, const char *params, const Tensor& in) {
+  out.reshape(in.getShape());
+
+  const float* in_data = in.getData();
+  float* out_data = out.getData();
+  const index_t num_elements = in.getShape().getNumElems();
+
+  for (index_t i = 0; i < num_elements; ++i) {
+    out_data[i] = abs(in_data[i]);
+  }
+}
+
+void transpose(Tensor &out, const char *params, const Tensor &in) {
+  TransposeParams transpose_params;
+  transpose_params.perm_count = static_cast<int8>(deserializeT<int32_t>(params));
+  for (int i = 0; i < transpose_params.perm_count; ++i)
+    transpose_params.perm[i] = deserializeT<int32_t>(params);
+
+  Shape out_s = deserializeShape(params);
+  assert(out_s.getNumElems() == in.getShape().getNumElems());
+  out.reshape(out_s);
+
+  Transpose(transpose_params,
+            shapeToRuntimeShape(in.getShape()), in.getData(),
+            shapeToRuntimeShape(out.getShape()), out.getData());
+}
+
+void gather(Tensor &out, const char *params, const Tensor &data, const Tensor &indices) {
+  GatherParams gather_params;
+  gather_params.axis = static_cast<int16>(deserializeT<int32_t>(params));
+
+  Shape out_s = deserializeShape(params);
+  out.reshape(out_s);
+
+  // reinterpret_cast is used here because indices in ModelIR are integral, but getData returns
+  // pointer to float.
+  Gather(gather_params,
+         shapeToRuntimeShape(data.getShape()), data.getData(),
+         shapeToRuntimeShape(indices.getShape()), indices.getData(),
+         shapeToRuntimeShape(out.getShape()), out.getData());
+}
+
+void constant(Tensor& out, const char* params) {
+  out = deserializeTensor(params);
+}
+
+void out(const char* params, const Tensor& in) {
+}

@@ -1,0 +1,30 @@
+#ifndef TFL_NODE
+#error "Define TFL_NODE"
+#endif // TFL_NODE
+
+//
+// PLEASE SORT NODE DECLS IN ALPHABETICAL ORDER
+//
+TFL_NODE(ADD, locoex::TFLAdd)
+TFL_NODE(AVERAGE_POOL_2D, locoex::TFLAveragePool2D)
+TFL_NODE(CONCATENATION, locoex::TFLConcatenation)
+TFL_NODE(CONST, locoex::TFLConst)
+TFL_NODE(CONV_2D, locoex::TFLConv2D)
+TFL_NODE(DEPTHWISE_CONV_2D, locoex::TFLDepthwiseConv2D)
+TFL_NODE(DIV, locoex::TFLDiv)
+TFL_NODE(FULLY_CONNECTED, locoex::TFLFullyConnected)
+TFL_NODE(MAXIMUM, locoex::TFLMaximum)
+TFL_NODE(MAX_POOL_2D, locoex::TFLMaxPool2D)
+TFL_NODE(MEAN, locoex::TFLMean)
+TFL_NODE(MUL, locoex::TFLMul)
+TFL_NODE(RELU, locoex::TFLRelu)
+TFL_NODE(RELU6, locoex::TFLRelu6)
+TFL_NODE(RESHAPE, locoex::TFLReshape)
+TFL_NODE(RSQRT, locoex::TFLRsqrt)
+// TODO TFLSoftmax
+TFL_NODE(SQRT, locoex::TFLSqrt)
+TFL_NODE(SQUARED_DIFFERENCE, locoex::TFLSquaredDifference)
+TFL_NODE(SUB, locoex::TFLSub)
+// TODO TFLTanh
+TFL_NODE(TRANSPOSE, locoex::TFLTranspose)
+TFL_NODE(TRANSPOSE_CONV, locoex::TFLTransposeConv)

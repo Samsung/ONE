@@ -1,0 +1,48 @@
+# SAME padding, stride = [1,1], activation=RELU6.
+# In mobilenet, there are two cases using depthwiseConv2D : A case like this one, and another case with stride=[2,2]
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 4 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 4 }
+}
+operation {
+  type: "DepthwiseConv2D"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation: RELU6
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

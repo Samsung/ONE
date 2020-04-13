@@ -1,0 +1,3 @@
+add_subdirectory(acl_soft_backend)
+add_subdirectory(interpreter)
+add_subdirectory(soft_backend)

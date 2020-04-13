@@ -1,0 +1,33 @@
+# Compilation SHOULD NOT fail even if all the inputs are constant
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  filler { tag: "constant" arg: "0.1" }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler { tag: "constant" arg: "0.2" }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "constant" arg: "0.3" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options { padding: VALID }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+output: "ofm"

@@ -1,0 +1,182 @@
+HOST_ARCH?=$(shell uname -p)
+TARGET_ARCH?=$(shell uname -p)
+BUILD_TYPE?=Debug
+CROSS_BUILD?=0
+HOST_OS?=linux
+TARGET_OS?=linux
+PARALLEL_BUILD?=1
+COVERAGE_BUILD?=0
+BENCHMARK_ACL_BUILD?=0
+OPTIONS?=
+
+# make TARGET and TYPE to lowercase
+HOST_ARCH_LC=$(shell echo $(HOST_ARCH) | tr A-Z a-z)
+TARGET_ARCH_LC=$(shell echo $(TARGET_ARCH) | tr A-Z a-z)
+BUILD_TYPE_LC=$(shell echo $(BUILD_TYPE) | tr A-Z a-z)
+# we need base name 'arm` for all arm arch
+TARGET_ARCH_BASE=$(TARGET_ARCH_LC)
+ifneq (,$(findstring arm64,$(TARGET_ARCH_BASE)))
+	TARGET_ARCH_LC=aarch64
+else ifneq (,$(findstring arm,$(TARGET_ARCH_BASE)))
+	TARGET_ARCH_LC=armv7l
+else ifneq (,$(findstring aarch64,$(TARGET_ARCH_BASE)))
+	TARGET_ARCH_LC=aarch64
+endif
+ifneq (,$(findstring android,$(TARGET_OS)))
+	# Anndroid only allow aarch64 target-arch
+	TARGET_ARCH_LC=aarch64
+	TARGET_OS=android
+endif
+# Set CROSS_BUILD=1 when ROOTFS_DIR is given, and TARGET_ARCH is different to HOST_ARCH.
+ifneq ($(ROOTFS_DIR),)
+ifneq ($(TARGET_ARCH_LC),$(HOST_ARCH_LC))
+  CROSS_BUILD=$(if $(wildcard $(ROOTFS_DIR)),1,0)
+endif
+endif
+# the toolchain file, only for cross build
+ifeq ($(CROSS_BUILD),1)
+	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
+	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
+endif
+
+ifeq ($(COVERAGE_BUILD),1)
+	OPTIONS+= -DENABLE_COVERAGE=ON
+else
+	OPTIONS+= -DENABLE_COVERAGE=OFF
+endif
+
+ifeq ($(BENCHMARK_ACL_BUILD),1)
+	OPTIONS+= -DBUILD_BENCHMARK_ACL=1
+endif
+
+ifneq ($(EXT_ACL_FOLDER),)
+	OPTIONS+= -DBUILD_ARMCOMPUTE=OFF
+	OPTIONS+= -DARMCompute_EXTDIR=$(EXT_ACL_FOLDER)
+endif
+
+ifneq ($(EXTERNAL_VOLUME),)
+	OPTIONS+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
+endif
+
+ifeq ($(TARGET_OS),android)
+	OPTIONS+= -DNDK_DIR=$(NDK_DIR)
+endif
+
+ifneq ($(ANDROID_BUILD_TOOLS_DIR),)
+  OPTIONS+= -DANDROID_BUILD_TOOLS_DIR=$(ANDROID_BUILD_TOOLS_DIR)
+endif
+
+ifneq ($(ANDROID_SDK_DIR),)
+  OPTIONS+= -DANDROID_SDK_DIR=$(ANDROID_SDK_DIR)
+endif
+
+ifneq ($(TFLITE_MODEL_PATH),)
+  OPTIONS+= -DTFLITE_MODEL_PATH=$(TFLITE_MODEL_PATH)
+endif
+
+ifneq ($(ANDROID_BOOST_ROOT),)
+  OPTIONS+= -DANDROID_BOOST_ROOT=$(ANDROID_BOOST_ROOT)
+endif
+
+ifeq ($(PARALLEL_BUILD),1)
+	# Get number of processors (linux only for now)
+	ifeq ($(HOST_OS),linux)
+		NPROCS?=$(shell grep -c ^processor /proc/cpuinfo)
+	endif
+endif
+
+NPROCS?=1
+WORKHOME=$(CURDIR)/Product
+WORKFOLDER=$(TARGET_ARCH_LC)-$(TARGET_OS).$(BUILD_TYPE_LC)
+WORKSPACE=$(WORKHOME)/$(WORKFOLDER)
+
+BUILD_FOLDER=$(WORKSPACE)/obj
+INSTALL_PATH?=$(WORKSPACE)/out
+OVERLAY_FOLDER?=$(WORKSPACE)/overlay
+BUILD_ALIAS=$(WORKHOME)/obj
+INSTALL_ALIAS=$(WORKHOME)/out
+
+TIMESTAMP_CONFIGURE=$(WORKSPACE)/CONFIGURE
+TIMESTAMP_BUILD=$(WORKSPACE)/BUILD
+TIMESTAMP_INSTALL=$(WORKSPACE)/INSTALL
+
+all: build
+
+###
+### Command (public)
+###
+configure: configure_internal
+
+build: build_internal
+
+install: $(TIMESTAMP_INSTALL)
+
+create_tar: runtime_tar_internal
+
+clean:
+	rm -rf $(WORKSPACE)
+
+distclean:
+	rm -rf $(WORKSPACE)
+	rm -rf externals/*.stamp
+	rm -rf tests/nnapi/src/generated/
+
+###
+### Command (internal)
+###
+configure_internal:
+	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
+		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
+		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
+		$(OPTIONS)
+	touch $(TIMESTAMP_CONFIGURE)
+
+build_internal: $(BUILD_FOLDER)
+	NNFW_WORKSPACE="$(WORKSPACE)" NPROCS="$(NPROCS)" PARALLEL_BUILD="1" ./nnfw build
+	rm -rf $(BUILD_ALIAS)
+	ln -s $(BUILD_FOLDER) $(BUILD_ALIAS)
+	touch $(TIMESTAMP_BUILD)
+
+install_internal:
+	NNFW_WORKSPACE="$(WORKSPACE)" ./nnfw install
+	rm -rf $(INSTALL_ALIAS)
+	ln -s $(INSTALL_PATH) $(INSTALL_ALIAS)
+	touch $(TIMESTAMP_INSTALL)
+
+runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
+	tar -zcf nnfw-package.tar.gz -C $(INSTALL_PATH) lib include
+	mv nnfw-package.tar.gz $(INSTALL_PATH)/.
+
+install_internal_acl:
+# Workaround to install acl for test (ignore error when there is no file to copy)
+	cp $(OVERLAY_FOLDER)/lib/* $(INSTALL_ALIAS)/lib || true
+
+build_test_suite: install_internal install_internal_acl
+	@echo "packaging test suite"
+	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
+# TODO Divide runtime package, external library package, and test suite
+	@tar -zcf test-suite.tar.gz tests/scripts infra Product/out --dereference
+	@mv test-suite.tar.gz $(INSTALL_PATH)/.
+
+build_coverage_suite: install_internal install_internal_acl
+	@echo "packaging test-coverage suite"
+	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
+	@find Product -name "*.gcno" > include_lists.txt
+	@pwd | grep -o '/' | wc -l > tests/scripts/build_path_depth.txt
+	@tar -zcf coverage-suite.tar.gz tests/scripts infra Product/out --dereference -T include_lists.txt
+	@rm -rf include_lists.txt tests/scripts/build_path_depth.txt
+	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.
+
+###
+### Timestamps
+###
+$(WORKSPACE):
+	mkdir -p $@
+
+$(BUILD_FOLDER): $(WORKSPACE) configure_internal
+
+$(TIMESTAMP_CONFIGURE): configure_internal
+
+$(TIMESTAMP_BUILD): $(TIMESTAMP_CONFIGURE) build_internal
+
+$(TIMESTAMP_INSTALL): $(TIMESTAMP_BUILD) install_internal install_internal_acl

@@ -1,0 +1,9 @@
+#ifndef EXPR
+#error EXPR is should be defined before include this file
+#endif
+
+// EXPR(Tag)
+EXPR(Var)
+EXPR(Deref)
+EXPR(Add)
+EXPR(Mul)

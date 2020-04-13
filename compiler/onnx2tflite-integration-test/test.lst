@@ -1,0 +1,5 @@
+#add(Const_000)
+add(UNIT_Identity_000)
+add(UNIT_Gemm_000)
+# runtime used in testing does not support 11 op version, skip this test until we update
+#add(UNIT_Gemm_001)

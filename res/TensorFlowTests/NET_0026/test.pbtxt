@@ -1,0 +1,293 @@
+node {
+  name: "InceptionV3/Conv2d_1a_3x3/weights/read/_3__cf__3"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 3
+          }
+          dim {
+            size: 3
+          }
+          dim {
+            size: 3
+          }
+          dim {
+            size: 4
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "input"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 9
+        }
+        dim {
+          size: 9
+        }
+        dim {
+          size: 3
+        }
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D"
+  op: "Conv2D"
+  input: "input:0"
+  input: "InceptionV3/Conv2d_1a_3x3/weights/read/_3__cf__3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "VALID"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 2
+        i: 2
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D_bn_offset"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/BatchNorm/FusedBatchNorm"
+  op: "BiasAdd"
+  input: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D"
+  input: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Conv2D_bn_offset"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"
+  op: "Relu"
+  input: "InceptionV3/InceptionV3/Conv2d_1a_3x3/BatchNorm/FusedBatchNorm"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "InceptionV3/Conv2d_2a_3x3/weights/read/_7__cf__7"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 3
+          }
+          dim {
+            size: 3
+          }
+          dim {
+            size: 4
+          }
+          dim {
+            size: 4
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_2a_3x3/Conv2D"
+  op: "Conv2D"
+  input: "InceptionV3/InceptionV3/Conv2d_1a_3x3/Relu"
+  input: "InceptionV3/Conv2d_2a_3x3/weights/read/_7__cf__7"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "VALID"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_2a_3x3/Conv2D_bn_offset"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_2a_3x3/BatchNorm/FusedBatchNorm"
+  op: "BiasAdd"
+  input: "InceptionV3/InceptionV3/Conv2d_2a_3x3/Conv2D"
+  input: "InceptionV3/InceptionV3/Conv2d_2a_3x3/Conv2D_bn_offset"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "InceptionV3/InceptionV3/Conv2d_2a_3x3/Relu"
+  op: "Relu"
+  input: "InceptionV3/InceptionV3/Conv2d_2a_3x3/BatchNorm/FusedBatchNorm"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}

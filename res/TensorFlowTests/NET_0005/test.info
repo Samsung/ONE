@@ -1,0 +1,2 @@
+input, Placeholder:0, TF_FLOAT, [1, 2, 3, 2]
+output, Reshape2:0, TF_FLOAT, [1, 2, 3, 2]

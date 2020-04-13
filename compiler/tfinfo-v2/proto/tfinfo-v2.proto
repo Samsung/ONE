@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package tfinfo_v2_proto;
+option cc_enable_arenas = true;
+
+/*
+Example of prototxt file is as follows:
+
+input {
+    name : "placeholder:0"
+}
+output {
+    name : "relu:0"
+}
+
+When a model has unknown dim in its input,
+value of all unknowm dims must be provided like the following:
+
+input {
+    name : "placeholder:0"
+    dim { axis: 0  size: 8 }
+    dim { axis: 3  size: 4 }
+}
+output {
+    name : "relu:0"
+}
+*/
+
+message Dim {
+  int32 axis = 1;
+  int64 size = 2; // tensorflow uses int64
+}
+
+message OutputDef {
+  string name = 1;
+}
+
+message InputDef {
+  string name = 1;
+  repeated Dim dim = 2;
+}
+
+message InfoDef {
+  repeated InputDef  input  = 1;
+  repeated OutputDef output = 2;
+}

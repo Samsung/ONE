@@ -1,0 +1,11 @@
+#ifndef KNOB_BOOL
+#error "KNOB_BOOL is not defined"
+#endif // KNOB_BOOL
+
+// KNOB_BOOL(KNOB_NAME, TFL_DEFAULT, CIRCLE_DEFAULT, DESCRIPTION)
+
+// Optimization pass
+KNOB_BOOL(UseFuseBiasAddPass, true, true, Fuse TFLAdd or TFLSub into TFLConv2D)
+KNOB_BOOL(UseFuseInstanceNormPass, false, true, Fuse InstanceNorm pattern)
+KNOB_BOOL(UseFuseReluPass, true, true, Fuse TFLAdd or TFLSub into TFLConv2D or so)
+KNOB_BOOL(UseFuseSquaredDifferencePass, false, true, Fuse SquaredDifference pattern)

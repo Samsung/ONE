@@ -1,0 +1,234 @@
+/*
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <cstring>
+#include <initializer_list>
+#include <memory>
+#include <cassert>
+#include <algorithm>
+
+using index_t = long;
+
+const index_t MAX_DIMS = 8;
+
+/** @brief Shape of Tensor object
+ *
+ * This class represents size of multidimensional table
+ */
+class Shape
+{
+public:
+
+  Shape()
+  {
+    _dims = 0;
+  }
+
+  template <class T>
+  Shape(std::initializer_list<T> data): _dims(data.size())
+  {
+    assert(_dims <= MAX_DIMS);
+    index_t *dataPtr = _data;
+    for (T value: data)
+    {
+      *dataPtr++ = static_cast<index_t>(value);
+    }
+  }
+
+  Shape(const Shape &orig): _dims(orig._dims)
+  {
+    for (index_t i = 0; i < _dims; ++i)
+      _data[i] = orig._data[i];
+  }
+
+  Shape &operator=(const Shape &orig)
+  {
+    _dims = orig._dims;
+    for (index_t i = 0; i < _dims; ++i)
+      _data[i] = orig._data[i];
+    return *this;
+  }
+
+  /** Returns number of table dimensions*/
+  index_t getDims() const
+  {
+    return _dims;
+  }
+
+  /** Sets number of table dimensions*/
+  void setDims(index_t dims)
+  {
+    assert(dims < MAX_DIMS);
+    _dims = dims;
+  }
+
+  /** Returns size of selected dimension*/
+  index_t &operator[](index_t dim)
+  {
+    assert(dim < _dims);
+    return _data[dim];
+  }
+
+  /** Returns size of selected dimension, constant version*/
+  index_t operator[](index_t dim) const
+  {
+    assert(dim < _dims);
+    return _data[dim];
+  }
+
+  /** Returns number of elements in table*/
+  index_t getNumElems() const
+  {
+    index_t volume = 1;
+    for (index_t i = 0; i < _dims; ++i)
+    {
+      volume *= _data[i];
+    }
+    return volume;
+  }
+
+private:
+  index_t _data[MAX_DIMS];
+  index_t _dims;
+};
+
+/** This class points to one cell in table*/
+using Index = Shape;
+
+/** @brief Multidimensional table
+ *
+ * This class represents multidimensional table.
+ * It is used to provide NN model interface and intermediate objects in inference sequence.
+ */
+class Tensor
+{
+public:
+  Tensor(): Tensor(Shape{}){}
+
+  Tensor(Tensor &&orig): _shape(orig._shape), _data(orig._data), _managed(orig._managed)
+  {
+    orig._managed = false;
+  }
+
+  /** Constructs table, that references external data as its content*/
+  Tensor(const Shape& shape, float *data): _shape(shape), _data(data){}
+
+  Tensor(const Shape& shape): _shape(shape), _data(new float[shape.getNumElems()]), _managed(true) {}
+
+  ~Tensor()
+  {
+    if (_managed)
+      delete [] _data;
+  }
+
+  /** Copies data from external source into table*/
+  void fillData(const float *data, const index_t num_elements)
+  {
+    assert(_managed);
+    std::memcpy(_data, data, num_elements * sizeof(float));
+  }
+
+  Tensor& operator=(const Tensor& t) {
+    if (this == &t)
+      return *this;
+
+    if (!t._managed) {
+      if (_managed)
+        delete _data;
+
+      _managed = false;
+      _data = t._data;
+      _shape = t._shape;
+    } else {
+      // this tensor is not constant so we can write data into it
+      assert(_managed);
+      reshape(t._shape);
+      fillData(t._data, _shape.getNumElems());
+    }
+
+    return *this;
+  }
+
+  /** Access element in table by index*/
+  float &at(const Index &idx)
+  {
+    return *(_data + getOffset(idx));
+  }
+
+  /** Access element in table by index, constant version*/
+  float at(const Index &idx) const
+  {
+    return *(_data + getOffset(idx));
+  }
+
+  void reshape(const Shape &shape)
+  {
+    index_t oldVolume = _shape.getNumElems();
+    _shape = shape;
+    if (_managed && oldVolume != shape.getNumElems())
+    {
+      float* new_data = new float[shape.getNumElems()];
+      delete [] _data;
+      std::swap(new_data, _data);
+    }
+  }
+
+  /** Free memory, set empty shape */
+  void clean()
+  {
+    _shape.setDims(0);
+    if (_managed)
+      delete [] _data;
+    _managed = false;
+  }
+
+  /** Returns pointer to raw data*/
+  float *getData()
+  {
+    return _data;
+  }
+
+  /** Returns pointer to raw data, constant version*/
+  const float *getData() const
+  {
+    return _data;
+  }
+
+  /** Returns size object of this table*/
+  const Shape &getShape() const
+  {
+    return _shape;
+  }
+
+private:
+  index_t getOffset(const Index &idx) const
+  {
+    assert(idx.getDims() == _shape.getDims());
+    index_t offset = 0;
+    index_t stride = 1;
+    for (index_t i = _shape.getDims() - 1; i >= 0; --i)
+    {
+      assert(idx[i] < _shape[i]);
+      offset += stride * idx[i];
+      stride *= _shape[i];
+    }
+    return offset;
+  }
+
+  Shape _shape;
+  float *_data;
+  bool _managed = false;
+};

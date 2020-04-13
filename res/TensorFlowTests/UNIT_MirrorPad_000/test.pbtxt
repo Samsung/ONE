@@ -1,0 +1,87 @@
+node {
+  name: "input"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 3
+        }
+        dim {
+          size: 2
+        }
+        dim {
+          size: 4
+        }
+      }
+    }
+  }
+}
+node {
+  name: "Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+          dim {
+            size: 2
+          }
+        }
+        int_val: 0
+        int_val: 0
+        int_val: 0
+        int_val: 0
+        int_val: 1
+        int_val: 1
+        int_val: 2
+        int_val: 3
+      }
+    }
+  }
+}
+node {
+  name: "MirrorPad"
+  op: "MirrorPad"
+  input: "input"
+  input: "Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tpaddings"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "mode"
+    value {
+      s: "REFLECT"
+    }
+  }
+}

@@ -1,0 +1,2 @@
+add_library(nnkit_intf_cmdline INTERFACE)
+target_include_directories(nnkit_intf_cmdline INTERFACE include)

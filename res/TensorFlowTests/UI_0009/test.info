@@ -1,0 +1,2 @@
+input,  Placeholder:1,  TF_FLOAT, [1, 2]    # Placeholder:1 does not exist in the model
+output,  Placeholder:0,  TF_FLOAT, [1, 2]

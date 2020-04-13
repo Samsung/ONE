@@ -1,0 +1,40 @@
+node {
+  name: "Placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 2
+        }
+        dim {
+          size: 3
+        }
+        dim {
+          size: -1
+        }
+      }
+    }
+  }
+}
+node {
+  name: "Identity"
+  op: "Identity"
+  input: "Placeholder"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}

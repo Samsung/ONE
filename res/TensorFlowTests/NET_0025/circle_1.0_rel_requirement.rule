@@ -1,0 +1,8 @@
+# tf2circle-dredd-pbtxt-test against CBR fusion
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1  # 1 means verification is OK
+
+RULE    "ALL_OP_COUNT"            $(all_op_count) '=' 1
+RULE    "OP_COUNT_CONV2D"         $(op_count CONV_2D) '=' 1
+RULE    "WEIGHT_CONST"            $(conv2d_weight_not_constant) '=' 0
+RULE    "FILE_SIZE"               $(file_size) '<' 1040   # As of 191105, file size is 1016

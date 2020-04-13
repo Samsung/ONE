@@ -1,0 +1,3 @@
+input, input_01:0,  TF_FLOAT,   [1, 3, 3, 5]
+input, input_02:0,  TF_FLOAT,   [1, 1, 1, 5]
+output, add:0,  TF_FLOAT,   [1, 3, 3, 5]

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ -z "${NNAS_PROJECT_PATH}" ]]; then
+  echo "ERROR: NNAS_PROJECT_PATH is not specified"
+  exit 255
+fi
+
+# The default preset
+PRESET="20191215"
+
+EXTRA_OPTIONS=()
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--prefix')
+      NNAS_INSTALL_PREFIX="$2"
+      shift 2
+      ;;
+    '--preset')
+      PRESET="$2"
+      shift 2
+      ;;
+    '--')
+      shift
+      while [ "$#" -ne 0 ]; do
+        EXTRA_OPTIONS+=("$1")
+        shift
+      done
+      ;;
+    *)
+      echo "ERROR: '${CUR}' is invalid"
+      exit 255
+      ;;
+  esac
+done
+
+# Q. Is it better to have the default value for NNAS_INSTALL_PREFIX?
+# TODO Show USAGE
+if [[ -z "${NNAS_INSTALL_PREFIX}" ]]; then
+  echo "ERROR: --prefix is not specified"
+  exit 255
+fi
+
+PRESET_PATH="${SCRIPT_PATH}/preset/${PRESET}"
+
+if [[ ! -f "${PRESET_PATH}" ]]; then
+  echo "ERROR: ${PRESET} is unavailable"
+  # TODO Show available presets
+  exit 255
+fi
+
+echo "-- Use '${PRESET}' SDK preset"
+
+source "${PRESET_PATH}"
+
+# Normalize to absolute path
+if [[ "${NNAS_INSTALL_PREFIX}" != /*  ]]; then
+    NNAS_INSTALL_PREFIX=${PWD}/${NNAS_INSTALL_PREFIX}
+fi
+
+if [[ -z "${NNAS_BUILD_PREFIX}" ]]; then
+  # Create a temporary directory and use it!
+  NNAS_BUILD_PREFIX=$(mktemp -d)
+  trap "{ rm -rf $NNAS_BUILD_PREFIX; }" EXIT
+fi
+
+# Create a release directory
+mkdir -p "${NNAS_INSTALL_PREFIX}"
+
+# Build and Install NNCC
+NNCC_BUILD_PREFIX="${NNAS_BUILD_PREFIX}/nncc"
+NNCC_INSTALL_PREFIX="${NNAS_INSTALL_PREFIX}"
+
+mkdir -p "${NNCC_BUILD_PREFIX}"
+cd "${NNCC_BUILD_PREFIX}"
+
+function join_by
+{
+  local IFS="$1"; shift; echo "$*"
+}
+
+# Invoke "preset_configure" function that the preset provides
+preset_configure
+
+NPROC=$(cat /proc/cpuinfo | grep -c processor)
+cmake --build . -- -j$((NPROC/2)) all
+cmake --build . -- install
+# Install NN Package tools
+NNPKG_INSTALL_PREFIX="${NNAS_INSTALL_PREFIX}"
+
+# Invoke "preset_install" function that the preset provides
+preset_install

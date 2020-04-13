@@ -1,0 +1,13 @@
+#!/bin/bash
+
+import "build.configuration"
+
+BUILD_WORKSPACE_PATH="${NNCC_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+
+if [[ ! -d "${BUILD_WORKSPACE_PATH}" ]]; then
+  echo "'${BUILD_WORKSPACE_RPATH}' does not exist. Please run 'configure' first"
+  exit 255
+fi
+
+export CTEST_OUTPUT_ON_FAILURE=1
+cd "${BUILD_WORKSPACE_PATH}" && ctest "$@"

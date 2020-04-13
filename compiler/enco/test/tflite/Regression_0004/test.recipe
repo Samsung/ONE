@@ -1,0 +1,27 @@
+operand {
+  name: "ifm0"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  filler { tag: "constant" arg: "0.1" }
+}
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  filler { tag: "constant" arg: "0.1" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "Div"
+  input: "ifm0"
+  input: "ifm1"
+  output: "ofm"
+  div_options {
+    activation: NONE
+  }
+}
+output: "ofm"

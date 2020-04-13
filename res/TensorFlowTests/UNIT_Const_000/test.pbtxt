@@ -1,0 +1,32 @@
+node {
+  name: "const/float"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+        }
+        float_val: 1.1
+        float_val: 2.2
+        float_val: 3.3
+        float_val: 4.4
+        float_val: 5.5
+        float_val: 6.6
+      }
+    }
+  }
+}

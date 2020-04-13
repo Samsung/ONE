@@ -1,0 +1,7 @@
+# tf2circle-dredd-pbtxt-test against two Concat ops with same axis
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1  # 1 means verification is OK
+
+RULE    "ALL_OP_COUNT"            $(all_op_count) '=' 1
+RULE    "OP_COUNT_CONCATENATION"  $(op_count CONCATENATION) '=' 1
+RULE    "FILE_SIZE"               $(file_size) '<=' 650      # real size is 616 as of 191105

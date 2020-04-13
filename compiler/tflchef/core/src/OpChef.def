@@ -1,0 +1,21 @@
+#ifndef OP_CHEF
+#error "Define OP first"
+#endif // OP_CHEF
+
+// Please keep the list in alphabetical order
+// OP_CHEF(NAME, FACTORY_CLASS)
+OP_CHEF(Add, AddChefFactory)
+OP_CHEF(ArgMax, ArgMaxChefFactory)
+OP_CHEF(AveragePool2D, AveragePool2DChefFactory)
+OP_CHEF(Concatenation, ConcatenationChefFactory)
+OP_CHEF(Conv2D, Conv2DChefFactory)
+OP_CHEF(DepthwiseConv2D, DepthwiseConv2DChefFactory)
+OP_CHEF(Div, DivChefFactory)
+OP_CHEF(FullyConnected, FullyConnectedChefFactory)
+OP_CHEF(MaxPool2D, MaxPool2DChefFactory)
+OP_CHEF(Pad, PadChefFactory)
+OP_CHEF(ReLU, ReLUChefFactory)
+OP_CHEF(ReLU6, ReLU6ChefFactory)
+OP_CHEF(Reshape, ReshapeChefFactory)
+OP_CHEF(Sqrt, SqrtChefFactory)
+OP_CHEF(Sub, SubChefFactory)

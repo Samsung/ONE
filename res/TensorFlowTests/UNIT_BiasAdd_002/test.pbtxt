@@ -1,0 +1,51 @@
+node {
+  name: "input"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 1 }
+        dim { size: 16 }
+        dim { size: 16 }
+        dim { size: 2 }
+      }
+    }
+  }
+}
+node {
+  name: "bias"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape { dim { size: 2 } }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "output"
+  op: "BiasAdd"
+  input: "input"
+  input: "bias"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "data_format"
+    value { s: "NHWC" }
+  }
+}

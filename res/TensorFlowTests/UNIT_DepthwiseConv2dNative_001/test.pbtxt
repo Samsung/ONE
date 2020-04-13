@@ -1,0 +1,115 @@
+# A simple network that has DepthwiseConv2dNative with input(Placeholder) and filter(Const)
+# HOW TO GENERATE:
+#  import tensorflow as tf
+#  input = tf.placeholder(tf.float32, shape=[1,4,4,3], name="input")
+#  filter = tf.constant(1.0, shape=[2,2,3,2], dtype=tf.float32)
+#  dwconv = tf.nn.depthwise_conv2d_native(input,filter,[1,1,1,1],'VALID')
+#  tf.get_default_graph().as_graph_def()
+node {
+  name: "input"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 4
+        }
+        dim {
+          size: 4
+        }
+        dim {
+          size: 3
+        }
+      }
+    }
+  }
+}
+node {
+  name: "Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 2
+          }
+          dim {
+            size: 3
+          }
+          dim {
+            size: 2
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "DepthwiseConv2dNative"
+  op: "DepthwiseConv2dNative"
+  input: "input"
+  input: "Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
+    key: "padding"
+    value {
+      s: "VALID"
+    }
+  }
+  attr {
+    key: "strides"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+node {
+  name: "Placeholder"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim { size: 2 }
+        dim { size: 3 }
+      }
+    }
+  }
+}
+node {
+  name: "Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value { type: DT_FLOAT }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim { size: 3 }
+        }
+        float_val: 1.1
+        float_val: 2.2
+        float_val: 3.3
+      }
+    }
+  }
+}
+node {
+  name: "Add_1"
+  op: "Add"
+  input: "Placeholder"
+  input: "Const"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+}
+node {
+  name: "Add_2"
+  op: "Add"
+  input: "Add_1"
+  input: "Const"
+  attr {
+    key: "T"
+    value { type: DT_FLOAT }
+  }
+}

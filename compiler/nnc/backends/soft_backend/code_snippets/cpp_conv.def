@@ -1,0 +1,237 @@
+/* Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
+
+template <typename T>
+inline void ExtractPatchIntoBufferColumn(const RuntimeShape& input_shape, int w,
+                                         int h, int b, int kheight, int kwidth,
+                                         int stride_width, int stride_height,
+                                         int pad_width, int pad_height,
+                                         int in_width, int in_height,
+                                         int in_depth, int single_buffer_length,
+                                         int buffer_id, const T* in_data,
+                                         T* conv_buffer_data, uint8 zero_byte) {
+  TFLITE_DCHECK_EQ(input_shape.DimensionsCount(), 4);
+  // This chunk of code reshapes all the inputs corresponding to
+  // output (b, h, w) to a column vector in conv_buffer(:, buffer_id).
+  const int kwidth_times_indepth = kwidth * in_depth;
+  const int inwidth_times_indepth = in_width * in_depth;
+  const int ih_ungated_start = h * stride_height - pad_height;
+  const int ih_ungated_end = (ih_ungated_start + kheight);
+  const int ih_end = std::min(ih_ungated_end, in_height);
+  const int iw_ungated_start = w * stride_width - pad_width;
+  const int iw_ungated_end = (iw_ungated_start + kwidth);
+  const int iw_end = std::min(iw_ungated_end, in_width);
+  // If the patch is off the edge of the input image, skip writing those rows
+  // and columns from the patch into the output array.
+  const int h_offset = std::max(0, -ih_ungated_start);
+  const int w_offset = std::max(0, -iw_ungated_start);
+  const int ih_start = std::max(0, ih_ungated_start);
+  const int iw_start = std::max(0, iw_ungated_start);
+  const int single_row_num =
+    std::min(kwidth - w_offset, in_width - iw_start) * in_depth;
+  const int output_row_offset = (buffer_id * single_buffer_length);
+  int out_offset =
+    output_row_offset + (h_offset * kwidth + w_offset) * in_depth;
+  int in_offset = Offset(input_shape, b, ih_start, iw_start, 0);
+
+  // Express all of the calculations as padding around the input patch.
+  const int top_padding = h_offset;
+  const int bottom_padding = (ih_ungated_end - ih_end);
+  const int left_padding = w_offset;
+  const int right_padding = (iw_ungated_end - iw_end);
+  assert(single_row_num ==
+         ((kwidth - (left_padding + right_padding)) * in_depth));
+
+  // Write out zeroes to the elements representing the top rows of the input
+  // patch that are off the edge of the input image.
+  if (top_padding > 0) {
+    const int top_row_elements = (top_padding * kwidth * in_depth);
+    memset(conv_buffer_data + output_row_offset, zero_byte,
+           (top_row_elements * sizeof(T)));
+  }
+
+  // If the patch is on the interior of the input image horizontally, just copy
+  // over the rows sequentially, otherwise add zero padding at the start or end.
+  if ((left_padding == 0) && (right_padding == 0)) {
+    for (int ih = ih_start; ih < ih_end; ++ih) {
+      memcpy(conv_buffer_data + out_offset, in_data + in_offset,
+             single_row_num * sizeof(T));
+      out_offset += kwidth_times_indepth;
+      in_offset += inwidth_times_indepth;
+    }
+  } else {
+    for (int ih = ih_start; ih < ih_end; ++ih) {
+      if (left_padding > 0) {
+        const int left_start = (out_offset - (left_padding * in_depth));
+        memset(conv_buffer_data + left_start, zero_byte,
+               (left_padding * in_depth * sizeof(T)));
+      }
+      memcpy(conv_buffer_data + out_offset, in_data + in_offset,
+             single_row_num * sizeof(T));
+      if (right_padding > 0) {
+        const int right_start = (out_offset + single_row_num);
+        memset(conv_buffer_data + right_start, zero_byte,
+               (right_padding * in_depth * sizeof(T)));
+      }
+      out_offset += kwidth_times_indepth;
+      in_offset += inwidth_times_indepth;
+    }
+  }
+
+  // If the bottom of the patch falls off the input image, pad the values
+  // representing those input rows with zeroes.
+  if (bottom_padding > 0) {
+    const int bottom_row_elements = (bottom_padding * kwidth * in_depth);
+    const int bottom_start =
+      output_row_offset +
+      ((top_padding + (ih_end - ih_start)) * kwidth * in_depth);
+    memset(conv_buffer_data + bottom_start, zero_byte,
+           (bottom_row_elements * sizeof(T)));
+  }
+}
+
+/* Place Dilated Im2Col should be here when it is required */
+
+template <typename T>
+void Im2col(const ConvParams& params, int kheight, int kwidth, uint8 zero_byte,
+            const RuntimeShape& input_shape, const T* input_data,
+            const RuntimeShape& output_shape, T* output_data) {
+  const int stride_width = params.stride_width;
+  const int stride_height = params.stride_height;
+  const int pad_width = params.padding_values.width;
+  const int pad_height = params.padding_values.height;
+  TFLITE_DCHECK_EQ(input_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_EQ(output_shape.DimensionsCount(), 4);
+
+  const int batches = MatchingDim(input_shape, 0, output_shape, 0);
+  const int input_depth = input_shape.Dims(3);
+  const int input_width = input_shape.Dims(2);
+  const int input_height = input_shape.Dims(1);
+  const int output_depth = output_shape.Dims(3);
+  const int output_width = output_shape.Dims(2);
+  const int output_height = output_shape.Dims(1);
+
+  int buffer_id = 0;
+  // Loop over the output nodes.
+  for (int b = 0; b < batches; ++b) {
+    for (int h = 0; h < output_height; ++h) {
+      for (int w = 0; w < output_width; ++w) {
+        ExtractPatchIntoBufferColumn(
+          input_shape, w, h, b, kheight, kwidth, stride_width, stride_height,
+          pad_width, pad_height, input_width, input_height, input_depth,
+          output_depth, buffer_id, input_data, output_data, zero_byte);
+        ++buffer_id;
+      }
+    }
+  }
+}
+
+inline void Conv(const ConvParams& params,
+                 const RuntimeShape& input_shape, const float* input_data,
+                 const RuntimeShape& filter_shape, const float* filter_data,
+                 const RuntimeShape& output_shape, float* output_data,
+                 const RuntimeShape& im2col_shape, float* im2col_data) {
+  const int stride_width = params.stride_width;
+  const int stride_height = params.stride_height;
+  /* Dilation
+  const int dilation_width_factor = params.dilation_width_factor;
+  const int dilation_height_factor = params.dilation_height_factor;
+
+  const float output_activation_min = params.float_activation_min;
+  const float output_activation_max = params.float_activation_max;
+   */
+  TFLITE_DCHECK_EQ(input_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_EQ(filter_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_EQ(output_shape.DimensionsCount(), 4);
+
+  (void)im2col_data;
+  (void)im2col_shape;
+
+  // NB: static_cast<float>(0x00000000h) == 0.0f
+  const uint8 float_zero_byte = 0x00;
+  const float* gemm_input_data = nullptr;
+  const RuntimeShape* gemm_input_shape = nullptr;
+  const int filter_width = filter_shape.Dims(2);
+  const int filter_height = filter_shape.Dims(1);
+  const bool need_im2col = stride_width != 1 || stride_height != 1 ||
+                           filter_width != 1 || filter_height != 1;
+  // Dilated im2col
+  /* const bool need_dilated_im2col =
+    dilation_width_factor != 1 || dilation_height_factor != 1;
+  if (need_dilated_im2col) {
+    DilatedIm2col(params, float_zero_byte, input_shape, input_data,
+                  filter_shape, output_shape, im2col_data);
+    gemm_input_data = im2col_data;
+    gemm_input_shape = &im2col_shape;
+  } else */if (need_im2col) {
+    TFLITE_DCHECK(im2col_data);
+    Im2col(params, filter_height, filter_width, float_zero_byte, input_shape,
+           input_data, im2col_shape, im2col_data);
+    gemm_input_data = im2col_data;
+    gemm_input_shape = &im2col_shape;
+  } else {
+    // TODO(aselle): We need to make sure to not send im2col if it is not
+    // needed.
+    TFLITE_DCHECK(!im2col_data);
+    gemm_input_data = input_data;
+    gemm_input_shape = &input_shape;
+  }
+
+  // The following code computes matrix multiplication c = a * transponse(b)
+  // with CBLAS, where:
+  // * `a` is a matrix with dimensions (m, k).
+  // * `b` is a matrix with dimensions (n, k), so transpose(b) is (k, n).
+  // * `c` is a matrix with dimensions (m, n).
+  // The naming of variables are aligned with CBLAS specification here.
+  const float* a = gemm_input_data;
+  const float* b = filter_data;
+  float* c = output_data;
+  const int gemm_input_dims = gemm_input_shape->DimensionsCount();
+  int m = FlatSizeSkipDim(*gemm_input_shape, gemm_input_dims - 1);
+  int n = output_shape.Dims(3);
+  int k = gemm_input_shape->Dims(gemm_input_dims - 1);
+
+#if defined(TF_LITE_USE_CBLAS) && defined(__APPLE__)
+  // The stride of matrix a, b and c respectively.
+  int stride_a = k;
+  int stride_b = k;
+  int stride_c = n;
+
+  cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans, m, n, k, 1.0f, a,
+              stride_a, b, stride_b, 0.0f, c, stride_c);
+#else
+  // When an optimized CBLAS implementation is not available, fall back
+  // to using Eigen.
+  typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
+    Matrix;
+  typedef Eigen::Map<Matrix> MatrixRef;
+  typedef Eigen::Map<const Matrix> ConstMatrixRef;
+
+  MatrixRef matrix_c(c, m, n);
+  ConstMatrixRef matrix_a(a, m, k);
+  ConstMatrixRef matrix_b(b, n, k);
+
+  // The following special casing for when a or b is a vector is required
+  // as Eigen seem to fail to make this optimization on its own.
+  if (n == 1) {
+    matrix_c.col(0).noalias() = matrix_a * matrix_b.row(0).transpose();
+  } else if (m == 1) {
+    matrix_c.row(0).noalias() = matrix_a.row(0) * matrix_b.transpose();
+  } else {
+    matrix_c.noalias() = matrix_a * matrix_b.transpose();
+  }
+
+#endif  //  defined(TF_LITE_USE_CBLAS) && defined(__APPLE__)
+}

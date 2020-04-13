@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package tf2circle;
+option cc_enable_arenas = true;
+
+/* example of prototxt file
+     custom_op {
+      name: "my/customOp/000"
+      op: "new_custom_op"
+      attr {
+        key: "output_shape"
+        value {
+          shape {
+            dim { size: 1 }
+            dim { size: 2 }
+            dim { size: 1 }
+            dim { size: 2 }
+          }
+        }
+      }
+    }
+*/
+
+enum DataType {
+  // Not a legal value for DataType.  Used to indicate a DataType field
+  // has not been set.
+  DT_INVALID = 0;
+
+  DT_FLOAT = 1;
+  DT_INT32 = 15; // Set to 15, considering possibility for reordering. 10 for INT, 10+N for INT 2^N
+  // TODO Support more types
+}
+
+message ShapeProto {
+  message Dim {
+    int64 size = 1; // tensorflow uses int64
+  };
+
+   repeated Dim dim = 2;
+}
+
+message AttrValue {
+  oneof value {
+    ShapeProto shape = 1;
+    DataType type = 2;
+  }
+}
+
+message CustomOpDef {
+  string name = 1;
+  string op = 2;
+  map<string, AttrValue> attr = 3;
+}
+
+message CustomOpInfoDef {
+  repeated CustomOpDef custom_op = 1;
+}

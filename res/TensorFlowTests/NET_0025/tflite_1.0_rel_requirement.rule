@@ -1,0 +1,8 @@
+# tf2tflite-dredd-pbtxt-test against NET_0025, which is CBR(Conv2D + BiasAdd + ReLU) network
+# how to write a RULE:
+# RULE  rule_name           rule_function(actual value)  condition expected_value
+
+RULE    "ALL_OP_COUNT"            $(all_op_count) '=' 1
+RULE    "OP_COUNT_CONV2D"         $(op_count CONV_2D) '=' 1
+RULE    "WEIGHT_CONST"            $(conv2d_weight_not_constant) '=' 0
+RULE    "FILE_SIZE"               $(file_size) '<' 1040   # As of 191105, file size is 1016

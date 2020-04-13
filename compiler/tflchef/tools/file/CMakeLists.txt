@@ -1,0 +1,3 @@
+add_executable(tflchef-file Driver.cpp)
+target_link_libraries(tflchef-file tflchef_core)
+target_link_libraries(tflchef-file safemain)
