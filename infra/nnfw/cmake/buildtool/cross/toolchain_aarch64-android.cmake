@@ -11,7 +11,8 @@ if(NOT DEFINED NDK_DIR)
 endif(NOT DEFINED NDK_DIR)
 
 set(ANDROID_ABI arm64-v8a)
-set(ANDROID_PLATFORM android-29)
+set(ANDROID_API_LEVEL 29)
+set(ANDROID_PLATFORM android-${ANDROID_API_LEVEL})
 
 # Find package in the host. `nnfw_find_package` won't work without this
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE NEVER)
