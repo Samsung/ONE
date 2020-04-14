@@ -76,6 +76,7 @@ private:
     _tfliteop_map[tflite::BuiltinOperator_RELU] = make_unique<TFliteOpReLU>();
     _tfliteop_map[tflite::BuiltinOperator_RELU6] = make_unique<TFliteOpReLU6>();
     _tfliteop_map[tflite::BuiltinOperator_RESHAPE] = make_unique<TFliteOpReshape>();
+    _tfliteop_map[tflite::BuiltinOperator_RSQRT] = make_unique<TFliteOpRsqrt>();
     _tfliteop_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<TFliteOpSoftmax>();
     _tfliteop_map[tflite::BuiltinOperator_SQRT] = make_unique<TFliteOpSqrt>();
     _tfliteop_map[tflite::BuiltinOperator_SUB] = make_unique<TFliteOpSub>();
