@@ -39,7 +39,7 @@ public:
   RuyContext() : ruy_context_(new ruy::Context)
   {
     SetMaxNumThreads(kDefaultNumThreadpoolThreads);
-#ifdef TFLITE_WITH_RUY_GEMV
+#ifdef USE_RUY_GEMV
     ruy_context_->cache_policy = ruy::kCacheLHSOnNarrowMul;
 #endif
   };
