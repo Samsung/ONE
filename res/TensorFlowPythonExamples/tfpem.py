@@ -15,11 +15,11 @@ if args.mode == 'pbtxt':
     for example in args.examples:
         print("Generate '" + example + ".pbtxt'")
 
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
         # https://stackoverflow.com/questions/37808866/proper-way-to-dynamically-import-a-module-with-relative-imports
         importlib.import_module("examples." + example)
 
         with open(example + ".pbtxt", "w") as f:
-            f.write(str(tf.get_default_graph().as_graph_def(add_shapes=True)))
+            f.write(str(tf.compat.v1.get_default_graph().as_graph_def(add_shapes=True)))
 
         print("Generate '" + example + ".pbtxt' - Done")

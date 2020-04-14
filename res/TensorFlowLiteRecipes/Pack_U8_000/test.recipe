@@ -1,0 +1,31 @@
+operand {
+  name: "input"
+  type: UINT8
+  shape { dim: 2 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "input_1"
+  type: UINT8
+  shape { dim: 2 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "stack_4d"
+  type: UINT8
+  shape { dim: 2 dim: 2 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Pack"
+  pack_options {
+    values_count: 2,
+    axis: 1
+  }
+  input: "input"
+  input: "input_1"
+  output: "stack_4d"
+}
+input: "input"
+input: "input_1"
+output: "stack_4d"

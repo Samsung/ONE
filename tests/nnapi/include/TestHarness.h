@@ -29,17 +29,25 @@
 #include <tuple>
 #include <vector>
 
+// Fix for onert: define _Float16 for gnu compiler
+#if  __GNUC__ && !__clang__
+#if __ARM_FP16_FORMAT_IEEE || __ARM_FP16_FORMAT_ALTERNATIVE
+#define _Float16 __fp16
+#else // __ARM_FP16_FORMAT_IEEE || __ARM_FP16_FORMAT_ALTERNATIVE
+#define _Float16 float
+#endif // __ARM_FP16_FORMAT_IEEE || __ARM_FP16_FORMAT_ALTERNATIVE
+#endif // __GNUC__ && !__clang__
+
 namespace test_helper {
 
 constexpr const size_t gMaximumNumberOfErrorMessages = 10;
 
 // TODO: Figure out the build dependency to make including "CpuOperationUtils.h" work.
-// Fix for neurun: comment out convertFloat16ToFloat32
-//inline void convertFloat16ToFloat32(const _Float16* input, std::vector<float>* output) {
-//    for (size_t i = 0; i < output->size(); ++i) {
-//        (*output)[i] = static_cast<float>(input[i]);
-//    }
-//}
+inline void convertFloat16ToFloat32(const _Float16* input, std::vector<float>* output) {
+    for (size_t i = 0; i < output->size(); ++i) {
+        (*output)[i] = static_cast<float>(input[i]);
+    }
+}
 
 // This class is a workaround for two issues our code relies on:
 // 1. sizeof(bool) is implementation defined.
@@ -61,8 +69,7 @@ typedef std::map<int, std::vector<float>> Float32Operands;
 typedef std::map<int, std::vector<int32_t>> Int32Operands;
 typedef std::map<int, std::vector<uint8_t>> Quant8AsymmOperands;
 typedef std::map<int, std::vector<int16_t>> Quant16SymmOperands;
-// Fix for neurun: comment out Float16Operands
-//typedef std::map<int, std::vector<_Float16>> Float16Operands;
+typedef std::map<int, std::vector<_Float16>> Float16Operands;
 typedef std::map<int, std::vector<bool8>> Bool8Operands;
 typedef std::map<int, std::vector<int8_t>> Quant8ChannelOperands;
 typedef std::map<int, std::vector<uint16_t>> Quant16AsymmOperands;
@@ -74,8 +81,7 @@ struct MixedTyped {
     Int32Operands int32Operands;
     Quant8AsymmOperands quant8AsymmOperands;
     Quant16SymmOperands quant16SymmOperands;
-    // Fix for neurun comment out Float16Operands
-    //Float16Operands float16Operands;
+    Float16Operands float16Operands;
     Bool8Operands bool8Operands;
     Quant8ChannelOperands quant8ChannelOperands;
     Quant16AsymmOperands quant16AsymmOperands;
@@ -89,9 +95,7 @@ typedef struct {
     // Specifies the RANDOM_MULTINOMIAL distribution tolerance.
     // If set to greater than zero, the input is compared as log-probabilities
     // to the output and must be within this tolerance to pass.
-    // Fix for neurun: Remove default value - c++11 don't support yet
-    //float expectedMultinomialDistributionTolerance = 0.0;
-    float expectedMultinomialDistributionTolerance;
+    float expectedMultinomialDistributionTolerance = 0.0;
 } MixedTypedExample;
 
 // Go through all index-value pairs of a given input type
@@ -152,8 +156,7 @@ inline void for_all(MixedTyped& idx_and_data,
     for_all_internal(idx_and_data.int32Operands, execute_this);
     for_all_internal(idx_and_data.quant8AsymmOperands, execute_this);
     for_all_internal(idx_and_data.quant16SymmOperands, execute_this);
-    // Fix for neurun: comment out float16Operands field
-    //for_all_internal(idx_and_data.float16Operands, execute_this);
+    for_all_internal(idx_and_data.float16Operands, execute_this);
     for_all_internal(idx_and_data.bool8Operands, execute_this);
     for_all_internal(idx_and_data.quant8ChannelOperands, execute_this);
     for_all_internal(idx_and_data.quant16AsymmOperands, execute_this);
@@ -179,8 +182,7 @@ inline void for_all(const MixedTyped& idx_and_data,
     for_all_internal(idx_and_data.int32Operands, execute_this);
     for_all_internal(idx_and_data.quant8AsymmOperands, execute_this);
     for_all_internal(idx_and_data.quant16SymmOperands, execute_this);
-    // Fix for neurun: comment out float16Operands field
-    //for_all_internal(idx_and_data.float16Operands, execute_this);
+    for_all_internal(idx_and_data.float16Operands, execute_this);
     for_all_internal(idx_and_data.bool8Operands, execute_this);
     for_all_internal(idx_and_data.quant8ChannelOperands, execute_this);
     for_all_internal(idx_and_data.quant16AsymmOperands, execute_this);
@@ -212,8 +214,7 @@ inline void resize_accordingly(const MixedTyped& golden, MixedTyped& test) {
     resize_accordingly_(golden.int32Operands, test.int32Operands);
     resize_accordingly_(golden.quant8AsymmOperands, test.quant8AsymmOperands);
     resize_accordingly_(golden.quant16SymmOperands, test.quant16SymmOperands);
-    //Fix for neurun: comment out float16Operands field
-    //resize_accordingly_(golden.float16Operands, test.float16Operands);
+    resize_accordingly_(golden.float16Operands, test.float16Operands);
     resize_accordingly_(golden.bool8Operands, test.bool8Operands);
     resize_accordingly_(golden.quant8ChannelOperands, test.quant8ChannelOperands);
     resize_accordingly_(golden.quant16AsymmOperands, test.quant16AsymmOperands);
@@ -240,8 +241,7 @@ inline MixedTyped filter(const MixedTyped& golden,
     filter_internal(golden.int32Operands, &filtered.int32Operands, is_ignored);
     filter_internal(golden.quant8AsymmOperands, &filtered.quant8AsymmOperands, is_ignored);
     filter_internal(golden.quant16SymmOperands, &filtered.quant16SymmOperands, is_ignored);
-    // Fix for neurun: comment out float16Operands field
-    //filter_internal(golden.float16Operands, &filtered.float16Operands, is_ignored);
+    filter_internal(golden.float16Operands, &filtered.float16Operands, is_ignored);
     filter_internal(golden.bool8Operands, &filtered.bool8Operands, is_ignored);
     filter_internal(golden.quant8ChannelOperands, &filtered.quant8ChannelOperands, is_ignored);
     filter_internal(golden.quant16AsymmOperands, &filtered.quant16AsymmOperands, is_ignored);
@@ -333,19 +333,18 @@ inline void compare(const MixedTyped& golden, const MixedTyped& test,
                               totalNumberOfErrors++;
                           }
                       });
-    // Fix for neurun: comment out _Float16 compare
-    //compare_<_Float16>(golden.float16Operands, test.float16Operands,
-    //                   [&totalNumberOfErrors, fpAtol, fpRtol](_Float16 expected, _Float16 actual) {
-    //                       // Compute the range based on both absolute tolerance and relative
-    //                       // tolerance
-    //                       float fpRange = fpAtol + fpRtol * std::abs(static_cast<float>(expected));
-    //                       if (totalNumberOfErrors < gMaximumNumberOfErrorMessages) {
-    //                           EXPECT_NEAR(expected, actual, fpRange);
-    //                       }
-    //                       if (std::abs(static_cast<float>(expected - actual)) > fpRange) {
-    //                           totalNumberOfErrors++;
-    //                       }
-    //                   });
+    compare_<_Float16>(golden.float16Operands, test.float16Operands,
+                       [&totalNumberOfErrors, fpAtol, fpRtol](_Float16 expected, _Float16 actual) {
+                           // Compute the range based on both absolute tolerance and relative
+                           // tolerance
+                           float fpRange = fpAtol + fpRtol * std::abs(static_cast<float>(expected));
+                           if (totalNumberOfErrors < gMaximumNumberOfErrorMessages) {
+                               EXPECT_NEAR(expected, actual, fpRange);
+                           }
+                           if (std::abs(static_cast<float>(expected - actual)) > fpRange) {
+                               totalNumberOfErrors++;
+                           }
+                       });
     compare_<bool8>(golden.bool8Operands, test.bool8Operands,
                     [&totalNumberOfErrors](bool expected, bool actual) {
                         if (totalNumberOfErrors < gMaximumNumberOfErrorMessages) {
@@ -410,12 +409,11 @@ inline void expectMultinomialDistributionWithinTolerance(const MixedTyped& test,
     Float32Operands float32Operands = example.operands.first.float32Operands;
     if (!float32Operands.empty()) {
         input = example.operands.first.float32Operands.at(0);
-    } /*else {
-        // Fix for neurun: comment out convertFloat16ToFloat32
+    } else {
         std::vector<_Float16> inputFloat16 = example.operands.first.float16Operands.at(0);
         input.resize(inputFloat16.size());
         convertFloat16ToFloat32(inputFloat16.data(), &input);
-    }*/
+    }
     for (int b = 0; b < kBatchSize; ++b) {
         float probability_sum = 0;
         const int batch_index = kBatchSize * b;

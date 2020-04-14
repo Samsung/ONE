@@ -4,7 +4,7 @@ set -eo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 BACKEND="cpu"
-TEST_ARCH=$(uname -p | tr '[:upper:]' '[:lower:]')
+TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 TEST_OS="linux"
 TFLITE_LOADER="0"
 LINEAR_ONLY="0"
@@ -31,6 +31,10 @@ do
       BACKEND=$(echo $2 | tr '[:upper:]' '[:lower:]')
       shift 2
       ;;
+    --backend=*)
+      BACKEND=$(echo ${1#*=} | tr '[:upper:]' '[:lower:]')
+      shift
+      ;;
     --tflite-loader)
       TFLITE_LOADER="1"
       shift
@@ -49,7 +53,7 @@ done
 CheckTestPrepared
 echo "[[ ${TEST_ARCH}-${TEST_OS}: ${BACKEND} backend test ]]"
 UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.${BACKEND}"
-FRAMEWORK_TESTLIST="tests/scripts/list/neurun_frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
+FRAMEWORK_TESTLIST="tests/scripts/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
 if [ $LINEAR_ONLY = "1" ]; then

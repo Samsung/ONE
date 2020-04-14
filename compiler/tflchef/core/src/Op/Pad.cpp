@@ -18,7 +18,8 @@
 
 flatbuffers::Offset<void> PadChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
-  return flatbuffers::Offset<void>();
+  tflite::PadOptionsBuilder pad_options_builder{fbb};
+  return pad_options_builder.Finish().Union();
 }
 
 std::unique_ptr<OpChef> PadChefFactory::create(const tflchef::Operation *operation) const

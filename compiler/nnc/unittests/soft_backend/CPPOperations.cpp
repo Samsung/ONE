@@ -26,6 +26,7 @@
 #include "code_snippets/cpp_header_types.def"
 #include "code_snippets/cpp_common_funcs.def"
 
+#include "code_snippets/cpp_broadcast.def"
 #include "code_snippets/cpp_capped_relu.def"
 #include "code_snippets/cpp_concat.def"
 #include "code_snippets/cpp_conv.def"
@@ -59,6 +60,7 @@
 #include "mir/ops/AbsOp.h"
 #include "mir/ops/AddOp.h"
 #include "mir/ops/AvgPool2DOp.h"
+#include "mir/ops/BroadcastOp.h"
 #include "mir/ops/CappedReluOp.h"
 #include "mir/ops/ConcatOp.h"
 #include "mir/ops/ConstantOp.h"
@@ -220,7 +222,7 @@ mir::TensorVariant getReferenceTensor(mir::Graph &g, mir::Operation *op)
   mir_interpreter::MIRInterpreter interpreter;
   g.accept(&interpreter);
   assert(op->getNumOutputs() == 1);
-  return interpreter.getResult(op->getOutput(0));
+  return interpreter.getTensor(op->getOutput(0));
 }
 
 /**
@@ -984,5 +986,22 @@ TEST(cpp_operations_test, transpose)
       return g.create<mir::ops::TransposeOp>(inputs[0], permute);
     };
     createAndRunTestGraph(op_generator, transpose, input_ntensor_3d, input_atensor_3d);
+  }
+}
+
+TEST(cpp_operation_test, broadcast)
+{
+  const mir::Shape target_shapes[] = {{6}, {2, 3}, {2, 3, 1}, {1, 2, 1, 3}};
+  for (const mir::Shape &target_shape : target_shapes)
+  {
+    vector<int> input_shape_data{};
+    vector<unique_ptr<mir::TensorVariant>> input_ntensors(1);
+    Tensor input_atensor;
+    fillTensors(input_ntensors[0], input_atensor, input_shape_data, 1.0f);
+    auto op_generator = [&target_shape](mir::Graph &g,
+                                        const std::vector<mir::Operation::Output *> &inputs) {
+      return g.create<mir::ops::BroadcastOp>(inputs[0], target_shape);
+    };
+    createAndRunTestGraph(op_generator, broadcast, input_ntensors, input_atensor);
   }
 }

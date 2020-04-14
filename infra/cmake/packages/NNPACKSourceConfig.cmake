@@ -1,7 +1,7 @@
 function(_NNPACKSource_import)
     if(NOT DOWNLOAD_NNPACK)
         set(NNPACKSource_FOUND FALSE PARENT_SCOPE)
-        message(WARN "NNPACK not downloaded")
+        message(WARNING "NNPACK not downloaded")
         return()
     endif(NOT DOWNLOAD_NNPACK)
 

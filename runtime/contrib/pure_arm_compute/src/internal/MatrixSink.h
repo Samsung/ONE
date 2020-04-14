@@ -62,10 +62,10 @@ public:
     assert(tensor.info()->dimension(0) == _width);
     assert(tensor.info()->dimension(1) == _height);
 
-    using ::arm_compute::Window;
-    using ::arm_compute::Iterator;
     using ::arm_compute::Coordinates;
     using ::arm_compute::execute_window_loop;
+    using ::arm_compute::Iterator;
+    using ::arm_compute::Window;
 
     Window window;
 

@@ -22,14 +22,6 @@
 
 #include <vector>
 
-/**
- * @brief Return the identity of arithmetic addition
- */
-template <typename T> T zero(void);
-
-template <> int zero(void) { return 0; }
-template <> uint8_t zero(void) { return 0; }
-
 template <typename T> class ExplicitDataChef final : public DataChef
 {
 public:
@@ -45,7 +37,7 @@ public:
 
     for (uint32_t n = 0; n < count; ++n)
     {
-      T const value = (n < _values.size()) ? _values.at(n) : zero<T>();
+      T const value = (n < _values.size()) ? _values.at(n) : T{};
       const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
 
       for (uint32_t b = 0; b < sizeof(T); ++b)

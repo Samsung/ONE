@@ -125,7 +125,7 @@ std::string OperandCodeResolver::resolve(int code) const
 
   return it->second;
 }
-}
+} // namespace
 
 //
 // Asynchronous Event

@@ -45,7 +45,7 @@ void Object::access(const std::function<void(::arm_compute::ITensor &tensor)> &f
 }
 
 } // namespace operand
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 namespace internal
@@ -65,7 +65,7 @@ Context &Context::set(const ::internal::tflite::operand::Index &id,
 }
 
 } // namespace operand
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 namespace internal
@@ -83,5 +83,5 @@ bool isGpuMode()
   return true;
 }
 
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal

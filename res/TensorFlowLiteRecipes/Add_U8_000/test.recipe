@@ -2,19 +2,19 @@ operand {
   name: "ifm1"
   type: UINT8
   shape { dim: 1 dim: 4 dim: 4 dim: 3 }
-  quant { min: 0 max: 1 scale: 0.004 zero_point: 0 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
 }
 operand {
   name: "ifm2"
   type: UINT8
   shape { dim: 1 dim: 4 dim: 4 dim: 3 }
-  quant { min: 0 max: 1 scale: 0.004 zero_point: 0 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
 }
 operand {
   name: "ofm"
   type: UINT8
   shape { dim: 1 dim: 4 dim: 4 dim: 3 }
-  quant { min: 0 max: 1 scale: 0.004 zero_point: 0 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
 }
 operation {
   type: "Add"

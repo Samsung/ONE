@@ -56,7 +56,7 @@ namespace luci
 
 std::unique_ptr<Model> load_model(const std::string &path)
 {
-  return std::unique_ptr<Model>{new FileModel(path)};
+  return std::make_unique<FileModel>(path);
 }
 
 } // namespace luci

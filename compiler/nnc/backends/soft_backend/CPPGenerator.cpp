@@ -48,6 +48,7 @@
 #include "cpp_pad.generated.h"
 #include "cpp_transpose.generated.h"
 #include "cpp_gather.generated.h"
+#include "cpp_broadcast.generated.h"
 
 #include <boost/filesystem.hpp>
 
@@ -423,6 +424,7 @@ void CPPCodeGenerator::materializeCode(ostream &out, const ModelAnalyzer &ma, co
   out.write(cpp_conv_transpose, sizeof(cpp_conv_transpose));
   out.write(cpp_transpose, sizeof(cpp_transpose));
   out.write(cpp_gather, sizeof(cpp_gather));
+  out.write(cpp_broadcast, sizeof(cpp_broadcast));
   // Operations calls into all of the above
   out.write(cpp_operations, sizeof(cpp_operations));
   // Below call into operations

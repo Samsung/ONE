@@ -21,4 +21,10 @@ TEST(nnfw_create_session, Test_001)
 {
   nnfw_session *session = nullptr;
   ASSERT_EQ(nnfw_create_session(&session), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_close_session(session), NNFW_STATUS_NO_ERROR);
+}
+
+TEST(nnfw_create_session, Negative_001)
+{
+  ASSERT_EQ(nnfw_create_session(nullptr), NNFW_STATUS_ERROR);
 }

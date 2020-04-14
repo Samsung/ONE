@@ -146,7 +146,6 @@ private:
   NEGEMMLowpMatrixBReductionKernel _mtx_b_reduction_kernel;
   NEGEMMLowpOffsetContributionKernel _offset_contribution_kernel;
   NEGEMMLowpOffsetContributionOutputStageKernel _offset_contribution_output_stage_kernel;
-  //    NEActivationLayer                             _activation_func;
 
   Tensor _vector_sum_col;
   Tensor _vector_sum_row;
@@ -165,7 +164,6 @@ private:
   bool _reshape_b_only_on_first_run;
   bool _is_prepared;
   bool _fuse_output_stage;
-  bool _run_activation;
   bool _flip_signedness;
 };
 } // namespace arm_compute

@@ -39,6 +39,7 @@ GeneratedTests.reshape_*weights_as_inputs
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
+GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.sqrt_
 GeneratedTests.sqrt__relaxed

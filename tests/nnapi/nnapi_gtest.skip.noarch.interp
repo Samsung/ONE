@@ -52,6 +52,7 @@ GeneratedTests.relu_quant*
 GeneratedTests.resize_bilinear*
 GeneratedTests.rnn*
 GeneratedTests.rsqrt*
+GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.softmax_quant*
 GeneratedTests.space_to_batch*

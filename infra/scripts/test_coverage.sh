@@ -24,19 +24,19 @@ if [[ ! -e $ROOT_PATH/tests/scripts/build_path_depth.txt ]]; then
 fi
 export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/tests/scripts/build_path_depth.txt`
 
-./infra/scripts/test_arm_neurun_acl_cl.sh
-./infra/scripts/test_arm_neurun_acl_neon.sh
-./infra/scripts/test_arm_neurun_cpu.sh
+./infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --tflite-loader
+./infra/scripts/test_ubuntu_runtime.sh --backend acl_neon
+./infra/scripts/test_ubuntu_runtime.sh --backend cpu
 
 # Enable all logs (mixed backend)
-TENSOR_LOGGING=trace_log.txt NEURUN_LOG_ENABLE=1 GRAPH_DOT_DUMP=1 ./infra/scripts/test_arm_neurun_mixed.sh
+TENSOR_LOGGING=trace_log.txt ONERT_LOG_ENABLE=1 GRAPH_DOT_DUMP=1 ./infra/scripts/test_ubuntu_runtime_mixed.sh
 # Enable trace event (acl_cl default backend)
 export TRACE_FILEPATH=trace.json
-TFLiteModelVerification "acl_cl" "tests/scripts/list/neurun_frameworktest_list.armv7l.acl_cl.txt" "report/acl_cl/trace"
+TFLiteModelVerification "acl_cl" "tests/scripts/list/frameworktest_list.armv7l.acl_cl.txt" "report/acl_cl/trace"
 unset TRACE_FILEPATH
 
 # Interpreter
-./infra/scripts/test_neurun_interp.sh
+./infra/scripts/test_ubuntu_runtime_interp.sh
 
 # nnpackage test suite
 if [[ -e ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz ]]; then

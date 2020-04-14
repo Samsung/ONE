@@ -93,8 +93,8 @@ void CLGEMMLowpMatrixMultiplyCoreEx::configure(const ICLTensor *a, const ICLTens
   // Set the target for the kernels
   _mm_midgard_kernel.set_target(gpu_target);
 
-  GEMMRHSMatrixInfo rhs_info;
-  GEMMLHSMatrixInfo lhs_info;
+  // GEMMRHSMatrixInfo rhs_info;
+  // GEMMLHSMatrixInfo lhs_info;
 
   // Arguments used by GEMMReshapeInfo
   // If we pass the matrix A and matrix B reshaped to CLGEMMMatrixMultiplyKernel, we need to pass m,
@@ -129,10 +129,6 @@ Status CLGEMMLowpMatrixMultiplyCoreEx::validate(const ITensorInfo *a, const ITen
                                   "Matrix B already reshaped is not supported");
 
   const ITensorInfo *matrix_a_info = a;
-
-  TensorInfo tmp_b_info{};
-  GEMMRHSMatrixInfo rhs_info;
-  GEMMLHSMatrixInfo lhs_info;
 
   // Get the GPU target
   const GPUTarget gpu_target = CLScheduler::get().target();

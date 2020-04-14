@@ -37,7 +37,7 @@ public:
   {
     for (uint32_t n = 0; n < arity; ++n)
     {
-      _args.emplace_back(std::move(std::unique_ptr<loco::Use>{new loco::Use{this}}));
+      _args.push_back(std::make_unique<loco::Use>(this));
     }
   };
 

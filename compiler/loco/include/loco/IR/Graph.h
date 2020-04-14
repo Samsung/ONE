@@ -238,7 +238,9 @@ struct GraphInputIndexQueryService : public DialectService
   virtual bool associated(const Node *node) const = 0;
 
   /**
-   * WARNING! CALLER SHOULD GUARANTEE that associated(node) is true before invoking this API.
+   * Exceptions
+   * - index SHOULD throw std::invalid_argument exception if a given node is not associated with
+   *   any input (i.e. assocaited above returns false).
    */
   virtual GraphInputIndex index(const Node *node) const = 0;
 };
@@ -255,7 +257,9 @@ struct GraphOutputIndexQueryService : public DialectService
   virtual bool associated(const Node *node) const = 0;
 
   /**
-   * WARNING! CALLER SHOULD GUARANTEE that associated(node) is true before invoking this API.
+   * Exceptions
+   * - index SHOULD throw std::invalid_argument exception if a given node is not associated with
+   *   any output (i.e. assocaited above returns false).
    */
   virtual GraphOutputIndex index(const Node *node) const = 0;
 };

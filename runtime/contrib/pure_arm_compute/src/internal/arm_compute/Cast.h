@@ -49,11 +49,11 @@
                                                    const ::arm_compute::Coordinates &axises);
 
 /**
-* @brief      Generate arm compute permutation vector from runtime permutation vector
-* @param[in]  rank                 Rank number supported upto 4
-* @param[in]  runtime_pv           Integer array for runtime permutation vector
-* @return     Permutation vector of arm compute
-*/
+ * @brief      Generate arm compute permutation vector from runtime permutation vector
+ * @param[in]  rank                 Rank number supported upto 4
+ * @param[in]  runtime_pv           Integer array for runtime permutation vector
+ * @return     Permutation vector of arm compute
+ */
 ::arm_compute::PermutationVector getARMComputePermutationVector(uint32_t rank,
                                                                 const int32_t *runtime_pv);
 /**

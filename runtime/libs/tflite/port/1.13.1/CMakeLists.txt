@@ -2,8 +2,6 @@ if(NOT SUPPORT_TFLITE_VERSION VERSION_EQUAL 1.13.1)
   return()
 endif(NOT SUPPORT_TFLITE_VERSION VERSION_EQUAL 1.13.1)
 
-nnfw_find_package(TensorFlowLite REQUIRED)
-
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_library(tensorflow-lite-ex STATIC ${SOURCES})

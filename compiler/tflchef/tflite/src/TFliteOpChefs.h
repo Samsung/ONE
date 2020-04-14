@@ -18,18 +18,30 @@
 #define __TFLITE_OP_CHEFS_H__
 
 // In alphabet order
+#include "Op/Abs.h"
 #include "Op/Add.h"
+#include "Op/ArgMax.h"
 #include "Op/AveragePool2D.h"
 #include "Op/Concatenation.h"
 #include "Op/Conv2D.h"
+#include "Op/Cos.h"
 #include "Op/DepthwiseConv2D.h"
 #include "Op/Div.h"
+#include "Op/Equal.h"
+#include "Op/FloorDiv.h"
 #include "Op/FullyConnected.h"
+#include "Op/LogicalNot.h"
+#include "Op/LogicalOr.h"
 #include "Op/MaxPool2D.h"
+#include "Op/Mean.h"
+#include "Op/Pack.h"
+#include "Op/Pad.h"
 #include "Op/ReLU.h"
 #include "Op/ReLU6.h"
 #include "Op/Reshape.h"
+#include "Op/Softmax.h"
 #include "Op/Sqrt.h"
 #include "Op/Sub.h"
+#include "Op/Transpose.h"
 
 #endif // __TFLITE_OP_CHEFS_H__

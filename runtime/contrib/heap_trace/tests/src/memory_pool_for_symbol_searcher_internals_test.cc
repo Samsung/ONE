@@ -66,4 +66,4 @@ TEST_F(MemoryPoolForSymbolSearcherInternals,
   memory.deallocate(p1);
   free(p2);
 }
-}
+} // namespace backstage

@@ -72,7 +72,7 @@ function run_benchmark_test()
         export USE_SCHEDULER=1
         export PROFILING_MODE=1
         export EXECUTOR="Dataflow"
-        export NEURUN_LOG_ENABLE=1
+        export ONERT_LOG_ENABLE=1
         for ((j = 1 ; j <= $PROFILING_RUN_CNT ; j++)); do
             # Save the verbose log of each run
             LOG_FILE=$REPORT_MODEL_DIR/tflite_profiling_$j.txt
@@ -89,7 +89,7 @@ function run_benchmark_test()
             # Save the exec_time.json of each run
             cp "exec_time.json" $REPORT_MODEL_DIR/"exec_time_$j.json"
         done
-        unset NEURUN_LOG_ENABLE
+        unset ONERT_LOG_ENABLE
 
 
 ##################################################################################

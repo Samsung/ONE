@@ -6,15 +6,19 @@ DIRECTORIES_TO_BE_TESTED=()
 DIRECTORIES_NOT_TO_BE_TESTED=()
 CLANG_FORMAT_CANDIDATES=()
 PATCH_FILE=format.patch
+CHECK_DIFF_ONLY="0"
+CHECK_STAGED_ONLY="0"
 
 function Usage()
 {
-  echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS] [<file> ...]"
+  echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS] [<file|dir> ...]"
   echo "If no arguments are specified, it formats all nnas codes"
   echo "If <file>s are given, it reformats the files"
   echo ""
   echo "Options:"
-  echo "     --clang-format       clang format bin (default: clang-format-3.9, clang-format)"
+  echo "      --clang-format <TOOL>     clang format bin (default: clang-format-3.9, clang-format)"
+  echo "      --diff-only               check diff files with master"
+  echo "      --staged-only             check git staged files"
 }
 
 while [[ $# -gt 0 ]]
@@ -28,6 +32,19 @@ do
     --clang-format)
       CLANG_FORMAT_CANDIDATES=($2)
       shift 2
+      ;;
+    --clang-format=*)
+      CLANG_FORMAT_CANDIDATES=(${1#*=})
+      shift
+      ;;
+    --staged-only)
+      CHECK_STAGED_ONLY="1"
+      CHECK_DIFF_ONLY="1"
+      shift
+      ;;
+    --diff-only)
+      CHECK_DIFF_ONLY="1"
+      shift
       ;;
     *)
       DIRECTORIES_TO_BE_TESTED+=($1)

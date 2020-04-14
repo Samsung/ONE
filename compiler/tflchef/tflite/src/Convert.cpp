@@ -27,13 +27,15 @@ tflchef::TensorType as_tflchef_type(const tflite::TensorType type)
       return tflchef::FLOAT32;
     case tflite::TensorType_INT32:
       return tflchef::INT32;
+    case tflite::TensorType_INT64:
+      return tflchef::INT64;
     case tflite::TensorType_UINT8:
       return tflchef::UINT8;
+    case tflite::TensorType_BOOL:
+      return tflchef::BOOL;
     // TODO handle other types
     // TensorType_FLOAT16
-    // TensorType_INT64
     // TensorType_STRING
-    // TensorType_BOOL
     // TensorType_INT16
     // TensorType_COMPLEX64
     default:

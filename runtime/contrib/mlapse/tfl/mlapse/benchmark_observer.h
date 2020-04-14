@@ -72,6 +72,6 @@ struct BenchmarkObserver
   virtual void notify(const NotificationArg<IterationEnd> &arg) = 0;
 };
 
-} // namespace mlpase
+} // namespace mlapse
 
 #endif // __MLAPSE_BENCHMARK_OBSERVER_H__

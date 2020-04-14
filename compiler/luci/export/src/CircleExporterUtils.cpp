@@ -18,6 +18,9 @@
 
 #include <oops/InternalExn.h>
 
+#include <cassert>
+#include <memory>
+
 namespace luci
 {
 
@@ -29,6 +32,8 @@ circle::ActivationFunctionType to_circle_actfunc(luci::FusedActFunc func)
       return circle::ActivationFunctionType_NONE;
     case luci::FusedActFunc::RELU:
       return circle::ActivationFunctionType_RELU;
+    case luci::FusedActFunc::RELU_N1_TO_1:
+      return circle::ActivationFunctionType_RELU_N1_TO_1;
     case luci::FusedActFunc::RELU6:
       return circle::ActivationFunctionType_RELU6;
     default:
@@ -56,6 +61,9 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
       return circle::TensorType_FLOAT16;
     case loco::DataType::FLOAT32:
       return circle::TensorType_FLOAT32;
+
+    case loco::DataType::BOOL:
+      return circle::TensorType_BOOL;
 
     default:
       INTERNAL_EXN_V("failed to convert unsupported loco::DataType", oops::to_uint32(type));
@@ -147,10 +155,6 @@ void registerGraphIOName(loco::Graph *graph, SerializedModelData &gd)
   gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
 }
 
-#include <stdex/Memory.h>
-
-#include <cassert>
-
 namespace
 {
 
@@ -174,7 +178,7 @@ private:
 void set_tensor_index(loco::Node *node, const CircleTensorIndex &tensor_id)
 {
   assert(node->annot<CircleTensorIndexAnnotation>() == nullptr);
-  node->annot(stdex::make_unique<CircleTensorIndexAnnotation>(tensor_id));
+  node->annot(std::make_unique<CircleTensorIndexAnnotation>(tensor_id));
 }
 
 CircleTensorIndex get_tensor_index(loco::Node *node)

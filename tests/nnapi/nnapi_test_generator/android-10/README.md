@@ -2,9 +2,9 @@
 
 Original code is at https://android.googlesource.com/platform/frameworks/ml/+/refs/tags/android-10.0.0_r2/nn/tools/test_generator/
 
-### Fix for neurun
+### Fix for onert
 
-- Update path in this `README.md` file for neurun NNAPI frontend test
+- Update path in this `README.md` file for onert NNAPI frontend test
   - `nn/runtime/test/specs/` => `tests/nnapi/specs/`
   - $ANDROID_BUILD_TOP/frameworks/ml/nn/runtime/test/specs => $NNAS_PROJECT_PATH/tests/nnapi/specs
   - Rebuild with mm afterwards => Rebuild afterwards (mm is not supported)
@@ -16,12 +16,9 @@ Original code is at https://android.googlesource.com/platform/frameworks/ml/+/re
   - path for regular expression:
     `((frameworks/ml/nn/(runtime/test/)?)|(vendor/google/[a-z]*/test/))` => `(tests/nnapi/src/)`
   - Support EX operation
-  - Fix c++14 feature: change to c++11 constructor
   - Comment out `TEST_AVAILABLE_SINCE()` macro generation
-  - Comment out unsupported `FLOAT16` on armv7 32bit architecture
 - Update `test_generator.py`
   - Comment out dynamic shape output test generation
-  - Skip test generation for float16 type variation
 
 ---
 

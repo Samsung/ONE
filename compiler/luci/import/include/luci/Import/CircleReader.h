@@ -33,29 +33,17 @@
 namespace luci
 {
 
-template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
-{
-  std::vector<T> ret(flat_array->Length());
-  for (uint32_t i = 0; i < flat_array->Length(); i++)
-  {
-    ret[i] = flat_array->Get(i);
-  }
-  return ret;
-}
-
-bool is_valid(const circle::OperatorCode *opcode);
-bool is_custom(const circle::OperatorCode *opcode);
-std::string opcode_name(const circle::OperatorCode *opcode);
-const char *tensor_type(const circle::Tensor *tensor);
-const char *tensor_name(const circle::Tensor *tensor);
-const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor);
+bool is_valid(const circle::OperatorCodeT &opcode);
+bool is_custom(const circle::OperatorCodeT &opcode);
+std::string opcode_name(const circle::OperatorCodeT &opcode);
+const char *tensor_name(const circle::TensorT &tensor);
+const circle::QuantizationParametersT *tensor_quantization(const circle::TensorT &tensor);
 
 loco::DataType luci_datatype(circle::TensorType type);
-loco::DataType luci_datatype(const circle::Tensor *tensor);
 FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
 Padding luci_padding(const circle::Padding padding);
 std::unique_ptr<CircleQuantParam>
-luci_quantparam(const circle::QuantizationParameters *quantization);
+luci_quantparam(const circle::QuantizationParametersT *quantization);
 
 /**
  * @brief Loads Circle file and provides helpers to access attributes
@@ -63,43 +51,34 @@ luci_quantparam(const circle::QuantizationParameters *quantization);
 class CircleReader
 {
 private:
-  using CircleSubGraphs_t = flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>;
-  using CircleBuffers_t = flatbuffers::Vector<flatbuffers::Offset<circle::Buffer>>;
-  using CircleTensors_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
-  using CircleOperators_t = flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>;
+  using CircleBuffers_t = std::vector<std::unique_ptr<circle::BufferT>>;
+  using CircleTensors_t = std::vector<std::unique_ptr<circle::TensorT>>;
+  using CircleOperators_t = std::vector<std::unique_ptr<circle::OperatorT>>;
+  using CircleOperatorCodes_t = std::vector<std::unique_ptr<circle::OperatorCodeT>>;
 
 public:
   CircleReader() = default;
 
 public:
-  const std::vector<const circle::OperatorCode *> &opcodes() const { return _op_codes; }
-  const CircleBuffers_t *buffers() const { return _buffers; }
-  const CircleTensors_t *tensors() const { return _tensors; }
-  const CircleOperators_t *operators() const { return _operators; }
-  const std::vector<int32_t> &inputs() const { return _inputs; }
-  const std::vector<int32_t> &outputs() const { return _outputs; }
+  const CircleOperatorCodes_t &opcodes() const { return _model->operator_codes; }
+  const CircleBuffers_t &buffers() const { return _model->buffers; }
+  const CircleTensors_t &tensors() const { return _current_subgraph->tensors; }
+  const CircleOperators_t &operators() const { return _current_subgraph->operators; }
+  const std::vector<int32_t> &inputs() const { return _current_subgraph->inputs; }
+  const std::vector<int32_t> &outputs() const { return _current_subgraph->outputs; }
 
-  uint32_t num_subgraph() const { return _subgraphs->Length(); }
+  uint32_t num_subgraph() const { return _model->subgraphs.size(); }
 
-  size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
-  circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
-  std::string opcode_name(const circle::Operator *op) const;
+  circle::BuiltinOperator builtin_code(const circle::OperatorT &op) const;
+  std::string opcode_name(const circle::OperatorT &op) const;
 
 public:
   bool parse(const circle::Model *model);
   bool select_subgraph(uint32_t subgraph);
 
 private:
-  const circle::Model *_model{nullptr};
-
-  const CircleSubGraphs_t *_subgraphs{nullptr};
-  const CircleBuffers_t *_buffers{nullptr};
-  const CircleTensors_t *_tensors{nullptr};
-  const CircleOperators_t *_operators{nullptr};
-
-  std::vector<const circle::OperatorCode *> _op_codes;
-  std::vector<int32_t> _inputs;
-  std::vector<int32_t> _outputs;
+  std::unique_ptr<const circle::ModelT> _model;
+  const circle::SubGraphT *_current_subgraph{nullptr};
 };
 
 } // namespace luci

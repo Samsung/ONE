@@ -33,6 +33,8 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  int32_t model_version = 1;
+
   ::tflchef::ModelRecipe model_recipe;
 
   // Load model recipe from a file
@@ -44,6 +46,18 @@ int entry(int argc, char **argv)
       std::cerr << "ERROR: Failed to parse recipe '" << argv[1] << "'" << std::endl;
       return 255;
     }
+
+    if (model_recipe.has_version())
+    {
+      model_version = model_recipe.version();
+    }
+  }
+
+  if (model_version > 1)
+  {
+    std::cerr << "ERROR: Unsupported recipe version: " << model_version << ", '" << argv[1] << "'"
+              << std::endl;
+    return 255;
   }
 
   auto generated_model = tflchef::cook(model_recipe);

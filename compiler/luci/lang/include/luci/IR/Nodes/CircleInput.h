@@ -46,10 +46,6 @@ public:
 
   bool indexed(void) const { return _index != -1; }
 
-public:
-  template <loco::DataType DT> uint32_t size(void) const;
-  template <loco::DataType DT> void size(uint32_t size);
-
 private:
   int64_t _index = -1; // Uninitialized
 };

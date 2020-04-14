@@ -28,6 +28,18 @@ tflchef::TensorType as_tflchef_type(const tflite::TensorType type);
 tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType type);
 tflchef::Padding as_tflchef_padding(const tflite::Padding padding);
 
+/**
+ * @brief extract buffer data to std::vector<DT>
+ */
+template <typename DT> std::vector<DT> extract_buffer(const tflite::Buffer *buffer)
+{
+  auto buffer_length = buffer->data()->size();
+  auto num_elements = buffer_length / sizeof(DT);
+  std::vector<DT> result(num_elements);
+  std::memcpy(result.data(), buffer->data()->data(), buffer_length);
+  return result;
+}
+
 template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
 {
   std::vector<T> ret(flat_array->Length());

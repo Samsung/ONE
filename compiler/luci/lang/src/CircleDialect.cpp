@@ -22,9 +22,8 @@
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
 
-#include <stdex/Memory.h>
-
 #include <cassert>
+#include <memory>
 
 namespace
 {
@@ -76,8 +75,8 @@ namespace luci
 
 CircleDialect::CircleDialect()
 {
-  service<loco::GraphInputIndexQueryService>(stdex::make_unique<GiiQueryServiceImpl>());
-  service<loco::GraphOutputIndexQueryService>(stdex::make_unique<GoiQueryServiceImpl>());
+  service<loco::GraphInputIndexQueryService>(std::make_unique<GiiQueryServiceImpl>());
+  service<loco::GraphOutputIndexQueryService>(std::make_unique<GoiQueryServiceImpl>());
 }
 
 loco::Dialect *CircleDialect::get(void)

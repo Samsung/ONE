@@ -77,6 +77,11 @@ public:
     _tensor_filler_vint32[tensor_index] = expvalues;
   }
 
+  void set_tensor_filler(uint32_t tensor_index, std::vector<float> &expvalues)
+  {
+    _tensor_filler_vfloat[tensor_index] = expvalues;
+  }
+
   /**
    * @brief This will return true if the tensor by index, needs a filler option.
    */
@@ -104,6 +109,17 @@ public:
     return false;
   }
 
+  bool get_tensor_filler(uint32_t tensor_index, std::vector<float> &expvalues)
+  {
+    auto it = _tensor_filler_vfloat.find(tensor_index);
+    if (it != _tensor_filler_vfloat.end())
+    {
+      expvalues = it->second;
+      return true;
+    }
+    return false;
+  }
+
 private:
   const TFliteSubGraphs_t *_subgraphs;
   const TFliteBuffers_t *_buffers;
@@ -116,6 +132,7 @@ private:
 
   std::map<uint32_t, bool> _tensor_filler;
   std::map<uint32_t, std::vector<int32_t>> _tensor_filler_vint32;
+  std::map<uint32_t, std::vector<float>> _tensor_filler_vfloat;
 };
 
 } // namespace tflchef

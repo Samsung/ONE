@@ -19,7 +19,8 @@
 #include "Check.h"
 
 #include <loco.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 // TODO Change all Canonical nodes to Circle nodes
 
@@ -116,7 +117,7 @@ template <FeatureLayout T> loco::FeatureEncode *make_feature_encode(loco::Node *
   LUCI_ASSERT(input_for_encode != nullptr, "input should not be nullptr");
   loco::Graph *g = input_for_encode->graph();
 
-  auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
+  auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>();
 
   encoder->perm(perm<T>());
 
@@ -132,7 +133,7 @@ template <FeatureLayout T> loco::FeatureDecode *make_feature_decode(loco::Node *
   LUCI_ASSERT(input_for_decode != nullptr, "input should not be nullptr");
   loco::Graph *g = input_for_decode->graph();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>();
 
   decoder->perm(perm<T>());
 
@@ -148,7 +149,7 @@ template <FilterLayout T> loco::FilterEncode *make_filter_encode(loco::Node *inp
   LUCI_ASSERT(input_for_encode != nullptr, "filter should not be nullptr");
   loco::Graph *g = input_for_encode->graph();
 
-  auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
+  auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>();
 
   encoder->perm(perm<T>());
 
@@ -164,7 +165,7 @@ template <FilterLayout T> loco::FilterDecode *make_filter_decode(loco::Node *inp
   LUCI_ASSERT(input_for_decode != nullptr, "filter should not be nullptr");
   loco::Graph *g = input_for_decode->graph();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Filter>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::Filter>>();
 
   decoder->perm(perm<T>());
 
@@ -181,7 +182,7 @@ loco::DepthwiseFilterDecode *make_dw_filter_decode(loco::Node *input_for_decode)
   LUCI_ASSERT(input_for_decode != nullptr, "filter should not be nullptr");
   loco::Graph *g = input_for_decode->graph();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::DepthwiseFilter>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::DepthwiseFilter>>();
 
   decoder->perm(perm<T>());
 
@@ -197,7 +198,7 @@ template <MatrixLayout T> loco::MatrixEncode *make_matrix_encode(loco::Node *inp
   LUCI_ASSERT(input_for_encode != nullptr, "input should not be nullptr");
   loco::Graph *g = input_for_encode->graph();
 
-  auto encoder = stdex::make_unique<loco::PermutingEncoder<loco::Domain::Matrix>>();
+  auto encoder = std::make_unique<loco::PermutingEncoder<loco::Domain::Matrix>>();
 
   encoder->perm(perm<T>());
 
@@ -213,7 +214,7 @@ template <MatrixLayout T> loco::MatrixDecode *make_matrix_decode(loco::Node *inp
   LUCI_ASSERT(input_for_decode != nullptr, "input should not be nullptr");
   loco::Graph *g = input_for_decode->graph();
 
-  auto decoder = stdex::make_unique<loco::PermutingDecoder<loco::Domain::Matrix>>();
+  auto decoder = std::make_unique<loco::PermutingDecoder<loco::Domain::Matrix>>();
 
   decoder->perm(perm<T>());
 

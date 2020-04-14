@@ -17,13 +17,30 @@
 #ifndef __LUCI_IMPORT_NODES_H__
 #define __LUCI_IMPORT_NODES_H__
 
+#include "Nodes/CircleAbs.h"
 #include "Nodes/CircleAdd.h"
 #include "Nodes/CircleArgMax.h"
+#include "Nodes/CircleAveragePool2D.h"
+#include "Nodes/CircleConcatenation.h"
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleConv2D.h"
+#include "Nodes/CircleCos.h"
+#include "Nodes/CircleDepthwiseConv2D.h"
+#include "Nodes/CircleDiv.h"
+#include "Nodes/CircleEqual.h"
+#include "Nodes/CircleFullyConnected.h"
+#include "Nodes/CircleLogicalNot.h"
+#include "Nodes/CircleLogicalOr.h"
 #include "Nodes/CircleMaxPool2D.h"
 #include "Nodes/CircleMean.h"
+#include "Nodes/CircleMul.h"
+#include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
+#include "Nodes/CircleRelu.h"
 #include "Nodes/CircleReshape.h"
+#include "Nodes/CircleRsqrt.h"
+#include "Nodes/CircleSoftmax.h"
+#include "Nodes/CircleSub.h"
+#include "Nodes/CircleTranspose.h"
 
 #endif // __LUCI_IMPORT_NODES_H__

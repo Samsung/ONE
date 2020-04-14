@@ -989,7 +989,7 @@ class Example:
                 ))
             else:
                 assert False
-        # Fix for neurun: disable dynamic shape test generation
+        # Fix for onert: disable dynamic shape test generation
         #if Configuration.test_dynamic_output_shape:
             #self.variations = [[DefaultVariation(), DynamicOutputShapeConverter()]]
         #else:

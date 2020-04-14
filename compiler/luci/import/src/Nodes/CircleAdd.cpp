@@ -15,118 +15,34 @@
  */
 
 #include "luci/Import/Nodes/CircleAdd.h"
-#include "luci/Import/GraphBuilderContext.h"
 
 #include <luci/IR/Nodes/CircleAdd.h>
-#include <luci/Log.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
-
-#include <cassert>
-
-namespace
-{
-
-using namespace luci;
-
-class CircleAddGraphUpdate final : public GraphUpdate
-{
-public:
-  CircleAddGraphUpdate(CircleAdd *node) : _node(node) {}
-
-  void update(GraphBuilderContext *) override;
-
-private:
-  CircleAdd *_node;
-};
-
-} // namespace
 
 namespace luci
 {
 
-bool CircleAddGraphBuilder::validate(const circle::Operator *op) const
+bool CircleAddGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  if (inputs.size() != 2)
+  if (args.op.inputs.size() != 2)
     return false;
 
   return true;
 }
 
-void CircleAddGraphBuilder::build(const circle::Operator *op, GraphBuilderContext *context) const
+CircleNode *CircleAddGraphBuilder::build_node(const circle::OperatorT &op,
+                                              const std::vector<CircleNode *> &inputs,
+                                              loco::Graph *graph) const
 {
-  LOGGER(l);
+  auto *node = graph->nodes()->create<CircleAdd>();
+  node->x(inputs[0]);
+  node->y(inputs[1]);
 
-  assert(context != nullptr);
+  const auto *options = op.builtin_options.AsAddOptions();
+  node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
 
-  auto graph = context->graph();
-  auto reader = context->reader();
-  auto opfinder = context->opfinder();
-  auto tensorfinder = context->tensorfinder();
-  auto nodefinder = context->nodefinder();
-  auto updates = context->updates();
-
-  // FlatBuffer contents
-  auto tensors = reader->tensors();
-
-  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  const std::vector<int32_t> &outputs = as_index_vector(op->outputs());
-
-  // Add node itself
-  auto add_node = graph->nodes()->create<CircleAdd>();
-  assert(outputs.size() > 0);
-  uint32_t output_ti = static_cast<uint32_t>(outputs[0]);
-  auto output_tensor = tensors->Get(output_ti);
-  auto tname = tensor_name(output_tensor);
-  add_node->name(tname);
-  auto quantization = tensor_quantization(output_tensor);
-  if (quantization)
-  {
-    auto quantparam = luci_quantparam(quantization);
-    if (quantparam.get())
-      add_node->quantparam(std::move(quantparam));
-  }
-  opfinder->enroll(add_node, op);
-  tensorfinder->enroll(add_node, output_tensor);
-  for (auto output : outputs)
-  {
-    INFO(l) << "[luci] NodeFinder add_node(" << output << ") -> " << add_node << std::endl;
-    nodefinder->enroll(output, add_node);
-  }
-  const auto *options = op->builtin_options_as_AddOptions();
-
-  // Activation
-  auto actfunctype = luci_actfunc(options->fused_activation_function());
-  add_node->fusedActivationFunction(actfunctype);
-
-  // Create GraphUpdate for graph connection for Add node
-  auto update = stdex::make_unique<CircleAddGraphUpdate>(add_node);
-  updates->enroll(std::move(update));
+  return node;
 }
 
 } // namespace luci
-
-namespace
-{
-
-void CircleAddGraphUpdate::update(GraphBuilderContext *context)
-{
-  auto opfinder = context->opfinder();
-  auto nodefinder = context->nodefinder();
-
-  auto op = opfinder->op(_node);
-
-  // set input 'x, y'
-  const std::vector<int32_t> &inputs = luci::as_index_vector(op->inputs());
-  uint32_t idx_x = static_cast<uint32_t>(inputs[0]);
-  uint32_t idx_y = static_cast<uint32_t>(inputs[1]);
-  auto node_x = nodefinder->node(idx_x);
-  assert(node_x != nullptr);
-  auto node_y = nodefinder->node(idx_y);
-  _node->x(node_x);
-  _node->y(node_y);
-}
-
-} // namespace

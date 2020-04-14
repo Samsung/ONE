@@ -23,12 +23,12 @@
 
 #include "NeuralNetworks.h"
 #include "NeuralNetworksWrapper.h"
-// Fix for neurun: comment out include NeuralNetworksWrapperExtensions.h
+// Fix for onert: comment out include NeuralNetworksWrapperExtensions.h
 //#include "NeuralNetworksWrapperExtensions.h"
 
 #include <math.h>
-// Fix for neurun: use boost::optional instead of std::optional
-// TODO in neurun: introduce and use internal optional library
+// Fix for onert: use boost::optional instead of std::optional
+// TODO in onert: introduce and use internal optional library
 #include <boost/optional.hpp>
 #include <string>
 #include <vector>
@@ -39,7 +39,7 @@ namespace test_wrapper {
 
 using wrapper::Event;
 using wrapper::ExecutePreference;
-// Fix for neurun: comment out ExtensionModel, ExtensionOperandParams and ExtensionOperandType
+// Fix for onert: comment out ExtensionModel, ExtensionOperandParams and ExtensionOperandType
 //using wrapper::ExtensionModel;
 //using wrapper::ExtensionOperandParams;
 //using wrapper::ExtensionOperandType;

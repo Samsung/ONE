@@ -6,9 +6,8 @@ add_library(luci_lang SHARED ${SOURCES})
 target_include_directories(luci_lang PRIVATE src)
 target_include_directories(luci_lang PUBLIC include)
 target_link_libraries(luci_lang PUBLIC loco)
+target_link_libraries(luci_lang PUBLIC oops)
 target_link_libraries(luci_lang PRIVATE nncc_common)
-target_link_libraries(luci_lang PRIVATE stdex)
-target_link_libraries(luci_lang PRIVATE oops)
 
 install(TARGETS luci_lang DESTINATION lib)
 

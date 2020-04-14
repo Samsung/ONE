@@ -22,7 +22,7 @@
 #include <backend/ITensorBuilder.h>
 #include "ir/OperandIndexMap.h"
 
-namespace neurun
+namespace onert
 {
 namespace backend
 {
@@ -39,6 +39,6 @@ private:
 
 } // namespace hi_perf_cpu
 } // namespace backend
-} // namespace neurun
+} // namespace onert
 
 #endif // NNFW_TENSORBUILDER_H

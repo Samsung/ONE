@@ -23,38 +23,6 @@
 namespace luci
 {
 
-void NodeOpFinder::enroll(CircleNode *node, const circle::Operator *op)
-{
-  assert(_table.find(node) == _table.end());
-
-  _table[node] = op;
-}
-
-const circle::Operator *NodeOpFinder::op(CircleNode *node) const
-{
-  MapNodeOperator_t::const_iterator iter = _table.find(node);
-
-  assert(iter != _table.end());
-
-  return iter->second;
-}
-
-void NodeTensorFinder::enroll(CircleNode *node, const circle::Tensor *tensor)
-{
-  assert(_table.find(node) == _table.end());
-
-  _table[node] = tensor;
-}
-
-const circle::Tensor *NodeTensorFinder::tensor(CircleNode *node) const
-{
-  MapNodeTensor_t::const_iterator iter = _table.find(node);
-
-  assert(iter != _table.end());
-
-  return iter->second;
-}
-
 void IndexNodeFinder::enroll(TensorIndex idx, CircleNode *node)
 {
   if (_table.find(idx) != _table.end())
@@ -71,14 +39,9 @@ CircleNode *IndexNodeFinder::node(TensorIndex idx) const
 {
   MapIndexNode_t::const_iterator iter = _table.find(idx);
 
-  assert(iter != _table.end());
+  assert(iter != _table.end() && iter->second != nullptr);
 
   return iter->second;
-}
-
-void UpdateQueue::enroll(std::unique_ptr<GraphUpdate> &&update)
-{
-  _queue.push_back(std::move(update));
 }
 
 } // namespace luci

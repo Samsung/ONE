@@ -81,11 +81,11 @@ add_custom_target(android-benchmark-apk ALL
   COMMAND ${CMAKE_COMMAND} -E copy ${CORE_LIBRARY} ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy ${RUNTIME_LIBRARY} ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:android_benchmark_native> ${LIB_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:neurun> ${LIB_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:neurun_backend_acl_cl> ${LIB_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert> ${LIB_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert_backend_acl_cl> ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:arm_compute_ex> ${LIB_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:neurun_backend_acl_neon> ${LIB_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:neurun_backend_cpu> ${LIB_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert_backend_acl_neon> ${LIB_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert_backend_cpu> ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E echo ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f -0 tflite -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml -S ${CMAKE_CURRENT_SOURCE_DIR}/res/ -I ${ANDROID_PLATFORM_DIR}/android.jar -F ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg ${PKG_DIR}
   COMMAND ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f
                                                   -0 tflite
@@ -94,4 +94,4 @@ add_custom_target(android-benchmark-apk ALL
                                                   -I ${ANDROID_PLATFORM_DIR}/android.jar
                                                   -F ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg
                                                   ${PKG_DIR}
-  DEPENDS android_benchmark_native neurun neurun_backend_acl_cl neurun_backend_acl_neon neurun_backend_cpu)
+  DEPENDS android_benchmark_native onert onert_backend_acl_cl onert_backend_acl_neon onert_backend_cpu)

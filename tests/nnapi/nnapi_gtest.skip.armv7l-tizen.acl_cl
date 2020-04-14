@@ -29,6 +29,7 @@ GeneratedTests.pack*
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
+GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.space_to_batch*
 GeneratedTests.sqrt_

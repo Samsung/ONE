@@ -51,12 +51,12 @@ struct Param
    */
   Param() = default;
   /**
- * @brief Construct a new Param object with params
- * @param[in] inputCount  Count of inputs
- * @param[in] inputs      Pointer of inputs
- * @param[in] outputCount Count of outputs
- * @param[in] outputs     Pointer of outputs
- */
+   * @brief Construct a new Param object with params
+   * @param[in] inputCount  Count of inputs
+   * @param[in] inputs      Pointer of inputs
+   * @param[in] outputCount Count of outputs
+   * @param[in] outputs     Pointer of outputs
+   */
   Param(uint32_t inputCount, const uint32_t *inputs, uint32_t outputCount, const uint32_t *outputs);
 };
 

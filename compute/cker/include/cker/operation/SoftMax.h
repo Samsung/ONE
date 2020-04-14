@@ -21,10 +21,10 @@
 #include "cker/Shape.h"
 #include "cker/Utils.h"
 #include "cker/Types.h"
-#include "cker/gemmlowp/FixedPoint.h"
 #include "cker/eigen/Utils.h"
 
 #include <Eigen/Core>
+#include <fixedpoint/fixedpoint.h>
 #include <cmath>
 
 namespace nnfw
@@ -63,9 +63,9 @@ inline void Softmax(const SoftmaxParams &params, const Shape &input_shape,
   // accumulation, but exp(-16) definitely is.
   static const int kScaledDiffIntegerBits = 5;
   static const int kAccumulationIntegerBits = 12;
-  using FixedPointScaledDiff = gemmlowp::FixedPoint<kScaledDiffIntegerBits>;
-  using FixedPointAccum = gemmlowp::FixedPoint<kAccumulationIntegerBits>;
-  using FixedPoint0 = gemmlowp::FixedPoint<0>;
+  using FixedPointScaledDiff = gemmlowp::FixedPoint<int32_t, kScaledDiffIntegerBits>;
+  using FixedPointAccum = gemmlowp::FixedPoint<int32_t, kAccumulationIntegerBits>;
+  using FixedPoint0 = gemmlowp::FixedPoint<int32_t, 0>;
 
   const int trailing_dim = input_shape.DimensionsCount() - 1;
   const int outer_size = MatchingFlatSizeSkipDim(input_shape, trailing_dim, output_shape);

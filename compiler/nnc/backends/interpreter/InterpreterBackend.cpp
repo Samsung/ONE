@@ -142,29 +142,25 @@ void InterpreterBackend::run(mir::Graph *graph)
 
   for (const auto *input_op : graph->getInputs())
   {
-    std::string tensor_name = input_op->getOutput(0)->getName();
+    const Operation::Output *input = input_op->getOutput(0);
+
+    std::string tensor_name = input->getName();
     assert(!tensor_name.empty());
     std::replace(tensor_name.begin(), tensor_name.end(), '/', '_');
     std::string filename = _input_dir + "/" + tensor_name + ".dat";
 
-    auto type = input_op->getOutput(0)->getType();
-    // TODO Fix frontends to set input type
-    if (input_op->getOutput(0)->getElementType() == DataType::UNKNOWN)
-    {
-      type = TensorType(DataType::FLOAT32, type.getShape(), type.getQuantization());
-    }
-    auto tensor = readTensorFromFile(filename, type);
-    interpreter.setOutputTensors(*input_op, {tensor});
+    TensorVariant tensor = readTensorFromFile(filename, input->getType());
+    interpreter.setTensor(input, std::move(tensor));
   }
 
   graph->accept(&interpreter);
 
   for (const auto *output_op : graph->getOutputs())
   {
-    const auto &tensor = interpreter.getResult(output_op->getInput(0));
     const auto &output_name = output_op->getInput(0)->getName();
 
 #ifdef NNC_HDF5_SUPPORTED
+    const auto &tensor = interpreter.getTensor(output_op->getInput(0));
     writeTensorToHDF5File(tensor, output_name, _output_dir);
 #else
     std::cout << "Result <" << output_name << "> wasn't saved, due to lack of HDF5" << std::endl;

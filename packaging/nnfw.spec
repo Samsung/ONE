@@ -11,15 +11,18 @@ Source1001: flatbuffers.tar.gz
 Source1002: nnapi_test_generated.tar.gz
 Source1003: gtest.tar.gz
 Source1004: eigen.tar.gz
+Source1005: gemmlowp.tar.gz
 Source2001: nnfw.pc.in
 
+%{!?build_type:     %define build_type      Release}
+%{!?coverage_build: %define coverage_build  0}
+%{!?test_build:     %define test_build      1}
+%{!?extra_option:   %define extra_option    %{nil}}
+%if %{coverage_build} == 1
+%define test_build 1
+%endif
+
 BuildRequires:  cmake
-BuildRequires:  boost-devel
-BuildRequires:  tensorflow-lite-devel
-BuildRequires:  hdf5-devel
-BuildRequires:  libaec-devel
-BuildRequires:  zlib-devel
-BuildRequires:  libjpeg-devel
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
@@ -30,9 +33,14 @@ BuildRequires:  libarmcl-devel
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
-%{!?build_type:     %define build_type      Release}
-%{!?coverage_build: %define coverage_build  0}
-%{!?extra_option:   %define extra_option    %{nil}}
+%if %{test_build} == 1
+BuildRequires:  boost-devel
+BuildRequires:  tensorflow-lite-devel
+BuildRequires:  hdf5-devel
+BuildRequires:  libaec-devel
+BuildRequires:  zlib-devel
+BuildRequires:  libjpeg-devel
+%endif
 
 %description
 nnfw is a high-performance, on-device neural network framework for Tizen
@@ -44,11 +52,13 @@ Requires: %{name} = %{version}-%{release}
 %description devel
 NNFW devel package.
 
+%if %{test_build} == 1
 %package test
 Summary: NNFW Test
 
 %description test
 NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
+%endif
 
 %ifarch %{arm}
 %define target_arch armv7l
@@ -63,7 +73,7 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
 %define build_env NNFW_WORKSPACE=build
-%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen
+%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off
 
 # Set option for test build (and coverage test build)
 %define test_install_home /opt/usr/nnfw-test
@@ -77,7 +87,7 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %define test_build_type Debug
 %endif
 %define test_build_env NNFW_INSTALL_PREFIX=%{test_install_path} NNFW_WORKSPACE=build_for_test
-%define test_build_options %{coverage_option} -DCMAKE_BUILD_TYPE=%{test_build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENVVAR_NEURUN_CONFIG=ON
+%define test_build_options %{coverage_option} -DCMAKE_BUILD_TYPE=%{test_build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENVVAR_ONERT_CONFIG=ON
 
 %prep
 %setup -q
@@ -87,6 +97,7 @@ tar -xf %{SOURCE1001} -C ./externals
 tar -xf %{SOURCE1002} -C ./tests/nnapi/src/
 tar -xf %{SOURCE1003} -C ./externals
 tar -xf %{SOURCE1004} -C ./externals
+tar -xf %{SOURCE1005} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64
@@ -97,23 +108,25 @@ tar -xf %{SOURCE1004} -C ./externals
 # TODO Set install path
 %{build_env} ./nnfw install
 
+%if %{test_build} == 1
 # test runtime
 # TODO remove duplicated build process
 %{test_build_env} ./nnfw configure %{test_build_options} %{extra_option}
 %{test_build_env} ./nnfw build
 %if %{coverage_build} == 1
 pwd > tests/scripts/build_path.txt
-%endif
+%endif # coverage_build
 tar -zcf test-suite.tar.gz infra/scripts tests/scripts
-%endif
+%endif # test_build
+%endif # arm armv7l aarch64
 
 %install
 %ifarch arm armv7l aarch64
 
 mkdir -p %{buildroot}%{_libdir}
-mkdir -p %{buildroot}%{_includedir}
+mkdir -p %{buildroot}%{_includedir}/nnfw
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
-cp -r build/out/include/* %{buildroot}%{_includedir}/
+cp -r build/out/include/nnfw/* %{buildroot}%{_includedir}/nnfw/
 
 # For developer
 cp %{SOURCE2001} .
@@ -122,16 +135,18 @@ sed -i 's:@libdir@:%{_libdir}:g
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
 
+%if %{test_build} == 1
 %{test_build_env} ./nnfw install
 # Share test script with ubuntu (ignore error if there is no list for target)
 cp tests/nnapi/nnapi_gtest.skip.* %{buildroot}%{test_install_dir}/unittest/.
-cp %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip.%{target_arch}-tizen.acl_cl %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip.%{target_arch}-linux.acl_cl || true
+cp %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1
 mkdir -p %{buildroot}%{test_install_home}/gcov
 find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
-%endif
+%endif # coverage_build
+%endif # test_build
 
 %endif
 
@@ -154,6 +169,7 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %{_libdir}/pkgconfig/nnfw.pc
 %endif
 
+%if %{test_build} == 1
 %files test
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
@@ -161,7 +177,8 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %dir %{test_install_home}
 %{test_install_home}/*
 %exclude %{_libdir}/debug
-%endif
+%endif # arm armv7l aarch64
+%endif # test_build
 
 %changelog
 * Thu Mar 15 2018 Chunseok Lee <chunseok.lee@samsung.com>

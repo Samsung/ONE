@@ -44,6 +44,7 @@ public:
   void visit(mir::ops::AbsOp &op) override;
   void visit(mir::ops::AddOp &op) override;
   void visit(mir::ops::AvgPool2DOp &op) override;
+  void visit(mir::ops::BroadcastOp &op) override;
   void visit(mir::ops::CappedReluOp &op) override;
   void visit(mir::ops::ConcatOp &op) override;
   void visit(mir::ops::ConstantOp &op) override;

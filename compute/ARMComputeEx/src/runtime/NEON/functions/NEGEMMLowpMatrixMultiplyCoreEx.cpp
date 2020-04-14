@@ -66,7 +66,7 @@ NEGEMMLowpMatrixMultiplyCoreEx::NEGEMMLowpMatrixMultiplyCoreEx(
       _tmp_b(), _mm_result_s32(), _signed_a(), _signed_output(), _original_b(nullptr), _a_offset(0),
       _b_offset(0), _run_vector_matrix_multiplication(false), _assembly_path(false),
       _fused_assembly_path(false), _reshape_b_only_on_first_run(false), _is_prepared(false),
-      _fuse_output_stage(false), _run_activation(false), _flip_signedness(false)
+      _fuse_output_stage(false), _flip_signedness(false)
 {
 }
 

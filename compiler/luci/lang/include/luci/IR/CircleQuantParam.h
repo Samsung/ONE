@@ -17,6 +17,7 @@
 #ifndef __LUCI_IR_CIRCLEQUANTPARAM_H__
 #define __LUCI_IR_CIRCLEQUANTPARAM_H__
 
+#include <cstdint>
 #include <vector>
 
 namespace luci

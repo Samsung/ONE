@@ -25,8 +25,11 @@ namespace luci
 class CirclePadGraphBuilder : public GraphBuilder
 {
 public:
-  bool validate(const circle::Operator *) const final;
-  void build(const circle::Operator *, GraphBuilderContext *) const final;
+  bool validate(const ValidateArgs &args) const final;
+
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const final;
 };
 
 } // namespace luci

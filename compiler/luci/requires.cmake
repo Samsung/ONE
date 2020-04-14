@@ -1,7 +1,6 @@
 require("loco")
 require("locop")
 require("logo-core")
-require("stdex")
 require("mio-circle")
 require("oops")
 require("hermes")

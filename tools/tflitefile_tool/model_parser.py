@@ -27,8 +27,9 @@ import flatbuffers
 import tflite.Model
 import tflite.SubGraph
 import argparse
+import graph_stats
 from operator_parser import OperatorParser
-from model_printer import ModelPrinter
+from subgraph_printer import SubgraphPrinter
 from model_saver import ModelSaver
 from perf_predictor import PerfPredictor
 
@@ -73,7 +74,7 @@ class TFLiteModelFileParser(object):
             self.save_prefix = args.prefix
 
     def PrintModel(self, model_name, op_parser):
-        printer = ModelPrinter(self.print_level, op_parser, model_name)
+        printer = SubgraphPrinter(self.print_level, op_parser, model_name)
 
         if self.print_all_tensor == False:
             printer.SetPrintSpecificTensors(self.print_tensor_index)
@@ -95,17 +96,20 @@ class TFLiteModelFileParser(object):
         buf = bytearray(buf)
         tf_model = tflite.Model.Model.GetRootAsModel(buf, 0)
 
+        stats = graph_stats.GraphStats()
         # Model file can have many models
-        # 1st subgraph is main model
-        model_name = "Main_model"
         for subgraph_index in range(tf_model.SubgraphsLength()):
             tf_subgraph = tf_model.Subgraphs(subgraph_index)
-            if (subgraph_index != 0):
-                model_name = "Model_#" + str(subgraph_index)
+            model_name = "#{0} {1}".format(subgraph_index, tf_subgraph.Name())
+            # 0th subgraph is main subgraph
+            if (subgraph_index == 0):
+                model_name += " (MAIN)"
 
             # Parse Operators
             op_parser = OperatorParser(tf_model, tf_subgraph, PerfPredictor())
             op_parser.Parse()
+
+            stats += graph_stats.CalcGraphStats(op_parser)
 
             if self.save == False:
                 # print all of operators or requested objects
@@ -113,6 +117,10 @@ class TFLiteModelFileParser(object):
             else:
                 # save all of operators in this model
                 self.SaveModel(model_name, op_parser)
+
+        print('==== Model Stats ({} Subgraphs) ===='.format(tf_model.SubgraphsLength()))
+        print('')
+        graph_stats.PrintGraphStats(stats, self.print_level)
 
 
 if __name__ == '__main__':

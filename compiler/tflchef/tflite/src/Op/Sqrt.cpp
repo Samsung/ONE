@@ -25,6 +25,19 @@ void TFliteOpSqrt::filler(const tflite::Operator *op, TFliteImport *import,
                           tflchef::ModelRecipe *model_recipe) const
 {
   // Nothing to do with filler
+  // But input has filler for constant inputs
+  const auto &inputs = *op->inputs();
+
+  const tflite::Tensor *tensor = import->tensors()->Get(inputs[0]);
+  if (tensor->type() == tflite::TensorType::TensorType_FLOAT32)
+  {
+    const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+    if (buffer && buffer->data())
+    {
+      auto vec = extract_buffer<float>(buffer);
+      import->set_tensor_filler(inputs[0], vec);
+    }
+  }
 }
 
 tflchef::Operation *TFliteOpSqrt::build(const tflite::Operator *op, TFliteImport *import,

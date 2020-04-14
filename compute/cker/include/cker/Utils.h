@@ -18,11 +18,11 @@
 #ifndef __NNFW_CKER_UTILS_H__
 #define __NNFW_CKER_UTILS_H__
 
+#include "Shape.h"
+
 #include <algorithm>
 #include <cstdint>
-
-#include "cker/gemmlowp/FixedPoint.h"
-#include "Shape.h"
+#include <fixedpoint/fixedpoint.h>
 
 namespace nnfw
 {

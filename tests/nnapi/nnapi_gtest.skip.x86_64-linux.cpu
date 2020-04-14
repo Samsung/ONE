@@ -57,7 +57,7 @@ GeneratedTests.rsqrt*
 GeneratedTests.slice*
 GeneratedTests.space_to_batch*
 GeneratedTests.space_to_depth*
-GeneratedTests.split*
+GeneratedTests.split_*nt*
 GeneratedTests.sqrt*
 GeneratedTests.squared_difference_ex*
 GeneratedTests.strided_slice*

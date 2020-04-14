@@ -23,7 +23,7 @@
 #include <sys/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
-// Note: neurun is allow to set activation operand constant only,
+// Note: onert is allow to set activation operand constant only,
 //       so we change test to set operand #2 to constant. (ANEURALNETWORKS_FUSED_NONE)
 //       And model's input is changed: [0, 1, 2] -> [0, 1]
 // This file tests all the validations done by the Neural Networks API.
@@ -87,7 +87,7 @@ class ValidationTestIdentify : public ValidationTestModel {
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &scalarType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
-        // neurun is allow to set activation operand constant only
+        // onert is allow to set activation operand constant only
         int32_t act = ANEURALNETWORKS_FUSED_NONE;
         ASSERT_EQ(ANeuralNetworksModel_setOperandValue(mModel, 2, &act, sizeof(act)), ANEURALNETWORKS_NO_ERROR);
         uint32_t inList[3]{0, 1, 2};
@@ -118,7 +118,7 @@ protected:
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &scalarType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
-        // neurun is allow to set activation operand constant only
+        // onert is allow to set activation operand constant only
         int32_t act = ANEURALNETWORKS_FUSED_NONE;
         ASSERT_EQ(ANeuralNetworksModel_setOperandValue(mModel, 2, &act, sizeof(act)), ANEURALNETWORKS_NO_ERROR);
         uint32_t inList[3]{0, 1, 2};

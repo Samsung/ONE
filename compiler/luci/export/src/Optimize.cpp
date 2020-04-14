@@ -21,7 +21,8 @@
 #include <luci/Pass/TypeInferencePass.h>
 
 #include <logo/Phase.h>
-#include <stdex/Memory.h>
+
+#include <memory>
 
 namespace luci
 {
@@ -31,8 +32,8 @@ void optimize(loco::Graph *g)
   logo::Phase phase;
   {
     // prepare type and shape before optimization
-    phase.emplace_back(stdex::make_unique<TypeInferencePass>());
-    phase.emplace_back(stdex::make_unique<ShapeInferencePass>());
+    phase.emplace_back(std::make_unique<TypeInferencePass>());
+    phase.emplace_back(std::make_unique<ShapeInferencePass>());
 
     // TODO add more optimization passes (with a knob)
   }

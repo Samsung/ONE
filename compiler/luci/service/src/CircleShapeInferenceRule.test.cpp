@@ -26,9 +26,9 @@
 #include <loco/Service/CanonicalShapeInferenceRule.h>
 #include <loco/Service/MultiDialectShapeInferenceRule.h>
 
-#include <stdex/Memory.h>
-
 #include <gtest/gtest.h>
+
+#include <memory>
 
 namespace
 {
@@ -249,20 +249,18 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
 {
   luci::test::ExampleGraph<luci::test::ExampleGraphType::CircleTranspose> g;
 
-  g.pull->rank(4);
-  g.pull->dim(0) = 10;
-  g.pull->dim(1) = 20;
-  g.pull->dim(2) = 30;
-  g.pull->dim(3) = 40;
+  g.pull->rank(3);
+  g.pull->dim(0) = 3;
+  g.pull->dim(1) = 8;
+  g.pull->dim(2) = 1;
 
   g.const_perm->dtype(loco::DataType::S32);
   g.const_perm->rank(1);
-  g.const_perm->dim(0) = 4;
-  g.const_perm->size<loco::DataType::S32>(4);
-  g.const_perm->at<loco::DataType::S32>(0) = 2;
-  g.const_perm->at<loco::DataType::S32>(1) = 3;
+  g.const_perm->dim(0) = 3;
+  g.const_perm->size<loco::DataType::S32>(3);
+  g.const_perm->at<loco::DataType::S32>(0) = 1;
+  g.const_perm->at<loco::DataType::S32>(1) = 2;
   g.const_perm->at<loco::DataType::S32>(2) = 0;
-  g.const_perm->at<loco::DataType::S32>(3) = 1;
 
   // pre-check
   ASSERT_FALSE(loco::shape_known(g.transpose_node));
@@ -276,10 +274,9 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
     ASSERT_TRUE(loco::shape_known(g.transpose_node));
 
     auto shape = loco::shape_get(g.transpose_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0), 30);
-    ASSERT_EQ(shape.dim(1), 40);
-    ASSERT_EQ(shape.dim(2), 10);
-    ASSERT_EQ(shape.dim(3), 20);
+    ASSERT_EQ(shape.rank(), 3);
+    ASSERT_EQ(shape.dim(0), 8);
+    ASSERT_EQ(shape.dim(1), 1);
+    ASSERT_EQ(shape.dim(2), 3);
   }
 }

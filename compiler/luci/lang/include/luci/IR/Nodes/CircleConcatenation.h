@@ -60,11 +60,11 @@ public:
   }
 
 public:
-  uint32_t axis(void) const { return _axis; }
-  void axis(uint32_t axis) { _axis = axis; }
+  int32_t axis(void) const { return _axis; }
+  void axis(int32_t axis) { _axis = axis; }
 
 private:
-  uint32_t _axis;
+  int32_t _axis;
 };
 
 } // namespace luci

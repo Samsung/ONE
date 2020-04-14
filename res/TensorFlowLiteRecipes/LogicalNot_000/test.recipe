@@ -1,0 +1,17 @@
+operand {
+  name: "ifm"
+  type: BOOL
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: BOOL
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "LogicalNot"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -2,10 +2,10 @@ if (NOT BUILD_RUNTIME_NNAPI_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNAPI_TEST)
 
-if (NOT BUILD_NEURUN)
+if (NOT BUILD_ONERT)
   message(STATUS "Skip build NNAPI test: no runtime build")
   return()
-endif(NOT BUILD_NEURUN)
+endif(NOT BUILD_ONERT)
 
 nnfw_find_package(GTest)
 

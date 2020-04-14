@@ -4,7 +4,7 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 1.13.1 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   return()
@@ -30,3 +30,8 @@ FlatBuffers_Target(mio_tflite
 
 add_executable(mio_tflite_example example.cpp)
 target_link_libraries(mio_tflite_example mio_tflite)
+
+# Temporay tflite validation tool to replace nnkit-tflite
+# TODO provide full tflite validation with runtime/interpreter
+add_executable(mio_tflite_validate example.cpp)
+target_link_libraries(mio_tflite_validate mio_tflite)

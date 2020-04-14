@@ -767,7 +767,6 @@ void Planner::visit(const ::internal::tflite::op::Mul::Node &node)
   param.activation = static_cast<FuseCode>(_ctx.at(activation_index).asScalar<int32_t>());
 
   auto stage = [param](const IAllocationContext &ctx, IExecutionBuilder &builder) {
-
     auto output_alloc = ctx.at(::internal::tflite::operand::Index{param.ofm_index});
     auto lhs_input_alloc = ctx.at(::internal::tflite::operand::Index{param.lhs_index});
     auto rhs_input_alloc = ctx.at(::internal::tflite::operand::Index{param.rhs_index});
@@ -3630,7 +3629,6 @@ void Planner::visit(const ::internal::tflite::op::Transpose::Node &node)
   param.rank = _ctx.at(ifm_index).shape().rank();
 
   auto stage = [param](const IAllocationContext &ctx, IExecutionBuilder &builder) {
-
     auto ofm_alloc = ctx.at(::internal::tflite::operand::Index{param.ofm_index});
     const auto ifm_alloc = ctx.at(::internal::tflite::operand::Index{param.ifm_index});
 
@@ -3647,7 +3645,6 @@ void Planner::visit(const ::internal::tflite::op::Transpose::Node &node)
     {
       throw std::runtime_error("Not supported, yet");
     }
-
   };
 
   _builder.addStage(stage);
@@ -4121,7 +4118,6 @@ void Planner::visit(const ::internal::tflite::op::SquaredDifference::Node &node)
       // TODO Enable NEON Support
       throw std::runtime_error("Not supported, yet");
     }
-
   };
 
   _builder.addStage(stage);
@@ -5350,7 +5346,6 @@ void Planner::visit(const ::internal::tflite::op::Neg::Node &node)
       // TODO Enable NEON Support
       throw std::runtime_error("Not supported, yet");
     }
-
   };
   _builder.addStage(stage);
 }

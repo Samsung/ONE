@@ -31,8 +31,8 @@ static_assert(std::numeric_limits<float>::is_iec559, "Unsupported float type");
 
 using namespace std;
 
-using mir::Shape;
 using mir::Index;
+using mir::Shape;
 using mir::ShapeRange;
 using mir::TensorVariant;
 
@@ -197,6 +197,12 @@ void Serializer::visit(ops::MaxPool2DOp &op)
 }
 
 void Serializer::visit(ops::FullyConnectedOp &op)
+{
+  _curOp->paramStartOffset = _buffer.size();
+  serializeShape(op.getOutputShape(0));
+}
+
+void Serializer::visit(ops::BroadcastOp &op)
 {
   _curOp->paramStartOffset = _buffer.size();
   serializeShape(op.getOutputShape(0));

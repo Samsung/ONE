@@ -62,7 +62,8 @@ GeneratedTests.relu1*
 GeneratedTests.relu6*
 GeneratedTests.resize_bilinear*
 GeneratedTests.rnn*
-GeneratedTests.rsqrt*
+GeneratedTests.rsqrt
+GeneratedTests.rsqrt_relaxed
 GeneratedTests.slice*
 GeneratedTests.space_to_batch*
 GeneratedTests.space_to_depth*

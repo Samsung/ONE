@@ -13,7 +13,7 @@ include("cmake/options/options_${TARGET_PLATFORM}.cmake")
 option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
-option(BUILD_NEURUN "Build neurun" ON)
+option(BUILD_ONERT "Build onert" ON)
 option(BUILD_LOGGING "Build logging runtime" ON)
 option(BUILD_PURE_ARM_COMPUTE "Build pure_arm_compute runtime" OFF)
 CMAKE_DEPENDENT_OPTION(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test"
@@ -32,7 +32,7 @@ option(BUILD_TFLITE_LOADER "Build TensorFlow Lite loader" ON)
 option(BUILD_CIRCLE_LOADER "Build circle loader" ON)
 option(BUILD_TFLITE_LOADER_TEST_TOOL "Build tflite loader testing tool" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
-option(ENVVAR_NEURUN_CONFIG "Use environment variable for neurun configuration" ON)
+option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
 #
 # Default build configuration for contrib

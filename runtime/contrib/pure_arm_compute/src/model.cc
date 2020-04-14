@@ -188,8 +188,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 3);
       assert(outputCount == 1);
 
-      using internal::tflite::op::Add::Param;
       using internal::tflite::op::Add::Node;
+      using internal::tflite::op::Add::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -203,8 +203,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 3);
       assert(outputCount == 1);
 
-      using internal::tflite::op::Sub::Param;
       using internal::tflite::op::Sub::Node;
+      using internal::tflite::op::Sub::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -218,8 +218,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 3);
       assert(outputCount == 1);
 
-      using internal::tflite::op::Mul::Param;
       using internal::tflite::op::Mul::Node;
+      using internal::tflite::op::Mul::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -233,8 +233,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 3);
       assert(outputCount == 1);
 
-      using internal::tflite::op::Div::Param;
       using internal::tflite::op::Div::Node;
+      using internal::tflite::op::Div::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -253,8 +253,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
 
       if (inputCount == 7)
       {
-        using internal::tflite::op::Conv2D::Implicit::Param;
         using internal::tflite::op::Conv2D::Implicit::Node;
+        using internal::tflite::op::Conv2D::Implicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -263,8 +263,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       }
       else
       {
-        using internal::tflite::op::Conv2D::Explicit::Param;
         using internal::tflite::op::Conv2D::Explicit::Node;
+        using internal::tflite::op::Conv2D::Explicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -284,8 +284,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
 
       if (inputCount == 8)
       {
-        using internal::tflite::op::DepthwiseConv2D::Implicit::Param;
         using internal::tflite::op::DepthwiseConv2D::Implicit::Node;
+        using internal::tflite::op::DepthwiseConv2D::Implicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -294,8 +294,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       }
       else
       {
-        using internal::tflite::op::DepthwiseConv2D::Explicit::Param;
         using internal::tflite::op::DepthwiseConv2D::Explicit::Node;
+        using internal::tflite::op::DepthwiseConv2D::Explicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -315,8 +315,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
 
       if (inputCount == 7)
       {
-        using internal::tflite::op::MaxPool2D::Implicit::Param;
         using internal::tflite::op::MaxPool2D::Implicit::Node;
+        using internal::tflite::op::MaxPool2D::Implicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -325,8 +325,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       }
       else
       {
-        using internal::tflite::op::MaxPool2D::Explicit::Param;
         using internal::tflite::op::MaxPool2D::Explicit::Node;
+        using internal::tflite::op::MaxPool2D::Explicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -339,8 +339,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     case ANEURALNETWORKS_DEQUANTIZE:
     {
       assert(outputCount == 1 && inputCount == 1);
-      using internal::tflite::op::Dequantize::Param;
       using internal::tflite::op::Dequantize::Node;
+      using internal::tflite::op::Dequantize::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -359,8 +359,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
 
       if (inputCount == 7)
       {
-        using internal::tflite::op::AvgPool2D::Implicit::Param;
         using internal::tflite::op::AvgPool2D::Implicit::Node;
+        using internal::tflite::op::AvgPool2D::Implicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -369,8 +369,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       }
       else
       {
-        using internal::tflite::op::AvgPool2D::Explicit::Param;
         using internal::tflite::op::AvgPool2D::Explicit::Node;
+        using internal::tflite::op::AvgPool2D::Explicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -382,8 +382,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_CONCATENATION:
     {
-      using internal::tflite::op::Concat::Param;
       using internal::tflite::op::Concat::Node;
+      using internal::tflite::op::Concat::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -394,8 +394,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RESIZE_BILINEAR:
     {
-      using internal::tflite::op::ResizeBilinear::Param;
       using internal::tflite::op::ResizeBilinear::Node;
+      using internal::tflite::op::ResizeBilinear::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -406,8 +406,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RESHAPE:
     {
-      using internal::tflite::op::Reshape::Param;
       using internal::tflite::op::Reshape::Node;
+      using internal::tflite::op::Reshape::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -418,8 +418,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SQUEEZE:
     {
-      using internal::tflite::op::Squeeze::Param;
       using internal::tflite::op::Squeeze::Node;
+      using internal::tflite::op::Squeeze::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -430,8 +430,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_FULLY_CONNECTED:
     {
-      using internal::tflite::op::FullyConnected::Param;
       using internal::tflite::op::FullyConnected::Node;
+      using internal::tflite::op::FullyConnected::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -442,8 +442,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SOFTMAX:
     {
-      using internal::tflite::op::Softmax::Param;
       using internal::tflite::op::Softmax::Node;
+      using internal::tflite::op::Softmax::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -454,8 +454,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RELU:
     {
-      using internal::tflite::op::ReLU::Param;
       using internal::tflite::op::ReLU::Node;
+      using internal::tflite::op::ReLU::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -466,8 +466,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RELU1:
     {
-      using internal::tflite::op::ReLU1::Param;
       using internal::tflite::op::ReLU1::Node;
+      using internal::tflite::op::ReLU1::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -478,8 +478,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RELU6:
     {
-      using internal::tflite::op::ReLU6::Param;
       using internal::tflite::op::ReLU6::Node;
+      using internal::tflite::op::ReLU6::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -490,8 +490,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_TANH:
     {
-      using internal::tflite::op::Tanh::Param;
       using internal::tflite::op::Tanh::Node;
+      using internal::tflite::op::Tanh::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -502,8 +502,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_STRIDED_SLICE:
     {
-      using internal::tflite::op::StridedSlice::Param;
       using internal::tflite::op::StridedSlice::Node;
+      using internal::tflite::op::StridedSlice::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -514,8 +514,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_LOGISTIC:
     {
-      using internal::tflite::op::Logistic::Param;
       using internal::tflite::op::Logistic::Node;
+      using internal::tflite::op::Logistic::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -526,8 +526,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_MEAN:
     {
-      using internal::tflite::op::Mean::Param;
       using internal::tflite::op::Mean::Node;
+      using internal::tflite::op::Mean::Param;
 
       auto &operations = model->deref().operations();
       operations.emplace_back<Node>(Param{inputCount, inputs, outputCount, outputs});
@@ -536,8 +536,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RNN:
     {
-      using internal::tflite::op::RNN::Param;
       using internal::tflite::op::RNN::Node;
+      using internal::tflite::op::RNN::Param;
 
       auto &operations = model->deref().operations();
 
@@ -547,8 +547,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_TRANSPOSE:
     {
-      using internal::tflite::op::Transpose::Param;
       using internal::tflite::op::Transpose::Node;
+      using internal::tflite::op::Transpose::Param;
       auto &operations = model->deref().operations();
 
       operations.emplace_back<Node>(Param{inputCount, inputs, outputCount, outputs});
@@ -557,8 +557,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_LSTM:
     {
-      using internal::tflite::op::LSTM::Param;
       using internal::tflite::op::LSTM::Node;
+      using internal::tflite::op::LSTM::Param;
 
       auto &operations = model->deref().operations();
 
@@ -568,8 +568,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_FLOOR:
     {
-      using internal::tflite::op::Floor::Param;
       using internal::tflite::op::Floor::Node;
+      using internal::tflite::op::Floor::Param;
 
       auto &operations = model->deref().operations();
 
@@ -581,8 +581,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     {
       assert(inputCount == 2 && outputCount == 1);
 
-      using internal::tflite::op::Pad::Param;
       using internal::tflite::op::Pad::Node;
+      using internal::tflite::op::Pad::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -593,8 +593,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SPACE_TO_DEPTH:
     {
-      using internal::tflite::op::SpaceToDepth::Param;
       using internal::tflite::op::SpaceToDepth::Node;
+      using internal::tflite::op::SpaceToDepth::Param;
 
       auto &operations = model->deref().operations();
 
@@ -604,8 +604,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SPACE_TO_BATCH_ND:
     {
-      using internal::tflite::op::SpaceToBatchND::Param;
       using internal::tflite::op::SpaceToBatchND::Node;
+      using internal::tflite::op::SpaceToBatchND::Param;
 
       auto &operations = model->deref().operations();
 
@@ -615,8 +615,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_BATCH_TO_SPACE_ND:
     {
-      using internal::tflite::op::BatchToSpaceNd::Param;
       using internal::tflite::op::BatchToSpaceNd::Node;
+      using internal::tflite::op::BatchToSpaceNd::Param;
 
       auto &operations = model->deref().operations();
 
@@ -633,8 +633,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
 
       if (inputCount == 7)
       {
-        using internal::tflite::op::L2Pool2D::Implicit::Param;
         using internal::tflite::op::L2Pool2D::Implicit::Node;
+        using internal::tflite::op::L2Pool2D::Implicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -643,8 +643,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       }
       else
       {
-        using internal::tflite::op::L2Pool2D::Explicit::Param;
         using internal::tflite::op::L2Pool2D::Explicit::Node;
+        using internal::tflite::op::L2Pool2D::Explicit::Param;
 
         // Add 'operations'
         auto &operations = model->deref().operations();
@@ -659,8 +659,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 2);
       assert(outputCount == 1);
 
-      using internal::tflite::op::EmbeddingLookup::Param;
       using internal::tflite::op::EmbeddingLookup::Node;
+      using internal::tflite::op::EmbeddingLookup::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -673,8 +673,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     {
       assert(inputCount == 1 && outputCount == 1);
 
-      using internal::tflite::op::L2Normalization::Param;
       using internal::tflite::op::L2Normalization::Node;
+      using internal::tflite::op::L2Normalization::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -688,8 +688,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
       assert(inputCount == 3);
       assert(outputCount == 2);
 
-      using internal::tflite::op::HashtableLookup::Param;
       using internal::tflite::op::HashtableLookup::Node;
+      using internal::tflite::op::HashtableLookup::Param;
 
       auto &operations = model->deref().operations();
 
@@ -700,8 +700,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     case ANEURALNETWORKS_LOCAL_RESPONSE_NORMALIZATION:
     {
 
-      using internal::tflite::op::LocalResponseNormalization::Param;
       using internal::tflite::op::LocalResponseNormalization::Node;
+      using internal::tflite::op::LocalResponseNormalization::Param;
 
       auto &operations = model->deref().operations();
 
@@ -711,8 +711,8 @@ int ANeuralNetworksModel_addOperation(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_DEPTH_TO_SPACE:
     {
-      using internal::tflite::op::DepthToSpace::Param;
       using internal::tflite::op::DepthToSpace::Node;
+      using internal::tflite::op::DepthToSpace::Param;
 
       auto &operations = model->deref().operations();
 
@@ -741,8 +741,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
   {
     case ANEURALNETWORKS_CAST_EX:
     {
-      using internal::tflite::op::Cast::Param;
       using internal::tflite::op::Cast::Node;
+      using internal::tflite::op::Cast::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -753,8 +753,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_REDUCE_MIN_EX:
     {
-      using internal::tflite::op::ReduceMin::Param;
       using internal::tflite::op::ReduceMin::Node;
+      using internal::tflite::op::ReduceMin::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -765,8 +765,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_REDUCE_MAX_EX:
     {
-      using internal::tflite::op::ReduceMax::Param;
       using internal::tflite::op::ReduceMax::Node;
+      using internal::tflite::op::ReduceMax::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -777,8 +777,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_PRELU_EX:
     {
-      using internal::tflite::op::PReLU::Param;
       using internal::tflite::op::PReLU::Node;
+      using internal::tflite::op::PReLU::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -789,8 +789,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_TRANSPOSE_CONV_EX:
     {
-      using internal::tflite::op::TransposeConv::Param;
       using internal::tflite::op::TransposeConv::Node;
+      using internal::tflite::op::TransposeConv::Param;
 
       auto &operations = model->deref().operations();
 
@@ -800,8 +800,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_LOGICAL_AND_EX:
     {
-      using internal::tflite::op::LogicalAnd::Param;
       using internal::tflite::op::LogicalAnd::Node;
+      using internal::tflite::op::LogicalAnd::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -812,8 +812,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_LOGICAL_OR_EX:
     {
-      using internal::tflite::op::LogicalOr::Param;
       using internal::tflite::op::LogicalOr::Node;
+      using internal::tflite::op::LogicalOr::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -824,8 +824,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_LOGICAL_NOT_EX:
     {
-      using internal::tflite::op::LogicalNot::Param;
       using internal::tflite::op::LogicalNot::Node;
+      using internal::tflite::op::LogicalNot::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -836,8 +836,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_RSQRT_EX:
     {
-      using internal::tflite::op::RSQRT::Param;
       using internal::tflite::op::RSQRT::Node;
+      using internal::tflite::op::RSQRT::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -848,8 +848,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SQRT_EX:
     {
-      using internal::tflite::op::SQRT::Param;
       using internal::tflite::op::SQRT::Node;
+      using internal::tflite::op::SQRT::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -860,8 +860,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_EQUAL_EX:
     {
-      using internal::tflite::op::Equal::Param;
       using internal::tflite::op::Equal::Node;
+      using internal::tflite::op::Equal::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -872,8 +872,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SQUARED_DIFFERENCE_EX:
     {
-      using internal::tflite::op::SquaredDifference::Param;
       using internal::tflite::op::SquaredDifference::Node;
+      using internal::tflite::op::SquaredDifference::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -884,8 +884,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_TOPK_V2_EX:
     {
-      using internal::tflite::op::TopKV2::Param;
       using internal::tflite::op::TopKV2::Node;
+      using internal::tflite::op::TopKV2::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -896,8 +896,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_GATHER_EX:
     {
-      using internal::tflite::op::Gather::Param;
       using internal::tflite::op::Gather::Node;
+      using internal::tflite::op::Gather::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -908,8 +908,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_SPLIT_EX:
     {
-      using internal::tflite::op::Split::Param;
       using internal::tflite::op::Split::Node;
+      using internal::tflite::op::Split::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -920,8 +920,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_UNPACK_EX:
     {
-      using internal::tflite::op::Unpack::Param;
       using internal::tflite::op::Unpack::Node;
+      using internal::tflite::op::Unpack::Param;
 
       auto &operations = model->deref().operations();
 
@@ -931,8 +931,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_NEG_EX:
     {
-      using internal::tflite::op::Neg::Param;
       using internal::tflite::op::Neg::Node;
+      using internal::tflite::op::Neg::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -943,8 +943,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_EXP_EX:
     {
-      using internal::tflite::op::Exp::Param;
       using internal::tflite::op::Exp::Node;
+      using internal::tflite::op::Exp::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -955,8 +955,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_REDUCE_SUM_EX:
     {
-      using internal::tflite::op::ReduceSum::Param;
       using internal::tflite::op::ReduceSum::Node;
+      using internal::tflite::op::ReduceSum::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -967,8 +967,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_PACK_EX:
     {
-      using internal::tflite::op::Pack::Param;
       using internal::tflite::op::Pack::Node;
+      using internal::tflite::op::Pack::Param;
 
       auto &operations = model->deref().operations();
 
@@ -978,8 +978,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_ABS_EX:
     {
-      using internal::tflite::op::Abs::Param;
       using internal::tflite::op::Abs::Node;
+      using internal::tflite::op::Abs::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -990,8 +990,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_ARGMAX_EX:
     {
-      using internal::tflite::op::ArgMax::Param;
       using internal::tflite::op::ArgMax::Node;
+      using internal::tflite::op::ArgMax::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();
@@ -1002,8 +1002,8 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
     }
     case ANEURALNETWORKS_NOT_EQUAL_EX:
     {
-      using internal::tflite::op::NotEqual::Param;
       using internal::tflite::op::NotEqual::Node;
+      using internal::tflite::op::NotEqual::Param;
 
       // Add 'operations'
       auto &operations = model->deref().operations();

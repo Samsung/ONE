@@ -39,7 +39,7 @@ uint32_t maxMemory(const std::unordered_map<benchmark::Phase, uint32_t> &map)
   return answer.second;
 }
 
-} // namespace anonymous
+} // namespace
 
 namespace benchmark
 {

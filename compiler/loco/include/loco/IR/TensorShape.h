@@ -19,6 +19,7 @@
 
 #include "loco/IR/Dimension.h"
 
+#include <initializer_list>
 #include <vector>
 
 namespace loco
@@ -28,6 +29,7 @@ class TensorShape
 {
 public:
   TensorShape() = default;
+  TensorShape(std::initializer_list<Dimension> dims) : _dims(dims.begin(), dims.end()) {}
 
 public:
   uint32_t rank(void) const { return _dims.size(); }

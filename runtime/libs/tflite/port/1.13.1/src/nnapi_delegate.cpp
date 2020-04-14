@@ -855,6 +855,10 @@ TfLiteStatus AddOpsAndParams(
             augmented_inputs.data(), static_cast<uint32_t>(node.outputs->size),
             reinterpret_cast<uint32_t*>(node.outputs->data)));
         continue; // _EX operator should use `continue` to skip addOperanation.
+      case tflite::BuiltinOperator_SIN:
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_SIN;
+        break;
       case tflite::BuiltinOperator_CONCAT_EMBEDDINGS:
       case tflite::BuiltinOperator_LSH_PROJECTION:
       case tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN:
@@ -892,7 +896,7 @@ TfLiteStatus AddOpsAndParams(
       //case tflite::BuiltinOperator_NEG:
       case tflite::BuiltinOperator_SELECT:
       // case tflite::BuiltinOperator_SLICE:
-      case tflite::BuiltinOperator_SIN:
+      //case tflite::BuiltinOperator_SIN:
       case tflite::BuiltinOperator_LOG:
       //case tflite::BuiltinOperator_TRANSPOSE_CONV:
       case tflite::BuiltinOperator_TILE:

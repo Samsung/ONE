@@ -17,7 +17,8 @@
 #ifndef _NNC_CORE_BACKEND_INTERPRETER_DECONV2D_IMPL_
 #define _NNC_CORE_BACKEND_INTERPRETER_DECONV2D_IMPL_
 
-#include "mir/ops/Deconv2DOp.h"
+#include "mir/Attributes.h"
+#include "mir/TensorVariant.h"
 
 namespace mir_interpreter
 {
@@ -33,7 +34,7 @@ namespace mir_interpreter
  */
 
 void DeConv2D(const mir::TensorVariant &input, const mir::TensorVariant &kernel,
-              const mir::ops::DeConv2DOp &op, mir::TensorVariant &output);
+              const mir::Deconv2DOpAttributes &attributes, mir::TensorVariant &output);
 
 } // namespace mir_interpreter
 

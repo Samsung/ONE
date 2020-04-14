@@ -20,13 +20,28 @@
 #include <luci/Log.h>
 
 #include <loco.h>
-#include <stdex/Memory.h>
 #include <oops/UserExn.h>
 
 #include <cassert>
 
 namespace luci
 {
+
+template <loco::DataType DT>
+static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
+                      CircleConst *const_node)
+{
+  using T = typename loco::DataTypeImpl<DT>::Type;
+
+  assert(raw_data.size() == num_elements * sizeof(T));
+  const auto *data = reinterpret_cast<const T *>(raw_data.data());
+
+  const_node->size<DT>(num_elements);
+  for (uint32_t i = 0; i < num_elements; ++i)
+  {
+    const_node->at<DT>(i) = data[i];
+  }
+}
 
 //
 // circleconst_from_tensor() ?
@@ -37,26 +52,27 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
   auto graph = context->graph();
   auto reader = context->reader();
-  auto opfinder = context->opfinder();
-  auto tensorfinder = context->tensorfinder();
-  auto nodefinder = context->nodefinder();
-  auto tensors = reader->tensors();
+  const auto &tensors = reader->tensors();
 
   // (1) create CircleConst
   auto const_node = graph->nodes()->create<CircleConst>();
-  auto const_tensor = tensors->Get(tensor_index);
-  opfinder->enroll(const_node, nullptr);
-  tensorfinder->enroll(const_node, const_tensor);
-  nodefinder->enroll(tensor_index, const_node);
+  const circle::TensorT &const_tensor = *tensors[tensor_index];
+  const_node->name(tensor_name(const_tensor));
+  auto quantization = luci::tensor_quantization(const_tensor);
+  if (quantization)
+  {
+    auto quantparam = luci::luci_quantparam(quantization);
+    if (quantparam.get())
+      const_node->quantparam(std::move(quantparam));
+  }
 
   INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << std::endl;
 
   // (2) set data_type to CircleConst
-  const_node->dtype(luci_datatype(const_tensor));
+  const_node->dtype(luci_datatype(const_tensor.type));
 
   // (3) set shape to CicleConst
-  assert(const_tensor->shape());
-  std::vector<int32_t> const_dims = as_index_vector(const_tensor->shape()); // in NHWC
+  std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
   const_node->rank(const_dims.size());
   uint32_t num_elements = 1;
   for (uint32_t r = 0; r < const_dims.size(); ++r)
@@ -66,48 +82,26 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   }
 
   // (4) constant values from circle buffer
-  uint32_t const_buff_idx = const_tensor->buffer();
-  const uint8_t *const_buff_data = nullptr;
-  size_t const_buff_size = reader->buffer_info(const_buff_idx, &const_buff_data);
-  switch (luci_datatype(const_tensor))
+  const std::vector<uint8_t> &buffer = reader->buffers()[const_tensor.buffer]->data;
+  if (buffer.empty())
+    throw oops::UserExn("Empty buffer");
+
+  switch (luci_datatype(const_tensor.type))
   {
     case loco::DataType::FLOAT32:
-    {
-      // NOTE assert(const_buff_size == num_elements * sizeof(float)) will drop
-      // unused variables compilation error in release build.
-      if (const_buff_size != num_elements * sizeof(float))
-        throw oops::UserExn("Invalid Buffer size", "FLOAT32");
-      const float *float_cb = reinterpret_cast<const float *>(const_buff_data);
-      const_node->size<loco::DataType::FLOAT32>(num_elements);
-      for (uint32_t ele = 0; ele < num_elements; ++ele)
-        const_node->at<loco::DataType::FLOAT32>(ele) = float_cb[ele];
+      copy_data<loco::DataType::FLOAT32>(buffer, num_elements, const_node);
       break;
-    }
 
     case loco::DataType::U8:
-    {
-      if (const_buff_size != num_elements * sizeof(uint8_t))
-        throw oops::UserExn("Invalid Buffer size", "UINT8");
-      const uint8_t *uint8_cb = reinterpret_cast<const uint8_t *>(const_buff_data);
-      const_node->size<loco::DataType::U8>(num_elements);
-      for (uint32_t ele = 0; ele < num_elements; ++ele)
-        const_node->at<loco::DataType::U8>(ele) = uint8_cb[ele];
+      copy_data<loco::DataType::U8>(buffer, num_elements, const_node);
       break;
-    }
 
     case loco::DataType::S32:
-    {
-      if (const_buff_size != num_elements * sizeof(int32_t))
-        throw oops::UserExn("Invalid Buffer size", "INT32");
-      const int32_t *int32_cb = reinterpret_cast<const int32_t *>(const_buff_data);
-      const_node->size<loco::DataType::S32>(num_elements);
-      for (uint32_t ele = 0; ele < num_elements; ++ele)
-        const_node->at<loco::DataType::S32>(ele) = int32_cb[ele];
+      copy_data<loco::DataType::S32>(buffer, num_elements, const_node);
       break;
-    }
 
     default:
-      assert(false);
+      throw oops::UserExn("Unsupported tensor type", circle::EnumNameTensorType(const_tensor.type));
   }
 
   return const_node;

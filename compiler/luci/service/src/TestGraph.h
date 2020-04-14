@@ -21,9 +21,9 @@
 #include "GraphBlock.h"
 
 #include <loco.h>
-#include <stdex/Memory.h>
 
 #include <cassert>
+#include <memory>
 
 // TODO Change all Canonical nodes to Circle nodes
 

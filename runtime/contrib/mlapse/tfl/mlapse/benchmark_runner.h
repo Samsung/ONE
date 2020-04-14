@@ -58,6 +58,6 @@ private:
   BenchmarkObserver *_observer = nullptr;
 };
 
-} // namespace mlpase
+} // namespace mlapse
 
 #endif // __MLAPSE_BENCHMARK_RUNNER_H__

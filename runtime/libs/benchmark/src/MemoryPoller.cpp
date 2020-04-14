@@ -82,7 +82,7 @@ std::vector<std::string> getValueFromFileStatus(const std::string &file, const s
   return val;
 }
 
-} // namespace anonymous
+} // namespace
 
 namespace benchmark
 {

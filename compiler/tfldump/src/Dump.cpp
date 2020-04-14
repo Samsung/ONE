@@ -104,50 +104,14 @@ std::ostream &operator<<(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
   return os;
 }
 
-void dump_model(std::ostream &os, const tflite::Model *model)
+void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
 {
-  tflread::Reader reader(model);
-
-  assert(reader.num_subgraph() == 1);
-  reader.select_subgraph(0);
-
-  auto opcodes = reader.opcodes();
-  auto buffers = reader.buffers();
   auto tensors = reader.tensors();
   auto operators = reader.operators();
 
-  // dump operator_codes
-  os << "Operator Codes: [order] OpCodeName (OpCode Enum)" << std::endl;
-  int32_t opcode_index = 0;
-  for (auto opcode : opcodes)
-  {
-    tflite::BuiltinOperator op_code = opcode->builtin_code();
-    auto op_name = tflread::opcode_name(opcode);
-
-    os << "[" << opcode_index << "] " << op_name << " (code: " << op_code << ")" << std::endl;
-
-    opcode_index++;
-  }
-  os << std::endl;
-
-  // dump buffer
-  os << "Buffers: B(index) (length) values, if any" << std::endl;
-  for (uint32_t i = 0; i < buffers->Length(); ++i)
-  {
-    const uint8_t *buff_data;
-    size_t size = reader.buffer_info(i, &buff_data);
-
-    os << "B(" << i << ") (" << size << ") ";
-    if (buff_data != nullptr)
-    {
-      dump_buffer(os, buff_data, size, 16);
-    }
-    os << std::endl;
-  }
-  os << std::endl;
-
   // dump operands(tensors)
-  os << "Operands: T(tensor index) TYPE (shape) B(buffer index) OperandName" << std::endl;
+  os << "Operands: T(subgraph index : tensor index) TYPE (shape) B(buffer index) OperandName"
+     << std::endl;
   for (uint32_t i = 0; i < tensors->Length(); ++i)
   {
     // TODO refactor to some better structure
@@ -157,7 +121,8 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     if (tensor->shape())
       dims = tflread::as_index_vector(tensor->shape());
 
-    os << "T(" << i << ") " << tflread::tensor_type(tensor) << " ";
+    os << "T(" << reader.subgraph_index() << ":" << i << ") " << tflread::tensor_type(tensor)
+       << " ";
     os << "(" << dims << ") ";
     os << "B(" << tensor->buffer() << ") ";
     os << tflread::tensor_name(tensor) << std::endl;
@@ -198,7 +163,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   os << std::endl;
 
   // dump operators
-  os << "Operators: O(operator index) OpCodeName " << std::endl;
+  os << "Operators: O(subgraph index : operator index) OpCodeName " << std::endl;
   os << "    Option(values) ... <-- depending on OpCode" << std::endl;
   os << "    I T(tensor index) OperandName <-- as input" << std::endl;
   os << "    O T(tensor index) OperandName <-- as output" << std::endl;
@@ -211,7 +176,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     const std::vector<int32_t> &outputs = tflread::as_index_vector(op->outputs());
     auto op_name = reader.opcode_name(op);
 
-    os << "O(" << i << ") " << op_name << " ";
+    os << "O(" << reader.subgraph_index() << ":" << i << ") " << op_name << " ";
     os << std::endl;
 
     if (auto op_prn = OpPrinterRegistry::get().lookup(builtincode))
@@ -258,6 +223,69 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     std::string name = tflread::tensor_name(tensor);
     os << "O T(" << output << ") " << name << std::endl;
   }
+
+  os << std::endl;
+}
+
+void dump_model(std::ostream &os, const tflite::Model *model)
+{
+  tflread::Reader reader(model);
+
+  uint32_t num_subgraph = reader.num_subgraph();
+
+  // dump model version
+  os << "===================================================================" << std::endl;
+  os << "Model version: " << reader.version() << std::endl;
+  os << " # sub graphs: " << num_subgraph << std::endl;
+  os << std::endl;
+
+  auto opcodes = reader.opcodes();
+  auto buffers = reader.buffers();
+
+  // dump operator_codes
+  os << "Operator Codes: [order] OpCodeName (OpCode Enum)" << std::endl;
+  int32_t opcode_index = 0;
+  for (auto opcode : opcodes)
+  {
+    tflite::BuiltinOperator op_code = opcode->builtin_code();
+    auto op_name = tflread::opcode_name(opcode);
+    auto op_version = opcode->version();
+
+    os << "[" << opcode_index << "] " << op_name << " (code: " << op_code
+       << ", version: " << op_version << ")" << std::endl;
+
+    opcode_index++;
+  }
+  os << std::endl;
+
+  // dump buffer
+  os << "Buffers: B(index) (length) values, if any" << std::endl;
+  for (uint32_t i = 0; i < buffers->Length(); ++i)
+  {
+    const uint8_t *buff_data;
+    size_t size = reader.buffer_info(i, &buff_data);
+
+    os << "B(" << i << ") (" << size << ") ";
+    if (buff_data != nullptr)
+    {
+      dump_buffer(os, buff_data, size, 16);
+    }
+    os << std::endl;
+  }
+  os << std::endl;
+
+  for (uint32_t sg = 0; sg < num_subgraph; ++sg)
+  {
+    reader.select_subgraph(sg);
+
+    os << "-------------------------------------------------------------------" << std::endl;
+    os << "Sub-Graph: #" << sg << " " << reader.subgraph_name() << std::endl;
+    os << std::endl;
+
+    dump_sub_graph(os, reader);
+  }
+
+  os << "===================================================================" << std::endl;
 }
 
 } // namespace tfldump

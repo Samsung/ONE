@@ -15,70 +15,32 @@
  */
 
 #include "luci/Import/Nodes/CircleMean.h"
-#include "luci/Import/GraphBuilderContext.h"
 
 #include <luci/IR/Nodes/CircleMean.h>
-
-#include <oops/UserExn.h>
-#include <stdex/Memory.h>
-
-#include <cassert>
 
 namespace luci
 {
 
-bool CircleMeanGraphBuilder::validate(const circle::Operator *op) const
+bool CircleMeanGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = *op->inputs();
-
-  if (inputs.size() != 2)
+  if (args.op.inputs.size() != 2)
     return false;
 
   return true;
 }
 
-void CircleMeanGraphBuilder::build(const circle::Operator *op, GraphBuilderContext *context) const
+CircleNode *CircleMeanGraphBuilder::build_node(const circle::OperatorT &op,
+                                               const std::vector<CircleNode *> &inputs,
+                                               loco::Graph *graph) const
 {
-  auto graph = context->graph();
-  auto reader = context->reader();
-  auto nodefinder = context->nodefinder();
+  auto *node = graph->nodes()->create<CircleMean>();
+  node->input(inputs[0]);
+  node->reduction_indices(inputs[1]);
 
-  auto tensors = reader->tensors();
-  const auto &inputs = *op->inputs();
-  const auto &outputs = *op->outputs();
+  const auto *options = op.builtin_options.AsReducerOptions();
+  node->keep_dims(options->keep_dims);
 
-  assert(outputs.size() == 1);
-  const circle::Tensor *output_tensor = tensors->Get(outputs[0]);
-
-  // Create the node.
-  auto mean_node = graph->nodes()->create<CircleMean>();
-  mean_node->name(tensor_name(output_tensor));
-
-  // Set node's quantization parameters, if any.
-  auto quantization = tensor_quantization(output_tensor);
-  if (quantization)
-  {
-    auto quantparam = luci_quantparam(quantization);
-    if (quantparam)
-      mean_node->quantparam(std::move(quantparam));
-  }
-
-  // input
-  CircleNode *input_node = nodefinder->node(inputs[0]);
-  assert(input_node != nullptr);
-  mean_node->input(input_node);
-
-  // reduction indices
-  CircleNode *reduction_insices_node = nodefinder->node(inputs[1]);
-  assert(reduction_insices_node != nullptr);
-  mean_node->reduction_indices(reduction_insices_node);
-
-  // Configure options.
-  const auto *options = op->builtin_options_as_ReducerOptions();
-  mean_node->keep_dims(options->keep_dims());
-
-  // Register node's only output.
-  nodefinder->enroll(outputs[0], mean_node);
+  return node;
 }
 
 } // namespace luci

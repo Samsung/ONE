@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,120 +15,97 @@
  * limitations under the License.
  */
 
-#include <cstdlib>
-
-#include "mir/TensorUtil.h"
-#include "mir/ShapeRange.h"
-#include "mir/Tensor.h"
-
 #include "DeConv2D.h"
 #include "Common.h"
+
+#include "mir/TensorUtil.h"
+
+#include <cstdint>
 
 namespace mir_interpreter
 {
 
 using namespace mir;
-using namespace mir::ops;
+using std::int32_t;
+
+static int32_t calcOffset(const Shape &shape, int32_t i0, int32_t i1, int32_t i2, int32_t i3)
+{
+  return ((i0 * shape.dim(1) + i1) * shape.dim(2) + i2) * shape.dim(3) + i3;
+}
 
 template <typename T> struct DeConv2DImpl
 {
-  static void run(const mir::TensorVariant &input_var, const mir::TensorVariant &kernel_var,
-                  const mir::ops::DeConv2DOp &op, mir::TensorVariant &output);
+  static void run(const TensorVariant &input, const TensorVariant &kernel,
+                  const Deconv2DOpAttributes &attributes, TensorVariant &output);
 };
 
 template <typename T>
-void DeConv2DImpl<T>::run(const TensorVariant &input_var, const TensorVariant &kernel_var,
-                          const DeConv2DOp &op, TensorVariant &output)
+void DeConv2DImpl<T>::run(const TensorVariant &input, const TensorVariant &kernel,
+                          const Deconv2DOpAttributes &attributes, TensorVariant &output)
 {
-  Tensor<T> input(input_var);
+  // [H, W, Co, Ci] -> [Ci, H, W, Co]
+  TensorVariant transposed_kernel = transposeTensor<3, 0, 1, 2>(kernel);
 
-  // Input shape: [N, Hi, Wi, Ci]
-  // Kernel shape: [Hk, Wk, Co, Ci]
-  assert(op.getInputShape(0).rank() == 4);
-  const auto &input_shape = input.getShape();
-  const auto &kernel_shape = kernel_var.getShape();
-  (void)input_shape;
-  (void)kernel_shape;
-  assert(input_shape.rank() == 4);
-  assert(kernel_shape.rank() == 4);
-  assert(kernel_shape.dim(3) == input_shape.dim(3));
-  assert(op.getPaddingBefore().size() == 2);
-  assert(op.getPaddingAfter().size() == 2);
+  const auto *input_data = reinterpret_cast<const T *>(input.atOffset(0));
+  const auto *kernel_data = reinterpret_cast<const T *>(transposed_kernel.atOffset(0));
+  auto *output_data = reinterpret_cast<T *>(output.atOffset(0));
 
-  const auto &strides = op.getStrides();
-  Shape out_shape = op.getOutputShape(0);
-  Tensor<T> res_accesor(output);
-  Index pads({op.getPaddingBefore().at(0), op.getPaddingBefore().at(1), 0});
+  const Shape &input_shape = input.getShape();
+  const Shape &output_shape = output.getShape();
+  const Shape &kernel_shape = transposed_kernel.getShape();
 
-  out_shape.dim(3) = 1;
-  ShapeRange out_range(out_shape);
+  const std::vector<int32_t> &strides = attributes.strides;
+  const std::vector<int32_t> &padding_before = attributes.padding_before;
+  assert(attributes.data_format == DataFormat::NHWC);
 
-  Shape in_shape = input.getShape();
-  ShapeRange in_range(in_shape);
+  const int32_t batch_size = output_shape.dim(0);
+  const int32_t output_height = output_shape.dim(1);
+  const int32_t output_width = output_shape.dim(2);
+  const int32_t kernel_height = kernel_shape.dim(1);
+  const int32_t kernel_width = kernel_shape.dim(2);
+  const int32_t input_height = input_shape.dim(1);
+  const int32_t input_width = input_shape.dim(2);
 
-  auto tr_kernel = transposeTensor<0, 1, 3, 2>(kernel_var);
-  Tensor<T> kernel(tr_kernel);
+  const int32_t num_in_channels = input_shape.dim(3);
+  const int32_t num_out_channels = output_shape.dim(3);
 
-  Shape k_shape = kernel.getShape();
-  int32_t num_kernels = k_shape.dim(3);
-  k_shape.dim(3) = 1;
-  ShapeRange kernel_range(k_shape);
-
-  Index input_idx;
-  input_idx.resize(in_shape.rank());
-
-  Index kernel_idx;
-  kernel_idx.resize(k_shape.rank());
+  assert(kernel_shape.dim(0) == num_in_channels);
+  assert(kernel_shape.dim(3) == num_out_channels);
 
   erase<T>(output);
 
-  for (auto &out_idx : out_range)
+  for (int32_t batch = 0; batch < batch_size; ++batch)
   {
-    auto out_region = res_accesor.getRegion(out_idx);
-    assert(out_region.size() == num_kernels);
-
-    for (auto &kernel_idx_r : kernel_range)
+    for (int32_t in_y = 0; in_y < input_height; ++in_y)
     {
-      // rotate kernel 180 deg around last axis
-      // by index transform
-      for (int32_t d = 0; d < 2; ++d)
+      for (int32_t in_x = 0; in_x < input_width; ++in_x)
       {
-        kernel_idx.at(d) = kernel.getShape().dim(d) - kernel_idx_r.at(d) - 1;
-      }
-      kernel_idx.at(2) = kernel_idx_r.at(2);
-      kernel_idx.at(3) = kernel_idx_r.at(3);
-
-      // flag that keeps info on whether the current input element is from input
-      // or is from dilation by stride
-      bool is_from_input = true;
-      for (int32_t d = 1; d < input_idx.rank() - 1; ++d)
-      {
-        const auto num = (out_idx.at(d) + pads.at(d - 1) - kernel_idx.at(d - 1));
-        auto stride = strides[d - 1];
-        const auto div_res = num / stride;
-        const auto rem = num - div_res * stride;
-        is_from_input = is_from_input && rem == 0;
-        if (rem != 0)
-          break;
-        input_idx.at(d) = div_res;
-      }
-      if (is_from_input)
-      {
-        // batch is same as output's
-        input_idx.at(0) = out_idx.at(0);
-        // channel index - same as kernel's
-        input_idx.at(3) = kernel_idx.at(2);
-
-        if (in_range.contains(input_idx))
+        for (int32_t in_c = 0; in_c < num_in_channels; ++in_c)
         {
-          auto kernel_region = kernel.getRegion(kernel_idx);
-          assert(kernel_region.size() == num_kernels);
+          const T input_val = input_data[calcOffset(input_shape, batch, in_y, in_x, in_c)];
+          const int32_t out_y_origin = in_y * strides[0] - padding_before[0];
+          const int32_t out_x_origin = in_x * strides[1] - padding_before[1];
 
-          auto in = input.at(input_idx);
-
-          for (int32_t kernel_index = 0; kernel_index < num_kernels; kernel_index++)
+          for (int32_t kernel_y = 0; kernel_y < kernel_height; ++kernel_y)
           {
-            out_region.base()[kernel_index] += in * kernel_region.base()[kernel_index];
+            for (int32_t kernel_x = 0; kernel_x < kernel_width; ++kernel_x)
+            {
+              const int32_t out_y = out_y_origin + kernel_y;
+              const int32_t out_x = out_x_origin + kernel_x;
+
+              if ((out_y >= 0 && out_y < output_height) && (out_x >= 0 && out_x < output_width))
+              {
+                for (int32_t out_c = 0; out_c < num_out_channels; ++out_c)
+                {
+                  const int32_t kernel_offset =
+                      calcOffset(kernel_shape, in_c, kernel_y, kernel_x, out_c);
+                  const int32_t output_offset =
+                      calcOffset(output_shape, batch, out_y, out_x, out_c);
+                  const T kernel_val = kernel_data[kernel_offset];
+                  output_data[output_offset] += input_val * kernel_val;
+                }
+              }
+            }
           }
         }
       }
@@ -135,10 +113,10 @@ void DeConv2DImpl<T>::run(const TensorVariant &input_var, const TensorVariant &k
   }
 }
 
-void DeConv2D(const mir::TensorVariant &input, const mir::TensorVariant &kernel,
-              const mir::ops::DeConv2DOp &op, mir::TensorVariant &output)
+void DeConv2D(const TensorVariant &input, const TensorVariant &kernel,
+              const Deconv2DOpAttributes &attributes, TensorVariant &output)
 {
-  dispatch<DeConv2DImpl>(output.getElementType(), input, kernel, op, output);
+  dispatch<DeConv2DImpl>(output.getElementType(), input, kernel, attributes, output);
 }
 
 } // namespace mir_interpreter

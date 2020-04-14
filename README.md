@@ -1,3 +1,5 @@
+[![Inner Source](https://img.shields.io/badge/innersource-incubating-orange)](http://mosaic.sec.samsung.net/kms/comty.do?comtyId=279217135&menuId=324419756&postId=373704030&page=view&type=LIST)
+
 # nnfw
 
 A high-performance, on-device neural network inference framework
@@ -45,7 +47,7 @@ Sooner or later, the maintainer will tag the `FEATURE_REQUEST` label and appear 
 
 We expect one of the most frequent feature requests would be the operator kernel implementation.
 It is good to make a request, but it is better if you contribute by yourself. See the following guide,
-[How to Implement Operator Kernel](docs/nnfw/HowToImplementOperatorKernel.md), for help.
+[How to Implement Operator Kernel](docs/nnfw/howto/HowToAddNewOperation.md), for help.
 
 We are looking forward to your participation.
 Thank you in advance!

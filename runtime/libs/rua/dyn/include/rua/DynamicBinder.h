@@ -30,6 +30,6 @@ struct DynamicBinder
   static const rua::RuntimeService *get(void);
 };
 
-} // namespace
+} // namespace rua
 
 #endif // __NNFW_RUA_DYNAMIC_BINDER_H__

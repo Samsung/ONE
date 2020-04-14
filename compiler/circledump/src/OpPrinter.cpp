@@ -39,7 +39,22 @@ public:
     if (auto *params = op->builtin_options_as_AddOptions())
     {
       os << "    ";
-      os << "Activation(" << params->fused_activation_function() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class ArgMaxPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ArgMaxOptions())
+    {
+      os << "    ";
+      os << "OutputType(" << EnumNameTensorType(params->output_type()) << ") ";
       os << std::endl;
     }
   }
@@ -56,7 +71,8 @@ public:
       os << "Padding(" << conv_params->padding() << ") ";
       os << "Stride.W(" << conv_params->stride_w() << ") ";
       os << "Stride.H(" << conv_params->stride_h() << ") ";
-      os << "Activation(" << conv_params->fused_activation_function() << ")";
+      os << "Activation("
+         << EnumNameActivationFunctionType(conv_params->fused_activation_function()) << ")";
       os << std::endl;
     }
   }
@@ -70,7 +86,8 @@ public:
     if (auto *params = op->builtin_options_as_DivOptions())
     {
       os << "    ";
-      os << "Activation(" << params->fused_activation_function() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
       os << std::endl;
     }
   }
@@ -89,7 +106,8 @@ public:
       os << "Stride.H(" << pool_params->stride_h() << ") ";
       os << "Filter.W(" << pool_params->filter_width() << ") ";
       os << "Filter.H(" << pool_params->filter_height() << ") ";
-      os << "Activation(" << pool_params->fused_activation_function() << ")";
+      os << "Activation("
+         << EnumNameActivationFunctionType(pool_params->fused_activation_function()) << ")";
       os << std::endl;
     }
   }
@@ -103,7 +121,9 @@ public:
     if (auto *concatenation_params = op->builtin_options_as_ConcatenationOptions())
     {
       os << "    ";
-      os << "Activation(" << concatenation_params->fused_activation_function() << ") ";
+      os << "Activation("
+         << EnumNameActivationFunctionType(concatenation_params->fused_activation_function())
+         << ") ";
       os << "Axis(" << concatenation_params->axis() << ")";
       os << std::endl;
     }
@@ -139,7 +159,8 @@ public:
       os << "DepthMultiplier(" << conv_params->depth_multiplier() << ") ";
       os << "Dilation.W(" << conv_params->dilation_w_factor() << ") ";
       os << "Dilation.H(" << conv_params->dilation_h_factor() << ")";
-      os << "Activation(" << conv_params->fused_activation_function() << ") ";
+      os << "Activation("
+         << EnumNameActivationFunctionType(conv_params->fused_activation_function()) << ") ";
       os << std::endl;
     }
   }
@@ -153,10 +174,11 @@ public:
     if (auto *params = op->builtin_options_as_FullyConnectedOptions())
     {
       os << "    ";
-      os << "WeightFormat("
-         << "..."
-         << ") "; // TODO implement this
-      os << "Activation(" << params->fused_activation_function() << ") ";
+      os << "WeightFormat(" << EnumNameFullyConnectedOptionsWeightsFormat(params->weights_format())
+         << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+
       os << std::endl;
     }
   }
@@ -170,7 +192,23 @@ public:
     if (auto *params = op->builtin_options_as_MulOptions())
     {
       os << "    ";
-      os << "Activation(" << params->fused_activation_function() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class PackPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_PackOptions())
+    {
+      os << "    ";
+      os << "ValuesCount(" << params->values_count() << ") ";
+      os << "Axis(" << params->axis() << ") ";
       os << std::endl;
     }
   }
@@ -198,7 +236,8 @@ public:
     if (auto *params = op->builtin_options_as_SubOptions())
     {
       os << "    ";
-      os << "Activation(" << params->fused_activation_function() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
       os << std::endl;
     }
   }
@@ -247,6 +286,7 @@ public:
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
+  _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
@@ -255,6 +295,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
+  _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for Pad
   // There is no Option for ReLU and ReLU6
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();

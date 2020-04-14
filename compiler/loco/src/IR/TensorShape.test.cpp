@@ -25,6 +25,19 @@ TEST(TensorShapeTest, default_constructor)
   ASSERT_EQ(tensor_shape.rank(), 0);
 }
 
+TEST(TensorShapeTest, initializer_list_constructor)
+{
+  loco::TensorShape tensor_shape{3, 5};
+
+  ASSERT_EQ(tensor_shape.rank(), 2);
+
+  ASSERT_TRUE(tensor_shape.dim(0).known());
+  ASSERT_TRUE(tensor_shape.dim(1).known());
+
+  ASSERT_EQ(tensor_shape.dim(0).value(), 3);
+  ASSERT_EQ(tensor_shape.dim(1).value(), 5);
+}
+
 TEST(TensorShapeTest, rank)
 {
   loco::TensorShape tensor_shape;

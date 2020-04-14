@@ -33,7 +33,7 @@ template <typename T> struct View
   virtual int32_t size(void) const = 0;
   virtual T at(uint32_t off) const = 0;
 };
-}
+} // namespace vector
 
 namespace feature
 {
@@ -52,7 +52,7 @@ template <typename T> struct View
   virtual const Shape &shape(void) const = 0;
   virtual T at(uint32_t ch, uint32_t row, uint32_t col) const = 0;
 };
-}
+} // namespace feature
 
 namespace kernel
 {
@@ -72,7 +72,7 @@ template <typename T> struct View
   virtual const Shape &shape(void) const = 0;
   virtual T at(uint32_t nth, uint32_t ch, uint32_t row, uint32_t col) const = 0;
 };
-}
+} // namespace kernel
 
 const int32_t N = 1;
 const int32_t C = 2;

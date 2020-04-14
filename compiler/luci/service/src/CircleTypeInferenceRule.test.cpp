@@ -24,9 +24,9 @@
 #include <loco/IR/CanonicalDialect.h>
 #include <loco/Service/TypeInference.h>
 
-#include <stdex/Memory.h>
-
 #include <gtest/gtest.h>
+
+#include <memory>
 
 TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
 {

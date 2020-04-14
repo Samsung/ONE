@@ -31,7 +31,7 @@
 
 #include "tflite_loader.h"
 
-#include "memory"
+#include <memory>
 
 const int RUN_FAILED = 1;
 
@@ -73,11 +73,11 @@ std::vector<float> randomData(RandomGenerator &randgen, const uint64_t size)
   return vec;
 }
 
-void executeGraph(const std::shared_ptr<neurun::ir::Graph> &g,
+void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
                   const std::vector<std::vector<float>> &inputs,
                   std::vector<std::vector<float>> &outputs)
 {
-  auto compiler = new neurun::compiler::Compiler(g);
+  auto compiler = new onert::compiler::Compiler(g);
   // Compilation
   try
   {
@@ -92,9 +92,9 @@ void executeGraph(const std::shared_ptr<neurun::ir::Graph> &g,
 
   std::cout << "[Execution] Graph compiled!" << std::endl;
 
-  std::shared_ptr<neurun::exec::IExecutor> executor;
+  std::shared_ptr<onert::exec::IExecutor> executor;
   compiler->release(executor);
-  auto execution = std::make_shared<neurun::exec::Execution>(executor);
+  auto execution = std::make_shared<onert::exec::Execution>(executor);
 
   // Setting IO
   try
@@ -119,10 +119,10 @@ void executeGraph(const std::shared_ptr<neurun::ir::Graph> &g,
     }
 
     for (size_t i = 0; i < num_inputs; i++)
-      execution->setInput(neurun::ir::IOIndex(i), inputs[i].data(),
+      execution->setInput(onert::ir::IOIndex(i), inputs[i].data(),
                           inputs[i].size() * sizeof(float));
     for (uint32_t i = 0; i < num_outputs; i++)
-      execution->setOutput(neurun::ir::IOIndex(i), outputs[i].data(),
+      execution->setOutput(onert::ir::IOIndex(i), outputs[i].data(),
                            outputs[i].size() * sizeof(float));
   }
   catch (const std::exception &e)
@@ -162,11 +162,11 @@ int main(const int argc, char **argv)
   }
 
   std::cout << "[Execution] Stage start!" << std::endl;
-  std::shared_ptr<neurun::ir::Graph> test_graph;
+  std::shared_ptr<onert::ir::Graph> test_graph;
   // Loading
   try
   {
-    test_graph = neurun::tflite_loader::loadModel(tflite_file.c_str());
+    test_graph = onert::tflite_loader::loadModel(tflite_file.c_str());
   }
   catch (std::exception &e)
   {
@@ -180,12 +180,12 @@ int main(const int argc, char **argv)
   for (const auto &input_idx : test_graph->getInputs())
   {
     const auto input_type = test_graph->operands().at(input_idx).typeInfo().type();
-    assert(input_type == neurun::ir::DataType::FLOAT32 && "Only FLOAT32 inputs are supported");
+    assert(input_type == onert::ir::DataType::FLOAT32 && "Only FLOAT32 inputs are supported");
   }
   for (const auto &output_idx : test_graph->getOutputs())
   {
     const auto output_type = test_graph->operands().at(output_idx).typeInfo().type();
-    assert(output_type == neurun::ir::DataType::FLOAT32 && "Only FLOAT32 outputs are supported");
+    assert(output_type == onert::ir::DataType::FLOAT32 && "Only FLOAT32 outputs are supported");
   }
 
   std::cout << "[Execution] Model is deserialized!" << std::endl;

@@ -24,6 +24,8 @@
 
 int entry(int argc, char **argv)
 {
+  int32_t model_version = 1;
+
   ::tflchef::ModelRecipe model_recipe;
 
   // Read a model recipe from standard input
@@ -31,9 +33,20 @@ int entry(int argc, char **argv)
     google::protobuf::io::IstreamInputStream iis{&std::cin};
     if (!google::protobuf::TextFormat::Parse(&iis, &model_recipe))
     {
-      std::cerr << "ERROR: Failed to parse recipe '" << argv[1] << "'" << std::endl;
+      std::cerr << "ERROR: Failed to parse recipe" << std::endl;
       return 255;
     }
+
+    if (model_recipe.has_version())
+    {
+      model_version = model_recipe.version();
+    }
+  }
+
+  if (model_version > 1)
+  {
+    std::cerr << "ERROR: Unsupported recipe version: " << model_version << std::endl;
+    return 255;
   }
 
   auto generated_model = tflchef::cook(model_recipe);

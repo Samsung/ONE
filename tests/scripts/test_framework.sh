@@ -27,7 +27,7 @@ function Usage()
     echo "./$0 \\"
     echo "  --runtestsh=tests/scripts/framework/run_test.sh \\ # Test runner script path"
     echo "  --driverbin=Product/out/bin/tflite_run \\  # Test driver path"
-    echo "  --frameworktest_list_file=tests/scripts/list/neurun_frameworktest_list.armv7l.cpu.txt \\"
+    echo "  --frameworktest_list_file=tests/scripts/list/frameworktest_list.armv7l.cpu.txt \\"
     echo "  --reportdir=report \\            # Directory for the report files will be saved"
     echo "  --tapname=framework_test.tap \\  # Tap file name"
     echo "  --logname=framework_test.log \\  # Log file name"

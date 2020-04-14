@@ -22,7 +22,7 @@
 #include "Utils.h"
 #endif
 
-// FIX for neurun: comment out include android-base/logging.h
+// FIX for onert: comment out include android-base/logging.h
 //#include <android-base/logging.h>
 #include <gtest/gtest.h>
 #include <cctype>
@@ -77,7 +77,7 @@ static int test(bool useCpuOnly, Execution::ComputeMode computeMode, bool allowS
         return "<unknown ComputeMode>";
     };
 
-    // FIX for neurun: comment out android logging
+    // FIX for onert: comment out android logging
     //LOG(INFO) << "test(useCpuOnly = " << useCpuOnly << ", computeMode = " << computeModeText()
     //          << ", allowSyncExecHal = " << allowSyncExecHal << ")  // pass " << passIndex;
     std::cout << "[**********] useCpuOnly = " << useCpuOnly
@@ -86,7 +86,7 @@ static int test(bool useCpuOnly, Execution::ComputeMode computeMode, bool allowS
               << std::endl;
 
     if (!((uint64_t(1) << passIndex) & allowedPasses)) {
-        // FIX for neurun: comment out android logging
+        // FIX for onert: comment out android logging
         //LOG(INFO) << "SKIPPED PASS";
         std::cout << "SKIPPED PASS" << std::endl;
         return 0;
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     // The burst path is off by default in these tests. This is the first case
     // where it is turned on. Both "useCpuOnly" and "allowSyncExecHal" are
     // irrelevant here because the burst path is separate from both.
-    // Fix for neurun: disable burst mode
+    // Fix for onert: disable burst mode
     //n |= test(/*useCpuOnly=*/false, Execution::ComputeMode::BURST);
 
     return n;

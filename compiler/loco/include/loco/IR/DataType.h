@@ -40,6 +40,10 @@ enum class DataType
   FLOAT16, // IEEE 16-bit floating-point
   FLOAT32, // IEEE 32-bit floating-point
   FLOAT64, // IEEE 64-bit floating-point
+
+  // WARNING the size of Bool may vary for NN frameworks
+  // TODO we need to find a way to resolve this issue
+  BOOL, // Boolean
 };
 
 } // namespace loco

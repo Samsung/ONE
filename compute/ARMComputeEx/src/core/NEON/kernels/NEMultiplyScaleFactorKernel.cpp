@@ -87,12 +87,6 @@ inline int32x4x4_t load_value(const int32_t *input_ptr)
           wrapper::vloadq(input_ptr + 8), wrapper::vloadq(input_ptr + 12)};
 }
 
-inline float32x4x4_t load_value(const float *input_ptr)
-{
-  return {wrapper::vloadq(input_ptr), wrapper::vloadq(input_ptr + 4),
-          wrapper::vloadq(input_ptr + 8), wrapper::vloadq(input_ptr + 12)};
-}
-
 #ifdef __ARM_FEATURE_FP16_VECTOR_ARITHMETIC
 inline const float32x4x4_t load_value(const float16_t *input_ptr)
 {

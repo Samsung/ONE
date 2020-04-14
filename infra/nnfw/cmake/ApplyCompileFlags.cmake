@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 #
 # Platform specific compile flag setting
 #
-include("cmake/buildtool/config/config_${TARGET_PLATFORM}.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/buildtool/config/config_${TARGET_PLATFORM}.cmake")
 
 #
 # Apply compile flags

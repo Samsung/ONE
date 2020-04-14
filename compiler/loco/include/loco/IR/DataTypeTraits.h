@@ -19,6 +19,7 @@
 
 #include "loco/IR/DataType.h"
 
+#include <cassert>
 #include <cstdint>
 
 namespace loco
@@ -56,6 +57,29 @@ template <> struct DataTypeImpl<DataType::FLOAT32>
   // Use C++ float type for IEEE 32-bit floating-point numbers
   using Type = float;
 };
+
+/**
+ * @brief Returns the size of the data type.
+ * @note If you need the size at compile time, use `sizeof(typename DataTypeImpl<DT>::Type)`.
+ */
+inline uint32_t size(DataType data_type)
+{
+  switch (data_type)
+  {
+    case DataType::S8:
+      return sizeof(DataTypeImpl<DataType::S8>::Type);
+    case DataType::U8:
+      return sizeof(DataTypeImpl<DataType::U8>::Type);
+    case DataType::S32:
+      return sizeof(DataTypeImpl<DataType::S32>::Type);
+    case DataType::FLOAT32:
+      return sizeof(DataTypeImpl<DataType::FLOAT32>::Type);
+    default:
+      // TODO Support remaining data types.
+      assert(false);
+      return UINT32_MAX; // Avoid compiler warning.
+  }
+}
 
 } // namespace loco
 

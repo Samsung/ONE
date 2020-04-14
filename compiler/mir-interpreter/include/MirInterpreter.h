@@ -33,12 +33,6 @@ public:
 
   ~MIRInterpreter() override = default;
 
-  /// @deprecated Use `setTensor` instead.
-  void setOutputTensors(const mir::Operation &op, std::vector<mir::TensorVariant> &&outputs);
-
-  /// @deprecated Use `getTensor` instead.
-  mir::TensorVariant getResult(const mir::Operation::Output *tensor);
-
   /// @brief Set tensor to the interpreter environment.
   void setTensor(const mir::Operation::Output *output, mir::TensorVariant tensor);
 
@@ -89,12 +83,14 @@ protected:
   void visit_fallback(mir::Operation &op) override;
 
 private:
+  mir::TensorVariant &allocateTensor(const mir::Operation::Output *output);
+
   /// @brief Gets the computed inputs for the operation.
   std::vector<std::reference_wrapper<const mir::TensorVariant>>
   getInputTensors(const mir::Operation &op);
 
   std::vector<std::reference_wrapper<mir::TensorVariant>>
-  getOutputTensors(const mir::Operation &op);
+  allocateOutputTensors(const mir::Operation &op);
 
   /// @brief Mapping of operation outputs to corresponding tensors.
   std::unordered_map<const mir::Operation::Output *, mir::TensorVariant> _tensors;

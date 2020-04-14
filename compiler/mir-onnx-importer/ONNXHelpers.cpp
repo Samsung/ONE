@@ -177,10 +177,10 @@ mir::Operation *foldConstants(mir::Graph *graph, mir::Operation *op)
   for (mir::Operation::Output *out : op->getInputs())
   {
     auto *constant = static_cast<mir::ops::ConstantOp *>(out->getNode());
-    interpreter.setOutputTensors(*constant, {constant->getValue()});
+    interpreter.setTensor(out, constant->getValue());
   }
   op->accept(&interpreter);
-  mir::TensorVariant output = interpreter.getResult(op->getOutput(0));
+  const mir::TensorVariant &output = interpreter.getTensor(op->getOutput(0));
 
   return graph->create<mir::ops::ConstantOp>(output);
 }

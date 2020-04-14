@@ -25,8 +25,8 @@
 #include <loco/Service/TypeInference.h>
 #include <mio/circle/schema_generated.h>
 #include <oops/InternalExn.h>
-#include <stdex/Memory.h>
 
+#include <memory>
 #include <stdexcept>
 #include <type_traits>
 
@@ -55,6 +55,8 @@ circle::TensorType translateLocoTypeToCircle(loco::DataType dtype)
     case loco::DataType::FLOAT32:
       return circle::TensorType_FLOAT32;
     //  case loco::DataType::FLOAT64: unsupported
+    case loco::DataType::BOOL:
+      return circle::TensorType_BOOL;
     default:
       break;
   }

@@ -54,20 +54,32 @@ public:
 private:
   TFliteOpRegistry()
   {
+    _tfliteop_map[tflite::BuiltinOperator_ABS] = make_unique<TFliteOpAbs>();
     _tfliteop_map[tflite::BuiltinOperator_ADD] = make_unique<TFliteOpAdd>();
+    _tfliteop_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<TFliteOpArgMax>();
     _tfliteop_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<TFliteOpAveragePool2D>();
     _tfliteop_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<TFliteOpConcatenation>();
     _tfliteop_map[tflite::BuiltinOperator_CONV_2D] = make_unique<TFliteOpConv2D>();
+    _tfliteop_map[tflite::BuiltinOperator_COS] = make_unique<TFliteOpCos>();
     _tfliteop_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] =
         make_unique<TFliteOpDepthwiseConv2D>();
     _tfliteop_map[tflite::BuiltinOperator_DIV] = make_unique<TFliteOpDiv>();
+    _tfliteop_map[tflite::BuiltinOperator_EQUAL] = make_unique<TFliteOpEqual>();
+    _tfliteop_map[tflite::BuiltinOperator_FLOOR_DIV] = make_unique<TFliteOpFloorDiv>();
     _tfliteop_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<TFliteOpFullyConnected>();
+    _tfliteop_map[tflite::BuiltinOperator_LOGICAL_NOT] = make_unique<TFliteOpLogicalNot>();
+    _tfliteop_map[tflite::BuiltinOperator_LOGICAL_OR] = make_unique<TFliteOpLogicalOr>();
     _tfliteop_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<TFliteOpMaxPool2D>();
+    _tfliteop_map[tflite::BuiltinOperator_MEAN] = make_unique<TFliteOpMean>();
+    _tfliteop_map[tflite::BuiltinOperator_PACK] = make_unique<TFliteOpPack>();
+    _tfliteop_map[tflite::BuiltinOperator_PAD] = make_unique<TFliteOpPad>();
     _tfliteop_map[tflite::BuiltinOperator_RELU] = make_unique<TFliteOpReLU>();
     _tfliteop_map[tflite::BuiltinOperator_RELU6] = make_unique<TFliteOpReLU6>();
     _tfliteop_map[tflite::BuiltinOperator_RESHAPE] = make_unique<TFliteOpReshape>();
+    _tfliteop_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<TFliteOpSoftmax>();
     _tfliteop_map[tflite::BuiltinOperator_SQRT] = make_unique<TFliteOpSqrt>();
     _tfliteop_map[tflite::BuiltinOperator_SUB] = make_unique<TFliteOpSub>();
+    _tfliteop_map[tflite::BuiltinOperator_TRANSPOSE] = make_unique<TFliteOpTranspose>();
   }
 
 private:

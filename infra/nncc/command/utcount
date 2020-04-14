@@ -1,0 +1,40 @@
+#!/bin/bash
+
+import "build.configuration"
+
+BUILD_WORKSPACE_PATH="${NNCC_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+
+if [[ ! -d "${BUILD_WORKSPACE_PATH}" ]]; then
+  echo "'${BUILD_WORKSPACE_RPATH}' does not exist. Please run 'configure' first"
+  exit 255
+fi
+
+BUILD_ITEMS="angkor cwrap pepper-str pepper-strcast pp stdex \
+oops pepper-assert \
+hermes hermes-std \
+loco locop locomotiv logo-core logo \
+safemain mio-circle mio-tflite \
+tflite2circle \
+luci"
+
+function count_all()
+{
+  local result=`ctest --verbose | grep -c '\[ RUN      \]'`
+  echo $result
+}
+
+function count_neg()
+{
+  local result=`ctest --verbose | grep '\[ RUN      \]' | grep -c '_NEG'`
+  echo $result
+}
+
+export CTEST_OUTPUT_ON_FAILURE=0
+
+for item in $BUILD_ITEMS
+do
+  cd ${BUILD_WORKSPACE_PATH}/compiler/$item &&
+    printf "$item = " &&
+      res="$(count_all)" && printf "$res " &&
+      res="$(count_neg)" && echo "$res"
+done

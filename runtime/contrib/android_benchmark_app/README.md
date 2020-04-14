@@ -5,7 +5,7 @@ An Android sample app that run `.tflite` and measure performance.
 You can run with two engines.
 
 - Tensorflow Lite Interpreter
-- NN API Delegate (neurun)
+- NN API Delegate (onert)
 
 ## Build
 

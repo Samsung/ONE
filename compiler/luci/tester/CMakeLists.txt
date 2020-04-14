@@ -16,7 +16,7 @@ set(SRCS_WRITE_TESTER
 
 add_executable(luci_writetester "${SRCS_WRITE_TESTER}")
 target_link_libraries(luci_writetester PRIVATE luci_import)
-target_link_libraries(luci_readtester PRIVATE luci_service)
+target_link_libraries(luci_writetester PRIVATE luci_service)
 target_link_libraries(luci_writetester PRIVATE luci_pass)
 target_link_libraries(luci_writetester PRIVATE luci_export)
 target_link_libraries(luci_writetester PRIVATE oops)

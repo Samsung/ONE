@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "FormattedGraph.h"
+#include "luci/FormattedGraph.h"
 
 #include <luci/IR/CircleDialect.h>
 #include <luci/IR/CircleNodes.h>
@@ -70,6 +70,9 @@ const char *to_str(loco::DataType type)
     case loco::DataType::FLOAT64:
       return "FLOAT64";
 
+    case loco::DataType::BOOL:
+      return "BOOL";
+
     default:
       return "Error";
   }
@@ -83,6 +86,8 @@ const char *to_str(luci::FusedActFunc fused)
       return "NONE";
     case luci::FusedActFunc::RELU:
       return "RELU";
+    case luci::FusedActFunc::RELU_N1_TO_1:
+      return "RELU_N1_TO_1";
     case luci::FusedActFunc::RELU6:
       return "RELU6";
     default:
@@ -173,23 +178,30 @@ public:
 
 private:
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
+  IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleArgMax)
   IMPLEMENT(luci::CircleAveragePool2D)
   IMPLEMENT(luci::CircleConcatenation)
   IMPLEMENT(luci::CircleConst)
   IMPLEMENT(luci::CircleConv2D)
+  IMPLEMENT(luci::CircleCos)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDiv)
+  IMPLEMENT(luci::CircleFullyConnected)
+  IMPLEMENT(luci::CircleLogicalNot)
+  IMPLEMENT(luci::CircleLogicalOr)
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
   IMPLEMENT(luci::CircleMul)
+  IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
   IMPLEMENT(luci::CircleRelu)
   IMPLEMENT(luci::CircleRelu6)
   IMPLEMENT(luci::CircleReshape)
   IMPLEMENT(luci::CircleRsqrt)
+  IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSqrt)
   IMPLEMENT(luci::CircleSquaredDifference)
   IMPLEMENT(luci::CircleSub)
@@ -218,6 +230,13 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
 #undef CIRCLE_NODE
 
   return false;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleAbs *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleAdd *node, locop::NodeSummary &s) const
@@ -293,6 +312,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleConv2D *node, locop::No
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleCos *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleDepthwiseConv2D *node,
                                        locop::NodeSummary &s) const
 {
@@ -314,6 +340,38 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDepthwiseConv2D *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleDiv *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFullyConnected *node,
+                                       locop::NodeSummary &s) const
+{
+  assert(node->fusedActivationFunction() != luci::FusedActFunc::UNDEFINED);
+
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("weights", tbl()->lookup(node->weights()));
+  s.args().append("bias", tbl()->lookup(node->bias()));
+  s.args().append("fused", to_str(node->fusedActivationFunction()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLogicalNot *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLogicalOr *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
@@ -365,6 +423,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMul *node, locop::NodeS
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CirclePack *node, locop::NodeSummary &s) const
+{
+  for (uint32_t i = 0; i < node->values_count(); ++i)
+    s.args().append("values", tbl()->lookup(node->values(i)));
+  s.args().append("values_count", pepper::str(node->values_count()));
+  s.args().append("axis", pepper::str(node->axis()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CirclePad *node, locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
@@ -403,7 +471,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleRsqrt *node, locop::Nod
   return true;
 }
 
-// TODO TFLSoftmax
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSoftmax *node, locop::NodeSummary &s) const
+{
+  s.args().append("logits", tbl()->lookup(node->logits()));
+  s.args().append("beta", pepper::str(node->beta()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSqrt *node, locop::NodeSummary &s) const
 {

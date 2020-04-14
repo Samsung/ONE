@@ -15,81 +15,68 @@
  */
 
 #include "luci/Import/Nodes/CircleReshape.h"
-#include "luci/Import/GraphBuilderContext.h"
 
+#include <luci/IR/Nodes/CircleConst.h>
 #include <luci/IR/Nodes/CircleReshape.h>
-
-#include <oops/UserExn.h>
-#include <stdex/Memory.h>
-
-#include <cassert>
 
 namespace luci
 {
 
-bool CircleReshapeGraphBuilder::validate(const circle::Operator *op) const
+bool CircleReshapeGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = *op->inputs();
-  const auto &outputs = *op->outputs();
-
-  if (inputs.size() != 1 && inputs.size() != 2)
+  if (args.op.inputs.size() != 1 && args.op.inputs.size() != 2)
     return false;
 
-  if (outputs.size() != 1)
+  if (args.op.outputs.size() != 1)
     return false;
 
   return true;
 }
 
-void CircleReshapeGraphBuilder::build(const circle::Operator *op,
-                                      GraphBuilderContext *context) const
+static void setup_shape_attribute(const std::vector<int32_t> &shape, CircleReshape *node)
 {
-  auto graph = context->graph();
-  auto reader = context->reader();
-  auto nodefinder = context->nodefinder();
-
-  auto tensors = reader->tensors();
-  const auto &inputs = *op->inputs();
-  const auto &outputs = *op->outputs();
-
-  assert(outputs.size() == 1);
-  const circle::Tensor *output_tensor = tensors->Get(outputs[0]);
-
-  // Create the node.
-  auto reshape_node = graph->nodes()->create<CircleReshape>();
-  reshape_node->name(tensor_name(output_tensor));
-
-  // Set node's quantization parameters, if any.
-  auto quantization = tensor_quantization(output_tensor);
-  if (quantization)
+  node->newShape()->rank(shape.size());
+  for (uint32_t i = 0; i < shape.size(); ++i)
   {
-    auto quantparam = luci_quantparam(quantization);
-    if (quantparam)
-      reshape_node->quantparam(std::move(quantparam));
+    node->newShape()->dim(i) = shape[i];
+  }
+}
+
+static CircleNode *create_shape_node(const std::vector<int32_t> &shape, loco::Graph *graph)
+{
+  auto *shape_node = graph->nodes()->create<luci::CircleConst>();
+  shape_node->dtype(loco::DataType::S32);
+  shape_node->rank(1);
+  shape_node->dim(0) = shape.size();
+  shape_node->size<loco::DataType::S32>(shape.size());
+  for (uint32_t i = 0; i < shape.size(); ++i)
+  {
+    shape_node->at<loco::DataType::S32>(i) = shape[i];
+  }
+  return shape_node;
+}
+
+CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
+                                                  const std::vector<CircleNode *> &inputs,
+                                                  loco::Graph *graph) const
+{
+  // If the second input is not provided, generate it based on the value of the attribute.
+  // TODO Presence of the second input is the current requirement of the IR.
+  auto *shape_node = (inputs.size() == 2) ? inputs[1] : nullptr;
+  if (shape_node == nullptr)
+  {
+    const auto *options = op.builtin_options.AsReshapeOptions();
+    shape_node = create_shape_node(options->new_shape, graph);
   }
 
-  // Set node's inputs. There may be one or two, but the IR requires 2 atm.
-  assert(inputs.size() == 1 || inputs.size() == 2);
-  if (inputs.size() != 2)
-    throw oops::UserExn("Unsupported number of inputs", inputs.size());
+  auto *node = graph->nodes()->create<CircleReshape>();
+  node->tensor(inputs[0]);
+  node->shape(shape_node);
 
-  CircleNode *tensor_node = nodefinder->node(inputs[0]);
-  assert(tensor_node != nullptr);
-  reshape_node->tensor(tensor_node);
+  const auto *options = op.builtin_options.AsReshapeOptions();
+  setup_shape_attribute(options->new_shape, node);
 
-  CircleNode *shape_node = nodefinder->node(inputs[1]);
-  assert(shape_node != nullptr);
-  reshape_node->shape(shape_node);
-
-  // Configure options.
-  const circle::ReshapeOptions *options = op->builtin_options_as_ReshapeOptions();
-  const auto &new_shape = *options->new_shape();
-  reshape_node->newShape()->rank(new_shape.size());
-  for (uint32_t i = 0; i < new_shape.size(); ++i)
-    reshape_node->newShape()->dim(i) = new_shape[i];
-
-  // Register node's only output.
-  nodefinder->enroll(outputs[0], reshape_node);
+  return node;
 }
 
 } // namespace luci

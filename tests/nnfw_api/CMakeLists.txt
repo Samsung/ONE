@@ -2,10 +2,10 @@ if (NOT BUILD_RUNTIME_NNFW_API_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNFW_API_TEST)
 
-if (NOT BUILD_NEURUN)
+if (NOT BUILD_ONERT)
   message(STATUS "Skip build NNFW API test: no runtime build")
   return()
-endif(NOT BUILD_NEURUN)
+endif(NOT BUILD_ONERT)
 
 nnfw_find_package(GTest)
 
@@ -24,14 +24,9 @@ target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)
 
 install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest)
 
-#set(SKIPLIST_FILE_NAME ${RUNTIME_NNFW_API_TEST}.skip.${TARGET_PLATFORM})
-#install(FILES ${SKIPLIST_FILE_NAME}
-#        DESTINATION unittest
-#        RENAME ${RUNTIME_NNFW_API_TEST}.skip
-#        OPTIONAL)
-
-# Install skiplist file for target as backup
-#FILE(GLOB SKIPLIST_TARGET ${CMAKE_CURRENT_SOURCE_DIR}/${RUNTIME_NNFW_API_TEST}.skip.${TARGET_PLATFORM}*)
-#FILE(GLOB SKIPLIST_NOARCH ${CMAKE_CURRENT_SOURCE_DIR}/${RUNTIME_NNFW_API_TEST}.skip.noarch.*)
-#list(APPEND SKIPLIST_ALL_RUNTIME ${SKIPLIST_TARGET} ${SKIPLIST_NOARCH})
-#install(FILES ${SKIPLIST_ALL_RUNTIME} DESTINATION unittest OPTIONAL)
+# Install sample models for test
+set(RUNTIME_NNFW_API_TEST_MODEL_DIR "${RUNTIME_NNFW_API_TEST}_models")
+file(MAKE_DIRECTORY ${RUNTIME_NNFW_API_TEST_MODEL_DIR})
+install(DIRECTORY ../../nnpackage/examples/one_op_in_tflite
+        DESTINATION unittest/${RUNTIME_NNFW_API_TEST_MODEL_DIR}
+        OPTIONAL)

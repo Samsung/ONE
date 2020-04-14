@@ -50,7 +50,7 @@ $ ./tests/scripts/test-driver.sh \
 ### Run nnapi_test with various tflite models
 - `nnapi_test` runs tflite in two ways and compares the result:
     1. tflite interpreter
-    2. `libneuralnetworks.so`, which could be PureACL or neurun depending on linked to nnapi_test
+    2. `libneuralnetworks.so`, which could be PureACL or onert depending on linked to nnapi_test
 - Driver : `nnapi_test`
 - Driver source location : `tools/nnapi_test/`
 - Usage :

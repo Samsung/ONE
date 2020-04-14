@@ -33,7 +33,7 @@ function Usage()
     echo "--frameworktest_list_file - filepath of model list for test"
     echo ""
     echo "Following option is only needed when you want to test benchmark."
-    echo "--benchmark_neurun_op     - (default=off) run benchmark per operation on neurun"
+    echo "--benchmark_onert_op     - (default=off) run benchmark per operation on onert"
     echo ""
     echo "etc."
     echo "--framework_driverbin     - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
@@ -57,7 +57,7 @@ ALLTEST_ON="true"
 UNITTEST_ON="false"
 FRAMEWORKTEST_ON="false"
 VERIFICATION_ON="false"
-BENCHMARK_NEURUN_OP_ON="false"
+BENCHMARK_ONERT_OP_ON="false"
 REPORT_DIR=""
 
 for i in "$@"
@@ -104,9 +104,9 @@ do
             ALLTEST_ON="false"
             VERIFICATION_ON="true"
             ;;
-        --benchmark_neurun_op)
+        --benchmark_onert_op)
             ALLTEST_ON="false"
-            BENCHMARK_NEURUN_OP_ON="true"
+            BENCHMARK_ONERT_OP_ON="true"
             ;;
         --reportdir=*)
             REPORT_DIR=${i#*=}
@@ -180,7 +180,7 @@ if [ "$ALLTEST_ON" == "true" ] || [ "$VERIFICATION_ON" == "true" ]; then
         --frameworktest_list_file=${FRAMEWORKTEST_LIST_FILE:-}
 fi
 
-if [ "$BENCHMARK_NEURUN_OP_ON" == "true" ]; then
+if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
     if [ -z "$BENCHMARK_DRIVER_BIN" ]; then
         DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_benchmark
     else
@@ -196,10 +196,10 @@ if [ "$BENCHMARK_NEURUN_OP_ON" == "true" ]; then
 fi
 
 # Make json file. Actually, this process is only needed on CI. That's why it is in test-driver.sh.
-if [ "$BENCHMARK_NEURUN_OP_ON" == "true" ]; then
+if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
     # functions to fill json with benchmark results
     source $ARTIFACT_PATH/tests/scripts/print_to_json.sh
-    if [ "$BENCHMARK_NEURUN_OP_ON" == "true" ]; then
+    if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
         print_to_json $REPORT_DIR/benchmark_op $REPORT_DIR "benchmark_op_result.json"
     else
         print_to_json $REPORT_DIR/benchmark $REPORT_DIR "benchmark_result.json"

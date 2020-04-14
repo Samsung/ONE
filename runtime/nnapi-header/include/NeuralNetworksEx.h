@@ -268,7 +268,7 @@ typedef enum {
    * ANEURALNETWORKS_NOT_EQUAL_EX operation is DEPRECATED
    * Use ANEURALNETWORKS_NOT_EQUAL instead
    *
-  */
+   */
   ANEURALNETWORKS_NOT_EQUAL_EX = 50017,
 
   /**

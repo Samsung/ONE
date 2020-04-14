@@ -5,7 +5,7 @@
 message(STATUS "Building for ARMv7l Linux")
 
 # include linux common
-include("cmake/buildtool/config/config_linux.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/config_linux.cmake")
 
 # addition for arm-linux
 set(FLAGS_COMMON ${FLAGS_COMMON}

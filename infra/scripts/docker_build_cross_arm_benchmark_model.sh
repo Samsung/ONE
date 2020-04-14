@@ -43,7 +43,7 @@ pushd $ROOT_PATH > /dev/null
 # TODO use command instead of makefile
 export DOCKER_ENV_VARS
 export DOCKER_VOLUMES
-CMD="export OPTIONS='-DBUILD_PURE_ARM_COMPUTE=ON -DBUILD_NEURUN=OFF -DBUILD_TFLITE_BENCHMARK_MODEL=ON -DBUILD_TFLITE_LOADER=OFF' && \
+CMD="export OPTIONS='-DBUILD_PURE_ARM_COMPUTE=ON -DBUILD_ONERT=OFF -DBUILD_TFLITE_BENCHMARK_MODEL=ON -DBUILD_TFLITE_LOADER=OFF' && \
      cp -nv Makefile.template Makefile && \
      make all install build_test_suite"
 ./nnfw docker-run bash -c "$CMD"

@@ -17,47 +17,36 @@
 #ifndef __BUILD_BUITIN_OPTIONS_H__
 #define __BUILD_BUITIN_OPTIONS_H__
 
-#include "DataLookup.h"
+// NOTE please add new option headers in alphabetical order
 
-namespace tflite2circle
-{
-
-flatbuffers::Offset<circle::Conv2DOptions>
-build_circle_Conv2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::DepthwiseConv2DOptions>
-build_circle_DepthwiseConv2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::Pool2DOptions>
-build_circle_Pool2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::ConcatenationOptions>
-build_circle_ConcatenationOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::AddOptions> build_circle_AddOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
-
-flatbuffers::Offset<circle::ReshapeOptions>
-build_circle_ReshapeOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::PadOptions> build_circle_PadOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
-
-flatbuffers::Offset<circle::SubOptions> build_circle_SubOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
-
-flatbuffers::Offset<circle::DivOptions> build_circle_DivOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
-
-flatbuffers::Offset<circle::SoftmaxOptions>
-build_circle_SoftmaxOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::FullyConnectedOptions>
-build_circle_FullyConnectedOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-flatbuffers::Offset<circle::ArgMaxOptions>
-build_circle_ArgMaxOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
-
-} // namespace tflite2circle
+#include "BuildBuiltinOptions/AbsOptions.h"
+#include "BuildBuiltinOptions/AddOptions.h"
+#include "BuildBuiltinOptions/ArgMaxOptions.h"
+#include "BuildBuiltinOptions/CastOptions.h"
+#include "BuildBuiltinOptions/ConcatenationOptions.h"
+#include "BuildBuiltinOptions/Conv2DOptions.h"
+#include "BuildBuiltinOptions/CosOptions.h"
+#include "BuildBuiltinOptions/DepthwiseConv2DOptions.h"
+#include "BuildBuiltinOptions/DivOptions.h"
+#include "BuildBuiltinOptions/EqualOptions.h"
+#include "BuildBuiltinOptions/ExpandDimsOptions.h"
+#include "BuildBuiltinOptions/FillOptions.h"
+#include "BuildBuiltinOptions/FullyConnectedOptions.h"
+#include "BuildBuiltinOptions/GreaterEqualOptions.h"
+#include "BuildBuiltinOptions/LogicalNotOptions.h"
+#include "BuildBuiltinOptions/LogicalOrOptions.h"
+#include "BuildBuiltinOptions/MulOptions.h"
+#include "BuildBuiltinOptions/NotEqualOptions.h"
+#include "BuildBuiltinOptions/PackOptions.h"
+#include "BuildBuiltinOptions/PadOptions.h"
+#include "BuildBuiltinOptions/Pool2DOptions.h"
+#include "BuildBuiltinOptions/ReducerOptions.h"
+#include "BuildBuiltinOptions/ReshapeOptions.h"
+#include "BuildBuiltinOptions/ShapeOptions.h"
+#include "BuildBuiltinOptions/SoftmaxOptions.h"
+#include "BuildBuiltinOptions/SplitOptions.h"
+#include "BuildBuiltinOptions/SqueezeOptions.h"
+#include "BuildBuiltinOptions/SubOptions.h"
+#include "BuildBuiltinOptions/TransposeOptions.h"
 
 #endif // __BUILD_BUITIN_OPTIONS_H__

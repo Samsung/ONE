@@ -96,7 +96,7 @@ function profile_for_he_shed()
     export USE_SCHEDULER=1
     export PROFILING_MODE=1
     export EXECUTOR="Dataflow"
-    export NEURUN_LOG_ENABLE=1
+    export ONERT_LOG_ENABLE=1
 
     rm "exec_time.json" 2>/dev/null
     for ((j = 1 ; j <= $PROFILING_RUN_CNT ; j++)); do
@@ -115,7 +115,7 @@ function profile_for_he_shed()
         # Save the exec_time.json of each run
         cp "exec_time.json" $REPORT_MODEL_DIR/"exec_time_$j.json"
     done
-    unset USE_SCHEDULER PROFILING_MODE EXECUTOR NEURUN_LOG_ENABLE
+    unset USE_SCHEDULER PROFILING_MODE EXECUTOR ONERT_LOG_ENABLE
 }
 
 function run_with_he_scheduler()
@@ -126,22 +126,22 @@ function run_with_he_scheduler()
     local MODEL=$4
     local EXECUTOR=$5
 
-    LOG_FILE=$REPORT_MODEL_DIR/tflite_neurun_with_he_scheduler_in_$EXECUTOR.txt
+    LOG_FILE=$REPORT_MODEL_DIR/tflite_onert_with_he_scheduler_in_$EXECUTOR.txt
     export EXECUTOR=$EXECUTOR
     export GRAPH_DOT_DUMP=1
     export USE_SCHEDULER=1
-    export NEURUN_LOG_ENABLE=1
+    export ONERT_LOG_ENABLE=1
 
-    print_with_dots "TFLite neurun $EXECUTOR with HEScheduler"
+    print_with_dots "TFLite onert $EXECUTOR with HEScheduler"
 
     RESULT=$(get_result_of_benchmark_test $RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
     echo "$RESULT ms"
 
     mv "after_lower.dot" $REPORT_MODEL_DIR/"after_lower_$EXECUTOR.dot"
-    unset EXECUTOR GRAPH_DOT_DUMP USE_SCHEDULER NEURUN_LOG_ENABLE
+    unset EXECUTOR GRAPH_DOT_DUMP USE_SCHEDULER ONERT_LOG_ENABLE
 }
 
-function run_neurun_with_all_config()
+function run_onert_with_all_config()
 {
     local MODEL=$1
     local REPORT_MODEL_DIR=$2
@@ -173,7 +173,7 @@ function run_neurun_with_all_config()
         fi
         for backend in $BACKEND_LIST; do
             export OP_BACKEND_ALLOPS=$backend
-            run_benchmark_and_print "tflite_neurun_"$executor"_executor_$backend" "TFLite neurun $executor Executor $backend"\
+            run_benchmark_and_print "tflite_onert_"$executor"_executor_$backend" "TFLite onert $executor Executor $backend"\
                                     $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH
         done
     done
@@ -188,7 +188,7 @@ function run_benchmark_test()
     local REPORT_MODEL_DIR=
 
     export COUNT=5
-    export NEURUN_LOG_ENABLE=1
+    export ONERT_LOG_ENABLE=1
     echo
     echo "============================================"
     echo
@@ -217,12 +217,12 @@ function run_benchmark_test()
         unset USE_NNAPI
         run_benchmark_and_print "tflite_cpu" "TFLite CPU" $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH
 
-        # run neurun
+        # run onert
         if [ "$TEST_OP" == "true" ]; then
           # Operation test don't need to test each scheduler
-          run_neurun_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "Linear" "$BACKEND_LIST"
+          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "Linear" "$BACKEND_LIST"
         else
-          run_neurun_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "$EXECUTORS" "$BACKEND_LIST"
+          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "$EXECUTORS" "$BACKEND_LIST"
         fi
 
         if [[ $i -ne $(echo $BENCHMARK_MODEL_LIST | wc -w)-1 ]]; then
@@ -246,5 +246,5 @@ rm -rf $BENCHMARK_MODELS_FILE
 
 echo ""
 # print the result AND append to log file
-run_benchmark_test 2>&1 | tee -a neurun_benchmarks.txt
+run_benchmark_test 2>&1 | tee -a onert_benchmarks.txt
 echo ""

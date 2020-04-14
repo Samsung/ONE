@@ -56,7 +56,8 @@ GeneratedTests.relu1*
 GeneratedTests.relu6*
 GeneratedTests.resize_bilinear*
 GeneratedTests.rnn*
-GeneratedTests.rsqrt*
+GeneratedTests.rsqrt
+GeneratedTests.rsqrt_relaxed
 GeneratedTests.slice_5
 GeneratedTests.slice_6
 GeneratedTests.slice_7
@@ -64,10 +65,11 @@ GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized*
 GeneratedTests.space_to_batch*
 GeneratedTests.space_to_depth*
-GeneratedTests.split*
+GeneratedTests.split_*nt*
 GeneratedTests.sqrt*
 GeneratedTests.squared_difference_ex*
-GeneratedTests.strided_slice*
+GeneratedTests.strided_slice_*quant*
+GeneratedTests.strided_slice_*qaunt*
 GeneratedTests.strided_slice_ex*
 GeneratedTests.sub_quant*
 GeneratedTests.sub_v1_2_broadcast_quant8

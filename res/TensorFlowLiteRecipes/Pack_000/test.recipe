@@ -1,0 +1,28 @@
+operand {
+  name: "input"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 dim: 3 }
+}
+operand {
+  name: "input_1"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 dim: 3 }
+}
+operand {
+  name: "stack_4d"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 dim: 4 dim: 3 }
+}
+operation {
+  type: "Pack"
+  pack_options {
+    values_count: 2,
+    axis: 1
+  }
+  input: "input"
+  input: "input_1"
+  output: "stack_4d"
+}
+input: "input"
+input: "input_1"
+output: "stack_4d"

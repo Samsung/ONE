@@ -13,5 +13,3 @@ option(BUILD_NNPACKAGE_RUN "Build nnpackge_run" OFF)
 option(BUILD_TFLITE_RUN "Build tflite-run" OFF)
 option(BUILD_TFLITE_LOADER_TEST_TOOL "Build tflite loader testing tool" OFF)
 option(BUILD_LOGGING "Build logging runtime" OFF)
-
-option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)

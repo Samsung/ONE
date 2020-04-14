@@ -44,7 +44,7 @@ struct CircleNode : public loco::Node
   NodeName name(void) const { return _name; }
   void name(const NodeName &name) { _name = name; }
 
-  CircleQuantParam *quantparam(void) { return _quantparam.get(); }
+  CircleQuantParam *quantparam(void) const { return _quantparam.get(); }
   void quantparam(std::unique_ptr<CircleQuantParam> &&quantparam)
   {
     _quantparam = std::move(quantparam);

@@ -30,10 +30,25 @@ namespace luci
 class GraphBuilder
 {
 public:
-  virtual bool validate(const circle::Operator *) const = 0;
-  virtual void build(const circle::Operator *, GraphBuilderContext *) const = 0;
+  struct ValidateArgs
+  {
+    ValidateArgs(const circle::OperatorT &o, const CircleReader &r) : op(o), reader(r) {}
 
-  virtual ~GraphBuilder() {}
+    const circle::OperatorT &op;
+    const CircleReader &reader;
+  };
+
+public:
+  virtual ~GraphBuilder() = default;
+
+  virtual bool validate(const ValidateArgs &) const = 0;
+
+  void build(const circle::OperatorT &op, GraphBuilderContext *context) const;
+
+private:
+  virtual CircleNode *build_node(const circle::OperatorT &op,
+                                 const std::vector<CircleNode *> &inputs,
+                                 loco::Graph *graph) const = 0;
 };
 
 } // namespace luci

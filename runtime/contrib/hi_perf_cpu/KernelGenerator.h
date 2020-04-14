@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __NEURUN_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__
-#define __NEURUN_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__
+#ifndef __ONERT_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__
+#define __ONERT_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__
 
 #include <backend/IKernelGenerator.h>
 
 #include "ir/Operands.h"
 #include "TensorBuilder.h"
 
-namespace neurun
+namespace onert
 {
 namespace backend
 {
@@ -42,6 +42,6 @@ private:
 
 } // namespace hi_perf_cpu
 } // namespace backend
-} // namespace neurun
+} // namespace onert
 
-#endif // __NEURUN_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__
+#endif // __ONERT_BACKEND_HI_PERF_CPU_KERNEL_GENERATOR_H__

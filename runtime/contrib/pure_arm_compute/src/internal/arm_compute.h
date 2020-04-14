@@ -68,7 +68,7 @@ public:
 };
 
 } // namespace operand
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 #include "internal/Model.h"
@@ -131,7 +131,7 @@ private:
 };
 
 } // namespace operand
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 #include <arm_compute/runtime/IFunction.h>
@@ -192,13 +192,14 @@ public:
    * @return The operation index as reference
    */
   int &op_idx() { return _op_idx; }
+
 private:
   int _op_idx;
 #endif
 };
 
 } // namespace op
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 namespace internal
@@ -252,7 +253,7 @@ private:
 };
 
 } // namespace op
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 namespace internal
@@ -312,7 +313,7 @@ private:
   op::Sequence _ops;
 };
 
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 #include <arm_compute/core/ITensor.h>
@@ -331,7 +332,7 @@ bool isGpuMode();
 #define CAST_CL(tensor) static_cast<::arm_compute::CLTensor *>(tensor)
 #define CAST_NE(tensor) static_cast<::arm_compute::Tensor *>(tensor)
 
-} // namepsace arm_compute
+} // namespace arm_compute
 } // namespace internal
 
 #endif // __INTERNAL_ARM_COMPUTE_H__

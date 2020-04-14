@@ -28,40 +28,6 @@
 namespace luci
 {
 
-/*
- * @brief  CircleNode to circle::Operator
- *         To find circle::Operator from CircleNode
- */
-class NodeOpFinder
-{
-public:
-  void enroll(CircleNode *node, const circle::Operator *op);
-
-  const circle::Operator *op(CircleNode *node) const;
-
-private:
-  using MapNodeOperator_t = std::map<CircleNode *, const circle::Operator *>;
-
-  MapNodeOperator_t _table;
-};
-
-/*
- * @brief  CircleNode to circle::Tensor
- *         To find circle::Tensor from CircleNode
- */
-class NodeTensorFinder
-{
-public:
-  void enroll(CircleNode *node, const circle::Tensor *tensor);
-
-  const circle::Tensor *tensor(CircleNode *node) const;
-
-private:
-  using MapNodeTensor_t = std::map<CircleNode *, const circle::Tensor *>;
-
-  MapNodeTensor_t _table;
-};
-
 using TensorIndex = int32_t;
 
 /*
@@ -81,53 +47,14 @@ private:
   MapIndexNode_t _table;
 };
 
-class GraphBuilderContext;
-
-/**
- * @brief Interface to connect the graph
- */
-class GraphUpdate
-{
-public:
-  virtual ~GraphUpdate() = default;
-
-public:
-  /**
-   * @brief  Do the graph input connections using the SymbolTable
-   */
-  virtual void update(GraphBuilderContext *) = 0;
-};
-
-/**
- * @brief Class to store GraphUpdate objects
- */
-class UpdateQueue final
-{
-public:
-  /**
-   * @brief  Registers GraphUpdate objects
-   */
-  void enroll(std::unique_ptr<GraphUpdate> &&update);
-
-public:
-  using Queue = std::vector<std::unique_ptr<GraphUpdate>>;
-
-  const Queue &queue() const { return _queue; }
-
-private:
-  Queue _queue;
-};
-
 /**
  * @brief Class to store context to build loco graph IR from TensorFlow
  */
 class GraphBuilderContext
 {
 public:
-  GraphBuilderContext(loco::Graph *g, CircleReader *reader, NodeOpFinder *nofinder,
-                      NodeTensorFinder *ntfinder, IndexNodeFinder *infinder, UpdateQueue *updates)
-      : _g(g), _reader(reader), _nodeopfinder(nofinder), _nodetensorfinder(ntfinder),
-        _indexnodefinder(infinder), _updates(updates)
+  GraphBuilderContext(loco::Graph *g, CircleReader *reader, IndexNodeFinder *nodefinder)
+      : _g(g), _reader(reader), _indexnodefinder(nodefinder)
   {
     // DO NOTHING
   }
@@ -139,18 +66,12 @@ public:
   loco::Graph *graph() { return _g; }
   CircleReader *reader() { return _reader; }
 
-  NodeOpFinder *opfinder(void) { return _nodeopfinder; }
-  NodeTensorFinder *tensorfinder(void) { return _nodetensorfinder; }
-  IndexNodeFinder *nodefinder(void) { return _indexnodefinder; }
-  UpdateQueue *updates() { return _updates; }
+  IndexNodeFinder *nodefinder() { return _indexnodefinder; }
 
 private:
   loco::Graph *_g;
   CircleReader *_reader;
-  NodeOpFinder *_nodeopfinder;
-  NodeTensorFinder *_nodetensorfinder;
   IndexNodeFinder *_indexnodefinder;
-  UpdateQueue *_updates;
 };
 
 } // namespace luci

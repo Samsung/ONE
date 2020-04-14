@@ -113,6 +113,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
 
     // filler for weights, bias and so on
     std::vector<int32_t> expvalues;
+    std::vector<float> expfvalues;
     if (tflite_import.get_tensor_filler(i))
     {
       tflchef::TensorFiller *filler = operand->mutable_filler();
@@ -126,6 +127,17 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
       tflchef::TensorFiller *filler = operand->mutable_filler();
       filler->set_tag("explicit");
       for (auto value : expvalues)
+      {
+        std::ostringstream ss;
+        ss << value;
+        filler->add_arg(ss.str());
+      }
+    }
+    else if (tflite_import.get_tensor_filler(i, expfvalues))
+    {
+      tflchef::TensorFiller *filler = operand->mutable_filler();
+      filler->set_tag("explicit");
+      for (auto value : expfvalues)
       {
         std::ostringstream ss;
         ss << value;

@@ -27,6 +27,10 @@ namespace
 
 struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataType>
 {
+  // TODO Given a tensor x of complex numbers, Abs operation returns a tensor of type float32 or
+  // float64.
+  loco::DataType visit(const luci::CircleAbs *node) final { return loco::dtype_get(node->x()); }
+
   loco::DataType visit(const luci::CircleAdd *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleArgMax *node) final { return node->output_type(); }
@@ -54,6 +58,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->input());
   }
 
+  loco::DataType visit(const luci::CircleCos *node) final { return loco::dtype_get(node->x()); }
+
   loco::DataType visit(const luci::CircleDepthwiseConv2D *node) final
   {
     return loco::dtype_get(node->input());
@@ -61,9 +67,21 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleDiv *node) final { return loco::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleEqual *) final { return loco::DataType::BOOL; }
+
   loco::DataType visit(const luci::CircleFullyConnected *node) final
   {
     return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleLogicalNot *node) final
+  {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleLogicalOr *node) final
+  {
+    return loco::dtype_get(node->x());
   }
 
   loco::DataType visit(const luci::CircleMaximum *node) final { return loco::dtype_get(node->x()); }
@@ -76,6 +94,18 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleMean *node) final
   {
     return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CirclePack *node) final
+  {
+    // Only support CirclePack with one or more inputs
+    assert(node->values_count() > 0);
+
+    auto first_value_type = loco::dtype_get(node->values(0));
+    for (uint32_t i = 1; i < node->values_count(); ++i)
+      assert(first_value_type == loco::dtype_get(node->values(i)));
+
+    return first_value_type;
   }
 
   loco::DataType visit(const luci::CirclePad *node) final { return loco::dtype_get(node->input()); }
@@ -99,7 +129,10 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleRsqrt *node) final { return loco::dtype_get(node->x()); }
 
-  // TODO CircleSoftmax
+  loco::DataType visit(const luci::CircleSoftmax *node) final
+  {
+    return loco::dtype_get(node->logits());
+  }
 
   loco::DataType visit(const luci::CircleSqrt *node) final { return loco::dtype_get(node->x()); }
 

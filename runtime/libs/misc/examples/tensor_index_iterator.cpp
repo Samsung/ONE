@@ -31,8 +31,8 @@ void test_iterate(void)
 
   array.fill(0);
 
-  using nnfw::misc::tensor::iterate;
   using nnfw::misc::tensor::Index;
+  using nnfw::misc::tensor::iterate;
 
   iterate(shape) << [&](const Index &index) {
     assert(index.rank() == shape.rank());

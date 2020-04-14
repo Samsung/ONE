@@ -639,6 +639,15 @@ void gather(Tensor &out, const char *params, const Tensor &data, const Tensor &i
          shapeToRuntimeShape(out.getShape()), out.getData());
 }
 
+void broadcast(Tensor &out, const char *params, const Tensor &in)
+{
+  Shape out_shape = deserializeShape(params);
+  out.reshape(out_shape);
+
+  Broadcast4DSlow(shapeToRuntimeShape(in.getShape()), in.getData(),
+                  shapeToRuntimeShape(out_shape), out.getData());
+}
+
 void constant(Tensor& out, const char* params) {
   out = deserializeTensor(params);
 }

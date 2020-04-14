@@ -221,7 +221,7 @@ struct DepthwiseConvParams
 
 struct FullyConnectedParams
 {
-  FusedActivationFunctionType activation;
+  FusedActivationFunctionType activation{FusedActivationFunctionType::kNone};
   // uint8 inference params.
   // TODO(b/65838351): Use smaller types if appropriate.
   int32_t input_offset;
@@ -281,6 +281,28 @@ struct SliceParams
   int32_t begin[4];
   int8_t size_count;
   int32_t size[4];
+};
+
+struct StridedSliceParams
+{
+  int8_t start_indices_count;
+  int16_t start_indices[4];
+  int8_t stop_indices_count;
+  int16_t stop_indices[4];
+  int8_t strides_count;
+  int16_t strides[4];
+
+  int16_t begin_mask;
+  int16_t ellipsis_mask;
+  int16_t end_mask;
+  int16_t new_axis_mask;
+  int16_t shrink_axis_mask;
+};
+
+struct SplitParams
+{
+  uint16_t num_split;
+  int16_t axis;
 };
 
 } // namespace cker

@@ -105,7 +105,7 @@ for i in "${model_lists[@]}"; do
   CPU_CMD="BACKENDS=cpu ${CMD}"
   echo "${CPU_CMD}"
   echo "" >> ${outfile}
-  echo "neurun cpu" >> ${outfile}
+  echo "onert cpu" >> ${outfile}
   eval "${CPU_CMD}"
 
   sleep 10 # for avoiding cpu overheated
@@ -114,7 +114,7 @@ for i in "${model_lists[@]}"; do
   NEON_CMD="BACKENDS=acl_neon ${CMD}"
   echo "${NEON_CMD}"
   echo "" >> ${outfile}
-  echo "neurun acl_neon" >> ${outfile}
+  echo "onert acl_neon" >> ${outfile}
   eval "${NEON_CMD}"
 
   sleep 10 # for avoiding cpu overheated
@@ -123,7 +123,7 @@ for i in "${model_lists[@]}"; do
   CL_CMD="BACKENDS=acl_cl ${CMD}"
   echo "${CL_CMD}"
   echo "" >> ${outfile}
-  echo "neurun acl_cl" >> ${outfile}
+  echo "onert acl_cl" >> ${outfile}
   eval "${CL_CMD}"
 
   echo "" >> ${outfile}

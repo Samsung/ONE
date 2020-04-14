@@ -86,8 +86,8 @@ bool TfLiteInterpMatchApp::compareSingleTensorView(const nnfw::tflite::TensorVie
   std::vector<nnfw::misc::tensor::Diff<T>> diffs;
   assert(expected.shape() == obtained.shape());
 
-  using nnfw::misc::tensor::zip;
   using nnfw::misc::tensor::Index;
+  using nnfw::misc::tensor::zip;
 
   zip(expected.shape(), expected, obtained)
       << [&](const Index &index, T expected_value, T obtained_value) {

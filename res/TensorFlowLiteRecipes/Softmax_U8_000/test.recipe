@@ -1,0 +1,22 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 1001 }
+  quant { min: -6.02353 max: 5.97647 scale: 0.0470588 zero_point: 128 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 1001 }
+  quant { min: 0 max: 0.996094 scale: 0.00390625 zero_point: 0 }
+}
+operation {
+  type: "Softmax"
+  softmax_options {
+    beta: 1.0
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

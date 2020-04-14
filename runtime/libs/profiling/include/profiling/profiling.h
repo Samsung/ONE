@@ -25,7 +25,7 @@ namespace profiling
 {
 class Profiler; // forward declaration
 }
-}
+} // namespace tflite
 
 namespace profiling
 {

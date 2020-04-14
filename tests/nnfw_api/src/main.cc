@@ -14,12 +14,42 @@
  * limitations under the License.
  */
 
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <dirent.h>
 #include <gtest/gtest.h>
+#include "model_path.h"
+
+/**
+ * @brief Function to check if test model directories exist before it actually performs the test
+ *
+ */
+void checkModels()
+{
+  std::string absolute_path = ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE);
+  DIR *dir = opendir(absolute_path.c_str());
+  if (!dir)
+  {
+    throw std::runtime_error{"Please install the nnpackge for testing: " + absolute_path};
+  }
+  closedir(dir);
+}
 
 int main(int argc, char **argv)
 {
+  ModelPath::get().init(argv[0]);
   ::testing::InitGoogleTest(&argc, argv);
-  std::cout << "Execption caught : ClassUniqueToAlwaysTrue" << std::endl;
+
+  try
+  {
+    checkModels();
+  }
+  catch (std::runtime_error &e)
+  {
+    std::cerr << e.what() << std::endl;
+    return -1;
+  }
 
   return RUN_ALL_TESTS();
 }

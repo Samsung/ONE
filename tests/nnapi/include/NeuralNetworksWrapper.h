@@ -20,15 +20,15 @@
 #ifndef __NNFW_RT_NEURAL_NETWORKS_WRAPPER_H__
 #define __NNFW_RT_NEURAL_NETWORKS_WRAPPER_H__
 
-// Fix for neurun:
+// Fix for onert:
 //  NeuralNetworks.h => NeuralNetworksShim.h
 //  Additional include NeuralNetworksExShim.h
 #include "NeuralNetworksShim.h"
 #include "NeuralNetworksExShim.h"
 
 #include <math.h>
-// Fix for neurun: use boost::optional instead of std::optional
-// TODO in neurun: introduce and use internal optional library
+// Fix for onert: use boost::optional instead of std::optional
+// TODO in onert: introduce and use internal optional library
 #include <boost/optional.hpp>
 #include <string>
 #include <vector>
@@ -104,7 +104,7 @@ struct SymmPerChannelQuantParams {
 struct OperandType {
     ANeuralNetworksOperandType operandType;
     std::vector<uint32_t> dimensions;
-    // Fix for neurun:
+    // Fix for onert:
     //  Use boost::optional instead of std::optional
     //  Default value: std::nullopt -> boost::none
     boost::optional<SymmPerChannelQuantParams> channelQuant;
@@ -275,7 +275,7 @@ class Model {
         }
     }
 
-    // Fix for neurun: addOperationEx for operation support extension (NeuralNetworksEx.h)
+    // Fix for onert: addOperationEx for operation support extension (NeuralNetworksEx.h)
     void addOperationEx(ANeuralNetworksOperationTypeEx type, const std::vector<uint32_t>& inputs,
                       const std::vector<uint32_t>& outputs) {
         if (ANeuralNetworksModel_addOperationEx(mModel, type, static_cast<uint32_t>(inputs.size()),

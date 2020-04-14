@@ -36,7 +36,7 @@ template <typename Arg, typename... Args> void _str(std::ostream &os, Arg &&arg,
   _str(os, std::forward<Args>(args)...);
 }
 
-} // namespace {anonymous}
+} // namespace
 
 namespace nnfw
 {

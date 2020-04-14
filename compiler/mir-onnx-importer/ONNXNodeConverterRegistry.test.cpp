@@ -42,13 +42,13 @@ protected:
 TEST_F(NodeConverterRegsitryTest, existing_lookup_works)
 {
   auto res = registry.lookup("dummy", 1);
-  ASSERT_EQ(res, converterV1);
+  ASSERT_EQ(res, &converterV1);
 }
 
 TEST_F(NodeConverterRegsitryTest, skipped_lookup_works)
 {
   auto res = registry.lookup("dummy", 2);
-  ASSERT_EQ(res, converterV1);
+  ASSERT_EQ(res, &converterV1);
 }
 
 TEST_F(NodeConverterRegsitryTest, first_unknown_version_works)

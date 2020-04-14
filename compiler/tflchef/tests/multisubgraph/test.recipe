@@ -1,0 +1,72 @@
+version: 1
+
+graph {
+  operand {
+    name: "ifm"
+    type: FLOAT32
+    shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  }
+  operation {
+    type: "ReLU"
+    input: "ifm"
+    output: "ofm"
+  }
+  input: "ifm"
+  output: "ofm"
+  name: "Sub_01"
+}
+
+graph {
+  operand {
+    name: "ifm"
+    type: FLOAT32
+    shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  }
+  operation {
+    type: "ReLU6"
+    input: "ifm"
+    output: "ofm"
+  }
+  input: "ifm"
+  output: "ofm"
+  name: "Sub_01"
+}
+
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
+name: "Main"

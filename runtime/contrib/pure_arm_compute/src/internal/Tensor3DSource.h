@@ -57,10 +57,10 @@ public:
    */
   void push(::arm_compute::ITensor &tensor) const override
   {
-    using ::arm_compute::Window;
-    using ::arm_compute::Iterator;
     using ::arm_compute::Coordinates;
     using ::arm_compute::execute_window_loop;
+    using ::arm_compute::Iterator;
+    using ::arm_compute::Window;
 
     Window window;
 

@@ -24,7 +24,7 @@ const std::vector<std::string> csv_header{
 #include "benchmark/CsvHeader.lst"
 };
 
-} // namespace anonymous
+} // namespace
 
 namespace benchmark
 {

@@ -1,6 +1,6 @@
-if(NOT BUILD_NEURUN)
+if(NOT BUILD_ONERT)
   return()
-endif(NOT BUILD_NEURUN)
+endif(NOT BUILD_ONERT)
 
 nnfw_find_package(FlatBuffers QUIET)
 if(NOT FlatBuffers_FOUND)

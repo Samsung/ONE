@@ -2,6 +2,8 @@
 #error "Activation function type is not defined."
 #endif
 
+// NOTE order of function follows TensorFlow lite schema.fbs 'enum ActivationFunctionType'
+
 TFL_ACTIVATION_FUNCTION(NONE)
 TFL_ACTIVATION_FUNCTION(RELU)
 TFL_ACTIVATION_FUNCTION(RELU_N1_TO_1)

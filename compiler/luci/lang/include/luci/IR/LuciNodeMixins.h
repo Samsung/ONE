@@ -72,7 +72,7 @@ public:
   {
     for (uint32_t n = 0; n < N; ++n)
     {
-      _args[n] = std::unique_ptr<loco::Use>(new loco::Use{this});
+      _args[n] = std::make_unique<loco::Use>(this);
     }
   }
 

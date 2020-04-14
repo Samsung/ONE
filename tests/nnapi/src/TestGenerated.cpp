@@ -59,25 +59,23 @@ void print(std::ostream& os, const std::map<int, std::vector<T>>& test) {
 }
 
 // Specialized for _Float16 because it requires explicit conversion.
-// Fix for neurun: comment out
-//template <>
-//void print<_Float16>(std::ostream& os, const std::map<int, std::vector<_Float16>>& test) {
-//    for_each<_Float16>(test, [&os](int idx, const std::vector<_Float16>& f) {
-//        os << "    aliased_output" << idx << ": [";
-//        for (size_t i = 0; i < f.size(); ++i) {
-//            os << (i == 0 ? "" : ", ") << +static_cast<float>(f[i]);
-//        }
-//        os << "],\n";
-//    });
-//}
+template <>
+void print<_Float16>(std::ostream& os, const std::map<int, std::vector<_Float16>>& test) {
+    for_each<_Float16>(test, [&os](int idx, const std::vector<_Float16>& f) {
+        os << "    aliased_output" << idx << ": [";
+        for (size_t i = 0; i < f.size(); ++i) {
+            os << (i == 0 ? "" : ", ") << +static_cast<float>(f[i]);
+        }
+        os << "],\n";
+    });
+}
 
 void printAll(std::ostream& os, const MixedTyped& test) {
     print(os, test.float32Operands);
     print(os, test.int32Operands);
     print(os, test.quant8AsymmOperands);
     print(os, test.quant16SymmOperands);
-    // Fix for neurun: comment out
-    //print(os, test.float16Operands);
+    print(os, test.float16Operands);
     print(os, test.bool8Operands);
     print(os, test.quant8ChannelOperands);
     print(os, test.quant16AsymmOperands);
@@ -244,7 +242,7 @@ void GeneratedTests::execute(std::function<void(Model*)> createModel,
     };
 
     mTestCompilationCaching = false;
-// Fix for neurun: Not supported feature - copmilation caching
+// Fix for onert: Not supported feature - copmilation caching
 // TODO Enable this
 #if 0
     executeInternal(dumpFile);
@@ -257,7 +255,7 @@ void GeneratedTests::SetUp() {
 #ifdef NNTEST_COMPUTE_MODE
     mOldComputeMode = Execution::setComputeMode(GetParam());
 #endif
-    // Fix for neurun: Fix file path for linux
+    // Fix for onert: Fix file path for linux
     char cacheDirTemp[] = "/tmp/TestCompilationCachingXXXXXX";
     //char cacheDirTemp[] = "/data/local/tmp/TestCompilationCachingXXXXXX";
     char* cacheDir = mkdtemp(cacheDirTemp);

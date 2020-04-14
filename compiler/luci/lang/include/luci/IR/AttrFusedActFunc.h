@@ -27,6 +27,7 @@ enum class FusedActFunc
              // prevent programming error.
   NONE,
   RELU,
+  RELU_N1_TO_1,
   RELU6
 };
 

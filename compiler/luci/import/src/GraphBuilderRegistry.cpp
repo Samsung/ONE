@@ -18,28 +18,45 @@
 
 #include "luci/Import/Nodes.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace luci
 {
 
 GraphBuilderRegistry::GraphBuilderRegistry()
 {
-  add(circle::BuiltinOperator_ADD, stdex::make_unique<CircleAddGraphBuilder>());               // 0
-  add(circle::BuiltinOperator_ARG_MAX, stdex::make_unique<CircleArgMaxGraphBuilder>());        // 56
-  add(circle::BuiltinOperator_CONV_2D, stdex::make_unique<CircleConv2DGraphBuilder>());        // 3
-  add(circle::BuiltinOperator_MAX_POOL_2D, stdex::make_unique<CircleMaxPool2DGraphBuilder>()); // 17
-  add(circle::BuiltinOperator_MEAN, stdex::make_unique<CircleMeanGraphBuilder>());             // 40
-  add(circle::BuiltinOperator_PAD, stdex::make_unique<CirclePadGraphBuilder>());               // 34
-  add(circle::BuiltinOperator_RESHAPE, stdex::make_unique<CircleReshapeGraphBuilder>());       // 22
+#define CIRCLE_NODE(OPCODE, CLASS) add(circle::BuiltinOperator_##OPCODE, std::make_unique<CLASS>());
 
-  // BuiltinOperator_AVERAGE_POOL_2D = 1,
-  // BuiltinOperator_CONCATENATION = 2,
-  // BuiltinOperator_DEPTHWISE_CONV_2D = 4,
+  CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                           // 101
+  CIRCLE_NODE(ADD, CircleAddGraphBuilder);                           // 0
+  CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                    // 56
+  CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);     // 1
+  CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);       // 2
+  CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                    // 3
+  CIRCLE_NODE(COS, CircleCosGraphBuilder);                           // 108
+  CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder); // 4
+  CIRCLE_NODE(DIV, CircleDivGraphBuilder);                           // 42
+  CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                       // 71
+  CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);    // 9
+  CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);            // 87
+  CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);              // 84
+  CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);             // 17
+  CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                         // 40
+  CIRCLE_NODE(MUL, CircleMulGraphBuilder);                           // 18
+  CIRCLE_NODE(PACK, CirclePackGraphBuilder);                         // 83
+  CIRCLE_NODE(PAD, CirclePadGraphBuilder);                           // 34
+  CIRCLE_NODE(RELU, CircleReluGraphBuilder);                         // 19
+  CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                   // 22
+  CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                       // 76
+  CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
+  CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
+  CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
+
+#undef CIRCLE_NODE
+
   // BuiltinOperator_DEQUANTIZE = 6,
   // BuiltinOperator_EMBEDDING_LOOKUP = 7,
   // BuiltinOperator_FLOOR = 8,
-  // BuiltinOperator_FULLY_CONNECTED = 9,
   // BuiltinOperator_HASHTABLE_LOOKUP = 10,
   // BuiltinOperator_L2_NORMALIZATION = 11,
   // BuiltinOperator_L2_POOL_2D = 12,
@@ -47,13 +64,10 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_LOGISTIC = 14,
   // BuiltinOperator_LSH_PROJECTION = 15,
   // BuiltinOperator_LSTM = 16,
-  // BuiltinOperator_MUL = 18,
-  // BuiltinOperator_RELU = 19,
   // BuiltinOperator_RELU_N1_TO_1 = 20,
   // BuiltinOperator_RELU6 = 21,
   // BuiltinOperator_RESIZE_BILINEAR = 23,
   // BuiltinOperator_RNN = 24,
-  // BuiltinOperator_SOFTMAX = 25,
   // BuiltinOperator_SPACE_TO_DEPTH = 26,
   // BuiltinOperator_SVDF = 27,
   // BuiltinOperator_TANH = 28,
@@ -66,9 +80,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_GATHER = 36,
   // BuiltinOperator_BATCH_TO_SPACE_ND = 37,
   // BuiltinOperator_SPACE_TO_BATCH_ND = 38,
-  // BuiltinOperator_TRANSPOSE = 39,
-  // BuiltinOperator_SUB = 41,
-  // BuiltinOperator_DIV = 42,
   // BuiltinOperator_SQUEEZE = 43,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_STRIDED_SLICE = 45,
@@ -97,23 +108,18 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
   // BuiltinOperator_TILE = 69,
   // BuiltinOperator_EXPAND_DIMS = 70,
-  // BuiltinOperator_EQUAL = 71,
   // BuiltinOperator_NOT_EQUAL = 72,
   // BuiltinOperator_LOG = 73,
   // BuiltinOperator_SUM = 74,
   // BuiltinOperator_SQRT = 75,
-  // BuiltinOperator_RSQRT = 76,
   // BuiltinOperator_SHAPE = 77,
   // BuiltinOperator_POW = 78,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_REDUCE_PROD = 81,
   // BuiltinOperator_REDUCE_MAX = 82,
-  // BuiltinOperator_PACK = 83,
-  // BuiltinOperator_LOGICAL_OR = 84,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_LOGICAL_AND = 86,
-  // BuiltinOperator_LOGICAL_NOT = 87,
   // BuiltinOperator_UNPACK = 88,
   // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_FLOOR_DIV = 90,
@@ -127,8 +133,30 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_LEAKY_RELU = 98,
   // BuiltinOperator_SQUARED_DIFFERENCE = 99,
   // BuiltinOperator_MIRROR_PAD = 100,
-  // BuiltinOperator_ABS = 101,
   // BuiltinOperator_SPLIT_V = 102,
+  // BuiltinOperator_UNIQUE = 103,
+  // BuiltinOperator_CEIL = 104,
+  // BuiltinOperator_REVERSE_V2 = 105,
+  // BuiltinOperator_ADD_N = 106,
+  // BuiltinOperator_GATHER_ND = 107,
+  // BuiltinOperator_WHERE = 109,
+  // BuiltinOperator_RANK = 110,
+  // BuiltinOperator_ELU = 111,
+  // BuiltinOperator_REVERSE_SEQUENCE = 112,
+  // BuiltinOperator_MATRIX_DIAG = 113,
+  // BuiltinOperator_QUANTIZE = 114,
+  // BuiltinOperator_MATRIX_SET_DIAG = 115,
+  // BuiltinOperator_ROUND = 116,
+  // BuiltinOperator_HARD_SWISH = 117,
+  // BuiltinOperator_IF = 118,
+  // BuiltinOperator_WHILE = 119,
+  // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,
+  // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
+  // BuiltinOperator_SCATTER_ND = 122,
+  // BuiltinOperator_SELECT_V2 = 123,
+  // BuiltinOperator_DENSIFY = 124,
+  // BuiltinOperator_SEGMENT_SUM = 125,
+  // BuiltinOperator_BATCH_MATMUL = 126,
   // BuiltinOperator_INSTANCE_NORM = 254,
 }
 

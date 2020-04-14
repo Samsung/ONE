@@ -148,7 +148,7 @@
     };
 
     auto add_one_hot_tensor_inputs_as_scalar = [subgraph, &node, &augmented_inputs,
-                                                &add_scalar_int32, &add_scalar_float32]() {
+                                                &add_scalar_float32]() {
       assert(augmented_inputs.size() == 4);
       const auto on_value_idx = node.inputs->data[2];
       const auto off_value_idx = node.inputs->data[3];

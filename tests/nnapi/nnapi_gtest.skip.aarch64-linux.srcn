@@ -53,6 +53,7 @@ GeneratedTests.reshape*
 GeneratedTests.resize_bilinear*
 GeneratedTests.rnn*
 GeneratedTests.rsqrt*
+GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.softmax*
 GeneratedTests.space_to_batch*

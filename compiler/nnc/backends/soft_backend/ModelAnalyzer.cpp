@@ -326,6 +326,8 @@ void ModelAnalyzer::visit(ops::FullyConnectedOp &op)
   appendOperationToInference(&op, "fullConnect");
 }
 
+void ModelAnalyzer::visit(ops::BroadcastOp &op) { appendOperationToInference(&op, "broadcast"); }
+
 void ModelAnalyzer::visit(ops::CappedReluOp &op) { appendOperationToInference(&op, "cappedRelu"); }
 
 void ModelAnalyzer::visit(ops::InputOp &op)

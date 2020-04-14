@@ -1,0 +1,24 @@
+operand {
+  name: "ifm1"
+  type: BOOL
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: BOOL
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: BOOL
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "LogicalOr"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"

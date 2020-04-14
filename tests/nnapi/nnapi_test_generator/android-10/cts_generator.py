@@ -106,7 +106,7 @@ namespace {spec_name} {{
 #include "{model_file}"
 }} // namespace {spec_name}\n"""
     # This regex is to remove prefix and get relative path for #include
-    # Fix for neurun: update path
+    # Fix for onert: update path
     pathRegex = r".*(tests/nnapi/src/)"
     specFileBase = os.path.basename(tg.FileNames.specFile)
     print(fileHeader.format(spec_file=specFileBase), file=model_fd)
@@ -162,7 +162,7 @@ def DumpCtsModel(model, model_fd):
             p.initializer, p.type.GetCppTypeString(), p.type.GetNumberOfElements())
         IndentedPrint(paramDef, file=model_fd)
     for op in model.operations:
-        # Fix for neurun: EX operation
+        # Fix for onert: EX operation
         if re.search('_EX$', op.optype):
             IndentedPrint("model->addOperationEx(ANEURALNETWORKS_%s, {%s}, {%s});"%(
                 op.optype, tg.GetJointStr(op.ins), tg.GetJointStr(op.outs)), file=model_fd)
@@ -210,30 +210,28 @@ def DumpMixedType(operands, feedDict):
         except KeyError as e:
             traceback.print_exc()
             sys.exit("Cannot dump tensor of type {}".format(operand.type.type))
-    # NFix for neurun: fix designated initializer (not supported on c++11)
-    #           comment out FLOAT16 type
     mixedTypeTemplate = """\
 {{ // See tools/test_generator/include/TestHarness.h:MixedTyped
   // int -> Dimensions map
-  {{{dimensions_map}}},
+  .operandDimensions = {{{dimensions_map}}},
   // int -> FLOAT32 map
-  {{{float32_map}}},
+  .float32Operands = {{{float32_map}}},
   // int -> INT32 map
-  {{{int32_map}}},
+  .int32Operands = {{{int32_map}}},
   // int -> QUANT8_ASYMM map
-  {{{uint8_map}}},
+  .quant8AsymmOperands = {{{uint8_map}}},
   // int -> QUANT16_SYMM map
-  {{{int16_map}}},
+  .quant16SymmOperands = {{{int16_map}}},
   // int -> FLOAT16 map
-  //{{{float16_map}}},
+  .float16Operands = {{{float16_map}}},
   // int -> BOOL8 map
-  {{{bool8_map}}},
+  .bool8Operands = {{{bool8_map}}},
   // int -> QUANT8_SYMM_PER_CHANNEL map
-  {{{int8_map}}},
+  .quant8ChannelOperands = {{{int8_map}}},
   // int -> QUANT16_ASYMM map
-  {{{uint16_map}}},
+  .quant16AsymmOperands = {{{uint16_map}}},
   // int -> QUANT8_SYMM map
-  {{{quant8_symm_map}}},
+  .quant8SymmOperands = {{{quant8_symm_map}}},
 }}"""
     return mixedTypeTemplate.format(
         dimensions_map=tg.GetJointStr(typedMap.get("DIMENSIONS", [])),
@@ -254,20 +252,16 @@ def DumpCtsExample(example, example_fd):
     print("std::vector<MixedTypedExample>& get_%s() {" % (example.examplesName), file=example_fd)
     print("static std::vector<MixedTypedExample> %s = {" % (example.examplesName), file=example_fd)
     for inputFeedDict, outputFeedDict in example.feedDicts:
-        # Fix designated initializer (c++11 don't support yet)
         print ('// Begin of an example', file = example_fd)
-        print ('{\n {', file = example_fd)
+        print ('{\n.operands = {', file = example_fd)
         inputs = DumpMixedType(example.model.GetInputs(), inputFeedDict)
         outputs = DumpMixedType(example.model.GetOutputs(), outputFeedDict)
         print ('//Input(s)\n%s,' % inputs , file = example_fd)
         print ('//Output(s)\n%s' % outputs, file = example_fd)
         print ('},', file = example_fd)
-        # Fix designated initializer (c++11 don't support yet)
         if example.expectedMultinomialDistributionTolerance is not None:
-          print ('%f' %
+          print ('.expectedMultinomialDistributionTolerance = %f' %
                  example.expectedMultinomialDistributionTolerance, file = example_fd)
-        else:
-          print ('0.0', file = example_fd)
         print ('}, // End of an example', file = example_fd)
     print("};", file=example_fd)
     print("return %s;" % (example.examplesName), file=example_fd)
@@ -280,7 +274,7 @@ TEST_F({test_case_name}, {test_name}) {{
     execute({namespace}::{create_model_name},
             {namespace}::{is_ignored_name},
             {namespace}::get_{examples_name}(){log_file});\n}}\n"""
-    # Fix for neurun: Remove version check
+    # Fix for onert: Remove version check
     #if example.model.version is not None:
         #testTemplate += """\
 #TEST_AVAILABLE_SINCE({version}, {test_name}, {namespace}::{create_model_name})\n"""

@@ -21,6 +21,7 @@
 #include <stdex/Memory.h>
 
 #include <cassert>
+#include <stdexcept>
 
 namespace
 {
@@ -39,9 +40,11 @@ struct GraphOutputIndexQueryServiceImpl final : public loco::GraphOutputIndexQue
   loco::GraphOutputIndex index(const loco::Node *node) const final
   {
     assert(associated(node));
-    auto push = dynamic_cast<const loco::Push *>(node);
-    assert(push != nullptr);
-    return push->index();
+    if (auto push = dynamic_cast<const loco::Push *>(node))
+    {
+      return push->index();
+    }
+    throw std::invalid_argument("node");
   }
 };
 

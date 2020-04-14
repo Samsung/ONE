@@ -26,11 +26,11 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_samsung_testaclexec_ActivityMain_RunACLJNI(JNIEnv *env, jobject)
 {
   using arm_compute::DataType;
-  using arm_compute::graph::Tensor;
-  using arm_compute::graph::TargetHint;
-  using arm_compute::graph::Graph;
   using arm_compute::TensorInfo;
   using arm_compute::TensorShape;
+  using arm_compute::graph::Graph;
+  using arm_compute::graph::TargetHint;
+  using arm_compute::graph::Tensor;
 
   arm_compute::graph::Graph graph;
   TargetHint target_hint = TargetHint::OPENCL;

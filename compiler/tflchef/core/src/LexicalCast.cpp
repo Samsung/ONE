@@ -28,3 +28,9 @@ template <> uint8_t to_number(const std::string &s)
   assert(temp <= std::numeric_limits<uint8_t>::max());
   return static_cast<uint8_t>(temp);
 }
+template <> bool to_number(const std::string &s)
+{
+  if (std::stoi(s) || s == "T" || s == "t" || s == "TRUE" || s == "true")
+    return true;
+  return false;
+}

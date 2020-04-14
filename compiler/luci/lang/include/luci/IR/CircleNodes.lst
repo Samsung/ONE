@@ -5,25 +5,37 @@
 //
 // PLEASE SORT NODE DECLS IN ALPHABETICAL ORDER
 //
+// Naming rule: Follow names in TensorFlow C++ source; same as TFDialect
+// ex) for AvgPool, tensorflow/core/ops/nn_ops.cc
+//    REGISTER_OP("AvgPool")     <-- OPCODE: AvgPool. Prefix `Circle` for CLASS name
+//        .Input("value: T")     <-- Input name is 'value'
+//
+
+CIRCLE_NODE(ABS, luci::CircleAbs)
 CIRCLE_NODE(ADD, luci::CircleAdd)
 CIRCLE_NODE(ARG_MAX, luci::CircleArgMax)
 CIRCLE_NODE(AVERAGE_POOL_2D, luci::CircleAveragePool2D)
 CIRCLE_NODE(CONCATENATION, luci::CircleConcatenation)
 CIRCLE_NODE(CONST, luci::CircleConst)
 CIRCLE_NODE(CONV_2D, luci::CircleConv2D)
+CIRCLE_NODE(COS, luci::CircleCos)
 CIRCLE_NODE(DEPTHWISE_CONV_2D, luci::CircleDepthwiseConv2D)
 CIRCLE_NODE(DIV, luci::CircleDiv)
+CIRCLE_NODE(EQUAL, luci::CircleEqual)
 CIRCLE_NODE(FULLY_CONNECTED, luci::CircleFullyConnected)
+CIRCLE_NODE(LOGICAL_NOT, luci::CircleLogicalNot)
+CIRCLE_NODE(LOGICAL_OR, luci::CircleLogicalOr)
 CIRCLE_NODE(MAXIMUM, luci::CircleMaximum)
 CIRCLE_NODE(MAX_POOL_2D, luci::CircleMaxPool2D)
 CIRCLE_NODE(MEAN, luci::CircleMean)
 CIRCLE_NODE(MUL, luci::CircleMul)
+CIRCLE_NODE(PACK, luci::CirclePack)
 CIRCLE_NODE(PAD, luci::CirclePad)
 CIRCLE_NODE(RELU, luci::CircleRelu)
 CIRCLE_NODE(RELU6, luci::CircleRelu6)
 CIRCLE_NODE(RESHAPE, luci::CircleReshape)
 CIRCLE_NODE(RSQRT, luci::CircleRsqrt)
-// TODO TFLSoftmax
+CIRCLE_NODE(SOFTMAX, luci::CircleSoftmax)
 CIRCLE_NODE(SQRT, luci::CircleSqrt)
 CIRCLE_NODE(SQUARED_DIFFERENCE, luci::CircleSquaredDifference)
 CIRCLE_NODE(SUB, luci::CircleSub)

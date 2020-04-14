@@ -41,6 +41,12 @@ int main(const int argc, char **argv)
 
   auto model = FlatBufferModel::BuildFromFile(filename, &error_reporter);
 
+  if (model == nullptr)
+  {
+    // error_reporter must have shown the error message already
+    return 1;
+  }
+
   const nnfw::tflite::FlatBufferBuilder builder(*model);
 
   try

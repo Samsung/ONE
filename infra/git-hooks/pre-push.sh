@@ -27,6 +27,6 @@ url="$2"
 REPO_PATH=$(git rev-parse --show-toplevel)
 cd $REPO_PATH
 
-CHECK_DIFF_ONLY=1 ./nnas format
+./nnas format --diff-only
 
 exit $?

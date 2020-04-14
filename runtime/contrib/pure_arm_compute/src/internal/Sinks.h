@@ -68,8 +68,8 @@ public:
     const ::internal::arm_compute::tensor::View<T> from{&tensor};
     ::internal::nnapi::tensor::View<T> into{_shape, _base, _size};
 
-    using ::nnfw::misc::tensor::iterate;
     using ::nnfw::misc::tensor::Index;
+    using ::nnfw::misc::tensor::iterate;
 
     const uint32_t rank = _shape.rank();
 

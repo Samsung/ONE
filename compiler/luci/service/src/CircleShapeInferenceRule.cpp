@@ -184,6 +184,12 @@ loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::Tensor
 class ShapeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::NodeShape>
 {
 public:
+  loco::NodeShape visit(const luci::CircleAbs *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleAdd *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -244,8 +250,13 @@ public:
     // TODO Support when CircleConcatenation has 0 input
     assert(node->numValues() > 0);
 
-    auto axis = node->axis();
     auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
+    auto axis = node->axis();
+    if (axis < 0)
+      axis += first_shape.rank();
+
+    assert(0 <= axis);
+    assert(first_shape.rank() > static_cast<uint32_t>(axis));
 
     loco::TensorShape output_shape;
 
@@ -259,7 +270,7 @@ public:
 
       for (uint32_t j = 0; j < output_shape.rank(); ++j)
       {
-        if (j == axis)
+        if (j == static_cast<uint32_t>(axis))
           output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
         else
           assert(output_shape.dim(j) == input_shape.dim(j));
@@ -331,6 +342,13 @@ public:
     return loco::NodeShape{ofm_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleCos *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleDepthwiseConv2D *node) final
   {
     auto ifm_shape = loco::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
@@ -387,24 +405,50 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleEqual *node) final
+  {
+    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFullyConnected *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
     auto weights_shape = loco::shape_get(node->weights()).as<loco::TensorShape>();
 
-    // Checking shape capability for multiplication
-    LUCI_ASSERT(input_shape.rank() == 2, "NYI for input shape rank > 2");
+    // Checking shape capability for fully connected layer
+    // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
+    // Weight: [# of units, K]
+    // Output: [D1 * D2 * ... * Dn / K, # of units]
+    LUCI_ASSERT(input_shape.rank() >= 2, "Input rank should be at least 2");
     LUCI_ASSERT(weights_shape.rank() == 2, "Incompatible weights rank for fully connected");
-    LUCI_ASSERT(input_shape.dim(1) == weights_shape.dim(1),
-                "Incompatible shapes for fully connected");
 
+    uint32_t input_size = 1;
+    for (uint32_t i = 0; i < input_shape.rank(); i++)
+    {
+      input_size = input_size * input_shape.dim(i).value();
+    }
+    const uint32_t batch_size = input_size / weights_shape.dim(1).value();
     loco::TensorShape out_shape;
     out_shape.rank(2);
-
-    out_shape.dim(0) = input_shape.dim(0);
+    out_shape.dim(0) = batch_size;
     out_shape.dim(1) = weights_shape.dim(0);
 
     return loco::NodeShape{out_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleLogicalNot *node) final
+  {
+    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleLogicalOr *node) final
+  {
+    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
   }
 
   loco::NodeShape visit(const luci::CircleMaximum *node) final
@@ -488,6 +532,49 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CirclePack *node) final
+  {
+    LUCI_ASSERT(node->values_count() > 0, "Only support one or more inputs");
+
+    auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
+    // Make sure all inputs have the same shape.
+    for (uint32_t i = 1; i < node->values_count(); ++i)
+    {
+      auto in_shape = loco::shape_get(node->values(i)).as<loco::TensorShape>();
+      LUCI_ASSERT(loco::NodeShape{first_shape} == loco::NodeShape{in_shape},
+                  "All inputs must have the same shape");
+    }
+
+    // Checking shape capability for pack layer
+    // Input: tensors [D1, D2, ... Dn]
+    // Axis: K
+    // Output: [D1, D2, ... , D_K-1, n, D_K+1, ... Dn]
+    auto axis = node->axis();
+    if (axis < 0)
+      axis += first_shape.rank() + 1;
+
+    LUCI_ASSERT(0 <= axis, "Axis is out of range");
+    LUCI_ASSERT(static_cast<uint32_t>(axis) <= first_shape.rank(), "Axis is out of range");
+
+    loco::TensorShape output_shape;
+    output_shape.rank(first_shape.rank() + 1);
+
+    uint32_t j = 0;
+    for (uint32_t i = 0; i < output_shape.rank(); ++i)
+    {
+      if (i == static_cast<uint32_t>(axis))
+      {
+        output_shape.dim(i) = node->values_count();
+      }
+      else
+      {
+        output_shape.dim(i) = first_shape.dim(j++);
+      }
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CirclePad *node) final
   {
     const loco::DataType S32 = loco::DataType::S32;
@@ -566,7 +653,6 @@ public:
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {
-        LUCI_ASSERT(const_shape_node->at<S32>(axis) > 0, "Dimension should be > 0")
         shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
       }
     }
@@ -577,7 +663,6 @@ public:
 
       for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
       {
-        LUCI_ASSERT(node->newShape()->dim(axis) > 0, "Dimension should be > 0")
         shape_by_attr.dim(axis) = node->newShape()->dim(axis);
       }
     }
@@ -585,7 +670,32 @@ public:
     LUCI_ASSERT(shape_by_input == shape_by_attr,
                 "Warning: Two new shape information mismatched for CircleReshape");
 
-    return loco::NodeShape{shape_by_input};
+    loco::TensorShape output_shape = shape_by_input;
+
+    // One of the dimensions can have special value -1, meaning its actual value should be inferred.
+    const auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
+    const uint32_t input_element_count = loco::element_count(&input_shape);
+    uint32_t output_element_count = 1;
+    uint32_t unknown_dim_index = UINT32_MAX;
+    for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
+    {
+      const uint32_t dim_value = output_shape.dim(dim_index).value();
+      if (static_cast<int>(dim_value) == -1)
+      {
+        LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
+        unknown_dim_index = dim_index;
+      }
+      else
+      {
+        output_element_count *= dim_value;
+      }
+    }
+    if (unknown_dim_index != UINT32_MAX)
+    {
+      output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
+    }
+
+    return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleRsqrt *node) final
@@ -595,7 +705,12 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  // TODO CircleSoftmax
+  loco::NodeShape visit(const luci::CircleSoftmax *node) final
+  {
+    auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
 
   loco::NodeShape visit(const luci::CircleSqrt *node) final
   {
@@ -639,8 +754,8 @@ public:
 
     for (uint32_t out_axis = 0; out_axis < output_shape.rank(); out_axis++)
     {
-      auto new_dim = perm_node->template at<loco::DataType::S32>(out_axis);
-      output_shape.dim(new_dim) = input_shape.dim(out_axis);
+      auto in_axis = perm_node->template at<loco::DataType::S32>(out_axis);
+      output_shape.dim(out_axis) = input_shape.dim(in_axis);
     }
 
     return output_shape;
@@ -651,15 +766,15 @@ public:
     auto input_shape = loco::shape_get(node->a()).as<loco::TensorShape>();
 
     auto canon_perm = dynamic_cast<loco::ConstGen *>(node->perm());
-    auto tfl_perm = dynamic_cast<luci::CircleConst *>(node->perm());
+    auto circle_perm = dynamic_cast<luci::CircleConst *>(node->perm());
 
     if (canon_perm)
     {
       return loco::NodeShape{output_shape_of_transpose(input_shape, canon_perm)};
     }
-    else if (tfl_perm)
+    else if (circle_perm)
     {
-      return loco::NodeShape{output_shape_of_transpose(input_shape, tfl_perm)};
+      return loco::NodeShape{output_shape_of_transpose(input_shape, circle_perm)};
     }
     else
       INTERNAL_EXN("perm of CircleTranspose should be either ConstGen or CircleConst");

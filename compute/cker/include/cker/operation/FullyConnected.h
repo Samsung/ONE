@@ -55,42 +55,30 @@ public:
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
                            const float *input_data, const Shape &weights_shape,
-                           const float *weights_data, const Shape &bias_shape,
-                           const float *bias_data, const Shape &output_shape, float *output_data)
+                           const float *weights_data, const Shape &, const float *bias_data,
+                           const Shape &, float *output_data)
 {
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(bias_shape);
-  const float output_activation_min = params.float_activation_min;
-  const float output_activation_max = params.float_activation_max;
-  // TODO(benoitjacob): This really should be:
-  //     const int batches = ArraySize(output_dims, 1);
-  // but the current --variable_batch hack consists in overwriting the 3rd
-  // dimension with the runtime batch size, as we don't keep track for each
-  // array of which dimension is the batch dimension in it.
-  const int output_dims_count = output_shape.DimensionsCount();
-  const int weights_dims_count = weights_shape.DimensionsCount();
-  const int batches = FlatSizeSkipDim(output_shape, output_dims_count - 1);
-  const int output_depth =
-      MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
-  const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
-  for (int b = 0; b < batches; ++b)
+  int total_input_size = input_shape.FlatSize();
+  int input_size = weights_shape.Dims(1);
+  const int batch_size = total_input_size / input_size;
+  const int num_units = weights_shape.Dims(0);
+
+  // Output = bias if bias tensor exists.
+  if (bias_data)
   {
-    for (int out_c = 0; out_c < output_depth; ++out_c)
-    {
-      float total = 0.f;
-      for (int d = 0; d < accum_depth; ++d)
-      {
-        total += input_data[b * accum_depth + d] * weights_data[out_c * accum_depth + d];
-      }
-      float bias_value = 0.0f;
-      if (bias_data)
-      {
-        bias_value = bias_data[out_c];
-      }
-      output_data[out_c + output_depth * b] = ActivationFunctionWithMinMax(
-          total + bias_value, output_activation_min, output_activation_max);
-    }
+    VectorBatchVectorAssign(bias_data, num_units, batch_size, output_data);
   }
+  else
+  {
+    ZeroVector(output_data, batch_size * num_units);
+  }
+
+  // Compute output += weight * input
+  MatrixBatchVectorMultiplyAccumulate(weights_data, num_units, input_size, input_data, batch_size,
+                                      output_data, /*result_stride=*/1);
+
+  // Apply activation function
+  ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
 }
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,

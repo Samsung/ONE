@@ -17,32 +17,12 @@
 #ifndef _NNC_CORE_BACKEND_INTERPRETER_RESHAPE_IMPL_
 #define _NNC_CORE_BACKEND_INTERPRETER_RESHAPE_IMPL_
 
-#include "mir/ShapeRange.h"
 #include "mir/TensorVariant.h"
-
-#include <cstring>
 
 namespace mir_interpreter
 {
 
-std::vector<mir::TensorVariant> Reshape(const mir::TensorVariant &input,
-                                        const mir::Shape &output_shape)
-{
-  assert(input.getShape().numElements() == output_shape.numElements());
-  mir::TensorType type(input.getElementType(), output_shape);
-  if (input.getType().isQuantized())
-    type.setQuantization(input.getType().getQuantization());
-
-  mir::TensorVariant result(type);
-  mir::ShapeRange input_range(input.getShape());
-  auto in_iter = input_range.begin();
-  const size_t elem_size = input.getElementSize();
-
-  for (const auto &out_index : mir::ShapeRange(output_shape))
-    std::memcpy(result.at(out_index), input.at(*in_iter++), elem_size);
-
-  return {result};
-}
+void Reshape(const mir::TensorVariant &input, mir::TensorVariant &output);
 
 } // namespace mir_interpreter
 

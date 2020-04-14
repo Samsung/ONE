@@ -1245,6 +1245,9 @@ struct gemm_pack_rhs<
     eigen_assert(stride == 0);
     eigen_assert(offset == 0);
 
+    (void)stride;
+    (void)offset;
+
     const int packet_size = 2;
     const Index packet_cols4 = (cols / 4) * 4;
     const Index peeled_k = (depth / packet_size) * packet_size;
@@ -1464,6 +1467,9 @@ struct gemm_pack_rhs<
   {
     eigen_assert(stride == 0);
     eigen_assert(offset == 0);
+
+    (void)offset;
+    (void)stride;
 
     const Index packet_cols4 = (cols / 4) * 4;
 

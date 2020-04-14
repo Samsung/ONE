@@ -29,8 +29,8 @@ get_gtest_option()
 {
     local output_option="--gtest_output=xml:$UNITTEST_REPORT_DIR/$TEST_BIN.xml"
     local filter_option
-    if [ -r "$UNITTEST_TEST_DIR/$TEST_BIN.skip" ]; then
-      filter_option="--gtest_filter=-$(grep -v '#' "$UNITTEST_TEST_DIR/$TEST_BIN.skip" | tr '\n' ':')"
+    if [ -r "$TEST_BIN.skip" ]; then
+      filter_option="--gtest_filter=-$(grep -v '#' "$TEST_BIN.skip" | tr '\n' ':')"
     fi
     echo "$output_option $filter_option"
 }
@@ -66,7 +66,8 @@ echo "Unittest start"
 echo "============================================"
 
 num_unittest=0
-for TEST_BIN in `ls $UNITTEST_TEST_DIR --hide=*.skip*`; do
+# Run all executables in unit test directory
+for TEST_BIN in `find $UNITTEST_TEST_DIR -maxdepth 1 -type f -executable`; do
     num_unittest=$((num_unittest+1))
     echo "============================================"
     echo "Starting set $num_unittest: $TEST_BIN..."
@@ -74,16 +75,16 @@ for TEST_BIN in `ls $UNITTEST_TEST_DIR --hide=*.skip*`; do
     TEMP_UNITTEST_RESULT=0
 
     if [ "$UNITTEST_RUN_ALL" == "true" ]; then
-        for TEST_LIST_VERBOSE_LINE in $($UNITTEST_TEST_DIR/$TEST_BIN --gtest_list_tests); do
+        for TEST_LIST_VERBOSE_LINE in $($TEST_BIN --gtest_list_tests); do
             if [[ $TEST_LIST_VERBOSE_LINE == *\. ]]; then
                 TEST_LIST_CATEGORY=$TEST_LIST_VERBOSE_LINE
             else
                 TEST_LIST_ITEM="$TEST_LIST_CATEGORY""$TEST_LIST_VERBOSE_LINE"
-                $UNITTEST_TEST_DIR/$TEST_BIN --gtest_filter=$TEST_LIST_ITEM --gtest_output="xml:$UNITTEST_REPORT_DIR/$TEST_LIST_ITEM.xml"
+                $TEST_BIN --gtest_filter=$TEST_LIST_ITEM --gtest_output="xml:$UNITTEST_REPORT_DIR/$TEST_LIST_ITEM.xml"
             fi
         done
     else
-        $UNITTEST_TEST_DIR/$TEST_BIN $(get_gtest_option)
+        $TEST_BIN $(get_gtest_option)
         TEMP_UNITTEST_RESULT=$?
     fi
 

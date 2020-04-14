@@ -2,6 +2,8 @@
 #error "TFL_TENSORTYPE is not defined."
 #endif
 
+// NOTE order of type follows TensorFlow lite schema.fbs 'enum TensorType'
+
 TFL_TENSORTYPE(FLOAT32)
 TFL_TENSORTYPE(FLOAT16)
 TFL_TENSORTYPE(INT32)

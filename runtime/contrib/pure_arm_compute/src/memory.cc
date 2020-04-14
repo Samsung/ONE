@@ -18,7 +18,7 @@
 #include <sys/mman.h>
 #include <memory>
 
-#include "memory"
+#include <memory>
 #include "memory.h"
 
 int ANeuralNetworksMemory_createFromFd(size_t size, int protect, int fd, size_t offset,

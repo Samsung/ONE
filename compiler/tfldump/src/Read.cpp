@@ -78,6 +78,7 @@ const char *tensor_name(const tflite::Tensor *tensor)
 
 Reader::Reader(const tflite::Model *model)
 {
+  _version = model->version();
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
 
@@ -137,6 +138,7 @@ std::string Reader::opcode_name(const tflite::Operator *op) const
 
 bool Reader::select_subgraph(uint32_t sgindex)
 {
+  _subgraph_index = sgindex;
   _tensors = nullptr;
   _operators = nullptr;
 
@@ -150,6 +152,9 @@ bool Reader::select_subgraph(uint32_t sgindex)
   }
 
   const tflite::SubGraph *subgraph = (*_subgraphs)[sgindex];
+
+  auto name = subgraph->name();
+  _subgraph_name = name ? name->c_str() : "(noname)";
 
   _tensors = subgraph->tensors();
   _operators = subgraph->operators();

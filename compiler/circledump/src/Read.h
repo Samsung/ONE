@@ -59,6 +59,8 @@ public:
   Reader() = delete;
 
 public:
+  uint32_t version() const { return _version; }
+
   const std::vector<const circle::OperatorCode *> &opcodes() { return _op_codes; }
   const CircleBuffers_t *buffers() { return _buffers; }
   const CircleTensors_t *tensors() { return _tensors; }
@@ -75,13 +77,19 @@ public:
 
 public:
   bool select_subgraph(uint32_t subgraph);
+  const std::string &subgraph_name(void) const { return _subgraph_name; }
+  uint32_t subgraph_index(void) const { return _subgraph_index; }
 
 private:
+  uint32_t _version;
+
   const CircleSubGraphs_t *_subgraphs{nullptr};
   const CircleBuffers_t *_buffers{nullptr};
   const CircleTensors_t *_tensors{nullptr};
   const CircleOperators_t *_operators{nullptr};
 
+  uint32_t _subgraph_index;
+  std::string _subgraph_name;
   std::vector<const circle::OperatorCode *> _op_codes;
   std::vector<int32_t> _inputs;
   std::vector<int32_t> _outputs;

@@ -129,7 +129,7 @@ std::unique_ptr<Model> load_tflite(const std::string &path)
 
   // Check if file is a valid Flatbuffer file
   const uint8_t *u8data = reinterpret_cast<const uint8_t *>(data);
-  flatbuffers::Verifier verifier{u8data, size};
+  flatbuffers::Verifier verifier{u8data, static_cast<size_t>(size)};
   if (!tflite::VerifyModelBuffer(verifier))
   {
     munmap(data, size);

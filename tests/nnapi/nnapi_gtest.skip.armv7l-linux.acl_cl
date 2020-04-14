@@ -26,6 +26,7 @@ GeneratedTests.neg_relaxed
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
+GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.sqrt_
 GeneratedTests.sqrt__relaxed

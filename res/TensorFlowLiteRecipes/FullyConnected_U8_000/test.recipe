@@ -1,0 +1,35 @@
+operand {
+  name: "in"
+  type: FLOAT32
+  shape { dim: 1 dim: 64 }
+}
+operand {
+  name: "weight"
+  type: UINT8
+  shape { dim: 8 dim: 64 }
+  quant { min: 0 max: 1 scale: 0.000553869 zero_point: 0 }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 8 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "in"
+  input: "weight"
+  input: "bias"
+  output: "out"
+}
+input: "in"
+input: "weight"
+input: "bias"
+output: "out"

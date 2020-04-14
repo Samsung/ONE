@@ -17,10 +17,10 @@
 #include "luci/CircleExporter.h"
 #include "CircleExporterImpl.h"
 
-#include <stdex/Memory.h>
 #include <oops/InternalExn.h>
 
 #include <fstream>
+#include <memory>
 
 namespace luci
 {

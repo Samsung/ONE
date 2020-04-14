@@ -28,5 +28,9 @@ target_compile_definitions(arm_compute_ex PRIVATE EMBEDDED_KERNELS
                                                                     ARM_COMPUTE_LOGGING_ENABLED>)
 # Validate check functions are not used on release build
 # Some parameter are used for validate check function call, and these parameter may not used on release build
-target_compile_options(arm_compute_ex PRIVATE $<$<NOT:$<CONFIG:Debug>>:-Wno-unused-parameter -Wno-unused-function>)
+# Because clang requires to add "-Wno-unused-parameter -Wno-unused-function" after "-Wall",
+# this should be after linking nnfw_common and use interface lib linking
+add_library(ignore_unused_warning INTERFACE)
+target_compile_options(ignore_unused_warning INTERFACE -Wno-unused-parameter -Wno-unused-function)
+target_link_libraries(arm_compute_ex PRIVATE $<$<NOT:$<CONFIG:Debug>>:ignore_unused_warning>)
 install(TARGETS arm_compute_ex DESTINATION lib)
