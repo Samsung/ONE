@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-#include "AbsOptions.h"
-#include "DataLookup.h"
-
-#include <cassert>
+#include <mio/tflite/schema_generated.h>
+#include <mio/circle/schema_generated.h>
 
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::AbsOptions> build_circle_AbsOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *)
-{
-  circle::AbsOptionsBuilder builtin_options_builder{fb};
-  return builtin_options_builder.Finish();
-}
+#define HANDLE_EMPTY_OPTIONS(TYPE)                                         \
+  flatbuffers::Offset<circle::TYPE##Options> build_circle_##TYPE##Options( \
+      flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)      \
+  {                                                                        \
+    circle::TYPE##OptionsBuilder builtin_options_builder{fb};              \
+    return builtin_options_builder.Finish();                               \
+  }
 
-} // namespace tflite2circle
+#include "EmptyOptions.lst"
+
+#undef HANDLE_EMPTY_OPTIONS
+
+}

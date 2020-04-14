@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_ABS_OPTIONS_H__
-#define __BBO_ABS_OPTIONS_H__
+#ifndef __EMPTY_OPTIONS_H__
+#define __EMPTY_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
 
+// Prototypes for functions converting empty BuiltinOptions types
+
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::AbsOptions> build_circle_AbsOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
+#define HANDLE_EMPTY_OPTIONS(TYPE)                                         \
+  flatbuffers::Offset<circle::TYPE##Options> build_circle_##TYPE##Options( \
+      flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
-} // namespace tflite2circle
+#include "EmptyOptions.lst"
 
-#endif // __BBO_ABS_OPTIONS_H__
+#undef HANDLE_EMPTY_OPTIONS
+
+}
+
+#endif // __EMPTY_OPTIONS_H__
