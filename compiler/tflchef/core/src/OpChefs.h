@@ -52,6 +52,7 @@
 #include "Op/Tile.h"
 #include "Op/Transpose.h"
 #include "Op/Unpack.h"
+#include "Op/ZerosLike.h"
 
 #include "CustomOp/BatchMatMulV2.h"
 
