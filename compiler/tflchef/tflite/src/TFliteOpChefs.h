@@ -54,5 +54,6 @@
 #include "Op/Tile.h"
 #include "Op/Transpose.h"
 #include "Op/Unpack.h"
+#include "Op/ZerosLike.h"
 
 #endif // __TFLITE_OP_CHEFS_H__

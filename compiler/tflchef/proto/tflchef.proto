@@ -215,6 +215,10 @@ message CastOptions {
   optional TensorType out_data_type = 2 [default = FLOAT32];
 }
 
+message ZerosLikeOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -255,6 +259,7 @@ message Operation {
   optional WhileOptions while_options = 132;
   optional SpaceToBatchNDOptions space_to_batch_nd_options = 133;
   optional CastOptions cast_options = 134;
+  optional ZerosLikeOptions zeros_like_options = 135;
 }
 
 // For additional subgraphs

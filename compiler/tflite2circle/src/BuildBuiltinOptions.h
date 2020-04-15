@@ -59,5 +59,6 @@
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
+#include "BuildBuiltinOptions/ZerosLikeOptions.h"
 
 #endif // __BUILD_BUITIN_OPTIONS_H__

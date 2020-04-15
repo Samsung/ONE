@@ -57,6 +57,7 @@
 #include "Op/Transpose.h"
 #include "Op/Unpack.h"
 #include "Op/While.h"
+#include "Op/ZerosLike.h"
 
 #include "CustomOp/BatchMatMulV2.h"
 
