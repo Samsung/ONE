@@ -34,14 +34,20 @@ endforeach(RECIPE)
 nncc_find_resource(TensorFlowLiteRecipes)
 set(TENSORFLOWLITERECIPES_DIR "${TensorFlowLiteRecipes_DIR}")
 
-file(GLOB RECIPES RELATIVE ${TENSORFLOWLITERECIPES_DIR} "${TENSORFLOWLITERECIPES_DIR}/*/test.recipe")
+macro(testcase NAME)
+  list(APPEND TESTNAMES ${NAME})
+endmacro(addname)
 
-foreach(RECIPE IN ITEMS ${RECIPES})
-  get_filename_component(RECIPE_PREFIX ${RECIPE} DIRECTORY)
+# Read "test.lst"
+include("test.lst")
+# Read "test.local.lst" if exists
+include("test.local.lst" OPTIONAL)
 
-  set(RECIPE_SOURCE_FILE "${RECIPE_PREFIX}.recipe")
-  set(RECIPE_OUTPUT_FILE "${RECIPE_PREFIX}.tflite")
-  set(CIRCLE_OUTPUT_FILE "${RECIPE_PREFIX}.circle")
+foreach(TESTNAME IN ITEMS ${TESTNAMES})
+  set(RECIPE "${TESTNAME}/test.recipe")
+  set(RECIPE_SOURCE_FILE "${TESTNAME}.recipe")
+  set(RECIPE_OUTPUT_FILE "${TESTNAME}.tflite")
+  set(CIRCLE_OUTPUT_FILE "${TESTNAME}.circle")
 
   # Copy .recipe
   add_custom_command(OUTPUT "${RECIPE_SOURCE_FILE}"
@@ -69,29 +75,16 @@ endforeach(RECIPE)
 # TODO Find a way to create dependency between CTest tests (added below) and generated testfiles.
 add_custom_target(luci_testfiles ALL DEPENDS ${TESTFILES})
 
-macro(addread NAME)
-  list(APPEND DAILY_READ_TESTS ${NAME})
-endmacro(addread)
-
-macro(addwrite NAME)
-  list(APPEND DAILY_WRITE_TESTS ${NAME})
-endmacro(addwrite)
-
-# Read "test.lst"
-include("test.lst")
-# Read "test.local.lst" if exists
-include("test.local.lst" OPTIONAL)
-
 add_test(NAME luci_unit_readtest
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/readverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "$<TARGET_FILE:luci_readtester>"
-          ${DAILY_READ_TESTS}
+          ${TESTNAMES}
 )
 
 add_test(NAME luci_unit_writetest
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/writeverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "$<TARGET_FILE:luci_writetester>"
-          ${DAILY_WRITE_TESTS}
+          ${TESTNAMES}
 )
