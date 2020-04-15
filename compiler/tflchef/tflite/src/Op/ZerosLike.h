@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-#include "AbsOptions.h"
-#include "DataLookup.h"
+#ifndef __TFLITE_OP_ZEROS_LIKE_H__
+#define __TFLITE_OP_ZEROS_LIKE_H__
 
-#include <cassert>
+#include "TFliteOpChef.h"
 
-namespace tflite2circle
+namespace tflchef
 {
 
-flatbuffers::Offset<circle::AbsOptions> build_circle_AbsOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *)
+/**
+ * @brief tflchef operator builder for ZerosLike
+ */
+class TFliteOpZerosLike : public TFliteOpChef
 {
-  circle::AbsOptionsBuilder builtin_options_builder{fb};
-  return builtin_options_builder.Finish();
-}
+public:
+  void filler(const tflite::Operator *op, TFliteImport *import,
+              tflchef::ModelRecipe *model_recipe) const override;
+  tflchef::Operation *build(const tflite::Operator *op, TFliteImport *import,
+                            tflchef::ModelRecipe *model_recipe) const override;
+};
 
-} // namespace tflite2circle
+} // namespace tflchef
+
+#endif // __TFLITE_OP_ZEROS_LIKE_H__

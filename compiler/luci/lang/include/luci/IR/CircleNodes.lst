@@ -49,6 +49,7 @@ CIRCLE_NODE(TILE, luci::CircleTile)
 CIRCLE_NODE(TRANSPOSE, luci::CircleTranspose)
 CIRCLE_NODE(TRANSPOSE_CONV, luci::CircleTransposeConv)
 CIRCLE_NODE(UNPACK, luci::CircleUnpack)
+CIRCLE_NODE(ZEROS_LIKE, luci::CircleZerosLike)
 // Circle Only
 CIRCLE_NODE(INSTANCE_NORM, luci::CircleInstanceNorm)
 // Virtual node(s)

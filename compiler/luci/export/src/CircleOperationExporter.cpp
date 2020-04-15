@@ -84,6 +84,7 @@ public:
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
   void visit(luci::CircleUnpack *) final;
+  void visit(luci::CircleZerosLike *) final;
   // Circle only
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
@@ -662,6 +663,17 @@ void OperationExporter::visit(luci::CircleUnpack *node)
   auto options = CreateUnpackOptions(builder, node->num(), node->axis());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_UnpackOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleZerosLike *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ZEROS_LIKE);
+  auto inputs = builder.CreateVector<int32_t>({get_tensor_index(node->input())});
+  auto outputs = builder.CreateVector<int32_t>({get_tensor_index(static_cast<loco::Node *>(node))});
+  auto options = CreateZerosLikeOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ZerosLikeOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

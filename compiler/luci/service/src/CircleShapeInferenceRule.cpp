@@ -913,6 +913,13 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleZerosLike *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   // Circle Only
   loco::NodeShape visit(const luci::CircleInstanceNorm *node) final
   {

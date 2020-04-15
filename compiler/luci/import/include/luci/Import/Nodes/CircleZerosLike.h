@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_ABS_OPTIONS_H__
-#define __BBO_ABS_OPTIONS_H__
+#ifndef __LUCI_IMPORT_OP_CIRCLE_ZEROS_LIKE_H__
+#define __LUCI_IMPORT_OP_CIRCLE_ZEROS_LIKE_H__
 
-#include <mio/tflite/schema_generated.h>
-#include <mio/circle/schema_generated.h>
+#include "luci/Import/GraphBuilder.h"
 
-namespace tflite2circle
+namespace luci
 {
 
-flatbuffers::Offset<circle::AbsOptions> build_circle_AbsOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
+class CircleZerosLikeGraphBuilder : public GraphBuilder
+{
+public:
+  bool validate(const ValidateArgs &args) const final;
 
-} // namespace tflite2circle
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const override;
+};
 
-#endif // __BBO_ABS_OPTIONS_H__
+} // namespace luci
+
+#endif // __LUCI_IMPORT_OP_CIRCLE_ZEROS_LIKE_H__

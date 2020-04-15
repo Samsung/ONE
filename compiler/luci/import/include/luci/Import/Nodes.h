@@ -47,5 +47,6 @@
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
+#include "Nodes/CircleZerosLike.h"
 
 #endif // __LUCI_IMPORT_NODES_H__

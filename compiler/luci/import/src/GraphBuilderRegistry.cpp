@@ -56,6 +56,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                     // 88
+  CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeGraphBuilder);              // 93
 
 #undef CIRCLE_NODE
 
@@ -125,7 +126,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_FLOOR_DIV = 90,
   // BuiltinOperator_REDUCE_ANY = 91,
   // BuiltinOperator_SQUARE = 92,
-  // BuiltinOperator_ZEROS_LIKE = 93,
   // BuiltinOperator_FILL = 94,
   // BuiltinOperator_FLOOR_MOD = 95,
   // BuiltinOperator_RANGE = 96,

@@ -1,0 +1,6 @@
+#ifndef HANDLE_EMPTY_OPTIONS
+#error "HANDLE_EMPTY_OPTIONS should be defined prior to inclusion of this file"
+#endif
+
+HANDLE_EMPTY_OPTIONS(Abs)
+HANDLE_EMPTY_OPTIONS(ZerosLike)
