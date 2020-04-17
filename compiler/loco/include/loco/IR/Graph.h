@@ -157,7 +157,7 @@ private:
 /**
  * @brief A neural network graph
  */
-class Graph final
+class Graph final : public NamedEntity
 {
 public:
   /**
