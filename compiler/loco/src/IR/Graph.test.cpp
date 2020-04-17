@@ -201,3 +201,18 @@ TEST(GraphTest, graph_inout_enumeration)
   ASSERT_EQ(output_nodes.at(0), push_1);
   ASSERT_EQ(output_nodes.at(1), push_3);
 }
+
+TEST(GraphTest, graph_name)
+{
+  auto g = loco::make_graph();
+
+  g->name("HelloGraph");
+  ASSERT_TRUE(g->name() == "HelloGraph");
+}
+
+TEST(GraphTest, graph_name_nullptr_NEG)
+{
+  auto g = loco::make_graph();
+
+  EXPECT_ANY_THROW(g->name(nullptr));
+}
