@@ -29,6 +29,7 @@
 #include "Nodes/CircleDiv.h"
 #include "Nodes/CircleEqual.h"
 #include "Nodes/CircleFullyConnected.h"
+#include "Nodes/CircleGather.h"
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
 #include "Nodes/CircleMaximum.h"
