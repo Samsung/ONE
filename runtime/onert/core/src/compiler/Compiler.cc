@@ -157,7 +157,7 @@ void Compiler::compile(void)
   // To delete cached data, this doing should be done for the original graph
   // at this line and then once again for the lowered graph in ExecutorFactory
   // TODO. Delete this code as code for disconnecting btw Graph and nnfw session lands
-  if (util::getConfigBool(util::config::DELETE_CACHED_DATA))
+  if (_options.delete_cached_data)
   {
     CachedDataDeleter(_graph->operands()).run();
   }
