@@ -82,3 +82,4 @@
 #include "ir/operation/Custom.h"
 #include "ir/operation/OneHot.h"
 #include "ir/operation/Sin.h"
+#include "ir/operation/Shape.h"

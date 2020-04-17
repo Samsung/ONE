@@ -78,6 +78,7 @@ public:
   void visit(const ir::operation::Split &node) override;
   void visit(const ir::operation::Sin &node) override;
   void visit(const ir::operation::RSQRT &node) override;
+  void visit(const ir::operation::Shape &node) override;
 
 private:
   // TODO Remove _ctx field

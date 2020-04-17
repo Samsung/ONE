@@ -220,19 +220,19 @@ std::shared_ptr<Graph> createStraightGraph()
   const TypeInfo float_op(DataType::FLOAT32);
 
   // Create add node
-  auto add_lhs_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto add_rhs_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto add_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto add_lhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto add_rhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto add_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Add>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx});
 
   // Create sub node
-  auto sub_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto sub_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto sub_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto sub_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Sub>(graph, OIS{add_out_idx, sub_const_idx}, OIS{sub_out_idx});
 
   // Create mul node
-  auto mul_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto mul_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto mul_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto mul_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Mul>(graph, OIS{sub_out_idx, mul_const_idx}, OIS{mul_out_idx});
 
   graph->finishBuilding();
@@ -254,33 +254,33 @@ std::shared_ptr<Graph> createBranchedGraph()
   const TypeInfo float_op(DataType::FLOAT32);
 
   // Create add node
-  auto add_lhs_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto add_rhs_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto add_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto add_lhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto add_rhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto add_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Add>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx});
 
   // Create mul1 node
-  auto mul1_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto mul1_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto mul1_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto mul1_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Mul>(graph, OIS{add_out_idx, mul1_const_idx}, OIS{mul1_out_idx});
 
   // Create mul2 node
-  auto mul2_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto mul2_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto mul2_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto mul2_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Mul>(graph, OIS{mul1_out_idx, mul2_const_idx}, OIS{mul2_out_idx});
 
   // Create fc1 node
-  auto fc1_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto fc1_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto fc1_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto fc1_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<FullyConnected>(graph, OIS{add_out_idx, fc1_const_idx}, OIS{fc1_out_idx});
 
   // Create fc2 node
-  auto fc2_const_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
-  auto fc2_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto fc2_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
+  auto fc2_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<FullyConnected>(graph, OIS{fc1_out_idx, fc2_const_idx}, OIS{fc2_out_idx});
 
   // Create add2 node
-  auto sub_out_idx = graph->addOperand(Shape{OPERAND_ELEMS}, float_op);
+  auto sub_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   create<Sub>(graph, OIS{mul2_out_idx, fc2_out_idx}, OIS{sub_out_idx});
 
   graph->finishBuilding();
