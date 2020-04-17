@@ -17,7 +17,6 @@
 from operator_wrapping import Operator
 from tensor_printer import TensorPrinter
 from option_printer import OptionPrinter
-from perf_predictor import PerfPredictor
 
 
 class ConfigSaver(object):

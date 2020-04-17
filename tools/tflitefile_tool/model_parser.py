@@ -31,7 +31,6 @@ import graph_stats
 from operator_parser import OperatorParser
 from subgraph_printer import SubgraphPrinter
 from model_saver import ModelSaver
-from perf_predictor import PerfPredictor
 
 
 class TFLiteModelFileParser(object):
@@ -106,7 +105,7 @@ class TFLiteModelFileParser(object):
                 model_name += " (MAIN)"
 
             # Parse Operators
-            op_parser = OperatorParser(tf_model, tf_subgraph, PerfPredictor())
+            op_parser = OperatorParser(tf_model, tf_subgraph)
             op_parser.Parse()
 
             stats += graph_stats.CalcGraphStats(op_parser)
