@@ -39,18 +39,26 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     : _graph{graph}
 {
   // Build backend contexts
+  auto &backend_manager = compiler::BackendManager::get();
   for (auto backend_str : options.backend_list)
   {
-    auto &backend_manager = compiler::BackendManager::get();
     backend_manager.loadBackend(backend_str);
     auto backend = backend_manager.get(backend_str);
 
+    // TODO As the default value of backend list contains "cpu", "acl_cl" and "acl_neon", and some
+    // are not available on x64 or some other platforms. So this may be a workaround for x64 and
+    // we should change it back(throw if backend is not loaded) later.
     if (!backend)
-      throw std::runtime_error("Cannot get required backend");
+    {
+      VERBOSE(LoweredGraph) << "Cannot load backend - " << backend_str;
+      continue;
+    }
 
     _backend_contexts.emplace(backend, backend->newContext(_graph, _graph.getKernelBuilder(),
                                                            options.executor == "Linear"));
   }
+  if (backend_manager.getAll().size() == 0)
+    throw std::runtime_error{"No available backends loaded."};
 
   // TODO Move "schedule" phase out of here
   // Schedule

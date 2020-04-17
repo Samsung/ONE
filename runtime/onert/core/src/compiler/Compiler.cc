@@ -61,10 +61,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
 
     // Default value for op_backend_all is first element in the backend list
     ms_options.backend_for_all = util::getConfigString(util::config::OP_BACKEND_ALLOPS);
-    if (ms_options.backend_for_all.empty())
-    {
-      ms_options.backend_for_all = options.backend_list.at(0);
-    }
 
 // Opcode to Backend
 #define OP(OpName)                                                                      \
