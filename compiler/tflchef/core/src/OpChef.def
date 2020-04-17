@@ -7,6 +7,7 @@
 OP_CHEF(Abs, AbsChefFactory)
 OP_CHEF(Add, AddChefFactory)
 OP_CHEF(ArgMax, ArgMaxChefFactory)
+OP_CHEF(BatchToSpaceND, BatchToSpaceNDChefFactory)
 OP_CHEF(AveragePool2D, AveragePool2DChefFactory)
 OP_CHEF(Concatenation, ConcatenationChefFactory)
 OP_CHEF(Conv2D, Conv2DChefFactory)

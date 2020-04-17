@@ -21,6 +21,7 @@
 #include "Op/Add.h"
 #include "Op/ArgMax.h"
 #include "Op/AveragePool2D.h"
+#include "Op/BatchToSpaceND.h"
 #include "Op/Concatenation.h"
 #include "Op/Conv2D.h"
 #include "Op/Cos.h"

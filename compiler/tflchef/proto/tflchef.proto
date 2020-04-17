@@ -170,6 +170,10 @@ message ShapeOptions {
   optional TensorType out_type = 1 [default = INT32];
 }
 
+message BatchToSpaceNDOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -200,6 +204,7 @@ message Operation {
   optional EqualOptions equal_options = 122;
   optional ShapeOptions shape_options = 123;
   optional FloorDivOptions floordiv_options = 124;
+  optional BatchToSpaceNDOptions batch_to_space_options = 125;
 }
 
 // For additional subgraphs
