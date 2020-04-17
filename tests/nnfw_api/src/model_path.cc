@@ -20,7 +20,7 @@
 #include <libgen.h>
 #include <string.h>
 
-const char *MODEL_ONE_OP_IN_TFLITE = "one_op_in_tflite";
+const char *MODEL_ADD = "add";
 
 ModelPath &ModelPath::get()
 {
@@ -51,5 +51,6 @@ void ModelPath::init(const char *argv0)
 
 std::string ModelPath::getModelAbsolutePath(const char *model_dir)
 {
-  return _base_path + "/nnfw_api_gtest_models/" + model_dir;
+  // Model dir is nested
+  return _base_path + "/nnfw_api_gtest_models/" + model_dir + "/" + model_dir;
 }

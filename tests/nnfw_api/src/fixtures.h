@@ -53,8 +53,8 @@ protected:
   void SetUp() override
   {
     ValidationTestSessionCreated::SetUp();
-    ASSERT_EQ(nnfw_load_model_from_file(
-                  _session, ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE).c_str()),
+    ASSERT_EQ(nnfw_load_model_from_file(_session,
+                                        ModelPath::get().getModelAbsolutePath(MODEL_ADD).c_str()),
               NNFW_STATUS_NO_ERROR);
     ASSERT_NE(_session, nullptr);
   }
