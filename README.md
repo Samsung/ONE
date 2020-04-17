@@ -74,24 +74,3 @@ NPU.
 ## How to Contact
 
 - Please post questions, issues, or suggestions into [Issues](https://github.sec.samsung.net/STAR/nnfw/issues).
-
-----
-
-## Notice
-
-### 22/07/2019
-
-Congratulations! On July 22nd, 2019, _nnfw_ repo and
-[_nncc_](https://github.sec.samsung.net/STAR/nncc) repo are finally integrated into single one. Now
-all activities related to the development of _nnas(Neural Network Acceleration Solution)_ will
-proceed in this integrated _nnfw_ repo. The old _nncc_ repo will only be maintained for follow up on
-remaining issues and for preserving development history. The following notice will remain in place
-until the update of documents in integrated repo is complete.
-
-### 02/05/2019
-
-~~We are currently working on [_nncc_](https://github.sec.samsung.net/STAR/nncc) as a sibling project.
-In our plan, the two projects will soon be integrated into one, and focusing on their roles as
-front-end(_nncc_) and back-end(_nnfw_), respectively. It will accompany the physical combination of
-the github repo.~~ You can find the latest roadmap of the integrated project
-[here](https://github.sec.samsung.net/orgs/STAR/projects/1).
