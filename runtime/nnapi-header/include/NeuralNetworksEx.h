@@ -364,6 +364,27 @@ typedef enum {
    *
    */
   ANEURALNETWORKS_LESS_EX = 50025,
+
+  /**
+   * Returns the input tensor's shape as a rank 1 output tensor
+   * If the input shape is [D0, D1, ..., D(N-1) ] and rank is N,
+   * the output tensor is [D0, D1, ... D(N-1)], shape is [N] and rank is 1.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   * * {@link ANEURALNETWORKS_TENSOR_INT32}
+   * * {@link ANEURALNETWORKS_TENSOR_QUANT8_ASYMM}
+   *
+   * Supported tensor rank: virtually unlimited
+   *
+   * Inputs:
+   * * 0: The input tensor.
+   *
+   * Outputs:
+   * * 0: The rank-1 shape tensor.
+   */
+  ANEURALNETWORKS_SHAPE_EX = 50026,
+
 } OperationCodeEx; // extends OperationCode
 
 typedef OperationCodeEx ANeuralNetworksOperationTypeEx;

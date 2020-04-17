@@ -27,6 +27,7 @@ reduce_max
 reduce_sum
 reshape/reshape1
 rsqrt
+shape
 sin
 slice
 strided_slice

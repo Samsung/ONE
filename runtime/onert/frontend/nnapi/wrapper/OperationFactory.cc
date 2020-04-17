@@ -1871,14 +1871,19 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_SIN] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
 
+    OperandIndexSequence inputs{init_param.inputs[0]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
     return new operation::Sin{inputs, outputs};
+  };
+
+  _map[ANEURALNETWORKS_SHAPE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Shape{inputs, outputs};
   };
 }
 

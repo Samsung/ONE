@@ -174,6 +174,8 @@ void ShapeFixer::visit(const ir::operation::Sin &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Shape &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

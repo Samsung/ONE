@@ -41,6 +41,7 @@
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/RsqrtLayer.h"
+#include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
 #include "kernel/SliceLayer.h"
 #include "kernel/SoftMaxLayer.h"
@@ -905,6 +906,21 @@ void KernelGenerator::visit(const ir::operation::RSQRT &node)
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::onert::backend::cpu::kernel::RsqrtLayer>();
+
+  fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Shape &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Shape::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ShapeLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 

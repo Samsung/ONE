@@ -128,6 +128,7 @@ protected:
   void loadOneHot(const Operator *op);
   void loadAbs(const Operator *op);
   void loadSin(const Operator *op);
+  void loadShape(const Operator *op);
 
 protected:
   // Buffer for loading (if needed)
@@ -1157,6 +1158,22 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSin(const Operator *op)
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  // ir::operation::Shape::Param param;
+  // const auto *options = op->builtin_options_as_ShapeOptions();
+  // param.out_type = tensorTypeToDataType(options->out_type());
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Shape(inputs, outputs /*, param*/));
+  _graph.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1302,6 +1319,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op)
       return;
     case BuiltinOperator::BuiltinOperator_SIN:
       loadSin(op);
+      return;
+    case BuiltinOperator::BuiltinOperator_SHAPE:
+      loadShape(op);
       return;
     default:
       throw std::runtime_error(
