@@ -36,13 +36,13 @@ the target platform, such as the Linux kernel based OS including Tizen.
 
 You can suggest development of nnfw's features that are not yet available.
 
-The functions requested so far can be checked in the [popular feature request](https://github.sec.samsung.net/STAR/nnfw/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3AFEATURE_REQUEST+sort%3Areactions-%2B1-desc) list.
+The functions requested so far can be checked in the [popular feature request](https://github.com/Samsung/ONE/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3AFEATURE_REQUEST+sort%3Areactions-%2B1-desc) list.
 
 - If the feature you want is on the list, :+1: to the body of the issue. The feature with the most
 :+1: is placed at the top of the list. When adding new features, we will prioritize them with this reference.
 Of course, it is good to add an additional comment which describes your request in detail.
 
-- For features not listed, [create a new issue](https://github.sec.samsung.net/STAR/nnfw/issues/new).
+- For features not listed, [create a new issue](https://github.com/Samsung/ONE/issues/new).
 Sooner or later, the maintainer will tag the `FEATURE_REQUEST` label and appear on the list.
 
 We expect one of the most frequent feature requests would be the operator kernel implementation.
@@ -73,7 +73,7 @@ NPU.
 
 ## How to Contact
 
-- Please post questions, issues, or suggestions into [Issues](https://github.sec.samsung.net/STAR/nnfw/issues).
+- Please post questions, issues, or suggestions into [Issues](https://github.com/Samsung/ONE/issues).
 
 ----
 
