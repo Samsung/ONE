@@ -41,6 +41,6 @@ loco::Graph *Module::graph(size_t idx) const
   return graph.get();
 }
 
-std::unique_ptr<Module> make_module(void) { return std::unique_ptr<Module>{new Module}; }
+std::unique_ptr<Module> make_module(void) { return std::make_unique<Module>(); }
 
 } // namespace loco

@@ -46,12 +46,14 @@ public:
   void add(std::unique_ptr<loco::Graph> &&g);
 
   /**
-   * @brief provide main graph(same as index 0)
+   * @brief provide main graph
    */
   loco::Graph *graph(void) const;
 
   /**
    * @brief provide graph with an index
+   *
+   * @note  graph(0) is interpreted as a main graph
    */
   loco::Graph *graph(size_t idx) const;
 
