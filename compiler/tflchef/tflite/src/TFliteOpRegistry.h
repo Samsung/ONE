@@ -20,9 +20,7 @@
 #include "TFliteOpChef.h"
 #include "TFliteOpChefs.h"
 
-#include <stdex/Memory.h>
-
-using stdex::make_unique;
+#include <memory>
 
 namespace tflchef
 {
@@ -54,33 +52,37 @@ public:
 private:
   TFliteOpRegistry()
   {
-    _tfliteop_map[tflite::BuiltinOperator_ABS] = make_unique<TFliteOpAbs>();
-    _tfliteop_map[tflite::BuiltinOperator_ADD] = make_unique<TFliteOpAdd>();
-    _tfliteop_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<TFliteOpArgMax>();
-    _tfliteop_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<TFliteOpAveragePool2D>();
-    _tfliteop_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<TFliteOpConcatenation>();
-    _tfliteop_map[tflite::BuiltinOperator_CONV_2D] = make_unique<TFliteOpConv2D>();
-    _tfliteop_map[tflite::BuiltinOperator_COS] = make_unique<TFliteOpCos>();
-    _tfliteop_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] =
-        make_unique<TFliteOpDepthwiseConv2D>();
-    _tfliteop_map[tflite::BuiltinOperator_DIV] = make_unique<TFliteOpDiv>();
-    _tfliteop_map[tflite::BuiltinOperator_EQUAL] = make_unique<TFliteOpEqual>();
-    _tfliteop_map[tflite::BuiltinOperator_FLOOR_DIV] = make_unique<TFliteOpFloorDiv>();
-    _tfliteop_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<TFliteOpFullyConnected>();
-    _tfliteop_map[tflite::BuiltinOperator_LOGICAL_NOT] = make_unique<TFliteOpLogicalNot>();
-    _tfliteop_map[tflite::BuiltinOperator_LOGICAL_OR] = make_unique<TFliteOpLogicalOr>();
-    _tfliteop_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<TFliteOpMaxPool2D>();
-    _tfliteop_map[tflite::BuiltinOperator_MEAN] = make_unique<TFliteOpMean>();
-    _tfliteop_map[tflite::BuiltinOperator_PACK] = make_unique<TFliteOpPack>();
-    _tfliteop_map[tflite::BuiltinOperator_PAD] = make_unique<TFliteOpPad>();
-    _tfliteop_map[tflite::BuiltinOperator_RELU] = make_unique<TFliteOpReLU>();
-    _tfliteop_map[tflite::BuiltinOperator_RELU6] = make_unique<TFliteOpReLU6>();
-    _tfliteop_map[tflite::BuiltinOperator_RESHAPE] = make_unique<TFliteOpReshape>();
-    _tfliteop_map[tflite::BuiltinOperator_RSQRT] = make_unique<TFliteOpRsqrt>();
-    _tfliteop_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<TFliteOpSoftmax>();
-    _tfliteop_map[tflite::BuiltinOperator_SQRT] = make_unique<TFliteOpSqrt>();
-    _tfliteop_map[tflite::BuiltinOperator_SUB] = make_unique<TFliteOpSub>();
-    _tfliteop_map[tflite::BuiltinOperator_TRANSPOSE] = make_unique<TFliteOpTranspose>();
+#define REG_TFL_OP(OPCODE, CLASS) \
+  _tfliteop_map[tflite::BuiltinOperator_##OPCODE] = std::make_unique<CLASS>()
+
+    REG_TFL_OP(ABS, TFliteOpAbs);
+    REG_TFL_OP(ADD, TFliteOpAdd);
+    REG_TFL_OP(ARG_MAX, TFliteOpArgMax);
+    REG_TFL_OP(AVERAGE_POOL_2D, TFliteOpAveragePool2D);
+    REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);
+    REG_TFL_OP(CONV_2D, TFliteOpConv2D);
+    REG_TFL_OP(COS, TFliteOpCos);
+    REG_TFL_OP(DEPTHWISE_CONV_2D, TFliteOpDepthwiseConv2D);
+    REG_TFL_OP(DIV, TFliteOpDiv);
+    REG_TFL_OP(EQUAL, TFliteOpEqual);
+    REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
+    REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
+    REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
+    REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
+    REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
+    REG_TFL_OP(MEAN, TFliteOpMean);
+    REG_TFL_OP(PACK, TFliteOpPack);
+    REG_TFL_OP(PAD, TFliteOpPad);
+    REG_TFL_OP(RELU, TFliteOpReLU);
+    REG_TFL_OP(RELU6, TFliteOpReLU6);
+    REG_TFL_OP(RESHAPE, TFliteOpReshape);
+    REG_TFL_OP(RSQRT, TFliteOpRsqrt);
+    REG_TFL_OP(SOFTMAX, TFliteOpSoftmax);
+    REG_TFL_OP(SQRT, TFliteOpSqrt);
+    REG_TFL_OP(SUB, TFliteOpSub);
+    REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
+
+#undef REG_TFL_OP
   }
 
 private:
