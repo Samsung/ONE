@@ -61,6 +61,7 @@ struct CompilerOptions
   bool he_profiling_mode;  //< Whether HEScheduler profiling mode ON/OFF
   bool delete_cached_data; //< Whether CachedData deletion ON/OFF
   bool disable_compile;    //< Run with Interpreter if true, try compilation otherwise
+  bool fp16_enable;        //< Whether fp16 mode ON/OFF
 };
 
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph);
