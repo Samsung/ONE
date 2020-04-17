@@ -29,8 +29,7 @@ namespace luci
 /**
  * @brief GATHER in Circle
  */
-class CircleGather final
-    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::GATHER>>
+class CircleGather final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::GATHER>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
