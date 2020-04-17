@@ -64,6 +64,7 @@ public:
   void finishBuilding(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   bool isBuildingPhase(void) const { return _phase == Phase::BUILDING; }
+  void setLayout(Layout layout) { _layout = layout; }
 
 private:
   void initializeUseDef();
@@ -94,6 +95,7 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
+  Layout layout() { return _layout; }
 
 private:
   Phase _phase{Phase::BUILDING};
@@ -102,6 +104,8 @@ private:
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
+  // TFLite and circle's default layout is NHWC;
+  Layout _layout{Layout::NHWC};
 };
 
 } // namespace ir
