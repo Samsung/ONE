@@ -109,6 +109,8 @@ public:
     }
   }
 
+  ir::OperandInfo &info() { return _info; }
+
 private:
   ir::OperandInfo _info;
   uint8_t *_buffer;

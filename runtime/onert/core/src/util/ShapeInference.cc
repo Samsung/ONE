@@ -237,5 +237,28 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   output.info().memAllocType(ir::MemAllocType::DYNAMIC);
 }
 
+/*
+  namespace dynamic_inf starts
+*/
+namespace dynamic_inf
+{
+
+ir::Shape inferReshape(const backend::ITensor *new_shape)
+{
+  assert(new_shape);
+  auto new_rank = new_shape->dimension(0);
+
+  ir::Shape output_shape(new_rank);
+
+  int32_t *shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
+  assert(shape_buf);
+  for (size_t d = 0; d < new_rank; d++)
+    output_shape.dim(d) = shape_buf[d];
+
+  return output_shape;
+}
+
+} // namespace dynamic_inf
+
 } // namespace shape_inference
 } // namespace onert

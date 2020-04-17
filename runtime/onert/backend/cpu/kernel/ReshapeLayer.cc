@@ -16,6 +16,8 @@
 
 #include "ReshapeLayer.h"
 
+#include <util/ShapeInference.h>
+
 namespace onert
 {
 namespace backend
@@ -32,8 +34,22 @@ ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr
 
 void ReshapeLayer::reshapeGeneric()
 {
-  // TODO use _shape to calculate shape of output when _shape is not nullptr && not constant
+  // if dynamic allocation is needed, allocate output tensor
+  if (_output->is_dynamic())
+  {
+    auto output_shape = shape_inference::dynamic_inf::inferReshape(_shape);
+    _output->info().shape(output_shape);
 
+    // set dynamic tensor's buffer
+    assert(_output->buffer() == nullptr);
+
+    //
+    // TODO Write code for memory allocation
+    //
+    throw std::runtime_error("Not yet implemented.");
+  }
+
+  // perform resize operation
   size_t count = _input->total_size();
   memcpy(_output->buffer(), _input->buffer(), count);
 }

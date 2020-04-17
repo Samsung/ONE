@@ -27,6 +27,7 @@
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
+#include "backend/ITensor.h"
 
 namespace onert
 {
@@ -83,6 +84,23 @@ private:
 private:
   ir::Operands &_operands;
 };
+
+/**
+ * @brief namespace for functions to infer shape during kernel execution
+ * @note   1. If output tensor is dynamic tensor, call these functions at execution time
+ *         2. These functions would have different param list, so it was not designed as visitor
+ */
+namespace dynamic_inf
+{
+
+/**
+ * @brief Infer output shape of Reshape at execution time.
+ */
+ir::Shape inferReshape(const backend::ITensor *new_shape);
+
+// TODO define more function
+
+} // namespace dynamic_inf
 
 } // namespace shape_inference
 } // namespace onert
