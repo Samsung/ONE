@@ -60,7 +60,7 @@ private:
   bool mergeable(const OpSequenceIndex &op_seq_index, const OperationIndex &node_index,
                  Layout layout);
   OpSequenceIndex appendFreshSingleOpSequence(const OperationIndex &node_index,
-                                              const Operation &node, Layout layout);
+                                              const Operation &node);
 
 private:
   Graph _graph;

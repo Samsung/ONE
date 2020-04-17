@@ -26,6 +26,19 @@ namespace circle_loader
 namespace
 {
 
+ir::Layout convertDataFormat(circle::DataFormat data_format)
+{
+  switch (data_format)
+  {
+    case circle::DataFormat::DataFormat_CHANNELS_FIRST:
+      return ir::Layout::NCHW;
+    case circle::DataFormat::DataFormat_CHANNELS_LAST:
+      return ir::Layout::NHWC;
+    default:
+      throw std::runtime_error("Unsupported DataFormat");
+  }
+}
+
 struct LoaderDomain
 {
   using Verifier = flatbuffers::Verifier;
@@ -84,7 +97,7 @@ public:
       CircleLoader::loadOperation(op, *subg);
     }
 
-    (void)circle_subg->data_format();
+    subg->setLayout(convertDataFormat(circle_subg->data_format()));
 
     subg->finishBuilding();
 
