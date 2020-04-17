@@ -1038,31 +1038,31 @@ enum BuiltinOptions
   BuiltinOptions_MirrorPadOptions = 77,
   BuiltinOptions_AbsOptions = 78,
   BuiltinOptions_SplitVOptions = 79,
-  BuiltinOptions_InstanceNormOptions = 80,
-  BuiltinOptions_UniqueOptions = 81,
-  BuiltinOptions_ReverseV2Options = 82,
-  BuiltinOptions_AddNOptions = 83,
-  BuiltinOptions_GatherNdOptions = 84,
-  BuiltinOptions_CosOptions = 85,
-  BuiltinOptions_WhereOptions = 86,
-  BuiltinOptions_RankOptions = 87,
-  BuiltinOptions_ReverseSequenceOptions = 88,
-  BuiltinOptions_MatrixDiagOptions = 89,
-  BuiltinOptions_QuantizeOptions = 90,
-  BuiltinOptions_MatrixSetDiagOptions = 91,
-  BuiltinOptions_HardSwishOptions = 92,
-  BuiltinOptions_IfOptions = 93,
-  BuiltinOptions_WhileOptions = 94,
-  BuiltinOptions_DepthToSpaceOptions = 95,
-  BuiltinOptions_NonMaxSuppressionV4Options = 96,
-  BuiltinOptions_NonMaxSuppressionV5Options = 97,
-  BuiltinOptions_ScatterNdOptions = 98,
-  BuiltinOptions_SelectV2Options = 99,
-  BuiltinOptions_DensifyOptions = 100,
-  BuiltinOptions_SegmentSumOptions = 101,
-  BuiltinOptions_BatchMatMulOptions = 102,
+  BuiltinOptions_UniqueOptions = 80,
+  BuiltinOptions_ReverseV2Options = 81,
+  BuiltinOptions_AddNOptions = 82,
+  BuiltinOptions_GatherNdOptions = 83,
+  BuiltinOptions_CosOptions = 84,
+  BuiltinOptions_WhereOptions = 85,
+  BuiltinOptions_RankOptions = 86,
+  BuiltinOptions_ReverseSequenceOptions = 87,
+  BuiltinOptions_MatrixDiagOptions = 88,
+  BuiltinOptions_QuantizeOptions = 89,
+  BuiltinOptions_MatrixSetDiagOptions = 90,
+  BuiltinOptions_HardSwishOptions = 91,
+  BuiltinOptions_IfOptions = 92,
+  BuiltinOptions_WhileOptions = 93,
+  BuiltinOptions_DepthToSpaceOptions = 94,
+  BuiltinOptions_NonMaxSuppressionV4Options = 95,
+  BuiltinOptions_NonMaxSuppressionV5Options = 96,
+  BuiltinOptions_ScatterNdOptions = 97,
+  BuiltinOptions_SelectV2Options = 98,
+  BuiltinOptions_DensifyOptions = 99,
+  BuiltinOptions_SegmentSumOptions = 100,
+  BuiltinOptions_BatchMatMulOptions = 101,
+  BuiltinOptions_InstanceNormOptions = 254,
   BuiltinOptions_MIN = BuiltinOptions_NONE,
-  BuiltinOptions_MAX = BuiltinOptions_BatchMatMulOptions
+  BuiltinOptions_MAX = BuiltinOptions_InstanceNormOptions
 };
 
 inline const BuiltinOptions (&EnumValuesBuiltinOptions())[103]
@@ -1147,7 +1147,6 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[103]
                                           BuiltinOptions_MirrorPadOptions,
                                           BuiltinOptions_AbsOptions,
                                           BuiltinOptions_SplitVOptions,
-                                          BuiltinOptions_InstanceNormOptions,
                                           BuiltinOptions_UniqueOptions,
                                           BuiltinOptions_ReverseV2Options,
                                           BuiltinOptions_AddNOptions,
@@ -1169,7 +1168,8 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[103]
                                           BuiltinOptions_SelectV2Options,
                                           BuiltinOptions_DensifyOptions,
                                           BuiltinOptions_SegmentSumOptions,
-                                          BuiltinOptions_BatchMatMulOptions};
+                                          BuiltinOptions_BatchMatMulOptions,
+                                          BuiltinOptions_InstanceNormOptions};
   return values;
 }
 
@@ -1255,7 +1255,6 @@ inline const char *const *EnumNamesBuiltinOptions()
                                       "MirrorPadOptions",
                                       "AbsOptions",
                                       "SplitVOptions",
-                                      "InstanceNormOptions",
                                       "UniqueOptions",
                                       "ReverseV2Options",
                                       "AddNOptions",
@@ -1278,6 +1277,159 @@ inline const char *const *EnumNamesBuiltinOptions()
                                       "DensifyOptions",
                                       "SegmentSumOptions",
                                       "BatchMatMulOptions",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "InstanceNormOptions",
                                       nullptr};
   return names;
 }
@@ -1688,11 +1840,6 @@ template <> struct BuiltinOptionsTraits<SplitVOptions>
   static const BuiltinOptions enum_value = BuiltinOptions_SplitVOptions;
 };
 
-template <> struct BuiltinOptionsTraits<InstanceNormOptions>
-{
-  static const BuiltinOptions enum_value = BuiltinOptions_InstanceNormOptions;
-};
-
 template <> struct BuiltinOptionsTraits<UniqueOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_UniqueOptions;
@@ -1801,6 +1948,11 @@ template <> struct BuiltinOptionsTraits<SegmentSumOptions>
 template <> struct BuiltinOptionsTraits<BatchMatMulOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_BatchMatMulOptions;
+};
+
+template <> struct BuiltinOptionsTraits<InstanceNormOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_InstanceNormOptions;
 };
 
 bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *obj, BuiltinOptions type);
@@ -7933,12 +8085,6 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
                ? static_cast<const SplitVOptions *>(builtin_options())
                : nullptr;
   }
-  const InstanceNormOptions *builtin_options_as_InstanceNormOptions() const
-  {
-    return builtin_options_type() == BuiltinOptions_InstanceNormOptions
-               ? static_cast<const InstanceNormOptions *>(builtin_options())
-               : nullptr;
-  }
   const UniqueOptions *builtin_options_as_UniqueOptions() const
   {
     return builtin_options_type() == BuiltinOptions_UniqueOptions
@@ -8069,6 +8215,12 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   {
     return builtin_options_type() == BuiltinOptions_BatchMatMulOptions
                ? static_cast<const BatchMatMulOptions *>(builtin_options())
+               : nullptr;
+  }
+  const InstanceNormOptions *builtin_options_as_InstanceNormOptions() const
+  {
+    return builtin_options_type() == BuiltinOptions_InstanceNormOptions
+               ? static_cast<const InstanceNormOptions *>(builtin_options())
                : nullptr;
   }
   const flatbuffers::Vector<uint8_t> *custom_options() const
@@ -8528,12 +8680,6 @@ template <> inline const SplitVOptions *Operator::builtin_options_as<SplitVOptio
   return builtin_options_as_SplitVOptions();
 }
 
-template <>
-inline const InstanceNormOptions *Operator::builtin_options_as<InstanceNormOptions>() const
-{
-  return builtin_options_as_InstanceNormOptions();
-}
-
 template <> inline const UniqueOptions *Operator::builtin_options_as<UniqueOptions>() const
 {
   return builtin_options_as_UniqueOptions();
@@ -8650,6 +8796,12 @@ template <>
 inline const BatchMatMulOptions *Operator::builtin_options_as<BatchMatMulOptions>() const
 {
   return builtin_options_as_BatchMatMulOptions();
+}
+
+template <>
+inline const InstanceNormOptions *Operator::builtin_options_as<InstanceNormOptions>() const
+{
+  return builtin_options_as_InstanceNormOptions();
 }
 
 struct OperatorBuilder
@@ -9616,11 +9768,6 @@ inline bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *ob
       auto ptr = reinterpret_cast<const SplitVOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case BuiltinOptions_InstanceNormOptions:
-    {
-      auto ptr = reinterpret_cast<const InstanceNormOptions *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
     case BuiltinOptions_UniqueOptions:
     {
       auto ptr = reinterpret_cast<const UniqueOptions *>(obj);
@@ -9729,6 +9876,11 @@ inline bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *ob
     case BuiltinOptions_BatchMatMulOptions:
     {
       auto ptr = reinterpret_cast<const BatchMatMulOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_InstanceNormOptions:
+    {
+      auto ptr = reinterpret_cast<const InstanceNormOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default:

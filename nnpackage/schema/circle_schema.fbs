@@ -442,7 +442,6 @@ union BuiltinOptions {
   MirrorPadOptions,
   AbsOptions,
   SplitVOptions,
-  InstanceNormOptions,
   UniqueOptions,
   ReverseV2Options,
   AddNOptions,
@@ -465,6 +464,7 @@ union BuiltinOptions {
   DensifyOptions,
   SegmentSumOptions,
   BatchMatMulOptions,
+  InstanceNormOptions = 254,
 }
 
 enum Padding : byte { SAME, VALID }
