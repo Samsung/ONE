@@ -25,10 +25,9 @@ from operation import Operation
 
 
 class OperatorParser(object):
-    def __init__(self, tf_model, tf_subgraph, perf_predictor=None):
+    def __init__(self, tf_model, tf_subgraph):
         self.tf_model = tf_model
         self.tf_subgraph = tf_subgraph
-        self.perf_predictor = perf_predictor
         self.operators_in_list = list()
         self.operators_per_type = dict()
         # Tensor type string table

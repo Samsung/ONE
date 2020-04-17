@@ -17,7 +17,6 @@
 from operator_wrapping import Operator
 from tensor_printer import TensorPrinter
 from option_printer import OptionPrinter
-from perf_predictor import PerfPredictor
 
 
 def GetStrTensorIndex(tensors):
@@ -35,24 +34,12 @@ class OperatorPrinter(object):
         self.verbose = verbose
         self.operator = operator
 
-    def PrintInfo(self, perf_predictor=None):
+    def PrintInfo(self):
         if (self.verbose < 1):
             return
 
         op_str = "Operator {0}: {1}".format(self.operator.operator_idx,
                                             self.operator.opcode_str)
-
-        if self.verbose == 2:
-            # total instruction num
-            instrs = "{:,}".format(self.operator.operation.TotalInstrNum()
-                                   ) if self.operator.operation.can_compute else "???"
-
-            # total operation cycles
-            cycles = "{:,}".format(
-                (perf_predictor.PredictCycles(self.operator.operation))
-            ) if self.operator.operation.can_compute and perf_predictor != None else "???"
-
-            op_str = op_str + "(instrs: {0}, cycls: {1})".format(instrs, cycles)
 
         print(op_str)
         print("\tFused Activation: " + self.operator.fused_activation)

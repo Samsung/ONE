@@ -31,7 +31,6 @@ import graph_stats
 from operator_parser import OperatorParser
 from subgraph_printer import SubgraphPrinter
 from model_saver import ModelSaver
-from perf_predictor import PerfPredictor
 
 
 class TFLiteModelFileParser(object):
@@ -39,10 +38,10 @@ class TFLiteModelFileParser(object):
         # Read flatbuffer file descriptor using argument
         self.tflite_file = args.input_file
 
-        # Set print level (0 ~ 2)
+        # Set print level (0 ~ 1)
         self.print_level = args.verbose
-        if (args.verbose > 2):
-            self.print_level = 2
+        if (args.verbose > 1):
+            self.print_level = 1
         if (args.verbose < 0):
             self.print_level = 0
 
@@ -106,7 +105,7 @@ class TFLiteModelFileParser(object):
                 model_name += " (MAIN)"
 
             # Parse Operators
-            op_parser = OperatorParser(tf_model, tf_subgraph, PerfPredictor())
+            op_parser = OperatorParser(tf_model, tf_subgraph)
             op_parser.Parse()
 
             stats += graph_stats.CalcGraphStats(op_parser)
@@ -129,7 +128,7 @@ if __name__ == '__main__':
     arg_parser.add_argument(
         "input_file", type=argparse.FileType('rb'), help="tflite file to read")
     arg_parser.add_argument(
-        '-v', '--verbose', type=int, default=1, help="set print level (0~2, default: 1)")
+        '-v', '--verbose', type=int, default=1, help="set print level (0~1, default: 1)")
     arg_parser.add_argument(
         '-t', '--tensor', nargs='*', help="tensor ID to print information (default: all)")
     arg_parser.add_argument(

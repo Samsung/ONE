@@ -69,7 +69,7 @@ class SubgraphPrinter(object):
 
         for operator in self.op_parser.operators_in_list:
             printer = OperatorPrinter(self.verbose, operator)
-            printer.PrintInfo(self.op_parser.perf_predictor)
+            printer.PrintInfo()
             print('')
 
         print('')
@@ -86,7 +86,7 @@ class SubgraphPrinter(object):
         for operator in self.op_parser.operators_in_list:
             if operator.operator_idx in self.print_operator_index_list:
                 printer = OperatorPrinter(self.verbose, operator)
-                printer.PrintInfo(self.op_parser.perf_predictor)
+                printer.PrintInfo()
                 print('')
 
         print('')
