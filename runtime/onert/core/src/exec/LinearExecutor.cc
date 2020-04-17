@@ -15,11 +15,27 @@
  */
 
 #include "LinearExecutor.h"
+#ifdef RUY_PROFILER
+#include "ruy/profiler/instrumentation.h"
+#endif
 
 namespace onert
 {
 namespace exec
 {
+
+#ifdef RUY_PROFILER
+namespace
+{
+char *seq_to_label(const onert::ir::OpSequence *op_seq)
+{
+  auto node_name = op_seq->operations().at(0).node->name();
+  char *cstr = new char[node_name.length() + 1];
+  std::strcpy(cstr, node_name.c_str());
+  return cstr;
+}
+} // namespace
+#endif
 
 void LinearExecutor::executeImpl()
 {
@@ -28,6 +44,9 @@ void LinearExecutor::executeImpl()
   {
     const auto op_seq = code.op_seq;
     const auto backend = code.lower_info->backend();
+#ifdef RUY_PROFILER
+    ruy::profiler::ScopeLabel label(seq_to_label(op_seq));
+#endif
     _subject.notifyJobBegin(this, op_seq, backend);
     code.fn_seq->run();
     _subject.notifyJobEnd(this, op_seq, backend);

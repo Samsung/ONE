@@ -22,6 +22,9 @@
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_debug.h"
+#ifdef RUY_PROFILER
+#include "ruy/profiler/profiler.h"
+#endif
 
 #include <cassert>
 #include <chrono>
@@ -78,6 +81,11 @@ int main(const int argc, char **argv)
               << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
     exit(0);
   }
+
+#ifdef RUY_PROFILER
+  std::unique_ptr<ruy::profiler::ScopeProfile> ruy_profile_{nullptr};
+  ruy_profile_.reset(new ruy::profiler::ScopeProfile);
+#endif
 
   std::unique_ptr<benchmark::MemoryPoller> mp{nullptr};
   if (args.getMemoryPoll())
@@ -254,6 +262,10 @@ int main(const int argc, char **argv)
   // dump output tensors
   if (!args.getDumpFilename().empty())
     H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
+
+#ifdef RUY_PROFILER
+  ruy_profile_ = nullptr;
+#endif
 
   NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
