@@ -39,7 +39,11 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   auto backend_resolver = std::make_unique<compiler::BackendResolver>();
 
   // 1. Backend for All operations
-  backend::Backend *backend_all = BackendManager::get().get(_options.backend_for_all);
+  const backend::Backend *backend_all = BackendManager::get().get(_options.backend_for_all);
+  if (!backend_all)
+  {
+    backend_all = BackendManager::get().getAll().at(0);
+  }
   VERBOSE(ManualScheduler) << "Default backend for all ops: " << _options.backend_for_all
                            << std::endl;
 
