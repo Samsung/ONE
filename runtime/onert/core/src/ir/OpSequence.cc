@@ -18,6 +18,24 @@
 #include "ir/OperationVisitor.h"
 #include <sstream>
 
+namespace
+{
+
+std::string getStrFromIndice(const onert::ir::OperandIndexSequence &indice)
+{
+  std::string str;
+  for (const auto &ind : indice)
+  {
+    str += std::to_string(ind.value());
+    str.push_back(',');
+  }
+  if (str.back() == ',')
+    str.pop_back();
+
+  return str;
+}
+}
+
 namespace onert
 {
 namespace ir
@@ -35,43 +53,14 @@ std::string OpSequence::getStr() const
 {
   // "  OpSequence IN(0,1,2) -> { op0(0,1,2:3), op1(3:4), op2(4:5) } -> OUT(5)"
   std::stringstream ss;
-  ss << "  OpSequence IN(";
-  for (const auto &index : getInputs())
-  {
-    ss << " " << index.value();
-  }
-  ss << " ) -> {";
+  ss << "  OpSequence IN(" << getStrFromIndice(getInputs()) << ") -> {";
   for (const auto &elem : _operations)
   {
-    // input string
-    std::string inputs;
-    for (const auto &ind : elem.node->getInputs())
-    {
-      inputs += std::to_string(ind.value());
-      inputs.push_back(',');
-    }
-    if (inputs.back() == ',')
-      inputs.pop_back();
-
-    // output string
-    std::string outputs;
-    for (const auto &ind : elem.node->getOutputs())
-    {
-      outputs += std::to_string(ind.value());
-      outputs.push_back(',');
-    }
-    if (outputs.back() == ',')
-      outputs.pop_back();
-
-    ss << " " << elem.index.value() << "(" << elem.node->name() << ":" << inputs << ":" << outputs
-       << ")";
+    ss << " " << elem.index.value() << "(" << elem.node->name() << ":"
+       << getStrFromIndice(elem.node->getInputs()) << ":"
+       << getStrFromIndice(elem.node->getOutputs()) << ")";
   }
-  ss << " } -> OUT(";
-  for (const auto &index : getOutputs())
-  {
-    ss << " " << index.value();
-  }
-  ss << " )";
+  ss << " } -> OUT(" << getStrFromIndice(getOutputs()) << ")";
   return ss.str();
 }
 
