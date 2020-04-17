@@ -20,19 +20,11 @@ class GraphStats():
         from collections import Counter
         from collections import defaultdict
         self.op_counts = Counter()
-        # `op_instrs` could have None as well as int so we can't use `Counter`
-        self.op_instrs = defaultdict(int)
         self.filled_memory = 0
         self.total_memory = 0
 
     def accumulate_op_count(self, op_str, count):
         self.op_counts[op_str] += count
-
-    def accumulate_op_instr(self, op_str, count):
-        if self.op_instrs[op_str] == None or count == None:
-            self.op_instrs[op_str] = None
-        else:
-            self.op_instrs[op_str] += count
 
     def accumulate_filled_memory(self, size):
         self.filled_memory += size
@@ -42,23 +34,12 @@ class GraphStats():
 
     def __iadd__(self, other):
         self.op_counts += other.op_counts
-        for key in other.op_instrs.keys():
-            if self.op_instrs[key] == None or other.op_instrs[key] == None:
-                self.op_instrs[key] = None
-            else:
-                self.op_instrs[key] += other.op_instrs[key]
         self.filled_memory += other.filled_memory
         self.total_memory += other.total_memory
         return self
 
 
 def PrintGraphStats(stats, verbose):
-    def instrs_to_str(val):
-        if val == None:
-            return '???'
-        else:
-            return '{:,}'.format(val)
-
     print("Number of all operator types: {0}".format(len(stats.op_counts)))
 
     # Print op type stats
@@ -66,20 +47,10 @@ def PrintGraphStats(stats, verbose):
         occur = stats.op_counts[op_name]
         optype_info_str = "\t{:38}: {:4}".format(op_name, occur)
 
-        if verbose == 2:
-            instrs = instrs_to_str(stats.op_instrs[op_name])
-            optype_info_str = optype_info_str + " \t (instrs: {})".format(instrs)
-
         print(optype_info_str)
 
     summary_str = "{0:46}: {1:4}".format("Number of all operators",
                                          sum(stats.op_counts.values()))
-    if verbose == 2:
-        values = stats.op_instrs.values()
-        instrs_sum = None if any(x == None for x in values) else sum(values)
-        instrs_str = instrs_to_str(instrs_sum)
-        summary_str = summary_str + " \t (total instrs: {0})".format(instrs_str)
-
     print(summary_str)
     print('')
 
@@ -100,13 +71,6 @@ def CalcGraphStats(op_parser):
 
         # this operator type can be computed?
         can_compute = oper_list[0].operation.can_compute
-
-        # total number of instructions of the same operator types
-        if can_compute:
-            instrs = sum(operator.operation.TotalInstrNum() for operator in oper_list)
-        else:
-            instrs = None
-        stats.accumulate_op_instr(type_str, instrs)
 
     total_memory = 0
     filled_memory = 0  # only memory for constant
