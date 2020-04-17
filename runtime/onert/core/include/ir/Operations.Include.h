@@ -83,3 +83,5 @@
 #include "ir/operation/OneHot.h"
 #include "ir/operation/Sin.h"
 #include "ir/operation/Shape.h"
+#include "ir/operation/ConvertFp32ToFp16.h"
+#include "ir/operation/ConvertFp16ToFp32.h"
