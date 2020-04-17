@@ -42,6 +42,9 @@ public:
   void deallocateConsts(void);
   void deallocateNonconsts(void);
 
+  // allocate dynamic tensor at execution time
+  void allocateDynamicTensor(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
+
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info, bool as_const);
 
   void claimPlan(const ir::OperandIndex &ind, uint32_t size);
@@ -54,6 +57,10 @@ public:
 private:
   std::unique_ptr<cpu_common::DynamicMemoryManager> _const_mgr;
   std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
+  /// @brief memory manager for dynamic tensor. each tensor keeps this object and allocate memory
+  /// when necessary. For now, let's use DynamicMemoryManager.
+  std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_tensor_mgr;
+
   ir::OperandIndexMap<std::shared_ptr<operand::Tensor>> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
 };

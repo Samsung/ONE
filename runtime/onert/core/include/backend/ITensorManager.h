@@ -30,6 +30,11 @@ namespace backend
 struct ITensorManager
 {
   virtual ~ITensorManager() = default;
+
+  virtual void allocateDynamicTensor(const ir::OperandIndex &, const ir::Shape &)
+  {
+    throw std::runtime_error("This backend does not support dynamic tensor");
+  }
 };
 
 } // namespace backend

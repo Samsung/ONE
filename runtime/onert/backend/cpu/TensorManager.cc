@@ -27,7 +27,8 @@ namespace cpu
 
 TensorManager::TensorManager()
     : _const_mgr{new cpu_common::DynamicMemoryManager()},
-      _nonconst_mgr{new cpu_common::MemoryManager()}
+      _nonconst_mgr{new cpu_common::MemoryManager()},
+      _dynamic_tensor_mgr{new cpu_common::DynamicMemoryManager()}
 {
   // DO NOTHING
 }
@@ -58,7 +59,7 @@ void TensorManager::allocateNonconsts(void)
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
-    if (!_as_constants[ind])
+    if (!_as_constants[ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
@@ -73,6 +74,19 @@ void TensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
 
 void TensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
 
+void TensorManager::allocateDynamicTensor(const ir::OperandIndex &ind, const ir::Shape &new_shape)
+{
+  auto tensor = _tensors[ind];
+  assert(tensor);
+
+  tensor->info().shape(new_shape);
+
+  auto capacity = tensor->total_size();
+  auto alloc = _dynamic_tensor_mgr->allocate(ind, capacity);
+
+  tensor->setBuffer(alloc);
+}
+
 void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
                                 bool as_const)
 {
@@ -85,6 +99,10 @@ void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandIn
 void TensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
   assert(_tensors.find(ind) != _tensors.end());
+
+  // This method is called only when a tensor is not dynamic
+  assert(!_tensors[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
@@ -92,6 +110,10 @@ void TensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 void TensorManager::releasePlan(const ir::OperandIndex &ind)
 {
   assert(_tensors.find(ind) != _tensors.end());
+
+  // This method is called only when a tensor is not dynamic
+  assert(!_tensors[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
 }
