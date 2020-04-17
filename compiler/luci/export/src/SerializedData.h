@@ -75,10 +75,6 @@ struct SerializedModelData final : public SubGraphContext
   std::vector<flatbuffers::Offset<circle::Tensor>> _tensors;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
 
-  // Graph input and output names
-  std::unordered_map<loco::Pull *, std::string> _pull_to_name;
-  std::unordered_map<loco::Push *, std::string> _push_to_name;
-
   /**
    * @brief if opcode is not registered in table of opcodes add it
    * @param builtin_code

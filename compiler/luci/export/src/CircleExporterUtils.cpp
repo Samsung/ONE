@@ -134,27 +134,6 @@ circle::Padding getOpPadding(const luci::Padding pad)
   INTERNAL_EXN_V("Unsupported luci::Padding", oops::to_uint32(pad));
 }
 
-void registerGraphIOName(loco::Graph *graph, SerializedModelData &gd)
-{
-  for (uint32_t in = 0; in < graph->inputs()->size(); ++in)
-  {
-    auto pull = loco::pull_node(graph, in);
-    auto name = graph->inputs()->at(in)->name();
-
-    gd._pull_to_name[pull] = name;
-  }
-  for (uint32_t out = 0; out < graph->outputs()->size(); ++out)
-  {
-    auto push = loco::push_node(graph, out);
-    auto name = graph->outputs()->at(out)->name();
-
-    gd._push_to_name[push] = name;
-  }
-
-  // TODO set this value properly
-  gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
-}
-
 namespace
 {
 

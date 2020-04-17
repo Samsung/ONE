@@ -152,8 +152,6 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
-  registerGraphIOName(graph, gd);
-
   // parse graph into SerializedModelData structure
   exportOpDefinedTensors(graph, _builder, gd);
 
