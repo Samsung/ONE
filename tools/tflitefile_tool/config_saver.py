@@ -23,8 +23,8 @@ class ConfigSaver(object):
     def __init__(self, file_name, operator):
         self.file_name = file_name
         self.operator = operator
-        # Set self.verbose to 2 level to print more information
-        self.verbose = 2
+        # Set self.verbose to 1 level to print more information
+        self.verbose = 1
         self.op_idx = operator.operator_idx
         self.op_name = operator.opcode_str
 
