@@ -184,8 +184,8 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, output_data,
                                       /*result_stride=*/1);
-#endif
   UNUSED_RELEASE(output_shape);
+#endif
 
   // Apply activation function to floats.
   ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);

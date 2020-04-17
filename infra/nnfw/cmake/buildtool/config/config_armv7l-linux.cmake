@@ -15,5 +15,4 @@ set(FLAGS_COMMON ${FLAGS_COMMON}
     "-funsafe-math-optimizations"
     "-ftree-vectorize"
     "-mfp16-format=ieee"
-    "-DUSE_RUY_GEMV"
     )

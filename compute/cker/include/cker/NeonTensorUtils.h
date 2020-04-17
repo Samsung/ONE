@@ -547,8 +547,6 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
                         const int8_t *input_to_gate_weights, int32_t n_batch, int32_t n_input,
                         int32_t n_output, int32_t, int32_t *scratch)
 {
-  VERBOSE("NeonCpuBackendGemm") << std::endl;
-
   MatrixParams<int8_t> lhs_params;
   lhs_params.order = Order::kRowMajor;
   lhs_params.rows = n_output;
@@ -856,7 +854,6 @@ void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, 
 {
   if (m_rows % 4 == 0 && result_stride == 1)
   {
-    VERBOSE("NeonTensorUtils") << "Rows is multiplies of 4" << std::endl;
     const int32_t *bias = static_cast<const int32_t *>(nullptr);
     NeonCpuBackendGemm(vectors, bias, matrix, n_batch, m_cols, m_rows,
                        /*output_zp =*/0, scratch);
@@ -889,7 +886,6 @@ void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, 
     }
     return;
   }
-  VERBOSE("NeonTensorUtils") << "Rows is not multiplies of 4" << std::endl;
   NeonMatrixBatchVectorMultiplyAccumulate(matrix, m_rows, m_cols, vectors, scaling_factors, n_batch,
                                           result, result_stride);
 }
