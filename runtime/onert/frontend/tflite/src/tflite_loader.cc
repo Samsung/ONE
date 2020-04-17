@@ -65,29 +65,34 @@ class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain, TFLiteLo
 public:
   using BaseLoader::BaseLoader;
 
-  void loadSubgraph(const onert_tflite::SubGraph *subgraph)
+  std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg)
   {
+    auto subg = std::make_unique<ir::Graph>();
     // Load tensors
-    _tensor_to_operand.resize(subgraph->tensors()->size());
-    for (flatbuffers::uoffset_t i = 0; i < subgraph->tensors()->size(); ++i)
+    _tensor_to_operand.resize(tflite_subg->tensors()->size());
+    for (flatbuffers::uoffset_t i = 0; i < tflite_subg->tensors()->size(); ++i)
     {
-      _tensor_to_operand[i] = loadOperand(subgraph->tensors()->Get(i));
+      _tensor_to_operand[i] = loadOperand(tflite_subg->tensors()->Get(i), *subg);
     }
     // Set inputs
-    for (const std::int32_t input_ind : *subgraph->inputs())
+    for (const std::int32_t input_ind : *tflite_subg->inputs())
     {
-      _graph.addInput(_tensor_to_operand[input_ind]);
+      subg->addInput(_tensor_to_operand[input_ind]);
     }
     // Set outputs
-    for (const std::int32_t output_ind : *subgraph->outputs())
+    for (const std::int32_t output_ind : *tflite_subg->outputs())
     {
-      _graph.addOutput(_tensor_to_operand[output_ind]);
+      subg->addOutput(_tensor_to_operand[output_ind]);
     }
     // Create operations
-    for (const auto *op : *subgraph->operators())
+    for (const auto *op : *tflite_subg->operators())
     {
-      loadOperation(op);
+      loadOperation(op, *subg);
     }
+
+    subg->finishBuilding();
+
+    return subg;
   }
 };
 
@@ -95,10 +100,10 @@ public:
 
 std::unique_ptr<ir::Graph> loadModel(const char *filename)
 {
-  auto graph = std::make_unique<ir::Graph>();
-  TFLiteLoader loader(*graph);
+  auto primary_subgraph = std::make_unique<ir::Graph>();
+  TFLiteLoader loader(primary_subgraph);
   loader.loadFromFile(filename);
-  return graph;
+  return primary_subgraph;
 }
 
 } // namespace tflite_loader

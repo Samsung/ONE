@@ -59,44 +59,49 @@ class CircleLoader final : public base_loader::BaseLoader<LoaderDomain, CircleLo
 public:
   using BaseLoader::BaseLoader;
 
-  void loadSubgraph(const circle::SubGraph *subgraph)
+  std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg)
   {
+    auto subg = std::make_unique<ir::Graph>();
     // Load tensors
-    _tensor_to_operand.resize(subgraph->tensors()->size());
-    for (flatbuffers::uoffset_t i = 0; i < subgraph->tensors()->size(); ++i)
+    _tensor_to_operand.resize(circle_subg->tensors()->size());
+    for (flatbuffers::uoffset_t i = 0; i < circle_subg->tensors()->size(); ++i)
     {
-      _tensor_to_operand[i] = loadOperand(subgraph->tensors()->Get(i));
+      _tensor_to_operand[i] = loadOperand(circle_subg->tensors()->Get(i), *subg);
     }
     // Set inputs
-    for (const std::int32_t input_ind : *subgraph->inputs())
+    for (const std::int32_t input_ind : *circle_subg->inputs())
     {
-      _graph.addInput(_tensor_to_operand[input_ind]);
+      subg->addInput(_tensor_to_operand[input_ind]);
     }
     // Set outputs
-    for (const std::int32_t output_ind : *subgraph->outputs())
+    for (const std::int32_t output_ind : *circle_subg->outputs())
     {
-      _graph.addOutput(_tensor_to_operand[output_ind]);
+      subg->addOutput(_tensor_to_operand[output_ind]);
     }
     // Create operations
-    for (const auto *op : *subgraph->operators())
+    for (const auto *op : *circle_subg->operators())
     {
-      CircleLoader::loadOperation(op);
+      CircleLoader::loadOperation(op, *subg);
     }
 
-    (void)subgraph->data_format();
+    (void)circle_subg->data_format();
+
+    subg->finishBuilding();
+
+    return subg;
   }
 
-  void loadOperation(const circle::Operator *op)
+  void loadOperation(const circle::Operator *op, ir::Graph &subg)
   {
     const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
 
     switch (builtin_op)
     {
       case circle::BuiltinOperator::BuiltinOperator_INSTANCE_NORM:
-        loadInstanceNorm(op);
+        loadInstanceNorm(op, subg);
         return;
       default:
-        BaseLoader::loadOperation(op);
+        BaseLoader::loadOperation(op, subg);
         return;
     }
   }
@@ -106,10 +111,10 @@ public:
 
 std::unique_ptr<ir::Graph> loadModel(const char *filename)
 {
-  auto graph = std::make_unique<ir::Graph>();
-  CircleLoader loader(*graph);
+  auto primary_subgraph = std::make_unique<ir::Graph>();
+  CircleLoader loader(primary_subgraph);
   loader.loadFromFile(filename);
-  return graph;
+  return primary_subgraph;
 }
 
 } // namespace circle_loader
