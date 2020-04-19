@@ -17,7 +17,7 @@
 #ifndef __LUCI_IMPORTER_H__
 #define __LUCI_IMPORTER_H__
 
-#include "Import/GraphBuilderRegistry.h"
+#include "luci/Import/GraphBuilderRegistry.h"
 
 #include <loco.h>
 
