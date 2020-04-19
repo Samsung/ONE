@@ -66,6 +66,7 @@ public:
   const CircleOperators_t &operators() const { return _current_subgraph->operators; }
   const std::vector<int32_t> &inputs() const { return _current_subgraph->inputs; }
   const std::vector<int32_t> &outputs() const { return _current_subgraph->outputs; }
+  const std::string &name() const { return _current_subgraph->name; }
 
   uint32_t num_subgraph() const { return _model->subgraphs.size(); }
 
