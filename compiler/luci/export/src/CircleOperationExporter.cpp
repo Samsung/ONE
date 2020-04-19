@@ -189,7 +189,7 @@ void OperationExporter::visit(luci::CircleConcatenation *node)
 
 void OperationExporter::visit(luci::CircleBatchToSpaceND *node)
 {
-  uint32_t op_idx = gd.registerBuiltinOpcode(circle::BuiltinOperator_BATCH_TO_SPACE_ND);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BATCH_TO_SPACE_ND);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
                                   get_tensor_index(node->block_shape()),
                                   get_tensor_index(node->crops())};
