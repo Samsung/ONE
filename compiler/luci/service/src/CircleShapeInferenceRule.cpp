@@ -245,6 +245,56 @@ public:
     return infer_pool_2d_shape(node);
   }
 
+  loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    // Support only input rank is 3 and 4
+    assert(input_shape.rank() == 3 || input_shape.rank() == 4);
+
+    // Only support block_shape() with S32 type CircleConst for now
+    auto const_block_shape = dynamic_cast<luci::CircleConst *>(node->block_shape());
+    LUCI_ASSERT(const_block_shape, "Only support CircleConst for block_shape");
+    LUCI_ASSERT(const_block_shape->dtype() == loco::DataType::S32,
+                "Only support int32 block_shape");
+
+    // Only support crops() with S32 type CircleConst for now
+    auto const_crops = dynamic_cast<luci::CircleConst *>(node->crops());
+    LUCI_ASSERT(const_crops, "Only support CircleConst for crops");
+    LUCI_ASSERT(const_crops->dtype() == loco::DataType::S32, "Only support int32 crops");
+
+    auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
+    auto const_crops_shape = loco::shape_get(const_crops).as<loco::TensorShape>();
+    assert(const_block_shape_shape.rank() == 1);
+    assert(const_crops_shape.rank() == 2);
+
+    int32_t input_spatial_dim = input_shape.rank() - 2;
+    assert(const_block_shape_shape.dim(0) == input_spatial_dim);
+    assert(const_crops_shape.dim(0) == input_spatial_dim);
+    assert(const_crops_shape.dim(1) == 2);
+
+    loco::TensorShape shape_output;
+
+    shape_output.rank(input_shape.rank());
+
+    int32_t output_batch_size = input_shape.dim(0).value();
+    for (int32_t dim = 0; dim < input_spatial_dim; ++dim)
+    {
+      int dim_size = input_shape.dim(dim + 1).value() * const_block_shape->at<S32>(dim);
+      dim_size -= const_crops->at<S32>(dim * 2);
+      dim_size -= const_crops->at<S32>(dim * 2 + 1);
+      shape_output.dim(dim + 1) = dim_size;
+
+      assert(output_batch_size % const_block_shape->at<S32>(dim) == 0);
+      output_batch_size = output_batch_size / const_block_shape->at<S32>(dim);
+    }
+    shape_output.dim(0) = output_batch_size;
+    shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
+
+    return loco::NodeShape{shape_output};
+  }
+
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
