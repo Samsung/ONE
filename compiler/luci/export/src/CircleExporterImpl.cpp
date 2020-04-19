@@ -129,7 +129,7 @@ using namespace flatbuffers;
 CircleExporterImpl::CircleExporterImpl(loco::Graph *graph) { exportGraph(graph); }
 
 ::flatbuffers::Offset<::circle::SubGraph>
-CircleExporterImpl::exportSubgraph(SerializedModelData &gd)
+CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
 {
   auto tensors = _builder.CreateVector(gd._tensors);
   auto inputs = _builder.CreateVector(gd._inputs);
@@ -147,23 +147,30 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
 
   _builder.Clear();
 
-  SerializedModelData gd;
+  SerializedModelData md;
+  SerializedGraphData gd;
 
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
+  // TODO set this value properly
+  gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
+
+  // prepare model data
+  prepareModelData(_builder, md);
+
   // parse graph into SerializedModelData structure
-  exportOpDefinedTensors(graph, _builder, gd);
+  exportOpDefinedTensors(graph, _builder, md, gd);
 
   // NOTE Invoke these register functions only after each node is annotated with its tensor_index
   registerGraphInputTensors(graph, gd);
   registerGraphOutputTensors(graph, gd);
 
-  exportNodes(graph, _builder, gd);
+  exportNodes(graph, _builder, md, gd);
 
   // encode operator codes
   auto operator_codes =
-      encodeOperatorCodes(_builder, gd._operator_codes, gd._custom_operator_codes);
+      encodeOperatorCodes(_builder, md._operator_codes, md._custom_operator_codes);
 
   // Subgraphs
   Offset<SubGraph> subgraph = exportSubgraph(gd);
@@ -174,7 +181,7 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   auto description = _builder.CreateString(description_str);
 
   // create array of buffers
-  auto buffers = _builder.CreateVector(gd._buffers);
+  auto buffers = _builder.CreateVector(md._buffers);
 
   // empty metadata
   std::vector<int> metadata_buffer_vec;
