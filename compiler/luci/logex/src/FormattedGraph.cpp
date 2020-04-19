@@ -182,6 +182,7 @@ private:
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleArgMax)
   IMPLEMENT(luci::CircleAveragePool2D)
+  IMPLEMENT(luci::CircleBatchToSpaceND)
   IMPLEMENT(luci::CircleConcatenation)
   IMPLEMENT(luci::CircleConst)
   IMPLEMENT(luci::CircleConv2D)
@@ -269,6 +270,18 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleAveragePool2D *node,
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
   s.args().append("fused", to_str(node->fusedActivationFunction()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("block_shape", tbl()->lookup(node->block_shape()));
+  s.args().append("crops", tbl()->lookup(node->crops()));
 
   s.state(locop::NodeSummary::State::Complete);
 
