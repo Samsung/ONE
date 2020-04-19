@@ -27,12 +27,17 @@ namespace luci
 {
 
 /**
+ * @brief one time preparation for SerializedModelData
+ */
+void prepareModelData(flatbuffers::FlatBufferBuilder &builder, SerializedModelData &md);
+
+/**
  * @brief create Tensors corresponding to results of all nodes in graph
  * @param computational graph
  * @param gd information about serialized parts of model
  */
 void exportOpDefinedTensors(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder,
-                            SerializedModelData &gd);
+                            SerializedModelData &md, SerializedGraphData &gd);
 
 } // namespace luci
 

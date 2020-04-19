@@ -29,7 +29,8 @@ namespace luci
  * @param nodes container with nodes
  * @param gd information about serializer parts of model
  */
-void exportNodes(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder, SerializedModelData &gd);
+void exportNodes(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder, SerializedModelData &md,
+                 SerializedGraphData &gd);
 
 } // namespace luci
 

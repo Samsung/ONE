@@ -19,14 +19,14 @@
 
 #include "luci/CircleExporter.h"
 
+#include "SerializedData.h"
+
 #include <mio/circle/schema_generated.h>
 
 #include <loco.h>
 
 namespace luci
 {
-
-struct SerializedModelData;
 
 /**
  * internal implementation of interface exporter class
@@ -51,11 +51,11 @@ public:
 
 private:
   /**
-   * @brief create Subgraph using data stored in SerializedModelData
+   * @brief create Subgraph using data stored in SerializedGraphData
    * @param gd information about serializer parts of model
    * @return offset in buffer corresponding to serialized subgraph
    */
-  flatbuffers::Offset<circle::SubGraph> exportSubgraph(SerializedModelData &gd);
+  flatbuffers::Offset<circle::SubGraph> exportSubgraph(SerializedGraphData &gd);
 
   /**
    * @brief root function that writes graph into internal buffer

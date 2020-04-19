@@ -17,8 +17,6 @@
 #ifndef __SERIALIZED_DATA_H__
 #define __SERIALIZED_DATA_H__
 
-#include <loco.h>
-
 #include <mio/circle/schema_generated.h>
 
 #include <vector>
@@ -64,15 +62,13 @@ struct SubGraphContext
 };
 
 // Prerequisites for circle::Model object creation
-struct SerializedModelData final : public SubGraphContext
+struct SerializedModelData final
 {
   SerializedModelData() = default;
   SerializedModelData(const SerializedModelData &) = delete;
 
   std::unordered_map<OpCode, uint32_t> _operator_codes;
   std::unordered_map<OpCode, std::string> _custom_operator_codes;
-  std::vector<flatbuffers::Offset<circle::Operator>> _operators;
-  std::vector<flatbuffers::Offset<circle::Tensor>> _tensors;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
 
   /**
@@ -82,6 +78,16 @@ struct SerializedModelData final : public SubGraphContext
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code);
   uint32_t registerCustomOpcode(const std::string &custom_op);
+};
+
+// Prerequisites for circle::Model object creation
+struct SerializedGraphData final : public SubGraphContext
+{
+  SerializedGraphData() = default;
+  SerializedGraphData(const SerializedModelData &) = delete;
+
+  std::vector<flatbuffers::Offset<circle::Operator>> _operators;
+  std::vector<flatbuffers::Offset<circle::Tensor>> _tensors;
 };
 
 } // namespace luci

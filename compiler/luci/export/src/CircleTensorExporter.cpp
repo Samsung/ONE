@@ -207,7 +207,7 @@ encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam 
 }
 
 void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
-                           SerializedModelData &gd)
+                           SerializedModelData &md, SerializedGraphData &gd)
 {
   // Create and register output tensor shape
   auto shape_offset = encodeShape(builder, info.shape());
@@ -218,8 +218,8 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 
   auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
 
-  auto buffer_id = static_cast<uint32_t>(gd._buffers.size());
-  gd._buffers.push_back(buffer);
+  auto buffer_id = static_cast<uint32_t>(md._buffers.size());
+  md._buffers.push_back(buffer);
 
   auto name_offset = builder.CreateString(info.name());
   auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
@@ -232,7 +232,20 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 namespace luci
 {
 
-void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, SerializedModelData &gd)
+void prepareModelData(FlatBufferBuilder &builder, SerializedModelData &md)
+{
+  // add one empty buffer
+  //   note: this follows TFLite
+  //   note: there's a comment in tflite fbs file
+  //   - Note the 0th entry of this array must be an empty buffer (sentinel).
+  //   - This is a convention so that tensors without a buffer can provide 0 as
+  //   - their buffer.
+  auto buffer = encodeOpBuffer(builder);
+  md._buffers.push_back(buffer);
+}
+
+void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, SerializedModelData &md,
+                            SerializedGraphData &gd)
 {
   CircleTensorContext tensor_ctx;
 
@@ -242,18 +255,9 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
     allocateCircleTensor(circle_node, tensor_ctx);
   }
 
-  // add one empty buffer
-  //   note: this follows TFLite
-  //   note: there's a comment in tflite fbs file
-  //   - Note the 0th entry of this array must be an empty buffer (sentinel).
-  //   - This is a convention so that tensors without a buffer can provide 0 as
-  //   - their buffer.
-  auto buffer = encodeOpBuffer(builder);
-  gd._buffers.push_back(buffer);
-
   for (const auto &tensor_info : tensor_ctx)
   {
-    exportOpDefinedTensor(tensor_info, builder, gd);
+    exportOpDefinedTensor(tensor_info, builder, md, gd);
   }
 }
 
