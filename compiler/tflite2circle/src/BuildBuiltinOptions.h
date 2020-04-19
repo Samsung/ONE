@@ -22,6 +22,7 @@
 #include "BuildBuiltinOptions/AbsOptions.h"
 #include "BuildBuiltinOptions/AddOptions.h"
 #include "BuildBuiltinOptions/ArgMaxOptions.h"
+#include "BuildBuiltinOptions/BatchToSpaceNDOptions.h"
 #include "BuildBuiltinOptions/CastOptions.h"
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
 #include "BuildBuiltinOptions/Conv2DOptions.h"
