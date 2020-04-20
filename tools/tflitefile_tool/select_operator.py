@@ -709,7 +709,16 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
 
     # SparseToDenseOptions: not supported
     # TileOptions: not supported
-    # ExpandDimsOptions: not supported
+
+    # ExpandDimsOptions:
+    import tflite.ExpandDimsOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().ExpandDimsOptions:
+
+        expanddims_option = tflite.ExpandDimsOptions.ExpandDimsOptions()
+        expanddims_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.ExpandDimsOptions.ExpandDimsOptionsStart(new_builder)
+        return tflite.ExpandDimsOptions.ExpandDimsOptionsEnd(new_builder)
 
     # NotEqualOptions:
     import tflite.NotEqualOptions
@@ -721,7 +730,17 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
         tflite.NotEqualOptions.NotEqualOptionsStart(new_builder)
         return tflite.NotEqualOptions.NotEqualOptionsEnd(new_builder)
 
-    # ShapeOptions: not supported
+    # ShapeOptions:
+    import tflite.ShapeOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().ShapeOptions:
+
+        shape_option = tflite.ShapeOptions.ShapeOptions()
+        shape_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.ShapeOptions.ShapeOptionsStart(new_builder)
+        tflite.ShapeOptions.ShapeOptionsAddOutType(new_builder, shape_option.OutType())
+        return tflite.ShapeOptions.ShapeOptionsEnd(new_builder)
+
     # PowOptions: not supported
     # ArgMinOptions: not supported
     # FakeQuantOptions: not supported
