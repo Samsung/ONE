@@ -19,6 +19,8 @@
 
 #include "luci/Import/GraphBuilderRegistry.h"
 
+#include "luci/IR/Module.h"
+
 #include <loco.h>
 
 #include <mio/circle/schema_generated.h>
@@ -41,6 +43,7 @@ public:
 
 public:
   std::unique_ptr<loco::Graph> import(const circle::Model *model) const;
+  std::unique_ptr<Module> importModule(const circle::Model *model) const;
 
 private:
   const GraphBuilderSource *_source = nullptr;
