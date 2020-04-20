@@ -27,6 +27,11 @@ namespace ir
 
 using namespace operation;
 
+OperationDumper::OperationDumper(const std::string &start_msg)
+{
+  VERBOSE(LIR) << start_msg << std::endl;
+}
+
 void OperationDumper::visit(const Abs &node)
 {
   VERBOSE(LIR) << "* Abs" << std::endl;

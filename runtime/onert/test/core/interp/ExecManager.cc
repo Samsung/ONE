@@ -70,6 +70,10 @@ protected:
 
     _graph->finishBuilding();
 
+    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    subgs->push(onert::ir::SubgraphIndex{0}, _graph);
+    _graph->setSubgraphs(subgs);
+
     _executor = std::make_unique<InterpExecutor>(*_graph);
   }
 
@@ -125,6 +129,10 @@ protected:
 
     _graph->finishBuilding();
 
+    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    subgs->push(onert::ir::SubgraphIndex{0}, _graph);
+    _graph->setSubgraphs(subgs);
+
     _executor = std::make_unique<InterpExecutor>(*_graph);
   }
 
@@ -171,6 +179,10 @@ protected:
 
     _graph->finishBuilding();
 
+    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    subgs->push(onert::ir::SubgraphIndex{0}, _graph);
+    _graph->setSubgraphs(subgs);
+
     _executor = std::make_unique<InterpExecutor>(*_graph);
   }
 
@@ -178,7 +190,7 @@ protected:
 
   virtual void TearDown() { _executor = nullptr; }
 
-  std::unique_ptr<Graph> _graph{nullptr};
+  std::shared_ptr<Graph> _graph{nullptr};
   std::shared_ptr<InterpExecutor> _executor{nullptr};
   std::unique_ptr<Execution> _execution{nullptr};
   const int32_t _activation_value{0};

@@ -101,6 +101,20 @@ public:
     }
   }
 
+  /**
+   * @brief Iterate over the container with given function
+   *
+   * @param[in] fn Function to be run for every container entry
+   * @return N/A
+   */
+  void iterate(const std::function<void(const SubgraphIndex &, Graph &)> &fn)
+  {
+    for (const auto &e : _subgraphs)
+    {
+      fn(e.first, *e.second);
+    }
+  }
+
 private:
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
 };
