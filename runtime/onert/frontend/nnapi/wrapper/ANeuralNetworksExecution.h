@@ -26,8 +26,8 @@
 struct ANeuralNetworksExecution
 {
 public:
-  ANeuralNetworksExecution(const std::shared_ptr<onert::exec::IExecutor> &executor)
-      : _execution{std::make_shared<onert::exec::Execution>(executor)}
+  ANeuralNetworksExecution(const std::shared_ptr<onert::exec::ExecutorMap> &executors)
+      : _execution{std::make_shared<onert::exec::Execution>(executors)}
   {
     // DO NOTHING
   }

@@ -30,9 +30,9 @@ public:
   bool finish() noexcept;
 
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
-  void publish(std::shared_ptr<onert::exec::IExecutor> &executor) noexcept
+  void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
   {
-    _compiler->release(executor);
+    _compiler->release(executors);
   }
 
 private:

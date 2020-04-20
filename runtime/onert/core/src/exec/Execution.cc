@@ -23,10 +23,13 @@ namespace onert
 namespace exec
 {
 
-Execution::Execution(const std::shared_ptr<IExecutor> &executor) : _executor{executor}
+Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors{executors}
 {
-  _io_desc.inputs.resize(_executor->graph().getInputs().size());
-  _io_desc.outputs.resize(_executor->graph().getOutputs().size());
+  assert(executors != nullptr);
+  assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
+  const auto &primary_subg = primary_executor()->graph();
+  _io_desc.inputs.resize(primary_subg.getInputs().size());
+  _io_desc.outputs.resize(primary_subg.getOutputs().size());
 }
 
 // TODO Remove default parameter
@@ -104,7 +107,7 @@ void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  _executor->execute(_io_desc);
+  primary_executor()->execute(_io_desc);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;

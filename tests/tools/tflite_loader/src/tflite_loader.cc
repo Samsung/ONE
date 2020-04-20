@@ -92,9 +92,9 @@ void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
 
   std::cout << "[Execution] Graph compiled!" << std::endl;
 
-  std::shared_ptr<onert::exec::IExecutor> executor;
-  compiler->release(executor);
-  auto execution = std::make_shared<onert::exec::Execution>(executor);
+  std::shared_ptr<onert::exec::ExecutorMap> executors;
+  compiler->release(executors);
+  auto execution = std::make_shared<onert::exec::Execution>(executors);
 
   // Setting IO
   try

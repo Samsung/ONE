@@ -97,7 +97,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Graph> &graph)
-    : _graph{graph}, _executor{nullptr}, _state{State::CREATED}
+    : _graph{graph}, _executors{nullptr}, _state{State::CREATED}
 {
 
   // Set default values for CompilerOptions
@@ -137,7 +137,10 @@ void Compiler::compile(void)
   // Compilable check
   if (!checkCompilable())
   {
-    _executor = std::make_shared<interp::InterpExecutor>(*_graph);
+    // TODO Support multiple executors for interpreter
+    _executors = std::make_shared<exec::ExecutorMap>();
+    _executors->insert(
+        std::make_pair(ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*_graph)));
     return;
   }
 
@@ -174,6 +177,7 @@ void Compiler::compile(void)
    *************************************************************/
   _state = State::LOWERED;
 
+  _executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -187,11 +191,10 @@ void Compiler::compile(void)
     lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
 
-    // TODO Support multiple executor
-    assert(lowered_subgs.size() == 1);
-    _executor = std::shared_ptr<exec::IExecutor>{
+    auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), _options)};
-    _executor->setIndexedRanks(indexed_ranks);
+    executor->setIndexedRanks(indexed_ranks);
+    _executors->insert(std::make_pair(subg_index, std::move(executor)));
   }
 
   /********************************

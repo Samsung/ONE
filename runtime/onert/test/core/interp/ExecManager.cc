@@ -29,6 +29,7 @@ namespace
 using namespace onert::ir;
 using InterpExecutor = onert::interp::InterpExecutor;
 using Execution = onert::exec::Execution;
+using ExecutorMap = onert::exec::ExecutorMap;
 
 class InterpExecutorTest : public ::testing::Test
 {
@@ -74,7 +75,9 @@ protected:
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 
-    _executor = std::make_unique<InterpExecutor>(*_graph);
+    _executors = std::make_shared<ExecutorMap>();
+    _executors->insert(
+        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
   void CreateTwoStepModel()
@@ -133,7 +136,9 @@ protected:
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 
-    _executor = std::make_unique<InterpExecutor>(*_graph);
+    _executors = std::make_shared<ExecutorMap>();
+    _executors->insert(
+        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
   void CreateUnspecifiedDimensionsModel()
@@ -183,15 +188,17 @@ protected:
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 
-    _executor = std::make_unique<InterpExecutor>(*_graph);
+    _executors = std::make_shared<ExecutorMap>();
+    _executors->insert(
+        std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
-  void createExecution() { _execution = std::make_unique<Execution>(_executor); }
+  void createExecution() { _execution = std::make_unique<Execution>(_executors); }
 
-  virtual void TearDown() { _executor = nullptr; }
+  virtual void TearDown() { _executors = nullptr; }
 
   std::shared_ptr<Graph> _graph{nullptr};
-  std::shared_ptr<InterpExecutor> _executor{nullptr};
+  std::shared_ptr<ExecutorMap> _executors{nullptr};
   std::unique_ptr<Execution> _execution{nullptr};
   const int32_t _activation_value{0};
 };
@@ -200,14 +207,15 @@ TEST_F(InterpExecutorTest, create_empty)
 {
   Graph graph;
   graph.finishBuilding();
-  _executor = std::make_unique<InterpExecutor>(graph);
-  ASSERT_NE(_executor, nullptr);
+  auto executor = std::make_unique<InterpExecutor>(graph);
+  ASSERT_NE(executor, nullptr);
 }
 
 TEST_F(InterpExecutorTest, create_simple)
 {
   CreateSimpleModel();
-  ASSERT_NE(_executor, nullptr);
+  ASSERT_NE(_executors, nullptr);
+  ASSERT_NE(_executors->at(onert::ir::SubgraphIndex{0}), nullptr);
 }
 
 TEST_F(InterpExecutorTest, setInput)
