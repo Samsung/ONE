@@ -35,11 +35,13 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_001)
 TEST_F(ValidationTestSessionCreated, neg_load_session_002)
 {
   ASSERT_EQ(nnfw_load_model_from_file(
-                nullptr, ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE).c_str()),
+                nullptr, // session is null
+                ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE).c_str()),
             NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_prepare_001)
 {
+  // nnfw_load_model_from_file was not called
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
 }
