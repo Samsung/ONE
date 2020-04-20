@@ -17,13 +17,15 @@
 #include "model_path.h"
 #include "fixtures.h"
 
-TEST_F(ValidationTestFourOneOpModelSetInput, run_001)
+using ValidationTestFourAddModelsSetInput = ValidationTestFourModelsSetInput<ModelPath::ADD>;
+
+TEST_F(ValidationTestFourAddModelsSetInput, run_001)
 {
   ASSERT_EQ(nnfw_run(_objects[0].session), NNFW_STATUS_NO_ERROR);
   ASSERT_EQ(nnfw_run(_objects[1].session), NNFW_STATUS_NO_ERROR);
 }
 
-TEST_F(ValidationTestFourOneOpModelSetInput, run_002)
+TEST_F(ValidationTestFourAddModelsSetInput, run_002)
 {
   int rep = 3;
   while (rep--)

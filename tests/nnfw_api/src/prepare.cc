@@ -15,8 +15,11 @@
  */
 
 #include "fixtures.h"
+#include "model_path.h"
 
-TEST_F(ValidationTestOneOpModelLoaded, prepare_001)
+using ValidationTestAddModelLoaded = ValidationTestModelLoaded<ModelPath::ADD>;
+
+TEST_F(ValidationTestAddModelLoaded, prepare_001)
 {
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 }

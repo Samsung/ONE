@@ -19,23 +19,32 @@
 
 #include <string>
 
-extern const char *MODEL_ADD;
-
 /**
  * @brief A helper class to find models for testing
  */
 class ModelPath
 {
 public:
+  /**
+   * @brief Serial numbers for test packages. The numbers are mapped with package names.
+   *        This is useful for creating GTest Fixtures with variable template to do
+   *        different nn packages with no code duplication.
+   */
+  enum TestPackages
+  {
+    DUMMY, // Non-existing directory for negative tests
+    ADD
+  };
+
   static ModelPath &get();
 
   /**
    * @brief Get the Absolute of the model to find
    *
-   * @param model_dir A relative model directory
+   * @param package_no Model's serial number
    * @return std::string The absolute path of model directory
    */
-  std::string getModelAbsolutePath(const char *model_dir);
+  std::string getModelAbsolutePath(int package_no);
   /**
    * @brief Save the current executable's directory based on argv[0] and CWD
    *

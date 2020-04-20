@@ -20,7 +20,8 @@
 #include <libgen.h>
 #include <string.h>
 
-const char *MODEL_ADD = "add";
+// NOTE Must match `enum TestPackages`
+const char *TEST_PACKAGE_NAMES[] = {"nonexisting_package", "add"};
 
 ModelPath &ModelPath::get()
 {
@@ -49,8 +50,9 @@ void ModelPath::init(const char *argv0)
   }
 }
 
-std::string ModelPath::getModelAbsolutePath(const char *model_dir)
+std::string ModelPath::getModelAbsolutePath(int package_no)
 {
+  const char *model_dir = TEST_PACKAGE_NAMES[package_no];
   // Model dir is nested
   return _base_path + "/nnfw_api_gtest_models/" + model_dir + "/" + model_dir;
 }
