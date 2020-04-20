@@ -58,6 +58,7 @@ public:
   void visit(luci::CircleCos *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDiv *) final;
+  void visit(luci::CircleExp *) final;
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleLogicalNot *) final;
@@ -271,6 +272,19 @@ void OperationExporter::visit(luci::CircleDiv *node)
   auto options = CreateDivOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_DivOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleExp *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EXP);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateAbsOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_AbsOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
