@@ -174,6 +174,10 @@ message BatchToSpaceNDOptions {
   // None
 }
 
+message ExpOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -205,6 +209,7 @@ message Operation {
   optional ShapeOptions shape_options = 123;
   optional FloorDivOptions floordiv_options = 124;
   optional BatchToSpaceNDOptions batch_to_space_options = 125;
+  optional ExpOptions exp_options = 126;
 }
 
 // For additional subgraphs
