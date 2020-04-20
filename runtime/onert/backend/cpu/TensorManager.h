@@ -43,7 +43,7 @@ public:
   void deallocateNonconsts(void);
 
   // allocate dynamic tensor at execution time
-  void allocateDynamicTensor(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
+  void allocateDynamicTensor(const ir::OperandIndex &ind, const ir::Shape &new_shape);
 
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info, bool as_const);
 
