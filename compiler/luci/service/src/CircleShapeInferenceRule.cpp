@@ -463,6 +463,12 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleExp *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFullyConnected *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
