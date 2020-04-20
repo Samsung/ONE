@@ -52,6 +52,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                       // 76
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
+  CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
 
 #undef CIRCLE_NODE
@@ -72,7 +73,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_RNN = 24,
   // BuiltinOperator_SPACE_TO_DEPTH = 26,
   // BuiltinOperator_SVDF = 27,
-  // BuiltinOperator_TANH = 28,
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
   // BuiltinOperator_SKIP_GRAM = 30,
   // BuiltinOperator_CALL = 31,

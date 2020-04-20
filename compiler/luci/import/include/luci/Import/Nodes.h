@@ -43,6 +43,7 @@
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSub.h"
+#include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTranspose.h"
 
 #endif // __LUCI_IMPORT_NODES_H__
