@@ -89,7 +89,7 @@ protected:
   {
     ValidationTest::SetUp();
 
-    auto model_path = ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE);
+    auto model_path = ModelPath::get().getModelAbsolutePath(MODEL_ADD);
     for (auto &obj : _objects)
     {
       ASSERT_EQ(nnfw_create_session(&obj.session), NNFW_STATUS_NO_ERROR);
