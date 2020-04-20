@@ -31,6 +31,7 @@
 #include "BuildBuiltinOptions/DivOptions.h"
 #include "BuildBuiltinOptions/EqualOptions.h"
 #include "BuildBuiltinOptions/ExpandDimsOptions.h"
+#include "BuildBuiltinOptions/ExpOptions.h"
 #include "BuildBuiltinOptions/FillOptions.h"
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
