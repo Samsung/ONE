@@ -44,6 +44,7 @@ int ANeuralNetworksCompilation_create(ANeuralNetworksModel *model,
 
   model->release(internal);
 
+  // TODO Support multiple subgraphs
   *compilation = new (std::nothrow) ANeuralNetworksCompilation(internal);
   if (*compilation == nullptr)
   {

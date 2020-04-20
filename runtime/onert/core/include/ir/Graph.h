@@ -24,6 +24,7 @@
 #include "ir/Operations.h"
 #include "ir/OpSequence.h"
 #include "ir/OpSequences.h"
+#include "ir/Subgraphs.h"
 
 namespace onert
 {
@@ -65,6 +66,7 @@ public:
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   bool isBuildingPhase(void) const { return _phase == Phase::BUILDING; }
   void setLayout(Layout layout) { _layout = layout; }
+  void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
 
 private:
   void initializeUseDef();
@@ -95,6 +97,8 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
+  const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
+  std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
   Layout layout() { return _layout; }
 
 private:
@@ -103,7 +107,7 @@ private:
   Operands _operands;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
-  std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
+  std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 };

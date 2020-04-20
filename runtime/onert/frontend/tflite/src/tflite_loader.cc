@@ -98,9 +98,9 @@ public:
 
 } // namespace
 
-std::unique_ptr<ir::Graph> loadModel(const char *filename)
+std::shared_ptr<ir::Graph> loadModel(const char *filename)
 {
-  auto primary_subgraph = std::make_unique<ir::Graph>();
+  auto primary_subgraph = std::make_shared<ir::Graph>();
   TFLiteLoader loader(primary_subgraph);
   loader.loadFromFile(filename);
   return primary_subgraph;
