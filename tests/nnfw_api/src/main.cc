@@ -27,7 +27,7 @@
  */
 void checkModels()
 {
-  std::string absolute_path = ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE);
+  std::string absolute_path = ModelPath::get().getModelAbsolutePath(MODEL_ADD);
   DIR *dir = opendir(absolute_path.c_str());
   if (!dir)
   {

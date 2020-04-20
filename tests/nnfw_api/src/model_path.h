@@ -19,7 +19,7 @@
 
 #include <string>
 
-extern const char *MODEL_ONE_OP_IN_TFLITE;
+extern const char *MODEL_ADD;
 
 /**
  * @brief A helper class to find models for testing

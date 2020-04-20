@@ -20,9 +20,9 @@
 TEST_F(ValidationTestSessionCreated, load_session_001)
 {
   // Existing model must
-  ASSERT_EQ(nnfw_load_model_from_file(
-                _session, ModelPath::get().getModelAbsolutePath(MODEL_ONE_OP_IN_TFLITE).c_str()),
-            NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(
+      nnfw_load_model_from_file(_session, ModelPath::get().getModelAbsolutePath(MODEL_ADD).c_str()),
+      NNFW_STATUS_NO_ERROR);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_001)
