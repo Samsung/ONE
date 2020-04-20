@@ -1,5 +1,6 @@
 MODELS/inception_module
 MODELS/mobilenet
+MODELS/mobilenet_quant8
 abs
 add
 average_pool_2d
