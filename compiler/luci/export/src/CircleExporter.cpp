@@ -15,6 +15,7 @@
  */
 
 #include "luci/CircleExporter.h"
+#include "luci/IR/Module.h"
 #include "CircleExporterImpl.h"
 
 #include <oops/InternalExn.h>
@@ -25,6 +26,9 @@
 namespace luci
 {
 
+// TODO remove this
+Module *CircleExporter::Contract::module(void) const { return nullptr; }
+
 CircleExporter::CircleExporter()
 {
   // NOTHING TO DO
@@ -32,6 +36,18 @@ CircleExporter::CircleExporter()
 
 bool CircleExporter::invoke(Contract *contract) const
 {
+  auto module = contract->module();
+  if (module != nullptr)
+  {
+    CircleExporterImpl impl(module);
+
+    const char *ptr = impl.getBufferPointer();
+    const size_t size = impl.getBufferSize();
+
+    // we just send one time
+    return contract->store(ptr, size);
+  }
+
   auto graph = contract->graph();
   if (graph == nullptr)
     return false;

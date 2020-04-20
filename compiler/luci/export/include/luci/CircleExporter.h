@@ -17,6 +17,8 @@
 #ifndef __LUCI_CIRCLEEXPORTER_H__
 #define __LUCI_CIRCLEEXPORTER_H__
 
+#include <luci/IR/Module.h>
+
 #include <loco.h>
 
 #include <memory>
@@ -37,6 +39,11 @@ public:
     // Input Graph (to be exported)
     // Exporter expects a loco graph that consists of Circle nodes
     virtual loco::Graph *graph(void) const = 0;
+
+    // Input Module (to be exported)
+    // Exporter expects a luci module that consists of loco graphs
+    // TODO make this pure virtual
+    virtual luci::Module *module(void) const;
 
   public: // Exporter -> Client
     // Exporter calls store for export data
