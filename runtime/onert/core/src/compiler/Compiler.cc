@@ -123,6 +123,14 @@ void Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
+  // The subgraphs being nullptr means that _graph has one subgraph
+  if (_graph->subgraphs() == nullptr)
+  {
+    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    subgs->push(onert::ir::SubgraphIndex{0}, _graph);
+    _graph->setSubgraphs(subgs);
+  }
+
   // Operation validation check
   OperationValidator{*_graph}();
 
