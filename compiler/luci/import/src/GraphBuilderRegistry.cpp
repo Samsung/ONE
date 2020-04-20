@@ -38,6 +38,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder); // 4
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                           // 42
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                       // 71
+  CIRCLE_NODE(EXP, CircleExpGraphBuilder);                           // 47
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);    // 9
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);            // 87
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);              // 84
@@ -84,7 +85,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_STRIDED_SLICE = 45,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
-  // BuiltinOperator_EXP = 47,
   // BuiltinOperator_TOPK_V2 = 48,
   // BuiltinOperator_SPLIT = 49,
   // BuiltinOperator_LOG_SOFTMAX = 50,
