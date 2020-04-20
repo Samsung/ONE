@@ -29,6 +29,7 @@
 #include "Nodes/CircleDepthwiseConv2D.h"
 #include "Nodes/CircleDiv.h"
 #include "Nodes/CircleEqual.h"
+#include "Nodes/CircleExp.h"
 #include "Nodes/CircleFullyConnected.h"
 #include "Nodes/CircleGather.h"
 #include "Nodes/CircleLogicalNot.h"
