@@ -1,5 +1,3 @@
-[![Inner Source](https://img.shields.io/badge/innersource-incubating-orange)](http://mosaic.sec.samsung.net/kms/comty.do?comtyId=279217135&menuId=324419756&postId=373704030&page=view&type=LIST)
-
 # nnfw
 
 A high-performance, on-device neural network inference framework
