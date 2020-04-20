@@ -191,6 +191,7 @@ private:
   IMPLEMENT(luci::CircleDiv)
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleFullyConnected)
+  IMPLEMENT(luci::CircleGather)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
   IMPLEMENT(luci::CircleMaximum)
@@ -380,6 +381,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleFullyConnected *node,
 
   s.state(locop::NodeSummary::State::Complete);
 
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleGather *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("positions", tbl()->lookup(node->positions()));
+  s.args().append("axis", pepper::str(node->axis()));
+
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
