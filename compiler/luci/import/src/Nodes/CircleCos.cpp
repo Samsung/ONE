@@ -33,7 +33,7 @@ bool CircleCosGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleCosGraphBuilder::build_node(const circle::OperatorT &,
                                               const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+                                              loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleCos>();
   node->x(inputs[0]);

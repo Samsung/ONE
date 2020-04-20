@@ -31,7 +31,7 @@ bool CircleAveragePool2DGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleAveragePool2DGraphBuilder::build_node(const circle::OperatorT &op,
                                                         const std::vector<CircleNode *> &inputs,
-                                                        loco::Graph *graph) const
+                                                        loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleAveragePool2D>();
   node->value(inputs[0]);

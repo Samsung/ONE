@@ -32,6 +32,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                    // 56
   CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);     // 1
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);  // 37
+  CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                     // 32
   CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);       // 2
   CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                    // 3
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                           // 108
@@ -78,7 +79,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
   // BuiltinOperator_SKIP_GRAM = 30,
   // BuiltinOperator_CALL = 31,
-  // BuiltinOperator_CUSTOM = 32,
   // BuiltinOperator_EMBEDDING_LOOKUP_SPARSE = 33,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
   // BuiltinOperator_SPACE_TO_BATCH_ND = 38,

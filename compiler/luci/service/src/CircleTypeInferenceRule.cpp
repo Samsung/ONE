@@ -40,6 +40,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->value());
   }
 
+  loco::DataType visit(const luci::CircleBatchMatMul *node) final
+  {
+    return loco::dtype_get(node->x());
+  }
+
   loco::DataType visit(const luci::CircleBatchToSpaceND *node) final
   {
     return loco::dtype_get(node->input());

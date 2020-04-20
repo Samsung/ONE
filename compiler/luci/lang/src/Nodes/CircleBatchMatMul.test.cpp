@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
-#define __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
+#include "luci/IR/Nodes/CircleBatchMatMul.h"
 
-#include "luci/Import/GraphBuilder.h"
+#include "luci/IR/CircleDialect.h"
 
-namespace luci
+#include <gtest/gtest.h>
+
+TEST(CircleBatchMatMulTest, constructor)
 {
+  luci::CircleBatchMatMul batchmatmul_node;
 
-class CircleLogicalOrGraphBuilder : public GraphBuilder
-{
-public:
-  bool validate(const ValidateArgs &args) const final;
+  ASSERT_EQ(batchmatmul_node.dialect(), luci::CircleDialect::get());
+  ASSERT_EQ(batchmatmul_node.opcode(), luci::CircleOpcode::BATCHMATMUL);
 
-private:
-  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph, CircleReader *) const final;
-};
-
-} // namespace luci
-
-#endif // __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
+  ASSERT_EQ(batchmatmul_node.x(), nullptr);
+  ASSERT_EQ(batchmatmul_node.y(), nullptr);
+}

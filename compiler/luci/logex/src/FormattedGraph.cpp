@@ -78,6 +78,8 @@ const char *to_str(loco::DataType type)
   }
 }
 
+const char *to_str(bool value) { return value ? "true" : "false"; }
+
 const char *to_str(luci::FusedActFunc fused)
 {
   switch (fused)
@@ -182,6 +184,7 @@ private:
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleArgMax)
   IMPLEMENT(luci::CircleAveragePool2D)
+  IMPLEMENT(luci::CircleBatchMatMul)
   IMPLEMENT(luci::CircleBatchToSpaceND)
   IMPLEMENT(luci::CircleConcatenation)
   IMPLEMENT(luci::CircleConst)
@@ -281,6 +284,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleAveragePool2D *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchMatMul *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
+  s.args().append("adj_x", to_str(node->adj_x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
                                        locop::NodeSummary &s) const
 {
@@ -289,7 +302,6 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
   s.args().append("crops", tbl()->lookup(node->crops()));
 
   s.state(locop::NodeSummary::State::Complete);
-
   return true;
 }
 

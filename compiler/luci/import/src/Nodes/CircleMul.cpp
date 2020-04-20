@@ -34,7 +34,7 @@ bool CircleMulGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleMulGraphBuilder::build_node(const circle::OperatorT &op,
                                               const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+                                              loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleMul>();
   node->x(inputs[0]);

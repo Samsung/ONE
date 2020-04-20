@@ -34,7 +34,7 @@ bool CircleFullyConnectedGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT &op,
                                                          const std::vector<CircleNode *> &inputs,
-                                                         loco::Graph *graph) const
+                                                         loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleFullyConnected>();
   node->input(inputs[0]);

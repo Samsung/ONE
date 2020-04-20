@@ -33,7 +33,13 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
     input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
   }
 
-  CircleNode *node = build_node(op, input_nodes, context->graph());
+  const auto &opcodes = context->reader()->opcodes();
+  const uint32_t opcode_index = op.opcode_index;
+  const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
+
+  CircleNode *node = opcode.builtin_code == circle::BuiltinOperator_CUSTOM
+                         ? build_node(op, input_nodes, context->graph(), context->reader())
+                         : build_node(op, input_nodes, context->graph());
 
   // Set up node parameters.
   assert(outputs.size() == 1);

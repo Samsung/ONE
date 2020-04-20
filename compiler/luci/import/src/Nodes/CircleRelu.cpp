@@ -36,7 +36,7 @@ bool CircleReluGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleReluGraphBuilder::build_node(const circle::OperatorT &,
                                                const std::vector<CircleNode *> &inputs,
-                                               loco::Graph *graph) const
+                                               loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleRelu>();
   node->features(inputs[0]);

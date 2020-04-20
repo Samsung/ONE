@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
-#define __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
+#ifndef __LUCI_IMPORT_OP_CIRCLE_CUSTOM_H__
+#define __LUCI_IMPORT_OP_CIRCLE_CUSTOM_H__
 
 #include "luci/Import/GraphBuilder.h"
 
 namespace luci
 {
 
-class CircleLogicalOrGraphBuilder : public GraphBuilder
+class CircleCustomGraphBuilder : public GraphBuilder
 {
 public:
   bool validate(const ValidateArgs &args) const final;
 
 private:
   CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph, CircleReader *) const final;
+                         loco::Graph *graph, CircleReader *context) const final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_IMPORT_OP_CIRCLE_LOGICALOR_H__
+#endif // __LUCI_IMPORT_OP_CIRCLE_CUSTOM_H__

@@ -49,7 +49,7 @@ bool CircleRsqrtGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleRsqrtGraphBuilder::build_node(const circle::OperatorT &,
                                                 const std::vector<CircleNode *> &inputs,
-                                                loco::Graph *graph) const
+                                                loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleRsqrt>();
   node->x(inputs[0]);

@@ -51,6 +51,7 @@ public:
   void visit(luci::CircleAdd *) final;
   void visit(luci::CircleArgMax *) final;
   void visit(luci::CircleAveragePool2D *) final;
+  void visit(luci::CircleBatchMatMul *) final;
   void visit(luci::CircleBatchToSpaceND *) final;
   void visit(luci::CircleConcatenation *) final;
   void visit(luci::CircleConst *) final{/* skip, everything is done in exportOpDefinedTensors */};
@@ -171,6 +172,19 @@ void OperationExporter::visit(luci::CircleArgMax *node)
 void OperationExporter::visit(luci::CircleAveragePool2D *node)
 {
   export_pool_2d<luci::CircleAveragePool2D>(node, circle::BuiltinOperator_AVERAGE_POOL_2D);
+}
+
+void OperationExporter::visit(luci::CircleBatchMatMul *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BATCH_MATMUL);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateBatchMatMulOptions(builder, node->adj_x(), node->adj_y());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BatchMatMulOptions, options.Union());
+  gd._operators.push_back(op_offset);
 }
 
 void OperationExporter::visit(luci::CircleConcatenation *node)

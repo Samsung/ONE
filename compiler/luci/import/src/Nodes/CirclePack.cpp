@@ -44,7 +44,7 @@ bool CirclePackGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CirclePackGraphBuilder::build_node(const circle::OperatorT &op,
                                                const std::vector<CircleNode *> &inputs,
-                                               loco::Graph *graph) const
+                                               loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CirclePack>(inputs.size());
   for (uint32_t i = 0; i < inputs.size(); ++i)

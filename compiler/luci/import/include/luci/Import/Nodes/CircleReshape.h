@@ -29,7 +29,7 @@ public:
 
 private:
   CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph) const final;
+                         loco::Graph *graph, CircleReader *) const final;
 };
 
 } // namespace luci
