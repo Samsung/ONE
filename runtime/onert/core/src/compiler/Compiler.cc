@@ -153,37 +153,47 @@ void Compiler::compile(void)
   onert::dumper::dot::DotDumper dot_dumper(*_graph, dump_level);
   dot_dumper.dump("before_lower");
 
-  // Lower: Assign backend
-  auto lowered_graph = std::make_unique<ir::LoweredGraph>(*_graph, _options);
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
+  _graph->subgraphs()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
+    // Lower: Assign backend
+    lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
-  // NOTE. Current datas' reference of constant operands is 2 because of
-  // original graph and lowered graph.
-  // To delete cached data, this doing should be done for the original graph
-  // at this line and then once again for the lowered graph in ExecutorFactory
-  // TODO. Delete this code as code for disconnecting btw Graph and nnfw session lands
-  if (util::getConfigBool(util::config::DELETE_CACHED_DATA))
-  {
-    CachedDataDeleter(_graph->operands()).run();
-  }
-
-  auto indexed_ranks = lowered_graph->indexed_ranks();
+    // NOTE. Current datas' reference of constant operands is 2 because of
+    // original graph and lowered graph.
+    // To delete cached data, this doing should be done for the original graph
+    // at this line and then once again for the lowered graph in ExecutorFactory
+    // TODO. Delete this code as code for disconnecting btw Graph and nnfw session lands
+    if (util::getConfigBool(util::config::DELETE_CACHED_DATA))
+    {
+      CachedDataDeleter(graph.operands()).run();
+    }
+  });
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-
   _state = State::LOWERED;
 
-  onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_graph.get(), dump_level);
-  dot_dumper_lowered.dump("after_lower");
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    auto indexed_ranks = lowered_subg->indexed_ranks();
 
-  ir::OperationDumper dumper;
-  _graph->operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
+    dot_dumper_lowered.dump("after_lower_subg-" + subg_index.value());
 
-  _executor = std::shared_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_graph), _options)};
-  _executor->setIndexedRanks(indexed_ranks);
+    ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
+    lowered_subg->graph().operations().iterate(
+        [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+    // TODO Support multiple executor
+    assert(lowered_subgs.size() == 1);
+    _executor = std::shared_ptr<exec::IExecutor>{
+        ExecutorFactory::get().create(std::move(lowered_subg), _options)};
+    _executor->setIndexedRanks(indexed_ranks);
+  }
+
   /********************************
    * Code generation phase finished
    ********************************/
