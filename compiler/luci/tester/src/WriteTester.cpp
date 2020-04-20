@@ -36,16 +36,24 @@ public:
   {
     // NOTHING TO DO
   }
+  CircleExpContract(luci::Module *module, const std::string &filename)
+      : _module(module), _filepath(filename)
+  {
+    // NOTHING TO DO
+  }
   virtual ~CircleExpContract() = default;
 
 public:
   loco::Graph *graph(void) const final { return _graph; }
+
+  luci::Module *module(void) const final { return _module; }
 
 public:
   bool store(const char *ptr, const size_t size) const final;
 
 private:
   loco::Graph *_graph;
+  luci::Module *_module;
   const std::string _filepath;
 };
 
@@ -101,29 +109,34 @@ int main(int argc, char **argv)
 
   // Import from input Circle file
   luci::Importer importer;
-  auto graph = importer.import(input_model);
+  auto module = importer.importModule(input_model);
+  assert(module->size() > 0);
 
-  if (graph.get() == nullptr)
-    return 255;
-
+  for (size_t g = 0; g < module->size(); ++g)
   {
-    luci::ShapeInferencePass pass;
-    while (pass.run(graph.get()) == true)
-      ;
-  }
-  {
-    luci::TypeInferencePass pass;
-    while (pass.run(graph.get()) == true)
-      ;
-  }
+    auto graph = module->graph(g);
+    if (graph == nullptr)
+      return 255;
 
-  if (!luci::validate(graph.get()))
-    return 255;
+    {
+      luci::ShapeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      luci::TypeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+
+    if (!luci::validate(graph))
+      return 255;
+  }
 
   // Export to output Circle file
   luci::CircleExporter exporter;
 
-  CircleExpContract contract(graph.get(), output_path);
+  CircleExpContract contract(module.get(), output_path);
 
   return exporter.invoke(&contract) ? 0 : 255;
 }

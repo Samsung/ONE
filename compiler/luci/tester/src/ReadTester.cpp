@@ -65,21 +65,28 @@ int main(int argc, char **argv)
   }
 
   luci::Importer importer;
-  auto graph = importer.import(input_model);
+  auto module = importer.importModule(input_model);
+  assert(module->size() > 0);
 
+  for (size_t g = 0; g < module->size(); ++g)
   {
-    luci::ShapeInferencePass pass;
-    while (pass.run(graph.get()) == true)
-      ;
-  }
-  {
-    luci::TypeInferencePass pass;
-    while (pass.run(graph.get()) == true)
-      ;
-  }
+    auto graph = module->graph(g);
+    if (graph == nullptr)
+      return 255;
 
-  if (!luci::validate(graph.get()))
-    return 255;
+    {
+      luci::ShapeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
+    {
+      luci::TypeInferencePass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
 
-  return graph.get() != nullptr ? 0 : 255;
+    if (!luci::validate(graph))
+      return 255;
+  }
+  return 0;
 }
