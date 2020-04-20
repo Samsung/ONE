@@ -19,6 +19,7 @@
 
 #include <loco.h>
 #include <luci/CircleExporter.h>
+#include <luci/IR/Module.h>
 #include <mio/circle/schema_generated.h>
 
 #include <memory>
@@ -27,21 +28,22 @@
 struct CircleExpContract : public luci::CircleExporter::Contract
 {
 public:
-  CircleExpContract(loco::Graph *graph, const std::string &filename)
-      : _graph(graph), _filepath(filename)
+  CircleExpContract(luci::Module *module, const std::string &filename)
+      : _module(module), _filepath(filename)
   {
     // NOTHING TO DO
   }
   virtual ~CircleExpContract() = default;
 
 public:
-  loco::Graph *graph(void) const final { return _graph; }
+  loco::Graph *graph(void) const final { return nullptr; }
+  luci::Module *module(void) const final { return _module; };
 
 public:
   bool store(const char *ptr, const size_t size) const final;
 
 private:
-  loco::Graph *_graph;
+  luci::Module *_module;
   const std::string _filepath;
 };
 

@@ -98,18 +98,23 @@ int entry(int argc, char **argv)
 
   // Import from input Circle file
   luci::Importer importer;
-  auto graph = importer.import(input_model);
+  auto module = importer.importModule(input_model);
 
-  // call luci optimizations
-  optimizer.optimize(graph.get());
+  for (size_t idx = 0; idx < module->size(); ++idx)
+  {
+    auto graph = module->graph(idx);
 
-  if (!luci::validate(graph.get()))
-    return 255;
+    // call luci optimizations
+    optimizer.optimize(graph);
+
+    if (!luci::validate(graph))
+      return 255;
+  }
 
   // Export to output Circle file
   luci::CircleExporter exporter;
 
-  CircleExpContract contract(graph.get(), output_path);
+  CircleExpContract contract(module.get(), output_path);
 
   return exporter.invoke(&contract) ? 0 : 255;
 }
