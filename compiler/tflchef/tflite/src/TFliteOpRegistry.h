@@ -66,6 +66,7 @@ private:
     REG_TFL_OP(DEPTHWISE_CONV_2D, TFliteOpDepthwiseConv2D);
     REG_TFL_OP(DIV, TFliteOpDiv);
     REG_TFL_OP(EQUAL, TFliteOpEqual);
+    REG_TFL_OP(EXP, TFliteOpExp);
     REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);

@@ -28,6 +28,7 @@
 #include "Op/DepthwiseConv2D.h"
 #include "Op/Div.h"
 #include "Op/Equal.h"
+#include "Op/Exp.h"
 #include "Op/FloorDiv.h"
 #include "Op/FullyConnected.h"
 #include "Op/LogicalOr.h"
