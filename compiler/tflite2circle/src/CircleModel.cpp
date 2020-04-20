@@ -152,10 +152,11 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       auto circle_builtin_options_type = get_circle_builtin_options_type(it);
       // custom options
       flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
-      if(it->custom_options())
+      if (it->custom_options())
       {
-       std::vector<uint8_t> custom_options_vec{it->custom_options()->begin(), it->custom_options()->end()};
-       circle_custom_options = fb->CreateVector(custom_options_vec);
+        std::vector<uint8_t> custom_options_vec{it->custom_options()->begin(),
+                                                it->custom_options()->end()};
+        circle_custom_options = fb->CreateVector(custom_options_vec);
       }
       // custom options format
       // TODO Make get_circle_custom_options_format

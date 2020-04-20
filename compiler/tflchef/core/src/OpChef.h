@@ -29,6 +29,12 @@ struct OpChef
   virtual tflite::BuiltinOperator code(void) const = 0;
   virtual tflite::BuiltinOptions type(void) const = 0;
   virtual flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const = 0;
+
+  virtual flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
+  custom_value(flatbuffers::FlatBufferBuilder &fbb) const
+  {
+    return flatbuffers::Offset<flatbuffers::Vector<uint8_t>>();
+  }
 };
 
 struct OpChefFactory

@@ -201,14 +201,16 @@ OpChefRegistry &op_chef_registry(void)
   return registry;
 }
 
-// @brief This will prepare a set of unique operator codes in the mode recipe
-std::set<tflite::BuiltinOperator> gather_opcode_set(const ::tflchef::ModelRecipe &model_recipe)
+// @brief This will prepare a set of unique builtin codes in the mode recipe
+std::set<tflite::BuiltinOperator> gather_builtincode_set(const ::tflchef::ModelRecipe &model_recipe)
 {
-  std::set<tflite::BuiltinOperator> opcode_set;
+  std::set<tflite::BuiltinOperator> builtin_set;
   for (const auto &operation : model_recipe.operation())
   {
     auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-    opcode_set.insert(op_chef->code());
+    if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+      continue;
+    builtin_set.insert(op_chef->code());
   }
 
   // Add ops used in Graphs(subgraphs)
@@ -218,11 +220,39 @@ std::set<tflite::BuiltinOperator> gather_opcode_set(const ::tflchef::ModelRecipe
     for (const auto &operation : graph.operation())
     {
       auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-      opcode_set.insert(op_chef->code());
+      if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+        continue;
+      builtin_set.insert(op_chef->code());
     }
   }
 
-  return opcode_set;
+  return builtin_set;
+}
+
+// @brief This will prepare a set of unique custom codes in the mode recipe
+std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_recipe)
+{
+  std::set<std::string> customcode_set;
+  for (const auto &operation : model_recipe.operation())
+  {
+    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+    if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+      customcode_set.insert(operation.type());
+  }
+
+  // Add ops used in Graphs(subgraphs)
+  for (int g = 0; g < model_recipe.graph_size(); ++g)
+  {
+    const auto &graph = model_recipe.graph(g);
+    for (const auto &operation : graph.operation())
+    {
+      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+      if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+        customcode_set.insert(operation.type());
+    }
+  }
+
+  return customcode_set;
 }
 
 } // namespace
@@ -265,12 +295,28 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   // Graphs-related
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> subgraph_vec;
 
-  // Create OperatorCode
-  std::set<tflite::BuiltinOperator> opcode_set = gather_opcode_set(model_recipe);
-  for (auto opcode : opcode_set)
+  // Create OperatorCode with Builtin Operator
+  std::set<tflite::BuiltinOperator> builtin_code_set = gather_builtincode_set(model_recipe);
+  for (auto opcode : builtin_code_set)
   {
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
     code_builder.add_builtin_code(opcode);
+    auto code = code_builder.Finish();
+    // Update OperatorCode vector
+    code_vec.emplace_back(code);
+  }
+
+  // Create OperatorCode with Custom Operator
+  std::set<std::string> custom_code_set = gather_customcode_set(model_recipe);
+  if (custom_code_set.size())
+    builtin_code_set.insert(tflite::BuiltinOperator_CUSTOM);
+
+  for (auto opcode : custom_code_set)
+  {
+    auto custom_code = flatbuffer_builder->CreateString(opcode);
+    tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
+    code_builder.add_builtin_code(tflite::BuiltinOperator_CUSTOM);
+    code_builder.add_custom_code(custom_code);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);
@@ -479,21 +525,24 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       // Create Option
       auto options = op_chef->value(*flatbuffer_builder);
 
+      // Create Custom option
+      auto circle_custom_options = op_chef->custom_value(*flatbuffer_builder);
+
       // Create Operator
       tflite::OperatorBuilder op_builder{*flatbuffer_builder};
 
       // Get operator code index from opcode_set with assumption, order of
       // opcode_set is same as that of code_vec
-      auto op_it = opcode_set.find(op_chef->code());
-      assert(op_it != opcode_set.end());
-      uint32_t opcode_index = std::distance(opcode_set.begin(), op_it);
-
+      auto op_it = builtin_code_set.find(op_chef->code());
+      assert(op_it != builtin_code_set.end());
+      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
       op_builder.add_opcode_index(opcode_index);
       op_builder.add_inputs(inputs);
       op_builder.add_outputs(outputs);
       op_builder.add_builtin_options_type(op_chef->type());
       op_builder.add_builtin_options(options);
-
+      op_builder.add_custom_options(circle_custom_options);
+      op_builder.add_custom_options_format(tflite::CustomOptionsFormat_FLEXBUFFERS);
       // Append Operator
       operator_vec.emplace_back(op_builder.Finish());
     }
@@ -719,20 +768,25 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       // Create Option
       auto options = op_chef->value(*flatbuffer_builder);
 
+      // Create Custom option
+      auto circle_custom_options = op_chef->custom_value(*flatbuffer_builder);
+
       // Create Operator
       tflite::OperatorBuilder op_builder{*flatbuffer_builder};
 
       // Get operator code index from opcode_set with assumption, order of
       // opcode_set is same as that of code_vec
-      auto op_it = opcode_set.find(op_chef->code());
-      assert(op_it != opcode_set.end());
-      uint32_t opcode_index = std::distance(opcode_set.begin(), op_it);
+      auto op_it = builtin_code_set.find(op_chef->code());
+      assert(op_it != builtin_code_set.end());
+      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
 
       op_builder.add_opcode_index(opcode_index);
       op_builder.add_inputs(inputs);
       op_builder.add_outputs(outputs);
       op_builder.add_builtin_options_type(op_chef->type());
       op_builder.add_builtin_options(options);
+      op_builder.add_custom_options(circle_custom_options);
+      op_builder.add_custom_options_format(tflite::CustomOptionsFormat_FLEXBUFFERS);
 
       // Append Operator
       operator_vec.emplace_back(op_builder.Finish());

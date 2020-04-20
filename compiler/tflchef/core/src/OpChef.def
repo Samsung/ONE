@@ -37,3 +37,6 @@ OP_CHEF(Sub, SubChefFactory)
 OP_CHEF(Tanh, TanhChefFactory)
 OP_CHEF(Transpose, TransposeChefFactory)
 OP_CHEF(Unpack, UnpackChefFactory)
+
+// Custom Op
+OP_CHEF(BatchMatMulV2, BatchMatMulV2ChefFactory)
