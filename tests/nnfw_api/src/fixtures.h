@@ -104,6 +104,15 @@ protected:
       ASSERT_EQ(nnfw_set_input(obj.session, 0, ti.dtype, obj.inputs[0].data(),
                                sizeof(float) * input_elements),
                 NNFW_STATUS_NO_ERROR);
+
+      obj.outputs.resize(1);
+      nnfw_tensorinfo ti_output;
+      ASSERT_EQ(nnfw_output_tensorinfo(obj.session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
+      uint64_t output_elements = num_elems(&ti_output);
+      obj.outputs[0].resize(output_elements);
+      ASSERT_EQ(nnfw_set_output(obj.session, 0, ti_output.dtype, obj.outputs[0].data(),
+                                sizeof(float) * output_elements),
+                NNFW_STATUS_NO_ERROR);
     }
   }
 
