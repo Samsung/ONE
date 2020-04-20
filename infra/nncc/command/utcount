@@ -15,7 +15,8 @@ hermes hermes-std \
 loco locop locomotiv logo-core logo \
 safemain mio-circle mio-tflite \
 tflite2circle \
-luci"
+luci \
+circle2circle"
 
 function count_all()
 {
