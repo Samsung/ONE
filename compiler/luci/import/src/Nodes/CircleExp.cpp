@@ -22,10 +22,26 @@
 
 namespace luci
 {
+
 bool CircleExpGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 1)
+  const auto &inputs = args.op.inputs;
+  if (inputs.size() != 1)
     return false;
+
+  // input type check
+  const auto &tensors = args.reader.tensors();
+  const auto &tensor = tensors.at(inputs[0]);
+  switch (tensor->type)
+  {
+    case circle::TensorType_FLOAT16:
+    case circle::TensorType_FLOAT32:
+    case circle::TensorType_FLOAT64:
+      break;
+    // TODO support TensorType_COMPLEX64, complex128, bfloat16
+    default:
+      return false;
+  }
 
   return true;
 }
