@@ -207,6 +207,7 @@ private:
   IMPLEMENT(luci::CircleSqrt)
   IMPLEMENT(luci::CircleSquaredDifference)
   IMPLEMENT(luci::CircleSub)
+  IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
@@ -526,7 +527,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSub *node, locop::NodeS
   return true;
 }
 
-// TODO TFLTanh
+bool CircleNodeSummaryBuilder::summary(const luci::CircleTanh *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleTranspose *node,
                                        locop::NodeSummary &s) const
