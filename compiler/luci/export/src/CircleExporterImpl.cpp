@@ -127,6 +127,7 @@ using namespace circle;
 using namespace flatbuffers;
 
 CircleExporterImpl::CircleExporterImpl(loco::Graph *graph) { exportGraph(graph); }
+CircleExporterImpl::CircleExporterImpl(Module *module) { exportModule(module); }
 
 ::flatbuffers::Offset<::circle::SubGraph>
 CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
@@ -186,6 +187,68 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   // empty metadata
   std::vector<int> metadata_buffer_vec;
   auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
+
+  // Model
+  auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
+                                  buffers, metadata_buffer);
+  FinishModelBuffer(_builder, model_offset);
+}
+
+void CircleExporterImpl::exportModule(Module *module)
+{
+  assert(module->size() > 0);
+  // do graph optimization
+
+  SerializedModelData md;
+
+  _builder.Clear();
+
+  std::vector<flatbuffers::Offset<circle::SubGraph>> subgraph_vec;
+
+  for (size_t g = 0; g < module->size(); ++g)
+  {
+    auto graph = module->graph(g);
+
+    optimize(graph);
+
+    SerializedGraphData gd;
+
+    // TODO set this value properly
+    gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
+
+    // parse graph into SerializedModelData structure
+    exportOpDefinedTensors(graph, _builder, md, gd);
+
+    // NOTE Invoke these register functions only after each node is annotated with its tensor_index
+    registerGraphInputTensors(graph, gd);
+    registerGraphOutputTensors(graph, gd);
+
+    exportNodes(graph, _builder, md, gd);
+
+    // Subgraphs
+    Offset<SubGraph> subgraph = exportSubgraph(gd);
+    subgraph_vec.push_back(subgraph);
+  }
+
+  auto subgraphs = _builder.CreateVector(std::vector<Offset<SubGraph>>{subgraph_vec});
+
+  // encode operator codes
+  auto operator_codes =
+      encodeOperatorCodes(_builder, md._operator_codes, md._custom_operator_codes);
+
+  // Description
+  std::string description_str = "nnpackage";
+  auto description = _builder.CreateString(description_str);
+
+  // create array of buffers
+  auto buffers = _builder.CreateVector(md._buffers);
+
+  // empty metadata
+  std::vector<int> metadata_buffer_vec;
+  auto metadata_buffer = _builder.CreateVector(metadata_buffer_vec);
+
+  // This version is taken from comment in fbs
+  constexpr uint32_t version = 0;
 
   // Model
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,

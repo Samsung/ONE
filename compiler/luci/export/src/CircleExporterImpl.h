@@ -18,6 +18,9 @@
 #define __CIRCLE_EXPORTER_IMPL_H__
 
 #include "luci/CircleExporter.h"
+#include "luci/IR/Module.h"
+
+#include "SerializedData.h"
 
 #include "SerializedData.h"
 
@@ -38,6 +41,7 @@ public:
   ~CircleExporterImpl() = default;
 
   explicit CircleExporterImpl(loco::Graph *graph);
+  explicit CircleExporterImpl(Module *module);
 
   /**
    * @return pointer to buffer with serialized graph
@@ -62,6 +66,12 @@ private:
    * @param graph
    */
   void exportGraph(loco::Graph *graph);
+
+  /**
+   * @brief root function that writes Module into internal buffer
+   * @param module
+   */
+  void exportModule(Module *module);
 
 private:
   flatbuffers::FlatBufferBuilder _builder;
