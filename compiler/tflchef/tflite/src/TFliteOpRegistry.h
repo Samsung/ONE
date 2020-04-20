@@ -82,6 +82,7 @@ private:
     REG_TFL_OP(SOFTMAX, TFliteOpSoftmax);
     REG_TFL_OP(SQRT, TFliteOpSqrt);
     REG_TFL_OP(SUB, TFliteOpSub);
+    REG_TFL_OP(TANH, TFliteOpTanh);
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
 
 #undef REG_TFL_OP
