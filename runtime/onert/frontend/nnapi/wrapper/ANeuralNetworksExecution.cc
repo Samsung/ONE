@@ -27,14 +27,14 @@ const onert::ir::OperandIndex ANeuralNetworksExecution::getInputOperandIndex(int
   }
 
   uint32_t cast_index = static_cast<uint32_t>(index);
-  if (cast_index >= _execution->graph().getInputs().size())
+  if (cast_index >= _execution->primary_subgraph().getInputs().size())
   {
     // Return invalid index
     return onert::ir::OperandIndex{};
   }
 
   onert::ir::IOIndex input_index{cast_index};
-  const auto operand_index = _execution->graph().getInputs().at(input_index);
+  const auto operand_index = _execution->primary_subgraph().getInputs().at(input_index);
   return operand_index;
 }
 
@@ -48,14 +48,14 @@ ANeuralNetworksExecution::getOutputOperandIndex(int32_t index) noexcept
   }
 
   uint32_t cast_index = static_cast<uint32_t>(index);
-  if (cast_index >= _execution->graph().getOutputs().size())
+  if (cast_index >= _execution->primary_subgraph().getOutputs().size())
   {
     // Return invalid index
     return onert::ir::OperandIndex{};
   }
 
   onert::ir::IOIndex output_index{cast_index};
-  const auto operand_index = _execution->graph().getOutputs().at(output_index);
+  const auto operand_index = _execution->primary_subgraph().getOutputs().at(output_index);
   return operand_index;
 }
 
@@ -64,7 +64,7 @@ bool ANeuralNetworksExecution::compareDataType(const ANeuralNetworksOperandType 
 {
   try
   {
-    const auto operand_type = _execution->graph().operands().at(index).typeInfo();
+    const auto operand_type = _execution->primary_subgraph().operands().at(index).typeInfo();
     const auto typeInfo = NNAPIConvert::getTypeInfo(type);
 
     if (operand_type != typeInfo)
@@ -92,7 +92,7 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
     return false;
   }
 
-  const auto &operand_shape = _execution->graph().operands().at(index).shape();
+  const auto &operand_shape = _execution->primary_subgraph().operands().at(index).shape();
   const auto &shape_from_type = NNAPIConvert::getShape(type);
 
   return operand_shape == shape_from_type;
@@ -100,7 +100,7 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
 
 bool ANeuralNetworksExecution::haveUnspecifiedDims(const onert::ir::OperandIndex index) noexcept
 {
-  const auto operand_shape = _execution->graph().operands().at(index).shape();
+  const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
   return operand_shape.num_elements() == 0;
 }
@@ -109,7 +109,7 @@ size_t ANeuralNetworksExecution::getOperandSize(const onert::ir::OperandIndex in
 {
   try
   {
-    return _execution->graph().operands().at(index).operandSize();
+    return _execution->primary_subgraph().operands().at(index).operandSize();
   }
   catch (const std::exception &e)
   {
@@ -127,9 +127,10 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
     onert::ir::IOIndex input_index{index};
     const auto operand_index = getInputOperandIndex(index);
 
-    const auto type_info = _execution->graph().operands().at(operand_index).typeInfo();
-    const auto shape = (type != nullptr) ? NNAPIConvert::getShape(type)
-                                         : _execution->graph().operands().at(operand_index).shape();
+    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
+    const auto shape = (type != nullptr)
+                           ? NNAPIConvert::getShape(type)
+                           : _execution->primary_subgraph().operands().at(operand_index).shape();
 
     // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
     // words, we can assume that io_layout from nnapi always is the same as layout of the used
@@ -155,9 +156,10 @@ bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOp
     onert::ir::IOIndex output_index{index};
     const auto operand_index = getOutputOperandIndex(index);
 
-    const auto type_info = _execution->graph().operands().at(operand_index).typeInfo();
-    const auto shape = (type != nullptr) ? NNAPIConvert::getShape(type)
-                                         : _execution->graph().operands().at(operand_index).shape();
+    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
+    const auto shape = (type != nullptr)
+                           ? NNAPIConvert::getShape(type)
+                           : _execution->primary_subgraph().operands().at(operand_index).shape();
 
     // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
     // words, we can assume that io_layout from nnapi always is the same as layout of the used
@@ -233,7 +235,7 @@ bool ANeuralNetworksExecution::getOutputOperandRank(uint32_t index, uint32_t *ra
       return false;
     }
 
-    *rank = _execution->graph().operands().at(operand_index).shape().rank();
+    *rank = _execution->primary_subgraph().operands().at(operand_index).shape().rank();
   }
   catch (const std::exception &e)
   {
@@ -264,7 +266,7 @@ bool ANeuralNetworksExecution::getOutputOperandDimensions(uint32_t index, uint32
       return false;
     }
 
-    auto shape = _execution->graph().operands().at(operand_index).shape();
+    auto shape = _execution->primary_subgraph().operands().at(operand_index).shape();
     for (int i = 0; i < shape.rank(); i++)
     {
       auto dim = shape.dim(i);

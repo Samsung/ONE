@@ -88,7 +88,7 @@ public:
    * @param[out]  plan  Plan reference to return\n
    *                    Set nullptr if compile is not run yet
    */
-  void release(std::shared_ptr<exec::IExecutor> &executor) { executor = _executor; }
+  void release(std::shared_ptr<exec::ExecutorMap> &executors) { executors = _executors; }
 
   void state(State state) { _state = state; }
   State state(void) const { return _state; }
@@ -107,7 +107,12 @@ private:
 
 private:
   std::shared_ptr<ir::Graph> _graph;
-  std::shared_ptr<exec::IExecutor> _executor;
+  // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
+  // subgraphs being called recursively because data of non-constant tensor of parent executor will
+  // be updated by child executor. If you want to support subgraphs being called recursively, you
+  // have to add allocate non-constant tensor memory of executors in execution time when each
+  // subgraph is called.
+  std::shared_ptr<exec::ExecutorMap> _executors;
   State _state;
   CompilerOptions _options;
 };
