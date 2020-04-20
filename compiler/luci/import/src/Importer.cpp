@@ -22,6 +22,7 @@
 #include "luci/Import/CircleReader.h"
 #include "luci/Import/Nodes/CircleConst.h"
 
+#include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
@@ -208,6 +209,45 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
   assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
   return std::move(graph);
+}
+
+std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
+{
+  auto module = make_module();
+
+  const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
+
+  if (_source != nullptr)
+  {
+    // Use user-defined GraphBuilderSource
+    source_ptr = _source;
+  }
+
+  CircleReader reader;
+  if (!reader.parse(model))
+    return nullptr;
+
+  for (uint32_t g = 0; g < reader.num_subgraph(); ++g)
+  {
+    auto graph = loco::make_graph();
+
+    if (!reader.select_subgraph(g))
+      return nullptr;
+
+    graph->name(reader.name());
+
+    // Convert circle::Model to loco::Graph
+    convert_graph(*source_ptr, reader, graph.get());
+
+    LOGGER(l);
+    INFO(l) << fmt(graph.get());
+
+    assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
+
+    module->add(std::move(graph));
+  }
+
+  return std::move(module);
 }
 
 } // namespace luci
