@@ -495,6 +495,28 @@ public:
     return loco::NodeShape{out_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleGather *node) final
+  {
+    loco::TensorShape output_shape;
+
+    const auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    const auto positions_shape = loco::shape_get(node->positions()).as<loco::TensorShape>();
+    int32_t axis = node->axis();
+
+    if (axis < 0)
+      axis += input_shape.rank();
+
+    output_shape.rank(input_shape.rank() - 1 + positions_shape.rank());
+    for (uint32_t i = 0; i < axis; ++i)
+      output_shape.dim(i) = input_shape.dim(i);
+    for (uint32_t i = 0; i < positions_shape.rank(); ++i)
+      output_shape.dim(axis + i) = positions_shape.dim(i);
+    for (uint32_t i = axis + 1; i < input_shape.rank(); ++i)
+      output_shape.dim(positions_shape.rank() + i) = input_shape.dim(i);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleLogicalNot *node) final
   {
     const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
