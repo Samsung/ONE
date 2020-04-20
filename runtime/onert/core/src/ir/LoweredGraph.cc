@@ -179,11 +179,11 @@ void LoweredGraph::removeLowerInfo(const OperandIndex &index)
 }
 
 OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &node_index,
-                                                          const Operation &node, Layout layout)
+                                                          const Operation &node)
 {
   // Create a fresh op_seq with one operation, and append it to op_seqs
   // Create a fresh op_seq
-  auto op_seq = std::make_unique<OpSequence>(layout);
+  auto op_seq = std::make_unique<OpSequence>(_graph.layout());
 
   // Add an operation
   op_seq->appendOperation(node_index, node);
@@ -214,9 +214,8 @@ void LoweredGraph::makeOpSequences(
         // LowerInfo for in/output operands
         auto backend = _backend_resolver->getBackend(node_index);
 
-        // TODO How to get frontend layout of this node from IR
-        auto frontend_layout = Layout::NHWC;
-        auto backend_layout = frontend_layout;
+        // Set backend's layout to frontend layout
+        auto backend_layout = _graph.layout();
 
         // The layout of each backend should be set at another place
         // TODO Change setting layout of each backend at another place
@@ -269,7 +268,7 @@ void LoweredGraph::makeOpSequences(
         // so that we can measure a node separately
         if (new_op_seq || is_profiling || !mergeable(op_seq_index, node_index, backend_layout))
         {
-          auto new_op_seq_index = appendFreshSingleOpSequence(node_index, node, frontend_layout);
+          auto new_op_seq_index = appendFreshSingleOpSequence(node_index, node);
 
           // OpSequence LowerInfo
           setLowerInfo(new_op_seq_index,
