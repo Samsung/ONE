@@ -284,7 +284,7 @@ void OperationExporter::visit(luci::CircleExp *node)
   auto outputs = builder.CreateVector(outputs_vec);
   auto options = CreateAbsOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_AbsOptions, options.Union());
+                                  circle::BuiltinOptions_ExpOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
