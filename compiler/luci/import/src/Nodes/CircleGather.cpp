@@ -30,11 +30,11 @@ bool CircleGatherGraphBuilder::validate(const ValidateArgs &args) const
   const auto &outputs = args.op.outputs;
   const auto *options = args.op.builtin_options.AsGatherOptions();
 
-  int axis = options->axis;
+  int32_t axis = options->axis;
   if (axis < 0)
     axis += inputs.size();
 
-  if (axis < 0 || axis >= inputs.size())
+  if (axis < 0 || static_cast<uint32_t>(axis) >= inputs.size())
     return false;
 
   if (inputs.size() != 2)
@@ -47,8 +47,8 @@ bool CircleGatherGraphBuilder::validate(const ValidateArgs &args) const
 }
 
 CircleNode *CircleGatherGraphBuilder::build_node(const circle::OperatorT &op,
-                                               const std::vector<CircleNode *> &inputs,
-                                               loco::Graph *graph) const
+                                                 const std::vector<CircleNode *> &inputs,
+                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleGather>();
 
