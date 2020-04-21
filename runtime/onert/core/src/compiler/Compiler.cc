@@ -147,6 +147,11 @@ void Compiler::compile(void)
 
   // Lower: Assign backend
   auto lowered_graph = std::make_unique<ir::LoweredGraph>(*_graph, _options);
+  if (_options.fp16_enable)
+  {
+    // TODO Fill this
+    // DO NOTHING
+  }
 
   // NOTE. Current datas' reference of constant operands is 2 because of
   // original graph and lowered graph.
