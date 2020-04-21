@@ -26,7 +26,7 @@ namespace onert
 namespace tflite_loader
 {
 
-std::unique_ptr<ir::Graph> loadModel(const char *filename);
+std::shared_ptr<ir::Graph> loadModel(const char *filename);
 
 } // namespace tflite_loader
 } // namespace onert
