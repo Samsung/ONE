@@ -65,14 +65,14 @@ protected:
   nnfw_session *_session = nullptr;
 };
 
-class ValidationTestOneOpModelLoaded : public ValidationTestSessionCreated
+template <int PackageNo> class ValidationTestModelLoaded : public ValidationTestSessionCreated
 {
 protected:
   void SetUp() override
   {
     ValidationTestSessionCreated::SetUp();
     ASSERT_EQ(nnfw_load_model_from_file(_session,
-                                        ModelPath::get().getModelAbsolutePath(MODEL_ADD).c_str()),
+                                        ModelPath::get().getModelAbsolutePath(PackageNo).c_str()),
               NNFW_STATUS_NO_ERROR);
     ASSERT_NE(_session, nullptr);
   }
@@ -80,7 +80,7 @@ protected:
   void TearDown() override { ValidationTestSessionCreated::TearDown(); }
 };
 
-class ValidationTestFourOneOpModelSetInput : public ValidationTest
+template <int PackageNo> class ValidationTestFourModelsSetInput : public ValidationTest
 {
 protected:
   static const uint32_t NUM_SESSIONS = 4;
@@ -89,7 +89,7 @@ protected:
   {
     ValidationTest::SetUp();
 
-    auto model_path = ModelPath::get().getModelAbsolutePath(MODEL_ADD);
+    auto model_path = ModelPath::get().getModelAbsolutePath(ModelPath::ADD);
     for (auto &obj : _objects)
     {
       ASSERT_EQ(nnfw_create_session(&obj.session), NNFW_STATUS_NO_ERROR);

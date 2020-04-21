@@ -27,7 +27,7 @@
  */
 void checkModels()
 {
-  std::string absolute_path = ModelPath::get().getModelAbsolutePath(MODEL_ADD);
+  std::string absolute_path = ModelPath::get().getModelAbsolutePath(ModelPath::ADD);
   DIR *dir = opendir(absolute_path.c_str());
   if (!dir)
   {
