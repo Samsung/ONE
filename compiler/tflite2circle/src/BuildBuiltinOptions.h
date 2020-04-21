@@ -50,5 +50,6 @@
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
+#include "BuildBuiltinOptions/UnpackOptions.h"
 
 #endif // __BUILD_BUITIN_OPTIONS_H__
