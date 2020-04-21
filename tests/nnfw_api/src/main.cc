@@ -19,7 +19,7 @@
 #include <string>
 #include <dirent.h>
 #include <gtest/gtest.h>
-#include "model_path.h"
+#include "NNPackages.h"
 
 /**
  * @brief Function to check if test model directories exist before it actually performs the test
@@ -27,7 +27,7 @@
  */
 void checkModels()
 {
-  std::string absolute_path = ModelPath::get().getModelAbsolutePath(ModelPath::ADD);
+  std::string absolute_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
   DIR *dir = opendir(absolute_path.c_str());
   if (!dir)
   {
@@ -38,7 +38,7 @@ void checkModels()
 
 int main(int argc, char **argv)
 {
-  ModelPath::get().init(argv[0]);
+  NNPackages::get().init(argv[0]);
   ::testing::InitGoogleTest(&argc, argv);
 
   try

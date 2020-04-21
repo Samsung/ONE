@@ -21,7 +21,7 @@
 #include <gtest/gtest.h>
 #include <nnfw.h>
 
-#include "model_path.h"
+#include "NNPackages.h"
 
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
@@ -72,7 +72,7 @@ protected:
   {
     ValidationTestSessionCreated::SetUp();
     ASSERT_EQ(nnfw_load_model_from_file(_session,
-                                        ModelPath::get().getModelAbsolutePath(PackageNo).c_str()),
+                                        NNPackages::get().getModelAbsolutePath(PackageNo).c_str()),
               NNFW_STATUS_NO_ERROR);
     ASSERT_NE(_session, nullptr);
   }
@@ -89,7 +89,7 @@ protected:
   {
     ValidationTest::SetUp();
 
-    auto model_path = ModelPath::get().getModelAbsolutePath(ModelPath::ADD);
+    auto model_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
     for (auto &obj : _objects)
     {
       ASSERT_EQ(nnfw_create_session(&obj.session), NNFW_STATUS_NO_ERROR);

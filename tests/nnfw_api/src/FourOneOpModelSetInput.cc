@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "model_path.h"
+#include "NNPackages.h"
 #include "fixtures.h"
 
-using ValidationTestFourAddModelsSetInput = ValidationTestFourModelsSetInput<ModelPath::ADD>;
+using ValidationTestFourAddModelsSetInput = ValidationTestFourModelsSetInput<NNPackages::ADD>;
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_001)
 {
