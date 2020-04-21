@@ -48,5 +48,6 @@
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
 #include "Op/Transpose.h"
+#include "Op/Unpack.h"
 
 #endif // __OP_CHEFS_H__
