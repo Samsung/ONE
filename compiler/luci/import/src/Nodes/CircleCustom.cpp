@@ -16,7 +16,7 @@
 
 #include "luci/Import/Nodes/CircleCustom.h"
 
-#include <luci/IR/Nodes/CircleBatchMatMul.h>
+//#include <luci/IR/Nodes/CircleBatchMatMul.h>
 
 #include <loco.h>
 
@@ -43,18 +43,11 @@ CircleNode *CircleCustomGraphBuilder::build_node(const circle::OperatorT &op,
   const uint32_t opcode_index = op.opcode_index;
   const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
 
-  CircleNode *node;
-  if (opcode.custom_code == "BatchMatMulV2")
-  {
-    auto *custom_node = graph->nodes()->create<CircleBatchMatMul>();
-    custom_node->x(inputs[0]);
-    custom_node->y(inputs[1]);
-
-    const auto *options = op.builtin_options.AsBatchMatMulOptions();
-    custom_node->adj_x(options->adjoint_lhs);
-    custom_node->adj_y(options->adjoint_rhs);
-    node = custom_node;
-  }
+  auto *node = graph->nodes()->create<CircleCustom>(inputs.size());
+  node->inputs(inputs);
+  node->builtin_options(op.builtin_options);
+  node->custom_options(std::vector<uint8_t>{op.custom_options.begin(), op.custom_options.end()});
+  node->custom_code(opcode.custom_code);
 
   return node;
 }

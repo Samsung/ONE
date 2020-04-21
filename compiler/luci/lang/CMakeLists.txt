@@ -7,6 +7,7 @@ target_include_directories(luci_lang PRIVATE src)
 target_include_directories(luci_lang PUBLIC include)
 target_link_libraries(luci_lang PUBLIC loco)
 target_link_libraries(luci_lang PUBLIC oops)
+target_link_libraries(luci_lang PUBLIC mio_circle)
 target_link_libraries(luci_lang PRIVATE nncc_common)
 
 install(TARGETS luci_lang DESTINATION lib)
