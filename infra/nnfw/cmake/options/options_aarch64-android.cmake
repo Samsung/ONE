@@ -8,6 +8,8 @@ option(BUILD_ANDROID_TFLITE "Enable android support for TensorFlow Lite" ON)
 option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" ON)
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 # Need boost library
+option(DOWNLOAD_BOOST "Download boost source" OFF)
+option(BUILD_BOOST "Build boost source" OFF)
 option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" OFF)
 option(BUILD_NNPACKAGE_RUN "Build nnpackge_run" OFF)
 option(BUILD_TFLITE_RUN "Build tflite-run" OFF)
