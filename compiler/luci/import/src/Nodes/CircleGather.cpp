@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "luci/Import/Nodes/CircleGather.h"
+
+#include <luci/IR/Nodes/CircleGather.h>
+
+#include <loco.h>
+#include <oops/UserExn.h>
+
+namespace luci
+{
+
+bool CircleGatherGraphBuilder::validate(const ValidateArgs &args) const
+{
+  const auto &inputs = args.op.inputs;
+  const auto &outputs = args.op.outputs;
+  const auto *options = args.op.builtin_options.AsGatherOptions();
+
+  const auto &tensors = args.reader.tensors();
+  const auto &tensor_0 = tensors.at(inputs[0]);
+
+  int32_t axis = options->axis;
+  if (axis < 0)
+    axis += inputs.size();
+
+  if (axis < 0)
+    return false;
+
+  // if(static_cast<uint32_t>(axis) >= tensor_0->shape.at(axis))
+  //   return false;
+
+  if (inputs.size() != 2)
+    return false;
+
+  if (outputs.size() != 1)
+    return false;
+
+  return true;
+}
+
+CircleNode *CircleGatherGraphBuilder::build_node(const circle::OperatorT &op,
+                                                 const std::vector<CircleNode *> &inputs,
+                                                 loco::Graph *graph) const
+{
+  auto *node = graph->nodes()->create<CircleGather>();
+
+  node->input(inputs[0]);
+  node->positions(inputs[1]);
+
+  const auto *options = op.builtin_options.AsGatherOptions();
+  node->axis(options->axis);
+
+  return node;
+}
+
+} // namespace luci

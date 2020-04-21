@@ -512,7 +512,7 @@ public:
     for (uint32_t i = 0; i < positions_shape.rank(); ++i)
       output_shape.dim(axis + i) = positions_shape.dim(i);
     for (uint32_t i = axis + 1; i < input_shape.rank(); ++i)
-      output_shape.dim(positions_shape.rank() + i) = input_shape.dim(i);
+        output_shape.dim(positions_shape.rank() + axis) = input_shape.dim(i);
 
     return loco::NodeShape{output_shape};
   }

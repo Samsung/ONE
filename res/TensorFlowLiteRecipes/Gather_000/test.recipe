@@ -1,0 +1,28 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "pos"
+  type: INT32
+  shape { dim: 2 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 4 }
+}
+operation {
+  type: "Gather"
+  gather_options {
+    axis: 2
+  }
+  input: "ifm"
+  input: "pos"
+  output: "ofm"
+}
+input: "ifm"
+input: "pos"
+output: "ofm"

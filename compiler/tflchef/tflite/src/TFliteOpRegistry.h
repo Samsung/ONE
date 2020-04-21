@@ -69,6 +69,7 @@ private:
     REG_TFL_OP(EXP, TFliteOpExp);
     REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
+    REG_TFL_OP(GATHER, TFliteOpGather);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
