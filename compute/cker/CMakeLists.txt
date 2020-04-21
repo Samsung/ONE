@@ -1,7 +1,17 @@
 nnfw_find_package(Eigen REQUIRED)
 nnfw_find_package(GEMMLowp REQUIRED)
+nnfw_find_package(Ruy QUIET)
 
 add_library(nnfw_lib_cker INTERFACE)
 target_link_libraries(nnfw_lib_cker INTERFACE eigen)
 target_link_libraries(nnfw_lib_cker INTERFACE gemmlowp)
+
+if(NOT Ruy_FOUND)
+  message(STATUS "Check Ruy library build : Not found")
+else(NOT Ruy_FOUND)
+  message(STATUS "Check Ruy library build : OK")
+  target_link_libraries(nnfw_lib_cker INTERFACE ruy)
+  target_compile_definitions(nnfw_lib_cker INTERFACE USE_RUY_GEMV)
+endif(NOT Ruy_FOUND)
+
 target_include_directories(nnfw_lib_cker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
