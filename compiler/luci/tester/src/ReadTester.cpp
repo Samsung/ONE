@@ -20,6 +20,7 @@
 #include <luci/Service/Validate.h>
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
+#include <luci/Pass/ResolveCustomOpPass.h>
 
 #include <iostream>
 #include <map>
@@ -90,6 +91,11 @@ int main(int argc, char **argv)
     if (graph == nullptr)
       return 255;
 
+    {
+      luci::ResolveCustomOpPass pass;
+      while (pass.run(graph) == true)
+        ;
+    }
     {
       luci::ShapeInferencePass pass;
       while (pass.run(graph) == true)

@@ -40,7 +40,14 @@ public:
 
 public:
   const std::vector<CircleNode *> &inputs(void) const { return _inputs; }
-  void inputs(const std::vector<CircleNode *> &inputs) { _inputs = std::move(inputs); }
+  void inputs(const std::vector<CircleNode *> &inputs)
+  {
+    _inputs = std::move(inputs);
+    for (uint32_t in = 0; in < _inputs.size(); in++)
+    {
+      at(in)->node(_inputs[in]);
+    }
+  }
 
   const circle::BuiltinOptionsUnion &builtin_options(void) const { return _builtin_options; }
   void builtin_options(const circle::BuiltinOptionsUnion &builtin_options)

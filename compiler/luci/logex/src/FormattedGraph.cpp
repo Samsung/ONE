@@ -291,6 +291,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchMatMul *node,
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("adj_x", to_str(node->adj_x()));
+  s.args().append("adj_y", to_str(node->adj_y()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

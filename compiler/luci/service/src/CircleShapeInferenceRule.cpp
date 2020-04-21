@@ -436,6 +436,21 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleCustom *node) final
+  {
+    loco::NodeShape shape;
+    // BatchMatMul
+    if (node->custom_code() == "BatchMatMulV2")
+    {
+      luci::CircleBatchMatMul *batch_matmul = new luci::CircleBatchMatMul;
+      batch_matmul->x(node->inputs()[0]);
+      batch_matmul->y(node->inputs()[1]);
+      ShapeInferenceAlgorithm alg;
+      shape = batch_matmul->accept(&alg);
+    }
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleDepthwiseConv2D *node) final
   {
     auto ifm_shape = loco::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
