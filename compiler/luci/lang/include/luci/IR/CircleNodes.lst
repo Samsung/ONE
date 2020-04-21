@@ -42,7 +42,7 @@ CIRCLE_NODE(SOFTMAX, luci::CircleSoftmax)
 CIRCLE_NODE(SQRT, luci::CircleSqrt)
 CIRCLE_NODE(SQUARED_DIFFERENCE, luci::CircleSquaredDifference)
 CIRCLE_NODE(SUB, luci::CircleSub)
-// TODO TFLTanh
+CIRCLE_NODE(TANH, luci::CircleTanh)
 CIRCLE_NODE(TRANSPOSE, luci::CircleTranspose)
 CIRCLE_NODE(TRANSPOSE_CONV, luci::CircleTransposeConv)
 // Circle Only

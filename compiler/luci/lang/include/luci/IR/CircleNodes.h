@@ -48,6 +48,7 @@
 #include "Nodes/CircleSqrt.h"
 #include "Nodes/CircleSquaredDifference.h"
 #include "Nodes/CircleSub.h"
+#include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
 // Circle only
