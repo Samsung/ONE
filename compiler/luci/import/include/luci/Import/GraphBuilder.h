@@ -43,7 +43,7 @@ public:
 
   virtual bool validate(const ValidateArgs &) const = 0;
 
-  void build(const circle::OperatorT &op, GraphBuilderContext *context) const;
+  virtual void build(const circle::OperatorT &op, GraphBuilderContext *context) const;
 
 private:
   virtual CircleNode *build_node(const circle::OperatorT &op,
