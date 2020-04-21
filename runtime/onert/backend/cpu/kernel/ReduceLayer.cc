@@ -120,6 +120,9 @@ void ReduceLayer::run()
     case ReduceType::kSum:
       evalGeneric<ReduceType::kSum>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
       break;
+    case ReduceType::kProd:
+      evalGeneric<ReduceType::kProd>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      break;
     case ReduceType::kMax:
       evalGeneric<ReduceType::kMax>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
       break;

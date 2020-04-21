@@ -131,6 +131,7 @@ protected:
   void loadAbs(const Operator *op, ir::Graph &subg);
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
+  void loadReduceProd(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1184,6 +1185,29 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  auto input = inputs.at(0);
+  auto axes = inputs.at(1);
+
+  // FIXME Handle ReducerOptions.
+  if (!subg.operands().at(axes).isConstant())
+    throw std::runtime_error("ReduceProd: non-constant 'axes' is not supported.");
+
+  ir::operation::ReduceProd::Param param;
+  param.axes = subg.operands().at(axes).template asVector<int>();
+  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
+  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd({input}, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1332,6 +1356,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_SHAPE:
       loadShape(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
+      loadReduceProd(op, subg);
       return;
     // TODO Implement loading subgraphs of conftrol flow ops
     default:

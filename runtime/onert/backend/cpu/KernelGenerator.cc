@@ -927,6 +927,22 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ReduceProd &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<kernel::ReduceLayer>();
+
+  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kProd, node.param().axes,
+                node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

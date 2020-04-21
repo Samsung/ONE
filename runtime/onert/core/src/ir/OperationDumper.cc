@@ -405,6 +405,14 @@ void OperationDumper::visit(const ReduceSum &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ReduceProd &node)
+{
+  VERBOSE(LIR) << "* ReduceProd" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceProd::Input::INPUT).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const ReLU &node)
 {
   VERBOSE(LIR) << "* ReLU" << std::endl;
