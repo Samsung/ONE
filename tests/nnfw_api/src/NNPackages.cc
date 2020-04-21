@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "model_path.h"
+#include "NNPackages.h"
 
 #include <unistd.h>
 #include <libgen.h>
@@ -23,13 +23,13 @@
 // NOTE Must match `enum TestPackages`
 const char *TEST_PACKAGE_NAMES[] = {"nonexisting_package", "add"};
 
-ModelPath &ModelPath::get()
+NNPackages &NNPackages::get()
 {
-  static ModelPath instance;
+  static NNPackages instance;
   return instance;
 }
 
-void ModelPath::init(const char *argv0)
+void NNPackages::init(const char *argv0)
 {
   char raw_dir[1024];
   char cwd[1024];
@@ -50,7 +50,7 @@ void ModelPath::init(const char *argv0)
   }
 }
 
-std::string ModelPath::getModelAbsolutePath(int package_no)
+std::string NNPackages::getModelAbsolutePath(int package_no)
 {
   const char *model_dir = TEST_PACKAGE_NAMES[package_no];
   // Model dir is nested

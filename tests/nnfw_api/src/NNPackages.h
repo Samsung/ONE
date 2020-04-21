@@ -20,9 +20,9 @@
 #include <string>
 
 /**
- * @brief A helper class to find models for testing
+ * @brief A helper class to find NN Packages for testing
  */
-class ModelPath
+class NNPackages
 {
 public:
   /**
@@ -36,7 +36,7 @@ public:
     ADD
   };
 
-  static ModelPath &get();
+  static NNPackages &get();
 
   /**
    * @brief Get the Absolute of the model to find
@@ -53,7 +53,7 @@ public:
   void init(const char *argv0);
 
 private:
-  ModelPath() = default;
+  NNPackages() = default;
 
 private:
   std::string _base_path;

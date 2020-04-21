@@ -15,9 +15,9 @@
  */
 
 #include "fixtures.h"
-#include "model_path.h"
+#include "NNPackages.h"
 
-using ValidationTestAddModelLoaded = ValidationTestModelLoaded<ModelPath::ADD>;
+using ValidationTestAddModelLoaded = ValidationTestModelLoaded<NNPackages::ADD>;
 
 TEST_F(ValidationTestAddModelLoaded, prepare_001)
 {
