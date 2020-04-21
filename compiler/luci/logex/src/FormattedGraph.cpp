@@ -190,6 +190,7 @@ private:
   IMPLEMENT(luci::CircleConst)
   IMPLEMENT(luci::CircleConv2D)
   IMPLEMENT(luci::CircleCos)
+  IMPLEMENT(luci::CircleCustom)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDiv)
   IMPLEMENT(luci::CircleExp)
@@ -345,6 +346,17 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleConv2D *node, locop::No
 bool CircleNodeSummaryBuilder::summary(const luci::CircleCos *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleCustom *node, locop::NodeSummary &s) const
+{
+  int input_idx = 0;
+  std::for_each(node->inputs().begin(), node->inputs().end(), [&](const loco::Node *n) {
+    s.args().append("input" + std::to_string(input_idx++), tbl()->lookup(n));
+  });
+  s.args().append("custom_code", node->custom_code());
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
