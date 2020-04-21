@@ -35,7 +35,7 @@ public:
 /**
  * @brief Logger Configuration
  *
- * Users are able to turn logging on/off via MOCO_LOG environment variable.
+ * Users are able to turn logging on/off via LUCI_LOG environment variable.
  */
 class LoggerConfig final : public hermes::Config
 {
