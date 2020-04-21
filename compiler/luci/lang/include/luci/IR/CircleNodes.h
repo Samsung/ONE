@@ -51,11 +51,13 @@
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
+#include "Nodes/CircleUnpack.h"
 // Circle only
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+#include "Nodes/CircleUnpackOut.h"
 
 namespace luci
 {
