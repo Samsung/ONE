@@ -1125,5 +1125,12 @@ void OperationValidator::visit(const ir::operation::ReduceProd &node)
   }
 }
 
+void OperationValidator::visit(const ir::operation::While &node)
+{
+  assert(node.getInputs().size() == node.getOutputs().size());
+  UNUSED_RELEASE(node);
+  // TODO Add to validate with subgraphs
+}
+
 } // namespace compiler
 } // namespace onert

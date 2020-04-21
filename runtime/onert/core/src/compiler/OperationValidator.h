@@ -80,6 +80,7 @@ public:
   void visit(const ir::operation::RSQRT &node) override;
   void visit(const ir::operation::Shape &node) override;
   void visit(const ir::operation::ReduceProd &node) override;
+  void visit(const ir::operation::While &node) override;
 
 private:
   // TODO Remove _ctx field
