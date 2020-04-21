@@ -46,6 +46,7 @@
 #include "Op/Softmax.h"
 #include "Op/Sqrt.h"
 #include "Op/Sub.h"
+#include "Op/Tanh.h"
 #include "Op/Transpose.h"
 
 #endif // __OP_CHEFS_H__
