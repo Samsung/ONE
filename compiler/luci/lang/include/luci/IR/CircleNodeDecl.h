@@ -17,8 +17,9 @@
 #ifndef __LUCI_IR_CIRCLENODEDECL_H__
 #define __LUCI_IR_CIRCLENODEDECL_H__
 
-#include <loco/IR/Node.h>
 #include <loco/IR/Dialect.h>
+#include <loco/IR/Node.h>
+#include <loco/IR/NodeMixins.h>
 
 #include "CircleOpcode.h"
 #include "CircleNodeVisitor.forward.h"
@@ -31,7 +32,7 @@ namespace luci
 
 using NodeName = std::string;
 
-struct CircleNode : public loco::Node
+struct CircleNode : public loco::Node, public loco::NodeMixin<loco::NodeTrait::DataType>
 {
   virtual ~CircleNode() = default;
 

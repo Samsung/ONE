@@ -21,6 +21,7 @@
 
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/IR/AttrPadding.h>
+#include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
 
 #include <loco.h>
@@ -44,6 +45,9 @@ FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
 Padding luci_padding(const circle::Padding padding);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization);
+
+/// @brief Copy common tensor attributes such as name, type, etc. to node.
+void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node);
 
 /**
  * @brief Loads Circle file and provides helpers to access attributes
