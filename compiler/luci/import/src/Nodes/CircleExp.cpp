@@ -48,7 +48,7 @@ bool CircleExpGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleExpGraphBuilder::build_node(const circle::OperatorT &,
                                               const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+                                              loco::Graph *graph, CircleReader *) const
 {
   auto *node = graph->nodes()->create<CircleAbs>();
   node->x(inputs[0]);
