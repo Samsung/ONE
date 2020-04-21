@@ -43,4 +43,4 @@ loco::Graph *Module::graph(size_t idx) const
 
 std::unique_ptr<Module> make_module(void) { return std::make_unique<Module>(); }
 
-} // namespace loco
+} // namespace luci
