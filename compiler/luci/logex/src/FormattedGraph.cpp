@@ -209,11 +209,13 @@ private:
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
+  IMPLEMENT(luci::CircleUnpack)
   // Circle Only
   IMPLEMENT(luci::CircleInstanceNorm)
   // Virtual nodes
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
+  IMPLEMENT(luci::CircleUnpackOut)
 #undef IMPLEMENT
 };
 
@@ -546,6 +548,28 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTransposeConv *node,
 
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::NodeSummary &s) const
+{
+  s.args().append("value", tbl()->lookup(node->value()));
+
+  s.args().append("num", pepper::str(node->num()));
+  s.args().append("axis", pepper::str(node->axis()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("unpack", tbl()->lookup(node->unpack()));
 
   s.state(locop::NodeSummary::State::Complete);
 
