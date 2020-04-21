@@ -27,6 +27,7 @@ TEST(CirclePackTest, constructor)
   ASSERT_EQ(pack_node.dialect(), luci::CircleDialect::get());
   ASSERT_EQ(pack_node.opcode(), luci::CircleOpcode::PACK);
 
+  ASSERT_EQ(pack_node.axis(), 0);
   ASSERT_EQ(pack_node.values_count(), 3);
   ASSERT_EQ(pack_node.values(0), nullptr);
   ASSERT_EQ(pack_node.values(1), nullptr);
