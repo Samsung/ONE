@@ -38,8 +38,16 @@ void checkModels()
 
 int main(int argc, char **argv)
 {
-  ModelPath::get().init(argv[0]);
-  ::testing::InitGoogleTest(&argc, argv);
+  try
+  {
+    ModelPath::get().init(argv[0]);
+    ::testing::InitGoogleTest(&argc, argv);
+  }
+  catch (std::runtime_error &e)
+  {
+    std::cerr << e.what() << std::endl;
+    return -1;
+  }
 
   try
   {
