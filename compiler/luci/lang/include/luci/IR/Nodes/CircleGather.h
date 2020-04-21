@@ -32,11 +32,11 @@ namespace luci
 class CircleGather final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::GATHER>>
 {
 public:
-  loco::Node *input(void) const { return at(0)->node(); }
-  void input(loco::Node *node) { at(0)->node(node); }
+  loco::Node *params(void) const { return at(0)->node(); }
+  void params(loco::Node *node) { at(0)->node(node); }
 
-  loco::Node *positions(void) const { return at(1)->node(); }
-  void positions(loco::Node *node) { at(1)->node(node); }
+  loco::Node *indices(void) const { return at(1)->node(); }
+  void indices(loco::Node *node) { at(1)->node(node); }
 
 public:
   int32_t axis(void) const { return _axis; }

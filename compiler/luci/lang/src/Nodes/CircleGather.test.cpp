@@ -27,7 +27,7 @@ TEST(CircleGatherTest, constructor)
   ASSERT_EQ(gather_node.dialect(), luci::CircleDialect::get());
   ASSERT_EQ(gather_node.opcode(), luci::CircleOpcode::GATHER);
 
-  ASSERT_EQ(gather_node.input(), nullptr);
-  ASSERT_EQ(gather_node.positions(), nullptr);
+  ASSERT_EQ(gather_node.params(), nullptr);
+  ASSERT_EQ(gather_node.indices(), nullptr);
   ASSERT_EQ(gather_node.axis(), 0);
 }
