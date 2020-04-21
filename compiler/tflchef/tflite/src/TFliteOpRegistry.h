@@ -84,6 +84,7 @@ private:
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(TANH, TFliteOpTanh);
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
+    REG_TFL_OP(UNPACK, TFliteOpUnpack);
 
 #undef REG_TFL_OP
   }
