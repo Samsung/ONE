@@ -17,7 +17,7 @@
 #ifndef __HALF_H__
 #define __HALF_H__
 
-#include "include/half.hpp"
+#include <half/include/half.hpp>
 
 using Half = half_float::half;
 
