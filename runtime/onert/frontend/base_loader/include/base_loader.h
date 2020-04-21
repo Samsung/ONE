@@ -229,6 +229,18 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
       shape.append(dim);
     }
   }
+  // Shape Signature : when val is -1, that means that dim is unknown
+  const auto *tensor_shape_sig = tensor->shape_signature();
+  if (tensor_shape_sig != nullptr)
+  {
+    int i = 0;
+    for (const auto &sig_dim : *tensor_shape_sig)
+    {
+      if (sig_dim == -1)
+        shape.dim(i) = -1;
+      i++;
+    }
+  }
   // Type
   ir::DataType data_type = tensorTypeToDataType(tensor->type());
   // Quantization
