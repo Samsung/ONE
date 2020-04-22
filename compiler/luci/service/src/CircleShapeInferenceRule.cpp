@@ -855,6 +855,33 @@ public:
     return loco::NodeShape{shape};
   }
 
+  loco::NodeShape visit(const luci::CircleUnpack *node) final
+  {
+    // CircleUnpack provides list(array) of Tensors which has one less dimension of the input
+    // We'll set shape of CircleUnpack to shape of actual outputs
+    // TODO fix this if any problem rises
+    auto value_shape = loco::shape_get(node->value()).as<loco::TensorShape>();
+
+    auto axis = node->axis();
+    auto num = node->num();
+
+    LUCI_ASSERT(0 <= axis, "Axis is out of range");
+    LUCI_ASSERT(static_cast<uint32_t>(axis) <= value_shape.rank(), "Axis is out of range");
+    LUCI_ASSERT(num == static_cast<int32_t>(value_shape.dim(axis).value()),
+                "num, axis maybe incorrect");
+
+    loco::TensorShape output_shape;
+    output_shape.rank(value_shape.rank() - 1);
+
+    for (int32_t i = 0, o = 0; i < static_cast<int32_t>(value_shape.rank()); ++i)
+    {
+      if (i != axis)
+        output_shape.dim(o++) = value_shape.dim(i);
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   // Circle Only
   loco::NodeShape visit(const luci::CircleInstanceNorm *node) final
   {
@@ -880,6 +907,19 @@ public:
     auto from_shape = loco::shape_get(node->from()).as<loco::TensorShape>();
 
     return loco::NodeShape{from_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleUnpackOut *node) final
+  {
+    auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->unpack());
+    if (unpack == nullptr)
+    {
+      INTERNAL_EXN("Unpack IR is not configured correctly");
+    }
+
+    auto unpack_shape = loco::shape_get(unpack).as<loco::TensorShape>();
+
+    return loco::NodeShape{unpack_shape};
   }
 };
 
