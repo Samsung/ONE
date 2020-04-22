@@ -77,6 +77,8 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
 
+  // NOTE Unpack has only one input so running a loop is not necessary
+  //      This is provided as a reference for other Ops as a reference
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
   {
