@@ -190,7 +190,7 @@ void Compiler::compile(void)
     auto indexed_ranks = lowered_subg->indexed_ranks();
 
     onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
-    dot_dumper_lowered.dump("after_lower_subg-" + subg_index.value());
+    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
 
     ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
