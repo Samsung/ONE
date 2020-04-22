@@ -27,6 +27,8 @@
 
 #include "Dataset.h"
 
+#include "Log.h"
+
 #include <iterator>
 #include <map>
 #include <string>
@@ -233,6 +235,8 @@ namespace tflchef
  */
 GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 {
+  LOGGER(l);
+
 // Initialize Op Chef Registry
 #define OP_CHEF(NAME, FACTORY_CLASS) \
   op_chef_registry().add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
@@ -442,6 +446,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       // Update Tensor Name -> Tensor Index Map
       int32_t tensor_index = symbol_table.size();
       const auto &tensor_name = operand.name();
+
+      INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
 
       symbol_table[tensor_name] = tensor_index;
     }
