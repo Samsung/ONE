@@ -6,9 +6,9 @@ Follow the [compiler guide](https://github.com/Samsung/ONE/blob/master/docs/nncc
 ## Convert tflite file to nnpackage
 Please see [model2nnpkg](https://github.com/Samsung/ONE/tree/master/tools/nnpackage_tool/model2nnpkg) for converting from tflite model file.
 
-# Build app with nnfw API
+# Build app with ONE API
 
-Here are basic steps to build app with [nnfw C API](https://github.com/Samsung/ONE/blob/master/runtime/onert/api/include/nnfw.h)
+Here are basic steps to build app with [ONE C API](https://github.com/Samsung/ONE/blob/master/runtime/onert/api/include/nnfw.h)
 
 1) Initialize nnfw_session
 ``` c
