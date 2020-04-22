@@ -389,7 +389,16 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
             }
           }
         }
+        if (buffer_index == 0)
+        {
+          // we couldn't find the buffer; create an empty buffer for this tensor
+          buffer_index = buffer_vec.size();
+
+          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+          buffer_vec.emplace_back(buffer_builder.Finish());
+        }
       }
+      assert(buffer_index != 0);
 
       flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
 
@@ -622,8 +631,16 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
             }
           }
         }
+        if (buffer_index == 0)
+        {
+          // we couldn't find the buffer; create an empty buffer for this tensor
+          buffer_index = buffer_vec.size();
+
+          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+          buffer_vec.emplace_back(buffer_builder.Finish());
+        }
       }
-      // NOTE buffer_index can be 0 when this operand does not have a filler or not I/O
+      assert(buffer_index != 0);
 
       flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
 
