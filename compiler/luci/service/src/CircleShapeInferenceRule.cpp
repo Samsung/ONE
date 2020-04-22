@@ -870,6 +870,9 @@ public:
     LUCI_ASSERT(num == static_cast<int32_t>(value_shape.dim(axis).value()),
                 "num, axis maybe incorrect");
 
+    if (axis < 0)
+      axis += rank;
+
     loco::TensorShape output_shape;
     output_shape.rank(rank - 1);
 
