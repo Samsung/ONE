@@ -31,17 +31,21 @@ bool CircleGatherGraphBuilder::validate(const ValidateArgs &args) const
   const auto *options = args.op.builtin_options.AsGatherOptions();
 
   int32_t axis = options->axis;
-  if (axis < 0)
-    axis += inputs.size();
-
-  if (axis < 0 || static_cast<uint32_t>(axis) >= inputs.size())
-    return false;
 
   if (inputs.size() != 2)
     return false;
 
   if (outputs.size() != 1)
     return false;
+
+  if (axis < 0)
+    axis += inputs.size();
+
+  if (axis < 0)
+    return false;
+
+  // TODO do indices type check
+  // TODO do axis check when shape information is given
 
   return true;
 }
@@ -52,8 +56,8 @@ CircleNode *CircleGatherGraphBuilder::build_node(const circle::OperatorT &op,
 {
   auto *node = graph->nodes()->create<CircleGather>();
 
-  node->input(inputs[0]);
-  node->positions(inputs[1]);
+  node->params(inputs[0]);
+  node->indices(inputs[1]);
 
   const auto *options = op.builtin_options.AsGatherOptions();
   node->axis(options->axis);
