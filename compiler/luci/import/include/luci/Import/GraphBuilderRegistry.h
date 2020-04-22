@@ -17,7 +17,7 @@
 #ifndef __LUCI_IMPORT_GRAPH_BUILDER_REGISTRY_H__
 #define __LUCI_IMPORT_GRAPH_BUILDER_REGISTRY_H__
 
-#include "GraphBuilder.h"
+#include "GraphBuilderBase.h"
 
 #include <map>
 
@@ -31,7 +31,7 @@ struct GraphBuilderSource
   /**
    * @brief Returns registered GraphBuilder pointer for operator (nullptr if not present)
    */
-  virtual const GraphBuilder *lookup(const circle::BuiltinOperator &op) const = 0;
+  virtual const GraphBuilderBase *lookup(const circle::BuiltinOperator &op) const = 0;
 };
 
 /**
@@ -53,7 +53,7 @@ public:
    * @brief Returns registered GraphBuilder pointer for operator or
    *        nullptr if not registered
    */
-  const GraphBuilder *lookup(const circle::BuiltinOperator &op) const final
+  const GraphBuilderBase *lookup(const circle::BuiltinOperator &op) const final
   {
     if (_builder_map.find(op) == _builder_map.end())
       return (_parent == nullptr) ? nullptr : _parent->lookup(op);
@@ -68,7 +68,7 @@ public:
   }
 
 public:
-  void add(const circle::BuiltinOperator op, std::unique_ptr<GraphBuilder> &&builder)
+  void add(const circle::BuiltinOperator op, std::unique_ptr<GraphBuilderBase> &&builder)
   {
     _builder_map[op] = std::move(builder);
   }
@@ -77,7 +77,7 @@ private:
   const GraphBuilderSource *_parent = nullptr;
 
 private:
-  std::map<const circle::BuiltinOperator, std::unique_ptr<GraphBuilder>> _builder_map;
+  std::map<const circle::BuiltinOperator, std::unique_ptr<GraphBuilderBase>> _builder_map;
 };
 
 } // namespace luci
