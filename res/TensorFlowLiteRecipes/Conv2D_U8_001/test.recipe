@@ -1,0 +1,40 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  quant { min: -128 max: 127 scale: 1.0 zero_point: 128 }
+}
+operand {
+  name: "ker"
+  type: UINT8
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler { tag: "constant", arg: "129" }
+  quant { min: -128 max: 127 scale: 1.0 zero_point: 128 }
+}
+operand {
+  name: "bias"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "constant", arg: "0" }
+  quant { scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+  quant { scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
