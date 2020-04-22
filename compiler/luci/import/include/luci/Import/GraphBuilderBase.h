@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IMPORT_GRAPH_BUILDER_H__
-#define __LUCI_IMPORT_GRAPH_BUILDER_H__
+#ifndef __LUCI_IMPORT_GRAPH_BUILDER_BASE_H__
+#define __LUCI_IMPORT_GRAPH_BUILDER_BASE_H__
 
 #include "GraphBuilderContext.h"
-#include "GraphBuilderBase.h"
 
 #include <mio/circle/schema_generated.h>
 
@@ -26,21 +25,22 @@ namespace luci
 {
 
 /**
- * @brief Base of general single output graph builder(e.g., Conv2DGraphBuilder)
+ * @brief Interface of convert circle::OperatorT to CircleNode
  */
-class GraphBuilder : public GraphBuilderBase
+struct GraphBuilderBase
 {
-public:
-  virtual ~GraphBuilder() = default;
+  struct ValidateArgs
+  {
+    ValidateArgs(const circle::OperatorT &o, const CircleReader &r) : op(o), reader(r) {}
 
-  void build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
+    const circle::OperatorT &op;
+    const CircleReader &reader;
+  };
 
-private:
-  virtual CircleNode *build_node(const circle::OperatorT &op,
-                                 const std::vector<CircleNode *> &inputs,
-                                 loco::Graph *graph) const = 0;
+  virtual bool validate(const ValidateArgs &) const = 0;
+  virtual void build(const circle::OperatorT &op, GraphBuilderContext *context) const = 0;
 };
 
 } // namespace luci
 
-#endif // __LUCI_IMPORT_GRAPH_BUILDER_H__
+#endif // __LUCI_IMPORT_GRAPH_BUILDER_BASE_H__
