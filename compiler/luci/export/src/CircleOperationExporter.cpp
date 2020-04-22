@@ -80,11 +80,13 @@ public:
   void visit(luci::CircleTanh *) final;
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
+  void visit(luci::CircleUnpack *) final;
   // Circle only
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
+  void visit(luci::CircleUnpackOut *) final {}
 
 private:
   /**
@@ -568,6 +570,44 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
   // Make TRANSPOSE_CONV operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_TransposeConvOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleUnpack *node)
+{
+  auto unpack_outs = loco::succs(node);
+  assert(int32_t(unpack_outs.size()) == node->num());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNPACK);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < node->num(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : unpack_outs)
+    {
+      auto unpack_out = dynamic_cast<luci::CircleUnpackOut *>(out);
+      assert(unpack_out != nullptr);
+      if (unpack_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(unpack_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Unpack output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateUnpackOptions(builder, node->num(), node->axis());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_UnpackOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
