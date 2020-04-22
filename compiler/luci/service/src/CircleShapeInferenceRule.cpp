@@ -795,7 +795,12 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  // TODO CircleTanh
+  loco::NodeShape visit(const luci::CircleTanh *node) final
+  {
+    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
 
   /// @brief Returns output shape of transpose. Use loco::ConstGen and luci::CircleConst for ConstT.
   template <class ConstT>
