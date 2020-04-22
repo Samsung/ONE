@@ -864,16 +864,16 @@ public:
 
     auto axis = node->axis();
     auto num = node->num();
+    auto rank = static_cast<int32_t>(value_shape.rank());
 
-    LUCI_ASSERT(0 <= axis, "Axis is out of range");
-    LUCI_ASSERT(static_cast<uint32_t>(axis) <= value_shape.rank(), "Axis is out of range");
+    LUCI_ASSERT(-rank <= axis && axis < rank, "Axis is out of range");
     LUCI_ASSERT(num == static_cast<int32_t>(value_shape.dim(axis).value()),
                 "num, axis maybe incorrect");
 
     loco::TensorShape output_shape;
-    output_shape.rank(value_shape.rank() - 1);
+    output_shape.rank(rank - 1);
 
-    for (int32_t i = 0, o = 0; i < static_cast<int32_t>(value_shape.rank()); ++i)
+    for (int32_t i = 0, o = 0; i < rank; ++i)
     {
       if (i != axis)
         output_shape.dim(o++) = value_shape.dim(i);
