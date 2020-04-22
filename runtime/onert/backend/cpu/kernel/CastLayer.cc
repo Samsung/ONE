@@ -64,8 +64,7 @@ template <typename FromT> void CastLayer::castPtr(const FromT *in, DataPtr out)
     case ir::DataType::BOOL8:
       castTensor(in, out.b);
       return;
-    case ir::DataType::QUANT8_ASYMM:
-    case ir::DataType::QUANT8_SYMM:
+    default:
       throw std::runtime_error("Not supported output type" +
                                std::to_string((int)_output->data_type()));
   }
@@ -95,8 +94,7 @@ void CastLayer::run()
     case ir::DataType::BOOL8:
       castPtr(in.b, out);
       return;
-    case ir::DataType::QUANT8_ASYMM:
-    case ir::DataType::QUANT8_SYMM:
+    default:
       throw std::runtime_error("Not supported input type" +
                                std::to_string((int)_input->data_type()));
   }

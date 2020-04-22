@@ -18,11 +18,14 @@
 #define __ONERT_IR_DATATYPE_H__
 
 #include <stdexcept>
+#include <Half.h>
 
 namespace onert
 {
 namespace ir
 {
+
+using float16 = Half;
 
 enum class DataType
 {
@@ -33,6 +36,7 @@ enum class DataType
   BOOL8 = 4,
   UINT8 = 5,
   QUANT8_SYMM = 6,
+  FLOAT16 = 7,
 };
 
 inline size_t sizeOfDataType(DataType data_type)
@@ -51,6 +55,8 @@ inline size_t sizeOfDataType(DataType data_type)
       return sizeof(uint8_t);
     case DataType::QUANT8_SYMM:
       return sizeof(int8_t);
+    case DataType::FLOAT16:
+      return sizeof(float16);
     default:
       throw std::runtime_error{"Unsupported type size"};
   }
