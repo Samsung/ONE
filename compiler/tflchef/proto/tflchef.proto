@@ -183,6 +183,10 @@ message UnpackOptions {
   optional int32 axis = 2 [default = 0];
 }
 
+message GatherOptions {
+  optional int32 axis = 1 [default = 0];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -216,6 +220,7 @@ message Operation {
   optional BatchToSpaceNDOptions batch_to_space_options = 125;
   optional ExpOptions exp_options = 126;
   optional UnpackOptions unpack_options = 127;
+  optional GatherOptions gather_options = 128;
 }
 
 // For additional subgraphs
