@@ -1,0 +1,41 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "unp"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "unp:1"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operation {
+  type: "Unpack"
+  input: "ifm"
+  output: "unp"
+  output: "unp:1"
+  unpack_options {
+    num: 2
+    axis: 0
+  }
+}
+operation {
+  type: "Add"
+  input: "unp"
+  input: "unp:1"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
