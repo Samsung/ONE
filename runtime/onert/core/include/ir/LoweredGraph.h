@@ -61,6 +61,7 @@ private:
                  Layout layout);
   OpSequenceIndex appendFreshSingleOpSequence(const OperationIndex &node_index,
                                               const Operation &node);
+  OperandIndexSequence excludeConstants(const OperandIndexSequence &node_inputs);
 
 private:
   Graph _graph;

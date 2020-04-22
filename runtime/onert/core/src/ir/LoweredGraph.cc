@@ -190,7 +190,7 @@ OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &
 
   // Update input/output
   op_seq->setOutputs(node.getOutputs());
-  op_seq->setInputs(node.getInputs());
+  op_seq->setInputs(excludeConstants(node.getInputs()));
 
   return _op_seqs.emplace(std::move(op_seq));
 }
@@ -283,7 +283,7 @@ void LoweredGraph::makeOpSequences(
         else
         {
           op_seq->appendOperation(node_index, node);
-          op_seq->setInputs(node.getInputs());
+          op_seq->setInputs(excludeConstants(node.getInputs()));
 
           VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " merges "
                          << "NODE#" << node_index.value() << "(" << node.name() << ")" << std::endl;
@@ -490,6 +490,19 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
   }
 
   return false;
+}
+
+OperandIndexSequence LoweredGraph::excludeConstants(const OperandIndexSequence &node_inputs)
+{
+  OperandIndexSequence ret;
+  for (const auto &ind : node_inputs)
+  {
+    const auto &obj = _graph.operands().at(ind);
+    if (obj.isConstant())
+      continue;
+    ret.append(ind);
+  }
+  return ret;
 }
 
 } // namespace ir
