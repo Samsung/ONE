@@ -40,6 +40,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                       // 71
   CIRCLE_NODE(EXP, CircleExpGraphBuilder);                           // 47
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);    // 9
+  CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                     // 36
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);            // 87
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);              // 84
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);             // 17
@@ -80,7 +81,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CUSTOM = 32,
   // BuiltinOperator_EMBEDDING_LOOKUP_SPARSE = 33,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
-  // BuiltinOperator_GATHER = 36,
   // BuiltinOperator_SPACE_TO_BATCH_ND = 38,
   // BuiltinOperator_SQUEEZE = 43,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
