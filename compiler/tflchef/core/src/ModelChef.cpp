@@ -585,7 +585,10 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     // Tensor Name -> Tensor ID mapping (per Graph)
     std::map<std::string, int32_t> symbol_table;
 
-    auto lookup = [&symbol_table](const std::string &name) { return symbol_table.at(name); };
+    auto lookup = [&symbol_table, &l](const std::string &name) {
+      INFO(l) << "Look symbol '" << name << "'" << std::endl;
+      return symbol_table.at(name);
+    };
 
     const auto &graph = model_recipe.graph(g);
 
