@@ -1075,5 +1075,55 @@ void OperationValidator::visit(const ir::operation::Shape &node)
   assert(_ctx.at(output_index).shape().rank() == 1);
 }
 
+void OperationValidator::visit(const ir::operation::ReduceProd &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
+  const auto &axes = node.param().axes;
+
+  auto output_shape = _ctx.at(output_index).shape();
+  auto input_shape = _ctx.at(input_index).shape();
+
+  UNUSED_RELEASE(output_shape);
+  UNUSED_RELEASE(input_shape);
+  UNUSED_RELEASE(axes);
+
+  assert(input_shape.rank() <= 4);
+  assert(output_shape.rank() <= input_shape.rank());
+
+  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
+  // supports cases reducing height and width or reducing depth.
+  // TODO We have to support all cases of dimensions up to 4.
+  // For correct permuting, we have to set output's shape to be equal in dimension position of the
+  // input. But the positions of the same dimensions in the input and output may be set differently.
+  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
+  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
+  // extend it in 4 dimensions, it should be {1,1,3,5}.
+  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
+  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
+  // next operation is not desired.
+  if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
+  {
+    if (output_shape.rank() == 2)
+    {
+      // Reducing HW
+      assert(input_shape.dim(0) == output_shape.dim(0) &&
+             input_shape.dim(3) == output_shape.dim(1));
+    }
+    else if (output_shape.rank() == 3)
+    {
+      // Reducing C or
+      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
+      assert((input_shape.dim(0) == output_shape.dim(0) &&
+              input_shape.dim(1) == output_shape.dim(1) &&
+              input_shape.dim(2) == output_shape.dim(2)) ||
+             (input_shape.dim(0) == output_shape.dim(0) &&
+              (input_shape.dim(1) == output_shape.dim(1) ||
+               input_shape.dim(2) == output_shape.dim(1)) &&
+              input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+    }
+  }
+}
+
 } // namespace compiler
 } // namespace onert

@@ -85,3 +85,4 @@
 #include "ir/operation/Shape.h"
 #include "ir/operation/ConvertFp32ToFp16.h"
 #include "ir/operation/ConvertFp16ToFp32.h"
+#include "ir/operation/ReduceProd.h"

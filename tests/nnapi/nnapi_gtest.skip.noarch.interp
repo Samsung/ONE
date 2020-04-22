@@ -46,6 +46,7 @@ GeneratedTests.prelu*
 GeneratedTests.reduce_max*
 GeneratedTests.reduce_min*
 GeneratedTests.reduce_sum*
+GeneratedTests.reduce_prod*
 GeneratedTests.relu1_quant*
 GeneratedTests.relu6_quant*
 GeneratedTests.relu_quant*

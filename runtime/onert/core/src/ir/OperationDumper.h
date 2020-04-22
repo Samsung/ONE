@@ -68,6 +68,7 @@ public:
   void visit(const operation::ReduceMax &) override;
   void visit(const operation::ReduceMin &) override;
   void visit(const operation::ReduceSum &) override;
+  void visit(const operation::ReduceProd &) override;
   void visit(const operation::ReLU &) override;
   void visit(const operation::ReLU1 &) override;
   void visit(const operation::ReLU6 &) override;
