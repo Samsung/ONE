@@ -2018,6 +2018,42 @@ void KernelGenerator::visit(const ir::operation::Max &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ConvertFp32ToFp16 &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ConvertFp32ToFp16::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::arm_compute::CLDepthConvertLayer>();
+
+  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), ::arm_compute::ConvertPolicy::SATURATE,
+                0);
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ConvertFp16ToFp32 &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ConvertFp16ToFp32::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::arm_compute::CLDepthConvertLayer>();
+
+  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), ::arm_compute::ConvertPolicy::SATURATE,
+                0);
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 } // namespace acl_cl
 } // namespace backend
 } // namespace onert

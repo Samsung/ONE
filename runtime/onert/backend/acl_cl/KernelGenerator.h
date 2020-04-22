@@ -98,6 +98,8 @@ public:
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Min &) override;
   void visit(const ir::operation::Max &) override;
+  void visit(const ir::operation::ConvertFp32ToFp16 &) override;
+  void visit(const ir::operation::ConvertFp16ToFp32 &) override;
 
 private:
   const ir::Operands &_ctx;
