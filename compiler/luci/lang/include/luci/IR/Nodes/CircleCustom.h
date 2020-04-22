@@ -20,7 +20,6 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/VariadicArityNode.h"
 
-#include <mio/circle/schema_generated.h>
 #include <cassert>
 
 namespace luci
@@ -49,12 +48,6 @@ public:
     }
   }
 
-  const circle::BuiltinOptionsUnion &builtin_options(void) const { return _builtin_options; }
-  void builtin_options(const circle::BuiltinOptionsUnion &builtin_options)
-  {
-    _builtin_options = builtin_options;
-  }
-
   const std::vector<uint8_t> &custom_options(void) const { return _custom_options; }
   void custom_options(const std::vector<uint8_t> &custom_options)
   {
@@ -66,7 +59,6 @@ public:
 
 private:
   std::vector<CircleNode *> _inputs;
-  circle::BuiltinOptionsUnion _builtin_options;
   std::vector<uint8_t> _custom_options;
   std::string _custom_code;
 };

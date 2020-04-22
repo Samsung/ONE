@@ -33,6 +33,4 @@ TEST(CircleCustomTest, constructor)
 
   ASSERT_EQ(custom_node.inputs().size(), 0);
   ASSERT_EQ(custom_node.custom_code().size(), 0);
-  ASSERT_EQ(custom_node.builtin_options().value, nullptr);
-  ASSERT_EQ(custom_node.builtin_options().type, circle::BuiltinOptions_NONE);
 }

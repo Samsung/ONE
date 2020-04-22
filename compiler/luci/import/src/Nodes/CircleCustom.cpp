@@ -45,7 +45,6 @@ CircleNode *CircleCustomGraphBuilder::build_node(const circle::OperatorT &op,
 
   auto *node = graph->nodes()->create<CircleCustom>(inputs.size());
   node->inputs(inputs);
-  node->builtin_options(op.builtin_options);
   node->custom_options(std::vector<uint8_t>{op.custom_options.begin(), op.custom_options.end()});
   node->custom_code(opcode.custom_code);
 
