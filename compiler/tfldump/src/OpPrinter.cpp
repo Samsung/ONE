@@ -184,6 +184,21 @@ public:
   }
 };
 
+class GatherPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_GatherOptions())
+    {
+      os << "    ";
+      os << "Axis(" << params->axis() << ") ";
+
+      os << std::endl;
+    }
+  }
+};
+
 class MulPrinter : public OpPrinter
 {
 public:
