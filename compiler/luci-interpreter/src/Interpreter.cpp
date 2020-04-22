@@ -106,6 +106,8 @@ void Interpreter::createTensors(const loco::Graph *graph)
 
 void Interpreter::createExecutionSequence(const loco::Graph *main_graph)
 {
+  KernelBuilder kernel_builder(*_tensor_map);
+
   auto nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(main_graph)));
   for (loco::Node *loco_node : nodes)
   {
@@ -118,8 +120,6 @@ void Interpreter::createExecutionSequence(const loco::Graph *main_graph)
     {
       continue;
     }
-
-    KernelBuilder kernel_builder(_tensor_map.get());
 
     _execution_sequence.push_back(node->accept(&kernel_builder));
   }

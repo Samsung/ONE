@@ -30,7 +30,7 @@ namespace luci_interpreter
 class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
 {
 public:
-  explicit KernelBuilder(TensorMap *context) : _context(context) {}
+  explicit KernelBuilder(TensorMap &tensor_map) : _tensor_map(tensor_map) {}
 
   std::unique_ptr<Kernel> visit(const luci::CircleAdd *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleAveragePool2D *node) override;
@@ -49,19 +49,20 @@ public:
 private:
   const Tensor *getInputTensor(const loco::Node *node) const
   {
-    const Tensor *tensor = _context->getTensor(node);
+    const Tensor *tensor = _tensor_map.getTensor(node);
     assert(tensor != nullptr);
     return tensor;
   }
 
   Tensor *getOutputTensor(const loco::Node *node) const
   {
-    Tensor *tensor = _context->getTensor(node);
+    Tensor *tensor = _tensor_map.getTensor(node);
     assert(tensor != nullptr);
     return tensor;
   }
 
-  TensorMap *_context;
+private:
+  TensorMap &_tensor_map;
 };
 
 } // namespace luci_interpreter
