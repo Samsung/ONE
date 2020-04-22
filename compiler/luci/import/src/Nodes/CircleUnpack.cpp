@@ -53,7 +53,7 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
 /**
  * @brief  Unpack Node builder
  *
- * @note   Current loco does not provide multiplt outputs
+ * @note   Current loco does not provide multiple outputs
  *         We will create multiple CircleUnpackOut nodes to emulate this
  *         For two outputs that may look like this
  *
@@ -62,8 +62,8 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
  *
  *         will be created like this
  *
- *         -- CircleUnpack --- CircleUnpackOut --- FullyConnected ---
- *                          \- CircleUnpackOut --- FullyConnected ---
+ *         --- CircleUnpack --- CircleUnpackOut --- FullyConnected ---
+ *                           \- CircleUnpackOut --- FullyConnected ---
  */
 
 void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
@@ -83,7 +83,7 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
     input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
   }
 
-  // Create CircleInpack
+  // Create CircleUnpack
   CircleUnpack *node = graph->nodes()->create<CircleUnpack>();
   node->value(input_nodes[0]);
 
