@@ -426,6 +426,10 @@ void ShapeFixer::visit(const ir::operation::Max &node)
   }
 }
 
+void ShapeFixer::visit(const ir::operation::ConvertFp32ToFp16 &) { /* DO NOTHING */}
+
+void ShapeFixer::visit(const ir::operation::ConvertFp16ToFp32 &) { /* DO NOTHING */}
+
 } // namespace acl_cl
 } // namespace backend
 } // namespace onert
