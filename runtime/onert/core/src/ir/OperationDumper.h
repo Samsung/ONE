@@ -18,6 +18,7 @@
 #define __ONERT_OPERATION_DUMPER_H__
 
 #include "ir/OperationVisitor.h"
+#include <string>
 
 namespace onert
 {
@@ -27,7 +28,7 @@ namespace ir
 class OperationDumper : public OperationVisitor
 {
 public:
-  OperationDumper() = default;
+  OperationDumper(const std::string &start_msg);
 
 public:
   void visit(const operation::Abs &) override;
