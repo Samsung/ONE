@@ -162,6 +162,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->outBackprop());
   }
 
+  loco::DataType visit(const luci::CircleUnpack *node) final
+  {
+    return loco::dtype_get(node->value());
+  }
+
   // Circle Only
   loco::DataType visit(const luci::CircleInstanceNorm *node) final
   {
@@ -174,6 +179,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleOutput *node) final
   {
     return loco::dtype_get(node->from());
+  }
+
+  loco::DataType visit(const luci::CircleUnpackOut *node) final
+  {
+    return loco::dtype_get(node->unpack());
   }
 };
 
