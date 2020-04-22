@@ -46,23 +46,26 @@ protected:
   void SetUp() override {}
 };
 
-class ValidationTestSessionCreated : public ValidationTest
+class ValidationTestSingleSession : public ValidationTest
+{
+protected:
+  nnfw_session *_session = nullptr;
+};
+
+class ValidationTestSessionCreated : public ValidationTestSingleSession
 {
 protected:
   void SetUp() override
   {
-    ValidationTest::SetUp();
+    ValidationTestSingleSession::SetUp();
     ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
   }
 
   void TearDown() override
   {
     ASSERT_EQ(nnfw_close_session(_session), NNFW_STATUS_NO_ERROR);
-    ValidationTest::TearDown();
+    ValidationTestSingleSession::TearDown();
   }
-
-protected:
-  nnfw_session *_session = nullptr;
 };
 
 template <int PackageNo> class ValidationTestModelLoaded : public ValidationTestSessionCreated

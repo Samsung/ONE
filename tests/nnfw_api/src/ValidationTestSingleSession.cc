@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-#include <nnfw_dev.h>
+#include "NNPackages.h"
+#include "fixtures.h"
 
-TEST(nnfw_create_session, Test_001)
+TEST_F(ValidationTestSingleSession, create_001)
 {
-  nnfw_session *session = nullptr;
-  ASSERT_EQ(nnfw_create_session(&session), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_close_session(session), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_close_session(_session), NNFW_STATUS_NO_ERROR);
 }
 
-TEST(nnfw_create_session, Negative_001)
+TEST_F(ValidationTestSingleSession, neg_create_001)
 {
   ASSERT_EQ(nnfw_create_session(nullptr), NNFW_STATUS_ERROR);
 }
