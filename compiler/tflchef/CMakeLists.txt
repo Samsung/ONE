@@ -10,6 +10,8 @@ endif(NOT TARGET mio_tflite)
 
 # Recipe Parser
 add_subdirectory(proto)
+# Log
+add_subdirectory(log)
 # Core Library
 add_subdirectory(core)
 # TFlite Library
