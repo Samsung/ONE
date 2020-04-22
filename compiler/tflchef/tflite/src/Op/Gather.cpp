@@ -31,7 +31,7 @@ void TFliteOpGather::filler(const tflite::Operator *op, TFliteImport *import,
   const tflite::Tensor *tensor = import->tensors()->Get(inputs[1]);
   assert(tensor->type() == tflite::TensorType::TensorType_INT32);
   const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
-  
+
   if (buffer && buffer->data())
   {
     auto vec = extract_buffer<int32_t>(buffer);
