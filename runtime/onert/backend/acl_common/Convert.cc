@@ -104,6 +104,8 @@ namespace acl_common
       return ::arm_compute::DataType::U8;
     case ir::DataType::QUANT8_SYMM:
       return ::arm_compute::DataType::S8;
+    case ir::DataType::FLOAT16:
+      return ::arm_compute::DataType::F16;
     default:
       throw std::runtime_error("Not supported, yet");
       break;
