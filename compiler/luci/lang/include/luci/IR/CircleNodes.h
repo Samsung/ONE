@@ -26,6 +26,7 @@
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleConv2D.h"
 #include "Nodes/CircleCos.h"
+#include "Nodes/CircleCustom.h"
 #include "Nodes/CircleDepthwiseConv2D.h"
 #include "Nodes/CircleDiv.h"
 #include "Nodes/CircleEqual.h"
