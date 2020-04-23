@@ -22,8 +22,10 @@
 namespace luci_interpreter
 {
 
-Tensor::Tensor(DataType element_type, Shape shape, AffineQuantization quantization)
-    : _element_type(element_type), _shape(std::move(shape)), _quantization(std::move(quantization))
+Tensor::Tensor(DataType element_type, Shape shape, AffineQuantization quantization,
+               std::string name)
+    : _element_type(element_type), _shape(std::move(shape)), _quantization(std::move(quantization)),
+      _name(std::move(name))
 {
   const size_t element_size = getDataTypeSize(_element_type);
   const int32_t num_elements = _shape.num_elements();

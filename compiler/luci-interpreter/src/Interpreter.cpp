@@ -90,8 +90,8 @@ void Interpreter::createTensors(const loco::Graph *graph)
       quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
     }
 
-    auto tensor =
-        std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization));
+    auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
+                                           node->name());
 
     if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {

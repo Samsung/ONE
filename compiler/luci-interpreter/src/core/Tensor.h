@@ -82,7 +82,7 @@ struct AffineQuantization
 class Tensor
 {
 public:
-  Tensor(DataType element_type, Shape shape, AffineQuantization quantization);
+  Tensor(DataType element_type, Shape shape, AffineQuantization quantization, std::string name);
 
   DataType element_type() const { return _element_type; }
 
@@ -104,6 +104,8 @@ public:
 
   template <typename T> T *data() { return reinterpret_cast<T *>(_data.get()); }
 
+  const std::string &name() { return _name; }
+
   void readData(void *data_ptr, size_t data_size) const;
 
   void writeData(const void *data_ptr, size_t data_size);
@@ -115,6 +117,7 @@ private:
   Shape _shape;
   AffineQuantization _quantization;
   std::unique_ptr<uint8_t[]> _data;
+  std::string _name;
 };
 
 } // namespace luci_interpreter
