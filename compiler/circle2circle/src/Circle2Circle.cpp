@@ -108,7 +108,10 @@ int entry(int argc, char **argv)
     optimizer.optimize(graph);
 
     if (!luci::validate(graph))
+    {
+      std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
       return 255;
+    }
   }
 
   // Export to output Circle file
@@ -116,5 +119,11 @@ int entry(int argc, char **argv)
 
   CircleExpContract contract(module.get(), output_path);
 
-  return exporter.invoke(&contract) ? 0 : 255;
+  if (!exporter.invoke(&contract))
+  {
+    std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
+    return 255;
+  }
+
+  return 0;
 }
