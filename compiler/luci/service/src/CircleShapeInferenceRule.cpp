@@ -255,7 +255,6 @@ public:
     uint32_t x_rank = x_shape.rank();
     uint32_t y_rank = y_shape.rank();
     assert(x_rank >= 2 && y_rank >= 2);
-    assert(x_shape.dim(x_rank - 1) == y_shape.dim(y_rank - 2));
 
     loco::TensorShape output_shape;
     output_shape.rank(x_shape.rank());
@@ -275,9 +274,16 @@ public:
       }
     }
 
+    loco::Dimension x_lhs = node->adj_x() ? x_shape.dim(x_rank - 1) : x_shape.dim(x_rank - 2);
+    loco::Dimension x_rhs = node->adj_x() ? x_shape.dim(x_rank - 2) : x_shape.dim(x_rank - 1);
+    loco::Dimension y_lhs = node->adj_y() ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
+    loco::Dimension y_rhs = node->adj_y() ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
+
+    assert(x_rhs == y_lhs);
+
     uint32_t out_rank = output_shape.rank();
-    output_shape.dim(out_rank - 2) = x_shape.dim(x_rank - 2);
-    output_shape.dim(out_rank - 1) = y_shape.dim(y_rank - 1);
+    output_shape.dim(out_rank - 2) = x_lhs;
+    output_shape.dim(out_rank - 1) = y_rhs;
 
     return loco::NodeShape{output_shape};
   }
