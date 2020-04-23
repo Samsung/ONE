@@ -37,18 +37,12 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
-  template <typename T, typename Fn>
-  void loop(int dim, const T *input1_data, const T *input2_data, T *output_data, Fn fn) const;
 
 private:
   const Tensor *const _input1;
   const Tensor *const _input2;
   Tensor *const _output;
   const AddParams _params;
-
-  std::vector<int32_t> _input1_strides;
-  std::vector<int32_t> _input2_strides;
-  std::vector<int32_t> _output_strides;
 };
 
 } // namespace kernels

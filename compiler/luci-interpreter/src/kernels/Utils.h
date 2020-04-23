@@ -22,6 +22,7 @@
 #include "core/Tensor.h"
 
 #include <public/gemmlowp.h>
+#include <tensorflow/lite/kernels/internal/types.h>
 
 #include <cassert>
 #include <cstdint>
@@ -60,41 +61,21 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max);
 
-template <typename T> inline T activationFunctionWithMinMax(T x, T activation_min, T activation_max)
-{
-  return (x < activation_min) ? activation_min : (x > activation_max) ? activation_max : x;
-}
-
-inline int32_t offset(const Shape &shape, int32_t i0, int32_t i1, int32_t i2, int32_t i3)
-{
-  assert(shape.num_dims() == 4);
-  assert(i0 >= 0 && i0 < shape.dim(0));
-  return ((i0 * shape.dim(1) + i1) * shape.dim(2) + i2) * shape.dim(3) + i3;
-}
-
 void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
 void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
                                          int *left_shift);
 
-inline int32_t multiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)
-{
-  using gemmlowp::RoundingDivideByPOT;
-  using gemmlowp::SaturatingRoundingDoublingHighMul;
-  int left_shift = shift > 0 ? shift : 0;
-  int right_shift = shift > 0 ? 0 : -shift;
-  return RoundingDivideByPOT(
-      SaturatingRoundingDoublingHighMul(x * (1 << left_shift), quantized_multiplier), right_shift);
-}
+Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
 
-inline int32_t multiplyByQuantizedMultiplierSmallerThanOneExp(int32_t x,
-                                                              int32_t quantized_multiplier,
-                                                              int left_shift)
+inline tflite::RuntimeShape convertShape(const Shape &shape)
 {
-  using gemmlowp::RoundingDivideByPOT;
-  using gemmlowp::SaturatingRoundingDoublingHighMul;
-  return RoundingDivideByPOT(SaturatingRoundingDoublingHighMul(x, quantized_multiplier),
-                             -left_shift);
+  tflite::RuntimeShape runtime_shape(shape.num_dims());
+  for (int i = 0; i < shape.num_dims(); ++i)
+  {
+    runtime_shape.SetDim(i, shape.dim(i));
+  }
+  return runtime_shape;
 }
 
 } // namespace kernels

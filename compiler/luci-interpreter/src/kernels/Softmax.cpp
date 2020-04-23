@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +16,10 @@
 
 #include "kernels/Softmax.h"
 
-#include <cmath>
-#include <limits>
+#include "kernels/Utils.h"
+
+#include <tensorflow/lite/kernels/internal/reference/softmax.h>
+
 #include <stdexcept>
 
 namespace luci_interpreter
@@ -46,43 +47,13 @@ void Softmax::execute() const
   }
 }
 
-// https://github.com/tensorflow/tensorflow/blob/v2.2.0-rc3/tensorflow/lite/kernels/internal/reference/softmax.h
 void Softmax::evalFloat() const
 {
-  const auto *input_data = _input->data<float>();
-  auto *output_data = _output->data<float>();
+  tflite::SoftmaxParams params{};
+  params.beta = _params.beta;
 
-  const Shape &input_shape = _input->shape();
-
-  const int32_t trailing_dim = input_shape.num_dims() - 1;
-  const int32_t depth = input_shape.dim(trailing_dim);
-  const int32_t outer_size = input_shape.num_elements() / depth;
-
-  for (int32_t i = 0; i < outer_size; ++i)
-  {
-    float max_val = std::numeric_limits<float>::lowest();
-    for (int32_t c = 0; c < depth; ++c)
-    {
-      const float val = input_data[i * depth + c];
-      if (val > max_val)
-      {
-        max_val = val;
-      }
-    }
-
-    float sum = 0.0f;
-    for (int32_t c = 0; c < depth; ++c)
-    {
-      const float val = input_data[i * depth + c];
-      sum += std::exp((val - max_val) * _params.beta);
-    }
-
-    for (int32_t c = 0; c < depth; ++c)
-    {
-      const float val = input_data[i * depth + c];
-      output_data[i * depth + c] = std::exp((val - max_val) * _params.beta) / sum;
-    }
-  }
+  tflite::reference_ops::Softmax(params, convertShape(_input->shape()), _input->data<float>(),
+                                 convertShape(_output->shape()), _output->data<float>());
 }
 
 } // namespace kernels

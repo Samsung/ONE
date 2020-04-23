@@ -148,5 +148,23 @@ void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quan
   *left_shift = shift;
 }
 
+Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape)
+{
+  const int num_input1_dims = input1_shape.num_dims();
+  const int num_input2_dims = input2_shape.num_dims();
+  const int num_out_dims = std::max(num_input1_dims, num_input2_dims);
+  Shape output_shape(num_out_dims);
+
+  for (int i = 0; i < num_out_dims; ++i)
+  {
+    const int32_t input1_dim = i < num_input1_dims ? input1_shape.dim(num_input1_dims - i - 1) : 1;
+    const int32_t input2_dim = i < num_input2_dims ? input2_shape.dim(num_input2_dims - i - 1) : 1;
+    assert(input1_dim == input2_dim || input1_dim == 1 || input2_dim == 1);
+    output_shape.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);
+  }
+
+  return output_shape;
+}
+
 } // namespace kernels
 } // namespace luci_interpreter

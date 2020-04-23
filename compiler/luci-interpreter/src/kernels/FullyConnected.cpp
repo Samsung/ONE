@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +17,8 @@
 #include "kernels/FullyConnected.h"
 
 #include "kernels/Utils.h"
+
+#include <tensorflow/lite/kernels/internal/reference/fully_connected.h>
 
 #include <stdexcept>
 
@@ -60,41 +61,20 @@ void FullyConnected::execute() const
   }
 }
 
-// https://github.com/tensorflow/tensorflow/blob/v2.2.0-rc3/tensorflow/lite/kernels/internal/reference/fully_connected.h
 void FullyConnected::evalFloat() const
 {
-  const auto *input_data = _input->data<float>();
-  const auto *weights_data = _weights->data<float>();
-  const auto *bias_data = _bias->data<float>();
-  auto *output_data = _output->data<float>();
-
-  const Shape &input_shape = _input->shape();
-  const Shape &weights_shape = _weights->shape();
-
   float activation_min{};
   float activation_max{};
   calculateActivationRange(_params.activation, &activation_min, &activation_max);
 
-  const int32_t accum_depth = weights_shape.dim(weights_shape.num_dims() - 1);
-  const int32_t batches = input_shape.num_elements() / weights_shape.dim(1);
-  const int32_t output_depth = weights_shape.dim(0);
+  tflite::FullyConnectedParams params{};
+  params.float_activation_min = activation_min;
+  params.float_activation_max = activation_max;
 
-  for (int32_t b = 0; b < batches; ++b)
-  {
-    for (int32_t out_c = 0; out_c < output_depth; ++out_c)
-    {
-      float sum = 0.0f;
-      for (int32_t d = 0; d < accum_depth; ++d)
-      {
-        const float input_value = input_data[b * accum_depth + d];
-        const float weights_value = weights_data[out_c * accum_depth + d];
-        sum += input_value * weights_value;
-      }
-      sum += bias_data[out_c];
-      output_data[output_depth * b + out_c] =
-          activationFunctionWithMinMax(sum, activation_min, activation_max);
-    }
-  }
+  tflite::reference_ops::FullyConnected(
+      params, convertShape(_input->shape()), _input->data<float>(), convertShape(_weights->shape()),
+      _weights->data<float>(), convertShape(_bias->shape()), _bias->data<float>(),
+      convertShape(_output->shape()), _output->data<float>());
 }
 
 } // namespace kernels
