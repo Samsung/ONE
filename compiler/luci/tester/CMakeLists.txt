@@ -20,3 +20,15 @@ target_link_libraries(luci_writetester PRIVATE luci_service)
 target_link_libraries(luci_writetester PRIVATE luci_pass)
 target_link_libraries(luci_writetester PRIVATE luci_export)
 target_link_libraries(luci_writetester PRIVATE oops)
+
+set(SRCS_PASS_TESTER
+      src/PassTester.cpp
+      src/Model.cpp
+   )
+
+add_executable(luci_passtester "${SRCS_PASS_TESTER}")
+target_link_libraries(luci_passtester PRIVATE luci_import)
+target_link_libraries(luci_passtester PRIVATE luci_service)
+target_link_libraries(luci_passtester PRIVATE luci_pass)
+target_link_libraries(luci_passtester PRIVATE luci_export)
+target_link_libraries(luci_passtester PRIVATE oops)
