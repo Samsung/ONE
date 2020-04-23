@@ -2,11 +2,11 @@
 
 ## Feature Highlights
 
-- `onert`
+- ONE runtime(a.k.a `onert`)
     - CPU backend supports more operations
     - Android package is released
 
-## onert
+## ONE Runtime
 
 #### CPU backend supports more operations
 
