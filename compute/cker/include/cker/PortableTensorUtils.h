@@ -137,6 +137,17 @@ void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matr
   }   // for batch
 }
 
+void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
+                                                 const int m_rows, const int m_cols,
+                                                 const int8_t *__restrict__ vector,
+                                                 const float *scaling_factors, int n_batch,
+                                                 int32_t *, float *__restrict__ result,
+                                                 int result_stride)
+{
+  PortableMatrixBatchVectorMultiplyAccumulate(matrix, m_rows, m_cols, vector, scaling_factors,
+                                              n_batch, result, result_stride);
+}
+
 void PortableMatrixBatchVectorMultiplyAccumulate(const float *matrix, int m_rows, int m_cols,
                                                  const float *vector, int n_batch, float *result,
                                                  int result_stride)
