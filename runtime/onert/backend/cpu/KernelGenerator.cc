@@ -490,7 +490,6 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto &shape = _ctx.at(output_index).shape();
   const auto input_backend_ctx = node.param().input_backend_ctx;
   const auto output_backend_ctx = node.param().output_backend_ctx;
-  const auto data_type = node.getDataType();
 
   auto output_tensor = output_backend_ctx->tensor_builder->tensorAt(output_index);
   auto input_tensor = input_backend_ctx->tensor_builder->tensorAt(input_index);
@@ -499,36 +498,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 
   auto fn = std::make_unique<::onert::backend::cpu::kernel::PermuteLayer>();
 
-  // TODO Support NCHW frontend
-  auto out_shape = shape;
-  if (shape.rank() == 4 && output_tensor->layout() == ir::Layout::NCHW)
-  {
-    out_shape.dim(1) = shape.dim(3);
-    out_shape.dim(2) = shape.dim(1);
-    out_shape.dim(3) = shape.dim(2);
-  }
-
-  const auto permute_type = node.getPermuteType();
-  // Check Permutation Type
-  const auto inferPermuteType = [&]() {
-    if (input_tensor->layout() == ir::Layout::NHWC && output_tensor->layout() == ir::Layout::NCHW)
-    {
-      return ir::operation::Permute::Type::NHWC_TO_NCHW;
-    }
-    else if (input_tensor->layout() == ir::Layout::NCHW &&
-             output_tensor->layout() == ir::Layout::NHWC)
-    {
-      return ir::operation::Permute::Type::NCHW_TO_NHWC;
-    }
-    else
-    {
-      return ir::operation::Permute::Type::COPY;
-    }
-  }();
-  UNUSED_RELEASE(inferPermuteType);
-  assert(permute_type == inferPermuteType);
-
-  fn->configure(input_tensor, output_tensor, out_shape, permute_type, data_type);
+  fn->configure(input_tensor, output_tensor, shape.rank());
 
   _return_fn = std::move(fn);
 }

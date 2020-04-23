@@ -28,41 +28,11 @@ namespace kernel
 using Type = ir::operation::Permute::Type;
 
 void PermuteLayer::configure(std::shared_ptr<backend::ITensor> input,
-                             std::shared_ptr<backend::ITensor> output,
-                             const ir::Shape &output_shape, Type type, ir::DataType dataType)
+                             std::shared_ptr<backend::ITensor> output, size_t rank)
 {
-  _input = input;
-  _output = output;
-  _output_shape = output_shape;
-  _type = type;
-  _dataType = dataType;
-}
-
-void PermuteLayer::run()
-{
-  using ir::DataType;
-  switch (_dataType)
-  {
-    case DataType::FLOAT32:
-      runTempl<float>();
-      break;
-    case DataType::INT32:
-      runTempl<int32_t>();
-      break;
-    case DataType::UINT32:
-      runTempl<uint32_t>();
-      break;
-    case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
-      runTempl<uint8_t>();
-      break;
-    case DataType::QUANT8_SYMM:
-      runTempl<int8_t>();
-      break;
-    default:
-      throw std::runtime_error("NYI");
-      break;
-  }
+  _src_tensors.emplace_back(input);
+  _dst_tensors.emplace_back(output);
+  _ranks.emplace_back(rank);
 }
 
 } // namespace kernel
