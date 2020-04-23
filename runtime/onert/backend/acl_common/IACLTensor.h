@@ -49,6 +49,7 @@ public:
   size_t num_dimensions() const override;
   size_t calcOffset(const ir::Coordinates &coords) const final;
   ir::Layout layout() const final;
+  ir::DataType data_type() const final;
   bool has_padding() const override { return info()->has_padding(); }
 
 public:
@@ -57,8 +58,6 @@ public:
 
   const arm_compute::ITensorInfo *info() const { return handle()->info(); }
   arm_compute::ITensorInfo *info() { return handle()->info(); }
-
-  arm_compute::DataType data_type() const { return info()->data_type(); }
 };
 
 } // namespace acl_common
