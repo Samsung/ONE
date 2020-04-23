@@ -31,15 +31,14 @@ BatchMatMulV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   uint8_t adj_x = operation.batch_matmul_options().adjoint_lhs() ? 1 : 0;
   uint8_t adj_y = operation.batch_matmul_options().adjoint_rhs() ? 1 : 0;
 
-  std::vector<uint8_t> custom_options_vec = {0x61,  0x64, 0x6a, 0x5f, 0x78, 0x0,  0x61,
-                                             0x64,  0x6a, 0x5f, 0x79, 0x0,  0x54, 0x0,
-                                             0x3,   0x3,  0x10, 0xb,  0x3,  0x1,  0x3,
+  // TODO This works with only float32
+  std::vector<uint8_t> custom_options_vec = {'a',   'd',  'j',  '_', 'x',  0x0, 'a',
+                                             'd',   'j',  '_',  'y', 0x0,  'T', 0x0,
+                                             0x3,   0x3,  0x10, 0xb, 0x3,  0x1, 0x3,
                                              0x0,   // TensorType
                                              adj_x, // adj_x
                                              adj_y, // adj_y
-                                             0x4,   0x68, 0x68, 0x6,  0x24, 0x1};
-  //{97, 100, 106, 95, 120, 0, 97, 100, 106, 95, 121, 0, 84, 0, 3, 3, 16, 11, 3, 1, 3, 0, 0,
-  // 0, 4, 104, 104, 6, 36, 1}
+                                             0x4,   0x68, 0x68, 0x6, 0x24, 0x1};
 
   auto circle_custom_options = fbb.CreateVector(custom_options_vec);
   return circle_custom_options;
