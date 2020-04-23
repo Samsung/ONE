@@ -132,6 +132,7 @@ protected:
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadReduceProd(const Operator *op, ir::Graph &subg);
+  void loadWhile(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1220,6 +1221,25 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::While::Param param;
+  const auto *options = op->builtin_options_as_WhileOptions();
+  const uint32_t cond_index = options->cond_subgraph_index();
+  const uint32_t body_index = options->body_subgraph_index();
+  param.cond_subg_index = ir::SubgraphIndex{cond_index};
+  param.body_subg_index = ir::SubgraphIndex{body_index};
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::While(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1369,8 +1389,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_SHAPE:
       loadShape(op, subg);
       return;
-    case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
-      loadReduceProd(op, subg);
+    case BuiltinOperator::BuiltinOperator_WHILE:
+      loadWhile(op, subg);
       return;
     // TODO Implement loading subgraphs of conftrol flow ops
     default:
