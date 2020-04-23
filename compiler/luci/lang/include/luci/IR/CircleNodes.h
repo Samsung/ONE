@@ -50,6 +50,7 @@
 #include "Nodes/CircleSquaredDifference.h"
 #include "Nodes/CircleSub.h"
 #include "Nodes/CircleTanh.h"
+#include "Nodes/CircleTile.h"
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"

@@ -54,6 +54,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
+  CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                     // 88
 
@@ -107,7 +108,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SIN = 66,
   // BuiltinOperator_TRANSPOSE_CONV = 67,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_TILE = 69,
   // BuiltinOperator_EXPAND_DIMS = 70,
   // BuiltinOperator_NOT_EQUAL = 72,
   // BuiltinOperator_LOG = 73,

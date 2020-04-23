@@ -825,6 +825,35 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleTile *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto multiples = dynamic_cast<luci::CircleConst *>(node->multiples());
+
+    // TODO support non-const case
+    LUCI_ASSERT(multiples, "Only support constant multiples");
+    // TODO support S64 type
+    LUCI_ASSERT(multiples->dtype() == S32, "Only support int32 multiples");
+    LUCI_ASSERT(multiples->rank() == 1, "multiples should be rank 1")
+
+    uint32_t n = multiples->dim(0).value();
+
+    LUCI_ASSERT(n == input_shape.rank(), "length of multiples should be the same with input rank");
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(input_shape.rank());
+    for (uint32_t ni = 0; ni < n; ++ni)
+    {
+      int32_t multiple = multiples->at<S32>(ni);
+      output_shape.dim(ni) = input_shape.dim(ni).value() * static_cast<uint32_t>(multiple);
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   /// @brief Returns output shape of transpose. Use loco::ConstGen and luci::CircleConst for ConstT.
   template <class ConstT>
   loco::TensorShape output_shape_of_transpose(loco::TensorShape input_shape,
