@@ -21,13 +21,17 @@
 
 /**
  * @brief A helper class to find NN Packages for testing
+ *        To add a nnpackage for your test, please do the followings:
+ *          0. Prerequisite: the actual file must be uploaded on the server
+ *          1. Append an enum value to @c NNPackages::TestPackages
+ *          2. Append a string literal to @c TEST_PACKAGE_NAMES in the source file
  */
 class NNPackages
 {
 public:
   /**
    * @brief Serial numbers for test packages. The numbers are mapped with package names.
-   *        This is useful for creating GTest Fixtures with variable template to do
+   *        This is useful for creating GTest Fixtures with variable template to perform
    *        different nn packages with no code duplication.
    */
   enum TestPackages
@@ -36,6 +40,11 @@ public:
     ADD
   };
 
+  /*
+   * @brief Singleton object getter
+   *
+   * @return NNPackages& The singleton object
+   */
   static NNPackages &get();
 
   /**
