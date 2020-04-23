@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief REDUCE MAX in Circle
  */
-class CircleReduceMax final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::REDUCE_MAX>>
+class CircleReduceMax final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::REDUCE_MAX>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
