@@ -67,12 +67,19 @@ private:
   std::vector<int32_t> _dims;
 };
 
-// Asymmetric quantization is per-tensor and uses unsigned integer types for quantized values,
-// meaning there there will be exactly one scale and one zero point.
-// Symmetric quantization is per-channel and uses signed integer types, meaning there will be
-// N scales and no zero points (they are assumed to be zero). N is the size of the quantized
-// dimension (usually the "channel" dimension).
-// TODO Support symmetric quantization.
+// Tensor affine quantization parameters.
+//
+// The relationship between real and quantized values:
+//   real_value = (quantized_value - zero_point) * scale
+//
+// In per-tensor case, 'scale' and 'zero_point' are one element each.
+// In per-channel case, 'scale' and 'zero_point' are N elements each, where N is the size
+// of the quantized dimension.
+//
+// Note that due to historical and performance reasons, per-tensor quantization uses unsigned
+// integer types, while per-channel uses signed types assuming 'zero_point' == 0.
+//
+// TODO Add 'quantized_dimension' field for per-channel case when IR provides it.
 struct AffineQuantization
 {
   std::vector<float> scale;
