@@ -31,8 +31,6 @@ BatchMatMulV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   uint8_t adj_x = operation.batch_matmul_options().adjoint_lhs() ? 1 : 0;
   uint8_t adj_y = operation.batch_matmul_options().adjoint_rhs() ? 1 : 0;
 
-  // TODO This works only with float32
-  // TODO Find a way to decode custom options
   std::vector<uint8_t> custom_options_vec = {'a',   'd',  'j',  '_', 'x',  0x0, 'a',
                                              'd',   'j',  '_',  'y', 0x0,  'T', 0x0,
                                              0x3,   0x3,  0x10, 0xb, 0x3,  0x1, 0x3,

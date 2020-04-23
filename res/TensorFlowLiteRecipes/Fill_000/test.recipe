@@ -1,0 +1,29 @@
+operand {
+  name: "dims"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "3" arg: "2" arg: "8" }
+}
+operand {
+  name: "value"
+  type: FLOAT32
+  shape { dim: 1 }
+}
+
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 2 dim: 8 }
+}
+
+operation {
+  type: "Fill"
+  fill_options {
+  }
+  input: "dims"
+  input: "value"
+  output: "ofm"
+}
+
+input: "value"
+output: "ofm"
