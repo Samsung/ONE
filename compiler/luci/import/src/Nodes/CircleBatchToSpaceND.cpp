@@ -65,7 +65,7 @@ bool CircleBatchToSpaceNDGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleBatchToSpaceNDGraphBuilder::build_node(const circle::OperatorT &,
                                                          const std::vector<CircleNode *> &inputs,
-                                                         loco::Graph *graph, CircleReader *) const
+                                                         loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleBatchToSpaceND>();
   node->input(inputs[0]);

@@ -58,7 +58,7 @@ static CircleNode *create_shape_node(const std::vector<int32_t> &shape, loco::Gr
 
 CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
                                                   const std::vector<CircleNode *> &inputs,
-                                                  loco::Graph *graph, CircleReader *) const
+                                                  loco::Graph *graph) const
 {
   // If the second input is not provided, generate it based on the value of the attribute.
   // TODO Presence of the second input is the current requirement of the IR.

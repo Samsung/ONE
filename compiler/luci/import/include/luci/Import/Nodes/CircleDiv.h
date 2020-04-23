@@ -28,7 +28,7 @@ class CircleDivGraphBuilder : public GraphBuilder
 
 private:
   CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph, CircleReader *) const override;
+                         loco::Graph *graph) const override;
 };
 
 } // namespace luci

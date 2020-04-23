@@ -38,7 +38,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
 
   CircleNode *node = opcode.builtin_code == circle::BuiltinOperator_CUSTOM
-                         ? build_node(op, input_nodes, context->graph(), context->reader())
+                         ? build_custom_node(op, input_nodes, context->graph(), context->reader())
                          : build_node(op, input_nodes, context->graph());
 
   // Set up node parameters.

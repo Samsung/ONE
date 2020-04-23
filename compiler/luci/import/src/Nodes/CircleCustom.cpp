@@ -35,9 +35,18 @@ bool CircleCustomGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
-CircleNode *CircleCustomGraphBuilder::build_node(const circle::OperatorT &op,
-                                                 const std::vector<CircleNode *> &inputs,
-                                                 loco::Graph *graph, CircleReader *reader) const
+CircleNode *CircleCustomGraphBuilder::build_node(const circle::OperatorT &,
+                                                 const std::vector<CircleNode *> &,
+                                                 loco::Graph *) const
+{
+  // DO NOTHING
+  return nullptr;
+}
+
+CircleNode *CircleCustomGraphBuilder::build_custom_node(const circle::OperatorT &op,
+                                                        const std::vector<CircleNode *> &inputs,
+                                                        loco::Graph *graph,
+                                                        luci::CircleReader *reader) const
 {
   const auto &opcodes = reader->opcodes();
   const uint32_t opcode_index = op.opcode_index;

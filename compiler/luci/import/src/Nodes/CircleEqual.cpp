@@ -39,7 +39,7 @@ bool CircleEqualGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleEqualGraphBuilder::build_node(const circle::OperatorT &,
                                                 const std::vector<CircleNode *> &inputs,
-                                                loco::Graph *graph, CircleReader *) const
+                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleEqual>();
   node->x(inputs[0]);

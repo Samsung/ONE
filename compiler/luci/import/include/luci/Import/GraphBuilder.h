@@ -37,8 +37,16 @@ public:
 
 private:
   virtual CircleNode *build_node(const circle::OperatorT &op,
-                                 const std::vector<CircleNode *> &inputs, loco::Graph *graph,
-                                 CircleReader *reader = nullptr) const = 0;
+                                 const std::vector<CircleNode *> &inputs,
+                                 loco::Graph *graph) const = 0;
+
+  virtual CircleNode *build_custom_node(const circle::OperatorT &,
+                                        const std::vector<CircleNode *> &, loco::Graph *,
+                                        CircleReader *) const
+  {
+    // DO NOTHING
+    return nullptr;
+  }
 };
 
 } // namespace luci

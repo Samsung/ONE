@@ -31,7 +31,7 @@ bool CircleMeanGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleMeanGraphBuilder::build_node(const circle::OperatorT &op,
                                                const std::vector<CircleNode *> &inputs,
-                                               loco::Graph *graph, CircleReader *) const
+                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleMean>();
   node->input(inputs[0]);

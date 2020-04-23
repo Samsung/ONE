@@ -35,7 +35,7 @@ bool CirclePadGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CirclePadGraphBuilder::build_node(const circle::OperatorT &op,
                                               const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph, CircleReader *) const
+                                              loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CirclePad>();
   node->input(inputs[0]);

@@ -37,7 +37,7 @@ bool CircleDepthwiseConv2DGraphBuilder::validate(const ValidateArgs &args) const
 
 CircleNode *CircleDepthwiseConv2DGraphBuilder::build_node(const circle::OperatorT &op,
                                                           const std::vector<CircleNode *> &inputs,
-                                                          loco::Graph *graph, CircleReader *) const
+                                                          loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleDepthwiseConv2D>();
   node->input(inputs[0]);
