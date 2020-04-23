@@ -21,6 +21,8 @@
 
 #include <loco/IR/Algorithm.h>
 
+#include <stdexcept>
+
 namespace luci_interpreter
 {
 
@@ -150,7 +152,11 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
                                    size_t data_size)
 {
   Tensor *tensor = _tensor_map->getTensor(input_node);
-  assert(tensor != nullptr);
+  if (tensor == nullptr)
+  {
+    const std::string &name = input_node->name();
+    throw std::runtime_error("Cannot find tensor for input node named \"" + name + "\".");
+  }
   tensor->writeData(data, data_size);
 }
 
@@ -158,7 +164,11 @@ void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *
                                    size_t data_size)
 {
   Tensor *tensor = _tensor_map->getTensor(output_node->from());
-  assert(tensor != nullptr);
+  if (tensor == nullptr)
+  {
+    const std::string &name = output_node->name();
+    throw std::runtime_error("Cannot find tensor for output node named \"" + name + "\".");
+  }
   tensor->readData(data, data_size);
 }
 
