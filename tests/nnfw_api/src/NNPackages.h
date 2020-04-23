@@ -36,8 +36,8 @@ public:
    */
   enum TestPackages
   {
-    DUMMY, // Non-existing directory for negative tests
-    ADD
+    ADD,
+    COUNT
   };
 
   /*
@@ -54,12 +54,27 @@ public:
    * @return std::string The absolute path of model directory
    */
   std::string getModelAbsolutePath(int package_no);
+
+  /**
+   * @brief Get the absolute of the model to find
+   *
+   * @param package_name Package name
+   * @return std::string The absolute path of model directory
+   */
+  std::string getModelAbsolutePath(const char *package_name);
+
   /**
    * @brief Save the current executable's directory based on argv[0] and CWD
    *
    * @param argv0 0th command line argument of the current process
    */
   void init(const char *argv0);
+
+  /**
+   * @brief Check all the nnpackages are installed
+   *        Must be run after @c init .
+   */
+  void checkAll();
 
 private:
   NNPackages() = default;
