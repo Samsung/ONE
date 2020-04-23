@@ -22,18 +22,12 @@
 namespace luci
 {
 
-class CircleCustomGraphBuilder : public GraphBuilder
+class CircleCustomGraphBuilder : public GraphBuilderBase
 {
 public:
   bool validate(const ValidateArgs &args) const final;
 
-private:
-  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
-                         loco::Graph *graph) const final;
-
-  CircleNode *build_custom_node(const circle::OperatorT &op,
-                                const std::vector<CircleNode *> &inputs, loco::Graph *graph,
-                                luci::CircleReader *reader) const final;
+  void build(const circle::OperatorT &op, GraphBuilderContext *context) const final;
 };
 
 } // namespace luci
