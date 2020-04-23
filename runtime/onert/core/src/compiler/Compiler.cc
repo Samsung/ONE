@@ -55,6 +55,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   options.delete_cached_data = util::getConfigBool(util::config::DELETE_CACHED_DATA);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
+  options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
 
   {
     // Backend for all
