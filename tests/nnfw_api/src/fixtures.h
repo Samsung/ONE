@@ -83,6 +83,21 @@ protected:
   void TearDown() override { ValidationTestSessionCreated::TearDown(); }
 };
 
+template <int PackageNo>
+class ValidationTestSessionPrepared : public ValidationTestModelLoaded<PackageNo>
+{
+protected:
+  using ValidationTestSingleSession::_session;
+
+  void SetUp() override
+  {
+    ValidationTestModelLoaded<PackageNo>::SetUp();
+    nnfw_prepare(_session);
+  }
+
+  void TearDown() override { ValidationTestModelLoaded<PackageNo>::TearDown(); }
+};
+
 template <int PackageNo> class ValidationTestFourModelsSetInput : public ValidationTest
 {
 protected:
