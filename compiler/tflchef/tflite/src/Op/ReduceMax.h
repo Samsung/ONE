@@ -23,7 +23,7 @@ namespace tflchef
 {
 
 /**
- * @brief tflchef operator builder for mean
+ * @brief tflchef operator builder for Reduce Max
  */
 class TFliteOpReduceMax : public TFliteOpChef
 {
