@@ -58,6 +58,11 @@ size_t IACLTensor::calcOffset(const ir::Coordinates &coords) const
 
 ir::Layout IACLTensor::layout() const { return acl_common::asRuntimeLayout(info()->data_layout()); }
 
+ir::DataType IACLTensor::data_type() const
+{
+  return acl_common::asRuntimeDataType(info()->data_type());
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

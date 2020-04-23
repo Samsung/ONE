@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <functional>
 
+#include "ir/DataType.h"
 #include "ir/Layout.h"
 #include "ir/Coordinates.h"
 
@@ -41,6 +42,7 @@ public:
   virtual size_t num_dimensions() const = 0;
   virtual size_t calcOffset(const ir::Coordinates &coords) const = 0;
   virtual ir::Layout layout() const = 0;
+  virtual ir::DataType data_type() const = 0;
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
