@@ -33,7 +33,7 @@ public:
     enum Algorithm
     {
       FuseInstanceNorm,
-      ResolveCustomOp
+      ResolveCustomOpBatchMatMul
     };
 
     virtual void enable(Algorithm) = 0;

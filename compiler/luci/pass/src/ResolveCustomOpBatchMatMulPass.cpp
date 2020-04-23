@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/ResolveCustomOpPass.h"
+#include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -45,7 +45,7 @@ void resolve_custom_op(luci::CircleCustom *cop)
 namespace luci
 {
 
-bool ResolveCustomOpPass::run(loco::Graph *g)
+bool ResolveCustomOpBatchMatMulPass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))

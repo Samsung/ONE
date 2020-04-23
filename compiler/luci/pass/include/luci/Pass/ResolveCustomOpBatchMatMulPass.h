@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_RESOLVE_CUSTOM_OP_PASS_H__
-#define __LUCI_RESOLVE_CUSTOM_OP_PASS_H__
+#ifndef __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__
+#define __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -23,15 +23,15 @@ namespace luci
 {
 
 /**
- * @brief  Class to resolve certain custom op of subgraph into predefined op in circle schema.
+ * @brief  Class to resolve certain custom op of subgraph into batchmatmul op in circle schema.
  */
-struct ResolveCustomOpPass final : public logo::Pass
+struct ResolveCustomOpBatchMatMulPass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::ResolveCustomOpPass"; }
+  const char *name(void) const final { return "luci::ResolveCustomOpBatchMatMulPass"; }
 
   bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_RESOLVE_CUSTOM_OP_PASS_H__
+#endif // __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__

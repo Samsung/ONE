@@ -20,7 +20,7 @@
 #include <luci/Service/Validate.h>
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
-#include <luci/Pass/ResolveCustomOpPass.h>
+#include <luci/Pass/ResolveCustomOpBatchMatMulPass.h>
 
 #include <iostream>
 #include <map>
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
       return 255;
 
     {
-      luci::ResolveCustomOpPass pass;
+      luci::ResolveCustomOpBatchMatMulPass pass;
       while (pass.run(graph) == true)
         ;
     }
