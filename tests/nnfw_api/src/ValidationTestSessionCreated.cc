@@ -28,7 +28,7 @@ TEST_F(ValidationTestSessionCreated, load_session_001)
 TEST_F(ValidationTestSessionCreated, neg_load_session_001)
 {
   ASSERT_EQ(nnfw_load_model_from_file(
-                _session, NNPackages::get().getModelAbsolutePath(NNPackages::DUMMY).c_str()),
+                _session, NNPackages::get().getModelAbsolutePath("nonexisting_directory").c_str()),
             NNFW_STATUS_ERROR);
 }
 

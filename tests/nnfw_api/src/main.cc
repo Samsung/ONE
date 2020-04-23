@@ -17,24 +17,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <dirent.h>
 #include <gtest/gtest.h>
 #include "NNPackages.h"
-
-/**
- * @brief Function to check if test model directories exist before it actually performs the test
- *
- */
-void checkModels()
-{
-  std::string absolute_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
-  DIR *dir = opendir(absolute_path.c_str());
-  if (!dir)
-  {
-    throw std::runtime_error{"Please install the nnpackge for testing: " + absolute_path};
-  }
-  closedir(dir);
-}
 
 int main(int argc, char **argv)
 {
@@ -43,7 +27,7 @@ int main(int argc, char **argv)
 
   try
   {
-    checkModels();
+    NNPackages::get().checkAll();
   }
   catch (std::runtime_error &e)
   {

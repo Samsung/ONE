@@ -19,9 +19,12 @@
 #include <unistd.h>
 #include <libgen.h>
 #include <string.h>
+#include <dirent.h>
+#include <assert.h>
+#include <stdexcept>
 
 // NOTE Must match `enum TestPackages`
-const char *TEST_PACKAGE_NAMES[] = {"nonexisting_package", "add"};
+const char *TEST_PACKAGE_NAMES[] = {"add"};
 
 NNPackages &NNPackages::get()
 {
@@ -50,9 +53,37 @@ void NNPackages::init(const char *argv0)
   }
 }
 
+void NNPackages::checkAll()
+{
+  assert(!_base_path.empty());
+
+  for (int i = 0; i < NNPackages::COUNT; i++)
+  {
+    std::string package_name = TEST_PACKAGE_NAMES[i];
+    std::string path = getModelAbsolutePath(i);
+
+    DIR *dir = opendir(path.c_str());
+    if (!dir)
+    {
+      std::string msg = "missing nnpackage: " + package_name + ", path: " + path;
+      throw std::runtime_error{msg};
+    }
+    closedir(dir);
+  }
+}
+
 std::string NNPackages::getModelAbsolutePath(int package_no)
 {
-  const char *model_dir = TEST_PACKAGE_NAMES[package_no];
-  // Model dir is nested
-  return _base_path + "/nnfw_api_gtest_models/" + model_dir + "/" + model_dir;
+  if (package_no < 0 || package_no >= NNPackages::COUNT)
+  {
+    throw std::runtime_error{"Invalid package_no: " + std::to_string(package_no)};
+  }
+
+  const char *package_dir = TEST_PACKAGE_NAMES[package_no];
+  return getModelAbsolutePath(package_dir);
+}
+
+std::string NNPackages::getModelAbsolutePath(const char *package_name)
+{
+  return _base_path + "/nnfw_api_gtest_models/" + package_name + "/" + package_name;
 }
