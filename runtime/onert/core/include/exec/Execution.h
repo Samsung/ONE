@@ -44,14 +44,14 @@ public:
    * @brief     Construct a new Execution object
    * @param[in] executor  Model executor
    */
-  Execution(const std::shared_ptr<IExecutor> &executor);
+  Execution(const std::shared_ptr<ExecutorMap> &executors);
 
 public:
   /**
-   * @brief   Returns graph object
+   * @brief   Returns primary graph object
    * @return  Graph object
    */
-  const ir::Graph &graph() const { return _executor->graph(); }
+  const ir::Graph &primary_subgraph() const { return primary_executor()->graph(); }
   /**
    * @brief     Set input data's information
    * @param[in] index   Input index
@@ -132,7 +132,14 @@ public:
   bool isFinished(void) const;
 
 private:
-  const std::shared_ptr<IExecutor> _executor;
+  const std::unique_ptr<IExecutor> &primary_executor() const
+  {
+    return _executors->at(ir::SubgraphIndex{0});
+  };
+  std::unique_ptr<IExecutor> &primary_executor() { return _executors->at(ir::SubgraphIndex{0}); };
+
+private:
+  const std::shared_ptr<ExecutorMap> _executors;
   IODescription _io_desc;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};

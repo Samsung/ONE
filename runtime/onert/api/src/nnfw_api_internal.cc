@@ -151,9 +151,9 @@ NNFW_STATUS nnfw_session::prepare()
     config_source(std::move(_source));
 
     _compiler->compile();
-    std::shared_ptr<onert::exec::IExecutor> executor;
-    _compiler->release(executor);
-    _execution = std::make_shared<onert::exec::Execution>(executor);
+    std::shared_ptr<onert::exec::ExecutorMap> executors;
+    _compiler->release(executors);
+    _execution = std::make_shared<onert::exec::Execution>(executors);
   }
   catch (const std::exception &e)
   {

@@ -23,18 +23,21 @@ namespace onert
 namespace exec
 {
 
-Execution::Execution(const std::shared_ptr<IExecutor> &executor) : _executor{executor}
+Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors{executors}
 {
-  _io_desc.inputs.resize(_executor->graph().getInputs().size());
-  _io_desc.outputs.resize(_executor->graph().getOutputs().size());
+  assert(executors != nullptr);
+  assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
+  const auto &primary_subg = primary_subgraph();
+  _io_desc.inputs.resize(primary_subg.getInputs().size());
+  _io_desc.outputs.resize(primary_subg.getOutputs().size());
 }
 
 // TODO Remove default parameter
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                          ir::Layout layout)
 {
-  const auto input_index = graph().getInputs().at(index);
-  const auto info = graph().operands().at(input_index).info();
+  const auto input_index = primary_subgraph().getInputs().at(index);
+  const auto info = primary_subgraph().operands().at(input_index).info();
 
   if (length < info.total_size())
   {
@@ -61,8 +64,8 @@ void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, con
 // TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length, ir::Layout layout)
 {
-  const auto output_index = graph().getOutputs().at(index);
-  const auto info = graph().operands().at(output_index).info();
+  const auto output_index = primary_subgraph().getOutputs().at(index);
+  const auto info = primary_subgraph().operands().at(output_index).info();
 
   if (length < info.total_size())
   {
@@ -104,7 +107,7 @@ void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  _executor->execute(_io_desc);
+  primary_executor()->execute(_io_desc);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;

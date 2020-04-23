@@ -37,17 +37,17 @@ int ANeuralNetworksExecution_create(ANeuralNetworksCompilation *compilation,
     return ANEURALNETWORKS_UNEXPECTED_NULL;
   }
 
-  std::shared_ptr<onert::exec::IExecutor> executor;
+  std::shared_ptr<onert::exec::ExecutorMap> executors;
 
-  compilation->publish(executor);
+  compilation->publish(executors);
 
-  if (executor == nullptr)
+  if (executors == nullptr)
   {
     VERBOSE(NNAPI::Execution) << "create: Never compiled yet" << std::endl;
     return ANEURALNETWORKS_BAD_STATE;
   }
 
-  *execution = new (std::nothrow) ANeuralNetworksExecution{executor};
+  *execution = new (std::nothrow) ANeuralNetworksExecution{executors};
   if (*execution == nullptr)
   {
     VERBOSE(NNAPI::Execution) << "create: Fail to create execution object" << std::endl;
