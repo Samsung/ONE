@@ -54,6 +54,11 @@ ifneq ($(EXT_ACL_FOLDER),)
 	OPTIONS+= -DARMCompute_EXTDIR=$(EXT_ACL_FOLDER)
 endif
 
+ifneq ($(EXT_HDF5_DIR),)
+  $(info Hello $(EXT_HDF5_DIR))
+	OPTIONS+= -DEXT_HDF5_DIR=$(EXT_HDF5_DIR)
+endif
+
 ifneq ($(EXTERNAL_VOLUME),)
 	OPTIONS+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
 endif
