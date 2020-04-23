@@ -43,4 +43,4 @@ struct ReduceMaxChefFactory final : public OpChefFactory
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };
 
-#endif // __OP_MEAN_H__
+#endif // __OP_REDUCEMAX_H__
