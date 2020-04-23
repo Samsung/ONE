@@ -1,3 +1,4 @@
+addread(Abs_000)
 addread(Add_000)
 addread(Add_U8_000)
 addread(ArgMax_000)
@@ -51,6 +52,7 @@ addread(Unpack_002)
 
 addread(Net_UnpackAdd_001)
 
+addwrite(Abs_000)
 addwrite(Add_000)
 addwrite(Add_U8_000)
 addwrite(ArgMax_000)
