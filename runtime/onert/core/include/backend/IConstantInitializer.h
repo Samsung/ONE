@@ -204,6 +204,7 @@ public:
 
     const auto type = obj.typeInfo().type();
     using ir::DataType;
+    using ir::float16;
 
     switch (type)
     {
@@ -223,6 +224,9 @@ public:
       case DataType::QUANT8_SYMM:
         _init_map[index] = copyInit<int8_t>;
         break;
+      case DataType::FLOAT16:
+        _init_map[index] = copyInit<float16>;
+        break;
       default:
         throw std::runtime_error("Not supported, yet");
         break;
@@ -239,6 +243,7 @@ public:
 
     const auto type = obj.typeInfo().type();
     using ir::DataType;
+    using ir::float16;
     using namespace std::placeholders;
 
     switch (type)
@@ -258,6 +263,9 @@ public:
         break;
       case DataType::QUANT8_SYMM:
         _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_op_seq_layout);
+        break;
+      case DataType::FLOAT16:
+        _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_op_seq_layout);
         break;
       default:
         throw std::runtime_error("Not supported, yet");
