@@ -17,7 +17,10 @@
 #ifndef __ONERT_BACKEND_ICONFIG_H__
 #define __ONERT_BACKEND_ICONFIG_H__
 
+#include "ir/Layout.h"
+#include "ir/Operation.h"
 #include "util/ITimer.h"
+
 #include <memory>
 #include <string>
 
@@ -34,6 +37,7 @@ struct IConfig
   virtual bool initialize() = 0;
   // Support permute kernel
   virtual bool SupportPermutation() = 0;
+  virtual ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
 
   // Timer is used for backend profiling. In case of default (nullptr) timer profiler won't work.
   virtual std::unique_ptr<util::ITimer> timer() { return nullptr; }

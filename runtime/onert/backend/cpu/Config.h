@@ -33,6 +33,7 @@ class Config : public IConfig
 public:
   std::string id() override { return "cpu"; }
   bool initialize() override;
+  ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
   bool SupportPermutation() override { return true; }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }

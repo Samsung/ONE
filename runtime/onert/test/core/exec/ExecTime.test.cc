@@ -31,6 +31,7 @@ struct MockConfig : public IConfig
   std::string id() override { return "b1"; }
   bool initialize() override { return true; };
   bool SupportPermutation() override { return false; }
+  ir::Layout SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
 };
 
 struct MockBackend : public ::onert::backend::Backend

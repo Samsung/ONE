@@ -214,40 +214,12 @@ void LoweredGraph::makeOpSequences(
         // LowerInfo for in/output operands
         auto backend = _backend_resolver->getBackend(node_index);
 
-        // Set backend's layout to frontend layout
-        auto backend_layout = _graph.layout();
+        // Get frontend's layout
+        auto frontend_layout = _graph.layout();
 
         // The layout of each backend should be set at another place
         // TODO Change setting layout of each backend at another place
-        // TODO Remove getting id of backend
-        if (backend->config()->id() == "acl_cl" || backend->config()->id() == "acl_neon")
-        {
-          const std::string acl_layout_str = util::getConfigString(util::config::ACL_LAYOUT);
-          if (acl_layout_str == "NHWC")
-          {
-            backend_layout = Layout::NHWC;
-          }
-          else if (acl_layout_str == "NCHW")
-          {
-            backend_layout = Layout::NCHW;
-          }
-        }
-        else if (backend->config()->id() == "srcn")
-        {
-          const std::string ncnn_layout_str = util::getConfigString(util::config::NCNN_LAYOUT);
-          if (ncnn_layout_str == "NHWC")
-          {
-            backend_layout = Layout::NHWC;
-          }
-          else if (ncnn_layout_str == "NCHW")
-          {
-            backend_layout = Layout::NCHW;
-          }
-        }
-        else if (backend->config()->id() == "cpu")
-        {
-          backend_layout = Layout::NHWC;
-        }
+        auto backend_layout = backend->config()->SupportLayout(node, frontend_layout);
 
         for (auto operand : node.getInputs())
         {

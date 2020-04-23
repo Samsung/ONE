@@ -34,6 +34,7 @@ public:
   std::string id() override { return "acl_cl"; }
   bool initialize() override;
   bool SupportPermutation() override { return true; }
+  ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
 };
 
