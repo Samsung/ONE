@@ -507,8 +507,8 @@ public:
       axis += input_shape.rank();
 
     output_shape.rank(input_shape.rank() - 1 + positions_shape.rank());
-    uint32_t outdim_index = 0;
-    for (uint32_t i = 0; i < axis; ++i)
+    int32_t outdim_index = 0;
+    for (int32_t i = 0; i < axis; ++i)
       output_shape.dim(outdim_index++) = input_shape.dim(i);
     for (uint32_t i = 0; i < positions_shape.rank(); ++i)
       output_shape.dim(outdim_index++) = positions_shape.dim(i);
