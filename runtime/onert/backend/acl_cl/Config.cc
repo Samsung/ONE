@@ -19,6 +19,8 @@
 #include "arm_compute/core/CL/CLKernelLibrary.h"
 #include "arm_compute/core/CL/CLKernelLibraryEx.h"
 
+#include <util/ConfigSource.h>
+
 #include <arm_compute/runtime/CL/CLScheduler.h>
 
 #include "Config.h"
@@ -43,6 +45,21 @@ bool Config::initialize()
       "./cl_kernels/", arm_compute::CLScheduler::get().context(), cl::Device::getDefault());
 
   return true;
+}
+
+ir::Layout Config::SupportLayout(const ir::Operation &, ir::Layout frontend_layout)
+{
+  const std::string acl_layout_str = util::getConfigString(util::config::ACL_LAYOUT);
+  if (acl_layout_str == "NHWC")
+  {
+    return ir::Layout::NHWC;
+  }
+  else if (acl_layout_str == "NCHW")
+  {
+    return ir::Layout::NCHW;
+  }
+
+  return frontend_layout;
 }
 
 } // namespace acl_cl

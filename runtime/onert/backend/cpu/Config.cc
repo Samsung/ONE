@@ -25,6 +25,8 @@ namespace cpu
 
 bool Config::initialize() { return true; }
 
+ir::Layout Config::SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert
