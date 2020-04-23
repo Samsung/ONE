@@ -33,6 +33,6 @@ namespace tflite2circle
 
 #undef HANDLE_EMPTY_OPTIONS
 
-}
+} // namespace tflite2circle
 
 #endif // __EMPTY_OPTIONS_H__

@@ -32,4 +32,4 @@ namespace tflite2circle
 
 #undef HANDLE_EMPTY_OPTIONS
 
-}
+} // namespace tflite2circle
