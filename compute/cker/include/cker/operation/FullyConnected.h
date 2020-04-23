@@ -31,7 +31,7 @@ namespace cker
 class FCTempArena
 {
 public:
-  FCTempArena(void) : prepared(false), input_quantized(), scaling_factors()
+  FCTempArena(void) : prepared(false), input_quantized(), scaling_factors(), accum_scratch()
   {
     // DO NOTHING
   }
@@ -51,6 +51,7 @@ public:
   bool prepared;
   std::vector<int8_t> input_quantized;
   std::vector<float> scaling_factors;
+  std::vector<int32_t> accum_scratch;
 };
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
@@ -138,7 +139,8 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
 inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape &input_shape,
                                  const float *input_data, const Shape &filter_shape,
                                  const int8_t *filter_data, const Shape &, const float *bias_data,
-                                 const Shape &, float *output_data, FCTempArena &temp_arena)
+                                 const Shape &output_shape, float *output_data,
+                                 FCTempArena &temp_arena)
 {
   int total_input_size = input_shape.FlatSize();
   const int input_size = filter_shape.Dims(1);
@@ -170,10 +172,20 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
     scaling_factors_ptr[b] *= params.weights_scale;
   }
 
-  // Compute output += weight * quantized_input
+// Compute output += weight * quantized_input
+#ifdef USE_RUY_GEMV
+  auto output_size = output_shape.FlatSize();
+  temp_arena.accum_scratch.resize(output_size);
+  int32_t *scratch = temp_arena.accum_scratch.data();
+  MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
+                                      scaling_factors_ptr, batch_size, scratch, output_data,
+                                      /*result_stride=*/1);
+#else
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, output_data,
                                       /*result_stride=*/1);
+  UNUSED_RELEASE(output_shape);
+#endif
 
   // Apply activation function to floats.
   ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
