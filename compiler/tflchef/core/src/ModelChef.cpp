@@ -201,14 +201,16 @@ OpChefRegistry &op_chef_registry(void)
   return registry;
 }
 
-// @brief This will prepare a set of unique operator codes in the mode recipe
-std::set<tflite::BuiltinOperator> gather_opcode_set(const ::tflchef::ModelRecipe &model_recipe)
+// @brief This will prepare a set of unique builtin codes in the mode recipe
+std::set<tflite::BuiltinOperator> gather_builtincode_set(const ::tflchef::ModelRecipe &model_recipe)
 {
-  std::set<tflite::BuiltinOperator> opcode_set;
+  std::set<tflite::BuiltinOperator> builtin_set;
   for (const auto &operation : model_recipe.operation())
   {
     auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-    opcode_set.insert(op_chef->code());
+    if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+      continue;
+    builtin_set.insert(op_chef->code());
   }
 
   // Add ops used in Graphs(subgraphs)
@@ -218,11 +220,13 @@ std::set<tflite::BuiltinOperator> gather_opcode_set(const ::tflchef::ModelRecipe
     for (const auto &operation : graph.operation())
     {
       auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-      opcode_set.insert(op_chef->code());
+      if (op_chef->code() == tflite::BuiltinOperator_CUSTOM)
+        continue;
+      builtin_set.insert(op_chef->code());
     }
   }
 
-  return opcode_set;
+  return builtin_set;
 }
 
 } // namespace
@@ -265,9 +269,9 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   // Graphs-related
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> subgraph_vec;
 
-  // Create OperatorCode
-  std::set<tflite::BuiltinOperator> opcode_set = gather_opcode_set(model_recipe);
-  for (auto opcode : opcode_set)
+  // Create OperatorCode with Builtin Operator
+  std::set<tflite::BuiltinOperator> builtin_code_set = gather_builtincode_set(model_recipe);
+  for (auto opcode : builtin_code_set)
   {
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
     code_builder.add_builtin_code(opcode);
@@ -482,11 +486,11 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       // Create Operator
       tflite::OperatorBuilder op_builder{*flatbuffer_builder};
 
-      // Get operator code index from opcode_set with assumption, order of
-      // opcode_set is same as that of code_vec
-      auto op_it = opcode_set.find(op_chef->code());
-      assert(op_it != opcode_set.end());
-      uint32_t opcode_index = std::distance(opcode_set.begin(), op_it);
+      // Get operator code index from builtin_code_set with assumption, order of
+      // builtin_code_set is same as that of code_vec
+      auto op_it = builtin_code_set.find(op_chef->code());
+      assert(op_it != builtin_code_set.end());
+      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
 
       op_builder.add_opcode_index(opcode_index);
       op_builder.add_inputs(inputs);
@@ -722,11 +726,11 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       // Create Operator
       tflite::OperatorBuilder op_builder{*flatbuffer_builder};
 
-      // Get operator code index from opcode_set with assumption, order of
-      // opcode_set is same as that of code_vec
-      auto op_it = opcode_set.find(op_chef->code());
-      assert(op_it != opcode_set.end());
-      uint32_t opcode_index = std::distance(opcode_set.begin(), op_it);
+      // Get operator code index from builtin_code_set with assumption, order of
+      // builtin_code_set is same as that of code_vec
+      auto op_it = builtin_code_set.find(op_chef->code());
+      assert(op_it != builtin_code_set.end());
+      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
 
       op_builder.add_opcode_index(opcode_index);
       op_builder.add_inputs(inputs);
