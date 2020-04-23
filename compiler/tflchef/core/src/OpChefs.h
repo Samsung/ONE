@@ -51,4 +51,6 @@
 #include "Op/Transpose.h"
 #include "Op/Unpack.h"
 
+#include "CustomOp/BatchMatMulV2.h"
+
 #endif // __OP_CHEFS_H__
