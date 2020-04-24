@@ -41,7 +41,7 @@ TEST(CircleCustomTest, invalidIndex_NEG)
 {
   luci::CircleCustom custom_node(2);
 
-  // TODO Fix this not to use '#ifdef'
+// TODO Fix this not to use '#ifdef'
 #ifdef NDEBUG
   // release build will throw
   EXPECT_ANY_THROW(custom_node.arg(5));
