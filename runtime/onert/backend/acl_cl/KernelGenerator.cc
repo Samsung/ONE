@@ -803,6 +803,33 @@ void KernelGenerator::visit(const ir::operation::Exp &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ExpandDims &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto axis_alloc = _tensor_builder->at(axis_index).get();
+
+  if (output_alloc->is_dynamic())
+  {
+    // TODO Support dynamic tensor
+    UNUSED_RELEASE(axis_index);
+    UNUSED_RELEASE(axis_alloc);
+    throw std::runtime_error("acl_cl backend does not support ExpandDims op with dynamic tensor");
+  }
+
+  auto fn = std::make_unique<::arm_compute::CLReshapeLayer>();
+
+  fn->configure(input_alloc->handle(), output_alloc->handle());
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};

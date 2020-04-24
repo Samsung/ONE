@@ -55,6 +55,7 @@ public:
   void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Exp &) override;
+  void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::ReduceMax &) override;

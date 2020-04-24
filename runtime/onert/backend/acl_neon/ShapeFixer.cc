@@ -98,6 +98,8 @@ void ShapeFixer::visit(const ir::operation::EmbeddingLookup &node)
 
 void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Floor &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::FullyConnected &node)
