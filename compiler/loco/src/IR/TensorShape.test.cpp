@@ -111,7 +111,6 @@ TEST(TensorShapeTest, element_count)
 TEST(TensorShapeTest, equal_operator)
 {
   loco::TensorShape lhs, rhs;
-  bool res = false;
 
   lhs.rank(2);
   lhs.dim(0) = 1;
@@ -120,15 +119,13 @@ TEST(TensorShapeTest, equal_operator)
   rhs.rank(1);
   rhs.dim(0) = 1;
 
-  res = (lhs == rhs);
-  ASSERT_FALSE(res);
+  ASSERT_FALSE(lhs == rhs);
 
   rhs.rank(2);
   rhs.dim(0) = 1;
   rhs.dim(1) = 3;
 
-  res = (lhs == rhs);
-  ASSERT_TRUE(res);
+  ASSERT_TRUE(lhs == rhs);
 
   // for unknown
   loco::TensorShape rhs_u;
@@ -136,6 +133,5 @@ TEST(TensorShapeTest, equal_operator)
   rhs_u.rank(2);
   rhs_u.dim(0) = 1;
 
-  res = (lhs == rhs_u);
-  ASSERT_FALSE(res);
+  ASSERT_FALSE(lhs == rhs_u);
 }
