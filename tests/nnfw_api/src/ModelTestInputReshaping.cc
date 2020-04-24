@@ -20,7 +20,25 @@
 #include "fixtures.h"
 #include "NNPackages.h"
 
-using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>;
+class TestInputReshapingAddModelLoaded
+    : public ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>
+{
+protected:
+  void set_input_output(const std::vector<float> &input1, const std::vector<float> &input2,
+                        std::vector<float> *actual_output)
+  {
+    ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
+                             sizeof(float) * input1.size()),
+              NNFW_STATUS_NO_ERROR);
+    ASSERT_EQ(nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
+                             sizeof(float) * input2.size()),
+              NNFW_STATUS_NO_ERROR);
+
+    ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
+                              sizeof(float) * actual_output->size()),
+              NNFW_STATUS_NO_ERROR);
+  }
+};
 
 /**
  * @brief Testing the following model:
@@ -30,17 +48,17 @@ using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::I
  *
  * @note Run this test with "cpu" backend and "linear" executor
  */
-TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
+TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2_before_prepare)
 {
   NNFW_STATUS res = NNFW_STATUS_ERROR;
 
   ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_config(_session, "EXECUTOR", "Linear"), NNFW_STATUS_NO_ERROR);
 
   // input and output values
   const std::vector<float> input1 = {0, 1, 2, 3, 4, 5, 6, 7}; // of changed shape [4, 2]
   const std::vector<float> input2 = {-10, -10};
   const std::vector<float> expected = {-10, -9, -8, -7, -6, -5, -4, -3}; // of shape [4, 2]
+  std::vector<float> actual_output(expected.size());
 
   /*
   testing sequence and what's been done:
@@ -63,18 +81,52 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
   res = nnfw_prepare(_session);
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
-  res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                       sizeof(float) * input1.size());
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
-  res = nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
-                       sizeof(float) * input2.size());
+  set_input_output(input1, input2, &actual_output);
+
+  // Do inference
+  res = nnfw_run(_session);
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
-  // TODO fix output setting in dynamic way
+  // compare
+  for (int i = 0; i < expected.size(); ++i)
+    ASSERT_EQ(expected[i], actual_output[i]);
+}
+
+TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2_after_prepare)
+{
+  NNFW_STATUS res = NNFW_STATUS_ERROR;
+
+  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+
+  // input and output values
+  const std::vector<float> input1 = {0, 1, 2, 3, 4, 5, 6, 7}; // of changed shape [4, 2]
+  const std::vector<float> input2 = {-10, -10};
+  const std::vector<float> expected = {-10, -9, -8, -7, -6, -5, -4, -3}; // of shape [4, 2]
   std::vector<float> actual_output(expected.size());
-  res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                        sizeof(float) * expected.size());
+
+  /*
+  testing sequence and what's been done:
+    1. nnfw_apply_tensorinfo : set input shape to different shape
+    2. nnfw_set_input
+    3. nnfw_prepare
+    4. nnfw_run
+  */
+
+  // input reshaping from [2, 2] to [4, 2]
+  nnfw_tensorinfo ti;
+  {
+    ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+    ti.rank = 2;
+    ti.dims[0] = 4;
+    ti.dims[1] = 2;
+  }
+
+  res = nnfw_prepare(_session);
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+
+  res = nnfw_apply_tensorinfo(_session, 0, ti);
+
+  set_input_output(input1, input2, &actual_output);
 
   // Do inference
   res = nnfw_run(_session);

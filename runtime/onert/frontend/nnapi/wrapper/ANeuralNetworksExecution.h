@@ -47,6 +47,7 @@ public:
   bool compareShape(const ANeuralNetworksOperandType *type,
                     const onert::ir::OperandIndex index) noexcept;
   bool haveUnspecifiedDims(const onert::ir::OperandIndex index) noexcept;
+  bool rankMaybeUnspecified(const onert::ir::OperandIndex index) noexcept;
   size_t getOperandSize(const onert::ir::OperandIndex index) noexcept;
   const std::shared_ptr<onert::exec::Execution> instance(void) noexcept;
 

@@ -208,16 +208,14 @@ int ANeuralNetworksExecution_setOutput(ANeuralNetworksExecution *execution, int3
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (!(execution->rankMaybeUnspecified(operand_index) ||
+          execution->haveUnspecifiedDims(operand_index)))
     {
-      VERBOSE(NNAPI::Execution) << "setOutput: Unspecified dimension value" << std::endl;
-      return ANEURALNETWORKS_BAD_DATA;
-    }
-
-    if (execution->getOperandSize(operand_index) != length)
-    {
-      VERBOSE(NNAPI::Execution) << "setOutput: Invalid length" << std::endl;
-      return ANEURALNETWORKS_BAD_DATA;
+      if (execution->getOperandSize(operand_index) != length)
+      {
+        VERBOSE(NNAPI::Execution) << "setOutput: Invalid length" << std::endl;
+        return ANEURALNETWORKS_BAD_DATA;
+      }
     }
   }
 
@@ -399,16 +397,14 @@ int ANeuralNetworksExecution_setOutputFromMemory(ANeuralNetworksExecution *execu
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (!(execution->rankMaybeUnspecified(operand_index) ||
+          execution->haveUnspecifiedDims(operand_index)))
     {
-      VERBOSE(NNAPI::Execution) << "setOutputFromMemory: Unspecified dimension value" << std::endl;
-      return ANEURALNETWORKS_BAD_DATA;
-    }
-
-    if (execution->getOperandSize(operand_index) != length)
-    {
-      VERBOSE(NNAPI::Execution) << "setOutputFromMemory: Invalid length" << std::endl;
-      return ANEURALNETWORKS_BAD_DATA;
+      if (execution->getOperandSize(operand_index) != length)
+      {
+        VERBOSE(NNAPI::Execution) << "setOutputFromMemory: Invalid length" << std::endl;
+        return ANEURALNETWORKS_BAD_DATA;
+      }
     }
   }
 

@@ -56,6 +56,8 @@ public:
     _allocator = alloc;
   }
 
+  void overwriteBuffer(const std::shared_ptr<Allocator> &alloc) { _allocator = alloc; }
+
 public:
   uint8_t *buffer() const override
   {

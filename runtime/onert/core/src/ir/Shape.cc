@@ -109,5 +109,20 @@ bool haveUnspecifiedDims(const ir::Shape &shape)
   return false;
 }
 
+std::ostream &operator<<(std::ostream &os, const Shape &shape)
+{
+  os << "shape : {";
+  for (int i = 0; i < shape.rank(); i++)
+  {
+    if (i == 0)
+      os << shape.dim(i);
+    else
+      os << " " << shape.dim(i);
+  }
+  os << "}";
+
+  return os;
+}
+
 } // namespace ir
 } // namespace onert

@@ -87,7 +87,7 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
                                             const onert::ir::OperandIndex index) noexcept
 {
   // Passed shape should be specified
-  if (haveUnspecifiedDims(index))
+  if (rankMaybeUnspecified(index) || haveUnspecifiedDims(index))
   {
     return false;
   }
@@ -103,6 +103,13 @@ bool ANeuralNetworksExecution::haveUnspecifiedDims(const onert::ir::OperandIndex
   const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
   return onert::ir::haveUnspecifiedDims(operand_shape);
+}
+
+bool ANeuralNetworksExecution::rankMaybeUnspecified(const onert::ir::OperandIndex index) noexcept
+{
+  const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
+
+  return onert::ir::rankMaybeUnspecified(operand_shape);
 }
 
 size_t ANeuralNetworksExecution::getOperandSize(const onert::ir::OperandIndex index) noexcept

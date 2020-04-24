@@ -22,6 +22,7 @@
 #define __ONERT_EXEC_EXECUTION_H__
 
 #include "ir/Layout.h"
+#include "ir/Shape.h"
 #include "exec/IExecutor.h"
 #include "IODescription.h"
 

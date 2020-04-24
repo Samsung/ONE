@@ -47,6 +47,11 @@ public:
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
+public:
+  // The following methods are needed for dynamic tensor. Dynamic tensor is a tensor whose
+  // the outpus shape cannot be known  during compile-time
+  // and the output shape is calculated during kernel execution-time.
+
   /**
    * @brief Return true if the tensor needs dynamic allocation, meaning that during compile-time
    *        the outpus shape cannot be known and the output shape is calculated during
@@ -60,7 +65,10 @@ public:
     throw std::runtime_error("This backend does not support dynamic tensor");
   }
 
-  // set dim when this tensor is dynamic
+  /**
+   * @brief Set dimemsion
+   * @note  Higer dimension will be placed on front.
+   */
   virtual void dimension(size_t /* index */, size_t /* dim */)
   {
     throw std::runtime_error("This backend does not support dynamic tensor");

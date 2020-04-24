@@ -189,8 +189,9 @@ NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package
 /**
  * @brief     Apply i-th input's tensor info to resize input tensor
  *
- * This function should be called before {@link nnfw_prepare} is invoked, and
- * should be called after {@link nnfw_load_model_from_file} is invoked
+ * This function should be called after {@link nnfw_load_model_from_file} is invoked.
+ * If this function is called before {@link nnfw_prepare}, new info is used at compilation time.
+ * If this function is called before {@link nnfw_run}, new info is used at execution time.
  * See {@link nnfw_prepare} for information applying updated tensor info
  * If this function is called many times for same index, tensor info is overwritten
  *
