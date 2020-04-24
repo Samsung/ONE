@@ -67,6 +67,9 @@ std::string str(const loco::DataType &dtype)
     case loco::DataType::FLOAT64:
       return "FLOAT64";
 
+    case loco::DataType::BOOL:
+      return "BOOL";
+
     default:
       break;
   };
