@@ -24,8 +24,8 @@ namespace tflite2circle
   flatbuffers::Offset<circle::TYPE##Options> build_circle_##TYPE##Options( \
       flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)      \
   {                                                                        \
-    return circle::Create##TYPE##Options(fb);
-}
+    return circle::Create##TYPE##Options(fb);                              \
+  }
 
 #include "EmptyOptions.lst"
 
