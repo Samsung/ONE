@@ -20,8 +20,6 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/VariadicArityNode.h"
 
-#include <cassert>
-
 namespace luci
 {
 
@@ -41,21 +39,13 @@ public:
   uint32_t numInputs(void) const { return arity(); }
 
 public:
-  Node *inputs(uint32_t index) const
-  {
-    assert(index < numInputs());
-    return at(index)->node();
-  }
-  void inputs(uint32_t index, Node *node)
-  {
-    assert(index < numInputs());
-    at(index)->node(node);
-  }
+  Node *inputs(uint32_t index) const { return at(index)->node(); }
+  void inputs(uint32_t index, Node *node) { at(index)->node(node); }
 
   const std::vector<uint8_t> &custom_options(void) const { return _custom_options; }
   void custom_options(const std::vector<uint8_t> &custom_options)
   {
-    _custom_options = std::move(custom_options);
+    _custom_options = custom_options;
   }
 
   const std::string &custom_code(void) const { return _custom_code; }
