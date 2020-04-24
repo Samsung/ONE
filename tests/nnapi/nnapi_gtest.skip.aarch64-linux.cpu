@@ -57,6 +57,7 @@ GeneratedTests.reduce_max_*int*
 GeneratedTests.reduce_max_quant8*
 GeneratedTests.reduce_min_int8*
 GeneratedTests.reduce_min_quant8*
+GeneratedTests.reduce_prod_*float16*
 GeneratedTests.relu*
 GeneratedTests.relu1*
 GeneratedTests.relu6*
