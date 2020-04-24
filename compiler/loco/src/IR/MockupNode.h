@@ -32,7 +32,7 @@ struct MockDialect final : public loco::Dialect
   }
 };
 
-// @brief Mockup node for internal testing
+/// @brief Mockup node for internal testing
 class MockupNode final : public loco::Node
 {
 public:

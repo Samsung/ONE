@@ -59,7 +59,7 @@ template <> loco::Permutation<loco::Domain::Feature> make_NHWC_perm(void)
 
 template <loco::Domain D> loco::Permutation<D> make_HWCN_perm(void);
 
-// @note  Also known as HWIO permutation
+/// @note  Also known as HWIO permutation
 template <> loco::Permutation<loco::Domain::Filter> make_HWCN_perm(void)
 {
   loco::Permutation<loco::Domain::Filter> perm;
