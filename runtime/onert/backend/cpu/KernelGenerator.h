@@ -58,6 +58,7 @@ public:
   void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Custom &node) override;
   void visit(const ir::operation::Exp &) override;
+  void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Max &) override;
