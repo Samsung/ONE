@@ -119,19 +119,22 @@ TEST(TensorShapeTest, equal_operator)
   rhs.rank(1);
   rhs.dim(0) = 1;
 
-  ASSERT_FALSE(lhs == rhs);
+  EXPECT_FALSE(lhs == rhs);
 
   rhs.rank(2);
   rhs.dim(0) = 1;
   rhs.dim(1) = 3;
 
-  ASSERT_TRUE(lhs == rhs);
+  EXPECT_TRUE(lhs == rhs);
 
   // for unknown
-  loco::TensorShape rhs_u;
+  loco::TensorShape lhs_u, rhs_u;
+
+  lhs_u.rank(2);
+  lhs_u.dim(0) = 1;
 
   rhs_u.rank(2);
   rhs_u.dim(0) = 1;
 
-  ASSERT_FALSE(lhs == rhs_u);
+  EXPECT_FALSE(lhs == rhs_u);
 }
