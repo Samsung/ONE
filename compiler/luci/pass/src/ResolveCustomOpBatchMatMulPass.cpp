@@ -33,6 +33,7 @@ void resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->x(cop->inputs(0));
     batch_matmul->y(cop->inputs(1));
     // adj
+    assert(custom_options.size() == 29);
     batch_matmul->adj_x(custom_options[22]);
     batch_matmul->adj_y(custom_options[23]);
 
