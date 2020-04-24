@@ -441,6 +441,21 @@ void OperationValidator::visit(const ir::operation::Exp &node)
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::ExpandDims &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+  UNUSED_RELEASE(axis_index);
+
+  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+  assert(_ctx.at(axis_index).shape().rank() <= 1);
+}
+
 void OperationValidator::visit(const ir::operation::Floor &node)
 {
   const auto output_index{node.getOutputs().at(0)};
