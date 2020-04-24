@@ -22,6 +22,7 @@
 #include <luci/Service/CircleTypeInference.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Log.h>
+#include <luci/LogHelper.h>
 
 #include <loco/IR/Algorithm.h>
 #include <loco/IR/CanonicalNode.h>
@@ -101,13 +102,10 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
   }
 
   auto tensor_index = static_cast<CircleTensorIndex>(ctx.size());
-  // TODO Use Graph-level metadata for Input & Output
-  // auto tensor_name = "t_" + std::to_string(tensor_index);
   std::string tensor_name = node->name();
   if (tensor_name.empty())
     tensor_name = "t_" + std::to_string(tensor_index);
-  INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
-
+  INFO(l) << "[luci] Export " << RawDumpNode(node);
   CircleTensoInfo tensor_info;
 
   tensor_info.name(tensor_name);

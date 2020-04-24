@@ -258,6 +258,11 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     INFO(l) << fmt(graph.get());
     INFO(l) << "--- graph dump end ---------------------------------------------";
 
+    INFO(l) << "--- node dump begin -------------------------------------------";
+    INFO(l) << "Name: " << graph->name();
+    INFO(l) << raw(graph.get());
+    INFO(l) << "--- node dump end ---------------------------------------------";
+
     assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
     module->add(std::move(graph));

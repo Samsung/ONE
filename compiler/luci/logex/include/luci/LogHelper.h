@@ -17,6 +17,8 @@
 #ifndef __LUCI_LOG_HELPER_H__
 #define __LUCI_LOG_HELPER_H__
 
+#include "RawGraphDumper.h"
+
 #include <locop/FormattedGraph.h>
 #include <loco.h>
 
@@ -30,6 +32,8 @@ using FormattedGraph = locop::FormattedGraphImpl<locop::Formatter::LinearV1>;
 FormattedGraph fmt(loco::Graph *g);
 
 static inline FormattedGraph fmt(const std::unique_ptr<loco::Graph> &g) { return fmt(g.get()); }
+
+RawDumpGraph raw(loco::Graph *g);
 
 } // namespace luci
 

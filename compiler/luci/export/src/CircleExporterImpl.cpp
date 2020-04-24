@@ -21,6 +21,8 @@
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
 
+#include <luci/Log.h>
+#include <luci/LogHelper.h>
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
@@ -65,20 +67,26 @@ luci::CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &in
 
 void registerGraphInputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
 {
+  LOGGER(l);
+
   for (uint32_t n = 0; n < graph->inputs()->size(); ++n)
   {
     auto node = input_node(graph, n);
     assert(node != nullptr);
+    INFO(l) << "[luci] Input tensor for " << node->name() << std::endl;
     ctx._inputs.push_back(luci::get_tensor_index(node));
   }
 }
 
 void registerGraphOutputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
 {
+  LOGGER(l);
+
   for (uint32_t n = 0; n < graph->outputs()->size(); ++n)
   {
     auto push = output_node(graph, n);
     assert(push != nullptr);
+    INFO(l) << "[luci] Output tensor for " << push->name() << std::endl;
     auto node = push->from();
     assert(node != nullptr);
     ctx._outputs.push_back(luci::get_tensor_index(node));
@@ -204,6 +212,8 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
 
 void CircleExporterImpl::exportModule(Module *module)
 {
+  LOGGER(l);
+
   assert(module->size() > 0);
   // do graph optimization
 
@@ -225,6 +235,8 @@ void CircleExporterImpl::exportModule(Module *module)
     // copy shape/dtype inference data to CircleNode
     copy_shape_dtype(graph);
 
+    INFO(l) << "--- graph export " << graph->name() << " ---------------------";
+
     SerializedGraphData gd;
 
     // set Subgraph name
@@ -245,6 +257,8 @@ void CircleExporterImpl::exportModule(Module *module)
     // Subgraphs
     Offset<SubGraph> subgraph = exportSubgraph(gd);
     subgraph_vec.push_back(subgraph);
+
+    INFO(l) << "--- graph export " << graph->name() << " done ----------------";
   }
 
   auto subgraphs = _builder.CreateVector(std::vector<Offset<SubGraph>>{subgraph_vec});

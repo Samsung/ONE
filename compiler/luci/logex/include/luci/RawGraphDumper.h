@@ -14,20 +14,33 @@
  * limitations under the License.
  */
 
-#include "luci/LogHelper.h"
-#include "luci/FormattedGraph.h"
+#ifndef __RAW_GRAPH_DUMPER_H__
+#define __RAW_GRAPH_DUMPER_H__
 
-#include <luci/IR/CircleNodes.h>
+#include <loco.h>
+
+#include "luci/IR/CircleNode.h"
 
 namespace luci
 {
 
-FormattedGraph fmt(loco::Graph *g)
+struct RawDumpGraph
 {
-  auto node_summary_builder = std::make_unique<NodeSummaryBuilderFactory>();
-  return std::move(locop::fmt<locop::LinearV1>(g).with(std::move(node_summary_builder)));
-}
+  RawDumpGraph(loco::Graph *g) { _g = g; }
 
-RawDumpGraph raw(loco::Graph *g) { return RawDumpGraph(g); }
+  loco::Graph *_g;
+};
+
+struct RawDumpNode
+{
+  RawDumpNode(CircleNode *n) { _n = n; }
+
+  CircleNode *_n;
+};
 
 } // namespace luci
+
+std::ostream &operator<<(std::ostream &os, luci::RawDumpGraph r);
+std::ostream &operator<<(std::ostream &os, luci::RawDumpNode r);
+
+#endif // __RAW_GRAPH_DUMPER_H__
