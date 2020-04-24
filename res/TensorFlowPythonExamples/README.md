@@ -14,6 +14,10 @@ examples/
     __init__.py
 ```
 
+## Folder naming convention
+
+Follow python API name
+
 ## HOWTO: Create a Python environment
 
 TBA
