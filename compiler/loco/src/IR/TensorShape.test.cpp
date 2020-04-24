@@ -121,12 +121,21 @@ TEST(TensorShapeTest, equal_operator)
   rhs.dim(0) = 1;
 
   res = (lhs == rhs);
-  ASSERT_EQ(res, false);
+  ASSERT_FALSE(res);
 
   rhs.rank(2);
   rhs.dim(0) = 1;
   rhs.dim(1) = 3;
 
   res = (lhs == rhs);
-  ASSERT_EQ(res, true);
+  ASSERT_TRUE(res);
+
+  // for unknown
+  loco::TensorShape rhs_u;
+
+  rhs_u.rank(2);
+  rhs_u.dim(0) = 1;
+
+  res = (lhs == rhs_u);
+  ASSERT_FALSE(res);
 }
