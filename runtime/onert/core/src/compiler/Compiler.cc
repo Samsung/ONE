@@ -177,8 +177,6 @@ void Compiler::compile(void)
   dot_dumper.dump("before_lower");
 
   // Lower: Assign backend
-  auto lowered_graph = std::make_unique<ir::LoweredGraph>(*_graph, _options);
-
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
   _graph->subgraphs()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
     // Lower: Assign backend
