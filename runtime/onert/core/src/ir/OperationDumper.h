@@ -45,6 +45,7 @@ public:
   void visit(const operation::Div &) override;
   void visit(const operation::EmbeddingLookup &) override;
   void visit(const operation::Exp &) override;
+  void visit(const operation::ExpandDims &) override;
   void visit(const operation::Floor &) override;
   void visit(const operation::FullyConnected &node) override;
   void visit(const operation::Gather &) override;
