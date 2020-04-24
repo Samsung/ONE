@@ -41,5 +41,5 @@ TEST(CircleCustomTest, invalidIndex_NEG)
 {
   luci::CircleCustom custom_node(2);
 
-  ASSERT_DEBUG_DEATH(custom_node.arg(5), "");
+  ASSERT_DEATH(custom_node.arg(5), "");
 }
