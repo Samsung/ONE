@@ -23,13 +23,7 @@ namespace luci
 
 bool CircleCustomGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &opcodes = args.reader.opcodes();
-  const uint32_t opcode_index = args.op.opcode_index;
-  const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
-
-  if (opcode.builtin_code != circle::BuiltinOperator_CUSTOM)
-    return false;
-
+  // DO NOTHING
   return true;
 }
 
