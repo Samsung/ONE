@@ -37,3 +37,20 @@ uint32_t element_count(const loco::TensorShape *tensor_shape)
 }
 
 } // namespace loco
+
+namespace loco
+{
+
+bool operator==(const TensorShape &lhs, const TensorShape &rhs)
+{
+  if (lhs.rank() != rhs.rank())
+    return false;
+  for (uint32_t axis = 0; axis < lhs.rank(); ++axis)
+  {
+    if (!(lhs.dim(axis) == rhs.dim(axis)))
+      return false;
+  }
+  return true;
+}
+
+} // namespace loco
