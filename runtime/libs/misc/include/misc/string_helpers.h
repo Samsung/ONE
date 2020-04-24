@@ -62,5 +62,20 @@ template <typename... Args> std::string str(Args &&... args)
   return ss.str();
 }
 
+template <typename InputIt> std::string join(InputIt first, InputIt last, const std::string &concat)
+{
+  std::string ret;
+  if (first == last)
+    return ret;
+
+  ret += *first;
+  for (++first; first != last; ++first)
+  {
+    ret += concat;
+    ret += *first;
+  }
+  return ret;
+}
+
 } // namespace misc
 } // namespace nnfw
