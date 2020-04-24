@@ -75,6 +75,10 @@ class TensorPrinter(object):
         for shape_idx in range(self.tensor.tf_tensor.ShapeLength()):
             if (shape_idx != 0):
                 return_string += ", "
-            return_string += str(self.tensor.tf_tensor.Shape(shape_idx))
+            # when shape signature is -1, that means unknown dim
+            if self.tensor.tf_tensor.ShapeSignature(shape_idx) != -1:
+                return_string += str(self.tensor.tf_tensor.Shape(shape_idx))
+            else:
+                return_string += "-1"
         return_string += "]"
         return return_string
