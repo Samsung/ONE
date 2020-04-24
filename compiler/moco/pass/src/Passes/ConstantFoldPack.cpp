@@ -33,7 +33,7 @@ namespace
 {
 
 // TODO move to loco
-bool operator==(const loco::TensorShape &lhs, const loco::TensorShape &rhs)
+bool equal(const loco::TensorShape &lhs, const loco::TensorShape &rhs)
 {
   if (lhs.rank() != rhs.rank())
     return false;
@@ -83,7 +83,7 @@ bool constantfold_pack(moco::TFPack *node)
     auto input_i = input_nodes.at(index);
     auto shape_i = moco::tensor_shape(input_i);
     auto dtype_i = input_i->dtype();
-    if (!(shape_0 == shape_i))
+    if (!equal(shape_0, shape_i))
       return false;
     if (dtype_0 != dtype_i)
       return false;
