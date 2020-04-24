@@ -21,7 +21,7 @@
 namespace luci
 {
 
-bool CircleCustomGraphBuilder::validate(const ValidateArgs &args) const
+bool CircleCustomGraphBuilder::validate(const ValidateArgs &) const
 {
   // DO NOTHING
   return true;
