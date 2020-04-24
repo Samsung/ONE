@@ -173,12 +173,12 @@ void Compiler::compile(void)
    ***************************************************/
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
 
-  onert::dumper::dot::DotDumper dot_dumper(*_graph, dump_level);
-  dot_dumper.dump("before_lower");
-
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
   _graph->subgraphs()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
+    onert::dumper::dot::DotDumper dot_dumper(*_graph, dump_level);
+    dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
+
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
