@@ -19,6 +19,7 @@
 #include "ParamChecker.h"
 #include "ExecutorFactory.h"
 #include "OperationValidator.h"
+#include "Fp32ToFp16Converter.h"
 
 #include "compiler/BackendManager.h"
 #include "compiler/IScheduler.h"
@@ -54,6 +55,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   options.delete_cached_data = util::getConfigBool(util::config::DELETE_CACHED_DATA);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
+  options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
 
   {
     // Backend for all
@@ -163,10 +165,11 @@ void Compiler::compile(void)
   _graph->subgraphs()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
+
     if (_options.fp16_enable)
     {
-      // TODO Fill this
-      // DO NOTHING
+      // NOTE: the only acl_cl backend enables fp16 mode
+      Fp32ToFp16Converter(*lowered_subgs[index]).run();
     }
 
     // NOTE. Current datas' reference of constant operands is 2 because of
