@@ -201,7 +201,7 @@ OpChefRegistry &op_chef_registry(void)
   return registry;
 }
 
-// @brief This will prepare a set of unique builtin codes in the mode recipe
+/// @brief This will prepare a set of unique builtin codes in the mode recipe
 std::set<tflite::BuiltinOperator> gather_builtincode_set(const ::tflchef::ModelRecipe &model_recipe)
 {
   std::set<tflite::BuiltinOperator> builtin_set;
@@ -229,7 +229,7 @@ std::set<tflite::BuiltinOperator> gather_builtincode_set(const ::tflchef::ModelR
   return builtin_set;
 }
 
-// @brief This will prepare a set of unique custom codes in the mode recipe
+/// @brief This will prepare a set of unique custom codes in the mode recipe
 std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_recipe)
 {
   std::set<std::string> customcode_set;
