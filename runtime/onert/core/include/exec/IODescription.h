@@ -60,7 +60,7 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
-  // Contains shape of input set by apply_tensorinfo
+  // Contains shape of input set by nnfw_apply_tensorinfo
   std::unordered_map<ir::IOIndex, ir::Shape> input_shape_signature;
 };
 

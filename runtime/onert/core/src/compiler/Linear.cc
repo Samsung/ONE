@@ -136,6 +136,13 @@ void Linear::dump(const ir::LoweredGraph &lowered_graph,
       const auto lower_info = lowered_graph.getLowerInfo(index);
       VERBOSE(Linear) << "* OP_SEQ " << toString(lower_info->backend()) << " " << op_seq.getStr()
                       << std::endl;
+      lowered_graph.graph().operands().iterate([&](const ir::OperandIndex &ind,
+                                                   const ir::Operand &operand) {
+        VERBOSE(Linear) << "* \t operand[" << ind.value() << "] "
+                        << ((operand.info().memAllocType() == ir::MemAllocType::STATIC) ? "static"
+                                                                                        : "dynamic")
+                        << std::endl;
+      });
     }
   }
 }

@@ -20,6 +20,10 @@
 #include "ir/operation/AvgPool2D.h"
 #include "ir/operation/MaxPool2D.h"
 #include "util/ShapeInference.h"
+#include "util/logging.h"
+
+#include <cassert>
+#include <sstream>
 
 namespace onert
 {
@@ -100,9 +104,9 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
 // Shape inference
 //
 
-Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
+ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 {
-  return {broadcastShapes(lhs_shape, rhs_shape)};
+  return broadcastShapes(lhs_shape, rhs_shape);
 }
 
 // TODO move this when Avgpool.cc is created in util/shapeinf
@@ -115,28 +119,6 @@ Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool
                                                   param.padding, param.stride);
   // Pooling don't change number of channels and batch size
   return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
-}
-
-// TODO move this when Concat.cc is created in util/shapeinf
-ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
-{
-  const int32_t concat_axis = param.axis;
-  const auto &first_in_shape = in_shapes[0];
-
-  // Check that all shapes are equal except for concat axis dimension
-  for (const auto &in_shape : in_shapes)
-  {
-    assert(in_shape.rank() == first_in_shape.rank());
-    for (int64_t dim_idx = 0; dim_idx < in_shape.rank(); ++dim_idx)
-      assert(dim_idx == concat_axis || in_shape.dim(dim_idx) == first_in_shape.dim(dim_idx));
-  }
-
-  // Calculate output shape
-  ir::Shape out_shape(first_in_shape);
-  out_shape.dim(concat_axis) = 0;
-  for (const auto &in_shape : in_shapes)
-    out_shape.dim(concat_axis) += in_shape.dim(concat_axis);
-  return out_shape;
 }
 
 // TODO move this when Conv2D.cc is created in util/shapeinf
@@ -208,54 +190,47 @@ Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool
   - For visit() of each operator, find each op's C file
 */
 
-// TODO move this into Add.cc
-void StaticInferer::visit(const ir::operation::Add &op)
+void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx)
 {
-  const auto lhs_idx{op.getInputs().at(ir::operation::Add::Input::LHS)};
-  const auto &lhs = _operands.at(lhs_idx);
-  const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
-  const auto &rhs = _operands.at(rhs_idx);
+  const auto &input = _operands.at(input_idx);
+
+  // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
+  // if input is dynamic, output also becomes dynamic
+  if (input.info().isDynamic())
   {
     output.info().setDynamic();
     return;
   }
 
   // re-sizing output shape
-  ir::Shape new_shape = broadcastShapes(lhs.info().shape(), rhs.info().shape());
+  ir::Shape new_shape = input.info().shape();
   output.info().shape(new_shape);
 }
 
-// TODO move this into Concat.cc
-void StaticInferer::visit(const ir::operation::Concat &op)
+void StaticInferer::dump()
 {
-  const auto input_count = op.getInputs().size();
-
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  Shapes input_shapes;
-  for (uint32_t i = 0; i < input_count; i++)
-  {
-    const auto input_idx{op.getInputs().at(i)};
-    const auto &input = _operands.at(input_idx);
-
-    if (input.info().isDynamic())
+  auto get_shape_str = [](const ir::Shape &shape) {
+    std::stringstream sstream;
+    sstream << "shape : ";
+    for (int i = 0; i < shape.rank(); i++)
     {
-      output.info().setDynamic();
-      return;
+      if (i == 0)
+        sstream << "{" << shape.dim(i);
+      else
+        sstream << " " << shape.dim(i);
     }
+    sstream << "}";
+    return sstream.str();
+  };
 
-    input_shapes.emplace_back(input.shape());
-  }
-
-  ir::Shape out_shape = inferConcatShape(input_shapes, op.param());
-
-  // re-sizing output shape
-  output.info().shape(out_shape);
+  _operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
+                           << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                           << get_shape_str(operand.info().shape()) << std::endl;
+  });
 }
 
 /*
@@ -263,6 +238,26 @@ void StaticInferer::visit(const ir::operation::Concat &op)
   - Write methods except visit()
   - For visit() of each operator, find each op's C file
  */
+
+void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
+{
+  // check if output is not dynamic
+  auto output_ind = op.getOutputs().at(0);
+  auto *output = _tensor_registry->getITensor(output_ind);
+  if (!output->is_dynamic())
+    return;
+
+  // getting output shape
+  auto *input = _tensor_registry->getITensor(input_ind);
+  auto output_shape = getShape(input);
+
+  // set output shape and output buffer
+  setShape(output, output_shape);
+
+  // assert(output->buffer() == nullptr);
+  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  assert(output->buffer() != nullptr);
+}
 
 } // namespace shape_inference
 } // namespace onert

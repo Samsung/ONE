@@ -31,54 +31,13 @@ Testing Tanh op when the input is dynamic.
         output [2x2], dynamic tensor
 '''
 
-class DynamicInputGenerator:
-
-    def __init__(self, model, model_input_shape_list):
-        self.new_shape = 0
-        self.model_input = 0
-        self.test_input = 0
-
-        # any shape that can be reshaped into model_input_shape
-        self.model_input = Input("model_input", "TENSOR_FLOAT32",
-                                 self.__getShapeInStr(model_input_shape_list))
-
-        # add Reshape. Output of Reshape dynamic (shapce cannot know at compile time)
-        new_shape_str = "{" + str(len(model_input_shape_list)) + "}"
-        self.new_shape   = Input("new_shape", "TENSOR_INT32", new_shape_str)
-
-        # shape not known since it is dynamic.. Just use {1}
-        # onert should take care of the shape of dynamic tensor
-        self.test_input = Internal("internal1", "TENSOR_FLOAT32", "{1}")
-        model.Operation("RESHAPE", self.model_input, self.new_shape).To(self.test_input)
-
-    # convert, e.g., [1, 2, 3] to "{1, 2, 3}"
-    def __getShapeInStr(self, shape_list):
-        str_shape = ""
-        i = 0
-        for dim in shape_list:
-            if i == 0:
-                str_shape = "{" + str(dim)
-            else:
-                str_shape = str_shape + ", " + str(dim)
-            i += 1
-        str_shape = str_shape + "}"
-        return str_shape
-
-    def getTestNodeInput(self):
-        return self.test_input
-
-    def getShapeInput(self):
-        return self.new_shape
-
-    def getModelInput(self):
-        return self.model_input
-
+import dynamic_tensor
 
 model = Model()
 
 model_input_shape = [2, 2]
 
-dynamic_layer = DynamicInputGenerator(model, model_input_shape)
+dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input_shape)
 
 test_node_input = dynamic_layer.getTestNodeInput()
 

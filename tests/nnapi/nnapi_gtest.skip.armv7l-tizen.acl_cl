@@ -3,8 +3,11 @@ GeneratedTests.*weights_as_inputs
 GeneratedTests.*zero_sized*
 GeneratedTests.abs_
 GeneratedTests.abs__relaxed
+GeneratedTests.abs_dynamic
+GeneratedTests.add_dynamic
 GeneratedTests.batch_to_space*
 GeneratedTests.cast_*overflow*
+GeneratedTests.concat_dynamic
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.exp_

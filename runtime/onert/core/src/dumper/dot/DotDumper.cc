@@ -127,6 +127,8 @@ void DotDumper::dump(const std::string &tag)
           {
             label += "\\n[";
             label += def_factors.getOnlyElement().backend()->config()->id();
+            label += "]\\n[";
+            label += object.info().isDynamic() ? "dynamic" : "static";
             label += "]";
 
             fillcolor = backend_to_fillcolor(lower_info->def_factors().getOnlyElement().backend());

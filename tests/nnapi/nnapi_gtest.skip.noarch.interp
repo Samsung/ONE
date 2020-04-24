@@ -3,7 +3,9 @@ GeneratedTests.abs_1D_float_nnfw
 GeneratedTests.abs_2D_float_nnfw
 GeneratedTests.abs_3D_float_nnfw
 GeneratedTests.abs_4D_float_nnfw
+GeneratedTests.abs_dynamic
 GeneratedTests.add_broadcast_quant8
+GeneratedTests.add_dynamic
 GeneratedTests.add_quant8
 GeneratedTests.argmax_1
 GeneratedTests.argmax_1_quant8
@@ -55,6 +57,7 @@ GeneratedTests.cast_quant8_to_float32
 GeneratedTests.cast_quant8_to_float32_relaxed
 GeneratedTests.cast_quant8_to_int32
 GeneratedTests.cast_quant8_to_quant8
+GeneratedTests.concat_dynamic
 GeneratedTests.concat_quant8_1
 GeneratedTests.concat_quant8_2
 GeneratedTests.concat_quant8_3

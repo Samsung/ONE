@@ -21,14 +21,14 @@ namespace onert
 namespace shape_inference
 {
 
-void StaticInferer::visit(const ir::operation::Tanh &op)
+void StaticInferer::visit(const ir::operation::Abs &op)
 {
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::Input::INPUT));
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Tanh &op)
+void DynamicInferer::visit(const ir::operation::Abs &op)
 {
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::INPUT));
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::INPUT));
 }
 
 } // namespace shape_inference

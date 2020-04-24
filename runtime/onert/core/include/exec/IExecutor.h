@@ -53,7 +53,7 @@ struct IExecutor
   virtual const ir::Graph &graph() = 0;
 
   /**
-   * @brief Change input tensor shape right before execution
+   * @brief Change tensor shape right before execution
    */
   virtual void changeInputShape(const ir::OperandIndex &, const ir::Shape &)
   {

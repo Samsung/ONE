@@ -443,9 +443,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, i
 
   loadOperationIO(op, inputs, outputs);
 
-  // const auto *options = op->builtin_options_as_ReshapeOptions();
-  // No params
-
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Reshape(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }

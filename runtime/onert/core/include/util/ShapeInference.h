@@ -25,6 +25,8 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
+#include "ir/Graph.h"
+#include "ir/Shape.h"
 #include "ir/Operands.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
@@ -56,7 +58,9 @@ Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker
                                  const ir::operation::DepthwiseConv2D::Param &param,
                                  ir::Layout layout = ir::Layout::NHWC);
 
-Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
+ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
+
+ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
 Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
@@ -76,7 +80,9 @@ Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool
 
 /**
  * @brief Class to infer shape before running kernels. It does the following:
- *        - re-calculate and set output shape at compile time (before running kernels)
+ *        - re-calculate and set output shape at compile time,
+ *          which means it is before running kernels
+ *          and no static or dynamic memory is allocated for tensors yet.
  *        - if calculation cannot be done at compile time, mark the outputs to be dynamic, meaning
  *          shapes of outputs will be calculated during running kernels
  */
@@ -95,13 +101,16 @@ public:
    */
   void infer(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
 
+  void dump();
+
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
+  void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
-  // TODO write op starting from E
+  void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   // TODO write op starting from L
@@ -113,6 +122,13 @@ private:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+
+private:
+  /**
+   * @brief Performs shape inference for unary op whose output shape is
+   *        always same with input shape
+   */
+  void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
   ir::Operands &_operands;
@@ -139,10 +155,11 @@ public:
 public:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
-  // TODO write op starting from A
-  // TODO write op starting from C
+  void visit(const ir::operation::Abs &op);
+  void visit(const ir::operation::Add &op);
+  void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
-  // TODO write op starting from E
+  void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   // TODO write op starting from L
@@ -154,6 +171,14 @@ public:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+  // TODO add visitor for operations
+
+private:
+  /**
+   * @brief Performs shape inference and memory allocation for unary op whose output shape is
+   *        always same with input shape
+   */
+  void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
   /**
