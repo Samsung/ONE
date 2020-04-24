@@ -14,43 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_OPTIMIZER_H__
-#define __LUCI_CIRCLE_OPTIMIZER_H__
+#ifndef __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__
+#define __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__
 
-#include <loco.h>
-
-#include <string>
-#include <vector>
+#include <logo/Pass.h>
 
 namespace luci
 {
 
-class CircleOptimizer final
+/**
+ * @brief  Class to resolve certain custom op of subgraph into batchmatmul op in circle schema.
+ */
+struct ResolveCustomOpBatchMatMulPass final : public logo::Pass
 {
-public:
-  struct Options
-  {
-    enum Algorithm
-    {
-      FuseInstanceNorm,
-      ResolveCustomOpBatchMatMul
-    };
+  const char *name(void) const final { return "luci::ResolveCustomOpBatchMatMulPass"; }
 
-    virtual void enable(Algorithm) = 0;
-    virtual bool query(Algorithm) = 0;
-  };
-
-public:
-  // TODO maybe caller can provide Options as ctor parameters
-  Options *options(void);
-
-public:
-  void optimize(loco::Graph *) const;
-
-private:
-  std::unique_ptr<Options> _options;
+  bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_OPTIMIZER_H__
+#endif // __LUCI_RESOLVE_CUSTOM_OP_BATCHMATMUL_PASS_H__
