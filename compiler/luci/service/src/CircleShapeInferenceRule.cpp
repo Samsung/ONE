@@ -176,6 +176,49 @@ loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::Tensor
   return output_shape;
 }
 
+// BatchMatMulV2 supports broadcasting in the batch dimensions(BatchMatMul doesn't)
+// TODO Distinguish BatchMatMul and BatchMatMulV2
+loco::NodeShape infer_batchmatmul_shape(const luci::CircleBatchMatMul *node)
+{
+  auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+
+  uint32_t x_rank = x_shape.rank();
+  uint32_t y_rank = y_shape.rank();
+  assert(x_rank >= 2 && y_rank >= 2);
+
+  loco::TensorShape output_shape;
+  output_shape.rank(x_shape.rank());
+  // Braodcast in the batch dimension
+  if (x_rank > 2 || y_rank > 2)
+  {
+    loco::TensorShape dummy_x = x_shape;
+    loco::TensorShape dummy_y = y_shape;
+    expand_rank(dummy_x, dummy_y);
+
+    if (x_rank < y_rank)
+      expand_rank(output_shape, y_shape);
+    for (uint32_t d = 0; d < output_shape.rank() - 2; d++)
+    {
+      uint32_t max_dim = std::max(dummy_x.dim(d).value(), dummy_y.dim(d).value());
+      output_shape.dim(d).set(max_dim);
+    }
+  }
+
+  loco::Dimension x_lhs = node->adj_x() ? x_shape.dim(x_rank - 1) : x_shape.dim(x_rank - 2);
+  loco::Dimension x_rhs = node->adj_x() ? x_shape.dim(x_rank - 2) : x_shape.dim(x_rank - 1);
+  loco::Dimension y_lhs = node->adj_y() ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
+  loco::Dimension y_rhs = node->adj_y() ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
+
+  assert(x_rhs == y_lhs);
+
+  uint32_t out_rank = output_shape.rank();
+  output_shape.dim(out_rank - 2) = x_lhs;
+  output_shape.dim(out_rank - 1) = y_rhs;
+
+  return loco::NodeShape{output_shape};
+}
+
 /**
  * @brief Class to infer the shape of CircleNode
  *
@@ -245,47 +288,9 @@ public:
     return infer_pool_2d_shape(node);
   }
 
-  // BatchMatMulV2 supports broadcasting in the batch dimensions(BatchMatMul doesn't)
-  // TODO Distinguish BatchMatMul and BatchMatMulV2
   loco::NodeShape visit(const luci::CircleBatchMatMul *node) final
   {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    uint32_t x_rank = x_shape.rank();
-    uint32_t y_rank = y_shape.rank();
-    assert(x_rank >= 2 && y_rank >= 2);
-
-    loco::TensorShape output_shape;
-    output_shape.rank(x_shape.rank());
-    // Braodcast in the batch dimension
-    if (x_rank > 2 || y_rank > 2)
-    {
-      loco::TensorShape dummy_x = x_shape;
-      loco::TensorShape dummy_y = y_shape;
-      expand_rank(dummy_x, dummy_y);
-
-      if (x_rank < y_rank)
-        expand_rank(output_shape, y_shape);
-      for (uint32_t d = 0; d < output_shape.rank() - 2; d++)
-      {
-        uint32_t max_dim = std::max(dummy_x.dim(d).value(), dummy_y.dim(d).value());
-        output_shape.dim(d).set(max_dim);
-      }
-    }
-
-    loco::Dimension x_lhs = node->adj_x() ? x_shape.dim(x_rank - 1) : x_shape.dim(x_rank - 2);
-    loco::Dimension x_rhs = node->adj_x() ? x_shape.dim(x_rank - 2) : x_shape.dim(x_rank - 1);
-    loco::Dimension y_lhs = node->adj_y() ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
-    loco::Dimension y_rhs = node->adj_y() ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
-
-    assert(x_rhs == y_lhs);
-
-    uint32_t out_rank = output_shape.rank();
-    output_shape.dim(out_rank - 2) = x_lhs;
-    output_shape.dim(out_rank - 1) = y_rhs;
-
-    return loco::NodeShape{output_shape};
+    return infer_batchmatmul_shape(node);
   }
 
   loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
@@ -448,11 +453,9 @@ public:
     // BatchMatMul
     if (node->custom_code() == "BatchMatMulV2")
     {
-      luci::CircleBatchMatMul *batch_matmul = new luci::CircleBatchMatMul;
-      batch_matmul->x(node->inputs(0));
-      batch_matmul->y(node->inputs(1));
-      ShapeInferenceAlgorithm alg;
-      shape = batch_matmul->accept(&alg);
+      auto batchmatmul_mode = dynamic_cast<const luci::CircleBatchMatMul *>(node);
+      assert(batchmatmul_mode);
+      return infer_batchmatmul_shape(batchmatmul_mode);
     }
     return loco::NodeShape{shape};
   }
