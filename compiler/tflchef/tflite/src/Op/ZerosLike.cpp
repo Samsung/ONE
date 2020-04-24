@@ -33,8 +33,7 @@ tflchef::Operation *TFliteOpZerosLike::build(const tflite::Operator *op, TFliteI
   auto operation = model_recipe->add_operation();
   operation->set_type("ZerosLike");
 
-  auto op_options = operation->mutable_zeros_like_options();
-  (void)op_options;
+  // ZerosLikeOptions are empty
 
   return operation;
 }
