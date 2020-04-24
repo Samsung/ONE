@@ -871,6 +871,10 @@ TfLiteStatus AddOpsAndParams(
         nnapi_version = 12;  // require NNAPI 1.2
         nn_op_type = ANEURALNETWORKS_REDUCE_PROD;
         break;
+      case tflite::BuiltinOperator_EXPAND_DIMS:
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_EXPAND_DIMS;
+        break;
       case tflite::BuiltinOperator_CONCAT_EMBEDDINGS:
       case tflite::BuiltinOperator_LSH_PROJECTION:
       case tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN:
@@ -912,7 +916,7 @@ TfLiteStatus AddOpsAndParams(
       case tflite::BuiltinOperator_LOG:
       //case tflite::BuiltinOperator_TRANSPOSE_CONV:
       case tflite::BuiltinOperator_TILE:
-      case tflite::BuiltinOperator_EXPAND_DIMS:
+      //case tflite::BuiltinOperator_EXPAND_DIMS:
       case tflite::BuiltinOperator_SPARSE_TO_DENSE:
       //case tflite::BuiltinOperator_EQUAL:
       //case tflite::BuiltinOperator_NOT_EQUAL:

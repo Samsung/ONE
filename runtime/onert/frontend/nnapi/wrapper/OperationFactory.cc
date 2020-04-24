@@ -789,6 +789,20 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_EXP_EX
   _map[ANEURALNETWORKS_EXP_EX] = _map[ANEURALNETWORKS_EXP];
 
+  _map[ANEURALNETWORKS_EXPAND_DIMS] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> Axis Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    return new operation::ExpandDims{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_GREATER] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
 
