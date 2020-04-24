@@ -28,5 +28,5 @@ TEST(CircleIfOutTest, constructor)
   ASSERT_EQ(ifout_node.opcode(), luci::CircleOpcode::CIRCLEIFOUT);
 
   ASSERT_EQ(ifout_node.input(), nullptr);
-  ASSERT_EQ(ifout_node.index(), 0);
+  ASSERT_EQ(ifout_node.index(), -1);
 }

@@ -42,7 +42,7 @@ public:
   void index(int32_t index) { _index = index; }
 
 private:
-  int32_t _index{0};
+  int32_t _index{-1};
 };
 
 } // namespace luci

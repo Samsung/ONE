@@ -75,8 +75,8 @@ public:
 
 private:
   uint32_t _output_count{0};
-  int32_t _then_branch{0};
-  int32_t _else_branch{0};
+  int32_t _then_branch{-1};
+  int32_t _else_branch{-1};
 
   loco::Graph *_then_graph{nullptr};
   loco::Graph *_else_graph{nullptr};
