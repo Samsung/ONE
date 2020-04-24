@@ -18,6 +18,7 @@
 #define __ONERT_IR_DATA_H__
 
 #include <algorithm>
+#include <cassert>
 
 namespace onert
 {
@@ -45,7 +46,18 @@ public:
 
 public:
   size_t size(void) const override { return _size; }
-  const uint8_t *base(void) const override { return _base; }
+  const uint8_t *base(void) const override
+  {
+    assert(_base != nullptr);
+    return _base;
+  }
+
+  void release(void)
+  {
+    assert(_base != nullptr);
+    delete[] _base;
+    _base = nullptr;
+  }
 
 private:
   uint8_t *_base;

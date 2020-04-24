@@ -17,6 +17,7 @@
 #include "Fp32ToFp16Converter.h"
 #include "ir/operation/ConvertFp32ToFp16.h"
 #include "ir/operation/ConvertFp16ToFp32.h"
+#include "compiler/ConstantDataDeleter.h"
 #include "util/logging.h"
 
 namespace
@@ -423,7 +424,7 @@ void Fp32ToFp16Converter::convertDatas()
       auto new_ptr = std::make_unique<uint8_t[]>(new_ptr_size);
       copyDataFromFp32ToFp16(reinterpret_cast<const float *>(data->base()),
                              reinterpret_cast<ir::float16 *>(new_ptr.get()), num_elements);
-      obj.releaseData();
+      obj.deleteData();
 
       auto new_data = std::make_unique<ir::CachedData>(new_ptr.get(), new_ptr_size);
 

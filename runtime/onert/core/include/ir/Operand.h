@@ -65,7 +65,14 @@ public:
   }
   const Data *data(void) const { return _data.get(); }
 
-  void releaseData(void) { _data.reset(); }
+  void deleteData(void)
+  {
+    if (auto cached_data = dynamic_cast<CachedData *>(_data.get()))
+    {
+      cached_data->release();
+    }
+    _data.reset();
+  }
 
   /**
    * @brief Get true if Operand is const, otherwise @c false

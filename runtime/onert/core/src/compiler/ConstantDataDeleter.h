@@ -28,21 +28,21 @@ namespace onert
 namespace compiler
 {
 
-class CachedDataDeleter : public ir::OperationVisitor
+class ConstantDataDeleter : public ir::OperationVisitor
 {
 public:
-  CachedDataDeleter(ir::Operands &operands) : _operands(operands)
+  ConstantDataDeleter(ir::Operands &operands) : _operands(operands)
   {
     // DO NOTHING
   }
 
-  virtual ~CachedDataDeleter() = default;
+  virtual ~ConstantDataDeleter() = default;
 
 public:
   void run()
   {
     _operands.iterate(
-        [&](const ir::OperandIndex &ind, const ir::Operand &) { deleteCachedData(ind); });
+        [&](const ir::OperandIndex &ind, const ir::Operand &) { deleteConstantData(ind); });
   }
 
   void run(const ir::OpSequence &op_seq)
@@ -60,8 +60,8 @@ public:
     using ir::operation::Conv2D;
     const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
     const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
-    deleteCachedData(ker_index);
-    deleteCachedData(bias_index);
+    deleteConstantData(ker_index);
+    deleteConstantData(bias_index);
   }
 
   void visit(const ir::operation::DepthwiseConv2D &node) override
@@ -69,8 +69,8 @@ public:
     using ir::operation::DepthwiseConv2D;
     const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
     const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
-    deleteCachedData(ker_index);
-    deleteCachedData(bias_index);
+    deleteConstantData(ker_index);
+    deleteConstantData(bias_index);
   }
 
   void visit(const ir::operation::FullyConnected &node) override
@@ -78,18 +78,18 @@ public:
     using ir::operation::FullyConnected;
     const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
     const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
-    deleteCachedData(weight_index);
-    deleteCachedData(bias_index);
+    deleteConstantData(weight_index);
+    deleteConstantData(bias_index);
   }
 
 private:
-  void deleteCachedData(const ir::OperandIndex &ind)
+  void deleteConstantData(const ir::OperandIndex &ind)
   {
     auto &obj = _operands.at(ind);
     if (obj.isConstant())
     {
       assert(obj.data() != nullptr);
-      obj.releaseData();
+      obj.deleteData();
     }
   }
 

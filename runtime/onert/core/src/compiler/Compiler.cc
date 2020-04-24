@@ -32,7 +32,7 @@
 #include "interp/InterpExecutor.h"
 #include "util/ConfigSource.h"
 #include "ir/OperationDumper.h"
-#include "compiler/CachedDataDeleter.h"
+#include "compiler/ConstantDataDeleter.h"
 #include "misc/string_helpers.h"
 
 namespace onert
@@ -186,16 +186,6 @@ void Compiler::compile(void)
     {
       // NOTE: the only acl_cl backend enables fp16 mode
       Fp32ToFp16Converter(*lowered_subgs[index]).run();
-    }
-
-    // NOTE. Current datas' reference of constant operands is 2 because of
-    // original graph and lowered graph.
-    // To delete cached data, this doing should be done for the original graph
-    // at this line and then once again for the lowered graph in ExecutorFactory
-    // TODO. Delete this code as code for disconnecting btw Graph and nnfw session lands
-    if (_options.delete_cached_data)
-    {
-      CachedDataDeleter(graph.operands()).run();
     }
   });
 
