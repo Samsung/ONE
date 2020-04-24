@@ -84,4 +84,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_IR_CIRCLEPACK_H__
+#endif // __LUCI_IR_CIRCLE_IF_H__
