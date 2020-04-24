@@ -1,0 +1,27 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "multiples"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "2"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 6 }
+}
+operation {
+  type: "Tile"
+  input: "ifm"
+  input: "multiples"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
