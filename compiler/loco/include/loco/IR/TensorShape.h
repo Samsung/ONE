@@ -57,6 +57,11 @@ private:
  */
 uint32_t element_count(const loco::TensorShape *tensor_shape);
 
+/**
+ * @brief '==' operator for TensorShape
+ */
+bool operator==(const TensorShape &lhs, const TensorShape &rhs);
+
 } // namespace loco
 
 #endif // __LOCO_IR_TENSOR_SHAPE_H__

@@ -107,3 +107,34 @@ TEST(TensorShapeTest, element_count)
 
   ASSERT_EQ(loco::element_count(&src), 1);
 }
+
+TEST(TensorShapeTest, equal_operator)
+{
+  loco::TensorShape lhs, rhs;
+
+  lhs.rank(2);
+  lhs.dim(0) = 1;
+  lhs.dim(1) = 3;
+
+  rhs.rank(1);
+  rhs.dim(0) = 1;
+
+  EXPECT_FALSE(lhs == rhs);
+
+  rhs.rank(2);
+  rhs.dim(0) = 1;
+  rhs.dim(1) = 3;
+
+  EXPECT_TRUE(lhs == rhs);
+
+  // for unknown
+  loco::TensorShape lhs_u, rhs_u;
+
+  lhs_u.rank(2);
+  lhs_u.dim(0) = 1;
+
+  rhs_u.rank(2);
+  rhs_u.dim(0) = 1;
+
+  EXPECT_FALSE(lhs == rhs_u);
+}
