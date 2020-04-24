@@ -12,6 +12,7 @@ Source1002: nnapi_test_generated.tar.gz
 Source1003: gtest.tar.gz
 Source1004: eigen.tar.gz
 Source1005: gemmlowp.tar.gz
+Source1006: ruy.tar.gz
 Source2001: nnfw.pc.in
 
 %{!?build_type:     %define build_type      Release}
@@ -98,6 +99,7 @@ tar -xf %{SOURCE1002} -C ./tests/nnapi/src/
 tar -xf %{SOURCE1003} -C ./externals
 tar -xf %{SOURCE1004} -C ./externals
 tar -xf %{SOURCE1005} -C ./externals
+tar -xf %{SOURCE1006} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64
