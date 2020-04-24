@@ -187,6 +187,10 @@ message GatherOptions {
   optional int32 axis = 1 [default = 0];
 }
 
+message TileOptions {
+  // None
+}
+
 message BatchMatMulOptions {
   optional bool adjoint_lhs = 1 [default = false];
   optional bool adjoint_rhs = 2 [default = false];
@@ -227,6 +231,7 @@ message Operation {
   optional UnpackOptions unpack_options = 127;
   optional GatherOptions gather_options = 128;
   optional BatchMatMulOptions batch_matmul_options = 129;
+  optional TileOptions tile_options = 130;
 }
 
 // For additional subgraphs
