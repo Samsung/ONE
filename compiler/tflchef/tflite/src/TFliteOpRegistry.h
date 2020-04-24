@@ -68,6 +68,7 @@ private:
     REG_TFL_OP(DIV, TFliteOpDiv);
     REG_TFL_OP(EQUAL, TFliteOpEqual);
     REG_TFL_OP(EXP, TFliteOpExp);
+    REG_TFL_OP(FILL, TFliteOpFill);
     REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
     REG_TFL_OP(GATHER, TFliteOpGather);

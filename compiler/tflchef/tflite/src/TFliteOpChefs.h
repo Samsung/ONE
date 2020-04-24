@@ -31,6 +31,7 @@
 #include "Op/Div.h"
 #include "Op/Equal.h"
 #include "Op/Exp.h"
+#include "Op/Fill.h"
 #include "Op/FloorDiv.h"
 #include "Op/FullyConnected.h"
 #include "Op/Gather.h"
