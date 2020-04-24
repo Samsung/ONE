@@ -55,3 +55,13 @@ target_compile_options(luci_interpreter_kernels PRIVATE -Wno-sign-compare)
 
 # eigen
 target_include_directories(luci_interpreter_kernels PRIVATE "${EIGEN_SOURCE_DIR}")
+
+
+set(TEST_SOURCES
+    TestCommon.cpp
+    Add.test.cpp)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_interpreter_kernels_test ${TEST_SOURCES})
+target_link_libraries(luci_interpreter_kernels_test luci_interpreter_kernels)

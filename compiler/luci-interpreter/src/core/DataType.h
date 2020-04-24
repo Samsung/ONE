@@ -27,6 +27,8 @@ namespace luci_interpreter
 
 using DataType = loco::DataType;
 
+template <DataType DT> using DataTypeImpl = loco::DataTypeImpl<DT>;
+
 inline size_t getDataTypeSize(DataType data_type) { return loco::size(data_type); }
 
 } // namespace luci_interpreter
