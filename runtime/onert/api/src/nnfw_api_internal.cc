@@ -142,7 +142,7 @@ NNFW_STATUS nnfw_session::prepare()
   // TODO : add additional setting routine(executor type, backend)
   // Note that we assume acl_cl backend
 
-  _source->set("DELETE_CACHED_DATA", "1");
+  set_config(onert::util::config::DELETE_CACHED_DATA, "1");
 
   try
   {
