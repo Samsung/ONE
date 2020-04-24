@@ -183,6 +183,8 @@ void ShapeFixer::visit(const ir::operation::Div &node)
 
 void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::InstanceNorm &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Logistic &) { /* DO NOTHING */}
