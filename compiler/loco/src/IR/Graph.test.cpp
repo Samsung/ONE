@@ -21,7 +21,7 @@
 namespace
 {
 
-// @brief Mockup class for loco::NamedEntity
+/// @brief Mockup class for loco::NamedEntity
 struct NamedElement final : private loco::NamedEntity
 {
   LOCO_NAMED_ENTITY_EXPOSE;

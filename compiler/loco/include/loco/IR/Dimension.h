@@ -36,18 +36,18 @@ private:
   };
 
 public:
-  // @brief Construct an "unknown" dimension
+  /// @brief Construct an "unknown" dimension
   Dimension() = default;
 
-  // @brief Construct a "known" dimension
+  /// @brief Construct a "known" dimension
   Dimension(uint32_t value) { set(value); }
 
 public:
-  // @brief Return whether the value is known (or not)
+  /// @brief Return whether the value is known (or not)
   bool known(void) const { return _kind == Kind::Known; }
 
-  // @brief Return the value
-  // @note This value is meaningful only for known dimension
+  /// @brief Return the value
+  /// @note This value is meaningful only for known dimension
   uint32_t value(void) const { return _value; }
 
   void set(uint32_t value)
@@ -77,7 +77,7 @@ bool operator==(const Dimension &, const Dimension &);
 bool operator==(const Dimension &, uint32_t);
 bool operator==(uint32_t, const Dimension &);
 
-// @brief Make an "unknown" dimension
+/// @brief Make an "unknown" dimension
 Dimension make_dimension(void);
 
 } // namespace loco
