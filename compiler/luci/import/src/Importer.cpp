@@ -15,6 +15,7 @@
  */
 
 #include "luci/Importer.h"
+#include "PostImport.h"
 
 #include "luci/Import/GraphBuilder.h"
 #include "luci/Import/GraphBuilderContext.h"
@@ -252,6 +253,8 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
     module->add(std::move(graph));
   }
+
+  post_import_graph(module.get(), reader);
 
   return std::move(module);
 }
