@@ -64,6 +64,7 @@ public:
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
+  void visit(luci::CircleIf *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
   void visit(luci::CircleMaximum *) final;
@@ -89,6 +90,8 @@ public:
   // Virtual
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
+  // Virtual for multiple-outputs
+  void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
 
 private:
@@ -361,6 +364,48 @@ void OperationExporter::visit(luci::CircleGather *node)
   // Make GATHER operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_GatherOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleIf *node)
+{
+  auto if_outs = loco::succs(node);
+  assert(if_outs.size() == node->output_count());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_IF);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec;
+
+  inputs_vec.push_back(get_tensor_index(node->cond()));
+  for (uint32_t idx = 0; idx < node->input_count(); ++idx)
+    inputs_vec.push_back(get_tensor_index(node->input(idx)));
+
+  for (uint32_t idx = 0; idx < node->output_count(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : if_outs)
+    {
+      auto if_out = dynamic_cast<luci::CircleIfOut *>(out);
+      assert(if_out != nullptr);
+      if (if_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(if_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid CircleIf output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_IfOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
