@@ -34,6 +34,7 @@
 #include "Nodes/CircleExp.h"
 #include "Nodes/CircleFullyConnected.h"
 #include "Nodes/CircleGather.h"
+#include "Nodes/CircleIf.h"
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
 #include "Nodes/CircleMaximum.h"
@@ -60,6 +61,7 @@
 // Virtual nodes
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+#include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleUnpackOut.h"
 
 namespace luci
