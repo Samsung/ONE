@@ -518,6 +518,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleIf *node) final
+  {
+    // Shape of CircleIf is not used. Just use input 1
+    assert(node->arity() > 1);
+    const auto input_shape = loco::shape_get(node->input(1)).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleLogicalNot *node) final
   {
     const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -938,6 +946,48 @@ public:
     auto from_shape = loco::shape_get(node->from()).as<loco::TensorShape>();
 
     return loco::NodeShape{from_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleIfOut *node) final
+  {
+    /**
+     * @note  IF operator type and shape are that of the "then" and "else"
+     *        Graph Outputs.
+     */
+    auto circle_if = dynamic_cast<const luci::CircleIf *>(node->input());
+    if (circle_if == nullptr)
+    {
+      INTERNAL_EXN("CircleIf IR is not configured correctly");
+    }
+
+    auto index = node->index();
+    auto then_graph = circle_if->then_graph();
+    auto else_graph = circle_if->else_graph();
+    assert(then_graph != nullptr);
+    assert(else_graph != nullptr);
+
+    // shape and type are assumed to be same
+    // these are checked at post_import_graph() in Import
+    auto then_outputs = loco::output_nodes(then_graph);
+    auto else_outputs = loco::output_nodes(else_graph);
+    assert(then_outputs.size() == else_outputs.size());
+    assert(index < static_cast<int32_t>(then_outputs.size()));
+
+    auto then_out = dynamic_cast<luci::CircleOutput *>(then_outputs.at(index));
+    auto else_out = dynamic_cast<luci::CircleOutput *>(else_outputs.at(index));
+    assert(then_out != nullptr);
+    assert(else_out != nullptr);
+
+    auto then_graph_outputs = then_graph->outputs(); // loco::GraphOutput items
+    auto else_graph_outputs = else_graph->outputs();
+    assert(then_graph_outputs->size() == else_graph_outputs->size());
+
+    auto then_graph_output = then_graph_outputs->at(then_out->index());
+    auto else_graph_output = else_graph_outputs->at(else_out->index());
+    (void)else_graph_output; // make compiler happy for unused variable warnings
+    assert(*then_graph_output->shape() == *else_graph_output->shape());
+
+    return loco::NodeShape{*then_graph_output->shape()};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
