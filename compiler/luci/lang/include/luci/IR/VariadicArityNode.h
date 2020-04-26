@@ -46,11 +46,7 @@ public:
 public:
   uint32_t arity(void) const final { return _args.size(); }
 
-  loco::Node *arg(uint32_t n) const final
-  {
-    assert(n < _args.size());
-    return _args.at(n)->node();
-  }
+  loco::Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
 
   void drop(void) final
   {
@@ -62,11 +58,7 @@ public:
 
 protected:
   // This API allows inherited classes to access "_args" field.
-  loco::Use *at(uint32_t n) const
-  {
-    assert(n < _args.size());
-    return _args.at(n).get();
-  }
+  loco::Use *at(uint32_t n) const { return _args.at(n).get(); }
 
 private:
   std::vector<std::unique_ptr<loco::Use>> _args;

@@ -48,16 +48,8 @@ public:
   Node *cond(void) const { return at(0)->node(); }
   void cond(Node *node) { at(0)->node(node); }
 
-  Node *input(uint32_t index) const
-  {
-    assert(index < input_count());
-    return at(index + 1)->node();
-  }
-  void input(uint32_t index, Node *node)
-  {
-    assert(index < input_count());
-    at(index + 1)->node(node);
-  }
+  Node *input(uint32_t index) const { return at(index + 1)->node(); }
+  void input(uint32_t index, Node *node) { at(index + 1)->node(node); }
 
 public:
   int32_t then_branch(void) const { return _then_branch; }
