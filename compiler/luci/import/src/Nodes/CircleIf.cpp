@@ -104,11 +104,11 @@ void CircleIfGraphBuilder::build(const circle::OperatorT &op, GraphBuilderContex
 
   assert(outputs.size() > 0);
   {
-    // Lets' use name of output 0 as Unpack name
+    // Lets use name of output 0 as If name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
 
-    // NOTE We don't set quantization for Unpack itself but to virtual outputs
+    // NOTE We don't set quantization for If itself but to virtual outputs
   }
 
   // Create virtual outputs of If
