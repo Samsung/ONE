@@ -39,6 +39,7 @@
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
+#include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
