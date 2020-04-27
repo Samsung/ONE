@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DotOpSequenceInfo.h"
+#include "DotSubgraphInfo.h"
 
 #include <sstream>
 
@@ -25,8 +25,8 @@ namespace dumper
 namespace dot
 {
 
-DotOpSequenceInfo::DotOpSequenceInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
-                                     const util::Set<ir::OperandIndex> &shown_operands)
+DotSubgraphInfo::DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
+                                 const util::Set<ir::OperandIndex> &shown_operands)
     : _index{index}
 {
   for (const auto &element : op_seq.operations())

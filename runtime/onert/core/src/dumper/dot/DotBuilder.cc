@@ -35,18 +35,18 @@ void DotBuilder::update(const Node &node_info)
   }
 }
 
-void DotBuilder::addOpSequence(const DotOpSequenceInfo &op_sequence_info)
+void DotBuilder::addOpSequence(const DotSubgraphInfo &subgraph_info)
 {
-  _dot << "op_sequence cluster_" << op_sequence_info.index().value() << " {\n";
-  _dot << "  label=\"" << op_sequence_info.label() << "\";\n";
+  _dot << "subgraph cluster_" << subgraph_info.index().value() << " {\n";
+  _dot << "  label=\"" << subgraph_info.label() << "\";\n";
   _dot << "  style=filled;\n";
   _dot << "  color=lightgrey;\n";
   _dot << "  ";
-  for (auto op : op_sequence_info.operations())
+  for (auto op : subgraph_info.operations())
   {
     _dot << "operation" << op.value() << "; ";
   }
-  for (auto op : op_sequence_info.operands())
+  for (auto op : subgraph_info.operands())
   {
     _dot << "operand" << op.value() << "; ";
   }

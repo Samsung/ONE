@@ -19,7 +19,7 @@
 
 #include "DotDumper.h"
 #include "DotBuilder.h"
-#include "DotOpSequenceInfo.h"
+#include "DotSubgraphInfo.h"
 #include "ir/OpSequence.h"
 #include "ir/OperationIndexMap.h"
 #include "backend/Backend.h"
@@ -155,10 +155,10 @@ void DotDumper::dump(const std::string &tag)
       auto fillcolor = backend_to_fillcolor(lower_info->backend());
       std::string label =
           std::to_string(index.value()) + " [" + lower_info->backend()->config()->id() + "]";
-      DotOpSequenceInfo op_sequence_info{index, op_seq, shown_operand_set};
-      op_sequence_info.label(label);
-      op_sequence_info.fillcolor(fillcolor);
-      dot_builder.addOpSequence(op_sequence_info);
+      DotSubgraphInfo subgraph_info{index, op_seq, shown_operand_set};
+      subgraph_info.label(label);
+      subgraph_info.fillcolor(fillcolor);
+      dot_builder.addOpSequence(subgraph_info);
 
       // Set fillcolor of all operations in the op_seq
       for (const auto &op : op_seq.operations())

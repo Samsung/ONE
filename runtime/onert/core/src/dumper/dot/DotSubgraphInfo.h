@@ -30,11 +30,11 @@ namespace dumper
 namespace dot
 {
 
-class DotOpSequenceInfo
+class DotSubgraphInfo
 {
 public:
-  DotOpSequenceInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
-                    const util::Set<ir::OperandIndex> &shown_operands);
+  DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
+                  const util::Set<ir::OperandIndex> &shown_operands);
 
   ir::OpSequenceIndex index() const { return _index; }
   std::string label() const { return _label; }
