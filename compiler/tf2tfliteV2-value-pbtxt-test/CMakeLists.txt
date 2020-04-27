@@ -2,12 +2,12 @@ find_package(PythonInterp 3 QUIET)
 find_package(PythonLibs 3 QUIET)
 
 if(NOT ${PYTHONINTERP_FOUND})
-  message("Build tf2tfliteV2-value-pbtxt-test: FALSE (Python3 is missing)")
+  message(STATUS "Build tf2tfliteV2-value-pbtxt-test: FALSE (Python3 is missing)")
   return()
 endif()
 
 if(${PYTHON_VERSION_MINOR} LESS 3)
-  message("Build tf2tfliteV2-value-pbtxt-test: FALSE (You need to install Python version higher than 3.3)")
+  message(STATUS "Build tf2tfliteV2-value-pbtxt-test: FALSE (You need to install Python version higher than 3.3)")
   return()
 endif()
 
