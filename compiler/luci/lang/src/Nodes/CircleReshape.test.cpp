@@ -24,12 +24,12 @@ TEST(CircleReshapeTest, constructor_P)
 {
   luci::CircleReshape reshape;
 
-  ASSERT_EQ(reshape.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(reshape.opcode(), luci::CircleOpcode::RESHAPE);
+  ASSERT_EQ(luci::CircleDialect::get(), reshape.dialect());
+  ASSERT_EQ(luci::CircleOpcode::RESHAPE, reshape.opcode());
 
-  ASSERT_EQ(reshape.tensor(), nullptr);
-  ASSERT_EQ(reshape.shape(), nullptr);
-  ASSERT_EQ(reshape.newShape()->rank(), 0);
+  ASSERT_EQ(nullptr, reshape.tensor());
+  ASSERT_EQ(nullptr, reshape.shape());
+  ASSERT_EQ(0, reshape.newShape()->rank());
 }
 
 TEST(CircleReshapeTest, alloc_new_shape_P)
@@ -37,12 +37,12 @@ TEST(CircleReshapeTest, alloc_new_shape_P)
   luci::CircleReshape reshape;
 
   reshape.newShape()->rank(2);
-  ASSERT_EQ(reshape.newShape()->rank(), 2);
+  ASSERT_EQ(2, reshape.newShape()->rank());
 
   reshape.newShape()->dim(0) = 0;
   reshape.newShape()->dim(1) = 1;
 
   auto &const_reshape = const_cast<const luci::CircleReshape &>(reshape);
-  ASSERT_EQ(const_reshape.newShape()->dim(0), 0);
-  ASSERT_EQ(const_reshape.newShape()->dim(1), 1);
+  ASSERT_EQ(0, const_reshape.newShape()->dim(0));
+  ASSERT_EQ(1, const_reshape.newShape()->dim(1));
 }

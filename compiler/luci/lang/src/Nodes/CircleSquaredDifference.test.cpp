@@ -24,9 +24,9 @@ TEST(CircleSquaredDifferenceTest, constructor_P)
 {
   luci::CircleSquaredDifference sd_node;
 
-  ASSERT_EQ(sd_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(sd_node.opcode(), luci::CircleOpcode::SQUARED_DIFFERENCE);
+  ASSERT_EQ(luci::CircleDialect::get(), sd_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::SQUARED_DIFFERENCE, sd_node.opcode());
 
-  ASSERT_EQ(sd_node.x(), nullptr);
-  ASSERT_EQ(sd_node.y(), nullptr);
+  ASSERT_EQ(nullptr, sd_node.x());
+  ASSERT_EQ(nullptr, sd_node.y());
 }

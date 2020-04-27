@@ -24,9 +24,9 @@ TEST(CircleMaximumTest, constructor_P)
 {
   luci::CircleMaximum max_node;
 
-  ASSERT_EQ(max_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(max_node.opcode(), luci::CircleOpcode::MAXIMUM);
+  ASSERT_EQ(luci::CircleDialect::get(), max_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::MAXIMUM, max_node.opcode());
 
-  ASSERT_EQ(max_node.x(), nullptr);
-  ASSERT_EQ(max_node.y(), nullptr);
+  ASSERT_EQ(nullptr, max_node.x());
+  ASSERT_EQ(nullptr, max_node.y());
 }

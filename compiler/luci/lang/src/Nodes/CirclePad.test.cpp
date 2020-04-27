@@ -24,9 +24,9 @@ TEST(CirclePadTest, constructor_P)
 {
   luci::CirclePad pad_node;
 
-  ASSERT_EQ(pad_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(pad_node.opcode(), luci::CircleOpcode::PAD);
+  ASSERT_EQ(luci::CircleDialect::get(), pad_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::PAD, pad_node.opcode());
 
-  ASSERT_EQ(pad_node.input(), nullptr);
-  ASSERT_EQ(pad_node.paddings(), nullptr);
+  ASSERT_EQ(nullptr, pad_node.input());
+  ASSERT_EQ(nullptr, pad_node.paddings());
 }

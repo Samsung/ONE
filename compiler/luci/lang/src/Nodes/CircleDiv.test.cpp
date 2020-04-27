@@ -24,9 +24,9 @@ TEST(CircleDivTest, constructor_P)
 {
   luci::CircleDiv div_node;
 
-  ASSERT_EQ(div_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(div_node.opcode(), luci::CircleOpcode::DIV);
+  ASSERT_EQ(luci::CircleDialect::get(), div_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::DIV, div_node.opcode());
 
-  ASSERT_EQ(div_node.x(), nullptr);
-  ASSERT_EQ(div_node.y(), nullptr);
+  ASSERT_EQ(nullptr, div_node.x());
+  ASSERT_EQ(nullptr, div_node.y());
 }

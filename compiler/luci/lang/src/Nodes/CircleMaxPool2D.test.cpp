@@ -24,10 +24,10 @@ TEST(CircleMaxPool2DTest, constructor_P)
 {
   luci::CircleMaxPool2D maxpool2d_node;
 
-  ASSERT_EQ(maxpool2d_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(maxpool2d_node.opcode(), luci::CircleOpcode::MAX_POOL_2D);
+  ASSERT_EQ(luci::CircleDialect::get(), maxpool2d_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::MAX_POOL_2D, maxpool2d_node.opcode());
 
-  ASSERT_EQ(maxpool2d_node.value(), nullptr);
+  ASSERT_EQ(nullptr, maxpool2d_node.value());
   ASSERT_NE(maxpool2d_node.filter(), nullptr);
   ASSERT_NE(maxpool2d_node.stride(), nullptr);
 }

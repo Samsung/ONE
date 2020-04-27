@@ -24,10 +24,10 @@ TEST(CircleTransposeConvTest, constructor_P)
 {
   luci::CircleTransposeConv trc_node;
 
-  ASSERT_EQ(trc_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(trc_node.opcode(), luci::CircleOpcode::TRANSPOSE_CONV);
+  ASSERT_EQ(luci::CircleDialect::get(), trc_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::TRANSPOSE_CONV, trc_node.opcode());
 
-  ASSERT_EQ(trc_node.inputSizes(), nullptr);
-  ASSERT_EQ(trc_node.filter(), nullptr);
-  ASSERT_EQ(trc_node.outBackprop(), nullptr);
+  ASSERT_EQ(nullptr, trc_node.inputSizes());
+  ASSERT_EQ(nullptr, trc_node.filter());
+  ASSERT_EQ(nullptr, trc_node.outBackprop());
 }

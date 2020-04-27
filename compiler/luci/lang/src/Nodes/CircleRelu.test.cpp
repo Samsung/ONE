@@ -24,8 +24,8 @@ TEST(CircleReluTest, constructor_P)
 {
   luci::CircleRelu relu_node;
 
-  ASSERT_EQ(relu_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(relu_node.opcode(), luci::CircleOpcode::RELU);
+  ASSERT_EQ(luci::CircleDialect::get(), relu_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::RELU, relu_node.opcode());
 
-  ASSERT_EQ(relu_node.features(), nullptr);
+  ASSERT_EQ(nullptr, relu_node.features());
 }

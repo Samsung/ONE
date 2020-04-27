@@ -24,11 +24,11 @@ TEST(CircleFullyConnectedTest, constructor)
 {
   luci::CircleFullyConnected fc_node;
 
-  ASSERT_EQ(fc_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(fc_node.opcode(), luci::CircleOpcode::FULLY_CONNECTED);
+  ASSERT_EQ(luci::CircleDialect::get(), fc_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::FULLY_CONNECTED, fc_node.opcode());
 
-  ASSERT_EQ(fc_node.input(), nullptr);
-  ASSERT_EQ(fc_node.weights(), nullptr);
-  ASSERT_EQ(fc_node.bias(), nullptr);
-  ASSERT_EQ(fc_node.fusedActivationFunction(), luci::FusedActFunc::UNDEFINED);
+  ASSERT_EQ(nullptr, fc_node.input());
+  ASSERT_EQ(nullptr, fc_node.weights());
+  ASSERT_EQ(nullptr, fc_node.bias());
+  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, fc_node.fusedActivationFunction());
 }

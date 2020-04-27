@@ -24,9 +24,9 @@ TEST(CircleTransposeTest, constructor_P)
 {
   luci::CircleTranspose tr_node;
 
-  ASSERT_EQ(tr_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(tr_node.opcode(), luci::CircleOpcode::TRANSPOSE);
+  ASSERT_EQ(luci::CircleDialect::get(), tr_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::TRANSPOSE, tr_node.opcode());
 
-  ASSERT_EQ(tr_node.a(), nullptr);
-  ASSERT_EQ(tr_node.perm(), nullptr);
+  ASSERT_EQ(nullptr, tr_node.a());
+  ASSERT_EQ(nullptr, tr_node.perm());
 }

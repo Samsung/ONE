@@ -24,9 +24,9 @@ TEST(CircleUnpackOutTest, constructor)
 {
   luci::CircleUnpackOut unpackout_node;
 
-  ASSERT_EQ(unpackout_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(unpackout_node.opcode(), luci::CircleOpcode::CIRCLEUNPACKOUT);
+  ASSERT_EQ(luci::CircleDialect::get(), unpackout_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::CIRCLEUNPACKOUT, unpackout_node.opcode());
 
-  ASSERT_EQ(unpackout_node.unpack(), nullptr);
-  ASSERT_EQ(unpackout_node.index(), 0);
+  ASSERT_EQ(nullptr, unpackout_node.unpack());
+  ASSERT_EQ(0, unpackout_node.index());
 }

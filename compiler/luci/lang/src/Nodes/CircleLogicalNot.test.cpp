@@ -24,8 +24,8 @@ TEST(CircleLogicalNotTest, constructor_P)
 {
   luci::CircleLogicalNot not_node;
 
-  ASSERT_EQ(not_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(not_node.opcode(), luci::CircleOpcode::LOGICAL_NOT);
+  ASSERT_EQ(luci::CircleDialect::get(), not_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::LOGICAL_NOT, not_node.opcode());
 
-  ASSERT_EQ(not_node.x(), nullptr);
+  ASSERT_EQ(nullptr, not_node.x());
 }

@@ -24,9 +24,9 @@ TEST(CircleArgMaxTest, constructor_P)
 {
   luci::CircleArgMax add_node;
 
-  ASSERT_EQ(add_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(add_node.opcode(), luci::CircleOpcode::ARG_MAX);
+  ASSERT_EQ(luci::CircleDialect::get(), add_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ARG_MAX, add_node.opcode());
 
-  ASSERT_EQ(add_node.input(), nullptr);
-  ASSERT_EQ(add_node.dimension(), nullptr);
+  ASSERT_EQ(nullptr, add_node.input());
+  ASSERT_EQ(nullptr, add_node.dimension());
 }

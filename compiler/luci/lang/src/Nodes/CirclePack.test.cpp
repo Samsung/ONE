@@ -24,12 +24,12 @@ TEST(CirclePackTest, constructor)
 {
   luci::CirclePack pack_node(3);
 
-  ASSERT_EQ(pack_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(pack_node.opcode(), luci::CircleOpcode::PACK);
+  ASSERT_EQ(luci::CircleDialect::get(), pack_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::PACK, pack_node.opcode());
 
-  ASSERT_EQ(pack_node.axis(), 0);
-  ASSERT_EQ(pack_node.values_count(), 3);
-  ASSERT_EQ(pack_node.values(0), nullptr);
-  ASSERT_EQ(pack_node.values(1), nullptr);
-  ASSERT_EQ(pack_node.values(2), nullptr);
+  ASSERT_EQ(0, pack_node.axis());
+  ASSERT_EQ(3, pack_node.values_count());
+  ASSERT_EQ(nullptr, pack_node.values(0));
+  ASSERT_EQ(nullptr, pack_node.values(1));
+  ASSERT_EQ(nullptr, pack_node.values(2));
 }

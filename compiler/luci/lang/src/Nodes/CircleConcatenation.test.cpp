@@ -24,12 +24,12 @@ TEST(CircleConcatenationTest, constructor_P)
 {
   luci::CircleConcatenation concat_node(3);
 
-  ASSERT_EQ(concat_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(concat_node.opcode(), luci::CircleOpcode::CONCATENATION);
+  ASSERT_EQ(luci::CircleDialect::get(), concat_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::CONCATENATION, concat_node.opcode());
 
-  ASSERT_EQ(concat_node.numValues(), 3);
-  ASSERT_EQ(concat_node.values(0), nullptr);
-  ASSERT_EQ(concat_node.values(1), nullptr);
-  ASSERT_EQ(concat_node.values(2), nullptr);
-  ASSERT_EQ(concat_node.fusedActivationFunction(), luci::FusedActFunc::UNDEFINED);
+  ASSERT_EQ(3, concat_node.numValues());
+  ASSERT_EQ(nullptr, concat_node.values(0));
+  ASSERT_EQ(nullptr, concat_node.values(1));
+  ASSERT_EQ(nullptr, concat_node.values(2));
+  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, concat_node.fusedActivationFunction());
 }
