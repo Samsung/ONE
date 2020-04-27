@@ -60,12 +60,12 @@ TEST(TFLShapeInferenceRuleTest, minimal_with_TFLRelu)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 2);
-    ASSERT_EQ(shape.dim(0), 3);
-    ASSERT_EQ(shape.dim(1), 4);
+    ASSERT_EQ(2, shape.rank());
+    ASSERT_EQ(3, shape.dim(0));
+    ASSERT_EQ(4, shape.dim(1));
   }
 }
 
@@ -105,14 +105,14 @@ TEST(TFLShapeInferenceRuleTest, avgpool2d_valid)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0).value(), 1);
-    ASSERT_EQ(shape.dim(1).value(), 2);
-    ASSERT_EQ(shape.dim(2).value(), 1);
-    ASSERT_EQ(shape.dim(3).value(), 1);
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(1, shape.dim(0).value());
+    ASSERT_EQ(2, shape.dim(1).value());
+    ASSERT_EQ(1, shape.dim(2).value());
+    ASSERT_EQ(1, shape.dim(3).value());
   }
 }
 
@@ -152,14 +152,14 @@ TEST(TFLShapeInferenceRuleTest, avgpool2d_same)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0).value(), 1);
-    ASSERT_EQ(shape.dim(1).value(), 2);
-    ASSERT_EQ(shape.dim(2).value(), 2);
-    ASSERT_EQ(shape.dim(3).value(), 1);
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(1, shape.dim(0).value());
+    ASSERT_EQ(2, shape.dim(1).value());
+    ASSERT_EQ(2, shape.dim(2).value());
+    ASSERT_EQ(1, shape.dim(3).value());
   }
 }
 
@@ -227,13 +227,13 @@ TEST(TFLShapeInferenceRuleTest, TFAdd_shapeinf_different)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 3);
-    ASSERT_EQ(shape.dim(0), 2);
-    ASSERT_EQ(shape.dim(1), 3);
-    ASSERT_EQ(shape.dim(2), 5);
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(2, shape.dim(0));
+    ASSERT_EQ(3, shape.dim(1));
+    ASSERT_EQ(5, shape.dim(2));
   }
 }
 
@@ -268,10 +268,10 @@ TEST(TFLShapeInferenceRuleTest, TFLTranspose_simple)
     ASSERT_TRUE(loco::shape_known(g.tfl_transpose));
 
     auto shape = loco::shape_get(g.tfl_transpose).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0), 30);
-    ASSERT_EQ(shape.dim(1), 40);
-    ASSERT_EQ(shape.dim(2), 10);
-    ASSERT_EQ(shape.dim(3), 20);
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(30, shape.dim(0));
+    ASSERT_EQ(40, shape.dim(1));
+    ASSERT_EQ(10, shape.dim(2));
+    ASSERT_EQ(20, shape.dim(3));
   }
 }

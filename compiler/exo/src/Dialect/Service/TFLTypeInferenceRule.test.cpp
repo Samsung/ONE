@@ -53,5 +53,5 @@ TEST(TFLTypeInferenceRuleTest, minimal_with_TFLRelu)
   // Verify
   ASSERT_TRUE(loco::dtype_known(tfl_node));
   auto type = loco::dtype_get(tfl_node);
-  ASSERT_EQ(type, loco::DataType::S32);
+  ASSERT_EQ(loco::DataType::S32, type);
 }

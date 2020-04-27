@@ -263,8 +263,8 @@ TEST(FuseBiasAddPassTest, Conv2D_Sub_02_fusing_will_not_performed)
   ASSERT_TRUE(a_bias != nullptr);
 
   ASSERT_TRUE(a_bias->dim(0) == 2);
-  ASSERT_FLOAT_EQ(a_bias->at<loco::DataType::FLOAT32>(0), 0);
-  ASSERT_FLOAT_EQ(a_bias->at<loco::DataType::FLOAT32>(1), 0);
+  ASSERT_FLOAT_EQ(0, a_bias->at<loco::DataType::FLOAT32>(0));
+  ASSERT_FLOAT_EQ(0, a_bias->at<loco::DataType::FLOAT32>(1));
 
   auto a_sub = exo::test::find_first_node_bytype<locoex::TFLSub>(g.graph());
   ASSERT_TRUE(a_sub != nullptr);
