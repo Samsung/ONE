@@ -27,8 +27,3 @@ TEST(CircleDialectTest, get_P)
   // The return value SHOULD be stable across multiple invocations
   ASSERT_EQ(luci::CircleDialect::get(), d);
 }
-
-TEST(CircleDialectTest, get_N)
-{
-  // TBD
-}
