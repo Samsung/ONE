@@ -196,6 +196,7 @@ private:
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleFullyConnected)
   IMPLEMENT(luci::CircleGather)
+  IMPLEMENT(luci::CircleIf)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
   IMPLEMENT(luci::CircleMaximum)
@@ -221,6 +222,7 @@ private:
   // Virtual nodes
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
+  IMPLEMENT(luci::CircleIfOut)
   IMPLEMENT(luci::CircleUnpackOut)
 #undef IMPLEMENT
 };
@@ -423,6 +425,27 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleGather *node, locop::No
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSummary &s) const
+{
+  s.args().append("cond", tbl()->lookup(node->cond()));
+  for (uint32_t i = 0; i < node->input_count(); ++i)
+    s.args().append("input", tbl()->lookup(node->input(i)));
+
+  if (node->then_graph() != nullptr)
+    s.args().append("then_graph", node->then_graph()->name());
+  else
+    s.args().append("then_branch", pepper::str(node->then_branch()));
+
+  if (node->else_graph() != nullptr)
+    s.args().append("else_graph", node->else_graph()->name());
+  else
+    s.args().append("else_branch", pepper::str(node->else_branch()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleLogicalNot *node,
                                        locop::NodeSummary &s) const
 {
@@ -613,6 +636,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("unpack", tbl()->lookup(node->unpack()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleIfOut *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 
