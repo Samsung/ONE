@@ -38,6 +38,7 @@
 #include "Nodes/CircleLogicalOr.h"
 #include "Nodes/CircleMaxPool2D.h"
 #include "Nodes/CircleMean.h"
+#include "Nodes/CircleMinimum.h"
 #include "Nodes/CircleMul.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"

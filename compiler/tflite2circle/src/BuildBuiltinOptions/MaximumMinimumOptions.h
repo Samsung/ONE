@@ -23,8 +23,8 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::MaximumMinimumOptions> build_circle_MaximumMinimumOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                                      const tflite::Operator *op);
+flatbuffers::Offset<circle::MaximumMinimumOptions>
+build_circle_MaximumMinimumOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
 
