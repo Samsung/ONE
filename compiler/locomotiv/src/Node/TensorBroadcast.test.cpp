@@ -54,10 +54,10 @@ TEST(NodeExecution_TensorBroadcast, f32)
 
   auto broadcast_data = locomotiv::annot_data(broadcast);
   ASSERT_NE(broadcast_data, nullptr);
-  ASSERT_EQ(broadcast_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ((*(broadcast_data->shape())), (Shape{2, 1}));
-  ASSERT_FLOAT_EQ(broadcast_data->as_f32_bufptr()->at(Index{0, 0}), -1.0f);
-  ASSERT_FLOAT_EQ(broadcast_data->as_f32_bufptr()->at(Index{1, 0}), -1.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, broadcast_data->dtype());
+  ASSERT_EQ((Shape{2, 1}), (*(broadcast_data->shape())));
+  ASSERT_FLOAT_EQ(-1.0f, broadcast_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(-1.0f, broadcast_data->as_f32_bufptr()->at(Index{1, 0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(broadcast), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(broadcast));
 }

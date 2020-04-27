@@ -53,16 +53,16 @@ TEST(NodeExecution_ConstGen, s32)
   // test
   auto data = locomotiv::annot_data(&constgen);
   ASSERT_NE(data, nullptr);
-  ASSERT_EQ(data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*data->shape(), Shape({2, 3}));
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{0, 0}), 0);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{0, 1}), 1);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{0, 2}), 2);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{1, 0}), -3);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{1, 1}), -4);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{1, 2}), -5);
+  ASSERT_EQ(loco::DataType::S32, data->dtype());
+  ASSERT_EQ(Shape({2, 3}), *data->shape());
+  ASSERT_EQ(0, data->as_s32_bufptr()->at(Index{0, 0}));
+  ASSERT_EQ(1, data->as_s32_bufptr()->at(Index{0, 1}));
+  ASSERT_EQ(2, data->as_s32_bufptr()->at(Index{0, 2}));
+  ASSERT_EQ(-3, data->as_s32_bufptr()->at(Index{1, 0}));
+  ASSERT_EQ(-4, data->as_s32_bufptr()->at(Index{1, 1}));
+  ASSERT_EQ(-5, data->as_s32_bufptr()->at(Index{1, 2}));
 
-  ASSERT_EQ(locomotiv::annot_domain(&constgen), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(&constgen));
 }
 
 TEST(NodeExecution_ConstGen, f32)
@@ -87,14 +87,14 @@ TEST(NodeExecution_ConstGen, f32)
   // test
   auto data = locomotiv::annot_data(&constgen);
   ASSERT_NE(data, nullptr);
-  ASSERT_EQ(data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*data->shape(), Shape({2, 3}));
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{0, 0}), 0.0f);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{0, 1}), 1.0f);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{0, 2}), 2.0f);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{1, 0}), 3.0f);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{1, 1}), 4.0f);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{1, 2}), 5.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, data->dtype());
+  ASSERT_EQ(Shape({2, 3}), *data->shape());
+  ASSERT_FLOAT_EQ(0.0f, data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(1.0f, data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(2.0f, data->as_f32_bufptr()->at(Index{0, 2}));
+  ASSERT_FLOAT_EQ(3.0f, data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(4.0f, data->as_f32_bufptr()->at(Index{1, 1}));
+  ASSERT_FLOAT_EQ(5.0f, data->as_f32_bufptr()->at(Index{1, 2}));
 
-  ASSERT_EQ(locomotiv::annot_domain(&constgen), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(&constgen));
 }

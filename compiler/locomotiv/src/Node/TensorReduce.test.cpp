@@ -60,12 +60,12 @@ TEST(NodeExecution_Fixed_Reduce_Mean, f32_0)
   auto kShape = Shape{1, 1, 2};
   auto reduce_data = locomotiv::annot_data(reduce_node);
   ASSERT_NE(reduce_data, nullptr);
-  ASSERT_EQ(reduce_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(reduce_data->shape()), kShape);
-  ASSERT_FLOAT_EQ(reduce_data->as_f32_bufptr()->at(Index{0, 0, 0}), 3.3f);
-  ASSERT_FLOAT_EQ(reduce_data->as_f32_bufptr()->at(Index{0, 0, 1}), 4.4f);
+  ASSERT_EQ(loco::DataType::FLOAT32, reduce_data->dtype());
+  ASSERT_EQ(kShape, *(reduce_data->shape()));
+  ASSERT_FLOAT_EQ(3.3f, reduce_data->as_f32_bufptr()->at(Index{0, 0, 0}));
+  ASSERT_FLOAT_EQ(4.4f, reduce_data->as_f32_bufptr()->at(Index{0, 0, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(reduce_node), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(reduce_node));
 }
 
 TEST(NodeExecution_Fixed_Reduce_Mean, f32_1)
@@ -96,9 +96,9 @@ TEST(NodeExecution_Fixed_Reduce_Mean, f32_1)
   auto kShape = Shape{1, 1, 1};
   auto reduce_data = locomotiv::annot_data(reduce_node);
   ASSERT_NE(reduce_data, nullptr);
-  ASSERT_EQ(reduce_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(reduce_data->shape()), kShape);
-  ASSERT_FLOAT_EQ(reduce_data->as_f32_bufptr()->at(Index{0, 0, 0}), 3.85f);
+  ASSERT_EQ(loco::DataType::FLOAT32, reduce_data->dtype());
+  ASSERT_EQ(kShape, *(reduce_data->shape()));
+  ASSERT_FLOAT_EQ(3.85f, reduce_data->as_f32_bufptr()->at(Index{0, 0, 0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(reduce_node), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(reduce_node));
 }

@@ -57,8 +57,8 @@ TEST(Session, graph_IO_size)
   // Make session
   locomotiv::Session s(g.get());
 
-  ASSERT_EQ(s.input_size(), inputs);
-  ASSERT_EQ(s.output_size(), outputs);
+  ASSERT_EQ(inputs, s.input_size());
+  ASSERT_EQ(outputs, s.output_size());
 }
 
 TEST(Session, set_input)
@@ -173,9 +173,9 @@ TEST(Session, inference_identity)
 
     auto output_data = s.get_output(0);
     ASSERT_NE(output_data, nullptr);
-    ASSERT_EQ(output_data->dtype(), loco::DataType::FLOAT32);
-    ASSERT_EQ(*(output_data->shape()), Shape{1});
-    ASSERT_EQ(output_data->as_f32_bufptr()->at(Index{0}), 3.14f);
+    ASSERT_EQ(loco::DataType::FLOAT32, output_data->dtype());
+    ASSERT_EQ(Shape{1}, *(output_data->shape()));
+    ASSERT_EQ(3.14f, output_data->as_f32_bufptr()->at(Index{0}));
   }
 }
 
@@ -234,63 +234,63 @@ TEST(Session, session_for_subgraph)
   {
     // Session to get t1 only
     locomotiv::Session s(g.get(), {t1});
-    ASSERT_EQ(s.output_size(), 1);
-    ASSERT_EQ(s.get_output_node(0), dynamic_cast<loco::Node *>(t1));
+    ASSERT_EQ(1, s.output_size());
+    ASSERT_EQ(dynamic_cast<loco::Node *>(t1), s.get_output_node(0));
 
     s.infer();
 
     auto t1_data = s.get_output(0);
     ASSERT_NE(t1_data, nullptr);
-    ASSERT_EQ(*(t1_data->shape()), Shape{2});
+    ASSERT_EQ(Shape{2}, *(t1_data->shape()));
 
     auto t1_buf = t1_data->as_f32_bufptr();
-    ASSERT_EQ(t1_buf->at({0}), 0.1f);
-    ASSERT_EQ(t1_buf->at({1}), 0.2f);
+    ASSERT_EQ(0.1f, t1_buf->at({0}));
+    ASSERT_EQ(0.2f, t1_buf->at({1}));
   }
 
   {
     // Session to get t2 only
     locomotiv::Session s(g.get(), {t2});
-    ASSERT_EQ(s.output_size(), 1);
-    ASSERT_EQ(s.get_output_node(0), dynamic_cast<loco::Node *>(t2));
+    ASSERT_EQ(1, s.output_size());
+    ASSERT_EQ(dynamic_cast<loco::Node *>(t2), s.get_output_node(0));
 
     s.infer();
 
     auto t2_data = s.get_output(0);
     ASSERT_NE(t2_data, nullptr);
-    ASSERT_EQ(*(t2_data->shape()), Shape{2});
+    ASSERT_EQ(Shape{2}, *(t2_data->shape()));
 
     auto t2_buf = t2_data->as_f32_bufptr();
-    ASSERT_EQ(t2_buf->at({0}), 0.3f);
-    ASSERT_EQ(t2_buf->at({1}), 0.4f);
+    ASSERT_EQ(0.3f, t2_buf->at({0}));
+    ASSERT_EQ(0.4f, t2_buf->at({1}));
   }
 
   {
     // Session to get t2 and push
     locomotiv::Session s(g.get(), {t2, push});
-    ASSERT_EQ(s.output_size(), 2);
-    ASSERT_EQ(s.get_output_node(0), dynamic_cast<loco::Node *>(t2));
-    ASSERT_EQ(s.get_output_node(1), dynamic_cast<loco::Node *>(push));
+    ASSERT_EQ(2, s.output_size());
+    ASSERT_EQ(dynamic_cast<loco::Node *>(t2), s.get_output_node(0));
+    ASSERT_EQ(dynamic_cast<loco::Node *>(push), s.get_output_node(1));
 
     s.infer();
 
     auto t2_data = s.get_output(0);
     ASSERT_NE(t2_data, nullptr);
-    ASSERT_EQ(*(t2_data->shape()), Shape{2});
+    ASSERT_EQ(Shape{2}, *(t2_data->shape()));
 
     auto t2_buf = t2_data->as_f32_bufptr();
-    ASSERT_EQ(t2_buf->at({0}), 0.3f);
-    ASSERT_EQ(t2_buf->at({1}), 0.4f);
+    ASSERT_EQ(0.3f, t2_buf->at({0}));
+    ASSERT_EQ(0.4f, t2_buf->at({1}));
 
     auto push_data = s.get_output(1);
     ASSERT_NE(push_data, nullptr);
-    ASSERT_EQ(*(push_data->shape()), Shape{4});
+    ASSERT_EQ(Shape{4}, *(push_data->shape()));
 
     auto push_buf = push_data->as_f32_bufptr();
-    ASSERT_EQ(push_buf->at({0}), 0.1f);
-    ASSERT_EQ(push_buf->at({1}), 0.2f);
-    ASSERT_EQ(push_buf->at({2}), 0.3f);
-    ASSERT_EQ(push_buf->at({3}), 0.4f);
+    ASSERT_EQ(0.1f, push_buf->at({0}));
+    ASSERT_EQ(0.2f, push_buf->at({1}));
+    ASSERT_EQ(0.3f, push_buf->at({2}));
+    ASSERT_EQ(0.4f, push_buf->at({3}));
   }
 }
 
@@ -321,19 +321,19 @@ TEST(Session, ctor_by_range)
 
   auto constgen_data = s.get_output(0);
   ASSERT_NE(constgen_data, nullptr);
-  ASSERT_EQ(*(constgen_data->shape()), Shape{2});
+  ASSERT_EQ(Shape{2}, *(constgen_data->shape()));
 
   auto constgen_buf = constgen_data->as_f32_bufptr();
-  ASSERT_EQ(constgen_buf->at({0}), 0.1f);
-  ASSERT_EQ(constgen_buf->at({1}), -0.1f);
+  ASSERT_EQ(0.1f, constgen_buf->at({0}));
+  ASSERT_EQ(-0.1f, constgen_buf->at({1}));
 
   auto push_data = s.get_output(1);
   ASSERT_NE(push_data, nullptr);
-  ASSERT_EQ(*(push_data->shape()), Shape{2});
+  ASSERT_EQ(Shape{2}, *(push_data->shape()));
 
   auto push_buf = push_data->as_f32_bufptr();
-  ASSERT_EQ(push_buf->at({0}), 0.1f);
-  ASSERT_EQ(push_buf->at({1}), 0.0f);
+  ASSERT_EQ(0.1f, push_buf->at({0}));
+  ASSERT_EQ(0.0f, push_buf->at({1}));
 }
 
 // Below here is internal test for locomotiv, i.e. not public usage of locomotiv
@@ -363,17 +363,17 @@ TEST(Session, dtor)
     s.set_input(0, std::move(data));
 
     auto data_annotated = locomotiv::annot_data(pull);
-    ASSERT_EQ(data_annotated, nullptr);
+    ASSERT_EQ(nullptr, data_annotated);
     auto user_data_annotated = locomotiv::user_data(pull);
     ASSERT_NE(user_data_annotated, nullptr);
     auto domain_annotated = locomotiv::annot_domain(pull);
-    ASSERT_EQ(domain_annotated, loco::Domain::Unknown);
+    ASSERT_EQ(loco::Domain::Unknown, domain_annotated);
   }
 
   auto data_annotated = locomotiv::annot_data(pull);
-  ASSERT_EQ(data_annotated, nullptr);
+  ASSERT_EQ(nullptr, data_annotated);
   auto user_data_annotated = locomotiv::user_data(pull);
-  ASSERT_EQ(user_data_annotated, nullptr);
+  ASSERT_EQ(nullptr, user_data_annotated);
   auto domain_annotated = locomotiv::annot_domain(pull);
-  ASSERT_EQ(domain_annotated, loco::Domain::Unknown);
+  ASSERT_EQ(loco::Domain::Unknown, domain_annotated);
 }

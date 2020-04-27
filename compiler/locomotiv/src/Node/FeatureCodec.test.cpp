@@ -128,16 +128,16 @@ TEST_F(NodeExecution_FeatureCodec, s32)
   // Test FeatureEncode
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{N, H, W, C})); // locomotiv feature is NHWC
+  ASSERT_EQ(loco::DataType::S32, enc_data->dtype());
+  ASSERT_EQ((Shape{N, H, W, C}), *(enc_data->shape())); // locomotiv feature is NHWC
   auto enc_buf = enc_data->as_s32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_EQ(pull_buf.at(Index{n, c, h, w}), enc_buf->at(Index{n, h, w, c}));
+          ASSERT_EQ(enc_buf->at(Index{n, h, w, c}), pull_buf.at(Index{n, c, h, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, locomotiv::annot_domain(enc));
 
   // FeatureDecode
   auto dec = feature_decode_layer(enc, NCHW);
@@ -146,16 +146,16 @@ TEST_F(NodeExecution_FeatureCodec, s32)
   // Test FeatureDecode: Encode -> Decode == identity
   auto dec_data = locomotiv::annot_data(dec);
   ASSERT_NE(dec_data, nullptr);
-  ASSERT_EQ(dec_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(dec_data->shape()), (Shape{N, C, H, W}));
+  ASSERT_EQ(loco::DataType::S32, dec_data->dtype());
+  ASSERT_EQ((Shape{N, C, H, W}), *(dec_data->shape()));
   auto dec_buf = dec_data->as_s32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_EQ(pull_buf.at(Index{n, c, h, w}), dec_buf->at(Index{n, c, h, w}));
+          ASSERT_EQ(dec_buf->at(Index{n, c, h, w}), pull_buf.at(Index{n, c, h, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(dec), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(dec));
 }
 
 TEST_F(NodeExecution_FeatureCodec, f32)
@@ -192,16 +192,16 @@ TEST_F(NodeExecution_FeatureCodec, f32)
   // Test FeatureEncode
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{N, H, W, C})); // locomotiv feature is NHWC
+  ASSERT_EQ(loco::DataType::FLOAT32, enc_data->dtype());
+  ASSERT_EQ((Shape{N, H, W, C}), *(enc_data->shape())); // locomotiv feature is NHWC
   auto enc_buf = enc_data->as_f32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_FLOAT_EQ(pull_buf.at(Index{c, h, n, w}), enc_buf->at(Index{n, h, w, c}));
+          ASSERT_FLOAT_EQ(enc_buf->at(Index{n, h, w, c}), pull_buf.at(Index{c, h, n, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, locomotiv::annot_domain(enc));
 
   // FeatureDecode
   auto dec = feature_decode_layer(enc, CHNW);
@@ -210,14 +210,14 @@ TEST_F(NodeExecution_FeatureCodec, f32)
   // Test FeatureDecode: Encode -> Decode == identity
   auto dec_data = locomotiv::annot_data(dec);
   ASSERT_NE(dec_data, nullptr);
-  ASSERT_EQ(dec_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(dec_data->shape()), (Shape{C, H, N, W}));
+  ASSERT_EQ(loco::DataType::FLOAT32, dec_data->dtype());
+  ASSERT_EQ((Shape{C, H, N, W}), *(dec_data->shape()));
   auto dec_buf = dec_data->as_f32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_FLOAT_EQ(pull_buf.at(Index{c, h, n, w}), dec_buf->at(Index{c, h, n, w}));
+          ASSERT_FLOAT_EQ(dec_buf->at(Index{c, h, n, w}), pull_buf.at(Index{c, h, n, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(dec), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(dec));
 }

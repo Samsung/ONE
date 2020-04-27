@@ -57,12 +57,12 @@ TEST(NodeExecution_Softmax, f32)
   auto kShape = Shape{2, 2};
   auto softmax_data = locomotiv::annot_data(softmax);
   ASSERT_NE(softmax_data, nullptr);
-  ASSERT_EQ(softmax_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(softmax_data->shape()), kShape);
-  ASSERT_FLOAT_EQ(softmax_data->as_f32_bufptr()->at(Index{0, 0}), 0.5f);
-  ASSERT_FLOAT_EQ(softmax_data->as_f32_bufptr()->at(Index{0, 1}), 0.5f);
-  ASSERT_FLOAT_EQ(softmax_data->as_f32_bufptr()->at(Index{1, 0}), 0.5f);
-  ASSERT_FLOAT_EQ(softmax_data->as_f32_bufptr()->at(Index{1, 1}), 0.5f);
+  ASSERT_EQ(loco::DataType::FLOAT32, softmax_data->dtype());
+  ASSERT_EQ(kShape, *(softmax_data->shape()));
+  ASSERT_FLOAT_EQ(0.5f, softmax_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(0.5f, softmax_data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(0.5f, softmax_data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(0.5f, softmax_data->as_f32_bufptr()->at(Index{1, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(softmax), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(softmax));
 }

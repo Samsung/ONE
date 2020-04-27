@@ -82,11 +82,11 @@ template <typename T> void test()
   auto bias_enc_data = locomotiv::annot_data(bias_enc);
 
   ASSERT_NE(bias_enc_data, nullptr);
-  ASSERT_EQ(bias_enc_data->dtype(), loco_dtype<T>());
-  ASSERT_EQ(*(bias_enc_data->shape()), Shape{1});
-  ASSERT_EQ(as_bufptr<T>(bias_enc_data)->at(Index{0}), pull_buf.at(Index{0}));
+  ASSERT_EQ(loco_dtype<T>(), bias_enc_data->dtype());
+  ASSERT_EQ(Shape{1}, *(bias_enc_data->shape()));
+  ASSERT_EQ(pull_buf.at(Index{0}), as_bufptr<T>(bias_enc_data)->at(Index{0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(bias_enc), loco::Domain::Bias);
+  ASSERT_EQ(loco::Domain::Bias, locomotiv::annot_domain(bias_enc));
 }
 } // namespace
 

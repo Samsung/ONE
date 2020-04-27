@@ -53,10 +53,10 @@ TEST(NodeExecution_ReLU, f32)
 
   auto relu_data = locomotiv::annot_data(relu);
   ASSERT_NE(relu_data, nullptr);
-  ASSERT_EQ(relu_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(relu_data->shape()), Shape{2});
-  ASSERT_FLOAT_EQ(relu_data->as_f32_bufptr()->at(Index{0}), 0.0f);
-  ASSERT_FLOAT_EQ(relu_data->as_f32_bufptr()->at(Index{1}), 10.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, relu_data->dtype());
+  ASSERT_EQ(Shape{2}, *(relu_data->shape()));
+  ASSERT_FLOAT_EQ(0.0f, relu_data->as_f32_bufptr()->at(Index{0}));
+  ASSERT_FLOAT_EQ(10.0f, relu_data->as_f32_bufptr()->at(Index{1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(relu), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(relu));
 }

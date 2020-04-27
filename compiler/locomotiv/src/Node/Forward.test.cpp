@@ -52,11 +52,11 @@ TEST(NodeExecution_Forward, s32)
 
   auto forward_data = locomotiv::annot_data(forward);
   ASSERT_NE(forward_data, nullptr);
-  ASSERT_EQ(forward_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(forward_data->shape()), Shape{1});
-  ASSERT_EQ(forward_data->as_s32_bufptr()->at(Index{0}), pull_buf.at(Index{0}));
+  ASSERT_EQ(loco::DataType::S32, forward_data->dtype());
+  ASSERT_EQ(Shape{1}, *(forward_data->shape()));
+  ASSERT_EQ(pull_buf.at(Index{0}), forward_data->as_s32_bufptr()->at(Index{0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(forward), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(forward));
 }
 
 TEST(NodeExecution_Forward, f32)
@@ -80,9 +80,9 @@ TEST(NodeExecution_Forward, f32)
 
   auto forward_data = locomotiv::annot_data(forward);
   ASSERT_NE(forward_data, nullptr);
-  ASSERT_EQ(forward_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(forward_data->shape()), Shape{1});
-  ASSERT_FLOAT_EQ(forward_data->as_f32_bufptr()->at(Index{0}), pull_buf.at(Index{0}));
+  ASSERT_EQ(loco::DataType::FLOAT32, forward_data->dtype());
+  ASSERT_EQ(Shape{1}, *(forward_data->shape()));
+  ASSERT_FLOAT_EQ(pull_buf.at(Index{0}), forward_data->as_f32_bufptr()->at(Index{0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(forward), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(forward));
 }

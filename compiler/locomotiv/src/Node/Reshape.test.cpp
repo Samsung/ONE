@@ -56,12 +56,12 @@ TEST(NodeExecution_Reshape, f32)
 
   auto reshape_data = locomotiv::annot_data(reshape);
   ASSERT_NE(reshape_data, nullptr);
-  ASSERT_EQ(reshape_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(reshape_data->shape()), (Shape{2, 2}));
-  ASSERT_FLOAT_EQ(reshape_data->as_f32_bufptr()->at(Index{0, 0}), 0.0f);
-  ASSERT_FLOAT_EQ(reshape_data->as_f32_bufptr()->at(Index{0, 1}), 1.1f);
-  ASSERT_FLOAT_EQ(reshape_data->as_f32_bufptr()->at(Index{1, 0}), 2.2f);
-  ASSERT_FLOAT_EQ(reshape_data->as_f32_bufptr()->at(Index{1, 1}), 3.3f);
+  ASSERT_EQ(loco::DataType::FLOAT32, reshape_data->dtype());
+  ASSERT_EQ((Shape{2, 2}), *(reshape_data->shape()));
+  ASSERT_FLOAT_EQ(0.0f, reshape_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(1.1f, reshape_data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(2.2f, reshape_data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(3.3f, reshape_data->as_f32_bufptr()->at(Index{1, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(reshape), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(reshape));
 }

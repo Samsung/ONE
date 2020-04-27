@@ -39,7 +39,7 @@ TEST(NodeDataImpl, as_annotation)
   auto g = loco::make_graph();
   auto node = g->nodes()->create<loco::Pull>();
 
-  ASSERT_EQ(locomotiv::annot_data(node), nullptr);
+  ASSERT_EQ(nullptr, locomotiv::annot_data(node));
 
   // Set annotation
   locomotiv::annot_data(node, std::move(data));
@@ -48,11 +48,11 @@ TEST(NodeDataImpl, as_annotation)
   const locomotiv::NodeData *obtained = locomotiv::annot_data(node);
   ASSERT_NE(obtained, nullptr);
 
-  ASSERT_EQ(obtained->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(obtained->shape()), shape);
-  ASSERT_FLOAT_EQ(obtained->as_f32_bufptr()->at(Index{0}), 3.14f);
+  ASSERT_EQ(loco::DataType::FLOAT32, obtained->dtype());
+  ASSERT_EQ(shape, *(obtained->shape()));
+  ASSERT_FLOAT_EQ(3.14f, obtained->as_f32_bufptr()->at(Index{0}));
 
   // Erase annotation
   locomotiv::erase_annot_data(node);
-  ASSERT_EQ(locomotiv::annot_data(node), nullptr);
+  ASSERT_EQ(nullptr, locomotiv::annot_data(node));
 }

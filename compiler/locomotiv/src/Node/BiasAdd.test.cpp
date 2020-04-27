@@ -107,16 +107,16 @@ TEST(NodeExecution_TensorBiasAdd, f32)
 
   // comparing the result
   ASSERT_NE(bias_add_data, nullptr);
-  ASSERT_EQ(bias_add_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(bias_add_data->shape()), Shape({1, 3, 3, 2}));
+  ASSERT_EQ(loco::DataType::FLOAT32, bias_add_data->dtype());
+  ASSERT_EQ(Shape({1, 3, 3, 2}), *(bias_add_data->shape()));
 
   uint32_t n = 0;
   for (IndexEnumerator e{*(bias_add_data->shape())}; e.valid(); e.advance())
   {
-    ASSERT_FLOAT_EQ(bias_add_data->as_f32_bufptr()->at(e.current()), out_val[n++]);
+    ASSERT_FLOAT_EQ(out_val[n++], bias_add_data->as_f32_bufptr()->at(e.current()));
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(bias_add), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(bias_add));
 }
 
 /*
@@ -191,14 +191,14 @@ TEST(NodeExecution_FeatureBiasAdd, f32)
 
   // comparing the result
   ASSERT_NE(bias_add_data, nullptr);
-  ASSERT_EQ(bias_add_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(bias_add_data->shape()), Shape({1, 3, 3, 2}));
+  ASSERT_EQ(loco::DataType::FLOAT32, bias_add_data->dtype());
+  ASSERT_EQ(Shape({1, 3, 3, 2}), *(bias_add_data->shape()));
 
   uint32_t n = 0;
   for (IndexEnumerator e{*(bias_add_data->shape())}; e.valid(); e.advance())
   {
-    ASSERT_FLOAT_EQ(bias_add_data->as_f32_bufptr()->at(e.current()), out_val[n++]);
+    ASSERT_FLOAT_EQ(out_val[n++], bias_add_data->as_f32_bufptr()->at(e.current()));
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(feature_bias_add), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, locomotiv::annot_domain(feature_bias_add));
 }

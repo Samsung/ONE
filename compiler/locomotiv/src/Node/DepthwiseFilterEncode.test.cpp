@@ -77,14 +77,14 @@ TEST(NodeExecution_DepthwiseFilterEncode, f32)
 
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{H, W, C, M})); // locomotiv depthwise filter is HWCM
+  ASSERT_EQ(loco::DataType::FLOAT32, enc_data->dtype());
+  ASSERT_EQ((Shape{H, W, C, M}), *(enc_data->shape())); // locomotiv depthwise filter is HWCM
   auto enc_buf = enc_data->as_f32_bufptr();
   for (uint32_t h = 0; h < H; ++h)
     for (uint32_t w = 0; w < W; ++w)
       for (uint32_t c = 0; c < C; ++c)
         for (uint32_t m = 0; m < M; ++m)
-          ASSERT_FLOAT_EQ(pull_buf.at(Index{m, h, w, c}), enc_buf->at(Index{h, w, c, m}));
+          ASSERT_FLOAT_EQ(enc_buf->at(Index{h, w, c, m}), pull_buf.at(Index{m, h, w, c}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::DepthwiseFilter);
+  ASSERT_EQ(loco::Domain::DepthwiseFilter, locomotiv::annot_domain(enc));
 }

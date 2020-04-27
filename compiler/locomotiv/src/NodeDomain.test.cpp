@@ -22,16 +22,16 @@ TEST(NodeDomain, as_annotation)
 {
   loco::Pull node;
 
-  ASSERT_EQ(locomotiv::annot_domain(&node), loco::Domain::Unknown);
+  ASSERT_EQ(loco::Domain::Unknown, locomotiv::annot_domain(&node));
 
   // Set annotation
   locomotiv::annot_domain(&node, loco::Domain::Tensor);
 
   // Get annotation
   const loco::Domain obtained = locomotiv::annot_domain(&node);
-  ASSERT_EQ(obtained, loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, obtained);
 
   // Erase annotation
   locomotiv::erase_annot_domain(&node);
-  ASSERT_EQ(locomotiv::annot_domain(&node), loco::Domain::Unknown);
+  ASSERT_EQ(loco::Domain::Unknown, locomotiv::annot_domain(&node));
 }

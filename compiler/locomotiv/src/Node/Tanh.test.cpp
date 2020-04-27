@@ -54,11 +54,11 @@ TEST(NodeExecution_Tanh, f32)
 
   auto tanh_data = locomotiv::annot_data(tanh);
   ASSERT_NE(tanh_data, nullptr);
-  ASSERT_EQ(tanh_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(tanh_data->shape()), Shape{3});
-  ASSERT_FLOAT_EQ(tanh_data->as_f32_bufptr()->at(Index{0}), 0.0f);
-  ASSERT_FLOAT_EQ(tanh_data->as_f32_bufptr()->at(Index{1}), 0.761594f);
-  ASSERT_FLOAT_EQ(tanh_data->as_f32_bufptr()->at(Index{2}), -0.761594f);
+  ASSERT_EQ(loco::DataType::FLOAT32, tanh_data->dtype());
+  ASSERT_EQ(Shape{3}, *(tanh_data->shape()));
+  ASSERT_FLOAT_EQ(0.0f, tanh_data->as_f32_bufptr()->at(Index{0}));
+  ASSERT_FLOAT_EQ(0.761594f, tanh_data->as_f32_bufptr()->at(Index{1}));
+  ASSERT_FLOAT_EQ(-0.761594f, tanh_data->as_f32_bufptr()->at(Index{2}));
 
-  ASSERT_EQ(locomotiv::annot_domain(tanh), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(tanh));
 }
