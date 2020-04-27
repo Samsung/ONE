@@ -51,22 +51,12 @@ TEST(CircleIfTestDeath, invalid_input_get_index_NEG)
 {
   luci::CircleIf if_node(2, 2);
 
-// TODO Fix this not to use '#ifdef'
-#ifdef NDEBUG
   EXPECT_ANY_THROW(if_node.input(100));
-#else
-  ASSERT_DEBUG_DEATH(if_node.input(100), "");
-#endif
 }
 
 TEST(CircleIfTestDeath, invalid_input_set_index_NEG)
 {
   luci::CircleIf if_node(2, 2);
 
-// TODO Fix this not to use '#ifdef'
-#ifdef NDEBUG
   EXPECT_ANY_THROW(if_node.input(100, nullptr));
-#else
-  ASSERT_DEBUG_DEATH(if_node.input(100), "");
-#endif
 }
