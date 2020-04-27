@@ -24,8 +24,8 @@ TEST(CircleExpTest, constructor)
 {
   luci::CircleExp exp_node;
 
-  ASSERT_EQ(exp_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(exp_node.opcode(), luci::CircleOpcode::EXP);
+  ASSERT_EQ(luci::CircleDialect::get(), exp_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::EXP, exp_node.opcode());
 
-  ASSERT_EQ(exp_node.x(), nullptr);
+  ASSERT_EQ(nullptr, exp_node.x());
 }

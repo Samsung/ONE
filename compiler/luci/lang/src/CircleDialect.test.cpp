@@ -25,7 +25,7 @@ TEST(CircleDialectTest, get_P)
   // get() SHOULD return a valid(non-null) pointer
   ASSERT_NE(d, nullptr);
   // The return value SHOULD be stable across multiple invocations
-  ASSERT_EQ(d, luci::CircleDialect::get());
+  ASSERT_EQ(luci::CircleDialect::get(), d);
 }
 
 TEST(CircleDialectTest, get_N)

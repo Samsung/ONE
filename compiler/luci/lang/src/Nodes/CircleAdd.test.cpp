@@ -24,9 +24,9 @@ TEST(CircleAddTest, constructor_P)
 {
   luci::CircleAdd add_node;
 
-  ASSERT_EQ(add_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(add_node.opcode(), luci::CircleOpcode::ADD);
+  ASSERT_EQ(luci::CircleDialect::get(), add_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ADD, add_node.opcode());
 
-  ASSERT_EQ(add_node.x(), nullptr);
-  ASSERT_EQ(add_node.y(), nullptr);
+  ASSERT_EQ(nullptr, add_node.x());
+  ASSERT_EQ(nullptr, add_node.y());
 }

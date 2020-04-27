@@ -24,8 +24,8 @@ TEST(CircleCosTest, constructor_P)
 {
   luci::CircleCos cos_node;
 
-  ASSERT_EQ(cos_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(cos_node.opcode(), luci::CircleOpcode::COS);
+  ASSERT_EQ(luci::CircleDialect::get(), cos_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::COS, cos_node.opcode());
 
-  ASSERT_EQ(cos_node.x(), nullptr);
+  ASSERT_EQ(nullptr, cos_node.x());
 }

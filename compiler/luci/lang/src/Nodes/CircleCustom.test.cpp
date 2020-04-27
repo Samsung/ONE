@@ -24,15 +24,15 @@ TEST(CircleCustomTest, constructor)
 {
   luci::CircleCustom custom_node(2);
 
-  ASSERT_EQ(custom_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(custom_node.opcode(), luci::CircleOpcode::CUSTOM);
+  ASSERT_EQ(luci::CircleDialect::get(), custom_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::CUSTOM, custom_node.opcode());
 
-  ASSERT_EQ(custom_node.arity(), 2);
-  ASSERT_EQ(custom_node.arg(0), nullptr);
-  ASSERT_EQ(custom_node.arg(1), nullptr);
+  ASSERT_EQ(2, custom_node.arity());
+  ASSERT_EQ(nullptr, custom_node.arg(0));
+  ASSERT_EQ(nullptr, custom_node.arg(1));
 
-  ASSERT_EQ(custom_node.numInputs(), 2);
-  ASSERT_EQ(custom_node.custom_code().size(), 0);
+  ASSERT_EQ(2, custom_node.numInputs());
+  ASSERT_EQ(0, custom_node.custom_code().size());
 }
 
 TEST(CircleCustomTest, constructor_NEG) { ASSERT_DEBUG_DEATH(luci::CircleCustom{0}, ""); }

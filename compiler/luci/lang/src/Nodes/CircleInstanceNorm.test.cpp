@@ -24,12 +24,12 @@ TEST(CircleInstanceNormTest, constructor)
 {
   luci::CircleInstanceNorm instance_norm;
 
-  ASSERT_EQ(instance_norm.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(instance_norm.opcode(), luci::CircleOpcode::INSTANCE_NORM);
+  ASSERT_EQ(luci::CircleDialect::get(), instance_norm.dialect());
+  ASSERT_EQ(luci::CircleOpcode::INSTANCE_NORM, instance_norm.opcode());
 
-  ASSERT_EQ(instance_norm.input(), nullptr);
-  ASSERT_EQ(instance_norm.gamma(), nullptr);
-  ASSERT_EQ(instance_norm.beta(), nullptr);
+  ASSERT_EQ(nullptr, instance_norm.input());
+  ASSERT_EQ(nullptr, instance_norm.gamma());
+  ASSERT_EQ(nullptr, instance_norm.beta());
   ASSERT_FLOAT_EQ(instance_norm.epsilon(), 1e-05);
-  ASSERT_EQ(instance_norm.fusedActivationFunction(), luci::FusedActFunc::UNDEFINED);
+  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, instance_norm.fusedActivationFunction());
 }

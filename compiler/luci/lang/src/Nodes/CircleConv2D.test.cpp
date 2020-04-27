@@ -24,10 +24,10 @@ TEST(CircleConv2Dest, constructor_P)
 {
   luci::CircleConv2D conv2d_node;
 
-  ASSERT_EQ(conv2d_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(conv2d_node.opcode(), luci::CircleOpcode::CONV_2D);
+  ASSERT_EQ(luci::CircleDialect::get(), conv2d_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::CONV_2D, conv2d_node.opcode());
 
-  ASSERT_EQ(conv2d_node.input(), nullptr);
-  ASSERT_EQ(conv2d_node.filter(), nullptr);
-  ASSERT_EQ(conv2d_node.bias(), nullptr);
+  ASSERT_EQ(nullptr, conv2d_node.input());
+  ASSERT_EQ(nullptr, conv2d_node.filter());
+  ASSERT_EQ(nullptr, conv2d_node.bias());
 }

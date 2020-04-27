@@ -24,9 +24,9 @@ TEST(CircleSubTest, constructor_P)
 {
   luci::CircleSub sub_node;
 
-  ASSERT_EQ(sub_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(sub_node.opcode(), luci::CircleOpcode::SUB);
+  ASSERT_EQ(luci::CircleDialect::get(), sub_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::SUB, sub_node.opcode());
 
-  ASSERT_EQ(sub_node.x(), nullptr);
-  ASSERT_EQ(sub_node.y(), nullptr);
+  ASSERT_EQ(nullptr, sub_node.x());
+  ASSERT_EQ(nullptr, sub_node.y());
 }

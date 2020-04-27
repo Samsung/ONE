@@ -24,9 +24,9 @@ TEST(CircleEqualTest, constructor_P)
 {
   luci::CircleEqual or_node;
 
-  ASSERT_EQ(or_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(or_node.opcode(), luci::CircleOpcode::EQUAL);
+  ASSERT_EQ(luci::CircleDialect::get(), or_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::EQUAL, or_node.opcode());
 
-  ASSERT_EQ(or_node.x(), nullptr);
-  ASSERT_EQ(or_node.y(), nullptr);
+  ASSERT_EQ(nullptr, or_node.x());
+  ASSERT_EQ(nullptr, or_node.y());
 }

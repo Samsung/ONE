@@ -33,8 +33,8 @@ TEST(ModuleTest, add)
 
   m->add(std::move(g));
 
-  ASSERT_EQ(m->graph(), g_ptr);
-  ASSERT_EQ(m->graph(0), g_ptr);
+  ASSERT_EQ(g_ptr, m->graph());
+  ASSERT_EQ(g_ptr, m->graph(0));
 }
 
 TEST(ModuleTest, add_more)
@@ -51,11 +51,11 @@ TEST(ModuleTest, add_more)
   m->add(std::move(g2));
   m->add(std::move(g3));
 
-  ASSERT_EQ(m->size(), 3);
-  ASSERT_EQ(m->graph(), g1_ptr);
-  ASSERT_EQ(m->graph(0), g1_ptr);
-  ASSERT_EQ(m->graph(1), g2_ptr);
-  ASSERT_EQ(m->graph(2), g3_ptr);
+  ASSERT_EQ(3, m->size());
+  ASSERT_EQ(g1_ptr, m->graph());
+  ASSERT_EQ(g1_ptr, m->graph(0));
+  ASSERT_EQ(g2_ptr, m->graph(1));
+  ASSERT_EQ(g3_ptr, m->graph(2));
 }
 
 TEST(ModuleTest, add_nullptr_NEG)

@@ -77,12 +77,12 @@ TEST(CircleShapeInferenceRuleTest, minimal_with_CircleRelu)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 2);
-    ASSERT_EQ(shape.dim(0), 3);
-    ASSERT_EQ(shape.dim(1), 4);
+    ASSERT_EQ(2, shape.rank());
+    ASSERT_EQ(3, shape.dim(0));
+    ASSERT_EQ(4, shape.dim(1));
   }
 }
 
@@ -122,14 +122,14 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_valid)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0).value(), 1);
-    ASSERT_EQ(shape.dim(1).value(), 2);
-    ASSERT_EQ(shape.dim(2).value(), 1);
-    ASSERT_EQ(shape.dim(3).value(), 1);
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(1, shape.dim(0).value());
+    ASSERT_EQ(2, shape.dim(1).value());
+    ASSERT_EQ(1, shape.dim(2).value());
+    ASSERT_EQ(1, shape.dim(3).value());
   }
 }
 
@@ -162,14 +162,14 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 4);
-    ASSERT_EQ(shape.dim(0).value(), 1);
-    ASSERT_EQ(shape.dim(1).value(), 2);
-    ASSERT_EQ(shape.dim(2).value(), 2);
-    ASSERT_EQ(shape.dim(3).value(), 1);
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(1, shape.dim(0).value());
+    ASSERT_EQ(2, shape.dim(1).value());
+    ASSERT_EQ(2, shape.dim(2).value());
+    ASSERT_EQ(1, shape.dim(3).value());
   }
 }
 
@@ -235,13 +235,13 @@ TEST(CircleShapeInferenceRuleTest, TFAdd_shapeinf_different)
   // Verify
   {
     ASSERT_TRUE(loco::shape_known(tfl_node));
-    ASSERT_EQ(loco::shape_get(tfl_node).domain(), loco::Domain::Tensor);
+    ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tfl_node).domain());
 
     auto shape = loco::shape_get(tfl_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 3);
-    ASSERT_EQ(shape.dim(0), 2);
-    ASSERT_EQ(shape.dim(1), 3);
-    ASSERT_EQ(shape.dim(2), 5);
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(2, shape.dim(0));
+    ASSERT_EQ(3, shape.dim(1));
+    ASSERT_EQ(5, shape.dim(2));
   }
 }
 
@@ -274,9 +274,9 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
     ASSERT_TRUE(loco::shape_known(g.transpose_node));
 
     auto shape = loco::shape_get(g.transpose_node).as<loco::TensorShape>();
-    ASSERT_EQ(shape.rank(), 3);
-    ASSERT_EQ(shape.dim(0), 8);
-    ASSERT_EQ(shape.dim(1), 1);
-    ASSERT_EQ(shape.dim(2), 3);
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(8, shape.dim(0));
+    ASSERT_EQ(1, shape.dim(1));
+    ASSERT_EQ(3, shape.dim(2));
   }
 }

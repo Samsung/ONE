@@ -24,12 +24,12 @@ TEST(CircleBatchMatMulTest, constructor)
 {
   luci::CircleBatchMatMul batchmatmul_node;
 
-  ASSERT_EQ(batchmatmul_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(batchmatmul_node.opcode(), luci::CircleOpcode::BATCHMATMUL);
+  ASSERT_EQ(luci::CircleDialect::get(), batchmatmul_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::BATCHMATMUL, batchmatmul_node.opcode());
 
-  ASSERT_EQ(batchmatmul_node.x(), nullptr);
-  ASSERT_EQ(batchmatmul_node.y(), nullptr);
+  ASSERT_EQ(nullptr, batchmatmul_node.x());
+  ASSERT_EQ(nullptr, batchmatmul_node.y());
 
-  ASSERT_EQ(batchmatmul_node.adj_x(), false);
-  ASSERT_EQ(batchmatmul_node.adj_y(), false);
+  ASSERT_EQ(false, batchmatmul_node.adj_x());
+  ASSERT_EQ(false, batchmatmul_node.adj_y());
 }

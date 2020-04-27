@@ -24,8 +24,8 @@ TEST(CircleSoftmaxTest, constructor_P)
 {
   luci::CircleSoftmax softmax_node;
 
-  ASSERT_EQ(softmax_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(softmax_node.opcode(), luci::CircleOpcode::SOFTMAX);
+  ASSERT_EQ(luci::CircleDialect::get(), softmax_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::SOFTMAX, softmax_node.opcode());
 
-  ASSERT_EQ(softmax_node.logits(), nullptr);
+  ASSERT_EQ(nullptr, softmax_node.logits());
 }

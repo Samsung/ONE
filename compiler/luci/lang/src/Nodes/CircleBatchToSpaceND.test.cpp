@@ -24,10 +24,10 @@ TEST(CircleBatchToSpaceNDTest, constructor)
 {
   luci::CircleBatchToSpaceND bts_node;
 
-  ASSERT_EQ(bts_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(bts_node.opcode(), luci::CircleOpcode::BATCH_TO_SPACE_ND);
+  ASSERT_EQ(luci::CircleDialect::get(), bts_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::BATCH_TO_SPACE_ND, bts_node.opcode());
 
-  ASSERT_EQ(bts_node.input(), nullptr);
-  ASSERT_EQ(bts_node.block_shape(), nullptr);
-  ASSERT_EQ(bts_node.crops(), nullptr);
+  ASSERT_EQ(nullptr, bts_node.input());
+  ASSERT_EQ(nullptr, bts_node.block_shape());
+  ASSERT_EQ(nullptr, bts_node.crops());
 }

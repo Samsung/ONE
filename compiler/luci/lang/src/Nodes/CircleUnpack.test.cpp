@@ -24,10 +24,10 @@ TEST(CircleUnpackTest, constructor)
 {
   luci::CircleUnpack unpack_node;
 
-  ASSERT_EQ(unpack_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(unpack_node.opcode(), luci::CircleOpcode::UNPACK);
+  ASSERT_EQ(luci::CircleDialect::get(), unpack_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::UNPACK, unpack_node.opcode());
 
-  ASSERT_EQ(unpack_node.value(), nullptr);
-  ASSERT_EQ(unpack_node.num(), 0);
-  ASSERT_EQ(unpack_node.axis(), 0);
+  ASSERT_EQ(nullptr, unpack_node.value());
+  ASSERT_EQ(0, unpack_node.num());
+  ASSERT_EQ(0, unpack_node.axis());
 }

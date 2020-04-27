@@ -24,17 +24,17 @@ TEST(CircleIfTest, constructor)
 {
   luci::CircleIf if_node(2, 2);
 
-  ASSERT_EQ(if_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(if_node.opcode(), luci::CircleOpcode::IF);
+  ASSERT_EQ(luci::CircleDialect::get(), if_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::IF, if_node.opcode());
 
-  ASSERT_EQ(if_node.input_count(), 2);
-  ASSERT_EQ(if_node.output_count(), 2);
+  ASSERT_EQ(2, if_node.input_count());
+  ASSERT_EQ(2, if_node.output_count());
 
-  ASSERT_EQ(if_node.input(0), nullptr);
-  ASSERT_EQ(if_node.input(1), nullptr);
+  ASSERT_EQ(nullptr, if_node.input(0));
+  ASSERT_EQ(nullptr, if_node.input(1));
 
-  ASSERT_EQ(if_node.then_branch(), -1);
-  ASSERT_EQ(if_node.else_branch(), -1);
+  ASSERT_EQ(-1, if_node.then_branch());
+  ASSERT_EQ(-1, if_node.else_branch());
 }
 
 TEST(CircleIfTestDeath, invalid_arity_NEG)

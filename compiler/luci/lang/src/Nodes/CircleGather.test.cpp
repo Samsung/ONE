@@ -24,10 +24,10 @@ TEST(CircleGatherTest, constructor)
 {
   luci::CircleGather gather_node;
 
-  ASSERT_EQ(gather_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(gather_node.opcode(), luci::CircleOpcode::GATHER);
+  ASSERT_EQ(luci::CircleDialect::get(), gather_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::GATHER, gather_node.opcode());
 
-  ASSERT_EQ(gather_node.params(), nullptr);
-  ASSERT_EQ(gather_node.indices(), nullptr);
-  ASSERT_EQ(gather_node.axis(), 0);
+  ASSERT_EQ(nullptr, gather_node.params());
+  ASSERT_EQ(nullptr, gather_node.indices());
+  ASSERT_EQ(0, gather_node.axis());
 }

@@ -24,8 +24,8 @@ TEST(CircleTanhTest, constructor)
 {
   luci::CircleTanh tanh_node;
 
-  ASSERT_EQ(tanh_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(tanh_node.opcode(), luci::CircleOpcode::TANH);
+  ASSERT_EQ(luci::CircleDialect::get(), tanh_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::TANH, tanh_node.opcode());
 
-  ASSERT_EQ(tanh_node.x(), nullptr);
+  ASSERT_EQ(nullptr, tanh_node.x());
 }

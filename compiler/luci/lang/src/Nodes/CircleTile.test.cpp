@@ -24,9 +24,9 @@ TEST(CircleTileTest, constructor)
 {
   luci::CircleTile tile_node;
 
-  ASSERT_EQ(tile_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(tile_node.opcode(), luci::CircleOpcode::TILE);
+  ASSERT_EQ(luci::CircleDialect::get(), tile_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::TILE, tile_node.opcode());
 
-  ASSERT_EQ(tile_node.input(), nullptr);
-  ASSERT_EQ(tile_node.multiples(), nullptr);
+  ASSERT_EQ(nullptr, tile_node.input());
+  ASSERT_EQ(nullptr, tile_node.multiples());
 }

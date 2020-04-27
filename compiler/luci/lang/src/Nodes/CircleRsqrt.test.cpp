@@ -24,8 +24,8 @@ TEST(CircleRsqrtTest, constructor)
 {
   luci::CircleRsqrt rsqrt_node;
 
-  ASSERT_EQ(rsqrt_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(rsqrt_node.opcode(), luci::CircleOpcode::RSQRT);
+  ASSERT_EQ(luci::CircleDialect::get(), rsqrt_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::RSQRT, rsqrt_node.opcode());
 
-  ASSERT_EQ(rsqrt_node.x(), nullptr);
+  ASSERT_EQ(nullptr, rsqrt_node.x());
 }

@@ -24,8 +24,8 @@ TEST(CircleAbsTest, constructor)
 {
   luci::CircleAbs abs_node;
 
-  ASSERT_EQ(abs_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(abs_node.opcode(), luci::CircleOpcode::ABS);
+  ASSERT_EQ(luci::CircleDialect::get(), abs_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ABS, abs_node.opcode());
 
-  ASSERT_EQ(abs_node.x(), nullptr);
+  ASSERT_EQ(nullptr, abs_node.x());
 }

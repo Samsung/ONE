@@ -24,9 +24,9 @@ TEST(CircleMulTest, constructor_P)
 {
   luci::CircleMul mul_node;
 
-  ASSERT_EQ(mul_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(mul_node.opcode(), luci::CircleOpcode::MUL);
+  ASSERT_EQ(luci::CircleDialect::get(), mul_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::MUL, mul_node.opcode());
 
-  ASSERT_EQ(mul_node.x(), nullptr);
-  ASSERT_EQ(mul_node.y(), nullptr);
+  ASSERT_EQ(nullptr, mul_node.x());
+  ASSERT_EQ(nullptr, mul_node.y());
 }
