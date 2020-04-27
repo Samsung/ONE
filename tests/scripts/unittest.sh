@@ -75,7 +75,7 @@ for TEST_BIN in `find $UNITTEST_TEST_DIR -maxdepth 1 -type f -executable`; do
     TEMP_UNITTEST_RESULT=0
 
     # This test requires test model installation
-    if [ "$(basename $TEST_BIN)" == "nnfw_api_gtest" ] && [ ! -d "${TEST_BIN}_models" ]; then
+    if [ "$(basename $TEST_BIN)" == "nnfw_api_gtest" ]; then
         ONEAPI_TEST_MODEL_INSTALLER=$(dirname $BASH_SOURCE)/oneapi_test/install_oneapi_test_nnpackages.sh
         $ONEAPI_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
         if [[ $? -ne 0 ]]; then
