@@ -33,6 +33,7 @@
 #include "kernel/MaxPoolLayer.h"
 #include "kernel/MinLayer.h"
 #include "kernel/MulLayer.h"
+#include "kernel/NegLayer.h"
 #include "kernel/OneHotLayer.h"
 #include "kernel/OperationUtils.h"
 #include "kernel/PackLayer.h"
@@ -939,6 +940,21 @@ void KernelGenerator::visit(const ir::operation::ReduceProd &node)
 
   fn->configure(input_alloc, output_alloc, kernel::ReduceType::kProd, node.param().axes,
                 node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Neg &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Neg::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::NegLayer>();
+
+  fn->configure(ifm_alloc, ofm_alloc);
 
   _return_fn = std::move(fn);
 }

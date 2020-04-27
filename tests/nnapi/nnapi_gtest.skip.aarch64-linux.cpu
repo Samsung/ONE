@@ -47,7 +47,9 @@ GeneratedTests.minimum_simple_quant*
 GeneratedTests.mobilenet*
 GeneratedTests.mul_broadcast_quant*
 GeneratedTests.mul_quant*
-GeneratedTests.neg*
+GeneratedTests.neg
+GeneratedTests.neg_3D_int_nnfw
+GeneratedTests.neg_4D_int_nnfw
 GeneratedTests.not_equal_boolean*
 GeneratedTests.not_equal_quant*
 GeneratedTests.pack_ex_2D_int_*
