@@ -18,6 +18,7 @@
 #ifndef __NNFW_CKER_RUY_RUY_SUPPORT_H__
 #define __NNFW_CKER_RUY_RUY_SUPPORT_H__
 
+#include <util/ConfigSource.h>
 #include <ruy/context.h>
 #include "cker/Types.h"
 
@@ -38,7 +39,7 @@ struct RuyContext
 public:
   RuyContext() : ruy_context_(new ruy::Context)
   {
-    SetMaxNumThreads(kDefaultNumThreadpoolThreads);
+    SetMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
 #ifdef USE_RUY_GEMV
     ruy_context_->cache_policy = ruy::kCacheLHSOnNarrowMul;
 #endif
