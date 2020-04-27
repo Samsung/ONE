@@ -8,11 +8,34 @@ fi
 
 function Usage()
 {
-    echo "Usage: ./tizen_xu4_test.sh --rpm-dir=path/to/rpm-dir --unittest --verification"
-    echo "Usage: ./tizen_xu4_test.sh --test-suite-path=path/to/test-suite.tar.gz --unittest --verification"
-    echo "--rpm-dir : directory containing nnfw.rpm and nnfw-test.rpm"
-    echo "--test-suite-path : filepath to test-suite.tar.gz"
-    echo "--gcov-dir : directory to save gcov files"
+    echo "Usage: ./tizen_xu4_test.sh"
+    echo "Usage: ./tizen_xu4_test.sh --rpm-dir=path/to/rpm-dir"
+    echo "Usage: ./tizen_xu4_test.sh --test-suite-path=path/to/test-suite.tar.gz"
+    echo "Usage: ./tizen_xu4_test.sh --skip-install-model"
+    echo ""
+    echo "--rpm-dir <dir>           : directory containing nnfw.rpm and nnfw-test.rpm"
+    echo "--test-suite-path <dir>   : filepath to test-suite.tar.gz"
+    echo "--skip-install-model      : skip install downloaded model"
+    echo "--gcov-dir <dir>          : directory to save gcov files"
+}
+
+function install_model()
+{
+    # download tflite model files
+    pushd $HOST_HOME
+    tests/scripts/framework/run_test.sh --download=on
+    find tests -name "*.zip" -exec rm {} \;
+    tar -zcf cache.tar.gz tests/scripts/framework/cache
+    $SDB_CMD push cache.tar.gz $TEST_ROOT/.
+    rm -rf cache.tar.gz
+    $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT
+
+    # download api test model file
+    MODEL_CACHE_DIR=$(mktemp -d)
+    tests/scripts/oneapi_test/install_oneapi_test_nnpackages.sh --install-dir $MODEL_CACHE_DIR
+    $SDB_CMD push $MODEL_CACHE_DIR/* $TEST_ROOT/Product/out/unittest/
+    rm -rf $MODEL_CACHE_DIR
+    popd
 }
 
 
@@ -28,15 +51,6 @@ function prepare_rpm_test()
         $SDB_CMD push $file $TEST_ROOT
         $SDB_CMD shell rpm -Uvh $TEST_ROOT/$(basename $file) --force --nodeps
     done
-
-    # download tflite model files
-    pushd $HOST_HOME
-    tests/scripts/framework/run_test.sh --download=on
-    find tests -name "*.zip" -exec rm {} \;
-    tar -zcf cache.tar.gz tests/scripts/framework/cache
-    $SDB_CMD push cache.tar.gz $TEST_ROOT/.
-    rm -rf cache.tar.gz
-    $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT
 }
 
 function prepare_suite_test()
@@ -49,18 +63,9 @@ function prepare_suite_test()
     # install test-suite
     $SDB_CMD push $TEST_SUITE_PATH $TEST_ROOT/$(basename $TEST_SUITE_PATH)
     $SDB_CMD shell tar -zxf $TEST_ROOT/$(basename $TEST_SUITE_PATH) -C $TEST_ROOT
-
-    # download tflite model files
-    pushd $HOST_HOME
-    tests/scripts/framework/run_test.sh --download=on
-    find tests -name "*.zip" -exec rm {} \;
-    tar -zcf cache.tar.gz tests/scripts/framework/cache
-    $SDB_CMD push cache.tar.gz $TEST_ROOT/.
-    rm -rf cache.tar.gz
-    $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT
 }
 
-
+INSTALL_MODEL="1"
 # Parse command argv
 for i in "$@"
 do
@@ -72,8 +77,19 @@ do
         --rpm-dir=*)
             RPM_DIR=${i#*=}
             ;;
+        --rpm-dir)
+            RPM_DIR="$2"
+            shift
+            ;;
         --test-suite-path=*)
             TEST_SUITE_PATH=${i#*=}
+            ;;
+        --test-suite-path)
+            RPM_DIR="$2"
+            shift
+            ;;
+        --skip-install-model)
+            INSTALL_MODEL="0"
             ;;
         --gcov-dir=*)
             GCOV_DIR=${i#*=}
@@ -109,14 +125,19 @@ SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT=$SCRIPT_ROOT/../
 
 if [ -z "$RPM_DIR" ] && [ -z "$TEST_SUITE_PATH" ]; then
-    echo "Please provide --rpm-dir or --test-suite-path"
-    exit 255
+    echo "======= Skip install runtime ======="
 fi
 
 if [ ! -z "$RPM_DIR" ]; then
     prepare_rpm_test
-else
+elif [ ! -z "$TEST_SUITE_PATH" ]; then
     prepare_suite_test
+fi
+
+if [ $INSTALL_MODEL = "1" ]; then
+    install_model
+else
+    echo "======= Skip install model ======="
 fi
 
 if [ -z "${GCOV_DIR}" ]; then
