@@ -28,6 +28,7 @@
 #include <luci/Log.h>
 #include <luci/LogHelper.h>
 
+#include <oops/InternalExn.h>
 #include <oops/UserExn.h>
 
 #include <memory>
@@ -196,8 +197,10 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
   if (!reader.parse(model))
     return nullptr;
 
-  // TODO support multiple subgraph when Circle supports
-  assert(reader.num_subgraph() == 1);
+  if (reader.num_subgraph() != 1)
+  {
+    INTERNAL_EXN("Use 'importModule()' for multiple subgraphs");
+  }
   if (!reader.select_subgraph(0))
     return nullptr;
 
