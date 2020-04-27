@@ -72,6 +72,7 @@ private:
     REG_TFL_OP(GATHER, TFliteOpGather);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
+    REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
     REG_TFL_OP(MEAN, TFliteOpMean);
     REG_TFL_OP(PACK, TFliteOpPack);
