@@ -211,6 +211,8 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   loco::Dimension y_rhs = adj_y ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
 
   assert(x_rhs == y_lhs);
+  (void)x_rhs;
+  (void)y_lhs;
 
   uint32_t out_rank = output_shape.rank();
   output_shape.dim(out_rank - 2) = x_lhs;
