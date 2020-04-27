@@ -45,6 +45,7 @@
 #include "Op/Logistic.h"
 #include "Op/Maximum.h"
 #include "Op/MaxPool2D.h"
+#include "Op/Minimum.h"
 #include "Op/Mean.h"
 #include "Op/Mul.h"
 #include "Op/OneHot.h"
