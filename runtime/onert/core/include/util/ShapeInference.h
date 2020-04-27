@@ -78,6 +78,7 @@ public:
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
+  void visit(const ir::operation::Add &op);
   void visit(const ir::operation::Reshape &op);
 
 private:

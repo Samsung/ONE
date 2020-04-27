@@ -200,6 +200,27 @@ Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_
   StaticInferer
 */
 
+void StaticInferer::visit(const ir::operation::Add &op)
+{
+  const auto lhs_idx{op.getInputs().at(ir::operation::Add::Input::LHS)};
+  const auto &lhs = _operands.at(lhs_idx);
+  const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
+  const auto &rhs = _operands.at(rhs_idx);
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = const_cast<ir::Operands &>(_operands).at(output_idx);
+
+  if (lhs.info().memAllocType() == ir::MemAllocType::DYNAMIC ||
+      rhs.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  {
+    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    return;
+  }
+
+  // re-sizing output shape
+  ir::Shape new_shape = broadcastShapes(lhs.info().shape(), rhs.info().shape());
+  output.info().shape(new_shape);
+}
+
 void StaticInferer::visit(const ir::operation::Reshape &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Reshape::Input::INPUT)};
