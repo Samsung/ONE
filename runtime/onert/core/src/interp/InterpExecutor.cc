@@ -40,11 +40,17 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   {
     ir::IOIndex index{n};
     const auto input_index = _graph.getInputs().at(index);
-    const auto &input = *desc.inputs.at(n);
 
-    auto input_tensor = std::make_shared<ROTensor>(input.info);
+    const auto input = desc.inputs.at(n).get();
+    if (input == nullptr)
+    {
+      // Optional input
+      continue;
+    }
+
+    auto input_tensor = std::make_shared<ROTensor>(input->info);
     input_tensor->setData(std::make_shared<const ir::ExternalData>(
-        reinterpret_cast<const uint8_t *>(input.buffer), input.size));
+        reinterpret_cast<const uint8_t *>(input->buffer), input->size));
     tensor_map[input_index] = input_tensor;
   }
 
@@ -52,11 +58,16 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   {
     ir::IOIndex index{n};
     const auto output_index = _graph.getOutputs().at(index);
-    const auto &output = *desc.outputs.at(n);
+    const auto output = desc.outputs.at(n).get();
+    if (output == nullptr)
+    {
+      // Optional output
+      continue;
+    }
 
-    auto output_tensor = std::make_shared<Tensor>(output.info);
-    output_tensor->setBuffer(
-        std::make_shared<ExternalBuffer>(reinterpret_cast<uint8_t *>(output.buffer), output.size));
+    auto output_tensor = std::make_shared<Tensor>(output->info);
+    output_tensor->setBuffer(std::make_shared<ExternalBuffer>(
+        reinterpret_cast<uint8_t *>(output->buffer), output->size));
     tensor_map[output_index] = output_tensor;
   }
 

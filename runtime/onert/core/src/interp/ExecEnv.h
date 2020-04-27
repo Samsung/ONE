@@ -70,10 +70,26 @@ public:
 
   /**
    * @brief     Return tensor pointer in environment
-   * @param[in] index Tensor index
+   * @param[in] index         Tensor index
+   *            can_optional  @c True if tensor can be optional input, otherwise @c false
    * @return    Tensor pointer
    */
-  const ITensor *tensorAt(const ir::OperandIndex index) const { return _tensors.at(index).get(); }
+  const ITensor *tensorAt(const ir::OperandIndex index, bool can_optional = false) const
+  {
+    if (_tensors.find(index) == _tensors.end())
+    {
+      // It may optional input,
+      // otherwise input is not set by runtime user
+      if (can_optional)
+      {
+        return nullptr;
+      }
+
+      throw std::runtime_error{"ExecEnv: Input is not set"};
+    }
+
+    return _tensors.at(index).get();
+  }
 
   /**
    * @brief     Check environment contains tensor
