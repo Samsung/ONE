@@ -1090,7 +1090,7 @@ public:
     auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->unpack());
     if (unpack == nullptr)
     {
-      INTERNAL_EXN("Unpack IR is not configured correctly");
+      INTERNAL_EXN("CircleUnpack IR is not configured correctly");
     }
 
     auto unpack_shape = loco::shape_get(unpack).as<loco::TensorShape>();
