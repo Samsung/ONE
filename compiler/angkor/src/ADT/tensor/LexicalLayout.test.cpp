@@ -28,7 +28,7 @@ TEST(ADT_TENSOR_LEXICAL_LAYOUT, last)
 
   const nncc::core::ADT::tensor::LexicalLayout l;
 
-  ASSERT_EQ(l.offset(shape, curr) + 1, l.offset(shape, next));
+  ASSERT_EQ(l.offset(shape, next), l.offset(shape, curr) + 1);
 }
 
 TEST(ADT_TENSOR_LEXICAL_LAYOUT, lexical_middle)
@@ -39,7 +39,7 @@ TEST(ADT_TENSOR_LEXICAL_LAYOUT, lexical_middle)
 
   const nncc::core::ADT::tensor::LexicalLayout l;
 
-  ASSERT_EQ(l.offset(shape, curr) + 6, l.offset(shape, next));
+  ASSERT_EQ(l.offset(shape, next), l.offset(shape, curr) + 6);
 }
 
 TEST(ADT_TENSOR_LEXICAL_LAYOUT, lexical_first)
@@ -50,5 +50,5 @@ TEST(ADT_TENSOR_LEXICAL_LAYOUT, lexical_first)
 
   const nncc::core::ADT::tensor::LexicalLayout l;
 
-  ASSERT_EQ(l.offset(shape, curr) + 6 * 3, l.offset(shape, next));
+  ASSERT_EQ(l.offset(shape, next), l.offset(shape, curr) + 6 * 3);
 }

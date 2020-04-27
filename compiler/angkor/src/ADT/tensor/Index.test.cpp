@@ -22,19 +22,19 @@ TEST(ADT_TENSOR_INDEX, ctor)
 {
   nncc::core::ADT::tensor::Index index;
 
-  ASSERT_EQ(index.rank(), 0);
+  ASSERT_EQ(0, index.rank());
 }
 
 TEST(ADT_TENSOR_INDEX, ctor_initializer_list)
 {
   const nncc::core::ADT::tensor::Index index{1, 3, 5, 7};
 
-  ASSERT_EQ(index.rank(), 4);
+  ASSERT_EQ(4, index.rank());
 
-  ASSERT_EQ(index.at(0), 1);
-  ASSERT_EQ(index.at(1), 3);
-  ASSERT_EQ(index.at(2), 5);
-  ASSERT_EQ(index.at(3), 7);
+  ASSERT_EQ(1, index.at(0));
+  ASSERT_EQ(3, index.at(1));
+  ASSERT_EQ(5, index.at(2));
+  ASSERT_EQ(7, index.at(3));
 }
 
 TEST(ADT_TENSOR_INDEX, operator_add)
@@ -43,10 +43,10 @@ TEST(ADT_TENSOR_INDEX, operator_add)
   nncc::core::ADT::tensor::Index index2{5, 6, 7, 8};
   nncc::core::ADT::tensor::Index result{index1 + index2};
 
-  ASSERT_EQ(result.at(0), 6);
-  ASSERT_EQ(result.at(1), 8);
-  ASSERT_EQ(result.at(2), 10);
-  ASSERT_EQ(result.at(3), 12);
+  ASSERT_EQ(6, result.at(0));
+  ASSERT_EQ(8, result.at(1));
+  ASSERT_EQ(10, result.at(2));
+  ASSERT_EQ(12, result.at(3));
 }
 
 TEST(ADT_TENSOR_INDEX, operator_eqaul)
@@ -75,7 +75,7 @@ TEST(ADT_TENSOR_INDEX, resize)
 
   index.resize(4);
 
-  ASSERT_EQ(index.rank(), 4);
+  ASSERT_EQ(4, index.rank());
 }
 
 TEST(ADT_TENSOR_INDEX, at)
@@ -89,7 +89,7 @@ TEST(ADT_TENSOR_INDEX, at)
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
     index.at(axis) = indices[axis];
-    ASSERT_EQ(index.at(axis), indices[axis]);
+    ASSERT_EQ(indices[axis], index.at(axis));
   }
 }
 
@@ -98,11 +98,11 @@ TEST(ADT_TENSOR_INDEX, copy)
   const nncc::core::ADT::tensor::Index original{3, 5, 2, 7};
   const nncc::core::ADT::tensor::Index copied{original};
 
-  ASSERT_EQ(original.rank(), copied.rank());
+  ASSERT_EQ(copied.rank(), original.rank());
 
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
-    ASSERT_EQ(original.at(axis), copied.at(axis));
+    ASSERT_EQ(copied.at(axis), original.at(axis));
   }
 }
 
@@ -112,8 +112,8 @@ TEST(ADT_TENSOR_INDEX, fill)
 
   index.fill(3);
 
-  ASSERT_EQ(index.rank(), 2);
+  ASSERT_EQ(2, index.rank());
 
-  ASSERT_EQ(index.at(0), 3);
-  ASSERT_EQ(index.at(1), 3);
+  ASSERT_EQ(3, index.at(0));
+  ASSERT_EQ(3, index.at(1));
 }

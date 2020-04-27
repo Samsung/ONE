@@ -35,7 +35,7 @@ TEST(ADT_TENSOR_OVERLAY, ctor)
   };
   auto view = make_overlay<int, LexicalLayout>(shape, data);
 
-  ASSERT_EQ(view.shape(), shape);
+  ASSERT_EQ(shape, view.shape());
 }
 
 TEST(ADT_TENSOR_OVERLAY, read)
@@ -51,9 +51,9 @@ TEST(ADT_TENSOR_OVERLAY, read)
 
   const Index index{1, 2};
 
-  ASSERT_EQ(data[layout.offset(shape, index)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, index)]);
   data[layout.offset(shape, index)] = 2;
-  ASSERT_EQ(view.at(index), 2);
+  ASSERT_EQ(2, view.at(index));
 }
 
 TEST(ADT_TENSOR_OVERLAY, access)
@@ -69,7 +69,7 @@ TEST(ADT_TENSOR_OVERLAY, access)
 
   const Index index{1, 2};
 
-  ASSERT_EQ(data[layout.offset(shape, index)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, index)]);
   view.at(index) = 4;
-  ASSERT_EQ(data[layout.offset(shape, index)], 4);
+  ASSERT_EQ(4, data[layout.offset(shape, index)]);
 }

@@ -25,7 +25,7 @@ TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, col_increment)
   const Shape shape{4, 3, 6, 5};
   const NCHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1, 1) + 1, l.offset(shape, 1, 1, 1, 2));
+  ASSERT_EQ(l.offset(shape, 1, 1, 1, 2), l.offset(shape, 1, 1, 1, 1) + 1);
 }
 
 TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, row_increment)
@@ -33,7 +33,7 @@ TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, row_increment)
   const Shape shape{4, 3, 6, 5};
   const NCHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1, 1) + 5, l.offset(shape, 1, 1, 2, 1));
+  ASSERT_EQ(l.offset(shape, 1, 1, 2, 1), l.offset(shape, 1, 1, 1, 1) + 5);
 }
 
 TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, ch_increment)
@@ -41,7 +41,7 @@ TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, ch_increment)
   const Shape shape{4, 3, 6, 5};
   const NCHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1, 1) + 6 * 5, l.offset(shape, 1, 2, 1, 1));
+  ASSERT_EQ(l.offset(shape, 1, 2, 1, 1), l.offset(shape, 1, 1, 1, 1) + 6 * 5);
 }
 
 TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, n_increment)
@@ -49,5 +49,5 @@ TEST(ADT_KERNEL_KERNEL_NCHW_LAYOUT, n_increment)
   const Shape shape{4, 3, 6, 5};
   const NCHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1, 1) + 3 * 6 * 5, l.offset(shape, 2, 1, 1, 1));
+  ASSERT_EQ(l.offset(shape, 2, 1, 1, 1), l.offset(shape, 1, 1, 1, 1) + 3 * 6 * 5);
 }

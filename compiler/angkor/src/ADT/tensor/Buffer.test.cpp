@@ -31,7 +31,7 @@ TEST(ADT_TENSOR_BUFFER, ctor)
   const Shape shape{2, 3};
   auto buffer = make_buffer<int, LexicalLayout>(shape);
 
-  ASSERT_EQ(buffer.shape(), shape);
+  ASSERT_EQ(shape, buffer.shape());
 }
 
 TEST(ADT_TENSOR_BUFFER, access)
@@ -41,9 +41,9 @@ TEST(ADT_TENSOR_BUFFER, access)
 
   const Index index{1, 2};
 
-  ASSERT_EQ(buffer.at(index), 0);
+  ASSERT_EQ(0, buffer.at(index));
   buffer.at(index) = 4;
 
   // Casting is introduced to use 'const T &at(...) const' method
-  ASSERT_EQ(static_cast<const Buffer<int> &>(buffer).at(index), 4);
+  ASSERT_EQ(4, static_cast<const Buffer<int> &>(buffer).at(index));
 }

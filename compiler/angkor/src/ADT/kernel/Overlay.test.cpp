@@ -34,10 +34,10 @@ TEST(ADT_KERNEL_OVERLAY, ctor)
   };
   auto overlay = make_overlay<int, NCHWLayout>(shape, data);
 
-  ASSERT_EQ(overlay.shape().count(), shape.count());
-  ASSERT_EQ(overlay.shape().depth(), shape.depth());
-  ASSERT_EQ(overlay.shape().height(), shape.height());
-  ASSERT_EQ(overlay.shape().width(), shape.width());
+  ASSERT_EQ(shape.count(), overlay.shape().count());
+  ASSERT_EQ(shape.depth(), overlay.shape().depth());
+  ASSERT_EQ(shape.height(), overlay.shape().height());
+  ASSERT_EQ(shape.width(), overlay.shape().width());
 }
 
 TEST(ADT_KERNEL_OVERLAY, read)
@@ -51,9 +51,9 @@ TEST(ADT_KERNEL_OVERLAY, read)
 
   NCHWLayout layout{};
 
-  ASSERT_EQ(data[layout.offset(shape, 1, 3, 5, 2)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, 1, 3, 5, 2)]);
   data[layout.offset(shape, 1, 3, 5, 2)] = 2;
-  ASSERT_EQ(overlay.at(1, 3, 5, 2), 2);
+  ASSERT_EQ(2, overlay.at(1, 3, 5, 2));
 }
 
 TEST(ADT_KERNEL_OVERLAY, access)
@@ -67,7 +67,7 @@ TEST(ADT_KERNEL_OVERLAY, access)
 
   NCHWLayout layout{};
 
-  ASSERT_EQ(data[layout.offset(shape, 1, 3, 5, 2)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, 1, 3, 5, 2)]);
   overlay.at(1, 3, 5, 2) = 4;
-  ASSERT_EQ(data[layout.offset(shape, 1, 3, 5, 2)], 4);
+  ASSERT_EQ(4, data[layout.offset(shape, 1, 3, 5, 2)]);
 }

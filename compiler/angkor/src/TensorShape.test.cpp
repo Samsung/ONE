@@ -22,19 +22,19 @@ TEST(TensorShapeTest, ctor)
 {
   angkor::TensorShape shape;
 
-  ASSERT_EQ(shape.rank(), 0);
+  ASSERT_EQ(0, shape.rank());
 }
 
 TEST(TensorShapeTest, ctor_initializer_list)
 {
   angkor::TensorShape shape{1, 3, 5, 7};
 
-  ASSERT_EQ(shape.rank(), 4);
+  ASSERT_EQ(4, shape.rank());
 
-  ASSERT_EQ(shape.dim(0), 1);
-  ASSERT_EQ(shape.dim(1), 3);
-  ASSERT_EQ(shape.dim(2), 5);
-  ASSERT_EQ(shape.dim(3), 7);
+  ASSERT_EQ(1, shape.dim(0));
+  ASSERT_EQ(3, shape.dim(1));
+  ASSERT_EQ(5, shape.dim(2));
+  ASSERT_EQ(7, shape.dim(3));
 }
 
 TEST(TensorShapeTest, resize)
@@ -43,7 +43,7 @@ TEST(TensorShapeTest, resize)
 
   shape.resize(4);
 
-  ASSERT_EQ(shape.rank(), 4);
+  ASSERT_EQ(4, shape.rank());
 }
 
 TEST(TensorShapeTest, dim)
@@ -57,7 +57,7 @@ TEST(TensorShapeTest, dim)
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
     shape.dim(axis) = dims[axis];
-    ASSERT_EQ(shape.dim(axis), dims[axis]);
+    ASSERT_EQ(dims[axis], shape.dim(axis));
   }
 }
 
@@ -66,11 +66,11 @@ TEST(TensorShapeTest, copy)
   const angkor::TensorShape original{3, 5, 2, 7};
   const angkor::TensorShape copied{original};
 
-  ASSERT_EQ(original.rank(), copied.rank());
+  ASSERT_EQ(copied.rank(), original.rank());
 
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
-    ASSERT_EQ(original.dim(axis), copied.dim(axis));
+    ASSERT_EQ(copied.dim(axis), original.dim(axis));
   }
 }
 

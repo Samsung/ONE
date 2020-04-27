@@ -22,19 +22,19 @@ TEST(ADT_TENSOR_SHAPE, ctor)
 {
   nncc::core::ADT::tensor::Shape shape;
 
-  ASSERT_EQ(shape.rank(), 0);
+  ASSERT_EQ(0, shape.rank());
 }
 
 TEST(ADT_TENSOR_SHAPE, ctor_initializer_list)
 {
   nncc::core::ADT::tensor::Shape shape{1, 3, 5, 7};
 
-  ASSERT_EQ(shape.rank(), 4);
+  ASSERT_EQ(4, shape.rank());
 
-  ASSERT_EQ(shape.dim(0), 1);
-  ASSERT_EQ(shape.dim(1), 3);
-  ASSERT_EQ(shape.dim(2), 5);
-  ASSERT_EQ(shape.dim(3), 7);
+  ASSERT_EQ(1, shape.dim(0));
+  ASSERT_EQ(3, shape.dim(1));
+  ASSERT_EQ(5, shape.dim(2));
+  ASSERT_EQ(7, shape.dim(3));
 }
 
 TEST(ADT_TENSOR_SHAPE, resize)
@@ -43,7 +43,7 @@ TEST(ADT_TENSOR_SHAPE, resize)
 
   shape.resize(4);
 
-  ASSERT_EQ(shape.rank(), 4);
+  ASSERT_EQ(4, shape.rank());
 }
 
 TEST(ADT_TENSOR_SHAPE, dim)
@@ -57,7 +57,7 @@ TEST(ADT_TENSOR_SHAPE, dim)
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
     shape.dim(axis) = dims[axis];
-    ASSERT_EQ(shape.dim(axis), dims[axis]);
+    ASSERT_EQ(dims[axis], shape.dim(axis));
   }
 }
 
@@ -66,11 +66,11 @@ TEST(ADT_TENSOR_SHAPE, copy)
   const nncc::core::ADT::tensor::Shape original{3, 5, 2, 7};
   const nncc::core::ADT::tensor::Shape copied{original};
 
-  ASSERT_EQ(original.rank(), copied.rank());
+  ASSERT_EQ(copied.rank(), original.rank());
 
   for (uint32_t axis = 0; axis < 4; ++axis)
   {
-    ASSERT_EQ(original.dim(axis), copied.dim(axis));
+    ASSERT_EQ(copied.dim(axis), original.dim(axis));
   }
 }
 
@@ -81,7 +81,7 @@ TEST(ADT_TENSOR_SHAPE, num_elements_rank_0)
 
   Shape rank_0_shape;
 
-  ASSERT_EQ(num_elements(rank_0_shape), 1);
+  ASSERT_EQ(1, num_elements(rank_0_shape));
 }
 
 TEST(ADT_TENSOR_SHAPE, num_elements_zero)
@@ -89,7 +89,7 @@ TEST(ADT_TENSOR_SHAPE, num_elements_zero)
   using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
 
-  ASSERT_EQ(num_elements(Shape{0, 0, 0, 0}), 0);
+  ASSERT_EQ(0, num_elements(Shape{0, 0, 0, 0}));
 }
 
 TEST(ADT_TENSOR_SHAPE, num_elements_nonzero)
@@ -97,7 +97,7 @@ TEST(ADT_TENSOR_SHAPE, num_elements_nonzero)
   using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
 
-  ASSERT_EQ(num_elements(Shape{2, 3}), 6);
+  ASSERT_EQ(6, num_elements(Shape{2, 3}));
 }
 
 TEST(ADT_TENSOR_SHAPE, num_elements_nulldim)
@@ -105,7 +105,7 @@ TEST(ADT_TENSOR_SHAPE, num_elements_nulldim)
   using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
 
-  ASSERT_EQ(num_elements(Shape{2, 0, 3}), 0);
+  ASSERT_EQ(0, num_elements(Shape{2, 0, 3}));
 }
 
 TEST(ADT_TENSOR_SHAPE, squeeze_neg)
@@ -115,10 +115,10 @@ TEST(ADT_TENSOR_SHAPE, squeeze_neg)
 
   auto squeezed = squeeze(Shape{3, 5, 2});
 
-  ASSERT_EQ(squeezed.rank(), 3);
-  ASSERT_EQ(squeezed.dim(0), 3);
-  ASSERT_EQ(squeezed.dim(1), 5);
-  ASSERT_EQ(squeezed.dim(2), 2);
+  ASSERT_EQ(3, squeezed.rank());
+  ASSERT_EQ(3, squeezed.dim(0));
+  ASSERT_EQ(5, squeezed.dim(1));
+  ASSERT_EQ(2, squeezed.dim(2));
 }
 
 TEST(ADT_TENSOR_SHAPE, squeeze_neg_0)
@@ -128,10 +128,10 @@ TEST(ADT_TENSOR_SHAPE, squeeze_neg_0)
 
   auto squeezed = squeeze(Shape{3, 0, 2});
 
-  ASSERT_EQ(squeezed.rank(), 3);
-  ASSERT_EQ(squeezed.dim(0), 3);
-  ASSERT_EQ(squeezed.dim(1), 0);
-  ASSERT_EQ(squeezed.dim(2), 2);
+  ASSERT_EQ(3, squeezed.rank());
+  ASSERT_EQ(3, squeezed.dim(0));
+  ASSERT_EQ(0, squeezed.dim(1));
+  ASSERT_EQ(2, squeezed.dim(2));
 }
 
 TEST(ADT_TENSOR_SHAPE, squeeze_pos)
@@ -141,9 +141,9 @@ TEST(ADT_TENSOR_SHAPE, squeeze_pos)
 
   auto squeezed = squeeze(Shape{3, 1, 2});
 
-  ASSERT_EQ(squeezed.rank(), 2);
-  ASSERT_EQ(squeezed.dim(0), 3);
-  ASSERT_EQ(squeezed.dim(1), 2);
+  ASSERT_EQ(2, squeezed.rank());
+  ASSERT_EQ(3, squeezed.dim(0));
+  ASSERT_EQ(2, squeezed.dim(1));
 }
 
 TEST(ADT_TENSOR_SHAPE, squeeze_nested)
@@ -155,9 +155,9 @@ TEST(ADT_TENSOR_SHAPE, squeeze_nested)
 
   shape.squeeze().squeeze();
 
-  ASSERT_EQ(shape.rank(), 2);
-  ASSERT_EQ(shape.dim(0), 3);
-  ASSERT_EQ(shape.dim(1), 2);
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_EQ(3, shape.dim(0));
+  ASSERT_EQ(2, shape.dim(1));
 }
 
 TEST(ADT_TENSOR_SHAPE, eq_negative_on_unmatched_rank)

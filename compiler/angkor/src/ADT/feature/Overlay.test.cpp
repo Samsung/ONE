@@ -34,9 +34,9 @@ TEST(ADT_FEATURE_OVERLAY, ctor)
   };
   auto overlay = make_overlay<int, CHWLayout>(shape, data);
 
-  ASSERT_EQ(overlay.shape().depth(), shape.depth());
-  ASSERT_EQ(overlay.shape().height(), shape.height());
-  ASSERT_EQ(overlay.shape().width(), shape.width());
+  ASSERT_EQ(shape.depth(), overlay.shape().depth());
+  ASSERT_EQ(shape.height(), overlay.shape().height());
+  ASSERT_EQ(shape.width(), overlay.shape().width());
 }
 
 TEST(ADT_FEATURE_OVERLAY, read)
@@ -50,9 +50,9 @@ TEST(ADT_FEATURE_OVERLAY, read)
 
   CHWLayout layout{};
 
-  ASSERT_EQ(data[layout.offset(shape, 3, 5, 2)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, 3, 5, 2)]);
   data[layout.offset(shape, 3, 5, 2)] = 2;
-  ASSERT_EQ(overlay.at(3, 5, 2), 2);
+  ASSERT_EQ(2, overlay.at(3, 5, 2));
 }
 
 TEST(ADT_FEATURE_OVERLAY, access)
@@ -66,7 +66,7 @@ TEST(ADT_FEATURE_OVERLAY, access)
 
   CHWLayout layout{};
 
-  ASSERT_EQ(data[layout.offset(shape, 3, 5, 2)], 0);
+  ASSERT_EQ(0, data[layout.offset(shape, 3, 5, 2)]);
   overlay.at(3, 5, 2) = 4;
-  ASSERT_EQ(data[layout.offset(shape, 3, 5, 2)], 4);
+  ASSERT_EQ(4, data[layout.offset(shape, 3, 5, 2)]);
 }
