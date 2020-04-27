@@ -57,21 +57,11 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   // (1) create CircleConst
   auto const_node = graph->nodes()->create<CircleConst>();
   const circle::TensorT &const_tensor = *tensors[tensor_index];
-  const_node->name(tensor_name(const_tensor));
-  auto quantization = luci::tensor_quantization(const_tensor);
-  if (quantization)
-  {
-    auto quantparam = luci::luci_quantparam(quantization);
-    if (quantparam.get())
-      const_node->quantparam(std::move(quantparam));
-  }
+  copy_tensor_attributes(const_tensor, const_node);
 
   INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << std::endl;
 
-  // (2) set data_type to CircleConst
-  const_node->dtype(luci_datatype(const_tensor.type));
-
-  // (3) set shape to CicleConst
+  // (2) set shape to CicleConst
   std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
   const_node->rank(const_dims.size());
   uint32_t num_elements = 1;
@@ -81,7 +71,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
     num_elements = num_elements * const_dims[r];
   }
 
-  // (4) constant values from circle buffer
+  // (3) constant values from circle buffer
   const std::vector<uint8_t> &buffer = reader->buffers()[const_tensor.buffer]->data;
   if (buffer.empty())
     throw oops::UserExn("Empty buffer");

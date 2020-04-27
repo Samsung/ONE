@@ -39,16 +39,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   assert(outputs.size() == 1);
   {
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
-
-    node->name(tensor_name(output_tensor));
-
-    auto quantization = tensor_quantization(output_tensor);
-    if (quantization)
-    {
-      auto quantparam = luci_quantparam(quantization);
-      if (quantparam)
-        node->quantparam(std::move(quantparam));
-    }
+    copy_tensor_attributes(output_tensor, node);
   }
 
   // Register node's only output.

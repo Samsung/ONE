@@ -109,19 +109,10 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
     const circle::TensorT &output_tensor = *tensors[outputs[n]];
 
     auto *nodeout = graph->nodes()->create<CircleUnpackOut>();
+    copy_tensor_attributes(output_tensor, nodeout);
 
     nodeout->unpack(node);
     nodeout->index(n);
-
-    nodeout->name(tensor_name(output_tensor));
-
-    auto quantization = tensor_quantization(output_tensor);
-    if (quantization)
-    {
-      auto quantparam = luci_quantparam(quantization);
-      if (quantparam)
-        node->quantparam(std::move(quantparam));
-    }
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }

@@ -159,6 +159,19 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
   return nullptr;
 }
 
+void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
+{
+  node->name(tensor_name(tensor));
+  node->dtype(luci_datatype(tensor.type));
+  const auto *quantization = tensor.quantization.get();
+  if (quantization != nullptr)
+  {
+    auto quantparam = luci_quantparam(quantization);
+    if (quantparam)
+      node->quantparam(std::move(quantparam));
+  }
+}
+
 circle::BuiltinOperator CircleReader::builtin_code(const circle::OperatorT &op) const
 {
   const auto &op_codes = opcodes();

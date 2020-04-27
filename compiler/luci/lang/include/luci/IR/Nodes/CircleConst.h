@@ -33,7 +33,6 @@ namespace luci
  * @note  This will not be exported as a specific op
  */
 class CircleConst final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CONST>>,
-                          public loco::NodeMixin<loco::NodeTrait::DataType>,
                           public loco::NodeMixin<loco::NodeTrait::TensorShape>
 {
 public:

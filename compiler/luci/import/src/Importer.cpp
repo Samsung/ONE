@@ -57,15 +57,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     assert(input_node != nullptr);
     const circle::TensorT &tensor = *tensors[input];
 
-    auto tname = luci::tensor_name(tensor);
-    input_node->name(tname);
-    auto quantization = luci::tensor_quantization(tensor);
-    if (quantization)
-    {
-      auto quantparam = luci::luci_quantparam(quantization);
-      if (quantparam.get())
-        input_node->quantparam(std::move(quantparam));
-    }
+    luci::copy_tensor_attributes(tensor, input_node);
 
     INFO(l) << "[luci] NodeFinder INPUT(" << input << ") = " << input_node << std::endl;
     nodefinder->enroll(input, input_node);
@@ -76,19 +68,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     for (uint32_t r = 0; r < input_dims.size(); ++r)
       input_node->dim(r) = loco::Dimension(input_dims[r]);
 
-    // Data type of Input
-    auto dtype = luci::luci_datatype(tensor.type);
-    input_node->dtype(dtype);
-
     // Name
     auto graph_input = graph->inputs()->create();
-    graph_input->name(tname);
+    graph_input->name(input_node->name());
 
     // Set GraphInputOutputIndex for graph
     input_node->index(graph_input->index());
 
     // Data type
-    graph_input->dtype(dtype);
+    graph_input->dtype(input_node->dtype());
   }
 
   // Create CircleConst nodes for constant tensors.
