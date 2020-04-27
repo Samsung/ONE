@@ -39,6 +39,7 @@
 #include "ir/operation/Cast.h"
 #include "ir/operation/Div.h"
 #include "ir/operation/Exp.h"
+#include "ir/operation/ExpandDims.h"
 #include "ir/operation/ReduceMax.h"
 #include "ir/operation/Comparison.h"
 #include "ir/operation/LogicalAnd.h"

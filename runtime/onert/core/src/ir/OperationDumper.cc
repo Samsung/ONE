@@ -157,6 +157,15 @@ void OperationDumper::visit(const Exp &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ExpandDims &node)
+{
+  VERBOSE(LIR) << "* ExpandDims" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ExpandDims::Input::INPUT).value()
+               << ") AXIS(" << node.getInputs().at(ExpandDims::Input::AXIS).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Floor &node)
 {
   VERBOSE(LIR) << "* Floor" << std::endl;
