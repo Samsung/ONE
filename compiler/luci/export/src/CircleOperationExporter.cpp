@@ -265,7 +265,7 @@ void OperationExporter::visit(luci::CircleCos *node)
 
 void OperationExporter::visit(luci::CircleCustom *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CUSTOM);
+  uint32_t op_idx = md.registerCustomOpcode(node->custom_code());
   std::vector<int32_t> inputs_vec;
   for (uint32_t i = 0; i < node->numInputs(); i++)
   {
