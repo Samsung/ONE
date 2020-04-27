@@ -25,5 +25,5 @@ TEST(Circle2CircleTest, NoArg_NEG)
 
   ::testing::internal::CaptureStdout();
   int result = entry(1, argv.argv());
-  ASSERT_EQ(result, 255);
+  ASSERT_EQ(255, result);
 }
