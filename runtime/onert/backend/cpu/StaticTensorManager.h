@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_TENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CPU_TENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
+#define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 
 #include "MemoryManager.h"
 #include "operand/Tensor.h"
@@ -31,11 +31,11 @@ namespace backend
 namespace cpu
 {
 
-class TensorManager : public backend::ITensorManager
+class StaticTensorManager : public backend::ITensorManager
 {
 public:
-  TensorManager();
-  virtual ~TensorManager() = default;
+  StaticTensorManager();
+  virtual ~StaticTensorManager() = default;
 
   void allocateConsts(void);
   void allocateNonconsts(void);
@@ -62,4 +62,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_TENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__

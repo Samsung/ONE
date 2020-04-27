@@ -27,7 +27,7 @@ namespace backend
 namespace cpu
 {
 
-TensorBuilder::TensorBuilder() : _tensor_mgr{new TensorManager()}
+TensorBuilder::TensorBuilder() : _static_tensor_mgr{new StaticTensorManager()}
 {
   // DO NOTHING
 }
@@ -46,11 +46,14 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
   const auto size = tensor_info.total_size();
-  _tensor_mgr->buildTensor(ind, tensor_info, _constants.contains(ind));
-  _tensor_mgr->claimPlan(ind, size);
+  _static_tensor_mgr->buildTensor(ind, tensor_info, _constants.contains(ind));
+  _static_tensor_mgr->claimPlan(ind, size);
 }
 
-void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind) { _tensor_mgr->releasePlan(ind); }
+void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
+{
+  _static_tensor_mgr->releasePlan(ind);
+}
 
 bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 {
@@ -59,8 +62,8 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 
 void TensorBuilder::prepare(void)
 {
-  _tensor_mgr->allocateConsts();
-  _tensor_mgr->allocateNonconsts();
+  _static_tensor_mgr->allocateConsts();
+  _static_tensor_mgr->allocateNonconsts();
 }
 
 void TensorBuilder::allocate()
@@ -71,21 +74,21 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _tensor_mgr->at(ind);
+  return _static_tensor_mgr->at(ind);
 }
 
-void TensorBuilder::iterate(const IterateFunction &fn) { _tensor_mgr->iterate(fn); }
+void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  auto ret = _tensor_mgr->at(ind);
+  auto ret = _static_tensor_mgr->at(ind);
   assert(ret != nullptr);
   return ret;
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseTensorManager(void)
 {
-  return std::move(_tensor_mgr);
+  return std::move(_static_tensor_mgr);
 }
 
 } // namespace cpu
