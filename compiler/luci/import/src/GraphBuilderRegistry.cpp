@@ -54,6 +54,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                   // 22
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                       // 76
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
+  CIRCLE_NODE(SQUEEZE, CircleSqueezeGraphBuilder);                   // 43
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69
@@ -84,7 +85,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_EMBEDDING_LOOKUP_SPARSE = 33,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
   // BuiltinOperator_SPACE_TO_BATCH_ND = 38,
-  // BuiltinOperator_SQUEEZE = 43,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_STRIDED_SLICE = 45,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,

@@ -45,6 +45,7 @@
 #include "Op/Rsqrt.h"
 #include "Op/Softmax.h"
 #include "Op/Sqrt.h"
+#include "Op/Squeeze.h"
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
 #include "Op/Tile.h"

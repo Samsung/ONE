@@ -45,6 +45,7 @@
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleSoftmax.h"
+#include "Nodes/CircleSqueeze.h"
 #include "Nodes/CircleSub.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
