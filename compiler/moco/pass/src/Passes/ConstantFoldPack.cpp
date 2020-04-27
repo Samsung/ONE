@@ -24,6 +24,8 @@
 
 #include <moco/Support/NodeAs.h>
 
+#include <loco/IR/TensorShape.h>
+
 #include <oops/UserExn.h>
 
 #include <cassert>
@@ -31,19 +33,6 @@
 
 namespace
 {
-
-// TODO move to loco
-bool equal(const loco::TensorShape &lhs, const loco::TensorShape &rhs)
-{
-  if (lhs.rank() != rhs.rank())
-    return false;
-  for (uint32_t axis = 0; axis < lhs.rank(); ++axis)
-  {
-    if (!(lhs.dim(axis) == rhs.dim(axis)))
-      return false;
-  }
-  return true;
-}
 
 bool valid_axis_range(int32_t output_rank, int32_t pack_axis)
 {
@@ -83,7 +72,7 @@ bool constantfold_pack(moco::TFPack *node)
     auto input_i = input_nodes.at(index);
     auto shape_i = moco::tensor_shape(input_i);
     auto dtype_i = input_i->dtype();
-    if (!equal(shape_0, shape_i))
+    if (!(shape_0 == shape_i))
       return false;
     if (dtype_0 != dtype_i)
       return false;
