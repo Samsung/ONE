@@ -55,6 +55,7 @@
 #include "Op/Sqrt.h"
 #include "Op/Square.h"
 #include "Op/SquaredDifference.h"
+#include "Op/Squeeze.h"
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
 #include "Op/Tile.h"

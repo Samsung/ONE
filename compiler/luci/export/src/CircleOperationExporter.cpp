@@ -84,6 +84,7 @@ public:
   void visit(luci::CircleSpaceToBatchND *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
+  void visit(luci::CircleSqueeze *) final;
   void visit(luci::CircleStridedSlice *) final;
   void visit(luci::CircleSub *) final;
   void visit(luci::CircleTanh *) final;
@@ -670,6 +671,25 @@ void OperationExporter::visit(luci::CircleSquaredDifference *node)
   auto options = CreateSquaredDifferenceOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SquaredDifferenceOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSqueeze *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SQUEEZE);
+  std::vector<int32_t> inputs{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto squeeze_dims = builder.CreateVector<int32_t>(
+      node->squeeze_dim_num(), [node](size_t i) { return node->squeeze_dim(i); });
+
+  auto options = CreateSqueezeOptions(builder, squeeze_dims);
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_SqueezeOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
