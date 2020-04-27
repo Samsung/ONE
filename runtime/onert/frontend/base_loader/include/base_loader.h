@@ -112,6 +112,7 @@ protected:
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
+  void loadExpandDims(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
   void loadSpaceToBatchND(const Operator *op, ir::Graph &subg);
@@ -819,6 +820,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadExp(const Operator *op, ir::G
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadExpandDims(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ExpandDims(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadGather(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1326,6 +1339,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_EXP:
       loadExp(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_EXPAND_DIMS:
+      loadExpandDims(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_GATHER:
       loadGather(op, subg);
