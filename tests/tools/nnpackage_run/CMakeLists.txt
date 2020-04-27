@@ -6,14 +6,11 @@ if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-find_package(HDF5 COMPONENTS CXX QUIET)
+nnfw_find_package(HDF5 COMPONENTS CXX QUIET)
 if(NOT HDF5_FOUND)
-  message(WARNING "HDF5 NOT found. Install libhdf5-dev to build nnpackage_run.")
+  message(WARNING "HDF5 NOT found. Install libhdf5-dev or set EXT_HDF5_DIR to build nnpackage_run.")
   return()
 endif(NOT HDF5_FOUND)
-
-# Append missing libaec, which is required by libsz, which is required by libhdf5.
-list(APPEND HDF5_CXX_LIBRARIES aec)
 
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnpackage_run.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
