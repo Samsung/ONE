@@ -17,6 +17,7 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -77,6 +78,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   logo::Phase phase;
 
   /* TRANSFORM DECLARATION BEGIN */
+  if (_options->query(Options::Algorithm::ResolveCustomOpBatchMatMul))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
+  }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
