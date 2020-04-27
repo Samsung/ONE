@@ -210,6 +210,9 @@ message WhileOptions {
   optional int32 body_subgraph_index = 2;
 }
 
+message MaximumMinimumOptions {
+  // None
+}
 
 message Operation {
   optional string type = 1;
@@ -250,6 +253,7 @@ message Operation {
   optional IfOptions if_options = 131;
   optional WhileOptions while_options = 132;
   optional SpaceToBatchNDOptions space_to_batch_nd_options = 133;
+  optional MaximumMinimumOptions minimum_options = 134;
 }
 
 // For additional subgraphs
