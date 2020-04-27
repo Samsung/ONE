@@ -40,7 +40,7 @@ TEST(ADT_TENSOR_INDEX_ENUMERATOR, iterate_full_range)
   {
     const auto &ind = e.current();
 
-    ASSERT_EQ(ind.rank(), 2);
+    ASSERT_EQ(2, ind.rank());
     count.at(ind.at(0) * W + ind.at(1)) += 1;
   }
 

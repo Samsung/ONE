@@ -27,10 +27,10 @@ TEST(ADT_KERNEL_SHAPE, ctor)
 
   nncc::core::ADT::kernel::Shape shape{N, C, H, W};
 
-  ASSERT_EQ(shape.count(), N);
-  ASSERT_EQ(shape.depth(), C);
-  ASSERT_EQ(shape.height(), H);
-  ASSERT_EQ(shape.width(), W);
+  ASSERT_EQ(N, shape.count());
+  ASSERT_EQ(C, shape.depth());
+  ASSERT_EQ(H, shape.height());
+  ASSERT_EQ(W, shape.width());
 }
 
 TEST(ADT_KERNEL_SHAPE, num_elements)
@@ -43,7 +43,7 @@ TEST(ADT_KERNEL_SHAPE, num_elements)
   using nncc::core::ADT::kernel::Shape;
   using nncc::core::ADT::kernel::num_elements;
 
-  ASSERT_EQ(num_elements(Shape{N, C, H, W}), N * C * H * W);
+  ASSERT_EQ(N * C * H * W, num_elements(Shape{N, C, H, W}));
 }
 
 TEST(ADT_KERNEL_SHAPE, operator_eq)

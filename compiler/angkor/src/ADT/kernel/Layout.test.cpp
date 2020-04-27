@@ -28,7 +28,7 @@ TEST(ADT_KERNEL_LAYOUT, ctor)
 {
   Layout l{offset_0};
 
-  ASSERT_EQ(l.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1), 0);
+  ASSERT_EQ(0, l.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1));
 }
 
 TEST(ADT_KERNEL_LAYOUT, copy)
@@ -36,11 +36,11 @@ TEST(ADT_KERNEL_LAYOUT, copy)
   Layout orig{offset_0};
   Layout copy{offset_1};
 
-  ASSERT_EQ(copy.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1), 1);
+  ASSERT_EQ(1, copy.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1));
 
   copy = orig;
 
-  ASSERT_EQ(copy.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1), 0);
+  ASSERT_EQ(0, copy.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1));
 }
 
 TEST(ADT_KERNEL_LAYOUT, move)
@@ -48,9 +48,9 @@ TEST(ADT_KERNEL_LAYOUT, move)
   Layout orig{offset_0};
   Layout move{offset_1};
 
-  ASSERT_EQ(move.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1), 1);
+  ASSERT_EQ(1, move.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1));
 
   move = std::move(orig);
 
-  ASSERT_EQ(move.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1), 0);
+  ASSERT_EQ(0, move.offset(Shape{4, 3, 6, 5}, 1, 1, 1, 1));
 }

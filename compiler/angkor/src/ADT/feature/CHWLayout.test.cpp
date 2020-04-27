@@ -25,7 +25,7 @@ TEST(ADT_FEATURE_CHW_LAYOUT, col_increase)
   const Shape shape{4, 3, 6};
   const CHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 2, 1) + 1, l.offset(shape, 1, 2, 2));
+  ASSERT_EQ(l.offset(shape, 1, 2, 2), l.offset(shape, 1, 2, 1) + 1);
 }
 
 TEST(ADT_FEATURE_CHW_LAYOUT, row_increase)
@@ -33,7 +33,7 @@ TEST(ADT_FEATURE_CHW_LAYOUT, row_increase)
   const Shape shape{4, 3, 6};
   const CHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1) + 6, l.offset(shape, 1, 2, 1));
+  ASSERT_EQ(l.offset(shape, 1, 2, 1), l.offset(shape, 1, 1, 1) + 6);
 }
 
 TEST(ADT_FEATURE_CHW_LAYOUT, ch_increase)
@@ -41,5 +41,5 @@ TEST(ADT_FEATURE_CHW_LAYOUT, ch_increase)
   const Shape shape{4, 3, 6};
   const CHWLayout l;
 
-  ASSERT_EQ(l.offset(shape, 1, 1, 1) + 6 * 3, l.offset(shape, 2, 1, 1));
+  ASSERT_EQ(l.offset(shape, 2, 1, 1), l.offset(shape, 1, 1, 1) + 6 * 3);
 }

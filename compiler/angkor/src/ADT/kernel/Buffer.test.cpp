@@ -30,10 +30,10 @@ TEST(ADT_KERNEL_BUFFER, ctor)
   const Shape shape{2, 4, 6, 3};
   auto buffer = make_buffer<int, NCHWLayout>(shape);
 
-  ASSERT_EQ(buffer.shape().count(), shape.count());
-  ASSERT_EQ(buffer.shape().depth(), shape.depth());
-  ASSERT_EQ(buffer.shape().height(), shape.height());
-  ASSERT_EQ(buffer.shape().width(), shape.width());
+  ASSERT_EQ(shape.count(), buffer.shape().count());
+  ASSERT_EQ(shape.depth(), buffer.shape().depth());
+  ASSERT_EQ(shape.height(), buffer.shape().height());
+  ASSERT_EQ(shape.width(), buffer.shape().width());
 }
 
 TEST(ADT_KERNEL_BUFFER, access)
@@ -41,9 +41,9 @@ TEST(ADT_KERNEL_BUFFER, access)
   const Shape shape{2, 4, 6, 3};
   auto buffer = make_buffer<int, NCHWLayout>(shape);
 
-  ASSERT_EQ(buffer.at(1, 3, 5, 2), 0);
+  ASSERT_EQ(0, buffer.at(1, 3, 5, 2));
   buffer.at(1, 3, 5, 2) = 4;
 
   // Casting is introduced to use 'const T &at(...) const' method
-  ASSERT_EQ(static_cast<const Buffer<int> &>(buffer).at(1, 3, 5, 2), 4);
+  ASSERT_EQ(4, static_cast<const Buffer<int> &>(buffer).at(1, 3, 5, 2));
 }

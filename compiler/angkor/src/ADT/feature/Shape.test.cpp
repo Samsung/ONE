@@ -26,9 +26,9 @@ TEST(ADT_FEATURE_SHAPE, ctor)
 
   nncc::core::ADT::feature::Shape shape{C, H, W};
 
-  ASSERT_EQ(shape.depth(), C);
-  ASSERT_EQ(shape.height(), H);
-  ASSERT_EQ(shape.width(), W);
+  ASSERT_EQ(C, shape.depth());
+  ASSERT_EQ(H, shape.height());
+  ASSERT_EQ(W, shape.width());
 }
 
 TEST(ADT_FEATURE_SHAPE, num_elements)
@@ -40,7 +40,7 @@ TEST(ADT_FEATURE_SHAPE, num_elements)
   using nncc::core::ADT::feature::Shape;
   using nncc::core::ADT::feature::num_elements;
 
-  ASSERT_EQ(num_elements(Shape{C, H, W}), C * H * W);
+  ASSERT_EQ(C * H * W, num_elements(Shape{C, H, W}));
 }
 
 TEST(ADT_FEATURE_SHAPE, operator_eq)
