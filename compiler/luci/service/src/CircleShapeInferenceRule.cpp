@@ -199,9 +199,11 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
     for (uint32_t d = 0; d < output_shape.rank() - 2; d++)
     {
       uint32_t max_dim = std::max(dummy_x.dim(d).value(), dummy_y.dim(d).value());
-      assert(dummy_x.dim(d) == dummy_y.dim(d) ||
-             dummy_x.dim(d).value() * dummy_y.dim(d).value() == max_dim);
-      output_shape.dim(d).set(max_dim);
+      if (dummy_x.dim(d) == dummy_y.dim(d) ||
+          dummy_x.dim(d).value() * dummy_y.dim(d).value() == max_dim)
+        output_shape.dim(d).set(max_dim);
+      else
+        INTERNAL_EXN("BatchMatMul has wrong shape");
     }
   }
 
@@ -210,9 +212,8 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   loco::Dimension y_lhs = adj_y ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
   loco::Dimension y_rhs = adj_y ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
 
-  assert(x_rhs == y_lhs);
-  (void)x_rhs;
-  (void)y_lhs;
+  if (not(x_rhs == y_lhs))
+    INTERNAL_EXN("x_rhs and y_lhs should be same");
 
   uint32_t out_rank = output_shape.rank();
   output_shape.dim(out_rank - 2) = x_lhs;
