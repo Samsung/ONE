@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "TensorManager.h"
+#include "StaticTensorManager.h"
 
 #include <util/logging.h>
 
@@ -25,14 +25,14 @@ namespace backend
 namespace cpu
 {
 
-TensorManager::TensorManager()
+StaticTensorManager::StaticTensorManager()
     : _const_mgr{new cpu_common::DynamicMemoryManager()},
       _nonconst_mgr{new cpu_common::MemoryManager()}
 {
   // DO NOTHING
 }
 
-void TensorManager::allocateConsts(void)
+void StaticTensorManager::allocateConsts(void)
 {
   for (auto &pair : _tensors)
   {
@@ -43,14 +43,14 @@ void TensorManager::allocateConsts(void)
       auto mem_alloc = _const_mgr->allocate(ind, tensor->total_size());
       tensor->setBuffer(mem_alloc);
       auto buffer = mem_alloc->base();
-      VERBOSE(CPU_TENSORMANAGER) << "CONSTANT TENSOR(#" << ind.value()
-                                 << "): " << static_cast<void *>(buffer)
-                                 << "size : " << tensor->total_size() << std::endl;
+      VERBOSE(CPU_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()
+                                       << "): " << static_cast<void *>(buffer)
+                                       << "size : " << tensor->total_size() << std::endl;
     }
   }
 }
 
-void TensorManager::allocateNonconsts(void)
+void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
@@ -63,18 +63,18 @@ void TensorManager::allocateNonconsts(void)
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
 
-      VERBOSE(CPU_TENSORMANAGER) << "TENSOR(#" << ind.value()
-                                 << "): " << static_cast<void *>(buffer) << std::endl;
+      VERBOSE(CPU_StaticTensorManager) << "TENSOR(#" << ind.value()
+                                       << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }
 
-void TensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
+void StaticTensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
 
-void TensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
+void StaticTensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
 
-void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                                bool as_const)
+void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
+                                      const ir::OperandInfo &tensor_info, bool as_const)
 {
   assert(_tensors.find(ind) == _tensors.end());
   auto tensor = std::make_shared<operand::Tensor>(tensor_info);
@@ -82,28 +82,28 @@ void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandIn
   _as_constants[ind] = as_const;
 }
 
-void TensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
+void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
   assert(_tensors.find(ind) != _tensors.end());
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
 
-void TensorManager::releasePlan(const ir::OperandIndex &ind)
+void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
   assert(_tensors.find(ind) != _tensors.end());
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
 }
 
-std::shared_ptr<operand::Tensor> TensorManager::at(const ir::OperandIndex &ind)
+std::shared_ptr<operand::Tensor> StaticTensorManager::at(const ir::OperandIndex &ind)
 {
   if (_tensors.find(ind) == _tensors.end())
     return nullptr;
   return _tensors.at(ind);
 }
 
-void TensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
+void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
   for (const auto &it : _tensors)
     fn(it.first);

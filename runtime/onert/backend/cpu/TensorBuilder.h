@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 
-#include "TensorManager.h"
+#include "StaticTensorManager.h"
 #include "operand/Tensor.h"
 
 #include <backend/ITensorBuilder.h>
@@ -64,7 +64,7 @@ public:
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
 private:
-  std::unique_ptr<TensorManager> _tensor_mgr;
+  std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexSequence _constants;
 };

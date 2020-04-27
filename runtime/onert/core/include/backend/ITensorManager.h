@@ -26,6 +26,7 @@ namespace backend
 // Anyone can argue with any better name.
 /**
  * @brief Interface as an abstract tensor manager which has MemoryManager
+ *        This is used as a base class for IStaticTensorManager and IDynamicTensorManager
  */
 struct ITensorManager
 {
