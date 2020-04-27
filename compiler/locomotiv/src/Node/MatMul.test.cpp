@@ -92,14 +92,14 @@ void run_test(const T *lhs, const T *rhs, const T *expected_output, const Shape 
   {
     const auto &ind = e.current();
     if (expected_datatype == loco::DataType::FLOAT32)
-      ASSERT_FLOAT_EQ(mat_mul_result->as_f32_bufptr()->at(ind), out_overlay.at(ind));
+      ASSERT_FLOAT_EQ(out_overlay.at(ind), mat_mul_result->as_f32_bufptr()->at(ind));
     else if (expected_datatype == loco::DataType::S32)
-      ASSERT_EQ(mat_mul_result->as_s32_bufptr()->at(ind), out_overlay.at(ind));
+      ASSERT_EQ(out_overlay.at(ind), mat_mul_result->as_s32_bufptr()->at(ind));
     else
       throw std::runtime_error("NYI for these DataTypes");
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(mat_mul), loco::Domain::Matrix);
+  ASSERT_EQ(loco::Domain::Matrix, locomotiv::annot_domain(mat_mul));
 }
 
 } // namespace

@@ -35,9 +35,9 @@ TEST(NodeData, as_s32_buffer_wrapper)
 
   auto data = locomotiv::make_data(buf);
 
-  ASSERT_EQ(data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(data->shape()), shape);
-  ASSERT_EQ(data->as_s32_bufptr()->at(Index{0}), 42);
+  ASSERT_EQ(loco::DataType::S32, data->dtype());
+  ASSERT_EQ(shape, *(data->shape()));
+  ASSERT_EQ(42, data->as_s32_bufptr()->at(Index{0}));
 }
 
 TEST(NodeData, as_f32_buffer_wrapper)
@@ -48,7 +48,7 @@ TEST(NodeData, as_f32_buffer_wrapper)
 
   auto data = locomotiv::make_data(buf);
 
-  ASSERT_EQ(data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(data->shape()), shape);
-  ASSERT_FLOAT_EQ(data->as_f32_bufptr()->at(Index{0}), 3.14f);
+  ASSERT_EQ(loco::DataType::FLOAT32, data->dtype());
+  ASSERT_EQ(shape, *(data->shape()));
+  ASSERT_FLOAT_EQ(3.14f, data->as_f32_bufptr()->at(Index{0}));
 }

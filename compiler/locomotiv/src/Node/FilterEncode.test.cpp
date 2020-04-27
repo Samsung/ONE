@@ -77,16 +77,16 @@ TEST(NodeExecution_FilterEncode, s32)
 
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{N, H, W, C})); // locomotiv filter is NHWC
+  ASSERT_EQ(loco::DataType::S32, enc_data->dtype());
+  ASSERT_EQ((Shape{N, H, W, C}), *(enc_data->shape())); // locomotiv filter is NHWC
   auto enc_buf = enc_data->as_s32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_EQ(pull_buf.at(Index{n, c, h, w}), enc_buf->at(Index{n, h, w, c}));
+          ASSERT_EQ(enc_buf->at(Index{n, h, w, c}), pull_buf.at(Index{n, c, h, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Filter);
+  ASSERT_EQ(loco::Domain::Filter, locomotiv::annot_domain(enc));
 }
 
 TEST(NodeExecution_FilterEncode, f32)
@@ -131,14 +131,14 @@ TEST(NodeExecution_FilterEncode, f32)
 
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{N, H, W, C})); // locomotiv filter is NHWC
+  ASSERT_EQ(loco::DataType::FLOAT32, enc_data->dtype());
+  ASSERT_EQ((Shape{N, H, W, C}), *(enc_data->shape())); // locomotiv filter is NHWC
   auto enc_buf = enc_data->as_f32_bufptr();
   for (uint32_t n = 0; n < N; ++n)
     for (uint32_t h = 0; h < H; ++h)
       for (uint32_t w = 0; w < W; ++w)
         for (uint32_t c = 0; c < C; ++c)
-          ASSERT_FLOAT_EQ(pull_buf.at(Index{c, h, n, w}), enc_buf->at(Index{n, h, w, c}));
+          ASSERT_FLOAT_EQ(enc_buf->at(Index{n, h, w, c}), pull_buf.at(Index{c, h, n, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Filter);
+  ASSERT_EQ(loco::Domain::Filter, locomotiv::annot_domain(enc));
 }

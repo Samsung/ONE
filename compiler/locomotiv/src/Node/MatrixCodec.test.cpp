@@ -124,14 +124,14 @@ TEST_F(NodeExecution_MatrixCodec, HW_s32)
   // Test MatrixEncode
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{H, W})); // locomotiv matrix is HW
+  ASSERT_EQ(loco::DataType::S32, enc_data->dtype());
+  ASSERT_EQ((Shape{H, W}), *(enc_data->shape())); // locomotiv matrix is HW
   auto enc_buf = enc_data->as_s32_bufptr();
   for (uint32_t h = 0; h < H; ++h)
     for (uint32_t w = 0; w < W; ++w)
-      ASSERT_EQ(pull_buf.at(Index{h, w}), enc_buf->at(Index{h, w}));
+      ASSERT_EQ(enc_buf->at(Index{h, w}), pull_buf.at(Index{h, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Matrix);
+  ASSERT_EQ(loco::Domain::Matrix, locomotiv::annot_domain(enc));
 
   // MatrixDecode
   auto dec = matrix_decode_layer(enc, HW);
@@ -140,14 +140,14 @@ TEST_F(NodeExecution_MatrixCodec, HW_s32)
   // Test MatrixDecode: Encode -> Decode == identity
   auto dec_data = locomotiv::annot_data(dec);
   ASSERT_NE(dec_data, nullptr);
-  ASSERT_EQ(dec_data->dtype(), loco::DataType::S32);
-  ASSERT_EQ(*(dec_data->shape()), (Shape{H, W}));
+  ASSERT_EQ(loco::DataType::S32, dec_data->dtype());
+  ASSERT_EQ((Shape{H, W}), *(dec_data->shape()));
   auto dec_buf = dec_data->as_s32_bufptr();
   for (uint32_t h = 0; h < H; ++h)
     for (uint32_t w = 0; w < W; ++w)
-      ASSERT_EQ(pull_buf.at(Index{h, w}), dec_buf->at(Index{h, w}));
+      ASSERT_EQ(dec_buf->at(Index{h, w}), pull_buf.at(Index{h, w}));
 
-  ASSERT_EQ(locomotiv::annot_domain(dec), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(dec));
 }
 
 TEST_F(NodeExecution_MatrixCodec, WH_f32)
@@ -180,14 +180,14 @@ TEST_F(NodeExecution_MatrixCodec, WH_f32)
   // Test MatrixEncode
   auto enc_data = locomotiv::annot_data(enc);
   ASSERT_NE(enc_data, nullptr);
-  ASSERT_EQ(enc_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(enc_data->shape()), (Shape{H, W})); // locomotiv matrix is HW
+  ASSERT_EQ(loco::DataType::FLOAT32, enc_data->dtype());
+  ASSERT_EQ((Shape{H, W}), *(enc_data->shape())); // locomotiv matrix is HW
   auto enc_buf = enc_data->as_f32_bufptr();
   for (uint32_t h = 0; h < H; ++h)
     for (uint32_t w = 0; w < W; ++w)
-      ASSERT_FLOAT_EQ(pull_buf.at(Index{w, h}), enc_buf->at(Index{h, w}));
+      ASSERT_FLOAT_EQ(enc_buf->at(Index{h, w}), pull_buf.at(Index{w, h}));
 
-  ASSERT_EQ(locomotiv::annot_domain(enc), loco::Domain::Matrix);
+  ASSERT_EQ(loco::Domain::Matrix, locomotiv::annot_domain(enc));
 
   // MatrixDecode
   auto dec = matrix_decode_layer(enc, WH);
@@ -196,12 +196,12 @@ TEST_F(NodeExecution_MatrixCodec, WH_f32)
   // Test MatrixDecode: Encode -> Decode == identity
   auto dec_data = locomotiv::annot_data(dec);
   ASSERT_NE(dec_data, nullptr);
-  ASSERT_EQ(dec_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(dec_data->shape()), (Shape{W, H}));
+  ASSERT_EQ(loco::DataType::FLOAT32, dec_data->dtype());
+  ASSERT_EQ((Shape{W, H}), *(dec_data->shape()));
   auto dec_buf = dec_data->as_f32_bufptr();
   for (uint32_t h = 0; h < H; ++h)
     for (uint32_t w = 0; w < W; ++w)
-      ASSERT_FLOAT_EQ(pull_buf.at(Index{w, h}), dec_buf->at(Index{w, h}));
+      ASSERT_FLOAT_EQ(dec_buf->at(Index{w, h}), pull_buf.at(Index{w, h}));
 
-  ASSERT_EQ(locomotiv::annot_domain(dec), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(dec));
 }

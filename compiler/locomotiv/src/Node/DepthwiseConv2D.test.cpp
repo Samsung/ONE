@@ -101,10 +101,10 @@ void run_test(const float *ifm, const float *ker, const float *expected_ofm, con
   for (nncc::core::ADT::tensor::IndexEnumerator e{ofm_shape}; e.valid(); e.advance())
   {
     const auto &ind = e.current();
-    ASSERT_FLOAT_EQ(dw_conv2d_result->as_f32_bufptr()->at(ind), ofm_overlay.at(ind));
+    ASSERT_FLOAT_EQ(ofm_overlay.at(ind), dw_conv2d_result->as_f32_bufptr()->at(ind));
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(dw_conv2d), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, locomotiv::annot_domain(dw_conv2d));
 }
 
 } // namespace

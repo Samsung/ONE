@@ -74,16 +74,16 @@ TEST(NodeExecution_Pad, tensor_constant_pad_4_dim)
 
   auto pad_data = locomotiv::annot_data(pad);
   ASSERT_NE(pad_data, nullptr);
-  ASSERT_EQ(pad_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(pad_data->shape()), Shape({1, 6, 4, 1}));
+  ASSERT_EQ(loco::DataType::FLOAT32, pad_data->dtype());
+  ASSERT_EQ(Shape({1, 6, 4, 1}), *(pad_data->shape()));
 
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0, 3, 1, 0}), 1.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0, 3, 2, 0}), 2.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0, 4, 1, 0}), 3.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0, 4, 2, 0}), 4.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0, 0, 0, 0}), 0.0f);
+  ASSERT_FLOAT_EQ(1.0f, pad_data->as_f32_bufptr()->at(Index{0, 3, 1, 0}));
+  ASSERT_FLOAT_EQ(2.0f, pad_data->as_f32_bufptr()->at(Index{0, 3, 2, 0}));
+  ASSERT_FLOAT_EQ(3.0f, pad_data->as_f32_bufptr()->at(Index{0, 4, 1, 0}));
+  ASSERT_FLOAT_EQ(4.0f, pad_data->as_f32_bufptr()->at(Index{0, 4, 2, 0}));
+  ASSERT_FLOAT_EQ(0.0f, pad_data->as_f32_bufptr()->at(Index{0, 0, 0, 0}));
 
-  ASSERT_EQ(locomotiv::annot_domain(pad), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(pad));
 }
 
 TEST(NodeExecution_Pad, tensor_constant_pad_1_dim)
@@ -122,17 +122,17 @@ TEST(NodeExecution_Pad, tensor_constant_pad_1_dim)
 
   auto pad_data = locomotiv::annot_data(pad);
   ASSERT_NE(pad_data, nullptr);
-  ASSERT_EQ(pad_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(pad_data->shape()), Shape({6}));
+  ASSERT_EQ(loco::DataType::FLOAT32, pad_data->dtype());
+  ASSERT_EQ(Shape({6}), *(pad_data->shape()));
 
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{0}), 0.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1}), 0.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{2}), 1.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{3}), 5.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{4}), 3.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{5}), 0.0f);
+  ASSERT_FLOAT_EQ(0.0f, pad_data->as_f32_bufptr()->at(Index{0}));
+  ASSERT_FLOAT_EQ(0.0f, pad_data->as_f32_bufptr()->at(Index{1}));
+  ASSERT_FLOAT_EQ(1.0f, pad_data->as_f32_bufptr()->at(Index{2}));
+  ASSERT_FLOAT_EQ(5.0f, pad_data->as_f32_bufptr()->at(Index{3}));
+  ASSERT_FLOAT_EQ(3.0f, pad_data->as_f32_bufptr()->at(Index{4}));
+  ASSERT_FLOAT_EQ(0.0f, pad_data->as_f32_bufptr()->at(Index{5}));
 
-  ASSERT_EQ(locomotiv::annot_domain(pad), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(pad));
 }
 
 TEST(NodeExecution_Pad, tensor_constant_pad_6_dim)
@@ -200,19 +200,19 @@ TEST(NodeExecution_Pad, tensor_constant_pad_6_dim)
 
   auto pad_data = locomotiv::annot_data(pad);
   ASSERT_NE(pad_data, nullptr);
-  ASSERT_EQ(pad_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(pad_data->shape()), Shape({4, 1, 6, 5, 1, 5}));
+  ASSERT_EQ(loco::DataType::FLOAT32, pad_data->dtype());
+  ASSERT_EQ(Shape({4, 1, 6, 5, 1, 5}), *(pad_data->shape()));
 
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 2, 0, 1}), 1.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 2, 0, 2}), 2.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 3, 0, 1}), 3.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 3, 0, 2}), 4.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 2, 0, 1}), 5.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 2, 0, 2}), 6.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 3, 0, 1}), 7.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 3, 0, 2}), 8.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 3, 2, 0, 1}), 9.0f);
-  ASSERT_FLOAT_EQ(pad_data->as_f32_bufptr()->at(Index{1, 0, 3, 2, 0, 2}), 10.0f);
+  ASSERT_FLOAT_EQ(1.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 2, 0, 1}));
+  ASSERT_FLOAT_EQ(2.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 2, 0, 2}));
+  ASSERT_FLOAT_EQ(3.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 3, 0, 1}));
+  ASSERT_FLOAT_EQ(4.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 1, 3, 0, 2}));
+  ASSERT_FLOAT_EQ(5.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 2, 0, 1}));
+  ASSERT_FLOAT_EQ(6.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 2, 0, 2}));
+  ASSERT_FLOAT_EQ(7.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 3, 0, 1}));
+  ASSERT_FLOAT_EQ(8.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 2, 3, 0, 2}));
+  ASSERT_FLOAT_EQ(9.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 3, 2, 0, 1}));
+  ASSERT_FLOAT_EQ(10.0f, pad_data->as_f32_bufptr()->at(Index{1, 0, 3, 2, 0, 2}));
 
-  ASSERT_EQ(locomotiv::annot_domain(pad), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(pad));
 }

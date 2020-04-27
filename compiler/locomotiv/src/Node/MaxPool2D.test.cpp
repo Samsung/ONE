@@ -86,10 +86,10 @@ void run_test(const float *ifm, const float *expected_ofm, const Shape &ifm_shap
   for (nncc::core::ADT::tensor::IndexEnumerator e{ofm_shape}; e.valid(); e.advance())
   {
     const auto &ind = e.current();
-    ASSERT_FLOAT_EQ(maxpool2d_data->as_f32_bufptr()->at(ind), ofm_overlay.at(ind));
+    ASSERT_FLOAT_EQ(ofm_overlay.at(ind), maxpool2d_data->as_f32_bufptr()->at(ind));
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(maxpool2d), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, locomotiv::annot_domain(maxpool2d));
 }
 
 } // namespace

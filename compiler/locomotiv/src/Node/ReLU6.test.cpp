@@ -55,12 +55,12 @@ TEST(NodeExecution_ReLU6, f32)
 
   auto relu6_data = locomotiv::annot_data(relu6);
   ASSERT_NE(relu6_data, nullptr);
-  ASSERT_EQ(relu6_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(relu6_data->shape()), Shape({2, 2}));
-  ASSERT_FLOAT_EQ(relu6_data->as_f32_bufptr()->at(Index{0, 0}), 0.0f);
-  ASSERT_FLOAT_EQ(relu6_data->as_f32_bufptr()->at(Index{0, 1}), 6.0f);
-  ASSERT_FLOAT_EQ(relu6_data->as_f32_bufptr()->at(Index{1, 0}), 6.0f);
-  ASSERT_FLOAT_EQ(relu6_data->as_f32_bufptr()->at(Index{1, 1}), 0.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, relu6_data->dtype());
+  ASSERT_EQ(Shape({2, 2}), *(relu6_data->shape()));
+  ASSERT_FLOAT_EQ(0.0f, relu6_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(6.0f, relu6_data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(6.0f, relu6_data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(0.0f, relu6_data->as_f32_bufptr()->at(Index{1, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(relu6), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(relu6));
 }

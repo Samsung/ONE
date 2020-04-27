@@ -65,14 +65,14 @@ TEST(NodeExecution_TensorConcat, f32)
 
   auto concat_data = locomotiv::annot_data(tconcat);
   ASSERT_NE(concat_data, nullptr);
-  ASSERT_EQ(concat_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ((*(concat_data->shape())), (Shape{2, 2}));
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{0, 0}), -1.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{0, 1}), -2.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{1, 0}), 3.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{1, 1}), 4.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, concat_data->dtype());
+  ASSERT_EQ((Shape{2, 2}), (*(concat_data->shape())));
+  ASSERT_FLOAT_EQ(-1.0f, concat_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(-2.0f, concat_data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(3.0f, concat_data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(4.0f, concat_data->as_f32_bufptr()->at(Index{1, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(tconcat), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(tconcat));
 }
 
 TEST(NodeExecution_TensorConcat, f32_2)
@@ -113,16 +113,16 @@ TEST(NodeExecution_TensorConcat, f32_2)
 
   auto concat_data = locomotiv::annot_data(tconcat);
   ASSERT_NE(concat_data, nullptr);
-  ASSERT_EQ(concat_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ((*(concat_data->shape())), (Shape{4, 2}));
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{0, 0}), -1.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{0, 1}), -2.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{1, 0}), 3.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{1, 1}), 4.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{2, 0}), -3.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{2, 1}), -4.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{3, 0}), 5.0f);
-  ASSERT_FLOAT_EQ(concat_data->as_f32_bufptr()->at(Index{3, 1}), 6.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, concat_data->dtype());
+  ASSERT_EQ((Shape{4, 2}), (*(concat_data->shape())));
+  ASSERT_FLOAT_EQ(-1.0f, concat_data->as_f32_bufptr()->at(Index{0, 0}));
+  ASSERT_FLOAT_EQ(-2.0f, concat_data->as_f32_bufptr()->at(Index{0, 1}));
+  ASSERT_FLOAT_EQ(3.0f, concat_data->as_f32_bufptr()->at(Index{1, 0}));
+  ASSERT_FLOAT_EQ(4.0f, concat_data->as_f32_bufptr()->at(Index{1, 1}));
+  ASSERT_FLOAT_EQ(-3.0f, concat_data->as_f32_bufptr()->at(Index{2, 0}));
+  ASSERT_FLOAT_EQ(-4.0f, concat_data->as_f32_bufptr()->at(Index{2, 1}));
+  ASSERT_FLOAT_EQ(5.0f, concat_data->as_f32_bufptr()->at(Index{3, 0}));
+  ASSERT_FLOAT_EQ(6.0f, concat_data->as_f32_bufptr()->at(Index{3, 1}));
 
-  ASSERT_EQ(locomotiv::annot_domain(tconcat), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(tconcat));
 }

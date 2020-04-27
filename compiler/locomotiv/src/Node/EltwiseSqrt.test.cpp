@@ -58,12 +58,12 @@ TEST(NodeExecution_EltwiseSqrt, f32)
 
   auto sqrt_data = locomotiv::annot_data(sqrt);
   ASSERT_NE(sqrt_data, nullptr);
-  ASSERT_EQ(sqrt_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(sqrt_data->shape()), Shape{4});
-  ASSERT_FLOAT_EQ(sqrt_data->as_f32_bufptr()->at(Index{0}), 2.0f);
-  ASSERT_FLOAT_EQ(sqrt_data->as_f32_bufptr()->at(Index{1}), 3.0f);
-  ASSERT_FLOAT_EQ(sqrt_data->as_f32_bufptr()->at(Index{2}), 0.0f);
+  ASSERT_EQ(loco::DataType::FLOAT32, sqrt_data->dtype());
+  ASSERT_EQ(Shape{4}, *(sqrt_data->shape()));
+  ASSERT_FLOAT_EQ(2.0f, sqrt_data->as_f32_bufptr()->at(Index{0}));
+  ASSERT_FLOAT_EQ(3.0f, sqrt_data->as_f32_bufptr()->at(Index{1}));
+  ASSERT_FLOAT_EQ(0.0f, sqrt_data->as_f32_bufptr()->at(Index{2}));
   ASSERT_TRUE(std::isnan(sqrt_data->as_f32_bufptr()->at(Index{3})));
 
-  ASSERT_EQ(locomotiv::annot_domain(sqrt), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(sqrt));
 }

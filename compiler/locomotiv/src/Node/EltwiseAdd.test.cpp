@@ -108,14 +108,14 @@ TEST(NodeExecution_EltwiseAdd, f32)
 
   // comparing the result
   ASSERT_NE(eltwise_add_data, nullptr);
-  ASSERT_EQ(eltwise_add_data->dtype(), loco::DataType::FLOAT32);
-  ASSERT_EQ(*(eltwise_add_data->shape()), Shape({1, 3, 3, 2}));
+  ASSERT_EQ(loco::DataType::FLOAT32, eltwise_add_data->dtype());
+  ASSERT_EQ(Shape({1, 3, 3, 2}), *(eltwise_add_data->shape()));
 
   uint32_t n = 0;
   for (IndexEnumerator e{*(eltwise_add_data->shape())}; e.valid(); e.advance())
   {
-    ASSERT_FLOAT_EQ(eltwise_add_data->as_f32_bufptr()->at(e.current()), out_val[n++]);
+    ASSERT_FLOAT_EQ(out_val[n++], eltwise_add_data->as_f32_bufptr()->at(e.current()));
   }
 
-  ASSERT_EQ(locomotiv::annot_domain(eltwise_add), loco::Domain::Tensor);
+  ASSERT_EQ(loco::Domain::Tensor, locomotiv::annot_domain(eltwise_add));
 }
