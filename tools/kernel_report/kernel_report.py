@@ -19,12 +19,11 @@ import argparse
 
 
 class Backend:
-    def __init__(self):
+    def __init__(self, backendList):
         self.backends = {}
-        self.backends["acl_cl"] = False
-        self.backends["acl_neon"] = False
-        self.backends["cpu"] = False
-        self.backends["srcn"] = False
+
+        for backend in backendList:
+            self.backends[backend] = False
 
 
 class KernelReporter(object):
@@ -34,6 +33,7 @@ class KernelReporter(object):
             self.onertBase = os.getcwd() + '/' + args.base
         else:
             self.onertBase = args.base
+        self.backendList = args.backends.split(',')
         self.opListFile = "core/include/ir/Operations.lst"
         self.operations = []
         self.kernelGeneratorFile = "KernelGenerator.h"
@@ -74,11 +74,9 @@ class KernelReporter(object):
 
     def generateKernelMap(self):
         for op in self.operations:
-            self.kernelMap[op] = Backend()
+            self.kernelMap[op] = Backend(self.backendList)
 
-        backendLists = ["acl_cl", "acl_neon", "cpu", "srcn"]
-
-        for backend in backendLists:
+        for backend in self.backendList:
             buf = open(
                 self.onertBase + '/backend/' + backend + '/' + self.kernelGeneratorFile,
                 "r")
@@ -101,18 +99,19 @@ class KernelReporter(object):
 
     def printResult(self):
         print()
-        backendLists = ["acl_cl", "acl_neon", "cpu", "srcn"]
         line = ""
-        for backend in backendLists:
+        for backend in self.backendList:
             line = line + "{0:^9}".format(backend)
         print('{0:30}{1}'.format("", line))
 
-        counts = [0, 0, 0, 0]
+        counts = []
+        for i in range(0, len(self.backendList), 1):
+            counts.append(0)
 
         for op in self.operations:
             line = ""
-            for i in range(0, 4, 1):
-                support = self.kernelMap[op].backends[backendLists[i]]
+            for i in range(0, len(self.backendList), 1):
+                support = self.kernelMap[op].backends[self.backendList[i]]
                 if support:
                     line = line + "{0:^9}".format("O")
                     counts[i] += 1
@@ -127,19 +126,23 @@ class KernelReporter(object):
 
     def printMDFormat(self):
         print()
-        backendLists = ["acl_cl", "acl_neon", "cpu", "srcn"]
-        line = ""
-        for backend in backendLists:
+        line = "-"
+        for backend in self.backendList:
             line = line + "|" + backend
-        print("|" + line)
-        print("-|-|-|-|-")
+        print(line)
+        line = ""
+        for i in range(0, len(self.backendList), 1):
+            line = line + "-|"
+        print(line + "-")
 
-        counts = [0, 0, 0, 0]
+        counts = []
+        for i in range(0, len(self.backendList), 1):
+            counts.append(0)
 
         for op in self.operations:
             line = ""
-            for i in range(0, 4, 1):
-                support = self.kernelMap[op].backends[backendLists[i]]
+            for i in range(0, len(self.backendList), 1):
+                support = self.kernelMap[op].backends[self.backendList[i]]
                 if support:
                     line = line + "|" + "O"
                     counts[i] += 1
@@ -148,10 +151,14 @@ class KernelReporter(object):
             print(op + line)
 
         line = ""
+        for i in range(0, len(self.backendList), 1):
+            line = line + "-|"
+        print(line + "-")
+
+        line = ""
         for count in counts:
             line = line + "|" + str(count)
 
-        print("-|-|-|-|-")
         print("TOTAL COUNT" + line)
 
     def run(self):
@@ -164,6 +171,11 @@ class KernelReporter(object):
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument(
+        "--backends",
+        type=str,
+        default='cpu,acl_cl,acl_neon',
+        help="backend list to report (use comma)")
     arg_parser.add_argument("base", type=str, help="onert base directory")
     args = arg_parser.parse_args()
 
