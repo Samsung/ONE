@@ -54,16 +54,13 @@ bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
-CircleNode *CircleTileGraphBuilder::build_node(const circle::OperatorT &op,
+CircleNode *CircleTileGraphBuilder::build_node(const circle::OperatorT &,
                                                const std::vector<CircleNode *> &inputs,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleTile>();
   node->input(inputs[0]);
   node->multiples(inputs[1]);
-
-  const auto *options = op.builtin_options.AsTileOptions();
-  (void)options; // There are no options.
 
   return node;
 }
