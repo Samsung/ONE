@@ -46,7 +46,7 @@ TEST(ExporterUtilsTests, getOpPadding)
     ofm._dims[1] = 2;
     ofm._dims[2] = 2;
 
-    ASSERT_EQ(getOpPadding(&pad, &stride, ifm, ofm), tflite::Padding_VALID);
+    ASSERT_EQ(tflite::Padding_VALID, getOpPadding(&pad, &stride, ifm, ofm));
   }
 
   // SAME padding
@@ -65,7 +65,7 @@ TEST(ExporterUtilsTests, getOpPadding)
     ofm._dims[1] = 3;
     ofm._dims[2] = 3;
 
-    ASSERT_EQ(getOpPadding(&pad, &stride, ifm, ofm), tflite::Padding_SAME);
+    ASSERT_EQ(tflite::Padding_SAME, getOpPadding(&pad, &stride, ifm, ofm));
   }
 
   // Custom padding 1 - Not supported by tflite

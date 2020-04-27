@@ -113,6 +113,6 @@ TEST_F(TypeInferenceTest, Regression_0000)
   TypeInferencePass type_inf_pass;
   type_inf_pass.run(graph());
 
-  ASSERT_EQ(TypeInference::get(relu), tflite::TensorType_INT8);
-  ASSERT_EQ(TypeInference::get(push), tflite::TensorType_INT8);
+  ASSERT_EQ(tflite::TensorType_INT8, TypeInference::get(relu));
+  ASSERT_EQ(tflite::TensorType_INT8, TypeInference::get(push));
 }

@@ -25,12 +25,12 @@ TEST(CircleInstanceNormTest, constructor)
 {
   locoex::CircleInstanceNorm instance_norm;
 
-  ASSERT_EQ(instance_norm.dialect(), locoex::CircleDialect::get());
-  ASSERT_EQ(instance_norm.opcode(), locoex::CircleOpcode::INSTANCE_NORM);
+  ASSERT_EQ(locoex::CircleDialect::get(), instance_norm.dialect());
+  ASSERT_EQ(locoex::CircleOpcode::INSTANCE_NORM, instance_norm.opcode());
 
-  ASSERT_EQ(instance_norm.input(), nullptr);
-  ASSERT_EQ(instance_norm.gamma(), nullptr);
-  ASSERT_EQ(instance_norm.beta(), nullptr);
-  ASSERT_FLOAT_EQ(instance_norm.epsilon(), 1e-05);
-  ASSERT_EQ(instance_norm.fusedActivationFunction(), locoex::FusedActFunc::UNDEFINED);
+  ASSERT_EQ(nullptr, instance_norm.input());
+  ASSERT_EQ(nullptr, instance_norm.gamma());
+  ASSERT_EQ(nullptr, instance_norm.beta());
+  ASSERT_FLOAT_EQ(1e-05, instance_norm.epsilon());
+  ASSERT_EQ(locoex::FusedActFunc::UNDEFINED, instance_norm.fusedActivationFunction());
 }

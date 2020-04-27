@@ -221,18 +221,18 @@ TEST(TFLExporterImplTest, Transpose_simple)
     auto perm = operators->Get(n)->inputs()->Get(1);
 
     auto perm_tensor = model->subgraphs()->Get(0)->tensors()->Get(perm);
-    ASSERT_EQ(perm_tensor->type(), tflite::TensorType::TensorType_INT32);
-    ASSERT_EQ(perm_tensor->shape()->size(), 1);
-    ASSERT_EQ(perm_tensor->shape()->Get(0), 4);
+    ASSERT_EQ(tflite::TensorType::TensorType_INT32, perm_tensor->type());
+    ASSERT_EQ(1, perm_tensor->shape()->size());
+    ASSERT_EQ(4, perm_tensor->shape()->Get(0));
 
     auto bufs = (model->buffers());
     auto *perm_buf =
         reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
 
-    ASSERT_EQ(perm_buf[0], 1);
-    ASSERT_EQ(perm_buf[1], 2);
-    ASSERT_EQ(perm_buf[2], 3);
-    ASSERT_EQ(perm_buf[3], 0);
+    ASSERT_EQ(1, perm_buf[0]);
+    ASSERT_EQ(2, perm_buf[1]);
+    ASSERT_EQ(3, perm_buf[2]);
+    ASSERT_EQ(0, perm_buf[3]);
   }
 }
 
@@ -279,17 +279,17 @@ TEST(TFLExporterImplTest, Transpose_from_FilterEncode_FilterDecode)
     auto perm = operators->Get(n)->inputs()->Get(1);
 
     auto perm_tensor = model->subgraphs()->Get(0)->tensors()->Get(perm);
-    ASSERT_EQ(perm_tensor->type(), tflite::TensorType::TensorType_INT32);
-    ASSERT_EQ(perm_tensor->shape()->size(), 1);
-    ASSERT_EQ(perm_tensor->shape()->Get(0), 4);
+    ASSERT_EQ(tflite::TensorType::TensorType_INT32, perm_tensor->type());
+    ASSERT_EQ(1, perm_tensor->shape()->size());
+    ASSERT_EQ(4, perm_tensor->shape()->Get(0));
 
     auto bufs = (model->buffers());
     auto *perm_buf =
         reinterpret_cast<const int32_t *>(bufs->Get(perm_tensor->buffer())->data()->data());
-    ASSERT_EQ(perm_buf[0], 3);
-    ASSERT_EQ(perm_buf[1], 0);
-    ASSERT_EQ(perm_buf[2], 1);
-    ASSERT_EQ(perm_buf[3], 2);
+    ASSERT_EQ(3, perm_buf[0]);
+    ASSERT_EQ(0, perm_buf[1]);
+    ASSERT_EQ(1, perm_buf[2]);
+    ASSERT_EQ(2, perm_buf[3]);
   }
 }
 
@@ -317,8 +317,8 @@ TEST_F(TFLExporterImplTests, Regression_0000)
   auto decode = exo::make_feature_decode<exo::FeatureLayout::NHWC>(relu);
   auto push = make_node<loco::Push>();
 
-  ASSERT_EQ(maxpool->window()->vertical(), 1);
-  ASSERT_EQ(maxpool->window()->horizontal(), 1);
+  ASSERT_EQ(1, maxpool->window()->vertical());
+  ASSERT_EQ(1, maxpool->window()->horizontal());
 
   maxpool->ifm(encode);
   relu->input(maxpool);
@@ -350,11 +350,11 @@ TEST_F(TFLExporterImplTests, Regression_0000)
       switch (model->operator_codes()->Get(opcode_index)->builtin_code())
       {
         case tflite::BuiltinOperator_RELU:
-          ASSERT_EQ(relu_exeuction_index, -1);
+          ASSERT_EQ(-1, relu_exeuction_index);
           relu_exeuction_index = static_cast<int64_t>(n);
           break;
         case tflite::BuiltinOperator_MAX_POOL_2D:
-          ASSERT_EQ(maxpool_execution_index, -1);
+          ASSERT_EQ(-1, maxpool_execution_index);
           maxpool_execution_index = static_cast<int64_t>(n);
           break;
         default:
@@ -397,17 +397,17 @@ TEST_F(TFLExporterImplTests, Regression_0001)
     auto buffers = model->buffers();
 
     // 0'th empty buffer + ConstGen data + ConstGen node output
-    ASSERT_EQ(buffers->Length(), 3);
+    ASSERT_EQ(3, buffers->Length());
 
     // 0'th should be empty buffer
     auto buffer_0 = (*buffers)[0];
     auto array_0 = buffer_0->data();
-    ASSERT_EQ(array_0, nullptr);
+    ASSERT_EQ(nullptr, array_0);
 
     // 1'st should be ConstGen data which is two float
     auto buffer_1 = (*buffers)[1];
     auto array_1 = buffer_1->data();
     size_t size_1 = array_1->size();
-    ASSERT_EQ(size_1, 2 * sizeof(float));
+    ASSERT_EQ(2 * sizeof(float), size_1);
   }
 }
