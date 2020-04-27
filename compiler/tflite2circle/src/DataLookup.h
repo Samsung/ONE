@@ -26,14 +26,14 @@ namespace tflite2circle
 /**
  * @brief Returns circle builtin_code according to tflite
  *
- * NOTE You can see a list of currently supported BuiltinOperator in TFLOperator.lst file
+ * @note You can see a list of currently supported BuiltinOperator in TFLOperator.lst file
 */
 circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop);
 
 /**
  * @brief Returns circle TensorType according to tflite
  *
- * NOTE You can see a list of currently supported TensorType in TFLTensorType.lst file
+ * @note You can see a list of currently supported TensorType in TFLTensorType.lst file
 */
 circle::TensorType get_circle_tensortype(tflite::TensorType tfl_tt);
 
@@ -45,7 +45,7 @@ circle::Padding get_circle_padding(tflite::Padding tfl_p);
 /**
  * @brief Returns circle ActivationFunctionType according to tflite
  *
- * NOTE You can see a list of currently supported ActivationFunctionType in
+ * @note You can see a list of currently supported ActivationFunctionType in
  * TFLActivationFunctionType.lst file
 */
 circle::ActivationFunctionType
@@ -55,7 +55,7 @@ get_circle_activation_function_type(tflite::ActivationFunctionType tfl_aft);
  * @brief Returns circle builtin_options according to tflite. This function calls the
  * build_circle_##BuiltinOptions internally, so refer to it for a more detailed implementation.
  *
- * NOTE You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file
+ * @note You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file
 */
 flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuilder &fb,
                                                      const tflite::Operator *op);
@@ -63,7 +63,7 @@ flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuil
 /**
  * @brief Returns circle builtin_options_type according to tflite
  *
- * NOTE You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file
+ * @note You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file
 */
 circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *op);
 
