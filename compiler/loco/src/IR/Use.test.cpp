@@ -25,8 +25,8 @@ TEST(UseTest, constructor)
   MockupNode user;
   loco::Use use{&user};
 
-  ASSERT_EQ(use.user(), &user);
-  ASSERT_EQ(use.node(), nullptr);
+  ASSERT_EQ(&user, use.user());
+  ASSERT_EQ(nullptr, use.node());
 }
 
 TEST(UseTest, link_node)
@@ -37,6 +37,6 @@ TEST(UseTest, link_node)
 
   use.node(&def);
 
-  ASSERT_EQ(use.user(), &user);
-  ASSERT_EQ(use.node(), &def);
+  ASSERT_EQ(&user, use.user());
+  ASSERT_EQ(&def, use.node());
 }

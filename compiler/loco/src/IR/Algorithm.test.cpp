@@ -50,9 +50,9 @@ TEST(AlgorithmTest, postorder_traversal)
 
   auto seq = loco::postorder_traversal({push});
 
-  ASSERT_EQ(seq.size(), 2);
-  ASSERT_EQ(seq.at(0), pull_1);
-  ASSERT_EQ(seq.at(1), push);
+  ASSERT_EQ(2, seq.size());
+  ASSERT_EQ(pull_1, seq.at(0));
+  ASSERT_EQ(push, seq.at(1));
 }
 
 TEST(AlgorithmTest, postorder_traversal_visit_once)
@@ -74,7 +74,7 @@ TEST(AlgorithmTest, postorder_traversal_visit_once)
 
   auto seq = loco::postorder_traversal({push_1, push_2});
 
-  ASSERT_EQ(seq.size(), 3);
+  ASSERT_EQ(3, seq.size());
   ASSERT_TRUE(contains(seq, pull));
   ASSERT_TRUE(contains(seq, push_1));
   ASSERT_TRUE(contains(seq, push_2));
@@ -97,9 +97,9 @@ TEST(AlgorithmTest, postorder_traversal_incomplte_graph)
 
   auto seq = loco::postorder_traversal({concat});
 
-  ASSERT_EQ(seq.size(), 2);
-  ASSERT_EQ(seq.at(0), pull);
-  ASSERT_EQ(seq.at(1), concat);
+  ASSERT_EQ(2, seq.size());
+  ASSERT_EQ(pull, seq.at(0));
+  ASSERT_EQ(concat, seq.at(1));
 }
 
 TEST(AlgorithmTest, active_nodes)
@@ -116,7 +116,7 @@ TEST(AlgorithmTest, active_nodes)
 
   auto s = loco::active_nodes({push});
 
-  ASSERT_EQ(s.size(), 2);
+  ASSERT_EQ(2, s.size());
   ASSERT_TRUE(contains(s, pull));
   ASSERT_TRUE(contains(s, push));
 }

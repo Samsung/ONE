@@ -25,5 +25,5 @@ TEST(CanonicalDialectTest, get)
   // get() SHOULD return a valid(non-null) pointer
   ASSERT_NE(d, nullptr);
   // The return value SHOULD be stable across multiple invocations
-  ASSERT_EQ(d, loco::CanonicalDialect::get());
+  ASSERT_EQ(loco::CanonicalDialect::get(), d);
 }

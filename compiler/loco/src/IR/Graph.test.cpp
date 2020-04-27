@@ -33,7 +33,7 @@ TEST(NamedTest, constructor)
 {
   NamedElement elem;
 
-  ASSERT_EQ(elem.name(), "");
+  ASSERT_EQ("", elem.name());
 }
 
 TEST(NamedTest, setter_and_getter)
@@ -41,14 +41,14 @@ TEST(NamedTest, setter_and_getter)
   NamedElement elem;
 
   elem.name("name");
-  ASSERT_EQ(elem.name(), "name");
+  ASSERT_EQ("name", elem.name());
 }
 
 TEST(DataTypedMixinTest, constructor)
 {
   loco::Mixin<loco::Trait::DataTyped> mixin;
 
-  ASSERT_EQ(mixin.dtype(), loco::DataType::Unknown);
+  ASSERT_EQ(loco::DataType::Unknown, mixin.dtype());
 }
 
 TEST(DataTypedMixinTest, setter_and_getter)
@@ -56,7 +56,7 @@ TEST(DataTypedMixinTest, setter_and_getter)
   loco::Mixin<loco::Trait::DataTyped> mixin;
 
   mixin.dtype(loco::DataType::FLOAT32);
-  ASSERT_EQ(mixin.dtype(), loco::DataType::FLOAT32);
+  ASSERT_EQ(loco::DataType::FLOAT32, mixin.dtype());
 }
 
 TEST(TensorShapedMixinTest, setter_and_getter)
@@ -65,11 +65,11 @@ TEST(TensorShapedMixinTest, setter_and_getter)
 
   mixin.shape({1, 2, 3, 4});
   ASSERT_NE(mixin.shape(), nullptr);
-  ASSERT_EQ(mixin.shape()->rank(), 4);
-  ASSERT_EQ(mixin.shape()->dim(0), 1);
-  ASSERT_EQ(mixin.shape()->dim(1), 2);
-  ASSERT_EQ(mixin.shape()->dim(2), 3);
-  ASSERT_EQ(mixin.shape()->dim(3), 4);
+  ASSERT_EQ(4, mixin.shape()->rank());
+  ASSERT_EQ(1, mixin.shape()->dim(0));
+  ASSERT_EQ(2, mixin.shape()->dim(1));
+  ASSERT_EQ(3, mixin.shape()->dim(2));
+  ASSERT_EQ(4, mixin.shape()->dim(3));
 }
 
 TEST(GraphTest, create_and_destroy_node)
@@ -89,8 +89,8 @@ TEST(GraphTest, create_input)
   auto input = g->inputs()->create();
 
   // TODO Add more checks
-  ASSERT_EQ(input->shape(), nullptr);
-  ASSERT_EQ(input->index(), 0);
+  ASSERT_EQ(nullptr, input->shape());
+  ASSERT_EQ(0, input->index());
 }
 
 TEST(GraphTest, create_output)
@@ -100,8 +100,8 @@ TEST(GraphTest, create_output)
   auto output = g->outputs()->create();
 
   // TODO Add more checks
-  ASSERT_EQ(output->shape(), nullptr);
-  ASSERT_EQ(output->index(), 0);
+  ASSERT_EQ(nullptr, output->shape());
+  ASSERT_EQ(0, output->index());
 }
 
 namespace
@@ -132,10 +132,10 @@ TEST(GraphTest, consturctor_with_param_node)
 
   auto test_node = g->nodes()->create<ParamCtorNode>(22, 11.11);
 
-  ASSERT_EQ(test_node->graph(), g.get());
-  ASSERT_EQ(const_cast<const ParamCtorNode *>(test_node)->graph(), g.get());
+  ASSERT_EQ(g.get(), test_node->graph());
+  ASSERT_EQ(g.get(), const_cast<const ParamCtorNode *>(test_node)->graph());
 
-  ASSERT_EQ(test_node->i(), 22);
+  ASSERT_EQ(22, test_node->i());
   ASSERT_FLOAT_EQ(test_node->f(), 11.11);
 
   ASSERT_NO_THROW(g->nodes()->destroy(test_node));
@@ -170,7 +170,7 @@ TEST(GraphTest, graph_node_enumeration)
   // Returns true if "nodes" includes a given node
   auto member = [&nodes](loco::Node *node) { return nodes.find(node) != nodes.end(); };
 
-  ASSERT_EQ(nodes.size(), 2);
+  ASSERT_EQ(2, nodes.size());
   ASSERT_TRUE(member(pull_1));
   ASSERT_TRUE(member(push_1));
 }
@@ -197,9 +197,9 @@ TEST(GraphTest, graph_inout_enumeration)
 
   auto output_nodes = loco::output_nodes(g.get());
 
-  ASSERT_EQ(output_nodes.size(), 2);
-  ASSERT_EQ(output_nodes.at(0), push_1);
-  ASSERT_EQ(output_nodes.at(1), push_3);
+  ASSERT_EQ(2, output_nodes.size());
+  ASSERT_EQ(push_1, output_nodes.at(0));
+  ASSERT_EQ(push_3, output_nodes.at(1));
 }
 
 TEST(GraphTest, graph_name)

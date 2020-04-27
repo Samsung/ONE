@@ -41,7 +41,7 @@ TEST(GraphBuilderTest, Usecase_000)
 
   auto node = gbuilder->pop();
 
-  ASSERT_EQ(g->nodes()->size(), 1);
-  ASSERT_EQ(node->dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(node->opnum(), static_cast<uint32_t>(loco::CanonicalOpcode::ConstGen));
+  ASSERT_EQ(1, g->nodes()->size());
+  ASSERT_EQ(loco::CanonicalDialect::get(), node->dialect());
+  ASSERT_EQ(static_cast<uint32_t>(loco::CanonicalOpcode::ConstGen), node->opnum());
 }

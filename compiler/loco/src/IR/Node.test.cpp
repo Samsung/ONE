@@ -29,7 +29,7 @@ TEST(NodeTest, preds)
 
   auto preds = loco::preds(&node);
 
-  ASSERT_EQ(preds.size(), 1);
+  ASSERT_EQ(1, preds.size());
   ASSERT_NE(preds.find(&arg), preds.end());
 }
 
@@ -44,7 +44,7 @@ TEST(NodeTest, succs)
 
   auto succs = loco::succs(&node);
 
-  ASSERT_EQ(succs.size(), 2);
+  ASSERT_EQ(2, succs.size());
   ASSERT_NE(succs.find(&succ_1), succs.end());
   ASSERT_NE(succs.find(&succ_2), succs.end());
 }
@@ -63,8 +63,8 @@ TEST(NodeTest, replace_with)
   // The following holds at this point
   // - node_3 USE node_1
   // - node_4 USE node_2
-  ASSERT_EQ(node_3.in(), &node_1);
-  ASSERT_EQ(node_4.in(), &node_2);
+  ASSERT_EQ(&node_1, node_3.in());
+  ASSERT_EQ(&node_2, node_4.in());
 
   // Replace all the usage of node_1 with node_2
   replace(&node_1).with(&node_2);
@@ -72,8 +72,8 @@ TEST(NodeTest, replace_with)
   // The following holds at this point
   // - node_3 USE node_2
   // - node_4 USE node_2
-  ASSERT_EQ(node_3.in(), &node_2);
-  ASSERT_EQ(node_4.in(), &node_2);
+  ASSERT_EQ(&node_2, node_3.in());
+  ASSERT_EQ(&node_2, node_4.in());
 }
 
 TEST(NodeTest, constructor)
@@ -81,7 +81,7 @@ TEST(NodeTest, constructor)
   MockupNode node;
 
   // graph() SHOULD return nullptr if node is not constructed through "Graph"
-  ASSERT_EQ(node.graph(), nullptr);
+  ASSERT_EQ(nullptr, node.graph());
 }
 
 // TODO Rewrite this as a FixedAritry mix-in test
@@ -96,7 +96,7 @@ TEST(FixedArityNodeTest, constructor)
 
   DerivedNode node;
 
-  ASSERT_EQ(node.arity(), 1);
-  ASSERT_EQ(node.arg(0), nullptr);
+  ASSERT_EQ(1, node.arity());
+  ASSERT_EQ(nullptr, node.arg(0));
 }
 #endif

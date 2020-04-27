@@ -34,8 +34,8 @@ TEST(CanonicalNodeTest, visitor_with_user_default_impl)
 
   MyVisitor v;
 
-  ASSERT_EQ(forward.accept(&v), 128);
-  ASSERT_EQ(constgen.accept(&v), 256);
+  ASSERT_EQ(128, forward.accept(&v));
+  ASSERT_EQ(256, constgen.accept(&v));
 }
 
 TEST(CanonicalNodeTest, visitor)
@@ -50,7 +50,7 @@ TEST(CanonicalNodeTest, visitor)
 
   CountingVisitor v;
 
-  ASSERT_EQ(node.accept(&v), 1);
+  ASSERT_EQ(1, node.accept(&v));
 }
 
 TEST(CanonicalNodeTest, mutable_visitor)
@@ -68,5 +68,5 @@ TEST(CanonicalNodeTest, mutable_visitor)
   ResetForward v;
   forward_node.accept(&v);
 
-  ASSERT_EQ(forward_node.input(), nullptr);
+  ASSERT_EQ(nullptr, forward_node.input());
 }

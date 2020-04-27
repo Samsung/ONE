@@ -58,11 +58,11 @@ TEST(LOCO, identity_network)
   loco::link(graph_output, push_node);
 
   // loco::link SHOULD update "index"
-  ASSERT_EQ(pull_node->index(), 0);
-  ASSERT_EQ(graph_input->dtype(), loco::DataType::FLOAT32);
+  ASSERT_EQ(0, pull_node->index());
+  ASSERT_EQ(loco::DataType::FLOAT32, graph_input->dtype());
 
   // loco::link SHOULD update "index"
-  ASSERT_EQ(push_node->index(), 0);
+  ASSERT_EQ(0, push_node->index());
 }
 
 #if 0
@@ -99,10 +99,10 @@ TEST(LOCO, identity_network_V2)
   push_node->index(0);
   push_node->from(pull_node);
 
-  ASSERT_EQ(pull_node->dtype(), loco::DataType::FLOAT32);
+  ASSERT_EQ(loco::DataType::FLOAT32, pull_node->dtype());
   // TODO Check Shape of pull_node
   // TODO Check Shape of push_node
 
-  ASSERT_EQ(loco::pull_node(g.get(), 0), pull_node);
-  ASSERT_EQ(loco::push_node(g.get(), 0), push_node);
+  ASSERT_EQ(pull_node, loco::pull_node(g.get(), 0));
+  ASSERT_EQ(push_node, loco::push_node(g.get(), 0));
 }

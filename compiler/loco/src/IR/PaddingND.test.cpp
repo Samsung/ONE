@@ -26,7 +26,7 @@ TEST(PaddingNDTest, default_constructor_ND)
   padding.front(0) = 1;
   padding.back(0) = 2;
 
-  ASSERT_EQ(padding.rank(), 1);
-  ASSERT_EQ(padding.front(0), 1);
-  ASSERT_EQ(padding.back(0), 2);
+  ASSERT_EQ(1, padding.rank());
+  ASSERT_EQ(1, padding.front(0));
+  ASSERT_EQ(2, padding.back(0));
 }

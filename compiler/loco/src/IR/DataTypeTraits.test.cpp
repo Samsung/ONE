@@ -25,5 +25,5 @@ TEST(DataTypeTraitsTest, FLOAT32)
   auto obtained = std::type_index(typeid(loco::DataTypeImpl<loco::DataType::FLOAT32>::Type));
   auto expected = std::type_index(typeid(float));
 
-  ASSERT_EQ(obtained, expected);
+  ASSERT_EQ(expected, obtained);
 }

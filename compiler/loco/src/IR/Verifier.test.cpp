@@ -58,7 +58,7 @@ TEST(VerifierTest, valid_error_reporter)
 
   std::vector<ErrorDetail<ErrorCategory::MissingArgument>> errors;
   ASSERT_FALSE(loco::valid(g.get(), make_unique<Collector>(&errors)));
-  ASSERT_EQ(errors.size(), 1);
-  ASSERT_EQ(errors.at(0).node(), push);
-  ASSERT_EQ(errors.at(0).index(), 0);
+  ASSERT_EQ(1, errors.size());
+  ASSERT_EQ(push, errors.at(0).node());
+  ASSERT_EQ(0, errors.at(0).index());
 }

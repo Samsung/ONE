@@ -23,10 +23,10 @@ TEST(FeatureIndexTest, default_constructor)
   loco::FeatureIndex index;
 
   // All the values are 0 at the beginning
-  ASSERT_EQ(index.batch(), 0);
-  ASSERT_EQ(index.channel(), 0);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(0, index.batch());
+  ASSERT_EQ(0, index.channel());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 }
 
 TEST(FeatureIndexTest, settet_and_getter)
@@ -36,32 +36,32 @@ TEST(FeatureIndexTest, settet_and_getter)
   // Set count
   index.batch() = 2;
 
-  ASSERT_EQ(index.batch(), 2);
-  ASSERT_EQ(index.channel(), 0);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.batch());
+  ASSERT_EQ(0, index.channel());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set channel
   index.channel() = 3;
 
-  ASSERT_EQ(index.batch(), 2);
-  ASSERT_EQ(index.channel(), 3);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.batch());
+  ASSERT_EQ(3, index.channel());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set height
   index.row() = 4;
 
-  ASSERT_EQ(index.batch(), 2);
-  ASSERT_EQ(index.channel(), 3);
-  ASSERT_EQ(index.row(), 4);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.batch());
+  ASSERT_EQ(3, index.channel());
+  ASSERT_EQ(4, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set width
   index.column() = 5;
 
-  ASSERT_EQ(index.batch(), 2);
-  ASSERT_EQ(index.channel(), 3);
-  ASSERT_EQ(index.row(), 4);
-  ASSERT_EQ(index.column(), 5);
+  ASSERT_EQ(2, index.batch());
+  ASSERT_EQ(3, index.channel());
+  ASSERT_EQ(4, index.row());
+  ASSERT_EQ(5, index.column());
 }

@@ -23,8 +23,8 @@ TEST(PushTest, constructor)
 {
   loco::Push push_node;
 
-  ASSERT_EQ(push_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(push_node.opcode(), loco::CanonicalOpcode::Push);
+  ASSERT_EQ(loco::CanonicalDialect::get(), push_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::Push, push_node.opcode());
 
   ASSERT_FALSE(push_node.indexed());
 }
@@ -37,24 +37,24 @@ TEST(PushTest, shape)
 
   push_node.shape({dims[0], dims[1], dims[2], dims[3]});
 
-  ASSERT_EQ(push_node.rank(), dims.size());
-  ASSERT_EQ(push_node.dim(0), dims[0]);
-  ASSERT_EQ(push_node.dim(1), dims[1]);
-  ASSERT_EQ(push_node.dim(2), dims[2]);
-  ASSERT_EQ(push_node.dim(3), dims[3]);
+  ASSERT_EQ(dims.size(), push_node.rank());
+  ASSERT_EQ(dims[0], push_node.dim(0));
+  ASSERT_EQ(dims[1], push_node.dim(1));
+  ASSERT_EQ(dims[2], push_node.dim(2));
+  ASSERT_EQ(dims[3], push_node.dim(3));
 }
 
 TEST(PullTest, constructor)
 {
   loco::Pull pull_node;
 
-  ASSERT_EQ(pull_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(pull_node.opcode(), loco::CanonicalOpcode::Pull);
+  ASSERT_EQ(loco::CanonicalDialect::get(), pull_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::Pull, pull_node.opcode());
 
   ASSERT_FALSE(pull_node.indexed());
 
-  ASSERT_EQ(pull_node.dtype(), loco::DataType::Unknown);
-  ASSERT_EQ(pull_node.rank(), 0);
+  ASSERT_EQ(loco::DataType::Unknown, pull_node.dtype());
+  ASSERT_EQ(0, pull_node.rank());
 }
 
 TEST(PullTest, shape)
@@ -65,58 +65,58 @@ TEST(PullTest, shape)
 
   pull_node.shape({dims[0], dims[1], dims[2], dims[3]});
 
-  ASSERT_EQ(pull_node.rank(), dims.size());
-  ASSERT_EQ(pull_node.dim(0), dims[0]);
-  ASSERT_EQ(pull_node.dim(1), dims[1]);
-  ASSERT_EQ(pull_node.dim(2), dims[2]);
-  ASSERT_EQ(pull_node.dim(3), dims[3]);
+  ASSERT_EQ(dims.size(), pull_node.rank());
+  ASSERT_EQ(dims[0], pull_node.dim(0));
+  ASSERT_EQ(dims[1], pull_node.dim(1));
+  ASSERT_EQ(dims[2], pull_node.dim(2));
+  ASSERT_EQ(dims[3], pull_node.dim(3));
 }
 
 TEST(ForwardTest, constructor)
 {
   loco::Forward forward_node;
 
-  ASSERT_EQ(forward_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(forward_node.opcode(), loco::CanonicalOpcode::Forward);
+  ASSERT_EQ(loco::CanonicalDialect::get(), forward_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::Forward, forward_node.opcode());
 
-  ASSERT_EQ(forward_node.input(), nullptr);
+  ASSERT_EQ(nullptr, forward_node.input());
 }
 
 TEST(ReLUTest, constructor)
 {
   loco::ReLU relu_node;
 
-  ASSERT_EQ(relu_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(relu_node.opcode(), loco::CanonicalOpcode::ReLU);
+  ASSERT_EQ(loco::CanonicalDialect::get(), relu_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::ReLU, relu_node.opcode());
 
-  ASSERT_EQ(relu_node.input(), nullptr);
+  ASSERT_EQ(nullptr, relu_node.input());
 }
 
 TEST(ReLU6Test, constructor)
 {
   loco::ReLU6 relu6_node;
 
-  ASSERT_EQ(relu6_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(relu6_node.opcode(), loco::CanonicalOpcode::ReLU6);
+  ASSERT_EQ(loco::CanonicalDialect::get(), relu6_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::ReLU6, relu6_node.opcode());
 
-  ASSERT_EQ(relu6_node.input(), nullptr);
+  ASSERT_EQ(nullptr, relu6_node.input());
 }
 
 TEST(ConstGenTest, constructor)
 {
   loco::ConstGen constgen_node;
 
-  ASSERT_EQ(constgen_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(constgen_node.opcode(), loco::CanonicalOpcode::ConstGen);
+  ASSERT_EQ(loco::CanonicalDialect::get(), constgen_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::ConstGen, constgen_node.opcode());
 
-  ASSERT_EQ(constgen_node.dtype(), loco::DataType::Unknown);
-  ASSERT_EQ(constgen_node.rank(), 0);
+  ASSERT_EQ(loco::DataType::Unknown, constgen_node.dtype());
+  ASSERT_EQ(0, constgen_node.rank());
 
   constgen_node.dtype(loco::DataType::FLOAT32);
-  ASSERT_EQ(constgen_node.dtype(), loco::DataType::FLOAT32);
+  ASSERT_EQ(loco::DataType::FLOAT32, constgen_node.dtype());
 
   constgen_node.rank(2);
-  ASSERT_EQ(constgen_node.rank(), 2);
+  ASSERT_EQ(2, constgen_node.rank());
 
   constgen_node.dim(0) = 2;
   constgen_node.dim(1) = 3;
@@ -124,12 +124,12 @@ TEST(ConstGenTest, constructor)
   ASSERT_TRUE(constgen_node.dim(0).known());
   ASSERT_TRUE(constgen_node.dim(1).known());
 
-  ASSERT_EQ(constgen_node.dim(0), 2);
-  ASSERT_EQ(constgen_node.dim(1), 3);
+  ASSERT_EQ(2, constgen_node.dim(0));
+  ASSERT_EQ(3, constgen_node.dim(1));
 
   constgen_node.size<loco::DataType::FLOAT32>(6);
 
-  ASSERT_EQ(constgen_node.size<loco::DataType::FLOAT32>(), 6);
+  ASSERT_EQ(6, constgen_node.size<loco::DataType::FLOAT32>());
 
   constgen_node.at<loco::DataType::FLOAT32>(0) = 0.0f; // Set 0,0
   constgen_node.at<loco::DataType::FLOAT32>(1) = 1.0f; // Set 0,1
@@ -138,26 +138,26 @@ TEST(ConstGenTest, constructor)
   constgen_node.at<loco::DataType::FLOAT32>(4) = 4.0f; // Set 1,1
   constgen_node.at<loco::DataType::FLOAT32>(5) = 5.0f; // Set 1,2
 
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(0), 0.0f);
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(1), 1.0f);
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(2), 2.0f);
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(3), 3.0f);
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(4), 4.0f);
-  ASSERT_EQ(constgen_node.at<loco::DataType::FLOAT32>(5), 5.0f);
+  ASSERT_EQ(0.0f, constgen_node.at<loco::DataType::FLOAT32>(0));
+  ASSERT_EQ(1.0f, constgen_node.at<loco::DataType::FLOAT32>(1));
+  ASSERT_EQ(2.0f, constgen_node.at<loco::DataType::FLOAT32>(2));
+  ASSERT_EQ(3.0f, constgen_node.at<loco::DataType::FLOAT32>(3));
+  ASSERT_EQ(4.0f, constgen_node.at<loco::DataType::FLOAT32>(4));
+  ASSERT_EQ(5.0f, constgen_node.at<loco::DataType::FLOAT32>(5));
 }
 
 TEST(ConstGenTest, constructor_s32)
 {
   loco::ConstGen constgen_node;
 
-  ASSERT_EQ(constgen_node.dtype(), loco::DataType::Unknown);
-  ASSERT_EQ(constgen_node.rank(), 0);
+  ASSERT_EQ(loco::DataType::Unknown, constgen_node.dtype());
+  ASSERT_EQ(0, constgen_node.rank());
 
   constgen_node.dtype(loco::DataType::S32);
-  ASSERT_EQ(constgen_node.dtype(), loco::DataType::S32);
+  ASSERT_EQ(loco::DataType::S32, constgen_node.dtype());
 
   constgen_node.rank(2);
-  ASSERT_EQ(constgen_node.rank(), 2);
+  ASSERT_EQ(2, constgen_node.rank());
 
   constgen_node.dim(0) = 2;
   constgen_node.dim(1) = 3;
@@ -165,12 +165,12 @@ TEST(ConstGenTest, constructor_s32)
   ASSERT_TRUE(constgen_node.dim(0).known());
   ASSERT_TRUE(constgen_node.dim(1).known());
 
-  ASSERT_EQ(constgen_node.dim(0), 2);
-  ASSERT_EQ(constgen_node.dim(1), 3);
+  ASSERT_EQ(2, constgen_node.dim(0));
+  ASSERT_EQ(3, constgen_node.dim(1));
 
   constgen_node.size<loco::DataType::S32>(6);
 
-  ASSERT_EQ(constgen_node.size<loco::DataType::S32>(), 6);
+  ASSERT_EQ(6, constgen_node.size<loco::DataType::S32>());
 
   constgen_node.at<loco::DataType::S32>(0) = 0;  // Set 0,0
   constgen_node.at<loco::DataType::S32>(1) = 1;  // Set 0,1
@@ -179,33 +179,33 @@ TEST(ConstGenTest, constructor_s32)
   constgen_node.at<loco::DataType::S32>(4) = -4; // Set 1,1
   constgen_node.at<loco::DataType::S32>(5) = -5; // Set 1,2
 
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(0), 0);
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(1), 1);
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(2), 2);
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(3), -3);
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(4), -4);
-  ASSERT_EQ(constgen_node.at<loco::DataType::S32>(5), -5);
+  ASSERT_EQ(0, constgen_node.at<loco::DataType::S32>(0));
+  ASSERT_EQ(1, constgen_node.at<loco::DataType::S32>(1));
+  ASSERT_EQ(2, constgen_node.at<loco::DataType::S32>(2));
+  ASSERT_EQ(-3, constgen_node.at<loco::DataType::S32>(3));
+  ASSERT_EQ(-4, constgen_node.at<loco::DataType::S32>(4));
+  ASSERT_EQ(-5, constgen_node.at<loco::DataType::S32>(5));
 }
 
 TEST(MaxPool2DTest, constructor)
 {
   loco::MaxPool2D maxpool_node;
 
-  ASSERT_EQ(maxpool_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(maxpool_node.opcode(), loco::CanonicalOpcode::MaxPool2D);
+  ASSERT_EQ(loco::CanonicalDialect::get(), maxpool_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::MaxPool2D, maxpool_node.opcode());
 
-  ASSERT_EQ(maxpool_node.ifm(), nullptr);
+  ASSERT_EQ(nullptr, maxpool_node.ifm());
 
-  ASSERT_EQ(maxpool_node.pad()->top(), 0);
-  ASSERT_EQ(maxpool_node.pad()->bottom(), 0);
-  ASSERT_EQ(maxpool_node.pad()->left(), 0);
-  ASSERT_EQ(maxpool_node.pad()->right(), 0);
+  ASSERT_EQ(0, maxpool_node.pad()->top());
+  ASSERT_EQ(0, maxpool_node.pad()->bottom());
+  ASSERT_EQ(0, maxpool_node.pad()->left());
+  ASSERT_EQ(0, maxpool_node.pad()->right());
 
-  ASSERT_EQ(maxpool_node.window()->vertical(), 1);
-  ASSERT_EQ(maxpool_node.window()->horizontal(), 1);
+  ASSERT_EQ(1, maxpool_node.window()->vertical());
+  ASSERT_EQ(1, maxpool_node.window()->horizontal());
 
-  ASSERT_EQ(maxpool_node.stride()->vertical(), 1);
-  ASSERT_EQ(maxpool_node.stride()->horizontal(), 1);
+  ASSERT_EQ(1, maxpool_node.stride()->vertical());
+  ASSERT_EQ(1, maxpool_node.stride()->horizontal());
 }
 
 TEST(MaxPool2DTest, pad)
@@ -218,71 +218,71 @@ TEST(MaxPool2DTest, pad)
   loco::MaxPool2D maxpool_node;
 
   maxpool_node.pad()->top(t);
-  ASSERT_EQ(maxpool_node.pad()->top(), t);
+  ASSERT_EQ(t, maxpool_node.pad()->top());
 
   maxpool_node.pad()->bottom(b);
-  ASSERT_EQ(maxpool_node.pad()->bottom(), b);
+  ASSERT_EQ(b, maxpool_node.pad()->bottom());
 
   maxpool_node.pad()->left(l);
-  ASSERT_EQ(maxpool_node.pad()->left(), l);
+  ASSERT_EQ(l, maxpool_node.pad()->left());
 
   maxpool_node.pad()->right(r);
-  ASSERT_EQ(maxpool_node.pad()->right(), r);
+  ASSERT_EQ(r, maxpool_node.pad()->right());
 }
 
 TEST(AvgPool2DTest, constructor)
 {
   loco::AvgPool2D avgpool_node;
 
-  ASSERT_EQ(avgpool_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(avgpool_node.opcode(), loco::CanonicalOpcode::AvgPool2D);
+  ASSERT_EQ(loco::CanonicalDialect::get(), avgpool_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::AvgPool2D, avgpool_node.opcode());
 
-  ASSERT_EQ(avgpool_node.ifm(), nullptr);
+  ASSERT_EQ(nullptr, avgpool_node.ifm());
 
-  ASSERT_EQ(avgpool_node.convention(), loco::AvgPool2D::Convention::Unknown);
+  ASSERT_EQ(loco::AvgPool2D::Convention::Unknown, avgpool_node.convention());
 
-  ASSERT_EQ(avgpool_node.pad()->top(), 0);
-  ASSERT_EQ(avgpool_node.pad()->bottom(), 0);
-  ASSERT_EQ(avgpool_node.pad()->left(), 0);
-  ASSERT_EQ(avgpool_node.pad()->right(), 0);
+  ASSERT_EQ(0, avgpool_node.pad()->top());
+  ASSERT_EQ(0, avgpool_node.pad()->bottom());
+  ASSERT_EQ(0, avgpool_node.pad()->left());
+  ASSERT_EQ(0, avgpool_node.pad()->right());
 
-  ASSERT_EQ(avgpool_node.window()->vertical(), 1);
-  ASSERT_EQ(avgpool_node.window()->horizontal(), 1);
+  ASSERT_EQ(1, avgpool_node.window()->vertical());
+  ASSERT_EQ(1, avgpool_node.window()->horizontal());
 
-  ASSERT_EQ(avgpool_node.stride()->vertical(), 1);
-  ASSERT_EQ(avgpool_node.stride()->horizontal(), 1);
+  ASSERT_EQ(1, avgpool_node.stride()->vertical());
+  ASSERT_EQ(1, avgpool_node.stride()->horizontal());
 }
 
 TEST(FeatureEncodeTest, constructor)
 {
   loco::FeatureEncode feature_encode;
 
-  ASSERT_EQ(feature_encode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(feature_encode.opcode(), loco::CanonicalOpcode::FeatureEncode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), feature_encode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FeatureEncode, feature_encode.opcode());
 
-  ASSERT_EQ(feature_encode.input(), nullptr);
-  ASSERT_EQ(feature_encode.encoder(), nullptr);
+  ASSERT_EQ(nullptr, feature_encode.input());
+  ASSERT_EQ(nullptr, feature_encode.encoder());
 }
 
 TEST(FeatureDecodeTest, constructor)
 {
   loco::FeatureDecode feature_decode;
 
-  ASSERT_EQ(feature_decode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(feature_decode.opcode(), loco::CanonicalOpcode::FeatureDecode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), feature_decode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FeatureDecode, feature_decode.opcode());
 
-  ASSERT_EQ(feature_decode.input(), nullptr);
-  ASSERT_EQ(feature_decode.decoder(), nullptr);
+  ASSERT_EQ(nullptr, feature_decode.input());
+  ASSERT_EQ(nullptr, feature_decode.decoder());
 }
 
 TEST(Reshape_Fixed_Test, constructor)
 {
   loco::Reshape<loco::ReshapeType::Fixed> reshape;
 
-  ASSERT_EQ(reshape.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(reshape.opcode(), loco::CanonicalOpcode::FixedReshape);
+  ASSERT_EQ(loco::CanonicalDialect::get(), reshape.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FixedReshape, reshape.opcode());
 
-  ASSERT_EQ(reshape.rank(), 0);
+  ASSERT_EQ(0, reshape.rank());
 }
 
 TEST(Reshape_Fixed_Test, shape)
@@ -290,153 +290,153 @@ TEST(Reshape_Fixed_Test, shape)
   loco::Reshape<loco::ReshapeType::Fixed> reshape;
   reshape.shape({2, 3});
 
-  ASSERT_EQ(reshape.rank(), 2);
-  ASSERT_EQ(reshape.dim(0), 2);
-  ASSERT_EQ(reshape.dim(1), 3);
+  ASSERT_EQ(2, reshape.rank());
+  ASSERT_EQ(2, reshape.dim(0));
+  ASSERT_EQ(3, reshape.dim(1));
 }
 
 TEST(FilterEncodeTest, constructor)
 {
   loco::FilterEncode filter_encode;
 
-  ASSERT_EQ(filter_encode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(filter_encode.opcode(), loco::CanonicalOpcode::FilterEncode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), filter_encode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FilterEncode, filter_encode.opcode());
 
-  ASSERT_EQ(filter_encode.input(), nullptr);
-  ASSERT_EQ(filter_encode.encoder(), nullptr);
+  ASSERT_EQ(nullptr, filter_encode.input());
+  ASSERT_EQ(nullptr, filter_encode.encoder());
 }
 
 TEST(FilterDecodeTest, constructor)
 {
   loco::FilterDecode filter_decode;
 
-  ASSERT_EQ(filter_decode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(filter_decode.opcode(), loco::CanonicalOpcode::FilterDecode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), filter_decode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FilterDecode, filter_decode.opcode());
 
-  ASSERT_EQ(filter_decode.input(), nullptr);
-  ASSERT_EQ(filter_decode.decoder(), nullptr);
+  ASSERT_EQ(nullptr, filter_decode.input());
+  ASSERT_EQ(nullptr, filter_decode.decoder());
 }
 
 TEST(DepthwiseFilterEncodeTest, constructor)
 {
   loco::DepthwiseFilterEncode dw_filter_encode;
 
-  ASSERT_EQ(dw_filter_encode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(dw_filter_encode.opcode(), loco::CanonicalOpcode::DepthwiseFilterEncode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), dw_filter_encode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::DepthwiseFilterEncode, dw_filter_encode.opcode());
 
-  ASSERT_EQ(dw_filter_encode.input(), nullptr);
-  ASSERT_EQ(dw_filter_encode.encoder(), nullptr);
+  ASSERT_EQ(nullptr, dw_filter_encode.input());
+  ASSERT_EQ(nullptr, dw_filter_encode.encoder());
 }
 
 TEST(DepthwiseFilterDecodeTest, constructor)
 {
   loco::DepthwiseFilterDecode dw_filter_decode;
 
-  ASSERT_EQ(dw_filter_decode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(dw_filter_decode.opcode(), loco::CanonicalOpcode::DepthwiseFilterDecode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), dw_filter_decode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::DepthwiseFilterDecode, dw_filter_decode.opcode());
 
-  ASSERT_EQ(dw_filter_decode.input(), nullptr);
-  ASSERT_EQ(dw_filter_decode.decoder(), nullptr);
+  ASSERT_EQ(nullptr, dw_filter_decode.input());
+  ASSERT_EQ(nullptr, dw_filter_decode.decoder());
 }
 
 TEST(TensorConcatTest, constructor)
 {
   loco::TensorConcat tensor_concat;
 
-  ASSERT_EQ(tensor_concat.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(tensor_concat.opcode(), loco::CanonicalOpcode::TensorConcat);
+  ASSERT_EQ(loco::CanonicalDialect::get(), tensor_concat.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::TensorConcat, tensor_concat.opcode());
 
-  ASSERT_EQ(tensor_concat.lhs(), nullptr);
-  ASSERT_EQ(tensor_concat.rhs(), nullptr);
-  ASSERT_EQ(tensor_concat.axis(), 0);
+  ASSERT_EQ(nullptr, tensor_concat.lhs());
+  ASSERT_EQ(nullptr, tensor_concat.rhs());
+  ASSERT_EQ(0, tensor_concat.axis());
 
   tensor_concat.axis(3);
-  ASSERT_EQ(tensor_concat.axis(), 3);
+  ASSERT_EQ(3, tensor_concat.axis());
 }
 
 TEST(Conv2DTest, constructor)
 {
   loco::Conv2D conv2d;
 
-  ASSERT_EQ(conv2d.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(conv2d.opcode(), loco::CanonicalOpcode::Conv2D);
+  ASSERT_EQ(loco::CanonicalDialect::get(), conv2d.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::Conv2D, conv2d.opcode());
 
-  ASSERT_EQ(conv2d.ifm(), nullptr);
-  ASSERT_EQ(conv2d.ker(), nullptr);
+  ASSERT_EQ(nullptr, conv2d.ifm());
+  ASSERT_EQ(nullptr, conv2d.ker());
 
   ASSERT_NE(conv2d.pad(), nullptr);
-  ASSERT_EQ(conv2d.pad()->top(), 0);
-  ASSERT_EQ(conv2d.pad()->bottom(), 0);
-  ASSERT_EQ(conv2d.pad()->left(), 0);
-  ASSERT_EQ(conv2d.pad()->right(), 0);
+  ASSERT_EQ(0, conv2d.pad()->top());
+  ASSERT_EQ(0, conv2d.pad()->bottom());
+  ASSERT_EQ(0, conv2d.pad()->left());
+  ASSERT_EQ(0, conv2d.pad()->right());
 
   ASSERT_NE(conv2d.stride(), nullptr);
-  ASSERT_EQ(conv2d.stride()->vertical(), 1);
-  ASSERT_EQ(conv2d.stride()->horizontal(), 1);
+  ASSERT_EQ(1, conv2d.stride()->vertical());
+  ASSERT_EQ(1, conv2d.stride()->horizontal());
 }
 
 TEST(DepthwiseConv2DTest, constructor)
 {
   loco::DepthwiseConv2D dw_conv2d;
 
-  ASSERT_EQ(dw_conv2d.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(dw_conv2d.opcode(), loco::CanonicalOpcode::DepthwiseConv2D);
+  ASSERT_EQ(loco::CanonicalDialect::get(), dw_conv2d.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::DepthwiseConv2D, dw_conv2d.opcode());
 
-  ASSERT_EQ(dw_conv2d.ifm(), nullptr);
-  ASSERT_EQ(dw_conv2d.ker(), nullptr);
+  ASSERT_EQ(nullptr, dw_conv2d.ifm());
+  ASSERT_EQ(nullptr, dw_conv2d.ker());
 
   ASSERT_NE(dw_conv2d.pad(), nullptr);
-  ASSERT_EQ(dw_conv2d.pad()->top(), 0);
-  ASSERT_EQ(dw_conv2d.pad()->bottom(), 0);
-  ASSERT_EQ(dw_conv2d.pad()->left(), 0);
-  ASSERT_EQ(dw_conv2d.pad()->right(), 0);
+  ASSERT_EQ(0, dw_conv2d.pad()->top());
+  ASSERT_EQ(0, dw_conv2d.pad()->bottom());
+  ASSERT_EQ(0, dw_conv2d.pad()->left());
+  ASSERT_EQ(0, dw_conv2d.pad()->right());
 
   ASSERT_NE(dw_conv2d.stride(), nullptr);
-  ASSERT_EQ(dw_conv2d.stride()->vertical(), 1);
-  ASSERT_EQ(dw_conv2d.stride()->horizontal(), 1);
+  ASSERT_EQ(1, dw_conv2d.stride()->vertical());
+  ASSERT_EQ(1, dw_conv2d.stride()->horizontal());
 }
 
 TEST(TransposedConv2DTest, constructor)
 {
   loco::TransposedConv2D tr_conv2d;
 
-  ASSERT_EQ(tr_conv2d.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(tr_conv2d.opcode(), loco::CanonicalOpcode::TransposedConv2D);
+  ASSERT_EQ(loco::CanonicalDialect::get(), tr_conv2d.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::TransposedConv2D, tr_conv2d.opcode());
 
-  ASSERT_EQ(tr_conv2d.ifm(), nullptr);
-  ASSERT_EQ(tr_conv2d.ker(), nullptr);
+  ASSERT_EQ(nullptr, tr_conv2d.ifm());
+  ASSERT_EQ(nullptr, tr_conv2d.ker());
 
   ASSERT_NE(tr_conv2d.pad(), nullptr);
-  ASSERT_EQ(tr_conv2d.pad()->top(), 0);
-  ASSERT_EQ(tr_conv2d.pad()->bottom(), 0);
-  ASSERT_EQ(tr_conv2d.pad()->left(), 0);
-  ASSERT_EQ(tr_conv2d.pad()->right(), 0);
+  ASSERT_EQ(0, tr_conv2d.pad()->top());
+  ASSERT_EQ(0, tr_conv2d.pad()->bottom());
+  ASSERT_EQ(0, tr_conv2d.pad()->left());
+  ASSERT_EQ(0, tr_conv2d.pad()->right());
 
   ASSERT_NE(tr_conv2d.stride(), nullptr);
-  ASSERT_EQ(tr_conv2d.stride()->vertical(), 1);
-  ASSERT_EQ(tr_conv2d.stride()->horizontal(), 1);
+  ASSERT_EQ(1, tr_conv2d.stride()->vertical());
+  ASSERT_EQ(1, tr_conv2d.stride()->horizontal());
 }
 
 TEST(BiasEncodeTest, constructor)
 {
   loco::BiasEncode bias_encode;
 
-  ASSERT_EQ(bias_encode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(bias_encode.opcode(), loco::CanonicalOpcode::BiasEncode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), bias_encode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::BiasEncode, bias_encode.opcode());
 
-  ASSERT_EQ(bias_encode.input(), nullptr);
+  ASSERT_EQ(nullptr, bias_encode.input());
 }
 
 TEST(TensorBiasAddTest, constructor)
 {
   loco::BiasAdd<loco::Domain::Tensor> bias_add;
 
-  ASSERT_EQ(bias_add.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(bias_add.opcode(), loco::CanonicalOpcode::TensorBiasAdd);
+  ASSERT_EQ(loco::CanonicalDialect::get(), bias_add.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::TensorBiasAdd, bias_add.opcode());
 
-  ASSERT_EQ(bias_add.value(), nullptr);
-  ASSERT_EQ(bias_add.bias(), nullptr);
-  ASSERT_EQ(bias_add.axis(), 0);
+  ASSERT_EQ(nullptr, bias_add.value());
+  ASSERT_EQ(nullptr, bias_add.bias());
+  ASSERT_EQ(0, bias_add.axis());
 }
 
 TEST(TensorBiasAddTest, alias)
@@ -450,11 +450,11 @@ TEST(FeatureBiasAddTest, constructor)
 {
   loco::BiasAdd<loco::Domain::Feature> bias_add;
 
-  ASSERT_EQ(bias_add.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(bias_add.opcode(), loco::CanonicalOpcode::FeatureBiasAdd);
+  ASSERT_EQ(loco::CanonicalDialect::get(), bias_add.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::FeatureBiasAdd, bias_add.opcode());
 
-  ASSERT_EQ(bias_add.value(), nullptr);
-  ASSERT_EQ(bias_add.bias(), nullptr);
+  ASSERT_EQ(nullptr, bias_add.value());
+  ASSERT_EQ(nullptr, bias_add.bias());
 }
 
 TEST(FeatureBiasAddTest, alias)
@@ -503,74 +503,74 @@ TEST(EltwiseSqrtTest, constructor)
 {
   loco::EltwiseSqrt sqrt_node;
 
-  ASSERT_EQ(sqrt_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(sqrt_node.opcode(), loco::CanonicalOpcode::EltwiseSqrt);
+  ASSERT_EQ(loco::CanonicalDialect::get(), sqrt_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::EltwiseSqrt, sqrt_node.opcode());
 
-  ASSERT_EQ(sqrt_node.input(), nullptr);
+  ASSERT_EQ(nullptr, sqrt_node.input());
 }
 
 TEST(TensorBroadcastTest, constructor)
 {
   loco::TensorBroadcast tensor_broadcast_node;
 
-  ASSERT_EQ(tensor_broadcast_node.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(tensor_broadcast_node.opcode(), loco::CanonicalOpcode::TensorBroadcast);
+  ASSERT_EQ(loco::CanonicalDialect::get(), tensor_broadcast_node.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::TensorBroadcast, tensor_broadcast_node.opcode());
 
-  ASSERT_EQ(tensor_broadcast_node.input(), nullptr);
+  ASSERT_EQ(nullptr, tensor_broadcast_node.input());
 }
 
 TEST(TensorBroadcastTest, mapping)
 {
   loco::TensorBroadcast tensor_broadcast_node;
 
-  ASSERT_EQ(tensor_broadcast_node.mapping()->defined(0), false);
+  ASSERT_EQ(false, tensor_broadcast_node.mapping()->defined(0));
 
   tensor_broadcast_node.mapping()->dim(0) = 3;
 
-  ASSERT_EQ(tensor_broadcast_node.mapping()->defined(0), true);
-  ASSERT_EQ(tensor_broadcast_node.mapping()->dim(0), 3);
+  ASSERT_EQ(true, tensor_broadcast_node.mapping()->defined(0));
+  ASSERT_EQ(3, tensor_broadcast_node.mapping()->dim(0));
 }
 
 TEST(MatrixEncodeTest, constructor)
 {
   loco::MatrixEncode matrix_encode;
 
-  ASSERT_EQ(matrix_encode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(matrix_encode.opcode(), loco::CanonicalOpcode::MatrixEncode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), matrix_encode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::MatrixEncode, matrix_encode.opcode());
 
-  ASSERT_EQ(matrix_encode.input(), nullptr);
+  ASSERT_EQ(nullptr, matrix_encode.input());
 }
 
 TEST(MatrixDecodeTest, constructor)
 {
   loco::MatrixDecode matrix_decode;
 
-  ASSERT_EQ(matrix_decode.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(matrix_decode.opcode(), loco::CanonicalOpcode::MatrixDecode);
+  ASSERT_EQ(loco::CanonicalDialect::get(), matrix_decode.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::MatrixDecode, matrix_decode.opcode());
 
-  ASSERT_EQ(matrix_decode.input(), nullptr);
+  ASSERT_EQ(nullptr, matrix_decode.input());
 }
 
 TEST(MatMulTest, constructor)
 {
   loco::MatMul mat_mul;
 
-  ASSERT_EQ(mat_mul.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(mat_mul.opcode(), loco::CanonicalOpcode::MatMul);
+  ASSERT_EQ(loco::CanonicalDialect::get(), mat_mul.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::MatMul, mat_mul.opcode());
 
-  ASSERT_EQ(mat_mul.lhs(), nullptr);
-  ASSERT_EQ(mat_mul.rhs(), nullptr);
+  ASSERT_EQ(nullptr, mat_mul.lhs());
+  ASSERT_EQ(nullptr, mat_mul.rhs());
 }
 
 TEST(TransposeTest, constructor)
 {
   loco::TensorTranspose transpose;
 
-  ASSERT_EQ(transpose.dialect(), loco::CanonicalDialect::get());
-  ASSERT_EQ(transpose.opcode(), loco::CanonicalOpcode::TensorTranspose);
+  ASSERT_EQ(loco::CanonicalDialect::get(), transpose.dialect());
+  ASSERT_EQ(loco::CanonicalOpcode::TensorTranspose, transpose.opcode());
 
-  ASSERT_EQ(transpose.input(), nullptr);
-  ASSERT_EQ(transpose.perm()->size(), 0);
+  ASSERT_EQ(nullptr, transpose.input());
+  ASSERT_EQ(0, transpose.perm()->size());
 }
 
 TEST(TransposeTest, perm)
@@ -582,7 +582,7 @@ TEST(TransposeTest, perm)
   transpose.perm()->axis(1) = 2;
   transpose.perm()->axis(2) = 0;
 
-  ASSERT_EQ(transpose.perm()->axis(0), 1);
-  ASSERT_EQ(transpose.perm()->axis(1), 2);
-  ASSERT_EQ(transpose.perm()->axis(2), 0);
+  ASSERT_EQ(1, transpose.perm()->axis(0));
+  ASSERT_EQ(2, transpose.perm()->axis(1));
+  ASSERT_EQ(0, transpose.perm()->axis(2));
 }

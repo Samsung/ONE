@@ -22,8 +22,8 @@ TEST(PadTest, default_constructor_2D)
 {
   loco::Padding2D pad;
 
-  ASSERT_EQ(pad.top(), 0);
-  ASSERT_EQ(pad.bottom(), 0);
-  ASSERT_EQ(pad.left(), 0);
-  ASSERT_EQ(pad.right(), 0);
+  ASSERT_EQ(0, pad.top());
+  ASSERT_EQ(0, pad.bottom());
+  ASSERT_EQ(0, pad.left());
+  ASSERT_EQ(0, pad.right());
 }
