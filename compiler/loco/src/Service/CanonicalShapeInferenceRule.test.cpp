@@ -35,12 +35,12 @@ TEST(CanonicalShapeInferenceRuleTest, minimal)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.push_node));
-  ASSERT_EQ(loco::shape_get(testcase.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank(), 4);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0), 1);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1), 2);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(2), 3);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(3), 4);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.push_node).domain());
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(1, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1));
+  ASSERT_EQ(3, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(2));
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(3));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, const_gen)
@@ -58,10 +58,10 @@ TEST(CanonicalShapeInferenceRuleTest, const_gen)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.push_node));
-  ASSERT_EQ(loco::shape_get(testcase.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0), 1);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1), 2);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.push_node).domain());
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(1, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, relu)
@@ -78,12 +78,12 @@ TEST(CanonicalShapeInferenceRuleTest, relu)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.push_node));
-  ASSERT_EQ(loco::shape_get(testcase.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank(), 4);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0), 1);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1), 2);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(2), 3);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(3), 4);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.push_node).domain());
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(1, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1));
+  ASSERT_EQ(3, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(2));
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(3));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, feature_codec)
@@ -100,15 +100,15 @@ TEST(CanonicalShapeInferenceRuleTest, feature_codec)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.encode_node));
-  ASSERT_EQ(loco::shape_get(testcase.encode_node).domain(), loco::Domain::Feature);
+  ASSERT_EQ(loco::Domain::Feature, loco::shape_get(testcase.encode_node).domain());
 
   ASSERT_TRUE(loco::shape_known(testcase.decode_node));
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).as<loco::TensorShape>().rank(), 4);
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(0), 1);
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(1), 2);
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(2), 3);
-  ASSERT_EQ(loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(3), 4);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.decode_node).domain());
+  ASSERT_EQ(4, loco::shape_get(testcase.decode_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(1, loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(2, loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(1));
+  ASSERT_EQ(3, loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(2));
+  ASSERT_EQ(4, loco::shape_get(testcase.decode_node).as<loco::TensorShape>().dim(3));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, avgpool2d)
@@ -141,11 +141,11 @@ TEST(CanonicalShapeInferenceRuleTest, avgpool2d)
   //
   // NOTE AvgPool2D testcase assumes NHWC layout
   ASSERT_TRUE(loco::shape_known(testcase.avgpool2d_node));
-  ASSERT_EQ(loco::shape_get(testcase.avgpool2d_node).domain(), loco::Domain::Feature);
-  ASSERT_EQ(loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().count(), 1);
-  ASSERT_EQ(loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().depth(), 3);
-  ASSERT_EQ(loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().height(), 4);
-  ASSERT_EQ(loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().width(), 2);
+  ASSERT_EQ(loco::Domain::Feature, loco::shape_get(testcase.avgpool2d_node).domain());
+  ASSERT_EQ(1, loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().count());
+  ASSERT_EQ(3, loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().depth());
+  ASSERT_EQ(4, loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().height());
+  ASSERT_EQ(2, loco::shape_get(testcase.avgpool2d_node).as<FeatureShape>().width());
 }
 
 TEST(CanonicalShapeInferenceRuleTest, depthwiseconv2d)
@@ -172,11 +172,11 @@ TEST(CanonicalShapeInferenceRuleTest, depthwiseconv2d)
   //
   // NOTE DepthwiseConv2D testcase assumes NHWC layout
   ASSERT_TRUE(loco::shape_known(testcase.depthwiseconv2d_node));
-  ASSERT_EQ(loco::shape_get(testcase.depthwiseconv2d_node).domain(), loco::Domain::Feature);
-  ASSERT_EQ(loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().count(), 1);
-  ASSERT_EQ(loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().depth(), 6);
-  ASSERT_EQ(loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().height(), 3);
-  ASSERT_EQ(loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().width(), 3);
+  ASSERT_EQ(loco::Domain::Feature, loco::shape_get(testcase.depthwiseconv2d_node).domain());
+  ASSERT_EQ(1, loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().count());
+  ASSERT_EQ(6, loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().depth());
+  ASSERT_EQ(3, loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().height());
+  ASSERT_EQ(3, loco::shape_get(testcase.depthwiseconv2d_node).as<FeatureShape>().width());
 }
 
 TEST(CanonicalShapeInferenceRuleTest, transposedconv2d)
@@ -206,11 +206,11 @@ TEST(CanonicalShapeInferenceRuleTest, transposedconv2d)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.tr_conv2d_node));
-  ASSERT_EQ(loco::shape_get(testcase.tr_conv2d_node).domain(), loco::Domain::Feature);
-  ASSERT_EQ(loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().count(), 1);
-  ASSERT_EQ(loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().height(), 540);
-  ASSERT_EQ(loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().width(), 960);
-  ASSERT_EQ(loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().depth(), 12);
+  ASSERT_EQ(loco::Domain::Feature, loco::shape_get(testcase.tr_conv2d_node).domain());
+  ASSERT_EQ(1, loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().count());
+  ASSERT_EQ(540, loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().height());
+  ASSERT_EQ(960, loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().width());
+  ASSERT_EQ(12, loco::shape_get(testcase.tr_conv2d_node).as<FeatureShape>().depth());
 }
 
 TEST(CanonicalShapeInferenceRuleTest, maxpool2d)
@@ -243,11 +243,11 @@ TEST(CanonicalShapeInferenceRuleTest, maxpool2d)
   //
   // NOTE MaxPool2D testcase assumes NHWC layout
   ASSERT_TRUE(loco::shape_known(testcase.maxpool2d_node));
-  ASSERT_EQ(loco::shape_get(testcase.maxpool2d_node).domain(), loco::Domain::Feature);
-  ASSERT_EQ(loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().count(), 1);
-  ASSERT_EQ(loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().depth(), 3);
-  ASSERT_EQ(loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().height(), 4);
-  ASSERT_EQ(loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().width(), 2);
+  ASSERT_EQ(loco::Domain::Feature, loco::shape_get(testcase.maxpool2d_node).domain());
+  ASSERT_EQ(1, loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().count());
+  ASSERT_EQ(3, loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().depth());
+  ASSERT_EQ(4, loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().height());
+  ASSERT_EQ(2, loco::shape_get(testcase.maxpool2d_node).as<FeatureShape>().width());
 }
 
 TEST(CanonicalShapeInferenceRuleTest, tensor_concat)
@@ -268,11 +268,11 @@ TEST(CanonicalShapeInferenceRuleTest, tensor_concat)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.concat_node));
-  ASSERT_EQ(loco::shape_get(testcase.concat_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.concat_node).as<TensorShape>().rank(), 3);
-  ASSERT_EQ(loco::shape_get(testcase.concat_node).as<TensorShape>().dim(0), 1);
-  ASSERT_EQ(loco::shape_get(testcase.concat_node).as<TensorShape>().dim(1), 6);
-  ASSERT_EQ(loco::shape_get(testcase.concat_node).as<TensorShape>().dim(2), 3);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.concat_node).domain());
+  ASSERT_EQ(3, loco::shape_get(testcase.concat_node).as<TensorShape>().rank());
+  ASSERT_EQ(1, loco::shape_get(testcase.concat_node).as<TensorShape>().dim(0));
+  ASSERT_EQ(6, loco::shape_get(testcase.concat_node).as<TensorShape>().dim(1));
+  ASSERT_EQ(3, loco::shape_get(testcase.concat_node).as<TensorShape>().dim(2));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, fixed_reshape)
@@ -290,10 +290,10 @@ TEST(CanonicalShapeInferenceRuleTest, fixed_reshape)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.push_node));
-  ASSERT_EQ(loco::shape_get(testcase.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1), 9);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.push_node).domain());
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(9, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, tensor_broadcast)
@@ -310,10 +310,10 @@ TEST(CanonicalShapeInferenceRuleTest, tensor_broadcast)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(testcase.push_node));
-  ASSERT_EQ(loco::shape_get(testcase.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1), 2);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.push_node).domain());
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(2, loco::shape_get(testcase.push_node).as<loco::TensorShape>().dim(1));
 }
 
 TEST(CanonicalShapeInferenceRuleTest, tensor_transpose)
@@ -336,12 +336,12 @@ TEST(CanonicalShapeInferenceRuleTest, tensor_transpose)
 
   // Verify!
   ASSERT_TRUE(loco::shape_known(tc.push_node));
-  ASSERT_EQ(loco::shape_get(tc.push_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(tc.push_node).as<loco::TensorShape>().rank(), 4);
-  ASSERT_EQ(loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(0), 30);
-  ASSERT_EQ(loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(1), 40);
-  ASSERT_EQ(loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(2), 10);
-  ASSERT_EQ(loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(3), 20);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(tc.push_node).domain());
+  ASSERT_EQ(4, loco::shape_get(tc.push_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(30, loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(40, loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(1));
+  ASSERT_EQ(10, loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(2));
+  ASSERT_EQ(20, loco::shape_get(tc.push_node).as<loco::TensorShape>().dim(3));
 }
 
 namespace
@@ -393,8 +393,8 @@ TEST(CanonicalShapeInferenceRuleTest, infer_v2)
 
   rule.infer(&ctx, relu_2, &sink);
 
-  ASSERT_EQ(sink.shape.domain(), loco::Domain::Tensor);
-  ASSERT_EQ(sink.shape.as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(sink.shape.as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(sink.shape.as<loco::TensorShape>().dim(1), 5);
+  ASSERT_EQ(loco::Domain::Tensor, sink.shape.domain());
+  ASSERT_EQ(2, sink.shape.as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, sink.shape.as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(5, sink.shape.as<loco::TensorShape>().dim(1));
 }

@@ -40,7 +40,7 @@ TEST(DepthwiseFilterShapeTest, settet_and_getter)
   ASSERT_FALSE(shape.height().known());
   ASSERT_FALSE(shape.width().known());
 
-  ASSERT_EQ(shape.depth(), 2);
+  ASSERT_EQ(2, shape.depth());
 
   // Set multiplier
   shape.multiplier() = 3;
@@ -50,8 +50,8 @@ TEST(DepthwiseFilterShapeTest, settet_and_getter)
   ASSERT_FALSE(shape.height().known());
   ASSERT_FALSE(shape.width().known());
 
-  ASSERT_EQ(shape.depth(), 2);
-  ASSERT_EQ(shape.multiplier(), 3);
+  ASSERT_EQ(2, shape.depth());
+  ASSERT_EQ(3, shape.multiplier());
 
   // Set height
   shape.height() = 4;
@@ -61,9 +61,9 @@ TEST(DepthwiseFilterShapeTest, settet_and_getter)
   ASSERT_TRUE(shape.height().known());
   ASSERT_FALSE(shape.width().known());
 
-  ASSERT_EQ(shape.depth(), 2);
-  ASSERT_EQ(shape.multiplier(), 3);
-  ASSERT_EQ(shape.height(), 4);
+  ASSERT_EQ(2, shape.depth());
+  ASSERT_EQ(3, shape.multiplier());
+  ASSERT_EQ(4, shape.height());
 
   // Set width
   shape.width() = 5;
@@ -73,8 +73,8 @@ TEST(DepthwiseFilterShapeTest, settet_and_getter)
   ASSERT_TRUE(shape.height().known());
   ASSERT_TRUE(shape.width().known());
 
-  ASSERT_EQ(shape.depth(), 2);
-  ASSERT_EQ(shape.multiplier(), 3);
-  ASSERT_EQ(shape.height(), 4);
-  ASSERT_EQ(shape.width(), 5);
+  ASSERT_EQ(2, shape.depth());
+  ASSERT_EQ(3, shape.multiplier());
+  ASSERT_EQ(4, shape.height());
+  ASSERT_EQ(5, shape.width());
 }

@@ -120,15 +120,15 @@ TEST(MultiDialectShapeInferenceRuleTest, test1)
   // Verify!
   ASSERT_TRUE(loco::shape_known(t23_node));
   auto t23_shape = loco::shape_get(t23_node);
-  ASSERT_EQ(t23_shape.domain(), loco::Domain::Tensor);
-  ASSERT_EQ(t23_shape.as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(t23_shape.as<loco::TensorShape>().dim(0), 2);
-  ASSERT_EQ(t23_shape.as<loco::TensorShape>().dim(1), 3);
+  ASSERT_EQ(loco::Domain::Tensor, t23_shape.domain());
+  ASSERT_EQ(2, t23_shape.as<loco::TensorShape>().rank());
+  ASSERT_EQ(2, t23_shape.as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(3, t23_shape.as<loco::TensorShape>().dim(1));
 
   ASSERT_TRUE(loco::shape_known(t45_node));
   auto t45_shape = loco::shape_get(t45_node);
-  ASSERT_EQ(t45_shape.domain(), loco::Domain::Tensor);
-  ASSERT_EQ(t45_shape.as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(t45_shape.as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(t45_shape.as<loco::TensorShape>().dim(1), 5);
+  ASSERT_EQ(loco::Domain::Tensor, t45_shape.domain());
+  ASSERT_EQ(2, t45_shape.as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, t45_shape.as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(5, t45_shape.as<loco::TensorShape>().dim(1));
 }

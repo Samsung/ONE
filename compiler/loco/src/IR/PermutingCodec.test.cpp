@@ -43,10 +43,10 @@ TEST(PemutationTest, feature)
   ASSERT_TRUE(perm.mapped(FeatureAxis::Width));
 
   // Check the value
-  ASSERT_EQ(perm[FeatureAxis::Count], 5);
-  ASSERT_EQ(perm[FeatureAxis::Depth], 6);
-  ASSERT_EQ(perm[FeatureAxis::Height], 7);
-  ASSERT_EQ(perm[FeatureAxis::Width], 8);
+  ASSERT_EQ(5, perm[FeatureAxis::Count]);
+  ASSERT_EQ(6, perm[FeatureAxis::Depth]);
+  ASSERT_EQ(7, perm[FeatureAxis::Height]);
+  ASSERT_EQ(8, perm[FeatureAxis::Width]);
 }
 
 TEST(PemutationTest, filter)
@@ -72,10 +72,10 @@ TEST(PemutationTest, filter)
   ASSERT_TRUE(perm.mapped(FilterAxis::Width));
 
   // Check the value
-  ASSERT_EQ(perm[FilterAxis::Count], 5);
-  ASSERT_EQ(perm[FilterAxis::Depth], 6);
-  ASSERT_EQ(perm[FilterAxis::Height], 7);
-  ASSERT_EQ(perm[FilterAxis::Width], 8);
+  ASSERT_EQ(5, perm[FilterAxis::Count]);
+  ASSERT_EQ(6, perm[FilterAxis::Depth]);
+  ASSERT_EQ(7, perm[FilterAxis::Height]);
+  ASSERT_EQ(8, perm[FilterAxis::Width]);
 }
 
 TEST(PemutationTest, depthwise_filter)
@@ -101,10 +101,10 @@ TEST(PemutationTest, depthwise_filter)
   ASSERT_TRUE(perm.mapped(DepthwiseFilterAxis::Width));
 
   // Check the value
-  ASSERT_EQ(perm[DepthwiseFilterAxis::Depth], 5);
-  ASSERT_EQ(perm[DepthwiseFilterAxis::Multiplier], 6);
-  ASSERT_EQ(perm[DepthwiseFilterAxis::Height], 7);
-  ASSERT_EQ(perm[DepthwiseFilterAxis::Width], 8);
+  ASSERT_EQ(5, perm[DepthwiseFilterAxis::Depth]);
+  ASSERT_EQ(6, perm[DepthwiseFilterAxis::Multiplier]);
+  ASSERT_EQ(7, perm[DepthwiseFilterAxis::Height]);
+  ASSERT_EQ(8, perm[DepthwiseFilterAxis::Width]);
 }
 
 TEST(PermutingEncoderTest, feature)
@@ -147,10 +147,10 @@ TEST(PermutingEncoderTest, feature)
   // Get the feature shape corresponding to a given image
   auto feature_shape = enc.shape(tensor_shape);
 
-  ASSERT_EQ(feature_shape.count(), 1);
-  ASSERT_EQ(feature_shape.depth(), 3);
-  ASSERT_EQ(feature_shape.height(), 720);
-  ASSERT_EQ(feature_shape.width(), 1280);
+  ASSERT_EQ(1, feature_shape.count());
+  ASSERT_EQ(3, feature_shape.depth());
+  ASSERT_EQ(720, feature_shape.height());
+  ASSERT_EQ(1280, feature_shape.width());
 
   // Let's find a source tensor index!
   FeatureIndex feature_index;
@@ -162,10 +162,10 @@ TEST(PermutingEncoderTest, feature)
 
   auto tensor_index = enc.value(feature_index);
 
-  ASSERT_EQ(tensor_index.at(0), 0); // BATCH(COUNT)
-  ASSERT_EQ(tensor_index.at(1), 2); // ROW(HEIGHT)
-  ASSERT_EQ(tensor_index.at(2), 3); // COLUMN(WIDTH)
-  ASSERT_EQ(tensor_index.at(3), 1); // CHANNEL(DEPTH)
+  ASSERT_EQ(0, tensor_index.at(0)); // BATCH(COUNT)
+  ASSERT_EQ(2, tensor_index.at(1)); // ROW(HEIGHT)
+  ASSERT_EQ(3, tensor_index.at(2)); // COLUMN(WIDTH)
+  ASSERT_EQ(1, tensor_index.at(3)); // CHANNEL(DEPTH)
 }
 
 TEST(PermutingEncoderTest, feature_clone)
@@ -233,10 +233,10 @@ TEST(PermutingEncoderTest, filter)
   // Get the corresponding filter shape
   auto filter_shape = enc.shape(tensor_shape);
 
-  ASSERT_EQ(filter_shape.count(), 8);
-  ASSERT_EQ(filter_shape.depth(), 4);
-  ASSERT_EQ(filter_shape.height(), 1);
-  ASSERT_EQ(filter_shape.width(), 7);
+  ASSERT_EQ(8, filter_shape.count());
+  ASSERT_EQ(4, filter_shape.depth());
+  ASSERT_EQ(1, filter_shape.height());
+  ASSERT_EQ(7, filter_shape.width());
 
   // Let's find a source tensor index!
   FilterIndex filter_index;
@@ -248,10 +248,10 @@ TEST(PermutingEncoderTest, filter)
 
   auto tensor_index = enc.value(filter_index);
 
-  ASSERT_EQ(tensor_index.at(0), 1); // NTH(COUNT)
-  ASSERT_EQ(tensor_index.at(1), 0); // ROW(HEIGHT)
-  ASSERT_EQ(tensor_index.at(2), 3); // COLUMN(WIDTH)
-  ASSERT_EQ(tensor_index.at(3), 2); // CHANNEL(DEPTH)
+  ASSERT_EQ(1, tensor_index.at(0)); // NTH(COUNT)
+  ASSERT_EQ(0, tensor_index.at(1)); // ROW(HEIGHT)
+  ASSERT_EQ(3, tensor_index.at(2)); // COLUMN(WIDTH)
+  ASSERT_EQ(2, tensor_index.at(3)); // CHANNEL(DEPTH)
 }
 
 TEST(PermutingEncoderTest, depthwise_filter)
@@ -293,10 +293,10 @@ TEST(PermutingEncoderTest, depthwise_filter)
   // Get the corresponding depthwise filter shape
   auto filter_shape = enc.shape(tensor_shape);
 
-  ASSERT_EQ(filter_shape.depth(), 8);
-  ASSERT_EQ(filter_shape.multiplier(), 4);
-  ASSERT_EQ(filter_shape.height(), 1);
-  ASSERT_EQ(filter_shape.width(), 7);
+  ASSERT_EQ(8, filter_shape.depth());
+  ASSERT_EQ(4, filter_shape.multiplier());
+  ASSERT_EQ(1, filter_shape.height());
+  ASSERT_EQ(7, filter_shape.width());
 
   // Let's find a source tensor index!
   DepthwiseFilterIndex filter_index;
@@ -308,10 +308,10 @@ TEST(PermutingEncoderTest, depthwise_filter)
 
   auto tensor_index = enc.value(filter_index);
 
-  ASSERT_EQ(tensor_index.at(0), 1); // CHANNEL(DEPTH)
-  ASSERT_EQ(tensor_index.at(1), 0); // ROW(HEIGHT)
-  ASSERT_EQ(tensor_index.at(2), 3); // COLUMN(WIDTH)
-  ASSERT_EQ(tensor_index.at(3), 2); // NTH(MULTIPLIER)
+  ASSERT_EQ(1, tensor_index.at(0)); // CHANNEL(DEPTH)
+  ASSERT_EQ(0, tensor_index.at(1)); // ROW(HEIGHT)
+  ASSERT_EQ(3, tensor_index.at(2)); // COLUMN(WIDTH)
+  ASSERT_EQ(2, tensor_index.at(3)); // NTH(MULTIPLIER)
 }
 
 TEST(PermutingEncoderTest, depthwisefilter_init)
@@ -379,11 +379,11 @@ TEST(PermutingDecoderTest, feature)
   // Get the tensor shape corresponding to a given image
   auto tensor_shape = dec.shape(feature_shape);
 
-  ASSERT_EQ(tensor_shape.rank(), 4);
-  ASSERT_EQ(tensor_shape.dim(0), 1);    // COUNT
-  ASSERT_EQ(tensor_shape.dim(1), 720);  // HEIGHT
-  ASSERT_EQ(tensor_shape.dim(2), 1280); // WIDTH
-  ASSERT_EQ(tensor_shape.dim(3), 3);    // DEPTH
+  ASSERT_EQ(4, tensor_shape.rank());
+  ASSERT_EQ(1, tensor_shape.dim(0));    // COUNT
+  ASSERT_EQ(720, tensor_shape.dim(1));  // HEIGHT
+  ASSERT_EQ(1280, tensor_shape.dim(2)); // WIDTH
+  ASSERT_EQ(3, tensor_shape.dim(3));    // DEPTH
 
   // Let's find a source feature index!
   TensorIndex tensor_index;
@@ -397,10 +397,10 @@ TEST(PermutingDecoderTest, feature)
 
   auto feature_index = dec.value(tensor_index);
 
-  ASSERT_EQ(feature_index.batch(), 0);
-  ASSERT_EQ(feature_index.channel(), 1);
-  ASSERT_EQ(feature_index.row(), 2);
-  ASSERT_EQ(feature_index.column(), 3);
+  ASSERT_EQ(0, feature_index.batch());
+  ASSERT_EQ(1, feature_index.channel());
+  ASSERT_EQ(2, feature_index.row());
+  ASSERT_EQ(3, feature_index.column());
 }
 
 TEST(PermutingDecoderTest, feature_clone)
@@ -468,11 +468,11 @@ TEST(PermutingDecoderTest, filter)
   // Get the tensor shape corresponding to a given image
   auto tensor_shape = dec.shape(filter_shape);
 
-  ASSERT_EQ(tensor_shape.rank(), 4);
-  ASSERT_EQ(tensor_shape.dim(0), 10); // COUNT
-  ASSERT_EQ(tensor_shape.dim(1), 6);  // HEIGHT
-  ASSERT_EQ(tensor_shape.dim(2), 8);  // WIDTH
-  ASSERT_EQ(tensor_shape.dim(3), 3);  // DEPTH
+  ASSERT_EQ(4, tensor_shape.rank());
+  ASSERT_EQ(10, tensor_shape.dim(0)); // COUNT
+  ASSERT_EQ(6, tensor_shape.dim(1));  // HEIGHT
+  ASSERT_EQ(8, tensor_shape.dim(2));  // WIDTH
+  ASSERT_EQ(3, tensor_shape.dim(3));  // DEPTH
 
   // Let's find a source filter index!
   TensorIndex tensor_index;
@@ -486,10 +486,10 @@ TEST(PermutingDecoderTest, filter)
 
   auto filter_index = dec.value(tensor_index);
 
-  ASSERT_EQ(filter_index.nth(), 0);
-  ASSERT_EQ(filter_index.channel(), 1);
-  ASSERT_EQ(filter_index.row(), 2);
-  ASSERT_EQ(filter_index.column(), 3);
+  ASSERT_EQ(0, filter_index.nth());
+  ASSERT_EQ(1, filter_index.channel());
+  ASSERT_EQ(2, filter_index.row());
+  ASSERT_EQ(3, filter_index.column());
 }
 
 TEST(PermutingDecoderTest, depthwise_filter)
@@ -530,10 +530,10 @@ TEST(PermutingDecoderTest, depthwise_filter)
   // Get the corresponding depthwise filter shape
   auto tensor_shape = dec.shape(dw_filter_shape);
 
-  ASSERT_EQ(tensor_shape.dim(0).value(), 8);
-  ASSERT_EQ(tensor_shape.dim(1).value(), 7);
-  ASSERT_EQ(tensor_shape.dim(2).value(), 4);
-  ASSERT_EQ(tensor_shape.dim(3).value(), 1);
+  ASSERT_EQ(8, tensor_shape.dim(0).value());
+  ASSERT_EQ(7, tensor_shape.dim(1).value());
+  ASSERT_EQ(4, tensor_shape.dim(2).value());
+  ASSERT_EQ(1, tensor_shape.dim(3).value());
 
   // Let's find a source tensor index!
   TensorIndex tensor_index;
@@ -546,8 +546,8 @@ TEST(PermutingDecoderTest, depthwise_filter)
 
   auto dw_filter_index = dec.value(tensor_index);
 
-  ASSERT_EQ(dw_filter_index.channel(), 4);
-  ASSERT_EQ(dw_filter_index.nth(), 0);
-  ASSERT_EQ(dw_filter_index.row(), 2);
-  ASSERT_EQ(dw_filter_index.column(), 1);
+  ASSERT_EQ(4, dw_filter_index.channel());
+  ASSERT_EQ(0, dw_filter_index.nth());
+  ASSERT_EQ(2, dw_filter_index.row());
+  ASSERT_EQ(1, dw_filter_index.column());
 }

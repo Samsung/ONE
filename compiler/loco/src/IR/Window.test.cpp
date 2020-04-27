@@ -22,8 +22,8 @@ TEST(WindowTest, default_constructor_2D)
 {
   loco::Window<2> window;
 
-  ASSERT_EQ(window.vertical(), 1);
-  ASSERT_EQ(window.horizontal(), 1);
+  ASSERT_EQ(1, window.vertical());
+  ASSERT_EQ(1, window.horizontal());
 }
 
 TEST(WindowTest, setter_and_getter_2D)
@@ -32,11 +32,11 @@ TEST(WindowTest, setter_and_getter_2D)
 
   window.vertical(2);
 
-  ASSERT_EQ(window.vertical(), 2);
-  ASSERT_EQ(window.horizontal(), 1);
+  ASSERT_EQ(2, window.vertical());
+  ASSERT_EQ(1, window.horizontal());
 
   window.horizontal(3);
 
-  ASSERT_EQ(window.vertical(), 2);
-  ASSERT_EQ(window.horizontal(), 3);
+  ASSERT_EQ(2, window.vertical());
+  ASSERT_EQ(3, window.horizontal());
 }

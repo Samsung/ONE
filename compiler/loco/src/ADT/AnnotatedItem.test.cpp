@@ -41,15 +41,15 @@ TEST(AnnotatedItemTest, annotation)
 {
   loco::AnnotatedItem<::Annotation> item;
 
-  ASSERT_EQ(item.annot<DerivedAnnotation<0>>(), nullptr);
+  ASSERT_EQ(nullptr, item.annot<DerivedAnnotation<0>>());
 
   item.annot(DerivedAnnotation<0>::make());
 
   ASSERT_NE(item.annot<DerivedAnnotation<0>>(), nullptr);
-  ASSERT_EQ(item.annot<DerivedAnnotation<1>>(), nullptr);
+  ASSERT_EQ(nullptr, item.annot<DerivedAnnotation<1>>());
 
   item.annot<DerivedAnnotation<0>>(nullptr);
-  ASSERT_EQ(item.annot<DerivedAnnotation<0>>(), nullptr);
+  ASSERT_EQ(nullptr, item.annot<DerivedAnnotation<0>>());
 
   // Below check guarantees that "annot<T>(nullptr)" is allowed even when there is no annotation.
   // This guarantee allows us to simplify code for some cases.

@@ -22,7 +22,7 @@ TEST(NodeShapeTest, default_constructor)
 {
   loco::NodeShape node_shape;
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::Unknown);
+  ASSERT_EQ(loco::Domain::Unknown, node_shape.domain());
 }
 
 TEST(NodeShapeTest, bias_shape_constructor)
@@ -33,8 +33,8 @@ TEST(NodeShapeTest, bias_shape_constructor)
 
   loco::NodeShape node_shape{bias_shape};
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::Bias);
-  ASSERT_EQ(node_shape.as<loco::BiasShape>().length(), 4);
+  ASSERT_EQ(loco::Domain::Bias, node_shape.domain());
+  ASSERT_EQ(4, node_shape.as<loco::BiasShape>().length());
 }
 
 TEST(NodeShapeTest, dwfilter_shape_constructor)
@@ -48,11 +48,11 @@ TEST(NodeShapeTest, dwfilter_shape_constructor)
 
   loco::NodeShape node_shape{dwfilter_shape};
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::DepthwiseFilter);
-  ASSERT_EQ(node_shape.as<loco::DepthwiseFilterShape>().depth(), 2);
-  ASSERT_EQ(node_shape.as<loco::DepthwiseFilterShape>().multiplier(), 3);
-  ASSERT_EQ(node_shape.as<loco::DepthwiseFilterShape>().height(), 4);
-  ASSERT_EQ(node_shape.as<loco::DepthwiseFilterShape>().width(), 5);
+  ASSERT_EQ(loco::Domain::DepthwiseFilter, node_shape.domain());
+  ASSERT_EQ(2, node_shape.as<loco::DepthwiseFilterShape>().depth());
+  ASSERT_EQ(3, node_shape.as<loco::DepthwiseFilterShape>().multiplier());
+  ASSERT_EQ(4, node_shape.as<loco::DepthwiseFilterShape>().height());
+  ASSERT_EQ(5, node_shape.as<loco::DepthwiseFilterShape>().width());
 }
 
 TEST(NodeShapeTest, feature_shape_constructor)
@@ -66,11 +66,11 @@ TEST(NodeShapeTest, feature_shape_constructor)
 
   loco::NodeShape node_shape{feature_shape};
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::Feature);
-  ASSERT_EQ(node_shape.as<loco::FeatureShape>().count(), 2);
-  ASSERT_EQ(node_shape.as<loco::FeatureShape>().depth(), 3);
-  ASSERT_EQ(node_shape.as<loco::FeatureShape>().height(), 4);
-  ASSERT_EQ(node_shape.as<loco::FeatureShape>().width(), 5);
+  ASSERT_EQ(loco::Domain::Feature, node_shape.domain());
+  ASSERT_EQ(2, node_shape.as<loco::FeatureShape>().count());
+  ASSERT_EQ(3, node_shape.as<loco::FeatureShape>().depth());
+  ASSERT_EQ(4, node_shape.as<loco::FeatureShape>().height());
+  ASSERT_EQ(5, node_shape.as<loco::FeatureShape>().width());
 }
 
 TEST(NodeShapeTest, filter_shape_constructor)
@@ -84,11 +84,11 @@ TEST(NodeShapeTest, filter_shape_constructor)
 
   loco::NodeShape node_shape{filter_shape};
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::Filter);
-  ASSERT_EQ(node_shape.as<loco::FilterShape>().count(), 2);
-  ASSERT_EQ(node_shape.as<loco::FilterShape>().depth(), 3);
-  ASSERT_EQ(node_shape.as<loco::FilterShape>().height(), 4);
-  ASSERT_EQ(node_shape.as<loco::FilterShape>().width(), 5);
+  ASSERT_EQ(loco::Domain::Filter, node_shape.domain());
+  ASSERT_EQ(2, node_shape.as<loco::FilterShape>().count());
+  ASSERT_EQ(3, node_shape.as<loco::FilterShape>().depth());
+  ASSERT_EQ(4, node_shape.as<loco::FilterShape>().height());
+  ASSERT_EQ(5, node_shape.as<loco::FilterShape>().width());
 }
 
 TEST(NodeShapeTest, tensor_shape_constructor)
@@ -101,10 +101,10 @@ TEST(NodeShapeTest, tensor_shape_constructor)
 
   loco::NodeShape node_shape{tensor_shape};
 
-  ASSERT_EQ(node_shape.domain(), loco::Domain::Tensor);
-  ASSERT_EQ(node_shape.as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(node_shape.as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(node_shape.as<loco::TensorShape>().dim(1), 5);
+  ASSERT_EQ(loco::Domain::Tensor, node_shape.domain());
+  ASSERT_EQ(2, node_shape.as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, node_shape.as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(5, node_shape.as<loco::TensorShape>().dim(1));
 }
 
 TEST(NodeShapeTest, copy_constructible)
@@ -118,8 +118,8 @@ TEST(NodeShapeTest, copy_constructible)
   loco::NodeShape orig{tensor_shape};
   loco::NodeShape copy{orig}; // Call Copy Constructor
 
-  ASSERT_EQ(copy.domain(), loco::Domain::Tensor);
-  ASSERT_EQ(copy.as<loco::TensorShape>().rank(), 2);
-  ASSERT_EQ(copy.as<loco::TensorShape>().dim(0), 4);
-  ASSERT_EQ(copy.as<loco::TensorShape>().dim(1), 5);
+  ASSERT_EQ(loco::Domain::Tensor, copy.domain());
+  ASSERT_EQ(2, copy.as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, copy.as<loco::TensorShape>().dim(0));
+  ASSERT_EQ(5, copy.as<loco::TensorShape>().dim(1));
 }

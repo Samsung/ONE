@@ -22,20 +22,20 @@ TEST(TensorShapeTest, default_constructor)
 {
   loco::TensorShape tensor_shape;
 
-  ASSERT_EQ(tensor_shape.rank(), 0);
+  ASSERT_EQ(0, tensor_shape.rank());
 }
 
 TEST(TensorShapeTest, initializer_list_constructor)
 {
   loco::TensorShape tensor_shape{3, 5};
 
-  ASSERT_EQ(tensor_shape.rank(), 2);
+  ASSERT_EQ(2, tensor_shape.rank());
 
   ASSERT_TRUE(tensor_shape.dim(0).known());
   ASSERT_TRUE(tensor_shape.dim(1).known());
 
-  ASSERT_EQ(tensor_shape.dim(0).value(), 3);
-  ASSERT_EQ(tensor_shape.dim(1).value(), 5);
+  ASSERT_EQ(3, tensor_shape.dim(0).value());
+  ASSERT_EQ(5, tensor_shape.dim(1).value());
 }
 
 TEST(TensorShapeTest, rank)
@@ -44,7 +44,7 @@ TEST(TensorShapeTest, rank)
 
   tensor_shape.rank(2);
 
-  ASSERT_EQ(tensor_shape.rank(), 2);
+  ASSERT_EQ(2, tensor_shape.rank());
   ASSERT_FALSE(tensor_shape.dim(0).known());
   ASSERT_FALSE(tensor_shape.dim(1).known());
 }
@@ -60,7 +60,7 @@ TEST(TensorShapeTest, dim)
   ASSERT_TRUE(tensor_shape.dim(0).known());
   ASSERT_FALSE(tensor_shape.dim(1).known());
 
-  ASSERT_EQ(tensor_shape.dim(0), 3);
+  ASSERT_EQ(3, tensor_shape.dim(0));
 }
 
 TEST(TensorShapeTest, rank_update)
@@ -78,7 +78,7 @@ TEST(TensorShapeTest, rank_update)
   ASSERT_FALSE(tensor_shape.dim(2).known());
   ASSERT_FALSE(tensor_shape.dim(3).known());
 
-  ASSERT_EQ(tensor_shape.dim(1), 3);
+  ASSERT_EQ(3, tensor_shape.dim(1));
 }
 
 TEST(TensorShapeTest, copy)
@@ -92,12 +92,12 @@ TEST(TensorShapeTest, copy)
 
   dst = src;
 
-  ASSERT_EQ(dst.rank(), 2);
+  ASSERT_EQ(2, dst.rank());
 
   ASSERT_FALSE(dst.dim(0).known());
   ASSERT_TRUE(dst.dim(1).known());
 
-  ASSERT_EQ(dst.dim(1), 3);
+  ASSERT_EQ(3, dst.dim(1));
 }
 
 TEST(TensorShapeTest, element_count)
@@ -105,7 +105,7 @@ TEST(TensorShapeTest, element_count)
   // Check Rank-0 case
   loco::TensorShape src;
 
-  ASSERT_EQ(loco::element_count(&src), 1);
+  ASSERT_EQ(1, loco::element_count(&src));
 }
 
 TEST(TensorShapeTest, equal_operator)

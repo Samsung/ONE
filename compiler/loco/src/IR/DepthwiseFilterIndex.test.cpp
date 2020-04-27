@@ -23,10 +23,10 @@ TEST(DepthwiseFilterIndexTest, default_constructor)
   loco::DepthwiseFilterIndex index;
 
   // All the values are 0 at the beginning
-  ASSERT_EQ(index.channel(), 0);
-  ASSERT_EQ(index.nth(), 0);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(0, index.channel());
+  ASSERT_EQ(0, index.nth());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 }
 
 TEST(DepthwiseFilterIndexTest, settet_and_getter)
@@ -36,32 +36,32 @@ TEST(DepthwiseFilterIndexTest, settet_and_getter)
   // Set depth
   index.channel() = 2;
 
-  ASSERT_EQ(index.channel(), 2);
-  ASSERT_EQ(index.nth(), 0);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.channel());
+  ASSERT_EQ(0, index.nth());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set multiplier
   index.nth() = 3;
 
-  ASSERT_EQ(index.channel(), 2);
-  ASSERT_EQ(index.nth(), 3);
-  ASSERT_EQ(index.row(), 0);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.channel());
+  ASSERT_EQ(3, index.nth());
+  ASSERT_EQ(0, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set height
   index.row() = 4;
 
-  ASSERT_EQ(index.channel(), 2);
-  ASSERT_EQ(index.nth(), 3);
-  ASSERT_EQ(index.row(), 4);
-  ASSERT_EQ(index.column(), 0);
+  ASSERT_EQ(2, index.channel());
+  ASSERT_EQ(3, index.nth());
+  ASSERT_EQ(4, index.row());
+  ASSERT_EQ(0, index.column());
 
   // Set width
   index.column() = 5;
 
-  ASSERT_EQ(index.channel(), 2);
-  ASSERT_EQ(index.nth(), 3);
-  ASSERT_EQ(index.row(), 4);
-  ASSERT_EQ(index.column(), 5);
+  ASSERT_EQ(2, index.channel());
+  ASSERT_EQ(3, index.nth());
+  ASSERT_EQ(4, index.row());
+  ASSERT_EQ(5, index.column());
 }

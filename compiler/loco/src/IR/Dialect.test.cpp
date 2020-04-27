@@ -36,6 +36,6 @@ TEST(DialectTest, service)
 
   MockDialect dialect;
 
-  ASSERT_EQ(dialect.service<S0>(), nullptr);
+  ASSERT_EQ(nullptr, dialect.service<S0>());
   ASSERT_NE(dialect.service<S1>(), nullptr);
 }

@@ -22,8 +22,8 @@ TEST(StrideTest, default_constructor_2D)
 {
   loco::Stride<2> stride;
 
-  ASSERT_EQ(stride.vertical(), 1);
-  ASSERT_EQ(stride.horizontal(), 1);
+  ASSERT_EQ(1, stride.vertical());
+  ASSERT_EQ(1, stride.horizontal());
 }
 
 TEST(StrideTest, setter_and_getter_2D)
@@ -32,11 +32,11 @@ TEST(StrideTest, setter_and_getter_2D)
 
   stride.vertical(2);
 
-  ASSERT_EQ(stride.vertical(), 2);
-  ASSERT_EQ(stride.horizontal(), 1);
+  ASSERT_EQ(2, stride.vertical());
+  ASSERT_EQ(1, stride.horizontal());
 
   stride.horizontal(3);
 
-  ASSERT_EQ(stride.vertical(), 2);
-  ASSERT_EQ(stride.horizontal(), 3);
+  ASSERT_EQ(2, stride.vertical());
+  ASSERT_EQ(3, stride.horizontal());
 }

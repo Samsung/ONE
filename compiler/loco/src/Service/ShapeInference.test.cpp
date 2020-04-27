@@ -71,16 +71,16 @@ TEST(ShapeInferenceTest, framework)
   loco::apply(&rule).to(testcase.graph());
 
   // Framework SHOULD visit all the nodes
-  ASSERT_EQ(nodes.size(), 2);
+  ASSERT_EQ(2, nodes.size());
   // Framework SHOULD visit "pull" before "push"
-  ASSERT_EQ(nodes.at(0), testcase.pull_node);
-  ASSERT_EQ(nodes.at(1), testcase.push_node);
+  ASSERT_EQ(testcase.pull_node, nodes.at(0));
+  ASSERT_EQ(testcase.push_node, nodes.at(1));
 
   // Framework SHOULD make an annotation if "rule" returns TRUE
   ASSERT_TRUE(loco::shape_known(testcase.pull_node));
-  ASSERT_EQ(loco::shape_get(testcase.pull_node).domain(), loco::Domain::Tensor);
-  ASSERT_EQ(loco::shape_get(testcase.pull_node).as<loco::TensorShape>().rank(), 1);
-  ASSERT_EQ(loco::shape_get(testcase.pull_node).as<loco::TensorShape>().dim(0), 4);
+  ASSERT_EQ(loco::Domain::Tensor, loco::shape_get(testcase.pull_node).domain());
+  ASSERT_EQ(1, loco::shape_get(testcase.pull_node).as<loco::TensorShape>().rank());
+  ASSERT_EQ(4, loco::shape_get(testcase.pull_node).as<loco::TensorShape>().dim(0));
 
   // Framework SHOULD NOT make any annotation if "rule" returns FALSE
   ASSERT_FALSE(loco::shape_known(testcase.push_node));

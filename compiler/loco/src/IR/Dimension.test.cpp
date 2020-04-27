@@ -44,7 +44,7 @@ TEST_F(DimensionTest, value_constructor)
   loco::Dimension dim{value()};
 
   ASSERT_TRUE(dim.known());
-  ASSERT_EQ(dim.value(), value());
+  ASSERT_EQ(value(), dim.value());
 }
 
 TEST_F(DimensionTest, set)
@@ -54,7 +54,7 @@ TEST_F(DimensionTest, set)
   dim.set(value());
 
   ASSERT_TRUE(dim.known());
-  ASSERT_EQ(dim.value(), value());
+  ASSERT_EQ(value(), dim.value());
 }
 
 TEST_F(DimensionTest, unset)
