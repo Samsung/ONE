@@ -15,6 +15,7 @@
  */
 
 #include "CircleTensorExporter.h"
+#include "TypeBridge.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -111,8 +112,8 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
   CircleTensoInfo tensor_info;
 
   tensor_info.name(tensor_name);
-  tensor_info.dtype(TypeInference::get(node));
-  tensor_info.shape(ShapeInference::get(node));
+  tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
+  tensor_info.shape(to_shape_description(luci::node_shape(node)));
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
