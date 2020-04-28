@@ -28,9 +28,15 @@ public:
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_GREATER_EQUAL; }
+  tflite::BuiltinOperator code(void) const override
+  {
+    return tflite::BuiltinOperator_GREATER_EQUAL;
+  }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_GreaterEqualOptions; }
+  tflite::BuiltinOptions type(void) const override
+  {
+    return tflite::BuiltinOptions_GreaterEqualOptions;
+  }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 
