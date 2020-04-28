@@ -317,10 +317,54 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
   }
 }
 
-NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t /*index*/, nnfw_tensorinfo /*ti*/)
+NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 {
-  std::cerr << "Error: NYI" << std::endl;
-  return NNFW_STATUS_ERROR;
+  // sanity check
+  {
+    if (!_primary_subgraph || _primary_subgraph->isBuildingPhase())
+    {
+      std::cerr << "Error during apply_tensorinfo : "
+                << "prepare should be run after load_model" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (ti.rank <= 0 || ti.rank > NNFW_MAX_RANK)
+    {
+      std::cerr << "unsupported rank: " << ti.rank << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    for (int32_t i = 0; i < ti.rank; ++i)
+    {
+      if (ti.dims[i] <= 0)
+      {
+        std::cerr << "dim must be positive integer but was " << ti.dims[i] << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+    }
+  }
+
+  // when called before nnfw_session::prepare()
+  if (!_execution)
+  {
+    // In this case, if we apply input shape in _primary_subgraph, it will propagate
+    // after compilation and excution
+    auto ind = _primary_subgraph->getInputs().at(index);
+    auto &input = _primary_subgraph->operands().at(ind);
+
+    onert::ir::Shape new_shape(ti.rank);
+    for (int32_t i = 0; i < ti.rank; i++)
+      new_shape.dim(i) = ti.dims[i];
+
+    // overwrite input shape with the shape from ti
+    input.info().shape(new_shape);
+  }
+  else // when called after nnfw_session::prepare() but before excute()
+  {
+    throw std::runtime_error("Not yet implemented");
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
