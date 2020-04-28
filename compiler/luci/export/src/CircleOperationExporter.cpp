@@ -79,6 +79,7 @@ public:
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleSin *) final;
   void visit(luci::CircleSoftmax *) final;
+  void visit(luci::CircleSpaceToBatchND *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
   void visit(luci::CircleSub *) final;
@@ -599,6 +600,22 @@ void OperationExporter::visit(luci::CircleSoftmax *node)
   auto options = CreateSoftmaxOptions(builder, node->beta());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SoftmaxOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPACE_TO_BATCH_ND);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->block_shape()),
+                                  get_tensor_index(node->paddings())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSpaceToBatchNDOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SpaceToBatchNDOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
