@@ -132,6 +132,7 @@ protected:
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadReduceProd(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
+  void loadNeg(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1251,6 +1252,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadNeg(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Neg(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1407,6 +1420,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadWhile(op, subg);
       return;
     // TODO Implement loading subgraphs of conftrol flow ops
+    case BuiltinOperator::BuiltinOperator_NEG:
+      loadNeg(op, subg);
+      return;
     default:
       throw std::runtime_error(
           std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));

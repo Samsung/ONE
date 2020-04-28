@@ -1150,5 +1150,15 @@ void OperationValidator::visit(const ir::operation::While &node)
   // TODO Add to validate with subgraphs
 }
 
+void OperationValidator::visit(const ir::operation::Neg &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+}
 } // namespace compiler
 } // namespace onert
