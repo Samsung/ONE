@@ -77,7 +77,9 @@ void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
                   const std::vector<std::vector<float>> &inputs,
                   std::vector<std::vector<float>> &outputs)
 {
-  auto compiler = new onert::compiler::Compiler(g);
+  auto subgs = std::make_shared<onert::ir::Subgraphs>();
+  subgs->push(onert::ir::SubgraphIndex{0}, g);
+  auto compiler = new onert::compiler::Compiler(subgs);
   // Compilation
   try
   {
@@ -166,7 +168,8 @@ int main(const int argc, char **argv)
   // Loading
   try
   {
-    test_graph = onert::tflite_loader::loadModel(tflite_file.c_str());
+    test_graph =
+        onert::tflite_loader::loadModel(tflite_file.c_str())->at(onert::ir::SubgraphIndex{0});
   }
   catch (std::exception &e)
   {

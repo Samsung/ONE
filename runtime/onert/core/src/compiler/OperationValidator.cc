@@ -36,8 +36,11 @@ OperationValidator::OperationValidator(const ir::Graph &graph)
 
 void OperationValidator::operator()()
 {
-  // TODO Get frontend layout from graph
-  _current_op_seq_layout = ir::Layout::NHWC;
+  // There is no reason for each subgraph to have subgraphs since compiler has subgraphs when
+  // creating Compiler
+  assert(_graph.subgraphs() == nullptr);
+
+  _current_op_seq_layout = _graph.layout();
 
   _graph.operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });

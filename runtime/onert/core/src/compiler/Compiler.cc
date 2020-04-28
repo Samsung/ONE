@@ -98,14 +98,15 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   return options;
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Graph> &graph)
-    : _graph{graph}, _executors{nullptr}, _state{State::CREATED}
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
+    : _subgraphs{subgs}, _executors{nullptr}, _state{State::CREATED}
 {
 
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
   // API.
-  _options = fetchCompilerOptionsFromGlobalConfig(*_graph);
+  // TODO Support multiple subgraphs
+  _options = fetchCompilerOptionsFromGlobalConfig(*primary_subgraph());
 }
 
 void Compiler::checkProfilerConditions()
@@ -145,24 +146,20 @@ void Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
-  // The subgraphs being nullptr means that _graph has one subgraph
-  if (_graph->subgraphs() == nullptr)
-  {
-    auto subgs = std::make_shared<onert::ir::Subgraphs>();
-    subgs->push(onert::ir::SubgraphIndex{0}, _graph);
-    _graph->setSubgraphs(subgs);
-  }
-
   // Operation validation check
-  OperationValidator{*_graph}();
+  assert(_subgraphs);
+  assert(_subgraphs->at(ir::SubgraphIndex{0}));
+  _subgraphs->iterate([](const onert::ir::SubgraphIndex &, const onert::ir::Graph &graph) {
+    OperationValidator{graph}();
+  });
 
   // Compilable check
   if (!checkCompilable())
   {
     // TODO Support multiple executors for interpreter
     _executors = std::make_shared<exec::ExecutorMap>();
-    _executors->insert(
-        std::make_pair(ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*_graph)));
+    _executors->insert(std::make_pair(
+        ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
     return;
   }
 
@@ -177,8 +174,8 @@ void Compiler::compile(void)
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
-  _graph->subgraphs()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
-    onert::dumper::dot::DotDumper dot_dumper(*_graph, dump_level);
+  _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
+    onert::dumper::dot::DotDumper dot_dumper(graph, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
@@ -245,11 +242,15 @@ bool Compiler::checkCompilable()
   // TODO check unspecified operand shape
 
   // Check compilable parameter
-  ParamChecker paramChecker{_graph};
-  paramChecker();
-  if (paramChecker.haveNoneConstParam())
+  for (uint32_t i = 0; i < _subgraphs->count(); ++i)
   {
-    return false;
+    auto graph = _subgraphs->at(ir::SubgraphIndex{i});
+    ParamChecker paramChecker{graph};
+    paramChecker();
+    if (paramChecker.haveNoneConstParam())
+    {
+      return false;
+    }
   }
 
   return true;

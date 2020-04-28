@@ -74,9 +74,9 @@ class Compiler
 public:
   /**
    * @brief     Construct a new Compiler object
-   * @param[in] model Graph model
+   * @param[in] subgs All subgraphs of a model
    */
-  Compiler(const std::shared_ptr<ir::Graph> &graph);
+  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs);
 
 public:
   /**
@@ -104,9 +104,10 @@ public:
 
 private:
   void checkProfilerConditions();
+  std::shared_ptr<ir::Graph> &primary_subgraph() { return _subgraphs->at(ir::SubgraphIndex{0}); }
 
 private:
-  std::shared_ptr<ir::Graph> _graph;
+  std::shared_ptr<ir::Subgraphs> _subgraphs;
   // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
   // subgraphs being called recursively because data of non-constant tensor of parent executor will
   // be updated by child executor. If you want to support subgraphs being called recursively, you

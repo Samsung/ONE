@@ -40,7 +40,7 @@ int ANeuralNetworksCompilation_create(ANeuralNetworksModel *model,
     return ANEURALNETWORKS_BAD_STATE;
   }
 
-  std::shared_ptr<onert::ir::Graph> internal;
+  std::shared_ptr<onert::ir::Subgraphs> internal;
 
   model->release(internal);
 

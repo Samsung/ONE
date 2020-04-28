@@ -19,12 +19,13 @@
 
 #include "compiler/Compiler.h"
 #include "ir/Graph.h"
+#include "ir/Subgraphs.h"
 #include "exec/IExecutor.h"
 
 struct ANeuralNetworksCompilation
 {
 public:
-  ANeuralNetworksCompilation(const std::shared_ptr<onert::ir::Graph> &graph) noexcept;
+  ANeuralNetworksCompilation(const std::shared_ptr<onert::ir::Subgraphs> &subgs) noexcept;
 
 public:
   bool finish() noexcept;
@@ -36,6 +37,7 @@ public:
   }
 
 private:
+  std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
 };
 

@@ -71,7 +71,9 @@ public:
     graph->finishBuilding();
 
     // Compile
-    auto compiler = new onert::compiler::Compiler{graph};
+    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    subgs->push(onert::ir::SubgraphIndex{0}, graph);
+    auto compiler = new onert::compiler::Compiler{subgs};
     compiler->compile();
     compiler->release(executors);
     delete compiler;
@@ -133,7 +135,9 @@ TEST(ExecInstance, twoCompile)
   execution1->setOutput(output, reinterpret_cast<void *>(exe1_output_buffer), 16);
 
   // Make new executor: compile again
-  auto compiler = new onert::compiler::Compiler{graph};
+  auto subgs = std::make_shared<onert::ir::Subgraphs>();
+  subgs->push(onert::ir::SubgraphIndex{0}, graph);
+  auto compiler = new onert::compiler::Compiler{subgs};
   compiler->compile();
   std::shared_ptr<onert::exec::ExecutorMap> executors2;
   compiler->release(executors2);

@@ -41,6 +41,7 @@ class Execution;
 namespace ir
 {
 class Graph;
+class Subgraphs;
 } // namespace ir
 namespace compiler
 {
@@ -80,7 +81,10 @@ public:
   NNFW_STATUS set_config(const char *key, const char *value);
 
 private:
-  std::shared_ptr<onert::ir::Graph> _primary_subgraph;
+  std::shared_ptr<onert::ir::Graph> primary_subgraph();
+
+private:
+  std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
