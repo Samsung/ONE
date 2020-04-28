@@ -32,8 +32,7 @@ namespace luci
  * @brief Class to build tensor data
  * @note  This will not be exported as a specific op
  */
-class CircleConst final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CONST>>,
-                          public loco::NodeMixin<loco::NodeTrait::TensorShape>
+class CircleConst final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CONST>>
 {
 public:
   CircleConst() = default;
