@@ -126,6 +126,8 @@ void ConcatLayer::run()
   {
     concatenationQuant8();
   }
+  else
+    throw std::runtime_error("ConcatLayer: Not supported datatype");
 }
 
 } // namespace kernel
