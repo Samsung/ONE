@@ -29,7 +29,7 @@ TEST(MODULE, create_var)
 
   auto check = [](const nest::Module &m) {
     // This code will invoke 'const VarContext &var(void) const' method
-    ASSERT_EQ(m.var().count(), 1);
+    ASSERT_EQ(1, m.var().count());
   };
 
   create(m);
@@ -47,7 +47,7 @@ TEST(MODULE, create_domain)
 
   auto check = [](const nest::Module &m) {
     // This code will invoke 'const DomainContext &domain(void) const' method
-    ASSERT_EQ(m.domain().count(), 1);
+    ASSERT_EQ(1, m.domain().count());
   };
 
   create(m, {1, 3, 3});
@@ -66,7 +66,7 @@ TEST(MODULE, push)
 
   m.push(ifm(var_ch, var_row, var_col));
 
-  ASSERT_EQ(m.block().size(), 1);
+  ASSERT_EQ(1, m.block().size());
   ASSERT_NE(m.block().at(0)->asPush(), nullptr);
 }
 
@@ -82,8 +82,8 @@ TEST(MODULE, ret)
   m.push(ifm(ind));
   m.ret(ofm(ind));
 
-  ASSERT_EQ(m.ret().id(), ofm.id());
-  ASSERT_EQ(m.ret().sub().rank(), 1);
+  ASSERT_EQ(ofm.id(), m.ret().id());
+  ASSERT_EQ(1, m.ret().sub().rank());
 }
 
 TEST(MODULE, copy)
@@ -95,5 +95,5 @@ TEST(MODULE, copy)
 
   orig.var().make();
 
-  ASSERT_EQ(copy.var().count(), 0);
+  ASSERT_EQ(0, copy.var().count());
 }

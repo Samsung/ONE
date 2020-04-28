@@ -22,7 +22,7 @@ TEST(LEVEL, constructor)
 {
   nest::Level lv{3};
 
-  ASSERT_EQ(lv.value(), 3);
+  ASSERT_EQ(3, lv.value());
 }
 
 TEST(LEVEL, operator_eq)

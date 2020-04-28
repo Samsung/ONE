@@ -22,7 +22,7 @@ TEST(VAR_ID, ctor)
 {
   nest::VarID id{0};
 
-  ASSERT_EQ(id.value(), 0);
+  ASSERT_EQ(0, id.value());
 }
 
 TEST(VAR_ID, operator_eq)

@@ -26,7 +26,7 @@ TEST(SCHEDULE, module)
 
   nest::Schedule sch{m};
 
-  ASSERT_EQ(sch.level(var_1).value(), 0);
+  ASSERT_EQ(0, sch.level(var_1).value());
 }
 
 TEST(SCHEDULE, module_copy)
@@ -40,5 +40,5 @@ TEST(SCHEDULE, module_copy)
   // Update on 'm' does not affect the schedule
   m.var().make();
 
-  ASSERT_EQ(sch.var().count(), 1);
+  ASSERT_EQ(1, sch.var().count());
 }

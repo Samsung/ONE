@@ -36,6 +36,6 @@ TEST(_DOMAIN, base_usecase)
 
   nest::Closure clo = dom(std::make_shared<::expr::DummyNode>());
 
-  ASSERT_EQ(clo.id(), dom_id);
-  ASSERT_EQ(clo.sub().rank(), 1);
+  ASSERT_EQ(dom_id, clo.id());
+  ASSERT_EQ(1, clo.sub().rank());
 }

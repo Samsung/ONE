@@ -33,5 +33,5 @@ TEST(STMT_PUSH_NODE, cast)
   std::shared_ptr<nest::stmt::Node> base = derived;
 
   ASSERT_NE(derived.get(), nullptr);
-  ASSERT_EQ(base->asPush(), derived.get());
+  ASSERT_EQ(derived.get(), base->asPush());
 }

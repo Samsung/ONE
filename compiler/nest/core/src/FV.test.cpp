@@ -27,7 +27,7 @@ TEST(FV, var_expr)
 
   auto fvs = nest::FV::in(var);
 
-  ASSERT_EQ(fvs.size(), 1);
+  ASSERT_EQ(1, fvs.size());
   ASSERT_NE(fvs.find(var.id()), fvs.end());
 }
 
@@ -40,7 +40,7 @@ TEST(FV, deref_expr)
 
   auto fvs = nest::FV::in(dom(var));
 
-  ASSERT_EQ(fvs.size(), 1);
+  ASSERT_EQ(1, fvs.size());
   ASSERT_NE(fvs.find(var.id()), fvs.end());
 }
 
@@ -53,7 +53,7 @@ TEST(FV, add_expr)
 
   auto fvs = nest::FV::in(v_0 + v_1);
 
-  ASSERT_EQ(fvs.size(), 2);
+  ASSERT_EQ(2, fvs.size());
   ASSERT_NE(fvs.find(v_0.id()), fvs.end());
   ASSERT_NE(fvs.find(v_1.id()), fvs.end());
 }
@@ -69,7 +69,7 @@ TEST(FV, mul_expr)
 
   auto fvs = nest::FV::in(v_0 * v_1);
 
-  ASSERT_EQ(fvs.size(), 2);
+  ASSERT_EQ(2, fvs.size());
   ASSERT_NE(fvs.find(v_0.id()), fvs.end());
   ASSERT_NE(fvs.find(v_1.id()), fvs.end());
 }

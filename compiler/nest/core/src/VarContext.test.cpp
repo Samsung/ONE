@@ -32,15 +32,15 @@ TEST(VAR_CONTEXT, count)
 {
   nest::VarContext ctx;
 
-  ASSERT_EQ(ctx.count(), 0);
+  ASSERT_EQ(0, ctx.count());
 
   auto var_0 = ctx.make();
 
-  ASSERT_EQ(ctx.count(), 1);
+  ASSERT_EQ(1, ctx.count());
 
   auto var_1 = ctx.make();
 
-  ASSERT_EQ(ctx.count(), 2);
+  ASSERT_EQ(2, ctx.count());
 }
 
 TEST(VAR_CONTEXT, bound_one)
@@ -49,13 +49,13 @@ TEST(VAR_CONTEXT, bound_one)
 
   auto var_0 = ctx.make();
 
-  ASSERT_EQ(ctx.bound(var_0).min(), 0);
-  ASSERT_EQ(ctx.bound(var_0).max(), 0);
+  ASSERT_EQ(0, ctx.bound(var_0).min());
+  ASSERT_EQ(0, ctx.bound(var_0).max());
 
   ctx.bound(var_0) = nest::Bound{-3, 5};
 
-  ASSERT_EQ(ctx.bound(var_0).min(), -3);
-  ASSERT_EQ(ctx.bound(var_0).max(), 5);
+  ASSERT_EQ(-3, ctx.bound(var_0).min());
+  ASSERT_EQ(5, ctx.bound(var_0).max());
 }
 
 TEST(VAR_CONTEXT, bound_independent)
@@ -64,19 +64,19 @@ TEST(VAR_CONTEXT, bound_independent)
 
   auto var_0 = ctx.make();
 
-  ASSERT_EQ(ctx.bound(var_0).min(), 0);
-  ASSERT_EQ(ctx.bound(var_0).max(), 0);
+  ASSERT_EQ(0, ctx.bound(var_0).min());
+  ASSERT_EQ(0, ctx.bound(var_0).max());
 
   auto var_1 = ctx.make();
 
-  ASSERT_EQ(ctx.bound(var_1).min(), 0);
-  ASSERT_EQ(ctx.bound(var_1).max(), 0);
+  ASSERT_EQ(0, ctx.bound(var_1).min());
+  ASSERT_EQ(0, ctx.bound(var_1).max());
 
   ctx.bound(var_0) = nest::Bound{-3, 5};
 
-  ASSERT_EQ(ctx.bound(var_0).min(), -3);
-  ASSERT_EQ(ctx.bound(var_0).max(), 5);
+  ASSERT_EQ(-3, ctx.bound(var_0).min());
+  ASSERT_EQ(5, ctx.bound(var_0).max());
 
-  ASSERT_EQ(ctx.bound(var_1).min(), 0);
-  ASSERT_EQ(ctx.bound(var_1).max(), 0);
+  ASSERT_EQ(0, ctx.bound(var_1).min());
+  ASSERT_EQ(0, ctx.bound(var_1).max());
 }
