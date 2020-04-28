@@ -15,19 +15,13 @@
  */
 
 #include "luci/Service/CircleTypeInference.h"
-#include "luci/Service/CircleTypeInferenceRule.h"
 
-#include <luci/IR/CircleDialect.h>
-
-#include <loco/IR/CanonicalNode.h>
-#include <loco/IR/CanonicalNodeVisitor.h>
-#include <loco/IR/CanonicalDialect.h>
+#include <loco.h>
 #include <loco/Service/TypeInference.h>
+
 #include <mio/circle/schema_generated.h>
 #include <oops/InternalExn.h>
 
-#include <memory>
-#include <stdexcept>
 #include <type_traits>
 
 namespace

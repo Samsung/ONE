@@ -27,11 +27,8 @@ namespace luci
 
 ShapeDescription ShapeInference::get(loco::Node *node)
 {
-  // TODO Adjust indentation level
-  {
-    assert(loco::shape_known(node));
-    return to_shape_description(loco::shape_get(node));
-  }
+  assert(loco::shape_known(node));
+  return to_shape_description(loco::shape_get(node));
 }
 
 } // namespace luci
