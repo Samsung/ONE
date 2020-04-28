@@ -18,6 +18,7 @@
 
 #include "kernel/AbsLayer.h"
 #include "kernel/AddLayer.h"
+#include "kernel/ArgMinMaxLayer.h"
 #include "kernel/AvgPoolLayer.h"
 #include "kernel/CastLayer.h"
 #include "kernel/CompareLayer.h"
@@ -976,6 +977,22 @@ void KernelGenerator::visit(const ir::operation::Neg &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ArgMax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
+
+  const auto axis = node.param().axis;
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ArgMinMaxLayer>();
+
+  fn->configure(input_alloc, output_alloc, axis, /* is_arg_max */ true);
+
+  _return_fn = std::move(fn);
+}
 } // namespace cpu
 } // namespace backend
 } // namespace onert
