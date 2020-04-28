@@ -33,6 +33,7 @@
 #include "Op/FloorDiv.h"
 #include "Op/FullyConnected.h"
 #include "Op/Gather.h"
+#include "Op/GreaterEqual.h"
 #include "Op/LogicalNot.h"
 #include "Op/LogicalOr.h"
 #include "Op/MaxPool2D.h"
