@@ -34,7 +34,7 @@ StaticTensorManager::StaticTensorManager()
 
 void StaticTensorManager::allocateConsts(void)
 {
-  for (auto &pair : _tensors)
+  for (auto &pair : (*_tensors))
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -54,7 +54,7 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : _tensors)
+  for (auto &pair : (*_tensors))
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -76,36 +76,29 @@ void StaticTensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(
 void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, bool as_const)
 {
-  assert(_tensors.find(ind) == _tensors.end());
+  assert(_tensors->find(ind) == _tensors->end());
   auto tensor = std::make_shared<operand::Tensor>(tensor_info);
-  _tensors[ind] = tensor;
+  (*_tensors)[ind] = tensor;
   _as_constants[ind] = as_const;
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
-  assert(_tensors.find(ind) != _tensors.end());
+  assert(_tensors->find(ind) != _tensors->end());
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
-  assert(_tensors.find(ind) != _tensors.end());
+  assert(_tensors->find(ind) != _tensors->end());
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
 }
 
-std::shared_ptr<operand::Tensor> StaticTensorManager::at(const ir::OperandIndex &ind)
-{
-  if (_tensors.find(ind) == _tensors.end())
-    return nullptr;
-  return _tensors.at(ind);
-}
-
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (const auto &it : _tensors)
+  for (const auto &it : (*_tensors))
     fn(it.first);
 }
 

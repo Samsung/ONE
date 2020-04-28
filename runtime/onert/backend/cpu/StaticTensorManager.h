@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 
 #include "MemoryManager.h"
+#include "TensorRegistry.h"
 #include "operand/Tensor.h"
 
 #include <backend/ITensorManager.h>
@@ -47,14 +48,14 @@ public:
   void claimPlan(const ir::OperandIndex &ind, uint32_t size);
   void releasePlan(const ir::OperandIndex &ind);
 
-  std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
-
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
+
+  void setRegistry(std::shared_ptr<TensorRegistry> &reg) { _tensors = reg; }
 
 private:
   std::unique_ptr<cpu_common::DynamicMemoryManager> _const_mgr;
   std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
-  ir::OperandIndexMap<std::shared_ptr<operand::Tensor>> _tensors;
+  std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
 };
 

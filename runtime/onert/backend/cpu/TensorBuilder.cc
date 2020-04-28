@@ -28,9 +28,11 @@ namespace cpu
 {
 
 TensorBuilder::TensorBuilder()
-    : _static_tensor_mgr{new StaticTensorManager()}, _dynamic_tensor_mgr{new DynamicTensorManager()}
+    : _static_tensor_mgr{new StaticTensorManager()},
+      _dynamic_tensor_mgr{new DynamicTensorManager()}, _tensor_reg{new TensorRegistry()}
 {
-  // DO NOTHING
+  _static_tensor_mgr->setRegistry(_tensor_reg);
+  _dynamic_tensor_mgr->setRegistry(_tensor_reg);
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
@@ -75,16 +77,22 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _static_tensor_mgr->at(ind);
+  auto found = _tensor_reg->find(ind);
+  if (found == _tensor_reg->end())
+    return nullptr;
+
+  return found->second;
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  auto ret = _static_tensor_mgr->at(ind);
-  assert(ret != nullptr);
-  return ret;
+  auto found = _tensor_reg->find(ind);
+  if (found == _tensor_reg->end())
+    return nullptr;
+
+  return found->second;
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)

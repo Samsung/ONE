@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_CPU_TENSOR_REGISTRY__
+#define __ONERT_BACKEND_CPU_TENSOR_REGISTRY__
 
-#include "TensorRegistry.h"
+#include "ir/OperandIndexMap.h"
+#include "backend/ITensorRegistry.h"
+#include "operand/Tensor.h"
 
-#include <backend/IDynamicTensorManager.h>
+#include <memory>
 
 namespace onert
 {
@@ -28,21 +30,19 @@ namespace backend
 namespace cpu
 {
 
-class DynamicTensorManager : public backend::IDynamicTensorManager
+class TensorRegistry : public ITensorRegistry,
+                       public ir::OperandIndexMap<std::shared_ptr<operand::Tensor>>
 {
 public:
-  virtual ~DynamicTensorManager() = default;
-
-  void setRegistry(std::shared_ptr<TensorRegistry> &reg) { _tensors = reg; }
-
-  // TODO write methods for dynamic tensor, e.g., allocate memory for dynamic tensor
-
-private:
-  std::shared_ptr<TensorRegistry> _tensors;
+  /**
+   * @brief Returns pointer of ITensor
+   * @note  Returned tensor cannot be used longer than dynamic tensor manager
+   */
+  ITensor *getITensor(const ir::OperandIndex &ind) override { return at(ind).get(); }
 };
 
 } // namespace cpu
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_CPU_TENSOR_REGISTRY__

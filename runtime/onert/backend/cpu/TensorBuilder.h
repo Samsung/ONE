@@ -19,6 +19,7 @@
 
 #include "DynamicTensorManager.h"
 #include "StaticTensorManager.h"
+#include "TensorRegistry.h"
 #include "operand/Tensor.h"
 
 #include <backend/ITensorBuilder.h>
@@ -67,11 +68,14 @@ public:
 
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
+  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
+
 private:
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexSequence _constants;
+  std::shared_ptr<TensorRegistry> _tensor_reg;
 };
 
 } // namespace cpu
