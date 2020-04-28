@@ -122,6 +122,7 @@ void Compiler::compile(void)
   _state = State::STARTED;
 
   {
+    VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;
     VERBOSE(Compiler) << "backend_list             : "
                       << nnfw::misc::join(_options.backend_list.begin(),
@@ -137,6 +138,7 @@ void Compiler::compile(void)
     VERBOSE(Compiler) << "delete_cached_data       : " << _options.delete_cached_data << std::endl;
     VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
     VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl;
+    VERBOSE(Compiler) << std::noboolalpha;
   }
 
   /***************************************************
