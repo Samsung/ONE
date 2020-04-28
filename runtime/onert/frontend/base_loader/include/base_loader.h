@@ -49,11 +49,9 @@ public:
   /**
    * @brief Construct a new Loader object
    *
-   * @param graph reference on primary subgraph
+   * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::shared_ptr<ir::Graph> &graph) : _primary_subgraph(graph), _model{nullptr}
-  {
-  }
+  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs) : _subgraphs(subgs), _model{nullptr} {}
 
   /**
    * @brief Load a model from file
@@ -138,8 +136,8 @@ protected:
 protected:
   // Buffer for loading (if needed)
   std::vector<char> _buffer;
-  // Reference on loadable primary subgraph
-  std::shared_ptr<ir::Graph> &_primary_subgraph;
+  // Reference on loadable subgraphs
+  std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
@@ -1428,15 +1426,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
   // const auto *metadata_buffer = _model->metadata_buffer();
   // Load subgraphs and map operations on subgraph
   const auto domain_subgraphs = _model->subgraphs();
-  auto subgraphs = std::make_shared<ir::Subgraphs>();
+  auto subgraphs = std::make_unique<ir::Subgraphs>();
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
     auto subg =
         static_cast<SpecificLoader *>(this)->loadSubgraph((*_model->subgraphs())[subgraph_index]);
-    subg->setSubgraphs(subgraphs);
     subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
-  _primary_subgraph = subgraphs->at(ir::SubgraphIndex{0});
+  _subgraphs = std::move(subgraphs);
 }
 
 } // namespace base_loader

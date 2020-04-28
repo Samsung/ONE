@@ -19,8 +19,8 @@
 #include "util/logging.h"
 
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(
-    const std::shared_ptr<onert::ir::Graph> &model) noexcept
-    : _compiler{new onert::compiler::Compiler{model}}
+    const std::shared_ptr<onert::ir::Subgraphs> &subgs) noexcept
+    : _subgraphs{subgs}, _compiler{new onert::compiler::Compiler{subgs}}
 {
   // DO NOTHING
 }

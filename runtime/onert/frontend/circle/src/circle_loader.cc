@@ -122,12 +122,12 @@ public:
 
 } // namespace
 
-std::shared_ptr<ir::Graph> loadModel(const char *filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
 {
-  auto primary_subgraph = std::make_shared<ir::Graph>();
-  CircleLoader loader(primary_subgraph);
+  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  CircleLoader loader(subgraphs);
   loader.loadFromFile(filename);
-  return primary_subgraph;
+  return std::move(subgraphs);
 }
 
 } // namespace circle_loader

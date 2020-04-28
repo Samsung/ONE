@@ -115,6 +115,13 @@ public:
     }
   }
 
+  /**
+   * @brief Get count of Subgraphs
+   *
+   * @return count of Subgraphs
+   */
+  size_t count() { return _subgraphs.size(); }
+
 private:
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
 };

@@ -98,12 +98,12 @@ public:
 
 } // namespace
 
-std::shared_ptr<ir::Graph> loadModel(const char *filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
 {
-  auto primary_subgraph = std::make_shared<ir::Graph>();
-  TFLiteLoader loader(primary_subgraph);
+  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  TFLiteLoader loader(subgraphs);
   loader.loadFromFile(filename);
-  return primary_subgraph;
+  return std::move(subgraphs);
 }
 
 } // namespace tflite_loader

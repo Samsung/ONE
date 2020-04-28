@@ -99,7 +99,7 @@ public:
   Operations &operations() { return _operations; }
   const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
   std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
-  Layout layout() { return _layout; }
+  Layout layout() const { return _layout; }
 
 private:
   Phase _phase{Phase::BUILDING};
@@ -107,6 +107,7 @@ private:
   Operands _operands;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
+  // Child subgraphs
   std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
