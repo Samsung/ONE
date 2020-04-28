@@ -48,6 +48,7 @@ public:
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
   void visit(const ir::operation::Exp &) override;
+  void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Floor &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Gather &) override;

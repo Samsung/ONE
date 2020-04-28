@@ -64,6 +64,7 @@ void ShapeFixer::visit(const ir::operation::AvgPool2D &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::Concat &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::FullyConnected &) { /* DO NOTHING */}
 

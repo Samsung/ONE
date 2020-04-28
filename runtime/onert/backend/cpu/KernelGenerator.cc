@@ -586,6 +586,23 @@ void KernelGenerator::visit(const ir::operation::Exp &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ExpandDims &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto axis_alloc = _tensor_builder->at(axis_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+
+  fn->configure(input_alloc, axis_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Logistic &node)
 {
   const auto output_index{node.getOutputs().at(0)};

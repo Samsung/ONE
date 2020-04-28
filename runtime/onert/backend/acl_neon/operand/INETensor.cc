@@ -25,7 +25,14 @@ namespace acl_neon
 namespace operand
 {
 
-void INETensor::access(const std::function<void(ITensor &tensor)> &fn) { fn(*this); }
+void INETensor::access(const std::function<void(ITensor &tensor)> &fn)
+{
+  // This is an optional input
+  if (total_size() == 0)
+    return;
+
+  fn(*this);
+}
 
 } // namespace operand
 } // namespace acl_neon

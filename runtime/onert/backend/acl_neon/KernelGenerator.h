@@ -94,6 +94,7 @@ public:
   void visit(const ir::operation::Add &) override;
   void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Exp &) override;
+  void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::Min &) override;
   void visit(const ir::operation::Max &) override;
