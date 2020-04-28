@@ -196,7 +196,11 @@ void Compiler::compile(void)
     {
       CachedDataDeleter(graph.operands()).run();
     }
+
+    graph.setSubgraphs(nullptr);
   });
+
+  _subgraphs.reset();
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished

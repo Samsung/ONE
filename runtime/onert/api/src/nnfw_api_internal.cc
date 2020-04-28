@@ -109,7 +109,7 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
       std::cerr << "Unsupported model type in MANIFEST" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+    _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
   {
@@ -150,6 +150,7 @@ NNFW_STATUS nnfw_session::prepare()
     using onert::util::config_source;
     config_source(std::move(_source));
 
+    _subgraphs.reset();
     _compiler->compile();
     std::shared_ptr<onert::exec::ExecutorMap> executors;
     _compiler->release(executors);
@@ -561,7 +562,18 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   return NNFW_STATUS_NO_ERROR;
 }
 
-std::shared_ptr<onert::ir::Graph> nnfw_session::primary_subgraph()
+onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  return _subgraphs->at(onert::ir::SubgraphIndex{0});
+  if (_subgraphs)
+  {
+    assert(!_execution);
+    return _subgraphs->primary().get();
+  }
+  else
+  {
+    assert(_execution);
+    // TODO Remove const_cast
+    // We assumed the graph will not change after compilation, but shape could change
+    return const_cast<onert::ir::Graph *>(&_execution->primary_subgraph());
+  }
 }
