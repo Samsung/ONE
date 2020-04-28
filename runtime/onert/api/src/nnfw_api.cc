@@ -17,6 +17,13 @@
 #include "nnfw_api_internal.h"
 #include "nnfw_version.h"
 
+#define NNFW_RETURN_ERROR_IF_NULL(p) \
+  do                                 \
+  {                                  \
+    if ((p) == NULL)                 \
+      return NNFW_STATUS_ERROR;      \
+  } while (0)
+
 /*
  * Create a new session instance
  *
@@ -25,8 +32,7 @@
  */
 NNFW_STATUS nnfw_create_session(nnfw_session **session)
 {
-  if (session == nullptr)
-    return NNFW_STATUS_ERROR;
+  NNFW_RETURN_ERROR_IF_NULL(session);
 
   *session = new nnfw_session();
 
@@ -44,13 +50,6 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session)
   delete session;
   return NNFW_STATUS_NO_ERROR;
 }
-
-#define NNFW_RETURN_ERROR_IF_NULL(p) \
-  do                                 \
-  {                                  \
-    if ((p) == NULL)                 \
-      return NNFW_STATUS_ERROR;      \
-  } while (0)
 
 /*
  * Load model from nnpackage file or directory
