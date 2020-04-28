@@ -26,7 +26,6 @@ set(MIR_ONNX_IMPORTER_SOURCES
         ONNXHelpers.cpp
         ONNXHelpers.h
         ONNXImporterImpl.cpp
-        ONNXImporterImpl.h
         ONNXNodeConverterRegistry.h
         ONNXNodeConverterRegistry.cpp
         ONNXOpRegistration.h
@@ -109,7 +108,8 @@ set(MIR_ONNX_IMPORTER_SOURCES
 
 add_library(mir_onnx_importer STATIC ${MIR_ONNX_IMPORTER_SOURCES})
 set_target_properties(mir_onnx_importer PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(mir_onnx_importer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(mir_onnx_importer PUBLIC ../../include/mir_onnx_importer)
+target_include_directories(mir_onnx_importer PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mir_onnx_importer PUBLIC mir_onnx_proto mir PRIVATE stdex mir_interpreter)
 
 nnas_find_package(GTest REQUIRED)
