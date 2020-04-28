@@ -1,7 +1,4 @@
 require("adtidas")
-require("mir-caffe2-importer")
-require("mir-caffe-importer")
-require("mir-onnx-importer")
+require("mir")
 require("mir-interpreter")
-require("mir-tflite-importer")
 require("stdex")

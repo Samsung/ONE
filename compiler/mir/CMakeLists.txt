@@ -36,3 +36,8 @@ set_target_properties(mir PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(mir PROPERTIES LINKER_LANGUAGE CXX)
 
 add_subdirectory(unittests)
+
+add_subdirectory(src/mir_caffe_importer)
+add_subdirectory(src/mir_caffe2_importer)
+add_subdirectory(src/mir_tflite_importer)
+add_subdirectory(src/mir_onnx_importer)

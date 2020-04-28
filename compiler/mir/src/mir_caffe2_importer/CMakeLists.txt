@@ -16,7 +16,6 @@ target_link_libraries(caffe2proto PUBLIC libprotobuf)
 
 set(MIR_CAFFE2_IMPORTER_SOURCES
         caffe2_importer.cpp
-        caffe2_importer.h
         caffe2_op_creator.cpp
         caffe2_op_creator.h
         caffe2_op_types.h
@@ -25,5 +24,5 @@ set(MIR_CAFFE2_IMPORTER_SOURCES
 
 add_library(mir_caffe2_importer STATIC ${MIR_CAFFE2_IMPORTER_SOURCES})
 set_target_properties(mir_caffe2_importer PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(mir_caffe2_importer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(mir_caffe2_importer PUBLIC ../../include/mir_caffe2_importer)
 target_link_libraries(mir_caffe2_importer PUBLIC mir caffe2proto PRIVATE stdex)
