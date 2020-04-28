@@ -59,6 +59,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                     // 88
+  CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                       // 119
 
 #undef CIRCLE_NODE
 
@@ -149,7 +150,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_MATRIX_SET_DIAG = 115,
   // BuiltinOperator_ROUND = 116,
   // BuiltinOperator_HARD_SWISH = 117,
-  // BuiltinOperator_WHILE = 119,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
   // BuiltinOperator_SCATTER_ND = 122,

@@ -54,6 +54,7 @@ addread(Transpose_000)
 addread(Unpack_000)
 addread(Unpack_001)
 addread(Unpack_002)
+addread(While_000)
 
 addread(Net_UnpackAdd_001)
 
@@ -113,5 +114,6 @@ addwrite(Transpose_000)
 addwrite(Unpack_000)
 addwrite(Unpack_001)
 addwrite(Unpack_002)
+addwrite(While_000)
 
 addwrite(Net_UnpackAdd_001)

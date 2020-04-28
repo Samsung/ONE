@@ -56,6 +56,7 @@
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
+#include "Nodes/CircleWhile.h"
 // Circle only
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
@@ -63,6 +64,7 @@
 #include "Nodes/CircleOutput.h"
 #include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleUnpackOut.h"
+#include "Nodes/CircleWhileOut.h"
 
 namespace luci
 {
