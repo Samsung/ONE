@@ -163,6 +163,14 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
 {
   node->name(tensor_name(tensor));
   node->dtype(luci_datatype(tensor.type));
+
+  std::vector<int32_t> dims = tensor.shape; // in NHWC
+  node->rank(dims.size());
+  for (uint32_t r = 0; r < dims.size(); ++r)
+  {
+    node->dim(r) = loco::Dimension(dims[r]);
+  }
+
   const auto *quantization = tensor.quantization.get();
   if (quantization != nullptr)
   {

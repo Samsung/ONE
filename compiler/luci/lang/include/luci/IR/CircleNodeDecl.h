@@ -32,7 +32,9 @@ namespace luci
 
 using NodeName = std::string;
 
-struct CircleNode : public loco::Node, public loco::NodeMixin<loco::NodeTrait::DataType>
+struct CircleNode : public loco::Node,
+                    public loco::NodeMixin<loco::NodeTrait::DataType>,
+                    public loco::NodeMixin<loco::NodeTrait::TensorShape>
 {
   virtual ~CircleNode() = default;
 

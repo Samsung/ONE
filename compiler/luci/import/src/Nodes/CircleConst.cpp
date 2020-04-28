@@ -61,13 +61,11 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
   INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << std::endl;
 
-  // (2) set shape to CicleConst
+  // (2) get number of elements
   std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
-  const_node->rank(const_dims.size());
   uint32_t num_elements = 1;
   for (uint32_t r = 0; r < const_dims.size(); ++r)
   {
-    const_node->dim(r) = loco::Dimension(const_dims[r]);
     num_elements = num_elements * const_dims[r];
   }
 

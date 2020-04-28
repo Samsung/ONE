@@ -33,8 +33,7 @@ namespace luci
  * @brief CircleNode used for Input of the Graph
  * @note  This will not be exported as a specific op
  */
-class CircleInput final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEINPUT>>,
-                          public loco::NodeMixin<loco::NodeTrait::TensorShape>
+class CircleInput final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEINPUT>>
 {
 public:
   CircleInput() = default;
