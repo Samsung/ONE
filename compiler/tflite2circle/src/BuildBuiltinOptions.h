@@ -35,6 +35,7 @@
 #include "BuildBuiltinOptions/FillOptions.h"
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GatherOptions.h"
+#include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
