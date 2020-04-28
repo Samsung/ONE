@@ -213,6 +213,9 @@ message WhileOptions {
 message CastOptions {
   optional TensorType in_data_type = 1 [default = FLOAT32];
   optional TensorType out_data_type = 2 [default = FLOAT32];
+
+message GreaterOptions {
+  // None
 }
 
 message Operation {
@@ -255,6 +258,7 @@ message Operation {
   optional WhileOptions while_options = 132;
   optional SpaceToBatchNDOptions space_to_batch_nd_options = 133;
   optional CastOptions cast_options = 134;
+  optional GreaterOptions greater_options = 135;
 }
 
 // For additional subgraphs
