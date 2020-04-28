@@ -16,6 +16,7 @@
 
 #include "CircleExporterImpl.h"
 #include "Optimize.h"
+#include "TypeBridge.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
@@ -146,6 +147,9 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   // do graph optimization
   optimize(graph);
 
+  // copy shape/dtype inference data to CircleNode
+  copy_shape_dtype(graph);
+
   _builder.Clear();
 
   SerializedModelData md;
@@ -210,6 +214,9 @@ void CircleExporterImpl::exportModule(Module *module)
     auto graph = module->graph(g);
 
     optimize(graph);
+
+    // copy shape/dtype inference data to CircleNode
+    copy_shape_dtype(graph);
 
     SerializedGraphData gd;
 
