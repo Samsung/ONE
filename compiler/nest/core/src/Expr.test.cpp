@@ -38,8 +38,8 @@ TEST(EXPR, operator_sum)
 
   auto add = expr->asAdd();
 
-  ASSERT_EQ(add->lhs().get(), left.get());
-  ASSERT_EQ(add->rhs().get(), right.get());
+  ASSERT_EQ(left.get(), add->lhs().get());
+  ASSERT_EQ(right.get(), add->rhs().get());
 }
 
 TEST(EXPR, operator_mul)
@@ -53,6 +53,6 @@ TEST(EXPR, operator_mul)
 
   auto add = expr->asMul();
 
-  ASSERT_EQ(add->lhs().get(), left.get());
-  ASSERT_EQ(add->rhs().get(), right.get());
+  ASSERT_EQ(left.get(), add->lhs().get());
+  ASSERT_EQ(right.get(), add->rhs().get());
 }

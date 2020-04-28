@@ -31,7 +31,7 @@ TEST(SUBSCRIPT, ctor)
 
   nest::expr::Subscript sub{expr_0, expr_1};
 
-  ASSERT_EQ(sub.rank(), 2);
-  ASSERT_EQ(sub.at(0), expr_0);
-  ASSERT_EQ(sub.at(1), expr_1);
+  ASSERT_EQ(2, sub.rank());
+  ASSERT_EQ(expr_0, sub.at(0));
+  ASSERT_EQ(expr_1, sub.at(1));
 }

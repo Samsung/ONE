@@ -22,9 +22,9 @@ TEST(DOMAIN_INFO, ctor)
 {
   nest::DomainInfo info{1, 2, 3, 4};
 
-  ASSERT_EQ(info.rank(), 4);
-  ASSERT_EQ(info.dim(0), 1);
-  ASSERT_EQ(info.dim(1), 2);
-  ASSERT_EQ(info.dim(2), 3);
-  ASSERT_EQ(info.dim(3), 4);
+  ASSERT_EQ(4, info.rank());
+  ASSERT_EQ(1, info.dim(0));
+  ASSERT_EQ(2, info.dim(1));
+  ASSERT_EQ(3, info.dim(2));
+  ASSERT_EQ(4, info.dim(3));
 }

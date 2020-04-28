@@ -24,30 +24,30 @@ TEST(DOMAIN_CONTEXT, usecase)
 
   auto dom_0 = ctx.make({1, 3, 4});
 
-  ASSERT_EQ(ctx.count(), 1);
+  ASSERT_EQ(1, ctx.count());
 
   auto check_dom_0 = [&](void) {
-    ASSERT_EQ(ctx.info(dom_0).rank(), 3);
-    ASSERT_EQ(ctx.info(dom_0).dim(0), 1);
-    ASSERT_EQ(ctx.info(dom_0).dim(1), 3);
-    ASSERT_EQ(ctx.info(dom_0).dim(2), 4);
+    ASSERT_EQ(3, ctx.info(dom_0).rank());
+    ASSERT_EQ(1, ctx.info(dom_0).dim(0));
+    ASSERT_EQ(3, ctx.info(dom_0).dim(1));
+    ASSERT_EQ(4, ctx.info(dom_0).dim(2));
   };
 
   check_dom_0();
 
   auto dom_1 = ctx.make({7, 6, 2, 1});
 
-  ASSERT_EQ(ctx.count(), 2);
+  ASSERT_EQ(2, ctx.count());
 
   // Domain ID should be unique for each domain
   ASSERT_FALSE(dom_0.id() == dom_1.id());
 
   auto check_dom_1 = [&](void) {
-    ASSERT_EQ(ctx.info(dom_1).rank(), 4);
-    ASSERT_EQ(ctx.info(dom_1).dim(0), 7);
-    ASSERT_EQ(ctx.info(dom_1).dim(1), 6);
-    ASSERT_EQ(ctx.info(dom_1).dim(2), 2);
-    ASSERT_EQ(ctx.info(dom_1).dim(3), 1);
+    ASSERT_EQ(4, ctx.info(dom_1).rank());
+    ASSERT_EQ(7, ctx.info(dom_1).dim(0));
+    ASSERT_EQ(6, ctx.info(dom_1).dim(1));
+    ASSERT_EQ(2, ctx.info(dom_1).dim(2));
+    ASSERT_EQ(1, ctx.info(dom_1).dim(3));
   };
 
   // make() SHOULD NOT affect the existing domain information

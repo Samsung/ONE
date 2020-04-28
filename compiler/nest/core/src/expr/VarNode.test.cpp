@@ -31,7 +31,7 @@ TEST(VAR_NODE, ctor)
   auto node = make(4);
 
   // NOTE 'id' should be copied
-  ASSERT_EQ(node->id().value(), 4);
+  ASSERT_EQ(4, node->id().value());
 }
 
 TEST(VAR_NODE, cast)
@@ -43,5 +43,5 @@ TEST(VAR_NODE, cast)
 
   // NOTE Cast method should be overrided
   ASSERT_NE(derived.get(), nullptr);
-  ASSERT_EQ(base->asVar(), derived.get());
+  ASSERT_EQ(derived.get(), base->asVar());
 }

@@ -35,5 +35,5 @@ TEST(DEREF_NODE, cast)
   std::shared_ptr<nest::expr::Node> base = derived;
 
   ASSERT_NE(derived.get(), nullptr);
-  ASSERT_EQ(base->asDeref(), derived.get());
+  ASSERT_EQ(derived.get(), base->asDeref());
 }

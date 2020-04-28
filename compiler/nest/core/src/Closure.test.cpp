@@ -30,8 +30,8 @@ TEST(Closure, ctor)
   nest::DomainID dom_id{0};
   nest::Closure closure{dom_id, std::make_shared<DummyNode>()};
 
-  ASSERT_EQ(closure.id().value(), 0);
-  ASSERT_EQ(closure.sub().rank(), 1);
+  ASSERT_EQ(0, closure.id().value());
+  ASSERT_EQ(1, closure.sub().rank());
 }
 
 TEST(Closure, cast)

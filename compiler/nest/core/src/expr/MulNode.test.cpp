@@ -36,8 +36,8 @@ TEST(MUL_NODE, cast)
   std::shared_ptr<nest::expr::Node> base = derived;
 
   ASSERT_NE(derived.get(), nullptr);
-  ASSERT_EQ(base->asMul(), derived.get());
+  ASSERT_EQ(derived.get(), base->asMul());
 
-  ASSERT_EQ(derived->lhs().get(), left.get());
-  ASSERT_EQ(derived->rhs().get(), right.get());
+  ASSERT_EQ(left.get(), derived->lhs().get());
+  ASSERT_EQ(right.get(), derived->rhs().get());
 }

@@ -32,8 +32,8 @@ TEST(RET, ctor)
 
   nest::Ret ret{dom_id, sub};
 
-  ASSERT_EQ(ret.id().value(), 0);
-  ASSERT_EQ(ret.sub().rank(), 1);
+  ASSERT_EQ(0, ret.id().value());
+  ASSERT_EQ(1, ret.sub().rank());
 }
 
 TEST(RET, copy)
@@ -48,11 +48,11 @@ TEST(RET, copy)
 
   nest::Ret dst{dst_id, dst_sub};
 
-  ASSERT_EQ(dst.id().value(), 1);
-  ASSERT_EQ(dst.sub().rank(), 2);
+  ASSERT_EQ(1, dst.id().value());
+  ASSERT_EQ(2, dst.sub().rank());
 
   dst = src;
 
-  ASSERT_EQ(dst.id().value(), 0);
-  ASSERT_EQ(dst.sub().rank(), 1);
+  ASSERT_EQ(0, dst.id().value());
+  ASSERT_EQ(1, dst.sub().rank());
 }

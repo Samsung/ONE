@@ -22,6 +22,6 @@ TEST(BOUND, ctor)
 {
   const nest::Bound b{-10, 20};
 
-  ASSERT_EQ(b.min(), -10);
-  ASSERT_EQ(b.max(), 20);
+  ASSERT_EQ(-10, b.min());
+  ASSERT_EQ(20, b.max());
 }

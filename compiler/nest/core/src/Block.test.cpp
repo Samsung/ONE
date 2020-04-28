@@ -30,12 +30,12 @@ TEST(BLOCK, use_case_1)
 {
   nest::Block block;
 
-  ASSERT_EQ(block.size(), 0);
+  ASSERT_EQ(0, block.size());
 
   auto stmt = std::make_shared<DummyNode>();
 
   block.append(stmt);
 
-  ASSERT_EQ(block.size(), 1);
-  ASSERT_EQ(block.at(0), stmt);
+  ASSERT_EQ(1, block.size());
+  ASSERT_EQ(stmt, block.at(0));
 }

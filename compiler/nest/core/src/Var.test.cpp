@@ -23,7 +23,7 @@ TEST(VAR, ctor)
   nest::VarID id{0};
   nest::Var var{id};
 
-  ASSERT_EQ(var.id(), id);
+  ASSERT_EQ(id, var.id());
 }
 
 TEST(VAR, cast)
@@ -34,5 +34,5 @@ TEST(VAR, cast)
   nest::Expr expr = var;
 
   ASSERT_NE(expr->asVar(), nullptr);
-  ASSERT_EQ(expr->asVar()->id(), id);
+  ASSERT_EQ(id, expr->asVar()->id());
 }
