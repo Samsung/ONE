@@ -247,6 +247,10 @@ message FillOptions {
   // None
 }
 
+message GreaterOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -296,6 +300,7 @@ message Operation {
   optional ReducerOptions reduce_prod_options = 141;
   optional SplitOptions split_options = 142;
   optional SplitVOptions split_v_options = 143;
+  optional GreaterOptions greater_options = 144;
 }
 
 // For additional subgraphs
