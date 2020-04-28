@@ -216,7 +216,7 @@ int ANeuralNetworksExecution_setOutput(ANeuralNetworksExecution *execution, int3
 
     if (execution->getOperandSize(operand_index) != length)
     {
-      VERBOSE(NNAPI::Execution) << "setInput: Invalid length" << std::endl;
+      VERBOSE(NNAPI::Execution) << "setOutput: Invalid length" << std::endl;
       return ANEURALNETWORKS_BAD_DATA;
     }
   }
