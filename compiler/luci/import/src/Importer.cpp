@@ -62,12 +62,6 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     INFO(l) << "[luci] NodeFinder INPUT(" << input << ") = " << input_node << std::endl;
     nodefinder->enroll(input, input_node);
 
-    // Shape of Input
-    const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
-    input_node->rank(input_dims.size());
-    for (uint32_t r = 0; r < input_dims.size(); ++r)
-      input_node->dim(r) = loco::Dimension(input_dims[r]);
-
     // Name
     auto graph_input = graph->inputs()->create();
     graph_input->name(input_node->name());
@@ -131,6 +125,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     auto graph_output = graph->outputs()->create();
     std::string tname = luci::tensor_name(tensor);
     graph_output->name("output_" + tname);
+
+    luci::copy_tensor_attributes(tensor, output_node);
 
     // Set GraphInputOutputIndex for graph
     output_node->index(graph_output->index());
