@@ -195,6 +195,28 @@ ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout)
   }
 }
 
+ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
+{
+  switch (data_type)
+  {
+    case ::arm_compute::DataType::F32:
+      return ir::DataType::FLOAT32;
+    case ::arm_compute::DataType::S32:
+      return ir::DataType::INT32;
+    case ::arm_compute::DataType::U32:
+      return ir::DataType::UINT32;
+    case ::arm_compute::DataType::QASYMM8:
+      return ir::DataType::QUANT8_ASYMM;
+    case ::arm_compute::DataType::U8:
+      return ir::DataType::UINT8;
+    case ::arm_compute::DataType::QSYMM8:
+      return ir::DataType::QUANT8_SYMM;
+    default:
+      throw std::runtime_error{"Not supported, yet"};
+      break;
+  }
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

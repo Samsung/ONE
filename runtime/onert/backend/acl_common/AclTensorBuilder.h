@@ -421,7 +421,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
              parent_tensor->info()->quantization_info().uniform().offset);
       assert(tensor_info.typeInfo().scale() ==
              parent_tensor->info()->quantization_info().uniform().scale);
-      assert(asDataType(tensor_info.typeInfo().type()) == parent_tensor->info()->data_type());
+      assert(tensor_info.typeInfo().type() == parent_tensor->data_type());
 
       // NOTE SubTensor's layout must be the same with layout of parent tensor
       const auto &root_parent = findRootParent(parent);
