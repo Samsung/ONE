@@ -114,14 +114,27 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // graph outputs
   for (auto output : reader.outputs())
   {
+    const circle::TensorT &tensor = *tensors[output];
+
     auto output_node = graph->nodes()->create<luci::CircleOutput>();
     assert(output_node != nullptr);
-    output_node->from(nodefinder->node(output));
+    auto output_from = nodefinder->node(output);
+    if (output_from != nullptr)
+      output_node->from(output_from);
+    else
+    {
+      // NOTE loco::Graph requires all input should exist.
+      //      We add a dummy node to make it happy.
+      auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
+      assert(output_dummy != nullptr);
+      output_node->from(output_dummy);
+
+      luci::copy_tensor_attributes(tensor, output_dummy);
+    }
 
     INFO(l) << "[luci] NodeFinder OUTPUT(" << output << ") = " << output_node << std::endl;
 
     // set the graph output name and node object
-    const circle::TensorT &tensor = *tensors[output];
     auto graph_output = graph->outputs()->create();
     std::string tname = luci::tensor_name(tensor);
     graph_output->name("output_" + tname);
