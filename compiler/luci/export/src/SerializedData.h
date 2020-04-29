@@ -53,6 +53,8 @@ namespace luci
  */
 struct SubGraphContext
 {
+  /// @brief SubGraph name
+  std::string _name;
   /// @brief SubGraph input tensor id
   std::vector<int32_t> _inputs;
   /// @brief SubGraph output tensor id
