@@ -3,7 +3,7 @@
 ## Prerequisite
 
 - Python 3.X
-- TensorFlow 1.13.1
+- TensorFlow 1.15
 
 ## Directory Layout
 
