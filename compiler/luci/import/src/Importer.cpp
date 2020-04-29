@@ -123,7 +123,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       output_node->from(output_from);
     else
     {
-      // NOTE loco::Graph requires all input should exist.
+      // NOTE loco::Graph requires all input node(s) to a node should exist.
+      //      Here, CircleOutput needs an input node.
       //      We add a dummy node to make it happy.
       auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
       assert(output_dummy != nullptr);
