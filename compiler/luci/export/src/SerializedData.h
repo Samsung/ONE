@@ -57,7 +57,7 @@ struct SubGraphContext
   std::vector<int32_t> _inputs;
   /// @brief SubGraph output tensor id
   std::vector<int32_t> _outputs;
-  /// @DataFormat for SubGraph
+  /// @brief DataFormat for SubGraph
   circle::DataFormat _data_format{circle::DataFormat::DataFormat_CHANNELS_LAST};
 };
 
