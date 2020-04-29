@@ -711,4 +711,4 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   return false;
 }
 
-} // namespace exo
+} // namespace luci
