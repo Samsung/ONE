@@ -50,6 +50,17 @@ private:
   int64_t _index = -1; // Uninitialized
 };
 
+/**
+ * @brief Temporary DummyNode used with dangle CircleNode
+ */
+// TODO remove CircleOutputDummy
+class CircleOutputDummy final
+    : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTDUMMY>>
+{
+public:
+  CircleOutputDummy() = default;
+};
+
 } // namespace luci
 
 #endif // __LUCI_IR_CIRCLEOUTPUT_H__
