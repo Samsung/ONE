@@ -128,8 +128,8 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
     const auto lhs_shape = convertExtendShape(lhs_tensor->tensorInfo().shape());
     const auto rhs_shape = convertExtendShape(rhs_tensor->tensorInfo().shape());
     const auto out_shape = convertExtendShape(out_tensor->tensorInfo().shape());
-    nnfw::cker::BroadcastBinaryArithmeticOpSlow(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr,
-                                                out_shape, out_ptr);
+    nnfw::cker::BroadcastBinaryArithmeticOp(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr,
+                                            out_shape, out_ptr);
     return;
   }
 

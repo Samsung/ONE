@@ -39,7 +39,7 @@ void PowLayer::powFloat32()
 
   if (!HaveSameShapes(_lhs, _rhs))
   {
-    nnfw::cker::BroadcastBinaryArithmeticOpSlow(
+    nnfw::cker::BroadcastBinaryArithmeticOp(
         op_params, convertToExtendedCkerShape(_lhs),
         reinterpret_cast<const float *>(_lhs->buffer()), convertToExtendedCkerShape(_rhs),
         reinterpret_cast<const float *>(_rhs->buffer()), convertToExtendedCkerShape(_output),
