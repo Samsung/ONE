@@ -57,10 +57,10 @@ bool CircleLessGraphBuilder::validate(const ValidateArgs &args) const
 
   if (tensors[inputs[1]]->type != tensor->type)
   {
-  return false;    
+    return false;
   }
-  
-  return tensors[outputs[0]]->type == circle::TensorType_BOOL; 
+
+  return tensors[outputs[0]]->type == circle::TensorType_BOOL;
 }
 
 CircleNode *CircleLessGraphBuilder::build_node(const circle::OperatorT &,
