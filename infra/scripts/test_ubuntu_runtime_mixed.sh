@@ -35,6 +35,7 @@ echo "GeneratedTests.logical_or_broadcast_4D_2D_nnfw" >> $SKIPLIST_PREFIX.union
 echo "GeneratedTests.mean" >> $SKIPLIST_PREFIX.union
 echo "GeneratedTests.add_broadcast_4D_2D_after_nops_float_nnfw" >> $SKIPLIST_PREFIX.union
 echo "GeneratedTests.argmax_*" >> $SKIPLIST_PREFIX.union
+echo "GeneratedTests.squeeze_relaxed" >> $SKIPLIST_PREFIX.union
 
 # Run the test
 export OP_BACKEND_Conv2D="cpu"

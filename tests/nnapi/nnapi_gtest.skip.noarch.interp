@@ -386,7 +386,9 @@ GeneratedTests.squared_difference_ex_broadcast_float
 GeneratedTests.squeeze
 GeneratedTests.squeeze_2D_float_1_nnfw
 GeneratedTests.squeeze_float_1
+GeneratedTests.squeeze_float_1_relaxed
 GeneratedTests.squeeze_quant8_1
+GeneratedTests.squeeze_relaxed
 GeneratedTests.strided_slice
 GeneratedTests.strided_slice_float_1
 GeneratedTests.strided_slice_float_10

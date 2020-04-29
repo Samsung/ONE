@@ -370,7 +370,6 @@ TEST_F(ValidationTestModel, IdentifyInputsAndOutputs) {
               ANEURALNETWORKS_BAD_STATE);
 }
 
-#if 0 // TODO-NNRT : Enable if we support 'RelaxComputationFloat32toFloat16'
 TEST_F(ValidationTestModel, RelaxComputationFloat32toFloat16) {
     EXPECT_EQ(ANeuralNetworksModel_relaxComputationFloat32toFloat16(nullptr, true),
               ANEURALNETWORKS_UNEXPECTED_NULL);
@@ -382,7 +381,6 @@ TEST_F(ValidationTestModel, RelaxComputationFloat32toFloat16) {
     EXPECT_EQ(ANeuralNetworksModel_relaxComputationFloat32toFloat16(mModel, false),
               ANEURALNETWORKS_BAD_STATE);
 }
-#endif
 
 TEST_F(ValidationTestModel, Finish) {
     EXPECT_EQ(ANeuralNetworksModel_finish(nullptr), ANEURALNETWORKS_UNEXPECTED_NULL);

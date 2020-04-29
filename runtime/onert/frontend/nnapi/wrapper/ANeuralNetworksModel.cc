@@ -196,6 +196,22 @@ bool ANeuralNetworksModel::addModelOutput(uint32_t index) noexcept
   return true;
 }
 
+bool ANeuralNetworksModel::allowFloat32toFloat16() noexcept
+{
+  try
+  {
+    _graph->allowFloat32toFloat16();
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(EXCEPTION) << e.what() << std::endl;
+
+    return false;
+  }
+
+  return true;
+}
+
 bool ANeuralNetworksModel::finish() noexcept
 {
   try

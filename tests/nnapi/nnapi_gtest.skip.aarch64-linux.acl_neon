@@ -1,4 +1,5 @@
 GeneratedTests.*float16*
+GeneratedTests.*relaxed*
 GeneratedTests.*zero_sized*
 GeneratedTests.abs_
 GeneratedTests.abs__relaxed
