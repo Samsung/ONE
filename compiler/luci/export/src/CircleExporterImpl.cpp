@@ -37,11 +37,11 @@ luci::CircleInput *input_node(loco::Graph *g, const loco::GraphInputIndex &index
 {
   for (uint32_t n = 0; n < g->nodes()->size(); ++n)
   {
-    if (auto pull = dynamic_cast<luci::CircleInput *>(g->nodes()->at(n)))
+    if (auto input = dynamic_cast<luci::CircleInput *>(g->nodes()->at(n)))
     {
-      if (pull->indexed() && pull->index() == index)
+      if (input->indexed() && input->index() == index)
       {
-        return pull;
+        return input;
       }
     }
   }
@@ -52,11 +52,11 @@ luci::CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &in
 {
   for (uint32_t n = 0; n < g->nodes()->size(); ++n)
   {
-    if (auto push = dynamic_cast<luci::CircleOutput *>(g->nodes()->at(n)))
+    if (auto output = dynamic_cast<luci::CircleOutput *>(g->nodes()->at(n)))
     {
-      if (push->indexed() && push->index() == index)
+      if (output->indexed() && output->index() == index)
       {
-        return push;
+        return output;
       }
     }
   }
