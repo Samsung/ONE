@@ -71,8 +71,8 @@ namespace cpu
 
 KernelGenerator::KernelGenerator(
     const ir::Operands &operand_ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
-    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builer)
-    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builer),
+    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder)
+    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builder),
       _current_op_seq_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
