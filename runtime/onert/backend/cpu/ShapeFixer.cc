@@ -181,6 +181,8 @@ void ShapeFixer::visit(const ir::operation::ReduceProd &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

@@ -38,6 +38,7 @@ public:
   {
     int axis;
     int rank;
+    DataType output_type;
   };
 
 public:

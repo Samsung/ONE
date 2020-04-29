@@ -133,6 +133,7 @@ protected:
   void loadReduceProd(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadNeg(const Operator *op, ir::Graph &subg);
+  void loadArgMax(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1264,6 +1265,39 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadNeg(const Operator *op, ir::G
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  auto inputOperand = subg.operands().at(inputs.at(0));
+  auto axisOperand = subg.operands().at(inputs.at(1));
+
+  if (!axisOperand.isConstant())
+    throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
+  if (!(axisOperand.operandSize() == 4 && axisOperand.typeInfo().type() == ir::DataType::INT32))
+    throw std::runtime_error("ArgMax: `axis` with an int32 element is only supported.");
+
+  ir::operation::ArgMax::Param param;
+  param.axis = axisOperand.template asVector<int>()[0];
+  param.rank = inputOperand.shape().rank();
+  const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
+  switch (output_type)
+  {
+    case TensorType::TensorType_INT32:
+    case TensorType::TensorType_INT64:
+      break;
+    default:
+      throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
+  }
+  param.output_type = tensorTypeToDataType(output_type);
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ArgMax(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1422,6 +1456,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     // TODO Implement loading subgraphs of conftrol flow ops
     case BuiltinOperator::BuiltinOperator_NEG:
       loadNeg(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_ARG_MAX:
+      loadArgMax(op, subg);
       return;
     default:
       throw std::runtime_error(
