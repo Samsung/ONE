@@ -71,6 +71,14 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     // Data type
     graph_input->dtype(input_node->dtype());
+
+    // Shape of GraphInput
+    auto input_shape = std::make_unique<loco::TensorShape>();
+    const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
+    input_shape->rank(input_dims.size());
+    for (uint32_t r = 0; r < input_dims.size(); ++r)
+      input_shape->dim(r) = loco::Dimension(input_dims[r]);
+    graph_input->shape(std::move(input_shape));
   }
 
   // Create CircleConst nodes for constant tensors.
