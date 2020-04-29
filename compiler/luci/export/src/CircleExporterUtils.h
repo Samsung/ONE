@@ -45,6 +45,7 @@ using CircleTensorIndex = int32_t;
 
 void set_tensor_index(loco::Node *node, const CircleTensorIndex &tensor_id);
 CircleTensorIndex get_tensor_index(loco::Node *node);
+bool has_tensor_index(loco::Node *node);
 
 } // namespace luci
 

@@ -166,4 +166,9 @@ CircleTensorIndex get_tensor_index(loco::Node *node)
   return node->annot<CircleTensorIndexAnnotation>()->index();
 }
 
+bool has_tensor_index(loco::Node *node)
+{
+  return node->annot<CircleTensorIndexAnnotation>() != nullptr;
+}
+
 } // namespace luci

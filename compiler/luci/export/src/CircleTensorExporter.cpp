@@ -256,6 +256,16 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
     allocateCircleTensor(circle_node, tensor_ctx);
   }
 
+  // Allocate tensors for dangling input nodes
+  for (auto node : loco::input_nodes(g))
+  {
+    if (!has_tensor_index(node))
+    {
+      CircleNode *circle_node = dynamic_cast<luci::CircleNode *>(node);
+      allocateCircleTensor(circle_node, tensor_ctx);
+    }
+  }
+
   for (const auto &tensor_info : tensor_ctx)
   {
     exportOpDefinedTensor(tensor_info, builder, md, gd);
