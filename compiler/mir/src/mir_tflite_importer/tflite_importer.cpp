@@ -23,7 +23,7 @@
 #include "mir/ops/OutputOp.h"
 
 #include <fstream>
-#include <stdex/Memory.h>
+#include <memory>
 #include <utility>
 #include <vector>
 #include <set>
@@ -77,8 +77,8 @@ private:
 
 TfliteImporter::TfliteImporter(std::string filename) : _filename(std::move(filename))
 {
-  _graph = stdex::make_unique<mir::Graph>();
-  _opCreator = stdex::make_unique<TFLiteOpCreator>(_graph.get());
+  _graph = std::make_unique<mir::Graph>();
+  _opCreator = std::make_unique<TFLiteOpCreator>(_graph.get());
 }
 
 TfliteImporter::~TfliteImporter() = default;
