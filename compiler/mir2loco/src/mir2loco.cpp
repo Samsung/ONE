@@ -37,7 +37,7 @@
 
 #include <cassert>
 #include <cstring>
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace mir2loco
 {
@@ -54,7 +54,7 @@ template <class NodeType> void setupShape(const mir::Shape &shape, NodeType *nod
 
 std::unique_ptr<loco::TensorShape> make_tensor_shape(const mir::Shape &shape)
 {
-  auto res = stdex::make_unique<loco::TensorShape>();
+  auto res = std::make_unique<loco::TensorShape>();
   setupShape(shape, res.get());
   return std::move(res);
 }
@@ -107,13 +107,13 @@ loco::Permutation<loco::Domain::Feature> createFeaturePermutation(mir::DataForma
 std::unique_ptr<loco::FeatureEncoder> createFeatureEncoder(mir::DataFormat data_format)
 {
   auto perm = createFeaturePermutation(data_format);
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::Feature>>(perm);
 }
 
 std::unique_ptr<loco::FeatureDecoder> createFeatureDecoder(mir::DataFormat data_format)
 {
   auto perm = createFeaturePermutation(data_format);
-  return stdex::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>(perm);
+  return std::make_unique<loco::PermutingDecoder<loco::Domain::Feature>>(perm);
 }
 
 std::unique_ptr<loco::FilterEncoder> createOHWIFilterEncoder()
@@ -123,7 +123,7 @@ std::unique_ptr<loco::FilterEncoder> createOHWIFilterEncoder()
   perm.axis(loco::FilterAxis::Height) = 1;
   perm.axis(loco::FilterAxis::Width) = 2;
   perm.axis(loco::FilterAxis::Depth) = 3;
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>(perm);
 }
 
 std::unique_ptr<loco::FilterEncoder> createHWOIFilterEncoder()
@@ -133,7 +133,7 @@ std::unique_ptr<loco::FilterEncoder> createHWOIFilterEncoder()
   perm.axis(loco::FilterAxis::Width) = 1;
   perm.axis(loco::FilterAxis::Count) = 2;
   perm.axis(loco::FilterAxis::Depth) = 3;
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::Filter>>(perm);
 }
 
 std::unique_ptr<loco::DepthwiseFilterEncoder> createHWIMDepthwiseFilterEncoder()
@@ -143,7 +143,7 @@ std::unique_ptr<loco::DepthwiseFilterEncoder> createHWIMDepthwiseFilterEncoder()
   perm.axis(loco::DepthwiseFilterAxis::Width) = 1;
   perm.axis(loco::DepthwiseFilterAxis::Depth) = 2;
   perm.axis(loco::DepthwiseFilterAxis::Multiplier) = 3;
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>(perm);
 }
 
 std::unique_ptr<loco::DepthwiseFilterEncoder> createIHWMDepthwiseFilterEncoder()
@@ -153,7 +153,7 @@ std::unique_ptr<loco::DepthwiseFilterEncoder> createIHWMDepthwiseFilterEncoder()
   perm.axis(loco::DepthwiseFilterAxis::Height) = 1;
   perm.axis(loco::DepthwiseFilterAxis::Width) = 2;
   perm.axis(loco::DepthwiseFilterAxis::Multiplier) = 3;
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::DepthwiseFilter>>(perm);
 }
 
 std::unique_ptr<loco::MatrixEncoder> createHWMatrixEncoder()
@@ -161,7 +161,7 @@ std::unique_ptr<loco::MatrixEncoder> createHWMatrixEncoder()
   loco::Permutation<loco::Domain::Matrix> perm;
   perm.axis(loco::MatrixAxis::Height) = 0;
   perm.axis(loco::MatrixAxis::Width) = 1;
-  return stdex::make_unique<loco::PermutingEncoder<loco::Domain::Matrix>>(perm);
+  return std::make_unique<loco::PermutingEncoder<loco::Domain::Matrix>>(perm);
 }
 
 std::unique_ptr<loco::MatrixDecoder> createHWMatrixDecoder()
@@ -169,7 +169,7 @@ std::unique_ptr<loco::MatrixDecoder> createHWMatrixDecoder()
   loco::Permutation<loco::Domain::Matrix> perm;
   perm.axis(loco::MatrixAxis::Height) = 0;
   perm.axis(loco::MatrixAxis::Width) = 1;
-  return stdex::make_unique<loco::PermutingDecoder<loco::Domain::Matrix>>(perm);
+  return std::make_unique<loco::PermutingDecoder<loco::Domain::Matrix>>(perm);
 }
 
 loco::DataType convertDataType(mir::DataType data_type)

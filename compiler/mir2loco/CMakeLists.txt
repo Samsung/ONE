@@ -7,7 +7,6 @@ target_include_directories(mir2loco PRIVATE src)
 target_include_directories(mir2loco PUBLIC include)
 target_link_libraries(mir2loco PUBLIC mir)
 target_link_libraries(mir2loco PUBLIC loco)
-target_link_libraries(mir2loco PRIVATE stdex)
 
 nnas_find_package(GTest QUIET)
 
