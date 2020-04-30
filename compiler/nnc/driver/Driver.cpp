@@ -49,7 +49,7 @@
 #include <ONNXImporterImpl.h>
 #endif // NNC_FRONTEND_ONNX_ENABLED
 
-#include <stdex/Memory.h>
+#include <memory>
 
 namespace nnc
 {
@@ -169,19 +169,19 @@ void Driver::registerBackendSpecificPasses()
 
   if (cli::target == NNC_TARGET_ARM_CPP || cli::target == NNC_TARGET_X86_CPP)
   {
-    _passManager.registerPass(stdex::make_unique<LowerConv2D>());
-    _passManager.registerPass(stdex::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
+    _passManager.registerPass(std::make_unique<LowerConv2D>());
+    _passManager.registerPass(std::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
   }
   else if (cli::target == NNC_TARGET_ARM_GPU_CPP)
   {
-    _passManager.registerPass(stdex::make_unique<LowerConv2D>());
-    _passManager.registerPass(stdex::make_unique<ConstantFoldTranspose>());
+    _passManager.registerPass(std::make_unique<LowerConv2D>());
+    _passManager.registerPass(std::make_unique<ConstantFoldTranspose>());
     // TODO Change to DataFormat::NCHW when fix it in ACL
-    _passManager.registerPass(stdex::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
+    _passManager.registerPass(std::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
   }
   else if (cli::target == NNC_TARGET_INTERPRETER)
   {
-    _passManager.registerPass(stdex::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
+    _passManager.registerPass(std::make_unique<DataFormatSwitcher>(mir::DataFormat::NHWC));
   }
   else
   {
