@@ -41,6 +41,7 @@
 #include "Nodes/CircleMaxPool2D.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMul.h"
+#include "Nodes/CircleNotEqual.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
 #include "Nodes/CircleReduceProd.h"

@@ -73,6 +73,7 @@ public:
   void visit(luci::CircleMaxPool2D *) final;
   void visit(luci::CircleMean *) final;
   void visit(luci::CircleMul *) final;
+  void visit(luci::CircleNotEqual *) final;
   void visit(luci::CirclePack *) final;
   void visit(luci::CircleReduceProd *) final;
   void visit(luci::CirclePad *) final;
@@ -525,6 +526,23 @@ void OperationExporter::visit(luci::CircleMul *node)
   auto options = CreateMulOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_MulOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleNotEqual *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_NOT_EQUAL);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateNotEqualOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_NotEqualOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
