@@ -63,7 +63,7 @@ bool CircleSquaredDifferenceGraphBuilder::validate(const ValidateArgs &args) con
   return true;
 }
 
-CircleNode *CircleSquaredDifferenceGraphBuilder::build_node(const circle::OperatorT &op,
+CircleNode *CircleSquaredDifferenceGraphBuilder::build_node(const circle::OperatorT &,
                                                             const std::vector<CircleNode *> &inputs,
                                                             loco::Graph *graph) const
 {
