@@ -30,7 +30,7 @@ public:
 public:
   tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_SQUARE; }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_NONE; }
+  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_SquareOptions; }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 

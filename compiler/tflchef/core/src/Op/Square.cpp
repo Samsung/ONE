@@ -18,7 +18,9 @@
 
 flatbuffers::Offset<void> SquareChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
-  return flatbuffers::Offset<void>();
+  tflite::SquareOptionsBuilder options_builder{fbb};
+
+  return options_builder.Finish().Union();
 }
 
 std::unique_ptr<OpChef> SquareChefFactory::create(const tflchef::Operation *operation) const
