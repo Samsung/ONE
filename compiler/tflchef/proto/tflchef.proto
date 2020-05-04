@@ -191,6 +191,10 @@ message TileOptions {
   // None
 }
 
+message SquareOptions {
+  // None
+}
+
 message BatchMatMulOptions {
   optional bool adjoint_lhs = 1 [default = false];
   optional bool adjoint_rhs = 2 [default = false];
@@ -238,6 +242,8 @@ message Operation {
   optional BatchMatMulOptions batch_matmul_options = 129;
   optional TileOptions tile_options = 130;
   optional IfOptions if_options = 131;
+  optional SquareOptions square_options = 132;
+  
 }
 
 // For additional subgraphs

@@ -211,6 +211,7 @@ private:
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSqrt)
+  IMPLEMENT(luci::CircleSquare)
   IMPLEMENT(luci::CircleSquaredDifference)
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleTanh)
@@ -565,6 +566,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSoftmax *node, locop::N
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSqrt *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSquare *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
