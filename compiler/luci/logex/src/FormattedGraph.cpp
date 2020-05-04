@@ -219,6 +219,7 @@ private:
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
+  IMPLEMENT(luci::CircleWhile)
   // Circle Only
   IMPLEMENT(luci::CircleInstanceNorm)
   // Virtual nodes
@@ -226,6 +227,7 @@ private:
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleIfOut)
   IMPLEMENT(luci::CircleUnpackOut)
+  IMPLEMENT(luci::CircleWhileOut)
 #undef IMPLEMENT
 };
 
@@ -649,6 +651,26 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::No
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleWhile *node, locop::NodeSummary &s) const
+{
+  for (uint32_t i = 0; i < node->input_count(); ++i)
+    s.args().append("input", tbl()->lookup(node->input(i)));
+
+  if (node->cond_graph() != nullptr)
+    s.args().append("cond_graph", node->cond_graph()->name());
+  else
+    s.args().append("cond_branch", pepper::str(node->cond_branch()));
+
+  if (node->body_graph() != nullptr)
+    s.args().append("body_graph", node->body_graph()->name());
+  else
+    s.args().append("body_branch", pepper::str(node->body_branch()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
                                        locop::NodeSummary &s) const
 {
@@ -662,6 +684,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleIfOut *node, locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleWhileOut *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("while", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 
