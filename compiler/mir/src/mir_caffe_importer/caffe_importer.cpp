@@ -30,7 +30,7 @@
 #include <cassert>
 #include <cerrno>
 #include <cstring>
-#include <stdex/Memory.h>
+#include <memory>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -135,8 +135,8 @@ void loadModelFromTextFile(const std::string &filename, caffe::NetParameter *net
 
 std::unique_ptr<mir::Graph> CaffeImporter::importModel()
 {
-  auto graph = stdex::make_unique<mir::Graph>();
-  _opCreator = stdex::make_unique<CaffeOpCreator>(graph.get());
+  auto graph = std::make_unique<mir::Graph>();
+  _opCreator = std::make_unique<CaffeOpCreator>(graph.get());
 
   collectUnsupportedLayers();
 
@@ -150,7 +150,7 @@ std::unique_ptr<mir::Graph> CaffeImporter::importModel()
 
 std::unique_ptr<mir::Graph> CaffeImporter::importModelFromBinaryFile(const std::string &filename)
 {
-  _net = stdex::make_unique<caffe::NetParameter>();
+  _net = std::make_unique<caffe::NetParameter>();
   loadModelFromBinaryFile(filename, _net.get());
 
   return importModel();
@@ -158,7 +158,7 @@ std::unique_ptr<mir::Graph> CaffeImporter::importModelFromBinaryFile(const std::
 
 std::unique_ptr<mir::Graph> CaffeImporter::importModelFromTextFile(const std::string &filename)
 {
-  _net = stdex::make_unique<caffe::NetParameter>();
+  _net = std::make_unique<caffe::NetParameter>();
   loadModelFromTextFile(filename, _net.get());
 
   return importModel();

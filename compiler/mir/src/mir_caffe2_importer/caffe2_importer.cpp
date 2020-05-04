@@ -31,7 +31,7 @@
 #include <cassert>
 #include <cerrno>
 #include <cstring>
-#include <stdex/Memory.h>
+#include <memory>
 #include <stdexcept>
 #include <utility>
 #include <set>
@@ -104,8 +104,8 @@ Caffe2Importer::Caffe2Importer(std::string predict_net, std::string init_net,
   for (auto &shape : input_shapes)
     _inputShapes.emplace_back(shape);
 
-  _graph = stdex::make_unique<mir::Graph>();
-  _opCreator = stdex::make_unique<Caffe2OpCreator>(_graph.get());
+  _graph = std::make_unique<mir::Graph>();
+  _opCreator = std::make_unique<Caffe2OpCreator>(_graph.get());
 }
 
 Caffe2Importer::~Caffe2Importer() = default;
@@ -136,10 +136,10 @@ static void loadModelFile(const std::string &filename, caffe2::NetDef *net)
 
 void Caffe2Importer::import()
 {
-  _predict_net = stdex::make_unique<NetDef>();
+  _predict_net = std::make_unique<NetDef>();
   loadModelFile(_predictNet, _predict_net.get());
 
-  _init_net = stdex::make_unique<NetDef>();
+  _init_net = std::make_unique<NetDef>();
   loadModelFile(_initNet, _init_net.get());
 
   collectUnsupportedOps();

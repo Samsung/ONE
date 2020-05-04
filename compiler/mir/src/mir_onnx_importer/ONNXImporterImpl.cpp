@@ -31,7 +31,7 @@
 #include <google/protobuf/text_format.h>
 #include <functional>
 #include <iostream>
-#include <stdex/Memory.h>
+#include <memory>
 #include <utility>
 
 namespace mir_onnx
@@ -106,18 +106,18 @@ void loadModelFromTextFile(const std::string &filename, onnx::ModelProto *model)
 
 std::unique_ptr<mir::Graph> ONNXImporterImpl::importModelFromBinaryFile(const std::string &filename)
 {
-  _model = stdex::make_unique<onnx::ModelProto>();
+  _model = std::make_unique<onnx::ModelProto>();
   loadModelFromBinaryFile(filename, _model.get());
-  _modelCtx = stdex::make_unique<ModelContext>(_model.get());
+  _modelCtx = std::make_unique<ModelContext>(_model.get());
   collectUnsupportedOps();
   return createIR();
 }
 
 std::unique_ptr<mir::Graph> ONNXImporterImpl::importModelFromTextFile(const std::string &filename)
 {
-  _model = stdex::make_unique<onnx::ModelProto>();
+  _model = std::make_unique<onnx::ModelProto>();
   loadModelFromTextFile(filename, _model.get());
-  _modelCtx = stdex::make_unique<ModelContext>(_model.get());
+  _modelCtx = std::make_unique<ModelContext>(_model.get());
   collectUnsupportedOps();
   return createIR();
 }
@@ -187,8 +187,8 @@ void ONNXImporterImpl::createGraphInputs()
 
 std::unique_ptr<mir::Graph> ONNXImporterImpl::createIR()
 {
-  _graph = stdex::make_unique<mir::Graph>();
-  _converterCtx = stdex::make_unique<ConverterContext>(_graph.get());
+  _graph = std::make_unique<mir::Graph>();
+  _converterCtx = std::make_unique<ConverterContext>(_graph.get());
 
   createGraphInputs();
 
