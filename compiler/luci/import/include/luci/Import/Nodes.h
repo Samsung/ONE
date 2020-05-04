@@ -51,5 +51,6 @@
 #include "Nodes/CircleTile.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
+#include "Nodes/CircleWhile.h"
 
 #endif // __LUCI_IMPORT_NODES_H__
