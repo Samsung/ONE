@@ -14,7 +14,6 @@ configure_file(${NNC_ROOT_SRC_DIR}/include/Definitions.h.in
 
 # target for compiler executable
 add_executable(${NNC_TARGET_EXECUTABLE} ${NNC_DRIVER_DIR}/main.cpp ${NNC_DRIVER_DIR}/Driver.cpp ${NNC_DRIVER_DIR}/Options.cpp)
-target_link_libraries(${NNC_TARGET_EXECUTABLE} PRIVATE stdex)
 
 # install compiler
 nnc_install_executable(${NNC_TARGET_EXECUTABLE})
