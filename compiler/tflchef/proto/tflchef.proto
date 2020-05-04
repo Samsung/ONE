@@ -201,6 +201,10 @@ message IfOptions {
   optional int32 else_subgraph_index = 2;
 }
 
+message SquaredDifferenceOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -238,6 +242,7 @@ message Operation {
   optional BatchMatMulOptions batch_matmul_options = 129;
   optional TileOptions tile_options = 130;
   optional IfOptions if_options = 131;
+  optional SquaredDifferenceOptions squared_difference_options = 132;
 }
 
 // For additional subgraphs

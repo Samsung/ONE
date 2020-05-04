@@ -49,6 +49,7 @@
 #include "BuildBuiltinOptions/ShapeOptions.h"
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
+#include "BuildBuiltinOptions/SquaredDifferenceOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
