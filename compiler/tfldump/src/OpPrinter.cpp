@@ -273,6 +273,21 @@ public:
   }
 };
 
+class WhilePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_WhileOptions())
+    {
+      os << "    ";
+      os << "cond_subgraph_index(" << params->cond_subgraph_index() << ") ";
+      os << "body_subgraph_index(" << params->body_subgraph_index() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class CustomOpPrinter : public OpPrinter
 {
 public:
@@ -332,6 +347,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
 
