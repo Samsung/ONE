@@ -36,8 +36,11 @@ bool CircleSquareGraphBuilder::validate(const ValidateArgs &args) const
   const auto &tensor = tensors.at(inputs[0]);
   switch (tensor->type)
   {
+    case circle::TensorType_INT32:
+    case circle::TensorType_INT64:
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:
+    case circle::TensorType_FLOAT64:
     case circle::TensorType_COMPLEX64:
       break;
     default:
