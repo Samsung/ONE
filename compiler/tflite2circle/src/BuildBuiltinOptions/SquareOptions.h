@@ -23,7 +23,7 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::SquareOptions> 
+flatbuffers::Offset<circle::SquareOptions>
 build_circle_SquareOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
