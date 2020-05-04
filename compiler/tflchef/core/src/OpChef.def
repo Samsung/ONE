@@ -40,6 +40,7 @@ OP_CHEF(Tanh, TanhChefFactory)
 OP_CHEF(Tile, TileChefFactory)
 OP_CHEF(Transpose, TransposeChefFactory)
 OP_CHEF(Unpack, UnpackChefFactory)
+OP_CHEF(While, WhileChefFactory)
 
 // Custom Op
 OP_CHEF(BatchMatMulV2, BatchMatMulV2ChefFactory)
