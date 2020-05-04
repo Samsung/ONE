@@ -361,7 +361,11 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   }
   else // when called after nnfw_session::prepare() but before excute()
   {
-    throw std::runtime_error("Not yet implemented");
+    onert::ir::Shape new_shape(ti.rank);
+    for (int32_t i = 0; i < ti.rank; i++)
+      new_shape.dim(i) = ti.dims[i];
+
+    _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
   }
 
   return NNFW_STATUS_NO_ERROR;

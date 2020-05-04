@@ -18,8 +18,10 @@
 #define __ONERT_EXEC_IO_DESCRIPTION_H__
 
 #include <vector>
+#include <unordered_map>
 
 #include "ir/OperandInfo.h"
+#include "ir/Index.h"
 
 namespace onert
 {
@@ -58,6 +60,8 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
+  // Contains shape of input set by apply_tensorinfo
+  std::unordered_map<ir::IOIndex, ir::Shape> input_shape_signature;
 };
 
 } // namespace exec
