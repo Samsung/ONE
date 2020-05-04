@@ -54,7 +54,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                   // 22
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                       // 76
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
-  CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                       // 92
+  CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                     // 92
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69

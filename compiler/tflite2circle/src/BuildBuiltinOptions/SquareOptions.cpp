@@ -19,8 +19,8 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::ExpOptions> build_circle_SquareOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *)
+flatbuffers::Offset<circle::ExpOptions> 
+build_circle_SquareOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *)
 {
   circle::SquareOptionsBuilder builtin_options_builder{fb};
   return builtin_options_builder.Finish();
