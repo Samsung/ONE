@@ -565,3 +565,43 @@ std::shared_ptr<onert::ir::Graph> nnfw_session::primary_subgraph()
 {
   return _subgraphs->at(onert::ir::SubgraphIndex{0});
 }
+
+NNFW_STATUS nnfw_session::get_config_str(const char *key, char *value)
+{
+  // The session must be in the state after model load
+  if (!_compiler)
+    return NNFW_STATUS_ERROR;
+
+  auto &options = _compiler->options();
+
+  using namespace onert::util;
+
+  if (key == config::BACKENDS)
+  {
+    if (options.backend_list.size() == 0)
+      return NNFW_STATUS_NO_ERROR; // no setting backend is not an error of get_config_str()
+
+    std::string str(options.backend_list.at(0).c_str());
+
+    int i = 0;
+    for (auto &backend : options.backend_list)
+    {
+      if (i++ == 0)
+        continue;
+      str.append(";");
+      str.append(backend.c_str());
+    }
+
+    strncpy(value, str.c_str(), str.length());
+  }
+  else if (key == config::EXECUTOR)
+  {
+    strncpy(value, options.executor.c_str(), options.executor.length());
+  }
+  else
+  {
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
