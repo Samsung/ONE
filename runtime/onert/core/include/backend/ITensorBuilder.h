@@ -38,6 +38,11 @@ struct ITensorBuilder
   virtual ~ITensorBuilder(void) = default;
 
   /**
+   * @brief Returns true if this TensorBuilder support dynamic tensor
+   */
+  virtual bool supportDynamicTensor() = 0;
+
+  /**
    * @brief Register tensor information to allocate on backend
    */
   virtual void registerTensorInfo(const ir::OperandIndex &, const ir::OperandInfo &,

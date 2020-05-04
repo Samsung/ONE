@@ -101,6 +101,8 @@ public:
    */
   bool isSubTensorOf(const ir::OperandIndex &parent, const ir::OperandIndex &child);
 
+  bool supportDynamicTensor() override { return false; }
+
 private:
   void buildTensors(void);
   ir::OperandIndex findRootParent(ir::OperandIndex index);

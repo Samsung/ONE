@@ -45,7 +45,7 @@ public:
                                              bool) const override
   {
     const auto &operands = graph.operands();
-    auto context = std::make_unique<BackendContext>(this, &graph);
+    auto context = std::make_unique<BackendContext>(this, &graph, true);
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);

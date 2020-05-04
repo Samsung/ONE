@@ -46,15 +46,17 @@ public:
 
 public:
   BackendContext(const Backend *backend, const ir::Graph *graph,
+                 bool support_dynamic_tensor = false,
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<IShapeFixer> shape_fixer = nullptr,
                  std::shared_ptr<ITensorRegister> tensor_register = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
-      : _backend{backend}, _graph{graph}, tensor_builder{tensor_builder},
-        constant_initializer{constant_initializer}, kernel_gen{kernel_gen},
-        shape_fixer{shape_fixer}, tensor_register{tensor_register}, optimizer{optimizer}
+      : _backend{backend}, _graph{graph}, _support_dynamic_tensor(support_dynamic_tensor),
+        tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+        kernel_gen{kernel_gen}, shape_fixer{shape_fixer}, tensor_register{tensor_register},
+        optimizer{optimizer}
   {
   }
 
@@ -68,11 +70,14 @@ public:
   const std::vector<OperationInfo> &operation_list() { return _operation_list; }
   const std::vector<ir::OperandIndex> &operand_list() { return _operand_list; }
 
+  bool support_dynamic_tensor() { return _support_dynamic_tensor; }
+
 private:
   const Backend *_backend{nullptr};
   const ir::Graph *_graph{nullptr};
   std::vector<OperationInfo> _operation_list;
   std::vector<ir::OperandIndex> _operand_list;
+  bool _support_dynamic_tensor;
 
 public:
   std::shared_ptr<ITensorBuilder> tensor_builder;
