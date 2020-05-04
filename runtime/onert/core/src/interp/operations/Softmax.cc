@@ -81,7 +81,7 @@ void prepareSoftMax(ExecEnv *env, const ir::Operation &node)
   const auto output_shape = env->graph().operands().at(in_index).info().shape();
   const auto output_type = env->graph().operands().at(out_index).info().typeInfo();
 
-  const ir::OperandInfo output_info{output_shape, output_type};
+  const auto output_info = ir::OperandInfo::createStaticInfo(output_shape, output_type);
   env->allocateIfNeeded(out_index, output_info);
 
   auto out_tensor = env->tensorAt(out_index);

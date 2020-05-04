@@ -128,7 +128,7 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
             const auto frontend_layout = op_seq.getLayout();
             const auto backend_layout = operand_lower_info.layout();
             ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                         obj.typeInfo()};
+                                         obj.typeInfo(), obj.info().memAllocType()};
             tensor_builder->registerTensorInfo(index, backend_info, backend_layout,
                                                obj.isConstant());
           }
