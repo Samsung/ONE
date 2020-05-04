@@ -54,5 +54,6 @@
 #include "BuildBuiltinOptions/TileOptions.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
+#include "BuildBuiltinOptions/WhileOptions.h"
 
 #endif // __BUILD_BUITIN_OPTIONS_H__
