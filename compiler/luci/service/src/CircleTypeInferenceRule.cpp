@@ -200,6 +200,13 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->value());
   }
 
+  loco::DataType visit(const luci::CircleWhile *node) final
+  {
+    // Type of While is not used. Just use input 0
+    assert(node->arity() > 0);
+    return loco::dtype_get(node->input(0));
+  }
+
   // Circle Only
   loco::DataType visit(const luci::CircleInstanceNorm *node) final
   {
@@ -271,6 +278,34 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleUnpackOut *node) final
   {
     return loco::dtype_get(node->unpack());
+  }
+
+  loco::DataType visit(const luci::CircleWhileOut *node) final
+  {
+    /**
+     * @note  WHILE operator's type is the same with the "cond"
+     *        Graph Input.
+     */
+    auto circle_while = dynamic_cast<const luci::CircleWhile *>(node->input());
+    if (circle_while == nullptr)
+    {
+      INTERNAL_EXN("CircleWhile IR is not configured correctly");
+    }
+
+    auto index = node->index();
+    auto cond_graph = circle_while->cond_graph();
+    assert(cond_graph != nullptr);
+
+    // Assumption: the index of CircleWhileOut matches with the index of input nodes returned by
+    // loco::input_nodes
+    auto cond_inputs = loco::input_nodes(cond_graph);
+    auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(index));
+    assert(cond_in != nullptr);
+
+    auto cond_graph_inputs = cond_graph->inputs();
+    auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
+
+    return cond_graph_input->dtype();
   }
 };
 
