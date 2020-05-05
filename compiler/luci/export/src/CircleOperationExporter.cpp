@@ -65,6 +65,7 @@ public:
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
   void visit(luci::CircleMaximum *) final;
@@ -407,6 +408,23 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_IfOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLogicalAnd *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOGICAL_AND);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateLogicalAndOptions(builder);
+
+  // Make LOGICAL_AND operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_LogicalAndOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

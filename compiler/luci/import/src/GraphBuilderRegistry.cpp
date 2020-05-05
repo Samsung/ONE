@@ -43,6 +43,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);    // 9
   CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                     // 36
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                             // 118
+  CIRCLE_NODE(LOGICAL_AND, CircleLogicalAndGraphBuilder);            // 86
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);            // 87
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);              // 84
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);             // 17
@@ -121,7 +122,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_REDUCE_PROD = 81,
   // BuiltinOperator_REDUCE_MAX = 82,
   // BuiltinOperator_ONE_HOT = 85,
-  // BuiltinOperator_LOGICAL_AND = 86,
   // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_FLOOR_DIV = 90,
   // BuiltinOperator_REDUCE_ANY = 91,
