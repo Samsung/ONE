@@ -39,9 +39,8 @@ CircleNode *IndexNodeFinder::node(TensorIndex idx) const
 {
   MapIndexNode_t::const_iterator iter = _table.find(idx);
 
-  assert(iter != _table.end() && iter->second != nullptr);
-
-  return iter->second;
+  // dangle output node may exist that are not enrolled
+  return (iter != _table.end()) ? iter->second : nullptr;
 }
 
 } // namespace luci
