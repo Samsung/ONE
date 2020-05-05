@@ -209,8 +209,19 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleOutput *node) final
   {
-    return loco::dtype_get(node->from());
+    auto graph_outputs = node->graph()->outputs();
+    auto graph_output = graph_outputs->at(node->index());
+    auto output_dtype = graph_output->dtype();
+
+    if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr)
+    {
+      // if CircleOutput as input, the dtype should match
+      assert(output_dtype == loco::dtype_get(node->from()));
+    }
+    return output_dtype;
   }
+
+  loco::DataType visit(const luci::CircleOutputDummy *node) final { return node->dtype(); }
 
   loco::DataType visit(const luci::CircleIfOut *node) final
   {
