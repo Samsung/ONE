@@ -394,6 +394,14 @@ void OperationDumper::visit(const Permute &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Pow &node)
+{
+  VERBOSE(LIR) << "* Pow" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Pow::Input::LHS).value() << ", "
+               << node.getInputs().at(Pow::Input::RHS).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const PReLU &node)
 {
   VERBOSE(LIR) << "* PReLU" << std::endl;
