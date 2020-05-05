@@ -35,7 +35,7 @@ struct GraphBuilderSource
 };
 
 /**
- * @brief Class to return graph builder for TF nodes
+ * @brief Class to return graph builder for Circle nodes
  */
 class GraphBuilderRegistry final : public GraphBuilderSource
 {
