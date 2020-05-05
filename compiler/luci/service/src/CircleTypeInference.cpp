@@ -34,7 +34,8 @@ circle::TensorType translateLocoTypeToCircle(loco::DataType dtype)
     case loco::DataType::U8:
       return circle::TensorType_UINT8;
     //  case loco::DataType::U16: unsupported
-    //  case loco::DataType::U32: unsupported
+    case loco::DataType::U32:
+      return circle::TensorType_UINT32;
     //  case loco::DataType::U64: unsupported
     case loco::DataType::S8:
       return circle::TensorType_INT8;

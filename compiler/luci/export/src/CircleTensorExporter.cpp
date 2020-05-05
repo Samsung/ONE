@@ -180,6 +180,10 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
   {
     return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
   }
+  else if (c->dtype() == loco::DataType::U32)
+  {
+    return encodeOpBufferByDType<loco::DataType::U32>(builder, c);
+  }
 
   INTERNAL_EXN_V("Unsupported datatype", oops::to_uint32(c->dtype()));
 }
