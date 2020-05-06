@@ -63,6 +63,29 @@ public:
     node->else_graph(else_graph);
   }
 
+  void visit(luci::CircleWhile *node) final
+  {
+    LOGGER(l);
+    INFO(l) << "CircleWhile " << node->name() << std::endl;
+
+    auto cond_branch = node->cond_branch();
+    auto body_branch = node->body_branch();
+    auto num_graphs = static_cast<int32_t>(_module->size());
+    (void)num_graphs;
+
+    assert(num_graphs > 0);
+    assert(cond_branch >= 0 && cond_branch < num_graphs);
+    assert(body_branch >= 0 && body_branch < num_graphs);
+
+    auto cond_graph = _module->graph(cond_branch);
+    auto body_graph = _module->graph(body_branch);
+    assert(cond_graph != nullptr);
+    assert(body_graph != nullptr);
+
+    node->cond_graph(cond_graph);
+    node->body_graph(body_graph);
+  }
+
   void visit(luci::CircleNode *) final
   {
     // DO NOTHING
@@ -157,6 +180,98 @@ public:
       if (then_graph_output->dtype() != else_graph_output->dtype())
       {
         INTERNAL_EXN_V("CircleIf THEN and ELSE Graph Output type mismatch ", idx);
+      }
+    }
+  }
+
+  /**
+   * @note  Validate CircleWhile node 'cond' and 'body' graph input/output count
+   *        shape and type
+   */
+  void visit(luci::CircleWhile *node) final
+  {
+    LOGGER(l);
+    INFO(l) << "CircleWhile " << node->name() << std::endl;
+
+    auto cond_graph = node->cond_graph();
+    auto body_graph = node->body_graph();
+    assert(cond_graph != nullptr);
+    assert(body_graph != nullptr);
+
+    // Check input of "cond" and input/output of "body" subgraph have the same size
+    auto cond_inputs = loco::input_nodes(cond_graph);
+    auto cond_outputs = loco::output_nodes(cond_graph);
+    auto body_inputs = loco::input_nodes(body_graph);
+    auto body_outputs = loco::output_nodes(body_graph);
+    if (cond_inputs.size() != body_outputs.size())
+    {
+      INTERNAL_EXN("CircleWhile COND input and BODY output have different sizes");
+    }
+    if (cond_inputs.size() != body_inputs.size())
+    {
+      INTERNAL_EXN("CircleWhile COND input and BODY input have different sizes");
+    }
+    if (cond_outputs.size() != 1)
+    {
+      INTERNAL_EXN("CircleWhile COND output must have size 1");
+    }
+    auto cond_out = dynamic_cast<luci::CircleOutput *>(cond_outputs.at(0));
+    if (cond_out->dtype() != loco::DataType::BOOL)
+    {
+      INTERNAL_EXN("CircleWhile COND output must have bool type");
+    }
+
+    // input of "cond" and input/output of "body" subgraph must have the same shape and type
+    // First we compare input of "cond" with input of "body"
+    auto cond_graph_inputs = cond_graph->inputs();
+    auto body_graph_inputs = body_graph->inputs();
+    for (size_t idx = 0; idx < cond_inputs.size(); ++idx)
+    {
+      auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(idx));
+      auto body_in = dynamic_cast<luci::CircleInput *>(body_inputs.at(idx));
+
+      auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
+      auto body_graph_input = body_graph_inputs->at(body_in->index());
+      if ((cond_in->rank() != body_in->rank()))
+      {
+        INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
+      }
+      if (cond_in->rank() > 0 && body_in->rank() > 0)
+      {
+        if (!(*cond_graph_input->shape() == *body_graph_input->shape()))
+        {
+          INTERNAL_EXN_V("CircleWhile COND input and BODY input shape mismatch ", idx);
+        }
+      }
+      if (cond_in->dtype() != body_in->dtype())
+      {
+        INTERNAL_EXN_V("CircleWhile COND input and BODY input type mismatch ", idx);
+      }
+    }
+
+    // Next we compare input of "cond" with output of "body"
+    auto body_graph_outputs = body_graph->outputs();
+    for (size_t idx = 0; idx < cond_inputs.size(); ++idx)
+    {
+      auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(idx));
+      auto body_out = dynamic_cast<luci::CircleOutput *>(body_outputs.at(idx));
+
+      auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
+      auto body_graph_output = body_graph_outputs->at(body_out->index());
+      if ((cond_in->rank() != body_out->rank()))
+      {
+        INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
+      }
+      if (cond_in->rank() > 0 && body_out->rank() > 0)
+      {
+        if (!(*cond_graph_input->shape() == *body_graph_output->shape()))
+        {
+          INTERNAL_EXN_V("CircleWhile COND input and BODY output shape mismatch ", idx);
+        }
+      }
+      if (cond_in->dtype() != body_out->dtype())
+      {
+        INTERNAL_EXN_V("CircleWhile COND input and BODY output type mismatch ", idx);
       }
     }
   }
