@@ -27,7 +27,8 @@ namespace backend
 namespace cpu
 {
 
-TensorBuilder::TensorBuilder() : _static_tensor_mgr{new StaticTensorManager()}
+TensorBuilder::TensorBuilder()
+    : _static_tensor_mgr{new StaticTensorManager()}, _dynamic_tensor_mgr{new DynamicTensorManager()}
 {
   // DO NOTHING
 }
@@ -86,7 +87,12 @@ std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
   return ret;
 }
 
-std::unique_ptr<ITensorManager> TensorBuilder::releaseTensorManager(void)
+std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
+{
+  return std::move(_static_tensor_mgr);
+}
+
+std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
 {
   return std::move(_static_tensor_mgr);
 }

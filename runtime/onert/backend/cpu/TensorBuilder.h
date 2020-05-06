@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 
+#include "DynamicTensorManager.h"
 #include "StaticTensorManager.h"
 #include "operand/Tensor.h"
 
@@ -59,12 +60,14 @@ public:
 
   void iterate(const IterateFunction &fn) override;
 
-  std::unique_ptr<ITensorManager> releaseTensorManager(void) override;
+  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
+  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
 private:
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
+  std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexSequence _constants;
 };

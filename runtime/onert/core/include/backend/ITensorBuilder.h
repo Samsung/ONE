@@ -55,7 +55,12 @@ struct ITensorBuilder
   virtual std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) = 0;
   virtual void iterate(const IterateFunction &fn) = 0;
 
-  virtual std::unique_ptr<ITensorManager> releaseTensorManager(void) = 0;
+  virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
+
+  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void)
+  {
+    throw std::runtime_error("releaseDynamicTensorManager() for this backend is not supported");
+  }
 };
 
 } // namespace backend
