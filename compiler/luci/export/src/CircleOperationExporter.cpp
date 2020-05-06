@@ -77,6 +77,7 @@ public:
   void visit(luci::CircleRelu6 *) final;
   void visit(luci::CircleReshape *) final;
   void visit(luci::CircleRsqrt *) final;
+  void visit(luci::CircleSin *) final;
   void visit(luci::CircleSoftmax *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
@@ -571,6 +572,18 @@ void OperationExporter::visit(luci::CircleRsqrt *node)
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSin *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SIN);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  // Make SIN operator; SIN does not have Options
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
