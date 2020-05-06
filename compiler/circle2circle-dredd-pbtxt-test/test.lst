@@ -1,0 +1,10 @@
+## EXAMPLE
+#
+# Add(RECIPE_REPO PASS pass1 pass2 ...)
+#
+## SUPPORTED PASS
+#
+# fuse_instnorm
+# resolve_cop_batchmatmul
+
+Add(BatchMatMulV2_000 PASS resolve_cop_batchmatmul)
