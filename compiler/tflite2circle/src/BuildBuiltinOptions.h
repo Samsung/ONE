@@ -49,6 +49,7 @@
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
+#include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
