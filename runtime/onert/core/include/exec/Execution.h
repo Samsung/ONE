@@ -52,6 +52,14 @@ public:
    * @return  Graph object
    */
   const ir::Graph &primary_subgraph() const { return primary_executor()->graph(); }
+
+  /**
+   * @brief     Change input shape
+   * @param[in] index   Input index
+   * @param[in] new_shape shape to change
+   */
+  void changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape);
+
   /**
    * @brief     Set input data's information
    * @param[in] index   Input index
