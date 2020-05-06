@@ -222,6 +222,15 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   return loco::NodeShape{output_shape};
 }
 
+loco::TensorShape own_shape(const luci::CircleNode *node)
+{
+  loco::TensorShape shape;
+  shape.rank(node->rank());
+  for (uint32_t r = 0; r < node->rank(); ++r)
+    shape.dim(r) = loco::Dimension(node->dim(r).value());
+  return shape;
+}
+
 /**
  * @brief Class to infer the shape of CircleNode
  *
@@ -1041,9 +1050,17 @@ public:
 
   loco::NodeShape visit(const luci::CircleOutput *node) final
   {
-    auto from_shape = loco::shape_get(node->from()).as<loco::TensorShape>();
+    auto graph_outputs = node->graph()->outputs();
+    auto graph_output = graph_outputs->at(node->index());
+    auto output_shape = graph_output->shape();
 
-    return loco::NodeShape{from_shape};
+    return loco::NodeShape{*output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleOutputDummy *node) final
+  {
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleIfOut *node) final
