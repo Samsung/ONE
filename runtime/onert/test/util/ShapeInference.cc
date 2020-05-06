@@ -206,8 +206,7 @@ TEST(ShapeInference, Concat)
   Shape in3{10, 20, 30, 2, 50};
 
   operation::Concat::Param param{3};
-  auto infered_shapes = onert::shape_inference::inferConcatShape({in1, in2, in3}, param);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferConcatShape({in1, in2, in3}, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 5);
   ASSERT_EQ(infered_out_shape.dim(0), 10);
