@@ -92,6 +92,7 @@ public:
   // Virtual
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
+  void visit(luci::CircleOutputDummy *) final {}
   // Virtual for multiple-outputs
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
@@ -775,6 +776,10 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
 {
   // TODO Use explicit tagging to prevent possible mistake
   auto isNoOp = [](loco::Node *node) {
+    if (dynamic_cast<luci::CircleOutputDummy *>(node) != nullptr)
+      return true;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      return true;
     // If there is only one input and the TensorIndex for the input is same
     // as the TensorIndex of the output then this node is just a dummy node
     if (node->arity() == 1)
