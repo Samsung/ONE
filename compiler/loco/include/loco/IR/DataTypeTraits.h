@@ -66,7 +66,7 @@ template <> struct DataTypeImpl<DataType::FLOAT32>
 
 template <> struct DataTypeImpl<DataType::BOOL>
 {
-  // Use C++ uint5_t type for bool
+  // Use C++ uint8_t type for bool
   using Type = uint8_t;
 };
 
