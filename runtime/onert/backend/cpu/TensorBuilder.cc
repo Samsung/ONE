@@ -40,6 +40,9 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 
   if (as_const)
     _constants.append(ind);
+
+  // TODO consider dynamic tensor
+  _static_tensor_mgr->buildTensor(ind, info, _constants.contains(ind));
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
@@ -47,7 +50,8 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
   const auto size = tensor_info.total_size();
-  _static_tensor_mgr->buildTensor(ind, tensor_info, _constants.contains(ind));
+
+  // TODO consider dynamic tensor
   _static_tensor_mgr->claimPlan(ind, size);
 }
 
