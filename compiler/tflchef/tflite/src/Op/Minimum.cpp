@@ -27,7 +27,7 @@ void TFliteOpMinimum::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpMinimum::build(const tflite::Operator*, TFliteImport *import,
+tflchef::Operation *TFliteOpMinimum::build(const tflite::Operator *, TFliteImport *,
                                            tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
