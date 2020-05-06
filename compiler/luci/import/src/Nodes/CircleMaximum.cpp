@@ -25,10 +25,35 @@ namespace luci
 
 bool CircleMaximumGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 2)
+  const auto &inputs = args.op.inputs;
+  const auto &outputs = args.op.outputs;
+
+  if (inputs.size() != 2)
     return false;
 
-  if (args.op.outputs.size() != 1)
+  if (outputs.size() != 1)
+    return false;
+
+  const auto &tensors = args.reader.tensors();
+  const auto &tensor = tensors.at(inputs[0]);
+
+  switch (tensor->type)
+  {
+    case circle::TensorType_FLOAT16:
+    case circle::TensorType_FLOAT32:
+    case circle::TensorType_FLOAT64:
+    case circle::TensorType_INT16:
+    case circle::TensorType_INT32:
+    case circle::TensorType_INT64:
+      break;
+    default:
+      return false;
+  }
+
+  if (tensors[inputs[1]]->type != tensor->type)
+    return false;
+
+  if (tensors[outputs[0]]->type != tensor->type)
     return false;
 
   return true;
