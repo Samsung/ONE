@@ -97,7 +97,6 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 
   if (isNoOp(node))
   {
-    set_tensor_index(node, get_tensor_index(node->arg(0)));
     return;
   }
 
