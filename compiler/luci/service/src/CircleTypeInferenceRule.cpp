@@ -50,6 +50,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->input());
   }
 
+  loco::DataType visit(const luci::CircleCast *node) final { return node->out_data_type(); }
+
   loco::DataType visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
