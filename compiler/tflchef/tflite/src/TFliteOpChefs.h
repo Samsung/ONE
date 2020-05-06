@@ -43,6 +43,7 @@
 #include "Op/ReLU6.h"
 #include "Op/Reshape.h"
 #include "Op/Rsqrt.h"
+#include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/Sqrt.h"
 #include "Op/Sub.h"

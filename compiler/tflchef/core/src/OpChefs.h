@@ -45,6 +45,7 @@
 #include "Op/Reshape.h"
 #include "Op/Rsqrt.h"
 #include "Op/Shape.h"
+#include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/Sqrt.h"
 #include "Op/Sub.h"
