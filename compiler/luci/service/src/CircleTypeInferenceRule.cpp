@@ -215,7 +215,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
     if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr)
     {
-      // if CircleOutput as input, the dtype should match
+      // We don't care for the type if from() is CircleOutputDummy
+      // from() type should match that of CircleOutput
       assert(output_dtype == loco::dtype_get(node->from()));
     }
     return output_dtype;
