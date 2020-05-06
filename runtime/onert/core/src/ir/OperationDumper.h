@@ -54,6 +54,7 @@ public:
   void visit(const operation::L2Normalization &) override;
   void visit(const operation::L2Pool2D &) override;
   void visit(const operation::LocalResponseNormalization &) override;
+  void visit(const operation::Log &) override;
   void visit(const operation::LogicalAnd &) override;
   void visit(const operation::LogicalNot &) override;
   void visit(const operation::LogicalOr &) override;

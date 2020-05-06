@@ -133,6 +133,7 @@ protected:
   void loadReduceProd(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadNeg(const Operator *op, ir::Graph &subg);
+  void loadLog(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
 
 protected:
@@ -1298,6 +1299,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadLog(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Log(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1459,6 +1472,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_ARG_MAX:
       loadArgMax(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_LOG:
+      loadLog(op, subg);
       return;
     default:
       throw std::runtime_error(

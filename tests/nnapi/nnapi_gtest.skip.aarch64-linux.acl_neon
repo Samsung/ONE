@@ -16,6 +16,7 @@ GeneratedTests.exp__relaxed
 GeneratedTests.fully_connected_hybrid*
 GeneratedTests.greater_equal_boolean
 GeneratedTests.less_boolean
+GeneratedTests.log_4D_float_nnfw
 GeneratedTests.logical_not*
 GeneratedTests.logical_or_broadcast
 GeneratedTests.lsh_*weights_as_inputs

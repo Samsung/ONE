@@ -32,6 +32,7 @@ GeneratedTests.gather_float16_7
 GeneratedTests.gather_float16_8
 GeneratedTests.greater_equal_boolean
 GeneratedTests.less_boolean
+GeneratedTests.log_4D_float_nnfw
 GeneratedTests.logical_not
 GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_not_4D_nnfw

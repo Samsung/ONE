@@ -816,6 +816,10 @@ TfLiteStatus AddOpsAndParams(
         nn_op_type = ANEURALNETWORKS_REDUCE_MIN;
         add_reducer_params(node.builtin_data);
         break;
+      case tflite::BuiltinOperator_LOG:
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_LOG;
+        break;
       case tflite::BuiltinOperator_LOGICAL_AND:
         nnapi_version = 12;  // require NNAPI 1.2
         nn_op_type = ANEURALNETWORKS_LOGICAL_AND;
@@ -913,7 +917,7 @@ TfLiteStatus AddOpsAndParams(
       case tflite::BuiltinOperator_SELECT:
       // case tflite::BuiltinOperator_SLICE:
       //case tflite::BuiltinOperator_SIN:
-      case tflite::BuiltinOperator_LOG:
+      //case tflite::BuiltinOperator_LOG:
       //case tflite::BuiltinOperator_TRANSPOSE_CONV:
       case tflite::BuiltinOperator_TILE:
       //case tflite::BuiltinOperator_EXPAND_DIMS:

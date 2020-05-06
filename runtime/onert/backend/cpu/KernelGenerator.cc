@@ -29,6 +29,7 @@
 #include "kernel/ExpLayer.h"
 #include "kernel/FullyConnectedLayer.h"
 #include "kernel/GatherLayer.h"
+#include "kernel/LogLayer.h"
 #include "kernel/LogisticLayer.h"
 #include "kernel/MaxLayer.h"
 #include "kernel/MaxPoolLayer.h"
@@ -993,6 +994,22 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   _return_fn = std::move(fn);
 }
+
+void KernelGenerator::visit(const ir::operation::Log &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Log::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogLayer>();
+
+  fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

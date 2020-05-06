@@ -738,6 +738,19 @@ OperationFactory::OperationFactory()
     return new operation::Tanh{inputs, outputs};
   };
 
+  _map[ANEURALNETWORKS_LOG] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+
+    return new operation::Log{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_LOGISTIC] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
 
