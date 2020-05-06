@@ -71,7 +71,7 @@ public:
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
   void iterate(const IterateFunction &fn) override;
 
-  std::unique_ptr<ITensorManager> releaseTensorManager(void) override;
+  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
 
@@ -341,7 +341,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::dimCorrection(
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 std::unique_ptr<ITensorManager>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseTensorManager(void)
+AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseStaticTensorManager(void)
 {
   return std::move(_tensor_mgr);
 }
