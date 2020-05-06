@@ -211,6 +211,8 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
       return ir::DataType::UINT8;
     case ::arm_compute::DataType::QSYMM8:
       return ir::DataType::QUANT8_SYMM;
+    case ::arm_compute::DataType::F16:
+      return ir::DataType::FLOAT16;
     default:
       throw std::runtime_error{"Not supported, yet"};
       break;
