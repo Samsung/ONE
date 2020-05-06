@@ -47,6 +47,7 @@
 #include "Op/Shape.h"
 #include "Op/Sin.h"
 #include "Op/Softmax.h"
+#include "Op/SpaceToBatchND.h"
 #include "Op/Sqrt.h"
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
