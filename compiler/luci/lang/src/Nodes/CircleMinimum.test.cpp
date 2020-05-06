@@ -25,7 +25,7 @@ TEST(CircleMinimumTest, constructor_P)
   luci::CircleMinimum min_node;
 
   ASSERT_EQ(luci::CircleDialect::get(), min_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::MAXIMUM, min_node.opcode());
+  ASSERT_EQ(luci::CircleOpcode::MINIMUM, min_node.opcode());
 
   ASSERT_EQ(nullptr, min_node.x());
   ASSERT_EQ(nullptr, min_node.y());
