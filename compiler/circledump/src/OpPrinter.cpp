@@ -332,6 +332,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for ReLU and ReLU6
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
+  // There is no Option for SIN
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
