@@ -250,9 +250,21 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
 {
   CircleTensorContext tensor_ctx;
 
+  // NOTE There may exist dangle CircleInput that is not visited with postorder_traversal()
+  //      All dangle CircleOutput should be visited by postorder_traversal()
+  auto nodes = g->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = dynamic_cast<luci::CircleInput *>(nodes->at(n));
+    if (node != nullptr)
+      allocateCircleTensor(node, tensor_ctx);
+  }
+
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     CircleNode *circle_node = dynamic_cast<luci::CircleNode *>(node);
+    if (dynamic_cast<const luci::CircleInput *>(circle_node) != nullptr)
+      continue;
     allocateCircleTensor(circle_node, tensor_ctx);
   }
 
