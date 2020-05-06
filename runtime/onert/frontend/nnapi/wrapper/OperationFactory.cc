@@ -1924,6 +1924,15 @@ OperationFactory::OperationFactory()
     return new operation::OneHot{inputs, outputs, param};
   };
 
+  _map[ANEURALNETWORKS_COS_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Cos{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_SIN] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
 

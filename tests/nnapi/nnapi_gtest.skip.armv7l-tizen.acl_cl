@@ -5,6 +5,8 @@ GeneratedTests.abs_
 GeneratedTests.abs__relaxed
 GeneratedTests.batch_to_space*
 GeneratedTests.cast_*overflow*
+GeneratedTests.cos_ex_1D_float_nnfw
+GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp__relaxed
 GeneratedTests.fully_connected_hybrid*

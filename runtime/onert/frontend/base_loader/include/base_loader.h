@@ -130,6 +130,7 @@ protected:
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
   void loadAbs(const Operator *op, ir::Graph &subg);
+  void loadCos(const Operator *op, ir::Graph &subg);
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadReduceProd(const Operator *op, ir::Graph &subg);
@@ -1212,6 +1213,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadAbs(const Operator *op, ir::G
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadCos(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Cos(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadSin(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1514,6 +1527,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_ABS:
       loadAbs(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_COS:
+      loadCos(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SIN:
       loadSin(op, subg);
