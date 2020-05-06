@@ -19,23 +19,10 @@
 
 #include "nnfw.h"
 
-/**
- * @brief Extension of NNFW_INFO_ID for API in nnfw_debug.h
- */
-typedef enum {
-
-  /* Experimental. Subject to be changed without notice. */
-  NNFW_INFO_BACKENDS,
-
-  /* Experimental. Subject to be changed without notice. */
-  NNFW_INFO_EXECUTOR,
-
-} NNFW_INFO_ID_EX;
-
 NNFW_STATUS nnfw_create_debug_session(nnfw_session **session);
 
 NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value);
 
-NNFW_STATUS nnfw_query_info_str(nnfw_session *session, NNFW_INFO_ID_EX id, char *value);
+NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size);
 
 #endif // __NNFW_DEBUG_H__

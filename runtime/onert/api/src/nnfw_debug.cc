@@ -30,26 +30,7 @@ NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *
   return session->set_config(key, value);
 }
 
-NNFW_STATUS nnfw_query_info_str(nnfw_session *session, NNFW_INFO_ID_EX id, char *value)
+NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
 {
-  (void)session;
-  switch (id)
-  {
-    case NNFW_INFO_BACKENDS:
-      if (value)
-      {
-        return session->get_config_str(onert::util::config::BACKENDS, value);
-      }
-      break;
-    case NNFW_INFO_EXECUTOR:
-      if (value)
-      {
-        return session->get_config_str(onert::util::config::EXECUTOR, value);
-      }
-      break;
-    default:
-      return NNFW_STATUS_ERROR;
-  }
-  // It should not be reached.
-  return NNFW_STATUS_ERROR;
+  return session->get_config(key, value, value_size);
 }

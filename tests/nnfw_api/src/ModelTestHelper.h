@@ -18,31 +18,36 @@
 #define __NNFW_API_MODEL_TEST_HELPER_H__
 
 #include <nnfw_debug.h>
+#include <util/ConfigSource.h>
+#include <misc/string_helpers.h>
 
 #include <cstring>
 #include <stdexcept>
 
 // This should be called after _compiler is created
-static bool only_for_cpu_backend(nnfw_session *session)
+static bool onlyForCpuBackend(nnfw_session *session)
 {
   char backends[128];
-  NNFW_STATUS res = nnfw_query_info_str(session, NNFW_INFO_BACKENDS, backends);
+  NNFW_STATUS res =
+      nnfw_get_config(session, onert::util::config::BACKENDS, backends, sizeof(backends));
   if (res == NNFW_STATUS_ERROR)
     throw std::runtime_error("error while calling nnfw_query_info_str() to get backends");
 
+  auto backend_list = nnfw::misc::split(std::string(backends), ';');
   // first backend should be "cpu"
-  return (strcmp(backends, "cpu") == 0 || strstr(backends, "cpu;") == backends);
+  return (backend_list.size() > 0 && backend_list.at(0) == "cpu");
 }
 
 // This should be called after _compiler is created
-static bool only_for_LinearExecutor(nnfw_session *session)
+static bool onlyForLinearExecutor(nnfw_session *session)
 {
-  char backends[128];
-  NNFW_STATUS res = nnfw_query_info_str(session, NNFW_INFO_EXECUTOR, backends);
+  char executor[128];
+  NNFW_STATUS res =
+      nnfw_get_config(session, onert::util::config::EXECUTOR, executor, sizeof(executor));
   if (res == NNFW_STATUS_ERROR)
     throw std::runtime_error("error while calling nnfw_query_info_str() to get executor");
 
-  return (strcmp(backends, "Linear") == 0);
+  return (strcmp(executor, "Linear") == 0);
 }
 
 #endif // __NNFW_API_MODEL_TEST_HELPER_H__
