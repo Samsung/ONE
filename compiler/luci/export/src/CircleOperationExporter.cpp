@@ -64,7 +64,7 @@ public:
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
-  void visit(luci::CircleGreaterEqual *node) final;
+  void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;

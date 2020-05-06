@@ -33,6 +33,11 @@ bool CircleGreaterEqualGraphBuilder::validate(const ValidateArgs &args) const
     return false;
   }
 
+  if (outputs.size() != 1)
+  {
+    return false;
+  }
+
   const auto &tensors = args.reader.tensors();
 
   if (tensors[inputs[0]]->type != tensors[inputs[1]]->type)
