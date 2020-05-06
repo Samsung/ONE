@@ -15,7 +15,6 @@ option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
 option(BUILD_ONERT "Build onert" ON)
 option(BUILD_LOGGING "Build logging runtime" ON)
-option(BUILD_PURE_ARM_COMPUTE "Build pure_arm_compute runtime" OFF)
 CMAKE_DEPENDENT_OPTION(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test"
                        # Set BUILD_RUNTIME_NNAPI_TEST as ON
                        #   if CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2
