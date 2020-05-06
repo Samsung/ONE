@@ -345,6 +345,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  // There is no Option for SIN
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
