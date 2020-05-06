@@ -181,7 +181,8 @@ void Compiler::compile(void)
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
-    if (_options.fp16_enable)
+    // TODO Merge managing option fp16_enable and FP32-to-FP16 configuration by NNAPI
+    if (_options.fp16_enable || graph.fp32toFp16Allowed())
     {
       // NOTE: the only acl_cl backend enables fp16 mode
       Fp32ToFp16Converter(*lowered_subgs[index]).run();

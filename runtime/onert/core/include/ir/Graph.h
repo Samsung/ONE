@@ -67,6 +67,7 @@ public:
   bool isBuildingPhase(void) const { return _phase == Phase::BUILDING; }
   void setLayout(Layout layout) { _layout = layout; }
   void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
+  void allowFloat32toFloat16() { _allowFp32toFp16 = true; }
 
 private:
   void initializeUseDef();
@@ -100,6 +101,7 @@ public:
   const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
   std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
   Layout layout() const { return _layout; }
+  bool fp32toFp16Allowed() { return _allowFp32toFp16; }
 
 private:
   Phase _phase{Phase::BUILDING};
@@ -111,6 +113,7 @@ private:
   std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
+  bool _allowFp32toFp16{false};
 };
 
 } // namespace ir
