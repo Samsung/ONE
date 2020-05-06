@@ -195,7 +195,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
       offset = {offset[0], offset[2], offset[3], offset[1]};
     }
     auto new_shape = permuteShape(shape, frontend_layout, backend_layout);
-    ir::OperandInfo oi{new_shape, obj.typeInfo()};
+    auto oi = ir::OperandInfo::createStaticInfo(new_shape, obj.typeInfo());
     _tensor_info_map.emplace(ind, oi);
 
     _apply_dim_correction_map.emplace(ind, true);

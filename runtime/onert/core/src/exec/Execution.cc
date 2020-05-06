@@ -51,7 +51,7 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
 void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
                          const void *buffer, size_t length, ir::Layout layout)
 {
-  const ir::OperandInfo info{shape, type};
+  auto info = ir::OperandInfo::createStaticInfo(shape, type);
 
   if (length < info.total_size())
   {
@@ -79,7 +79,7 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length,
 void Execution::setOutput(const ir::IOIndex &index, const ir::TypeInfo &type,
                           const ir::Shape &shape, void *buffer, size_t length, ir::Layout layout)
 {
-  const ir::OperandInfo info{shape, type};
+  auto info = ir::OperandInfo::createStaticInfo(shape, type);
 
   if (length < info.total_size())
   {
