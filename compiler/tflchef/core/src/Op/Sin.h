@@ -43,4 +43,4 @@ struct SinChefFactory final : public OpChefFactory
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };
 
-#endif // __OP_COS_H__
+#endif // __OP_SIN_H__
