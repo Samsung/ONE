@@ -199,6 +199,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   ExecutionBuilder builder;
 
   // Generate kernels
+  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
   lowered_graph->op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
@@ -298,6 +299,7 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
   ExecutionBuilder builder;
 
   // Generate kernels
+  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
   lowered_graph->op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
