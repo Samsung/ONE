@@ -23,6 +23,7 @@
 #include "Nodes/CircleAveragePool2D.h"
 #include "Nodes/CircleBatchMatMul.h"
 #include "Nodes/CircleBatchToSpaceND.h"
+#include "Nodes/CircleCast.h"
 #include "Nodes/CircleConcatenation.h"
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleConv2D.h"
