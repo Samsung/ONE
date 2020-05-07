@@ -33,8 +33,8 @@ class Config : public IConfig
 public:
   std::string id() override { return "acl_cl"; }
   bool initialize() override;
-  bool SupportPermutation() override { return true; }
-  ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
+  bool supportPermutation() override { return true; }
+  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
   bool supportDynamicTensor() override { return false; }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
