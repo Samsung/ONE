@@ -912,6 +912,17 @@ public:
     assert(const_paddings_shape.dim(0) == input_spatial_dim);
     assert(const_paddings_shape.dim(1) == 2);
 
+    // Check all values of block_shape >= 1
+    uint32_t ele_count = const_block_shape->size<S32>();
+    for (uint32_t e = 0; e < ele_count; ++e)
+    {
+      auto val = const_block_shape->at<S32>(e);
+      if (val < 1)
+      {
+        INTERNAL_EXN_V("All values of block_shape >= 1: ", e);
+      }
+    }
+
     loco::TensorShape shape_output;
 
     shape_output.rank(input_shape.rank());
