@@ -60,6 +60,7 @@ private:
     REG_TFL_OP(ARG_MAX, TFliteOpArgMax);
     REG_TFL_OP(AVERAGE_POOL_2D, TFliteOpAveragePool2D);
     REG_TFL_OP(BATCH_TO_SPACE_ND, TFliteOpBatchToSpaceND);
+    REG_TFL_OP(CAST, TFliteOpCast);
     REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);
     REG_TFL_OP(CONV_2D, TFliteOpConv2D);
     REG_TFL_OP(COS, TFliteOpCos);
