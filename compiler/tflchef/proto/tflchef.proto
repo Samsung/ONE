@@ -213,6 +213,7 @@ message WhileOptions {
 message CastOptions {
   optional TensorType in_data_type = 1 [default = FLOAT32];
   optional TensorType out_data_type = 2 [default = FLOAT32];
+}
 
 message GreaterOptions {
   // None

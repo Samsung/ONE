@@ -25,10 +25,21 @@ namespace luci
 
 bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 2)
+  const auto &inputs = args.op.inputs;
+  const auto &outputs = args.op.outputs;
+
+  if (inputs.size() != 2)
     return false;
 
-  if (args.op.outputs.size() != 1)
+  if (outputs.size() != 1)
+    return false;
+
+  const auto &tensors = args.reader.tensors();
+
+  if (tensors[inputs[0]]->type != tensors[inputs[1]]->type)
+    return false;
+
+  if (tensors[outputs[0]]->type != circle::TensorType_BOOL)
     return false;
 
   return true;
