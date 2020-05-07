@@ -28,11 +28,10 @@ namespace cpu
 {
 
 TensorBuilder::TensorBuilder()
-    : _static_tensor_mgr{new StaticTensorManager()},
-      _dynamic_tensor_mgr{new DynamicTensorManager()}, _tensor_reg{new TensorRegistry()}
+    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
 {
-  _static_tensor_mgr->setRegistry(_tensor_reg);
-  _dynamic_tensor_mgr->setRegistry(_tensor_reg);
+  /* empty */
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,

@@ -35,7 +35,7 @@ namespace cpu
 class StaticTensorManager : public backend::ITensorManager
 {
 public:
-  StaticTensorManager();
+  StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg);
   virtual ~StaticTensorManager() = default;
 
   void allocateConsts(void);
@@ -50,12 +50,10 @@ public:
 
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
-  void setRegistry(std::shared_ptr<TensorRegistry> &reg) { _tensors = reg; }
-
 private:
   std::unique_ptr<cpu_common::DynamicMemoryManager> _const_mgr;
   std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
-  std::shared_ptr<TensorRegistry> _tensors;
+  const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
 };
 

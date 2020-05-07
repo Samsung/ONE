@@ -25,9 +25,9 @@ namespace backend
 namespace cpu
 {
 
-StaticTensorManager::StaticTensorManager()
+StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg)
     : _const_mgr{new cpu_common::DynamicMemoryManager()},
-      _nonconst_mgr{new cpu_common::MemoryManager()}
+      _nonconst_mgr{new cpu_common::MemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }

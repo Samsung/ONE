@@ -31,14 +31,14 @@ namespace cpu
 class DynamicTensorManager : public backend::IDynamicTensorManager
 {
 public:
-  virtual ~DynamicTensorManager() = default;
+  DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg);
 
-  void setRegistry(std::shared_ptr<TensorRegistry> &reg) { _tensors = reg; }
+  virtual ~DynamicTensorManager() = default;
 
   // TODO write methods for dynamic tensor, e.g., allocate memory for dynamic tensor
 
 private:
-  std::shared_ptr<TensorRegistry> _tensors;
+  const std::shared_ptr<TensorRegistry> _tensors;
 };
 
 } // namespace cpu
