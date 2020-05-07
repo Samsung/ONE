@@ -282,8 +282,10 @@ public:
     {
       os << "    ";
       os << "SqueezeDims(";
-      for( int i = 0; i < params->squeeze_dims()->size(); ++i ) {
-        if(i != 0) os << ", ";
+      for (int i = 0; i < params->squeeze_dims()->size(); ++i)
+      {
+        if (i != 0)
+          os << ", ";
         os << params->squeeze_dims()->Get(i);
       }
       os << ")";
