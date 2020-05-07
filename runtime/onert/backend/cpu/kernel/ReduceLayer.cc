@@ -78,6 +78,24 @@ void evalType(const operand::Tensor *input, operand::Tensor *output, const std::
   }
 }
 
+// Template specialization for bool type
+template <>
+void evalType<bool>(const operand::Tensor *input, operand::Tensor *output,
+                    const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
+                    ReduceType reduce_type)
+{
+  switch (reduce_type)
+  {
+    case ReduceType::kAny:
+      return evalLogic<bool>(
+          input, output, axes, keep_dims, false, reduce_kernel,
+          [](const bool current, const bool in) -> bool { return in || current; });
+      break;
+    default:
+      throw std::runtime_error{"Reduce: Unsupported reduce type"};
+  }
+}
+
 template <ReduceType reduce_type>
 void evalGeneric(const operand::Tensor *input, operand::Tensor *output,
                  const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
@@ -88,6 +106,8 @@ void evalGeneric(const operand::Tensor *input, operand::Tensor *output,
       return evalType<float>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
     case OperandType::INT32:
       return evalType<int32_t>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
+    case OperandType::BOOL8:
+      return evalType<bool>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
     default:
       throw std::runtime_error{"Reduce(generic): Unsupported input type"};
   }
@@ -128,6 +148,9 @@ void ReduceLayer::run()
       break;
     case ReduceType::kMin:
       evalGeneric<ReduceType::kMin>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      break;
+    case ReduceType::kAny:
+      evalGeneric<ReduceType::kAny>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
       break;
     default:
       throw std::runtime_error{"ReduceSum: Unsupported reduce type"};

@@ -65,6 +65,9 @@ GeneratedTests.reshape_quant8_weights_as_inputs
 GeneratedTests.reshape_weights_as_inputs
 GeneratedTests.rnn
 GeneratedTests.rnn_state
+GeneratedTests.reduce_any_
+GeneratedTests.reduce_any_2D_nnfw
+GeneratedTests.reduce_any_4D_nnfw
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
 GeneratedTests.rsqrt

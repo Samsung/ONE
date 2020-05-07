@@ -30,6 +30,9 @@ GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
+GeneratedTests.reduce_any_
+GeneratedTests.reduce_any_2D_nnfw
+GeneratedTests.reduce_any_4D_nnfw
 GeneratedTests.reduce_prod*
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
