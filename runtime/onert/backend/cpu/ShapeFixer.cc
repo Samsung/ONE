@@ -185,6 +185,8 @@ void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Log &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Round &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert
