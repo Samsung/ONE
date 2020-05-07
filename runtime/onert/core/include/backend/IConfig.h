@@ -36,8 +36,8 @@ struct IConfig
   virtual std::string id() = 0;
   virtual bool initialize() = 0;
   // Support permute kernel
-  virtual bool SupportPermutation() = 0;
-  virtual ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
+  virtual bool supportPermutation() = 0;
+  virtual ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
 
   virtual bool supportDynamicTensor() = 0;
 
