@@ -37,6 +37,7 @@
 #include "Nodes/CircleIf.h"
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
+#include "Nodes/CircleLogistic.h"
 #include "Nodes/CircleMaxPool2D.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMul.h"
