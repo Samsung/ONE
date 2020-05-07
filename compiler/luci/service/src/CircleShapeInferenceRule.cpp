@@ -1115,7 +1115,6 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-
   // Circle Only
   loco::NodeShape visit(const luci::CircleInstanceNorm *node) final
   {

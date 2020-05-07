@@ -23,8 +23,8 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::ZerosLikeOptions> build_circle_ZerosLikeOptions(flatbuffers::FlatBufferBuilder &fb,
-                                                                const tflite::Operator *op);
+flatbuffers::Offset<circle::ZerosLikeOptions>
+build_circle_ZerosLikeOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
 
