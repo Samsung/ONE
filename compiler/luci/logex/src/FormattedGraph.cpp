@@ -200,6 +200,7 @@ private:
   IMPLEMENT(luci::CircleIf)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
+  IMPLEMENT(luci::CircleLogistic)
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
@@ -474,6 +475,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLogicalOr *node,
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLogistic *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
