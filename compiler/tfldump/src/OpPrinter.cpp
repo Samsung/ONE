@@ -60,6 +60,21 @@ public:
   }
 };
 
+class CastPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto cast_params = op->builtin_options_as_CastOptions())
+    {
+      os << "    ";
+      os << "in_data_type(" << tflite::EnumNameTensorType(cast_params->in_data_type()) << ") ";
+      os << "out_data_type(" << tflite::EnumNameTensorType(cast_params->out_data_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class Conv2DPrinter : public OpPrinter
 {
 public:
@@ -333,6 +348,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
