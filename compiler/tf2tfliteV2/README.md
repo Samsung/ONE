@@ -27,6 +27,14 @@ python tf2tfliteV2.py \
 > --input_arrays=model_inputs \
 > --output_arrays=model_outputs
 ```
+```
+python tf2tfliteV2.py \
+> --v2 \
+> --input_path=multiple_output_graph.pb \
+> --output_path=converted.tflite \
+> --input_arrays=model_inputs \
+> --output_arrays=output,output:1,output:2
+```
 
 ## optional argument
 ```
