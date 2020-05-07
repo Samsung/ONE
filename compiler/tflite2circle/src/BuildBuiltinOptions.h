@@ -53,6 +53,7 @@
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
 #include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
+#include "BuildBuiltinOptions/SquareOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
