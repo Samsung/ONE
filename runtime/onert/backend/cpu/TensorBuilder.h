@@ -59,6 +59,11 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
+  /**
+   * @brief Get tensor with a specific OperandIndex
+   *
+   * @return shared_ptr<ITensor> if a tensor with given OperandIndex exists. nullptr otherwise.
+   */
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
 
   void iterate(const IterateFunction &fn) override;
@@ -66,6 +71,12 @@ public:
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
   std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
+  /**
+   * @brief Get tensor with a specific OperandIndex.
+   * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
+   *        If not, program will crash with assert or exception.
+   * @return shared_ptr<operand::Tensor>
+   */
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
