@@ -25,8 +25,10 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <dirent.h>
 #include <util/ConfigSource.h>
+#include <misc/string_helpers.h>
 
 /*
  * API does not accept string argument longer than max length below
@@ -580,4 +582,48 @@ onert::ir::Graph *nnfw_session::primary_subgraph()
     // We assumed the graph will not change after compilation, but shape could change
     return const_cast<onert::ir::Graph *>(&_execution->primary_subgraph());
   }
+}
+
+NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)
+{
+  // The session must be in the state after model load
+  if (!_compiler)
+    return NNFW_STATUS_ERROR;
+
+  auto &options = _compiler->options();
+
+  auto check_boundary = [](size_t dest_size, std::string &src) {
+    if (dest_size < src.length() + 1 /* for '\0' */)
+    {
+      std::cerr << "buffer is small to copy config value." << std::endl;
+      return false;
+    }
+    return true;
+  };
+
+  if (key == onert::util::config::BACKENDS)
+  {
+    if (options.backend_list.size() == 0)
+      return NNFW_STATUS_NO_ERROR; // no setting backend is not an error of get_config_str()
+
+    auto str = nnfw::misc::join(options.backend_list.begin(), options.backend_list.end(), ";");
+
+    if (!check_boundary(value_size, str))
+      return NNFW_STATUS_ERROR;
+
+    strncpy(value, str.c_str(), value_size);
+  }
+  else if (key == onert::util::config::EXECUTOR)
+  {
+    if (!check_boundary(value_size, options.executor))
+      return NNFW_STATUS_ERROR;
+
+    strncpy(value, options.executor.c_str(), options.executor.length());
+  }
+  else
+  {
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
