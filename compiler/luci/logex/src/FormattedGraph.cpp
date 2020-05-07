@@ -186,6 +186,7 @@ private:
   IMPLEMENT(luci::CircleAveragePool2D)
   IMPLEMENT(luci::CircleBatchMatMul)
   IMPLEMENT(luci::CircleBatchToSpaceND)
+  IMPLEMENT(luci::CircleCast)
   IMPLEMENT(luci::CircleConcatenation)
   IMPLEMENT(luci::CircleConst)
   IMPLEMENT(luci::CircleConv2D)
@@ -312,6 +313,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBatchToSpaceND *node,
 
   s.state(locop::NodeSummary::State::Complete);
 
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleCast *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("in_data_type", to_str(node->in_data_type()));
+  s.args().append("out_data_type", to_str(node->out_data_type()));
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
