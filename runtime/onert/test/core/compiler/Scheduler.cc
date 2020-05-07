@@ -58,6 +58,7 @@ struct MockConfigCPU : public IConfig
   bool initialize() override { return true; };
   bool SupportPermutation() override { return false; }
   Layout SupportLayout(const Operation &, Layout) { return Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendCPU : public Backend
@@ -67,7 +68,7 @@ struct MockBackendCPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, true, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
   }
 };
 
@@ -77,6 +78,7 @@ struct MockConfigGPU : public IConfig
   bool initialize() override { return true; };
   bool SupportPermutation() override { return false; }
   ir::Layout SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendGPU : public Backend
@@ -86,7 +88,7 @@ struct MockBackendGPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, true, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
   }
 };
 
@@ -96,6 +98,7 @@ struct MockConfigNPU : public IConfig
   bool initialize() override { return true; };
   bool SupportPermutation() override { return false; }
   ir::Layout SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendNPU : public Backend
@@ -105,7 +108,7 @@ struct MockBackendNPU : public Backend
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
     return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, true, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
   }
 };
 

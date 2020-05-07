@@ -39,6 +39,8 @@ struct IConfig
   virtual bool SupportPermutation() = 0;
   virtual ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
 
+  virtual bool supportDynamicTensor() = 0;
+
   // Timer is used for backend profiling. In case of default (nullptr) timer profiler won't work.
   virtual std::unique_ptr<util::ITimer> timer() { return nullptr; }
 };

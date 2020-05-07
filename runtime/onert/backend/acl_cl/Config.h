@@ -35,6 +35,8 @@ public:
   bool initialize() override;
   bool SupportPermutation() override { return true; }
   ir::Layout SupportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
+  bool supportDynamicTensor() override { return false; }
+
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
 };
 
