@@ -36,6 +36,7 @@
 #include "Op/Gather.h"
 #include "Op/LogicalNot.h"
 #include "Op/LogicalOr.h"
+#include "Op/Logistic.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"
 #include "Op/Pack.h"
