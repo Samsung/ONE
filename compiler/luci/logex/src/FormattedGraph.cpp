@@ -195,6 +195,7 @@ private:
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDiv)
   IMPLEMENT(luci::CircleExp)
+  IMPLEMENT(luci::CircleFill)
   IMPLEMENT(luci::CircleFullyConnected)
   IMPLEMENT(luci::CircleGather)
   IMPLEMENT(luci::CircleIf)
@@ -413,6 +414,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDiv *node, locop::NodeS
 bool CircleNodeSummaryBuilder::summary(const luci::CircleExp *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFill *node, locop::NodeSummary &s) const
+{
+  s.args().append("dims", tbl()->lookup(node->dims()));
+  s.args().append("value", tbl()->lookup(node->value()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
