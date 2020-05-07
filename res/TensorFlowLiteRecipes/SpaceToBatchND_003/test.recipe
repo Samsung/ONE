@@ -1,0 +1,38 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 dim: 4 dim: 1 }
+}
+operand {
+  name: "block_shape"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "2" arg: "2"
+  }
+}
+operand {
+  name: "paddings"
+  type: INT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "2" arg: "0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 8 dim: 1 dim: 3 dim: 1 }
+}
+operation {
+  type: "SpaceToBatchND"
+  input: "ifm"
+  input: "block_shape"
+  input: "paddings"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
