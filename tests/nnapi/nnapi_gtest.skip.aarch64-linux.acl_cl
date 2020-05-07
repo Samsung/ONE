@@ -7,6 +7,7 @@ GeneratedTests.abs__relaxed
 GeneratedTests.cast_*overflow*
 GeneratedTests.exp_
 GeneratedTests.exp__relaxed
+GeneratedTests.log_4D_float_nnfw
 GeneratedTests.logical_not*
 GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_ex_broadcast_4D_2D

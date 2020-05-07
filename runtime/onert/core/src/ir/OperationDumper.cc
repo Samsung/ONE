@@ -283,6 +283,14 @@ void OperationDumper::visit(const LSTM &node)
                << node.getInputs().at(LSTM::Output::OUTPUT).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Log &node)
+{
+  VERBOSE(LIR) << "* Log" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Log::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const LogicalAnd &node)
 {
   VERBOSE(LIR) << "* LogicalAnd" << std::endl;

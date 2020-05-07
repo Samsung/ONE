@@ -66,6 +66,16 @@ inline void Neg(const Shape &input_shape, const float *input_data, const Shape &
   }
 }
 
+inline void Log(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                float *output_data)
+{
+  const int size = MatchingFlatSize(input_shape, output_shape);
+  for (int i = 0; i < size; i++)
+  {
+    output_data[i] = std::log(input_data[i]);
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 

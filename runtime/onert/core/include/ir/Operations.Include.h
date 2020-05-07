@@ -35,6 +35,7 @@
 #include "ir/operation/Mul.h"
 #include "ir/operation/Squeeze.h"
 #include "ir/operation/Tanh.h"
+#include "ir/operation/Log.h"
 #include "ir/operation/Logistic.h"
 #include "ir/operation/Cast.h"
 #include "ir/operation/Div.h"
