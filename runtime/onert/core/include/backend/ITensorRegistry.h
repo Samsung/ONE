@@ -28,6 +28,11 @@ namespace backend
 struct ITensorRegistry
 {
   /**
+   * @brief Deconstruct itself
+   */
+  virtual ~ITensorRegistry() = default;
+
+  /**
    * @brief Returns pointer of ITensor
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
