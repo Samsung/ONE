@@ -51,7 +51,7 @@ public:
    *        the outpus shape cannot be known and the output shape is calculated during
    *        kernel execution-time.
    */
-  virtual bool is_dynamic() const { return false; /* default */ }
+  virtual bool is_dynamic() const { throw std::runtime_error("not yet implemented"); }
 };
 
 } // namespace backend
