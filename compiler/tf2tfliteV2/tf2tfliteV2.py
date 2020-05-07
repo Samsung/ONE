@@ -141,9 +141,15 @@ def _v2_convert(flags):
 
     wrap_func = wrap_frozen_graph(
         graph_def,
-        inputs=[_str + ":0" for _str in _parse_array(flags.input_arrays)],
+        inputs=[
+            _str + ":0" if len(_str.split(":")) == 1 else _str
+            for _str in _parse_array(flags.input_arrays)
+        ],
         # TODO What if multiple outputs come in?
-        outputs=[_str + ":0" for _str in _parse_array(flags.output_arrays)])
+        outputs=[
+            _str + ":0" if len(_str.split(":")) == 1 else _str
+            for _str in _parse_array(flags.output_arrays)
+        ])
     converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
 
     converter.allow_custom_ops = True
