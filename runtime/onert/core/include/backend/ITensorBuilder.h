@@ -25,6 +25,7 @@
 #include "ir/Layout.h"
 #include "ITensor.h"
 #include "ITensorManager.h"
+#include "ITensorRegistry.h"
 
 namespace onert
 {
@@ -120,6 +121,18 @@ struct ITensorBuilder
   virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void)
   {
     throw std::runtime_error("releaseDynamicTensorManager() for this backend is not supported");
+  }
+
+  /**
+   * @brief Get tensor registry
+   *
+   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
+   *
+   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
+   */
+  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry()
+  {
+    throw std::runtime_error("tensorRegistry(): NYI");
   }
 };
 

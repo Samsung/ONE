@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-#include "DynamicTensorManager.h"
+#ifndef __ONERT_BACKEND_ITENSOR_REGISTRY__
+#define __ONERT_BACKEND_ITENSOR_REGISTRY__
+
+#include "ir/Index.h"
+#include "backend/ITensor.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace cpu
-{
 
-DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _tensors{reg}
+struct ITensorRegistry
 {
-  // DO NOTHING
-}
+  /**
+   * @brief Returns pointer of ITensor
+   * @note  Return tensor cannot be used longer than dynamic tensor manager
+   */
+  virtual ITensor *getITensor(const ir::OperandIndex &) = 0;
+};
 
-} // namespace cpu
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_ITENSOR_REGISTRY__
