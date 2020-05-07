@@ -884,6 +884,66 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSpaceToBatchND *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    // Support only input rank is 3 and 4
+    assert(input_shape.rank() == 3 || input_shape.rank() == 4);
+
+    // Only support block_shape() with S32 type CircleConst for now
+    auto const_block_shape = dynamic_cast<luci::CircleConst *>(node->block_shape());
+    LUCI_ASSERT(const_block_shape, "Only support CircleConst for block_shape");
+    LUCI_ASSERT(const_block_shape->dtype() == S32, "Only support int32 block_shape");
+
+    // Only support paddings() with S32 type CircleConst for now
+    auto const_paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+    LUCI_ASSERT(const_paddings, "Only support CircleConst for paddings");
+    LUCI_ASSERT(const_paddings->dtype() == S32, "Only support int32 paddings");
+
+    auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
+    auto const_paddings_shape = loco::shape_get(const_paddings).as<loco::TensorShape>();
+    assert(const_block_shape_shape.rank() == 1);
+    assert(const_paddings_shape.rank() == 2);
+
+    int32_t input_spatial_dim = input_shape.rank() - 2;
+    assert(const_block_shape_shape.dim(0) == input_spatial_dim);
+    assert(const_paddings_shape.dim(0) == input_spatial_dim);
+    assert(const_paddings_shape.dim(1) == 2);
+
+    // Check all values of block_shape >= 1
+    uint32_t ele_count = const_block_shape->size<S32>();
+    for (uint32_t e = 0; e < ele_count; ++e)
+    {
+      auto val = const_block_shape->at<S32>(e);
+      if (val < 1)
+      {
+        INTERNAL_EXN_V("All values of block_shape >= 1: ", e);
+      }
+    }
+
+    loco::TensorShape shape_output;
+
+    shape_output.rank(input_shape.rank());
+
+    int32_t output_batch_size = input_shape.dim(0).value();
+    for (int32_t dim = 0; dim < input_spatial_dim; ++dim)
+    {
+      int dim_size = input_shape.dim(dim + 1).value();
+      dim_size += const_paddings->at<S32>(dim * 2);
+      dim_size += const_paddings->at<S32>(dim * 2 + 1);
+      shape_output.dim(dim + 1) = dim_size / const_block_shape->at<S32>(dim);
+
+      assert(dim_size % const_block_shape->at<S32>(dim) == 0);
+      output_batch_size = output_batch_size * const_block_shape->at<S32>(dim);
+    }
+    shape_output.dim(0) = output_batch_size;
+    shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
+
+    return loco::NodeShape{shape_output};
+  }
+
   loco::NodeShape visit(const luci::CircleSqrt *node) final
   {
     auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
