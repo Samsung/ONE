@@ -61,7 +61,7 @@ public:
   void executeImpl(void) override;
 
 private:
-  std::vector<compiler::CodeAndInfo> _code;
+  std::vector<std::unique_ptr<compiler::CodeAndInfo>> _code;
 };
 
 } // namespace exec

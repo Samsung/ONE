@@ -207,13 +207,29 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   ExecutionBuilder builder;
 
   // Generate kernels
-  lowered_graph->op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
+  lowered_graph->op_seqs().iterate([&](const ir::OpSequenceIndex &op_seq_index,
+                                       const ir::OpSequence &op_seq) {
+    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+    auto &backend_ctx = lowered_graph->backend_contexts().at(lower_info->backend());
+    auto kernel_gen = backend_ctx->kernel_gen;
+    auto fn_seq = kernel_gen->generate(op_seq);
+
+    if (lower_info->backend()->config()->supportDynamicTensor())
+    {
+      auto dynamic_tensor_mgr = backend_ctx->tensor_builder->dynamicTensorManager();
+      assert(dynamic_tensor_mgr);
+      auto tensor_registry = backend_ctx->tensor_builder->tensorRegistry();
+      assert(tensor_registry.get());
+      builder.append(op_seq_index, std::make_unique<CodeAndInfoForDynamicTensor>(
+                                       &op_seq, lower_info, std::move(fn_seq), dynamic_tensor_mgr,
+                                       tensor_registry));
+    }
+    else
+    {
+      builder.append(op_seq_index, std::make_unique<CodeAndInfoForStaticTensor>(&op_seq, lower_info,
+                                                                                std::move(fn_seq)));
+    }
+  });
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -241,7 +257,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   for (auto &it : code_map)
   {
     auto op_seq_index = it.first;
-    auto &fn_seq = it.second.fn_seq;
+    auto &fn_seq = it.second->fn_seq;
 
     fn_seq->iterate([&](exec::IFunction &ifunc) {
       ifunc.prepare();
@@ -306,13 +322,15 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
   ExecutionBuilder builder;
 
   // Generate kernels
-  lowered_graph->op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
+  lowered_graph->op_seqs().iterate([&](const ir::OpSequenceIndex &op_seq_index,
+                                       const ir::OpSequence &op_seq) {
+    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+    auto fn_seq = kernel_gen->generate(op_seq);
+    builder.append(op_seq_index, std::make_unique<CodeAndInfoForStaticTensor>(&op_seq, lower_info,
+                                                                              std::move(fn_seq)));
+    // TODO consider Dynamic Tensor
+  });
 
   for (const auto &tensor_builder : tensor_builders)
   {
@@ -338,7 +356,7 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
   for (auto &it : code_map)
   {
     auto op_seq_index = it.first;
-    auto &fn_seq = it.second.fn_seq;
+    auto &fn_seq = it.second->fn_seq;
 
     fn_seq->iterate([&](exec::IFunction &ifunc) {
       ifunc.prepare();

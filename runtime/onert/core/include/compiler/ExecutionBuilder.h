@@ -32,7 +32,14 @@ namespace compiler
 class ExecutionBuilder
 {
 public:
-  void append(const ir::OpSequenceIndex index, CodeAndInfo &&code_and_info)
+  void append(const ir::OpSequenceIndex index,
+              std::unique_ptr<CodeAndInfoForStaticTensor> code_and_info)
+  {
+    _code_map.emplace(index, std::move(code_and_info));
+  }
+
+  void append(const ir::OpSequenceIndex index,
+              std::unique_ptr<CodeAndInfoForDynamicTensor> code_and_info)
   {
     _code_map.emplace(index, std::move(code_and_info));
   }

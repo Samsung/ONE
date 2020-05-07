@@ -17,6 +17,10 @@
 #ifndef __ONERT_COMPILER_CODE_MAP_H__
 #define __ONERT_COMPILER_CODE_MAP_H__
 
+#include "backend/IDynamicTensorManager.h"
+#include "backend/ITensorRegistry.h"
+#include "ir/OperandInfo.h"
+#include <memory>
 #include <unordered_map>
 
 namespace onert
@@ -35,9 +39,39 @@ struct CodeAndInfo
       : op_seq{op_seq}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
   {
   }
+
+  virtual ~CodeAndInfo() = default;
 };
 
-using CodeMap = std::unordered_map<ir::OpSequenceIndex, CodeAndInfo>;
+struct CodeAndInfoForStaticTensor : public CodeAndInfo
+{
+  CodeAndInfoForStaticTensor(const ir::OpSequence *op_seq,
+                             const ir::operation::LowerInfo *lower_info,
+                             std::unique_ptr<exec::FunctionSequence> &&fn_seq)
+      : CodeAndInfo(op_seq, lower_info, std::move(fn_seq))
+  {
+  }
+};
+
+struct CodeAndInfoForDynamicTensor : public CodeAndInfo
+{
+  /// @brief dynamic tensor_manager is used to allocate memory during shape inference at execution
+  backend::IDynamicTensorManager *dynamic_tensor_manager;
+  /// @brief tensor_registry is used to access tensor to infer shape and allocate memory
+  std::shared_ptr<backend::ITensorRegistry> tensor_registry;
+
+  CodeAndInfoForDynamicTensor(const ir::OpSequence *op_seq,
+                              const ir::operation::LowerInfo *lower_info,
+                              std::unique_ptr<exec::FunctionSequence> &&fn_seq,
+                              backend::IDynamicTensorManager *dynamic_tensor_manager,
+                              std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+      : CodeAndInfo(op_seq, lower_info, std::move(fn_seq)),
+        dynamic_tensor_manager(dynamic_tensor_manager), tensor_registry(tensor_registry)
+  {
+  }
+};
+
+using CodeMap = std::unordered_map<ir::OpSequenceIndex, std::unique_ptr<CodeAndInfo>>;
 
 } // namespace compiler
 } // namespace onert

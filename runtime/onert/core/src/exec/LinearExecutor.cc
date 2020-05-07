@@ -16,6 +16,8 @@
 
 #include "LinearExecutor.h"
 
+#include <compiler/CodeMap.h>
+
 namespace onert
 {
 namespace exec
@@ -26,10 +28,24 @@ void LinearExecutor::executeImpl()
   _subject.notifyModelBegin(this);
   for (auto &&code : _code)
   {
-    const auto op_seq = code.op_seq;
-    const auto backend = code.lower_info->backend();
+    const auto op_seq = code->op_seq;
+    const auto backend = code->lower_info->backend();
     _subject.notifyJobBegin(this, op_seq, backend);
-    code.fn_seq->run();
+
+    // run function sequence considering dynamic tensor
+    if (backend->config()->supportDynamicTensor())
+    {
+      auto dyn_code = dynamic_cast<onert::compiler::CodeAndInfoForDynamicTensor *>(code.get());
+      assert(dyn_code);
+
+      code->fn_seq->run(dyn_code->op_seq, _lowered_graph->graph().operands(),
+                        dyn_code->dynamic_tensor_manager, dyn_code->tensor_registry);
+    }
+    else
+    {
+      code->fn_seq->run();
+    }
+
     _subject.notifyJobEnd(this, op_seq, backend);
   }
   _subject.notifyModelEnd(this);

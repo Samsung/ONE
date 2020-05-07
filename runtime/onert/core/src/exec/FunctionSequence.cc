@@ -16,11 +16,17 @@
 
 #include "exec/FunctionSequence.h"
 
+#include "ir/Operation.h"
+#include "backend/IDynamicTensorManager.h"
+#include "backend/ITensorRegistry.h"
+#include "util/ShapeInference.h"
+
 namespace onert
 {
 namespace exec
 {
 
+// for OpSequence only with static tensor
 void FunctionSequence::run()
 {
   for (const auto &function : _functions)
@@ -35,6 +41,22 @@ void FunctionSequence::runSync()
   {
     function->runSync();
   }
+}
+
+// for OpSequence with dynamic tensor
+void FunctionSequence::run(const ir::OpSequence *op_seq, const ir::Operands &operands,
+                           backend::IDynamicTensorManager *dynamic_tensor_manager,
+                           std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+{
+  // TODO Write code to run shape inference and dynamic tensor allocation using params below:
+  (void)op_seq;
+  (void)operands;
+  (void)dynamic_tensor_manager;
+  (void)tensor_registry;
+
+  // TODO Write code to run a function
+
+  throw std::runtime_error("run() with dynamic tensor: Not yet implemented");
 }
 
 void FunctionSequence::prepare()

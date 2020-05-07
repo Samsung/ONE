@@ -92,7 +92,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_gra
     VERBOSE(DataflowExecutor) << "Create a job #" << next_job_index << " with OpSequenceIndex "
                               << op_seq_index.value() << std::endl;
     _finished_jobs.emplace_back(
-        std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index).fn_seq.get()));
+        std::make_unique<Job>(next_job_index, _code_map.at(op_seq_index)->fn_seq.get()));
     op_seq_to_job[op_seq_index] = next_job_index++;
   });
 
