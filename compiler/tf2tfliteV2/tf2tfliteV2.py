@@ -145,7 +145,6 @@ def _v2_convert(flags):
             _str + ":0" if len(_str.split(":")) == 1 else _str
             for _str in _parse_array(flags.input_arrays)
         ],
-        # TODO What if multiple outputs come in?
         outputs=[
             _str + ":0" if len(_str.split(":")) == 1 else _str
             for _str in _parse_array(flags.output_arrays)
