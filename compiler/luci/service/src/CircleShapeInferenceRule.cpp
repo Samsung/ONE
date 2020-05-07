@@ -471,16 +471,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleCustom *node) final
   {
-    loco::NodeShape shape;
-    // BatchMatMul
-    if (node->custom_code() == "BatchMatMulV2")
-    {
-      auto x_shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
-      auto y_shape = loco::shape_get(node->inputs(1)).as<loco::TensorShape>();
-
-      return infer_batchmatmul_shape(x_shape, y_shape, node->custom_options()[22],
-                                     node->custom_options()[23]);
-    }
+    loco::TensorShape shape = own_shape(node);
     return loco::NodeShape{shape};
   }
 
