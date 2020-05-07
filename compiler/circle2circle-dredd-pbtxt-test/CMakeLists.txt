@@ -24,11 +24,11 @@ set(multiValueArgs PASS)
 
 macro(Add RECIPE)
   if(NOT EXISTS "${RECIPE_REPO}/${RECIPE}/test.recipe")
-  message(FATAL_ERROR "Missing recipe of '${RECIPE}' test")
+    message(FATAL_ERROR "Missing recipe of '${RECIPE}' test")
   endif()
 
   if(NOT EXISTS "${RECIPE_REPO}/${RECIPE}/test.rule")
-  message(FATAL_ERROR "Missing rule of '${RECIPE}' test")
+    message(FATAL_ERROR "Missing rule of '${RECIPE}' test")
   endif()
 
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
