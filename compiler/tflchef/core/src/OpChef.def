@@ -23,11 +23,8 @@ OP_CHEF(Gather, GatherChefFactory)
 OP_CHEF(If, IfChefFactory)
 OP_CHEF(LogicalNot, LogicalNotChefFactory)
 OP_CHEF(LogicalOr, LogicalOrChefFactory)
-<<<<<<< HEAD
 OP_CHEF(Logistic, LogisticChefFactory)
-=======
 OP_CHEF(Maximum, MaximumChefFactory)
->>>>>>> [tflchef] Support Maximum operation
 OP_CHEF(MaxPool2D, MaxPool2DChefFactory)
 OP_CHEF(Mean, MeanChefFactory)
 OP_CHEF(Mul, MulChefFactory)
