@@ -88,6 +88,7 @@ public:
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
   void visit(luci::CircleUnpack *) final;
+  void visit(luci::CircleWhile *) final;
   // Circle only
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
@@ -97,6 +98,7 @@ public:
   // Virtual for multiple-outputs
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
+  void visit(luci::CircleWhileOut *) final {}
 
 private:
   /**
@@ -753,6 +755,47 @@ void OperationExporter::visit(luci::CircleUnpack *node)
   auto options = CreateUnpackOptions(builder, node->num(), node->axis());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_UnpackOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleWhile *node)
+{
+  auto while_outs = loco::succs(node);
+  assert(while_outs.size() == node->output_count());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHILE);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < node->input_count(); ++idx)
+    inputs_vec.push_back(get_tensor_index(node->input(idx)));
+
+  for (uint32_t idx = 0; idx < node->output_count(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : while_outs)
+    {
+      auto while_out = dynamic_cast<luci::CircleWhileOut *>(out);
+      assert(while_out != nullptr);
+      if (while_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(while_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid CircleWhile output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateWhileOptions(builder, node->cond_branch(), node->body_branch());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_WhileOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
