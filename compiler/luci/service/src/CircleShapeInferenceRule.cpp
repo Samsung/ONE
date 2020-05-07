@@ -464,14 +464,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleCustom *node) final
   {
-    loco::TensorShape shape;
-
-    shape.rank(node->rank());
-    for (uint32_t r = 0; r < shape.rank(); r++)
-    {
-      shape.dim(r).set(node->dim(r).value());
-    }
-
+    loco::TensorShape shape = own_shape(node);
     return loco::NodeShape{shape};
   }
 
