@@ -60,6 +60,21 @@ public:
   }
 };
 
+class CastPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto cast_params = op->builtin_options_as_CastOptions())
+    {
+      os << "    ";
+      os << "in_data_type(" << circle::EnumNameTensorType(cast_params->in_data_type()) << ") ";
+      os << "out_data_type(" << circle::EnumNameTensorType(cast_params->out_data_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class Conv2DPrinter : public OpPrinter
 {
 public:
@@ -318,6 +333,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
