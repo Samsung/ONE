@@ -27,6 +27,7 @@
 #include "kernel/DepthwiseConvolutionLayer.h"
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
+#include "kernel/ExpandDimsLayer.h"
 #include "kernel/FullyConnectedLayer.h"
 #include "kernel/GatherLayer.h"
 #include "kernel/LogisticLayer.h"
@@ -598,7 +599,7 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto axis_alloc = _tensor_builder->at(axis_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ExpandDimsLayer>();
 
   fn->configure(input_alloc, axis_alloc, output_alloc);
 
