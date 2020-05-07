@@ -55,9 +55,13 @@ std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
   return cf_op_codes;
 }
 
-CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
+CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
-  const auto cf_ops = getControlFlowOp(graph);
+  std::set<ir::OpCode> cf_ops;
+  subgs.iterate([&](const ir::SubgraphIndex &, const ir::Graph &graph) {
+    const auto ops = getControlFlowOp(graph);
+    cf_ops.insert(ops.cbegin(), ops.cend());
+  });
   CompilerOptions options;
 
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
@@ -101,6 +105,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
     }
 
     // Index to Backend
+    // TODO Support multiple subgraphs for manual scheduling
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
     auto key_val_list = nnfw::misc::split(map_str, ';');
     for (const auto &key_val_str : key_val_list)
@@ -115,7 +120,9 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
       const auto &val = key_val.at(1);
       auto key = static_cast<uint32_t>(std::stoi(key_str));
 
-      graph.operations().at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+      subgs.at(ir::SubgraphIndex{0})
+          ->operations()
+          .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
       ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
     }
   }
@@ -129,8 +136,7 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
   // API.
-  // TODO Support multiple subgraphs
-  _options = fetchCompilerOptionsFromGlobalConfig(*primary_subgraph());
+  _options = fetchCompilerOptionsFromGlobalConfig(*subgs);
 }
 
 void Compiler::checkProfilerConditions()
