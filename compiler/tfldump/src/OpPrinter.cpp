@@ -356,6 +356,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();

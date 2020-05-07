@@ -614,6 +614,13 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleLogistic *node) final
+  {
+    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleMaximum *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
