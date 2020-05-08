@@ -982,13 +982,13 @@ public:
     std::vector<bool> do_squeeze(input_shape.rank(), false);
     uint32_t num_squeezed = 0;
 
-    auto squeeze_dim_num = node->squeeze_dim_num();
+    uint32_t squeeze_dim_num = node->squeeze_dim_num();
     if (node->squeeze_dim_num() != 0)
     {
       // SqueezeDims not empty, squeeze only dims specified
-      for (int idx = 0; idx < squeeze_dim_num; ++idx)
+      for (uint32_t idx = 0; idx < squeeze_dim_num; ++idx)
       {
-        uint32_t dim = node->squeeze_dim(idx) < 0 ? node->squeeze_dim(idx) + input_shape.rank()
+        int32_t dim = node->squeeze_dim(idx) < 0 ? node->squeeze_dim(idx) + input_shape.rank()
                                                   : node->squeeze_dim(idx);
 
         if (dim < 0 || dim >= input_shape.rank() || input_shape.dim(dim).value() != 1)
@@ -1004,7 +1004,7 @@ public:
     else
     {
       // SqueezeDims empty, squeeze any dims with size == 1
-      for (int dim = 0; dim < input_shape.rank(); ++dim)
+      for (uint32_t dim = 0; dim < input_shape.rank(); ++dim)
       {
         if (input_shape.dim(dim) == 1)
         {
@@ -1017,7 +1017,7 @@ public:
     loco::TensorShape output_shape;
     output_shape.rank(input_shape.rank() - num_squeezed);
 
-    for (int in_dim = 0, out_dim = 0; in_dim < input_shape.rank(); ++in_dim)
+    for (uint32_t in_dim = 0, out_dim = 0; in_dim < input_shape.rank(); ++in_dim)
     {
       if (!do_squeeze[in_dim])
       {
