@@ -9,6 +9,13 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            ndkBuild {
+                targets "onert-native"
+                abiFilters 'arm64-v8a'
+            }
+        }
     }
     buildTypes {
         debug {
@@ -20,6 +27,11 @@ android {
         }
     }
     productFlavors {
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/native/Android.mk'
+        }
     }
 }
 
