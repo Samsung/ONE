@@ -49,6 +49,7 @@
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
 #include "Op/Sqrt.h"
+#include "Op/Square.h"
 #include "Op/StridedSlice.h"
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
