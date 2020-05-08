@@ -17,6 +17,7 @@
 #include "PowLayer.h"
 
 #include <cker/operation/Pow.h>
+#include <cker/operation/BinaryArithmeticOps.h>
 
 namespace onert
 {
@@ -27,25 +28,46 @@ namespace cpu
 namespace kernel
 {
 
-void PowLayer::configure(const operand::Tensor *lhs, const operand::Tensor *rhs,
-                         operand::Tensor *output)
+void PowLayer::powFloat32()
 {
-  _lhs = lhs;
-  _rhs = rhs;
-  _output = output;
-}
+  float output_activation_min, output_activation_max;
+  CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
+  nnfw::cker::BinaryArithmeticOpParam op_params;
+  op_params.type = nnfw::cker::BinaryArithmeticOpType::POW;
+  op_params.float_activation_max = output_activation_max;
+  op_params.float_activation_min = output_activation_min;
 
-void PowLayer::run()
-{
   if (!HaveSameShapes(_lhs, _rhs))
   {
-    throw std::runtime_error{"Pow NYI for broadcast."};
+    nnfw::cker::BroadcastBinaryArithmeticOpSlow(
+        op_params, convertToExtendedCkerShape(_lhs),
+        reinterpret_cast<const float *>(_lhs->buffer()), convertToExtendedCkerShape(_rhs),
+        reinterpret_cast<const float *>(_rhs->buffer()), convertToExtendedCkerShape(_output),
+        reinterpret_cast<float *>(_output->buffer()));
+    return;
   }
 
   nnfw::cker::powImpl(
       convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
       convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+}
+
+void PowLayer::configure(const operand::Tensor *lhs, const operand::Tensor *rhs,
+                         ir::Activation activation, operand::Tensor *output)
+{
+  _lhs = lhs;
+  _rhs = rhs;
+  _activation = activation;
+  _output = output;
+}
+
+void PowLayer::run()
+{
+  if (_output->data_type() == OperandType::FLOAT32)
+    powFloat32();
+  else
+    throw std::runtime_error{"Pow supports float32 only."};
 }
 
 } // namespace kernel

@@ -1010,7 +1010,7 @@ void KernelGenerator::visit(const ir::operation::Pow &node)
 
   auto fn = std::make_unique<::onert::backend::cpu::kernel::PowLayer>();
 
-  fn->configure(lhs_alloc, rhs_alloc, output_alloc);
+  fn->configure(lhs_alloc, rhs_alloc, ir::Activation::NONE, output_alloc);
 
   _return_fn = std::move(fn);
 }
