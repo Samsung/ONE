@@ -210,7 +210,7 @@ void StaticInferer::visit(const ir::operation::Add &op)
   const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
   const auto &rhs = _operands.at(rhs_idx);
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = const_cast<ir::Operands &>(_operands).at(output_idx);
+  ir::Operand &output = _operands.at(output_idx);
 
   if (lhs.info().memAllocType() == ir::MemAllocType::DYNAMIC ||
       rhs.info().memAllocType() == ir::MemAllocType::DYNAMIC)
