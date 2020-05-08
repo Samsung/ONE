@@ -273,6 +273,24 @@ public:
   }
 };
 
+class StridedSlicePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *strided_slice_params = op->builtin_options_as_StridedSliceOptions())
+    {
+      os << "    ";
+      os << "begin_mask(" << strided_slice_params->begin_mask() << ") ";
+      os << "end_mask(" << strided_slice_params->end_mask() << ") ";
+      os << "ellipsis_mask(" << strided_slice_params->ellipsis_mask() << ") ";
+      os << "new_axis_mask(" << strided_slice_params->new_axis_mask() << ") ";
+      os << "shrink_axis_mask(" << strided_slice_params->shrink_axis_mask() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class SubPrinter : public OpPrinter
 {
 public:
@@ -351,6 +369,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for SIN
   _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
