@@ -60,6 +60,21 @@ public:
   }
 };
 
+class CastPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto cast_params = op->builtin_options_as_CastOptions())
+    {
+      os << "    ";
+      os << "in_data_type(" << tflite::EnumNameTensorType(cast_params->in_data_type()) << ") ";
+      os << "out_data_type(" << tflite::EnumNameTensorType(cast_params->out_data_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class Conv2DPrinter : public OpPrinter
 {
 public:
@@ -258,6 +273,24 @@ public:
   }
 };
 
+class StridedSlicePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *strided_slice_params = op->builtin_options_as_StridedSliceOptions())
+    {
+      os << "    ";
+      os << "begin_mask(" << strided_slice_params->begin_mask() << ") ";
+      os << "end_mask(" << strided_slice_params->end_mask() << ") ";
+      os << "ellipsis_mask(" << strided_slice_params->ellipsis_mask() << ") ";
+      os << "new_axis_mask(" << strided_slice_params->new_axis_mask() << ") ";
+      os << "shrink_axis_mask(" << strided_slice_params->shrink_axis_mask() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class SubPrinter : public OpPrinter
 {
 public:
@@ -268,6 +301,21 @@ public:
       os << "    ";
       os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
          << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class WhilePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_WhileOptions())
+    {
+      os << "    ";
+      os << "cond_subgraph_index(" << params->cond_subgraph_index() << ") ";
+      os << "body_subgraph_index(" << params->body_subgraph_index() << ") ";
       os << std::endl;
     }
   }
@@ -318,6 +366,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
@@ -325,13 +374,18 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  // There is no Option for SIN
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
+  // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
 

@@ -60,6 +60,7 @@ private:
     REG_TFL_OP(ARG_MAX, TFliteOpArgMax);
     REG_TFL_OP(AVERAGE_POOL_2D, TFliteOpAveragePool2D);
     REG_TFL_OP(BATCH_TO_SPACE_ND, TFliteOpBatchToSpaceND);
+    REG_TFL_OP(CAST, TFliteOpCast);
     REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);
     REG_TFL_OP(CONV_2D, TFliteOpConv2D);
     REG_TFL_OP(COS, TFliteOpCos);
@@ -72,6 +73,7 @@ private:
     REG_TFL_OP(GATHER, TFliteOpGather);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
+    REG_TFL_OP(LOGISTIC, TFliteOpLogistic);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
     REG_TFL_OP(MEAN, TFliteOpMean);
     REG_TFL_OP(PACK, TFliteOpPack);
@@ -80,7 +82,9 @@ private:
     REG_TFL_OP(RELU6, TFliteOpReLU6);
     REG_TFL_OP(RESHAPE, TFliteOpReshape);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
+    REG_TFL_OP(SIN, TFliteOpSin);
     REG_TFL_OP(SOFTMAX, TFliteOpSoftmax);
+    REG_TFL_OP(SPACE_TO_BATCH_ND, TFliteOpSpaceToBatchND);
     REG_TFL_OP(SQRT, TFliteOpSqrt);
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(TANH, TFliteOpTanh);

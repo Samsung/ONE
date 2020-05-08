@@ -59,7 +59,8 @@ void prepareFC(ExecEnv *env, const ir::Operation &node)
   ir::Shape output_shape(2);
   output_shape.dim(0) = batch_size;
   output_shape.dim(1) = num_units;
-  const ir::OperandInfo out_info{output_shape, in_tensor->tensorInfo().typeInfo()};
+  const auto out_info =
+      ir::OperandInfo::createStaticInfo(output_shape, in_tensor->tensorInfo().typeInfo());
   env->allocateIfNeeded(out_index, out_info);
 
   auto out_tensor = env->tensorAt(out_index);

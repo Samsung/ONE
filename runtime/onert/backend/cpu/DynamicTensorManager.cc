@@ -16,4 +16,19 @@
 
 #include "DynamicTensorManager.h"
 
-// TODO implement methods
+namespace onert
+{
+namespace backend
+{
+namespace cpu
+{
+
+DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
+    : _tensors{reg}
+{
+  // DO NOTHING
+}
+
+} // namespace cpu
+} // namespace backend
+} // namespace onert

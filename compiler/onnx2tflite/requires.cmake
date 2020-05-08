@@ -1,3 +1,3 @@
-require("mir-onnx-importer")
+require("mir")
 require("mir2loco")
 require("exo")

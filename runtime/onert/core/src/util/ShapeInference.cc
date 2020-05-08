@@ -116,7 +116,7 @@ Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool
   return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
 }
 
-Shapes inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
+ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
 {
   const int32_t concat_axis = param.axis;
   const auto &first_in_shape = in_shapes[0];
@@ -134,7 +134,7 @@ Shapes inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Pa
   out_shape.dim(concat_axis) = 0;
   for (const auto &in_shape : in_shapes)
     out_shape.dim(concat_axis) += in_shape.dim(concat_axis);
-  return {out_shape};
+  return out_shape;
 }
 
 Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
@@ -198,7 +198,68 @@ Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_
 
 /*
   StaticInferer
+
+  - Define visitors for operations. List them in alphabetic order.
+  - Remove TODO when any op starting from the alphabet is added
 */
+
+void StaticInferer::visit(const ir::operation::Add &op)
+{
+  const auto lhs_idx{op.getInputs().at(ir::operation::Add::Input::LHS)};
+  const auto &lhs = _operands.at(lhs_idx);
+  const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
+  const auto &rhs = _operands.at(rhs_idx);
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = const_cast<ir::Operands &>(_operands).at(output_idx);
+
+  if (lhs.info().memAllocType() == ir::MemAllocType::DYNAMIC ||
+      rhs.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  {
+    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    return;
+  }
+
+  // re-sizing output shape
+  ir::Shape new_shape = broadcastShapes(lhs.info().shape(), rhs.info().shape());
+  output.info().shape(new_shape);
+}
+
+void StaticInferer::visit(const ir::operation::Concat &op)
+{
+  const auto input_count = op.getInputs().size();
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  Shapes input_shapes;
+  for (uint32_t i = 0; i < input_count; i++)
+  {
+    const auto input_idx{op.getInputs().at(i)};
+    const auto &input = _operands.at(input_idx);
+
+    if (input.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+    {
+      output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+      return;
+    }
+
+    input_shapes.emplace_back(input.shape());
+  }
+
+  ir::Shape out_shape = inferConcatShape(input_shapes, op.param());
+
+  // re-sizing output shape
+  output.info().shape(out_shape);
+}
+
+// TODO write op starting from D
+// TODO write op starting from E
+// TODO write op starting from F
+// TODO write op starting from G
+// TODO write op starting from L
+// TODO write op starting from M
+// TODO write op starting from N
+// TODO write op starting from P
 
 void StaticInferer::visit(const ir::operation::Reshape &op)
 {
@@ -236,6 +297,11 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   // if shape is NOT Const, set output shape to be dynamic_
   output.info().memAllocType(ir::MemAllocType::DYNAMIC);
 }
+
+// TODO write op starting from S
+// TODO write op starting from T
+// TODO write op starting from U
+// TODO write op starting from Z
 
 } // namespace shape_inference
 } // namespace onert

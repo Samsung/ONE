@@ -79,9 +79,10 @@ public:
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
   NNFW_STATUS set_config(const char *key, const char *value);
+  NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
 
 private:
-  std::shared_ptr<onert::ir::Graph> primary_subgraph();
+  onert::ir::Graph *primary_subgraph();
 
 private:
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;

@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 
+#include "TensorRegistry.h"
+
 #include <backend/IDynamicTensorManager.h>
 
 namespace onert
@@ -29,9 +31,14 @@ namespace cpu
 class DynamicTensorManager : public backend::IDynamicTensorManager
 {
 public:
+  DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg);
+
   virtual ~DynamicTensorManager() = default;
 
   // TODO write methods for dynamic tensor, e.g., allocate memory for dynamic tensor
+
+private:
+  const std::shared_ptr<TensorRegistry> _tensors;
 };
 
 } // namespace cpu

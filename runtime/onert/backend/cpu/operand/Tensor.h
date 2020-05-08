@@ -55,7 +55,6 @@ public:
     assert(_buffer == nullptr && _allocator == nullptr);
     _allocator = alloc;
   }
-  ir::DataType data_type() const { return _info.typeInfo().type(); }
   float scale() const { return _info.typeInfo().scale(); }
   int32_t offset() const { return _info.typeInfo().offset(); }
 
@@ -82,6 +81,7 @@ public:
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return ir::Layout::NHWC; }
+  ir::DataType data_type() const override { return _info.typeInfo().type(); }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool is_dynamic() const override { return _info.memAllocType() == ir::MemAllocType::DYNAMIC; }

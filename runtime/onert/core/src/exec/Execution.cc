@@ -32,6 +32,23 @@ Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors
   _io_desc.outputs.resize(primary_subg.getOutputs().size());
 }
 
+void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
+{
+  // This should be called BEFORE setInput.
+  if (_io_desc.inputs.at(index.value()) != 0)
+    throw std::runtime_error("Error in calling order");
+
+  auto shape_sig = _io_desc.input_shape_signature.find(index);
+  if (shape_sig != _io_desc.input_shape_signature.end())
+    throw std::runtime_error("Duplicate attempt to change input shape");
+
+  _io_desc.input_shape_signature[index] = new_shape;
+
+  // Modifying Tensor
+  const auto input_index = primary_subgraph().getInputs().at(index);
+  primary_executor()->changeInputShape(input_index, new_shape);
+}
+
 // TODO Remove default parameter
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                          ir::Layout layout)
@@ -51,7 +68,7 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
 void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
                          const void *buffer, size_t length, ir::Layout layout)
 {
-  const ir::OperandInfo info{shape, type};
+  auto info = ir::OperandInfo::createStaticInfo(shape, type);
 
   if (length < info.total_size())
   {
@@ -79,7 +96,7 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length,
 void Execution::setOutput(const ir::IOIndex &index, const ir::TypeInfo &type,
                           const ir::Shape &shape, void *buffer, size_t length, ir::Layout layout)
 {
-  const ir::OperandInfo info{shape, type};
+  auto info = ir::OperandInfo::createStaticInfo(shape, type);
 
   if (length < info.total_size())
   {

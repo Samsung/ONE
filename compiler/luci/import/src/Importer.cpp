@@ -71,6 +71,14 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     // Data type
     graph_input->dtype(input_node->dtype());
+
+    // Shape of GraphInput
+    auto input_shape = std::make_unique<loco::TensorShape>();
+    const std::vector<int32_t> &input_dims = tensor.shape; // in NHWC
+    input_shape->rank(input_dims.size());
+    for (uint32_t r = 0; r < input_dims.size(); ++r)
+      input_shape->dim(r) = loco::Dimension(input_dims[r]);
+    graph_input->shape(std::move(input_shape));
   }
 
   // Create CircleConst nodes for constant tensors.
@@ -114,14 +122,28 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   // graph outputs
   for (auto output : reader.outputs())
   {
+    const circle::TensorT &tensor = *tensors[output];
+
     auto output_node = graph->nodes()->create<luci::CircleOutput>();
     assert(output_node != nullptr);
-    output_node->from(nodefinder->node(output));
+    auto output_from = nodefinder->node(output);
+    if (output_from != nullptr)
+      output_node->from(output_from);
+    else
+    {
+      // NOTE loco::Graph requires all input node(s) to a node should exist.
+      //      Here, CircleOutput needs an input node.
+      //      We add a dummy node to make it happy.
+      auto output_dummy = graph->nodes()->create<luci::CircleOutputDummy>();
+      assert(output_dummy != nullptr);
+      output_node->from(output_dummy);
+
+      luci::copy_tensor_attributes(tensor, output_dummy);
+    }
 
     INFO(l) << "[luci] NodeFinder OUTPUT(" << output << ") = " << output_node << std::endl;
 
     // set the graph output name and node object
-    const circle::TensorT &tensor = *tensors[output];
     auto graph_output = graph->outputs()->create();
     std::string tname = luci::tensor_name(tensor);
     graph_output->name("output_" + tname);

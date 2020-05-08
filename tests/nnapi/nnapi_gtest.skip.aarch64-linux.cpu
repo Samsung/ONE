@@ -1,11 +1,11 @@
 GeneratedTests.*float16*
+GeneratedTests.*relaxed*
 GeneratedTests.*weights_as_inputs
 GeneratedTests.*zero_sized*
 GeneratedTests.abs_
 GeneratedTests.abs__relaxed
 GeneratedTests.add_broadcast_quant*
 GeneratedTests.add_quant*
-GeneratedTests.argmax*
 GeneratedTests.batch_to_space*
 GeneratedTests.cast_*quant*
 GeneratedTests.depth_to_space*

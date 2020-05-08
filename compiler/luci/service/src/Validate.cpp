@@ -46,7 +46,7 @@ luci::CircleOutput *find_node(std::vector<loco::Node *> nodes, loco::GraphOutput
   return nullptr;
 }
 
-bool validate_shape_type(loco::Graph *g)
+bool validate_shape_dtype(loco::Graph *g)
 {
   LOGGER(l);
 
@@ -98,7 +98,7 @@ bool validate(loco::Graph *g)
   if (!loco::valid(g))
     return false;
 
-  if (!validate_shape_type(g))
+  if (!validate_shape_dtype(g))
     return false;
 
   // TODO add more validation

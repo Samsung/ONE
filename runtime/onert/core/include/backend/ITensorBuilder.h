@@ -25,6 +25,7 @@
 #include "ir/Layout.h"
 #include "ITensor.h"
 #include "ITensorManager.h"
+#include "ITensorRegistry.h"
 
 namespace onert
 {
@@ -38,24 +39,101 @@ struct ITensorBuilder
   virtual ~ITensorBuilder(void) = default;
 
   /**
-   * @brief Register tensor information to allocate on backend
+   * @brief Returns true if this TensorBuilder support dynamic tensor
    */
-  virtual void registerTensorInfo(const ir::OperandIndex &, const ir::OperandInfo &,
+  virtual bool supportDynamicTensor() = 0;
+
+  /**
+   * @brief Register tensor information to allocate on backend
+   *
+   * @param ind Index
+   * @param info Info
+   * @param backend_layout Backend layout
+   * @param as_const Whether this tensor is constant
+   */
+  virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                   ir::Layout backend_layout, bool as_const) = 0;
-
+  /**
+   * @brief Let the tensor builder know first use(start of lifetime) of a tensor
+   *        Must be called before calling @c prepare
+   *        Must be run up to once for each tensor before calling @c notifyLastUse
+   *        NOTE: Useful only for static models
+   */
   virtual void notifyFirstUse(const ir::OperandIndex &) = 0;
+  /**
+   * @brief Let the tensor builder know last use(end of lifetime) of a tensor
+   *        Must be run up to once for each tensor after calling @c notifyFirstUse
+   *        NOTE: Useful only for static models
+   */
   virtual void notifyLastUse(const ir::OperandIndex &) = 0;
-
+  /**
+   * @brief Check if the tensor has been registered with @c registerTensorInfo
+   *
+   * @return true If the tensor has been registered
+   * @return false Otherwise
+   */
   virtual bool isRegistered(const ir::OperandIndex &) const = 0;
-
+  /**
+   * @brief Prepare the tensors
+   *        Before calling this, all the tensors must be registered
+   */
   virtual void prepare(void) = 0;
+  /**
+   * @brief Allocate the tensors
+   *        Before calling this, @c prepare must be called
+   */
   virtual void allocate() = 0;
+  /**
+   * @brief Some actions after functions' @c IFunction::prepare method.
+   *        This is called right after each function's @c IFunction::prepare function has been
+   *        called.
+   */
   virtual void postFunctionPrepare() = 0;
 
+  /**
+   * @brief Get the tensor object
+   *
+   * @param ind Index of the tensor
+   * @return std::shared_ptr<ITensor> The tensor object
+   */
   virtual std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) = 0;
+  /**
+   * @brief Iterate over tensors
+   *
+   * @param fn The function to be run
+   */
   virtual void iterate(const IterateFunction &fn) = 0;
 
-  virtual std::unique_ptr<ITensorManager> releaseTensorManager(void) = 0;
+  /**
+   * @brief Release static @c ITensorManger object which was built
+   *        Before calling this, @c allocate must have been called
+   *
+   * @return std::unique_ptr<ITensorManager> Tensor Manager object
+   */
+  virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
+
+  /**
+   * @brief Release dynamic @c ITensorManger object which was built
+   *        Before calling this, @c allocate must have been called
+   *
+   * @return std::unique_ptr<ITensorManager> Tensor Manager object
+   */
+  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void)
+  {
+    throw std::runtime_error("releaseDynamicTensorManager() for this backend is not supported");
+  }
+
+  /**
+   * @brief Get tensor registry
+   *
+   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
+   *
+   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
+   */
+  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry()
+  {
+    throw std::runtime_error("tensorRegistry(): NYI");
+  }
 };
 
 } // namespace backend

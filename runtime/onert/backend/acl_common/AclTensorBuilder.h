@@ -71,7 +71,7 @@ public:
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
   void iterate(const IterateFunction &fn) override;
 
-  std::unique_ptr<ITensorManager> releaseTensorManager(void) override;
+  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
 
@@ -100,6 +100,8 @@ public:
    * @return    @c true if child is allocated as subtensor of parent, otherwise @c false
    */
   bool isSubTensorOf(const ir::OperandIndex &parent, const ir::OperandIndex &child);
+
+  bool supportDynamicTensor() override { return false; }
 
 private:
   void buildTensors(void);
@@ -195,7 +197,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
       offset = {offset[0], offset[2], offset[3], offset[1]};
     }
     auto new_shape = permuteShape(shape, frontend_layout, backend_layout);
-    ir::OperandInfo oi{new_shape, obj.typeInfo()};
+    auto oi = ir::OperandInfo::createStaticInfo(new_shape, obj.typeInfo());
     _tensor_info_map.emplace(ind, oi);
 
     _apply_dim_correction_map.emplace(ind, true);
@@ -341,7 +343,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::dimCorrection(
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 std::unique_ptr<ITensorManager>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseTensorManager(void)
+AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseStaticTensorManager(void)
 {
   return std::move(_tensor_mgr);
 }
@@ -421,7 +423,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
              parent_tensor->info()->quantization_info().uniform().offset);
       assert(tensor_info.typeInfo().scale() ==
              parent_tensor->info()->quantization_info().uniform().scale);
-      assert(asDataType(tensor_info.typeInfo().type()) == parent_tensor->info()->data_type());
+      assert(tensor_info.typeInfo().type() == parent_tensor->data_type());
 
       // NOTE SubTensor's layout must be the same with layout of parent tensor
       const auto &root_parent = findRootParent(parent);

@@ -66,6 +66,7 @@ std::unique_ptr<T_Function> asFunction(std::unique_ptr<::arm_compute::IFunction>
 }
 
 ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout);
+ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
 
 } // namespace acl_common
 } // namespace backend

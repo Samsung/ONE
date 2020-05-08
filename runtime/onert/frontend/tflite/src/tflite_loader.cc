@@ -103,7 +103,7 @@ std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   TFLiteLoader loader(subgraphs);
   loader.loadFromFile(filename);
-  return std::move(subgraphs);
+  return subgraphs;
 }
 
 } // namespace tflite_loader

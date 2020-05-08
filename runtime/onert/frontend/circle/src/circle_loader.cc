@@ -127,7 +127,7 @@ std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   CircleLoader loader(subgraphs);
   loader.loadFromFile(filename);
-  return std::move(subgraphs);
+  return subgraphs;
 }
 
 } // namespace circle_loader

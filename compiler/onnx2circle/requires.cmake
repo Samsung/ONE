@@ -1,7 +1,7 @@
 require("stdex")
 require("hermes-std")
 require("mir2loco")
-require("mir-onnx-importer")
+require("mir")
 require("exo")
 require("locop")
 require("loco")

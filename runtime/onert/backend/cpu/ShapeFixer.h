@@ -76,6 +76,9 @@ public:
   void visit(const ir::operation::Shape &) override;
   void visit(const ir::operation::ReduceProd &) override;
   void visit(const ir::operation::Neg &) override;
+  void visit(const ir::operation::ArgMax &) override;
+  void visit(const ir::operation::Log &) override;
+  void visit(const ir::operation::Round &) override;
 
 private:
   const ir::Operands &_ctx;

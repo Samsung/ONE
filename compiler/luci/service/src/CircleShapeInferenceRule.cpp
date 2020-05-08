@@ -222,6 +222,15 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   return loco::NodeShape{output_shape};
 }
 
+loco::TensorShape own_shape(const luci::CircleNode *node)
+{
+  loco::TensorShape shape;
+  shape.rank(node->rank());
+  for (uint32_t r = 0; r < node->rank(); ++r)
+    shape.dim(r) = loco::Dimension(node->dim(r).value());
+  return shape;
+}
+
 /**
  * @brief Class to infer the shape of CircleNode
  *
@@ -349,6 +358,13 @@ public:
     return loco::NodeShape{shape_output};
   }
 
+  loco::NodeShape visit(const luci::CircleCast *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
@@ -455,16 +471,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleCustom *node) final
   {
-    loco::NodeShape shape;
-    // BatchMatMul
-    if (node->custom_code() == "BatchMatMulV2")
-    {
-      auto x_shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
-      auto y_shape = loco::shape_get(node->inputs(1)).as<loco::TensorShape>();
-
-      return infer_batchmatmul_shape(x_shape, y_shape, node->custom_options()[22],
-                                     node->custom_options()[23]);
-    }
+    loco::TensorShape shape = own_shape(node);
     return loco::NodeShape{shape};
   }
 
@@ -604,6 +611,13 @@ public:
   loco::NodeShape visit(const luci::CircleLogicalOr *node) final
   {
     const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleLogistic *node) final
+  {
+    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
     return loco::NodeShape{input_shape};
   }
 
@@ -861,11 +875,78 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSin *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSoftmax *node) final
   {
     auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();
 
     return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSpaceToBatchND *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    // Support only input rank is 3 and 4
+    assert(input_shape.rank() == 3 || input_shape.rank() == 4);
+
+    // Only support block_shape() with S32 type CircleConst for now
+    auto const_block_shape = dynamic_cast<luci::CircleConst *>(node->block_shape());
+    LUCI_ASSERT(const_block_shape, "Only support CircleConst for block_shape");
+    LUCI_ASSERT(const_block_shape->dtype() == S32, "Only support int32 block_shape");
+
+    // Only support paddings() with S32 type CircleConst for now
+    auto const_paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+    LUCI_ASSERT(const_paddings, "Only support CircleConst for paddings");
+    LUCI_ASSERT(const_paddings->dtype() == S32, "Only support int32 paddings");
+
+    auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
+    auto const_paddings_shape = loco::shape_get(const_paddings).as<loco::TensorShape>();
+    assert(const_block_shape_shape.rank() == 1);
+    assert(const_paddings_shape.rank() == 2);
+
+    int32_t input_spatial_dim = input_shape.rank() - 2;
+    assert(const_block_shape_shape.dim(0) == input_spatial_dim);
+    assert(const_paddings_shape.dim(0) == input_spatial_dim);
+    assert(const_paddings_shape.dim(1) == 2);
+
+    // Check all values of block_shape >= 1
+    uint32_t ele_count = const_block_shape->size<S32>();
+    for (uint32_t e = 0; e < ele_count; ++e)
+    {
+      auto val = const_block_shape->at<S32>(e);
+      if (val < 1)
+      {
+        INTERNAL_EXN_V("All values of block_shape >= 1: ", e);
+      }
+    }
+
+    loco::TensorShape shape_output;
+
+    shape_output.rank(input_shape.rank());
+
+    int32_t output_batch_size = input_shape.dim(0).value();
+    for (int32_t dim = 0; dim < input_spatial_dim; ++dim)
+    {
+      int dim_size = input_shape.dim(dim + 1).value();
+      dim_size += const_paddings->at<S32>(dim * 2);
+      dim_size += const_paddings->at<S32>(dim * 2 + 1);
+      shape_output.dim(dim + 1) = dim_size / const_block_shape->at<S32>(dim);
+
+      assert(dim_size % const_block_shape->at<S32>(dim) == 0);
+      output_batch_size = output_batch_size * const_block_shape->at<S32>(dim);
+    }
+    shape_output.dim(0) = output_batch_size;
+    shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
+
+    return loco::NodeShape{shape_output};
   }
 
   loco::NodeShape visit(const luci::CircleSqrt *node) final
@@ -1019,6 +1100,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleWhile *node) final
+  {
+    // Shape of CircleWhile is not used. Just use input 0
+    assert(node->arity() > 0);
+    const auto input_shape = loco::shape_get(node->input(0)).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   // Circle Only
   loco::NodeShape visit(const luci::CircleInstanceNorm *node) final
   {
@@ -1041,9 +1130,17 @@ public:
 
   loco::NodeShape visit(const luci::CircleOutput *node) final
   {
-    auto from_shape = loco::shape_get(node->from()).as<loco::TensorShape>();
+    auto graph_outputs = node->graph()->outputs();
+    auto graph_output = graph_outputs->at(node->index());
+    auto output_shape = graph_output->shape();
 
-    return loco::NodeShape{from_shape};
+    return loco::NodeShape{*output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleOutputDummy *node) final
+  {
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleIfOut *node) final
@@ -1099,6 +1196,34 @@ public:
     auto unpack_shape = loco::shape_get(unpack).as<loco::TensorShape>();
 
     return loco::NodeShape{unpack_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleWhileOut *node) final
+  {
+    /**
+     * @note  WHILE operator's shape is the same with the "cond"
+     *        Graph input.
+     */
+    auto circle_while = dynamic_cast<const luci::CircleWhile *>(node->input());
+    if (circle_while == nullptr)
+    {
+      INTERNAL_EXN("CircleWhile IR is not configured correctly");
+    }
+
+    auto index = node->index();
+    auto cond_graph = circle_while->cond_graph();
+    assert(cond_graph != nullptr);
+
+    // Assumption: the index of CircleWhileOut matches with the index of input nodes returned by
+    // loco::input_nodes
+    auto cond_inputs = loco::input_nodes(cond_graph);
+    auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(index));
+    assert(cond_in != nullptr);
+
+    auto cond_graph_inputs = cond_graph->inputs();
+    auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
+
+    return loco::NodeShape{*cond_graph_input->shape()};
   }
 };
 

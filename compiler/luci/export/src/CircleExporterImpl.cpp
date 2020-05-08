@@ -37,11 +37,11 @@ luci::CircleInput *input_node(loco::Graph *g, const loco::GraphInputIndex &index
 {
   for (uint32_t n = 0; n < g->nodes()->size(); ++n)
   {
-    if (auto pull = dynamic_cast<luci::CircleInput *>(g->nodes()->at(n)))
+    if (auto input = dynamic_cast<luci::CircleInput *>(g->nodes()->at(n)))
     {
-      if (pull->indexed() && pull->index() == index)
+      if (input->indexed() && input->index() == index)
       {
-        return pull;
+        return input;
       }
     }
   }
@@ -52,11 +52,11 @@ luci::CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &in
 {
   for (uint32_t n = 0; n < g->nodes()->size(); ++n)
   {
-    if (auto push = dynamic_cast<luci::CircleOutput *>(g->nodes()->at(n)))
+    if (auto output = dynamic_cast<luci::CircleOutput *>(g->nodes()->at(n)))
     {
-      if (push->indexed() && push->index() == index)
+      if (output->indexed() && output->index() == index)
       {
-        return push;
+        return output;
       }
     }
   }
@@ -137,8 +137,9 @@ CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
   auto inputs = _builder.CreateVector(gd._inputs);
   auto outputs = _builder.CreateVector(gd._outputs);
   auto operators = _builder.CreateVector(gd._operators);
+  auto name = _builder.CreateString(gd._name);
   auto df = gd._data_format;
-  auto subgraph = CreateSubGraph(_builder, tensors, inputs, outputs, operators, df);
+  auto subgraph = CreateSubGraph(_builder, tensors, inputs, outputs, operators, name, df);
   return subgraph;
 }
 
@@ -157,6 +158,9 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
 
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
+
+  // set Subgraph name
+  gd._name = graph->name();
 
   // TODO set this value properly
   gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
@@ -207,6 +211,9 @@ void CircleExporterImpl::exportModule(Module *module)
 
   _builder.Clear();
 
+  // prepare model data
+  prepareModelData(_builder, md);
+
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgraph_vec;
 
   for (size_t g = 0; g < module->size(); ++g)
@@ -219,6 +226,9 @@ void CircleExporterImpl::exportModule(Module *module)
     copy_shape_dtype(graph);
 
     SerializedGraphData gd;
+
+    // set Subgraph name
+    gd._name = graph->name();
 
     // TODO set this value properly
     gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;

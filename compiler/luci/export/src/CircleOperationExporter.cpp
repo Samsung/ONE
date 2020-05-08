@@ -53,6 +53,7 @@ public:
   void visit(luci::CircleAveragePool2D *) final;
   void visit(luci::CircleBatchMatMul *) final;
   void visit(luci::CircleBatchToSpaceND *) final;
+  void visit(luci::CircleCast *) final;
   void visit(luci::CircleConcatenation *) final;
   void visit(luci::CircleConst *) final{/* skip, everything is done in exportOpDefinedTensors */};
   void visit(luci::CircleConv2D *) final;
@@ -67,6 +68,7 @@ public:
   void visit(luci::CircleIf *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
+  void visit(luci::CircleLogistic *) final;
   void visit(luci::CircleMaximum *) final;
   void visit(luci::CircleMaxPool2D *) final;
   void visit(luci::CircleMean *) final;
@@ -77,7 +79,9 @@ public:
   void visit(luci::CircleRelu6 *) final;
   void visit(luci::CircleReshape *) final;
   void visit(luci::CircleRsqrt *) final;
+  void visit(luci::CircleSin *) final;
   void visit(luci::CircleSoftmax *) final;
+  void visit(luci::CircleSpaceToBatchND *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
   void visit(luci::CircleSub *) final;
@@ -86,14 +90,17 @@ public:
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
   void visit(luci::CircleUnpack *) final;
+  void visit(luci::CircleWhile *) final;
   // Circle only
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
+  void visit(luci::CircleOutputDummy *) final {}
   // Virtual for multiple-outputs
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
+  void visit(luci::CircleWhileOut *) final {}
 
 private:
   /**
@@ -189,6 +196,20 @@ void OperationExporter::visit(luci::CircleBatchMatMul *node)
   auto options = CreateBatchMatMulOptions(builder, node->adj_x(), node->adj_y());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_BatchMatMulOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleCast *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CAST);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateCastOptions(builder, to_circle_tensortype(node->in_data_type()),
+                                   to_circle_tensortype(node->out_data_type()));
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_CastOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -444,6 +465,17 @@ void OperationExporter::visit(luci::CircleLogicalOr *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleLogistic *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOGISTIC);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleMaximum *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_MAXIMUM);
@@ -575,6 +607,18 @@ void OperationExporter::visit(luci::CircleRsqrt *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleSin *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SIN);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  // Make SIN operator; SIN does not have Options
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleSoftmax *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SOFTMAX);
@@ -585,6 +629,22 @@ void OperationExporter::visit(luci::CircleSoftmax *node)
   auto options = CreateSoftmaxOptions(builder, node->beta());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SoftmaxOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPACE_TO_BATCH_ND);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->block_shape()),
+                                  get_tensor_index(node->paddings())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSpaceToBatchNDOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SpaceToBatchNDOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -725,6 +785,47 @@ void OperationExporter::visit(luci::CircleUnpack *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleWhile *node)
+{
+  auto while_outs = loco::succs(node);
+  assert(while_outs.size() == node->output_count());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHILE);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < node->input_count(); ++idx)
+    inputs_vec.push_back(get_tensor_index(node->input(idx)));
+
+  for (uint32_t idx = 0; idx < node->output_count(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : while_outs)
+    {
+      auto while_out = dynamic_cast<luci::CircleWhileOut *>(out);
+      assert(while_out != nullptr);
+      if (while_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(while_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid CircleWhile output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateWhileOptions(builder, node->cond_branch(), node->body_branch());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_WhileOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleInstanceNorm *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_INSTANCE_NORM);
@@ -762,6 +863,10 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
 {
   // TODO Use explicit tagging to prevent possible mistake
   auto isNoOp = [](loco::Node *node) {
+    if (dynamic_cast<luci::CircleOutputDummy *>(node) != nullptr)
+      return true;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      return true;
     // If there is only one input and the TensorIndex for the input is same
     // as the TensorIndex of the output then this node is just a dummy node
     if (node->arity() == 1)

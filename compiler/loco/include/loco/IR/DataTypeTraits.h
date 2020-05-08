@@ -52,6 +52,12 @@ template <> struct DataTypeImpl<DataType::S32>
   using Type = int32_t;
 };
 
+template <> struct DataTypeImpl<DataType::U32>
+{
+  // Use C++ uint32_t type for unsigned 32bit integer
+  using Type = uint32_t;
+};
+
 template <> struct DataTypeImpl<DataType::FLOAT32>
 {
   // Use C++ float type for IEEE 32-bit floating-point numbers
@@ -72,6 +78,8 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::U8>::Type);
     case DataType::S32:
       return sizeof(DataTypeImpl<DataType::S32>::Type);
+    case DataType::U32:
+      return sizeof(DataTypeImpl<DataType::U32>::Type);
     case DataType::FLOAT32:
       return sizeof(DataTypeImpl<DataType::FLOAT32>::Type);
     default:

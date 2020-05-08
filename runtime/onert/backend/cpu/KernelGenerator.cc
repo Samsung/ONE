@@ -18,6 +18,7 @@
 
 #include "kernel/AbsLayer.h"
 #include "kernel/AddLayer.h"
+#include "kernel/ArgMinMaxLayer.h"
 #include "kernel/AvgPoolLayer.h"
 #include "kernel/CastLayer.h"
 #include "kernel/CompareLayer.h"
@@ -26,8 +27,10 @@
 #include "kernel/DepthwiseConvolutionLayer.h"
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
+#include "kernel/ExpandDimsLayer.h"
 #include "kernel/FullyConnectedLayer.h"
 #include "kernel/GatherLayer.h"
+#include "kernel/LogLayer.h"
 #include "kernel/LogisticLayer.h"
 #include "kernel/MaxLayer.h"
 #include "kernel/MaxPoolLayer.h"
@@ -41,6 +44,7 @@
 #include "kernel/PermuteLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
+#include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
 #include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
@@ -70,8 +74,8 @@ namespace cpu
 
 KernelGenerator::KernelGenerator(
     const ir::Operands &operand_ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
-    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builer)
-    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builer),
+    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder)
+    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builder),
       _current_op_seq_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
@@ -597,7 +601,7 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto axis_alloc = _tensor_builder->at(axis_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ExpandDimsLayer>();
 
   fn->configure(input_alloc, axis_alloc, output_alloc);
 
@@ -972,6 +976,53 @@ void KernelGenerator::visit(const ir::operation::Neg &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::NegLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ArgMax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
+
+  const auto axis = node.param().axis;
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ArgMinMaxLayer>();
+
+  fn->configure(input_alloc, output_alloc, axis, /* is_arg_max */ true);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Log &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Log::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogLayer>();
+
+  fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Round &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::RoundLayer>();
+
+  fn->configure(input_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

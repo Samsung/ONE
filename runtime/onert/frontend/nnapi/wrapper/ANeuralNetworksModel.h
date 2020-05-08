@@ -49,6 +49,7 @@ public:
                       const uint32_t *outputs) noexcept;
   bool addModelInput(uint32_t index) noexcept;
   bool addModelOutput(uint32_t index) noexcept;
+  bool allowFloat32toFloat16() noexcept;
   bool finish() noexcept;
 
   onert::ir::Graph &deref(void) { return *_graph; }

@@ -1,4 +1,5 @@
 GeneratedTests.*float16*
+GeneratedTests.*relaxed*
 GeneratedTests.*weights_as_inputs
 GeneratedTests.*zero_sized*
 GeneratedTests.abs_
@@ -6,6 +7,7 @@ GeneratedTests.abs__relaxed
 GeneratedTests.cast_*overflow*
 GeneratedTests.exp_
 GeneratedTests.exp__relaxed
+GeneratedTests.log_4D_float_nnfw
 GeneratedTests.logical_not*
 GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_ex_broadcast_4D_2D
@@ -25,6 +27,8 @@ GeneratedTests.neg_int32_relaxed
 GeneratedTests.neg_relaxed
 GeneratedTests.reduce_prod*
 GeneratedTests.rnn*
+GeneratedTests.round_ex_1D_float
+GeneratedTests.round_ex_4D_float
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
 GeneratedTests.sin*
