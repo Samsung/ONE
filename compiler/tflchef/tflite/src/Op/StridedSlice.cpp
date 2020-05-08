@@ -26,7 +26,8 @@ void TFliteOpStridedSlice::filler(const tflite::Operator *op, TFliteImport *impo
 {
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
 
-  for (int32_t index = 1; index < 3; ++index)
+  // for begin, end and strides
+  for (int32_t index = 1; index <= 3; ++index)
   {
     const tflite::Tensor *tensor = import->tensors()->Get(inputs[index]);
     assert(tensor->type() == tflite::TensorType::TensorType_INT32);
