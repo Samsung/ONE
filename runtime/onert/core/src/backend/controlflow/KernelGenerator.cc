@@ -25,7 +25,7 @@ namespace controlflow
 {
 
 KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx)
-    : _operand_ctx{operand_ctx}, _tensor_builder_set{nullptr}, _executor_map{nullptr}
+    : _operand_ctx{operand_ctx}, _tensor_builder_set{}, _executor_map{nullptr}
 {
   // DO NOTHING
 }
@@ -49,7 +49,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
   auto getTensor = [&](const ir::OperandIndex &index) -> std::shared_ptr<backend::ITensor> {
     std::shared_ptr<backend::ITensor> ret;
-    for (auto tensor_builder : *_tensor_builder_set.get())
+    for (auto tensor_builder : _tensor_builder_set)
     {
       auto tensor = tensor_builder->tensorAt(index);
       if (tensor)
@@ -79,12 +79,10 @@ void KernelGenerator::visit(const ir::operation::While &node)
     output_tensors.emplace_back(output_alloc);
   }
 
-  auto &cond_subg_executor = _executor_map->at(cond_subg_index);
-  auto &body_subg_executor = _executor_map->at(body_subg_index);
-  assert(cond_subg_executor != nullptr);
-  assert(body_subg_executor != nullptr);
+  // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
+  // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, *cond_subg_executor, *body_subg_executor);
+      input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
