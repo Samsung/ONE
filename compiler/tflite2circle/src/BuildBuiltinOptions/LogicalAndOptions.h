@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_LOGICALOR_OPTIONS_H__
-#define __BBO_LOGICALOR_OPTIONS_H__
+#ifndef __BBO_LOGICALAND_OPTIONS_H__
+#define __BBO_LOGICALAND_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -23,9 +23,9 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::LogicalOrOptions>
-build_circle_LogicalOrOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
+flatbuffers::Offset<circle::LogicalAndOptions>
+build_circle_LogicalAndOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
 
-#endif // __BBO_LOGICALOR_OPTIONS_H__
+#endif // __BBO_LOGICALAND_OPTIONS_H__
