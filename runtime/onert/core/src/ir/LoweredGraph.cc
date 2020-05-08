@@ -257,7 +257,7 @@ void LoweredGraph::makeOpSequences(
           op_seq_index = new_op_seq_index;
           op_seq = &(_op_seqs.at(new_op_seq_index));
 
-          VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " is created for "
+          VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " is created for "
                          << "NODE#" << node_index.value() << "(" << node.name() << ")" << std::endl;
         }
         else
@@ -265,7 +265,7 @@ void LoweredGraph::makeOpSequences(
           op_seq->appendOperation(node_index, node);
           op_seq->setInputs(node.getInputs());
 
-          VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " merges "
+          VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " merges "
                          << "NODE#" << node_index.value() << "(" << node.name() << ")" << std::endl;
         }
       });
@@ -378,7 +378,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     const auto op_seq_backend_layout = getLowerInfo(op_seq_index)->layout();
     const auto &op_seq_backend_id = getLowerInfo(op_seq_index)->backend()->config()->id();
     const auto &node_backend_id = _backend_resolver->getBackend(node_index)->config()->id();
-    VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " { " << op_seq_backend_id << "("
+    VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " { " << op_seq_backend_id << "("
                    << to_string(op_seq_backend_layout) << ") } "
                    << " NODE#" << node_index.value() << " (" << node.name() << ") { "
                    << node_backend_id << "(" << to_string(layout) << ") } " << std::endl;
@@ -444,9 +444,9 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
       {
         if (node_outputs.contains(input))
         {
-          VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " 's NODE#" << n_index.value() << "("
-                         << n.name() << ") is connected to NODE#" << node_index.value() << "("
-                         << node.name() << ")" << std::endl;
+          VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " 's NODE#" << n_index.value()
+                         << "(" << n.name() << ") is connected to NODE#" << node_index.value()
+                         << "(" << node.name() << ")" << std::endl;
           return true;
         }
       }
@@ -457,7 +457,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
       {
         if (node_inputs.contains(output))
         {
-          VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " 's NODE#" << n_index.value()
+          VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " 's NODE#" << n_index.value()
                          << " (" << n.name() << ") is connected to NODE#" << node_index.value()
                          << std::endl;
           return true;
@@ -465,7 +465,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
       }
     }
 
-    VERBOSE(Lower) << "SUBG#" << op_seq_index.value() << " is not connected to NODE#"
+    VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " is not connected to NODE#"
                    << node_index.value() << "(" << node.name() << ")" << std::endl;
   }
 
