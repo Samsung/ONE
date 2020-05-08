@@ -99,7 +99,7 @@ std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
 {
-  return std::move(_static_tensor_mgr);
+  return std::move(_dynamic_tensor_mgr);
 }
 
 } // namespace cpu
