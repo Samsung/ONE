@@ -19,6 +19,7 @@
 
 #include "Config.h"
 #include "KernelGenerator.h"
+#include "TensorBuilder.h"
 
 #include <backend/Backend.h>
 
@@ -46,7 +47,24 @@ public:
   {
     const auto &operands = graph.operands();
     auto context = std::make_unique<BackendContext>(this, &graph);
-    auto tb = std::shared_ptr<ITensorBuilder>(nullptr);
+    // ControlFlow backend may not build tensors for itself because the backend's operation uses
+    // tensors of other baceknd instead
+    // But the backend builds tensors in case of that the controlflow operation may have constant
+    // input or that consecutive controflow operations exist. We have to make them not to be built
+    // later
+    // 1. Constant input
+    //   These tensors cannot be dynamic tensor, so let's do it as follows:
+    //   - always skip copying
+    //   - if it is operation's input in child subgraph: register "use" as constant input of the
+    //   operations in child subgraph
+    //   - if it is child subgraph's output: register "use" as constant input of the operations
+    //   using it
+    // 2. Consecutive controflow operation's intermediate tensor
+    //   These tensors can be dynamic tensor and this is complicated to support without copying. But
+    //   there is no such case until now, let's support it later
+    // TODO Remove TensorBuilder
+    // TODO Support Consecutive controflow operation's intermediate tensor
+    auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::shared_ptr<IConstantInitializer>(nullptr);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands);
