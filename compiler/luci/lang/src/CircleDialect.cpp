@@ -22,7 +22,7 @@
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
 
-#include <logo/CheckIfDeadNodeService.h>
+#include <logo/DeadNodeQueryService.h>
 
 #include <cassert>
 #include <memory>
@@ -70,7 +70,7 @@ struct GoiQueryServiceImpl final : public loco::GraphOutputIndexQueryService
   }
 };
 
-struct CheckIfDeadNodeServiceImpl final : public logo::CheckIfDeadNodeService
+struct DeadNodeQueryServiceImpl final : public logo::DeadNodeQueryService
 {
   bool isDeadNode(loco::Node *node) final
   {
@@ -103,7 +103,7 @@ CircleDialect::CircleDialect()
 {
   service<loco::GraphInputIndexQueryService>(std::make_unique<GiiQueryServiceImpl>());
   service<loco::GraphOutputIndexQueryService>(std::make_unique<GoiQueryServiceImpl>());
-  service<logo::CheckIfDeadNodeService>(std::make_unique<CheckIfDeadNodeServiceImpl>());
+  service<logo::DeadNodeQueryService>(std::make_unique<DeadNodeQueryServiceImpl>());
 }
 
 loco::Dialect *CircleDialect::get(void)

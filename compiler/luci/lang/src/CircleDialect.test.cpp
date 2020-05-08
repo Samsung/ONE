@@ -18,7 +18,7 @@
 #include "luci/IR/CircleNodes.h"
 
 #include <loco.h>
-#include <logo/CheckIfDeadNodeService.h>
+#include <logo/DeadNodeQueryService.h>
 
 #include <gtest/gtest.h>
 
@@ -68,7 +68,7 @@ TEST(CircleDialectTest, check_if_dead_node_service)
   circle_output1->index(graph_output1->index());
   circle_output1->from(active_node);
 
-  auto service = active_node->dialect()->service<logo::CheckIfDeadNodeService>();
+  auto service = active_node->dialect()->service<logo::DeadNodeQueryService>();
 
   ASSERT_TRUE(service->isDeadNode(dangling_node));
   ASSERT_FALSE(service->isDeadNode(dangling_input));

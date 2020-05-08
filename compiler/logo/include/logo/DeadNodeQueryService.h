@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LOGO_CHECK_IF_DEAD_NODE_SERVICE_H__
-#define __LOGO_CHECK_IF_DEAD_NODE_SERVICE_H__
+#ifndef __LOGO_DEAD_NODE_QUERY_SERVICE_H__
+#define __LOGO_DEAD_NODE_QUERY_SERVICE_H__
 
 #include <loco.h>
 #include <loco/IR/DialectService.h>
@@ -23,13 +23,13 @@
 namespace logo
 {
 
-struct CheckIfDeadNodeService : public ::loco::DialectService
+struct DeadNodeQueryService : public ::loco::DialectService
 {
-  virtual ~CheckIfDeadNodeService() = default;
+  virtual ~DeadNodeQueryService() = default;
   /// @brief Check if the node is dead node
   virtual bool isDeadNode(loco::Node *node) = 0;
 };
 
 } // namespace logo
 
-#endif // __LOGO_CHECK_IF_DEAD_NODE_SERVICE_H__
+#endif // __LOGO_DEAD_NODE_QUERY_SERVICE_H__

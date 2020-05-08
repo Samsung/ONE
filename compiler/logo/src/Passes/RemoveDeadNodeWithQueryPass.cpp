@@ -15,7 +15,7 @@
  */
 
 #include <logo/RemoveDeadNodeWithQueryPass.h>
-#include <logo/CheckIfDeadNodeService.h>
+#include <logo/DeadNodeQueryService.h>
 
 #include <loco/IR/Algorithm.h>
 #include <loco/IR/CanonicalDialect.h>
@@ -28,17 +28,28 @@ namespace logo
 
 bool RemoveDeadNodeWithQueryPass::run(loco::Graph *g)
 {
+  // Let's enumerate nodes required to compute output nodes
+  auto active_nodes = loco::active_nodes(loco::output_nodes(g));
+
   // Find dead(= non-active) nodes
   std::set<loco::Node *> candidates;
 
   for (auto node : loco::all_nodes(g))
   {
-    // The node's dialect must have a CheckIfDeadNodeService
-    if (auto service = node->dialect()->service<CheckIfDeadNodeService>())
+    if (active_nodes.find(node) == active_nodes.end())
     {
-      if (service->isDeadNode(node))
+      candidates.insert(node);
+    }
+  }
+
+  // Find the nodes that should not be erased in candidates
+  for (auto node : candidates)
+  {
+    if (auto service = node->dialect()->service<DeadNodeQueryService>())
+    {
+      if (!service->isDeadNode(node))
       {
-        candidates.insert(node);
+        candidates.erase(node);
       }
     }
   }
