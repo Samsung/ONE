@@ -35,6 +35,15 @@ class KernelGenerator : public IKernelGenerator
 public:
   KernelGenerator(const ir::Operands &operand_ctx);
 
+  void setTensorBuilderSet(const TensorBuilderSet &tensor_builder_set)
+  {
+    _tensor_builder_set = tensor_builder_set;
+  }
+  void setExecutorMap(const std::shared_ptr<exec::ExecutorMap> &executor_map)
+  {
+    _executor_map = executor_map;
+  }
+
   using IKernelGenerator::visit;
 
   void visit(const ir::OpSequence &) override;
@@ -42,8 +51,8 @@ public:
 
 private:
   const ir::Operands &_operand_ctx;
-  const std::shared_ptr<TensorBuilderSet> _tensor_builder_set;
-  const std::shared_ptr<exec::ExecutorMap> _executor_map;
+  TensorBuilderSet _tensor_builder_set;
+  std::shared_ptr<exec::ExecutorMap> _executor_map;
 };
 
 } // namespace controlflow

@@ -30,6 +30,8 @@
 #include "backend/IShapeFixer.h"
 #include "backend/IOptimizer.h"
 #include "backend/ITensorRegister.h"
+#include "backend/controlflow/Config.h"
+#include "backend/controlflow/KernelGenerator.h"
 #include <memory>
 #include "compiler/CachedDataDeleter.h"
 
@@ -47,16 +49,17 @@ ExecutorFactory &ExecutorFactory::get()
 ExecutorFactory::ExecutorFactory()
 {
   _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] =
-      std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2, false);
-  _map["Parallel"] =
-      std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2, true);
+  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, false);
+  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, true);
 }
 
 exec::IExecutor *ExecutorFactory::create(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                         const compiler::CompilerOptions &options)
+                                         const compiler::CompilerOptions &options,
+                                         const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
-  return _map.at(options.executor)(std::move(lowered_graph), options);
+  return _map.at(options.executor)(std::move(lowered_graph), options, executor_map);
 }
 
 void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
@@ -147,7 +150,8 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
 
 exec::IExecutor *
 ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                      const compiler::CompilerOptions &options)
+                                      const compiler::CompilerOptions &options,
+                                      const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
   const auto &backend_contexts = lowered_graph->backend_contexts();
 
@@ -199,14 +203,21 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   ExecutionBuilder builder;
 
   // Generate kernels
-  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
-  lowered_graph->op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
+  lowered_graph->op_seqs().iterate([&](const ir::OpSequenceIndex &op_seq_index,
+                                       const ir::OpSequence &op_seq) {
+    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+    // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
+    if (lower_info->backend()->config()->id() == backend::controlflow::Config::ID)
+    {
+      auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
+      assert(cf_kernel_gen != nullptr);
+      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setExecutorMap(executor_map);
+    }
+    auto fn_seq = kernel_gen->generate(op_seq);
+    builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+  });
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -252,9 +263,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   return exec;
 }
 
-exec::IExecutor *
-ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                        const compiler::CompilerOptions &options, bool parallel)
+exec::IExecutor *ExecutorFactory::createDataflowExecutor(
+    std::unique_ptr<ir::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
+    const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
 {
   const auto &backend_contexts = lowered_graph->backend_contexts();
 
@@ -294,14 +305,21 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
   ExecutionBuilder builder;
 
   // Generate kernels
-  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
-  lowered_graph->op_seqs().iterate(
-      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
-        auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
-        auto fn_seq = kernel_gen->generate(op_seq);
-        builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
-      });
+  lowered_graph->op_seqs().iterate([&](const ir::OpSequenceIndex &op_seq_index,
+                                       const ir::OpSequence &op_seq) {
+    auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+    auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
+    // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
+    if (lower_info->backend()->config()->id() == backend::controlflow::Config::ID)
+    {
+      auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
+      assert(cf_kernel_gen != nullptr);
+      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setExecutorMap(executor_map);
+    }
+    auto fn_seq = kernel_gen->generate(op_seq);
+    builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
+  });
 
   for (const auto &tensor_builder : tensor_builders)
   {

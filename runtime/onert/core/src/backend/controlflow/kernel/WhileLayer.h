@@ -35,7 +35,8 @@ class WhileLayer : public ::onert::exec::IPermuteFunction
 public:
   WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
              std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
-             exec::IExecutor &cond_executor, exec::IExecutor &body_executor);
+             const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
+             const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
 public:
   void configure();
@@ -48,8 +49,9 @@ public:
   void run() override;
 
 private:
-  exec::IExecutor &_cond_executor;
-  exec::IExecutor &_body_executor;
+  const ir::SubgraphIndex _cond_subg_index;
+  const ir::SubgraphIndex _body_subg_index;
+  const std::shared_ptr<exec::ExecutorMap> &_executor_map;
 };
 
 } // namespace kernel
