@@ -41,3 +41,6 @@
 
 # Makefile
 /Makefile
+/runtime/contrib/android/.gradle/*
+/runtime/contrib/android/build/*
+/runtime/contrib/android/api/build/*
