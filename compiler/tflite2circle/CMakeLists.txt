@@ -14,3 +14,5 @@ target_link_libraries(tflite2circle safemain)
 target_link_libraries(tflite2circle stdex)
 target_link_libraries(tflite2circle mio_tflite)
 target_link_libraries(tflite2circle mio_circle)
+
+install(TARGETS tflite2circle DESTINATION bin)
