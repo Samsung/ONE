@@ -989,7 +989,7 @@ public:
       for (uint32_t idx = 0; idx < squeeze_dim_num; ++idx)
       {
         int32_t dim = node->squeeze_dim(idx) < 0 ? node->squeeze_dim(idx) + input_shape.rank()
-                                                  : node->squeeze_dim(idx);
+                                                 : node->squeeze_dim(idx);
 
         if (dim < 0 || dim >= input_shape.rank() || input_shape.dim(dim).value() != 1)
         {
