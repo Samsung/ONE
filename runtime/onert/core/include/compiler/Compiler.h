@@ -34,8 +34,6 @@ namespace compiler
 enum class State
 {
   CREATED, // Before compilation
-  STARTED, // Compile is started
-  LOWERED, // Backend is decided
   COMPILED // Success compilation
 };
 

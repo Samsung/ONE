@@ -120,8 +120,6 @@ void Compiler::checkProfilerConditions()
 
 void Compiler::compile(void)
 {
-  _state = State::STARTED;
-
   {
     VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;
@@ -160,6 +158,7 @@ void Compiler::compile(void)
     _executors = std::make_shared<exec::ExecutorMap>();
     _executors->insert(std::make_pair(
         ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
+    _state = State::COMPILED;
     return;
   }
 
@@ -196,8 +195,6 @@ void Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-
-  _state = State::LOWERED;
 
   _executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
