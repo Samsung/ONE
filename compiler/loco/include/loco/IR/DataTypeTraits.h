@@ -64,7 +64,7 @@ template <> struct DataTypeImpl<DataType::FLOAT32>
   using Type = float;
 };
 
-// NOTE DataTypeImpl for BOOL would be changed
+// NOTE DataTypeImpl for BOOL is subject to change
 template <> struct DataTypeImpl<DataType::BOOL>
 {
   // Use C++ uint8_t type for bool
