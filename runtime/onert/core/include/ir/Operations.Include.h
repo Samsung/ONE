@@ -53,6 +53,7 @@
 #include "ir/operation/ReLU1.h"
 #include "ir/operation/ReLU6.h"
 #include "ir/operation/RNN.h"
+#include "ir/operation/Round.h"
 #include "ir/operation/Floor.h"
 #include "ir/operation/SpaceToBatchND.h"
 #include "ir/operation/SpaceToDepth.h"

@@ -41,6 +41,8 @@ GeneratedTests.reduce_max_quant8
 GeneratedTests.reduce_prod*
 GeneratedTests.reshape_*weights_as_inputs
 GeneratedTests.rnn*
+GeneratedTests.round_ex_1D_float
+GeneratedTests.round_ex_4D_float
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
 GeneratedTests.sin*

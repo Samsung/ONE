@@ -1935,6 +1935,18 @@ OperationFactory::OperationFactory()
 
     return new operation::ReduceProd{inputs, outputs, param};
   };
+
+  _map[ANEURALNETWORKS_ROUND_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //  0 -> input Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+
+    return new operation::Round{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

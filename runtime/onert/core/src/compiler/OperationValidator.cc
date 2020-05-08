@@ -335,6 +335,18 @@ void OperationValidator::visit(const ir::operation::RNN &node)
          num_units == _ctx.at(hidden_state_out_index).shape().dim(1));
 }
 
+void OperationValidator::visit(const ir::operation::Round &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Round::Input::INPUT)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};

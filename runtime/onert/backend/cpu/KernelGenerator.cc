@@ -43,6 +43,7 @@
 #include "kernel/PermuteLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
+#include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
 #include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
@@ -1006,6 +1007,21 @@ void KernelGenerator::visit(const ir::operation::Log &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::LogLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Round &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::RoundLayer>();
+
+  fn->configure(input_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

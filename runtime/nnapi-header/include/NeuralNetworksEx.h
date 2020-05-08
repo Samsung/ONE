@@ -385,6 +385,23 @@ typedef enum {
    */
   ANEURALNETWORKS_SHAPE_EX = 50026,
 
+  /**
+   * Computes element-wise round() on the input tensor.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A tensor.
+   *
+   * Outputs:
+   * * 0: The output tensor, of the same {@link OperandCode} and dimensions as
+   *      the input tensor.
+   */
+  ANEURALNETWORKS_ROUND_EX = 50027,
+
 } OperationCodeEx; // extends OperationCode
 
 typedef OperationCodeEx ANeuralNetworksOperationTypeEx;
