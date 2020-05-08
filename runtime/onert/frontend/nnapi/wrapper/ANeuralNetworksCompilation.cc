@@ -18,11 +18,14 @@
 
 #include "util/logging.h"
 
-ANeuralNetworksCompilation::ANeuralNetworksCompilation(
-    const std::shared_ptr<onert::ir::Subgraphs> &subgs) noexcept
-    : _subgraphs{subgs}, _compiler{new onert::compiler::Compiler{subgs}}
+// TODO Support multiple subgraphs
+ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
+    : _subgraphs{model->subGraphs()}, _compiler{new onert::compiler::Compiler{_subgraphs}}
 {
-  // DO NOTHING
+  if (model->allowedToFp16())
+  {
+    _compiler->enableToFp16();
+  }
 }
 
 bool ANeuralNetworksCompilation::finish() noexcept

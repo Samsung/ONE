@@ -26,7 +26,8 @@
 //
 // ANeuralNetworksModel
 //
-ANeuralNetworksModel::ANeuralNetworksModel() noexcept : _optional_operands{}, _operand_usages{}
+ANeuralNetworksModel::ANeuralNetworksModel() noexcept
+    : _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{false}
 {
   _graph = std::make_shared<onert::ir::Graph>();
 }
@@ -196,20 +197,9 @@ bool ANeuralNetworksModel::addModelOutput(uint32_t index) noexcept
   return true;
 }
 
-bool ANeuralNetworksModel::allowFloat32toFloat16() noexcept
+void ANeuralNetworksModel::allowFloat32toFloat16(bool allow) noexcept
 {
-  try
-  {
-    _graph->allowFloat32toFloat16();
-  }
-  catch (const std::exception &e)
-  {
-    VERBOSE(EXCEPTION) << e.what() << std::endl;
-
-    return false;
-  }
-
-  return true;
+  _allowFloat32toFloat16 = allow;
 }
 
 bool ANeuralNetworksModel::finish() noexcept
@@ -282,7 +272,7 @@ void ANeuralNetworksModel::fillOptionalOperand(void)
   });
 }
 
-void ANeuralNetworksModel::release(std::shared_ptr<onert::ir::Subgraphs> &subgs)
+std::shared_ptr<onert::ir::Subgraphs> ANeuralNetworksModel::subGraphs() const
 {
   auto all_subgs = std::make_shared<onert::ir::Subgraphs>();
 
@@ -293,5 +283,5 @@ void ANeuralNetworksModel::release(std::shared_ptr<onert::ir::Subgraphs> &subgs)
   // Must clean all child subgraphs's pointer to prevent memory leak in case of that graph has
   // subgraph itself recursively
 
-  subgs = all_subgs;
+  return all_subgs;
 }

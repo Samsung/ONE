@@ -100,6 +100,11 @@ public:
   bool checkCompilable();
   CompilerOptions &options() { return _options; }
 
+  /**
+   * @brief   Allow to compute float32 using float16 data type
+   */
+  void enableToFp16();
+
 private:
   void checkProfilerConditions();
   std::shared_ptr<ir::Graph> &primary_subgraph() { return _subgraphs->at(ir::SubgraphIndex{0}); }
