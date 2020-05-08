@@ -40,6 +40,44 @@ namespace onert
 namespace exec
 {
 
+struct InputTensorInfo
+{
+  std::shared_ptr<backend::ITensor> tensor;
+
+  InputTensorInfo(std::shared_ptr<backend::ITensor> &tensor) : tensor(tensor) {}
+
+  virtual ~InputTensorInfo() = default;
+};
+
+/**
+ * @brief Class to have input tensor info when backend supports static tensor but not dynamic tensor
+ */
+struct InputTensorInfoForStaticTensor : public InputTensorInfo
+{
+  InputTensorInfoForStaticTensor(std::shared_ptr<backend::ITensor> &tensor)
+      : InputTensorInfo(tensor)
+  {
+  }
+};
+
+/**
+ * @brief Class to have input tensor info when backend supports static and dynamic tensor
+ */
+struct InputTensorInfoForDynamicTensor : public InputTensorInfo
+{
+  /// @brief index of input tensor whose memory needs to be allocated at execution time
+  ir::OperandIndex ind;
+
+  /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
+  backend::IDynamicTensorManager *tensor_manager;
+
+  InputTensorInfoForDynamicTensor(std::shared_ptr<backend::ITensor> &tensor, ir::OperandIndex ind,
+                                  backend::IDynamicTensorManager *tensor_manager)
+      : InputTensorInfo(tensor), ind(ind), tensor_manager(tensor_manager)
+  {
+  }
+};
+
 class ExecutorBase : public IExecutor
 {
 public:
@@ -80,7 +118,7 @@ private:
     const auto operand_index = _graph.getInputs().at(index);
     const auto &operand = _graph.operands().at(operand_index);
 
-    const auto tensor = _input_tensors[index.value()];
+    const auto tensor = _input_info[index.value()]->tensor;
     const auto tensor_layout = tensor->layout();
 
     if (((io_layout == ir::Layout::NHWC) && (tensor_layout == ir::Layout::NCHW)) ||
@@ -121,7 +159,7 @@ protected:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
+  std::vector<std::unique_ptr<InputTensorInfo>> _input_info;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;

@@ -26,7 +26,29 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
                            const backend::TensorBuilderSet &tensor_builders)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
-  auto build_itensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
+  auto build_input_tensor_info = [&](const onert::ir::OperandIndexSequence &ind_seq) {
+    std::vector<std::unique_ptr<InputTensorInfo>> list;
+    for (auto ind : ind_seq)
+    {
+      std::shared_ptr<backend::ITensor> tensor;
+      for (auto &tensor_builder : tensor_builders)
+      {
+        tensor = tensor_builder->tensorAt(ind);
+        if (tensor != nullptr)
+        {
+          if (tensor_builder->supportDynamicTensor())
+            list.push_back(std::make_unique<InputTensorInfoForDynamicTensor>(
+                tensor, ind, tensor_builder->dynamicTensorManager()));
+          else
+            list.push_back(std::make_unique<InputTensorInfoForStaticTensor>(tensor));
+          break;
+        }
+      }
+    }
+    return list;
+  };
+
+  auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
     std::vector<std::shared_ptr<backend::ITensor>> list;
     for (auto ind : ind_seq)
     {
@@ -43,8 +65,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
     return list;
   };
 
-  _input_tensors = build_itensor_list(_graph.getInputs());
-  _output_tensors = build_itensor_list(_graph.getOutputs());
+  _input_info = build_input_tensor_info(_graph.getInputs());
+  _output_tensors = build_output_tensor_list(_graph.getOutputs());
 
   // Prepare each TensorManager on each backend
   for (auto &tensor_builder : tensor_builders)
@@ -133,13 +155,21 @@ void ExecutorBase::execute(const IODescription &desc)
       continue;
     }
 
+    //
+    // TODO Allocate memory for input tensor when input tensor is dynamic
+    // e.g.,
+    //   auto *info = dynamic_cast<InputTensorInfoForDynamicTensor *>(_input_info[n].get());
+    //   if (info)
+    //     info->dynamic_tensor_manager->allocate(info->ind, shape_user_provide);
+    //
+
     const auto &input = *desc.inputs.at(n);
     sources.at(n) =
         source(input_index, input.info.typeInfo(), input.buffer, input.size, input.layout);
 
     auto setter = [&](::onert::backend::ITensor &tensor) { sources.at(n)->push(tensor); };
 
-    _input_tensors[n]->access(setter);
+    _input_info[n]->tensor->access(setter);
   }
 
   executeImpl();
