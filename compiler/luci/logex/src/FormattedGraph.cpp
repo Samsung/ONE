@@ -216,6 +216,7 @@ private:
   IMPLEMENT(luci::CircleSpaceToBatchND)
   IMPLEMENT(luci::CircleSqrt)
   IMPLEMENT(luci::CircleSquaredDifference)
+  IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTile)
@@ -618,6 +619,24 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSquaredDifference *node
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleStridedSlice *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("begin", tbl()->lookup(node->begin()));
+  s.args().append("end", tbl()->lookup(node->end()));
+  s.args().append("strides", tbl()->lookup(node->strides()));
+
+  s.args().append("begin_mask", pepper::str(node->begin_mask()));
+  s.args().append("end_mask", pepper::str(node->end_mask()));
+  s.args().append("ellipsis_mask", pepper::str(node->ellipsis_mask()));
+  s.args().append("new_axis_mask", pepper::str(node->new_axis_mask()));
+  s.args().append("shrink_axis_mask", pepper::str(node->shrink_axis_mask()));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
