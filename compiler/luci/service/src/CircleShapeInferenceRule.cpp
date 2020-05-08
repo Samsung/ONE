@@ -991,7 +991,8 @@ public:
         int32_t dim = node->squeeze_dim(idx) < 0 ? node->squeeze_dim(idx) + input_shape.rank()
                                                  : node->squeeze_dim(idx);
 
-        if (dim < 0 || dim >= input_shape.rank() || input_shape.dim(dim).value() != 1)
+        if (dim < 0 || static_cast<uint32_t>(dim) >= input_shape.rank() ||
+            input_shape.dim(dim).value() != 1)
         {
           INTERNAL_EXN("invalid dimention specified to Squeeze");
         }
