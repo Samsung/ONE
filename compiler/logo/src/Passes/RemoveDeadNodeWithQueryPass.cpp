@@ -31,7 +31,7 @@ bool RemoveDeadNodeWithQueryPass::run(loco::Graph *g)
   // Let's enumerate nodes required to compute output nodes
   auto active_nodes = loco::active_nodes(loco::output_nodes(g));
 
-  // Find dead(= non-active) nodes
+  // List dead(= non-active) nodes candidates
   std::set<loco::Node *> candidates;
 
   for (auto node : loco::all_nodes(g))
@@ -42,7 +42,7 @@ bool RemoveDeadNodeWithQueryPass::run(loco::Graph *g)
     }
   }
 
-  // Find the nodes that should not be erased in candidates
+  // Find the nodes that should not be dead node in candidates
   for (auto node : candidates)
   {
     if (auto service = node->dialect()->service<DeadNodeQueryService>())
