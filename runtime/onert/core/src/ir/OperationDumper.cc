@@ -508,6 +508,14 @@ void OperationDumper::visit(const RNN &node)
                << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Round &node)
+{
+  VERBOSE(LIR) << "* Round" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Round::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const RSQRT &node)
 {
   VERBOSE(LIR) << "* RSQRT" << std::endl;
