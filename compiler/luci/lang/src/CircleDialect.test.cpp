@@ -15,6 +15,10 @@
  */
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodes.h"
+
+#include <loco.h>
+#include <logo/CheckIfDeadNodeService.h>
 
 #include <gtest/gtest.h>
 
@@ -26,4 +30,50 @@ TEST(CircleDialectTest, get_P)
   ASSERT_NE(d, nullptr);
   // The return value SHOULD be stable across multiple invocations
   ASSERT_EQ(luci::CircleDialect::get(), d);
+}
+
+TEST(CircleDialectTest, check_if_dead_node_service)
+{
+  /**
+   * [CircleInput1] [CircleInput2]       [CircleInput3]
+   *        \           /               (dangling input)
+   *         \         /
+   *         [CircleAdd]         [CircleBatchMatMul]
+   *              |                (dangling node)
+   *              |
+   *        [CircleOutput]
+   */
+  auto g = loco::make_graph();
+
+  auto graph_input1 = g->inputs()->create();
+  auto circle_input1 = g->nodes()->create<luci::CircleInput>();
+  circle_input1->index(graph_input1->index());
+
+  auto graph_input2 = g->inputs()->create();
+  auto circle_input2 = g->nodes()->create<luci::CircleInput>();
+  circle_input2->index(graph_input2->index());
+
+  auto graph_input3 = g->inputs()->create();
+  auto dangling_input = g->nodes()->create<luci::CircleInput>();
+  dangling_input->index(graph_input3->index());
+
+  auto active_node = g->nodes()->create<luci::CircleAdd>();
+  active_node->x(circle_input1);
+  active_node->y(circle_input2);
+
+  auto dangling_node = g->nodes()->create<luci::CircleBatchMatMul>();
+
+  auto graph_output1 = g->outputs()->create();
+  auto circle_output1 = g->nodes()->create<luci::CircleOutput>();
+  circle_output1->index(graph_output1->index());
+  circle_output1->from(active_node);
+
+  auto service = active_node->dialect()->service<logo::CheckIfDeadNodeService>();
+
+  ASSERT_TRUE(service->isDeadNode(dangling_node));
+  ASSERT_FALSE(service->isDeadNode(dangling_input));
+  ASSERT_FALSE(service->isDeadNode(active_node));
+  ASSERT_FALSE(service->isDeadNode(circle_input1));
+  ASSERT_FALSE(service->isDeadNode(circle_input2));
+  ASSERT_FALSE(service->isDeadNode(circle_output1));
 }

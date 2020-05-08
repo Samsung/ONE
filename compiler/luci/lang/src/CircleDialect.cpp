@@ -22,6 +22,8 @@
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
 
+#include <logo/CheckIfDeadNodeService.h>
+
 #include <cassert>
 #include <memory>
 
@@ -68,6 +70,30 @@ struct GoiQueryServiceImpl final : public loco::GraphOutputIndexQueryService
   }
 };
 
+struct CheckIfDeadNodeServiceImpl final : public logo::CheckIfDeadNodeService
+{
+  bool isDeadNode(loco::Node *node) final
+  {
+    auto g = node->graph();
+    auto input_nodes_vec = loco::input_nodes(g);
+    auto output_nodes_vec = loco::output_nodes(g);
+
+    auto input_nodes = std::set<loco::Node *>(input_nodes_vec.begin(), input_nodes_vec.end());
+    auto output_nodes = std::set<loco::Node *>(output_nodes_vec.begin(), output_nodes_vec.end());
+    auto active_nodes = loco::active_nodes(output_nodes_vec);
+
+    if (active_nodes.find(node) != active_nodes.end())
+      return false;
+    // input and output nodes are not dead node even if it is not active.
+    if (input_nodes.find(node) != input_nodes.end())
+      return false;
+    if (output_nodes.find(node) != output_nodes.end())
+      return false;
+
+    return true;
+  }
+};
+
 } // namespace
 
 namespace luci
@@ -77,6 +103,7 @@ CircleDialect::CircleDialect()
 {
   service<loco::GraphInputIndexQueryService>(std::make_unique<GiiQueryServiceImpl>());
   service<loco::GraphOutputIndexQueryService>(std::make_unique<GoiQueryServiceImpl>());
+  service<logo::CheckIfDeadNodeService>(std::make_unique<CheckIfDeadNodeServiceImpl>());
 }
 
 loco::Dialect *CircleDialect::get(void)
