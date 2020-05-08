@@ -87,6 +87,7 @@ private:
     REG_TFL_OP(SPACE_TO_BATCH_ND, TFliteOpSpaceToBatchND);
     REG_TFL_OP(SQRT, TFliteOpSqrt);
     REG_TFL_OP(SQUARE, TFliteOpSquare);
+    REG_TFL_OP(SQUARED_DIFFERENCE, TFliteOpSquaredDifference);
     REG_TFL_OP(STRIDED_SLICE, TFliteOpStridedSlice);
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(TANH, TFliteOpTanh);

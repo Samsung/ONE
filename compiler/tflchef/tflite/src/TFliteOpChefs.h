@@ -50,6 +50,7 @@
 #include "Op/SpaceToBatchND.h"
 #include "Op/Sqrt.h"
 #include "Op/Square.h"
+#include "Op/SquaredDifference.h"
 #include "Op/StridedSlice.h"
 #include "Op/Sub.h"
 #include "Op/Tanh.h"
