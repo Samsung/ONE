@@ -37,6 +37,7 @@
 #include "Op/LogicalOr.h"
 #include "Op/LogicalNot.h"
 #include "Op/Logistic.h"
+#include "Op/Maximum.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"
 #include "Op/Mul.h"
