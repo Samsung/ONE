@@ -64,6 +64,13 @@ template <> struct DataTypeImpl<DataType::FLOAT32>
   using Type = float;
 };
 
+// NOTE DataTypeImpl for BOOL would be changed
+template <> struct DataTypeImpl<DataType::BOOL>
+{
+  // Use C++ uint8_t type for bool
+  using Type = uint8_t;
+};
+
 /**
  * @brief Returns the size of the data type.
  * @note If you need the size at compile time, use `sizeof(typename DataTypeImpl<DT>::Type)`.
@@ -82,6 +89,8 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::U32>::Type);
     case DataType::FLOAT32:
       return sizeof(DataTypeImpl<DataType::FLOAT32>::Type);
+    case DataType::BOOL:
+      return sizeof(DataTypeImpl<DataType::BOOL>::Type);
     default:
       // TODO Support remaining data types.
       assert(false);
