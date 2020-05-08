@@ -215,6 +215,10 @@ message CastOptions {
   optional TensorType out_data_type = 2 [default = FLOAT32];
 }
 
+message SquareOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
