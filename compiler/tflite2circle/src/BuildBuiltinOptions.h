@@ -55,6 +55,7 @@
 #include "BuildBuiltinOptions/SplitOptions.h"
 #include "BuildBuiltinOptions/SquareOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
+#include "BuildBuiltinOptions/StridedSliceOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
