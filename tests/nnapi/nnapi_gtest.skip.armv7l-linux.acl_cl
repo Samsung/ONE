@@ -49,6 +49,7 @@ GeneratedTests.lstm3_state3
 GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
 GeneratedTests.neg
+GeneratedTests.pow_nnfw
 GeneratedTests.reduce_prod
 GeneratedTests.reduce_prod_2
 GeneratedTests.reduce_prod_2D_float_nnfw

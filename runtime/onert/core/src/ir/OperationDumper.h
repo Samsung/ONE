@@ -66,6 +66,7 @@ public:
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Permute &node) override;
+  void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::ReduceMax &) override;
   void visit(const operation::ReduceMin &) override;

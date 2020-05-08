@@ -50,6 +50,7 @@
 #include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
+#include "Op/StridedSlice.h"
 #include "Op/Sqrt.h"
 #include "Op/Square.h"
 #include "Op/Sub.h"

@@ -1947,6 +1947,21 @@ OperationFactory::OperationFactory()
 
     return new operation::Round{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_POW] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> LHS Tensor Index
+    //  1 -> RHS Tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    return new operation::Pow{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

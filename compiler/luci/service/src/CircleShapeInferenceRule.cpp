@@ -17,6 +17,8 @@
 #include "luci/Service/CircleShapeInferenceRule.h"
 #include "Check.h"
 
+#include "ShapeInfer_StridedSlice.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -964,6 +966,12 @@ public:
     auto output_shape = broadcast_shape(x_shape, y_shape);
 
     return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleStridedSlice *node) final
+  {
+    loco::TensorShape shape = infer_output_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleSub *node) final
