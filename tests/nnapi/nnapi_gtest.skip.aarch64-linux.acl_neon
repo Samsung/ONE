@@ -36,7 +36,10 @@ GeneratedTests.neg_int32
 GeneratedTests.neg_int32_relaxed
 GeneratedTests.neg_relaxed
 GeneratedTests.not_equal_boolean
-GeneratedTests.pow_nnfw
+GeneratedTests.pow_2D_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw_2
+GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.reduce_max_2D_int32_nnfw
 GeneratedTests.reduce_max_quant8
 GeneratedTests.reduce_prod*

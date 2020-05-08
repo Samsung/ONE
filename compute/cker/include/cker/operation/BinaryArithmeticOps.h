@@ -59,6 +59,10 @@ const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn(BinaryArithm
         return a / b;
       };
     }
+    case BinaryArithmeticOpType::POW:
+    {
+      return [](const T &a, const T &b) -> T { return std::pow(a, b); };
+    }
     default:
     {
       assert(false);

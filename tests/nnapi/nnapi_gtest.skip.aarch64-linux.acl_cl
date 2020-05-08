@@ -25,7 +25,10 @@ GeneratedTests.neg
 GeneratedTests.neg_int32
 GeneratedTests.neg_int32_relaxed
 GeneratedTests.neg_relaxed
-GeneratedTests.pow_nnfw
+GeneratedTests.pow_2D_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw_2
+GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.reduce_prod*
 GeneratedTests.rnn*
 GeneratedTests.round_ex_1D_float
