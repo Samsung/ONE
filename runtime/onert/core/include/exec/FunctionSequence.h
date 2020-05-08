@@ -22,6 +22,10 @@
 #include <functional>
 
 #include "exec/IFunction.h"
+#include "ir/Operands.h"
+#include "ir/OpSequence.h"
+#include "backend/ITensorRegistry.h"
+#include "backend/IDynamicTensorManager.h"
 #include <memory>
 
 namespace onert
@@ -49,8 +53,22 @@ private:
 public:
   virtual ~FunctionSequence() = default;
 
+  /**
+   * @brief Runs OpSequence for backends supporting static tensor only
+   */
   void run() override;
+
   void runSync() override;
+
+  /**
+   * @brief Runs OpSequence for backends supporting static and dynamic tensor
+   *        This will perform shape inference and memory allocation
+   *        when output tensor is a dynamic tensor
+   */
+  void run(const ir::OpSequence *op_seq, const ir::Operands &operands,
+           backend::IDynamicTensorManager *tensor_manager,
+           std::shared_ptr<backend::ITensorRegistry> &tensor_registry);
+
   void prepare() override;
 
   /**

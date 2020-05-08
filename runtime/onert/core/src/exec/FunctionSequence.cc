@@ -16,11 +16,17 @@
 
 #include "exec/FunctionSequence.h"
 
+#include "ir/Operation.h"
+#include "backend/IDynamicTensorManager.h"
+#include "backend/ITensorRegistry.h"
+#include "util/ShapeInference.h"
+
 namespace onert
 {
 namespace exec
 {
 
+// for OpSequence only with static tensor
 void FunctionSequence::run()
 {
   for (const auto &function : _functions)
@@ -34,6 +40,27 @@ void FunctionSequence::runSync()
   for (const auto &function : _functions)
   {
     function->runSync();
+  }
+}
+
+void FunctionSequence::run(const ir::OpSequence *op_seq, const ir::Operands &operands,
+                           backend::IDynamicTensorManager *dynamic_tensor_manager,
+                           std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+{
+  if (op_seq->size() != _functions.size())
+    throw std::runtime_error("operation and functions should be mapped one by one");
+
+  onert::shape_inference::DynamicInferer dynamic_inferer(operands, dynamic_tensor_manager,
+                                                         tensor_registry);
+  auto op_iter = op_seq->begin();
+  for (const auto &function : _functions)
+  {
+    // set shape of output and allocate memory when needed
+    auto *op = op_iter->node;
+    op->accept(dynamic_inferer);
+
+    // run kernel
+    function->run();
   }
 }
 
