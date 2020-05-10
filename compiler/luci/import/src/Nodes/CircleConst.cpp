@@ -88,6 +88,10 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
       copy_data<loco::DataType::S32>(buffer, num_elements, const_node);
       break;
 
+    case loco::DataType::BOOL:
+      copy_data<loco::DataType::BOOL>(buffer, num_elements, const_node);
+      break;
+
     default:
       throw oops::UserExn("Unsupported tensor type", circle::EnumNameTensorType(const_tensor.type));
   }
