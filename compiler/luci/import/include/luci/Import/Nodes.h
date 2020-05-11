@@ -50,6 +50,7 @@
 #include "Nodes/CircleSin.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
+#include "Nodes/CircleSquaredDifference.h"
 #include "Nodes/CircleStridedSlice.h"
 #include "Nodes/CircleSub.h"
 #include "Nodes/CircleTanh.h"
