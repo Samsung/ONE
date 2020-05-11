@@ -688,7 +688,7 @@ public:
       output_shape.rank(input_shape.rank() - reduce_cnt);
       for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
         if (check_reduce.at(i) == false)
-          output_shape.dim(j++) = i;
+          output_shape.dim(j++) = input_shape.dim(i);
     }
 
     return loco::NodeShape{output_shape};
