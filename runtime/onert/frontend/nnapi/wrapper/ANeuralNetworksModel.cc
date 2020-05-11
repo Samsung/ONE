@@ -272,7 +272,7 @@ void ANeuralNetworksModel::fillOptionalOperand(void)
   });
 }
 
-std::shared_ptr<onert::ir::Subgraphs> ANeuralNetworksModel::subGraphs() const
+std::shared_ptr<onert::ir::Subgraphs> ANeuralNetworksModel::getSubGraphs() const
 {
   auto all_subgs = std::make_shared<onert::ir::Subgraphs>();
 

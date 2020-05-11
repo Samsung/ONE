@@ -59,7 +59,7 @@ public:
   size_t operandSize(uint32_t index) noexcept;
   bool isUsageSet(uint32_t index) noexcept;
   bool isOperationOutput(uint32_t index) noexcept;
-  std::shared_ptr<onert::ir::Subgraphs> subGraphs() const;
+  std::shared_ptr<onert::ir::Subgraphs> getSubGraphs() const;
 
 private:
   void setOptionalOperand(const onert::ir::OperandIndex idx);
