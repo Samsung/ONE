@@ -411,6 +411,14 @@ void OperationDumper::visit(const PReLU &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ReduceAny &node)
+{
+  VERBOSE(LIR) << "* ReduceAny" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceAny::Input::INPUT).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const ReduceMax &node)
 {
   VERBOSE(LIR) << "* ReduceMax" << std::endl;

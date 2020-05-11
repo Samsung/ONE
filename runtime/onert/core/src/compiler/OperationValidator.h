@@ -54,6 +54,7 @@ public:
   void visit(const ir::operation::Permute &node) override;
   void visit(const ir::operation::ReduceSum &node) override;
   void visit(const ir::operation::Transpose &node) override;
+  void visit(const ir::operation::ReduceAny &node) override;
   void visit(const ir::operation::ReduceMax &node) override;
   void visit(const ir::operation::RNN &node) override;
   void visit(const ir::operation::Round &node) override;

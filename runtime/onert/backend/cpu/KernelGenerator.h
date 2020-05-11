@@ -71,6 +71,7 @@ public:
   void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::ReduceSum &) override;
+  void visit(const ir::operation::ReduceAny &) override;
   void visit(const ir::operation::ReduceMax &) override;
   void visit(const ir::operation::ReduceMin &) override;
   void visit(const ir::operation::Select &) override;

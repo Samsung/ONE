@@ -806,6 +806,11 @@ TfLiteStatus AddOpsAndParams(
         nn_op_type = ANEURALNETWORKS_REDUCE_SUM;
         add_reducer_params(node.builtin_data);
         break;
+      case tflite::BuiltinOperator_REDUCE_ANY:
+        add_reducer_params(node.builtin_data);
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_REDUCE_ANY;
+        break;
       case tflite::BuiltinOperator_REDUCE_MAX:
         add_reducer_params(node.builtin_data);
         nnapi_version = 12;  // require NNAPI 1.2
@@ -952,7 +957,7 @@ TfLiteStatus AddOpsAndParams(
       //case tflite::BuiltinOperator_LOGICAL_NOT:
       //case tflite::BuiltinOperator_UNPACK:
       case tflite::BuiltinOperator_FLOOR_DIV:
-      case tflite::BuiltinOperator_REDUCE_ANY:
+      //case tflite::BuiltinOperator_REDUCE_ANY:
       case tflite::BuiltinOperator_SQUARE:
       case tflite::BuiltinOperator_ZEROS_LIKE:
       case tflite::BuiltinOperator_FILL:

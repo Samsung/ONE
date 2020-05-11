@@ -108,6 +108,7 @@ protected:
   void loadTanh(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadMean(const Operator *op, ir::Graph &subg);
+  void loadReduceAny(const Operator *op, ir::Graph &subg);
   void loadReduceMax(const Operator *op, ir::Graph &subg);
   void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
@@ -786,6 +787,29 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::
   param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean({input}, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  auto input = inputs.at(0);
+  auto axes = inputs.at(1);
+
+  // FIXME Handle ReducerOptions.
+  if (!subg.operands().at(axes).isConstant())
+    throw std::runtime_error("ReduceAny: non-constant 'axes' is not supported.");
+
+  ir::operation::ReduceAny::Param param;
+  param.axes = subg.operands().at(axes).template asVector<int>();
+  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
+  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny({input}, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1483,6 +1507,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
       loadMean(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_ANY:
+      loadReduceAny(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
       loadReduceMax(op, subg);

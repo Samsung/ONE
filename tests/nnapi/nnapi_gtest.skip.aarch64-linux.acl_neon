@@ -80,6 +80,12 @@ GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
+GeneratedTests.reduce_any
+GeneratedTests.reduce_any_2
+GeneratedTests.reduce_any_2D_nnfw
+GeneratedTests.reduce_any_3
+GeneratedTests.reduce_any_4
+GeneratedTests.reduce_any_4D_nnfw
 GeneratedTests.reduce_max_2D_int32_nnfw
 GeneratedTests.reduce_max_quant8
 GeneratedTests.reduce_prod
