@@ -43,6 +43,7 @@
 #include "Nodes/CircleMul.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
+#include "Nodes/CircleReduceProd.h"
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleRsqrt.h"
