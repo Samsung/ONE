@@ -83,6 +83,7 @@ fi
 # activate python virtual environment
 source "${ROOT}/bin/venv/bin/activate"
 
+# parse inputs, outputs from info file
 INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 
