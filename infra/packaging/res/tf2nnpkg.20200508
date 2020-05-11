@@ -83,10 +83,10 @@ fi
 # activate python virtual environment
 source "${ROOT}/bin/venv/bin/activate"
 
-# generate tflite file
 INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 
+# generate tflite file
 python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --input_arrays ${INPUT} --output_arrays ${OUTPUT}
