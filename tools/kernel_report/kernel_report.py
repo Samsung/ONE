@@ -33,6 +33,10 @@ class KernelReporter(object):
             self.onertBase = os.getcwd() + '/' + args.base
         else:
             self.onertBase = args.base
+        if args.md5:
+            self.printMD5 = True
+        else:
+            self.printMD5 = False
         self.backendList = args.backends.split(',')
         self.opListFile = "core/include/ir/Operations.lst"
         self.operations = []
@@ -40,8 +44,6 @@ class KernelReporter(object):
         self.kernelMap = {}
 
     def parseOpList(self):
-        #buf = open(self.onertBase + '/' + self.opListFile, "r")
-
         # Parsing line and get op list
         skipLine = False
         for line in open(self.onertBase + '/' + self.opListFile, "r"):
@@ -164,9 +166,11 @@ class KernelReporter(object):
     def run(self):
         self.parseOpList()
         self.generateKernelMap()
-        self.printResult()
 
-        self.printMDFormat()
+        if self.printMD5:
+            self.printMDFormat()
+        else:
+            self.printResult()
 
 
 if __name__ == '__main__':
@@ -176,6 +180,7 @@ if __name__ == '__main__':
         type=str,
         default='cpu,acl_cl,acl_neon',
         help="backend list to report (use comma)")
+    arg_parser.add_argument("--md5", action='store_true', help="Print for md5")
     arg_parser.add_argument("base", type=str, help="onert base directory")
     args = arg_parser.parse_args()
 
