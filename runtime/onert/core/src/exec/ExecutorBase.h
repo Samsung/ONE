@@ -40,22 +40,22 @@ namespace onert
 namespace exec
 {
 
-struct InputTensorInfo
+struct InputTensorWrapper
 {
   std::shared_ptr<backend::ITensor> tensor;
 
-  InputTensorInfo(std::shared_ptr<backend::ITensor> &tensor) : tensor(tensor) {}
+  InputTensorWrapper(std::shared_ptr<backend::ITensor> &tensor) : tensor(tensor) {}
 
-  virtual ~InputTensorInfo() = default;
+  virtual ~InputTensorWrapper() = default;
 };
 
 /**
  * @brief Class to have input tensor info when backend supports static tensor but not dynamic tensor
  */
-struct InputTensorInfoForStaticTensor : public InputTensorInfo
+struct InputTensorWrapperForStaticTensor : public InputTensorWrapper
 {
-  InputTensorInfoForStaticTensor(std::shared_ptr<backend::ITensor> &tensor)
-      : InputTensorInfo(tensor)
+  InputTensorWrapperForStaticTensor(std::shared_ptr<backend::ITensor> &tensor)
+      : InputTensorWrapper(tensor)
   {
   }
 };
@@ -63,17 +63,18 @@ struct InputTensorInfoForStaticTensor : public InputTensorInfo
 /**
  * @brief Class to have input tensor info when backend supports static and dynamic tensor
  */
-struct InputTensorInfoForDynamicTensor : public InputTensorInfo
+struct InputTensorWrapperForDynamicTensor : public InputTensorWrapper
 {
   /// @brief index of input tensor whose memory needs to be allocated at execution time
   ir::OperandIndex ind;
 
   /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
-  backend::IDynamicTensorManager *tensor_manager;
+  backend::IDynamicTensorManager *dyn_tensor_manager;
 
-  InputTensorInfoForDynamicTensor(std::shared_ptr<backend::ITensor> &tensor, ir::OperandIndex ind,
-                                  backend::IDynamicTensorManager *tensor_manager)
-      : InputTensorInfo(tensor), ind(ind), tensor_manager(tensor_manager)
+  InputTensorWrapperForDynamicTensor(std::shared_ptr<backend::ITensor> &tensor,
+                                     ir::OperandIndex ind,
+                                     backend::IDynamicTensorManager *dyn_tensor_manager)
+      : InputTensorWrapper(tensor), ind(ind), dyn_tensor_manager(dyn_tensor_manager)
   {
   }
 };
@@ -118,7 +119,7 @@ private:
     const auto operand_index = _graph.getInputs().at(index);
     const auto &operand = _graph.operands().at(operand_index);
 
-    const auto tensor = _input_info[index.value()]->tensor;
+    const auto tensor = _input_wrapper[index.value()]->tensor;
     const auto tensor_layout = tensor->layout();
 
     if (((io_layout == ir::Layout::NHWC) && (tensor_layout == ir::Layout::NCHW)) ||
@@ -159,7 +160,7 @@ protected:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<std::unique_ptr<InputTensorInfo>> _input_info;
+  std::vector<std::unique_ptr<InputTensorWrapper>> _input_wrapper;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
