@@ -102,6 +102,17 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
   }
 }
 
+void ExecutorBase::execute()
+{
+  // For thread-safe, use mutex
+  // TODO: if all used backends on this executor are thread-safe,
+  //       do not need to use mutex (otherwise, use mutex)
+  // Deadlock occurs when an Executor is called recursively.
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  executeImpl();
+}
+
 void ExecutorBase::execute(const IODescription &desc)
 {
   // For thread-safe, use mutex

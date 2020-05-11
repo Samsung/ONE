@@ -16,6 +16,30 @@
 
 #include "WhileLayer.h"
 
+#include <backend/ITensor.h>
+#include "exec/ExecutorBase.h"
+
+namespace
+{
+class PermuteTensorsLayer : public onert::exec::IPermuteFunction
+{
+public:
+  PermuteTensorsLayer(const std::vector<std::shared_ptr<onert::backend::ITensor>> &src_tensors,
+                      const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors,
+                      std::vector<size_t> ranks)
+  {
+    _src_tensors = src_tensors;
+    _dst_tensors = dst_tensors;
+    _ranks = ranks;
+  }
+
+  void optimize() override
+  {
+    // TODO Implement optimization
+  }
+};
+}
+
 namespace onert
 {
 namespace backend
@@ -46,15 +70,48 @@ WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tens
 
 void WhileLayer::run()
 {
-  // TODO Implement like below comments
+  // TODO Support dynamic tensor
   // Copy _src_tensors -> inputs of cond subg
   // Run cond subg
   // Start loop while output of cond subg is ture
-  // Copy cond subg inputs -> body subg inputs
-  // Run body subg
-  // Copy body subg outputs -> cond subg inputs
-  // Run cond subg
+  // // Copy cond subg inputs -> body subg inputs
+  // // Run body subg
+  // // Copy body subg outputs -> cond subg inputs
+  // // Run cond subg
   // Copy cond subg inputs -> _dst_tensors
+  auto cond_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_cond_subg_index).get());
+  auto body_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_body_subg_index).get());
+  const auto &cond_input_tensors = cond_exec->getInputTensors();
+  const auto &body_input_tensors = body_exec->getInputTensors();
+  const auto &body_output_tensors = body_exec->getOutputTensors();
+
+  PermuteTensorsLayer permute_op_input_to_cond_input{_src_tensors, cond_input_tensors, _ranks};
+  PermuteTensorsLayer permute_cond_input_to_body_input{cond_input_tensors, body_input_tensors,
+                                                       _ranks};
+  PermuteTensorsLayer permute_body_output_to_cond_input{body_output_tensors, cond_input_tensors,
+                                                        _ranks};
+  PermuteTensorsLayer permute_cond_input_to_op_output{cond_input_tensors, _dst_tensors, _ranks};
+
+  permute_op_input_to_cond_input.run();
+  cond_exec->execute();
+
+  assert(cond_exec->getOutputTensors().size() == 1);
+  auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
+  auto getResultCond = [](backend::ITensor *tensor) -> bool {
+    bool ret;
+    tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
+    return ret;
+  };
+
+  // Loop while Cond subgraph's output is true
+  while (getResultCond(cond_output_tensor.get()))
+  {
+    permute_cond_input_to_body_input.run();
+    body_exec->execute();
+    permute_body_output_to_cond_input.run();
+    cond_exec->execute();
+  }
+  permute_cond_input_to_op_output.run();
 }
 
 } // namespace kernel
