@@ -1489,6 +1489,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_SHAPE:
       loadShape(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
+      loadReduceProd(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_WHILE:
       loadWhile(op, subg);
       return;
