@@ -386,6 +386,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for SPACE_TO_BATCH_ND
   _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
 

@@ -52,6 +52,7 @@
 #include "Nodes/CircleSpaceToBatchND.h"
 #include "Nodes/CircleStridedSlice.h"
 #include "Nodes/CircleSub.h"
+#include "Nodes/CircleSum.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
 #include "Nodes/CircleTranspose.h"

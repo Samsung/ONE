@@ -286,6 +286,7 @@ message Operation {
   optional FillOptions fill_options = 139;
   // optional GreaterOptions greater_options = 140;
   optional ReducerOptions reduce_prod_options = 141;
+  optional ReducerOptions sum_options = 142;
 }
 
 // For additional subgraphs

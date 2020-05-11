@@ -61,6 +61,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);  // 38
   CIRCLE_NODE(STRIDED_SLICE, CircleStridedSliceGraphBuilder);        // 45
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
+  CIRCLE_NODE(SUM, CircleSumGraphBuilder);                           // 74
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
@@ -114,7 +115,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_EXPAND_DIMS = 70,
   // BuiltinOperator_NOT_EQUAL = 72,
   // BuiltinOperator_LOG = 73,
-  // BuiltinOperator_SUM = 74,
   // BuiltinOperator_SQRT = 75,
   // BuiltinOperator_SHAPE = 77,
   // BuiltinOperator_POW = 78,

@@ -58,6 +58,7 @@
 #include "Op/Square.h"
 #include "Op/SquaredDifference.h"
 #include "Op/Sub.h"
+#include "Op/Sum.h"
 #include "Op/Tanh.h"
 #include "Op/Tile.h"
 #include "Op/Transpose.h"
