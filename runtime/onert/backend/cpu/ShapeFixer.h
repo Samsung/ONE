@@ -80,6 +80,7 @@ public:
   void visit(const ir::operation::Log &) override;
   void visit(const ir::operation::Round &) override;
   void visit(const ir::operation::Pow &) override;
+  void visit(const ir::operation::LogicalNot &) override;
 
 private:
   const ir::Operands &_ctx;
