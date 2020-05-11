@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_BATCH_TO_SPACE_ND_OPTIONS_H__
-#define __BBO_BATCH_TO_SPACE_ND_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_BATCH_TO_SPACE_ND_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_BATCH_TO_SPACE_ND_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -28,4 +28,4 @@ build_circle_BatchToSpaceNDOptions(flatbuffers::FlatBufferBuilder &fb, const tfl
 
 } // namespace tflite2circle
 
-#endif // __BBO_BATCH_TO_SPACE_ND_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_BATCH_TO_SPACE_ND_OPTIONS_H__

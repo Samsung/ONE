@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_SQUAREDDIFFERENCE_OPTIONS_H__
-#define __BBO_SQUAREDDIFFERENCE_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_SQUAREDDIFFERENCE_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_SQUAREDDIFFERENCE_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -29,4 +29,4 @@ build_circle_SquaredDifferenceOptions(flatbuffers::FlatBufferBuilder &fb,
 
 } // namespace tflite2circle
 
-#endif // __BBO_SQUAREDDIFFERENCE_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_SQUAREDDIFFERENCE_OPTIONS_H__

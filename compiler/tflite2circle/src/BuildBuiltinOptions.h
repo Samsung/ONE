@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BUILD_BUITIN_OPTIONS_H__
-#define __BUILD_BUITIN_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BUILD_BUITIN_OPTIONS_H__
+#define __TFLITE2CIRCLE_BUILD_BUITIN_OPTIONS_H__
 
 // NOTE please add new option headers in alphabetical order
 
@@ -64,4 +64,4 @@
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
 
-#endif // __BUILD_BUITIN_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BUILD_BUITIN_OPTIONS_H__

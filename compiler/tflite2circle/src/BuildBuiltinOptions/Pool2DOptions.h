@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_POOL2D_OPTIONS_H__
-#define __BBO_POOL2D_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_POOL2D_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_POOL2D_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -28,4 +28,4 @@ build_circle_Pool2DOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Ope
 
 } // namespace tflite2circle
 
-#endif // __BBO_POOL2D_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_POOL2D_OPTIONS_H__

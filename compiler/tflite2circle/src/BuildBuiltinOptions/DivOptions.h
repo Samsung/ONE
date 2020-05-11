@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_DIV_OPTIONS_H__
-#define __BBO_DIV_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_DIV_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_DIV_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -28,4 +28,4 @@ flatbuffers::Offset<circle::DivOptions> build_circle_DivOptions(flatbuffers::Fla
 
 } // namespace tflite2circle
 
-#endif // __BBO_DIV_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_DIV_OPTIONS_H__

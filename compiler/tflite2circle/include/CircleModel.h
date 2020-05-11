@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_MODEL_H__
-#define __CIRCLE_MODEL_H__
+#ifndef __TFLITE2CIRCLE_CIRCLE_MODEL_H__
+#define __TFLITE2CIRCLE_CIRCLE_MODEL_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -99,4 +99,4 @@ private:
 
 } // namespace tflite2circle
 
-#endif // __CIRCLE_MODEL_H__
+#endif // __TFLITE2CIRCLE_CIRCLE_MODEL_H__

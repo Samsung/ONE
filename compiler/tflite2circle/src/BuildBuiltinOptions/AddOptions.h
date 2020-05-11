@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_ADD_OPTIONS_H__
-#define __BBO_ADD_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_ADD_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_ADD_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -28,4 +28,4 @@ flatbuffers::Offset<circle::AddOptions> build_circle_AddOptions(flatbuffers::Fla
 
 } // namespace tflite2circle
 
-#endif // __BBO_ADD_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_ADD_OPTIONS_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_DEPTHWISECONV2D_OPTIONS_H__
-#define __BBO_DEPTHWISECONV2D_OPTIONS_H__
+#ifndef __TFLITE2CIRCLE_BBO_DEPTHWISECONV2D_OPTIONS_H__
+#define __TFLITE2CIRCLE_BBO_DEPTHWISECONV2D_OPTIONS_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -28,4 +28,4 @@ build_circle_DepthwiseConv2DOptions(flatbuffers::FlatBufferBuilder &fb, const tf
 
 } // namespace tflite2circle
 
-#endif // __BBO_DEPTHWISECONV2D_OPTIONS_H__
+#endif // __TFLITE2CIRCLE_BBO_DEPTHWISECONV2D_OPTIONS_H__

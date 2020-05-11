@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __TFL_MODEL_H__
-#define __TFL_MODEL_H__
+#ifndef __TFLITE2CIRCLE_TFL_MODEL_H__
+#define __TFLITE2CIRCLE_TFL_MODEL_H__
 
 #include <iostream>
 #include <fstream>
@@ -52,4 +52,4 @@ private:
 
 } // namespace tflite2circle
 
-#endif // __TFL_MODEL_H__
+#endif // __TFLITE2CIRCLE_TFL_MODEL_H__

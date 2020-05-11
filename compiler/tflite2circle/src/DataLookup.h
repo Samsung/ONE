@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __DATA_LOOKUP_H__
-#define __DATA_LOOKUP_H__
+#ifndef __TFLITE2CIRCLE_DATA_LOOKUP_H__
+#define __TFLITE2CIRCLE_DATA_LOOKUP_H__
 
 #include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
@@ -73,4 +73,4 @@ circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *o
 
 } // namespace tflite2circle
 
-#endif // __DATA_LOOKUP_H__
+#endif // __TFLITE2CIRCLE_DATA_LOOKUP_H__
