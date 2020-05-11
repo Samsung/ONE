@@ -35,6 +35,7 @@
 #include "Op/FloorDiv.h"
 #include "Op/FullyConnected.h"
 #include "Op/Gather.h"
+#include "Op/LogicalAnd.h"
 #include "Op/LogicalNot.h"
 #include "Op/LogicalOr.h"
 #include "Op/Logistic.h"
