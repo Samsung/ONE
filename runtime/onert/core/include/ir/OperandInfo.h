@@ -58,19 +58,7 @@ public:
    * @brief Construct a new OperandInfo object (deleted)
    */
   OperandInfo() = delete;
-  /**
-   * @brief     Construct a new OperandInfo object
-   * @param[in] shape     Tensor shape
-   * @param[in] typeInfo  Tensor data type
-   *
-   * @todo Deprecated this constructor because setting member var implicitly can cause bug later.
-   *       Please use the third constructor. (This constor needs for now not to break previous code)
-   */
-  OperandInfo(const Shape &shape, const TypeInfo &typeInfo)
-      : _shape(shape), _typeInfo(typeInfo), _alloc_type(MemAllocType::STATIC)
-  {
-    // DO NOTHING
-  }
+
   /**
    * @brief     Construct a new OperandInfo object
    * @param[in] shape     Tensor shape
@@ -87,6 +75,14 @@ public:
    * @param[in] origin info for copy
    */
   OperandInfo(const OperandInfo &origin) = default;
+
+  /**
+   * @brief Create a static OperandInfo object
+   */
+  static OperandInfo createStaticInfo(const Shape &shape, const TypeInfo &typeInfo)
+  {
+    return OperandInfo(shape, typeInfo, MemAllocType::STATIC);
+  }
 
 public:
   /**

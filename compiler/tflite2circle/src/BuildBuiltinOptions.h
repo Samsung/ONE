@@ -37,8 +37,10 @@
 #include "BuildBuiltinOptions/GatherOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
+#include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
+// There is no LogisticOptions
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
@@ -46,11 +48,16 @@
 #include "BuildBuiltinOptions/Pool2DOptions.h"
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
+// There is no RsqrtOptions
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
+#include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
+#include "BuildBuiltinOptions/SquaredDifferenceOptions.h"
+#include "BuildBuiltinOptions/SquareOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
+#include "BuildBuiltinOptions/StridedSliceOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"

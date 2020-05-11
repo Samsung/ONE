@@ -41,7 +41,14 @@ void MeanLayer::MeanFloat32()
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()), _axes);
 }
 
-void MeanLayer::MeanQuant8() { throw std::runtime_error{"NYI"}; }
+void MeanLayer::MeanQuant8()
+{
+  nnfw::cker::MeanQ8Asymm(convertTensorToCkerShape(_input),
+                          reinterpret_cast<const uint8_t *>(_input->buffer()), _input->data_scale(),
+                          _input->data_offset(), convertTensorToCkerShape(_output),
+                          reinterpret_cast<uint8_t *>(_output->buffer()), _output->data_scale(),
+                          _output->data_offset(), _axes);
+}
 
 void MeanLayer::configure(const operand::Tensor *input, operand::Tensor *output,
                           const std::vector<int> &axes, bool keep_dims)

@@ -16,6 +16,8 @@
 
 #include "nnfw_debug_internal.h"
 
+#include <util/ConfigSource.h>
+
 NNFW_STATUS nnfw_create_debug_session(nnfw_session **session)
 {
   *session = new nnfw_debug_session();
@@ -26,4 +28,9 @@ NNFW_STATUS nnfw_create_debug_session(nnfw_session **session)
 NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
 {
   return session->set_config(key, value);
+}
+
+NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size)
+{
+  return session->get_config(key, value, value_size);
 }

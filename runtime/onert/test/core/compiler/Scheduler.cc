@@ -56,8 +56,9 @@ struct MockConfigCPU : public IConfig
 {
   std::string id() override { return "cpu"; }
   bool initialize() override { return true; };
-  bool SupportPermutation() override { return false; }
-  Layout SupportLayout(const Operation &, Layout) { return Layout::UNKNOWN; }
+  bool supportPermutation() override { return false; }
+  Layout supportLayout(const Operation &, Layout) { return Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendCPU : public Backend
@@ -75,8 +76,9 @@ struct MockConfigGPU : public IConfig
 {
   std::string id() override { return "gpu"; }
   bool initialize() override { return true; };
-  bool SupportPermutation() override { return false; }
-  ir::Layout SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportPermutation() override { return false; }
+  ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendGPU : public Backend
@@ -94,8 +96,9 @@ struct MockConfigNPU : public IConfig
 {
   std::string id() override { return "npu"; }
   bool initialize() override { return true; };
-  bool SupportPermutation() override { return false; }
-  ir::Layout SupportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportPermutation() override { return false; }
+  ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  bool supportDynamicTensor() override { return false; }
 };
 
 struct MockBackendNPU : public Backend

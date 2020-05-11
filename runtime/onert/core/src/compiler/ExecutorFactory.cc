@@ -124,11 +124,19 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
           {
             const auto &operand_lower_info =
                 lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
+
+            // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
+            // op.getOutputs() of permute (CPU) returns tensor A
+            // but tensor A belongs to the backend of acl_cl.
+            // So, we have to make this tensor NOT registered for CPU.
+            if (operand_lower_info.backend() != backend)
+              continue;
+
             const auto &obj = lowered_graph->graph().operands().at(index);
             const auto frontend_layout = op_seq.getLayout();
             const auto backend_layout = operand_lower_info.layout();
             ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                         obj.typeInfo()};
+                                         obj.typeInfo(), obj.info().memAllocType()};
             tensor_builder->registerTensorInfo(index, backend_info, backend_layout,
                                                obj.isConstant());
           }

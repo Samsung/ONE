@@ -174,6 +174,18 @@ message BatchToSpaceNDOptions {
   // None
 }
 
+message SpaceToBatchNDOptions {
+  // None
+}
+
+message StridedSliceOptions {
+  optional int32 begin_mask = 1;
+  optional int32 end_mask = 2;
+  optional int32 ellipsis_mask = 3;
+  optional int32 new_axis_mask = 4;
+  optional int32 shrink_axis_mask = 5;
+}
+
 message ExpOptions {
   // None
 }
@@ -199,6 +211,32 @@ message BatchMatMulOptions {
 message IfOptions {
   optional int32 then_subgraph_index = 1;
   optional int32 else_subgraph_index = 2;
+}
+
+message WhileOptions {
+  optional int32 cond_subgraph_index = 1;
+  optional int32 body_subgraph_index = 2;
+}
+
+message CastOptions {
+  optional TensorType in_data_type = 1 [default = FLOAT32];
+  optional TensorType out_data_type = 2 [default = FLOAT32];
+}
+
+message SquareOptions {
+  // None
+}
+
+message MaximumMinimumOptions {
+  // None
+}
+
+message SquaredDifferenceOptions {
+  // None
+}
+
+message FillOptions {
+  // None
 }
 
 message Operation {
@@ -238,6 +276,16 @@ message Operation {
   optional BatchMatMulOptions batch_matmul_options = 129;
   optional TileOptions tile_options = 130;
   optional IfOptions if_options = 131;
+  optional WhileOptions while_options = 132;
+  optional SpaceToBatchNDOptions space_to_batch_nd_options = 133;
+  optional CastOptions cast_options = 134;
+  // optional GreaterEqualOptions greaterequal_options = 135;
+  optional MaximumMinimumOptions maximum_options = 136;
+  optional StridedSliceOptions strided_slice_options = 137;
+  optional SquaredDifferenceOptions squared_difference_options = 138;
+  optional FillOptions fill_options = 139;
+  // optional GreaterOptions greater_options = 140;
+  optional ReducerOptions reduce_prod_options = 141;
 }
 
 // For additional subgraphs

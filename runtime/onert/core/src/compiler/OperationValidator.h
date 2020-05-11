@@ -56,6 +56,7 @@ public:
   void visit(const ir::operation::Transpose &node) override;
   void visit(const ir::operation::ReduceMax &node) override;
   void visit(const ir::operation::RNN &node) override;
+  void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
   void visit(const ir::operation::SpaceToDepth &node) override;
   void visit(const ir::operation::EmbeddingLookup &node) override;
@@ -83,6 +84,7 @@ public:
   void visit(const ir::operation::ReduceProd &node) override;
   void visit(const ir::operation::While &node) override;
   void visit(const ir::operation::Neg &node) override;
+  void visit(const ir::operation::Log &node) override;
 
 private:
   // TODO Remove _ctx field

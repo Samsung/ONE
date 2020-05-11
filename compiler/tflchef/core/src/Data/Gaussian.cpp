@@ -26,9 +26,9 @@
 std::vector<uint8_t> GaussianFloat32DataChef::generate(int32_t count) const
 {
   // TODO Support seed value override
-  int seed = std::chrono::system_clock::now().time_since_epoch().count();
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 
-  std::minstd_rand rand{seed};
+  std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
   std::normal_distribution<float> dist{_mean, _stddev};
 
   std::vector<uint8_t> res;
@@ -50,9 +50,9 @@ std::vector<uint8_t> GaussianFloat32DataChef::generate(int32_t count) const
 std::vector<uint8_t> GaussianInt32DataChef::generate(int32_t count) const
 {
   // TODO Support seed value override
-  int seed = std::chrono::system_clock::now().time_since_epoch().count();
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 
-  std::minstd_rand rand{seed};
+  std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
   std::normal_distribution<float> dist{_mean, _stddev};
 
   std::vector<uint8_t> res;
@@ -74,9 +74,9 @@ std::vector<uint8_t> GaussianInt32DataChef::generate(int32_t count) const
 std::vector<uint8_t> GaussianUint8DataChef::generate(int32_t count) const
 {
   // TODO Support seed value override
-  int seed = std::chrono::system_clock::now().time_since_epoch().count();
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 
-  std::minstd_rand rand{seed};
+  std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
   std::normal_distribution<float> dist{_mean, _stddev};
 
   std::vector<uint8_t> res;

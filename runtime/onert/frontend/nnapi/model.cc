@@ -294,7 +294,7 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
   }
 
   const ANeuralNetworksOperationTypeEx FIRST_OPERATION = ANEURALNETWORKS_CAST_EX;
-  const ANeuralNetworksOperationTypeEx LAST_OPERATION = ANEURALNETWORKS_SHAPE_EX;
+  const ANeuralNetworksOperationTypeEx LAST_OPERATION = ANEURALNETWORKS_ROUND_EX;
   if ((type < FIRST_OPERATION) || (type > LAST_OPERATION))
   {
     VERBOSE(NNAPI::Model) << "addOperation: Invalid operation type" << std::endl;
@@ -395,7 +395,7 @@ int ANeuralNetworksModel_finish(ANeuralNetworksModel *model)
   return ANEURALNETWORKS_NO_ERROR;
 }
 
-int ANeuralNetworksModel_relaxComputationFloat32toFloat16(ANeuralNetworksModel *model, bool)
+int ANeuralNetworksModel_relaxComputationFloat32toFloat16(ANeuralNetworksModel *model, bool allow)
 {
   if (model == nullptr)
   {
@@ -404,8 +404,13 @@ int ANeuralNetworksModel_relaxComputationFloat32toFloat16(ANeuralNetworksModel *
     return ANEURALNETWORKS_UNEXPECTED_NULL;
   }
 
-  // NYI: nothing to set
-  VERBOSE(NNAPI::Model) << "relaxComputationFloat32toFloat16: Do nothing yet" << std::endl;
+  if (model->isFinished())
+  {
+    VERBOSE(NNAPI::Model) << "relaxComputationFloat32toFloat16: Already finished" << std::endl;
+    return ANEURALNETWORKS_BAD_STATE;
+  }
+
+  model->allowFloat32toFloat16(allow);
 
   return ANEURALNETWORKS_NO_ERROR;
 }

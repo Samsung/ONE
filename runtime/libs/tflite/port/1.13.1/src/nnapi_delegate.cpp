@@ -816,6 +816,10 @@ TfLiteStatus AddOpsAndParams(
         nn_op_type = ANEURALNETWORKS_REDUCE_MIN;
         add_reducer_params(node.builtin_data);
         break;
+      case tflite::BuiltinOperator_LOG:
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_LOG;
+        break;
       case tflite::BuiltinOperator_LOGICAL_AND:
         nnapi_version = 12;  // require NNAPI 1.2
         nn_op_type = ANEURALNETWORKS_LOGICAL_AND;
@@ -875,6 +879,14 @@ TfLiteStatus AddOpsAndParams(
         nnapi_version = 12;  // require NNAPI 1.2
         nn_op_type = ANEURALNETWORKS_EXPAND_DIMS;
         break;
+      case tflite::BuiltinOperator_POW:
+        if (!(subgraph->tensor(node.inputs->data[0])->type == kTfLiteFloat32 &&
+            subgraph->tensor(node.inputs->data[1])->type == kTfLiteFloat32)) {
+          logError("NNAPI delegate for Pow supports only float32.", builtin);
+          return kTfLiteError;
+        }
+        nn_op_type = ANEURALNETWORKS_POW;
+        break;
       case tflite::BuiltinOperator_CONCAT_EMBEDDINGS:
       case tflite::BuiltinOperator_LSH_PROJECTION:
       case tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN:
@@ -913,7 +925,7 @@ TfLiteStatus AddOpsAndParams(
       case tflite::BuiltinOperator_SELECT:
       // case tflite::BuiltinOperator_SLICE:
       //case tflite::BuiltinOperator_SIN:
-      case tflite::BuiltinOperator_LOG:
+      //case tflite::BuiltinOperator_LOG:
       //case tflite::BuiltinOperator_TRANSPOSE_CONV:
       case tflite::BuiltinOperator_TILE:
       //case tflite::BuiltinOperator_EXPAND_DIMS:
@@ -927,7 +939,7 @@ TfLiteStatus AddOpsAndParams(
       //case tflite::BuiltinOperator_SQRT:
       //case tflite::BuiltinOperator_RSQRT:
       //case tflite::BuiltinOperator_SHAPE:
-      case tflite::BuiltinOperator_POW:
+      //case tflite::BuiltinOperator_POW:
       case tflite::BuiltinOperator_FAKE_QUANT:
       //case tflite::BuiltinOperator_PACK:
       //case tflite::BuiltinOperator_LOGICAL_OR:

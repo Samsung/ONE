@@ -83,6 +83,9 @@ public:
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::Mean &) override;
+  void visit(const ir::operation::Log &) override;
+  void visit(const ir::operation::Round &) override;
+  void visit(const ir::operation::Pow &) override;
 
 private:
   const ir::Operands &_ctx;

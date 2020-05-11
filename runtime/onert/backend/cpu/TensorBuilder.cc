@@ -27,9 +27,11 @@ namespace backend
 namespace cpu
 {
 
-TensorBuilder::TensorBuilder() : _static_tensor_mgr{new StaticTensorManager()}
+TensorBuilder::TensorBuilder()
+    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
 {
-  // DO NOTHING
+  /* empty */
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
@@ -39,6 +41,9 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 
   if (as_const)
     _constants.append(ind);
+
+  // TODO consider dynamic tensor
+  _static_tensor_mgr->buildTensor(ind, info, _constants.contains(ind));
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
@@ -46,7 +51,8 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
   const auto size = tensor_info.total_size();
-  _static_tensor_mgr->buildTensor(ind, tensor_info, _constants.contains(ind));
+
+  // TODO consider dynamic tensor
   _static_tensor_mgr->claimPlan(ind, size);
 }
 
@@ -74,21 +80,30 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _static_tensor_mgr->at(ind);
+  auto found = _tensor_reg->find(ind);
+  if (found == _tensor_reg->end())
+    return nullptr;
+
+  return found->second;
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  auto ret = _static_tensor_mgr->at(ind);
-  assert(ret != nullptr);
-  return ret;
+  auto found = _tensor_reg->find(ind);
+  assert(found != _tensor_reg->end());
+  return found->second;
 }
 
-std::unique_ptr<ITensorManager> TensorBuilder::releaseTensorManager(void)
+std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 {
   return std::move(_static_tensor_mgr);
+}
+
+std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
+{
+  return std::move(_dynamic_tensor_mgr);
 }
 
 } // namespace cpu

@@ -109,6 +109,8 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
   _options = fetchCompilerOptionsFromGlobalConfig(*primary_subgraph());
 }
 
+void Compiler::enableToFp16() { _options.fp16_enable = true; }
+
 void Compiler::checkProfilerConditions()
 {
   if (!_options.he_scheduler)
@@ -120,8 +122,6 @@ void Compiler::checkProfilerConditions()
 
 void Compiler::compile(void)
 {
-  _state = State::STARTED;
-
   {
     VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;
@@ -160,6 +160,7 @@ void Compiler::compile(void)
     _executors = std::make_shared<exec::ExecutorMap>();
     _executors->insert(std::make_pair(
         ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
+    _state = State::COMPILED;
     return;
   }
 
@@ -187,16 +188,6 @@ void Compiler::compile(void)
       Fp32ToFp16Converter(*lowered_subgs[index]).run();
     }
 
-    // NOTE. Current datas' reference of constant operands is 2 because of
-    // original graph and lowered graph.
-    // To delete cached data, this doing should be done for the original graph
-    // at this line and then once again for the lowered graph in ExecutorFactory
-    // TODO. Delete this code as code for disconnecting btw Graph and nnfw session lands
-    if (_options.delete_cached_data)
-    {
-      CachedDataDeleter(graph.operands()).run();
-    }
-
     graph.setSubgraphs(nullptr);
   });
 
@@ -205,8 +196,6 @@ void Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-
-  _state = State::LOWERED;
 
   _executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)

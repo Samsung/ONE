@@ -9,3 +9,5 @@ add_custom_command(OUTPUT ${tf2tfliteV2_BIN}
   )
 
 add_custom_target(tf2tfliteV2 ALL DEPENDS ${tf2tfliteV2_BIN})
+
+install(FILES ${tf2tfliteV2_BIN} DESTINATION bin)

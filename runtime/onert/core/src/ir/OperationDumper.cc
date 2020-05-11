@@ -283,6 +283,14 @@ void OperationDumper::visit(const LSTM &node)
                << node.getInputs().at(LSTM::Output::OUTPUT).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Log &node)
+{
+  VERBOSE(LIR) << "* Log" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Log::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const LogicalAnd &node)
 {
   VERBOSE(LIR) << "* LogicalAnd" << std::endl;
@@ -383,6 +391,14 @@ void OperationDumper::visit(const Permute &node)
 
   VERBOSE(LIR) << "* Permute(" + permute_type + ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Pow &node)
+{
+  VERBOSE(LIR) << "* Pow" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Pow::Input::LHS).value() << ", "
+               << node.getInputs().at(Pow::Input::RHS).value() << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
@@ -490,6 +506,14 @@ void OperationDumper::visit(const RNN &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(RNN::Output::OUTPUT).value()
                << ") Hidden State" << node.getInputs().at(RNN::Output::HIDDEN_STATE_OUT).value()
                << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Round &node)
+{
+  VERBOSE(LIR) << "* Round" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Round::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
 void OperationDumper::visit(const RSQRT &node)

@@ -219,7 +219,7 @@ void LoweredGraph::makeOpSequences(
 
         // The layout of each backend should be set at another place
         // TODO Change setting layout of each backend at another place
-        auto backend_layout = backend->config()->SupportLayout(node, frontend_layout);
+        auto backend_layout = backend->config()->supportLayout(node, frontend_layout);
 
         for (auto operand : node.getInputs())
         {

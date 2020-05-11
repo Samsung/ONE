@@ -15,7 +15,6 @@ option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
 option(BUILD_ONERT "Build onert" ON)
 option(BUILD_LOGGING "Build logging runtime" ON)
-option(BUILD_PURE_ARM_COMPUTE "Build pure_arm_compute runtime" OFF)
 CMAKE_DEPENDENT_OPTION(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test"
                        # Set BUILD_RUNTIME_NNAPI_TEST as ON
                        #   if CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2
@@ -74,6 +73,7 @@ option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" 
 option(BUILD_GTEST "Download and build Google Test" ON)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
+option(PROFILE_RUY "Enable ruy library profiling" OFF)
 
 #
 ## Default sample build configuration

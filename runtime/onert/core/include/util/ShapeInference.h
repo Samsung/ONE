@@ -40,7 +40,7 @@ Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
                          ir::Layout layout = ir::Layout::NHWC);
 
-Shapes inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
+ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
 
 Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
                          ir::Layout layout = ir::Layout::NHWC);
@@ -78,8 +78,22 @@ public:
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
+  // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Add &op);
+  void visit(const ir::operation::Concat &op);
+  // TODO write op starting from D
+  // TODO write op starting from E
+  // TODO write op starting from F
+  // TODO write op starting from G
+  // TODO write op starting from L
+  // TODO write op starting from M
+  // TODO write op starting from N
+  // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
+  // TODO write op starting from S
+  // TODO write op starting from T
+  // TODO write op starting from U
+  // TODO write op starting from Z
 
 private:
   ir::Operands &_operands;

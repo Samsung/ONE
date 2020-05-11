@@ -62,7 +62,8 @@ void prepareDepthwiseConv(ExecEnv *env, const ir::Operation &node)
     const auto infered_output_shapes = shape_inference::inferDepthwiseConv2DShape(
         in_tensor->tensorInfo().shape(), kernel_tensor->tensorInfo().shape(),
         depth_conv_node.param());
-    env->allocateIfNeeded(out_index, {infered_output_shapes[0], output_info.typeInfo()});
+    env->allocateIfNeeded(out_index, ir::OperandInfo::createStaticInfo(infered_output_shapes[0],
+                                                                       output_info.typeInfo()));
   }
   else
   {

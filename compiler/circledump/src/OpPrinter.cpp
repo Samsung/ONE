@@ -60,6 +60,21 @@ public:
   }
 };
 
+class CastPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto cast_params = op->builtin_options_as_CastOptions())
+    {
+      os << "    ";
+      os << "in_data_type(" << circle::EnumNameTensorType(cast_params->in_data_type()) << ") ";
+      os << "out_data_type(" << circle::EnumNameTensorType(cast_params->out_data_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class Conv2DPrinter : public OpPrinter
 {
 public:
@@ -125,6 +140,20 @@ public:
          << EnumNameActivationFunctionType(concatenation_params->fused_activation_function())
          << ") ";
       os << "Axis(" << concatenation_params->axis() << ")";
+      os << std::endl;
+    }
+  }
+};
+
+class ReducerPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto reducer_params = op->builtin_options_as_ReducerOptions())
+    {
+      os << "    ";
+      os << "keep_dims(" << reducer_params->keep_dims() << ") ";
       os << std::endl;
     }
   }
@@ -258,6 +287,24 @@ public:
   }
 };
 
+class StridedSlicePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *strided_slice_params = op->builtin_options_as_StridedSliceOptions())
+    {
+      os << "    ";
+      os << "begin_mask(" << strided_slice_params->begin_mask() << ") ";
+      os << "end_mask(" << strided_slice_params->end_mask() << ") ";
+      os << "ellipsis_mask(" << strided_slice_params->ellipsis_mask() << ") ";
+      os << "new_axis_mask(" << strided_slice_params->new_axis_mask() << ") ";
+      os << "shrink_axis_mask(" << strided_slice_params->shrink_axis_mask() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class SubPrinter : public OpPrinter
 {
 public:
@@ -318,6 +365,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
@@ -325,14 +373,18 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for Pad
   // There is no Option for ReLU and ReLU6
+  _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
-  _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SIN
+  _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
+  // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }

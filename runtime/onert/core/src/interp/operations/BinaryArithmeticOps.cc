@@ -67,7 +67,8 @@ template <typename node_type> void prepareAdd(ExecEnv *env, const ir::Operation 
       throw std::runtime_error{"Interp(Add): Fail to brodcasting"};
     }
 
-    auto output_info = ir::OperandInfo(out_shape, lhs_tensor->tensorInfo().typeInfo());
+    auto output_info =
+        ir::OperandInfo::createStaticInfo(out_shape, lhs_tensor->tensorInfo().typeInfo());
     // We can handle already allocated (ex. model output)
     env->allocateIfNeeded(out_index, output_info);
   }
