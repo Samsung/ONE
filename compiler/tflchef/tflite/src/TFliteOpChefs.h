@@ -43,6 +43,7 @@
 #include "Op/Mean.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"
+#include "Op/ReduceProd.h"
 #include "Op/ReLU.h"
 #include "Op/ReLU6.h"
 #include "Op/Reshape.h"

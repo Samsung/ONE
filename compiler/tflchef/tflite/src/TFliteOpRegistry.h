@@ -80,6 +80,7 @@ private:
     REG_TFL_OP(MEAN, TFliteOpMean);
     REG_TFL_OP(PACK, TFliteOpPack);
     REG_TFL_OP(PAD, TFliteOpPad);
+    REG_TFL_OP(REDUCE_PROD, TFliteOpReduceProd);
     REG_TFL_OP(RELU, TFliteOpReLU);
     REG_TFL_OP(RELU6, TFliteOpReLU6);
     REG_TFL_OP(RESHAPE, TFliteOpReshape);

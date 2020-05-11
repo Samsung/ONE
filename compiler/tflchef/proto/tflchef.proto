@@ -284,6 +284,8 @@ message Operation {
   optional StridedSliceOptions strided_slice_options = 137;
   optional SquaredDifferenceOptions squared_difference_options = 138;
   optional FillOptions fill_options = 139;
+  // optional GreaterOptions greater_options = 140;
+  optional ReducerOptions reduce_prod_options = 141;
 }
 
 // For additional subgraphs
