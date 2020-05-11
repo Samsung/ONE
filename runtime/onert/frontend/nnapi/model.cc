@@ -410,10 +410,7 @@ int ANeuralNetworksModel_relaxComputationFloat32toFloat16(ANeuralNetworksModel *
     return ANEURALNETWORKS_BAD_STATE;
   }
 
-  if (allow && !model->allowFloat32toFloat16())
-  {
-    return ANEURALNETWORKS_BAD_STATE;
-  }
+  model->allowFloat32toFloat16(allow);
 
   return ANEURALNETWORKS_NO_ERROR;
 }

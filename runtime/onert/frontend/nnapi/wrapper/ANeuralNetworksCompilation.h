@@ -17,6 +17,8 @@
 #ifndef __COMPILATION_H__
 #define __COMPILATION_H__
 
+#include "ANeuralNetworksModel.h"
+
 #include "compiler/Compiler.h"
 #include "ir/Graph.h"
 #include "ir/Subgraphs.h"
@@ -25,7 +27,7 @@
 struct ANeuralNetworksCompilation
 {
 public:
-  ANeuralNetworksCompilation(const std::shared_ptr<onert::ir::Subgraphs> &subgs) noexcept;
+  ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept;
 
 public:
   bool finish() noexcept;
