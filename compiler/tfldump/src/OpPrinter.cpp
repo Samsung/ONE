@@ -145,6 +145,20 @@ public:
   }
 };
 
+class ReducerPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto reducer_params = op->builtin_options_as_ReducerOptions())
+    {
+      os << "    ";
+      os << "keep_dims(" << reducer_params->keep_dims() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class ReshapePrinter : public OpPrinter
 {
 public:
@@ -379,6 +393,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
+  _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SIN
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
