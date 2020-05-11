@@ -47,6 +47,7 @@
 #include "kernel/ReshapeLayer.h"
 #include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
+#include "kernel/SelectLayer.h"
 #include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
 #include "kernel/SliceLayer.h"
@@ -815,6 +816,25 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
 
   fn->configure(input_alloc, output_alloc, kernel::ReduceType::kMin, node.param().axes,
                 node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Select &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto condition_alloc = _tensor_builder->at(condition_index).get();
+  auto true_alloc = _tensor_builder->at(true_index).get();
+  auto false_alloc = _tensor_builder->at(false_index).get();
+
+  auto fn = std::make_unique<kernel::SelectLayer>();
+
+  fn->configure(condition_alloc, true_alloc, false_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

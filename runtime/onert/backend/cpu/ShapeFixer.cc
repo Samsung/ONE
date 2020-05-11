@@ -163,6 +163,8 @@ void ShapeFixer::visit(const ir::operation::ReduceMax &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceMin &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Select &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Slice &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::StridedSlice &) { /* DO NOTHING */}

@@ -1046,6 +1046,21 @@ OperationFactory::OperationFactory()
     return new operation::RSQRT{inputs, outputs};
   };
 
+  _map[ANEURALNETWORKS_SELECT] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Condition Tensor Index
+    //  1 -> Input X(true) Tensor Index
+    //  2 -> Input Y(false) Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+
+    return new operation::Select{inputs, outputs};
+  };
+
   // ANEURALNETWORKS_RSQRT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_RSQRT_EX
   _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];

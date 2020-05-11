@@ -1036,6 +1036,21 @@ void OperationValidator::visit(const ir::operation::Max &node)
   assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::Select &node)
+{
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  UNUSED_RELEASE(condition_index);
+  UNUSED_RELEASE(input_true_index);
+  UNUSED_RELEASE(input_false_index);
+  UNUSED_RELEASE(output_index);
+
+  assert(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
+}
+
 void OperationValidator::visit(const ir::operation::StridedSlice &node)
 {
   const auto output_index{node.getOutputs().at(0)};

@@ -34,6 +34,12 @@ GeneratedTests.reduce_prod*
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
+GeneratedTests.select_v1_2_five_dim
+GeneratedTests.select_v1_2_five_dim_quant8
+GeneratedTests.select_v1_2_one_dim
+GeneratedTests.select_v1_2_one_dim_quant8
+GeneratedTests.select_v1_2_two_dim
+GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.space_to_batch*
