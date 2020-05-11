@@ -1451,6 +1451,12 @@ public:
 
     return loco::NodeShape{*cond_graph_input->shape()};
   }
+
+  loco::NodeShape visit(const luci::CircleNoOp *node) final
+  {
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
+  }
 };
 
 } // namespace

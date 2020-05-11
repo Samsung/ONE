@@ -86,6 +86,7 @@
 #include "Nodes/CircleSplitOut.h"
 #include "Nodes/CircleSplitVOut.h"
 #include "Nodes/CircleWhileOut.h"
+#include "Nodes/CircleNoOp.h"
 
 namespace luci
 {

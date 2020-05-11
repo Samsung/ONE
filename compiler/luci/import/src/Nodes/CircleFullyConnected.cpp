@@ -39,7 +39,23 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
   auto *node = graph->nodes()->create<CircleFullyConnected>();
   node->input(inputs[0]);
   node->weights(inputs[1]);
-  node->bias(inputs[2]);
+
+  // If bias is NoOp, substitute it as zero const tensor.
+  if (dynamic_cast<luci::CircleNoOp *>(inputs[2]))
+  {
+    auto const_node = graph->nodes()->create<luci::CircleConst>();
+    const_node->dtype(loco::DataType::FLOAT32);
+    const_node->rank(1);
+    const_node->dim(0) = 1;
+    const_node->size<loco::DataType::FLOAT32>(1);
+    const_node->at<loco::DataType::FLOAT32>(0) = 0;
+
+    node->bias(const_node);
+  }
+  else
+  {
+    node->bias(inputs[2]);
+  }
 
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));

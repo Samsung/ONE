@@ -376,6 +376,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
     return cond_graph_input->dtype();
   }
+
+  loco::DataType visit(const luci::CircleNoOp *node) final { return node->dtype(); }
 };
 
 } // namespace

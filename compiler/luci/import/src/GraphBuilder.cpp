@@ -30,7 +30,16 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
   {
-    input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+    if (input_tensor_index >= 0)
+    {
+      input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+    }
+    else
+    {
+      // If there is no tensor, insert NoOp. This NoOp will be handled in each nodes.
+      auto noOp = context->graph()->nodes()->create<luci::CircleNoOp>();
+      input_nodes.push_back(noOp);
+    }
   }
 
   CircleNode *node = build_node(op, input_nodes, context->graph());
