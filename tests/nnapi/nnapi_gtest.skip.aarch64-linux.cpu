@@ -39,7 +39,6 @@ GeneratedTests.lstm*
 GeneratedTests.maximum_broadcast_quant*
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple_quant*
-GeneratedTests.mean*
 GeneratedTests.minimum_broadcast_quant*
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant*

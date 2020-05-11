@@ -183,6 +183,8 @@ void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Mean &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

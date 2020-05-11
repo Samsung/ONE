@@ -158,6 +158,9 @@ public:
                             num_resolved_axis, _temp_index.data(), reducer, output_data);
   }
 
+  inline int32_t *resolved_axis_data(void) { return _resolved_axis.data(); }
+  inline int32_t *temp_index_data(void) { return _temp_index.data(); }
+
 private:
   std::vector<int> _temp_index;
   std::vector<int> _resolved_axis;

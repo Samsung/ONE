@@ -48,6 +48,7 @@ GeneratedTests.lstm3_state2
 GeneratedTests.lstm3_state3
 GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
+GeneratedTests.mean*
 GeneratedTests.neg
 GeneratedTests.not_equal_boolean
 GeneratedTests.reduce_max_2D_int32_nnfw
