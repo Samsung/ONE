@@ -100,6 +100,9 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
 // Shape inference
 //
 
+// Define shape calculation for operations. List them in alphabetic order.
+// Remove TODO when the function name matching the alphabet is added
+
 Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 {
   return {broadcastShapes(lhs_shape, rhs_shape)};
@@ -135,17 +138,6 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
   for (const auto &in_shape : in_shapes)
     out_shape.dim(concat_axis) += in_shape.dim(concat_axis);
   return out_shape;
-}
-
-Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                         const ir::Layout layout)
-{
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
-                                                  param.padding, param.stride);
-  // Pooling don't change number of channels and batch size
-  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
 }
 
 Shapes inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
@@ -195,6 +187,28 @@ Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_
 
   return {{ir::Shape({static_cast<int32_t>(batch_size), num_units})}};
 }
+
+// TODO write op starting from G
+// TODO write op starting from L
+
+Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
+                         const ir::Layout layout)
+{
+  assert(layout == ir::Layout::NHWC);
+  auto ifm_shape = in_shape.asFeature(layout);
+  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
+                                                  param.padding, param.stride);
+  // Pooling don't change number of channels and batch size
+  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
+}
+
+// TODO write op starting from N
+// TODO write op starting from P
+// TODO write op starting from R
+// TODO write op starting from S
+// TODO write op starting from T
+// TODO write op starting from U
+// TODO write op starting from Z
 
 /*
   StaticInferer

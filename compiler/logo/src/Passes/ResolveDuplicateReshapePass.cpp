@@ -61,7 +61,7 @@ bool is_duplicate_reshape(loco::Node *node)
  */
 void remap_input(loco::FixedReshape *reshape)
 {
-  auto input_reshape = dynamic_cast<loco::FixedReshape *>(reshape->input());
+  auto input_reshape = loco::must_cast<loco::FixedReshape *>(reshape->input());
 
   auto volume = [](loco::FixedReshape *node) {
     uint32_t vol = 1;
@@ -94,7 +94,7 @@ bool ResolveDuplicateReshapePass::run(loco::Graph *graph)
   {
     if (is_duplicate_reshape(node))
     {
-      auto node_as_reshape = dynamic_cast<loco::FixedReshape *>(node);
+      auto node_as_reshape = loco::must_cast<loco::FixedReshape *>(node);
 
       remap_input(node_as_reshape);
 

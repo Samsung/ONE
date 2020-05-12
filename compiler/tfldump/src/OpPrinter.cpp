@@ -430,6 +430,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
   _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[tflite::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }

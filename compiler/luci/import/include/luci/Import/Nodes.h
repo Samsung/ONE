@@ -52,6 +52,7 @@
 #include "Nodes/CircleSpaceToBatchND.h"
 #include "Nodes/CircleSplit.h"
 #include "Nodes/CircleSplitV.h"
+#include "Nodes/CircleSquare.h"
 #include "Nodes/CircleSquaredDifference.h"
 #include "Nodes/CircleStridedSlice.h"
 #include "Nodes/CircleSub.h"

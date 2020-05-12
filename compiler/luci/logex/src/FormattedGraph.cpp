@@ -218,6 +218,7 @@ private:
   IMPLEMENT(luci::CircleSplit)
   IMPLEMENT(luci::CircleSplitV)
   IMPLEMENT(luci::CircleSqrt)
+  IMPLEMENT(luci::CircleSquare)
   IMPLEMENT(luci::CircleSquaredDifference)
   IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
@@ -649,6 +650,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitV *node, locop::No
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSqrt *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSquare *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);

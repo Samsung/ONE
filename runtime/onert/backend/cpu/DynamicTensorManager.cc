@@ -29,6 +29,14 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
   // DO NOTHING
 }
 
+void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
+                                       const ir::OperandInfo &tensor_info)
+{
+  assert(_tensors->find(ind) == _tensors->end());
+  auto tensor = std::make_shared<operand::Tensor>(tensor_info);
+  (*_tensors)[ind] = tensor;
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert
