@@ -52,6 +52,15 @@ public:
    *        kernel execution-time.
    */
   virtual bool is_dynamic() const { throw std::runtime_error("not yet implemented"); }
+
+  // set dim when this tensor is dynamic
+  virtual void dimension(size_t /* index */, size_t /* dim */)
+  {
+    throw std::runtime_error("not yet implemented");
+  }
+
+  // set the rank when this tensor is dynamic.
+  virtual void num_dimensions(size_t /*rank*/) { throw std::runtime_error("not yet implemented"); }
 };
 
 } // namespace backend

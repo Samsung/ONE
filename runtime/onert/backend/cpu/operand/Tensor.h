@@ -109,6 +109,22 @@ public:
     }
   }
 
+  void dimension(size_t index, size_t dim) override
+  {
+    if (!(index < static_cast<size_t>(_info.shape().rank())))
+    {
+      throw std::runtime_error("index should be less than rank");
+    }
+
+    _info.shape().dim(index) = dim;
+  }
+
+  void num_dimensions(size_t rank) override
+  {
+    ir::Shape new_shape(rank); // all dims are initialized to 0 (invalid dim)
+    _info.shape(new_shape);
+  };
+
 private:
   ir::OperandInfo _info;
   uint8_t *_buffer;

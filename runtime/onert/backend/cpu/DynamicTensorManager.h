@@ -37,9 +37,15 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
+  void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
 
 private:
+  /**
+   * @brief Memory manager for dynamic tensor.
+   * @todo  DynamicMemoryManager is not optimized. Optimized one is needed
+   */
+  std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
 
