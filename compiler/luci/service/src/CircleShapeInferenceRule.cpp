@@ -1020,6 +1020,13 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSquare *node) final
+  {
+    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSquaredDifference *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
