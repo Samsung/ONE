@@ -49,7 +49,8 @@ public:
                       const uint32_t *outputs) noexcept;
   bool addModelInput(uint32_t index) noexcept;
   bool addModelOutput(uint32_t index) noexcept;
-  bool allowFloat32toFloat16() noexcept;
+  void allowFloat32toFloat16(bool allow) noexcept;
+  bool allowedToFp16() const noexcept { return _allowFloat32toFloat16; }
   bool finish() noexcept;
 
   onert::ir::Graph &deref(void) { return *_graph; }
@@ -58,7 +59,7 @@ public:
   size_t operandSize(uint32_t index) noexcept;
   bool isUsageSet(uint32_t index) noexcept;
   bool isOperationOutput(uint32_t index) noexcept;
-  void release(std::shared_ptr<onert::ir::Subgraphs> &subgs);
+  std::shared_ptr<onert::ir::Subgraphs> getSubGraphs() const;
 
 private:
   void setOptionalOperand(const onert::ir::OperandIndex idx);
@@ -68,6 +69,7 @@ private:
   std::shared_ptr<onert::ir::Graph> _graph;
   std::unordered_set<onert::ir::OperandIndex> _optional_operands;
   std::vector<OperandUsage> _operand_usages;
+  bool _allowFloat32toFloat16;
 };
 
 #endif // __MODEL_H__

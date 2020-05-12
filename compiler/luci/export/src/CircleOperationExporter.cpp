@@ -74,6 +74,7 @@ public:
   void visit(luci::CircleMean *) final;
   void visit(luci::CircleMul *) final;
   void visit(luci::CirclePack *) final;
+  void visit(luci::CircleReduceProd *) final;
   void visit(luci::CirclePad *) final;
   void visit(luci::CircleRelu *) final;
   void visit(luci::CircleRelu6 *) final;
@@ -84,6 +85,7 @@ public:
   void visit(luci::CircleSpaceToBatchND *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
+  void visit(luci::CircleStridedSlice *) final;
   void visit(luci::CircleSub *) final;
   void visit(luci::CircleTanh *) final;
   void visit(luci::CircleTile *) final;
@@ -552,6 +554,20 @@ void OperationExporter::visit(luci::CirclePad *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleReduceProd *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_PROD);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->reduction_indices())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateReducerOptions(builder, node->keep_dims());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReducerOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleRelu *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RELU);
@@ -669,6 +685,22 @@ void OperationExporter::visit(luci::CircleSquaredDifference *node)
   auto options = CreateSquaredDifferenceOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SquaredDifferenceOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleStridedSlice *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_STRIDED_SLICE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->begin()),
+                                  get_tensor_index(node->end()), get_tensor_index(node->strides())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateStridedSliceOptions(builder, node->begin_mask(), node->end_mask(),
+                                           node->ellipsis_mask(), node->new_axis_mask(),
+                                           node->shrink_axis_mask());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_StridedSliceOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

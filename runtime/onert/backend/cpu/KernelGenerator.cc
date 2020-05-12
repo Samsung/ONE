@@ -42,6 +42,7 @@
 #include "kernel/PackLayer.h"
 #include "kernel/PadLayer.h"
 #include "kernel/PermuteLayer.h"
+#include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/RoundLayer.h"
@@ -993,6 +994,23 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::ArgMinMaxLayer>();
 
   fn->configure(input_alloc, output_alloc, axis, /* is_arg_max */ true);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Pow &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::Pow::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::Pow::RHS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
+  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::PowLayer>();
+
+  fn->configure(lhs_alloc, rhs_alloc, ir::Activation::NONE, output_alloc);
 
   _return_fn = std::move(fn);
 }

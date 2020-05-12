@@ -66,6 +66,7 @@ public:
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Permute &node) override;
+  void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::ReduceMax &) override;
   void visit(const operation::ReduceMin &) override;
@@ -77,6 +78,7 @@ public:
   void visit(const operation::Reshape &node) override;
   void visit(const operation::ResizeBilinear &) override;
   void visit(const operation::RNN &) override;
+  void visit(const operation::Round &) override;
   void visit(const operation::RSQRT &) override;
   void visit(const operation::Softmax &node) override;
   void visit(const operation::SpaceToDepth &) override;

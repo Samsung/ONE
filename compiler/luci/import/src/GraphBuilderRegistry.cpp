@@ -27,43 +27,46 @@ GraphBuilderRegistry::GraphBuilderRegistry()
 {
 #define CIRCLE_NODE(OPCODE, CLASS) add(circle::BuiltinOperator_##OPCODE, std::make_unique<CLASS>());
 
-  CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                           // 101
-  CIRCLE_NODE(ADD, CircleAddGraphBuilder);                           // 0
-  CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                    // 56
-  CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);     // 1
-  CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);  // 37
-  CIRCLE_NODE(CAST, CircleCastGraphBuilder);                         // 53
-  CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                     // 32
-  CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);       // 2
-  CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                    // 3
-  CIRCLE_NODE(COS, CircleCosGraphBuilder);                           // 108
-  CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder); // 4
-  CIRCLE_NODE(DIV, CircleDivGraphBuilder);                           // 42
-  CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                       // 71
-  CIRCLE_NODE(EXP, CircleExpGraphBuilder);                           // 47
-  CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);    // 9
-  CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                     // 36
-  CIRCLE_NODE(IF, CircleIfGraphBuilder);                             // 118
-  CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);            // 87
-  CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);              // 84
-  CIRCLE_NODE(LOGISTIC, CircleLogisticGraphBuilder);                 // 14
-  CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);             // 17
-  CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                         // 40
-  CIRCLE_NODE(MUL, CircleMulGraphBuilder);                           // 18
-  CIRCLE_NODE(PACK, CirclePackGraphBuilder);                         // 83
-  CIRCLE_NODE(PAD, CirclePadGraphBuilder);                           // 34
-  CIRCLE_NODE(RELU, CircleReluGraphBuilder);                         // 19
-  CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                   // 22
-  CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                       // 76
-  CIRCLE_NODE(SIN, CircleSinGraphBuilder);                           // 66
-  CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                   // 25
-  CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);  // 38
-  CIRCLE_NODE(SUB, CircleSubGraphBuilder);                           // 41
-  CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                         // 28
-  CIRCLE_NODE(TILE, CircleTileGraphBuilder);                         // 69
-  CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);               // 39
-  CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                     // 88
-  CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                       // 119
+  CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                              // 101
+  CIRCLE_NODE(ADD, CircleAddGraphBuilder);                              // 0
+  CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                       // 56
+  CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);        // 1
+  CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);     // 37
+  CIRCLE_NODE(CAST, CircleCastGraphBuilder);                            // 53
+  CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                        // 32
+  CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);          // 2
+  CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                       // 3
+  CIRCLE_NODE(COS, CircleCosGraphBuilder);                              // 108
+  CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);    // 4
+  CIRCLE_NODE(DIV, CircleDivGraphBuilder);                              // 42
+  CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                          // 71
+  CIRCLE_NODE(EXP, CircleExpGraphBuilder);                              // 47
+  CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);       // 9
+  CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                        // 36
+  CIRCLE_NODE(IF, CircleIfGraphBuilder);                                // 118
+  CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);               // 87
+  CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);                 // 84
+  CIRCLE_NODE(LOGISTIC, CircleLogisticGraphBuilder);                    // 14
+  CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                // 17
+  CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                            // 40
+  CIRCLE_NODE(MUL, CircleMulGraphBuilder);                              // 18
+  CIRCLE_NODE(PACK, CirclePackGraphBuilder);                            // 83
+  CIRCLE_NODE(PAD, CirclePadGraphBuilder);                              // 34
+  CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);               // 81
+  CIRCLE_NODE(RELU, CircleReluGraphBuilder);                            // 19
+  CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                      // 22
+  CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                          // 76
+  CIRCLE_NODE(SIN, CircleSinGraphBuilder);                              // 66
+  CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                      // 25
+  CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);     // 38
+  CIRCLE_NODE(SQUARED_DIFFERENCE, CircleSquaredDifferenceGraphBuilder); // 99
+  CIRCLE_NODE(STRIDED_SLICE, CircleStridedSliceGraphBuilder);           // 45
+  CIRCLE_NODE(SUB, CircleSubGraphBuilder);                              // 41
+  CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                            // 28
+  CIRCLE_NODE(TILE, CircleTileGraphBuilder);                            // 69
+  CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                  // 39
+  CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                        // 88
+  CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                          // 119
 
 #undef CIRCLE_NODE
 
@@ -89,7 +92,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
   // BuiltinOperator_SQUEEZE = 43,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
-  // BuiltinOperator_STRIDED_SLICE = 45,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_TOPK_V2 = 48,
   // BuiltinOperator_SPLIT = 49,
@@ -119,7 +121,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_POW = 78,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
-  // BuiltinOperator_REDUCE_PROD = 81,
   // BuiltinOperator_REDUCE_MAX = 82,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_LOGICAL_AND = 86,
@@ -133,7 +134,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_RANGE = 96,
   // BuiltinOperator_RESIZE_NEAREST_NEIGHBOR = 97,
   // BuiltinOperator_LEAKY_RELU = 98,
-  // BuiltinOperator_SQUARED_DIFFERENCE = 99,
   // BuiltinOperator_MIRROR_PAD = 100,
   // BuiltinOperator_SPLIT_V = 102,
   // BuiltinOperator_UNIQUE = 103,

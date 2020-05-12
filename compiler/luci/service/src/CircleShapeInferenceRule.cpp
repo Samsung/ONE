@@ -17,6 +17,8 @@
 #include "luci/Service/CircleShapeInferenceRule.h"
 #include "Check.h"
 
+#include "ShapeInfer_StridedSlice.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -686,7 +688,7 @@ public:
       output_shape.rank(input_shape.rank() - reduce_cnt);
       for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
         if (check_reduce.at(i) == false)
-          output_shape.dim(j++) = i;
+          output_shape.dim(j++) = input_shape.dim(i);
     }
 
     return loco::NodeShape{output_shape};
@@ -775,6 +777,62 @@ public:
       value += paddings->at<S32>(idx + 0); // left
       value += paddings->at<S32>(idx + 1); // right
       output_shape.dim(ni) = value;
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleReduceProd *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto reduction_indices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+
+    { // Exceptions
+      // TODO support non-const case
+      LUCI_ASSERT(reduction_indices, "Only support constant reduction_indices");
+      // TODO support other data type
+      LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
+    }
+
+    std::vector<int32_t> reduction_values;
+
+    for (uint32_t i = 0; i < reduction_indices->size<S32>(); ++i)
+    {
+      int32_t axis = reduction_indices->at<S32>(i);
+      if (axis < 0)
+        axis += input_shape.rank();
+      if (not(0 <= axis and axis < static_cast<int32_t>(input_shape.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for REDUCE_PROD", oops::to_uint32(axis));
+      reduction_values.push_back(axis);
+    }
+
+    loco::TensorShape output_shape;
+
+    if (node->keep_dims())
+    {
+      output_shape.rank(input_shape.rank());
+      for (uint32_t i = 0; i < input_shape.rank(); ++i)
+        output_shape.dim(i) = input_shape.dim(i);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        output_shape.dim(reduction_values.at(i)) = 1;
+    }
+    else
+    {
+      std::vector<bool> check_reduce(input_shape.rank(), false);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        check_reduce.at(reduction_values.at(i)) = true;
+
+      uint32_t reduce_cnt = 0;
+      for (uint32_t i = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i))
+          ++reduce_cnt;
+
+      output_shape.rank(input_shape.rank() - reduce_cnt);
+      for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i) == false)
+          output_shape.dim(j++) = input_shape.dim(i);
     }
 
     return loco::NodeShape{output_shape};
@@ -964,6 +1022,12 @@ public:
     auto output_shape = broadcast_shape(x_shape, y_shape);
 
     return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleStridedSlice *node) final
+  {
+    loco::TensorShape shape = infer_output_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleSub *node) final
