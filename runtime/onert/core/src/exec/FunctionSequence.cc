@@ -43,27 +43,6 @@ void FunctionSequence::runSync()
   }
 }
 
-void FunctionSequence::run(const ir::OpSequence *op_seq, const ir::Operands &operands,
-                           backend::IDynamicTensorManager *dynamic_tensor_manager,
-                           std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
-{
-  if (op_seq->size() != _functions.size())
-    throw std::runtime_error("operation and functions should be mapped one by one");
-
-  onert::shape_inference::DynamicInferer dynamic_inferer(operands, dynamic_tensor_manager,
-                                                         tensor_registry);
-  auto op_iter = op_seq->begin();
-  for (const auto &function : _functions)
-  {
-    // set shape of output and allocate memory when needed
-    auto *op = op_iter->node;
-    op->accept(dynamic_inferer);
-
-    // run kernel
-    function->run();
-  }
-}
-
 void FunctionSequence::prepare()
 {
   for (const auto &function : _functions)
@@ -82,6 +61,23 @@ void FunctionSequence::iterate(const std::function<void(IFunction &)> &fn)
   for (const auto &func : _functions)
   {
     fn(*func);
+  }
+}
+
+void FunctionSequenceForDynamicBackend::run()
+{
+  if (_op_seq.size() != _functions.size())
+    throw std::runtime_error("operation and functions should be mapped one by one");
+
+  auto op_iter = _op_seq.begin();
+  for (const auto &function : _functions)
+  {
+    // set shape of output and allocate memory when needed
+    auto *op = op_iter->node;
+    op->accept(*_dyn_shape_inferer.get());
+
+    // run kernel
+    function->run();
   }
 }
 

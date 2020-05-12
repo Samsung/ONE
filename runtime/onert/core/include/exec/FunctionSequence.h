@@ -22,10 +22,8 @@
 #include <functional>
 
 #include "exec/IFunction.h"
-#include "ir/Operands.h"
-#include "ir/OpSequence.h"
-#include "backend/ITensorRegistry.h"
-#include "backend/IDynamicTensorManager.h"
+#include "util/ShapeInference.h"
+
 #include <memory>
 
 namespace onert
@@ -53,22 +51,8 @@ private:
 public:
   virtual ~FunctionSequence() = default;
 
-  /**
-   * @brief Runs OpSequence for backends supporting static tensor only
-   */
   void run() override;
-
   void runSync() override;
-
-  /**
-   * @brief Runs OpSequence for backends supporting static and dynamic tensor
-   *        This will perform shape inference and memory allocation
-   *        when output tensor is a dynamic tensor
-   */
-  void run(const ir::OpSequence *op_seq, const ir::Operands &operands,
-           backend::IDynamicTensorManager *tensor_manager,
-           std::shared_ptr<backend::ITensorRegistry> &tensor_registry);
-
   void prepare() override;
 
   /**
@@ -80,8 +64,30 @@ public:
 
   void iterate(const std::function<void(IFunction &)> &fn);
 
-private:
+protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
+};
+
+/**
+ * @brief Function sequence used for backend that supports dynamic tensor
+ *        Such backend cannot use class FunctionSequence but use this class
+ */
+class FunctionSequenceForDynamicBackend : public FunctionSequence
+{
+public:
+  FunctionSequenceForDynamicBackend(
+      const ir::OpSequence &op_seq,
+      std::unique_ptr<shape_inference::DynamicInferer> dyn_shape_inferer)
+      : _op_seq(op_seq), _dyn_shape_inferer(std::move(dyn_shape_inferer))
+  { /* empty */
+  }
+
+  void run() override;
+
+private:
+  const ir::OpSequence &_op_seq;
+  /// @brief shape inferer at execution time
+  std::unique_ptr<shape_inference::DynamicInferer> _dyn_shape_inferer;
 };
 
 } // namespace exec
