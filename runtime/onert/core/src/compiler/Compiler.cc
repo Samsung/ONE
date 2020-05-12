@@ -21,6 +21,7 @@
 #include "OperationValidator.h"
 #include "Fp32ToFp16Converter.h"
 
+#include <backend/controlflow/Config.h>
 #include "compiler/BackendManager.h"
 #include "compiler/IScheduler.h"
 #include "compiler/ManualScheduler.h"
@@ -41,11 +42,29 @@ namespace onert
 namespace compiler
 {
 
+std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
+{
+  std::set<ir::OpCode> cf_op_codes;
+  graph.operations().iterate(
+      [&](const onert::ir::OperationIndex &, const onert::ir::Operation &node) {
+        if (node.opcode() == ir::OpCode::While)
+        {
+          cf_op_codes.insert(ir::OpCode::While);
+        }
+      });
+  return cf_op_codes;
+}
+
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
 {
+  const auto cf_ops = getControlFlowOp(graph);
   CompilerOptions options;
 
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  if (cf_ops.size() != 0)
+  {
+    options.backend_list.emplace_back(backend::controlflow::Config::ID);
+  }
 
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
@@ -75,6 +94,11 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   }
 #include "ir/Operations.lst"
 #undef OP
+
+    for (auto cf_op : cf_ops)
+    {
+      ms_options.opcode_to_backend[cf_op] = backend::controlflow::Config::ID;
+    }
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
