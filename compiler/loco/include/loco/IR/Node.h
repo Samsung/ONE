@@ -158,6 +158,18 @@ template <typename T> T must_cast(Node *node)
   return cast_node;
 }
 
+template <typename T> T must_cast(const Node *node)
+{
+  auto cast_node = dynamic_cast<T>(node);
+  if (cast_node == nullptr)
+  {
+    std::string msg = "loco::must_cast() failed to cast: ";
+    msg += typeid(T).name();
+    throw std::invalid_argument(msg.c_str());
+  }
+  return cast_node;
+}
+
 } // namespace loco
 
 #endif // __LOCO_IR_NODE_H__
