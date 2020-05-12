@@ -20,16 +20,15 @@
 
 #include <gtest/gtest.h>
 
-TEST(CircleGatherTest, constructor)
-{
+TEST(CircleOneHotTest, constructor) {
   luci::CircleOneHot one_hot_node;
 
   ASSERT_EQ(one_hot_node.dialect(), luci::CircleDialect::get());
   ASSERT_EQ(one_hot_node.opcode(), luci::CircleOpcode::ONE_HOT);
 
-  ASSERT_EQ(one_hot_node.indices(), nullptr);
-  ASSERT_EQ(one_hot_node.depth(), nullptr);
-  ASSERT_EQ(one_hot_node.on_value(), nullptr);
-  ASSERT_EQ(one_hot_node.off_value(), nullptr);
-  ASSERT_EQ(one_hot_node.axis(), -1);
+  ASSERT_EQ(nullptr, one_hot_node.indices());
+  ASSERT_EQ(nullptr, one_hot_node.depth());
+  ASSERT_EQ(nullptr, one_hot_node.on_value());
+  ASSERT_EQ(nullptr, one_hot_node.off_value());
+  ASSERT_EQ(-1, one_hot_node.axis());
 }

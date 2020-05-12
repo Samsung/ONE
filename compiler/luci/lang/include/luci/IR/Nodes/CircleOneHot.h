@@ -23,14 +23,13 @@
 #include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/LuciNodeMixins.h"
 
-namespace luci
-{
+namespace luci {
 
 /**
  * @brief ONEHOT in Circle
  */
-class CircleOneHot final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::ONE_HOT>>
-{
+class CircleOneHot final
+    : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::ONE_HOT>> {
 public:
   loco::Node *indices(void) const { return at(0)->node(); }
   void indices(loco::Node *node) { at(0)->node(node); }
@@ -40,10 +39,9 @@ public:
 
   loco::Node *on_value(void) const { return at(2)->node(); }
   void on_value(loco::Node *node) { at(2)->node(node); }
-  
+
   loco::Node *off_value(void) const { return at(3)->node(); }
   void off_value(loco::Node *node) { at(3)->node(node); }
-  
 
 public:
   int32_t axis(void) const { return _axis; }

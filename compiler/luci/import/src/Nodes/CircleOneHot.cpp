@@ -21,11 +21,9 @@
 #include <loco.h>
 #include <oops/UserExn.h>
 
-namespace luci
-{
+namespace luci {
 
-bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
-{
+bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const {
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
@@ -35,53 +33,23 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 1)
     return false;
   // validate -> build_node
-  // /home/local/CORP/kideuk.bang/workspaces/ONE/compiler/luci/import/src/Importer.cpp on line 109~115
+  // /home/local/CORP/kideuk.bang/workspaces/ONE/compiler/luci/import/src/Importer.cpp
+  // on line 109~115
   // Need to update below comment as correct code.
   // 1. dtype checking(output data type checking).(O)
   // 2. input indices data type checking.(O)
   // 3. axis value check & update.{consider -1}(X)
   // 4. depth, on_value, off_value shape checking.(X)
   // 5. matching of on_value datatype and off_value datatype.(X)
+  // TODO dtype check on (1, 2, 5).
 
-  /*
-  const auto *options = args.op.builtin_options.AsOneHotOptions();
-  const auto &tensors = args.reader.tensors();
-  const auto &indices = tensors.at(inputs[0]);
-  const auto &depth = tensors.at(inputs[1]);
-  const auto &on_value = tensors.at(inputs[2]);
-  const auto &off_value = tensors.at(inputs[3]);
-
-  switch (on_value->type)
-  {
-  case circle::TensorType_FLOAT32:
-  case circle::TensorType_INT16:
-  case circle::TensorType_INT32:
-  case circle::TensorType_INT64:
-  case circle::TensorType_INT8:
-  case circle::TensorType_UINT8:
-  case circle::TensorType_BOOL:
-    // Update output Tensor Type as on_value->type.
-    break;
-  default:
-    return false;
-  }
-
-  switch (indices->type)
-  {
-  case circle::TensorType_INT32:
-  case circle::TensorType_INT64:
-    break;
-  default:
-    return false;
-  }
-  */
   return true;
 }
 
-CircleNode *CircleOneHotGraphBuilder::build_node(const circle::OperatorT &op,
-                                                 const std::vector<CircleNode *> &inputs,
-                                                 loco::Graph *graph) const
-{
+CircleNode *
+CircleOneHotGraphBuilder::build_node(const circle::OperatorT &op,
+                                     const std::vector<CircleNode *> &inputs,
+                                     loco::Graph *graph) const {
   auto *node = graph->nodes()->create<CircleOneHot>();
 
   node->indices(inputs[0]);
@@ -91,7 +59,6 @@ CircleNode *CircleOneHotGraphBuilder::build_node(const circle::OperatorT &op,
 
   const auto *options = op.builtin_options.AsOneHotOptions();
   node->axis(options->axis);
-  
 
   return node;
 }

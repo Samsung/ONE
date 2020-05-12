@@ -17,14 +17,14 @@
 #ifndef __BBO_ONEHOT_OPTIONS_H__
 #define __BBO_ONEHOT_OPTIONS_H__
 
-#include <mio/tflite/schema_generated.h>
 #include <mio/circle/schema_generated.h>
+#include <mio/tflite/schema_generated.h>
 
-namespace tflite2circle
-{
+namespace tflite2circle {
 
 flatbuffers::Offset<circle::OneHotOptions>
-build_circle_OneHotOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
+build_circle_OneHotOptions(flatbuffers::FlatBufferBuilder &fb,
+                           const tflite::Operator *op);
 
 } // namespace tflite2circle
 

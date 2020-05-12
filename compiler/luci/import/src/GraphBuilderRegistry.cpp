@@ -20,12 +20,11 @@
 
 #include <memory>
 
-namespace luci
-{
+namespace luci {
 
-GraphBuilderRegistry::GraphBuilderRegistry()
-{
-#define CIRCLE_NODE(OPCODE, CLASS) add(circle::BuiltinOperator_##OPCODE, std::make_unique<CLASS>());
+GraphBuilderRegistry::GraphBuilderRegistry() {
+#define CIRCLE_NODE(OPCODE, CLASS)                                             \
+  add(circle::BuiltinOperator_##OPCODE, std::make_unique<CLASS>());
 
   CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                              // 101
   CIRCLE_NODE(ADD, CircleAddGraphBuilder);                              // 0

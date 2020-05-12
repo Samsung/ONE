@@ -223,10 +223,10 @@ message CastOptions {
   optional TensorType out_data_type = 2 [default = FLOAT32];
 }
 
-<<<<<<< HEAD
 message OneHotOptions {
   optional int32 axis = 1 [default = -1];
-=======
+}
+
 message SquareOptions {
   // None
 }
@@ -249,7 +249,6 @@ message SquaredDifferenceOptions {
 
 message FillOptions {
   // None
->>>>>>> upstream/master
 }
 
 message Operation {

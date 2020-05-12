@@ -17,21 +17,18 @@
 #include "OneHot.h"
 #include "Convert.h"
 
-namespace tflchef
-{
+namespace tflchef {
 
 void TFliteOpOneHot::filler(const tflite::Operator *op, TFliteImport *import,
-                            tflchef::ModelRecipe *model_recipe) const
-{
+                            tflchef::ModelRecipe *model_recipe) const {
   // Nothing to do with filler
   // Need to Add Filler on input[2], input[3] if value is none.
   // Need to Add value update when option axis value -1.
-  
 }
 
-tflchef::Operation *TFliteOpOneHot::build(const tflite::Operator *op, TFliteImport *import,
-                                          tflchef::ModelRecipe *model_recipe) const
-{
+tflchef::Operation *
+TFliteOpOneHot::build(const tflite::Operator *op, TFliteImport *import,
+                      tflchef::ModelRecipe *model_recipe) const {
   auto op_params = op->builtin_options_as_OneHotOptions();
   assert(op_params != nullptr);
 

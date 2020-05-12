@@ -19,28 +19,32 @@
 
 #include "OpChef.h"
 
-class OneHotChef final : public OpChef
-{
+class OneHotChef final : public OpChef {
 public:
-  explicit OneHotChef(const tflchef::Operation *operation) : _operation{operation}
-  {
+  explicit OneHotChef(const tflchef::Operation *operation)
+      : _operation{operation} {
     // DO NOTHING
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_ONE_HOT; }
+  tflite::BuiltinOperator code(void) const override {
+    return tflite::BuiltinOperator_ONE_HOT;
+  }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_OneHotOptions; }
+  tflite::BuiltinOptions type(void) const override {
+    return tflite::BuiltinOptions_OneHotOptions;
+  }
 
-  flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
+  flatbuffers::Offset<void>
+  value(flatbuffers::FlatBufferBuilder &fbb) const override;
 
 private:
   const tflchef::Operation *_operation;
 };
 
-struct OneHotChefFactory final : public OpChefFactory
-{
-  std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
+struct OneHotChefFactory final : public OpChefFactory {
+  std::unique_ptr<OpChef>
+  create(const tflchef::Operation *operation) const override;
 };
 
 #endif // __OP_ONEHOT_H__

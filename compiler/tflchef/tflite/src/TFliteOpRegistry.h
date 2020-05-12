@@ -22,37 +22,32 @@
 
 #include <memory>
 
-namespace tflchef
-{
+namespace tflchef {
 
 /**
  * @brief tflchef operator registry
  */
-class TFliteOpRegistry
-{
+class TFliteOpRegistry {
 public:
   /**
    * @brief Returns registered TFliteOpChef pointer for BuiltinOperator or
    *        nullptr if not registered
    */
-  const TFliteOpChef *lookup(tflite::BuiltinOperator op) const
-  {
+  const TFliteOpChef *lookup(tflite::BuiltinOperator op) const {
     if (_tfliteop_map.find(op) == _tfliteop_map.end())
       return nullptr;
 
     return _tfliteop_map.at(op).get();
   }
 
-  static TFliteOpRegistry &get()
-  {
+  static TFliteOpRegistry &get() {
     static TFliteOpRegistry me;
     return me;
   }
 
 private:
-  TFliteOpRegistry()
-  {
-#define REG_TFL_OP(OPCODE, CLASS) \
+  TFliteOpRegistry() {
+#define REG_TFL_OP(OPCODE, CLASS)                                              \
   _tfliteop_map[tflite::BuiltinOperator_##OPCODE] = std::make_unique<CLASS>()
 
     REG_TFL_OP(ABS, TFliteOpAbs);
@@ -107,7 +102,8 @@ private:
   }
 
 private:
-  std::map<tflite::BuiltinOperator, std::unique_ptr<TFliteOpChef>> _tfliteop_map;
+  std::map<tflite::BuiltinOperator, std::unique_ptr<TFliteOpChef>>
+      _tfliteop_map;
 };
 
 } // namespace tflchef

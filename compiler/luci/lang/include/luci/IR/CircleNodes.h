@@ -39,16 +39,16 @@
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
 #include "Nodes/CircleLogistic.h"
-#include "Nodes/CircleMaximum.h"
 #include "Nodes/CircleMaxPool2D.h"
+#include "Nodes/CircleMaximum.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMul.h"
 #include "Nodes/CircleOneHot.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
 #include "Nodes/CircleReduceProd.h"
-#include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleRelu.h"
+#include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleSin.h"
@@ -64,26 +64,26 @@
 #include "Nodes/CircleSum.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
-#include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
+#include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleUnpack.h"
 #include "Nodes/CircleWhile.h"
 // Circle only
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
+#include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
-#include "Nodes/CircleIfOut.h"
-#include "Nodes/CircleUnpackOut.h"
 #include "Nodes/CircleSplitOut.h"
 #include "Nodes/CircleSplitVOut.h"
+#include "Nodes/CircleUnpackOut.h"
 #include "Nodes/CircleWhileOut.h"
 
-namespace luci
-{
+namespace luci {
 
 /**
- * @brief  Set both CircleReshape's 2nd input as CircleConst, and newShape attribute
+ * @brief  Set both CircleReshape's 2nd input as CircleConst, and newShape
+ * attribute
  *         with same value
  * @note   Shape inference for TFLReshape forces them to be same
  *

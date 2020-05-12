@@ -19,14 +19,12 @@
 
 #include "TFliteOpChef.h"
 
-namespace tflchef
-{
+namespace tflchef {
 
 /**
  * @brief tflchef operator builder for OneHot
  */
-class TFliteOpOneHot : public TFliteOpChef
-{
+class TFliteOpOneHot : public TFliteOpChef {
 public:
   void filler(const tflite::Operator *op, TFliteImport *import,
               tflchef::ModelRecipe *model_recipe) const override;

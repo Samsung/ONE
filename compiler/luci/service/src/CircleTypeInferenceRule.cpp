@@ -22,122 +22,126 @@
 
 #include <cassert>
 
-namespace
-{
+namespace {
 
-struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataType>
-{
-  // TODO Given a tensor x of complex numbers, Abs operation returns a tensor of type float32 or
+struct TypeInferenceAlgorithm final
+    : public luci::CircleNodeVisitor<loco::DataType> {
+  // TODO Given a tensor x of complex numbers, Abs operation returns a tensor of
+  // type float32 or
   // float64.
-  loco::DataType visit(const luci::CircleAbs *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleAdd *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleArgMax *node) final { return node->output_type(); }
-
-  loco::DataType visit(const luci::CircleAveragePool2D *node) final
-  {
-    return loco::dtype_get(node->value());
-  }
-
-  loco::DataType visit(const luci::CircleBatchMatMul *node) final
-  {
+  loco::DataType visit(const luci::CircleAbs *node) final {
     return loco::dtype_get(node->x());
   }
 
-  loco::DataType visit(const luci::CircleBatchToSpaceND *node) final
-  {
+  loco::DataType visit(const luci::CircleAdd *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleArgMax *node) final {
+    return node->output_type();
+  }
+
+  loco::DataType visit(const luci::CircleAveragePool2D *node) final {
+    return loco::dtype_get(node->value());
+  }
+
+  loco::DataType visit(const luci::CircleBatchMatMul *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleBatchToSpaceND *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleCast *node) final { return node->out_data_type(); }
+  loco::DataType visit(const luci::CircleCast *node) final {
+    return node->out_data_type();
+  }
 
-  loco::DataType visit(const luci::CircleConcatenation *node) final
-  {
+  loco::DataType visit(const luci::CircleConcatenation *node) final {
     // TODO Support when CircleConcatenation has 0 input
     assert(node->numValues() > 0);
 
     for (uint32_t i = 1; i < node->numValues(); ++i)
-      assert(loco::dtype_get(node->values(i - 1)) == loco::dtype_get(node->values(i)));
+      assert(loco::dtype_get(node->values(i - 1)) ==
+             loco::dtype_get(node->values(i)));
 
     return loco::dtype_get(node->values(0));
   }
 
-  loco::DataType visit(const luci::CircleConst *node) final { return node->dtype(); }
+  loco::DataType visit(const luci::CircleConst *node) final {
+    return node->dtype();
+  }
 
-  loco::DataType visit(const luci::CircleConv2D *node) final
-  {
+  loco::DataType visit(const luci::CircleConv2D *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleCos *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleCos *node) final {
+    return loco::dtype_get(node->x());
+  }
 
-  loco::DataType visit(const luci::CircleCustom *node) final
-  {
-    if (node->custom_code() == "BatchMatMulV2")
-    {
+  loco::DataType visit(const luci::CircleCustom *node) final {
+    if (node->custom_code() == "BatchMatMulV2") {
       return loco::dtype_get(node->inputs(0));
     }
     return loco::DataType::Unknown;
   }
 
-  loco::DataType visit(const luci::CircleDepthwiseConv2D *node) final
-  {
+  loco::DataType visit(const luci::CircleDepthwiseConv2D *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleDiv *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleDiv *node) final {
+    return loco::dtype_get(node->x());
+  }
 
-  loco::DataType visit(const luci::CircleEqual *) final { return loco::DataType::BOOL; }
+  loco::DataType visit(const luci::CircleEqual *) final {
+    return loco::DataType::BOOL;
+  }
 
-  loco::DataType visit(const luci::CircleExp *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleExp *node) final {
+    return loco::dtype_get(node->x());
+  }
 
-  loco::DataType visit(const luci::CircleFullyConnected *node) final
-  {
+  loco::DataType visit(const luci::CircleFullyConnected *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleGather *node) final
-  {
+  loco::DataType visit(const luci::CircleGather *node) final {
     return loco::dtype_get(node->params());
   }
 
-  loco::DataType visit(const luci::CircleIf *node) final
-  {
+  loco::DataType visit(const luci::CircleIf *node) final {
     // Type of If is not used. Just use input 1
     assert(node->arity() > 1);
     return loco::dtype_get(node->input(1));
   }
 
-  loco::DataType visit(const luci::CircleLogicalNot *node) final
-  {
+  loco::DataType visit(const luci::CircleLogicalNot *node) final {
     return loco::dtype_get(node->x());
   }
 
-  loco::DataType visit(const luci::CircleLogicalOr *node) final
-  {
+  loco::DataType visit(const luci::CircleLogicalOr *node) final {
     return loco::dtype_get(node->x());
   }
 
-  loco::DataType visit(const luci::CircleLogistic *node) final
-  {
+  loco::DataType visit(const luci::CircleLogistic *node) final {
     return loco::dtype_get(node->x());
   }
 
-  loco::DataType visit(const luci::CircleMaximum *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleMaximum *node) final {
+    return loco::dtype_get(node->x());
+  }
 
-  loco::DataType visit(const luci::CircleMaxPool2D *node) final
-  {
+  loco::DataType visit(const luci::CircleMaxPool2D *node) final {
     return loco::dtype_get(node->value());
   }
 
-  loco::DataType visit(const luci::CircleMean *node) final
-  {
+  loco::DataType visit(const luci::CircleMean *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CirclePack *node) final
-  {
+  loco::DataType visit(const luci::CirclePack *node) final {
     // Only support CirclePack with one or more inputs
     assert(node->values_count() > 0);
 
@@ -148,118 +152,120 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return first_value_type;
   }
 
-  loco::DataType visit(const luci::CirclePad *node) final { return loco::dtype_get(node->input()); }
-
-  loco::DataType visit(const luci::CircleMul *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleOneHot *node) final { return loco::dtype_get(node->on_value()); }
-
-  loco::DataType visit(const luci::CircleReduceProd *node) final
-  {
+  loco::DataType visit(const luci::CirclePad *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleRelu *node) final
-  {
-    return loco::dtype_get(node->features());
-  }
-
-  loco::DataType visit(const luci::CircleRelu6 *node) final
-  {
-    return loco::dtype_get(node->features());
-  }
-
-  loco::DataType visit(const luci::CircleReshape *node) final
-  {
-    return loco::dtype_get(node->tensor());
-  }
-
-  loco::DataType visit(const luci::CircleRsqrt *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleSin *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleSoftmax *node) final
-  {
-    return loco::dtype_get(node->logits());
-  }
-
-  loco::DataType visit(const luci::CircleSpaceToBatchND *node) final
-  {
-    return loco::dtype_get(node->input());
-  }
-
-  loco::DataType visit(const luci::CircleSplit *node) final
-  {
-    return loco::dtype_get(node->input());
-  }
-
-  loco::DataType visit(const luci::CircleSplitV *node) final
-  {
-    return loco::dtype_get(node->input());
-  }
-
-  loco::DataType visit(const luci::CircleSqrt *node) final { return loco::dtype_get(node->x()); }
-
-  loco::DataType visit(const luci::CircleSquaredDifference *node) final
-  {
+  loco::DataType visit(const luci::CircleMul *node) final {
     return loco::dtype_get(node->x());
   }
 
-  loco::DataType visit(const luci::CircleStridedSlice *node) final
-  {
+  loco::DataType visit(const luci::CircleOneHot *node) final {
+    return loco::dtype_get(node->on_value());
+  }
+
+  loco::DataType visit(const luci::CircleReduceProd *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleSub *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleRelu *node) final {
+    return loco::dtype_get(node->features());
+  }
 
-  loco::DataType visit(const luci::CircleSum *node) final { return loco::dtype_get(node->input()); }
+  loco::DataType visit(const luci::CircleRelu6 *node) final {
+    return loco::dtype_get(node->features());
+  }
 
-  loco::DataType visit(const luci::CircleTanh *node) final { return loco::dtype_get(node->x()); }
+  loco::DataType visit(const luci::CircleReshape *node) final {
+    return loco::dtype_get(node->tensor());
+  }
 
-  loco::DataType visit(const luci::CircleTile *node) final
-  {
+  loco::DataType visit(const luci::CircleRsqrt *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleSin *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleSoftmax *node) final {
+    return loco::dtype_get(node->logits());
+  }
+
+  loco::DataType visit(const luci::CircleSpaceToBatchND *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleTranspose *node) final
-  {
+  loco::DataType visit(const luci::CircleSplit *node) final {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleSplitV *node) final {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleSqrt *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleSquaredDifference *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleStridedSlice *node) final {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleSub *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleSum *node) final {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleTanh *node) final {
+    return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleTile *node) final {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleTranspose *node) final {
     return loco::dtype_get(node->a());
   }
 
-  loco::DataType visit(const luci::CircleTransposeConv *node) final
-  {
+  loco::DataType visit(const luci::CircleTransposeConv *node) final {
     return loco::dtype_get(node->outBackprop());
   }
 
-  loco::DataType visit(const luci::CircleUnpack *node) final
-  {
+  loco::DataType visit(const luci::CircleUnpack *node) final {
     return loco::dtype_get(node->value());
   }
 
-  loco::DataType visit(const luci::CircleWhile *node) final
-  {
+  loco::DataType visit(const luci::CircleWhile *node) final {
     // Type of While is not used. Just use input 0
     assert(node->arity() > 0);
     return loco::dtype_get(node->input(0));
   }
 
   // Circle Only
-  loco::DataType visit(const luci::CircleInstanceNorm *node) final
-  {
+  loco::DataType visit(const luci::CircleInstanceNorm *node) final {
     return loco::dtype_get(node->input());
   }
 
   // Virtual
-  loco::DataType visit(const luci::CircleInput *node) final { return node->dtype(); }
+  loco::DataType visit(const luci::CircleInput *node) final {
+    return node->dtype();
+  }
 
-  loco::DataType visit(const luci::CircleOutput *node) final
-  {
+  loco::DataType visit(const luci::CircleOutput *node) final {
     auto graph_outputs = node->graph()->outputs();
     auto graph_output = graph_outputs->at(node->index());
     auto output_dtype = graph_output->dtype();
 
-    if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr)
-    {
+    if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr) {
       // We don't care for the type if from() is CircleOutputDummy
       // from() type should match that of CircleOutput
       assert(output_dtype == loco::dtype_get(node->from()));
@@ -267,17 +273,17 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return output_dtype;
   }
 
-  loco::DataType visit(const luci::CircleOutputDummy *node) final { return node->dtype(); }
+  loco::DataType visit(const luci::CircleOutputDummy *node) final {
+    return node->dtype();
+  }
 
-  loco::DataType visit(const luci::CircleIfOut *node) final
-  {
+  loco::DataType visit(const luci::CircleIfOut *node) final {
     /**
      * @note  IF operator type and shape are that of the "then" and "else"
      *        Graph Outputs.
      */
     auto circle_if = dynamic_cast<const luci::CircleIf *>(node->input());
-    if (circle_if == nullptr)
-    {
+    if (circle_if == nullptr) {
       INTERNAL_EXN("CircleIf IR is not configured correctly");
     }
 
@@ -294,8 +300,10 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     assert(then_outputs.size() == else_outputs.size());
     assert(index < static_cast<int32_t>(then_outputs.size()));
 
-    auto then_out = loco::must_cast<luci::CircleOutput *>(then_outputs.at(index));
-    auto else_out = loco::must_cast<luci::CircleOutput *>(else_outputs.at(index));
+    auto then_out =
+        loco::must_cast<luci::CircleOutput *>(then_outputs.at(index));
+    auto else_out =
+        loco::must_cast<luci::CircleOutput *>(else_outputs.at(index));
 
     auto then_graph_outputs = then_graph->outputs(); // loco::GraphOutput items
     auto else_graph_outputs = else_graph->outputs();
@@ -309,30 +317,25 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return then_graph_output->dtype();
   }
 
-  loco::DataType visit(const luci::CircleSplitOut *node) final
-  {
+  loco::DataType visit(const luci::CircleSplitOut *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleSplitVOut *node) final
-  {
+  loco::DataType visit(const luci::CircleSplitVOut *node) final {
     return loco::dtype_get(node->input());
   }
 
-  loco::DataType visit(const luci::CircleUnpackOut *node) final
-  {
+  loco::DataType visit(const luci::CircleUnpackOut *node) final {
     return loco::dtype_get(node->unpack());
   }
 
-  loco::DataType visit(const luci::CircleWhileOut *node) final
-  {
+  loco::DataType visit(const luci::CircleWhileOut *node) final {
     /**
      * @note  WHILE operator's type is the same with the "cond"
      *        Graph Input.
      */
     auto circle_while = dynamic_cast<const luci::CircleWhile *>(node->input());
-    if (circle_while == nullptr)
-    {
+    if (circle_while == nullptr) {
       INTERNAL_EXN("CircleWhile IR is not configured correctly");
     }
 
@@ -340,7 +343,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     auto cond_graph = circle_while->cond_graph();
     assert(cond_graph != nullptr);
 
-    // Assumption: the index of CircleWhileOut matches with the index of input nodes returned by
+    // Assumption: the index of CircleWhileOut matches with the index of input
+    // nodes returned by
     // loco::input_nodes
     auto cond_inputs = loco::input_nodes(cond_graph);
     auto cond_in = loco::must_cast<luci::CircleInput *>(cond_inputs.at(index));
@@ -354,16 +358,14 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
 } // namespace
 
-namespace luci
-{
+namespace luci {
 
-bool CircleTypeInferenceRule::recognize(const loco::Dialect *d) const
-{
+bool CircleTypeInferenceRule::recognize(const loco::Dialect *d) const {
   return CircleDialect::get() == d;
 }
 
-bool CircleTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtype) const
-{
+bool CircleTypeInferenceRule::infer(const loco::Node *node,
+                                    loco::DataType &dtype) const {
   assert(node->dialect() == CircleDialect::get());
 
   TypeInferenceAlgorithm alg;

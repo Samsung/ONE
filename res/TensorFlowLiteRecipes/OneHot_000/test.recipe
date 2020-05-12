@@ -28,7 +28,7 @@ operand {
 }
 operation {
   type: "OneHot"
-  gather_options {
+  onehot_options {
     axis: -1
   }
   input: "indices"
@@ -42,3 +42,4 @@ input: "depth"
 input: "on_value"
 input: "off_value"
 output: "ofm"
+

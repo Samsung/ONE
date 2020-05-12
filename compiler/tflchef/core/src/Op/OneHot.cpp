@@ -19,8 +19,8 @@
 
 #include <cassert>
 
-flatbuffers::Offset<void> OneHotChef::value(flatbuffers::FlatBufferBuilder &fbb) const
-{
+flatbuffers::Offset<void>
+OneHotChef::value(flatbuffers::FlatBufferBuilder &fbb) const {
   auto &operation = (*_operation);
 
   assert(operation.has_onehot_options());
@@ -33,7 +33,7 @@ flatbuffers::Offset<void> OneHotChef::value(flatbuffers::FlatBufferBuilder &fbb)
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef> OneHotChefFactory::create(const tflchef::Operation *operation) const
-{
+std::unique_ptr<OpChef>
+OneHotChefFactory::create(const tflchef::Operation *operation) const {
   return std::unique_ptr<OpChef>{new OneHotChef{operation}};
 }

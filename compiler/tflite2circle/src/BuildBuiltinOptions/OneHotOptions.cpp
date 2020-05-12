@@ -19,12 +19,11 @@
 
 #include <cassert>
 
-namespace tflite2circle
-{
+namespace tflite2circle {
 
 flatbuffers::Offset<circle::OneHotOptions>
-build_circle_OneHotOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
-{
+build_circle_OneHotOptions(flatbuffers::FlatBufferBuilder &fb,
+                           const tflite::Operator *op) {
   auto tflite_builtin_options = op->builtin_options_as_OneHotOptions();
   assert(tflite_builtin_options);
   circle::OneHotOptionsBuilder builtin_options_builder{fb};
