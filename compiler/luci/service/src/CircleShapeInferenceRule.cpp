@@ -1046,6 +1046,60 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSum *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto reduction_indices = loco::must_cast<luci::CircleConst *>(node->reduction_indices());
+
+    { // Exceptions
+      // TODO support other data type
+      LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
+    }
+
+    std::vector<int32_t> reduction_values;
+
+    for (uint32_t i = 0; i < reduction_indices->size<S32>(); ++i)
+    {
+      int32_t axis = reduction_indices->at<S32>(i);
+      if (axis < 0)
+        axis += input_shape.rank();
+      if (not(0 <= axis and axis < static_cast<int32_t>(input_shape.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for SUM", oops::to_uint32(axis));
+      reduction_values.push_back(axis);
+    }
+
+    loco::TensorShape output_shape;
+
+    if (node->keep_dims())
+    {
+      output_shape.rank(input_shape.rank());
+      for (uint32_t i = 0; i < input_shape.rank(); ++i)
+        output_shape.dim(i) = input_shape.dim(i);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        output_shape.dim(reduction_values.at(i)) = 1;
+    }
+    else
+    {
+      std::vector<bool> check_reduce(input_shape.rank(), false);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        check_reduce.at(reduction_values.at(i)) = true;
+
+      uint32_t reduce_cnt = 0;
+      for (uint32_t i = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i))
+          ++reduce_cnt;
+
+      output_shape.rank(input_shape.rank() - reduce_cnt);
+      for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i) == false)
+          output_shape.dim(j++) = input_shape.dim(i);
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleTanh *node) final
   {
     auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
