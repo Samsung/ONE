@@ -39,9 +39,10 @@ input_data.tofile("input.dat")
 subprocess.run([driver, model, "input.dat", "output.dat"])
 output_data = np.fromfile("output.dat", output_details["dtype"])
 
-# Compare the results. In case of quantized model the output should be exact match.
+# Compare the results.
 if output_details["dtype"] == np.uint8:
-    assert np.all(output_data == ref_output_data)
+    # Ideally, the match should be exact.
+    assert np.allclose(output_data, ref_output_data, rtol=0, atol=1)
 else:
     assert np.allclose(output_data, ref_output_data, rtol=1.e-5, atol=1.e-5)
 
