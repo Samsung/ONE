@@ -296,6 +296,7 @@ message Operation {
   optional ReducerOptions reduce_prod_options = 141;
   optional SplitOptions split_options = 142;
   optional SplitVOptions split_v_options = 143;
+  optional ReducerOptions sum_options = 144;
 }
 
 // For additional subgraphs
