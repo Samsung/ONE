@@ -1007,6 +1007,20 @@ public:
     return loco::NodeShape{shape_output};
   }
 
+  loco::NodeShape visit(const luci::CircleSplit *node) final
+  {
+    // We'll set Split output as same as input so that SplitOut can handle it's own shape
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitV *node) final
+  {
+    // We'll set SplitV output as same as input so that SplitOut can handle it's own shape
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSqrt *node) final
   {
     auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -1247,6 +1261,104 @@ public:
     assert(*then_graph_output->shape() == *else_graph_output->shape());
 
     return loco::NodeShape{*then_graph_output->shape()};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitOut *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto split = dynamic_cast<const luci::CircleSplit *>(node->input());
+    if (split == nullptr)
+      INTERNAL_EXN("CircleSplit IR is not configured correctly");
+
+    loco::NodeShape unknown;
+
+    auto split_shape = loco::shape_get(split).as<loco::TensorShape>();
+
+    auto split_dim = dynamic_cast<const luci::CircleConst *>(split->split_dim());
+    if (split_dim == nullptr)
+      return unknown; // we need CircleConst for split_dim
+    LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
+
+    uint32_t split_dim_count = split_dim->size<S32>();
+    assert(split_dim_count == 1);
+    auto split_dim_axis = split_dim->at<S32>(0);
+    if (split_dim_axis < 0)
+      split_dim_axis += split_shape.rank();
+
+    auto split_dim_value = split_shape.dim(split_dim_axis).value();
+    assert(split_dim_value % split->num_split() == 0);
+    const int split_depth = split_dim_value / split->num_split();
+
+    loco::TensorShape output_shape = split_shape;
+
+    // All shapes are equally same
+    output_shape.dim(split_dim_axis) = loco::Dimension(split_depth);
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitVOut *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto split = dynamic_cast<const luci::CircleSplitV *>(node->input());
+    if (split == nullptr)
+      INTERNAL_EXN("CircleSplit IR is not configured correctly");
+
+    loco::NodeShape unknown;
+
+    auto split_shape = loco::shape_get(split).as<loco::TensorShape>();
+
+    auto size_splits = dynamic_cast<const luci::CircleConst *>(split->size_splits());
+    if (size_splits == nullptr)
+      return unknown; // we need CircleConst for size_splits
+    LUCI_ASSERT(size_splits->dtype() == S32, "Only support int32 for size_splits");
+
+    auto split_dim = dynamic_cast<const luci::CircleConst *>(split->split_dim());
+    if (split_dim == nullptr)
+      return unknown; // we need CircleConst for split_dim
+    LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
+
+    // fetch axis
+    uint32_t split_dim_count = split_dim->size<S32>();
+    assert(split_dim_count == 1);
+    auto split_dim_axis = split_dim->at<S32>(0);
+    if (split_dim_axis < 0)
+      split_dim_axis += split_shape.rank();
+
+    // interpret size_splits values
+    int32_t size_splits_count = static_cast<int32_t>(size_splits->size<S32>());
+    assert(size_splits_count == split->num_split());
+
+    int64_t minus_one_count = 0, size_splits_sum = 0;
+    for (int32_t idx = 0; idx < size_splits_count; ++idx)
+    {
+      auto size = size_splits->at<S32>(idx);
+      assert(size >= -1);
+      if (size == -1)
+        ++minus_one_count;
+      else
+        size_splits_sum += size;
+    }
+    if (minus_one_count > 1)
+      INTERNAL_EXN("CircleSplitV size_splits has more than two -1 values");
+
+    // calcuate this SplitVOut shape
+    auto input_size = split_shape.dim(split_dim_axis).value();
+    assert(size_splits_sum <= input_size);
+
+    auto index_this = node->index();
+    assert(0 <= index_this && index_this < split->num_split());
+    auto split_depth = size_splits->at<S32>(index_this);
+    if (split_depth == -1)
+      split_depth = input_size - size_splits_sum;
+
+    loco::TensorShape output_shape = split_shape;
+
+    output_shape.dim(split_dim_axis) = loco::Dimension(split_depth);
+
+    return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
