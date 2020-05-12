@@ -414,8 +414,7 @@ void OperationExporter::visit(luci::CircleIf *node)
     bool found = false;
     for (auto out : if_outs)
     {
-      auto if_out = dynamic_cast<luci::CircleIfOut *>(out);
-      assert(if_out != nullptr);
+      auto if_out = loco::must_cast<luci::CircleIfOut *>(out);
       if (if_out->index() == static_cast<int32_t>(idx))
       {
         outputs_vec.push_back(get_tensor_index(if_out));
@@ -878,8 +877,7 @@ void OperationExporter::visit(luci::CircleUnpack *node)
     bool found = false;
     for (auto out : unpack_outs)
     {
-      auto unpack_out = dynamic_cast<luci::CircleUnpackOut *>(out);
-      assert(unpack_out != nullptr);
+      auto unpack_out = loco::must_cast<luci::CircleUnpackOut *>(out);
       if (unpack_out->index() == index)
       {
         outputs_vec.push_back(get_tensor_index(unpack_out));
@@ -919,8 +917,7 @@ void OperationExporter::visit(luci::CircleWhile *node)
     bool found = false;
     for (auto out : while_outs)
     {
-      auto while_out = dynamic_cast<luci::CircleWhileOut *>(out);
-      assert(while_out != nullptr);
+      auto while_out = loco::must_cast<luci::CircleWhileOut *>(out);
       if (while_out->index() == static_cast<int32_t>(idx))
       {
         outputs_vec.push_back(get_tensor_index(while_out));
