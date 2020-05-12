@@ -114,23 +114,33 @@ protected:
       ASSERT_EQ(nnfw_load_model_from_file(obj.session, model_path.c_str()), NNFW_STATUS_NO_ERROR);
       ASSERT_EQ(nnfw_prepare(obj.session), NNFW_STATUS_NO_ERROR);
 
-      obj.inputs.resize(1);
-      nnfw_tensorinfo ti;
-      ASSERT_EQ(nnfw_input_tensorinfo(obj.session, 0, &ti), NNFW_STATUS_NO_ERROR);
-      uint64_t input_elements = num_elems(&ti);
-      obj.inputs[0].resize(input_elements);
-      ASSERT_EQ(nnfw_set_input(obj.session, 0, ti.dtype, obj.inputs[0].data(),
-                               sizeof(float) * input_elements),
-                NNFW_STATUS_NO_ERROR);
+      uint32_t num_inputs;
+      ASSERT_EQ(nnfw_input_size(obj.session, &num_inputs), NNFW_STATUS_NO_ERROR);
+      obj.inputs.resize(num_inputs);
+      for (uint32_t ind = 0; ind < obj.inputs.size(); ind++)
+      {
+        nnfw_tensorinfo ti;
+        ASSERT_EQ(nnfw_input_tensorinfo(obj.session, ind, &ti), NNFW_STATUS_NO_ERROR);
+        uint64_t input_elements = num_elems(&ti);
+        obj.inputs[ind].resize(input_elements);
+        ASSERT_EQ(nnfw_set_input(obj.session, ind, ti.dtype, obj.inputs[ind].data(),
+                                 sizeof(float) * input_elements),
+                  NNFW_STATUS_NO_ERROR);
+      }
 
-      obj.outputs.resize(1);
-      nnfw_tensorinfo ti_output;
-      ASSERT_EQ(nnfw_output_tensorinfo(obj.session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
-      uint64_t output_elements = num_elems(&ti_output);
-      obj.outputs[0].resize(output_elements);
-      ASSERT_EQ(nnfw_set_output(obj.session, 0, ti_output.dtype, obj.outputs[0].data(),
-                                sizeof(float) * output_elements),
-                NNFW_STATUS_NO_ERROR);
+      uint32_t num_outputs;
+      ASSERT_EQ(nnfw_output_size(obj.session, &num_outputs), NNFW_STATUS_NO_ERROR);
+      obj.outputs.resize(num_outputs);
+      for (uint32_t ind = 0; ind < obj.outputs.size(); ind++)
+      {
+        nnfw_tensorinfo ti;
+        ASSERT_EQ(nnfw_output_tensorinfo(obj.session, ind, &ti), NNFW_STATUS_NO_ERROR);
+        uint64_t output_elements = num_elems(&ti);
+        obj.outputs[ind].resize(output_elements);
+        ASSERT_EQ(nnfw_set_output(obj.session, ind, ti.dtype, obj.outputs[ind].data(),
+                                  sizeof(float) * output_elements),
+                  NNFW_STATUS_NO_ERROR);
+      }
     }
   }
 
