@@ -27,6 +27,7 @@
 #include <array>
 #include <memory>
 #include <set>
+#include <stdexcept>
 
 namespace loco
 {
@@ -141,6 +142,21 @@ private:
 };
 
 Subst<SubstQualifier::Default> replace(Node *node);
+
+/**
+ * @brief A helper dynamic_cast that throws when failed
+ */
+template <typename T> T must(Node *node)
+{
+  auto cast_node = dynamic_cast<T>(node);
+  if (cast_node == nullptr)
+  {
+    std::string msg = "loco::must() failed to cast: ";
+    msg += typeid(T).name();
+    throw std::invalid_argument(msg.c_str());
+  }
+  return cast_node;
+}
 
 } // namespace loco
 
