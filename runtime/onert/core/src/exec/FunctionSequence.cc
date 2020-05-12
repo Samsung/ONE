@@ -74,7 +74,7 @@ void FunctionSequenceForDynamicBackend::run()
   {
     // set shape of output and allocate memory when needed
     auto *op = op_iter->node;
-    op->accept(*_dyn_shape_inferer.get());
+    op->accept(*_dyn_shape_inferer);
 
     // run kernel
     function->run();
