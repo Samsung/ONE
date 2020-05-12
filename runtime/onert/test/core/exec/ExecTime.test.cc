@@ -33,6 +33,7 @@ struct MockConfig : public IConfig
   bool supportPermutation() override { return false; }
   ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
   bool supportDynamicTensor() override { return false; }
+  bool supportFP16() override { return false; }
 };
 
 struct MockBackend : public ::onert::backend::Backend

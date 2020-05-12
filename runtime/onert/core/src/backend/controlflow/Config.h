@@ -41,6 +41,7 @@ public:
     // TODO Make this backend to support dynamic tensor or not to build non-constant tensor
     return false;
   }
+  bool supportFP16() override { return false; }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
