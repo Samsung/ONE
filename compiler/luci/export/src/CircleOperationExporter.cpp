@@ -86,6 +86,7 @@ public:
   void visit(luci::CircleSplit *) final;
   void visit(luci::CircleSplitV *) final;
   void visit(luci::CircleSqrt *) final;
+  void visit(luci::CircleSquare *) final;
   void visit(luci::CircleSquaredDifference *) final;
   void visit(luci::CircleStridedSlice *) final;
   void visit(luci::CircleSub *) final;
@@ -754,6 +755,19 @@ void OperationExporter::visit(luci::CircleSqrt *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSquare *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SQUARE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSquareOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SquareOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
