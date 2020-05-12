@@ -78,6 +78,78 @@ inline tflite::RuntimeShape convertShape(const Shape &shape)
   return runtime_shape;
 }
 
+// A list of tensors in a format that can be used by kernels like split and
+// concatenation.
+template <typename T> class VectorOfTensors
+{
+public:
+  // Build with the tensors in 'tensor_list'.
+  explicit VectorOfTensors(const std::vector<const Tensor *> &tensor_list)
+  {
+    const int num_tensors = tensor_list.size();
+
+    all_data_.reserve(num_tensors);
+    all_shape_.reserve(num_tensors);
+    all_shape_ptr_.reserve(num_tensors);
+
+    for (int i = 0; i < num_tensors; ++i)
+    {
+      const Tensor *tensor = tensor_list[i];
+      all_data_.push_back(tensor->data<T>());
+      all_shape_.push_back(convertShape(tensor->shape()));
+    }
+
+    // Taking the pointer from inside a std::vector is only OK if the vector is
+    // never modified, so we populate all_shape in the previous loop and then we
+    // are free to grab iterators here.
+    for (int i = 0; i < num_tensors; ++i)
+    {
+      all_shape_ptr_.push_back(&all_shape_[i]);
+    }
+  }
+  // Return a pointer to the data pointers of all tensors in the list. For
+  // example:
+  //   float* const* f = v.data();
+  //   f[0][1] is the second element of the first tensor.
+  const T *const *data() const { return all_data_.data(); }
+
+  // Return a pointer the shape pointers of all tensors in the list. For
+  // example:
+  //   const RuntimeShape* const* d = v.dims();
+  //   dims[1] are the dimensions of the second tensor in the list.
+  const tflite::RuntimeShape *const *shapes() const { return all_shape_ptr_.data(); }
+
+private:
+  std::vector<const T *> all_data_;
+  std::vector<tflite::RuntimeShape> all_shape_;
+  std::vector<tflite::RuntimeShape *> all_shape_ptr_;
+};
+
+// A list of quantized tensors in a format that can be used by kernels like
+// split and concatenation.
+class VectorOfQuantizedTensors : public VectorOfTensors<uint8_t>
+{
+public:
+  // Build with the tensors in 'tensor_list'.
+  explicit VectorOfQuantizedTensors(const std::vector<const Tensor *> &tensor_list)
+      : VectorOfTensors<uint8_t>(tensor_list)
+  {
+    for (int i = 0; i < static_cast<int>(tensor_list.size()); ++i)
+    {
+      const Tensor *tensor = tensor_list[i];
+      zero_point_.push_back(tensor->zero_point());
+      scale_.push_back(tensor->scale());
+    }
+  }
+
+  const float *scale() const { return scale_.data(); }
+  const int32_t *zero_point() const { return zero_point_.data(); }
+
+private:
+  std::vector<int32_t> zero_point_;
+  std::vector<float> scale_;
+};
+
 } // namespace kernels
 } // namespace luci_interpreter
 
