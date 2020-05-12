@@ -772,7 +772,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
 
   // FIXME Handle ReducerOptions.
   if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceSum: non-constant 'axes' is not supported.");
+    throw std::runtime_error("ReduceMax: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceMax::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
