@@ -315,6 +315,27 @@ public:
   }
 };
 
+class SqueezePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SqueezeOptions())
+    {
+      os << "    ";
+      os << "SqueezeDims(";
+      for (int i = 0; i < params->squeeze_dims()->size(); ++i)
+      {
+        if (i != 0)
+          os << ", ";
+        os << params->squeeze_dims()->Get(i);
+      }
+      os << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class StridedSlicePrinter : public OpPrinter
 {
 public:
@@ -414,6 +435,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for SPACE_TO_BATCH_ND
   _op_map[circle::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
   _op_map[circle::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
+  _op_map[circle::BuiltinOperator_SQUEEZE] = make_unique<SqueezePrinter>();
   _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
