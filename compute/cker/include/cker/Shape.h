@@ -213,6 +213,13 @@ inline int MatchingDim(const Shape &shape1, int index1, const Shape &shape2, int
   return shape1.Dims(index1);
 }
 
+template <typename... Args>
+int MatchingDim(const Shape &shape1, int index1, const Shape &shape2, int index2, Args... args)
+{
+  assert(shape1.Dims(index1) == shape2.Dims(index2));
+  return MatchingDim(shape1, index1, args...);
+}
+
 inline Shape GetShape(const std::vector<int32_t> &data) { return Shape(data.size(), data.data()); }
 
 inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3)
@@ -289,6 +296,21 @@ inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape
     }
   }
   return FlatSizeSkipDim(shape, skip_dim);
+}
+
+inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape &check_shape_0,
+                                   const Shape &check_shape_1)
+{
+  UNUSED_RELEASE(check_shape_0);
+  const int dims_count = shape.DimensionsCount();
+  for (int i = 0; i < dims_count; ++i)
+  {
+    if (i != skip_dim)
+    {
+      assert(shape.Dims(i) == check_shape_0.Dims(i));
+    }
+  }
+  return MatchingFlatSizeSkipDim(shape, skip_dim, check_shape_1);
 }
 
 } // namespace cker

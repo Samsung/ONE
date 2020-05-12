@@ -524,6 +524,17 @@ void OperationDumper::visit(const RSQRT &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Select &node)
+{
+  VERBOSE(LIR) << "* Select" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Select::Input::CONDITION).value()
+               << ")"
+               << " Input_X(" << node.getInputs().at(Select::Input::INPUT_TRUE).value() << ")"
+               << " Input_Y(" << node.getInputs().at(Select::Input::INPUT_FALSE).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Softmax &node)
 {
   VERBOSE(LIR) << "* Softmax" << std::endl;

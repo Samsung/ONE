@@ -101,6 +101,7 @@ protected:
   void loadRelu6(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadRsqrt(const Operator *op, ir::Graph &subg);
+  void loadSelect(const Operator *op, ir::Graph &subg);
   void loadSqrt(const Operator *op, ir::Graph &subg);
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTanh(const Operator *op, ir::Graph &subg);
@@ -677,6 +678,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadRsqrt(const Operator *op, ir:
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::RSQRT(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Select(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1396,6 +1409,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_RSQRT:
       loadRsqrt(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_SELECT:
+      loadSelect(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadSqrt(op, subg);
