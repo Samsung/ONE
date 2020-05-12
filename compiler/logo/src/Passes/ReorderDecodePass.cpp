@@ -76,7 +76,7 @@ bool ReorderDecodePass<loco::TensorBiasAdd>::run(loco::Graph *g)
   {
     if (node->dialect() == loco::CanonicalDialect::get())
     {
-      auto canonical_node = dynamic_cast<loco::CanonicalNode *>(node);
+      auto canonical_node = loco::must_cast<loco::CanonicalNode *>(node);
       canonical_node->accept(&collector);
     }
   }
@@ -125,9 +125,7 @@ bool ReorderDecodePass<loco::TensorBiasAdd>::run(loco::Graph *g)
       // Q. Is it better to create an independent transform for this rewriting rule?
       if (isTensorBiasAdd(u))
       {
-        auto old_badd = dynamic_cast<loco::TensorBiasAdd *>(u);
-
-        assert(old_badd != nullptr);
+        auto old_badd = loco::must_cast<loco::TensorBiasAdd *>(u);
 
         /**
          * Let us consider the following example:
@@ -212,7 +210,7 @@ bool ReorderDecodePass<loco::ReLU>::run(loco::Graph *g)
   {
     if (node->dialect() == loco::CanonicalDialect::get())
     {
-      auto canonical_node = dynamic_cast<loco::CanonicalNode *>(node);
+      auto canonical_node = loco::must_cast<loco::CanonicalNode *>(node);
       canonical_node->accept(&collector);
     }
   }
