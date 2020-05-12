@@ -41,6 +41,7 @@
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
 // There is no LogisticOptions
+#include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
