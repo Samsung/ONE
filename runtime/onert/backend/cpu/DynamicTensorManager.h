@@ -17,9 +17,11 @@
 #ifndef __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 
+#include "MemoryManager.h"
 #include "TensorRegistry.h"
 
 #include <backend/IDynamicTensorManager.h>
+#include <ir/OperandInfo.h>
 
 namespace onert
 {
@@ -35,7 +37,7 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
-  // TODO write methods for dynamic tensor, e.g., allocate memory for dynamic tensor
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
 
 private:
   const std::shared_ptr<TensorRegistry> _tensors;

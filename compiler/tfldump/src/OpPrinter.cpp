@@ -145,6 +145,20 @@ public:
   }
 };
 
+class ReducerPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto reducer_params = op->builtin_options_as_ReducerOptions())
+    {
+      os << "    ";
+      os << "keep_dims(" << reducer_params->keep_dims() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class ReshapePrinter : public OpPrinter
 {
 public:
@@ -306,6 +320,34 @@ public:
   }
 };
 
+class SplitPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SplitOptions())
+    {
+      os << "    ";
+      os << "num_splits(" << params->num_splits() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class SplitVPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SplitVOptions())
+    {
+      os << "    ";
+      os << "num_splits(" << params->num_splits() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class SubPrinter : public OpPrinter
 {
 public:
@@ -395,12 +437,16 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
+  _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SIN
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[tflite::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
+  _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
   _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[tflite::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }

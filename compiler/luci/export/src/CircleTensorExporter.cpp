@@ -166,18 +166,18 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &bui
 template <>
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, luci::CircleConst *c)
 {
-  // TODO use switch
-  if (c->dtype() == loco::DataType::FLOAT32)
+  switch (c->dtype())
   {
-    return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
-  }
-  else if (c->dtype() == loco::DataType::S32)
-  {
-    return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
-  }
-  else if (c->dtype() == loco::DataType::U8)
-  {
-    return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
+    case loco::DataType::FLOAT32:
+      return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
+    case loco::DataType::S32:
+      return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
+    case loco::DataType::U8:
+      return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
+    case loco::DataType::BOOL:
+      return encodeOpBufferByDType<loco::DataType::BOOL>(builder, c);
+    default:
+      break;
   }
 
   INTERNAL_EXN_V("Unsupported datatype", oops::to_uint32(c->dtype()));

@@ -24,7 +24,7 @@
 #include "luci/Pass/TypeInferencePass.h"
 
 // logo passes
-#include <logo/RemoveDeadNodePass.h>
+#include <logo/RemoveDeadNodeWithQueryPass.h>
 
 #include "ProgressReporter.h"
 
@@ -89,7 +89,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Shape inference is needed for added nodes doing above transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodePass>());
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
 
   ProgressReporter prog(g, logo::PhaseStrategy::Saturate);

@@ -24,7 +24,7 @@
 #include <stdexcept>
 
 // NOTE Must match `enum TestPackages`
-const char *TEST_PACKAGE_NAMES[] = {"add"};
+const char *TEST_PACKAGE_NAMES[] = {"add", "input_reshaping_add"};
 
 NNPackages &NNPackages::get()
 {

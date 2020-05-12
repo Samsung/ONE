@@ -6,7 +6,7 @@ _tf2tfliteV2_ is a TensorFlow to TensorFlow Lite model Converter.
 Even though we alreay have _tf2tflite_, we cannot cover all opeartors in TensorFlow. To expand coverage, we introduce _tf2tfliteV2_ which uses `TensorFlow Lite Converter`(by Google) internally.
 
 ## Prerequisite
-- Frozen graph from TensorFlow 1.13.1
+- Frozen graph from TensorFlow 1.13.1 in binary(`*.pb`) or text(`*.pbtxt`) format
 - Desired version of TensorFlow(You can use python virtualenv, docker, etc.)
 
 ## Example
@@ -22,7 +22,7 @@ python tf2tfliteV2.py \
 ```
 python tf2tfliteV2.py \
 > --v2 \
-> --input_path=frozen_graph.pb \
+> --input_path=frozen_graph.pbtxt \
 > --output_path=converted.tflite \
 > --input_arrays=model_inputs \
 > --output_arrays=model_outputs

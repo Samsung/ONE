@@ -77,6 +77,7 @@
 #include "ir/operation/DepthToSpace.h"
 #include "ir/operation/Pack.h"
 #include "ir/operation/ReduceMin.h"
+#include "ir/operation/Select.h"
 #include "ir/operation/Split.h"
 #include "ir/operation/Unpack.h"
 #include "ir/operation/Pad.h"
@@ -90,3 +91,4 @@
 #include "ir/operation/ConvertFp16ToFp32.h"
 #include "ir/operation/ReduceProd.h"
 #include "ir/operation/While.h"
+#include "ir/operation/Pow.h"

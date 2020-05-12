@@ -67,6 +67,7 @@ public:
   void visit(const ir::operation::ReduceSum &) override;
   void visit(const ir::operation::ReduceMax &) override;
   void visit(const ir::operation::ReduceMin &) override;
+  void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::Split &) override;
@@ -79,6 +80,7 @@ public:
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::Log &) override;
   void visit(const ir::operation::Round &) override;
+  void visit(const ir::operation::Pow &) override;
 
 private:
   const ir::Operands &_ctx;

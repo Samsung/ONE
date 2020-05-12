@@ -37,6 +37,7 @@
 #include "BuildBuiltinOptions/GatherOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
+#include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
 // There is no LogisticOptions
@@ -54,6 +55,8 @@
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
 #include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
+#include "BuildBuiltinOptions/SplitVOptions.h"
+#include "BuildBuiltinOptions/SquaredDifferenceOptions.h"
 #include "BuildBuiltinOptions/SquareOptions.h"
 #include "BuildBuiltinOptions/SqueezeOptions.h"
 #include "BuildBuiltinOptions/StridedSliceOptions.h"

@@ -76,6 +76,7 @@ public:
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::Min &node) override;
   void visit(const ir::operation::Max &node) override;
+  void visit(const ir::operation::Select &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
   void visit(const ir::operation::Split &node) override;
   void visit(const ir::operation::Sin &node) override;

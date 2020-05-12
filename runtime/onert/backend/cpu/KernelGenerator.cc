@@ -27,6 +27,7 @@
 #include "kernel/DepthwiseConvolutionLayer.h"
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
+#include "kernel/ExpandDimsLayer.h"
 #include "kernel/FullyConnectedLayer.h"
 #include "kernel/GatherLayer.h"
 #include "kernel/LogLayer.h"
@@ -41,10 +42,12 @@
 #include "kernel/PackLayer.h"
 #include "kernel/PadLayer.h"
 #include "kernel/PermuteLayer.h"
+#include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
+#include "kernel/SelectLayer.h"
 #include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
 #include "kernel/SliceLayer.h"
@@ -600,7 +603,7 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto axis_alloc = _tensor_builder->at(axis_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ExpandDimsLayer>();
 
   fn->configure(input_alloc, axis_alloc, output_alloc);
 
@@ -817,6 +820,25 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::Select &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto condition_alloc = _tensor_builder->at(condition_index).get();
+  auto true_alloc = _tensor_builder->at(true_index).get();
+  auto false_alloc = _tensor_builder->at(false_index).get();
+
+  auto fn = std::make_unique<kernel::SelectLayer>();
+
+  fn->configure(condition_alloc, true_alloc, false_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Slice &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -992,6 +1014,23 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::ArgMinMaxLayer>();
 
   fn->configure(input_alloc, output_alloc, axis, /* is_arg_max */ true);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Pow &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::Pow::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::Pow::RHS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
+  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::PowLayer>();
+
+  fn->configure(lhs_alloc, rhs_alloc, ir::Activation::NONE, output_alloc);
 
   _return_fn = std::move(fn);
 }

@@ -71,6 +71,10 @@ GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
 GeneratedTests.neg
 GeneratedTests.not_equal_boolean
+GeneratedTests.pow_2D_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw_2
+GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.reduce_max_2D_int32_nnfw
 GeneratedTests.reduce_max_quant8
 GeneratedTests.reduce_prod
@@ -88,6 +92,12 @@ GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
 GeneratedTests.rsqrt
+GeneratedTests.select_v1_2_five_dim
+GeneratedTests.select_v1_2_five_dim_quant8
+GeneratedTests.select_v1_2_one_dim
+GeneratedTests.select_v1_2_one_dim_quant8
+GeneratedTests.select_v1_2_two_dim
+GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.sin_1D_float_nnfw
 GeneratedTests.sin_4D_float_nnfw
 GeneratedTests.slice

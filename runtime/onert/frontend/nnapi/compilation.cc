@@ -40,12 +40,7 @@ int ANeuralNetworksCompilation_create(ANeuralNetworksModel *model,
     return ANEURALNETWORKS_BAD_STATE;
   }
 
-  std::shared_ptr<onert::ir::Subgraphs> internal;
-
-  model->release(internal);
-
-  // TODO Support multiple subgraphs
-  *compilation = new (std::nothrow) ANeuralNetworksCompilation(internal);
+  *compilation = new (std::nothrow) ANeuralNetworksCompilation(model);
   if (*compilation == nullptr)
   {
     VERBOSE(NNAPI::Compilation) << "create: ail to create compilation object" << std::endl;

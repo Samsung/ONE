@@ -40,5 +40,8 @@ else()
 endif()
 target_link_libraries(nnpackage_run ${HDF5_CXX_LIBRARIES})
 target_link_libraries(nnpackage_run nnfw_lib_benchmark)
+if(PROFILE_RUY)
+  target_link_libraries(nnpackage_run ruy)
+endif(PROFILE_RUY)
 
 install(TARGETS nnpackage_run DESTINATION bin)

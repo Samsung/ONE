@@ -17,6 +17,8 @@
 #include "luci/Service/CircleShapeInferenceRule.h"
 #include "Check.h"
 
+#include "ShapeInfer_StridedSlice.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -266,8 +268,7 @@ public:
 
       // Only support node's shape() is CircleConst with S32/S64
       // Support S32 for now.
-      auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->dimension());
-      LUCI_ASSERT(const_shape_node, "Only support CircleConst for shape of CircleArgMax");
+      auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
       LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
                   "Only support int32 CircleConst for CircleArgMax");
 
@@ -317,14 +318,12 @@ public:
     assert(input_shape.rank() == 3 || input_shape.rank() == 4);
 
     // Only support block_shape() with S32 type CircleConst for now
-    auto const_block_shape = dynamic_cast<luci::CircleConst *>(node->block_shape());
-    LUCI_ASSERT(const_block_shape, "Only support CircleConst for block_shape");
+    auto const_block_shape = loco::must_cast<luci::CircleConst *>(node->block_shape());
     LUCI_ASSERT(const_block_shape->dtype() == loco::DataType::S32,
                 "Only support int32 block_shape");
 
     // Only support crops() with S32 type CircleConst for now
-    auto const_crops = dynamic_cast<luci::CircleConst *>(node->crops());
-    LUCI_ASSERT(const_crops, "Only support CircleConst for crops");
+    auto const_crops = loco::must_cast<luci::CircleConst *>(node->crops());
     LUCI_ASSERT(const_crops->dtype() == loco::DataType::S32, "Only support int32 crops");
 
     auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
@@ -641,11 +640,10 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto reduction_indices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+    auto reduction_indices = loco::must_cast<luci::CircleConst *>(node->reduction_indices());
 
     { // Exceptions
       // TODO support non-const case
-      LUCI_ASSERT(reduction_indices, "Only support constant reduction_indices");
       // TODO support other data type
       LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
     }
@@ -686,7 +684,7 @@ public:
       output_shape.rank(input_shape.rank() - reduce_cnt);
       for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
         if (check_reduce.at(i) == false)
-          output_shape.dim(j++) = i;
+          output_shape.dim(j++) = input_shape.dim(i);
     }
 
     return loco::NodeShape{output_shape};
@@ -767,10 +765,9 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+    auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
 
     // TODO support non-const case
-    LUCI_ASSERT(paddings, "Only support constant reduction_indices");
     // TODO support other data type
     LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
     LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
@@ -792,6 +789,61 @@ public:
       value += paddings->at<S32>(idx + 0); // left
       value += paddings->at<S32>(idx + 1); // right
       output_shape.dim(ni) = value;
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleReduceProd *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto reduction_indices = loco::must_cast<luci::CircleConst *>(node->reduction_indices());
+
+    { // Exceptions
+      // TODO support non-const case
+      // TODO support other data type
+      LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
+    }
+
+    std::vector<int32_t> reduction_values;
+
+    for (uint32_t i = 0; i < reduction_indices->size<S32>(); ++i)
+    {
+      int32_t axis = reduction_indices->at<S32>(i);
+      if (axis < 0)
+        axis += input_shape.rank();
+      if (not(0 <= axis and axis < static_cast<int32_t>(input_shape.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for REDUCE_PROD", oops::to_uint32(axis));
+      reduction_values.push_back(axis);
+    }
+
+    loco::TensorShape output_shape;
+
+    if (node->keep_dims())
+    {
+      output_shape.rank(input_shape.rank());
+      for (uint32_t i = 0; i < input_shape.rank(); ++i)
+        output_shape.dim(i) = input_shape.dim(i);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        output_shape.dim(reduction_values.at(i)) = 1;
+    }
+    else
+    {
+      std::vector<bool> check_reduce(input_shape.rank(), false);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        check_reduce.at(reduction_values.at(i)) = true;
+
+      uint32_t reduce_cnt = 0;
+      for (uint32_t i = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i))
+          ++reduce_cnt;
+
+      output_shape.rank(input_shape.rank() - reduce_cnt);
+      for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i) == false)
+          output_shape.dim(j++) = input_shape.dim(i);
     }
 
     return loco::NodeShape{output_shape};
@@ -828,7 +880,7 @@ public:
 
       // Only support node's shape() is CircleConst with S32
       // TODO support other node with other types
-      auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
+      auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->shape());
       LUCI_ASSERT(const_shape_node, "Only support CircleConst for shape of CircleReshape");
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
 
@@ -915,13 +967,11 @@ public:
     assert(input_shape.rank() == 3 || input_shape.rank() == 4);
 
     // Only support block_shape() with S32 type CircleConst for now
-    auto const_block_shape = dynamic_cast<luci::CircleConst *>(node->block_shape());
-    LUCI_ASSERT(const_block_shape, "Only support CircleConst for block_shape");
+    auto const_block_shape = loco::must_cast<luci::CircleConst *>(node->block_shape());
     LUCI_ASSERT(const_block_shape->dtype() == S32, "Only support int32 block_shape");
 
     // Only support paddings() with S32 type CircleConst for now
-    auto const_paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
-    LUCI_ASSERT(const_paddings, "Only support CircleConst for paddings");
+    auto const_paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
     LUCI_ASSERT(const_paddings->dtype() == S32, "Only support int32 paddings");
 
     auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
@@ -966,6 +1016,20 @@ public:
     return loco::NodeShape{shape_output};
   }
 
+  loco::NodeShape visit(const luci::CircleSplit *node) final
+  {
+    // We'll set Split output as same as input so that SplitOut can handle it's own shape
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitV *node) final
+  {
+    // We'll set SplitV output as same as input so that SplitOut can handle it's own shape
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSqrt *node) final
   {
     auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -983,12 +1047,72 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleStridedSlice *node) final
+  {
+    loco::TensorShape shape = infer_output_shape(node);
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSub *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
     auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
 
     auto output_shape = broadcast_shape(x_shape, y_shape);
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSum *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto reduction_indices = loco::must_cast<luci::CircleConst *>(node->reduction_indices());
+
+    { // Exceptions
+      // TODO support other data type
+      LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
+    }
+
+    std::vector<int32_t> reduction_values;
+
+    for (uint32_t i = 0; i < reduction_indices->size<S32>(); ++i)
+    {
+      int32_t axis = reduction_indices->at<S32>(i);
+      if (axis < 0)
+        axis += input_shape.rank();
+      if (not(0 <= axis and axis < static_cast<int32_t>(input_shape.rank())))
+        INTERNAL_EXN_V("Invalid reduction axis for SUM", oops::to_uint32(axis));
+      reduction_values.push_back(axis);
+    }
+
+    loco::TensorShape output_shape;
+
+    if (node->keep_dims())
+    {
+      output_shape.rank(input_shape.rank());
+      for (uint32_t i = 0; i < input_shape.rank(); ++i)
+        output_shape.dim(i) = input_shape.dim(i);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        output_shape.dim(reduction_values.at(i)) = 1;
+    }
+    else
+    {
+      std::vector<bool> check_reduce(input_shape.rank(), false);
+      for (uint32_t i = 0; i < reduction_values.size(); ++i)
+        check_reduce.at(reduction_values.at(i)) = true;
+
+      uint32_t reduce_cnt = 0;
+      for (uint32_t i = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i))
+          ++reduce_cnt;
+
+      output_shape.rank(input_shape.rank() - reduce_cnt);
+      for (uint32_t i = 0, j = 0; i < check_reduce.size(); ++i)
+        if (check_reduce.at(i) == false)
+          output_shape.dim(j++) = input_shape.dim(i);
+    }
 
     return loco::NodeShape{output_shape};
   }
@@ -1005,10 +1129,9 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto multiples = dynamic_cast<luci::CircleConst *>(node->multiples());
+    auto multiples = loco::must_cast<luci::CircleConst *>(node->multiples());
 
     // TODO support non-const case
-    LUCI_ASSERT(multiples, "Only support constant multiples");
     // TODO support S64 type
     LUCI_ASSERT(multiples->dtype() == S32, "Only support int32 multiples");
     LUCI_ASSERT(multiples->rank() == 1, "multiples should be rank 1")
@@ -1071,9 +1194,8 @@ public:
   loco::NodeShape visit(const luci::CircleTransposeConv *node) final
   {
     // TransposeConv's output shape is written in its 'inputSizes' argument
-    auto input_sizes_const = dynamic_cast<luci::CircleConst *>(node->inputSizes());
-    LUCI_ASSERT(input_sizes_const,
-                "Only support when CircleTransposeConv's inputSizes is CircleConst")
+    auto input_sizes_const = loco::must_cast<luci::CircleConst *>(node->inputSizes());
+    // TODO support non-const type
     LUCI_ASSERT(input_sizes_const->dtype() == loco::DataType::S32, "Only support S32 dtype")
     LUCI_ASSERT(input_sizes_const->rank() == 1 && input_sizes_const->dim(0).value() == 4,
                 "Only support rank 1 with 4 entries")
@@ -1185,10 +1307,8 @@ public:
     assert(then_outputs.size() == else_outputs.size());
     assert(index < static_cast<int32_t>(then_outputs.size()));
 
-    auto then_out = dynamic_cast<luci::CircleOutput *>(then_outputs.at(index));
-    auto else_out = dynamic_cast<luci::CircleOutput *>(else_outputs.at(index));
-    assert(then_out != nullptr);
-    assert(else_out != nullptr);
+    auto then_out = loco::must_cast<luci::CircleOutput *>(then_outputs.at(index));
+    auto else_out = loco::must_cast<luci::CircleOutput *>(else_outputs.at(index));
 
     auto then_graph_outputs = then_graph->outputs(); // loco::GraphOutput items
     auto else_graph_outputs = else_graph->outputs();
@@ -1200,6 +1320,102 @@ public:
     assert(*then_graph_output->shape() == *else_graph_output->shape());
 
     return loco::NodeShape{*then_graph_output->shape()};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitOut *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto split = dynamic_cast<const luci::CircleSplit *>(node->input());
+    if (split == nullptr)
+      INTERNAL_EXN("CircleSplit IR is not configured correctly");
+
+    loco::NodeShape unknown;
+
+    auto split_shape = loco::shape_get(split).as<loco::TensorShape>();
+
+    auto split_dim = dynamic_cast<const luci::CircleConst *>(split->split_dim());
+    if (split_dim == nullptr)
+      return unknown; // we need CircleConst for split_dim
+    LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
+
+    assert(split_dim->size<S32>() == 1);
+    auto split_dim_axis = split_dim->at<S32>(0);
+    if (split_dim_axis < 0)
+      split_dim_axis += split_shape.rank();
+
+    auto split_dim_value = split_shape.dim(split_dim_axis).value();
+    assert(split_dim_value % split->num_split() == 0);
+    const int split_depth = split_dim_value / split->num_split();
+
+    loco::TensorShape output_shape = split_shape;
+
+    // All shapes are equally same
+    output_shape.dim(split_dim_axis) = loco::Dimension(split_depth);
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleSplitVOut *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto split = dynamic_cast<const luci::CircleSplitV *>(node->input());
+    if (split == nullptr)
+      INTERNAL_EXN("CircleSplit IR is not configured correctly");
+
+    loco::NodeShape unknown;
+
+    auto split_shape = loco::shape_get(split).as<loco::TensorShape>();
+
+    auto size_splits = dynamic_cast<const luci::CircleConst *>(split->size_splits());
+    if (size_splits == nullptr)
+      return unknown; // we need CircleConst for size_splits
+    LUCI_ASSERT(size_splits->dtype() == S32, "Only support int32 for size_splits");
+
+    auto split_dim = dynamic_cast<const luci::CircleConst *>(split->split_dim());
+    if (split_dim == nullptr)
+      return unknown; // we need CircleConst for split_dim
+    LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
+
+    // fetch axis
+    assert(split_dim->size<S32>() == 1);
+    auto split_dim_axis = split_dim->at<S32>(0);
+    if (split_dim_axis < 0)
+      split_dim_axis += split_shape.rank();
+
+    // interpret size_splits values
+    int32_t size_splits_count = static_cast<int32_t>(size_splits->size<S32>());
+    assert(size_splits_count == split->num_split());
+
+    int64_t minus_one_count = 0, size_splits_sum = 0;
+    for (int32_t idx = 0; idx < size_splits_count; ++idx)
+    {
+      auto size = size_splits->at<S32>(idx);
+      assert(size >= -1);
+      if (size == -1)
+        ++minus_one_count;
+      else
+        size_splits_sum += size;
+    }
+    if (minus_one_count > 1)
+      INTERNAL_EXN("CircleSplitV size_splits has more than two -1 values");
+
+    // calcuate this SplitVOut shape
+    auto input_size = split_shape.dim(split_dim_axis).value();
+    assert(size_splits_sum <= input_size);
+
+    auto index_this = node->index();
+    assert(0 <= index_this && index_this < split->num_split());
+    auto split_depth = size_splits->at<S32>(index_this);
+    if (split_depth == -1)
+      split_depth = input_size - size_splits_sum;
+
+    loco::TensorShape output_shape = split_shape;
+
+    output_shape.dim(split_dim_axis) = loco::Dimension(split_depth);
+
+    return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
@@ -1234,8 +1450,7 @@ public:
     // Assumption: the index of CircleWhileOut matches with the index of input nodes returned by
     // loco::input_nodes
     auto cond_inputs = loco::input_nodes(cond_graph);
-    auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(index));
-    assert(cond_in != nullptr);
+    auto cond_in = loco::must_cast<luci::CircleInput *>(cond_inputs.at(index));
 
     auto cond_graph_inputs = cond_graph->inputs();
     auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
@@ -1257,10 +1472,10 @@ bool CircleShapeInferenceRule::recognize(const loco::Dialect *d) const
 bool CircleShapeInferenceRule::infer(const loco::Node *node, loco::NodeShape &shape) const
 {
   assert(node->dialect() == CircleDialect::get());
-  assert(dynamic_cast<const CircleNode *>(node) != nullptr);
 
   ShapeInferenceAlgorithm alg;
-  shape = dynamic_cast<const CircleNode *>(node)->accept(&alg);
+  auto circle_node = loco::must_cast<const CircleNode *>(node);
+  shape = circle_node->accept(&alg);
 
   return true;
 }

@@ -47,6 +47,7 @@ enum class BinaryArithmeticOpType
   SUB = 1,
   MUL = 2,
   DIV = 3,
+  POW = 4,
 };
 
 enum class ComparisonOpType

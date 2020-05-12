@@ -241,6 +241,10 @@ GeneratedTests.pack_ex_2D_float_2
 GeneratedTests.pack_ex_2D_int_1
 GeneratedTests.pack_ex_2D_int_2
 GeneratedTests.pad_quant8_nnfw
+GeneratedTests.pow_2D_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw
+GeneratedTests.pow_broadcast_float_nnfw_2
+GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.prelu
 GeneratedTests.prelu_broadcast_float_1_nnfw
 GeneratedTests.prelu_broadcast_quant8_1_nnfw
@@ -316,6 +320,12 @@ GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw
 GeneratedTests.rsqrt_3D_float_nnfw
 GeneratedTests.rsqrt_4D_float_nnfw
+GeneratedTests.select_v1_2_five_dim
+GeneratedTests.select_v1_2_five_dim_quant8
+GeneratedTests.select_v1_2_one_dim
+GeneratedTests.select_v1_2_one_dim_quant8
+GeneratedTests.select_v1_2_two_dim
+GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.sin_1D_float_nnfw
 GeneratedTests.sin_4D_float_nnfw
 GeneratedTests.slice

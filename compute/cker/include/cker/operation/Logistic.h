@@ -19,8 +19,10 @@
 #define __NNFW_CKER_LOGISTIC_H__
 
 #include "cker/Shape.h"
+#include "cker/eigen/Utils.h"
 
 #include <cmath>
+#include <Eigen/Core>
 
 namespace nnfw
 {
@@ -30,12 +32,9 @@ namespace cker
 inline void Logistic(const Shape &input_shape, const float *input_data, const Shape &output_shape,
                      float *output_data)
 {
-  // Note, this can be done using TANH: (1/2) + (1/2) * TANH(x/2)
-  const int size = MatchingFlatSize(input_shape, output_shape);
-  for (int i = 0; i < size; i++)
-  {
-    output_data[i] = 1.f / (1.f + std::exp(-input_data[i]));
-  }
+  auto input_map = MapAsVector(input_data, input_shape);
+  auto output_map = MapAsVector(output_data, output_shape);
+  output_map.array() = input_map.array().unaryExpr(Eigen::internal::scalar_logistic_op<float>());
 }
 
 } // namespace cker

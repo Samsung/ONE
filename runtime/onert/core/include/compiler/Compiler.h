@@ -34,8 +34,6 @@ namespace compiler
 enum class State
 {
   CREATED, // Before compilation
-  STARTED, // Compile is started
-  LOWERED, // Backend is decided
   COMPILED // Success compilation
 };
 
@@ -101,6 +99,11 @@ public:
    */
   bool checkCompilable();
   CompilerOptions &options() { return _options; }
+
+  /**
+   * @brief   Allow to compute float32 using float16 data type
+   */
+  void enableToFp16();
 
 private:
   void checkProfilerConditions();

@@ -21,6 +21,7 @@
 #include "OperationValidator.h"
 #include "Fp32ToFp16Converter.h"
 
+#include <backend/controlflow/Config.h>
 #include "compiler/BackendManager.h"
 #include "compiler/IScheduler.h"
 #include "compiler/ManualScheduler.h"
@@ -41,11 +42,29 @@ namespace onert
 namespace compiler
 {
 
+std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
+{
+  std::set<ir::OpCode> cf_op_codes;
+  graph.operations().iterate(
+      [&](const onert::ir::OperationIndex &, const onert::ir::Operation &node) {
+        if (node.opcode() == ir::OpCode::While)
+        {
+          cf_op_codes.insert(ir::OpCode::While);
+        }
+      });
+  return cf_op_codes;
+}
+
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
 {
+  const auto cf_ops = getControlFlowOp(graph);
   CompilerOptions options;
 
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  if (cf_ops.size() != 0)
+  {
+    options.backend_list.emplace_back(backend::controlflow::Config::ID);
+  }
 
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
@@ -75,6 +94,11 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   }
 #include "ir/Operations.lst"
 #undef OP
+
+    for (auto cf_op : cf_ops)
+    {
+      ms_options.opcode_to_backend[cf_op] = backend::controlflow::Config::ID;
+    }
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
@@ -109,6 +133,8 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
   _options = fetchCompilerOptionsFromGlobalConfig(*primary_subgraph());
 }
 
+void Compiler::enableToFp16() { _options.fp16_enable = true; }
+
 void Compiler::checkProfilerConditions()
 {
   if (!_options.he_scheduler)
@@ -120,8 +146,6 @@ void Compiler::checkProfilerConditions()
 
 void Compiler::compile(void)
 {
-  _state = State::STARTED;
-
   {
     VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;
@@ -160,6 +184,7 @@ void Compiler::compile(void)
     _executors = std::make_shared<exec::ExecutorMap>();
     _executors->insert(std::make_pair(
         ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
+    _state = State::COMPILED;
     return;
   }
 
@@ -181,8 +206,7 @@ void Compiler::compile(void)
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
-    // TODO Merge managing option fp16_enable and FP32-to-FP16 configuration by NNAPI
-    if (_options.fp16_enable || graph.fp32toFp16Allowed())
+    if (_options.fp16_enable)
     {
       // NOTE: the only acl_cl backend enables fp16 mode
       Fp32ToFp16Converter(*lowered_subgs[index]).run();
@@ -196,8 +220,6 @@ void Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-
-  _state = State::LOWERED;
 
   _executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)

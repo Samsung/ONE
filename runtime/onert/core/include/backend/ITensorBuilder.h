@@ -26,6 +26,7 @@
 #include "ITensor.h"
 #include "ITensorManager.h"
 #include "ITensorRegistry.h"
+#include "IDynamicTensorManager.h"
 
 namespace onert
 {
@@ -111,6 +112,20 @@ struct ITensorBuilder
    * @return std::unique_ptr<ITensorManager> Tensor Manager object
    */
   virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
+
+  /**
+   * @brief Get dynamicTensorManager. If a backend does not support dynamic tensor, exception
+   *        will be thrown.
+   *
+   * @return pointer of IDynamicTensorManager object
+   *
+   * @note   Since it is a pointer, its life time is from the cration of TensorBuilder
+   *         to the end of execution
+   */
+  virtual IDynamicTensorManager *dynamicTensorManager(void)
+  {
+    throw std::runtime_error("dynamicTensorManager(): NYI");
+  }
 
   /**
    * @brief Release dynamic @c ITensorManger object which was built

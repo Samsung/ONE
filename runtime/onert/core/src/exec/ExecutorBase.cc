@@ -49,11 +49,16 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
   // Prepare each TensorManager on each backend
   for (auto &tensor_builder : tensor_builders)
   {
-    auto tensor_manager = tensor_builder->releaseStaticTensorManager();
-    assert(tensor_manager != nullptr);
-    _tensor_mgrs.insert(std::move(tensor_manager));
+    auto s_tensor_manager = tensor_builder->releaseStaticTensorManager();
+    if (s_tensor_manager != nullptr)
+      _tensor_mgrs.insert(std::move(s_tensor_manager));
 
-    // TODO release DynamicTensorManager
+    if (tensor_builder->supportDynamicTensor())
+    {
+      auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
+      if (d_tensor_manager != nullptr)
+        _tensor_mgrs.insert(std::move(d_tensor_manager));
+    }
   }
 }
 

@@ -101,6 +101,7 @@ protected:
   void loadRelu6(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadRsqrt(const Operator *op, ir::Graph &subg);
+  void loadSelect(const Operator *op, ir::Graph &subg);
   void loadSqrt(const Operator *op, ir::Graph &subg);
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTanh(const Operator *op, ir::Graph &subg);
@@ -136,6 +137,7 @@ protected:
   void loadLog(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
   void loadRound(const Operator *op, ir::Graph &subg);
+  void loadPow(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -680,6 +682,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadRsqrt(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Select(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadSqrt(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -771,7 +785,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
 
   // FIXME Handle ReducerOptions.
   if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceSum: non-constant 'axes' is not supported.");
+    throw std::runtime_error("ReduceMax: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceMax::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
@@ -1324,6 +1338,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadRound(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pow(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1383,6 +1409,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_RSQRT:
       loadRsqrt(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_SELECT:
+      loadSelect(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadSqrt(op, subg);
@@ -1476,6 +1505,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_SHAPE:
       loadShape(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
+      loadReduceProd(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_WHILE:
       loadWhile(op, subg);
       return;
@@ -1491,6 +1523,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_ROUND:
       loadRound(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_POW:
+      loadPow(op, subg);
       return;
     default:
       throw std::runtime_error(
