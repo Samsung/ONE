@@ -83,6 +83,8 @@ public:
   void visit(luci::CircleSin *) final;
   void visit(luci::CircleSoftmax *) final;
   void visit(luci::CircleSpaceToBatchND *) final;
+  void visit(luci::CircleSplit *) final;
+  void visit(luci::CircleSplitV *) final;
   void visit(luci::CircleSqrt *) final;
   void visit(luci::CircleSquaredDifference *) final;
   void visit(luci::CircleStridedSlice *) final;
@@ -101,6 +103,8 @@ public:
   void visit(luci::CircleOutputDummy *) final {}
   // Virtual for multiple-outputs
   void visit(luci::CircleIfOut *) final {}
+  void visit(luci::CircleSplitOut *) final {}
+  void visit(luci::CircleSplitVOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
 
@@ -661,6 +665,86 @@ void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
   auto options = CreateSpaceToBatchNDOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SpaceToBatchNDOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSplit *node)
+{
+  auto split_outs = loco::succs(node);
+  assert(int32_t(split_outs.size()) == node->num_split());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT);
+  // NOTE BuiltinOperator_SPLIT input is placed at second position
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->split_dim()),
+                                  get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < node->num_split(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : split_outs)
+    {
+      auto split_out = dynamic_cast<luci::CircleSplitOut *>(out);
+      assert(split_out != nullptr);
+      if (split_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(split_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Split output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSplitOptions(builder, node->num_split());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SplitOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSplitV *node)
+{
+  auto split_outs = loco::succs(node);
+  assert(int32_t(split_outs.size()) == node->num_split());
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT_V);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->size_splits()),
+                                  get_tensor_index(node->split_dim())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < node->num_split(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : split_outs)
+    {
+      auto split_out = dynamic_cast<luci::CircleSplitVOut *>(out);
+      assert(split_out != nullptr);
+      if (split_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(split_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid SplitV output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSplitVOptions(builder, node->num_split());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SplitVOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
