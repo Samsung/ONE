@@ -54,6 +54,8 @@
 #include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
+#include "Op/Split.h"
+#include "Op/SplitV.h"
 #include "Op/Sqrt.h"
 #include "Op/Square.h"
 #include "Op/SquaredDifference.h"

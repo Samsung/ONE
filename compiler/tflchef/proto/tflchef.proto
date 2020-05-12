@@ -231,6 +231,14 @@ message MaximumMinimumOptions {
   // None
 }
 
+message SplitOptions {
+  optional int32 num_splits = 1;
+}
+
+message SplitVOptions {
+  optional int32 num_splits = 1;
+}
+
 message SquaredDifferenceOptions {
   // None
 }
@@ -286,6 +294,8 @@ message Operation {
   optional FillOptions fill_options = 139;
   // optional GreaterOptions greater_options = 140;
   optional ReducerOptions reduce_prod_options = 141;
+  optional SplitOptions split_options = 142;
+  optional SplitVOptions split_v_options = 143;
 }
 
 // For additional subgraphs
