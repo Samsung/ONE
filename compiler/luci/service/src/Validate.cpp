@@ -61,8 +61,7 @@ bool validate_shape_dtype(loco::Graph *g)
     auto circle_output = find_node(output_nodes, out_index);
     assert(circle_output != nullptr);
     assert(circle_output->from() != nullptr);
-    auto circle_node = dynamic_cast<luci::CircleNode *>(circle_output->from());
-    assert(circle_node != nullptr);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(circle_output->from());
     assert(loco::shape_known(circle_node));
 
     // check if output node shape is same as graph output shape
