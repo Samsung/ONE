@@ -1,4 +1,10 @@
 function(_Ruy_import)
+  # NOTE This line prevents multiple definitions of ruy target
+  if(TARGET ruy)
+    set(Ruy_FOUND TRUE)
+    return()
+  endif(TARGET ruy)
+
   nnfw_find_package(RuySource QUIET)
 
   if(NOT RuySource_FOUND)

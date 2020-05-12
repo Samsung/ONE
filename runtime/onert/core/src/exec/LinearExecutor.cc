@@ -44,6 +44,7 @@ void LinearExecutor::executeImpl()
   {
     const auto op_seq = code.op_seq;
     const auto backend = code.lower_info->backend();
+// TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
     ruy::profiler::ScopeLabel label(seq_to_label(op_seq));
 #endif

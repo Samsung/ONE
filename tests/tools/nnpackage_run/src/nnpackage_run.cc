@@ -83,8 +83,7 @@ int main(const int argc, char **argv)
   }
 
 #ifdef RUY_PROFILER
-  std::unique_ptr<ruy::profiler::ScopeProfile> ruy_profile_{nullptr};
-  ruy_profile_.reset(new ruy::profiler::ScopeProfile);
+  ruy::profiler::ScopeProfile ruy_profile;
 #endif
 
   std::unique_ptr<benchmark::MemoryPoller> mp{nullptr};
@@ -262,10 +261,6 @@ int main(const int argc, char **argv)
   // dump output tensors
   if (!args.getDumpFilename().empty())
     H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
-
-#ifdef RUY_PROFILER
-  ruy_profile_ = nullptr;
-#endif
 
   NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
