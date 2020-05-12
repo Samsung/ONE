@@ -68,8 +68,8 @@ public:
   bool store(const char *ptr, const size_t size) const final;
 
 private:
-  loco::Graph *_graph;
-  luci::Module *_module;
+  loco::Graph *_graph{nullptr};
+  luci::Module *_module{nullptr};
   const std::string _filepath;
 };
 
