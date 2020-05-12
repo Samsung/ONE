@@ -20,14 +20,13 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
-#include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/LuciNodeMixins.h"
 
 namespace luci
 {
 
 /**
- * @brief RESHAPE in Circle
+ * @brief SQUEEZE in Circle
  */
 class CircleSqueeze final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::SQUEEZE>>
 {
