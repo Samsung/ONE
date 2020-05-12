@@ -73,6 +73,7 @@ public:
   void visit(luci::CircleMaxPool2D *) final;
   void visit(luci::CircleMean *) final;
   void visit(luci::CircleMul *) final;
+  void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
   void visit(luci::CirclePad *) final;
   void visit(luci::CircleRelu *) final;
@@ -518,6 +519,19 @@ void OperationExporter::visit(luci::CircleMul *node)
   auto options = CreateMulOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_MulOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleOneHot *node){
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ONE_HOT);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->indices()),get_tensor_index(node->depth()),get_tensor_index(node->on_value()),get_tensor_index(node->off_value())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateOneHotOptions(builder, node->axis());
+
+  // Make ONEHOT operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_OneHotOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

@@ -1,0 +1,44 @@
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 1 dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "depth"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "5" }
+}
+operand {
+  name: "on_value"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1" }
+}
+operand {
+  name: "off_value"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "0" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 4 dim: 5 }
+}
+operation {
+  type: "OneHot"
+  gather_options {
+    axis: -1
+  }
+  input: "indices"
+  input: "depth"
+  input: "on_value"
+  input: "off_value"
+  output: "ofm"
+}
+input: "indices"
+input: "depth"
+input: "on_value"
+input: "off_value"
+output: "ofm"

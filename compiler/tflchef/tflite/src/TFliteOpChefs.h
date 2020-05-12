@@ -39,6 +39,7 @@
 #include "Op/Logistic.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"
+#include "Op/OneHot.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"
 #include "Op/ReLU.h"

@@ -702,6 +702,23 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleOneHot *node) final
+  {
+    // Add Shapre inference logic
+    // Need 3 value of input and option.
+    // 1. shape of indices.
+    // 2. value of depth.
+    // 3. value of axis.
+    // output shape will be like this :
+    // default input shape + certain axis append depth.
+    // ------------------------------------------------------------------------------------
+    // EX) if shape of indices (1,2,3,4), value of depth = d(assume), and value of axis -1
+    // index of axis     0  1  2  3   4(=-1)
+    // shape of input  = ( 1, 2, 3, 4   )
+    // shape of output = ( 1, 2, 3, 4, d)
+    // ------------------------------------------------------------------------------------
+  }
+
   loco::NodeShape visit(const luci::CirclePack *node) final
   {
     LUCI_ASSERT(node->values_count() > 0, "Only support one or more inputs");
