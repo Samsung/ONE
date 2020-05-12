@@ -61,6 +61,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);     // 38
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                          // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                       // 102
+  CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                        // 92
   CIRCLE_NODE(SQUARED_DIFFERENCE, CircleSquaredDifferenceGraphBuilder); // 99
   CIRCLE_NODE(STRIDED_SLICE, CircleStridedSliceGraphBuilder);           // 45
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                              // 41
