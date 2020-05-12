@@ -108,6 +108,7 @@ protected:
   void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadMean(const Operator *op, ir::Graph &subg);
   void loadReduceMax(const Operator *op, ir::Graph &subg);
+  void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
@@ -797,6 +798,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReverseV2(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reverse(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1430,6 +1443,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
       loadReduceMax(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_REVERSE_V2:
+      loadReverseV2(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PAD:
       loadPad(op, subg);

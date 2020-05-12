@@ -52,6 +52,7 @@
 #include "ir/operation/ResizeBilinear.h"
 #include "ir/operation/ReLU1.h"
 #include "ir/operation/ReLU6.h"
+#include "ir/operation/Reverse.h"
 #include "ir/operation/RNN.h"
 #include "ir/operation/Round.h"
 #include "ir/operation/Floor.h"

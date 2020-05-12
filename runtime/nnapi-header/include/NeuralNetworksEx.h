@@ -402,6 +402,22 @@ typedef enum {
    */
   ANEURALNETWORKS_ROUND_EX = 50027,
 
+  /**
+   * Reverses specific dimensions of a tensor.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A tensor to reverse.
+   * * 1: A 1-D tensor of {@link ANEURALNETWORKS_TENSOR_INT32}. The dimensions to reverse
+   *
+   * Outputs:
+   * * 0: The output tensor, of the same {@link OperandCode} and dimensions as
+   *      the input tensor.
+   */
   ANEURALNETWORKS_REVERSE_EX = 50028,
 
   ANEURALNETWORKS_FILL_EX = 50029,

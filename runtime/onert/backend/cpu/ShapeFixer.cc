@@ -181,6 +181,8 @@ void ShapeFixer::visit(const ir::operation::Shape &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceProd &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Reverse &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}

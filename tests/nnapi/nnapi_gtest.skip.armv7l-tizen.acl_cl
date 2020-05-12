@@ -31,6 +31,8 @@ GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.reduce_prod*
+GeneratedTests.reverse_ex_1d
+GeneratedTests.reverse_ex_3d
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
