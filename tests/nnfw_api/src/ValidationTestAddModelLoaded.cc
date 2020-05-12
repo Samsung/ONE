@@ -24,4 +24,9 @@ TEST_F(ValidationTestAddModelLoaded, prepare_001)
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 }
 
+TEST_F(ValidationTestAddModelLoaded, neg_run_001)
+{
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+}
+
 TEST_F(ValidationTest, neg_prepare_001) { ASSERT_EQ(nnfw_prepare(nullptr), NNFW_STATUS_ERROR); }
