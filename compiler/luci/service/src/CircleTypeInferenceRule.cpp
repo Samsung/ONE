@@ -290,10 +290,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     assert(then_outputs.size() == else_outputs.size());
     assert(index < static_cast<int32_t>(then_outputs.size()));
 
-    auto then_out = dynamic_cast<luci::CircleOutput *>(then_outputs.at(index));
-    auto else_out = dynamic_cast<luci::CircleOutput *>(else_outputs.at(index));
-    assert(then_out != nullptr);
-    assert(else_out != nullptr);
+    auto then_out = loco::must_cast<luci::CircleOutput *>(then_outputs.at(index));
+    auto else_out = loco::must_cast<luci::CircleOutput *>(else_outputs.at(index));
 
     auto then_graph_outputs = then_graph->outputs(); // loco::GraphOutput items
     auto else_graph_outputs = else_graph->outputs();
@@ -341,8 +339,7 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     // Assumption: the index of CircleWhileOut matches with the index of input nodes returned by
     // loco::input_nodes
     auto cond_inputs = loco::input_nodes(cond_graph);
-    auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(index));
-    assert(cond_in != nullptr);
+    auto cond_in = loco::must_cast<luci::CircleInput *>(cond_inputs.at(index));
 
     auto cond_graph_inputs = cond_graph->inputs();
     auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
@@ -367,7 +364,8 @@ bool CircleTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtyp
 
   TypeInferenceAlgorithm alg;
 
-  dtype = dynamic_cast<const CircleNode *>(node)->accept(&alg);
+  auto circle_node = loco::must_cast<const CircleNode *>(node);
+  dtype = circle_node->accept(&alg);
   assert(dtype != loco::DataType::Unknown);
 
   return true;
