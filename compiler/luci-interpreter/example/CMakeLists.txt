@@ -1,0 +1,4 @@
+add_executable(luci_interpreter_example example.cpp)
+target_link_libraries(luci_interpreter_example PRIVATE luci_import)
+target_link_libraries(luci_interpreter_example PRIVATE luci_lang)
+target_link_libraries(luci_interpreter_example PRIVATE luci_interpreter)
