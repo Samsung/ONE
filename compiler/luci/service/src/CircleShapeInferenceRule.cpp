@@ -1051,11 +1051,9 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto reduction_indices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+    auto reduction_indices = loco::must_cast<luci::CircleConst *>(node->reduction_indices());
 
     { // Exceptions
-      // TODO support non-const case
-      LUCI_ASSERT(reduction_indices, "Only support constant reduction_indices");
       // TODO support other data type
       LUCI_ASSERT(reduction_indices->dtype() == S32, "Only support int 32");
     }
