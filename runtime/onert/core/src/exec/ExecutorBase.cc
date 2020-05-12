@@ -26,8 +26,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
                            const backend::TensorBuilderSet &tensor_builders)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
-  auto build_input_tensor_wrapper = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-    std::vector<std::unique_ptr<InputTensorWrapper>> list;
+  auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
+    std::vector<std::shared_ptr<backend::ITensor>> list;
     for (auto ind : ind_seq)
     {
       std::shared_ptr<backend::ITensor> tensor;
@@ -37,13 +37,15 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         if (tensor != nullptr)
         {
           if (tensor_builder->supportDynamicTensor())
-            list.push_back(std::make_unique<InputTensorWrapperForDynamicTensor>(
-                tensor, ind, tensor_builder->dynamicTensorManager()));
-          else
-            list.push_back(std::make_unique<InputTensorWrapperForStaticTensor>(tensor));
+          {
+            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+            _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+          }
           break;
         }
       }
+      assert(tensor != nullptr);
+      list.push_back(tensor);
     }
     return list;
   };
@@ -65,7 +67,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
     return list;
   };
 
-  _input_wrapper = build_input_tensor_wrapper(_graph.getInputs());
+  _input_tensors = build_input_tensor_list(_graph.getInputs());
   _output_tensors = build_output_tensor_list(_graph.getOutputs());
 
   // Prepare each TensorManager on each backend
@@ -158,10 +160,12 @@ void ExecutorBase::execute(const IODescription &desc)
     //
     // TODO Allocate memory for input tensor when input tensor is dynamic
     // e.g.,
-    //  auto *wrapper = dynamic_cast<InputTensorWrapperForDynamicTensor *>(_input_wrapper[n].get());
-    //  if (info)
-    //    wrapper->dynamic_tensor_manager->allocate(info->ind, shape_user_provide);
-    //
+    //  auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
+    //  if (dyn_alloc_info != _input_to_dyn_alloc_info.end())
+    //  {
+    //    auto ind = dyn_alloc_info->second.ind;
+    //    dyn_alloc_info->second.dyn_tensor_manager->allocate(ind, exec_time_shape);
+    //  }
 
     const auto &input = *desc.inputs.at(n);
     sources.at(n) =
@@ -169,7 +173,7 @@ void ExecutorBase::execute(const IODescription &desc)
 
     auto setter = [&](::onert::backend::ITensor &tensor) { sources.at(n)->push(tensor); };
 
-    _input_wrapper[n]->tensor->access(setter);
+    _input_tensors[n]->access(setter);
   }
 
   executeImpl();

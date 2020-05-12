@@ -40,45 +40,6 @@ namespace onert
 namespace exec
 {
 
-struct InputTensorWrapper
-{
-  std::shared_ptr<backend::ITensor> tensor;
-
-  InputTensorWrapper(std::shared_ptr<backend::ITensor> &tensor) : tensor(tensor) {}
-
-  virtual ~InputTensorWrapper() = default;
-};
-
-/**
- * @brief Class to have input tensor info when backend supports static tensor but not dynamic tensor
- */
-struct InputTensorWrapperForStaticTensor : public InputTensorWrapper
-{
-  InputTensorWrapperForStaticTensor(std::shared_ptr<backend::ITensor> &tensor)
-      : InputTensorWrapper(tensor)
-  {
-  }
-};
-
-/**
- * @brief Class to have input tensor info when backend supports static and dynamic tensor
- */
-struct InputTensorWrapperForDynamicTensor : public InputTensorWrapper
-{
-  /// @brief index of input tensor whose memory needs to be allocated at execution time
-  ir::OperandIndex ind;
-
-  /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
-  backend::IDynamicTensorManager *dyn_tensor_manager;
-
-  InputTensorWrapperForDynamicTensor(std::shared_ptr<backend::ITensor> &tensor,
-                                     ir::OperandIndex ind,
-                                     backend::IDynamicTensorManager *dyn_tensor_manager)
-      : InputTensorWrapper(tensor), ind(ind), dyn_tensor_manager(dyn_tensor_manager)
-  {
-  }
-};
-
 class ExecutorBase : public IExecutor
 {
 public:
@@ -119,7 +80,7 @@ private:
     const auto operand_index = _graph.getInputs().at(index);
     const auto &operand = _graph.operands().at(operand_index);
 
-    const auto tensor = _input_wrapper[index.value()]->tensor;
+    const auto tensor = _input_tensors[index.value()];
     const auto tensor_layout = tensor->layout();
 
     if (((io_layout == ir::Layout::NHWC) && (tensor_layout == ir::Layout::NCHW)) ||
@@ -156,12 +117,28 @@ private:
   }
 
 protected:
+  /**
+   * @brief Dynamic allocation info for input tensors
+   *        When user sets shape of input having unknown dims after compilation, memory for the
+   *        input should be allocated before executing kernels. This struct contains information
+   *        to allocate memory.
+   */
+  struct DynAllocInfo
+  {
+    /// @brief index of input tensor whose memory needs to be allocated at execution time
+    ir::OperandIndex ind;
+
+    /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
+    backend::IDynamicTensorManager *dyn_tensor_manager;
+  };
+
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<std::unique_ptr<InputTensorWrapper>> _input_wrapper;
+  std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
+  std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
 };
