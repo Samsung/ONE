@@ -1322,8 +1322,7 @@ public:
       return unknown; // we need CircleConst for split_dim
     LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
 
-    uint32_t split_dim_count = split_dim->size<S32>();
-    assert(split_dim_count == 1);
+    assert(split_dim->size<S32>() == 1);
     auto split_dim_axis = split_dim->at<S32>(0);
     if (split_dim_axis < 0)
       split_dim_axis += split_shape.rank();
@@ -1363,8 +1362,7 @@ public:
     LUCI_ASSERT(split_dim->dtype() == S32, "Only support int32 for split_dim");
 
     // fetch axis
-    uint32_t split_dim_count = split_dim->size<S32>();
-    assert(split_dim_count == 1);
+    assert(split_dim->size<S32>() == 1);
     auto split_dim_axis = split_dim->at<S32>(0);
     if (split_dim_axis < 0)
       split_dim_axis += split_shape.rank();
