@@ -60,6 +60,8 @@ GraphOutput *Graph::OutputContext::create(void)
   return take(stdex::make_unique<GraphOutput>(size()));
 }
 
+bool Graph::OutputContext::erase_output(GraphOutput *ptr) { return erase(ptr); }
+
 std::set<loco::Node *> all_nodes(loco::Graph *g)
 {
   std::set<loco::Node *> res;
@@ -125,7 +127,7 @@ std::vector<loco::Node *> output_nodes(loco::Graph *g)
 
   for (uint32_t n = 0; n < g->outputs()->size(); ++n)
   {
-    auto it = table.find(n);
+    auto it = table.find(g->outputs()->at(n)->index());
     res.emplace_back(it == table.end() ? nullptr : it->second);
   }
 

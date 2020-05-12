@@ -37,7 +37,7 @@ class CircleOutput final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode:
 public:
   CircleOutput() = default;
 
-  void index(const loco::GraphOutputIndex &index);
+  void index(const int64_t &index);
   loco::GraphOutputIndex index(void) const;
 
   bool indexed(void) const { return _index != -1; }

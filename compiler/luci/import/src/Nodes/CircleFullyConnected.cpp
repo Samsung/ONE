@@ -36,10 +36,13 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
                                                          const std::vector<CircleNode *> &inputs,
                                                          loco::Graph *graph) const
 {
-  auto *node = graph->nodes()->create<CircleFullyConnected>();
+  auto arity = inputs[2] == nullptr ? 2 : 3;
+
+  auto *node = graph->nodes()->create<CircleFullyConnected>(arity);
   node->input(inputs[0]);
   node->weights(inputs[1]);
-  node->bias(inputs[2]);
+  if (arity == 3)
+    node->bias(inputs[2]);
 
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));

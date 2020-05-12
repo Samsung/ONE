@@ -18,6 +18,7 @@
 #define __LUCI_IR_CIRCLEFULLYCONNECTED_H__
 
 #include "luci/IR/CircleNodeDecl.h"
+#include "luci/IR/VariadicArityNode.h"
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/AttrFusedActFunc.h"
@@ -30,10 +31,21 @@ namespace luci
  * @brief FULLY_CONNECTED in Circle
  */
 class CircleFullyConnected final
-    : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>,
+    : public VariadicArityNode<CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>,
       public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
       public LuciNodeMixin<LuciNodeTrait::Bias>
 {
+public:
+  CircleFullyConnected(uint32_t arity)
+      : VariadicArityNode<CircleNodeImpl<CircleOpcode::FULLY_CONNECTED>>(arity)
+  {
+    // TODO Support when arity is 0
+    assert(arity >= 1);
+  }
+
+public:
+  uint32_t numInputs(void) const { return arity(); }
+
 public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }

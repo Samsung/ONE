@@ -22,7 +22,7 @@
 namespace luci
 {
 
-void CircleOutput::index(const loco::GraphOutputIndex &index)
+void CircleOutput::index(const int64_t &index)
 {
   // CircleOutput internally stores "GraphOutputIndex" as int64_t
   _index = static_cast<int64_t>(index);
@@ -30,8 +30,8 @@ void CircleOutput::index(const loco::GraphOutputIndex &index)
 
 loco::GraphOutputIndex CircleOutput::index(void) const
 {
-  assert(_index >= std::numeric_limits<loco::GraphOutputIndex>::min());
-  assert(_index <= std::numeric_limits<loco::GraphOutputIndex>::max());
+  // assert(_index >= std::numeric_limits<loco::GraphOutputIndex>::min());
+  // assert(_index <= std::numeric_limits<loco::GraphOutputIndex>::max());
   return static_cast<loco::GraphOutputIndex>(_index);
 }
 

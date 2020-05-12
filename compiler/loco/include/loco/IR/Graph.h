@@ -199,6 +199,7 @@ public:
   struct OutputContext final : public ObjectPool<GraphOutput>
   {
     GraphOutput *create(void);
+    bool erase_output(GraphOutput *);
   };
 
 public:

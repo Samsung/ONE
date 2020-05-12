@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-#include "luci/IR/Nodes/CircleFullyConnected.h"
+#ifndef __LUCI_REMOVE_CONST_DEAD_NODE_PASS_H__
+#define __LUCI_REMOVE_CONST_DEAD_NODE_PASS_H__
 
-#include "luci/IR/CircleDialect.h"
+#include <logo/Pass.h>
 
-#include <gtest/gtest.h>
-
-TEST(CircleFullyConnectedTest, constructor)
+namespace luci
 {
-  luci::CircleFullyConnected fc_node(3);
 
-  ASSERT_EQ(luci::CircleDialect::get(), fc_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::FULLY_CONNECTED, fc_node.opcode());
+struct RemoveConstDeadNodePass final : public logo::Pass
+{
+  const char *name(void) const final { return "luci::RemoveConstDeadNodePass"; }
 
-  ASSERT_EQ(nullptr, fc_node.input());
-  ASSERT_EQ(nullptr, fc_node.weights());
-  ASSERT_EQ(nullptr, fc_node.bias());
-  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, fc_node.fusedActivationFunction());
-}
+  bool run(loco::Graph *g) final;
+};
+
+} // namespace luci
+
+#endif // __LUCI_REMOVE_CONST_DEAD_NODE_PASS_H__

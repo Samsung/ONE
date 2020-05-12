@@ -18,6 +18,7 @@
 
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
+#include "luci/Pass/RemoveConstDeadNodePass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -89,6 +90,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Shape inference is needed for added nodes doing above transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::RemoveConstDeadNodePass>());
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
 

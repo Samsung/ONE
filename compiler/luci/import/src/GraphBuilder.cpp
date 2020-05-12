@@ -30,6 +30,13 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
   {
+    if (input_tensor_index == -1)
+    {
+      // If it is an optional input, we must specify it as a nullptr or an actual value to see which
+      // option is empty when building the actual op. If we continue without nullptr, we will not be
+      // able to know which option is empty.
+      input_nodes.push_back(nullptr);
+    }
     input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
   }
 

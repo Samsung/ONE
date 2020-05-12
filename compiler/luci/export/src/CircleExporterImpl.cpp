@@ -77,7 +77,7 @@ void registerGraphOutputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
 {
   for (uint32_t n = 0; n < graph->outputs()->size(); ++n)
   {
-    auto push = output_node(graph, n);
+    auto push = output_node(graph, graph->outputs()->at(n)->index());
     assert(push != nullptr);
     auto node = push->from();
     assert(node != nullptr);

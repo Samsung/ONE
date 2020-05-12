@@ -356,10 +356,11 @@ void OperationExporter::visit(luci::CircleFullyConnected *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_FULLY_CONNECTED);
 
+  // optional input
+  auto bias_tensor_index = node->numInputs() == 2 ? -1 : get_tensor_index(node->bias());
   // Make input, output and options for operator
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
-                                  get_tensor_index(node->weights()),
-                                  get_tensor_index(node->bias())};
+                                  get_tensor_index(node->weights()), bias_tensor_index};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
