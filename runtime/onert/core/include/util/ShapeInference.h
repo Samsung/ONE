@@ -35,15 +35,13 @@ namespace shape_inference
 
 using Shapes = std::vector<ir::Shape>;
 
-Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
+// Define shape calculation for operations. List them in alphabetic order.
+// Remove TODO when the function name matching the alphabet is added
 
 Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
                          ir::Layout layout = ir::Layout::NHWC);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
-
-Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                         ir::Layout layout = ir::Layout::NHWC);
 
 Shapes inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
                         const ir::operation::Conv2D::Param &param,
@@ -53,7 +51,23 @@ Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker
                                  const ir::operation::DepthwiseConv2D::Param &param,
                                  ir::Layout layout = ir::Layout::NHWC);
 
+Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
+
 Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
+
+// TODO write op starting from G
+// TODO write op starting from L
+
+Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
+                         ir::Layout layout = ir::Layout::NHWC);
+
+// TODO write op starting from N
+// TODO write op starting from P
+// TODO write op starting from R
+// TODO write op starting from S
+// TODO write op starting from T
+// TODO write op starting from U
+// TODO write op starting from Z
 
 /**
  * @brief Class to infer shape before running kernels. It does the following:
