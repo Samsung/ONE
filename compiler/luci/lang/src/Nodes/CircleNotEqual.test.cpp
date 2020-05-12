@@ -25,7 +25,7 @@ TEST(CircleNotEqualTest, constructor_P)
   luci::CircleNotEqual not_equal_node;
 
   ASSERT_EQ(luci::CircleDialect::get(), not_equal_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::EQUAL, not_equal_node.opcode());
+  ASSERT_EQ(luci::CircleOpcode::NOT_EQUAL, not_equal_node.opcode());
 
   ASSERT_EQ(nullptr, not_equal_node.x());
   ASSERT_EQ(nullptr, not_equal_node.y());
