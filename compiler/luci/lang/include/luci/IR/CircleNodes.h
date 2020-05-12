@@ -53,6 +53,8 @@
 #include "Nodes/CircleSin.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
+#include "Nodes/CircleSplit.h"
+#include "Nodes/CircleSplitV.h"
 #include "Nodes/CircleSqrt.h"
 #include "Nodes/CircleSquare.h"
 #include "Nodes/CircleSquaredDifference.h"
@@ -71,6 +73,8 @@
 #include "Nodes/CircleOutput.h"
 #include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleUnpackOut.h"
+#include "Nodes/CircleSplitOut.h"
+#include "Nodes/CircleSplitVOut.h"
 #include "Nodes/CircleWhileOut.h"
 
 namespace luci
