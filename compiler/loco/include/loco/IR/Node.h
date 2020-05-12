@@ -146,12 +146,12 @@ Subst<SubstQualifier::Default> replace(Node *node);
 /**
  * @brief A helper dynamic_cast that throws when failed
  */
-template <typename T> T must(Node *node)
+template <typename T> T must_cast(Node *node)
 {
   auto cast_node = dynamic_cast<T>(node);
   if (cast_node == nullptr)
   {
-    std::string msg = "loco::must() failed to cast: ";
+    std::string msg = "loco::must_cast() failed to cast: ";
     msg += typeid(T).name();
     throw std::invalid_argument(msg.c_str());
   }

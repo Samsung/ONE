@@ -106,5 +106,5 @@ TEST(NodeTest, cast_with_must_NEG)
   Mockup2Node mockupnode;
   loco::Node *node = &mockupnode;
 
-  ASSERT_THROW(loco::must<MockupNode *>(node), std::invalid_argument);
+  ASSERT_THROW(loco::must_cast<MockupNode *>(node), std::invalid_argument);
 }

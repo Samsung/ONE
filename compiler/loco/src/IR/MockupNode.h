@@ -63,15 +63,9 @@ public:
   const loco::Dialect *dialect(void) const final { return MockDialect::get(); }
   uint32_t opnum(void) const final { return 1; }
 
-  uint32_t arity(void) const final { return 1; }
-  Node *arg(uint32_t N) const final { return _arg.node(); }
-  void drop(void) final { _arg.node(nullptr); }
-
-  Node *in(void)const { return _arg.node(); }
-  void in(Node *node) { _arg.node(node); }
-
-private:
-  loco::Use _arg{this};
+  uint32_t arity(void) const final { return 0; }
+  Node *arg(uint32_t) const final { return nullptr; }
+  void drop(void) final {}
 };
 
 } // namespace
