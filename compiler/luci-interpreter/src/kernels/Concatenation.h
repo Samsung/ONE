@@ -38,6 +38,7 @@ public:
 
 private:
   template <typename T> void evalGeneric() const;
+  void evalQuantized() const;
 
 private:
   const std::vector<const Tensor *> _inputs;

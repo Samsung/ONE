@@ -16,8 +16,10 @@
  */
 
 #include "kernels/Concatenation.h"
+#include "kernels/Utils.h"
 
-#include <cstring>
+#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+
 #include <stdexcept>
 
 namespace luci_interpreter
@@ -54,7 +56,8 @@ void Concatenation::execute() const
       evalGeneric<float>();
       break;
     case DataType::U8:
-      throw std::runtime_error("Unsupported type.");
+      evalQuantized();
+      break;
     case DataType::S8:
       evalGeneric<int8_t>();
       break;
@@ -71,39 +74,36 @@ void Concatenation::execute() const
 
 template <typename T> void Concatenation::evalGeneric() const
 {
-  auto *output_data = _output->data<T>();
-
-  const Shape &output_shape = _output->shape();
-
   int axis = _params.axis;
   if (axis < 0)
-  {
-    axis += output_shape.num_dims();
-  }
+    axis += _output->shape().num_dims();
 
-  int32_t outer_size = 1;
-  for (int i = 0; i < axis; ++i)
-  {
-    outer_size *= output_shape.dim(i);
-  }
+  VectorOfTensors<T> inputs(_inputs);
+  tflite::ConcatenationParams params{};
+  params.axis = axis;
+  params.inputs_count = _inputs.size();
+  tflite::reference_ops::Concatenation(params, inputs.shapes(), inputs.data(),
+                                       convertShape(_output->shape()), _output->data<T>());
+}
 
-  int32_t inner_size = 1;
-  for (int i = axis + 1; i < output_shape.num_dims(); ++i)
-  {
-    inner_size *= output_shape.dim(i);
-  }
+void Concatenation::evalQuantized() const
+{
+  int axis = _params.axis;
+  if (axis < 0)
+    axis += _output->shape().num_dims();
 
-  T *output_ptr = output_data;
-  for (int32_t i = 0; i < outer_size; ++i)
-  {
-    for (const Tensor *input : _inputs)
-    {
-      const int32_t slice_size = input->shape().dim(axis) * inner_size;
-      const T *input_ptr = input->data<T>() + i * slice_size;
-      std::memcpy(output_ptr, input_ptr, slice_size * sizeof(T));
-      output_ptr += slice_size;
-    }
-  }
+  VectorOfQuantizedTensors inputs(_inputs);
+  tflite::ConcatenationParams params{};
+  params.axis = axis;
+  params.input_zeropoint = inputs.zero_point();
+  params.input_scale = inputs.scale();
+  params.inputs_count = _inputs.size();
+  params.output_zeropoint = _output->zero_point();
+  params.output_scale = _output->scale();
+
+  tflite::reference_ops::ConcatenationWithScaling(params, inputs.shapes(), inputs.data(),
+                                                  convertShape(_output->shape()),
+                                                  _output->data<uint8_t>());
 }
 
 } // namespace kernels
