@@ -263,14 +263,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     module->add(std::move(graph));
   }
 
-  try
-  {
-    post_import_graph(module.get(), reader);
-  }
-  catch (...)
-  {
-    return nullptr;
-  }
+  post_import_graph(module.get(), reader);
 
   return std::move(module);
 }
