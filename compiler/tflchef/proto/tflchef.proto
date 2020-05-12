@@ -251,6 +251,10 @@ message GreaterOptions {
   // None
 }
 
+message SqueezeOptions {
+  repeated int32 squeeze_dim = 1;
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -302,6 +306,7 @@ message Operation {
   optional SplitVOptions split_v_options = 143;
   optional ReducerOptions sum_options = 144;
   optional GreaterOptions greater_options = 145;
+  optional SqueezeOptions squeeze_options = 146;
 }
 
 // For additional subgraphs
