@@ -16,6 +16,8 @@
 
 #include "KernelGenerator.h"
 
+#include <util/Utils.h>
+
 namespace onert
 {
 namespace backend
@@ -26,7 +28,9 @@ namespace controlflow
 KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx)
     : _operand_ctx{operand_ctx}, _tensor_builder_set{nullptr}, _executor_map{nullptr}
 {
-  // DO NOTHING
+  UNUSED_RELEASE(_operand_ctx);
+  UNUSED_RELEASE(_tensor_builder_set);
+  UNUSED_RELEASE(_executor_map);
 }
 
 void KernelGenerator::visit(const ir::OpSequence &)
