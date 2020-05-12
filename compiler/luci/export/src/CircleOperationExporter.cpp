@@ -685,8 +685,7 @@ void OperationExporter::visit(luci::CircleSplit *node)
     bool found = false;
     for (auto out : split_outs)
     {
-      auto split_out = dynamic_cast<luci::CircleSplitOut *>(out);
-      assert(split_out != nullptr);
+      auto split_out = loco::must_cast<luci::CircleSplitOut *>(out);
       if (split_out->index() == index)
       {
         outputs_vec.push_back(get_tensor_index(split_out));
@@ -725,8 +724,7 @@ void OperationExporter::visit(luci::CircleSplitV *node)
     bool found = false;
     for (auto out : split_outs)
     {
-      auto split_out = dynamic_cast<luci::CircleSplitVOut *>(out);
-      assert(split_out != nullptr);
+      auto split_out = loco::must_cast<luci::CircleSplitVOut *>(out);
       if (split_out->index() == index)
       {
         outputs_vec.push_back(get_tensor_index(split_out));
