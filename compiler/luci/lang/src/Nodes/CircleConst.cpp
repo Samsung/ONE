@@ -70,6 +70,7 @@ template <loco::DataType DT> typename loco::DataTypeImpl<DT>::Type &CircleConst:
   template const typename loco::DataTypeImpl<DT>::Type &CircleConst::scalar<DT>(void) const; \
   template typename loco::DataTypeImpl<DT>::Type &CircleConst::scalar<DT>(void);
 
+INSTANTIATE(loco::DataType::S64);
 INSTANTIATE(loco::DataType::S32);
 INSTANTIATE(loco::DataType::FLOAT32);
 INSTANTIATE(loco::DataType::U8);

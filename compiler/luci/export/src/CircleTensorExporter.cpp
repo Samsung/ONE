@@ -172,6 +172,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
       return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
     case loco::DataType::S32:
       return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
+    case loco::DataType::S64:
+      return encodeOpBufferByDType<loco::DataType::S64>(builder, c);
     case loco::DataType::U8:
       return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
     case loco::DataType::BOOL:
