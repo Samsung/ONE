@@ -57,6 +57,7 @@ option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
 # Default external libraries source download and build configuration
 #
 option(DOWNLOAD_TENSORFLOW "Download Tensorflow source" ON)
+option(DOWNLOAD_TENSORFLOW_LITE2 "Download TensorFlow Lite 2 source" ON)
 option(DOWNLOAD_ABSL "Download Absl source" ON)
 option(DOWNLOAD_EIGEN "Download Eigen source" ON)
 option(DOWNLOAD_FARMHASH "Download farmhash source" ON)
@@ -72,6 +73,7 @@ option(BUILD_BOOST "Build boost source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" ON)
 option(BUILD_GTEST "Download and build Google Test" ON)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
+option(BUILD_TENSORFLOW_LITE2 "Build TensorFlow Lite 2 from the downloaded source" ON)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 option(PROFILE_RUY "Enable ruy library profiling" OFF)
 

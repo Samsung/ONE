@@ -1,0 +1,8 @@
+if (${TARGET_OS} STREQUAL "linux" AND ${TARGET_ARCH} STREQUAL "x86_64")
+    nnas_find_package(TensorFlowLite2_${TARGET_ARCH}_${TARGET_OS}_)
+elseif (${TARGET_OS} STREQUAL "android" AND ${TARGET_ARCH} STREQUAL "aarch64")
+    nnas_find_package(TensorFlowLite2_${TARGET_ARCH}_${TARGET_OS}_)
+else()
+    message("TensorFlow Lite 2 does not support platform ${TARGET_ARCH}.${TARGET_OS} yet. Build will be skipped.")
+    return()
+endif()
