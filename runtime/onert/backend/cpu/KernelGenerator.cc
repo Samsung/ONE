@@ -45,6 +45,7 @@
 #include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
+#include "kernel/ReverseLayer.h"
 #include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
 #include "kernel/SelectLayer.h"
@@ -982,6 +983,23 @@ void KernelGenerator::visit(const ir::operation::ReduceProd &node)
 
   fn->configure(input_alloc, output_alloc, kernel::ReduceType::kProd, node.param().axes,
                 node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Reverse &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reverse::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::AXIS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto axis_alloc = _tensor_builder->at(axis_index).get();
+
+  auto fn = std::make_unique<kernel::ReverseLayer>();
+
+  fn->configure(input_alloc, axis_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

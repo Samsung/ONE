@@ -1124,6 +1124,20 @@ OperationFactory::OperationFactory()
     return new operation::ReLU6{inputs, outputs};
   };
 
+  _map[ANEURALNETWORKS_REVERSE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    // 0 -> Input Tensor Index
+    // 1 -> Axis Tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Reverse{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_RNN] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 6 && init_param.output_count == 2);
 
