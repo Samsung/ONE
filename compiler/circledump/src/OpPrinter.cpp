@@ -430,6 +430,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for ReLU and ReLU6
   _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  // There is no Option for SELECT
   // There is no Option for SIN
   _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
