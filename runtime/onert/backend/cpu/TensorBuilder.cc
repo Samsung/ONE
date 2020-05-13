@@ -42,23 +42,34 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   if (as_const)
     _constants.append(ind);
 
-  // TODO consider dynamic tensor
-  _static_tensor_mgr->buildTensor(ind, info, _constants.contains(ind));
+  if (info.memAllocType() == ir::MemAllocType::DYNAMIC)
+  {
+    _dynamic_tensor_mgr->buildTensor(ind, info);
+  }
+  else
+  {
+    _static_tensor_mgr->buildTensor(ind, info, _constants.contains(ind));
+  }
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
-  const auto size = tensor_info.total_size();
 
-  // TODO consider dynamic tensor
-  _static_tensor_mgr->claimPlan(ind, size);
+  if (!at(ind)->is_dynamic())
+  {
+    const auto size = tensor_info.total_size();
+    _static_tensor_mgr->claimPlan(ind, size);
+  }
 }
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  _static_tensor_mgr->releasePlan(ind);
+  if (!at(ind)->is_dynamic())
+  {
+    _static_tensor_mgr->releasePlan(ind);
+  }
 }
 
 bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
