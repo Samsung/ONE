@@ -440,6 +440,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
+  _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for Pad
   // There is no Option for ReLU and ReLU6
