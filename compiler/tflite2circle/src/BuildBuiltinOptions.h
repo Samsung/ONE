@@ -50,6 +50,7 @@
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
 // There is no RsqrtOptions
+#include "BuildBuiltinOptions/SelectOptions.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
