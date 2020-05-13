@@ -236,7 +236,7 @@ inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape
                 const Shape &output_shape, float *output_data)
 {
   int i = 0;
-  const int size = MatchingFlatSize(input1_shape, input2_shape, output_shape);
+  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
 #ifdef USE_NEON
   const auto activation_min = vdupq_n_f32(params.float_activation_min);
   const auto activation_max = vdupq_n_f32(params.float_activation_max);
@@ -291,7 +291,7 @@ inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape
                 const Shape &output_shape, float *output_data)
 {
   int i = 0;
-  const int size = MatchingFlatSize(input1_shape, input2_shape, output_shape);
+  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
 #ifdef USE_NEON
   const auto activation_min = vdupq_n_f32(params.float_activation_min);
   const auto activation_max = vdupq_n_f32(params.float_activation_max);
