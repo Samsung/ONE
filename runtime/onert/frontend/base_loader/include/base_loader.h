@@ -1426,6 +1426,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_SELECT:
       loadSelect(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_SELECT_V2:
+      // Use same loader with BuiltinOperator_SELECT
+      loadSelect(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadSqrt(op, subg);
       return;
