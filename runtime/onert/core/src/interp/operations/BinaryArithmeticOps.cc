@@ -123,11 +123,15 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
                         : ((op_type == OpType::SUB) ? nnfw::cker::BinaryArithmeticOpType::SUB
                                                     : nnfw::cker::BinaryArithmeticOpType::MUL);
 
-  if (lhs_tensor->tensorInfo().shape() != rhs_tensor->tensorInfo().shape())
+  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(
+      convertShape(lhs_tensor->tensorInfo().shape()),
+      convertShape(rhs_tensor->tensorInfo().shape()), &cker_param);
+
+  if (need_broadcast)
   {
-    const auto lhs_shape = convertExtendShape(lhs_tensor->tensorInfo().shape());
-    const auto rhs_shape = convertExtendShape(rhs_tensor->tensorInfo().shape());
-    const auto out_shape = convertExtendShape(out_tensor->tensorInfo().shape());
+    const auto lhs_shape = convertShape(lhs_tensor->tensorInfo().shape());
+    const auto rhs_shape = convertShape(rhs_tensor->tensorInfo().shape());
+    const auto out_shape = convertShape(out_tensor->tensorInfo().shape());
     nnfw::cker::BroadcastBinaryArithmeticOp(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr,
                                             out_shape, out_ptr);
     return;
