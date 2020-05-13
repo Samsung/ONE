@@ -50,6 +50,7 @@
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleRsqrt.h"
+#include "Nodes/CircleSelect.h"
 #include "Nodes/CircleSin.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
