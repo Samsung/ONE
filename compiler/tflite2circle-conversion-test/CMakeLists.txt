@@ -10,20 +10,15 @@ nncc_find_resource(TensorFlowLiteRecipes)
 set(TEST_REPO "${TensorFlowLiteRecipes_DIR}")
 set(TEST_RECIPE_FILENAME "test.recipe")
 
-unset(TESTCASES)
-macro(add NAME)
-  list(APPEND TESTCASES ${NAME})
-endmacro(add)
-
-# Read "test.lst"
-include("test.lst")
+file(GLOB RECIPES RELATIVE ${TEST_REPO} "${TEST_REPO}/*/${TEST_RECIPE_FILENAME}")
 
 unset(TEST_DEPS)
 unset(TEST_NAMES)
 
-foreach(PREFIX IN ITEMS ${TESTCASES})
-  if(NOT IS_DIRECTORY "${TEST_REPO}/${PREFIX}")
-    message(FATAL_ERROR "Missing '${PREFIX}' test")
+foreach(RECIPE IN ITEMS ${RECIPES})
+  get_filename_component(PREFIX ${RECIPE} DIRECTORY)
+  if(NOT IS_DIRECTORY "${TEST_REPO}/${RECIPE_PREFIX}")
+    message(FATAL_ERROR "Missing '${RECIPE_PREFIX}' test")
   endif()
 
   set(RECIPE_SOURCE_PATH "${TEST_REPO}/${PREFIX}/${TEST_RECIPE_FILENAME}")
