@@ -34,18 +34,11 @@ inline nnfw::cker::Shape convertShape(const ir::Shape &shape)
   auto dimensions = std::vector<uint32_t>(shape.dims().begin(), shape.dims().end());
 
   std::vector<int32_t> raw_shape;
-  raw_shape.resize(4);
+  raw_shape.resize(dimensions.size());
 
-  for (uint32_t i = 0; i < 4; ++i)
+  for (uint32_t i = 0; i < dimensions.size(); ++i)
   {
-    if (i >= dimensions.size())
-    {
-      raw_shape[i] = 1;
-    }
-    else
-    {
-      raw_shape[i] = dimensions[i];
-    }
+    raw_shape[i] = dimensions[i];
   }
 
   return nnfw::cker::GetShape(raw_shape);
