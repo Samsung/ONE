@@ -132,7 +132,7 @@ bool TFLTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtype) 
 
   TypeInferenceAlgorithm alg;
 
-  dtype = dynamic_cast<const TFLNode *>(node)->accept(&alg);
+  dtype = loco::must_cast<const TFLNode *>(node)->accept(&alg);
   assert(dtype != loco::DataType::Unknown);
 
   return true;
