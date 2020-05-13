@@ -86,10 +86,16 @@ KernelGenerator::KernelGenerator(
 
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
-  // TODO Move this to IKernelGenerator
-  //      (all derivatives have the same implementation for this)
   assert(!_return_fn_seq);
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+
+  auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
+      _ctx, _tensor_builder->dynamicTensorManager(), _tensor_builder->tensorRegistry());
+
+  _return_fn_seq = _tensor_builder->supportDynamicTensor()
+                       ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+                             op_seq, std::move(dyn_shape_inferer))
+                       : std::make_unique<exec::FunctionSequence>();
+
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &e : op_seq.operations())
   {
