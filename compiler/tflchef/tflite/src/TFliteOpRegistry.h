@@ -96,6 +96,7 @@ private:
     REG_TFL_OP(SQRT, TFliteOpSqrt);
     REG_TFL_OP(SQUARE, TFliteOpSquare);
     REG_TFL_OP(SQUARED_DIFFERENCE, TFliteOpSquaredDifference);
+    REG_TFL_OP(SQUEEZE, TFliteOpSqueeze);
     REG_TFL_OP(STRIDED_SLICE, TFliteOpStridedSlice);
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(SUM, TFliteOpSum);
