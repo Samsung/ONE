@@ -58,7 +58,7 @@ void StaticTensorManager::allocateNonconsts(void)
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
-    if (!_as_constants[ind])
+    if (!_as_constants[ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
@@ -85,6 +85,10 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
   assert(_tensors->find(ind) != _tensors->end());
+
+  // This method is called only when a tensor has proper shape
+  assert(!(*_tensors)[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
@@ -92,6 +96,10 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
   assert(_tensors->find(ind) != _tensors->end());
+
+  // This method is called only when a tensor is not dynamic
+  assert(!(*_tensors)[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
 }
