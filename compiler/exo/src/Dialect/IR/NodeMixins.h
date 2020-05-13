@@ -58,7 +58,7 @@ protected:
   loco::Use *at(unsigned n) const { return _args.at(n).get(); }
 
 private:
-  std::array<std::unique_ptr<loco::Use>, N> _args;
+  std::array<std::unique_ptr<loco::Use>, N> _args{};
 };
 
 } // namespace locoex

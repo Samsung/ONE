@@ -60,8 +60,8 @@ public:
 private:
   std::string _name;
 
-  tflite::TensorType _dtype;
-  ShapeDescription _shape;
+  tflite::TensorType _dtype{TensorType_FLOAT32};
+  ShapeDescription _shape{};
 
   // TODO Find a better design
   loco::ConstGen *_content = nullptr; // TODO deprecate
