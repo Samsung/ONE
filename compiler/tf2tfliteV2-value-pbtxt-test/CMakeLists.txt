@@ -174,10 +174,10 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 add_custom_target(tf2tfliteV2_value_pbtxt_test_deps ALL DEPENDS ${TEST_DEPS})
 
 # Run tests
-add_test(
-  NAME tf2tfliteV2_value_pbtxt_test
-  COMMAND "${TEST_RUNNER}"
-          "${TEST_CONFIG}"
-          "${CMAKE_CURRENT_BINARY_DIR}"
-          ${TEST_NAMES}
-)
+# add_test(
+#   NAME tf2tfliteV2_value_pbtxt_test
+#   COMMAND "${TEST_RUNNER}"
+#           "${TEST_CONFIG}"
+#           "${CMAKE_CURRENT_BINARY_DIR}"
+#           ${TEST_NAMES}
+# )
