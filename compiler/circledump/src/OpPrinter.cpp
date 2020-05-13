@@ -258,6 +258,21 @@ public:
   }
 };
 
+class OneHotPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_OneHotOptions())
+    {
+      os << "    ";
+      os << "Axis(" << params->axis() << ") ";
+
+      os << std::endl;
+    }
+  }
+};
+
 class PackPrinter : public OpPrinter
 {
 public:
