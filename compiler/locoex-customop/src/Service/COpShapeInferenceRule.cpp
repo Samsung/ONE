@@ -37,7 +37,7 @@ bool COpShapeInferenceRule::infer(const loco::Node *node, loco::NodeShape &shape
   assert(node->dialect() == COpDialect::get());
   assert(dynamic_cast<const COpNode *>(node) != nullptr);
 
-  auto cop_call = dynamic_cast<const COpCall *>(node);
+  auto cop_call = loco::must_cast<const COpCall *>(node);
 
   // Note that the shape of custom op is considered as TensorShape
   // TODO Decide how to deal with this shape error cases
