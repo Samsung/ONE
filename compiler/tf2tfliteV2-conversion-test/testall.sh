@@ -38,7 +38,7 @@ while [[ $# -ne 0 ]]; do
   cat > "${PREFIX}.log" <(
     exec 2>&1
 
-    echo "-- Found pb: ${PREFIX}.pbtxt"
+    echo "-- Found pbtxt: ${PREFIX}.pbtxt"
 
     # Exit immediately if any command fails
     set -e
