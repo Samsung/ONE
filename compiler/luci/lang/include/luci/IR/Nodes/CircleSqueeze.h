@@ -38,15 +38,11 @@ public:
   void input(loco::Node *node) { at(0)->node(node); }
 
 public:
-  uint32_t squeeze_dim_num() const { return static_cast<uint32_t>(squeeze_dims.size()); };
-  void squeeze_dim_num(uint32_t num) { squeeze_dims.resize(static_cast<std::size_t>(num)); };
-
-public:
-  int32_t squeeze_dim(uint32_t idx) const { return squeeze_dims[idx]; }
-  void squeeze_dim(uint32_t idx, int32_t dim) { squeeze_dims[idx] = dim; };
+  const std::vector<int32_t> &squeeze_dims() const { return _squeeze_dims; }
+  void squeeze_dims(const std::vector<int32_t> &squeeze_dims) { _squeeze_dims = squeeze_dims; };
 
 private:
-  std::vector<int32_t> squeeze_dims{};
+  std::vector<int32_t> _squeeze_dims{};
 };
 
 } // namespace luci

@@ -28,19 +28,15 @@ TEST(CircleSqueezeTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::SQUEEZE, squeeze.opcode());
 
   ASSERT_EQ(nullptr, squeeze.input());
-  ASSERT_EQ(0, squeeze.squeeze_dim_num());
+  ASSERT_EQ(0, squeeze.squeeze_dims().size());
 }
 
 TEST(CircleSqueezeTest, squeeze_dims)
 {
   luci::CircleSqueeze squeeze;
 
-  squeeze.squeeze_dim_num(2);
-  ASSERT_EQ(2, squeeze.squeeze_dim_num());
+  squeeze.squeeze_dims({1, 2});
 
-  squeeze.squeeze_dim(0, 1);
-  squeeze.squeeze_dim(1, 2);
-
-  ASSERT_EQ(1, squeeze.squeeze_dim(0));
-  ASSERT_EQ(2, squeeze.squeeze_dim(1));
+  ASSERT_EQ(1, squeeze.squeeze_dims().at(0));
+  ASSERT_EQ(2, squeeze.squeeze_dims().at(1));
 }
