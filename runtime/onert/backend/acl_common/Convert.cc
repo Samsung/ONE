@@ -48,7 +48,12 @@ namespace acl_common
 ::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, ir::Layout frontend_layout,
                                          ir::Layout backend_layout, bool apply_dim_correction)
 {
-  const uint32_t rank = shape.rank();
+  // If shape's rank is 0, the tensor is a scalar
+  // Sometimes, some ACL kernel can use a scalar as tensor. But ACL does not allocate buffer for
+  // tensor having rank as 0.
+  const auto tensor_shape = shape.rank() == 0 ? ir::Shape{1} : shape;
+
+  const uint32_t rank = tensor_shape.rank();
 
   ::arm_compute::TensorShape res{};
 
@@ -63,8 +68,8 @@ namespace acl_common
     // However, if the dimension correction is applied to input_to_input_weights with input_size
     // equal to 1, it will be changed to 1-D.
     // So input_to_input_weights is not used by the weight of FullyConnected.
-    res.set(ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value(), shape.dim(axis),
-            apply_dim_correction);
+    res.set(ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value(),
+            tensor_shape.dim(axis), apply_dim_correction);
   }
 
   return res;
