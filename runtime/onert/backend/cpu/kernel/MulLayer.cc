@@ -36,13 +36,14 @@ void MulLayer::mulFloat32()
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
-  if (!HaveSameShapes(_lhs, _rhs))
+  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(
+      convertTensorToCkerShape(_lhs), convertTensorToCkerShape(_rhs), &op_params);
+  if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOpSlow(
-        op_params, convertToExtendedCkerShape(_lhs),
-        reinterpret_cast<const float *>(_lhs->buffer()), convertToExtendedCkerShape(_rhs),
-        reinterpret_cast<const float *>(_rhs->buffer()), convertToExtendedCkerShape(_output),
-        reinterpret_cast<float *>(_output->buffer()));
+    nnfw::cker::BroadcastBinaryArithmeticOp(
+        op_params, convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+        convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+        convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 

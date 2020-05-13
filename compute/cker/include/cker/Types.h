@@ -66,6 +66,15 @@ struct PaddingValues
   int16_t height;
 };
 
+enum class BroadcastableOpCategory : uint8_t
+{
+  kNone,
+  kNonBroadcast,              // Matching input shapes.
+  kFirstInputBroadcastsFast,  // Fivefold nested loops.
+  kSecondInputBroadcastsFast, // Fivefold nested loops.
+  kGenericBroadcast,          // Fall-back.
+};
+
 struct PoolParams
 {
   FusedActivationFunctionType activation;
@@ -150,7 +159,7 @@ struct BinaryArithmeticOpParam
 {
   BinaryArithmeticOpType type;
   // Shape dependent / common to data / op types.
-  // BroadcastableOpCategory broadcast_category;
+  BroadcastableOpCategory broadcast_category;
   // uint8 inference params.
   int32_t input1_offset;
   int32_t input2_offset;
@@ -179,7 +188,7 @@ struct BinaryArithmeticOpParam
   // broadcast_shape[2] = b2 = a2.
   // broadcast_shape[1] = a3; b3 = 1.
   // broadcast_shape[0] = b4 = a4.
-  // int broadcast_shape[5];
+  int broadcast_shape[5] = {};
 };
 
 struct TransposeParams

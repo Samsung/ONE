@@ -313,6 +313,19 @@ inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape
   return MatchingFlatSizeSkipDim(shape, skip_dim, check_shape_1);
 }
 
+inline int MatchingElementsSize(const Shape &shape, const Shape &check_shape_0,
+                                const Shape &check_shape_1)
+{
+  const int size_1 = shape.FlatSize();
+  const int size_2 = check_shape_0.FlatSize();
+  const int size_3 = check_shape_1.FlatSize();
+  assert(size_1 == size_2);
+  assert(size_2 == size_3);
+  UNUSED_RELEASE(size_2);
+  UNUSED_RELEASE(size_3);
+  return size_1;
+}
+
 } // namespace cker
 } // namespace nnfw
 
