@@ -50,6 +50,7 @@
 #include "Op/ReLU6.h"
 #include "Op/Reshape.h"
 #include "Op/Rsqrt.h"
+#include "Op/Select.h"
 #include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
