@@ -23,11 +23,11 @@
 #include "loco/IR/Dialect.h"
 #include "loco/IR/NodePool.forward.h"
 #include "loco/IR/Graph.forward.h"
+#include "loco/IR/MustCast.h"
 
 #include <array>
 #include <memory>
 #include <set>
-#include <stdexcept>
 
 namespace loco
 {
@@ -146,29 +146,9 @@ Subst<SubstQualifier::Default> replace(Node *node);
 /**
  * @brief A helper dynamic_cast that throws when failed
  */
-template <typename T> T must_cast(Node *node)
-{
-  auto cast_node = dynamic_cast<T>(node);
-  if (cast_node == nullptr)
-  {
-    std::string msg = "loco::must_cast() failed to cast: ";
-    msg += typeid(T).name();
-    throw std::invalid_argument(msg.c_str());
-  }
-  return cast_node;
-}
+template <typename T> T must_cast(Node *node) { return _must_cast<T, Node *>(node); }
 
-template <typename T> T must_cast(const Node *node)
-{
-  auto cast_node = dynamic_cast<T>(node);
-  if (cast_node == nullptr)
-  {
-    std::string msg = "loco::must_cast() failed to cast: ";
-    msg += typeid(T).name();
-    throw std::invalid_argument(msg.c_str());
-  }
-  return cast_node;
-}
+template <typename T> T must_cast(const Node *node) { return _must_cast<T, const Node *>(node); }
 
 } // namespace loco
 
