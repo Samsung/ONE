@@ -126,7 +126,7 @@ void convert_graph(const moco::GraphBuilderSource &source, const moco::ModelSign
 
     auto graph_input = graph->inputs()->create();
 
-    auto placeholder_node = dynamic_cast<moco::TFPlaceholder *>(node);
+    auto placeholder_node = loco::must_cast<moco::TFPlaceholder *>(node);
     assert(placeholder_node != nullptr);
 
     graph_input->name(input.nodeName());

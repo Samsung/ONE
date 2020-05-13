@@ -473,7 +473,7 @@ public:
     auto input_shape = node_shape(node->input());
     assert(input_shape.domain() == loco::Domain::Tensor);
 
-    auto const_paddings = dynamic_cast<moco::TFConst *>(node->paddings());
+    auto const_paddings = loco::must_cast<moco::TFConst *>(node->paddings());
     assert(const_paddings);
     assert(const_paddings->dtype() == loco::DataType::S32);
     assert(const_paddings->rank() == 2);
@@ -707,9 +707,9 @@ public:
     assert(node->ellipsis_mask() == 0);
     assert(node->shrink_axis_mask() == 1);
 
-    auto const_begin = dynamic_cast<moco::TFConst *>(node->begin());
-    auto const_end = dynamic_cast<moco::TFConst *>(node->end());
-    auto const_strides = dynamic_cast<moco::TFConst *>(node->strides());
+    auto const_begin = loco::must_cast<moco::TFConst *>(node->begin());
+    auto const_end = loco::must_cast<moco::TFConst *>(node->end());
+    auto const_strides = loco::must_cast<moco::TFConst *>(node->strides());
 
     assert(dynamic_cast<moco::TFConst *>(node->input()) != nullptr);
     assert(const_begin != nullptr);
@@ -880,7 +880,7 @@ void TFShapeInferenceRule::infer(const Context *ctx, const loco::Node *node, Sin
   assert(dynamic_cast<const TFNode *>(node) != nullptr);
 
   ShapeInferenceAlgorithm alg{ctx};
-  auto shape = dynamic_cast<const TFNode *>(node)->accept(&alg);
+  auto shape = loco::must_cast<const TFNode *>(node)->accept(&alg);
 
   if (shape.domain() == loco::Domain::Unknown)
     sink->fail();

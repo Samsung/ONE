@@ -61,7 +61,7 @@ TEST(TensorFlowImport, bias_add_01)
   tester.output("out");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFBiasAdd *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFBiasAdd *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_TRUE(test_node->data_layout() == "NHWC");
 }
@@ -106,7 +106,7 @@ TEST(TensorFlowImport, bias_add_NCHW_axis)
   tester.output("out");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFBiasAdd *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFBiasAdd *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_TRUE(test_node->data_layout() == "NCHW");
 }

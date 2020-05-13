@@ -79,7 +79,7 @@ TEST(TensorFlowImport, const_float_01)
   tester.output("const/float");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::FLOAT32>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::FLOAT32>(0), 1.1f);
@@ -142,7 +142,7 @@ TEST(TensorFlowImport, const_float_02)
   tester.output("const/float");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::FLOAT32>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::FLOAT32>(0), 1.1f);
@@ -206,7 +206,7 @@ TEST(TensorFlowImport, const_float_03)
   tester.output("const/float");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::FLOAT32>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::FLOAT32>(0), 1.1f);
@@ -270,7 +270,7 @@ TEST(TensorFlowImport, const_float_04)
   tester.output("const/float");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::FLOAT32>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::FLOAT32>(0), 1.1f);
@@ -334,7 +334,7 @@ TEST(TensorFlowImport, const_int32_04)
   tester.output("const/int");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::S32>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::S32>(0), 1);
@@ -391,7 +391,7 @@ TEST(TensorFlowImport, const_int32_scalar)
   tester.output("const/int");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::S32>(), 1);
   ASSERT_EQ(test_node->at<loco::DataType::S32>(0), 3);
@@ -453,7 +453,7 @@ TEST(TensorFlowImport, const_int8_01)
   tester.output("const/int8");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConst *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConst *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->size<loco::DataType::S8>(), 6);
   ASSERT_EQ(test_node->at<loco::DataType::S8>(0), 0);
