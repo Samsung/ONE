@@ -65,6 +65,7 @@
 #include "Op/Tanh.h"
 #include "Op/Tile.h"
 #include "Op/Transpose.h"
+#include "Op/OneHot.h"
 #include "Op/Unpack.h"
 
 #endif // __TFLITE_OP_CHEFS_H__

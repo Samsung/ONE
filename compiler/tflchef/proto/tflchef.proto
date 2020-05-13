@@ -30,6 +30,10 @@ message TensorFiller {
   repeated string arg = 2;
 }
 
+message OneHotOptions {
+  optional int32 axis = 1 [default = -1];
+}
+
 message TensorQuantization {
   repeated float min = 1;
   repeated float max = 2;
@@ -306,6 +310,7 @@ message Operation {
   optional SplitVOptions split_v_options = 143;
   optional ReducerOptions sum_options = 144;
   optional GreaterOptions greater_options = 145;
+  optional OneHotOptions onehot_options = 146;
 }
 
 // For additional subgraphs

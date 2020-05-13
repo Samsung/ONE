@@ -53,6 +53,7 @@
 #include "Op/Rsqrt.h"
 #include "Op/Select.h"
 #include "Op/Shape.h"
+#include "Op/OneHot.h"
 #include "Op/Sin.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
