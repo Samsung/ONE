@@ -44,8 +44,7 @@ struct GiiQueryServiceImpl final : public loco::GraphInputIndexQueryService
   loco::GraphOutputIndex index(const loco::Node *node) const final
   {
     assert(associated(node));
-    auto circleinput = dynamic_cast<const luci::CircleInput *>(node);
-    assert(circleinput != nullptr);
+    auto circleinput = loco::must_cast<const luci::CircleInput *>(node);
     return circleinput->index();
   }
 };
@@ -64,8 +63,7 @@ struct GoiQueryServiceImpl final : public loco::GraphOutputIndexQueryService
   loco::GraphOutputIndex index(const loco::Node *node) const final
   {
     assert(associated(node));
-    auto circleoutput = dynamic_cast<const luci::CircleOutput *>(node);
-    assert(circleoutput != nullptr);
+    auto circleoutput = loco::must_cast<const luci::CircleOutput *>(node);
     return circleoutput->index();
   }
 };
