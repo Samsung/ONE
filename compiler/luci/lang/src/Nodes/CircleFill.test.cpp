@@ -27,6 +27,6 @@ TEST(CircleFillTest, constructor_P)
   ASSERT_EQ(fill.dialect(), luci::CircleDialect::get());
   ASSERT_EQ(fill.opcode(), luci::CircleOpcode::FILL);
 
-  ASSERT_EQ(fill.dims(), nullptr);
-  ASSERT_EQ(fill.value(), nullptr);
+  ASSERT_EQ(nullptr, fill.dims());
+  ASSERT_EQ(nullptr, fill.value());
 }
