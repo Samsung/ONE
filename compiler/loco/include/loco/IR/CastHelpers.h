@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LOCO_IR_MUST_CAST_H__
-#define __LOCO_IR_MUST_CAST_H__
+#ifndef __LOCO_IR_CAST_HELPERS_H__
+#define __LOCO_IR_CAST_HELPERS_H__
 
 #include <string>
 #include <stdexcept>
@@ -38,4 +38,4 @@ template <typename T, typename ARG> T _must_cast(ARG arg)
 
 } // namespace loco
 
-#endif // __LOCO_IR_MUST_CAST_H__
+#endif // __LOCO_IR_CAST_HELPERS_H__

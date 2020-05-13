@@ -23,7 +23,7 @@
 #include "loco/IR/Dialect.h"
 #include "loco/IR/NodePool.forward.h"
 #include "loco/IR/Graph.forward.h"
-#include "loco/IR/MustCast.h"
+#include "loco/IR/CastHelpers.h"
 
 #include <array>
 #include <memory>
