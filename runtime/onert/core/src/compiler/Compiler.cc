@@ -206,7 +206,15 @@ void Compiler::compile(void)
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
-    if (_options.fp16_enable)
+    // Check backend(s) for subgraph support FP16
+    bool backends_support_fp16 = true;
+    auto &contexts = (*lowered_subgs[index]).backend_contexts();
+    for (auto it = contexts.begin(); it != contexts.end(); it++)
+    {
+      backends_support_fp16 &= it->first->config()->supportFP16();
+    }
+
+    if (_options.fp16_enable && backends_support_fp16)
     {
       // NOTE: the only acl_cl backend enables fp16 mode
       Fp32ToFp16Converter(*lowered_subgs[index]).run();
