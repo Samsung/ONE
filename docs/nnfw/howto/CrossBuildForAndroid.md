@@ -6,7 +6,7 @@ Supported Architecture : AARCH64 only (ARM32 is not supported yet)
 
 ## Prepare Android NDK
 
-Use `tools/cross/build_android_ndk.sh` script to prepare Android NDK. This is recommended way to build Android NDK.
+Use `tools/cross/install_android_ndk.sh` script to prepare Android NDK. This is recommended way to build Android NDK.
 You may download it yourself from the offical Android NDK website, but the script does a little more than just downloading and unzipping.
 
 ## Build
