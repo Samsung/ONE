@@ -133,7 +133,8 @@ void allocateTFLiteTensor(loco::Node *node, TFLTensorContext &ctx)
   tensor_info.dtype(TypeInference::get(node));
   tensor_info.shape(ShapeInference::get(node));
 
-  tensor_info.tfl_content(dynamic_cast<locoex::TFLConst *>(node));
+  if (auto const_node = dynamic_cast<locoex::TFLConst *>(node))
+    tensor_info.tfl_content(const_node);
 
   set_tensor_index(node, tensor_index);
 
