@@ -63,8 +63,8 @@ public:
 private:
   std::string _name;
 
-  circle::TensorType _dtype;
-  ShapeDescription _shape;
+  circle::TensorType _dtype{circle::TensorType_FLOAT32};
+  ShapeDescription _shape{};
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
