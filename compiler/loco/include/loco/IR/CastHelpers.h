@@ -19,6 +19,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <typeinfo>
 
 namespace loco
 {
