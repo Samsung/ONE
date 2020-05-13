@@ -22,11 +22,11 @@
 
 TEST(CircleLogicalAndTest, constructor_P)
 {
-  luci::CircleLogicalAnd or_node;
+  luci::CircleLogicalAnd and_node;
 
-  ASSERT_EQ(luci::CircleDialect::get(), or_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::LOGICAL_AND, or_node.opcode());
+  ASSERT_EQ(luci::CircleDialect::get(), and_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::LOGICAL_AND, and_node.opcode());
 
-  ASSERT_EQ(nullptr, or_node.x());
-  ASSERT_EQ(nullptr, or_node.y());
+  ASSERT_EQ(nullptr, and_node.x());
+  ASSERT_EQ(nullptr, and_node.y());
 }
