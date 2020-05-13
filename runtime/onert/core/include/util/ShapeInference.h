@@ -17,6 +17,8 @@
 #ifndef __ONERT_GRAPH_SHAPE_INFERENCE_H__
 #define __ONERT_GRAPH_SHAPE_INFERENCE_H__
 
+#include "Utils.h"
+
 #include "ir/operation/AvgPool2D.h"
 #include "ir/operation/Concat.h"
 #include "ir/operation/MaxPool2D.h"
@@ -128,7 +130,10 @@ public:
                  std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
       : _operands(operands), _dynamic_tensor_manager(tensor_manager),
         _tensor_registry(tensor_registry)
-  { /* empty */
+  {
+    UNUSED_RELEASE(_operands);
+    UNUSED_RELEASE(_dynamic_tensor_manager);
+    UNUSED_RELEASE(_tensor_registry);
   }
 
 public:
