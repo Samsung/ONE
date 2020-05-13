@@ -23,6 +23,8 @@
 #include "loco/IR/TensorShape.h"
 #include "loco/IR/TensorIndex.h"
 
+#include "loco/IR/CastHelpers.h"
+
 namespace loco
 {
 
@@ -55,6 +57,21 @@ struct FilterDecoder
   virtual TensorShape shape(const FilterShape &shape) const = 0;
   virtual FilterIndex value(const TensorIndex &index) const = 0;
 };
+
+/**
+ * @brief A helper dynamic_cast that throws when failed
+ */
+template <typename T> T must_cast(FilterEncoder *node)
+{
+  return _must_cast<T, FilterEncoder *>(node);
+}
+
+template <typename T> T must_cast(const FilterEncoder *node)
+{
+  return _must_cast<T, const FilterEncoder *>(node);
+}
+
+// TODO add must_cast for FilterDecoder
 
 } // namespace loco
 
