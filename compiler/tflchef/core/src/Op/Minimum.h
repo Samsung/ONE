@@ -46,4 +46,4 @@ struct MinimumChefFactory final : public OpChefFactory
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };
 
-#endif // __OP_FLOORDIV_H__
+#endif // __OP_MINIMUM_H__
