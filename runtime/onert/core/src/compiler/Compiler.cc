@@ -122,6 +122,21 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
   return options;
 }
 
+/**
+ * @brief Set input tensors with unknown dim to dynamic tensor.
+ *        This will make shape inference during compilation work correctly.
+ */
+void setInputToDynamicTensor(std::shared_ptr<onert::ir::Graph> &primary_subgraph)
+{
+  auto input_inds = primary_subgraph->getInputs();
+  for (auto input_ind : input_inds)
+  {
+    auto &input = primary_subgraph->operands().at(input_ind);
+    if (input.info().shape().hasUnknownDim())
+      input.info().memAllocType(ir::MemAllocType::DYNAMIC);
+  }
+}
+
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
     : _subgraphs{subgs}, _executors{nullptr}, _state{State::CREATED}
 {
@@ -176,6 +191,9 @@ void Compiler::compile(void)
   _subgraphs->iterate([](const onert::ir::SubgraphIndex &, const onert::ir::Graph &graph) {
     OperationValidator{graph}();
   });
+
+  // mark an input tensor "dynamic" when the tensor has unknown dim
+  setInputToDynamicTensor(_subgraphs->at(ir::SubgraphIndex{0}));
 
   // Compilable check
   if (!checkCompilable())
