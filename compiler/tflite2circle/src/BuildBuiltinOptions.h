@@ -44,6 +44,7 @@
 #include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
+#include "BuildBuiltinOptions/OneHotOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
 #include "BuildBuiltinOptions/PadOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
