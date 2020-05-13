@@ -23,6 +23,7 @@
 
 #include "ir/DataType.h"
 #include "ir/Layout.h"
+#include "ir/Shape.h"
 #include "ir/Coordinates.h"
 
 namespace onert
@@ -62,6 +63,11 @@ public:
   // set the rank when this tensor is dynamic.
   virtual void num_dimensions(size_t /*rank*/) { throw std::runtime_error("not yet implemented"); }
 };
+
+/**
+ * @brief Set the shape of tenser to new_shape
+ */
+void setShape(ITensor *tensor, const ir::Shape &new_shape);
 
 } // namespace backend
 } // namespace onert
