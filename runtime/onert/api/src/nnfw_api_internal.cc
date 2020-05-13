@@ -324,7 +324,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 {
   // sanity check
   {
-    if (!_subgraphs || !primary_subgraph() || primary_subgraph()->isBuildingPhase())
+    if (!primary_subgraph() || primary_subgraph()->isBuildingPhase())
     {
       std::cerr << "Error during apply_tensorinfo : "
                 << "prepare should be run after load_model" << std::endl;
