@@ -37,6 +37,10 @@ void ReverseLayer::run()
     throw std::runtime_error{"Reverse: only support 1 axis"};
   }
   int32_t axis = *(reinterpret_cast<int32_t *>(_axis->buffer()));
+  if (axis < 0)
+  {
+    axis += _input->num_dimensions();
+  }
 
   switch (_input->data_type())
   {
