@@ -1,0 +1,9 @@
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_library(circlechef_circle STATIC ${SOURCES})
+target_include_directories(circlechef_circle PUBLIC include)
+target_include_directories(circlechef_circle PRIVATE src)
+target_link_libraries(circlechef_circle circlechef_proto)
+target_link_libraries(circlechef_circle mio_circle)
+target_link_libraries(circlechef_circle stdex)
+target_link_libraries(circlechef_circle cwrap)
