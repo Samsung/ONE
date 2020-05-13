@@ -273,6 +273,21 @@ public:
   }
 };
 
+class OneHotPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_OneHotOptions())
+    {
+      os << "    ";
+      os << "Axis(" << params->axis() << ") ";
+
+      os << std::endl;
+    }
+  }
+};
+
 class SoftmaxPrinter : public OpPrinter
 {
 public:
@@ -419,6 +434,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
+  _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
