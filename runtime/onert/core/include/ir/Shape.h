@@ -22,6 +22,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <algorithm>
 
 namespace onert
 {
@@ -70,6 +71,16 @@ public:
    * @param[in] to_rank The rank value to be extended to
    */
   void extendRank(int to_rank);
+
+  /**
+   * @brief Check if shape has unknown dim (-1)
+   * @note  base_loader set dim to -1 when there is unknown dim in input tensor
+   */
+  bool hasUnknownDim() const
+  {
+    constexpr int32_t UNKNOWN_DIM = -1;
+    return (std::find(_dimensions.begin(), _dimensions.end(), UNKNOWN_DIM) != _dimensions.end());
+  }
 
 private:
   std::vector<int32_t> _dimensions;
