@@ -163,6 +163,8 @@ void ShapeFixer::visit(const ir::operation::ReduceMax &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceMin &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Select &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Slice &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::StridedSlice &) { /* DO NOTHING */}
@@ -171,6 +173,8 @@ void ShapeFixer::visit(const ir::operation::Split &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Cos &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Sin &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
@@ -178,6 +182,8 @@ void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::Shape &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceProd &) { /* DO NOTHING */}
+
+void ShapeFixer::visit(const ir::operation::Reverse &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
 
@@ -190,6 +196,9 @@ void ShapeFixer::visit(const ir::operation::Log &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::Round &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Pow &) { /* DO NOTHING */}
+
+void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

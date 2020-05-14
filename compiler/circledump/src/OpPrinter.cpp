@@ -258,6 +258,21 @@ public:
   }
 };
 
+class OneHotPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_OneHotOptions())
+    {
+      os << "    ";
+      os << "Axis(" << params->axis() << ") ";
+
+      os << std::endl;
+    }
+  }
+};
+
 class PackPrinter : public OpPrinter
 {
 public:
@@ -282,6 +297,55 @@ public:
     {
       os << "    ";
       os << "Beta(" << softmax_params->beta() << ")";
+      os << std::endl;
+    }
+  }
+};
+
+class SplitPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SplitOptions())
+    {
+      os << "    ";
+      os << "num_splits(" << params->num_splits() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class SplitVPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SplitVOptions())
+    {
+      os << "    ";
+      os << "num_splits(" << params->num_splits() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class SqueezePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_SqueezeOptions())
+    {
+      os << "    ";
+      os << "SqueezeDims(";
+      for (int i = 0; i < params->squeeze_dims()->size(); ++i)
+      {
+        if (i != 0)
+          os << ", ";
+        os << params->squeeze_dims()->Get(i);
+      }
+      os << ")";
       os << std::endl;
     }
   }
@@ -376,16 +440,22 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
+  _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for Pad
   // There is no Option for ReLU and ReLU6
   _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  // There is no Option for SELECT
   // There is no Option for SIN
   _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[circle::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
+  _op_map[circle::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
+  _op_map[circle::BuiltinOperator_SQUEEZE] = make_unique<SqueezePrinter>();
   _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
+  _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
 

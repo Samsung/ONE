@@ -20,6 +20,7 @@
 #include <dlfcn.h>
 
 #include "backend/Backend.h"
+#include "backend/controlflow/Backend.h"
 #include "backend/IConfig.h"
 #include "util/logging.h"
 #include "util/ConfigSource.h"
@@ -61,37 +62,15 @@ void BackendManager::loadBackend(const std::string &backend)
     return;
   }
 
-  const std::string backend_plugin = "libbackend_" + backend + ".so";
-  void *handle = dlopen(backend_plugin.c_str(), RTLD_LAZY | RTLD_LOCAL);
-  if (handle == nullptr)
+  if (backend == backend::controlflow::Config::ID)
   {
-    VERBOSE(BackendManager::loadBackend) << "loadBackend failed to load plugin of "
-                                         << backend.c_str() << " backend: " << dlerror()
-                                         << std::endl;
-    return;
-  }
+    // TODO Make this backend to be loaded from .so file
+    // Add controlflow Backend
+    auto backend_create = []() -> backend::Backend * {
+      return new onert::backend::controlflow::Backend;
+    };
 
-  VERBOSE(BackendManager::loadBackend) << "loaded " << backend_plugin << " as a plugin of "
-                                       << backend << " backend\n";
-
-  {
-    // load object creator function
-    auto backend_create = (backend_create_t)dlsym(handle, "onert_backend_create");
-    if (backend_create == nullptr)
-    {
-      fprintf(stderr, "BackendManager: unable to open function onert_backend_create : %s\n",
-              dlerror());
-      abort();
-    }
-
-    // load object creator function
-    auto backend_destroy = (backend_destroy_t)dlsym(handle, "onert_backend_destroy");
-    if (backend_destroy == nullptr)
-    {
-      fprintf(stderr, "BackendManager: unable to open function onert_backend_destroy : %s\n",
-              dlerror());
-      abort();
-    }
+    auto backend_destroy = [](backend::Backend *backend) { delete backend; };
 
     auto backend_object =
         std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
@@ -99,19 +78,66 @@ void BackendManager::loadBackend(const std::string &backend)
     bool initialized = backend_object->config()->initialize(); // Call initialize here?
     if (!initialized)
     {
-      VERBOSE(BackendManager::loadBackend)
-          << backend.c_str() << " backend initialization failed. Don't use this backend"
-          << std::endl;
-      dlclose(handle);
-      return;
+      throw std::runtime_error(backend::controlflow::Config::ID + " backend initialization failed");
     }
+    (void)backend_object_raw;
     _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
     _available_backends.push_back(backend_object_raw);
   }
+  else
+  {
+    const std::string backend_plugin = "libbackend_" + backend + ".so";
+    void *handle = dlopen(backend_plugin.c_str(), RTLD_LAZY | RTLD_LOCAL);
+    if (handle == nullptr)
+    {
+      VERBOSE(BackendManager::loadBackend) << "loadBackend failed to load plugin of "
+                                           << backend.c_str() << " backend: " << dlerror()
+                                           << std::endl;
+      return;
+    }
 
-  // Save backend handle (avoid warning by handle lost without dlclose())
-  auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{handle, [](void *h) { dlclose(h); }};
-  _handle_map.emplace(backend, std::move(u_handle));
+    VERBOSE(BackendManager::loadBackend) << "loaded " << backend_plugin << " as a plugin of "
+                                         << backend << " backend\n";
+
+    {
+      // load object creator function
+      auto backend_create = (backend_create_t)dlsym(handle, "onert_backend_create");
+      if (backend_create == nullptr)
+      {
+        fprintf(stderr, "BackendManager: unable to open function onert_backend_create : %s\n",
+                dlerror());
+        abort();
+      }
+
+      // load object creator function
+      auto backend_destroy = (backend_destroy_t)dlsym(handle, "onert_backend_destroy");
+      if (backend_destroy == nullptr)
+      {
+        fprintf(stderr, "BackendManager: unable to open function onert_backend_destroy : %s\n",
+                dlerror());
+        abort();
+      }
+
+      auto backend_object =
+          std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
+      auto backend_object_raw = backend_object.get();
+      bool initialized = backend_object->config()->initialize(); // Call initialize here?
+      if (!initialized)
+      {
+        VERBOSE(BackendManager::loadBackend)
+            << backend.c_str() << " backend initialization failed. Don't use this backend"
+            << std::endl;
+        dlclose(handle);
+        return;
+      }
+      _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
+      _available_backends.push_back(backend_object_raw);
+    }
+
+    // Save backend handle (avoid warning by handle lost without dlclose())
+    auto u_handle = std::unique_ptr<void, dlhandle_destroy_t>{handle, [](void *h) { dlclose(h); }};
+    _handle_map.emplace(backend, std::move(u_handle));
+  }
 }
 
 backend::Backend *BackendManager::get(const std::string &key)

@@ -59,6 +59,7 @@ struct MockConfigCPU : public IConfig
   bool supportPermutation() override { return false; }
   Layout supportLayout(const Operation &, Layout) { return Layout::UNKNOWN; }
   bool supportDynamicTensor() override { return false; }
+  bool supportFP16() override { return false; }
 };
 
 struct MockBackendCPU : public Backend
@@ -79,6 +80,7 @@ struct MockConfigGPU : public IConfig
   bool supportPermutation() override { return false; }
   ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
   bool supportDynamicTensor() override { return false; }
+  bool supportFP16() override { return false; }
 };
 
 struct MockBackendGPU : public Backend
@@ -99,6 +101,7 @@ struct MockConfigNPU : public IConfig
   bool supportPermutation() override { return false; }
   ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
   bool supportDynamicTensor() override { return false; }
+  bool supportFP16() override { return false; }
 };
 
 struct MockBackendNPU : public Backend

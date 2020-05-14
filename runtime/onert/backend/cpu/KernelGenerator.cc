@@ -24,6 +24,7 @@
 #include "kernel/CompareLayer.h"
 #include "kernel/ConcatLayer.h"
 #include "kernel/ConvolutionLayer.h"
+#include "kernel/CosLayer.h"
 #include "kernel/DepthwiseConvolutionLayer.h"
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
@@ -46,8 +47,10 @@
 #include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
+#include "kernel/ReverseLayer.h"
 #include "kernel/RoundLayer.h"
 #include "kernel/RsqrtLayer.h"
+#include "kernel/SelectLayer.h"
 #include "kernel/ShapeLayer.h"
 #include "kernel/SinLayer.h"
 #include "kernel/SliceLayer.h"
@@ -58,6 +61,7 @@
 #include "kernel/TanhLayer.h"
 #include "kernel/TransposeLayer.h"
 #include "kernel/UnpackLayer.h"
+#include "kernel/LogicalNotLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -820,6 +824,25 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::Select &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto condition_alloc = _tensor_builder->at(condition_index).get();
+  auto true_alloc = _tensor_builder->at(true_index).get();
+  auto false_alloc = _tensor_builder->at(false_index).get();
+
+  auto fn = std::make_unique<kernel::SelectLayer>();
+
+  fn->configure(condition_alloc, true_alloc, false_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Slice &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -921,6 +944,21 @@ void KernelGenerator::visit(const ir::operation::Sin &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::Cos &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Cos::Input::INPUT)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::CosLayer>();
+
+  fn->configure(ifm_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::RSQRT &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -963,6 +1001,23 @@ void KernelGenerator::visit(const ir::operation::ReduceProd &node)
 
   fn->configure(input_alloc, output_alloc, kernel::ReduceType::kProd, node.param().axes,
                 node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Reverse &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reverse::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::AXIS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto axis_alloc = _tensor_builder->at(axis_index).get();
+
+  auto fn = std::make_unique<kernel::ReverseLayer>();
+
+  fn->configure(input_alloc, axis_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }
@@ -1046,6 +1101,21 @@ void KernelGenerator::visit(const ir::operation::Round &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::LogicalNot &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::LogicalNot::INPUT)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalNotLayer>();
+
+  fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Mean &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1053,16 +1123,15 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 
   const auto axes = node.param().axes;
   const auto keep_dims = node.param().keep_dims;
-
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::onert::backend::cpu::kernel::MeanLayer>();
 
   fn->configure(input_alloc, output_alloc, axes, keep_dims);
-
   _return_fn = std::move(fn);
 }
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

@@ -23,6 +23,7 @@
 #include "loco/IR/Dialect.h"
 #include "loco/IR/NodePool.forward.h"
 #include "loco/IR/Graph.forward.h"
+#include "loco/IR/CastHelpers.h"
 
 #include <array>
 #include <memory>
@@ -141,6 +142,13 @@ private:
 };
 
 Subst<SubstQualifier::Default> replace(Node *node);
+
+/**
+ * @brief A helper dynamic_cast that throws when failed
+ */
+template <typename T> T must_cast(Node *node) { return _must_cast<T, Node *>(node); }
+
+template <typename T> T must_cast(const Node *node) { return _must_cast<T, const Node *>(node); }
 
 } // namespace loco
 

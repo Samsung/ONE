@@ -183,7 +183,7 @@ public:
   void axis(uint32_t axis) { _axis = axis; }
 
 private:
-  uint32_t _axis;
+  uint32_t _axis{0};
 };
 
 /**

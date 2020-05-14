@@ -1,0 +1,48 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 6 dim: 1 dim: 2 }
+}
+operand {
+  name: "size_splits"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "3"}
+}
+operand {
+  name: "split_dim"
+  type: INT32
+  shape { }
+  filler { tag: "explicit" arg: "0" }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 2 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 2 dim: 1 dim: 2 }
+}
+operand {
+  name: "ofm3"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 2 }
+}
+operation {
+  type: "SplitV"
+  split_v_options {
+    num_splits: 3
+  }
+  input: "ifm"
+  input: "size_splits"
+  input: "split_dim"
+  output: "ofm1"
+  output: "ofm2"
+  output: "ofm3"
+}
+input: "ifm"
+output: "ofm1"
+output: "ofm2"
+output: "ofm3"

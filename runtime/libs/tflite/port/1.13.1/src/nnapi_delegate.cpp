@@ -887,6 +887,10 @@ TfLiteStatus AddOpsAndParams(
         }
         nn_op_type = ANEURALNETWORKS_POW;
         break;
+      case tflite::BuiltinOperator_SELECT:
+        nnapi_version = 12;  // require NNAPI 1.2
+        nn_op_type = ANEURALNETWORKS_SELECT;
+        break;
       case tflite::BuiltinOperator_CONCAT_EMBEDDINGS:
       case tflite::BuiltinOperator_LSH_PROJECTION:
       case tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN:
@@ -922,7 +926,7 @@ TfLiteStatus AddOpsAndParams(
       //case tflite::BuiltinOperator_LESS:
       //case tflite::BuiltinOperator_LESS_EQUAL:
       //case tflite::BuiltinOperator_NEG:
-      case tflite::BuiltinOperator_SELECT:
+      //case tflite::BuiltinOperator_SELECT:
       // case tflite::BuiltinOperator_SLICE:
       //case tflite::BuiltinOperator_SIN:
       //case tflite::BuiltinOperator_LOG:

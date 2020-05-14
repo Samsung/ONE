@@ -1036,6 +1036,21 @@ void OperationValidator::visit(const ir::operation::Max &node)
   assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::Select &node)
+{
+  const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
+  const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  UNUSED_RELEASE(condition_index);
+  UNUSED_RELEASE(input_true_index);
+  UNUSED_RELEASE(input_false_index);
+  UNUSED_RELEASE(output_index);
+
+  assert(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
+}
+
 void OperationValidator::visit(const ir::operation::StridedSlice &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1070,6 +1085,17 @@ void OperationValidator::visit(const ir::operation::Split &node)
   assert(axis >= 0 && axis < input_rank);
   assert(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
   assert(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
+}
+
+void OperationValidator::visit(const ir::operation::Cos &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Sin &node)
@@ -1155,6 +1181,21 @@ void OperationValidator::visit(const ir::operation::ReduceProd &node)
   }
 }
 
+void OperationValidator::visit(const ir::operation::Reverse &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  UNUSED_RELEASE(input_index);
+  UNUSED_RELEASE(axis_index);
+  UNUSED_RELEASE(output_index);
+
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::While &node)
 {
   assert(node.getInputs().size() == node.getOutputs().size());
@@ -1174,6 +1215,17 @@ void OperationValidator::visit(const ir::operation::Neg &node)
 }
 
 void OperationValidator::visit(const ir::operation::Log &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+}
+
+void OperationValidator::visit(const ir::operation::LogicalNot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};

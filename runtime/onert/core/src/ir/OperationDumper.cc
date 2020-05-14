@@ -494,6 +494,15 @@ void OperationDumper::visit(const ResizeBilinear &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Reverse &node)
+{
+  VERBOSE(LIR) << "* Reverse" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Reverse::Input::INPUT).value()
+               << ") Axis(" << node.getInputs().at(Reverse::Input::AXIS).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const RNN &node)
 {
   VERBOSE(LIR) << "* RNN" << std::endl;
@@ -520,6 +529,17 @@ void OperationDumper::visit(const RSQRT &node)
 {
   VERBOSE(LIR) << "* RSQRT" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(RSQRT::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Select &node)
+{
+  VERBOSE(LIR) << "* Select" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Select::Input::CONDITION).value()
+               << ")"
+               << " Input_X(" << node.getInputs().at(Select::Input::INPUT_TRUE).value() << ")"
+               << " Input_Y(" << node.getInputs().at(Select::Input::INPUT_FALSE).value() << ")"
                << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }

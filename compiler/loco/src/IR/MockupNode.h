@@ -53,6 +53,21 @@ private:
   loco::Use _arg{this};
 };
 
+/// @brief Mockup2Node node for internal testing
+class Mockup2Node final : public loco::Node
+{
+public:
+  Mockup2Node() = default;
+
+public:
+  const loco::Dialect *dialect(void) const final { return MockDialect::get(); }
+  uint32_t opnum(void) const final { return 1; }
+
+  uint32_t arity(void) const final { return 0; }
+  Node *arg(uint32_t) const final { return nullptr; }
+  void drop(void) final {}
+};
+
 } // namespace
 
 #endif // __LOCO_IR_MOCKUP_NODE_H__

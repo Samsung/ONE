@@ -411,7 +411,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
   {
     if (node->dialect() == loco::CanonicalDialect::get())
     {
-      auto canonical_node = dynamic_cast<loco::CanonicalNode *>(node);
+      auto canonical_node = loco::must_cast<loco::CanonicalNode *>(node);
       canonical_node->accept(&collector);
     }
   }

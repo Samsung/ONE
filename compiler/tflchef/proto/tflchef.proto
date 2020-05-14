@@ -231,12 +231,32 @@ message MaximumMinimumOptions {
   // None
 }
 
+message SelectOptions {
+  // None
+}
+
+message SplitOptions {
+  optional int32 num_splits = 1;
+}
+
+message SplitVOptions {
+  optional int32 num_splits = 1;
+}
+
 message SquaredDifferenceOptions {
   // None
 }
 
 message FillOptions {
   // None
+}
+
+message GreaterOptions {
+  // None
+}
+
+message SqueezeOptions {
+  repeated int32 squeeze_dim = 1;
 }
 
 message Operation {
@@ -284,8 +304,13 @@ message Operation {
   optional StridedSliceOptions strided_slice_options = 137;
   optional SquaredDifferenceOptions squared_difference_options = 138;
   optional FillOptions fill_options = 139;
-  // optional GreaterOptions greater_options = 140;
+  optional SelectOptions select_options = 140;
   optional ReducerOptions reduce_prod_options = 141;
+  optional SplitOptions split_options = 142;
+  optional SplitVOptions split_v_options = 143;
+  optional ReducerOptions sum_options = 144;
+  optional GreaterOptions greater_options = 145;
+  optional SqueezeOptions squeeze_options = 146;
 }
 
 // For additional subgraphs

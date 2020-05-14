@@ -108,8 +108,7 @@ public:
     {
       if (recognize(node->dialect()))
       {
-        auto cn = dynamic_cast<luci::CircleNode *>(node);
-        assert(cn != nullptr);
+        auto cn = loco::must_cast<luci::CircleNode *>(node);
 
         fix(cn, m, r);
       }
@@ -168,8 +167,8 @@ public:
     auto else_graph_outputs = else_graph->outputs();
     for (size_t idx = 0; idx < then_outputs.size(); ++idx)
     {
-      auto then_out = dynamic_cast<luci::CircleOutput *>(then_outputs.at(idx));
-      auto else_out = dynamic_cast<luci::CircleOutput *>(else_outputs.at(idx));
+      auto then_out = loco::must_cast<luci::CircleOutput *>(then_outputs.at(idx));
+      auto else_out = loco::must_cast<luci::CircleOutput *>(else_outputs.at(idx));
 
       auto then_graph_output = then_graph_outputs->at(then_out->index());
       auto else_graph_output = else_graph_outputs->at(else_out->index());
@@ -215,7 +214,7 @@ public:
     {
       INTERNAL_EXN("CircleWhile COND output must have size 1");
     }
-    auto cond_out = dynamic_cast<luci::CircleOutput *>(cond_outputs.at(0));
+    auto cond_out = loco::must_cast<luci::CircleOutput *>(cond_outputs.at(0));
     if (cond_out->dtype() != loco::DataType::BOOL)
     {
       INTERNAL_EXN("CircleWhile COND output must have bool type");
@@ -227,8 +226,8 @@ public:
     auto body_graph_inputs = body_graph->inputs();
     for (size_t idx = 0; idx < cond_inputs.size(); ++idx)
     {
-      auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(idx));
-      auto body_in = dynamic_cast<luci::CircleInput *>(body_inputs.at(idx));
+      auto cond_in = loco::must_cast<luci::CircleInput *>(cond_inputs.at(idx));
+      auto body_in = loco::must_cast<luci::CircleInput *>(body_inputs.at(idx));
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_input = body_graph_inputs->at(body_in->index());
@@ -253,8 +252,8 @@ public:
     auto body_graph_outputs = body_graph->outputs();
     for (size_t idx = 0; idx < cond_inputs.size(); ++idx)
     {
-      auto cond_in = dynamic_cast<luci::CircleInput *>(cond_inputs.at(idx));
-      auto body_out = dynamic_cast<luci::CircleOutput *>(body_outputs.at(idx));
+      auto cond_in = loco::must_cast<luci::CircleInput *>(cond_inputs.at(idx));
+      auto body_out = loco::must_cast<luci::CircleOutput *>(body_outputs.at(idx));
 
       auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
       auto body_graph_output = body_graph_outputs->at(body_out->index());
@@ -298,8 +297,7 @@ public:
     {
       if (recognize(node->dialect()))
       {
-        auto cn = dynamic_cast<luci::CircleNode *>(node);
-        assert(cn != nullptr);
+        auto cn = loco::must_cast<luci::CircleNode *>(node);
 
         eval(cn, m, r);
       }
