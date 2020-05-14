@@ -142,6 +142,7 @@ protected:
   void loadRound(const Operator *op, ir::Graph &subg);
   void loadPow(const Operator *op, ir::Graph &subg);
   void loadLogicalNot(const Operator *op, ir::Graph &subg);
+  void loadZerosLike(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1402,6 +1403,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalNot(const Operator *op
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadZerosLike(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ZerosLike(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1594,6 +1607,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_FILL:
       loadFill(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_ZEROS_LIKE:
+      loadZerosLike(op, subg);
       return;
     default:
       throw std::runtime_error(

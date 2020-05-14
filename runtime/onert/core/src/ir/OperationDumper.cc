@@ -721,5 +721,13 @@ void OperationDumper::visit(const While &node)
   VERBOSE(LIR) << "  - Output : Outputs(" << outputs << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ZerosLike &node)
+{
+  VERBOSE(LIR) << "* RoZerosLike" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ZerosLike::Input::INPUT).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 } // namespace ir
 } // namespace onert

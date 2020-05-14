@@ -201,6 +201,8 @@ void ShapeFixer::visit(const ir::operation::Pow &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::ZerosLike &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

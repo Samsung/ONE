@@ -95,3 +95,4 @@
 #include "ir/operation/ReduceProd.h"
 #include "ir/operation/While.h"
 #include "ir/operation/Pow.h"
+#include "ir/operation/ZerosLike.h"

@@ -63,6 +63,7 @@
 #include "kernel/TransposeLayer.h"
 #include "kernel/UnpackLayer.h"
 #include "kernel/LogicalNotLayer.h"
+#include "kernel/ZerosLikeLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1156,6 +1157,20 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ZerosLike &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::ZerosLikeLayer>();
+
+  fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
 } // namespace cpu
 } // namespace backend
 } // namespace onert
