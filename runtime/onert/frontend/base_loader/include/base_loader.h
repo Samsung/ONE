@@ -91,6 +91,7 @@ protected:
   void loadMaxPool2D(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
+  void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
   void loadAdd(const Operator *op, ir::Graph &subg);
   void loadSub(const Operator *op, ir::Graph &subg);
@@ -507,6 +508,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadInstanceNorm(const Operator *
   param.epsilon = options->epsilon() == 0.f ? 1e-5 : options->epsilon();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::InstanceNorm(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFill(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Fill(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1578,6 +1591,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadLogicalNot(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_FILL:
+      loadFill(op, subg);
       return;
     default:
       throw std::runtime_error(

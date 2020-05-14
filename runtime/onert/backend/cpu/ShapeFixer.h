@@ -41,6 +41,7 @@ public:
   void visit(const ir::operation::MaxPool2D &) override;
   void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
+  void visit(const ir::operation::Fill &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Squeeze &) override;

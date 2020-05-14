@@ -62,6 +62,7 @@ public:
   void visit(const ir::operation::EmbeddingLookup &node) override;
   void visit(const ir::operation::Exp &node) override;
   void visit(const ir::operation::ExpandDims &node) override;
+  void visit(const ir::operation::Fill &node) override;
   void visit(const ir::operation::Floor &node) override;
   void visit(const ir::operation::HashtableLookup &node) override;
   void visit(const ir::operation::TransposeConv &node) override;

@@ -66,6 +66,8 @@ void ShapeFixer::visit(const ir::operation::Concat &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Fill &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::FullyConnected &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Reshape &) { /* DO NOTHING */}

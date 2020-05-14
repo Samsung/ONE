@@ -2015,6 +2015,20 @@ OperationFactory::OperationFactory()
 
     return new operation::Pow{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_FILL_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> A tensor, specifying the input.
+    //  1 -> A 1-D tensor, specifying the value
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Fill{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
