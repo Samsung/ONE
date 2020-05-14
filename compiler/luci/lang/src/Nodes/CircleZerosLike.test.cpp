@@ -24,8 +24,8 @@ TEST(CircleZerosLikeTest, constructor_P)
 {
   luci::CircleZerosLike node;
 
-  ASSERT_EQ(node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(node.opcode(), luci::CircleOpcode::ZEROS_LIKE);
+  ASSERT_EQ(luci::CircleDialect::get(), node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ZEROS_LIKE, node.opcode());
 
-  ASSERT_EQ(node.input(), nullptr);
+  ASSERT_EQ(nullptr, node.input());
 }
