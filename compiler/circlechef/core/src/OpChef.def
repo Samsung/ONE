@@ -1,0 +1,7 @@
+#ifndef OP_CHEF
+#error "Define OP first"
+#endif // OP_CHEF
+
+// Please keep the list in alphabetical order
+// OP_CHEF(NAME, FACTORY_CLASS)
+OP_CHEF(BatchMatMul, BatchMatMulChefFactory)

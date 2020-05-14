@@ -58,7 +58,7 @@ bool canonicalize_pad(loco::Graph *graph, moco::TFPad *node)
   constant_node->size<loco::DataType::FLOAT32>(1);
   constant_node->at<loco::DataType::FLOAT32>(0) = 0.0f;
 
-  auto const_paddings_node = dynamic_cast<loco::ConstGen *>(node->paddings());
+  auto const_paddings_node = loco::must_cast<loco::ConstGen *>(node->paddings());
   // TODO: support S64 type.
   assert(const_paddings_node->dtype() == loco::DataType::S32);
   assert(const_paddings_node->rank() == 2);

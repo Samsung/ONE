@@ -71,9 +71,7 @@ std::string opname(const loco::Node *node)
 {
   if (node->dialect() == loco::CanonicalDialect::get())
   {
-    auto canonical_node = dynamic_cast<const loco::CanonicalNode *>(node);
-
-    assert(canonical_node != nullptr);
+    auto canonical_node = loco::must_cast<const loco::CanonicalNode *>(node);
 
     switch (canonical_node->opcode())
     {
@@ -288,8 +286,7 @@ bool CanonicalNodeSummaryBuilder::build(const loco::Node *node, locop::NodeSumma
     return false;
   }
 
-  auto canonical_node = dynamic_cast<const loco::CanonicalNode *>(node);
-  assert(canonical_node != nullptr);
+  auto canonical_node = loco::must_cast<const loco::CanonicalNode *>(node);
   out = canonical_node_desc(*_tbl, canonical_node);
   return true;
 }

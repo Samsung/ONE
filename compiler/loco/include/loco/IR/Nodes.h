@@ -632,7 +632,7 @@ public:
 
 private:
   TensorAxisSet _axes;
-  ReduceFunc _func;
+  ReduceFunc _func{ReduceFunc::Mean};
 };
 
 /**

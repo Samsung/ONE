@@ -1,0 +1,6 @@
+# Console-based tool (circlechef)
+add_subdirectory(console)
+# File-based tool (circlechef-file)
+add_subdirectory(file)
+# Reverse tool to generate recipe from circle (circlechef-reverse)
+add_subdirectory(reverse)
