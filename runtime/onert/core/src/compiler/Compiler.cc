@@ -193,7 +193,7 @@ void Compiler::compile(void)
   });
 
   // mark an input tensor "dynamic" when the tensor has unknown dim
-  setInputToDynamicTensor(_subgraphs->at(ir::SubgraphIndex{0}));
+  setInputToDynamicTensor(_subgraphs->primary());
 
   // Compilable check
   if (!checkCompilable())
