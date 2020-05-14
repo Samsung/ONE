@@ -31,7 +31,6 @@
 #include "backend/IOptimizer.h"
 #include "backend/ITensorRegister.h"
 #include <memory>
-#include "compiler/CachedDataDeleter.h"
 
 namespace onert
 {
