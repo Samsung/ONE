@@ -56,9 +56,20 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   const auto input_index = primary_subgraph().getInputs().at(index);
   const auto info = primary_subgraph().operands().at(input_index).info();
 
-  if (length < info.total_size())
+  // check if size enough for input is passed
+  // if input_shape_sig is set, input_shape_sig overrides shape in info
+  // note: input_shape_sig contains shape passed by nnfw_apply_tensorinfo()
   {
-    throw std::runtime_error{"Too small length"};
+    auto input_shape_sig = _io_desc.input_shape_signature.find(index);
+    auto size_required = (input_shape_sig != _io_desc.input_shape_signature.end())
+                             ? input_shape_sig->second.num_elements() *
+                                   onert::ir::sizeOfDataType(info.typeInfo().type())
+                             : info.total_size();
+
+    if (length < size_required)
+    {
+      throw std::runtime_error{"Too small length"};
+    }
   }
 
   _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);

@@ -105,6 +105,10 @@ message FloorDivOptions {
   // None
 }
 
+message FloorModOptions {
+  // None
+}
+
 message FullyConnectedOptions {
   optional Activation activation = 1 [default = NONE];
 }
@@ -235,6 +239,10 @@ message GreaterEqualOptions {
   // None
 }
 
+message SelectOptions {
+  // None
+}
+
 message SplitOptions {
   optional int32 num_splits = 1;
 }
@@ -252,7 +260,19 @@ message FillOptions {
 }
 
 message GreaterOptions {
+  // None 
+}
+
+message LessOptions {
   // None
+}
+
+message SqueezeOptions {
+  repeated int32 squeeze_dim = 1;
+}
+
+message OneHotOptions {
+  optional int32 axis = 1 [default = -1];
 }
 
 message Operation {
@@ -300,12 +320,16 @@ message Operation {
   optional StridedSliceOptions strided_slice_options = 137;
   optional SquaredDifferenceOptions squared_difference_options = 138;
   optional FillOptions fill_options = 139;
-  // optional GreaterOptions greater_options = 140;
+  optional SelectOptions select_options = 140;
   optional ReducerOptions reduce_prod_options = 141;
   optional SplitOptions split_options = 142;
   optional SplitVOptions split_v_options = 143;
   optional ReducerOptions sum_options = 144;
   optional GreaterOptions greater_options = 145;
+  optional SqueezeOptions squeeze_options = 146;
+  optional FloorModOptions floormod_options = 147;
+  optional OneHotOptions onehot_options = 148;
+  optional LessOptions less_options = 149;
 }
 
 // For additional subgraphs

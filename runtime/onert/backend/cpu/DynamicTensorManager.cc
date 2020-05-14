@@ -24,9 +24,22 @@ namespace cpu
 {
 
 DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _tensors{reg}
+    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
+}
+
+void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape)
+{
+  auto tensor = (*_tensors)[ind];
+  assert(tensor);
+
+  setShape(tensor.get(), new_shape);
+
+  auto capacity = tensor->total_size();
+  auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
+
+  tensor->setBuffer(alloc);
 }
 
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,

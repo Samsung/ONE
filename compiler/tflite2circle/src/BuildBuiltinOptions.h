@@ -33,10 +33,13 @@
 #include "BuildBuiltinOptions/ExpandDimsOptions.h"
 #include "BuildBuiltinOptions/ExpOptions.h"
 #include "BuildBuiltinOptions/FillOptions.h"
+#include "BuildBuiltinOptions/FloorModOptions.h"
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GatherOptions.h"
+#include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
+#include "BuildBuiltinOptions/LessOptions.h"
 #include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
@@ -44,12 +47,14 @@
 #include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
+#include "BuildBuiltinOptions/OneHotOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
 #include "BuildBuiltinOptions/PadOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
 // There is no RsqrtOptions
+#include "BuildBuiltinOptions/SelectOptions.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
@@ -65,5 +70,6 @@
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
+#include "BuildBuiltinOptions/ZerosLikeOptions.h"
 
 #endif // __BUILD_BUITIN_OPTIONS_H__

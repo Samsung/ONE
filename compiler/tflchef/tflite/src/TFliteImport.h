@@ -121,18 +121,18 @@ public:
   }
 
 private:
-  const TFliteSubGraphs_t *_subgraphs;
-  const TFliteBuffers_t *_buffers;
-  const TFliteTensors_t *_tensors;
-  const TFliteOperators_t *_operators;
+  const TFliteSubGraphs_t *_subgraphs{nullptr};
+  const TFliteBuffers_t *_buffers{nullptr};
+  const TFliteTensors_t *_tensors{nullptr};
+  const TFliteOperators_t *_operators{nullptr};
 
-  std::vector<const tflite::OperatorCode *> _op_codes;
-  std::vector<int32_t> _inputs;
-  std::vector<int32_t> _outputs;
+  std::vector<const tflite::OperatorCode *> _op_codes{};
+  std::vector<int32_t> _inputs{};
+  std::vector<int32_t> _outputs{};
 
-  std::map<uint32_t, bool> _tensor_filler;
-  std::map<uint32_t, std::vector<int32_t>> _tensor_filler_vint32;
-  std::map<uint32_t, std::vector<float>> _tensor_filler_vfloat;
+  std::map<uint32_t, bool> _tensor_filler{};
+  std::map<uint32_t, std::vector<int32_t>> _tensor_filler_vint32{};
+  std::map<uint32_t, std::vector<float>> _tensor_filler_vfloat{};
 };
 
 } // namespace tflchef

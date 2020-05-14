@@ -92,6 +92,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleExp *node) final { return loco::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleFloorMod *node) final
+  {
+    return loco::dtype_get(node->x());
+  }
+
   loco::DataType visit(const luci::CircleFullyConnected *node) final
   {
     return loco::dtype_get(node->input());
@@ -107,6 +112,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     // Type of If is not used. Just use input 1
     assert(node->arity() > 1);
     return loco::dtype_get(node->input(1));
+  }
+
+  loco::DataType visit(const luci::CircleLogicalAnd *node) final
+  {
+    return loco::dtype_get(node->x());
   }
 
   loco::DataType visit(const luci::CircleLogicalNot *node) final
@@ -174,6 +184,12 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleRsqrt *node) final { return loco::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleSelect *node) final
+  {
+    assert(loco::dtype_get(node->t()) == loco::dtype_get(node->e()));
+    return loco::dtype_get(node->t());
+  }
+
   loco::DataType visit(const luci::CircleSin *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleSoftmax *node) final
@@ -203,6 +219,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleSquaredDifference *node) final
   {
     return loco::dtype_get(node->x());
+  }
+
+  loco::DataType visit(const luci::CircleSqueeze *node) final
+  {
+    return loco::dtype_get(node->input());
   }
 
   loco::DataType visit(const luci::CircleStridedSlice *node) final

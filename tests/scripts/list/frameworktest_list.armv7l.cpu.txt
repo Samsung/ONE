@@ -19,6 +19,7 @@ less_equal
 logistic
 max
 max_pool_2d
+mean
 min
 mul
 neg

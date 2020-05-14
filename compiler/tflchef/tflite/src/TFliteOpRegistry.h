@@ -70,10 +70,12 @@ private:
     REG_TFL_OP(EXP, TFliteOpExp);
     REG_TFL_OP(FILL, TFliteOpFill);
     REG_TFL_OP(FLOOR_DIV, TFliteOpFloorDiv);
+    REG_TFL_OP(FLOOR_MOD, TFliteOpFloorMod);
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
     REG_TFL_OP(GATHER, TFliteOpGather);
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
+    REG_TFL_OP(LESS, TFliteOpLess);
     REG_TFL_OP(LOGICAL_AND, TFliteOpLogicalAnd);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
@@ -81,6 +83,7 @@ private:
     REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
     REG_TFL_OP(MEAN, TFliteOpMean);
+    REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
     REG_TFL_OP(PAD, TFliteOpPad);
     REG_TFL_OP(REDUCE_PROD, TFliteOpReduceProd);
@@ -88,6 +91,7 @@ private:
     REG_TFL_OP(RELU6, TFliteOpReLU6);
     REG_TFL_OP(RESHAPE, TFliteOpReshape);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
+    REG_TFL_OP(SELECT, TFliteOpSelect);
     REG_TFL_OP(SIN, TFliteOpSin);
     REG_TFL_OP(SOFTMAX, TFliteOpSoftmax);
     REG_TFL_OP(SPACE_TO_BATCH_ND, TFliteOpSpaceToBatchND);
@@ -96,6 +100,7 @@ private:
     REG_TFL_OP(SQRT, TFliteOpSqrt);
     REG_TFL_OP(SQUARE, TFliteOpSquare);
     REG_TFL_OP(SQUARED_DIFFERENCE, TFliteOpSquaredDifference);
+    REG_TFL_OP(SQUEEZE, TFliteOpSqueeze);
     REG_TFL_OP(STRIDED_SLICE, TFliteOpStridedSlice);
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(SUM, TFliteOpSum);

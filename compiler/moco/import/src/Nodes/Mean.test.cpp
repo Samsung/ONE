@@ -65,7 +65,7 @@ TEST(TensorFlowImport, mean_true)
   tester.output("Mean");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFMean *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFMean *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->keep_dims(), true);
 }
@@ -114,7 +114,7 @@ TEST(TensorFlowImport, mean_false)
   tester.output("Mean");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFMean *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFMean *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->keep_dims(), false);
 }

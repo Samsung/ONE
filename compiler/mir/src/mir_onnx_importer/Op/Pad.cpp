@@ -42,7 +42,7 @@ void convertPadAttrName(const std::string &pad_attr_name, const onnx::NodeProto 
     throw std::runtime_error("Not supported Pad mode attribute!");
 
   const int num_dims = input->getShape().rank();
-  assert(pads.size() == num_dims * 2);
+  assert(static_cast<int>(pads.size()) == num_dims * 2);
   mir::PadOpAttributes attributes(num_dims);
   for (int i = 0; i < num_dims; i++)
   {

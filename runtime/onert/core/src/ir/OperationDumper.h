@@ -77,6 +77,7 @@ public:
   void visit(const operation::ReLU6 &) override;
   void visit(const operation::Reshape &node) override;
   void visit(const operation::ResizeBilinear &) override;
+  void visit(const operation::Reverse &) override;
   void visit(const operation::RNN &) override;
   void visit(const operation::Round &) override;
   void visit(const operation::RSQRT &) override;

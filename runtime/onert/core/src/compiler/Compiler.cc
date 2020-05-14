@@ -55,9 +55,13 @@ std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
   return cf_op_codes;
 }
 
-CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
+CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
-  const auto cf_ops = getControlFlowOp(graph);
+  std::set<ir::OpCode> cf_ops;
+  subgs.iterate([&](const ir::SubgraphIndex &, const ir::Graph &graph) {
+    const auto ops = getControlFlowOp(graph);
+    cf_ops.insert(ops.cbegin(), ops.cend());
+  });
   CompilerOptions options;
 
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
@@ -101,6 +105,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
     }
 
     // Index to Backend
+    // TODO Support multiple subgraphs for manual scheduling
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
     auto key_val_list = nnfw::misc::split(map_str, ';');
     for (const auto &key_val_str : key_val_list)
@@ -115,22 +120,37 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
       const auto &val = key_val.at(1);
       auto key = static_cast<uint32_t>(std::stoi(key_str));
 
-      graph.operations().at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+      subgs.at(ir::SubgraphIndex{0})
+          ->operations()
+          .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
       ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
     }
   }
   return options;
 }
 
+/**
+ * @brief Set input tensors with unknown dim to dynamic tensor.
+ *        This will make shape inference during compilation work correctly.
+ */
+void setInputToDynamicTensor(const std::shared_ptr<onert::ir::Graph> &primary_subgraph)
+{
+  auto input_inds = primary_subgraph->getInputs();
+  for (auto input_ind : input_inds)
+  {
+    auto &input = primary_subgraph->operands().at(input_ind);
+    if (input.info().shape().hasUnknownDim())
+      input.info().memAllocType(ir::MemAllocType::DYNAMIC);
+  }
+}
+
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
     : _subgraphs{subgs}, _executors{nullptr}, _state{State::CREATED}
 {
-
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
   // API.
-  // TODO Support multiple subgraphs
-  _options = fetchCompilerOptionsFromGlobalConfig(*primary_subgraph());
+  _options = fetchCompilerOptionsFromGlobalConfig(*subgs);
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
@@ -177,6 +197,9 @@ void Compiler::compile(void)
     OperationValidator{graph}();
   });
 
+  // mark an input tensor "dynamic" when the tensor has unknown dim
+  setInputToDynamicTensor(_subgraphs->primary());
+
   // Compilable check
   if (!checkCompilable())
   {
@@ -206,7 +229,15 @@ void Compiler::compile(void)
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
 
-    if (_options.fp16_enable)
+    // Check backend(s) for subgraph support FP16
+    bool backends_support_fp16 = true;
+    auto &contexts = (*lowered_subgs[index]).backend_contexts();
+    for (auto it = contexts.begin(); it != contexts.end(); it++)
+    {
+      backends_support_fp16 &= it->first->config()->supportFP16();
+    }
+
+    if (_options.fp16_enable && backends_support_fp16)
     {
       // NOTE: the only acl_cl backend enables fp16 mode
       Fp32ToFp16Converter(*lowered_subgs[index]).run();

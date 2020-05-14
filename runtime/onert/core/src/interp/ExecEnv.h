@@ -116,7 +116,16 @@ public:
       return;
     }
 
+    // Buffer from external (ex. model output)
     auto tensor = std::make_shared<Tensor>(info);
+    if (isExtBuffer(index))
+    {
+      tensor->setBuffer(_external_buffers.at(index));
+      assignTensor(index, tensor);
+
+      return;
+    }
+
     tensor->setBuffer(std::make_shared<InternalBuffer>(tensor->total_size()));
     assignTensor(index, tensor);
     _buffers.insert(index);
@@ -141,6 +150,13 @@ public:
     {
       return;
     }
+
+    if (isExtBuffer(index))
+    {
+      auto tensor = std::make_shared<Tensor>(info);
+      tensor->setBuffer(_external_buffers.at(index));
+      assignTensor(index, tensor);
+    }
     else
     {
       auto tensor = std::make_shared<ROTensor>(info);
@@ -163,6 +179,22 @@ public:
     }
   }
 
+  /**
+   * @brief     Assign ExternalBuffer into external buffer map
+   * @param[in] index   Tensor index
+   * @param[in] buffer  External buffer
+   */
+  void assignExternalBuffer(const ir::OperandIndex index, std::shared_ptr<ExternalBuffer> buffer)
+  {
+    _external_buffers.emplace(index, buffer);
+  }
+
+private:
+  bool isExtBuffer(const ir::OperandIndex index)
+  {
+    return (_external_buffers.find(index) != _external_buffers.end());
+  }
+
 private:
   const ir::Graph &_graph;
   // Tensor map to use in interpreter
@@ -170,6 +202,8 @@ private:
   std::unordered_map<ir::OperandIndex, std::shared_ptr<ITensor>> _tensors;
   // Tensors allocated by allocateIfNeed (buffer)
   std::unordered_set<ir::OperandIndex> _buffers;
+  // Tensor buffer from external
+  std::unordered_map<ir::OperandIndex, std::shared_ptr<ExternalBuffer>> _external_buffers;
 };
 
 } // namespace interp

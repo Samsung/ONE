@@ -23,6 +23,8 @@
 #include "loco/IR/TensorShape.h"
 #include "loco/IR/TensorIndex.h"
 
+#include "loco/IR/CastHelpers.h"
+
 #include <memory>
 
 namespace loco
@@ -71,6 +73,29 @@ struct FeatureDecoder
 
   virtual std::unique_ptr<FeatureDecoder> clone(void) const = 0;
 };
+
+/**
+ * @brief A helper dynamic_cast that throws when failed
+ */
+template <typename T> T must_cast(FeatureEncoder *node)
+{
+  return _must_cast<T, FeatureEncoder *>(node);
+}
+
+template <typename T> T must_cast(const FeatureEncoder *node)
+{
+  return _must_cast<T, const FeatureEncoder *>(node);
+}
+
+template <typename T> T must_cast(FeatureDecoder *node)
+{
+  return _must_cast<T, FeatureDecoder *>(node);
+}
+
+template <typename T> T must_cast(const FeatureDecoder *node)
+{
+  return _must_cast<T, const FeatureDecoder *>(node);
+}
 
 } // namespace loco
 

@@ -98,7 +98,7 @@ bool TFTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtype) c
 #define TENSORFLOW_NODE(OPCODE,CLASS)                          \
   if (dynamic_cast<const moco::CLASS *>(node))             \
   {                                                            \
-    auto tfnode = dynamic_cast<const moco::CLASS *>(node); \
+    auto tfnode = loco::must_cast<const moco::CLASS *>(node); \
     dtype = tfnode->accept(&alg);                              \
     assert(dtype != loco::DataType::Unknown);                  \
     return true;                                               \

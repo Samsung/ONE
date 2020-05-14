@@ -37,7 +37,10 @@ struct IDynamicTensorManager : public ITensorManager
   virtual ~IDynamicTensorManager() = default;
 
 public:
-  // TODO Add method for dynamic tensor manager, e.g., allocating memory for dynamic tensor
+  /**
+   * @brief Allocate memory for dynamic tensor
+   */
+  virtual void allocate(const ir::OperandIndex &, const ir::Shape &) = 0;
 };
 
 } // namespace backend

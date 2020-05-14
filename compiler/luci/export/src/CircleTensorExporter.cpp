@@ -63,8 +63,8 @@ public:
 private:
   std::string _name;
 
-  circle::TensorType _dtype;
-  ShapeDescription _shape;
+  circle::TensorType _dtype{circle::TensorType_FLOAT32};
+  ShapeDescription _shape{};
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
@@ -263,7 +263,7 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
 
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
-    CircleNode *circle_node = dynamic_cast<luci::CircleNode *>(node);
+    CircleNode *circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (dynamic_cast<const luci::CircleInput *>(circle_node) != nullptr)
       continue;
     allocateCircleTensor(circle_node, tensor_ctx);

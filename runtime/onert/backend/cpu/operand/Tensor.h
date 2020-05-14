@@ -82,6 +82,8 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return ir::Layout::NHWC; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
+  float data_scale() const { return _info.typeInfo().scale(); }
+  int32_t data_offset() const { return _info.typeInfo().offset(); }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool is_dynamic() const override { return _info.memAllocType() == ir::MemAllocType::DYNAMIC; }
@@ -108,6 +110,22 @@ public:
       }
     }
   }
+
+  void dimension(size_t index, size_t dim) override
+  {
+    if (!(index < static_cast<size_t>(_info.shape().rank())))
+    {
+      throw std::runtime_error("index should be less than rank");
+    }
+
+    _info.shape().dim(index) = dim;
+  }
+
+  void num_dimensions(size_t rank) override
+  {
+    ir::Shape new_shape(rank); // all dims are initialized to 0 (invalid dim)
+    _info.shape(new_shape);
+  };
 
 private:
   ir::OperandInfo _info;

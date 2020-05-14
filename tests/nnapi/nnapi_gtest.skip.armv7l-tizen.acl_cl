@@ -5,6 +5,8 @@ GeneratedTests.abs_
 GeneratedTests.abs__relaxed
 GeneratedTests.batch_to_space*
 GeneratedTests.cast_*overflow*
+GeneratedTests.cos_ex_1D_float_nnfw
+GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp__relaxed
 GeneratedTests.fully_connected_hybrid*
@@ -31,6 +33,8 @@ GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.reduce_prod*
+GeneratedTests.reverse_ex_1d
+GeneratedTests.reverse_ex_3d
 GeneratedTests.rnn*
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_relaxed
@@ -40,6 +44,10 @@ GeneratedTests.select_v1_2_one_dim
 GeneratedTests.select_v1_2_one_dim_quant8
 GeneratedTests.select_v1_2_two_dim
 GeneratedTests.select_v1_2_two_dim_quant8
+GeneratedTests.select_v2_ex_broadcast_1d_single_value
+GeneratedTests.select_v2_ex_broadcast_2d_one
+GeneratedTests.select_v2_ex_broadcast_less_4d
+GeneratedTests.select_v2_ex_float
 GeneratedTests.sin*
 GeneratedTests.slice*
 GeneratedTests.space_to_batch*

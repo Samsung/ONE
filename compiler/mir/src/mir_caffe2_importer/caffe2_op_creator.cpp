@@ -247,7 +247,7 @@ static mir::TensorVariant createTensor(const OperatorDef &op)
 //
 
 std::vector<mir::Operation::Output *>
-Caffe2OpCreator::convertConstant(const std::vector<mir::Operation::Output *> &inputs,
+Caffe2OpCreator::convertConstant(const std::vector<mir::Operation::Output *> &,
                                  const ::caffe2::OperatorDef &op)
 {
   // Constant may not contain any data if it is a fake input.
@@ -521,7 +521,7 @@ Caffe2OpCreator::convertClip(const std::vector<mir::Operation::Output *> &inputs
 
 std::vector<mir::Operation::Output *>
 Caffe2OpCreator::convertReshape(const std::vector<mir::Operation::Output *> &inputs,
-                                const ::caffe2::OperatorDef &op)
+                                const ::caffe2::OperatorDef &)
 {
   auto shape_op = dynamic_cast<mir::ops::ConstantOp *>(inputs[1]->getNode());
   if (shape_op == nullptr)

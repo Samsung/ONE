@@ -27,7 +27,7 @@ const ::caffe2::Argument &findArgumentByName(RepArgument args, const std::string
   throw std::runtime_error("Can't find argument with name: " + name);
 }
 
-const bool hasArgument(RepArgument args, const std::string &name)
+bool hasArgument(RepArgument args, const std::string &name)
 {
   for (auto &arg : args)
     if (arg.name() == name)

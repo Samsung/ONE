@@ -54,6 +54,23 @@ void InterpExecutor::execute(const exec::IODescription &desc)
     tensor_map[input_index] = input_tensor;
   }
 
+  /************************************************************************
+   * Prepare execution environment
+     Execution environment will be assigned to invoked interpreter instance
+   ***********************************************************************/
+
+  std::unique_ptr<ExecEnv> interp_env = std::make_unique<ExecEnv>(_graph);
+
+  // Assign input/output tensor into interpreter execution environment
+  for (auto index : _graph.getInputs())
+  {
+    if (tensor_map.find(index) != tensor_map.end())
+    {
+      VERBOSE(INTERPRETER) << "Assign input tensor. operand index:" << index.value() << std::endl;
+      interp_env->assignTensor(index, tensor_map.at(index));
+    }
+  }
+
   for (uint32_t n = 0; n < _graph.getOutputs().size(); n++)
   {
     ir::IOIndex index{n};
@@ -65,28 +82,12 @@ void InterpExecutor::execute(const exec::IODescription &desc)
       continue;
     }
 
-    auto output_tensor = std::make_shared<Tensor>(output->info);
-    output_tensor->setBuffer(std::make_shared<ExternalBuffer>(
-        reinterpret_cast<uint8_t *>(output->buffer), output->size));
-    tensor_map[output_index] = output_tensor;
-  }
+    VERBOSE(INTERPRETER) << "Set out buffer to ExecEnv. operand index:" << output_index.value()
+                         << std::endl;
 
-  /************************************************************************
-   * Prepare execution environment
-     Execution environment will be assigned to invoked interpreter instance
-   ***********************************************************************/
-
-  std::unique_ptr<ExecEnv> interp_env = std::make_unique<ExecEnv>(_graph);
-
-  // Assign input/output tensor into interpreter execution environment
-  for (auto index : _graph.getInputs() + _graph.getOutputs())
-  {
-    if (tensor_map.find(index) != tensor_map.end())
-    {
-      VERBOSE(INTERPRETER) << "Assign input/output tensor. operand index:" << index.value()
-                           << std::endl;
-      interp_env->assignTensor(index, tensor_map.at(index));
-    }
+    interp_env->assignExternalBuffer(
+        output_index, std::make_shared<ExternalBuffer>(reinterpret_cast<uint8_t *>(output->buffer),
+                                                       output->size));
   }
 
   // Allocate constant tensor

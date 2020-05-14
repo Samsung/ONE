@@ -53,7 +53,7 @@ void show_error_message(const char *progname, std::ostream &os, const std::strin
  *        dump graph to console if set.
  *        i.e. "LUCI_LOG=1 luci_readtester mymodel.circle"
  */
-int main(int argc, char **argv)
+int entry(int argc, char **argv)
 {
   if (argc != 2)
   {

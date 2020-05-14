@@ -91,6 +91,7 @@ protected:
   void loadMaxPool2D(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
+  void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
   void loadAdd(const Operator *op, ir::Graph &subg);
   void loadSub(const Operator *op, ir::Graph &subg);
@@ -108,6 +109,7 @@ protected:
   void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadMean(const Operator *op, ir::Graph &subg);
   void loadReduceMax(const Operator *op, ir::Graph &subg);
+  void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
@@ -129,6 +131,7 @@ protected:
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
   void loadAbs(const Operator *op, ir::Graph &subg);
+  void loadCos(const Operator *op, ir::Graph &subg);
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadReduceProd(const Operator *op, ir::Graph &subg);
@@ -138,6 +141,7 @@ protected:
   void loadArgMax(const Operator *op, ir::Graph &subg);
   void loadRound(const Operator *op, ir::Graph &subg);
   void loadPow(const Operator *op, ir::Graph &subg);
+  void loadLogicalNot(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -508,6 +512,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadInstanceNorm(const Operator *
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFill(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Fill(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -793,6 +809,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
   param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax({input}, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReverseV2(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reverse(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1199,6 +1227,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadAbs(const Operator *op, ir::G
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadCos(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Cos(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadSin(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1350,6 +1390,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::G
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalNot(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalNot(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1413,6 +1465,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_SELECT:
       loadSelect(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_SELECT_V2:
+      // Use same loader with BuiltinOperator_SELECT
+      loadSelect(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadSqrt(op, subg);
       return;
@@ -1430,6 +1486,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
       loadReduceMax(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_REVERSE_V2:
+      loadReverseV2(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PAD:
       loadPad(op, subg);
@@ -1499,6 +1558,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_ABS:
       loadAbs(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_COS:
+      loadCos(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_SIN:
       loadSin(op, subg);
       return;
@@ -1526,6 +1588,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_POW:
       loadPow(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
+      loadLogicalNot(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_FILL:
+      loadFill(op, subg);
       return;
     default:
       throw std::runtime_error(

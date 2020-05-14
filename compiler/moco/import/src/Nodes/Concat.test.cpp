@@ -72,7 +72,7 @@ TEST(TensorFlowImport, concat_01)
   tester.output("Concat");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConcatV2 *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConcatV2 *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->num_values(), 2);
 }
@@ -128,7 +128,7 @@ TEST(TensorFlowImport, concat_02)
   tester.output("Concat");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFConcatV2 *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFConcatV2 *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->num_values(), 3);
 }

@@ -36,6 +36,7 @@ public:
   ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
   bool supportPermutation() override { return true; }
   bool supportDynamicTensor() override { return true; }
+  bool supportFP16() override { return false; }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };

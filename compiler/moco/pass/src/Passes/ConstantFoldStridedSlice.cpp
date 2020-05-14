@@ -35,10 +35,9 @@ namespace
 
 loco::TensorShape calc_output_shape(moco::TFStridedSlice *node)
 {
-  auto const_input = dynamic_cast<moco::TFConst *>(node->input());
-  auto const_begin = dynamic_cast<moco::TFConst *>(node->begin());
-  auto const_end = dynamic_cast<moco::TFConst *>(node->end());
-  auto const_strides = dynamic_cast<moco::TFConst *>(node->strides());
+  auto const_input = loco::must_cast<moco::TFConst *>(node->input());
+  auto const_begin = loco::must_cast<moco::TFConst *>(node->begin());
+  auto const_end = loco::must_cast<moco::TFConst *>(node->end());
   auto input_rank = const_input->rank();
   auto output_rank = input_rank;
   loco::TensorShape output_shape_range;

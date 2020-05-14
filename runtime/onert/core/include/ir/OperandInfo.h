@@ -91,6 +91,11 @@ public:
    */
   const Shape &shape() const { return _shape; }
   /**
+   * @brief   Return mutable tensor shape
+   * @return  Tensor shape
+   */
+  Shape &shape() { return _shape; }
+  /**
    * @brief set shape
    */
   void shape(const ir::Shape &new_shape) { _shape = new_shape; }

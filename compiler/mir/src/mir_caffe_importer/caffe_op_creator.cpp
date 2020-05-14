@@ -618,7 +618,7 @@ CaffeOpCreator::convertEmbed(const caffe::LayerParameter &layer,
 }
 
 std::vector<mir::Operation::Output *>
-CaffeOpCreator::convertSigmoid(const caffe::LayerParameter &layer,
+CaffeOpCreator::convertSigmoid(const caffe::LayerParameter &,
                                const std::vector<mir::Operation::Output *> &inputs)
 {
   auto result = createOp<ops::SigmoidOp>(inputs[0]);
@@ -626,7 +626,7 @@ CaffeOpCreator::convertSigmoid(const caffe::LayerParameter &layer,
 }
 
 std::vector<mir::Operation::Output *>
-CaffeOpCreator::convertTanH(const caffe::LayerParameter &layer,
+CaffeOpCreator::convertTanH(const caffe::LayerParameter &,
                             const std::vector<mir::Operation::Output *> &inputs)
 {
   auto tanh = createOp<ops::TanhOp>(inputs[0]);

@@ -32,7 +32,6 @@
 #include "backend/ITensorRegister.h"
 #include <memory>
 #include "compiler/CachedDataDeleter.h"
-#include "util/ShapeInference.h"
 
 namespace onert
 {
@@ -157,13 +156,6 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   // linearize
   assert(!lowered_graph->graph().isBuildingPhase());
 
-  // Shape inference.
-  {
-    shape_inference::StaticInferer inferer(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
-  }
-
   for (auto &pair : backend_contexts)
   {
     pair.second->fixShapes();
@@ -207,6 +199,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   ExecutionBuilder builder;
 
   // Generate kernels
+  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
   lowered_graph->op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
@@ -225,15 +218,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     pair.second->initConsts();
   }
 
-  // Note. The best solution is not to use CachedDataDeleter but decreasing reference counts of data
-  // naturally
   if (options.delete_cached_data)
   {
-    CachedDataDeleter cached_data_deleter(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          cached_data_deleter.run(op_seq);
-        });
+    lowered_graph->graph().operands().iterate(
+        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
   }
 
   auto code_map = builder.releaseCodeMap();
@@ -306,6 +294,7 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
   ExecutionBuilder builder;
 
   // Generate kernels
+  // TODO Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
   lowered_graph->op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
@@ -326,11 +315,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
 
   if (options.delete_cached_data)
   {
-    CachedDataDeleter cached_data_deleter(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          cached_data_deleter.run(op_seq);
-        });
+    lowered_graph->graph().operands().iterate(
+        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
   }
 
   auto code_map = builder.releaseCodeMap();
