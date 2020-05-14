@@ -23,8 +23,7 @@ namespace tflchef
 void TFliteOpOneHot::filler(const tflite::Operator *op, TFliteImport *import,
                             tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
-  // only depth(second input) has constant on recipe.
+  // only depth(second input) has constant on recipe cause depth value is used in shape inference.
   const auto &inputs = *op->inputs();
 
   const tflite::Tensor *tensor = import->tensors()->Get(inputs[1]);
