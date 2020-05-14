@@ -434,6 +434,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   _op_map[circle::BuiltinOperator_DIV] = make_unique<DivPrinter>();
+  // There is no Option for FLOOR_MOD
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
