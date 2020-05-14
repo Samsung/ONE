@@ -47,7 +47,7 @@ public:
   int release(void);
 
 private:
-  int _value;
+  int _value{-1};
 };
 
 bool valid(const Fildes &);
