@@ -13,17 +13,15 @@ operand {
   name: "on_value"
   type: INT32
   shape { dim: 1 }
-  filler { tag: "explicit" arg: "1" }
 }
 operand {
   name: "off_value"
   type: INT32
   shape { dim: 1 }
-  filler { tag: "explicit" arg: "0" }
 }
 operand {
   name: "ofm"
-  type: FLOAT32
+  type: INT32
   shape { dim: 1 dim: 2 dim: 2 dim: 4 dim: 5 }
 }
 operation {

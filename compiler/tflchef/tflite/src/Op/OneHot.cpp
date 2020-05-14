@@ -22,8 +22,18 @@ namespace tflchef {
 void TFliteOpOneHot::filler(const tflite::Operator *op, TFliteImport *import,
                             tflchef::ModelRecipe *model_recipe) const {
   // Nothing to do with filler
-  // Need to Add Filler on input[2], input[3] if value is none.
-  // Need to Add value update when option axis value -1.
+  // only depth(second input) has constant on recipe.
+  const auto &inputs = *op->inputs();
+
+  const tflite::Tensor *tensor = import->tensors()->Get(inputs[1]);
+  assert(tensor->type() == tflite::TensorType::TensorType_INT32);
+  const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+
+  if (buffer && buffer->data())
+  {
+    auto vec = extract_buffer<int32_t>(buffer);
+    import->set_tensor_filler(inputs[1], vec);
+  }
 }
 
 tflchef::Operation *
