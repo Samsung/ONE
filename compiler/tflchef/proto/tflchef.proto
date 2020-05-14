@@ -263,6 +263,10 @@ message SqueezeOptions {
   repeated int32 squeeze_dim = 1;
 }
 
+message OneHotOptions {
+  optional int32 axis = 1 [default = -1];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -316,6 +320,7 @@ message Operation {
   optional GreaterOptions greater_options = 145;
   optional SqueezeOptions squeeze_options = 146;
   optional FloorModOptions floormod_options = 147;
+  optional OneHotOptions onehot_options = 148;
 }
 
 // For additional subgraphs
