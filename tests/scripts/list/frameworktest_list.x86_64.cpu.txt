@@ -17,3 +17,4 @@ select
 softmax
 squeeze
 transpose
+zeros_like
