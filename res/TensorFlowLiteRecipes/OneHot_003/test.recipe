@@ -1,7 +1,7 @@
 operand {
   name: "indices"
   type: INT32
-  shape: { dim: 3 }
+  shape: { dim: 2 dim: None }
 }
 operand {
   name: "depth"
@@ -22,7 +22,7 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape: { dim: 3 dim: 3 }
+  shape: { dim: 2 dim: None dim: 3 }
 }
 operation {
   type: "OneHot"
