@@ -474,7 +474,6 @@ public:
     assert(input_shape.domain() == loco::Domain::Tensor);
 
     auto const_paddings = loco::must_cast<moco::TFConst *>(node->paddings());
-    assert(const_paddings);
     assert(const_paddings->dtype() == loco::DataType::S32);
     assert(const_paddings->rank() == 2);
 

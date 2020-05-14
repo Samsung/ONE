@@ -472,7 +472,6 @@ bool fuse_to_preceding(loco::Graph *graph, moco::TFAdd *node)
 
   // Let's fuse addparam into biasadd bias
   auto biasadd_bias = loco::must_cast<moco::TFConst *>(biasadd->bias());
-  assert(biasadd_bias != nullptr);
   if (!shape_match(biasadd_bias, addparam))
   {
     // INFO(l) << "TFBiasAdd bias and TFAdd input shape mismatch";
