@@ -46,7 +46,7 @@ private:
   };
 
 public:
-  virtual void run()
+  virtual void run() override
   {
     assert(_src_tensors.size() > 0);
     assert(_src_tensors.size() == _dst_tensors.size());
