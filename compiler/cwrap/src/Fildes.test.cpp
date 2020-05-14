@@ -32,7 +32,9 @@ namespace
 
 int make_temp(char *name_template)
 {
+  mode_t mask = umask(S_IRWXU);
   int fd = mkstemp(name_template);
+  umask(mask);
 
   if (fd == -1)
   {
