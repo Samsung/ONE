@@ -16,7 +16,7 @@
 
 #include "luci/Import/Nodes/CircleReduceProd.h"
 
-#include <luci/IR/Nodes/CircleMean.h>
+#include <luci/IR/Nodes/CircleReduceProd.h>
 
 namespace luci
 {
