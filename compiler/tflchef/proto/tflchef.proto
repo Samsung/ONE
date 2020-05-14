@@ -256,6 +256,10 @@ message FillOptions {
 }
 
 message GreaterOptions {
+  // None 
+}
+
+message LessOptions {
   // None
 }
 
@@ -321,6 +325,7 @@ message Operation {
   optional SqueezeOptions squeeze_options = 146;
   optional FloorModOptions floormod_options = 147;
   optional OneHotOptions onehot_options = 148;
+  optional LessOptions less_options = 149;
 }
 
 // For additional subgraphs
