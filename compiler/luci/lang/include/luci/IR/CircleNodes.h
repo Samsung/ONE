@@ -60,6 +60,7 @@
 #include "Nodes/CircleSqrt.h"
 #include "Nodes/CircleSquare.h"
 #include "Nodes/CircleSquaredDifference.h"
+#include "Nodes/CircleSqueeze.h"
 #include "Nodes/CircleStridedSlice.h"
 #include "Nodes/CircleSub.h"
 #include "Nodes/CircleSum.h"
