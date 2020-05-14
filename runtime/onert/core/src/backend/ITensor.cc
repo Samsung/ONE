@@ -14,36 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_IDYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_IDYNAMICTENSOR_MANAGER_H__
-
-#include "ITensorManager.h"
-
-#include <ir/Index.h>
-#include <ir/Shape.h>
-#include <backend/ITensor.h>
+#include "backend/ITensor.h"
 
 namespace onert
 {
 namespace backend
 {
 
-/**
- * @brief Interface as an abstract tensor manager, providing ways to handle memory
- *        for dynamic tensors.
- */
-struct IDynamicTensorManager : public ITensorManager
+void setShape(ITensor *tensor, const ir::Shape &new_shape)
 {
-  virtual ~IDynamicTensorManager() = default;
-
-public:
-  /**
-   * @brief Allocate memory for dynamic tensor
-   */
-  virtual void allocate(const ir::OperandIndex &, const ir::Shape &) = 0;
-};
+  tensor->num_dimensions(new_shape.rank());
+  for (int i = 0; i < new_shape.rank(); i++)
+    tensor->dimension(i, new_shape.dim(i));
+}
 
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_BACKEND_IDYNAMICTENSOR_MANAGER_H__
