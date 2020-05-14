@@ -223,6 +223,7 @@ private:
   IMPLEMENT(luci::CircleSqrt)
   IMPLEMENT(luci::CircleSquare)
   IMPLEMENT(luci::CircleSquaredDifference)
+  IMPLEMENT(luci::CircleSqueeze)
   IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleSum)
@@ -698,6 +699,24 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSquaredDifference *node
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSqueeze *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+
+  std::stringstream ss{"("};
+  for (size_t i = 0; i < node->squeeze_dims().size(); ++i)
+  {
+    if (i != 0)
+      ss << ", ";
+    ss << node->squeeze_dims()[i];
+  }
+  ss << ")";
+
+  s.args().append("squeeze_dims", ss.str());
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
