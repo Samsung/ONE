@@ -36,6 +36,7 @@
 #include "BuildBuiltinOptions/FloorModOptions.h"
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GatherOptions.h"
+#include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
