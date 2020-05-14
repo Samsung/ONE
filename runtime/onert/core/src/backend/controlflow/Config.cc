@@ -27,7 +27,10 @@ std::string Config::ID = "controlflow";
 
 bool Config::initialize() { return true; }
 
-ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout frontend_layout)
+{
+  return frontend_layout;
+}
 
 } // namespace controlflow
 } // namespace backend
