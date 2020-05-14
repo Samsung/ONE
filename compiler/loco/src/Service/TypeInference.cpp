@@ -182,7 +182,7 @@ bool CanonicalTypeInferenceRule::infer(const Node *node, DataType &dtype) const
   assert(dynamic_cast<const loco::CanonicalNode *>(node) != nullptr);
 
   CanonicalTypeForwardAlgorithm alg;
-  dtype = dynamic_cast<const loco::CanonicalNode *>(node)->accept(&alg);
+  dtype = loco::must_cast<const loco::CanonicalNode *>(node)->accept(&alg);
 
   return true;
 }

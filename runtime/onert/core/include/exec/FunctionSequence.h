@@ -22,6 +22,8 @@
 #include <functional>
 
 #include "exec/IFunction.h"
+#include "util/ShapeInference.h"
+
 #include <memory>
 
 namespace onert
@@ -62,8 +64,30 @@ public:
 
   void iterate(const std::function<void(IFunction &)> &fn);
 
-private:
+protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
+};
+
+/**
+ * @brief Function sequence used for backend that supports dynamic tensor
+ *        Such backend cannot use class FunctionSequence but use this class
+ */
+class FunctionSequenceForDynamicBackend : public FunctionSequence
+{
+public:
+  FunctionSequenceForDynamicBackend(
+      const ir::OpSequence &op_seq,
+      std::unique_ptr<shape_inference::DynamicInferer> dyn_shape_inferer)
+      : _op_seq(op_seq), _dyn_shape_inferer(std::move(dyn_shape_inferer))
+  { /* empty */
+  }
+
+  void run() override;
+
+private:
+  const ir::OpSequence &_op_seq;
+  /// @brief shape inferer at execution time
+  std::unique_ptr<shape_inference::DynamicInferer> _dyn_shape_inferer;
 };
 
 } // namespace exec

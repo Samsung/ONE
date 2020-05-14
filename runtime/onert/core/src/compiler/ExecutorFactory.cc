@@ -32,7 +32,6 @@
 #include "backend/ITensorRegister.h"
 #include <memory>
 #include "compiler/CachedDataDeleter.h"
-#include "util/ShapeInference.h"
 
 namespace onert
 {
@@ -156,13 +155,6 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   // linearize
   assert(!lowered_graph->graph().isBuildingPhase());
-
-  // Shape inference.
-  {
-    shape_inference::StaticInferer inferer(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
-  }
 
   for (auto &pair : backend_contexts)
   {

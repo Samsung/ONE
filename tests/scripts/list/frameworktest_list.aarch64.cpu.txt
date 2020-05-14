@@ -27,6 +27,7 @@ pack
 reduce_max
 reduce_sum
 reshape/reshape1
+select
 softmax
 squeeze
 sub

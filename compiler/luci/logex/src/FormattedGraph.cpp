@@ -212,13 +212,18 @@ private:
   IMPLEMENT(luci::CircleRelu6)
   IMPLEMENT(luci::CircleReshape)
   IMPLEMENT(luci::CircleRsqrt)
+  IMPLEMENT(luci::CircleSelect)
   IMPLEMENT(luci::CircleSin)
   IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSpaceToBatchND)
+  IMPLEMENT(luci::CircleSplit)
+  IMPLEMENT(luci::CircleSplitV)
   IMPLEMENT(luci::CircleSqrt)
+  IMPLEMENT(luci::CircleSquare)
   IMPLEMENT(luci::CircleSquaredDifference)
   IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
+  IMPLEMENT(luci::CircleSum)
   IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTile)
   IMPLEMENT(luci::CircleTranspose)
@@ -231,6 +236,8 @@ private:
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleIfOut)
+  IMPLEMENT(luci::CircleSplitOut)
+  IMPLEMENT(luci::CircleSplitVOut)
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
 #undef IMPLEMENT
@@ -591,6 +598,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleRsqrt *node, locop::Nod
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSelect *node, locop::NodeSummary &s) const
+{
+  s.args().append("condition", tbl()->lookup(node->condition()));
+  s.args().append("t", tbl()->lookup(node->t()));
+  s.args().append("e", tbl()->lookup(node->e()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSin *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
@@ -618,7 +634,39 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSpaceToBatchND *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSplit *node, locop::NodeSummary &s) const
+{
+  s.args().append("split_dim", tbl()->lookup(node->split_dim()));
+  s.args().append("input", tbl()->lookup(node->input()));
+
+  s.args().append("num_split", pepper::str(node->num_split()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitV *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("size_splits", tbl()->lookup(node->size_splits()));
+  s.args().append("split_dim", tbl()->lookup(node->split_dim()));
+
+  s.args().append("num_split", pepper::str(node->num_split()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSqrt *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSquare *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
@@ -656,6 +704,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSub *node, locop::NodeS
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSum *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
+  s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -727,6 +784,26 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleWhile *node, locop::Nod
     s.args().append("body_graph", node->body_graph()->name());
   else
     s.args().append("body_branch", pepper::str(node->body_branch()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitOut *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitVOut *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 

@@ -63,8 +63,8 @@ public:
 private:
   std::string _name;
 
-  circle::TensorType _dtype;
-  ShapeDescription _shape;
+  circle::TensorType _dtype{circle::TensorType_FLOAT32};
+  ShapeDescription _shape{};
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
@@ -172,6 +172,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
       return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
     case loco::DataType::S32:
       return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
+    case loco::DataType::S64:
+      return encodeOpBufferByDType<loco::DataType::S64>(builder, c);
     case loco::DataType::U8:
       return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
     case loco::DataType::BOOL:

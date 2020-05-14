@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [[ $# -le 3 ]]; then
+if [[ $# -le 2 ]]; then
   echo "USAGE: $0 [mio_tflite_validate path] [prefix 0] "
   exit 255
 fi
 
 MIO_TFLITE_VALIDATE_PATH="$1"; shift
 
-echo "-- Found mio_tflite_validate: ${NNKIT_RUN_PATH}"
+echo "-- Found mio_tflite_validate: ${MIO_TFLITE_VALIDATE_PATH}"
 
 TESTED=()
 PASSED=()

@@ -9,9 +9,11 @@ depthwise_conv_2d
 fullyconnected
 logistic
 max_pool_2d
+mean
 reduce_max
 reduce_sum
 reshape/reshape1
+select
 softmax
 squeeze
 transpose

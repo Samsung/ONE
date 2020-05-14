@@ -69,8 +69,7 @@ void copy_shape_dtype(loco::Graph *graph)
   auto nodes = graph->nodes();
   for (uint32_t n = 0; n < nodes->size(); ++n)
   {
-    auto node = dynamic_cast<luci::CircleNode *>(nodes->at(n));
-    assert(node != nullptr);
+    auto node = loco::must_cast<luci::CircleNode *>(nodes->at(n));
 
     CopySelector cs;
     if (node->accept(&cs))

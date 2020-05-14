@@ -60,8 +60,8 @@ public:
 private:
   std::string _name;
 
-  tflite::TensorType _dtype;
-  ShapeDescription _shape;
+  tflite::TensorType _dtype{TensorType_FLOAT32};
+  ShapeDescription _shape{};
 
   // TODO Find a better design
   loco::ConstGen *_content = nullptr; // TODO deprecate
@@ -80,7 +80,7 @@ struct NoOpDetector final : public loco::CanonicalNodeMutableVisitor<bool>
 
   bool visit(loco::FilterEncode *node) final
   {
-    auto encoder = dynamic_cast<loco::PermutingEncoder<loco::Domain::Filter> *>(node->encoder());
+    auto encoder = loco::must_cast<loco::PermutingEncoder<loco::Domain::Filter> *>(node->encoder());
     auto perm = encoder->perm();
 
     return isNHWC(perm);
@@ -88,14 +88,16 @@ struct NoOpDetector final : public loco::CanonicalNodeMutableVisitor<bool>
 
   bool visit(loco::FeatureEncode *node) final
   {
-    auto encoder = dynamic_cast<loco::PermutingEncoder<loco::Domain::Feature> *>(node->encoder());
+    auto encoder =
+        loco::must_cast<loco::PermutingEncoder<loco::Domain::Feature> *>(node->encoder());
     auto perm = encoder->perm();
     return isNHWC(perm);
   }
 
   bool visit(loco::FeatureDecode *node) final
   {
-    auto decoder = dynamic_cast<loco::PermutingDecoder<loco::Domain::Feature> *>(node->decoder());
+    auto decoder =
+        loco::must_cast<loco::PermutingDecoder<loco::Domain::Feature> *>(node->decoder());
     auto perm = decoder->perm();
     return isNHWC(perm);
   }
@@ -133,7 +135,8 @@ void allocateTFLiteTensor(loco::Node *node, TFLTensorContext &ctx)
   tensor_info.dtype(TypeInference::get(node));
   tensor_info.shape(ShapeInference::get(node));
 
-  tensor_info.tfl_content(dynamic_cast<locoex::TFLConst *>(node));
+  if (auto const_node = dynamic_cast<locoex::TFLConst *>(node))
+    tensor_info.tfl_content(const_node);
 
   set_tensor_index(node, tensor_index);
 

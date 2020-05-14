@@ -76,15 +76,19 @@ public:
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::Min &node) override;
   void visit(const ir::operation::Max &node) override;
+  void visit(const ir::operation::Select &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
   void visit(const ir::operation::Split &node) override;
+  void visit(const ir::operation::Cos &node) override;
   void visit(const ir::operation::Sin &node) override;
   void visit(const ir::operation::RSQRT &node) override;
   void visit(const ir::operation::Shape &node) override;
   void visit(const ir::operation::ReduceProd &node) override;
+  void visit(const ir::operation::Reverse &node) override;
   void visit(const ir::operation::While &node) override;
   void visit(const ir::operation::Neg &node) override;
   void visit(const ir::operation::Log &node) override;
+  void visit(const ir::operation::LogicalNot &node) override;
 
 private:
   // TODO Remove _ctx field

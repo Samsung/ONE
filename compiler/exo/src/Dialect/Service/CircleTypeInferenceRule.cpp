@@ -49,7 +49,7 @@ bool CircleTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtyp
 
   TypeInferenceAlgorithm alg;
 
-  dtype = dynamic_cast<const CircleNode *>(node)->accept(&alg);
+  dtype = loco::must_cast<const CircleNode *>(node)->accept(&alg);
   assert(dtype != loco::DataType::Unknown);
 
   return true;

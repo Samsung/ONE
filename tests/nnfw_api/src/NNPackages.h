@@ -38,6 +38,7 @@ public:
   enum TestPackages
   {
     ADD,
+    INPUT_RESHAPING_ADD,
     COUNT
   };
 
