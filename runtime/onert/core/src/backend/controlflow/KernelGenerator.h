@@ -21,7 +21,6 @@
 #include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
 #include <ir/Operands.h>
-#include <ir/Operations.Include.h>
 
 namespace onert
 {
@@ -47,6 +46,7 @@ public:
   using IKernelGenerator::visit;
 
   void visit(const ir::OpSequence &) override;
+  void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
 
 private:
