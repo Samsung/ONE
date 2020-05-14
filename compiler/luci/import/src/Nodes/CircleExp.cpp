@@ -16,7 +16,7 @@
 
 #include "luci/Import/Nodes/CircleExp.h"
 
-#include <luci/IR/Nodes/CircleExp.h>
+#include <luci/IR/Nodes/CircleAbs.h>
 
 #include <loco.h>
 
@@ -50,7 +50,7 @@ CircleNode *CircleExpGraphBuilder::build_node(const circle::OperatorT &,
                                               const std::vector<CircleNode *> &inputs,
                                               loco::Graph *graph) const
 {
-  auto *node = graph->nodes()->create<CircleExp>();
+  auto *node = graph->nodes()->create<CircleAbs>();
   node->x(inputs[0]);
 
   return node;

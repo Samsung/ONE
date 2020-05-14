@@ -180,7 +180,7 @@ TEST(PermutingEncoderTest, feature_clone)
   src_perm->axis(FeatureAxis::Width) = 2;
 
   auto dst_enc = src_enc.clone();
-  auto dst_perm = loco::must_cast<PermutingEncoder<Domain::Feature> *>(dst_enc.get())->perm();
+  auto dst_perm = dynamic_cast<PermutingEncoder<Domain::Feature> *>(dst_enc.get())->perm();
 
   EXPECT_EQ(dst_perm->axis(FeatureAxis::Count), src_perm->axis(FeatureAxis::Count));
   EXPECT_EQ(dst_perm->axis(FeatureAxis::Depth), src_perm->axis(FeatureAxis::Depth));
@@ -415,7 +415,7 @@ TEST(PermutingDecoderTest, feature_clone)
   src_perm->axis(FeatureAxis::Width) = 2;
 
   auto dst_enc = src_enc.clone();
-  auto dst_perm = loco::must_cast<PermutingDecoder<Domain::Feature> *>(dst_enc.get())->perm();
+  auto dst_perm = dynamic_cast<PermutingDecoder<Domain::Feature> *>(dst_enc.get())->perm();
 
   EXPECT_EQ(dst_perm->axis(FeatureAxis::Count), src_perm->axis(FeatureAxis::Count));
   EXPECT_EQ(dst_perm->axis(FeatureAxis::Depth), src_perm->axis(FeatureAxis::Depth));

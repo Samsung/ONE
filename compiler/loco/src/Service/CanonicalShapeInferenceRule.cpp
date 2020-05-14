@@ -766,7 +766,7 @@ void CanonicalShapeInferenceRule::infer(const Context *ctx, const Node *node, Si
   assert(dynamic_cast<const loco::CanonicalNode *>(node) != nullptr);
 
   ForwardShapeInferenceAlgorithm alg{ctx};
-  auto shape = loco::must_cast<const loco::CanonicalNode *>(node)->accept(&alg);
+  auto shape = dynamic_cast<const loco::CanonicalNode *>(node)->accept(&alg);
 
   sink->okay(shape);
 }

@@ -72,9 +72,9 @@ void NodeExecution::eltwise_unary(loco::Node *node, const UnaryFunc &f)
   auto input_node = node->arg(0);
   auto input_domain = annot_domain(input_node);
   auto input_data = annot_data(input_node);
-  validate(input_data, "Input is not ready");
   auto input_dtype = input_data->dtype();
 
+  validate(input_data, "Input is not ready");
   validate(input_domain != loco::Domain::Unknown, "Input domain is unknown");
 
   auto output_node = node;

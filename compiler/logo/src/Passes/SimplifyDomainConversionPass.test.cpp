@@ -227,7 +227,7 @@ TEST(SimplifyDomainConversionPass, FilterEncode_FilterDecode_equal_perms)
   ASSERT_EQ(loco::output_nodes(graph.get()).size(), 1);
   loco::Node *output_node = loco::output_nodes(graph.get())[0];
 
-  auto forward = loco::must_cast<loco::Forward *>(output_node->arg(0));
+  auto forward = dynamic_cast<loco::Forward *>(output_node->arg(0));
   ASSERT_NE(forward, nullptr);
   auto const_gen = dynamic_cast<loco::ConstGen *>(forward->arg(0));
   ASSERT_NE(const_gen, nullptr);

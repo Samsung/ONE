@@ -934,28 +934,6 @@ public:
     return loco::NodeShape{x_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleSelect *node) final
-  {
-    auto t_shape = loco::shape_get(node->t()).as<loco::TensorShape>();
-    assert(t_shape == loco::shape_get(node->e()).as<loco::TensorShape>());
-
-    // condition shape validation
-    auto c_shape = loco::shape_get(node->condition()).as<loco::TensorShape>();
-    if (c_shape.rank() != t_shape.rank())
-    {
-      if (c_shape.rank() != 0 && c_shape.rank() != 1)
-        INTERNAL_EXN_V("CircleSelect condition rank is not 0 nor 1: ", c_shape.rank());
-
-      if (c_shape.rank() == 1)
-      {
-        if (c_shape.dim(0).value() != t_shape.dim(0).value())
-          INTERNAL_EXN("CircleSelect condition dim(0) should match with t.dim(0)");
-      }
-    }
-
-    return loco::NodeShape{t_shape};
-  }
-
   loco::NodeShape visit(const luci::CircleSoftmax *node) final
   {
     auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();

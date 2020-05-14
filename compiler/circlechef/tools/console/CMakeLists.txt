@@ -1,3 +1,0 @@
-add_executable(circlechef Driver.cpp)
-target_link_libraries(circlechef circlechef_core)
-target_link_libraries(circlechef safemain)

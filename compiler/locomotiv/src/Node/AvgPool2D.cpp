@@ -129,8 +129,7 @@ nncc::core::ADT::tensor::Buffer<T> avgPool2D(const loco::AvgPool2D *avgpool2d,
             }
           }
 
-          if (filter_ele_count <= 0)
-            throw std::runtime_error("The number of filter element must be greater than zero.");
+          assert(filter_ele_count > 0);
           output_buf.at(Index({batch, out_y, out_x, channel})) = total / filter_ele_count;
         }
       }

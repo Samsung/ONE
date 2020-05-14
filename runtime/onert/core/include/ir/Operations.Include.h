@@ -86,7 +86,6 @@
 #include "ir/operation/Max.h"
 #include "ir/operation/Custom.h"
 #include "ir/operation/OneHot.h"
-#include "ir/operation/Cos.h"
 #include "ir/operation/Sin.h"
 #include "ir/operation/Shape.h"
 #include "ir/operation/ConvertFp32ToFp16.h"

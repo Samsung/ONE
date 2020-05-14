@@ -82,7 +82,7 @@ TEST(ConstantFolding, const_relu_to_const)
   }
 
   auto push = logo::test::find_first_node_by_type<loco::Push>(graph.get());
-  auto const_gen = loco::must_cast<loco::ConstGen *>(push->from());
+  auto const_gen = dynamic_cast<loco::ConstGen *>(push->from());
   ASSERT_NE(const_gen, nullptr);
 
   ASSERT_EQ(const_gen->size<loco::DataType::FLOAT32>(), 2);
@@ -168,7 +168,7 @@ TEST(ConstantFolding, const_relu_to_concat)
   }
 
   auto push = logo::test::find_first_node_by_type<loco::Push>(graph.get());
-  auto const_gen = loco::must_cast<loco::ConstGen *>(push->from());
+  auto const_gen = dynamic_cast<loco::ConstGen *>(push->from());
   ASSERT_NE(const_gen, nullptr);
 
   ASSERT_EQ(const_gen->size<loco::DataType::FLOAT32>(), 4);

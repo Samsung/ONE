@@ -1061,21 +1061,6 @@ OperationFactory::OperationFactory()
     return new operation::Select{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_SELECT_V2_EX] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Condition Tensor Index
-    //  1 -> Input X(true) Tensor Index
-    //  2 -> Input Y(false) Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
-
-    return new operation::Select{inputs, outputs};
-  };
-
   // ANEURALNETWORKS_RSQRT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_RSQRT_EX
   _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];
@@ -1937,15 +1922,6 @@ OperationFactory::OperationFactory()
     param.axis = operands.at(OperandIndex{init_param.inputs[4]}).asScalar<std::int32_t>();
 
     return new operation::OneHot{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_COS_EX] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Cos{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_SIN] = [](const OperationFactory::Param &init_param, Operands &) {

@@ -57,7 +57,7 @@ struct IExecutor
    */
   virtual void changeInputShape(const ir::OperandIndex &, const ir::Shape &)
   {
-    throw std::runtime_error("changeInputShape is not yet implemented for this executor.");
+    throw std::runtime_error("changeTensorShape is not yet implemented for this executor.");
   }
 
   /**

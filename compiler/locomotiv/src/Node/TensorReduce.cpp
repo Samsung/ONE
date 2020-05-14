@@ -121,8 +121,9 @@ namespace locomotiv
 void NodeExecution::execute(loco::TensorReduce *node)
 {
   auto input_data = annot_data(node->input());
-  validate(input_data, "Input not ready");
   auto input_shape = input_data->shape();
+
+  validate(input_data, "Input not ready");
   validate(annot_domain(node->input()) == loco::Domain::Tensor,
            "Input domain of TensorReduce is not Tensor");
 

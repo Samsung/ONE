@@ -173,8 +173,6 @@ void ShapeFixer::visit(const ir::operation::Split &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
 
-void ShapeFixer::visit(const ir::operation::Cos &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::Sin &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
@@ -194,9 +192,6 @@ void ShapeFixer::visit(const ir::operation::Log &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::Round &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Pow &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
-
 } // namespace cpu
 } // namespace backend
 } // namespace onert

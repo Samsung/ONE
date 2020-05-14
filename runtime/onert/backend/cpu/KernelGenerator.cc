@@ -24,7 +24,6 @@
 #include "kernel/CompareLayer.h"
 #include "kernel/ConcatLayer.h"
 #include "kernel/ConvolutionLayer.h"
-#include "kernel/CosLayer.h"
 #include "kernel/DepthwiseConvolutionLayer.h"
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
@@ -60,7 +59,6 @@
 #include "kernel/TanhLayer.h"
 #include "kernel/TransposeLayer.h"
 #include "kernel/UnpackLayer.h"
-#include "kernel/LogicalNotLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -943,21 +941,6 @@ void KernelGenerator::visit(const ir::operation::Sin &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Cos &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Cos::Input::INPUT)};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::CosLayer>();
-
-  fn->configure(ifm_alloc, ofm_alloc);
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::RSQRT &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1100,20 +1083,6 @@ void KernelGenerator::visit(const ir::operation::Round &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::LogicalNot &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::LogicalNot::INPUT)};
-
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
-
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalNotLayer>();
-
-  fn->configure(input_alloc, output_alloc);
-
-  _return_fn = std::move(fn);
-}
 } // namespace cpu
 } // namespace backend
 } // namespace onert
