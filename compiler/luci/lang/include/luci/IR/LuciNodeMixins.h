@@ -22,6 +22,8 @@
 #include <loco/IR/Node.h>
 #include <loco/IR/NodeMixins.h>
 
+#include <vector>
+
 namespace luci
 {
 
@@ -70,6 +72,7 @@ template <unsigned N, typename Base> class FixedArityNode : public Base
 public:
   FixedArityNode()
   {
+    _args.resize(N);
     for (uint32_t n = 0; n < N; ++n)
     {
       _args[n] = std::make_unique<loco::Use>(this);
@@ -96,7 +99,7 @@ protected:
   loco::Use *at(unsigned n) const { return _args.at(n).get(); }
 
 private:
-  std::array<std::unique_ptr<loco::Use>, N> _args{};
+  std::vector<std::unique_ptr<loco::Use>> _args{};
 };
 
 } // namespace luci
