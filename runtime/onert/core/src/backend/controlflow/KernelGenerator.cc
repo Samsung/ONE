@@ -16,8 +16,10 @@
 
 #include "KernelGenerator.h"
 
+#include <backend/BackendContext.h>
 #include <util/Utils.h>
 #include "kernel/WhileLayer.h"
+#include "kernel/PermuteLayer.h"
 
 namespace onert
 {
@@ -44,6 +46,48 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
   }
+}
+
+void KernelGenerator::visit(const ir::operation::Permute &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  const auto input_backend_ctx = node.param().input_backend_ctx;
+  const auto output_backend_ctx = node.param().output_backend_ctx;
+
+  const auto &shape = _operand_ctx.at(output_index).shape();
+  auto output_tensor = output_backend_ctx->tensor_builder->tensorAt(output_index);
+  auto input_tensor = input_backend_ctx->tensor_builder->tensorAt(input_index);
+  assert(output_tensor != nullptr);
+  assert(input_tensor != nullptr);
+
+  auto fn = std::make_unique<::onert::backend::controlflow::kernel::PermuteLayer>();
+
+  const auto permute_type = node.getPermuteType();
+  // Check Permutation Type
+  const auto inferPermuteType = [&]() {
+    if (input_tensor->layout() == ir::Layout::NHWC && output_tensor->layout() == ir::Layout::NCHW)
+    {
+      return ir::operation::Permute::Type::NHWC_TO_NCHW;
+    }
+    else if (input_tensor->layout() == ir::Layout::NCHW &&
+             output_tensor->layout() == ir::Layout::NHWC)
+    {
+      return ir::operation::Permute::Type::NCHW_TO_NHWC;
+    }
+    else
+    {
+      return ir::operation::Permute::Type::COPY;
+    }
+  }();
+  UNUSED_RELEASE(permute_type);
+  UNUSED_RELEASE(inferPermuteType);
+  assert(permute_type == inferPermuteType);
+
+  fn->configure(input_tensor, output_tensor, shape.rank());
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::While &node)
