@@ -2,30 +2,22 @@ find_package(PythonInterp 3 QUIET)
 find_package(PythonLibs 3 QUIET)
 
 if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build tf2tfliteV2-value-pbtxt-test: FALSE (Python3 is missing)")
+  message(STATUS "Build tf2tfliteV2-conversion-test: FALSE (Python3 is missing)")
   return()
 endif()
 
 if(${PYTHON_VERSION_MINOR} LESS 3)
-  message(STATUS "Build tf2tfliteV2-value-pbtxt-test: FALSE (You need to install Python version higher than 3.3)")
+  message(STATUS "Build tf2tfliteV2-conversion-test: FALSE (You need to install Python version higher than 3.3)")
   return()
 endif()
 
 nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
-list(APPEND REQUIRED_TARGETS tfkit)
 list(APPEND REQUIRED_TARGETS tf2tfliteV2)
-list(APPEND REQUIRED_TARGETS nnkit-run)
-list(APPEND REQUIRED_TARGETS nnkit_tf_backend)
-list(APPEND REQUIRED_TARGETS nnkit_tflite_backend)
-list(APPEND REQUIRED_TARGETS nnkit_randomize_action)
-list(APPEND REQUIRED_TARGETS nnkit_HDF5_export_action)
-list(APPEND REQUIRED_TARGETS nnkit_HDF5_import_action)
-list(APPEND REQUIRED_TARGETS i5diff)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
-message(STATUS "tf2tfliteV2-value-pbtxt-test: run tests")
+message(STATUS "tf2tfliteV2-conversion-test: run tests")
 
 # Create python virtual environment
 set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv")
@@ -48,8 +40,8 @@ add_custom_command(
   DEPENDS ${VIRTUALENV} ${REQUIREMENTS_SRC_PATH}
 )
 
-add_custom_target(tf2tfliteV2_value_pbtxt_python_deps ALL
-  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_BIN_PATH} #${TF2TFLITEV2_BIN_PATH}
+add_custom_target(tf2tfliteV2_conversion_test_python_deps ALL
+  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_BIN_PATH}
 )
 
 nncc_find_resource(TensorFlowTests)
@@ -91,9 +83,6 @@ foreach(PREFIX IN ITEMS ${TESTCASES})
   set(INFO_FILE "${PREFIX}.info")
   set(INFO_PATH "${CMAKE_CURRENT_BINARY_DIR}/${INFO_FILE}")
 
-  set(PB_FILE "${PREFIX}.pb")
-  set(PB_PATH "${CMAKE_CURRENT_BINARY_DIR}/${PB_FILE}")
-
   # Copy .pbtxt
   add_custom_command(OUTPUT ${PBTXT_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${PBTXT_SOURCE_PATH}" "${PBTXT_PATH}"
@@ -108,14 +97,7 @@ foreach(PREFIX IN ITEMS ${TESTCASES})
     COMMENT "Generate ${INFO_FILE}"
   )
 
-  # Generate .pb from .pbtxt
-  add_custom_command(OUTPUT ${PB_PATH}
-    COMMAND $<TARGET_FILE:tfkit> encode ${PBTXT_PATH} ${PB_PATH}
-    DEPENDS ${PBTXT_PATH}
-    COMMENT "Generate ${PB_FILE}"
-  )
-
-  list(APPEND TEST_DEPS ${INFO_PATH} ${PB_PATH})
+  list(APPEND TEST_DEPS ${INFO_PATH} ${PBTXT_PATH})
   list(APPEND TEST_NAMES ${PREFIX})
 endforeach(PREFIX)
 
@@ -146,36 +128,23 @@ set(TF2TFLITEV2_PATH "${TF2TFLITEV2_BIN_DIR}/tf2tfliteV2.py")
 add_custom_command(
   OUTPUT ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'NNKIT_RUN_PATH=\"$<TARGET_FILE:nnkit-run>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'TF_BACKEND_PATH=\"$<TARGET_FILE:nnkit_tf_backend>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'TFLITE_BACKEND_PATH=\"$<TARGET_FILE:nnkit_tflite_backend>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'RANDOMIZE_ACTION_PATH=\"$<TARGET_FILE:nnkit_randomize_action>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'I5DIFF_PATH=\"$<TARGET_FILE:i5diff>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2TFLITEV2_PATH=\"${TF2TFLITEV2_PATH}\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'VIRTUALENV=\"${VIRTUALENV}\"' >> ${TEST_CONFIG}
   DEPENDS
-    i5diff
-    nnkit-run
-    nnkit_tf_backend
-    nnkit_tflite_backend
-    nnkit_randomize_action
-    nnkit_HDF5_export_action
-    nnkit_HDF5_import_action
     tf2tfliteV2
-    tf2tfliteV2_value_pbtxt_python_deps
+    tf2tfliteV2_conversion_test_python_deps
   COMMENT "Generate test configuration"
 )
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
-# This "tf2tfliteV2_value_pbtxt_test_deps" target enforces CMake to generate all the dependencies during "build" phase
-add_custom_target(tf2tfliteV2_value_pbtxt_test_deps ALL DEPENDS ${TEST_DEPS})
+# This "tf2tfliteV2_conversion_test_deps" target enforces CMake to generate all the dependencies during "build" phase
+add_custom_target(tf2tfliteV2_conversion_test_deps ALL DEPENDS ${TEST_DEPS})
 
+# TODO This test takes a long time and will only be tested once a day.
 # Run tests
 # add_test(
-#   NAME tf2tfliteV2_value_pbtxt_test
+#   NAME tf2tfliteV2_conversion_test
 #   COMMAND "${TEST_RUNNER}"
 #           "${TEST_CONFIG}"
 #           "${CMAKE_CURRENT_BINARY_DIR}"
