@@ -116,15 +116,10 @@ GeneratedTests.lstm_state2
 GeneratedTests.maximum_broadcast_quant8
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple_quant8
-GeneratedTests.mean
 GeneratedTests.mean_4D_float_reducing_C_nnfw
 GeneratedTests.mean_4D_float_reducing_HW_nnfw
 GeneratedTests.mean_axis01_1_nnfw
 GeneratedTests.mean_axis01_2_nnfw
-GeneratedTests.mean_float_1
-GeneratedTests.mean_float_2
-GeneratedTests.mean_quant8_1
-GeneratedTests.mean_quant8_2
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant8
