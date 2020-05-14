@@ -217,15 +217,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     pair.second->initConsts();
   }
 
-  // Note. The best solution is not to use CachedDataDeleter but decreasing reference counts of data
-  // naturally
   if (options.delete_cached_data)
   {
-    CachedDataDeleter cached_data_deleter(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          cached_data_deleter.run(op_seq);
-        });
+    lowered_graph->graph().operands().iterate(
+        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
   }
 
   auto code_map = builder.releaseCodeMap();
@@ -318,11 +313,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
 
   if (options.delete_cached_data)
   {
-    CachedDataDeleter cached_data_deleter(lowered_graph->graph().operands());
-    lowered_graph->op_seqs().iterate(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          cached_data_deleter.run(op_seq);
-        });
+    lowered_graph->graph().operands().iterate(
+        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
   }
 
   auto code_map = builder.releaseCodeMap();
