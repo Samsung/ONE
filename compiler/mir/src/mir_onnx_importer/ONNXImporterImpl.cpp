@@ -152,7 +152,6 @@ void ONNXImporterImpl::createGraphInputs()
 {
   const auto &graph = _model->graph();
   const auto &initializer = graph.initializer();
-  const auto &value_info = graph.value_info();
 
   // Create all initializer Tensors
   for (const auto &tensor : initializer)

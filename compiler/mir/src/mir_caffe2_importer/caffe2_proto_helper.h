@@ -26,7 +26,7 @@ using RepArgument = const ::google::protobuf::RepeatedPtrField<::caffe2::Argumen
 
 const ::caffe2::Argument &findArgumentByName(RepArgument args, const std::string &name);
 
-const bool hasArgument(RepArgument args, const std::string &name);
+bool hasArgument(RepArgument args, const std::string &name);
 
 int getSingleArgument(const ::caffe2::OperatorDef &op, const std::string &argument_name,
                       int default_value);

@@ -33,7 +33,7 @@ void convertTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *cont
   assert(inputs.size() == 1);
   auto input = inputs[0];
 
-  const auto num_axes = input->getShape().rank();
+  const int num_axes = input->getShape().rank();
   std::vector<std::size_t> axis_order(num_axes);
   const auto *perm_attr = findAttribute(onnx_node, "perm");
 
@@ -45,7 +45,7 @@ void convertTransposeV1(const onnx::NodeProto &onnx_node, ConverterContext *cont
   else
   {
     const auto perm = getAttributeValue<std::vector<std::int64_t>>(*perm_attr);
-    assert(perm.size() == num_axes);
+    assert(static_cast<int>(perm.size()) == num_axes);
     std::copy(perm.cbegin(), perm.cend(), axis_order.begin());
   }
 
