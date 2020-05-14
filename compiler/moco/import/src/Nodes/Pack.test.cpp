@@ -73,7 +73,7 @@ TEST(TensorFlowImport, tf_pack_basic)
   tester.output("Pack");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFPack *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFPack *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->N(), 4);
   ASSERT_NE(test_node->values(0), nullptr);

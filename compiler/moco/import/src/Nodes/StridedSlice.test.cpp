@@ -95,7 +95,7 @@ TEST(TensorFlowImport, tf_stridedslice_basic)
   tester.output("StridedSlice");
   tester.run(nodedef, graphbuilder);
 
-  auto test_node = dynamic_cast<moco::TFStridedSlice *>(tester.output());
+  auto test_node = loco::must_cast<moco::TFStridedSlice *>(tester.output());
   ASSERT_NE(test_node, nullptr);
   ASSERT_EQ(test_node->begin_mask(), 0);
   ASSERT_EQ(test_node->end_mask(), 0);
