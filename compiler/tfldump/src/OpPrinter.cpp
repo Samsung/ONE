@@ -459,6 +459,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for ReLU and ReLU6
+  _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SELECT
