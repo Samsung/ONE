@@ -62,7 +62,7 @@ struct CompilerOptions
   bool fp16_enable;        //< Whether fp16 mode ON/OFF
 };
 
-CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph);
+CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs);
 
 /**
  * @brief Class to compile graph model
