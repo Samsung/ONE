@@ -43,6 +43,7 @@
 #include <cmath>
 #include <iostream>
 #include <set>
+#include <stdexcept>
 
 namespace mir_caffe
 {
@@ -425,7 +426,7 @@ CaffeOpCreator::convertPooling(const caffe::LayerParameter &layer,
       break;
     }
     default:
-      assert(false);
+      throw std::runtime_error("Unsupported PoolMethod: " + std::to_string(params.pool()));
   }
 
   return {result};
