@@ -126,7 +126,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Graph &graph)
  * @brief Set input tensors with unknown dim to dynamic tensor.
  *        This will make shape inference during compilation work correctly.
  */
-void setInputToDynamicTensor(std::shared_ptr<onert::ir::Graph> &primary_subgraph)
+void setInputToDynamicTensor(const std::shared_ptr<onert::ir::Graph> &primary_subgraph)
 {
   auto input_inds = primary_subgraph->getInputs();
   for (auto input_ind : input_inds)
