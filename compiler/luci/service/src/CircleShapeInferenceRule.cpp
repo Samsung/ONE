@@ -599,6 +599,32 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleFill *node) final
+  {
+    loco::TensorShape shape;
+    {
+      LUCI_ASSERT(node->dims(), "dims input should not be nullptr");
+
+      // Only support node's shape() is CircleConst with S32
+      // TODO support other node with other types
+      auto dims_node = dynamic_cast<luci::CircleConst *>(node->dims());
+      LUCI_ASSERT(dims_node, "Only support CircleConst for dims of CircleFill");
+      LUCI_ASSERT(dims_node->dtype() == loco::DataType::S32, "Only support int32 CircleConst");
+
+      if (dims_node->rank() != 1)
+        INTERNAL_EXN_V("Only support rank 1 CircleConst", oops::to_uint32(dims_node->rank()));
+
+      shape.rank(dims_node->dim(0).value());
+
+      for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+      {
+        shape.dim(axis) = dims_node->at<loco::DataType::S32>(axis);
+      }
+    }
+
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFloorMod *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
