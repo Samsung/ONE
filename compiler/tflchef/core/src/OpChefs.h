@@ -49,6 +49,7 @@
 #include "Op/OneHot.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"
+#include "Op/ReduceAny.h"
 #include "Op/ReduceProd.h"
 #include "Op/ReLU.h"
 #include "Op/ReLU6.h"
