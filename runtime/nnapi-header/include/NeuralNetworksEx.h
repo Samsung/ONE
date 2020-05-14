@@ -424,7 +424,22 @@ typedef enum {
 
   ANEURALNETWORKS_SELECT_V2_EX = 50030,
 
-  ANEURALNETWORKS_ZERO_LIKE_EX = 50031,
+  /**
+   * Make the output tensor same shape to the input tensor and fill zero for all elements.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32, ANEURALNETWORKS_TENSOR_INT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A tensor.
+   *
+   * Outputs:
+   * * 0: The output tensor, of the same {@link OperandCode} and dimensions as
+   *      the input tensor.
+   */
+  ANEURALNETWORKS_ZEROS_LIKE_EX = 50031,
 
   ANEURALNETWORKS_COS_EX = 50032,
 

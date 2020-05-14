@@ -891,6 +891,13 @@ TfLiteStatus AddOpsAndParams(
         nnapi_version = 12;  // require NNAPI 1.2
         nn_op_type = ANEURALNETWORKS_SELECT;
         break;
+      case tflite::BuiltinOperator_ZEROS_LIKE:
+        CHECK_NN(ANeuralNetworksModel_addOperationEx(
+            nn_model, ANEURALNETWORKS_ZEROS_LIKE_EX,
+            static_cast<uint32_t>(augmented_inputs.size()),
+            augmented_inputs.data(), static_cast<uint32_t>(node.outputs->size),
+            reinterpret_cast<uint32_t*>(node.outputs->data)));
+        continue; // _EX operator should use `continue` to skip addOperanation.
       case tflite::BuiltinOperator_CONCAT_EMBEDDINGS:
       case tflite::BuiltinOperator_LSH_PROJECTION:
       case tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN:
@@ -954,7 +961,7 @@ TfLiteStatus AddOpsAndParams(
       case tflite::BuiltinOperator_FLOOR_DIV:
       case tflite::BuiltinOperator_REDUCE_ANY:
       case tflite::BuiltinOperator_SQUARE:
-      case tflite::BuiltinOperator_ZEROS_LIKE:
+      //case tflite::BuiltinOperator_ZEROS_LIKE:
       case tflite::BuiltinOperator_FILL:
       case tflite::BuiltinOperator_FLOOR_MOD:
       case tflite::BuiltinOperator_RANGE:
