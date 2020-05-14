@@ -3,3 +3,5 @@ set(LUCI_INTERPRETER_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_subdirectory(src)
 add_subdirectory(example)
+add_subdirectory(tests)
+add_subdirectory(tester)
