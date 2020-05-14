@@ -96,7 +96,7 @@ T getAttributeValue(const onnx::NodeProto &node, const std::string &name, T defa
 {
   const auto *attribute = findAttribute(node, name);
   if (attribute == nullptr)
-    return std::move(default_value);
+    return default_value;
   return getAttributeValue<T>(*attribute);
 }
 
