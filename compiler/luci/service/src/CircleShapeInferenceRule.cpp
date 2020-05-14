@@ -1233,11 +1233,12 @@ public:
     auto rank = static_cast<int32_t>(value_shape.rank());
 
     LUCI_ASSERT(-rank <= axis && axis < rank, "Axis is out of range");
-    LUCI_ASSERT(num == static_cast<int32_t>(value_shape.dim(axis).value()),
-                "num, axis maybe incorrect");
 
     if (axis < 0)
       axis += rank;
+
+    LUCI_ASSERT(num == static_cast<int32_t>(value_shape.dim(axis).value()),
+                "num, axis maybe incorrect");
 
     loco::TensorShape output_shape;
     output_shape.rank(rank - 1);
