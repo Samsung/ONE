@@ -218,11 +218,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     pair.second->initConsts();
   }
 
-  if (options.delete_cached_data)
-  {
-    lowered_graph->graph().operands().iterate(
-        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
-  }
+  lowered_graph->graph().operands().iterate(
+      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   auto code_map = builder.releaseCodeMap();
 
@@ -313,11 +310,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowere
     pair.second->initConsts();
   }
 
-  if (options.delete_cached_data)
-  {
-    lowered_graph->graph().operands().iterate(
-        [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
-  }
+  lowered_graph->graph().operands().iterate(
+      [](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   auto code_map = builder.releaseCodeMap();
 
