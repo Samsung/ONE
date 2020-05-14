@@ -65,12 +65,17 @@ void SelectLayer::run()
       throw std::runtime_error{"NYI : not supported input type for SelectLayer"}; \
   }
 
-  int32_t rank = _input_true->num_dimensions();
   auto input_type = _input_true->data_type();
+  bool require_broadcast = !HaveSameShapes(_input_true, _cond);
+  bool rank_one_select = ((_input_true->num_dimensions() == 1) && !require_broadcast);
 
-  if (rank == 1)
+  if (rank_one_select)
   {
     KERNEL_SWITCH(input_type, RankOneSelect);
+  }
+  else if (require_broadcast)
+  {
+    KERNEL_SWITCH(input_type, BroadcastSelect4DSlow);
   }
   else
   {
