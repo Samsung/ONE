@@ -292,8 +292,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
     pull->shape({1, 4, 3, 1});
   }
 
-  squeeze_node->squeeze_dim_num(1);
-  squeeze_node->squeeze_dim(0, 0);
+  squeeze_node->squeeze_dims({0});
 
   // pre-check
   ASSERT_FALSE(loco::shape_known(squeeze_node));
@@ -325,7 +324,7 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
     pull->shape({1, 4, 3, 1});
   }
 
-  squeeze_node->squeeze_dim_num(0);
+  squeeze_node->squeeze_dims({});
 
   // pre-check
   ASSERT_FALSE(loco::shape_known(squeeze_node));
