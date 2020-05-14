@@ -280,3 +280,66 @@ TEST(CircleShapeInferenceRuleTest, CircleTranspose_simple)
     ASSERT_EQ(3, shape.dim(2));
   }
 }
+
+TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
+{
+  luci::test::TestGraph graph;
+  auto squeeze_node = graph.append<luci::CircleSqueeze>(graph.pull);
+  graph.complete();
+
+  auto pull = graph.pull;
+  {
+    pull->shape({1, 4, 3, 1});
+  }
+
+  squeeze_node->squeeze_dims({0});
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(squeeze_node));
+
+  // shape inference
+  while (shape_pass(graph.graph()) == true)
+    ;
+
+  // Verify
+  {
+    ASSERT_TRUE(loco::shape_known(squeeze_node));
+
+    auto shape = loco::shape_get(squeeze_node).as<loco::TensorShape>();
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(4, shape.dim(0));
+    ASSERT_EQ(3, shape.dim(1));
+    ASSERT_EQ(1, shape.dim(2));
+  }
+}
+
+TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
+{
+  luci::test::TestGraph graph;
+  auto squeeze_node = graph.append<luci::CircleSqueeze>(graph.pull);
+  graph.complete();
+
+  auto pull = graph.pull;
+  {
+    pull->shape({1, 4, 3, 1});
+  }
+
+  squeeze_node->squeeze_dims({});
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(squeeze_node));
+
+  // shape inference
+  while (shape_pass(graph.graph()) == true)
+    ;
+
+  // Verify
+  {
+    ASSERT_TRUE(loco::shape_known(squeeze_node));
+
+    auto shape = loco::shape_get(squeeze_node).as<loco::TensorShape>();
+    ASSERT_EQ(2, shape.rank());
+    ASSERT_EQ(4, shape.dim(0));
+    ASSERT_EQ(3, shape.dim(1));
+  }
+}
