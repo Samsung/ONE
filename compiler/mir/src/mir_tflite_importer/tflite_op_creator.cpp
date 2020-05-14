@@ -50,6 +50,8 @@
 #include "mir/ShapeRange.h"
 #include "mir/Tensor.h"
 
+#include <stdexcept>
+
 namespace mir_tflite
 {
 
@@ -65,7 +67,8 @@ static mir::ops::PaddingType convertPadding(tflite::Padding padding)
     case tflite::Padding_SAME:
       return mir::ops::PaddingType::SameUpper;
     default:
-      assert(false);
+      throw std::runtime_error(std::string("Unsupported Padding: ") +
+                               tflite::EnumNamePadding(padding));
   }
 }
 
