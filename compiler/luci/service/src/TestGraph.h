@@ -127,6 +127,7 @@ private:
   void setInput(luci::CircleMaxPool2D *node, loco::Node *input) { node->value(input); };
   void setInput(luci::CircleRelu *node, loco::Node *input) { node->features(input); };
   void setInput(luci::CircleRelu6 *node, loco::Node *input) { node->features(input); };
+  void setInput(luci::CircleSqueeze *node, loco::Node *input) { node->input(input); };
 
   // arity 2
   void setInput(loco::Node *node, loco::Node *, loco::Node *) { assert(false && "NYI"); };

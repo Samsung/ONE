@@ -1035,6 +1035,59 @@ public:
     return loco::NodeShape{shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSqueeze *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+    // TODO input shape may be unknown before runtime
+    std::vector<bool> do_squeeze(input_shape.rank(), false);
+    uint32_t num_squeezed = 0;
+
+    if (!node->squeeze_dims().empty())
+    {
+      // SqueezeDims not empty, squeeze only dims specified
+      for (int32_t raw_dim : node->squeeze_dims())
+      {
+        int32_t dim = raw_dim < 0 ? raw_dim + input_shape.rank() : raw_dim;
+
+        if (dim < 0 || static_cast<uint32_t>(dim) >= input_shape.rank() ||
+            input_shape.dim(dim).value() != 1)
+        {
+          INTERNAL_EXN("invalid dimention specified to Squeeze");
+        }
+
+        if (!do_squeeze[dim])
+          ++num_squeezed;
+        do_squeeze[dim] = true;
+      }
+    }
+    else
+    {
+      // SqueezeDims empty, squeeze any dims with size == 1
+      for (uint32_t dim = 0; dim < input_shape.rank(); ++dim)
+      {
+        if (input_shape.dim(dim) == 1)
+        {
+          do_squeeze[dim] = true;
+          ++num_squeezed;
+        }
+      }
+    }
+
+    loco::TensorShape output_shape;
+    output_shape.rank(input_shape.rank() - num_squeezed);
+
+    for (uint32_t in_dim = 0, out_dim = 0; in_dim < input_shape.rank(); ++in_dim)
+    {
+      if (!do_squeeze[in_dim])
+      {
+        output_shape.dim(out_dim++) = input_shape.dim(in_dim);
+      }
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSub *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
