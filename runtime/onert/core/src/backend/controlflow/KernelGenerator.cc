@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include <util/Utils.h>
+#include "kernel/WhileLayer.h"
 
 namespace onert
 {
@@ -33,14 +34,63 @@ KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx)
   UNUSED_RELEASE(_executor_map);
 }
 
-void KernelGenerator::visit(const ir::OpSequence &)
+void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
-  // TODO Implement
+  assert(!_return_fn_seq);
+  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  for (const auto &e : op_seq.operations())
+  {
+    const auto &node = *(e.node);
+    node.accept(*this);
+    _return_fn_seq->append(releaseFunction());
+  }
 }
 
-void KernelGenerator::visit(const ir::operation::While &)
+void KernelGenerator::visit(const ir::operation::While &node)
 {
-  // TODO Implement
+  const auto cond_subg_index = node.param().cond_subg_index;
+  const auto body_subg_index = node.param().body_subg_index;
+
+  auto getTensor = [&](const ir::OperandIndex &index) -> std::shared_ptr<backend::ITensor> {
+    std::shared_ptr<backend::ITensor> ret;
+    for (auto tensor_builder : *_tensor_builder_set.get())
+    {
+      auto tensor = tensor_builder->tensorAt(index);
+      if (tensor)
+      {
+        ret = tensor;
+      }
+    }
+    assert(ret != nullptr);
+    return ret;
+  };
+
+  // This op does not support input as a constant, because controlflow backend does not have
+  // TensorBuilder
+  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  for (const auto input_index : node.getInputs())
+  {
+    auto input_alloc = getTensor(input_index);
+
+    input_tensors.emplace_back(input_alloc);
+  }
+
+  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  for (const auto output_index : node.getOutputs())
+  {
+    auto output_alloc = getTensor(output_index);
+
+    output_tensors.emplace_back(output_alloc);
+  }
+
+  auto &cond_subg_executor = _executor_map->at(cond_subg_index);
+  auto &body_subg_executor = _executor_map->at(body_subg_index);
+  assert(cond_subg_executor != nullptr);
+  assert(body_subg_executor != nullptr);
+  auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
+      input_tensors, output_tensors, *cond_subg_executor, *body_subg_executor);
+
+  _return_fn = std::move(fn);
 }
 
 } // namespace controlflow
