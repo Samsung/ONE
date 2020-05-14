@@ -29,6 +29,7 @@
 #include "kernel/DivLayer.h"
 #include "kernel/ExpLayer.h"
 #include "kernel/ExpandDimsLayer.h"
+#include "kernel/FillLayer.h"
 #include "kernel/FullyConnectedLayer.h"
 #include "kernel/GatherLayer.h"
 #include "kernel/LogLayer.h"
@@ -252,6 +253,23 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::ConcatLayer>();
 
   fn->configure(input_tensors, axis, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Fill &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Fill::Input::INPUT)};
+  const auto value_index{node.getInputs().at(ir::operation::Fill::Input::VALUE)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto value_alloc = _tensor_builder->at(value_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::FillLayer>();
+
+  fn->configure(input_alloc, value_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }
