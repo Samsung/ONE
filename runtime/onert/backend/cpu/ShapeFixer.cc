@@ -173,6 +173,8 @@ void ShapeFixer::visit(const ir::operation::Split &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::Cos &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Sin &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
