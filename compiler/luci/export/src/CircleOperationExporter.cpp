@@ -61,8 +61,8 @@ public:
   void visit(luci::CircleCustom *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDiv *) final;
-  void visit(luci::CircleExp *) final;
   void visit(luci::CircleEqual *) final;
+  void visit(luci::CircleExp *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
   void visit(luci::CircleIf *) final;
@@ -347,6 +347,23 @@ void OperationExporter::visit(luci::CircleDiv *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleEqual *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EQUAL);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateEqualOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_EqualOptions, options.Union());
+
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleExp *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EXP);
@@ -354,7 +371,7 @@ void OperationExporter::visit(luci::CircleExp *node)
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateAbsOptions(builder);
+  auto options = CreateExpOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ExpOptions, options.Union());
   gd._operators.push_back(op_offset);
@@ -993,23 +1010,6 @@ void OperationExporter::visit(luci::CircleInstanceNorm *node)
                                            to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_InstanceNormOptions, options.Union());
-  gd._operators.push_back(op_offset);
-}
-
-void OperationExporter::visit(luci::CircleEqual *node)
-{
-  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EQUAL);
-  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
-  std::vector<int32_t> outputs{get_tensor_index(node)};
-
-  auto fb_inputs = builder.CreateVector(inputs);
-  auto fb_outputs = builder.CreateVector(outputs);
-
-  auto options = CreateEqualOptions(builder);
-
-  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
-                                  circle::BuiltinOptions_EqualOptions, options.Union());
-
   gd._operators.push_back(op_offset);
 }
 
