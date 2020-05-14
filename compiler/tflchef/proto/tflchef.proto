@@ -267,6 +267,10 @@ message OneHotOptions {
   optional int32 axis = 1 [default = -1];
 }
 
+message ZerosLikeOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -321,6 +325,7 @@ message Operation {
   optional SqueezeOptions squeeze_options = 146;
   optional FloorModOptions floormod_options = 147;
   optional OneHotOptions onehot_options = 148;
+  optional ZerosLikeOptions zeros_like_options = 149;
 }
 
 // For additional subgraphs

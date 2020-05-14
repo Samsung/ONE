@@ -59,6 +59,7 @@ OP_CHEF(Tile, TileChefFactory)
 OP_CHEF(Transpose, TransposeChefFactory)
 OP_CHEF(Unpack, UnpackChefFactory)
 OP_CHEF(While, WhileChefFactory)
+OP_CHEF(ZerosLike, ZerosLikeChefFactory)
 
 // Custom Op
 OP_CHEF(BatchMatMulV2, BatchMatMulV2ChefFactory)
