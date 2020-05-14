@@ -263,7 +263,7 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
 
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
-    CircleNode *circle_node = dynamic_cast<luci::CircleNode *>(node);
+    CircleNode *circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (dynamic_cast<const luci::CircleInput *>(circle_node) != nullptr)
       continue;
     allocateCircleTensor(circle_node, tensor_ctx);

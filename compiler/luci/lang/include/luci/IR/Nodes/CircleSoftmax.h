@@ -39,7 +39,7 @@ public:
   void beta(float beta) { _beta = beta; }
 
 private:
-  float _beta;
+  float _beta{0.0f};
 };
 
 } // namespace luci

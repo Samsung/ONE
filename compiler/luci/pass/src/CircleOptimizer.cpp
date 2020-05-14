@@ -37,7 +37,7 @@ namespace
 
 using namespace luci;
 
-class OptimizeOptionsImpl : public luci::CircleOptimizer::Options
+class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
 public:
   void enable(Algorithm) final;

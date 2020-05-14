@@ -237,8 +237,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
 {
   loco::TensorShape output_shape;
 
-  auto input_node = dynamic_cast<luci::CircleNode *>(node->input());
-  assert(input_node);
+  auto input_node = loco::must_cast<luci::CircleNode *>(node->input());
 
   uint32_t shape_size = 0;
   auto op_params = BuildStridedSliceParams(node);

@@ -36,6 +36,8 @@ public:
       ResolveCustomOpBatchMatMul
     };
 
+    virtual ~Options() = default;
+
     virtual void enable(Algorithm) = 0;
     virtual bool query(Algorithm) = 0;
   };
