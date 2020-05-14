@@ -1,3 +1,9 @@
+nnas_include(TargetRequire)
+
+unset(REQUIRED_TARGETS)
+list(APPEND REQUIRED_TARGETS safemain)
+TargetRequire_Return(${REQUIRED_TARGETS})
+
 set(SRCS_READ_TESTER
       src/ReadTester.cpp
       src/Model.cpp
@@ -8,6 +14,7 @@ target_link_libraries(luci_readtester PRIVATE luci_import)
 target_link_libraries(luci_readtester PRIVATE luci_service)
 target_link_libraries(luci_readtester PRIVATE luci_pass)
 target_link_libraries(luci_readtester PRIVATE oops)
+target_link_libraries(luci_readtester PRIVATE safemain)
 
 set(SRCS_WRITE_TESTER
       src/WriteTester.cpp
@@ -20,3 +27,4 @@ target_link_libraries(luci_writetester PRIVATE luci_service)
 target_link_libraries(luci_writetester PRIVATE luci_pass)
 target_link_libraries(luci_writetester PRIVATE luci_export)
 target_link_libraries(luci_writetester PRIVATE oops)
+target_link_libraries(luci_writetester PRIVATE safemain)
