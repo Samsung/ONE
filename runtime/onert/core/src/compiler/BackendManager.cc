@@ -21,6 +21,7 @@
 
 #include "backend/Backend.h"
 #include "backend/controlflow/Backend.h"
+#include "backend/controlflow/Config.h"
 #include "backend/IConfig.h"
 #include "util/logging.h"
 #include "util/ConfigSource.h"
@@ -55,6 +56,27 @@ void BackendManager::loadObjectFromPlugin(std::shared_ptr<T> &object_of_plugin_c
   object_of_plugin_class.reset(allocate_obj(args...));
 }
 
+void BackendManager::loadDefaultBackend()
+{
+  // Add controlflow Backend
+  auto backend_create = []() -> backend::Backend * {
+    return new onert::backend::controlflow::Backend;
+  };
+
+  auto backend_destroy = [](backend::Backend *backend) { delete backend; };
+
+  auto backend_object =
+      std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
+  auto backend_object_raw = backend_object.get();
+  bool initialized = backend_object->config()->initialize(); // Call initialize here?
+  if (!initialized)
+  {
+    throw std::runtime_error(backend::controlflow::Config::ID + " backend initialization failed");
+  }
+  _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
+  _available_backends.push_back(backend_object_raw);
+}
+
 void BackendManager::loadBackend(const std::string &backend)
 {
   if (get(backend) != nullptr)
@@ -64,25 +86,7 @@ void BackendManager::loadBackend(const std::string &backend)
 
   if (backend == backend::controlflow::Config::ID)
   {
-    // TODO Make this backend to be loaded from .so file
-    // Add controlflow Backend
-    auto backend_create = []() -> backend::Backend * {
-      return new onert::backend::controlflow::Backend;
-    };
-
-    auto backend_destroy = [](backend::Backend *backend) { delete backend; };
-
-    auto backend_object =
-        std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
-    auto backend_object_raw = backend_object.get();
-    bool initialized = backend_object->config()->initialize(); // Call initialize here?
-    if (!initialized)
-    {
-      throw std::runtime_error(backend::controlflow::Config::ID + " backend initialization failed");
-    }
-    (void)backend_object_raw;
-    _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
-    _available_backends.push_back(backend_object_raw);
+    loadDefaultBackend();
   }
   else
   {
@@ -160,7 +164,10 @@ const backend::Backend *BackendManager::get(const std::string &key) const
   return nullptr;
 }
 
-const backend::Backend *BackendManager::getDefault() const { return get("cpu"); }
+const backend::Backend *BackendManager::getDefault() const
+{
+  return get(backend::controlflow::Config::ID);
+}
 
 } // namespace compiler
 } // namespace onert

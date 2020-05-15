@@ -73,6 +73,15 @@ private:
   void loadObjectFromPlugin(std::shared_ptr<T> &object_of_plugin_class,
                             const std::string obj_creator_func_name, void *handle,
                             Types &&... args);
+
+  /**
+   * @brief load default(controlflow) backend plugin
+   *
+   * @param backend backend to be loaded
+   *
+   * @return
+   */
+  void loadDefaultBackend();
 };
 
 } // namespace compiler

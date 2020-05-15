@@ -139,7 +139,12 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   // NOTE Permute may not have specific layout because the layout of input and output may be
   // different.
   const auto permute_node_layout = Layout::UNKNOWN;
-  const auto permute_node_backend = compiler::BackendManager::get().getDefault();
+  // NOTE If one backend supports several layout, the backend must support Permute operation
+  auto permute_node_backend = compiler::BackendManager::get().getDefault();
+  if (input_backend == output_backend)
+  {
+    permute_node_backend = input_backend;
+  }
   const operand::PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
 
   // Update LowerInfo of input operand
