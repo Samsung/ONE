@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <cassert>
 #include <memory>
+#include <cmath>
 
 namespace
 {
@@ -55,17 +56,28 @@ public:
   {
     // execute
     double sum = 0.0;
+    double log_sum = 0.0;
     double min = std::numeric_limits<double>::max();
     double max = std::numeric_limits<double>::lowest();
     for (auto t : execute_times)
     {
       sum += t;
+      log_sum += std::log(t);
       min = std::min(min, t);
       max = std::max(max, t);
     }
     _execute_time_mean = sum / static_cast<double>(execute_times.size());
     _execute_time_min = min;
     _execute_time_max = max;
+
+    // Calculating geometric mean with logs
+    //   "Geometric Mean of (V1, V2, ... Vn)"
+    // = (V1*V2*...*Vn)^(1/n)
+    // = exp(log((V1*V2*...*Vn)^(1/n)))
+    // = exp(log((V1*V2*...*Vn)/n)))
+    // = exp((log(V1) + log(V2) + ... + log(Vn))/n)
+    // = exp(_log_sum/num)
+    _execute_time_geomean = std::exp(log_sum / static_cast<double>(execute_times.size()));
   }
 
   Result(double model_load_time, double prepare_time, const std::vector<double> &execute_times,
@@ -103,6 +115,7 @@ public:
   double getModelLoadTime() const { return _model_load_time; }
   double getPrepareTime() const { return _prepare_time; }
   double getExecuteTimeMean() const { return _execute_time_mean; }
+  double getExecuteTimeGeoMean() const { return _execute_time_geomean; }
   double getExecuteTimeMin() const { return _execute_time_min; }
   double getExecuteTimeMax() const { return _execute_time_max; }
 
@@ -120,6 +133,7 @@ private:
   double _model_load_time;
   double _prepare_time;
   double _execute_time_mean;
+  double _execute_time_geomean;
   double _execute_time_min;
   double _execute_time_max;
 

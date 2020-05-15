@@ -47,6 +47,7 @@ inline void printResult(const Result &result, bool print_memory)
   std::cout << "- Min:  " << result.getExecuteTimeMin() / 1e3 << " ms" << std::endl;
   std::cout << "- Max:  " << result.getExecuteTimeMax() / 1e3 << " ms" << std::endl;
   std::cout << "- Mean: " << result.getExecuteTimeMean() / 1e3 << " ms" << std::endl;
+  std::cout << "- GeoMean: " << result.getExecuteTimeGeoMean() / 1e3 << " ms" << std::endl;
   std::cout << "===================================" << std::endl;
 
   if (print_memory == false)
