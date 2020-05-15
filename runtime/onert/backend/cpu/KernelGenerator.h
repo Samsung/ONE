@@ -55,7 +55,6 @@ public:
   void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::Div &) override;
-  void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Custom &node) override;
   void visit(const ir::operation::Exp &) override;
