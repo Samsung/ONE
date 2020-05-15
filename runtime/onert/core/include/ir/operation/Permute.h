@@ -44,31 +44,18 @@ public:
     COPY
   };
 
-  struct Param
-  {
-    const backend::BackendContext *input_backend_ctx;
-    const backend::BackendContext *output_backend_ctx;
-  };
-
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Permute; }
 
 public:
-  Permute(const OperandIndex &input, const OperandIndex &output,
-          const backend::BackendContext *input_backend_ctx,
-          const backend::BackendContext *output_backend_ctx, Type type,
-          DataType data_type = DataType::FLOAT32);
+  Permute(const OperandIndex &input, const OperandIndex &output, Type type);
 
 public:
-  const Param &param() const { return _param; }
-  DataType getDataType() const { return _dataType; }
   Type getPermuteType() const { return _type; }
 
 private:
-  Param _param;
   Type _type;
-  DataType _dataType;
 };
 
 } // namespace operation

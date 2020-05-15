@@ -19,7 +19,6 @@
 #include <string>
 
 #include "util/logging.h"
-#include "ir/operation/Permute.h"
 #include "exec/IExecutor.h"
 #include "misc/polymorphic_downcast.h"
 #include "ir/OpSequence.h"
@@ -61,11 +60,8 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
   }
   if (node_name == "Permute")
   {
-    auto *permute_node = nnfw::misc::polymorphic_downcast<const ir::operation::Permute *>(node);
-    assert(permute_node != nullptr);
-    _et->updatePermuteTime(permute_node->param().input_backend_ctx->backend(),
-                           permute_node->param().output_backend_ctx->backend(), is_quantized, size,
-                           timer_res);
+    // TODO Change it to updateOperationExecTime()
+    _et->updatePermuteTime(backend, backend, is_quantized, size, timer_res);
   }
   else
   {
