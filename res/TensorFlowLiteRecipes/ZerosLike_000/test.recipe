@@ -1,0 +1,19 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 4 }
+}
+operation {
+  type: "ZerosLike"
+  zeros_like_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
