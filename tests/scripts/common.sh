@@ -24,14 +24,14 @@ function get_result_of_benchmark_test()
     local LOG_FILE=$4
 
     local RET=0
-    $RUN_TEST_SH --driverbin=$DRIVER_BIN $MODEL > $LOG_FILE 2>&1
+    $RUN_TEST_SH --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
     RET=$?
     if [[ $RET -ne 0 ]]; then
         echo "Testing $MODEL aborted... exit code: $RET"
         exit $RET
     fi
 
-    local RESULT=`grep -E '^Mean:' $LOG_FILE | sed -e 's/ms//g' | awk '{print $2}'`
+    local RESULT=`grep -E '^- Mean:' $LOG_FILE | sed -e 's/ms//g' | awk '{print $3}'`
     echo "$RESULT"
 }
 

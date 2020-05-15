@@ -30,7 +30,7 @@ EXECUTORS="Linear Parallel" #TODO: accept this list as argument
 
 function Usage()
 {
-    echo "Usage: ./$0 --reportdir=. --runtestsh=tests/scripts/framework/run_test.sh --driverbin=Product/out/bin/tflite_benchmark"
+    echo "Usage: ./$0 --reportdir=. --runtestsh=tests/scripts/framework/run_test.sh --driverbin=Product/out/bin/tflite_run"
 }
 
 for i in "$@"
