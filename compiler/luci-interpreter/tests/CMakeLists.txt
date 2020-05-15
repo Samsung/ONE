@@ -12,13 +12,19 @@ add_custom_target(eval_verifier ALL DEPENDS ${eval_verifier_BIN})
 
 install(FILES ${eval_verifier_BIN} DESTINATION bin)
 
+macro(addeval NAME)
+  list(APPEND DAILY_EVAL_TESTS ${NAME})
+endmacro(addeval)
+
+# Read "test.lst"
+include("test.lst")
+
 # Generate tflite and circle from res/TensorFlowLiteRecipes
 nncc_find_resource(TensorFlowLiteRecipes)
 set(TENSORFLOWLITERECIPES_DIR "${TensorFlowLiteRecipes_DIR}")
 
-file(GLOB RECIPES RELATIVE ${TENSORFLOWLITERECIPES_DIR} "${TENSORFLOWLITERECIPES_DIR}/*/test.recipe")
-
-foreach(RECIPE IN ITEMS ${RECIPES})
+foreach(TEST IN ITEMS ${DAILY_EVAL_TESTS})
+  set(RECIPE "${TEST}/test.recipe")
   get_filename_component(RECIPE_PREFIX ${RECIPE} DIRECTORY)
 
   set(RECIPE_SOURCE_FILE "${RECIPE_PREFIX}.recipe")
@@ -45,18 +51,11 @@ foreach(RECIPE IN ITEMS ${RECIPES})
                      COMMENT "Generating ${CIRCLE_OUTPUT_FILE}")
 
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
-endforeach(RECIPE)
+endforeach(TEST)
 
 # Add a dummy target to create a target-level dependency.
 # TODO Find a way to create dependency between CTest tests (added below) and generated testfiles.
 add_custom_target(luci_eval_testfiles ALL DEPENDS ${TESTFILES})
-
-macro(addeval NAME)
-  list(APPEND DAILY_EVAL_TESTS ${NAME})
-endmacro(addeval)
-
-# Read "test.lst"
-include("test.lst")
 
 add_test(NAME luci_unit_evaltest
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"

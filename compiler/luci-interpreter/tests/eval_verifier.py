@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tf
 import subprocess
 import argparse
+import traceback
 
 #
 # This script compares the execution result of luci-interpreter with that of TFLite interpreter
@@ -16,11 +17,11 @@ parser.add_argument('--model', type=str, required=True)
 args = parser.parse_args()
 
 driver = args.driver
-model = args.model
-circle_model = model.replace('tflite', 'circle')
+tflite_model = args.model
+circle_model = tflite_model.replace('tflite', 'circle')
 
 # Build TFLite interpreter.
-interpreter = tf.lite.Interpreter(model)
+interpreter = tf.lite.Interpreter(tflite_model)
 interpreter.allocate_tensors()
 
 # Generate random input data.
@@ -41,11 +42,12 @@ output_details = interpreter.get_output_details()[0]
 ref_output_data = interpreter.get_tensor(output_details["index"])
 
 # Execute luci interpreter.
-input_data.tofile(circle_model + ".input")
-subprocess.run([
-    driver, circle_model,
-    str(num_inputs), circle_model + ".input", circle_model + ".output"
-])
+subprocess.run(
+    [
+        driver, circle_model,
+        str(num_inputs), circle_model + ".input", circle_model + ".output"
+    ],
+    check=True)
 output_data = np.fromfile(circle_model + ".output", output_details["dtype"])
 shape_file = open(circle_model + ".output.shape", 'r')
 output_shape = [int(i) for i in shape_file.read().split(',')]
@@ -53,14 +55,20 @@ shape_file.close()
 luci_output_data = np.reshape(output_data, output_shape)
 
 # Compare the results.
-if output_details["dtype"] == np.uint8:
-    # Ideally, the match should be exact.
-    if np.allclose(luci_output_data, ref_output_data, rtol=0, atol=0):
-        quit(0)
+try:
+    if output_details["dtype"] == np.uint8:
+        if np.allclose(luci_output_data, ref_output_data, rtol=0, atol=0) == False:
+            raise SystemExit("Execution result of " + tflite_model +
+                             " does not match with " + circle_model)
+    elif output_details["dtype"] == np.float32:
+        if np.allclose(
+                luci_output_data, ref_output_data, rtol=1.e-5, atol=1.e-5) == False:
+            raise SystemExit("Execution result of " + tflite_model +
+                             " does not match with " + circle_model)
     else:
-        quit(255)
-else:
-    if np.allclose(luci_output_data, ref_output_data, rtol=1.e-5, atol=1.e-5):
-        quit(0)
-    else:
-        quit(255)
+        raise SystemExit("Unsupported data type")
+except:
+    print(traceback.format_exc())
+    quit(255)
+
+quit(0)
