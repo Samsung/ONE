@@ -90,6 +90,7 @@ public:
   void visit(const ir::operation::Neg &node) override;
   void visit(const ir::operation::Log &node) override;
   void visit(const ir::operation::LogicalNot &node) override;
+  void visit(const ir::operation::Tile &node) override;
 
 private:
   // TODO Remove _ctx field

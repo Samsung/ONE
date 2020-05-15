@@ -625,6 +625,14 @@ void OperationDumper::visit(const Tanh &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Tile &node)
+{
+  VERBOSE(LIR) << "* Tile" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Tile::Input::INPUT).value() << ", "
+               << node.getInputs().at(Tile::Input::MULTIPLES).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const TopKV2 &node)
 {
   VERBOSE(LIR) << "* TopKV2" << std::endl;
