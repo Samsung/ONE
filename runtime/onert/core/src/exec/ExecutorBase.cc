@@ -173,15 +173,21 @@ void ExecutorBase::execute(const IODescription &desc)
       continue;
     }
 
-    //
-    // TODO Allocate memory for input tensor when input tensor is dynamic
-    // e.g.,
-    //  auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
-    //  if (dyn_alloc_info != _input_to_dyn_alloc_info.end())
-    //  {
-    //    auto ind = dyn_alloc_info->second.ind;
-    //    dyn_alloc_info->second.dyn_tensor_manager->allocate(ind, exec_time_shape);
-    //  }
+    // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
+    // This code find the info to allocate dynamic tensor, and allocate memory based on
+    // the input shape user set by calling nnfw_apply_tensorinfo(..)
+    auto shape_sig_found = desc.input_shape_signature.find(input_index);
+    if (shape_sig_found != desc.input_shape_signature.end())
+    {
+      auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
+      if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
+        throw std::runtime_error("Unknown dim is found at execution time for a backend that "
+                                 "does not support dynamic tensor");
+
+      auto changed_input_shape = shape_sig_found->second;
+      auto operand_ind = dyn_alloc_info->second.ind;
+      dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
+    }
 
     const auto &input = *desc.inputs.at(n);
     sources.at(n) =
