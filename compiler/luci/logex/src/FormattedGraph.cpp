@@ -574,8 +574,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMul *node, locop::NodeS
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleOneHot *node, locop::NodeSummary &s) const
 {
-  s.args().append("params", tbl()->lookup(node->indices()));
-  s.args().append("indices", tbl()->lookup(node->depth()));
+  s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("depth", tbl()->lookup(node->depth()));
   s.args().append("on_value", tbl()->lookup(node->on_value()));
   s.args().append("off_value", tbl()->lookup(node->off_value()));
   s.args().append("axis", pepper::str(node->axis()));
