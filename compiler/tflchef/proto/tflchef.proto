@@ -332,7 +332,7 @@ message Operation {
   optional LessOptions less_options = 149;
   // optional ReducerOptions reducemax_options = 150;
   // optional MaximumMinimumOptions minimum_options = 151;
-  // optional ReducerOptions reduce_any_options = 152;
+  optional ReducerOptions reduce_any_options = 152;
   optional ZerosLikeOptions zeros_like_options = 153;
   // ConcatEmbeddingsOptions 154
   // LSHProjectionOptions 155
