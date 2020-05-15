@@ -313,7 +313,28 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
 }
 
 // TODO write op starting from S
-// TODO write op starting from T
+
+void StaticInferer::visit(const ir::operation::Tanh &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::Tanh::Input::INPUT)};
+  const auto &input = _operands.at(input_idx);
+
+  // get mutable output operand
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  // if input is dynamic, output also becomes dynamic
+  if (input.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  {
+    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    return;
+  }
+
+  // re-sizing output shape
+  ir::Shape new_shape = input.info().shape();
+  output.info().shape(new_shape);
+}
+
 // TODO write op starting from U
 // TODO write op starting from Z
 
@@ -336,7 +357,28 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
 // TODO write op starting from P
 // TODO write op starting from R
 // TODO write op starting from S
-// TODO write op starting from T
+
+void DynamicInferer::visit(const ir::operation::Tanh &op)
+{
+  // check if output is not dynamic
+  auto output_ind = op.getOutputs().at(0);
+  auto *output = _tensor_registry->getITensor(output_ind);
+  if (!output->is_dynamic())
+    return;
+
+  // getting output shape
+  auto input_ind = op.getInputs().at(ir::operation::Tanh::Input::INPUT);
+  auto *input = _tensor_registry->getITensor(input_ind);
+  auto output_shape = getShape(input);
+
+  // set output shape and output buffer
+  setShape(output, output_shape);
+
+  assert(output->buffer() == nullptr);
+  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  assert(output->buffer() != nullptr);
+}
+
 // TODO write op starting from U
 // TODO write op starting from Z
 

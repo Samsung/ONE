@@ -28,5 +28,14 @@ void setShape(ITensor *tensor, const ir::Shape &new_shape)
     tensor->dimension(i, new_shape.dim(i));
 }
 
+ir::Shape getShape(ITensor *tensor)
+{
+  onert::ir::Shape shape(tensor->num_dimensions());
+  for (uint32_t d = 0; d < tensor->num_dimensions(); d++)
+    shape.dim(d) = tensor->dimension(d);
+
+  return shape;
+}
+
 } // namespace backend
 } // namespace onert
