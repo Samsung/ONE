@@ -4,7 +4,7 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.2.0 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   return()
