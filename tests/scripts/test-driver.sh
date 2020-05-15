@@ -38,7 +38,6 @@ function Usage()
     echo "etc."
     echo "--framework_driverbin     - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
     echo "--verification_driverbin  - (default=../../Product/out/bin/nnapi_test) runner for runnning verification tests"
-    echo "--benchmark_driverbin     - (default=../../Product/out/bin/tflite_benchmark) runner for runnning benchmark"
     echo "--runtestsh               - (default=\$ARTIFACT_PATH/tests/scripts/framework/run_test.sh) run_test.sh with path where it is for framework test and verification"
     echo "--unittestdir             - (default=\$ARTIFACT_PATH/Product/out/unittest) directory that has unittest binaries for unit test"
     echo ""
@@ -50,7 +49,6 @@ TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../../"
 FRAMEWORK_DRIVER_BIN=""
 VERIFICATION_DRIVER_BIN=""
-BENCHMARK_DRIVER_BIN=""
 RUN_TEST_SH=""
 UNIT_TEST_DIR=""
 ALLTEST_ON="true"
@@ -75,9 +73,6 @@ do
             ;;
         --verification_driverbin=*)
             VERIFICATION_DRIVER_BIN=${i#*=}
-            ;;
-        --benchmark_driverbin=*)
-            BENCHMARK_DRIVER_BIN=${i#*=}
             ;;
         --runtestsh=*)
             RUN_TEST_SH=${i#*=}
@@ -181,11 +176,7 @@ if [ "$ALLTEST_ON" == "true" ] || [ "$VERIFICATION_ON" == "true" ]; then
 fi
 
 if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
-    if [ -z "$BENCHMARK_DRIVER_BIN" ]; then
-        DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_benchmark
-    else
-        DRIVER_BIN=$BENCHMARK_DRIVER_BIN
-    fi
+    DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run
 
     $TEST_DRIVER_DIR/benchmark_nnapi.sh \
         --test_op \
