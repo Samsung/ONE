@@ -50,6 +50,16 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
   (*_tensors)[ind] = tensor;
 }
 
+void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
+{
+  auto tensor = (*_tensors)[ind];
+  assert(tensor);
+
+  setShape(tensor.get(), new_shape);
+  // once the shape is changed, the output of operations using this tensor should be re-calculated
+  tensor->set_dynamic();
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

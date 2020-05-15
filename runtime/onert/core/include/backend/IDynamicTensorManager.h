@@ -41,6 +41,12 @@ public:
    * @brief Allocate memory for dynamic tensor
    */
   virtual void allocate(const ir::OperandIndex &, const ir::Shape &) = 0;
+
+  /**
+   * @brief Change shape of tensor, which makes the tensor "dynamic"
+   * @note  This should be called before execution.
+   */
+  virtual void changeShape(const ir::OperandIndex &, const ir::Shape &) = 0;
 };
 
 } // namespace backend

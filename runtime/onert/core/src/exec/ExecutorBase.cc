@@ -133,6 +133,27 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
   }
 }
 
+void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape)
+{
+  for (auto &input_tensor : _input_tensors)
+  {
+    auto dyn_alloc_info = _input_to_dyn_alloc_info.find(input_tensor);
+    if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
+      continue;
+
+    // when user-provided input change is stored in _input_to_dyn_alloc_info
+    if (index == dyn_alloc_info->second.ind)
+    {
+      auto dyn_tensor_manager = dyn_alloc_info->second.dyn_tensor_manager;
+      assert(dyn_tensor_manager);
+      dyn_tensor_manager->changeShape(index, new_shape);
+      return;
+    }
+  }
+  throw std::runtime_error("changeInputShape(): Cannot find such index or "
+                           "check if the tensor's backend supports dynamic tensor.");
+}
+
 void ExecutorBase::execute()
 {
   // For thread-safe, use mutex

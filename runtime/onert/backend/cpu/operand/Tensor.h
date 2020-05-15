@@ -87,6 +87,7 @@ public:
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool is_dynamic() const override { return _info.memAllocType() == ir::MemAllocType::DYNAMIC; }
+  void set_dynamic() override { _info.memAllocType(ir::MemAllocType::DYNAMIC); }
 
   void increase_ref()
   {

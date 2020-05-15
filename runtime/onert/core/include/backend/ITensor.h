@@ -54,6 +54,9 @@ public:
    */
   virtual bool is_dynamic() const { throw std::runtime_error("not yet implemented"); }
 
+  /// @brief set this tensor dynamic
+  virtual void set_dynamic() { throw std::runtime_error("not yet implemented"); }
+
   // set dim when this tensor is dynamic
   virtual void dimension(size_t /* index */, size_t /* dim */)
   {
