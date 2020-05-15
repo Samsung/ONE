@@ -79,6 +79,8 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
   operations.iterate([&](const OperationIndex &index, const Operation &node) {
     for (auto operand_index : node.getInputs())
     {
+      if (isOptionalOperand(operand_index))
+        continue;
       auto &operand = graph.operands().at(operand_index);
       mismatches += (operand.getUses().contains(index) ? 0 : 1);
     }

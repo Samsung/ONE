@@ -77,12 +77,12 @@ public:
     // Set inputs
     for (const std::int32_t input_ind : *tflite_subg->inputs())
     {
-      subg->addInput(_tensor_to_operand[input_ind]);
+      subg->addInput(tensorIdxToOperandIdx(input_ind));
     }
     // Set outputs
     for (const std::int32_t output_ind : *tflite_subg->outputs())
     {
-      subg->addOutput(_tensor_to_operand[output_ind]);
+      subg->addOutput(tensorIdxToOperandIdx(output_ind));
     }
     // Create operations
     for (const auto *op : *tflite_subg->operators())

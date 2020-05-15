@@ -29,6 +29,8 @@ using OperationIndex = ::onert::util::Index<uint32_t, OperationIndexTag>;
 
 struct OperandIndexTag;
 using OperandIndex = ::onert::util::Index<uint32_t, OperandIndexTag>;
+static int const OPTIONAL_OPERAND = 0xFFFFFFFE;
+inline bool isOptionalOperand(OperandIndex n) { return n == OPTIONAL_OPERAND; }
 
 struct IOIndexTag;
 using IOIndex = ::onert::util::Index<uint32_t, IOIndexTag>;

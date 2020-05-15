@@ -70,6 +70,7 @@ protected:
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
+  ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -232,6 +233,13 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+ir::OperandIndex
+BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
+{
+  return tensorIdx == -1 ? ir::OperandIndex(ir::OPTIONAL_OPERAND) : _tensor_to_operand[tensorIdx];
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Tensor *tensor,
                                                                        ir::Graph &subg)
 {
@@ -319,17 +327,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
   for (const std::int32_t idx : *op->inputs())
   {
     // Optional tensors are not supported yet except for FULLY_CONNECTED.
-    auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-    if (isOptionalInputTensor(idx))
-      throw std::runtime_error(std::string("loader doesn't support optional input tensor yet for ")
-                                   .append(EnumNameBuiltinOperator(builtin_code)));
+    // auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+    // if (isOptionalInputTensor(idx))
+    //   throw std::runtime_error(std::string("loader doesn't support optional input tensor yet for
+    //   ")
+    //                                .append(EnumNameBuiltinOperator(builtin_code)));
 
-    inputs.append(_tensor_to_operand[idx]);
+    inputs.append(tensorIdxToOperandIdx(idx));
   }
 
   for (const std::int32_t idx : *op->outputs())
   {
-    outputs.append(_tensor_to_operand[idx]);
+    outputs.append(tensorIdxToOperandIdx(idx));
   }
 }
 
@@ -1231,14 +1240,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
 
   // Set input and output tensors
   ir::OperandIndexSequence inputs, outputs;
-  inputs.append(_tensor_to_operand[op->inputs()->Get(INDICES)]);
-  outputs.append(_tensor_to_operand[op->outputs()->Get(0)]);
+  inputs.append(tensorIdxToOperandIdx(op->inputs()->Get(INDICES)));
+  outputs.append(tensorIdxToOperandIdx(op->outputs()->Get(0)));
 
   // Set parameters
   // depth, on_value and off_value are scalar though it is passed as inputs
-  auto depth_opidx = _tensor_to_operand[op->inputs()->Get(DEPTH)];
-  auto on_value_opidx = _tensor_to_operand[op->inputs()->Get(ON_VALUE)];
-  auto off_value_opidx = _tensor_to_operand[op->inputs()->Get(OFF_VALUE)];
+  auto depth_opidx = tensorIdxToOperandIdx(op->inputs()->Get(DEPTH));
+  auto on_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(ON_VALUE));
+  auto off_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(OFF_VALUE));
   const auto depth = subg.operands().at(depth_opidx).template asScalar<int>();
   const auto on_value = subg.operands().at(on_value_opidx).template asScalar<float>();
   const auto off_value = subg.operands().at(off_value_opidx).template asScalar<float>();

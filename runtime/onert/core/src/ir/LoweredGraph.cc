@@ -81,6 +81,8 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     OperandIndexMap<std::unique_ptr<operand::LowerInfo>> operands_lower_info;
 
     _graph.operands().iterate([&](const OperandIndex &index, const Operand &) {
+      if (isOptionalOperand(index))
+        return;
       operands_lower_info[index] = std::make_unique<operand::LowerInfo>();
     });
 
@@ -94,8 +96,8 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     _op_seqs.dump("merged and sorted operations without permutation");
 
-    pass::ConstantInsertionPass ci_pass(*this);
-    ci_pass.run();
+    // pass::ConstantInsertionPass ci_pass(*this);
+    // ci_pass.run();
 
     pass::ConstantLoweringPass cl_pass(*this);
     cl_pass.run();
@@ -235,6 +237,8 @@ void LoweredGraph::makeOpSequences(
 
         for (auto operand : node.getInputs())
         {
+          if (isOptionalOperand(operand))
+            continue;
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
         }
@@ -399,6 +403,8 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     const auto &inputs = op_seq.getInputs();
     for (const auto &input : inputs)
     {
+      if (isOptionalOperand(input))
+        continue;
       const auto &input_obj = _graph.operands().at(input);
       for (const auto &def : input_obj.getDef().list())
       {

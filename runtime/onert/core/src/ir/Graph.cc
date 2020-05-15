@@ -94,6 +94,8 @@ void Graph::initializeUseDef()
     auto inputs = node.getInputs();
     for (auto input : inputs)
     {
+      if (isOptionalOperand(input))
+        continue;
       operands().at(input).appendUse(index);
     }
   });

@@ -39,6 +39,8 @@ void ConstantLoweringPass::callback(const OperationIndex &node_index, Operation 
   // Now this runtime does not support the node making output of operation as constant
   for (const auto input : node.getInputs())
   {
+    if (isOptionalOperand(input))
+      continue;
     auto &object = _graph.operands().at(input);
     if (object.isConstant())
     {
