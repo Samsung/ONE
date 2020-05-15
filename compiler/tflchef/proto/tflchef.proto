@@ -271,6 +271,10 @@ message OneHotOptions {
   optional int32 axis = 1 [default = -1];
 }
 
+message ZerosLikeOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -329,7 +333,7 @@ message Operation {
   // optional ReducerOptions reducemax_options = 150;
   // optional MaximumMinimumOptions minimum_options = 151;
   // optional ReducerOptions reduce_any_options = 152;
-  // optional ZerosLikeOptions zeros_like_options = 153;
+  optional ZerosLikeOptions zeros_like_options = 153;
   // ConcatEmbeddingsOptions 154
   // LSHProjectionOptions 155
   // SVDFOptions 156
