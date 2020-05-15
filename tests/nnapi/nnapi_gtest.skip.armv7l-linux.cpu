@@ -93,7 +93,6 @@ GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_or_1D_nnfw
 GeneratedTests.logical_or_2D_nnfw
 GeneratedTests.logical_or_3D_nnfw
-GeneratedTests.logical_or_4D_nnfw
 GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_broadcast_4D_2D_nnfw
 GeneratedTests.logical_or_broadcast_nnfw
