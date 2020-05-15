@@ -208,6 +208,7 @@ private:
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
   IMPLEMENT(luci::CircleMul)
+  IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
   IMPLEMENT(luci::CircleReduceAny)
@@ -567,6 +568,18 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMul *node, locop::NodeS
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleOneHot *node, locop::NodeSummary &s) const
+{
+  s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("depth", tbl()->lookup(node->depth()));
+  s.args().append("on_value", tbl()->lookup(node->on_value()));
+  s.args().append("off_value", tbl()->lookup(node->off_value()));
+  s.args().append("axis", pepper::str(node->axis()));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
