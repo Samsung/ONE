@@ -53,11 +53,12 @@ foreach(TEST IN ITEMS ${DAILY_EVAL_TESTS})
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
 endforeach(TEST)
 
-# Add a dummy target to create a target-level dependency.
-# TODO Find a way to create dependency between CTest tests (added below) and generated testfiles.
+# Generate dependencies
 add_custom_target(luci_eval_testfiles ALL DEPENDS ${TESTFILES})
 
-add_test(NAME luci_unit_evaltest
+add_subdirectory(tester)
+
+add_test(NAME luci_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "$<TARGET_FILE:luci_interpreter_tester>"
