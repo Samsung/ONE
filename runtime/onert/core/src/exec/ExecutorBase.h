@@ -30,6 +30,7 @@
 #include "compiler/OperandContext.h"
 #include "exec/ExecTime.h"
 #include "exec/IFunction.h"
+#include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"
 #include "exec/ExecutionObservee.h"
@@ -127,6 +128,8 @@ private:
 
     return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
   }
+
+  void changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape) override;
 
 protected:
   /**

@@ -39,6 +39,7 @@ public:
 
   void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
+  void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
 
 private:
   /**
