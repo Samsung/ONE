@@ -284,9 +284,10 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     auto graph_output = graph_outputs->at(node->index());
     auto output_dtype = graph_output->dtype();
 
-    if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr)
+    if (dynamic_cast<luci::CircleOutputDummy *>(node->from()) == nullptr &&
+        dynamic_cast<luci::CircleOutputExclude *>(node->from()) == nullptr)
     {
-      // We don't care for the type if from() is CircleOutputDummy
+      // We don't care for the type if from() is CircleOutputDummy or CircleOutputExclude
       // from() type should match that of CircleOutput
       assert(output_dtype == loco::dtype_get(node->from()));
     }

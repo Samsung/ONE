@@ -61,6 +61,16 @@ public:
   CircleOutputDummy() = default;
 };
 
+/**
+ * @brief CircleOutputExclude is used to specifying not exported nodes
+ */
+class CircleOutputExclude final
+    : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLEOUTPUTEXCLUDE>>
+{
+public:
+  CircleOutputExclude() = default;
+};
+
 } // namespace luci
 
 #endif // __LUCI_IR_CIRCLEOUTPUT_H__
