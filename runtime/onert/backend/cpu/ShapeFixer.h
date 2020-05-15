@@ -51,7 +51,6 @@ public:
   void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::Div &) override;
-  void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::Custom &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
