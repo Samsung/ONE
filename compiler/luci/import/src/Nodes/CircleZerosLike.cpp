@@ -34,7 +34,7 @@ bool CircleZerosLikeGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
-CircleNode *CircleZerosLikeGraphBuilder::build_node(const circle::OperatorT &op,
+CircleNode *CircleZerosLikeGraphBuilder::build_node(const circle::OperatorT &,
                                                     const std::vector<CircleNode *> &inputs,
                                                     loco::Graph *graph) const
 {
