@@ -55,6 +55,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                              // 18
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                            // 83
   CIRCLE_NODE(PAD, CirclePadGraphBuilder);                              // 34
+  CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                 // 91
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);               // 81
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                            // 19
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                      // 22
@@ -130,7 +131,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_FLOOR_DIV = 90,
-  // BuiltinOperator_REDUCE_ANY = 91,
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_ZEROS_LIKE = 93,
   // BuiltinOperator_RANGE = 96,
