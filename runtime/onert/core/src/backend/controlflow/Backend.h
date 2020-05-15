@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CONTROLFLOW_BACKEND_H__
 
 #include "Config.h"
+#include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
@@ -62,11 +63,11 @@ public:
     // 2. Consecutive controflow operation's intermediate tensor
     //   These tensors can be dynamic tensor and this is complicated to support without copying. But
     //   there is no such case until now, let's support it later
-    // TODO Remove TensorBuilder
+    // TODO Remove TensorBuilder and ConstantInitializer
     // TODO Support Consecutive controflow operation's intermediate tensor
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
-    context->constant_initializer = std::shared_ptr<IConstantInitializer>(nullptr);
+    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands);
     context->shape_fixer = std::shared_ptr<IShapeFixer>(std::make_shared<EmptyShapeFixer>());
     context->tensor_register = nullptr;
