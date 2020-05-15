@@ -80,13 +80,9 @@ void registerGraphOutputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
     auto push = output_node(graph, n);
     assert(push != nullptr);
 
-    // Do not export NoOp
+    //Do not export NoOp
     if (dynamic_cast<luci::CircleNoOp *>(push->from()) != nullptr)
     {
-      // auto rnode = push->from();
-      // push->from(nullptr);
-      // rnode->drop();
-      // graph->nodes()->destroy(rnode);
       continue;
     }
 

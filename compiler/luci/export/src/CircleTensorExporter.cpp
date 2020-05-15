@@ -77,6 +77,7 @@ struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
   // Input is Virtual but does produce a Tensor
   // Output is Virtual that does not produce any Tensor
   bool visit(luci::CircleOutput *) final { return true; }
+  bool visit(luci::CircleNoOp *) final { return true; }
 
   // Return false by default
   bool visit(luci::CircleNode *) final { return false; }
@@ -97,6 +98,7 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 
   if (isNoOp(node))
   {
+    set_tensor_index(node, -1);
     return;
   }
 
