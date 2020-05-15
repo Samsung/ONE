@@ -21,6 +21,7 @@
 
 #include <backend/ITensor.h>
 #include <ir/OperandInfo.h>
+#include <util/Utils.h>
 
 namespace onert
 {
@@ -40,7 +41,7 @@ public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout)
       : _info(info), _layout(layout), _buffer(nullptr), _allocator(nullptr)
   {
-    // DO NOTHING
+    UNUSED_RELEASE(_layout);
   }
 
 public:
