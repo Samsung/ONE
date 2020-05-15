@@ -47,7 +47,7 @@ void PadLayer::configure(const operand::Tensor *input, operand::Tensor *output,
 {
   _input = input;
   _output = output;
-  _padData = padData;
+  memcpy(_padData, padData, sizeof(_padData));
   _padRank = padRank;
   _constantValueData.u8 = constantValueData;
 }
