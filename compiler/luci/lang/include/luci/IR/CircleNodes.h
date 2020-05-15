@@ -76,6 +76,7 @@
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
 #include "Nodes/CircleWhile.h"
+#include "Nodes/CircleZerosLike.h"
 // Circle only
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
