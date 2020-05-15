@@ -41,7 +41,7 @@ public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout)
       : _info(info), _layout(layout), _buffer(nullptr), _allocator(nullptr)
   {
-    UNUSED_RELEASE(_layout);
+    // DO NOTHING
   }
 
 public:
@@ -81,7 +81,7 @@ public:
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
-  ir::Layout layout() const override { return ir::Layout::NHWC; }
+  ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
