@@ -10,3 +10,12 @@ Middleend
    :maxdepth: 2
    :caption: Contents:
 
+  ./compiler/exo/README.md
+  ./compiler/locoex-customop/README.md
+  ./compiler/logo/README.md
+  ./compiler/logo-core/README.md
+  ./compiler/mir2loco/README.md
+
+  ./compiler/moco-tf/README.md
+  ./compiler/moco-tf/doc/Conversion.md
+

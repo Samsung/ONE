@@ -10,3 +10,5 @@ Interpreter
    :maxdepth: 2
    :caption: Contents:
 
+  ./compiler/locomotiv/README.md
+  ./compiler/mir-interpreter/README.md
