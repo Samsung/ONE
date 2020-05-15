@@ -2,11 +2,7 @@ set(eval_verifier_FILE "eval_verifier.py")
 set(eval_verifier_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${eval_verifier_FILE}")
 set(eval_verifier_BIN "${CMAKE_CURRENT_BINARY_DIR}/${eval_verifier_FILE}")
 
-add_custom_command(OUTPUT ${eval_verifier_BIN}
-    COMMAND ${CMAKE_COMMAND} -E copy "${eval_verifier_SRC}" "${eval_verifier_BIN}"
-    DEPENDS ${eval_verifier_SRC}
-    COMMENT "Generate ${eval_verifier_BIN}"
-  )
+configure_file(${eval_verifier_SRC} ${eval_verifier_BIN})
 
 add_custom_target(eval_verifier ALL DEPENDS ${eval_verifier_BIN})
 
