@@ -100,6 +100,7 @@ public:
   void visit(const operation::Max &) override;
   void visit(const operation::OneHot &) override;
   void visit(const operation::While &) override;
+  void visit(const operation::ZerosLike &) override;
 };
 
 } // namespace ir
