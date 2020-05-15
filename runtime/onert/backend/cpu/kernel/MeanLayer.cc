@@ -29,7 +29,7 @@ namespace cpu
 namespace kernel
 {
 
-MeanLayer::MeanLayer() : _input(nullptr), _output(nullptr)
+MeanLayer::MeanLayer() : _input(nullptr), _output(nullptr), _axes(), _keep_dims(false)
 {
   // DO NOTHING
 }
