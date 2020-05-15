@@ -36,6 +36,7 @@
 #include "Op/FullyConnected.h"
 #include "Op/Gather.h"
 #include "Op/Greater.h"
+#include "Op/GreaterEqual.h"
 #include "Op/If.h"
 #include "Op/Less.h"
 #include "Op/LogicalAnd.h"
