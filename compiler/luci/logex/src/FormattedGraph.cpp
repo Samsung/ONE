@@ -236,6 +236,7 @@ private:
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
   IMPLEMENT(luci::CircleWhile)
+  IMPLEMENT(luci::CircleZerosLike)
   // Circle Only
   IMPLEMENT(luci::CircleInstanceNorm)
   // Virtual nodes
@@ -856,6 +857,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleWhile *node, locop::Nod
     s.args().append("body_graph", node->body_graph()->name());
   else
     s.args().append("body_branch", pepper::str(node->body_branch()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleZerosLike *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 
