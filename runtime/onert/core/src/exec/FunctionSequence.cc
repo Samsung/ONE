@@ -78,6 +78,8 @@ void FunctionSequenceForDynamicBackend::run()
 
     // run kernel
     function->run();
+
+    op_iter++;
   }
 }
 
