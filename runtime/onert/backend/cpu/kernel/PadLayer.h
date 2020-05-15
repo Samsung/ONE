@@ -58,7 +58,7 @@ private:
   const operand::Tensor *_input;
   operand::Tensor *_output;
 
-  const int32_t *_padData;
+  int32_t _padData[8];
   int32_t _padRank;
   DataPtr _constantValueData;
 };
