@@ -39,7 +39,7 @@ public:
   void run();
   void runSync()
   {
-    // this rsqrttract method is used just for profiling and called for
+    // this abstract method is used just for profiling and called for
     // backend::acl_common::AclFunction
     run();
   }

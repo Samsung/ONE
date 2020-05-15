@@ -50,6 +50,8 @@
 #include "mir/ShapeRange.h"
 #include "mir/Tensor.h"
 
+#include <stdexcept>
+
 namespace mir_tflite
 {
 
@@ -65,7 +67,8 @@ static mir::ops::PaddingType convertPadding(tflite::Padding padding)
     case tflite::Padding_SAME:
       return mir::ops::PaddingType::SameUpper;
     default:
-      assert(false);
+      throw std::runtime_error(std::string("Unsupported Padding: ") +
+                               tflite::EnumNamePadding(padding));
   }
 }
 
@@ -286,7 +289,7 @@ TFLiteOpCreator::convertReshape(const tflite::ReshapeOptionsT *opts,
   // TODO: we should also support "-1" values in new_shape, which means that correct
   // shape values must be calculated. Better do it in the shape inference module.
   Shape new_shape(opts->new_shape.size());
-  for (int i = 0; i < opts->new_shape.size(); ++i)
+  for (int i = 0; i < static_cast<int>(opts->new_shape.size()); ++i)
   {
     new_shape.dim(i) = opts->new_shape[i];
   }
@@ -639,7 +642,7 @@ TFLiteOpCreator::convertShape(const tflite::ShapeOptionsT *opts,
 }
 
 std::vector<mir::Operation::Output *>
-TFLiteOpCreator::convertHardSwish(const tflite::HardSwishOptionsT *opts,
+TFLiteOpCreator::convertHardSwish(const tflite::HardSwishOptionsT *,
                                   const std::vector<mir::Operation::Output *> &inputs)
 {
   auto result = createOp<ops::HardSwishOp>(inputs[0])->getOutput(0);

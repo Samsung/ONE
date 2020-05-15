@@ -39,6 +39,8 @@ struct GraphBuilderBase
 
   virtual bool validate(const ValidateArgs &) const = 0;
   virtual void build(const circle::OperatorT &op, GraphBuilderContext *context) const = 0;
+
+  virtual ~GraphBuilderBase() = default;
 };
 
 } // namespace luci

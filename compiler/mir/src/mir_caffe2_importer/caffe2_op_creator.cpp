@@ -40,6 +40,7 @@
 #include "mir/TensorUtil.h"
 
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 namespace mir_caffe2
@@ -247,7 +248,7 @@ static mir::TensorVariant createTensor(const OperatorDef &op)
 //
 
 std::vector<mir::Operation::Output *>
-Caffe2OpCreator::convertConstant(const std::vector<mir::Operation::Output *> &inputs,
+Caffe2OpCreator::convertConstant(const std::vector<mir::Operation::Output *> &,
                                  const ::caffe2::OperatorDef &op)
 {
   // Constant may not contain any data if it is a fake input.
@@ -513,7 +514,10 @@ Caffe2OpCreator::convertClip(const std::vector<mir::Operation::Output *> &inputs
   float max = getSingleArgument(op, "max", float(0));
   float min = getSingleArgument(op, "min", float(0));
 
-  assert(max > 0.0 && min == 0.0 && "Support only if clip is CappedRelu");
+  if (min != 0.0f)
+    throw std::runtime_error("Clip: min != 0 is not supported.");
+  if (max <= min)
+    throw std::runtime_error("Clip: max <= min is not supported.");
   auto cap_relu = createOp<ops::CappedReluOp>(inputs[0], max);
 
   return {cap_relu->getOutput(0)};
@@ -521,7 +525,7 @@ Caffe2OpCreator::convertClip(const std::vector<mir::Operation::Output *> &inputs
 
 std::vector<mir::Operation::Output *>
 Caffe2OpCreator::convertReshape(const std::vector<mir::Operation::Output *> &inputs,
-                                const ::caffe2::OperatorDef &op)
+                                const ::caffe2::OperatorDef &)
 {
   auto shape_op = dynamic_cast<mir::ops::ConstantOp *>(inputs[1]->getNode());
   if (shape_op == nullptr)

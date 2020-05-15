@@ -145,7 +145,7 @@ std::unique_ptr<mir::Graph> CaffeImporter::importModel()
 
   setGraphOutputs(graph.get());
 
-  return std::move(graph);
+  return graph;
 }
 
 std::unique_ptr<mir::Graph> CaffeImporter::importModelFromBinaryFile(const std::string &filename)

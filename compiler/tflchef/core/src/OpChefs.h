@@ -37,6 +37,7 @@
 #include "Op/Gather.h"
 #include "Op/Greater.h"
 #include "Op/If.h"
+#include "Op/Less.h"
 #include "Op/LogicalAnd.h"
 #include "Op/LogicalOr.h"
 #include "Op/LogicalNot.h"

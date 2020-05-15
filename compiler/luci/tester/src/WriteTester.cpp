@@ -95,7 +95,7 @@ bool CircleExpContract::store(const char *ptr, const size_t size) const
  *        With the graph, this will use luci_export to write to the second file
  *        Like ReadTester, LUCI_LOG=1 environment variable is available to dump the graph
  */
-int main(int argc, char **argv)
+int entry(int argc, char **argv)
 {
   if (argc != 3)
   {
