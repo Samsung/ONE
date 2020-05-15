@@ -86,6 +86,7 @@ public:
   void visit(const ir::operation::Round &) override;
   void visit(const ir::operation::Pow &) override;
   void visit(const ir::operation::LogicalNot &) override;
+  void visit(const ir::operation::LogicalOr &) override;
 
 private:
   const ir::Operands &_ctx;
