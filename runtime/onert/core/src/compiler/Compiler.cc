@@ -32,8 +32,8 @@
 #include "compiler/Linear.h"
 #include "interp/InterpExecutor.h"
 #include "util/ConfigSource.h"
+#include "util/logging.h"
 #include "ir/OperationDumper.h"
-#include "compiler/CachedDataDeleter.h"
 #include "misc/string_helpers.h"
 
 namespace onert
