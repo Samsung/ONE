@@ -2029,6 +2029,18 @@ OperationFactory::OperationFactory()
 
     return new operation::Fill{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_ZEROS_LIKE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //  0 -> input Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+
+    return new operation::ZerosLike{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
