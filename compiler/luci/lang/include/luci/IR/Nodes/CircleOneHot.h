@@ -29,7 +29,7 @@ namespace luci
 /**
  * @brief ONEHOT in Circle
  */
-class CircleOneHot final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::ONE_HOT>>
+class CircleOneHot final : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::ONE_HOT>>
 {
 public:
   loco::Node *indices(void) const { return at(0)->node(); }

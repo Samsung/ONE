@@ -24,8 +24,8 @@ TEST(CircleOneHotTest, constructor)
 {
   luci::CircleOneHot one_hot_node;
 
-  ASSERT_EQ(one_hot_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(one_hot_node.opcode(), luci::CircleOpcode::ONE_HOT);
+  ASSERT_EQ(luci::CircleDialect::get(), one_hot_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ONE_HOT, one_hot_node.opcode());
 
   ASSERT_EQ(nullptr, one_hot_node.indices());
   ASSERT_EQ(nullptr, one_hot_node.depth());
