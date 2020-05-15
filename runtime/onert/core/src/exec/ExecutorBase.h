@@ -55,6 +55,11 @@ public:
 
   const ir::Graph &graph() final { return _graph; }
 
+  /**
+   * @brief Execute without IODescription
+   */
+  void execute();
+
   void execute(const IODescription &desc) final;
 
   // Used only in Dataflow and Parallel Executors
@@ -66,6 +71,13 @@ public:
   virtual void executeImpl(void) = 0;
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
+
+  const std::vector<std::shared_ptr<backend::ITensor>> &getInputTensors() { return _input_tensors; }
+
+  const std::vector<std::shared_ptr<backend::ITensor>> &getOutputTensors()
+  {
+    return _output_tensors;
+  }
 
 private:
   std::unique_ptr<ISource> source(const ir::IOIndex &index, const ir::TypeInfo &type,
