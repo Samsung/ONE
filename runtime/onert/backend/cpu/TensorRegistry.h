@@ -30,6 +30,7 @@ namespace backend
 namespace cpu
 {
 
+#if 0
 class TensorRegistry : public ITensorRegistry,
                        public ir::OperandIndexMap<std::shared_ptr<operand::Tensor>>
 {
@@ -38,8 +39,11 @@ public:
    * @brief Returns pointer of ITensor
    * @note  Returned tensor cannot be used longer than dynamic tensor manager
    */
-  ITensor *getITensor(const ir::OperandIndex &ind) override { return at(ind).get(); }
+  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override { return at(ind); }
 };
+#endif
+
+using TensorRegistry = TensorRegistryTemplate<operand::Tensor>;
 
 } // namespace cpu
 } // namespace backend

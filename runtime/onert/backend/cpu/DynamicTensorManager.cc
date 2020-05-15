@@ -31,7 +31,7 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
 
 void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
-  auto tensor = (*_tensors)[ind];
+  auto tensor = _tensors->getManagedTensor(ind);
   assert(tensor);
 
   auto allocTensorMem = [&]() {
@@ -60,14 +60,14 @@ void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info)
 {
-  assert(_tensors->find(ind) == _tensors->end());
+  assert(_tensors->getITensor(ind) == nullptr);
   auto tensor = std::make_shared<operand::Tensor>(tensor_info);
-  (*_tensors)[ind] = tensor;
+  _tensors->setManagedTensor(ind, tensor);
 }
 
 void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
-  auto tensor = (*_tensors)[ind];
+  auto tensor = _tensors->getITensor(ind);
   assert(tensor);
 
   setShape(tensor.get(), new_shape);

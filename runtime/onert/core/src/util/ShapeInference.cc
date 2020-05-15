@@ -386,7 +386,7 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto *output = _tensor_registry->getITensor(output_ind).get();
   if (!output->is_dynamic())
     return;
 
@@ -417,7 +417,7 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   // sanity check
   {
     auto input_ind = op.getInputs().at(ir::operation::Reshape::Input::INPUT);
-    auto input = _tensor_registry->getITensor(input_ind);
+    auto input = _tensor_registry->getITensor(input_ind).get();
     assert(input);
 
     if (!isReshapableShape(input, output_shape))
@@ -438,13 +438,13 @@ void DynamicInferer::visit(const ir::operation::Tanh &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto *output = _tensor_registry->getITensor(output_ind).get();
   if (!output->is_dynamic())
     return;
 
   // getting output shape
   auto input_ind = op.getInputs().at(ir::operation::Tanh::Input::INPUT);
-  auto *input = _tensor_registry->getITensor(input_ind);
+  auto *input = _tensor_registry->getITensor(input_ind).get();
   auto output_shape = getShape(input);
 
   // set output shape and output buffer
