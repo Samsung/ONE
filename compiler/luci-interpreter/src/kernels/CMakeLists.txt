@@ -9,6 +9,8 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    Softmax.h
+    Softmax.cpp
     Utils.h
     Utils.cpp)
 

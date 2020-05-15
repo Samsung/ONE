@@ -35,6 +35,18 @@ public:
   virtual void execute() const = 0;
 };
 
+// Base class for kernels with parameters.
+template <typename Params> class KernelWithParams : public Kernel
+{
+public:
+  explicit KernelWithParams(const Params &params) : _params(params) {}
+
+  const Params &params() const { return _params; }
+
+protected:
+  const Params _params;
+};
+
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_CORE_KERNEL_H
