@@ -1,0 +1,33 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "TopKV2/k"
+  type: INT32
+  shape { }
+  filler {
+    tag: "explicit" arg: "1"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 }
+}
+operand {
+  name: "ofm:1"
+  type: INT32
+  shape { dim: 1 }
+}
+operation {
+  type: "TopKV2"
+  input: "ifm"
+  input: "TopKV2/k"
+  output: "ofm"
+  output: "ofm:1"
+}
+input: "ifm"
+output: "ofm"
+output: "ofm:1"
