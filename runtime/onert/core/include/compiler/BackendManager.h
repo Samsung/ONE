@@ -40,7 +40,7 @@ public:
 public:
   backend::Backend *get(const std::string &key);
   const backend::Backend *get(const std::string &key) const;
-  const backend::Backend *getDefault() const;
+  const backend::Backend *getControlflow() const;
   const std::vector<const backend::Backend *> &getAll() const { return _available_backends; };
   /**
    * @brief load backend plugin
@@ -73,6 +73,15 @@ private:
   void loadObjectFromPlugin(std::shared_ptr<T> &object_of_plugin_class,
                             const std::string obj_creator_func_name, void *handle,
                             Types &&... args);
+
+  /**
+   * @brief load controlflow backend
+   *
+   * @param backend backend to be loaded
+   *
+   * @return
+   */
+  void loadControlflowBackend();
 };
 
 } // namespace compiler
