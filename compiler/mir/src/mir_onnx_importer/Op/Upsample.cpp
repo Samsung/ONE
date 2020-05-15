@@ -24,6 +24,8 @@
 #include "mir/ops/ConstantOp.h"
 #include "mir/ops/ResizeOp.h"
 
+#include <stdexcept>
+
 namespace mir_onnx
 {
 
@@ -97,7 +99,8 @@ void convertUpsampleV9(const onnx::NodeProto &onnx_node, ConverterContext *conte
 
   // "nearest" is the default mode.
   const auto mode = getAttributeValue<std::string>(onnx_node, "mode", "nearest");
-  assert(mode == "nearest" && "Unsupported upscale mode!");
+  if (mode != "nearest")
+    throw std::runtime_error("Upsample: only 'nearest' mode is supported.");
 
   // relies on attributes being lifted to constants (ONNX optimization pass)
   assert(inputs.size() > 1);
@@ -105,11 +108,11 @@ void convertUpsampleV9(const onnx::NodeProto &onnx_node, ConverterContext *conte
   assert(scales && "Weights could be a constant tensor only");
   auto scales_tensor = mir::Tensor<float>(scales->getValue());
   int rank = inputs[0]->getShape().rank();
+  if (rank != 4)
+    throw std::runtime_error("Upsample: only 4-D input is supported.");
   assert(scales_tensor.getShape().numElements() == rank &&
          "The number of elements of 'scales' should be the same as the rank of input 'X'");
-  assert(rank == 4 && "Only rank 4 is supported");
-  std::vector<float> scales_vector(4);
-  assert(scales_tensor.getShape().rank() == 1 && "Scales are a 1d tensor");
+  std::vector<float> scales_vector(rank);
   for (int i = 0; i < scales_tensor.getShape().numElements(); i++)
     scales_vector[i] = scales_tensor.atOffset(i);
 
