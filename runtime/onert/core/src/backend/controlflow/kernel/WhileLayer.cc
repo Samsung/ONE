@@ -27,9 +27,13 @@ namespace kernel
 
 WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
                        std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
-                       exec::IExecutor &cond_executor, exec::IExecutor &body_executor)
-    : _cond_executor{cond_executor}, _body_executor{body_executor}
+                       const ir::SubgraphIndex &cond_subg_index,
+                       const ir::SubgraphIndex &body_subg_index,
+                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
+    : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
+      _executor_map{executor_map}
 {
+  // At this point, executor_map may not have executors of cond subg and body subg
   _src_tensors = input_tensors;
   _dst_tensors = output_tensors;
   for (size_t i = 0; i < input_tensors.size(); ++i)

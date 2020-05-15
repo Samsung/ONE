@@ -265,7 +265,7 @@ void Compiler::compile(void)
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
 
     auto executor = std::unique_ptr<exec::IExecutor>{
-        ExecutorFactory::get().create(std::move(lowered_subg), _options)};
+        ExecutorFactory::get().create(std::move(lowered_subg), _options, _executors)};
     executor->setIndexedRanks(indexed_ranks);
     _executors->insert(std::make_pair(subg_index, std::move(executor)));
   }

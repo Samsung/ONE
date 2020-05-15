@@ -34,7 +34,8 @@ public:
 
 public:
   exec::IExecutor *create(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                          const compiler::CompilerOptions &options);
+                          const compiler::CompilerOptions &options,
+                          const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
 private:
   ExecutorFactory();
@@ -43,16 +44,20 @@ private:
   static void initializeBackendContext(ir::LoweredGraph *lowered_graph);
   static void runTensorRegistration(ir::LoweredGraph *lowered_graph,
                                     const std::vector<ir::OpSequenceIndex> &order);
-  static exec::IExecutor *createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                               const compiler::CompilerOptions &options);
-  static exec::IExecutor *createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                                 const compiler::CompilerOptions &options,
-                                                 bool parallel);
+  static exec::IExecutor *
+  createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+                       const compiler::CompilerOptions &options,
+                       const std::shared_ptr<exec::ExecutorMap> &executor_map);
+  static exec::IExecutor *
+  createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+                         const compiler::CompilerOptions &options,
+                         const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel);
 
 private:
-  std::unordered_map<std::string,
-                     std::function<exec::IExecutor *(std::unique_ptr<ir::LoweredGraph>,
-                                                     const compiler::CompilerOptions &options)>>
+  std::unordered_map<
+      std::string, std::function<exec::IExecutor *(
+                       std::unique_ptr<ir::LoweredGraph>, const compiler::CompilerOptions &options,
+                       const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
       _map;
 };
 
