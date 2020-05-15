@@ -607,8 +607,7 @@ public:
 
       // Only support node's shape() is CircleConst with S32
       // TODO support other node with other types
-      auto dims_node = dynamic_cast<luci::CircleConst *>(node->dims());
-      LUCI_ASSERT(dims_node, "Only support CircleConst for dims of CircleFill");
+      auto dims_node = loco::must_cast<luci::CircleConst *>(node->dims());
       LUCI_ASSERT(dims_node->dtype() == loco::DataType::S32, "Only support int32 CircleConst");
 
       if (dims_node->rank() != 1)
