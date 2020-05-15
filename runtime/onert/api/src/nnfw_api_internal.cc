@@ -141,11 +141,6 @@ NNFW_STATUS nnfw_session::prepare()
     return NNFW_STATUS_ERROR;
   }
 
-  // TODO : add additional setting routine(executor type, backend)
-  // Note that we assume acl_cl backend
-
-  set_config(onert::util::config::DELETE_CACHED_DATA, "1");
-
   try
   {
     // config_source setting
@@ -552,10 +547,6 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   else if (key == config::PROFILING_MODE)
   {
     options.he_profiling_mode = toBool(value);
-  }
-  else if (key == config::DELETE_CACHED_DATA)
-  {
-    options.delete_cached_data = toBool(value);
   }
   else if (key == config::DISABLE_COMPILE)
   {

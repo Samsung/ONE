@@ -76,7 +76,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   options.executor = util::getConfigString(util::config::EXECUTOR);
   options.he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
-  options.delete_cached_data = util::getConfigBool(util::config::DELETE_CACHED_DATA);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
 
@@ -180,7 +179,6 @@ void Compiler::compile(void)
     VERBOSE(Compiler) << "manual_scheduler_options : (Too many things to print)" << std::endl;
     VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
     VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
-    VERBOSE(Compiler) << "delete_cached_data       : " << _options.delete_cached_data << std::endl;
     VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
     VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl;
     VERBOSE(Compiler) << std::noboolalpha;
