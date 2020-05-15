@@ -53,37 +53,11 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  const auto input_backend_ctx = node.param().input_backend_ctx;
-  const auto output_backend_ctx = node.param().output_backend_ctx;
-
   const auto &shape = _operand_ctx.at(output_index).shape();
-  auto output_tensor = output_backend_ctx->tensor_builder->tensorAt(output_index);
-  auto input_tensor = input_backend_ctx->tensor_builder->tensorAt(input_index);
-  assert(output_tensor != nullptr);
-  assert(input_tensor != nullptr);
+  auto output_tensor = getTensor(output_index);
+  auto input_tensor = getTensor(input_index);
 
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::PermuteLayer>();
-
-  const auto permute_type = node.getPermuteType();
-  // Check Permutation Type
-  const auto inferPermuteType = [&]() {
-    if (input_tensor->layout() == ir::Layout::NHWC && output_tensor->layout() == ir::Layout::NCHW)
-    {
-      return ir::operation::Permute::Type::NHWC_TO_NCHW;
-    }
-    else if (input_tensor->layout() == ir::Layout::NCHW &&
-             output_tensor->layout() == ir::Layout::NHWC)
-    {
-      return ir::operation::Permute::Type::NCHW_TO_NHWC;
-    }
-    else
-    {
-      return ir::operation::Permute::Type::COPY;
-    }
-  }();
-  UNUSED_RELEASE(permute_type);
-  UNUSED_RELEASE(inferPermuteType);
-  assert(permute_type == inferPermuteType);
 
   fn->configure(input_tensor, output_tensor, shape.rank());
 
@@ -94,20 +68,6 @@ void KernelGenerator::visit(const ir::operation::While &node)
 {
   const auto cond_subg_index = node.param().cond_subg_index;
   const auto body_subg_index = node.param().body_subg_index;
-
-  auto getTensor = [&](const ir::OperandIndex &index) -> std::shared_ptr<backend::ITensor> {
-    std::shared_ptr<backend::ITensor> ret;
-    for (auto tensor_builder : _tensor_builder_set)
-    {
-      auto tensor = tensor_builder->tensorAt(index);
-      if (tensor)
-      {
-        ret = tensor;
-      }
-    }
-    assert(ret != nullptr);
-    return ret;
-  };
 
   // This op does not support input as a constant, because controlflow backend does not have
   // TensorBuilder
@@ -133,6 +93,21 @@ void KernelGenerator::visit(const ir::operation::While &node)
       input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
+}
+
+std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
+{
+  std::shared_ptr<backend::ITensor> ret;
+  for (auto tensor_builder : _tensor_builder_set)
+  {
+    auto tensor = tensor_builder->tensorAt(index);
+    if (tensor)
+    {
+      ret = tensor;
+    }
+  }
+  assert(ret != nullptr);
+  return ret;
 }
 
 } // namespace controlflow

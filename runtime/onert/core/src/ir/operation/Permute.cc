@@ -29,11 +29,8 @@ namespace operation
 
 void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Permute::Permute(const OperandIndex &input, const OperandIndex &output,
-                 const backend::BackendContext *input_backend_ctx,
-                 const backend::BackendContext *output_backend_ctx, Type type, DataType data_type)
-    : Operation{OperandConstraint::createExact(1u)}, _param{input_backend_ctx, output_backend_ctx},
-      _type{type}, _dataType{data_type}
+Permute::Permute(const OperandIndex &input, const OperandIndex &output, Type type)
+    : Operation{OperandConstraint::createExact(1u)}, _type{type}
 {
   setInputs({input});
   setOutputs({output});
