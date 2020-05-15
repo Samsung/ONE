@@ -53,6 +53,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                            // 40
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                              // 18
+  CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                       // 85
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                            // 83
   CIRCLE_NODE(PAD, CirclePadGraphBuilder);                              // 34
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                 // 91
