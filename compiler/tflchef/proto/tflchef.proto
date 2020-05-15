@@ -326,6 +326,60 @@ message Operation {
   optional FloorModOptions floormod_options = 147;
   optional OneHotOptions onehot_options = 148;
   optional LessOptions less_options = 149;
+  // optional ReducerOptions reducemax_options = 150;
+  // optional MaximumMinimumOptions minimum_options = 151;
+  // optional ReducerOptions reduce_any_options = 152;
+  // optional ZerosLikeOptions zeros_like_options = 153;
+  // ConcatEmbeddingsOptions 154
+  // LSHProjectionOptions 155
+  // SVDFOptions 156
+  // RNNOptions 157
+  // L2NormOptions 158
+  // LocalResponseNormalizationOptions 159
+  // LSTMOptions 160
+  // ResizeBilinearOptions 161
+  // CallOptions 162
+  // SkipGramOptions 163
+  // SpaceToDepthOptions 164
+  // EmbeddingLookupSparseOptions 165
+  // SequenceRNNOptions 166
+  // TopKV2Options 167
+  // LogSoftmaxOptions 168
+  // DequantizeOptions 169
+  // NegOptions 170
+  // PadV2Options 171
+  // LessEqualOptions 172
+  // SliceOptions 173
+  // TransposeConvOptions 174
+  // SparseToDenseOptions 175
+  // PowOptions 176
+  // ArgMinOptions 177
+  // FakeQuantOptions 178
+  // BidirectionalSequenceLSTMOptions 179
+  // BidirectionalSequenceRNNOptions 180
+  // UnidirectionalSequenceLSTMOptions 181
+  // RangeOptions 182
+  // ResizeNearestNeighborOptions 183
+  // LeakyReluOptions 184
+  // MirrorPadOptions 185
+  // UniqueOptions 186
+  // ReverseV2Options 187
+  // AddNOptions 188
+  // GatherNdOptions 189
+  // WhereOptions 190
+  // RankOptions 191
+  // ReverseSequenceOptions 192
+  // MatrixDiagOptions 193
+  // QuantizeOptions 194
+  // MatrixSetDiagOptions 195
+  // HardSwishOptions 196
+  // DepthToSpaceOptions 197
+  // NonMaxSuppressionV4Options 198
+  // NonMaxSuppressionV5Options 199
+  // ScatterNdOptions 200
+
+  // NOTE if there are more than two options with same type of Options
+  // use the number not listed in the above reserve list
 }
 
 // For additional subgraphs
