@@ -37,7 +37,7 @@ std::unique_ptr<loco::TensorShape> make_tensor_shape(std::initializer_list<loco:
     assert(axis == dims.size());
   }
 
-  return std::move(tensor_shape);
+  return tensor_shape;
 }
 
 } // namespace
