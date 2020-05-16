@@ -221,7 +221,7 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
 
   assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
-  return std::move(graph);
+  return graph;
 }
 
 std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
@@ -265,7 +265,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
   post_import_graph(module.get(), reader);
 
-  return std::move(module);
+  return module;
 }
 
 } // namespace luci
