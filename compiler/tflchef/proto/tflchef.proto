@@ -275,6 +275,10 @@ message OneHotOptions {
   optional int32 axis = 1 [default = -1];
 }
 
+message TopKV2Options {
+  // None
+}
+
 message ZerosLikeOptions {
   // None
 }
@@ -351,7 +355,7 @@ message Operation {
   // SpaceToDepthOptions 164
   // EmbeddingLookupSparseOptions 165
   // SequenceRNNOptions 166
-  // TopKV2Options 167
+  optional TopKV2Options topk_v2_options = 167;
   // LogSoftmaxOptions 168
   // DequantizeOptions 169
   // NegOptions 170

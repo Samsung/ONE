@@ -73,6 +73,7 @@
 #include "Op/Sum.h"
 #include "Op/Tanh.h"
 #include "Op/Tile.h"
+#include "Op/TopKV2.h"
 #include "Op/Transpose.h"
 #include "Op/Unpack.h"
 #include "Op/While.h"
