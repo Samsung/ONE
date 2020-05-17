@@ -56,7 +56,7 @@ bool DepthwiseConv2DConverter::convert(loco::DepthwiseConv2D *origin)
     tfl_dw_conv2d->fusedActivationFunction(locoex::FusedActFunc::NONE);
 
     uint32_t multiplier = filter_shape.multiplier().value();
-    EXO_ASSERT(multiplier < std::numeric_limits<int32_t>::max(),
+    EXO_ASSERT(multiplier < static_cast<uint32_t>(std::numeric_limits<int32_t>::max()),
                "Multiplier is too big that casting may occur unintended behavior")
 
     tfl_dw_conv2d->depthMultiplier(static_cast<int32_t>(multiplier));
