@@ -212,6 +212,7 @@ private:
   IMPLEMENT(luci::CircleMean)
   IMPLEMENT(luci::CircleMinimum)
   IMPLEMENT(luci::CircleMul)
+  IMPLEMENT(luci::CircleNeg)
   IMPLEMENT(luci::CircleNotEqual)
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
@@ -612,6 +613,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMul *node, locop::NodeS
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleNeg *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
