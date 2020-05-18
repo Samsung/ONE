@@ -779,8 +779,7 @@ void OperationExporter::visit(luci::CirclePad *node)
 void OperationExporter::visit(luci::CirclePow *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_POW);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()),
-                                  get_tensor_index(node->y())};
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
