@@ -8,7 +8,7 @@ This project ONE aims at providing a high-performance, on-device neural network 
 framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP or NPU.
 
 We develop a runtime that runs on a Linux kernel-based OS platform such as Ubuntu, Tizen, or 
-Android, and a compiler toolchain to support NN models made of various NN training frameworks such 
+Android, and a compiler toolchain to support NN models created using various NN training frameworks such 
 as Tensorflow or PyTorch in a unified form at runtime.
 
 ## Overview
@@ -46,4 +46,3 @@ Thank you in advance!
 
 - Please post questions, issues, or suggestions into [Issues](https://github.com/Samsung/ONE/issues). This is the best way to communicate with the developer.
 - You can also have an open discussion with community members through [gitter.im](https://gitter.im/Samsung/ONE) channel.
-
