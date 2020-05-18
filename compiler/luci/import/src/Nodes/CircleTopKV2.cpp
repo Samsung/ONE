@@ -83,7 +83,7 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
 
   assert(outputs.size() == 2);
   {
-    // Lets use name of output 0 as TopKV2 name
+    // Let's use name of output 0 as TopKV2 name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
 
