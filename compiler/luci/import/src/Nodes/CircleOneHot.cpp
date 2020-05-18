@@ -31,7 +31,6 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
   const auto *options = args.op.builtin_options.AsOneHotOptions();
 
   // Only 4 Input come refered from
-  // 'https://github.com/tensorflow/tensorflow/blob/392d3a0ab81d16e8815385175e3daa9d023cca67/tensorflow/lite/kernels/one_hot.cc#L121'
   if (inputs.size() != 4)
     return false;
 
@@ -44,7 +43,7 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
   const auto &on_value = tensors.at(inputs[2]);
   const auto &off_value = tensors.at(inputs[3]);
 
-  if (options->axis < -1 || options->axis > indices->shape.size())
+  if (options->axis < -1 || options->axis > (int32_t)indices->shape.size())
     return false;
   if (depth->shape.size() != 1)
     return false;
