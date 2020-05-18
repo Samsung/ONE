@@ -624,6 +624,13 @@ public:
     return loco::NodeShape{shape};
   }
 
+loco::NodeShape visit(const luci::CircleFloorDiv *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    assert(x_shape == loco::shape_get(node->y()).as<loco::TensorShape>());
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFloorMod *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
