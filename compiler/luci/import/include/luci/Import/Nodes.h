@@ -37,6 +37,7 @@
 #include "Nodes/CircleFullyConnected.h"
 #include "Nodes/CircleGather.h"
 #include "Nodes/CircleIf.h"
+#include "Nodes/CircleLess.h"
 #include "Nodes/CircleLogicalAnd.h"
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
