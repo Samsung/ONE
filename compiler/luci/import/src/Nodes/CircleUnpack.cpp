@@ -96,7 +96,7 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
   assert(outputs.size() > 0);
   assert(int32_t(outputs.size()) == options->num);
   {
-    // Lets' use name of output 0 as Unpack name
+    // Let's use name of output 0 as Unpack name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
 
