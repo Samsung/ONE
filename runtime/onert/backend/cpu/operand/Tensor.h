@@ -91,7 +91,10 @@ public:
 
   void increase_ref()
   {
-    assert(_buffer != nullptr || _allocator != nullptr);
+    assert(is_dynamic() ||
+           // when not dynamic
+           (_buffer != nullptr || _allocator != nullptr));
+
     ++_num_references;
   }
   void decrease_ref()
