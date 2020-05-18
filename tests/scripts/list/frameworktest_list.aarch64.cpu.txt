@@ -33,3 +33,4 @@ squeeze
 sub
 tanh
 transpose
+zeros_like
