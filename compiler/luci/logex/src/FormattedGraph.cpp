@@ -232,6 +232,7 @@ private:
   IMPLEMENT(luci::CircleSum)
   IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTile)
+  IMPLEMENT(luci::CircleTopKV2)
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
@@ -245,6 +246,7 @@ private:
   IMPLEMENT(luci::CircleIfOut)
   IMPLEMENT(luci::CircleSplitOut)
   IMPLEMENT(luci::CircleSplitVOut)
+  IMPLEMENT(luci::CircleTopKV2Out)
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
 #undef IMPLEMENT
@@ -805,6 +807,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTile *node, locop::Node
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2 *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("k", tbl()->lookup(node->k()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleTranspose *node,
                                        locop::NodeSummary &s) const
 {
@@ -890,6 +900,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitVOut *node,
 
   s.state(locop::NodeSummary::State::Complete);
 
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("topkv2", tbl()->lookup(node->topkv2()));
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
