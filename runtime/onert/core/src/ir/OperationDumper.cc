@@ -64,6 +64,16 @@ void OperationDumper::visit(const AvgPool2D &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const BatchToSpaceND &node)
+{
+  VERBOSE(LIR) << "* BatchToSpaceND" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(BatchToSpaceND::Input::INPUT).value()
+               << ")"
+               << " BlockSize(" << node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Cast &node)
 {
   VERBOSE(LIR) << "* Cast" << std::endl;
@@ -102,6 +112,30 @@ void OperationDumper::visit(const Conv2D &node)
                << ") Kernel(" << node.getInputs().at(Conv2D::Input::KERNEL).value() << ") Bias("
                << node.getInputs().at(Conv2D::Input::BIAS).value() << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const ConvertFp16ToFp32 &node)
+{
+  VERBOSE(LIR) << "* ConvertFp16ToFp32" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input("
+               << node.getInputs().at(ConvertFp16ToFp32::Input::INPUT).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const ConvertFp32ToFp16 &node)
+{
+  VERBOSE(LIR) << "* ConvertFp32ToFp16" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input("
+               << node.getInputs().at(ConvertFp32ToFp16::Input::INPUT).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Cos &node)
+{
+  VERBOSE(LIR) << "* Cos" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Cos::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
 void OperationDumper::visit(const DepthToSpace &node)
@@ -373,6 +407,14 @@ void OperationDumper::visit(const Pack &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Pad &node)
+{
+  VERBOSE(LIR) << "* Pad" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Pad::Input::INPUT).value()
+               << ") Pad(" << node.getInputs().at(Pad::Input::PAD).value() << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Permute &node)
 {
   std::string permute_type = "Unknown";
@@ -507,13 +549,13 @@ void OperationDumper::visit(const RNN &node)
 {
   VERBOSE(LIR) << "* RNN" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(RNN::Input::INPUT).value()
-               << ") Weights" << node.getInputs().at(RNN::Input::WEIGHTS).value()
-               << ") Recurrent Weights"
-               << node.getInputs().at(RNN::Input::RECURRENT_WEIGHTS).value() << ") Bias"
-               << node.getInputs().at(RNN::Input::BIAS).value() << ") Hidden State"
+               << ") Weights(" << node.getInputs().at(RNN::Input::WEIGHTS).value()
+               << ") Recurrent Weights("
+               << node.getInputs().at(RNN::Input::RECURRENT_WEIGHTS).value() << ") Bias("
+               << node.getInputs().at(RNN::Input::BIAS).value() << ") Hidden State("
                << node.getInputs().at(RNN::Input::HIDDEN_STATE_IN).value() << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(RNN::Output::OUTPUT).value()
-               << ") Hidden State" << node.getInputs().at(RNN::Output::HIDDEN_STATE_OUT).value()
+               << ") Hidden State(" << node.getInputs().at(RNN::Output::HIDDEN_STATE_OUT).value()
                << ")" << std::endl;
 }
 
@@ -544,11 +586,38 @@ void OperationDumper::visit(const Select &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ir::operation::Shape &node)
+{
+  VERBOSE(LIR) << "* Shape" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input("
+               << node.getInputs().at(ir::operation::Shape::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Sin &node)
+{
+  VERBOSE(LIR) << "* Sin" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Sin::Input::INPUT).value() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Softmax &node)
 {
   VERBOSE(LIR) << "* Softmax" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Softmax::Input::INPUT).value() << ")"
                << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const SpaceToBatchND &node)
+{
+  VERBOSE(LIR) << "* SpaceToBatchND" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(SpaceToBatchND::Input::INPUT).value()
+               << ") BlockSize(" << node.getInputs().at(SpaceToBatchND::Input::BLOCK_SIZE).value()
+               << ") Paddings(" << node.getInputs().at(SpaceToBatchND::Input::PADDINGS).value()
+               << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
