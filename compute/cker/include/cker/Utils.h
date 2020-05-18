@@ -105,6 +105,19 @@ inline int SubscriptToIndex(const NdArrayDesc<4> &desc, int i0, int i1, int i2, 
   return i0 * desc.strides[0] + i1 * desc.strides[1] + i2 * desc.strides[2] + i3 * desc.strides[3];
 }
 
+template <int N>
+inline int SubscriptToIndexGeneric(const NdArrayDesc<N> *desc, int *iter)
+{
+  int ret_indx = 0;
+  for (size_t idx = 0; idx < static_cast<size_t>(N); idx++)
+  {
+    assert(iter[idx] >= 0 && iter[idx] < desc->extents[idx]);
+    ret_indx += iter[idx] * desc->strides[idx];
+  }
+
+  return ret_indx;
+}
+
 // Copies dims to desc, calculating strides.
 template <int N> inline void CopyDimsToDesc(const Shape &input_shape, NdArrayDesc<N> *desc_out)
 {
