@@ -81,6 +81,13 @@ void registerGraphOutputTensors(loco::Graph *graph, luci::SubGraphContext &ctx)
     assert(push != nullptr);
     auto node = push->from();
     assert(node != nullptr);
+
+    // Do not export CircleOutput when it's input is CircleOutputExclude
+    if (dynamic_cast<luci::CircleOutputExclude *>(push->from()) != nullptr)
+    {
+      continue;
+    }
+
     ctx._outputs.push_back(luci::get_tensor_index(node));
   }
 }
