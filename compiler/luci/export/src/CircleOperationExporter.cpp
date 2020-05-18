@@ -67,6 +67,7 @@ public:
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
+  void visit(luci::CircleGreater *) final;
   void visit(luci::CircleIf *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
