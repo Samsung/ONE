@@ -83,14 +83,14 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
 
   assert(outputs.size() == 2);
   {
-    // Lets' use name of output 0 as Unpack name
+    // Lets use name of output 0 as TopKV2 name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
 
-    // NOTE We don't set quantization for Unpack itself but to virtual outputs
+    // NOTE We don't set quantization for TopKV2 itself but to virtual outputs
   }
 
-  // Create virtual outputs of Unpack
+  // Create virtual outputs of TopKV2
   for (size_t n = 0; n < outputs.size(); ++n)
   {
     const circle::TensorT &output_tensor = *tensors[outputs[n]];
