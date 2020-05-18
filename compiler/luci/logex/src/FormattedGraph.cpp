@@ -211,6 +211,7 @@ private:
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
+  IMPLEMENT(luci::CircleRange)
   IMPLEMENT(luci::CircleReduceAny)
   IMPLEMENT(luci::CircleReduceProd)
   IMPLEMENT(luci::CircleRelu)
@@ -603,6 +604,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CirclePad *node, locop::NodeS
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("paddings", tbl()->lookup(node->paddings()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleRange *node, locop::NodeSummary &s) const
+{
+  s.args().append("start", tbl()->lookup(node->start()));
+  s.args().append("limit", tbl()->lookup(node->limit()));
+  s.args().append("delta", tbl()->lookup(node->delta()));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
