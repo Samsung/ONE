@@ -10,6 +10,8 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    FullyConnected.h
+    FullyConnected.cpp
     Softmax.h
     Softmax.cpp
     Utils.h

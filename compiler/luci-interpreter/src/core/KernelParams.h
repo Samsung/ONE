@@ -29,6 +29,11 @@ namespace luci_interpreter
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
 
+struct FullyConnectedParams
+{
+  Activation activation;
+};
+
 struct SoftmaxParams
 {
   float beta;
