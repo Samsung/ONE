@@ -1053,7 +1053,7 @@ void OperationValidator::visit(const ir::operation::Pad &node)
 {
   const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
-  const auto output_index{node.getInputs().at(0)};
+  const auto output_index{node.getOutputs().at(0)};
 
   const auto &pad_shape = _ctx.at(pad_index).shape();
   const auto input_rank = static_cast<int32_t>(_ctx.at(input_index).shape().rank());
