@@ -188,13 +188,6 @@ void Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
-  // Operation validation check
-  assert(_subgraphs);
-  assert(_subgraphs->at(ir::SubgraphIndex{0}));
-  _subgraphs->iterate([](const onert::ir::SubgraphIndex &, const onert::ir::Graph &graph) {
-    OperationValidator{graph}();
-  });
-
   // mark an input tensor "dynamic" when the tensor has unknown dim
   setInputToDynamicTensor(_subgraphs->primary());
 
@@ -249,6 +242,13 @@ void Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
+
+  // operation validation
+  for (auto &pair : lowered_subgs)
+  {
+    auto &lowered_subg = pair.second;
+    compiler::OperationValidator{lowered_subg->graph()}();
+  }
 
   _executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
