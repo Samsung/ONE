@@ -65,7 +65,7 @@ const std::string &LinearDocument::line(uint32_t n) const
     }
     default:
       throw std::runtime_error{"Not supported Direction"};
-  } 
+  }
 }
 
 } // namespace pp
