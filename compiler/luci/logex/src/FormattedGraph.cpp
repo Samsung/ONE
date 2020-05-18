@@ -218,6 +218,7 @@ private:
   IMPLEMENT(luci::CircleReshape)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleSelect)
+  IMPLEMENT(luci::CircleShape)
   IMPLEMENT(luci::CircleSin)
   IMPLEMENT(luci::CircleSlice)
   IMPLEMENT(luci::CircleSoftmax)
@@ -661,6 +662,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSelect *node, locop::No
   s.args().append("condition", tbl()->lookup(node->condition()));
   s.args().append("t", tbl()->lookup(node->t()));
   s.args().append("e", tbl()->lookup(node->e()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleShape *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("out_type", to_str(node->out_type()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
