@@ -326,7 +326,7 @@ namespace
 
 using onert::backend::ITensor;
 
-bool isReshapableShape(const ITensor *input, onert::ir::Shape &shape)
+bool isReshapableShape(const ITensor *input, const onert::ir::Shape &shape)
 {
   size_t input_elem_conut = 1;
   {
