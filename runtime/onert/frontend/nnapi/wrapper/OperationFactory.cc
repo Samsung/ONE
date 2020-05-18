@@ -362,9 +362,7 @@ OperationFactory::OperationFactory()
     //  1 -> A 1-D tensor of type ANEURALNETWORKS_TENSOR_INT32, defining the shape of the output
     //  tensor
 
-    // TODO Second input should be shape tensor (init_param.inputs[1])
-    //      Currently unused since assume that it is same with output tensor size
-    OperandIndexSequence inputs{init_param.inputs[0] /* , init_param.inputs[1] */};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     return new operation::Reshape{inputs, outputs};
