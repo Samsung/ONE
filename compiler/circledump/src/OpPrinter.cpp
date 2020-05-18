@@ -472,8 +472,9 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
-  // There is no Option for Pad
-  // There is no Option for ReLU and ReLU6
+  // There is no Option for PAD
+  // There is no Option for RELU
+  // There is no Option for RELU6
   _op_map[circle::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
