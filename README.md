@@ -1,40 +1,32 @@
-# nnfw
+# ONE (On-device Neural Engine)
 
-A high-performance, on-device neural network inference framework
+A high-performance, on-device neural network inference framework.
 
 ## Goal
 
-This project _nnfw_ aims at providing a high-performance, on-device neural network (NN) inference
-framework that performs inference of a given NN model on processors, such as CPU, GPU, or NPU, in
-the target platform, such as the Linux kernel based OS including Tizen.
+This project ONE aims at providing a high-performance, on-device neural network (NN) inference
+framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP or NPU.
 
-## Project Documents
+We develop a runtime that runs on a Linux kernel-based OS platform such as Ubuntu, Tizen, or 
+Android, and a compiler toolchain to support NN models made of various NN training frameworks such 
+as Tensorflow or PyTorch in a unified form at runtime.
 
-- [Roadmap](docs/nnfw/roadmap.md)
-- [SW Requirement Specification](docs/nnfw/project/2019_requirement_specification.md)
-- [SW High Level Design](docs/nnfw/project/2018_high_level_design.md)
+## Overview
+
+- [Background](docs/overview/background.md)
+- [Roadmap](docs/overview/roadmap.md)
+- [Overall Architecture](docs/overview/overall-architecture.md)
 
 ## Getting started
 
-- For the contribution, please refer to our [contribution guide](docs/HowToContribute.md).
-- You can also find how-to documents [HERE](docs/nnfw/howto.md).
+- For the contribution, please refer to our [contribution guide](docs/howto/how-to-contribute.md).
+- You can also find various how-to documents [here](docs/howto).
 
-## Maintainers
+## Feature Request
 
-- Sung-Jae Lee <<sj925.lee@samsung.com>>
-- Chunseok Lee <<chunseok.lee@samsung.com>>
+You can suggest development of ONE's features that are not yet available.
 
-## Committers
-
-- Hyeongseok Oh <<hseok82.oh@samsung.com>>
-- Hanjoung Lee <<hanjoung.lee@samsung.com>>
-- Sharan Allur <<sharan.allur@samsung.com>>
-
-## Feature Request (NEW)
-
-You can suggest development of nnfw's features that are not yet available.
-
-The functions requested so far can be checked in the [popular feature request](https://github.com/Samsung/ONE/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3AFEATURE_REQUEST+sort%3Areactions-%2B1-desc) list.
+The functions requested so far can be checked in the [popular feature request](https://github.com/Samsung/ONE/issues?q=label%3AFEATURE_REQUEST+) list.
 
 - If the feature you want is on the list, :+1: to the body of the issue. The feature with the most
 :+1: is placed at the top of the list. When adding new features, we will prioritize them with this reference.
@@ -50,25 +42,8 @@ It is good to make a request, but it is better if you contribute by yourself. Se
 We are looking forward to your participation.
 Thank you in advance!
 
-# nncc
-Re-targetable neural network (NN) model compilation framework
-
-## Goals
-nncc, which stands for neural network compiler collection, aims to provide a general framework for
-compiling a given NN model to an artifact that runs on various target devices such as CPU, GPU, or
-NPU.
-
-## Maintainers
-
-- Sung-Jae Lee <<sj925.lee@samsung.com>>
-- Jonghyun Park <<jh1302.park@samsung.com>>
-
-## Committers
-
-- Saehie Park <<saehie.park@samsung.com>>
-- Hyeongseok Oh <<hseok82.oh@samsung.com>>
-- Efimov Alexander <<a.efimov@samsung.com>>
-
 ## How to Contact
 
-- Please post questions, issues, or suggestions into [Issues](https://github.com/Samsung/ONE/issues).
+- Please post questions, issues, or suggestions into [Issues](https://github.com/Samsung/ONE/issues). This is the best way to communicate with the developer.
+- You can also have an open discussion with community members through [gitter.im](https://gitter.im/Samsung/ONE) channel.
+
