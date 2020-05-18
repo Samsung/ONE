@@ -23,53 +23,11 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
+                           const std::vector<std::shared_ptr<backend::UserTensor>> &input_tensors,
+                           const std::vector<std::shared_ptr<backend::UserTensor>> &output_tensors,
                            const backend::TensorBuilderSet &tensor_builders)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
+    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
 {
-  auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-    std::vector<std::shared_ptr<backend::ITensor>> list;
-    for (auto ind : ind_seq)
-    {
-      std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
-      {
-        tensor = tensor_builder->tensorAt(ind);
-        if (tensor != nullptr)
-        {
-          if (tensor_builder->supportDynamicTensor())
-          {
-            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
-            _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
-          }
-          break;
-        }
-      }
-      assert(tensor != nullptr);
-      list.push_back(tensor);
-    }
-    return list;
-  };
-
-  auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-    std::vector<std::shared_ptr<backend::ITensor>> list;
-    for (auto ind : ind_seq)
-    {
-      std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
-      {
-        tensor = tensor_builder->tensorAt(ind);
-        if (tensor != nullptr)
-          break;
-      }
-      assert(tensor != nullptr);
-      list.push_back(tensor);
-    }
-    return list;
-  };
-
-  _input_tensors = build_input_tensor_list(_graph.getInputs());
-  _output_tensors = build_output_tensor_list(_graph.getOutputs());
-
   // Prepare each TensorManager on each backend
   for (auto &tensor_builder : tensor_builders)
   {
@@ -84,74 +42,6 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         _tensor_mgrs.insert(std::move(d_tensor_manager));
     }
   }
-}
-
-std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir::TypeInfo &type,
-                                              const void *buffer, size_t length,
-                                              ir::Layout io_layout)
-{
-  using ir::DataType;
-  switch (type.type())
-  {
-    case DataType::FLOAT32:
-      return source<float>(index, buffer, length, io_layout);
-    case DataType::INT32:
-      return source<int32_t>(index, buffer, length, io_layout);
-    case DataType::UINT32:
-      return source<uint32_t>(index, buffer, length, io_layout);
-    case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
-    case DataType::UINT8:
-      return source<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
-      return source<int8_t>(index, buffer, length, io_layout);
-    default:
-      throw std::runtime_error("Not supported yet");
-  }
-}
-
-std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::TypeInfo &type,
-                                          void *buffer, size_t length, ir::Layout io_layout)
-{
-  using ir::DataType;
-  switch (type.type())
-  {
-    case DataType::FLOAT32:
-      return sink<float>(index, buffer, length, io_layout);
-    case DataType::INT32:
-      return sink<int32_t>(index, buffer, length, io_layout);
-    case DataType::UINT32:
-      return sink<uint32_t>(index, buffer, length, io_layout);
-    case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
-    case DataType::UINT8:
-      return sink<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
-      return sink<int8_t>(index, buffer, length, io_layout);
-    default:
-      throw std::runtime_error("Not supported yet");
-  }
-}
-
-void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape)
-{
-  for (auto &input_tensor : _input_tensors)
-  {
-    auto dyn_alloc_info = _input_to_dyn_alloc_info.find(input_tensor);
-    if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
-      continue;
-
-    // when user-provided input change is stored in _input_to_dyn_alloc_info
-    if (index == dyn_alloc_info->second.ind)
-    {
-      auto dyn_tensor_manager = dyn_alloc_info->second.dyn_tensor_manager;
-      assert(dyn_tensor_manager);
-      dyn_tensor_manager->changeShape(index, new_shape);
-      return;
-    }
-  }
-  throw std::runtime_error("changeInputShape(): Cannot find such index or "
-                           "check if the tensor's backend supports dynamic tensor.");
 }
 
 void ExecutorBase::execute()
@@ -172,72 +62,23 @@ void ExecutorBase::execute(const IODescription &desc)
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
 
-  std::vector<std::unique_ptr<ISource>> sources{_graph.getInputs().size()};
-  std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};
-
-  // Set input(s)
-  for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
+  assert(_input_tensors.size() == desc.inputs.size());
+  for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
-    ir::IOIndex input_index{n};
-    ir::OperandIndex index{_graph.getInputs().at(input_index)};
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    _input_tensors[i]->setBuffer(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
+                              desc.inputs[i]->size);
+  }
 
-    if (desc.inputs.at(n) == nullptr)
-    {
-      // Optional input
-      continue;
-    }
-
-    const auto operand_li = _lowered_graph->getLowerInfo()->operand.at(index).get();
-    if (operand_li->def_factors().empty())
-    {
-      // This input is not used (i.e. constant, EX. reshape's axis)
-      continue;
-    }
-
-    // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
-    // This code find the info to allocate dynamic tensor, and allocate memory based on
-    // the input shape user set by calling nnfw_apply_tensorinfo(..)
-    auto shape_sig_found = desc.input_shape_signature.find(input_index);
-    if (shape_sig_found != desc.input_shape_signature.end())
-    {
-      auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
-      if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
-        throw std::runtime_error("Unknown dim is found at execution time for a backend that "
-                                 "does not support dynamic tensor");
-
-      auto changed_input_shape = shape_sig_found->second;
-      auto operand_ind = dyn_alloc_info->second.ind;
-      dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
-    }
-
-    const auto &input = *desc.inputs.at(n);
-    sources.at(n) =
-        source(input_index, input.info.typeInfo(), input.buffer, input.size, input.layout);
-
-    auto setter = [&](::onert::backend::ITensor &tensor) { sources.at(n)->push(tensor); };
-
-    _input_tensors[n]->access(setter);
+  assert(_output_tensors.size() == desc.outputs.size());
+  for (uint32_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    _output_tensors[i]->setBuffer(static_cast<uint8_t *>(const_cast<void *>(desc.outputs[i]->buffer)),
+                               desc.outputs[i]->size);
   }
 
   executeImpl();
-
-  // Get output(s)
-  for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)
-  {
-    ir::IOIndex output_index{n};
-    // Optional output
-    if (desc.outputs.at(n) == nullptr)
-    {
-      continue;
-    }
-    const auto &output = *desc.outputs.at(n);
-    sinks.at(n) =
-        sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
-
-    auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
-
-    _output_tensors[n]->access(getter);
-  }
 }
 
 } // namespace exec

@@ -61,9 +61,11 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
 }
 
 ParallelExecutor::ParallelExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+                   const std::vector<std::shared_ptr<backend::UserTensor>> &input_tensors,
+                   const std::vector<std::shared_ptr<backend::UserTensor>> &output_tensors,
                                    const backend::TensorBuilderSet &tensor_builders,
                                    compiler::CodeMap &&code_map)
-    : DataflowExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)}
+    : DataflowExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders, std::move(code_map)}
 {
   VERBOSE(ParallelExecutor) << "Constructing Parallel Executor" << std::endl;
 }

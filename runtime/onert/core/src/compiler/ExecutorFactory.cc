@@ -147,6 +147,32 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
   }
 }
 
+std::vector<std::shared_ptr<backend::UserTensor>> ExecutorFactory::initializeTensors(ir::LoweredGraph &lowered_graph, const ir::OperandIndexSequence &indices)
+{
+  std::vector<std::shared_ptr<backend::UserTensor>> ret;
+
+  backend::TensorBuilderSet tensor_builders;
+  for (const auto &e : lowered_graph.backend_contexts())
+  {
+    tensor_builders.insert(e.second->tensor_builder);
+  }
+
+  for (auto ind : indices)
+  {
+    const auto &input = lowered_graph.graph().operands().at(ind);
+    auto tensor = std::make_shared<backend::UserTensor>(input.info(), ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
+    ret.push_back(tensor);
+    for (auto &tensor_builder : tensor_builders)
+    {
+      if (tensor_builder->isRegistered(ind))
+      {
+        tensor_builder->setExternalTensor(ind, tensor);
+      }
+    }
+  }
+  return ret;
+}
+
 exec::IExecutor *
 ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
                                       const compiler::CompilerOptions &options,
@@ -185,6 +211,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
+  auto input_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getInputs());
+  auto output_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getOutputs());
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
 
@@ -245,7 +273,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     });
   }
 
-  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_builders,
+  auto exec = new exec::LinearExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders,
                                        std::move(code_map), order};
 
   if (!options.trace_filepath.empty())
@@ -273,6 +301,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
+  auto input_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getInputs());
+  auto output_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getOutputs());
 
   backend::TensorBuilderSet tensor_builders;
   for (const auto &e : lowered_graph->backend_contexts())
@@ -348,12 +378,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   if (parallel)
   {
     exec =
-        new exec::ParallelExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)};
+        new exec::ParallelExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders, std::move(code_map)};
   }
   else
   {
     auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)};
+        new exec::DataflowExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders, std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

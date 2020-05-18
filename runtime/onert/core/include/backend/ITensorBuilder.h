@@ -54,6 +54,10 @@ struct ITensorBuilder
    */
   virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                   ir::Layout backend_layout, bool as_const) = 0;
+  virtual void setExternalTensor(const ir::OperandIndex &, const std::shared_ptr<ITensor> &)
+  {
+    throw std::runtime_error{"setExternalTensor NYI"};
+  }
   /**
    * @brief Let the tensor builder know first use(start of lifetime) of a tensor
    *        Must be called before calling @c prepare

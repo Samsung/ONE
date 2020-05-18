@@ -50,7 +50,10 @@ public:
    * @param code_map OpSequence and its code map
    */
   DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                   const backend::TensorBuilderSet &tensor_builders, compiler::CodeMap &&code_map);
+                   const std::vector<std::shared_ptr<backend::UserTensor>> &input_tensors,
+                   const std::vector<std::shared_ptr<backend::UserTensor>> &output_tensors,
+                   const backend::TensorBuilderSet &tensor_builders,
+                   compiler::CodeMap &&code_map);
 
   void executeImpl() override;
   void setProfilingMode(bool profiling) { _profiling = profiling; }

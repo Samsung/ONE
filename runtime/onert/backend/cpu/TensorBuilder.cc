@@ -52,6 +52,11 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
 }
 
+void TensorBuilder::setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor)
+{
+  _tensor_reg->setExternalTensor(ind, tensor);
+}
+
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
