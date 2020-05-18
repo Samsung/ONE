@@ -60,6 +60,7 @@
 #include "Op/Select.h"
 #include "Op/Shape.h"
 #include "Op/Sin.h"
+#include "Op/Slice.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
 #include "Op/Split.h"

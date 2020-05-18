@@ -190,6 +190,10 @@ message StridedSliceOptions {
   optional int32 shrink_axis_mask = 5;
 }
 
+message SliceOptions {
+  // None
+}
+
 message ExpOptions {
   // None
 }
@@ -361,7 +365,7 @@ message Operation {
   // NegOptions 170
   // PadV2Options 171
   // LessEqualOptions 172
-  // SliceOptions 173
+  optional SliceOptions slice_options = 173;
   // TransposeConvOptions 174
   // SparseToDenseOptions 175
   // PowOptions 176
