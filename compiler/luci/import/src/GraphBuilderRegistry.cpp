@@ -62,6 +62,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                      // 22
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                          // 76
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                        // 64
+  CIRCLE_NODE(SHAPE, CircleShapeGraphBuilder);                          // 77
   CIRCLE_NODE(SIN, CircleSinGraphBuilder);                              // 66
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                          // 65
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                      // 25
@@ -125,7 +126,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_NOT_EQUAL = 72,
   // BuiltinOperator_LOG = 73,
   // BuiltinOperator_SQRT = 75,
-  // BuiltinOperator_SHAPE = 77,
   // BuiltinOperator_POW = 78,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
