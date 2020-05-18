@@ -119,11 +119,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_MINIMUM = 57,
   // BuiltinOperator_NEG = 59,
   // BuiltinOperator_PADV2 = 60,
-<<<<<<< HEAD
-  // BuiltinOperator_GREATER = 61,
-=======
-  // BuiltinOperator_GREATER_EQUAL = 62,
->>>>>>> [luci] Support Greater operator in import
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_TRANSPOSE_CONV = 67,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
