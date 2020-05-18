@@ -45,6 +45,7 @@
 #include "BuildBuiltinOptions/L2NormalizeOptions.h"
 #include "BuildBuiltinOptions/LeakyReluOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
+#include "BuildBuiltinOptions/LessEqualOptions.h"
 #include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"
 #include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
