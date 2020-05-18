@@ -65,6 +65,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MINIMUM, CircleMinimumGraphBuilder);                                         // 57
   CIRCLE_NODE(MIRROR_PAD, CircleMirrorPadGraphBuilder);                                    // 100
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                                                 // 18
+  CIRCLE_NODE(NEG, CircleNegGraphBuilder);                                                 // 59
   CIRCLE_NODE(NOT_EQUAL, CircleNotEqualGraphBuilder);                                      // 72
   CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                                          // 85
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                                               // 83
@@ -127,7 +128,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_PRELU = 54,
   // BuiltinOperator_ARG_MAX = 56,
-  // BuiltinOperator_NEG = 59,
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_TRANSPOSE_CONV = 67,
