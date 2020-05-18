@@ -127,9 +127,9 @@ class DynamicInferer : public ir::OperationVisitor
 {
 public:
   DynamicInferer(const ir::Operands &operands, backend::IDynamicTensorManager *tensor_manager,
-                 const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+                 std::shared_ptr<backend::ITensorRegistry> &&tensor_registry)
       : _operands(operands), _dynamic_tensor_manager(tensor_manager),
-        _tensor_registry(tensor_registry)
+        _tensor_registry(std::move(tensor_registry))
   {
     UNUSED_RELEASE(_operands);
     UNUSED_RELEASE(_dynamic_tensor_manager);
