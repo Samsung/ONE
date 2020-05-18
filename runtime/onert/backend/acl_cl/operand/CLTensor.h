@@ -50,8 +50,6 @@ public:
 
 public:
   arm_compute::CLTensorAllocator *allocator();
-  void map(bool blocking = true);
-  void unmap();
   /** Set given buffer as the buffer of the tensor
    *
    * @note Ownership of the memory is not transferred to this object.
