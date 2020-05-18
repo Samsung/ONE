@@ -123,11 +123,8 @@ addwrite(DepthwiseConv2D_U8_000)
 addwrite(Div_000)
 addwrite(Equal_000)
 addwrite(Exp_000)
-<<<<<<< HEAD
 addwrite(Fill_000)
-=======
 addwrite(FloorDiv_000)
->>>>>>> [luci] Add Floor Div in tests
 addwrite(FloorMod_000)
 addwrite(FullyConnected_000)
 addwrite(FullyConnected_001)
