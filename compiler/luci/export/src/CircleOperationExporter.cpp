@@ -87,6 +87,7 @@ public:
   void visit(luci::CircleMinimum *) final;
   void visit(luci::CircleMirrorPad *) final;
   void visit(luci::CircleMul *) final;
+  void visit(luci::CircleNeg *) final;
   void visit(luci::CircleNotEqual *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
@@ -826,6 +827,19 @@ void OperationExporter::visit(luci::CircleOneHot *node)
   // Make ONEHOT operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_OneHotOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleNeg *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_NEG);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateAbsOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_NegOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
