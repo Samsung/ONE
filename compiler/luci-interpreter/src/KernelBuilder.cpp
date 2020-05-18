@@ -16,6 +16,8 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/Softmax.h"
+
 #include <stdexcept>
 
 namespace luci_interpreter
@@ -36,6 +38,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
   throw std::runtime_error("Output node cannot be executed.");
 }
 
-// TODO Kernel builder visitors will go here...
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->logits());
+  Tensor *output = getOutputTensor(node);
+
+  SoftmaxParams params{};
+  params.beta = node->beta();
+
+  return std::make_unique<kernels::Softmax>(input, output, params);
+}
 
 } // namespace luci_interpreter

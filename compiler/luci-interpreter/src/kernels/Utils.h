@@ -18,10 +18,38 @@
 #ifndef LUCI_INTERPRETER_KERNELS_UTILS_H
 #define LUCI_INTERPRETER_KERNELS_UTILS_H
 
+#include "core/Tensor.h"
+
+#include <tensorflow/lite/kernels/internal/types.h>
+
 namespace luci_interpreter
 {
 namespace kernels
 {
+
+inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
+{
+  if (tensor == nullptr)
+    return tflite::RuntimeShape();
+
+  const Shape &shape = tensor->shape();
+  tflite::RuntimeShape runtime_shape(shape.num_dims());
+  for (int i = 0; i < shape.num_dims(); ++i)
+  {
+    runtime_shape.SetDim(i, shape.dim(i));
+  }
+  return runtime_shape;
+}
+
+template <typename T> const T *getTensorData(const Tensor *tensor)
+{
+  return tensor != nullptr ? tensor->data<T>() : nullptr;
+}
+
+template <typename T> T *getTensorData(Tensor *tensor)
+{
+  return tensor != nullptr ? tensor->data<T>() : nullptr;
+}
 
 } // namespace kernels
 } // namespace luci_interpreter
