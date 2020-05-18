@@ -464,6 +464,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SELECT
   // There is no Option for SIN
+  // There is no Option for SLICE
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
   _op_map[tflite::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
