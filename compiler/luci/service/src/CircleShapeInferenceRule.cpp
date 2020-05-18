@@ -724,7 +724,7 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
     auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
     // Only support OneHot node's depth() is CircleConst with type S32
-    // TODO support other node with other types
+    // TODO support depth with other types
     auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
     LUCI_ASSERT(depth, "Currently only support CircleConst for shape of CircleOneHot in Depth");
     LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
