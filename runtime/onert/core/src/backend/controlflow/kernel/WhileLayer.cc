@@ -99,7 +99,7 @@ void WhileLayer::run()
   assert(cond_exec->getOutputTensors().size() == 1);
   auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
-    bool ret;
+    bool ret = false;
     tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
     return ret;
   };
