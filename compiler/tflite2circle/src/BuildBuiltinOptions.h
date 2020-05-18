@@ -67,6 +67,7 @@
 #include "BuildBuiltinOptions/StridedSliceOptions.h"
 #include "BuildBuiltinOptions/SubOptions.h"
 #include "BuildBuiltinOptions/TileOptions.h"
+#include "BuildBuiltinOptions/TopKV2Options.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
