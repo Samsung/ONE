@@ -217,6 +217,8 @@ template <typename... Args>
 int MatchingDim(const Shape &shape1, int index1, const Shape &shape2, int index2, Args... args)
 {
   assert(shape1.Dims(index1) == shape2.Dims(index2));
+  UNUSED_RELEASE(shape2);
+  UNUSED_RELEASE(index2);
   return MatchingDim(shape1, index1, args...);
 }
 
