@@ -30,7 +30,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
   {
-    if(input_tensor_index >= 0)
+    if (input_tensor_index >= 0)
     {
       input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
     }
