@@ -688,6 +688,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleGreaterEqual *node) final
+  {
+    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleIf *node) final
   {
     // Shape of CircleIf is not used. Just use input 1
