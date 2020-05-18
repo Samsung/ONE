@@ -32,5 +32,6 @@ softmax
 squeeze
 sub
 tanh
+tile
 transpose
 zeros_like
