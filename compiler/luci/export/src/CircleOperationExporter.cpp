@@ -460,6 +460,23 @@ void OperationExporter::visit(luci::CircleGather *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleGreater *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_GREATER);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateGreaterOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_GreaterOptions, options.Union());
+
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleIf *node)
 {
   auto if_outs = loco::succs(node);
