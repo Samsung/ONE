@@ -1170,6 +1170,13 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleTopKV2 *node) final
+  {
+    // set shape of this node as same as input
+    const auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   /// @brief Returns output shape of transpose. Use loco::ConstGen and luci::CircleConst for ConstT.
   template <class ConstT>
   loco::TensorShape output_shape_of_transpose(loco::TensorShape input_shape,
@@ -1446,6 +1453,33 @@ public:
     loco::TensorShape output_shape = split_shape;
 
     output_shape.dim(split_dim_axis) = loco::Dimension(split_depth);
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleTopKV2Out *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto topkv2 = dynamic_cast<const luci::CircleTopKV2 *>(node->topkv2());
+    if (topkv2 == nullptr)
+      INTERNAL_EXN("CircleSplit IR is not configured correctly");
+
+    // shape of topkv2 is same as topkv2->input()
+    auto input_shape = loco::shape_get(topkv2).as<loco::TensorShape>();
+
+    auto node_k = loco::must_cast<const luci::CircleConst *>(topkv2->k());
+    LUCI_ASSERT(node_k->dtype() == S32, "Only support Int32");
+    assert(node_k->size<S32>() == 1);
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(input_shape.rank());
+    for (uint32_t idx = 0; idx < input_shape.rank() - 1; ++idx)
+    {
+      output_shape.dim(idx) = input_shape.dim(idx);
+    }
+    output_shape.dim(input_shape.rank() - 1) = node_k->at<S32>(0);
 
     return loco::NodeShape{output_shape};
   }
