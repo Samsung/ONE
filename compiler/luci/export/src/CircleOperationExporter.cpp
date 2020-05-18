@@ -86,6 +86,7 @@ public:
   void visit(luci::CircleReshape *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleSelect *) final;
+  void visit(luci::CircleShape *) final;
   void visit(luci::CircleSin *) final;
   void visit(luci::CircleSlice *) final;
   void visit(luci::CircleSoftmax *) final;
@@ -748,6 +749,19 @@ void OperationExporter::visit(luci::CircleSelect *node)
   auto options = CreateSelectOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SelectOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleShape *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SHAPE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateShapeOptions(builder, to_circle_tensortype(node->out_type()));
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ShapeOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
