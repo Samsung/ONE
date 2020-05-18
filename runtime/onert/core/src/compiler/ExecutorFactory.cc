@@ -121,6 +121,8 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
         const auto &op = *elem.node;
         for (const auto &index : op.getInputs() + op.getOutputs())
         {
+          if ((lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()).contains(index))
+            continue;
           if (!tensor_builder->isRegistered(index))
           {
             const auto &operand_lower_info =

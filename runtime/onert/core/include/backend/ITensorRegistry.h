@@ -21,6 +21,7 @@
 #include "backend/ITensor.h"
 
 #include "ir/OperandIndexMap.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -81,14 +82,19 @@ public:
 
   void setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor)
   {
+    VERBOSE(TensorRegistryTemplate_setExternalTensor) << ind.value() << std::endl;
     auto itr = _managed.find(ind);
     if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
-      throw std::runtime_error{"Tried to set an external tensor but a managed tensor already exists."};
+    {
+      _managed.erase(itr);
+      //throw std::runtime_error{"Tried to set an external tensor but a managed tensor already exists."};
+    }
     _external[ind] = tensor;
   }
 
   void setManagedTensor(const ir::OperandIndex &ind, const std::shared_ptr<T_Tensor> &tensor)
   {
+    VERBOSE(TensorRegistryTemplate_setManagedTensor) << ind.value() << std::endl;
     auto itr = _external.find(ind);
     if (itr != _external.end() && itr->second != nullptr && tensor != nullptr)
       throw std::runtime_error{"Tried to set a managed tensor but an external tensor already exists."};

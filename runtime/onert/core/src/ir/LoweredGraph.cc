@@ -235,6 +235,8 @@ void LoweredGraph::makeOpSequences(
 
         for (auto operand : node.getInputs())
         {
+          if (graph().getInputs().contains(operand))
+            continue;
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
         }
@@ -284,8 +286,8 @@ void LoweredGraph::manipulateLowerInfo(
     // Pick just any one from the uses, here the first one is chosen
     // For the other uses, Permute operations will be inserted later
     auto &&lower_info = operands_lower_info.at(index);
-    assert(lower_info->use_factors().size() > 0);
-    lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
+    if (!lower_info->use_factors().empty())
+      lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
   }
   for (auto index : _graph.getOutputs())
   {
