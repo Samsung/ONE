@@ -65,6 +65,7 @@
 #include "Nodes/CircleSum.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
+#include "Nodes/CircleTopKV2.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
 #include "Nodes/CircleWhile.h"
