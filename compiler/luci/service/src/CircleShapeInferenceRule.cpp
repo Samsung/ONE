@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <stdexcept>
 
 namespace
@@ -833,6 +834,45 @@ public:
       value += paddings->at<S32>(idx + 1); // right
       output_shape.dim(ni) = value;
     }
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleRange *node) final
+  {
+    loco::TensorShape output_shape;
+    output_shape.rank(1);
+
+    auto start_node = loco::must_cast<luci::CircleConst *>(node->start());
+    auto limit_node = loco::must_cast<luci::CircleConst *>(node->limit());
+    auto delta_node = loco::must_cast<luci::CircleConst *>(node->delta());
+
+    double start = 0, limit = 0, delta = 0;
+
+#define GET_RANGE_PARAM(DT)         \
+  start = start_node->scalar<DT>(); \
+  limit = limit_node->scalar<DT>(); \
+  delta = delta_node->scalar<DT>(); \
+  LUCI_ASSERT(delta != 0, "Delta can not be zero");
+
+    switch (start_node->dtype())
+    {
+      case loco::DataType::FLOAT32:
+        GET_RANGE_PARAM(loco::DataType::FLOAT32)
+        break;
+      case loco::DataType::S32:
+        GET_RANGE_PARAM(loco::DataType::S32)
+        break;
+      case loco::DataType::S64:
+        GET_RANGE_PARAM(loco::DataType::S64)
+        break;
+      default:
+        LUCI_ASSERT(false, "Range data type not supported");
+    }
+
+#undef GET_RANGE_PARAM
+
+    output_shape.dim(0) = ceil((limit - start) / delta);
 
     return loco::NodeShape{output_shape};
   }
