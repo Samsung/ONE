@@ -40,6 +40,8 @@ namespace locomotiv
 
 void NodeExecution::execute(loco::TensorConcat *tensor_concat)
 {
+  validate(tensor_concat, "TensorConcat is nullptr");
+
   auto lhs_data = annot_data(tensor_concat->lhs());
   auto rhs_data = annot_data(tensor_concat->rhs());
   auto axis = tensor_concat->axis();

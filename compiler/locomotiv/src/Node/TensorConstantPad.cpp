@@ -36,6 +36,8 @@ namespace locomotiv
 
 void NodeExecution::execute(loco::TensorConstantPad *pad)
 {
+  validate(pad, "TensorConstantPad is nullptr");
+
   auto input_data = annot_data(pad->input());
   auto input_domain = annot_domain(pad->input());
   validate(input_data, "Input not ready");
