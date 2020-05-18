@@ -957,6 +957,39 @@ public:
     return loco::NodeShape{t_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSlice *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+    // Only support begin() with S32 type CircleConst for now
+    auto const_begin = loco::must_cast<luci::CircleConst *>(node->begin());
+    LUCI_ASSERT(const_begin->dtype() == S32, "Only support int32 begin()");
+
+    // Only support size() with S32 type CircleConst for now
+    auto const_size = loco::must_cast<luci::CircleConst *>(node->size());
+    LUCI_ASSERT(const_size->dtype() == S32, "Only support int32 size()");
+
+    assert(input_shape.rank() == const_begin->size<S32>());
+    assert(input_shape.rank() == const_size->size<S32>());
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(const_begin->size<S32>());
+    for (uint32_t idx = 0; idx < const_begin->size<S32>(); ++idx)
+    {
+      int size = const_size->at<S32>(idx);
+      if (size == -1)
+      {
+        size = input_shape.dim(idx).value() - const_begin->at<S32>(idx);
+      }
+      output_shape.dim(idx) = size;
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSoftmax *node) final
   {
     auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();
