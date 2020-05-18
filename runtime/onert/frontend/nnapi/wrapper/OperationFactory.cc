@@ -930,6 +930,29 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
+  _map[ANEURALNETWORKS_REDUCE_ANY] = [](const OperationFactory::Param &init_param,
+                                        Operands &operands) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> Axis Tensor Index
+    //  2 -> keep_dims Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    std::vector<std::int32_t> axes =
+        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+
+    operation::ReduceAny::Param param;
+    param.axes.assign(axes.cbegin(), axes.cend());
+    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
+    param.rank = operands.at(inputs.at(0)).shape().rank();
+
+    return new operation::ReduceAny{inputs, outputs, param};
+  };
+
   _map[ANEURALNETWORKS_REDUCE_MAX] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);

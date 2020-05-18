@@ -161,6 +161,8 @@ void ShapeFixer::visit(const ir::operation::Transpose &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceSum &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::ReduceAny &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::ReduceMax &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::ReduceMin &) { /* DO NOTHING */}
