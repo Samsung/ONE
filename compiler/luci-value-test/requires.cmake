@@ -1,0 +1,5 @@
+require("luci")
+require("luci-interpreter")
+require("tflchef")
+require("tflite2circle")
+require("safemain")
