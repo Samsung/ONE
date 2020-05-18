@@ -1115,28 +1115,6 @@ void OperationExporter::visit(luci::CircleInstanceNorm *node)
 void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, SerializedModelData &md,
                 SerializedGraphData &gd)
 {
-  // TODO Use explicit tagging to prevent possible mistake
-  auto isNoOp = [](loco::Node *node) {
-    if (dynamic_cast<luci::CircleOutputDummy *>(node) != nullptr)
-      return true;
-    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
-      return true;
-    // If there is only one input and the TensorIndex for the input is same
-    // as the TensorIndex of the output then this node is just a dummy node
-    if (node->arity() == 1)
-    {
-      assert(node->arg(0) != nullptr);
-      return get_tensor_index(node) == get_tensor_index(node->arg(0));
-    }
-    return false;
-  };
-
-  if (isNoOp(node))
-  {
-    // Skip if a given node is marked as NoOp (op with no effect) before
-    return;
-  }
-
   if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
   {
     OperationExporter exporter{builder, md, gd};
