@@ -55,6 +55,7 @@
 #include "Nodes/CircleMinimum.h"
 #include "Nodes/CircleMirrorPad.h"
 #include "Nodes/CircleMul.h"
+#include "Nodes/CircleNeg.h"
 #include "Nodes/CircleNotEqual.h"
 #include "Nodes/CircleOneHot.h"
 #include "Nodes/CirclePack.h"
