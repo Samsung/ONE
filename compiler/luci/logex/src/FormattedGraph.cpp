@@ -693,8 +693,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CirclePad *node, locop::NodeS
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CirclePow *node,
-                                       locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CirclePow *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
