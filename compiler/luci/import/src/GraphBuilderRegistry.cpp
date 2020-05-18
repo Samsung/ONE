@@ -45,6 +45,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(FLOOR_MOD, CircleFloorModGraphBuilder)                    // 95
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);       // 9
   CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                        // 36
+  CIRCLE_NODE(GATHER_ND, CircleGatherNdGraphBuilder);                   // 107
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                      // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);           // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                // 118
@@ -142,7 +143,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CEIL = 104,
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_ADD_N = 106,
-  // BuiltinOperator_GATHER_ND = 107,
   // BuiltinOperator_WHERE = 109,
   // BuiltinOperator_RANK = 110,
   // BuiltinOperator_ELU = 111,
