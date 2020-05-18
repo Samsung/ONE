@@ -42,7 +42,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   if (as_const)
     _constants.append(ind);
 
-  if (info.memAllocType() == ir::MemAllocType::DYNAMIC)
+  if (info.isDynamic())
   {
     _dynamic_tensor_mgr->buildTensor(ind, info);
   }

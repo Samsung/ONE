@@ -226,10 +226,9 @@ void StaticInferer::visit(const ir::operation::Add &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (lhs.info().memAllocType() == ir::MemAllocType::DYNAMIC ||
-      rhs.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  if (lhs.info().isDynamic() || rhs.info().isDynamic())
   {
-    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    output.info().setDynamic();
     return;
   }
 
@@ -251,9 +250,9 @@ void StaticInferer::visit(const ir::operation::Concat &op)
     const auto input_idx{op.getInputs().at(i)};
     const auto &input = _operands.at(input_idx);
 
-    if (input.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+    if (input.info().isDynamic())
     {
-      output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+      output.info().setDynamic();
       return;
     }
 
@@ -285,9 +284,9 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   ir::Operand &output = _operands.at(output_idx);
 
   // if input is dynamic, output also becomes dynamic
-  if (input.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  if (input.info().isDynamic())
   {
-    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    output.info().setDynamic();
     return;
   }
 
@@ -309,7 +308,7 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   }
 
   // if shape is NOT Const, set output shape to be dynamic_
-  output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+  output.info().setDynamic();
 }
 
 // TODO write op starting from S
@@ -324,9 +323,9 @@ void StaticInferer::visit(const ir::operation::Tanh &op)
   ir::Operand &output = _operands.at(output_idx);
 
   // if input is dynamic, output also becomes dynamic
-  if (input.info().memAllocType() == ir::MemAllocType::DYNAMIC)
+  if (input.info().isDynamic())
   {
-    output.info().memAllocType(ir::MemAllocType::DYNAMIC);
+    output.info().setDynamic();
     return;
   }
 

@@ -139,7 +139,7 @@ void setInputToDynamicTensor(const std::shared_ptr<onert::ir::Graph> &primary_su
   {
     auto &input = primary_subgraph->operands().at(input_ind);
     if (input.info().shape().hasUnknownDim())
-      input.info().memAllocType(ir::MemAllocType::DYNAMIC);
+      input.info().setDynamic();
   }
 }
 
