@@ -46,6 +46,8 @@ namespace locomotiv
 
 void NodeExecution::execute(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
 {
+  validate(bias_add, "BiasAdd is nullptr");
+
   auto input_data = locomotiv::annot_data(bias_add->value());
   auto bias_data = locomotiv::annot_data(bias_add->bias());
 
@@ -63,6 +65,8 @@ void NodeExecution::execute(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
 
 void NodeExecution::execute(loco::BiasAdd<loco::Domain::Feature> *bias_add)
 {
+  validate(bias_add, "BiasAdd is nullptr");
+
   auto input_data = locomotiv::annot_data(bias_add->value());
   auto bias_data = locomotiv::annot_data(bias_add->bias());
 
