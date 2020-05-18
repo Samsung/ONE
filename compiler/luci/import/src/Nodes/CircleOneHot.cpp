@@ -44,8 +44,6 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
   const auto &on_value = tensors.at(inputs[2]);
   const auto &off_value = tensors.at(inputs[3]);
 
-
-
   if (options->axis < -1 || options->axis > indices->shape.size())
     return false;
   if (depth->shape.size() != 1)
