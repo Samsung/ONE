@@ -35,6 +35,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleConst *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleOutput *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
 
 private:
   const Tensor *getInputTensor(const loco::Node *node) const

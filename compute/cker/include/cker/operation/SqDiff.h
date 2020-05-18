@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_CKER_REDUCEMEAN_H__
-#define __NNFW_CKER_REDUCEMEAN_H__
+#ifndef __NNFW_CKER_REDUCESQDIFF_H__
+#define __NNFW_CKER_REDUCESQDIFF_H__
 
 #include "cker/Shape.h"
 #include "cker/Utils.h"
@@ -26,19 +26,20 @@ namespace nnfw
 namespace cker
 {
 
-#define SQDIFF(N)                                                                                     \
-do {                                                                                                  \
-  NdArrayDesc<N> input1_desc;                                                                         \
-  NdArrayDesc<N> input2_desc;                                                                         \
-  NdArrayDesc<N> output_desc;                                                                         \
-  SqDiffImpl<T, N>( input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,  \
-                    &input1_desc, &input2_desc, &output_desc);                                        \
-} while(0);
+#define SQDIFF(N)                                                                        \
+  do                                                                                     \
+  {                                                                                      \
+    NdArrayDesc<N> input1_desc;                                                          \
+    NdArrayDesc<N> input2_desc;                                                          \
+    NdArrayDesc<N> output_desc;                                                          \
+    SqDiffImpl<T, N>(input1_shape, input1_data, input2_shape, input2_data, output_shape, \
+                     output_data, &input1_desc, &input2_desc, &output_desc);             \
+  } while (0);
 
 template <typename T, int N>
-void SqDiffImpl(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape, const T *input2_data, 
-                const Shape &output_shape, T *output_data, NdArrayDesc<N> *desc1_in, NdArrayDesc<N> *desc2_in,
-                NdArrayDesc<N> *desc_out)
+void SqDiffImpl(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
+                const T *input2_data, const Shape &output_shape, T *output_data,
+                NdArrayDesc<N> *desc1_in, NdArrayDesc<N> *desc2_in, NdArrayDesc<N> *desc_out)
 {
   std::vector<int> input_iter;
   input_iter.resize(N);
@@ -53,45 +54,44 @@ void SqDiffImpl(const Shape &input1_shape, const T *input1_data, const Shape &in
     int input1_indx = SubscriptToIndexGeneric(desc1_in, input_iter.data());
     int input2_indx = SubscriptToIndexGeneric(desc2_in, input_iter.data());
     int output_indx = SubscriptToIndexGeneric(desc_out, input_iter.data());
-    output_data[output_indx] = (input1_data[input1_indx] - input2_data[input2_indx])*
-                                (input1_data[input1_indx] - input2_data[input2_indx]);
-  } while (NextIndex(N, output_dims, input_iter.data()));  
+    output_data[output_indx] = (input1_data[input1_indx] - input2_data[input2_indx]) *
+                               (input1_data[input1_indx] - input2_data[input2_indx]);
+  } while (NextIndex(N, output_dims, input_iter.data()));
 }
 
-
-
 template <typename T>
-void SqDiff(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape, const T *input2_data, 
-            const Shape &output_shape, T *output_data)
+void SqDiff(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
+            const T *input2_data, const Shape &output_shape, T *output_data)
 {
   UNUSED_RELEASE(output_shape);
-  assert(input1_shape.DimensionsCount() > 0 && input2_shape.DimensionsCount() > 0 && output_shape.DimensionsCount() > 0);
+  assert(input1_shape.DimensionsCount() > 0 && input2_shape.DimensionsCount() > 0 &&
+         output_shape.DimensionsCount() > 0);
   int outRank = output_shape.DimensionsCount();
 
   switch (outRank)
   {
     case 4:
       SQDIFF(4);
-    break;
-  
+      break;
+
     case 3:
       SQDIFF(3);
-    break;
+      break;
 
     case 2:
       SQDIFF(2);
-    break;
+      break;
 
     case 1:
       SQDIFF(1);
-    break;
+      break;
 
-    case default:
+    default:
       throw std::runtime_error("Support up to 4-D tensors at present");
-    break;
-  }  
+      break;
+  }
 }
 } // namespace cker
 } // namespace nnfw
 
-#endif // __NNFW_CKER_REDUCEMEAN_H__
+#endif // __NNFW_CKER_REDUCESQDIFF_H__

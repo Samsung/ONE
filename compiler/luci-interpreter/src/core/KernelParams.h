@@ -29,7 +29,10 @@ namespace luci_interpreter
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
 
-// TODO Kernel parameter structures will go here...
+struct SoftmaxParams
+{
+  float beta;
+};
 
 } // namespace luci_interpreter
 

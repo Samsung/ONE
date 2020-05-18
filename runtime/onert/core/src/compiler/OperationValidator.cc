@@ -1324,22 +1324,43 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
     int r_idx = rhs_shape.rank() - idx;
     int out_idx = output_shape.rank() - idx;
 
-    assert((l_idx >= 0) && (r_idx >=0) && (out_idx >= 0));
+    assert((l_idx >= 0) && (r_idx >= 0) && (out_idx >= 0));
 
     auto l_dims = lhs_shape.dim(l_idx);
     auto r_dims = rhs_shape.dim(r_idx);
     auto out_dims = output_shape.dim(out_idx);
-    
-    assert(((l_dims == r_dims) && (out_dims == l_dims )) || ((l_dims == 1) && (out_dims == r_dims )) ||
-           ((r_dims == 1) && (out_dims == l_dims )));
+    // Prevent build errors arising from unused variables.
+    UNUSED_RELEASE(l_dims);
+    UNUSED_RELEASE(r_dims);
+    UNUSED_RELEASE(out_dims);
+    assert(((l_dims == r_dims) && (out_dims == l_dims)) ||
+           ((l_dims == 1) && (out_dims == r_dims)) || ((r_dims == 1) && (out_dims == l_dims)));
   }
-  auto &tmp_shape = (lhs_shape.rank() > rhs_shape.rank())? lhs_shape: rhs_shape;
-  for(int idx = min_rank+1; idx <= output_shape.rank(); idx++)
+  auto &tmp_shape = (lhs_shape.rank() > rhs_shape.rank()) ? lhs_shape : rhs_shape;
+  for (int idx = min_rank + 1; idx <= output_shape.rank(); idx++)
   {
     int out_idx = output_shape.rank() - idx;
     int tmp_idx = tmp_shape.rank() - idx;
-    assert((out_idx >= 0) && (tmp_idx >= 0) && (output_shape.dim(out_idx) == tmp_shape.dim(tmp_idx)));
+    // Prevent build errors arising from unused variables.
+    UNUSED_RELEASE(out_idx);
+    UNUSED_RELEASE(tmp_idx);
+    assert((out_idx >= 0) && (tmp_idx >= 0) &&
+           (output_shape.dim(out_idx) == tmp_shape.dim(tmp_idx)));
   }
 }
+void OperationValidator::visit(const ir::operation::Tile &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+  const auto multiple_index{node.getInputs().at(1)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+  UNUSED_RELEASE(multiple_index);
+
+  assert(_ctx.at(multiple_index).shape().rank() == 1);
+  assert(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+}
+
 } // namespace compiler
 } // namespace onert

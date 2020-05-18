@@ -38,9 +38,8 @@ public:
 public:
   void SqDiffFloat32();
 
-  void SqDiffQuant8();
-
-  void configure(const operand::Tensor *input1, const operand::Tensor *input2, operand::Tensor *output);
+  void configure(const operand::Tensor *input1, const operand::Tensor *input2,
+                 operand::Tensor *output);
 
   void run();
   void runSync()

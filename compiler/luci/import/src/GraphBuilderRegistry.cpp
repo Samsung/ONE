@@ -74,6 +74,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SUM, CircleSumGraphBuilder);                              // 74
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                            // 28
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                            // 69
+  CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                       // 48
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                  // 39
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                        // 88
   CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                          // 119
@@ -103,7 +104,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
-  // BuiltinOperator_TOPK_V2 = 48,
   // BuiltinOperator_LOG_SOFTMAX = 50,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,

@@ -105,8 +105,7 @@ inline int SubscriptToIndex(const NdArrayDesc<4> &desc, int i0, int i1, int i2, 
   return i0 * desc.strides[0] + i1 * desc.strides[1] + i2 * desc.strides[2] + i3 * desc.strides[3];
 }
 
-template <int N>
-inline int SubscriptToIndexGeneric(const NdArrayDesc<N> *desc, int *iter)
+template <int N> inline int SubscriptToIndexGeneric(const NdArrayDesc<N> *desc, int *iter)
 {
   int ret_indx = 0;
   for (size_t idx = 0; idx < static_cast<size_t>(N); idx++)

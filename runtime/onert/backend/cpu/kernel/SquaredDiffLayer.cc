@@ -42,7 +42,8 @@ void SqDiffLayer::SqDiffFloat32()
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void SqDiffLayer::configure(const operand::Tensor *input1, const operand::Tensor *input2, operand::Tensor *output)
+void SqDiffLayer::configure(const operand::Tensor *input1, const operand::Tensor *input2,
+                            operand::Tensor *output)
 {
   _input1 = input1;
   _input2 = input2;

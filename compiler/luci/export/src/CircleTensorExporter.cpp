@@ -77,6 +77,13 @@ struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
   // Input is Virtual but does produce a Tensor
   // Output is Virtual that does not produce any Tensor
   bool visit(luci::CircleOutput *) final { return true; }
+  // Ignore Node of multiple outputs
+  bool visit(luci::CircleIf *) final { return true; }
+  bool visit(luci::CircleSplit *) final { return true; }
+  bool visit(luci::CircleSplitV *) final { return true; }
+  bool visit(luci::CircleTopKV2 *) final { return true; }
+  bool visit(luci::CircleUnpack *) final { return true; }
+  bool visit(luci::CircleWhile *) final { return true; }
 
   // Return false by default
   bool visit(luci::CircleNode *) final { return false; }
