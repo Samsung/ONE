@@ -16,5 +16,6 @@ reshape/reshape1
 select
 softmax
 squeeze
+tile
 transpose
 zeros_like
