@@ -41,6 +41,8 @@ tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &v
       return tflite::ActivationFunctionType_NONE;
     case tflchef::RELU:
       return tflite::ActivationFunctionType_RELU;
+    case tflchef::RELU_N1_TO_1:
+      return tflite::ActivationFunctionType_RELU_N1_TO_1;
     case tflchef::RELU6:
       return tflite::ActivationFunctionType_RELU6;
     default:

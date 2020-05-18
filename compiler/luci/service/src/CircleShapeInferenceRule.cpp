@@ -863,6 +863,13 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleReluN1To1 *node) final
+  {
+    auto input_shape = loco::shape_get(node->features()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   /**
    * @note  CircleReshape has new shape info in two places: 2nd input and attribute.
    *        This shape inference forces both to exist, and match each other.
