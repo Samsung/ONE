@@ -114,6 +114,7 @@ public:
   void visit(luci::CircleInput *) final {}
   void visit(luci::CircleOutput *) final {}
   void visit(luci::CircleOutputDummy *) final {}
+  void visit(luci::CircleOutputExclude *) final {}
   // Virtual for multiple-outputs
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleSplitOut *) final {}
