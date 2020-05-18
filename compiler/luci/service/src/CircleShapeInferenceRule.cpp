@@ -1308,6 +1308,12 @@ public:
     return loco::NodeShape{shape};
   }
 
+  loco::NodeShape visit(const luci::CircleOutputExclude *node) final
+  {
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleIfOut *node) final
   {
     /**
