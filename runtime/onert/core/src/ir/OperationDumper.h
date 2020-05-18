@@ -35,10 +35,14 @@ public:
   void visit(const operation::Add &node) override;
   void visit(const operation::ArgMax &) override;
   void visit(const operation::AvgPool2D &node) override;
+  void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::Cast &) override;
   void visit(const operation::Comparison &) override;
   void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;
+  void visit(const operation::ConvertFp16ToFp32 &node) override;
+  void visit(const operation::ConvertFp32ToFp16 &node) override;
+  void visit(const operation::Cos &node) override;
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::Dequantize &) override;
@@ -65,6 +69,7 @@ public:
   void visit(const operation::Mul &) override;
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
+  void visit(const operation::Pad &) override;
   void visit(const operation::Permute &node) override;
   void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
@@ -83,7 +88,10 @@ public:
   void visit(const operation::Round &) override;
   void visit(const operation::RSQRT &) override;
   void visit(const operation::Select &node) override;
+  void visit(const operation::Shape &node) override;
+  void visit(const operation::Sin &node) override;
   void visit(const operation::Softmax &node) override;
+  void visit(const operation::SpaceToBatchND &) override;
   void visit(const operation::SpaceToDepth &) override;
   void visit(const operation::Split &) override;
   void visit(const operation::SQRT &) override;
