@@ -93,6 +93,7 @@ public:
   void visit(const operation::StridedSlice &) override;
   void visit(const operation::Sub &) override;
   void visit(const operation::Tanh &) override;
+  void visit(const operation::Tile &) override;
   void visit(const operation::TopKV2 &) override;
   void visit(const operation::TransposeConv &) override;
   void visit(const operation::Transpose &) override;

@@ -60,6 +60,7 @@
 #include "kernel/SplitLayer.h"
 #include "kernel/SubLayer.h"
 #include "kernel/TanhLayer.h"
+#include "kernel/TileLayer.h"
 #include "kernel/TransposeLayer.h"
 #include "kernel/UnpackLayer.h"
 #include "kernel/LogicalNotLayer.h"
@@ -1187,6 +1188,23 @@ void KernelGenerator::visit(const ir::operation::ZerosLike &node)
 
   _return_fn = std::move(fn);
 }
+void KernelGenerator::visit(const ir::operation::Tile &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Tile::INPUT)};
+  const auto multiples_index{node.getInputs().at(ir::operation::Tile::MULTIPLES)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto multiples_alloc = _tensor_builder->at(multiples_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::TileLayer>();
+
+  fn->configure(input_alloc, multiples_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

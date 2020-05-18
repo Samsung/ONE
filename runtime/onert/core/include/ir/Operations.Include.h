@@ -97,3 +97,4 @@
 #include "ir/operation/While.h"
 #include "ir/operation/Pow.h"
 #include "ir/operation/ZerosLike.h"
+#include "ir/operation/Tile.h"
