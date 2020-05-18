@@ -36,6 +36,7 @@
 #include "Nodes/CircleFloorMod.h"
 #include "Nodes/CircleFullyConnected.h"
 #include "Nodes/CircleGather.h"
+#include "Nodes/CircleGreaterEqual.h"
 #include "Nodes/CircleIf.h"
 #include "Nodes/CircleLogicalAnd.h"
 #include "Nodes/CircleLogicalNot.h"
