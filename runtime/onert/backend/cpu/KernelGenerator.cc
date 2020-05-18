@@ -92,6 +92,8 @@ KernelGenerator::KernelGenerator(
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
+  assert(_tensor_builder->dynamicTensorManager());
+  assert(_tensor_builder->tensorRegistry());
 
   auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
       _ctx, _tensor_builder->dynamicTensorManager(), _tensor_builder->tensorRegistry());
