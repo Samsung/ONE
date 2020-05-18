@@ -22,13 +22,12 @@ namespace tflchef
 {
 
 void TFliteOpPow::filler(const tflite::Operator *op, TFliteImport *import,
-                          tflchef::ModelRecipe *model_recipe) const
+                         tflchef::ModelRecipe *model_recipe) const
 {
-
 }
 
 tflchef::Operation *TFliteOpPow::build(const tflite::Operator *op, TFliteImport *import,
-                                        tflchef::ModelRecipe *model_recipe) const
+                                       tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
   operation->set_type("Pow");
