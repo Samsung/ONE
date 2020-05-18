@@ -80,6 +80,7 @@ public:
   void visit(luci::CircleMul *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
+  void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceProd *) final;
   void visit(luci::CirclePad *) final;
@@ -689,6 +690,20 @@ void OperationExporter::visit(luci::CirclePad *node)
   auto options = CreatePadOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_PadOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleRange *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RANGE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->start()), get_tensor_index(node->limit()),
+                                  get_tensor_index(node->delta())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateRangeOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_RangeOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
