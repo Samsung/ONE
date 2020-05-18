@@ -94,8 +94,11 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     _op_seqs.dump("merged and sorted operations without permutation");
 
-    pass::ConstantInsertionPass ci_pass(*this);
-    ci_pass.run();
+    if (backend_manager.getAll().size() > 1)
+    {
+      pass::ConstantInsertionPass ci_pass(*this);
+      ci_pass.run();
+    }
 
     pass::ConstantLoweringPass cl_pass(*this);
     cl_pass.run();
@@ -238,6 +241,8 @@ void LoweredGraph::makeOpSequences(
         {
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
+          if (_graph.operands().at(operand).isConstant())
+            lower_info->addDefPermuteFactor(operand::PermuteFactor{backend, backend_layout});
         }
         for (auto operand : node.getOutputs())
         {
