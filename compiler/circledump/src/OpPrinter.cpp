@@ -473,6 +473,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
+  // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 }
