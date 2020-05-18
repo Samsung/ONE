@@ -1,6 +1,7 @@
 nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
 nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.1.0 QUIET)
 nnas_find_package(TensorFlowEigenSource EXACT 2.1.0 QUIET)
+nnas_find_package(GTest REQUIRED)
 
 if (NOT TensorFlowSource_FOUND OR
     NOT TensorFlowGEMMLowpSource_FOUND OR
@@ -24,3 +25,12 @@ target_include_directories(luci_interpreter_kernels SYSTEM PRIVATE
 target_link_libraries(luci_interpreter_kernels
     PUBLIC luci_interpreter_core
     PRIVATE nncc_common)
+
+
+set(TEST_SOURCES
+    TestUtils.h
+    TestUtils.cpp
+    Softmax.test.cpp)
+
+GTest_AddTest(luci_interpreter_kernels_test ${TEST_SOURCES})
+target_link_libraries(luci_interpreter_kernels_test luci_interpreter_kernels)
