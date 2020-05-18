@@ -99,6 +99,7 @@ public:
   void visit(luci::CircleSum *) final;
   void visit(luci::CircleTanh *) final;
   void visit(luci::CircleTile *) final;
+  void visit(luci::CircleTopKV2 *) final;
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
   void visit(luci::CircleUnpack *) final;
@@ -114,6 +115,7 @@ public:
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleSplitOut *) final {}
   void visit(luci::CircleSplitVOut *) final {}
+  void visit(luci::CircleTopKV2Out *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
 
@@ -969,6 +971,44 @@ void OperationExporter::visit(luci::CircleTile *node)
   auto options = CreateTileOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_TileOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleTopKV2 *node)
+{
+  auto topkv2_outs = loco::succs(node);
+  int outs_count = int32_t(topkv2_outs.size());
+  assert(outs_count == 2);
+
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_TOPK_V2);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->k())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < outs_count; index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : topkv2_outs)
+    {
+      auto topkv2_out = loco::must_cast<luci::CircleTopKV2Out *>(out);
+      if (topkv2_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(topkv2_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid TopKV2 output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateTopKV2Options(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_TopKV2Options, options.Union());
   gd._operators.push_back(op_offset);
 }
 
