@@ -288,6 +288,20 @@ public:
   }
 };
 
+class ShapePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ShapeOptions())
+    {
+      os << "    ";
+      os << "out_type(" << EnumNameTensorType(params->out_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class SoftmaxPrinter : public OpPrinter
 {
 public:
@@ -463,6 +477,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SELECT
+  _op_map[tflite::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN
   // There is no Option for SLICE
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
