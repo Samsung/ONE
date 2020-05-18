@@ -34,7 +34,7 @@ bool CirclePowGraphBuilder::validate(const ValidateArgs &args) const
   return true;
 }
 
-CircleNode *CirclePowGraphBuilder::build_node(const circle::OperatorT &op,
+CircleNode *CirclePowGraphBuilder::build_node(const circle::OperatorT &,
                                               const std::vector<CircleNode *> &inputs,
                                               loco::Graph *graph) const
 {
