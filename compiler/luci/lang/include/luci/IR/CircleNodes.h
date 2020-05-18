@@ -60,6 +60,7 @@
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleSelect.h"
 #include "Nodes/CircleSin.h"
+#include "Nodes/CircleSlice.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
 #include "Nodes/CircleSplit.h"
