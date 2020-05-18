@@ -73,6 +73,7 @@
 #include "Nodes/CircleSum.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
+#include "Nodes/CircleTopKV2.h"
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleUnpack.h"
@@ -87,6 +88,7 @@
 #include "Nodes/CircleUnpackOut.h"
 #include "Nodes/CircleSplitOut.h"
 #include "Nodes/CircleSplitVOut.h"
+#include "Nodes/CircleTopKV2Out.h"
 #include "Nodes/CircleWhileOut.h"
 
 namespace luci
