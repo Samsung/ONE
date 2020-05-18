@@ -40,6 +40,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
 {
+  assert(node->arity() == 1);
+
   const Tensor *input = getInputTensor(node->logits());
   Tensor *output = getOutputTensor(node);
 
