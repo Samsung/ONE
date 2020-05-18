@@ -149,6 +149,10 @@ message MulOptions {
   optional Activation activation = 1 [default = NONE];
 }
 
+message NegOptions {
+  // None
+}
+
 message RangeOptions {
   // None
 }
@@ -397,7 +401,7 @@ message Operation {
   optional TopKV2Options topk_v2_options = 167;
   // LogSoftmaxOptions 168
   // DequantizeOptions 169
-  // NegOptions 170
+  optional NegOptions neg_options = 170;
   // PadV2Options 171
   // LessEqualOptions 172
   optional SliceOptions slice_options = 173;
