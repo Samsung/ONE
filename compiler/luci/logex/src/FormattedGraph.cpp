@@ -721,6 +721,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceAny *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceAny *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
+  s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceProd *node,
                                        locop::NodeSummary &s) const
 {
