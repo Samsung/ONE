@@ -19,6 +19,7 @@
 #define __NNFW_CKER_REFERENCE_BINARYARITHMETICOPS_H__
 
 #include "cker/Shape.h"
+#include "cker/Types.h"
 #include "cker/Utils.h"
 
 #include <cmath>
@@ -58,6 +59,78 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
     output_data[i] =
         ActivationFunctionWithMinMax(fn(input1_data[i], input2_data[i]),
                                      params.float_activation_min, params.float_activation_max);
+  }
+}
+
+template <typename T>
+inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &params,
+                                            const Shape &input1_shape, const T *input1_data,
+                                            const Shape &input2_shape, const T *input2_data,
+                                            const Shape &output_shape, T *output_data,
+                                            const std::function<T(const T &, const T &)> &fn)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+
+  // Comment from tensorflow lite:
+  //
+  // In Tensorflow, the dimensions are canonically named (batch_number, row,
+  // col, channel), with extents (batches, height, width, depth), with the
+  // trailing dimension changing most rapidly (channels has the smallest stride,
+  // typically 1 element).
+  //
+  // In generated C code, we store arrays with the dimensions reversed. The
+  // first dimension has smallest stride.
+  //
+  // We name our variables by their Tensorflow convention, but generate C code
+  // nesting loops such that the innermost loop has the smallest stride for the
+  // best cache behavior.
+  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        {
+          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax(
+              fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+                 input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
+              params.quantized_activation_min, params.quantized_activation_max);
+        }
+      }
+    }
+  }
+}
+
+template <>
+inline void BroadcastBinaryArithmeticOpSlow(
+    const BinaryArithmeticOpParam &params, const Shape &input1_shape, const float *input1_data,
+    const Shape &input2_shape, const float *input2_data, const Shape &output_shape,
+    float *output_data, const std::function<float(const float &, const float &)> &fn)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+
+  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        {
+          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax(
+              fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+                 input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
+              params.float_activation_min, params.float_activation_max);
+        }
+      }
+    }
   }
 }
 
