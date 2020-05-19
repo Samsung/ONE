@@ -525,6 +525,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 
+  // Circle only
   _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique<BCQFullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique<BCQGatherPrinter>();
 }

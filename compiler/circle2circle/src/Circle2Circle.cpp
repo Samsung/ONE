@@ -37,10 +37,10 @@ using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 void print_help(const char *progname)
 {
   std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
+  std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
-  std::cerr << "   --fuse_BCQ : Enable FuseBCQ Pass" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -61,17 +61,16 @@ int entry(int argc, char **argv)
   auto options = optimizer.options();
 
   // TODO merge this with help message
+  argparse["--fuse_bcq"] = [&options](const char **) {
+    options->enable(Algorithms::FuseBCQ);
+    return 0;
+  };
   argparse["--fuse_instnorm"] = [&options](const char **) {
     options->enable(Algorithms::FuseInstanceNorm);
     return 0;
   };
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-    return 0;
-  };
-
-  argparse["--fuse_BCQ"] = [&options](const char **) {
-    options->enable(Algorithms::FuseBCQ);
     return 0;
   };
 

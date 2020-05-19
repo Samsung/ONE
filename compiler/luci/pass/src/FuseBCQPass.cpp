@@ -104,8 +104,7 @@ public:
 
   luci::CircleConst *get_packed_bits(luci::CircleConst *node)
   {
-    const auto prefix = node_name_prefix(node->name(), true);
-    auto bits_const = const_nodes_bits_const[prefix];
+    auto bits_const = get_binary(node);
 
     const auto graph = node->graph();
     auto packed_bits = graph->nodes()->create<luci::CircleConst>();
@@ -244,56 +243,79 @@ bool FuseBCQPass::run(loco::Graph *g)
       auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights());
       if (weights != nullptr && converter.has_BCQ_info_nodes(weights))
       {
-        //--------------------------------------------------------//
-        // Validate quantized weights and information
-        auto alphas = converter.get_alphas(weights);
-        auto bins = converter.get_binary(weights);
-        int out_size = alphas->dim(0).value();
-        int hidden_size = converter.get_packed_bits(weights)->dim(2).value() * 32;
+        {
+          // Validate BCQ information
+          auto alphas = converter.get_alphas(weights);
+          auto binary = converter.get_binary(weights);
 
-        for (int i = 0; i < out_size; ++i)
-          for (int j = 0; j < hidden_size; ++j)
+          if(alphas->dim(0).value() != binary->dim(1).value())
+            throw std::runtime_error("FuseBCQ : [out] dimension mismatch");
+          
+          if(alphas->dim(1).value() != binary->dim(0).value())
+            throw std::runtime_error("FuseBCQ : [bits] dimension mismatch");
+          
+          if(binary->dim(2).value() % 32 != 0)
+            throw std::runtime_error("FuseBCQ : hidden size should be divided by 32");
+
+          // Validate pre-calculated BCQ values
+          int bits_size = alphas->dim(1).value();
+          int out_size = alphas->dim(0).value();
+          int hidden_size = binary->dim(2).value();
+
+          for (int o = 0; o < out_size; ++o)
           {
-            float res = 0.0;
-            for (int a = 0; a < 3; ++a)
+            for (int h = 0; h < hidden_size; ++h)
             {
-              if (bins->at<loco::DataType::BOOL>(a * out_size * hidden_size + i * hidden_size +
-                                                 j) == 1)
-                res += alphas->at<loco::DataType::FLOAT32>(i * 3 + a);
-              else
-                res -= alphas->at<loco::DataType::FLOAT32>(i * 3 + a);
-            }
-            // printf("[%d][%d] %f
-            // %f\n",i,j,res,weights->at<loco::DataType::FLOAT32>(i*hidden_size+j));
-            auto diff = res - weights->at<loco::DataType::FLOAT32>(i * hidden_size + j);
-            if (diff < 0)
-              diff = -diff;
-            assert(diff <= 0.0001);
-          }
-
-        auto pack_bins = converter.get_packed_bits(weights);
-        for (int i = 0; i < out_size; ++i)
-          for (int x = 0; x < 3; ++x)
-            for (int j = 0; j < hidden_size / 32; ++j)
-            {
-              for (int b = 0; b < 32; ++b)
+              float res = 0.0;
+              for (int b = 0; b < bits_size; ++b)
               {
-                auto lhs = pack_bins->at<loco::DataType::S32>(i * 3 * hidden_size / 32 +
-                                                              x * hidden_size / 32 + j);
-                auto lhs_v = (lhs >> b) & 0x1;
-                auto rhs = bins->at<loco::DataType::BOOL>(x * out_size * hidden_size +
-                                                          i * hidden_size + j * 32 + b);
-                // printf("out bits hidden [%d][%d][%d] %d %d %d\n",i,x,j*32+b,lhs,lhs_v,rhs);
-                assert(lhs_v == rhs);
+                if (binary->at<loco::DataType::BOOL>(b * out_size * hidden_size + o * hidden_size +
+                                                  h) == 1)
+                  res += alphas->at<loco::DataType::FLOAT32>(o * 3 + b);
+                else
+                  res -= alphas->at<loco::DataType::FLOAT32>(o * 3 + b);
               }
+              auto diff = res - weights->at<loco::DataType::FLOAT32>(o * hidden_size + h);
+              assert(-0.0001 <= diff && diff <= 0.0001);
             }
-        //--------------------------------------------------------//
+          }
+        }
 
         auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
         bcq_fc->input(fully_connected->input());
         bcq_fc->weights_scales(converter.get_alphas(weights));
         bcq_fc->weights_binary(converter.get_packed_bits(weights));
+
+        {
+          auto alphas = converter.get_alphas(weights);
+          auto binary = converter.get_binary(weights);
+
+          int bits_size = alphas->dim(1).value();
+          int out_size = alphas->dim(0).value();
+          int hidden_size = binary->dim(2).value();
+
+          // Validate packed binary
+          auto pack_binary = dynamic_cast<luci::CircleConst *>(bcq_fc->weights_binary());
+          for (int o = 0; o < out_size; ++o)
+          {
+            for (int b = 0; b < bits_size; ++b)
+              for (int h = 0; h < hidden_size / 32; ++h)
+              {
+                auto pack_int = pack_binary->at<loco::DataType::S32>(o * 3 * hidden_size / 32 +
+                                                                b * hidden_size / 32 + h);
+                for (int z = 0; z < 32; ++z)
+                {
+                  bool bit_pack = (pack_int >> z) & 0x1;
+                  bool bit_origin = binary->at<loco::DataType::BOOL>(b * out_size * hidden_size +
+                                                            o * hidden_size + h * 32 + z);
+                  assert(bit_pack == bit_origin);
+                }
+              }
+          }
+        }
+
+        // TODO remove this hard coding
         if (dynamic_cast<luci::CircleOutputExclude *>(fully_connected->bias()))
         {
           auto const_node = g->nodes()->create<luci::CircleConst>();
