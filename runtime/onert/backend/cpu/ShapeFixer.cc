@@ -175,6 +175,8 @@ void ShapeFixer::visit(const ir::operation::StridedSlice &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Split &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::SquaredDifference &) { /* DO NOTHING */}
+
 void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Cos &) { /* DO NOTHING */}

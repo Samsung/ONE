@@ -73,6 +73,7 @@ public:
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::Split &) override;
+  void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Abs &) override;
   void visit(const ir::operation::Cos &) override;
   void visit(const ir::operation::Sin &) override;
