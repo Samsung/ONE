@@ -288,6 +288,10 @@ message ZerosLikeOptions {
   // None
 }
 
+message GatherNdOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -382,7 +386,7 @@ message Operation {
   // UniqueOptions 186
   // ReverseV2Options 187
   // AddNOptions 188
-  // GatherNdOptions 189
+  optional GatherNdOptions gather_nd_options = 189;
   // WhereOptions 190
   // RankOptions 191
   // ReverseSequenceOptions 192

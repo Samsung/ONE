@@ -36,6 +36,7 @@
 #include "Op/FloorMod.h"
 #include "Op/FullyConnected.h"
 #include "Op/Gather.h"
+#include "Op/GatherNd.h"
 #include "Op/Greater.h"
 #include "Op/GreaterEqual.h"
 #include "Op/Less.h"

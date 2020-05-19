@@ -73,6 +73,7 @@ private:
     REG_TFL_OP(FLOOR_MOD, TFliteOpFloorMod);
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
     REG_TFL_OP(GATHER, TFliteOpGather);
+    REG_TFL_OP(GATHER_ND, TFliteOpGatherNd);
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
     REG_TFL_OP(LESS, TFliteOpLess);
