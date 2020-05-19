@@ -115,7 +115,8 @@ public:
   size_t total_size() const { return _shape.num_elements() * sizeOfDataType(_typeInfo.type()); }
 
   MemAllocType memAllocType() const { return _alloc_type; }
-  void memAllocType(MemAllocType alloc_type) { _alloc_type = alloc_type; }
+  bool isDynamic() const { return _alloc_type == MemAllocType::DYNAMIC; }
+  void setDynamic() { _alloc_type = MemAllocType::DYNAMIC; }
 
 private:
   Shape _shape;
