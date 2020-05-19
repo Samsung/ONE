@@ -53,6 +53,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);               // 87
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);                 // 84
   CIRCLE_NODE(LOGISTIC, CircleLogisticGraphBuilder);                    // 14
+  CIRCLE_NODE(MAXIMUM, CircleMaximumGraphBuilder);                      // 55
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                            // 40
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                              // 18
@@ -115,7 +116,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_PRELU = 54,
-  // BuiltinOperator_MAXIMUM = 55,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_MINIMUM = 57,
   // BuiltinOperator_NEG = 59,
