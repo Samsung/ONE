@@ -49,6 +49,9 @@ void OperationValidator::operator()()
 void OperationValidator::visit(const ir::operation::Abs &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -60,6 +63,9 @@ void OperationValidator::visit(const ir::operation::Abs &node)
 void OperationValidator::visit(const ir::operation::AvgPool2D &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::AvgPool2D::Input::INPUT)};
 
   UNUSED_RELEASE(ofm_index);
@@ -71,6 +77,9 @@ void OperationValidator::visit(const ir::operation::AvgPool2D &node)
 void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
@@ -98,6 +107,9 @@ void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
 void OperationValidator::visit(const ir::operation::Cast &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -109,6 +121,8 @@ void OperationValidator::visit(const ir::operation::Cast &node)
 void OperationValidator::visit(const ir::operation::Comparison &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
   const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
 
@@ -125,6 +139,9 @@ void OperationValidator::visit(const ir::operation::Softmax &node)
   VERBOSE(Softmax) << "Configure SOFTMAX operation" << std::endl;
 
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -136,6 +153,9 @@ void OperationValidator::visit(const ir::operation::Softmax &node)
 void OperationValidator::visit(const ir::operation::InstanceNorm &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::InstanceNorm::Input::INPUT)};
   const auto gamma_index{node.getInputs().at(ir::operation::InstanceNorm::Input::GAMMA)};
   const auto beta_index{node.getInputs().at(ir::operation::InstanceNorm::Input::BETA)};
@@ -156,6 +176,9 @@ void OperationValidator::visit(const ir::operation::Permute &node)
   VERBOSE(Permute) << "Configure Permute operation" << std::endl;
 
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -169,6 +192,9 @@ void OperationValidator::visit(const ir::operation::ReduceSum &node)
   VERBOSE(Permute) << "Configure ReduceSum operation" << std::endl;
 
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
   const auto &axes = node.param().axes;
 
@@ -222,6 +248,9 @@ void OperationValidator::visit(const ir::operation::ReduceSum &node)
 void OperationValidator::visit(const ir::operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &perm{node.param().perm};
 
@@ -239,6 +268,9 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
 void OperationValidator::visit(const ir::operation::ReduceAny &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::ReduceAny::Input::INPUT)};
   const auto &axes = node.param().axes;
 
@@ -289,6 +321,9 @@ void OperationValidator::visit(const ir::operation::ReduceAny &node)
 void OperationValidator::visit(const ir::operation::ReduceMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
   const auto &axes = node.param().axes;
 
@@ -341,6 +376,9 @@ void OperationValidator::visit(const ir::operation::RNN &node)
   // NOTE This validation is for static rnn(non-dynamic shape), but not for dynamic rnn
   // TODO Support dynamic rnn
   const auto output_index{node.getOutputs().at(ir::operation::RNN::Output::OUTPUT)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto hidden_state_out_index{
       node.getOutputs().at(ir::operation::RNN::Output::HIDDEN_STATE_OUT)};
 
@@ -393,13 +431,19 @@ void OperationValidator::visit(const ir::operation::Round &node)
   UNUSED_RELEASE(output_index);
   UNUSED_RELEASE(input_index);
 
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
   const auto block_size_index{
       node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
@@ -433,6 +477,9 @@ void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
 void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToDepth::Input::INPUT)};
 
   const auto frontend_layout = _current_op_seq_layout;
@@ -472,6 +519,9 @@ void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
   {
     assert(lookups_obj.typeInfo().type() == ir::DataType::INT32);
 
+    if (_ctx.at(output_index).info().isDynamic())
+      return;
+
     const auto &output_shape = output_obj.shape();
     const auto &lookups_shape = lookups_obj.shape();
     const auto &values_shape = values_obj.shape();
@@ -502,8 +552,11 @@ void OperationValidator::visit(const ir::operation::Exp &node)
   UNUSED_RELEASE(output_index);
   UNUSED_RELEASE(input_index);
 
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::ExpandDims &node)
@@ -518,12 +571,17 @@ void OperationValidator::visit(const ir::operation::ExpandDims &node)
 
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
   assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+
+  if (_ctx.at(axis_index).info().isDynamic())
+    return;
   assert(_ctx.at(axis_index).shape().rank() <= 1);
 }
 
 void OperationValidator::visit(const ir::operation::Fill &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   const auto input_index{node.getInputs().at(0)};
   const auto value_index{node.getInputs().at(1)};
 
@@ -540,8 +598,11 @@ void OperationValidator::visit(const ir::operation::Floor &node)
   UNUSED_RELEASE(output_index);
   UNUSED_RELEASE(input_index);
 
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::HashtableLookup &node)
@@ -563,6 +624,9 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
   assert(lookups_obj.typeInfo().type() == ir::DataType::INT32);
   assert(keys_obj.typeInfo().type() == ir::DataType::INT32);
   assert(hits_obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
 
   const auto &output_shape = output_obj.shape();
   const auto &hits_shape = hits_obj.shape();
@@ -586,7 +650,15 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
 
 void OperationValidator::visit(const ir::operation::TransposeConv &node)
 {
+  // param check
+  assert((node.param().padding.type == ir::PaddingType::SAME) ||
+         (node.param().padding.type == ir::PaddingType::VALID));
+
+  // shape check
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::TransposeConv::Input::INPUT)};
   const auto ker_index{node.getInputs().at(ir::operation::TransposeConv::Input::KERNEL)};
 
@@ -610,8 +682,6 @@ void OperationValidator::visit(const ir::operation::TransposeConv &node)
   UNUSED_RELEASE(ifm_shape);
   UNUSED_RELEASE(ker_shape);
 
-  assert((node.param().padding.type == ir::PaddingType::SAME) ||
-         (node.param().padding.type == ir::PaddingType::VALID));
   assert(ifm_shape.N == ofm_shape.N);
   assert(ifm_shape.C == ker_shape.C);
   assert(ker_shape.N == ofm_shape.C);
@@ -620,6 +690,8 @@ void OperationValidator::visit(const ir::operation::TransposeConv &node)
 void OperationValidator::visit(const ir::operation::Gather &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
@@ -643,20 +715,27 @@ void OperationValidator::visit(const ir::operation::Gather &node)
 void OperationValidator::visit(const ir::operation::Dequantize &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+
   const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
 
   UNUSED_RELEASE(output_index);
   UNUSED_RELEASE(input_index);
 
-  assert(_ctx.at(input_index).shape().rank() <= 4);
-  assert(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
   assert(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM);
   assert(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+  assert(_ctx.at(input_index).shape().rank() <= 4);
+  assert(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Mean &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
 
   const auto ifm_shape = _ctx.at(ifm_index).shape();
@@ -695,7 +774,18 @@ void OperationValidator::visit(const ir::operation::Mean &node)
 
 void OperationValidator::visit(const ir::operation::DepthToSpace &node)
 {
+  // param check
+  int32_t block_size = node.param().block_size;
+
+  UNUSED_RELEASE(block_size);
+
+  assert(block_size > 0);
+
+  // shape check
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
 
   const auto frontend_layout = _current_op_seq_layout;
@@ -708,12 +798,6 @@ void OperationValidator::visit(const ir::operation::DepthToSpace &node)
   assert(_ctx.at(input_index).shape().rank() == 4);
   assert(_ctx.at(output_index).shape().rank() == 4);
 
-  int32_t block_size = node.param().block_size;
-
-  UNUSED_RELEASE(block_size);
-
-  assert(block_size > 0);
-
   { // assertions block
     assert(output_shape.N == input_shape.N);
     assert(output_shape.H == input_shape.H * block_size);
@@ -725,10 +809,16 @@ void OperationValidator::visit(const ir::operation::DepthToSpace &node)
 
 void OperationValidator::visit(const ir::operation::Pack &node)
 {
-  const auto output_index{node.getOutputs().at(0)};
+  // param check
   const auto num{node.param().num};
   const auto axis{node.param().axis};
+  assert(num == static_cast<int32_t>(node.getInputs().size()));
 
+  const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  // shape check
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto output_rank = static_cast<int32_t>(output_shape.rank());
 
@@ -739,7 +829,6 @@ void OperationValidator::visit(const ir::operation::Pack &node)
   UNUSED_RELEASE(axis);
   UNUSED_RELEASE(output_rank);
 
-  assert(num == static_cast<int32_t>(node.getInputs().size()));
   assert(axis >= -output_rank && axis < output_rank);
   for (const auto &index : node.getInputs())
   {
@@ -751,6 +840,9 @@ void OperationValidator::visit(const ir::operation::Pack &node)
 void OperationValidator::visit(const ir::operation::ReduceMin &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
   const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
   const auto &axes = node.param().axes;
 
@@ -799,13 +891,16 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
 {
   // NOTE This validation is for static rnn(non-dynamic shape), but not for dynamic rnn
   // TODO Support dynamic rnn
+  const auto output_index{node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto scratch_buffer_index{
       node.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
   const auto output_state_out_index{
       node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
   const auto cell_state_out_index{
       node.getOutputs().at(ir::operation::LSTM::Output::CELL_STATE_OUT)};
-  const auto output_index{node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
 
   const auto input_index{node.getInputs().at(ir::operation::LSTM::Input::INPUT)};
   const auto input_to_input_weights_index{
@@ -1034,9 +1129,15 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
 
 void OperationValidator::visit(const ir::operation::Unpack &node)
 {
-  const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
   const auto num{node.param().num};
+  assert(num == static_cast<int32_t>(node.getOutputs().size()));
   const auto axis{node.param().axis};
+
+  const auto output_index{node.getInputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
 
   const auto &input_shape = _ctx.at(input_index).shape();
   const auto input_rank = static_cast<int32_t>(input_shape.rank());
@@ -1045,15 +1146,19 @@ void OperationValidator::visit(const ir::operation::Unpack &node)
   UNUSED_RELEASE(axis);
   UNUSED_RELEASE(input_rank);
 
-  assert(num == static_cast<int32_t>(node.getOutputs().size()));
   assert(axis >= -input_rank && axis < input_rank);
 }
 
 void OperationValidator::visit(const ir::operation::Pad &node)
 {
-  const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
-  const auto output_index{node.getOutputs().at(0)};
+  assert(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
+
+  const auto output_index{node.getInputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
 
   const auto &pad_shape = _ctx.at(pad_index).shape();
   const auto input_rank = static_cast<int32_t>(_ctx.at(input_index).shape().rank());
@@ -1065,13 +1170,14 @@ void OperationValidator::visit(const ir::operation::Pad &node)
   assert(pad_shape.rank() == 2);
   assert(pad_shape.dim(0) == input_rank);
   assert(pad_shape.dim(1) == 2);
-  assert(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
   assert(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
 void OperationValidator::visit(const ir::operation::Min &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
 
@@ -1086,6 +1192,8 @@ void OperationValidator::visit(const ir::operation::Min &node)
 void OperationValidator::visit(const ir::operation::Max &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
 
@@ -1099,10 +1207,12 @@ void OperationValidator::visit(const ir::operation::Max &node)
 
 void OperationValidator::visit(const ir::operation::Select &node)
 {
+  const auto output_index{node.getOutputs().at(0)};
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
   const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
   const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
-  const auto output_index{node.getOutputs().at(0)};
 
   UNUSED_RELEASE(condition_index);
   UNUSED_RELEASE(input_true_index);
@@ -1120,19 +1230,24 @@ void OperationValidator::visit(const ir::operation::StridedSlice &node)
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
 
+  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+
   UNUSED_RELEASE(output_index);
   UNUSED_RELEASE(input_index);
   UNUSED_RELEASE(starts_index);
   UNUSED_RELEASE(ends_index);
   UNUSED_RELEASE(strides_index);
 
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   assert(_ctx.at(input_index).shape().rank() <= 4);
 }
 
 void OperationValidator::visit(const ir::operation::Split &node)
 {
   const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+
   const auto &num_splits = node.param().num_splits;
   const auto &input_rank = node.param().rank;
   const auto &axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
@@ -1144,13 +1259,19 @@ void OperationValidator::visit(const ir::operation::Split &node)
 
   assert(num_splits > 0 && num_splits <= 0xFFFF);
   assert(axis >= 0 && axis < input_rank);
-  assert(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
   assert(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
+
+  if (_ctx.at(input_index).info().isDynamic())
+    return;
+  assert(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
 void OperationValidator::visit(const ir::operation::Cos &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1162,6 +1283,9 @@ void OperationValidator::visit(const ir::operation::Cos &node)
 void OperationValidator::visit(const ir::operation::Sin &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1173,6 +1297,9 @@ void OperationValidator::visit(const ir::operation::Sin &node)
 void OperationValidator::visit(const ir::operation::RSQRT &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1184,6 +1311,9 @@ void OperationValidator::visit(const ir::operation::RSQRT &node)
 void OperationValidator::visit(const ir::operation::Shape &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1195,6 +1325,9 @@ void OperationValidator::visit(const ir::operation::Shape &node)
 void OperationValidator::visit(const ir::operation::ReduceProd &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
   const auto &axes = node.param().axes;
 
@@ -1244,21 +1377,26 @@ void OperationValidator::visit(const ir::operation::ReduceProd &node)
 
 void OperationValidator::visit(const ir::operation::Reverse &node)
 {
+  const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
-  const auto output_index{node.getOutputs().at(0)};
 
   UNUSED_RELEASE(input_index);
   UNUSED_RELEASE(axis_index);
   UNUSED_RELEASE(output_index);
 
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
   assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::While &node)
 {
+  // This validator does not check shape. So checking isDynamic() is skipped.
+
   assert(node.getInputs().size() == node.getOutputs().size());
   UNUSED_RELEASE(node);
   // TODO Add to validate with subgraphs
@@ -1267,6 +1405,9 @@ void OperationValidator::visit(const ir::operation::While &node)
 void OperationValidator::visit(const ir::operation::Neg &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1278,6 +1419,9 @@ void OperationValidator::visit(const ir::operation::Neg &node)
 void OperationValidator::visit(const ir::operation::Log &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1289,6 +1433,9 @@ void OperationValidator::visit(const ir::operation::Log &node)
 void OperationValidator::visit(const ir::operation::LogicalNot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
 
   UNUSED_RELEASE(output_index);
@@ -1310,6 +1457,10 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
   assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(lhs_index).typeInfo().type());
   assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
 
+  // Check for dimension constraints
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   auto output_shape = _ctx.at(output_index).shape();
   auto lhs_shape = _ctx.at(lhs_index).shape();
   auto rhs_shape = _ctx.at(rhs_index).shape();
@@ -1317,7 +1468,6 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
   assert(output_shape.rank() == std::max(lhs_shape.rank(), rhs_shape.rank()));
   auto min_rank = std::min(lhs_shape.rank(), rhs_shape.rank());
 
-  // Check for dimension constraints
   for (int idx = 1; idx <= min_rank; idx++)
   {
     int l_idx = lhs_shape.rank() - idx;
@@ -1351,6 +1501,9 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
 void OperationValidator::visit(const ir::operation::Tile &node)
 {
   const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
   const auto input_index{node.getInputs().at(0)};
   const auto multiple_index{node.getInputs().at(1)};
 
