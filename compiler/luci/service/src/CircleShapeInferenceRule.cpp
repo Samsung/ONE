@@ -726,7 +726,6 @@ public:
     // Only support OneHot node's depth() is CircleConst with type S32
     // TODO support depth with other types
     auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
-    LUCI_ASSERT(depth, "Currently only support CircleConst for shape of CircleOneHot in Depth");
     LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
     if (depth->rank() != 1)
       INTERNAL_EXN_V("Only support rank 1 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
