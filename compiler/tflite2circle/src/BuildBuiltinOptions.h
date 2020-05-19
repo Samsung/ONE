@@ -51,6 +51,7 @@
 #include "BuildBuiltinOptions/PackOptions.h"
 #include "BuildBuiltinOptions/PadOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
+#include "BuildBuiltinOptions/PowOptions.h"
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
 // There is no RsqrtOptions
