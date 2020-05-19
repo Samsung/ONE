@@ -866,7 +866,7 @@ public:
         GET_RANGE_PARAM(loco::DataType::S64)
         break;
       default:
-        INTERNAL_EXN("Range data type not supported");;
+        INTERNAL_EXN("Range data type not supported");
     }
 
 #undef GET_RANGE_PARAM
