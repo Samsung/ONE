@@ -20,6 +20,7 @@
 #include <sstream>
 #include "util/logging.h"
 #include "pass/ConstantInsertionPass.h"
+#include "pass/ConstantLoweringPass.h"
 #include "pass/PermutationOperationPass.h"
 #include "pass/PermutationInsertionPass.h"
 #include "ir/GraphIterator.h"
@@ -95,6 +96,9 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     pass::ConstantInsertionPass ci_pass(*this);
     ci_pass.run();
+
+    pass::ConstantLoweringPass cl_pass(*this);
+    cl_pass.run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
     manipulateLowerInfo(operands_lower_info);
@@ -288,6 +292,7 @@ void LoweredGraph::manipulateLowerInfo(
     auto &&lower_info = operands_lower_info.at(index);
     if (_graph.operands().at(index).isConstant())
     {
+      // In case of that a constant is Graph's output and not input or output of any operation
       lower_info->addDefPermuteFactor(operand::PermuteFactor{
           default_backend,
           Layout::NHWC // TODO Get frontend layout of this node from IR
