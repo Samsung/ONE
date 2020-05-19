@@ -475,6 +475,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for PAD
   // There is no Option for RELU
   // There is no Option for RELU6
+  // There is no Option for RELU_N1_TO_1
   _op_map[circle::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
