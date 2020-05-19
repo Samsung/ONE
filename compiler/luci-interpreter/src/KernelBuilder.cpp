@@ -16,6 +16,7 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/FullyConnected.h"
 #include "kernels/Softmax.h"
 
 #include <stdexcept>
@@ -26,6 +27,21 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
 {
   throw std::runtime_error("Const node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *filter = getInputTensor(node->weights());
+  const Tensor *bias = getOptionalInputTensor(node->bias());
+  Tensor *output = getOutputTensor(node);
+
+  FullyConnectedParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)

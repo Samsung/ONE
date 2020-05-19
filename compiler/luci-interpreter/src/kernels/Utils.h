@@ -18,6 +18,7 @@
 #ifndef LUCI_INTERPRETER_KERNELS_UTILS_H
 #define LUCI_INTERPRETER_KERNELS_UTILS_H
 
+#include "core/KernelParams.h"
 #include "core/Tensor.h"
 
 #include <tensorflow/lite/kernels/internal/types.h>
@@ -26,6 +27,8 @@ namespace luci_interpreter
 {
 namespace kernels
 {
+
+void calculateActivationRange(Activation activation, float *activation_min, float *activation_max);
 
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
 {

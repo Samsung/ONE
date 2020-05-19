@@ -17,10 +17,38 @@
 
 #include "kernels/Utils.h"
 
+#include <limits>
+#include <stdexcept>
+
 namespace luci_interpreter
 {
 namespace kernels
 {
+
+void calculateActivationRange(Activation activation, float *activation_min, float *activation_max)
+{
+  switch (activation)
+  {
+    case Activation::NONE:
+      *activation_min = std::numeric_limits<float>::lowest();
+      *activation_max = std::numeric_limits<float>::max();
+      break;
+    case Activation::RELU:
+      *activation_min = 0;
+      *activation_max = std::numeric_limits<float>::max();
+      break;
+    case Activation::RELU_N1_TO_1:
+      *activation_min = -1;
+      *activation_max = 1;
+      break;
+    case Activation::RELU6:
+      *activation_min = 0;
+      *activation_max = 6;
+      break;
+    default:
+      throw std::runtime_error("Unsupported activation.");
+  }
+}
 
 } // namespace kernels
 } // namespace luci_interpreter
