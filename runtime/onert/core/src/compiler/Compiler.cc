@@ -51,6 +51,10 @@ std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
         {
           cf_op_codes.insert(ir::OpCode::While);
         }
+        else if (node.opcode() == ir::OpCode::If)
+        {
+          cf_op_codes.insert(ir::OpCode::If);
+        }
       });
   return cf_op_codes;
 }
