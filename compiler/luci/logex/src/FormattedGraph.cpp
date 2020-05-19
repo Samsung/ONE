@@ -200,6 +200,7 @@ private:
   IMPLEMENT(luci::CircleFullyConnected)
   IMPLEMENT(luci::CircleGather)
   IMPLEMENT(luci::CircleIf)
+  IMPLEMENT(luci::CircleLess)
   IMPLEMENT(luci::CircleLogicalAnd)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
@@ -497,6 +498,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSu
 
   s.state(locop::NodeSummary::State::Complete);
 
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLess *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
