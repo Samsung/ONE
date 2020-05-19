@@ -852,8 +852,7 @@ public:
 #define GET_RANGE_PARAM(DT)         \
   start = start_node->scalar<DT>(); \
   limit = limit_node->scalar<DT>(); \
-  delta = delta_node->scalar<DT>(); \
-  LUCI_ASSERT(delta != 0, "Delta can not be zero");
+  delta = delta_node->scalar<DT>();
 
     switch (start_node->dtype())
     {
@@ -867,10 +866,13 @@ public:
         GET_RANGE_PARAM(loco::DataType::S64)
         break;
       default:
-        LUCI_ASSERT(false, "Range data type not supported");
+        INTERNAL_EXN("Range data type not supported");;
     }
 
 #undef GET_RANGE_PARAM
+
+    if (delta == 0)
+      INTERNAL_EXN("Delta can not be zero");
 
     output_shape.dim(0) = ceil((limit - start) / delta);
 

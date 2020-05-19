@@ -24,7 +24,28 @@ namespace tflchef
 void TFliteOpRange::filler(const tflite::Operator *op, TFliteImport *import,
                            tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  // filler for all inputs
+  const auto &inputs = *op->inputs();
+
+  for (int index = 0; index < 3; ++index)
+  {
+    const tflite::Tensor *tensor = import->tensors()->Get(inputs[index]);
+    const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+    if (tensor->type() == tflite::TensorType::TensorType_INT32)
+    {
+      auto vec = extract_buffer<int32_t>(buffer);
+      import->set_tensor_filler(inputs[index], vec);
+    }
+    else if (tensor->type() == tflite::TensorType::TensorType_FLOAT32)
+    {
+      auto vec = extract_buffer<float>(buffer);
+      import->set_tensor_filler(inputs[index], vec);
+    }
+    else
+    {
+      assert(false && "Invalid tensor type");
+    }
+  }
 }
 
 tflchef::Operation *TFliteOpRange::build(const tflite::Operator *op, TFliteImport *import,

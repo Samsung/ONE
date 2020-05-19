@@ -24,8 +24,8 @@ namespace luci
 {
 bool CircleRangeGraphBuilder::validate(const ValidateArgs &args) const
 {
-  // if (args.op.inputs.size() != 3)
-  //  return false;
+  if (args.op.inputs.size() != 3)
+    return false;
 
   // TODO Support type check
   return true;
