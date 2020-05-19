@@ -44,7 +44,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           break;
         }
       }
-      assert(tensor != nullptr);
+      assert(tensor != nullptr || _lowered_graph->graph().getInputs().contains(ind));
       list.push_back(tensor);
     }
     return list;
@@ -61,7 +61,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         if (tensor != nullptr)
           break;
       }
-      assert(tensor != nullptr);
+      assert(tensor != nullptr || _lowered_graph->graph().getInputs().contains(ind));
       list.push_back(tensor);
     }
     return list;

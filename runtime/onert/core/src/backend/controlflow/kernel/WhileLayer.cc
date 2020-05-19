@@ -82,6 +82,12 @@ void WhileLayer::run()
                                                         _ranks};
   PermuteTensorsLayer permute_cond_input_to_op_output{cond_input_tensors, _dst_tensors, _ranks};
 
+  // Remove copying of unused tensor
+  permute_op_input_to_cond_input.prepare();
+  permute_cond_input_to_body_input.prepare();
+  permute_body_output_to_cond_input.prepare();
+  permute_cond_input_to_op_output.prepare();
+
   permute_op_input_to_cond_input.run();
   cond_exec->execute();
 

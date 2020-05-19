@@ -163,6 +163,16 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
       return;
     }
 
+    // Unused input of subgraph
+    // TODO Register unused input as nullptr in tensor_builder
+    if (lower_info->def_factors().size() == 0 && lower_info->use_factors().size() == 0 &&
+        graph.getInputs().contains(ind))
+    {
+      VERBOSE(LINEAR) << "Operand #" << ind.value() << " will not be used. no more process."
+                      << std::endl;
+      return;
+    }
+
     uses_map[ind] = obj.getUses().size();
     def_map[ind] = obj.getDef().size(); // should be 1 or 0
 

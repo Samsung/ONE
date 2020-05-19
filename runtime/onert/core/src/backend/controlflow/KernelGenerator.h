@@ -62,7 +62,7 @@ private:
         ret = tensor;
       }
     }
-    assert(ret != nullptr);
+    // Unused operand's index doesn't exist as a tensor in tensor builders
     return ret;
   }
 
