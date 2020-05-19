@@ -36,6 +36,7 @@ target_link_libraries(luci_interpreter_kernels
 set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
+    Concatenation.test.cpp
     FullyConnected.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp)
