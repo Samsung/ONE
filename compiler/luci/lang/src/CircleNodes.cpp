@@ -47,4 +47,38 @@ void set_new_shape(CircleReshape *node, int32_t *base, uint32_t size)
     node->newShape()->dim(axis) = base[axis];
 }
 
+void link(loco::GraphOutput *output, CircleOutput *node) { node->index(output->index()); }
+
+CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &index)
+{
+  for (uint32_t n = 0; n < g->nodes()->size(); ++n)
+  {
+    if (auto output = dynamic_cast<CircleOutput *>(g->nodes()->at(n)))
+    {
+      if (output->indexed() && output->index() == index)
+      {
+        return output;
+      }
+    }
+  }
+  return nullptr;
+}
+
+void link(loco::GraphInput *input, CircleInput *node) { node->index(input->index()); }
+
+CircleInput *input_node(loco::Graph *g, const loco::GraphInputIndex &index)
+{
+  for (uint32_t n = 0; n < g->nodes()->size(); ++n)
+  {
+    if (auto input = dynamic_cast<CircleInput *>(g->nodes()->at(n)))
+    {
+      if (input->indexed() && input->index() == index)
+      {
+        return input;
+      }
+    }
+  }
+  return nullptr;
+}
+
 } // namespace luci

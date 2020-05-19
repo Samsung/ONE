@@ -95,6 +95,8 @@
 #include "Nodes/CircleTopKV2Out.h"
 #include "Nodes/CircleWhileOut.h"
 
+#include <loco/IR/Graph.h>
+
 namespace luci
 {
 
@@ -106,6 +108,18 @@ namespace luci
  * TODO find better place for this helper
  */
 void set_new_shape(CircleReshape *node, int32_t *base, uint32_t size);
+
+/// @brief Link GraphOutput with CircleOutput node
+void link(loco::GraphOutput *, CircleOutput *);
+
+/// @brief Link GraphInput with CircleInput node
+void link(loco::GraphInput *, CircleInput *);
+
+/// @brief Find a CircleOutput node with a given output index
+CircleOutput *output_node(loco::Graph *g, const loco::GraphOutputIndex &index);
+
+/// @brief Find a Pull node with a given input index
+CircleInput *input_node(loco::Graph *g, const loco::GraphInputIndex &index);
 
 } // namespace luci
 
