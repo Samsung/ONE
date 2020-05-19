@@ -82,9 +82,9 @@ void GetQuantizedConvolutionMultiplier(const operand::Tensor *input, const opera
                                        const operand::Tensor *bias, const operand::Tensor *output,
                                        double *multiplier)
 {
-  const double input_product_scale = input->scale() * filter->scale();
-  const double bias_scale = bias->scale();
-  const double output_scale = output->scale();
+  const double input_product_scale = input->data_scale() * filter->data_scale();
+  const double bias_scale = bias->data_scale();
+  const double output_scale = output->data_scale();
   // The following conditions must be guaranteed by the training pipeline.
   UNUSED_RELEASE(bias_scale);
   assert(std::abs(input_product_scale - bias_scale) <=
@@ -150,8 +150,8 @@ void CalculateActivationRangeUint8(ir::Activation activation, const operand::Ten
 {
   const int32_t qmin = std::numeric_limits<uint8_t>::min();
   const int32_t qmax = std::numeric_limits<uint8_t>::max();
-  const auto scale = output->scale();
-  const auto zero_point = output->offset();
+  const auto scale = output->data_scale();
+  const auto zero_point = output->data_offset();
   auto quantize = [scale, zero_point](float f) {
     return zero_point + static_cast<int32_t>(std::round(f / scale));
   };
