@@ -42,10 +42,10 @@ void print_help(const char *progname)
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
   std::cerr << "   --quantize_with_minmax : Enable QuantizeWithMinMax Pass" << std::endl;
-  std::cerr
-      << "                            Require two following parameters (input_dtype, output_dtype)"
-      << std::endl;
-  std::cerr << "                            Ex: --quantize_with_minmax float32 uint8" << std::endl;
+  std::cerr << "                            ";
+  std::cerr << "Require two following parameters (input_dtype, output_dtype)" << std::endl;
+  std::cerr << "                            ";
+  std::cerr << "Ex: --quantize_with_minmax float32 uint8" << std::endl;
   std::cerr << std::endl;
 }
 
