@@ -46,8 +46,25 @@ public:
   using IKernelGenerator::visit;
 
   void visit(const ir::OpSequence &) override;
+  void visit(const ir::operation::If &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
+
+private:
+  std::shared_ptr<backend::ITensor> getTensor(const ir::OperandIndex &index)
+  {
+    std::shared_ptr<backend::ITensor> ret;
+    for (auto tensor_builder : _tensor_builder_set)
+    {
+      auto tensor = tensor_builder->tensorAt(index);
+      if (tensor)
+      {
+        ret = tensor;
+      }
+    }
+    assert(ret != nullptr);
+    return ret;
+  }
 
 private:
   const ir::Operands &_operand_ctx;

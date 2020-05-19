@@ -81,10 +81,15 @@ private:
   public:
     EmptyShapeFixer() = default;
 
+    void visit(const ir::operation::If &) override
+    {
+      // DO NOTHING
+    }
     void visit(const ir::operation::Permute &) override
     {
       // DO NOTHING
     }
+
     void visit(const ir::operation::While &) override
     {
       // DO NOTHING
