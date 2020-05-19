@@ -18,27 +18,7 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
-
-namespace
-{
-class PermuteTensorsLayer : public onert::exec::IPermuteFunction
-{
-public:
-  PermuteTensorsLayer(const std::vector<std::shared_ptr<onert::backend::ITensor>> &src_tensors,
-                      const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors,
-                      std::vector<size_t> ranks)
-  {
-    _src_tensors = src_tensors;
-    _dst_tensors = dst_tensors;
-    _ranks = ranks;
-  }
-
-  void optimize() override
-  {
-    // TODO Implement optimization
-  }
-};
-}
+#include "PermuteTensorsLayer.h"
 
 namespace onert
 {
