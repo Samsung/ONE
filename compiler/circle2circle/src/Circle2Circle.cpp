@@ -74,12 +74,21 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     return 0;
   };
+
+  // TODO use better parsing library (ex: boost.program_options)
   argparse["--quantize_with_minmax"] = [&options](const char **argv) {
     options->enable(Algorithms::QuantizeWithMinMax);
+
+    if (argv[0] == nullptr || argv[1] == nullptr)
+      throw std::runtime_error("--quantize_with_minmax must have two following parameters.");
+
     std::string input_dtype = argv[0];
-    assert(!input_dtype.empty());
     std::string output_dtype = argv[1];
-    assert(!output_dtype.empty());
+
+    if (input_dtype.empty() || output_dtype.empty() ||
+        input_dtype.substr(0, 2).compare("--") == 0 || output_dtype.substr(0, 2).compare("--") == 0)
+      throw std::runtime_error("Wrong algorithm parameters for --quantize_with_minmax.");
+
     options->param(AlgorithmParameters::QuantizeWithMinMax_input_dtype, input_dtype);
     options->param(AlgorithmParameters::QuantizeWithMinMax_output_dtype, output_dtype);
     return 2;

@@ -47,8 +47,8 @@ public:
 
     virtual void enable(Algorithm) = 0;
     virtual bool query(Algorithm) = 0;
-    virtual void param(AlgorithmParameters, std::string) = 0;
-    virtual std::string param(AlgorithmParameters) = 0;
+    virtual void param(AlgorithmParameters, const std::string &) = 0;
+    virtual const std::string param(AlgorithmParameters) const = 0;
   };
 
 public:
