@@ -20,6 +20,7 @@
 #include <utility>
 #include <unordered_map>
 
+#include "backend/controlflow/Config.h"
 #include "ir/Operand.h"
 #include "ir/operation/LowerInfo.h"
 #include "ir/Graph.h"
@@ -91,7 +92,11 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
       const backend::Backend *backend = op_seq_li->backend();
       assert(backend);
       auto use_node_inputs = operation.getInputs();
-      assert(use_node_inputs.contains(index));
+      // Controlflow operation can have the same operand as 2 or more inputs
+      if (backend->config()->id() != backend::controlflow::Config::ID)
+      {
+        assert(use_node_inputs.contains(index));
+      }
 
       auto new_index = factor_to_index.at({backend, op_seq_layout});
       if (index != new_index)
