@@ -207,10 +207,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
     auto kernel_gen = lowered_graph->backend_contexts().at(lower_info->backend())->kernel_gen;
     // Set TensorBuilderSet and ExecutorMap to kernel_gen of control flow
-    if (lower_info->backend()->config()->id() == backend::controlflow::Config::ID)
+    auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
+    if (cf_kernel_gen != nullptr)
     {
-      auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
-      assert(cf_kernel_gen != nullptr);
       cf_kernel_gen->setTensorBuilderSet(tensor_builders);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
