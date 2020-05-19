@@ -84,7 +84,7 @@ public:
   /// @brief Creates op T (arity=2) with arg1, arg2 as inputs and appends it to graph
   template <class T> T *append(luci::CircleNode *arg1, luci::CircleNode *arg2)
   {
-    T *node = g->nodes()->create<T>();
+    auto node = g->nodes()->create<T>();
     setInput(node, arg1, arg2);
     _next_input = node;
 

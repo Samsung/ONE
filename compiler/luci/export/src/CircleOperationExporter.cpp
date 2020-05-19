@@ -396,7 +396,7 @@ void OperationExporter::visit(luci::CircleExp *node)
 
 void OperationExporter::visit(luci::CircleExpandDims *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EXP);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EXPAND_DIMS);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
