@@ -33,8 +33,10 @@ public:
   explicit KernelBuilder(TensorMap &tensor_map) : _tensor_map(tensor_map) {}
 
   std::unique_ptr<Kernel> visit(const luci::CircleConst *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleFullyConnected *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleOutput *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleReshape *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
 
 private:
@@ -43,6 +45,12 @@ private:
     const Tensor *tensor = _tensor_map.getTensor(node);
     assert(tensor != nullptr);
     return tensor;
+  }
+
+  const Tensor *getOptionalInputTensor(const loco::Node *node) const
+  {
+    // TODO Revise this when optional inputs are implemented in the IR.
+    return getInputTensor(node);
   }
 
   Tensor *getOutputTensor(const loco::Node *node) const

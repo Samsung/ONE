@@ -10,6 +10,10 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    FullyConnected.h
+    FullyConnected.cpp
+    Reshape.h
+    Reshape.cpp
     Softmax.h
     Softmax.cpp
     Utils.h
@@ -30,6 +34,8 @@ target_link_libraries(luci_interpreter_kernels
 set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
+    FullyConnected.test.cpp
+    Reshape.test.cpp
     Softmax.test.cpp)
 
 GTest_AddTest(luci_interpreter_kernels_test ${TEST_SOURCES})

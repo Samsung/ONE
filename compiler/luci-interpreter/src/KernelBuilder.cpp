@@ -16,6 +16,8 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/FullyConnected.h"
+#include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 
 #include <stdexcept>
@@ -28,6 +30,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
   throw std::runtime_error("Const node cannot be executed.");
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *filter = getInputTensor(node->weights());
+  const Tensor *bias = getOptionalInputTensor(node->bias());
+  Tensor *output = getOutputTensor(node);
+
+  FullyConnectedParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
 {
   throw std::runtime_error("Input node cannot be executed.");
@@ -36,6 +53,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 {
   throw std::runtime_error("Output node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
+{
+  assert(node->arity() == 2);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->shape()) == nullptr)
+    throw std::runtime_error("Dynamic shape is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->tensor());
+  const Tensor *shape = getInputTensor(node->shape());
+  Tensor *output = getOutputTensor(node);
+
+  // NOTE 'newShape' attribute is ignored.
+  return std::make_unique<kernels::Reshape>(input, shape, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
