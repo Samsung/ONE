@@ -37,9 +37,11 @@ public:
   arm_compute::ICLTensor *handle() override = 0;
 
 public:
+  void access(const std::function<void(ITensor &tensor)> &fn) final;
+
+private:
   void map(cl::CommandQueue &q, bool blocking = true) { return handle()->map(q, blocking); }
   void unmap(cl::CommandQueue &q) { return handle()->unmap(q); }
-  void access(const std::function<void(ITensor &tensor)> &fn) final;
 };
 
 } // namespace operand

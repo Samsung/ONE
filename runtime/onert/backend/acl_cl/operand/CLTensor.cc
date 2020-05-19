@@ -43,10 +43,6 @@ arm_compute::CLTensor *CLTensor::handle() { return _cl_tensor.get(); }
 
 arm_compute::CLTensorAllocator *CLTensor::allocator() { return _cl_tensor->allocator(); }
 
-void CLTensor::map(bool blocking) { _cl_tensor->map(blocking); }
-
-void CLTensor::unmap() { _cl_tensor->unmap(); }
-
 void CLTensor::setBuffer(void *host_ptr)
 {
   // Constructs a Buffer on a user-supplied memory
