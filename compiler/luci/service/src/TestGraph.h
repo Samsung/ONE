@@ -315,10 +315,16 @@ namespace luci
 namespace test
 {
 
+/// @brief This will set GraphInput shape from CircleInput shape
 void graph_input_shape(luci::CircleInput *input);
+
+/// @brief This will set GraphOutput shape from CircleOutput shape
 void graph_output_shape(luci::CircleOutput *output);
 
+/// @brief This will set GraphInput dtype from CircleInput dtype
 void graph_input_dtype(luci::CircleInput *input);
+
+/// @brief This will set GraphOutput dtype from CircleOutput dtype
 void graph_output_dtype(luci::CircleOutput *output);
 
 } // namespace test
