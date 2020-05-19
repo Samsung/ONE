@@ -21,7 +21,7 @@ neural network (NN) models. For example, in one product requirement, a mobile de
 less than 1.2W and could use at most 2W only for 10 minutes due to thermal issue. Next, on-device AI
 software stack needs to support diverse device environments, since embedded platforms may consist of
 heterogeneous compute devices, such as CPU, GPU, DSP, or neural processing unit (NPU), and use
-different OS platforms, such as Tizen, Android, or various Linuxs.
+different OS platforms, such as Tizen, Android, or various Linux.
 
 To tackle the challenges above and to have the leadership on on-device AI technology, this project,
 as the first step, aims at developing a neural network inference framework specialized and optimized
