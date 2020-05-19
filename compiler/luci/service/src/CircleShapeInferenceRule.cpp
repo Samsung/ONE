@@ -731,6 +731,12 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleLeakyRelu *node) final
+  {
+    const auto input_shape = loco::shape_get(node->features()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleLess *node) final
   {
     const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();

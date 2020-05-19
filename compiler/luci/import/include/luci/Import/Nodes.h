@@ -40,6 +40,7 @@
 #include "Nodes/CircleGreater.h"
 #include "Nodes/CircleGreaterEqual.h"
 #include "Nodes/CircleIf.h"
+#include "Nodes/CircleLeakyRelu.h"
 #include "Nodes/CircleLess.h"
 #include "Nodes/CircleLogicalAnd.h"
 #include "Nodes/CircleLogicalNot.h"

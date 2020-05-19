@@ -243,6 +243,20 @@ public:
   }
 };
 
+class LeakyReluPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_LeakyReluOptions())
+    {
+      os << "    ";
+      os << "alpha(" << params->alpha() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class MirrorPadPrinter : public OpPrinter
 {
 public:
@@ -256,6 +270,7 @@ public:
     }
   }
 };
+
 
 class MulPrinter : public OpPrinter
 {
@@ -481,6 +496,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();

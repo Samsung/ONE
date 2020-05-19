@@ -40,6 +40,7 @@
 #include "Op/GatherNd.h"
 #include "Op/Greater.h"
 #include "Op/GreaterEqual.h"
+#include "Op/LeakyRelu.h"
 #include "Op/Less.h"
 #include "Op/LogicalAnd.h"
 #include "Op/LogicalNot.h"
