@@ -207,6 +207,7 @@ private:
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
+  IMPLEMENT(luci::CircleMinimum)
   IMPLEMENT(luci::CircleMul)
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
@@ -563,6 +564,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMean *node, locop::Node
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
   s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMinimum *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
