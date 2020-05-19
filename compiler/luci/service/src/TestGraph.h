@@ -109,7 +109,7 @@ public:
 
 private:
   // arity 1
-  void setInput(loco::Node *node, loco::Node *) { assert(false && "NYI"); };
+  void setInput(loco::Node *, loco::Node *) { assert(false && "NYI"); };
 
   void setInput(loco::AvgPool2D *node, loco::Node *input) { node->ifm(input); }
   void setInput(loco::BiasDecode *node, loco::Node *input) { node->input(input); };
@@ -130,7 +130,7 @@ private:
   void setInput(luci::CircleSqueeze *node, loco::Node *input) { node->input(input); };
 
   // arity 2
-  void setInput(loco::Node *node, loco::Node *, loco::Node *) { assert(false && "NYI"); };
+  void setInput(loco::Node *, loco::Node *, loco::Node *) { assert(false && "NYI"); };
 
   void setInput(loco::Conv2D *node, loco::Node *input, loco::Node *filter)
   {
@@ -175,10 +175,7 @@ private:
   };
 
   // arity 3
-  void setInput(loco::Node *node, loco::Node *, loco::Node *, loco::Node *)
-  {
-    assert(false && "NYI");
-  };
+  void setInput(loco::Node *, loco::Node *, loco::Node *, loco::Node *) { assert(false && "NYI"); };
 
   void setInput(luci::CircleConv2D *node, loco::Node *input, loco::Node *filter, loco::Node *bias)
   {
@@ -309,6 +306,26 @@ public:
     complete(transpose_node);
   }
 };
+
+} // namespace test
+} // namespace luci
+
+namespace luci
+{
+namespace test
+{
+
+/// @brief This will set GraphInput shape from CircleInput shape
+void graph_input_shape(luci::CircleInput *input);
+
+/// @brief This will set GraphOutput shape from CircleOutput shape
+void graph_output_shape(luci::CircleOutput *output);
+
+/// @brief This will set GraphInput dtype from CircleInput dtype
+void graph_input_dtype(luci::CircleInput *input);
+
+/// @brief This will set GraphOutput dtype from CircleOutput dtype
+void graph_output_dtype(luci::CircleOutput *output);
 
 } // namespace test
 } // namespace luci
