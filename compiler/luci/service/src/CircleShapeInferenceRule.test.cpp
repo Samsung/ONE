@@ -334,6 +334,48 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueeze)
   }
 }
 
+TEST(CircleShapeInferenceRuleTest, CircleExpandDims)
+{
+  luci::test::TestGraph graph;
+  auto axis = graph.append<luci::CircleConst>();
+  axis->dtype(loco::DataType::S32);
+  axis->rank(0);
+  axis->size<loco::DataType::S32>(1);
+  axis->at<loco::DataType::S32>(0) = 1;
+
+  auto expand_dims = graph.append<luci::CircleExpandDims>(graph.input_node, axis);
+  graph.complete();
+
+  auto input_node = graph.input_node;
+  {
+    input_node->shape({4, 3});
+  }
+
+  auto output_node = graph.output_node;
+  {
+    output_node->from(expand_dims);
+  }
+
+  luci::test::graph_input_shape(input_node);
+  luci::test::graph_output_shape(output_node);
+
+  // shape inference
+  while (shape_pass(graph.graph()))
+    ;
+
+  // validation
+  {
+    ASSERT_TRUE(loco::shape_known(expand_dims));
+
+    auto shape = loco::shape_get(expand_dims).as<loco::TensorShape>();
+
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(4, shape.dim(0));
+    ASSERT_EQ(1, shape.dim(1));
+    ASSERT_EQ(3, shape.dim(2));
+  }
+}
+
 TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
 {
   luci::test::TestGraph graph;

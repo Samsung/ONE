@@ -33,6 +33,7 @@
 #include "Nodes/CircleDiv.h"
 #include "Nodes/CircleEqual.h"
 #include "Nodes/CircleExp.h"
+#include "Nodes/CircleExpandDims.h"
 #include "Nodes/CircleFill.h"
 #include "Nodes/CircleFloorMod.h"
 #include "Nodes/CircleFullyConnected.h"

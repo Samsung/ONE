@@ -599,6 +599,31 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleExpandDims *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+    auto x_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto const_axis = loco::must_cast<luci::CircleConst *>(node->axis());
+    LUCI_ASSERT(const_axis->dtype() == S32, "Only support int32 CircleConst for axis");
+    if (const_axis->rank() != 0)
+    {
+      INTERNAL_EXN_V("Non-scalar axis in OP", node->opnum());
+    }
+    int32_t axis = const_axis->at<S32>(0);
+    LUCI_ASSERT((axis < x_shape.rank()) && (axis > -1 - static_cast<int32_t>(x_shape.rank())),
+                "Axis has to be between [-(D+1), D], where D is rank of input.");
+    axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
+    loco::TensorShape output_shape;
+    output_shape.rank(x_shape.rank() + 1);
+    int i = 0;
+    for (; i < axis; i++)
+      output_shape.dim(i) = x_shape.dim(i);
+    output_shape.dim(i) = loco::Dimension(1);
+    for (; i < x_shape.rank(); i++)
+      output_shape.dim(i + 1) = x_shape.dim(i);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFill *node) final
   {
     loco::TensorShape shape;
