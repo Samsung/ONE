@@ -87,6 +87,11 @@ void IfLayer::run()
     PermuteTensorsLayer permute_then_output_to_op_output{then_output_tensors, _output_tensors,
                                                          output_ranks};
 
+    // Remove copying of unused tensor
+    permute_op_input_to_then_input.prepare();
+    permute_then_output_to_op_output.prepare();
+
+    // Copy & run
     permute_op_input_to_then_input.run();
     then_exec->execute();
     permute_then_output_to_op_output.run();
@@ -106,6 +111,11 @@ void IfLayer::run()
     PermuteTensorsLayer permute_else_output_to_op_output{else_output_tensors, _output_tensors,
                                                          output_ranks};
 
+    // Remove copying of unused tensor
+    permute_op_input_to_else_input.prepare();
+    permute_else_output_to_op_output.prepare();
+
+    // Copy & run
     permute_op_input_to_else_input.run();
     else_exec->execute();
     permute_else_output_to_op_output.run();
