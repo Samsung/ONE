@@ -82,6 +82,11 @@ void WhileLayer::run()
   // Copy cond subg inputs -> _dst_tensors
   auto cond_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_cond_subg_index).get());
   auto body_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_body_subg_index).get());
+  if ((cond_exec == nullptr) || (body_exec == nullptr))
+  {
+    throw std::runtime_error{"While: Invalid condition or body"};
+  }
+
   const auto &cond_input_tensors = cond_exec->getInputTensors();
   const auto &body_input_tensors = body_exec->getInputTensors();
   const auto &body_output_tensors = body_exec->getOutputTensors();
