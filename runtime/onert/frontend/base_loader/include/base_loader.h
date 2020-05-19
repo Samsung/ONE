@@ -138,6 +138,7 @@ protected:
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadReduceProd(const Operator *op, ir::Graph &subg);
+  void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadNeg(const Operator *op, ir::Graph &subg);
   void loadLog(const Operator *op, ir::Graph &subg);
@@ -1324,6 +1325,25 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::If::Param param;
+  const auto *options = op->builtin_options_as_IfOptions();
+  const uint32_t then_index = options->then_subgraph_index();
+  const uint32_t else_index = options->else_subgraph_index();
+  param.then_subg_index = ir::SubgraphIndex{then_index};
+  param.else_subg_index = ir::SubgraphIndex{else_index};
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::If(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1636,10 +1656,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
       loadReduceProd(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_IF:
+      loadIf(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_WHILE:
       loadWhile(op, subg);
       return;
-    // TODO Implement loading subgraphs of conftrol flow ops
     case BuiltinOperator::BuiltinOperator_NEG:
       loadNeg(op, subg);
       return;
