@@ -199,6 +199,7 @@ private:
   IMPLEMENT(luci::CircleFloorMod)
   IMPLEMENT(luci::CircleFullyConnected)
   IMPLEMENT(luci::CircleGather)
+  IMPLEMENT(luci::CircleGreater)
   IMPLEMENT(luci::CircleGreaterEqual)
   IMPLEMENT(luci::CircleIf)
   IMPLEMENT(luci::CircleLess)
@@ -479,6 +480,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleGather *node, locop::No
   s.args().append("indices", tbl()->lookup(node->indices()));
   s.args().append("axis", pepper::str(node->axis()));
 
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleGreater *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
