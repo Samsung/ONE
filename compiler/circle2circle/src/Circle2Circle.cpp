@@ -33,6 +33,7 @@
 using OptionHook = std::function<int(const char **)>;
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
+using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 
 void print_help(const char *progname)
 {
@@ -40,6 +41,11 @@ void print_help(const char *progname)
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
+  std::cerr << "   --quantize_with_minmax : Enable QuantizeWithMinMax Pass" << std::endl;
+  std::cerr
+      << "                            Require two following parameters (input_dtype, output_dtype)"
+      << std::endl;
+  std::cerr << "                            Ex: --quantize_with_minmax float32 uint8" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -67,6 +73,16 @@ int entry(int argc, char **argv)
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     return 0;
+  };
+  argparse["--quantize_with_minmax"] = [&options](const char **argv) {
+    options->enable(Algorithms::QuantizeWithMinMax);
+    std::string input_dtype = argv[0];
+    assert(!input_dtype.empty());
+    std::string output_dtype = argv[1];
+    assert(!output_dtype.empty());
+    options->param(AlgorithmParameters::QuantizeWithMinMax_input_dtype, input_dtype);
+    options->param(AlgorithmParameters::QuantizeWithMinMax_output_dtype, output_dtype);
+    return 2;
   };
 
   for (int n = 1; n < argc - 2; ++n)

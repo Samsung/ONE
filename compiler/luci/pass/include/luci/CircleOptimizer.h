@@ -33,13 +33,22 @@ public:
     enum Algorithm
     {
       FuseInstanceNorm,
-      ResolveCustomOpBatchMatMul
+      ResolveCustomOpBatchMatMul,
+      QuantizeWithMinMax
+    };
+
+    enum AlgorithmParameters
+    {
+      QuantizeWithMinMax_input_dtype,
+      QuantizeWithMinMax_output_dtype
     };
 
     virtual ~Options() = default;
 
     virtual void enable(Algorithm) = 0;
     virtual bool query(Algorithm) = 0;
+    virtual void param(AlgorithmParameters, std::string) = 0;
+    virtual std::string param(AlgorithmParameters) = 0;
   };
 
 public:

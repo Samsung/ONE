@@ -41,13 +41,26 @@ class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
 public:
   void enable(Algorithm) final;
+  void param(AlgorithmParameters, std::string) final;
+  std::string param(AlgorithmParameters) final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
+  std::map<AlgorithmParameters, std::string> _algorithm_params;
 };
 
 void OptimizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
+
+void OptimizeOptionsImpl::param(AlgorithmParameters param, std::string str)
+{
+  _algorithm_params[param] = str;
+}
+
+std::string OptimizeOptionsImpl::param(AlgorithmParameters param)
+{
+  return _algorithm_params[param];
+}
 
 bool OptimizeOptionsImpl::query(Algorithm algo)
 {
@@ -91,6 +104,11 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
+
+  if (_options->query(Options::Algorithm::QuantizeWithMinMax))
+  {
+    // TODO: Add QuantizeWithMinMaxPass phase with parameters
+  }
 
   ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
   logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
