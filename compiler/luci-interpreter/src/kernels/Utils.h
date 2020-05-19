@@ -23,12 +23,42 @@
 
 #include <tensorflow/lite/kernels/internal/types.h>
 
+#include <cassert>
+#include <cstdint>
+
 namespace luci_interpreter
 {
 namespace kernels
 {
 
+inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_size,
+                              int32_t filter_size, int32_t out_size)
+{
+  const int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  const int32_t padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
+  return padding > 0 ? padding : 0;
+}
+
+inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t filter_size,
+                                 int32_t stride, int32_t dilation_rate = 1)
+{
+  const int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  switch (padding)
+  {
+    case Padding::SAME:
+      return (image_size + stride - 1) / stride;
+    case Padding::VALID:
+      return (image_size + stride - effective_filter_size) / stride;
+    default:
+      assert(false);
+      return 0;
+  }
+}
+
 void calculateActivationRange(Activation activation, float *activation_min, float *activation_max);
+
+void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
+                                       int32_t *activation_min, int32_t *activation_max);
 
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
 {

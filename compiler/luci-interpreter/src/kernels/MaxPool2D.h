@@ -14,41 +14,39 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_CORE_KERNELPARAMS_H
-#define LUCI_INTERPRETER_CORE_KERNELPARAMS_H
+#ifndef LUCI_INTERPRETER_KERNELS_MAXPOOL2D_H
+#define LUCI_INTERPRETER_KERNELS_MAXPOOL2D_H
 
-#include <luci/IR/AttrPadding.h>
-#include <luci/IR/AttrFusedActFunc.h>
-
-#include <cstdint>
+#include "core/Kernel.h"
+#include "core/KernelParams.h"
+#include "core/Tensor.h"
 
 namespace luci_interpreter
 {
 
-// Inject commonly used types into `luci_interpreter` namespace for convenience.
-using Activation = luci::FusedActFunc;
-using Padding = luci::Padding;
-
-struct FullyConnectedParams
+namespace kernels
 {
-  Activation activation;
+
+class MaxPool2D : public KernelWithParams<Pool2DParams>
+{
+public:
+  MaxPool2D(const Tensor *input, Tensor *output, const Pool2DParams &params);
+
+  void configure() override;
+  void execute() const override;
+
+private:
+  void evalFloat() const;
+  void evalQuantized() const;
+
+private:
+  const Tensor *const _input;
+  Tensor *const _output;
+  int32_t _padding_height{};
+  int32_t _padding_width{};
 };
 
-struct Pool2DParams
-{
-  Padding padding;
-  int32_t filter_height;
-  int32_t filter_width;
-  int32_t stride_height;
-  int32_t stride_width;
-  Activation activation;
-};
-
-struct SoftmaxParams
-{
-  float beta;
-};
-
+} // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_CORE_KERNELPARAMS_H
+#endif // LUCI_INTERPRETER_KERNELS_MAXPOOL2D_H

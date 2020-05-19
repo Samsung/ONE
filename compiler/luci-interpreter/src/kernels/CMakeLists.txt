@@ -12,6 +12,7 @@ endif ()
 set(SOURCES
     FullyConnected.h
     FullyConnected.cpp
+    MaxPool2D.cpp
     Reshape.h
     Reshape.cpp
     Softmax.h
@@ -35,6 +36,7 @@ set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
     FullyConnected.test.cpp
+    MaxPool2D.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp)
 
