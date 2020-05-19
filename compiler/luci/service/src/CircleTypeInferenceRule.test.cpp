@@ -32,26 +32,32 @@ TEST(CircleTypeInferenceRuleTest, minimal_with_CircleRelu)
 {
   // Create a simple network
   luci::test::TestGraph graph;
-  auto tfl_node = graph.append<luci::CircleRelu>(graph.pull);
-  graph.complete(tfl_node);
+  auto relu_node = graph.append<luci::CircleRelu>(graph.input_node);
+  graph.complete(relu_node);
 
-  graph.pull->dtype(loco::DataType::S32);
+  // set dtype for nodes; like setting them in import
+  graph.input_node->dtype(loco::DataType::S32);
+  relu_node->dtype(loco::DataType::S32);
+  graph.output_node->dtype(loco::DataType::S32);
+
+  luci::test::graph_input_dtype(graph.input_node);
+  luci::test::graph_output_dtype(graph.output_node);
 
   // pre-check
-  ASSERT_FALSE(loco::dtype_known(tfl_node));
+  ASSERT_FALSE(loco::dtype_known(relu_node));
 
   // type inference
-  luci::CircleTypeInferenceRule tfl_rule;
+  luci::CircleTypeInferenceRule circle_rule;
   loco::CanonicalTypeInferenceRule canon_rule;
   loco::MultiDialectTypeInferenceRule rules;
 
   rules.bind(loco::CanonicalDialect::get(), &canon_rule);
-  rules.bind(luci::CircleDialect::get(), &tfl_rule);
+  rules.bind(luci::CircleDialect::get(), &circle_rule);
 
   loco::apply(&rules).to(graph.g.get());
 
   // Verify
-  ASSERT_TRUE(loco::dtype_known(tfl_node));
-  auto type = loco::dtype_get(tfl_node);
+  ASSERT_TRUE(loco::dtype_known(relu_node));
+  auto type = loco::dtype_get(relu_node);
   ASSERT_EQ(loco::DataType::S32, type);
 }
