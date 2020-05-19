@@ -26,6 +26,7 @@
 // Version 0.1: Based on TF v2.2-rc2 + more (from TensorFlow `56d281c`)
 //              `BATCH_MATMUL` operator, `FLOAT64` tensor type,
 //              `asymmetric_quantize_inputs` for several operator options
+// Version 0.2: BCQ_GATHER and BCQ_FULLY_CONNECTED are added.
 
 namespace circle;
 
