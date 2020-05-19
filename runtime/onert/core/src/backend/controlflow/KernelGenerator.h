@@ -46,6 +46,7 @@ public:
   using IKernelGenerator::visit;
 
   void visit(const ir::OpSequence &) override;
+  void visit(const ir::operation::If &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
 
