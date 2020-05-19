@@ -50,9 +50,6 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
         const_cast<std::list<OperationIndex> &>(new_object.getUses().list()).clear();
         const auto new_index = _graph.operands().emplace(new_object);
         _replace_operands_map[key] = new_index;
-
-        _lowered_graph.setLowerInfo(new_index, std::make_unique<operand::LowerInfo>());
-        _lowered_graph.getLowerInfo(new_index)->addDefPermuteFactor(factor);
       }
 
       const auto replaced_input = _replace_operands_map[key];
@@ -69,10 +66,6 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       auto &replaced_object = _graph.operands().at(replaced_input);
       replaced_object.appendUse(node_index);
 
-      // Update lower_info
-      auto replaced_lower_info = _lowered_graph.getLowerInfo(replaced_input);
-      replaced_lower_info->addUsePermuteFactor(factor);
-
       // Remove this node from def and uses of origin operand
       if (object.getDef().contains(node_index))
       {
@@ -84,7 +77,6 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       if (object.getDef().size() == 0 && object.getUses().size() == 0)
       {
         _graph.removeOperand(input);
-        _lowered_graph.removeLowerInfo(input);
       }
     }
   }
