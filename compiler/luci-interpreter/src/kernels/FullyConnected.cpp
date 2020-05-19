@@ -50,6 +50,7 @@ void FullyConnected::configure()
   assert(weights_shape.num_dims() == 2);
   assert(_bias == nullptr || _bias->shape().num_elements() == weights_shape.dim(0));
 
+  assert(input_shape.num_elements() % weights_shape.dim(1) == 0);
   const int32_t batch_size = input_shape.num_elements() / weights_shape.dim(1);
   const int32_t num_units = weights_shape.dim(0);
 
