@@ -760,6 +760,38 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleOneHot *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+    auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
+    // Only support OneHot node's depth() is CircleConst with type S32
+    // TODO support depth with other types
+    auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
+    LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
+    if (depth->rank() != 1)
+      INTERNAL_EXN_V("Only support rank 1 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
+    loco::TensorShape output_shape;
+    output_shape.rank(indices_shape.rank() + 1);
+    auto axis = node->axis();
+    if (axis < 0)
+      axis += indices_shape.rank() + 1;
+    LUCI_ASSERT(0 <= axis, "Axis is out of range");
+    LUCI_ASSERT(static_cast<uint32_t>(axis) <= indices_shape.rank(), "Axis is out of range");
+    uint32_t j = 0;
+    for (uint32_t i = 0; i < output_shape.rank(); i++)
+    {
+      if (i == static_cast<uint32_t>(axis))
+      {
+        output_shape.dim(i) = depth->at<S32>(0);
+      }
+      else
+      {
+        output_shape.dim(i) = indices_shape.dim(j++);
+      }
+    }
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CirclePack *node) final
   {
     LUCI_ASSERT(node->values_count() > 0, "Only support one or more inputs");
