@@ -10,6 +10,8 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    Concatenation.h
+    Concatenation.cpp
     FullyConnected.h
     FullyConnected.cpp
     Reshape.h

@@ -14,36 +14,38 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_CORE_KERNELPARAMS_H
-#define LUCI_INTERPRETER_CORE_KERNELPARAMS_H
+#ifndef LUCI_INTERPRETER_KERNELS_CONCATENATION_H
+#define LUCI_INTERPRETER_KERNELS_CONCATENATION_H
 
-#include <luci/IR/AttrPadding.h>
-#include <luci/IR/AttrFusedActFunc.h>
-
-#include <cstdint>
+#include "core/Kernel.h"
+#include "core/KernelParams.h"
+#include "core/Tensor.h"
 
 namespace luci_interpreter
 {
 
-// Inject commonly used types into `luci_interpreter` namespace for convenience.
-using Activation = luci::FusedActFunc;
-using Padding = luci::Padding;
-
-struct ConcatenationParams
+namespace kernels
 {
-  int axis;
+
+class Concatenation : public KernelWithParams<ConcatenationParams>
+{
+public:
+  Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
+                const ConcatenationParams &params);
+
+  void configure() override;
+  void execute() const override;
+
+private:
+  template <typename T> void evalGeneric() const;
+  void evalQuantized() const;
+
+private:
+  const std::vector<const Tensor *> _inputs;
+  Tensor *const _output;
 };
 
-struct FullyConnectedParams
-{
-  Activation activation;
-};
-
-struct SoftmaxParams
-{
-  float beta;
-};
-
+} // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_CORE_KERNELPARAMS_H
+#endif // LUCI_INTERPRETER_KERNELS_CONCATENATION_H

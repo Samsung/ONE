@@ -16,6 +16,7 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/Concatenation.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
@@ -24,6 +25,21 @@
 
 namespace luci_interpreter
 {
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
+{
+  std::vector<const Tensor *> inputs(node->numValues());
+  for (uint32_t i = 0; i < node->numValues(); ++i)
+  {
+    inputs[i] = getInputTensor(node->values(i));
+  }
+  Tensor *output = getOutputTensor(node);
+
+  ConcatenationParams params{};
+  params.axis = node->axis();
+
+  return std::make_unique<kernels::Concatenation>(inputs, output, params);
+}
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
 {
