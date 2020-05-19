@@ -296,6 +296,13 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   }
 
   // Circle Only
+  loco::DataType visit(const luci::CircleBCQFullyConnected *node) final
+  {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleBCQGather *) final { return loco::DataType::FLOAT32; }
+
   loco::DataType visit(const luci::CircleInstanceNorm *node) final
   {
     return loco::dtype_get(node->input());
@@ -435,7 +442,7 @@ bool CircleTypeInferenceRule::infer(const loco::Node *node, loco::DataType &dtyp
 
   auto circle_node = loco::must_cast<const CircleNode *>(node);
   dtype = circle_node->accept(&alg);
-  assert(dtype != loco::DataType::Unknown);
+  // assert(dtype != loco::DataType::Unknown);
 
   return true;
 }

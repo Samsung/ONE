@@ -1342,6 +1342,67 @@ public:
   }
 
   // Circle Only
+  loco::NodeShape visit(const luci::CircleBCQFullyConnected *node) final
+  {
+    loco::TensorShape out_shape;
+    loco::TensorShape weights_shape;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto weights_scales_shape = loco::shape_get(node->weights_scales()).as<loco::TensorShape>();
+    auto weights_binary_shape = loco::shape_get(node->weights_binary()).as<loco::TensorShape>();
+
+    weights_shape.rank(2);
+    weights_shape.dim(0) = weights_binary_shape.dim(0);
+    weights_shape.dim(1) = weights_binary_shape.dim(2).value() * 32;
+
+    // Checking shape capability for fully connected layer
+    // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
+    // Weight: [# of units, K]
+    // Output: [D1 * D2 * ... * Dn / K, # of units]
+    LUCI_ASSERT(input_shape.rank() >= 2, "Input rank should be at least 2");
+    LUCI_ASSERT(weights_shape.rank() == 2, "Incompatible weights rank for BCQ fully connected");
+
+    uint32_t input_size = 1;
+    for (uint32_t i = 0; i < input_shape.rank(); i++)
+    {
+      input_size = input_size * input_shape.dim(i).value();
+    }
+    const uint32_t batch_size = input_size / weights_shape.dim(1).value();
+
+    out_shape.rank(2);
+    out_shape.dim(0) = batch_size;
+    out_shape.dim(1) = weights_shape.dim(0);
+
+    return loco::NodeShape{out_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleBCQGather *node) final
+  {
+    loco::TensorShape input_shape;
+    loco::TensorShape output_shape;
+
+    const auto input_scales_shape = loco::shape_get(node->input_scales()).as<loco::TensorShape>();
+    const auto input_binary_shape = loco::shape_get(node->input_binary()).as<loco::TensorShape>();
+    const auto positions_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
+    auto axis = node->axis();
+
+    // Exclude bits dimension ()
+    input_shape.rank(2); // [hidden][out]
+    input_shape.dim(0) = input_binary_shape.dim(2);
+    input_shape.dim(1) = input_binary_shape.dim(0);
+
+    output_shape.rank(input_shape.rank() - 1 + positions_shape.rank());
+    int32_t outdim_index = 0;
+    for (int32_t i = 0; i < axis; ++i)
+      output_shape.dim(outdim_index++) = input_shape.dim(i);
+    for (uint32_t i = 0; i < positions_shape.rank(); ++i)
+      output_shape.dim(outdim_index++) = positions_shape.dim(i);
+    for (uint32_t i = axis + 1; i < input_shape.rank(); ++i)
+      output_shape.dim(outdim_index++) = input_shape.dim(i);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleInstanceNorm *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();

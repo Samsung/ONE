@@ -358,6 +358,8 @@ enum BuiltinOperator : ubyte {
   DENSIFY = 124,
   SEGMENT_SUM = 125,
   BATCH_MATMUL = 126,
+  BCQ_GATHER = 252,
+  BCQ_FULLY_CONNECTED = 253,
   INSTANCE_NORM = 254,
 }
 
@@ -464,6 +466,8 @@ union BuiltinOptions {
   DensifyOptions,
   SegmentSumOptions,
   BatchMatMulOptions,
+  BCQGatherOptions = 252,
+  BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
 }
 
@@ -981,6 +985,16 @@ table SegmentSumOptions {
 table BatchMatMulOptions {
   adjoint_lhs:bool;
   adjoint_rhs:bool;
+}
+
+table BCQGatherOptions {
+  input_hidden_size: int;
+  axis: int;
+}
+
+table BCQFullyConnectedOptions {
+  weights_hidden_size: int;
+  fused_activation_function:ActivationFunctionType;
 }
 
 table InstanceNormOptions {

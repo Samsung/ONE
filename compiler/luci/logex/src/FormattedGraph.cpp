@@ -241,6 +241,8 @@ private:
   IMPLEMENT(luci::CircleWhile)
   IMPLEMENT(luci::CircleZerosLike)
   // Circle Only
+  IMPLEMENT(luci::CircleBCQFullyConnected)
+  IMPLEMENT(luci::CircleBCQGather)
   IMPLEMENT(luci::CircleInstanceNorm)
   // Virtual nodes
   IMPLEMENT(luci::CircleInput)
@@ -968,6 +970,38 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleInput *, locop::NodeSum
 bool CircleNodeSummaryBuilder::summary(const luci::CircleOutput *node, locop::NodeSummary &s) const
 {
   s.args().append("from", tbl()->lookup(node->from()));
+
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQFullyConnected *node,
+                                       locop::NodeSummary &s) const
+{
+  assert(node->fusedActivationFunction() != luci::FusedActFunc::UNDEFINED);
+
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("weights_alpha", tbl()->lookup(node->weights_scales()));
+  s.args().append("weights_bits", tbl()->lookup(node->weights_binary()));
+  s.args().append("bias", tbl()->lookup(node->bias()));
+
+  s.args().append("fused", to_str(node->fusedActivationFunction()));
+  s.args().append("weights_hidden_size", pepper::str(node->weights_hidden_size()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQGather *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input_alpha", tbl()->lookup(node->input_scales()));
+  s.args().append("input_bits", tbl()->lookup(node->input_binary()));
+  s.args().append("positions", tbl()->lookup(node->indices()));
+
+  s.args().append("axis", pepper::str(node->axis()));
+  s.args().append("input_hidden_size", pepper::str(node->input_hidden_size()));
 
   s.state(locop::NodeSummary::State::Complete);
   return true;

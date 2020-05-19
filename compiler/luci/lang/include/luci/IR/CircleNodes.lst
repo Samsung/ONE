@@ -78,6 +78,8 @@ CIRCLE_NODE(UNPACK, luci::CircleUnpack)
 CIRCLE_NODE(WHILE, luci::CircleWhile)
 CIRCLE_NODE(ZEROS_LIKE, luci::CircleZerosLike)
 // Circle Only
+CIRCLE_NODE(BCQ_FULLY_CONNECTED, luci::CircleBCQFullyConnected)
+CIRCLE_NODE(BCQ_GATHER, luci::CircleBCQGather)
 CIRCLE_NODE(INSTANCE_NORM, luci::CircleInstanceNorm)
 // Virtual node(s)
 CIRCLE_NODE(CIRCLEINPUT, luci::CircleInput)

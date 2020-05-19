@@ -40,6 +40,7 @@ void print_help(const char *progname)
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
+  std::cerr << "   --fuse_BCQ : Enable FuseBCQ Pass" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -66,6 +67,11 @@ int entry(int argc, char **argv)
   };
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+    return 0;
+  };
+
+  argparse["--fuse_BCQ"] = [&options](const char **) {
+    options->enable(Algorithms::FuseBCQ);
     return 0;
   };
 
