@@ -29,7 +29,7 @@ namespace cpu
 namespace kernel
 {
 
-TileLayer::TileLayer() : _input(nullptr), _output(nullptr)
+TileLayer::TileLayer() : _input(nullptr), _multipliers(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
