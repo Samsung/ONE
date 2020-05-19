@@ -42,7 +42,6 @@ bool CircleMaximumGraphBuilder::validate(const ValidateArgs &args) const
     case circle::TensorType_FLOAT16:
     case circle::TensorType_FLOAT32:
     case circle::TensorType_FLOAT64:
-    case circle::TensorType_INT16:
     case circle::TensorType_INT32:
     case circle::TensorType_INT64:
       break;
