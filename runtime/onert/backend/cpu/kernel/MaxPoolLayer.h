@@ -41,12 +41,12 @@ public:
 
   void maxPoolQuant8();
 
-  void configure(const operand::Tensor *input, const uint32_t paddingLeft,
+  void configure(const ITensor *input, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t kernelWidth,
                  const uint32_t kernelHeight, const ir::Activation activation,
-                 operand::Tensor *output);
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -57,8 +57,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 
   uint32_t _paddingLeft;
   uint32_t _paddingTop;

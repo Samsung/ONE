@@ -166,10 +166,8 @@ std::vector<std::shared_ptr<backend::UserTensor>> ExecutorFactory::initializeTen
     ret.push_back(tensor);
     for (auto &tensor_builder : tensor_builders)
     {
-      if (tensor_builder->isRegistered(ind))
-      {
-        tensor_builder->setExternalTensor(ind, tensor);
-      }
+      assert(!tensor_builder->isRegistered(ind)); // I/O tensors must not be registered
+      tensor_builder->setExternalTensor(ind, tensor);
     }
   }
   return ret;

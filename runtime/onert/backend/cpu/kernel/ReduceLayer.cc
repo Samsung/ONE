@@ -33,7 +33,7 @@ namespace
 {
 
 template <typename T>
-void evalLogic(const operand::Tensor *input, operand::Tensor *output, const std::vector<int> &axes,
+void evalLogic(const ITensor *input, ITensor *output, const std::vector<int> &axes,
                bool keep_dims, T init_value, nnfw::cker::Reduce &reduce_kernel,
                T reducer(const T current, const T in))
 {
@@ -50,7 +50,7 @@ void evalLogic(const operand::Tensor *input, operand::Tensor *output, const std:
 }
 
 template <typename T>
-void evalType(const operand::Tensor *input, operand::Tensor *output, const std::vector<int> &axes,
+void evalType(const ITensor *input, ITensor *output, const std::vector<int> &axes,
               bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
@@ -97,7 +97,7 @@ void evalType<bool>(const operand::Tensor *input, operand::Tensor *output,
 }
 
 template <ReduceType reduce_type>
-void evalGeneric(const operand::Tensor *input, operand::Tensor *output,
+void evalGeneric(const ITensor *input, ITensor *output,
                  const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
 {
   switch (input->data_type())
@@ -123,7 +123,7 @@ ReduceLayer::ReduceLayer()
 
 ReduceLayer::~ReduceLayer() = default;
 
-void ReduceLayer::configure(const operand::Tensor *input, operand::Tensor *output,
+void ReduceLayer::configure(const ITensor *input, ITensor *output,
                             ReduceType reduceType, const std::vector<int> &axes, bool keep_dims)
 {
   _input = input;

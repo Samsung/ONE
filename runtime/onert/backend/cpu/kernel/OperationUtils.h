@@ -51,13 +51,13 @@ union DataPtr {
   void *v;
 };
 
-uint32_t getNumberOfDimensions(const operand::Tensor *tensor);
+uint32_t getNumberOfDimensions(const ITensor *tensor);
 
-uint32_t getNumberOfElements(const operand::Tensor *tensor);
+uint32_t getNumberOfElements(const ITensor *tensor);
 
-uint32_t getSizeOfDimension(const operand::Tensor *tensor, uint32_t dimensionIdx);
+uint32_t getSizeOfDimension(const ITensor *tensor, uint32_t dimensionIdx);
 
-inline nnfw::cker::Shape convertToExtendedCkerShape(const operand::Tensor *tensor)
+inline nnfw::cker::Shape convertToExtendedCkerShape(const ITensor *tensor)
 {
   assert(tensor);
   std::vector<int32_t> raw_shape;
@@ -79,7 +79,7 @@ inline nnfw::cker::Shape convertToExtendedCkerShape(const operand::Tensor *tenso
   return nnfw::cker::GetShape(raw_shape);
 }
 
-inline nnfw::cker::Shape convertTensorToCkerShape(const operand::Tensor *tensor)
+inline nnfw::cker::Shape convertTensorToCkerShape(const ITensor *tensor)
 {
   assert(tensor);
   assert(tensor->layout() == ir::Layout::NHWC);
@@ -132,10 +132,10 @@ inline int32_t getAxis(uint32_t rank, int32_t axis, ir::Layout frontend_layout)
 
 void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
-void GetQuantizedConvolutionMultiplier(const operand::Tensor *inputDescr,
-                                       const operand::Tensor *filterDescr,
-                                       const operand::Tensor *biasDescr,
-                                       const operand::Tensor *outputDescr, double *multiplier);
+void GetQuantizedConvolutionMultiplier(const ITensor *inputDescr,
+                                       const ITensor *filterDescr,
+                                       const ITensor *biasDescr,
+                                       const ITensor *outputDescr, double *multiplier);
 
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
                                       int *left_shift);
@@ -143,10 +143,10 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
 void CalculateActivationRangeFloat(ir::Activation activation, float *activation_min,
                                    float *activation_max);
 
-void CalculateActivationRangeUint8(ir::Activation activation, const operand::Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const ITensor *output,
                                    int32_t *act_min, int32_t *act_max);
 
-bool HaveSameShapes(const operand::Tensor *input1, const operand::Tensor *input2);
+bool HaveSameShapes(const ITensor *input1, const ITensor *input2);
 
 int32_t CalculateInputRadius(int input_integer_bits, int input_left_shift);
 

@@ -39,8 +39,8 @@ public:
   }
 
 public:
-  void configure(const operand::Tensor *input, const operand::Tensor *axis,
-                 operand::Tensor *output);
+  void configure(const ITensor *input, const ITensor *axis,
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -51,9 +51,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_axis;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_axis;
+  ITensor *_output;
 };
 
 } // namespace kernel

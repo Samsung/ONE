@@ -35,8 +35,8 @@ class FillLayer : public ::onert::exec::IFunction
 public:
   FillLayer();
 
-  void configure(const operand::Tensor *input, const operand::Tensor *value,
-                 operand::Tensor *output);
+  void configure(const ITensor *input, const ITensor *value,
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -47,9 +47,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_value;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_value;
+  ITensor *_output;
 };
 
 } // namespace kernel

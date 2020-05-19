@@ -47,7 +47,7 @@ void TanhLayer::tanhQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TanhLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void TanhLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

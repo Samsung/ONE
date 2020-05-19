@@ -40,7 +40,7 @@ void RoundLayer::roundFloat32()
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void RoundLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void RoundLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

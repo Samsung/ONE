@@ -43,7 +43,7 @@ public:
 
   void maxQuant8();
 
-  void configure(const operand::Tensor *lhs, const operand::Tensor *rhs, operand::Tensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs, ITensor *output);
 
   void run();
   void runSync()
@@ -54,9 +54,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_lhs;
-  const operand::Tensor *_rhs;
-  operand::Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
 };
 
 } // namespace kernel

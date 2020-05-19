@@ -45,6 +45,8 @@ public:
   virtual size_t calcOffset(const ir::Coordinates &coords) const = 0;
   virtual ir::Layout layout() const = 0;
   virtual ir::DataType data_type() const = 0;
+  virtual float data_scale() const { return 0; } // XXX Remove default impl
+  virtual int32_t data_offset() const { return 0; } // XXX Remove default impl
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
@@ -115,6 +117,8 @@ public:
   }
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
+  float data_scale() const override { return _info.typeInfo().scale(); }
+  int32_t data_offset() const override { return _info.typeInfo().offset(); }
   bool has_padding() const override { return false; }
   bool is_dynamic() const override { return false; }
   void access(const std::function<void(backend::ITensor &tensor)> &fn) override

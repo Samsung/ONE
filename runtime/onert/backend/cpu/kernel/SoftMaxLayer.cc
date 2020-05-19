@@ -126,13 +126,13 @@ void SoftMaxLayer::softmaxQuant8()
   {
     throw std::runtime_error{"only 2D and 4D tensors supported"};
   }
-  if (_output->offset() != 0 || _output->scale() != 1.f / 256)
+  if (_output->data_offset() != 0 || _output->data_scale() != 1.f / 256)
   {
     throw std::runtime_error{"incorrect scale / offset for output"};
   }
   static const int32_t kScaledDiffIntegerBits = 5;
   const double input_beta_real_multiplier = std::min(
-      1.0 * _beta * _input->scale() * (1 << (31 - kScaledDiffIntegerBits)), (1ll << 31) - 1.0);
+      1.0 * _beta * _input->data_scale() * (1 << (31 - kScaledDiffIntegerBits)), (1ll << 31) - 1.0);
   int32_t input_multiplier = 0;
   int32_t input_left_shift = 0;
   QuantizeMultiplierGreaterThanOne(input_beta_real_multiplier, &input_multiplier,
@@ -147,8 +147,8 @@ void SoftMaxLayer::softmaxQuant8()
                       descrIn4D, reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void SoftMaxLayer::configure(const operand::Tensor *input, const float beta,
-                             operand::Tensor *output)
+void SoftMaxLayer::configure(const ITensor *input, const float beta,
+                             ITensor *output)
 {
   _input = input;
   _output = output;

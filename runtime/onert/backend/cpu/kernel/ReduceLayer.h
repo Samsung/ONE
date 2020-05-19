@@ -55,7 +55,7 @@ public:
   ~ReduceLayer();
 
 public:
-  void configure(const operand::Tensor *input, operand::Tensor *output, ReduceType reduceType,
+  void configure(const ITensor *input, ITensor *output, ReduceType reduceType,
                  const std::vector<int> &axes, bool keep_dims);
 
   void run();
@@ -67,8 +67,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
   ReduceType _reduceType;
   std::vector<int> _axes;
   bool _keep_dims;

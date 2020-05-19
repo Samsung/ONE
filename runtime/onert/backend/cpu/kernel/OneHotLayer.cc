@@ -39,7 +39,7 @@ void OneHotLayer::oneHotFloat32()
 
 void OneHotLayer::oneHotQuant8() { throw std::runtime_error{"OneHot NYI for quantized"}; }
 
-void OneHotLayer::configure(const operand::Tensor *indices, operand::Tensor *output, int32_t depth,
+void OneHotLayer::configure(const ITensor *indices, ITensor *output, int32_t depth,
                             float on_value, float off_value, int32_t axis)
 {
   _indices = indices;

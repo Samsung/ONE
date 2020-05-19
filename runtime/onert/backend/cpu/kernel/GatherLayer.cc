@@ -29,8 +29,8 @@ namespace cpu
 namespace kernel
 {
 
-void GatherLayer::configure(const operand::Tensor *input, const operand::Tensor *indices,
-                            operand::Tensor *output, int32_t axis)
+void GatherLayer::configure(const ITensor *input, const ITensor *indices,
+                            ITensor *output, int32_t axis)
 {
   _input = input;
   _indices = indices;

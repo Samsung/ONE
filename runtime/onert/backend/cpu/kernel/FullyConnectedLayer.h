@@ -52,8 +52,8 @@ public:
 
   void fullyConnectedHybrid();
 
-  void configure(const operand::Tensor *input, const operand::Tensor *weights,
-                 const operand::Tensor *bias, ir::Activation activation, operand::Tensor *output);
+  void configure(const ITensor *input, const ITensor *weights,
+                 const ITensor *bias, ir::Activation activation, ITensor *output);
 
   void run();
   void runSync()
@@ -64,10 +64,10 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_weights;
-  const operand::Tensor *_bias;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_weights;
+  const ITensor *_bias;
+  ITensor *_output;
 
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;

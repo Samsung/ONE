@@ -40,7 +40,7 @@ public:
 
   void softmaxQuant8();
 
-  void configure(const operand::Tensor *input, const float beta, operand::Tensor *output);
+  void configure(const ITensor *input, const float beta, ITensor *output);
 
   void run();
   void runSync()
@@ -51,8 +51,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 
   float _beta;
 };

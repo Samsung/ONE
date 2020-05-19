@@ -72,8 +72,8 @@ void ConcatLayer::concatenationQuant8()
   std::vector<float> input_scales(num_inputs);
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    input_zeropoints[i] = _inputs[i]->offset();
-    input_scales[i] = _inputs[i]->scale();
+    input_zeropoints[i] = _inputs[i]->data_offset();
+    input_scales[i] = _inputs[i]->data_scale();
   }
 
   nnfw::cker::ConcatenationParams op_params;
@@ -81,8 +81,8 @@ void ConcatLayer::concatenationQuant8()
   op_params.inputs_count = num_inputs;
   op_params.input_zeropoint = input_zeropoints.data();
   op_params.input_scale = input_scales.data();
-  op_params.output_zeropoint = _output->offset();
-  op_params.output_scale = _output->scale();
+  op_params.output_zeropoint = _output->data_offset();
+  op_params.output_scale = _output->data_scale();
 
   std::vector<nnfw::cker::Shape *> inputDimsPtr;
   std::vector<nnfw::cker::Shape> inputDims;
@@ -105,8 +105,8 @@ void ConcatLayer::concatenationQuant8()
                                        reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConcatLayer::configure(const std::vector<const operand::Tensor *> &inputs, int32_t axis,
-                            operand::Tensor *output)
+void ConcatLayer::configure(const std::vector<const ITensor *> &inputs, int32_t axis,
+                            ITensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

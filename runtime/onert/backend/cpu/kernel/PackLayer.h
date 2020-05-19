@@ -40,8 +40,8 @@ public:
 
   void packQuant8();
 
-  void configure(const std::vector<const operand::Tensor *> &inputs, int32_t axis,
-                 operand::Tensor *output);
+  void configure(const std::vector<const ITensor *> &inputs, int32_t axis,
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -52,8 +52,8 @@ public:
   }
 
 private:
-  std::vector<const operand::Tensor *> _inputs;
-  operand::Tensor *_output;
+  std::vector<const ITensor *> _inputs;
+  ITensor *_output;
   int32_t _axis;
 };
 

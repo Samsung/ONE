@@ -34,7 +34,7 @@ class RoundLayer : public ::onert::exec::IFunction
 public:
   RoundLayer();
 
-  void configure(const operand::Tensor *input, operand::Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
   void runSync()
@@ -48,8 +48,8 @@ private:
   void roundFloat32();
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace kernel

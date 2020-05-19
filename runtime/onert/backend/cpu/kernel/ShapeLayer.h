@@ -38,7 +38,7 @@ public:
 public:
   void shape();
 
-  void configure(const operand::Tensor *input, operand::Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
   void runSync()
@@ -49,8 +49,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace kernel

@@ -69,8 +69,8 @@ void UnpackLayer::unpackQuant8()
   throw std::runtime_error{"Unpack: NYI quant8 type"};
 }
 
-void UnpackLayer::configure(const operand::Tensor *input, uint32_t axis, int32_t num,
-                            std::vector<operand::Tensor *> &outputs)
+void UnpackLayer::configure(const ITensor *input, uint32_t axis, int32_t num,
+                            std::vector<ITensor *> &outputs)
 {
   assert(input != nullptr);
   assert(outputs.size() > 0);

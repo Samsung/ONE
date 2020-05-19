@@ -47,7 +47,7 @@ void LogisticLayer::logisticQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void LogisticLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void LogisticLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

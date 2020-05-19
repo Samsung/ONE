@@ -41,12 +41,12 @@ public:
 
   void convQuant8();
 
-  void configure(const operand::Tensor *input, const operand::Tensor *kernel,
-                 const operand::Tensor *bias, const uint32_t paddingLeft,
+  void configure(const ITensor *input, const ITensor *kernel,
+                 const ITensor *bias, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideW, const uint32_t strideH,
                  const uint32_t multiplier, const ir::Activation activation,
-                 operand::Tensor *output);
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -57,10 +57,10 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_kernel;
-  const operand::Tensor *_bias;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_kernel;
+  const ITensor *_bias;
+  ITensor *_output;
 
   uint32_t _paddingLeft;
   uint32_t _paddingTop;

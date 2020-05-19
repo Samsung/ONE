@@ -40,7 +40,7 @@ public:
   template <typename FromT, typename ToT> void castTensor(const FromT *in, ToT *out);
   template <typename FromT> void castPtr(const FromT *in, DataPtr out);
 
-  void configure(const operand::Tensor *input, operand::Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
   void runSync()
@@ -51,8 +51,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace kernel

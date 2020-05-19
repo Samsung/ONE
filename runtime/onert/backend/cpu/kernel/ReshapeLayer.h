@@ -38,8 +38,8 @@ public:
 public:
   void reshapeGeneric();
 
-  void configure(const operand::Tensor *input, const operand::Tensor *shape,
-                 operand::Tensor *output);
+  void configure(const ITensor *input, const ITensor *shape,
+                 ITensor *output);
 
   void run();
   void runSync()
@@ -50,9 +50,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_shape;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_shape;
+  ITensor *_output;
 };
 
 } // namespace kernel

@@ -41,7 +41,7 @@ void SinLayer::sinFloat32()
 
 void SinLayer::sinQuant8() { throw std::runtime_error{"NYI"}; }
 
-void SinLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void SinLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

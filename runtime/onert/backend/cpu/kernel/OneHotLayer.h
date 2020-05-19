@@ -44,7 +44,7 @@ public:
 
   void oneHotQuant8();
 
-  void configure(const operand::Tensor *indices, operand::Tensor *output, int32_t depth,
+  void configure(const ITensor *indices, ITensor *output, int32_t depth,
                  float on_value, float off_value, int32_t axis);
 
   void run();
@@ -56,8 +56,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_indices;
-  operand::Tensor *_output;
+  const ITensor *_indices;
+  ITensor *_output;
 
   int32_t _depth;
   float _on_value;

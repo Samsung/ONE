@@ -40,7 +40,7 @@ public:
 
   void MeanQuant8();
 
-  void configure(const operand::Tensor *input, operand::Tensor *output,
+  void configure(const ITensor *input, ITensor *output,
                  const std::vector<int> &axes, bool keep_dims);
 
   void run();
@@ -52,8 +52,8 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
   std::vector<int> _axes;
   bool _keep_dims;
 };

@@ -42,7 +42,7 @@ void RsqrtLayer::rsqrtFloat32()
 
 void RsqrtLayer::rsqrtQuant8() { throw std::runtime_error{"NYI : QASYMM8 not supported"}; }
 
-void RsqrtLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void RsqrtLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

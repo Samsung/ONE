@@ -73,12 +73,12 @@ void AvgPoolLayer::averagePoolQuant8()
                           reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void AvgPoolLayer::configure(const operand::Tensor *input, const uint32_t paddingLeft,
+void AvgPoolLayer::configure(const ITensor *input, const uint32_t paddingLeft,
                              const uint32_t paddingRight, const uint32_t paddingTop,
                              const uint32_t paddingBottom, const uint32_t strideWidth,
                              const uint32_t strideHeight, const uint32_t kernelWidth,
                              const uint32_t kernelHeight, const ir::Activation activation,
-                             operand::Tensor *output)
+                             ITensor *output)
 {
   assert(input != nullptr);
   assert(output != nullptr);

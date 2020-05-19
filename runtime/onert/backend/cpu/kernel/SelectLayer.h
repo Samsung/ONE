@@ -36,8 +36,8 @@ public:
   SelectLayer();
 
 public:
-  void configure(const operand::Tensor *cond, const operand::Tensor *input_true,
-                 const operand::Tensor *input_false, operand::Tensor *output);
+  void configure(const ITensor *cond, const ITensor *input_true,
+                 const ITensor *input_false, ITensor *output);
 
   void run();
   void runSync()
@@ -48,10 +48,10 @@ public:
   }
 
 private:
-  const operand::Tensor *_cond;
-  const operand::Tensor *_input_true;
-  const operand::Tensor *_input_false;
-  operand::Tensor *_output;
+  const ITensor *_cond;
+  const ITensor *_input_true;
+  const ITensor *_input_false;
+  ITensor *_output;
 };
 
 } // namespace kernel

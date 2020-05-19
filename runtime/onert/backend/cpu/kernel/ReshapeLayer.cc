@@ -38,8 +38,8 @@ void ReshapeLayer::reshapeGeneric()
   memcpy(_output->buffer(), _input->buffer(), count);
 }
 
-void ReshapeLayer::configure(const operand::Tensor *input, const operand::Tensor *shape,
-                             operand::Tensor *output)
+void ReshapeLayer::configure(const ITensor *input, const ITensor *shape,
+                             ITensor *output)
 {
   _input = input;
   /* note : shape is optional. If not provided from model, _shape is nullptr. */

@@ -36,8 +36,8 @@ public:
   SliceLayer();
 
 public:
-  void configure(const operand::Tensor *input, const operand::Tensor *begin,
-                 const operand::Tensor *size, operand::Tensor *output);
+  void configure(const ITensor *input, const ITensor *begin,
+                 const ITensor *size, ITensor *output);
 
   void run();
   void runSync()
@@ -52,15 +52,15 @@ private:
   void sliceQuant8();
 
   template <typename T>
-  void GetBeginAndSizeVectors(int dimensions, const operand::Tensor *begin,
-                              const operand::Tensor *size, std::vector<int> *begins,
+  void GetBeginAndSizeVectors(int dimensions, const ITensor *begin,
+                              const ITensor *size, std::vector<int> *begins,
                               std::vector<int> *sizes);
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_begin;
-  const operand::Tensor *_size;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_begin;
+  const ITensor *_size;
+  ITensor *_output;
 };
 
 } // namespace kernel

@@ -63,8 +63,10 @@ void ConvolutionLayer::convFloat32()
 
     if (is_replaced_weights)
     {
+      auto kernel_tensor = dynamic_cast<const operand::Tensor *>(_kernel);
+      if (kernel_tensor)
       // TODO Remove const_cast
-      const_cast<operand::Tensor *>(_kernel)->decrease_ref();
+        const_cast<operand::Tensor *>(kernel_tensor)->decrease_ref();
     }
     _prepare = true;
   }
@@ -96,9 +98,9 @@ void ConvolutionLayer::convQuant8()
   op_params.padding_type = getPaddingType(_paddingType);
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
-  op_params.input_offset = -_input->offset();
-  op_params.weights_offset = -_kernel->offset();
-  op_params.output_offset = _output->offset();
+  op_params.input_offset = -_input->data_offset();
+  op_params.weights_offset = -_kernel->data_offset();
+  op_params.output_offset = _output->data_offset();
   op_params.output_multiplier = output_multiplier;
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
@@ -118,12 +120,12 @@ void ConvolutionLayer::convQuant8()
          reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConvolutionLayer::configure(const operand::Tensor *input, const operand::Tensor *kernel,
-                                 const operand::Tensor *bias, const ir::PaddingType paddingType,
+void ConvolutionLayer::configure(const ITensor *input, const ITensor *kernel,
+                                 const ITensor *bias, const ir::PaddingType paddingType,
                                  const uint32_t paddingLeft, const uint32_t paddingRight,
                                  const uint32_t paddingTop, const uint32_t paddingBottom,
                                  const uint32_t strideWidth, const uint32_t strideHeight,
-                                 const ir::Activation activation, operand::Tensor *output)
+                                 const ir::Activation activation, ITensor *output)
 {
   _input = input;
   _kernel = kernel;

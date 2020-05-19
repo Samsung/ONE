@@ -29,13 +29,13 @@ namespace cpu
 namespace kernel
 {
 
-uint32_t getNumberOfDimensions(const operand::Tensor *tensor)
+uint32_t getNumberOfDimensions(const ITensor *tensor)
 {
   assert(tensor);
   return tensor->num_dimensions();
 }
 
-uint32_t getNumberOfElements(const operand::Tensor *tensor)
+uint32_t getNumberOfElements(const ITensor *tensor)
 {
   assert(tensor);
   uint32_t count = 1;
@@ -46,7 +46,7 @@ uint32_t getNumberOfElements(const operand::Tensor *tensor)
   return count;
 }
 
-uint32_t getSizeOfDimension(const operand::Tensor *tensor, uint32_t dimensionIdx)
+uint32_t getSizeOfDimension(const ITensor *tensor, uint32_t dimensionIdx)
 {
   assert(tensor);
   if (dimensionIdx >= tensor->num_dimensions())
@@ -78,13 +78,13 @@ void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void GetQuantizedConvolutionMultiplier(const operand::Tensor *input, const operand::Tensor *filter,
-                                       const operand::Tensor *bias, const operand::Tensor *output,
+void GetQuantizedConvolutionMultiplier(const ITensor *input, const ITensor *filter,
+                                       const ITensor *bias, const ITensor *output,
                                        double *multiplier)
 {
-  const double input_product_scale = input->scale() * filter->scale();
-  const double bias_scale = bias->scale();
-  const double output_scale = output->scale();
+  const double input_product_scale = input->data_scale() * filter->data_scale();
+  const double bias_scale = bias->data_scale();
+  const double output_scale = output->data_scale();
   // The following conditions must be guaranteed by the training pipeline.
   UNUSED_RELEASE(bias_scale);
   assert(std::abs(input_product_scale - bias_scale) <=
@@ -145,13 +145,13 @@ void CalculateActivationRangeFloat(ir::Activation activation, float *activation_
   }
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const operand::Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const ITensor *output,
                                    int32_t *act_min, int32_t *act_max)
 {
   const int32_t qmin = std::numeric_limits<uint8_t>::min();
   const int32_t qmax = std::numeric_limits<uint8_t>::max();
-  const auto scale = output->scale();
-  const auto zero_point = output->offset();
+  const auto scale = output->data_scale();
+  const auto zero_point = output->data_offset();
   auto quantize = [scale, zero_point](float f) {
     return zero_point + static_cast<int32_t>(std::round(f / scale));
   };
@@ -186,7 +186,7 @@ void CalculateActivationRangeUint8(ir::Activation activation, const operand::Ten
   }
 }
 
-bool HaveSameShapes(const operand::Tensor *input1, const operand::Tensor *input2)
+bool HaveSameShapes(const ITensor *input1, const ITensor *input2)
 {
   if (input1 == input2)
     return true;

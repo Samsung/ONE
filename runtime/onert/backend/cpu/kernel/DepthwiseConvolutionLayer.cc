@@ -80,9 +80,9 @@ void DepthwiseConvolutionLayer::convQuant8()
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.depth_multiplier = _multiplier;
-  op_params.input_offset = -_input->offset();
-  op_params.weights_offset = -_kernel->offset();
-  op_params.output_offset = _output->offset();
+  op_params.input_offset = -_input->data_offset();
+  op_params.weights_offset = -_kernel->data_offset();
+  op_params.output_offset = _output->data_offset();
   op_params.output_multiplier = output_multiplier;
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
@@ -96,13 +96,13 @@ void DepthwiseConvolutionLayer::convQuant8()
       reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void DepthwiseConvolutionLayer::configure(const operand::Tensor *input,
-                                          const operand::Tensor *kernel,
-                                          const operand::Tensor *bias, const uint32_t paddingLeft,
+void DepthwiseConvolutionLayer::configure(const ITensor *input,
+                                          const ITensor *kernel,
+                                          const ITensor *bias, const uint32_t paddingLeft,
                                           const uint32_t paddingRight, const uint32_t paddingTop,
                                           const uint32_t paddingBottom, const uint32_t strideWidth,
                                           const uint32_t strideHeight, const uint32_t multiplier,
-                                          const ir::Activation activation, operand::Tensor *output)
+                                          const ir::Activation activation, ITensor *output)
 {
   _input = input;
   _kernel = kernel;

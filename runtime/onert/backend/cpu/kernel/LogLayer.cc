@@ -43,7 +43,7 @@ void LogLayer::logFloat32()
 
 void LogLayer::logQuant8() { throw std::runtime_error{"NYI"}; }
 
-void LogLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void LogLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

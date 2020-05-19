@@ -34,7 +34,7 @@ class CosLayer : public ::onert::exec::IFunction
 public:
   CosLayer();
 
-  void configure(const operand::Tensor *input, operand::Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
   void runSync()
@@ -48,8 +48,8 @@ private:
   void cosFloat32();
   void cosQuant8();
 
-  const operand::Tensor *_input;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace kernel

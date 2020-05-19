@@ -39,8 +39,8 @@ public:
   }
 
 public:
-  void configure(const operand::Tensor *input, const operand::Tensor *indices,
-                 operand::Tensor *output, int32_t axis);
+  void configure(const ITensor *input, const ITensor *indices,
+                 ITensor *output, int32_t axis);
 
   void run();
   void runSync()
@@ -51,9 +51,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
-  const operand::Tensor *_indices;
-  operand::Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_indices;
+  ITensor *_output;
 
   int32_t _axis;
 };

@@ -40,8 +40,8 @@ public:
 
   void splitQuant8();
 
-  void configure(const operand::Tensor *input, uint16_t num_splits, int16_t axis,
-                 std::vector<operand::Tensor *> &outputs);
+  void configure(const ITensor *input, uint16_t num_splits, int16_t axis,
+                 std::vector<ITensor *> &outputs);
 
   void run();
   void runSync()
@@ -52,10 +52,10 @@ public:
   }
 
 private:
-  const operand::Tensor *_input;
+  const ITensor *_input;
   uint16_t _num_splits;
   int16_t _axis;
-  std::vector<operand::Tensor *> _outputs;
+  std::vector<ITensor *> _outputs;
 };
 
 } // namespace kernel

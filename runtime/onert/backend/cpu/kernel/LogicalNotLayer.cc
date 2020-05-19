@@ -41,7 +41,7 @@ void LogicalNotLayer::logicalNotBool8()
       convertTensorToCkerShape(_output), reinterpret_cast<bool *>(_output->buffer()));
 }
 
-void LogicalNotLayer::configure(const operand::Tensor *input, operand::Tensor *output)
+void LogicalNotLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

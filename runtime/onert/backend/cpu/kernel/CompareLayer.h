@@ -39,8 +39,8 @@ public:
 public:
   void compareQuant8();
 
-  void configure(const operand::Tensor *lhs, const operand::Tensor *rhs,
-                 const ir::operation::Comparison::ComparisonType op_type, operand::Tensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs,
+                 const ir::operation::Comparison::ComparisonType op_type, ITensor *output);
 
   void run();
   void runSync()
@@ -51,9 +51,9 @@ public:
   }
 
 private:
-  const operand::Tensor *_lhs;
-  const operand::Tensor *_rhs;
-  operand::Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
   ir::operation::Comparison::ComparisonType _op_type;
 };
 
