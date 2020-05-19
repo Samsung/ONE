@@ -51,10 +51,11 @@ tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType t
       return tflchef::NONE;
     case tflite::ActivationFunctionType_RELU:
       return tflchef::RELU;
+    case tflite::ActivationFunctionType_RELU_N1_TO_1:
+      return tflchef::RELU_N1_TO_1;
     case tflite::ActivationFunctionType_RELU6:
       return tflchef::RELU6;
     // TODO handle other types
-    // ActivationFunctionType_RELU_N1_TO_1
     // ActivationFunctionType_TANH
     // ActivationFunctionType_SIGN_BIT
     default:
