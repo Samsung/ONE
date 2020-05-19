@@ -292,6 +292,10 @@ message GatherNdOptions {
   // None
 }
 
+message PowOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -373,7 +377,7 @@ message Operation {
   optional SliceOptions slice_options = 173;
   // TransposeConvOptions 174
   // SparseToDenseOptions 175
-  // PowOptions 176
+  optional PowOptions pow_options = 176;
   // ArgMinOptions 177
   // FakeQuantOptions 178
   // BidirectionalSequenceLSTMOptions 179
