@@ -17,6 +17,7 @@
 #include "KernelBuilder.h"
 
 #include "kernels/FullyConnected.h"
+#include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 
 #include <stdexcept>
@@ -52,6 +53,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 {
   throw std::runtime_error("Output node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
+{
+  assert(node->arity() == 2);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->shape()) == nullptr)
+    throw std::runtime_error("Dynamic shape is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->tensor());
+  const Tensor *shape = getInputTensor(node->shape());
+  Tensor *output = getOutputTensor(node);
+
+  // NOTE 'newShape' attribute is ignored.
+  return std::make_unique<kernels::Reshape>(input, shape, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
