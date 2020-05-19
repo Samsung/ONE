@@ -254,6 +254,9 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
+      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                      output_shape, output_data);
+      break;
     case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
