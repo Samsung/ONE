@@ -21,35 +21,46 @@
 #include <loco.h>
 #include <oops/UserExn.h>
 
-namespace luci {
+namespace luci
+{
 
-bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const {
+bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
+{
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
+  const auto *options = args.op.builtin_options.AsOneHotOptions();
 
-  if (inputs.size() != 4) // Optional Vaule check for 2~4;
+  // Only 4 Input come refered from
+  if (inputs.size() != 4)
     return false;
 
   if (outputs.size() != 1)
     return false;
-  // validate -> build_node
-  // /home/local/CORP/kideuk.bang/workspaces/ONE/compiler/luci/import/src/Importer.cpp
-  // on line 109~115
-  // Need to update below comment as correct code.
-  // 1. dtype checking(output data type checking).(O)
-  // 2. input indices data type checking.(O)
-  // 3. axis value check & update.{consider -1}(X)
-  // 4. depth, on_value, off_value shape checking.(X)
-  // 5. matching of on_value datatype and off_value datatype.(X)
-  // TODO dtype check on (1, 2, 5).
+
+  const auto &tensors = args.reader.tensors();
+  const auto &indices = tensors.at(inputs[0]);
+  const auto &depth = tensors.at(inputs[1]);
+  const auto &on_value = tensors.at(inputs[2]);
+  const auto &off_value = tensors.at(inputs[3]);
+
+  if (options->axis < -1 || options->axis > static_cast<int32_t>(indices->shape.size()))
+    return false;
+  if (depth->shape.size() != 0)
+    return false;
+  if (on_value->shape.size() != 0)
+    return false;
+  if (off_value->shape.size() != 0)
+    return false;
+  if (on_value->type != off_value->type)
+    return false;
 
   return true;
 }
 
-CircleNode *
-CircleOneHotGraphBuilder::build_node(const circle::OperatorT &op,
-                                     const std::vector<CircleNode *> &inputs,
-                                     loco::Graph *graph) const {
+CircleNode *CircleOneHotGraphBuilder::build_node(const circle::OperatorT &op,
+                                                 const std::vector<CircleNode *> &inputs,
+                                                 loco::Graph *graph) const
+{
   auto *node = graph->nodes()->create<CircleOneHot>();
 
   node->indices(inputs[0]);
