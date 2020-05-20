@@ -60,6 +60,15 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max);
 
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of its exponent.
+//
+// Handles an arbitrary positive multiplier. The 'shift' output-value is
+// basically the 'floating-point exponent' of the multiplier:
+// Negative for a right-shift (when the multiplier is <1), positive for a
+// left-shift (when the multiplier is >1)
+void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
+
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
 {
   if (tensor == nullptr)

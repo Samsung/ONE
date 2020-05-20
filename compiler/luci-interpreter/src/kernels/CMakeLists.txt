@@ -12,6 +12,8 @@ endif ()
 set(SOURCES
     Concatenation.h
     Concatenation.cpp
+    DepthwiseConv2D.h
+    DepthwiseConv2D.cpp
     FullyConnected.h
     FullyConnected.cpp
     MaxPool2D.cpp
