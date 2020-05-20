@@ -55,6 +55,7 @@
 #include "Nodes/CircleOneHot.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
+#include "Nodes/CircleRange.h"
 #include "Nodes/CircleReduceAny.h"
 #include "Nodes/CircleReduceProd.h"
 #include "Nodes/CircleRelu6.h"
