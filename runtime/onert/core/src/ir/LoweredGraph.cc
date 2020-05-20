@@ -278,7 +278,7 @@ void LoweredGraph::makeOpSequences(
 void LoweredGraph::manipulateLowerInfo(
     OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info)
 {
-  const auto default_backend = compiler::BackendManager::get().getDefault();
+  const auto controlflow_backend = compiler::BackendManager::get().getControlflow();
   for (auto index : _graph.getInputs())
   {
     // Pick just any one from the uses, here the first one is chosen
@@ -294,7 +294,7 @@ void LoweredGraph::manipulateLowerInfo(
     {
       // In case of that a constant is Graph's output and not input or output of any operation
       lower_info->addDefPermuteFactor(operand::PermuteFactor{
-          default_backend,
+          controlflow_backend,
           Layout::NHWC // TODO Get frontend layout of this node from IR
       });
     }

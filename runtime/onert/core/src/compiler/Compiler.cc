@@ -63,9 +63,11 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
     cf_ops.insert(ops.cbegin(), ops.cend());
   });
   CompilerOptions options;
-
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  if (cf_ops.size() != 0)
+  // There are two cases to load default backend
+  // 1. whether controlflow operation exist in subgraphs for controlflow kernel
+  // 2. whether to load 2 or more backends for Permute kernel between different backends
+  if (cf_ops.size() != 0 || options.backend_list.size() > 1)
   {
     options.backend_list.emplace_back(backend::controlflow::Config::ID);
   }
