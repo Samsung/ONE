@@ -44,7 +44,7 @@ tflchef::Operation *TFliteOpReduceMax::build(const tflite::Operator *op, TFliteI
 
   operation->set_type("ReduceMax");
 
-  auto op_options = operation->mutable_reducemax_options();
+  auto op_options = operation->mutable_reduce_max_options();
 
   op_options->set_keep_dims(op_params->keep_dims());
 

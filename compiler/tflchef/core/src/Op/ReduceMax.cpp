@@ -23,14 +23,14 @@ flatbuffers::Offset<void> ReduceMaxChef::value(flatbuffers::FlatBufferBuilder &f
 {
   auto &operation = (*_operation);
 
-  assert(operation.has_reducemax_options());
+  assert(operation.has_reduce_max_options());
 
-  auto keep_dims = operation.reducemax_options().keep_dims();
+  auto keep_dims = operation.reduce_max_options().keep_dims();
 
-  tflite::ReducerOptionsBuilder reducemax_options_builder{fbb};
-  reducemax_options_builder.add_keep_dims(keep_dims);
+  tflite::ReducerOptionsBuilder reduce_max_options_builder{fbb};
+  reduce_max_options_builder.add_keep_dims(keep_dims);
 
-  return reducemax_options_builder.Finish().Union();
+  return reduce_max_options_builder.Finish().Union();
 }
 
 std::unique_ptr<OpChef> ReduceMaxChefFactory::create(const tflchef::Operation *operation) const
