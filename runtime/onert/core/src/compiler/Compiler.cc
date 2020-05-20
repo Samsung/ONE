@@ -194,12 +194,14 @@ void Compiler::compile(void)
   setInputToDynamicTensor(_subgraphs->primary());
 
   // Compilable check
+  // TODO: Support hybrid execution -
+  //       execution between interpreter and compiled executor (including control flow)
   if (!checkCompilable())
   {
-    // TODO Support multiple executors for interpreter
     _executors = std::make_shared<exec::ExecutorMap>();
-    _executors->insert(std::make_pair(
-        ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
+    _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      _executors->insert(std::make_pair(index, std::make_unique<interp::InterpExecutor>(subg)));
+    });
     _state = State::COMPILED;
     return;
   }
