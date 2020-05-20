@@ -52,6 +52,23 @@ void print_max_idx(float *f, int size)
 
 static const char *default_backend_cand = "tflite_cpu";
 
+// Verifies whether the model is a flatbuffer file.
+class BMFlatBufferVerifier : public tflite::TfLiteVerifier
+{
+public:
+  bool Verify(const char *data, int length, tflite::ErrorReporter *reporter) override
+  {
+
+    flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(data), length);
+    if (!tflite::VerifyModelBuffer(verifier))
+    {
+      reporter->Report("The model is not a valid Flatbuffer file");
+      return false;
+    }
+    return true;
+  }
+};
+
 } // namespace anonymous
 
 int main(const int argc, char **argv)
@@ -80,13 +97,28 @@ int main(const int argc, char **argv)
 
   std::unique_ptr<FlatBufferModel> model;
   std::unique_ptr<Interpreter> interpreter;
+  std::unique_ptr<tflite::TfLiteVerifier> verifier{new BMFlatBufferVerifier};
   try
   {
     if (mp)
       mp->start(benchmark::Phase::MODEL_LOAD);
 
     nnfw::misc::benchmark::measure(t_model_load) << [&](void) {
-      model = FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(), &error_reporter);
+
+      if (args.getModelValidate())
+      {
+        model = FlatBufferModel::VerifyAndBuildFromFile(args.getTFLiteFilename().c_str(),
+                                                        verifier.get(), &error_reporter);
+      }
+      else
+      {
+        model = FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(), &error_reporter);
+      }
+      if (model == nullptr)
+      {
+        throw std::runtime_error{"Cannot create model"};
+      }
+
       BuiltinOpResolver resolver;
       InterpreterBuilder builder(*model, resolver);
       TFLITE_ENSURE(builder(&interpreter))

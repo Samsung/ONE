@@ -41,6 +41,7 @@ public:
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
+  const bool getModelValidate(void) const { return _tflite_validate; }
 
 private:
   void Initialize();
@@ -60,6 +61,7 @@ private:
   bool _gpumem_poll;
   bool _mem_poll;
   bool _write_report;
+  bool _tflite_validate;
 };
 
 } // end of namespace TFLiteRun
