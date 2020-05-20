@@ -30,9 +30,10 @@ namespace backend
 namespace cpu
 {
 
+// TODO Find optimized algorithm to manage memory.
+
 /**
  * @brief Class to manage dynamic tensor and its memory
- * @todo  Optimization is needed
  */
 class DynamicTensorManager : public backend::IDynamicTensorManager
 {
