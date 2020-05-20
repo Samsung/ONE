@@ -20,6 +20,7 @@
 #include "ir/Layout.h"
 #include "misc/feature/Shape.h"
 
+#include <cassert>
 #include <cstdint>
 #include <vector>
 #include <algorithm>
@@ -45,7 +46,11 @@ public:
 
   const std::vector<int32_t> &dims() const { return _dimensions; }
 
-  int32_t dim(int i) const { return _dimensions.at(i); }
+  int32_t dim(int i) const
+  {
+    assert(rank() != 0 || i == 0);
+    return rank() == 0 ? 1 : _dimensions.at(i);
+  }
 
   int32_t &dim(int i) { return _dimensions.at(i); }
 
