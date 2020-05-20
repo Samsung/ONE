@@ -39,6 +39,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                              // 108
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);    // 4
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                              // 42
+  CIRCLE_NODE(ELU, CircleEluGraphBuilder);                              // 111
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                          // 71
   CIRCLE_NODE(EXP, CircleExpGraphBuilder);                              // 47
   CIRCLE_NODE(FILL, CircleFillGraphBuilder);                            // 94
@@ -145,7 +146,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_GATHER_ND = 107,
   // BuiltinOperator_WHERE = 109,
   // BuiltinOperator_RANK = 110,
-  // BuiltinOperator_ELU = 111,
   // BuiltinOperator_REVERSE_SEQUENCE = 112,
   // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
