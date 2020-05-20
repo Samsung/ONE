@@ -139,6 +139,10 @@ message MulOptions {
   optional Activation activation = 1 [default = NONE];
 }
 
+message RangeOptions {
+  // None
+}
+
 message ReducerOptions {
   optional bool keep_dims = 1 [ default = false ];
 }
@@ -379,7 +383,7 @@ message Operation {
   // BidirectionalSequenceLSTMOptions 179
   // BidirectionalSequenceRNNOptions 180
   // UnidirectionalSequenceLSTMOptions 181
-  // RangeOptions 182
+  optional RangeOptions range_options = 182;
   // ResizeNearestNeighborOptions 183
   // LeakyReluOptions 184
   // MirrorPadOptions 185
