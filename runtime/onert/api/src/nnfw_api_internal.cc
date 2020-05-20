@@ -310,8 +310,7 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
     case DataType::UINT32:
     case DataType::QUANT8_SYMM:
     default:
-      std::cerr << "Error: Model has type that runtime API does not support." << std::endl;
-      exit(-1);
+      throw std::runtime_error("Error: Model has type that runtime API does not support.");
   }
 }
 
