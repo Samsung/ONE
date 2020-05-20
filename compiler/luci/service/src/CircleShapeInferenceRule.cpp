@@ -585,6 +585,13 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleElu *node) final
+  {
+    auto input_shape = loco::shape_get(node->features()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleEqual *node) final
   {
     const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
