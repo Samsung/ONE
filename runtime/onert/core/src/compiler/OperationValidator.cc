@@ -1515,5 +1515,17 @@ void OperationValidator::visit(const ir::operation::Tile &node)
   assert(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
+void OperationValidator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::Input::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::Input::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::Input::DELTA)};
+
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(start_index);
+  UNUSED_RELEASE(limit_index);
+  UNUSED_RELEASE(delta_index);
+}
 } // namespace compiler
 } // namespace onert

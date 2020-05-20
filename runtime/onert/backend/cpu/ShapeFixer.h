@@ -90,6 +90,7 @@ public:
   void visit(const ir::operation::LogicalNot &) override;
   void visit(const ir::operation::ZerosLike &) override;
   void visit(const ir::operation::Tile &) override;
+  void visit(const ir::operation::Range &) override;
 
 private:
   const ir::Operands &_ctx;

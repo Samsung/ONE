@@ -128,6 +128,7 @@ GeneratedTests.prelu_weight_as_input_quant8
 GeneratedTests.prelu_weight_as_input_quant8_2
 GeneratedTests.prelu_weight_as_input_quant8_3
 GeneratedTests.prelu_weight_as_input_quant8_4
+GeneratedTests.range_ex_float
 GeneratedTests.reduce_max_quant8
 GeneratedTests.reduce_max_quant8_1_nnfw
 GeneratedTests.reduce_max_quant8_2

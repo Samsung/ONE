@@ -51,32 +51,60 @@ namespace cpu
 
 ShapeFixer::ShapeFixer(const ir::Operands &operand_ctx) : _ctx(operand_ctx) {}
 
-void ShapeFixer::visit(const ir::operation::Comparison &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Comparison &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Conv2D &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Conv2D &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::DepthwiseConv2D &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::DepthwiseConv2D &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::MaxPool2D &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::MaxPool2D &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::AvgPool2D &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::AvgPool2D &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Concat &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Concat &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
-void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Exp &)
+{ /* DO NOTHING */
+}
+void ShapeFixer::visit(const ir::operation::ExpandDims &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Fill &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Fill &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::FullyConnected &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::FullyConnected &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Reshape &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Reshape &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Squeeze &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Squeeze &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Softmax &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Softmax &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Gather &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Gather &)
+{ /* DO NOTHING */
+}
 
 void ShapeFixer::visit(const ir::operation::Add &node)
 {
@@ -125,11 +153,17 @@ void ShapeFixer::visit(const ir::operation::Div &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::Permute &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Permute &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Custom &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Custom &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Logistic &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Logistic &)
+{ /* DO NOTHING */
+}
 
 void ShapeFixer::visit(const ir::operation::Pad &node)
 {
@@ -143,71 +177,141 @@ void ShapeFixer::visit(const ir::operation::Pad &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::Max &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Max &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Min &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Min &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Tanh &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Tanh &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Pack &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Pack &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Unpack &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Unpack &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::OneHot &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::OneHot &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Cast &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Cast &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Transpose &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Transpose &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ReduceSum &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ReduceSum &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ReduceAny &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ReduceAny &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ReduceMax &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ReduceMax &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ReduceMin &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ReduceMin &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Select &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Select &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Slice &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Slice &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::StridedSlice &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::StridedSlice &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Split &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Split &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::SquaredDifference &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::SquaredDifference &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Abs &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Cos &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Cos &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Sin &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Sin &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::RSQRT &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Shape &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Shape &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ReduceProd &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ReduceProd &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Reverse &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Reverse &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Neg &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ArgMax &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Mean &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Mean &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Log &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Log &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Round &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Round &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Pow &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Pow &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::LogicalNot &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::ZerosLike &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::ZerosLike &)
+{ /* DO NOTHING */
+}
 
-void ShapeFixer::visit(const ir::operation::Tile &) { /* DO NOTHING */}
+void ShapeFixer::visit(const ir::operation::Tile &)
+{ /* DO NOTHING */
+}
+
+void ShapeFixer::visit(const ir::operation::Range &)
+{ /* DO NOTHING */
+}
 
 } // namespace cpu
 } // namespace backend
