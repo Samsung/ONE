@@ -55,8 +55,6 @@ public:
     assert(_buffer == nullptr && _allocator == nullptr);
     _allocator = alloc;
   }
-  float scale() const { return _info.typeInfo().scale(); }
-  int32_t offset() const { return _info.typeInfo().offset(); }
 
 public:
   uint8_t *buffer() const override

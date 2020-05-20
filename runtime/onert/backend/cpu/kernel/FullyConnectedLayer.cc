@@ -69,9 +69,9 @@ void FullyConnectedLayer::fullyConnectedQuant8()
                                 &output_activation_max);
 
   nnfw::cker::FullyConnectedParams op_params;
-  op_params.input_offset = -_input->offset();
-  op_params.weights_offset = -_weights->offset();
-  op_params.output_offset = _output->offset();
+  op_params.input_offset = -_input->data_offset();
+  op_params.weights_offset = -_weights->data_offset();
+  op_params.output_offset = _output->data_offset();
   op_params.output_multiplier = output_multiplier;
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
@@ -95,7 +95,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 
   nnfw::cker::FullyConnectedParams op_params;
   op_params.activation = convertActivationType(_activation);
-  op_params.weights_scale = _weights->scale();
+  op_params.weights_scale = _weights->data_scale();
 
   nnfw::cker::FullyConnectedHybrid(
       op_params, convertTensorToCkerShape(_input),
