@@ -24,14 +24,14 @@ TEST(CircleBCQFullyConnectedTest, constructor)
 {
   luci::CircleBCQFullyConnected bcq_FC_node;
 
-  ASSERT_EQ(bcq_FC_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(bcq_FC_node.opcode(), luci::CircleOpcode::BCQ_FULLY_CONNECTED);
+  ASSERT_EQ(luci::CircleDialect::get(), bcq_FC_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::BCQ_FULLY_CONNECTED, bcq_FC_node.opcode());
 
   ASSERT_EQ(nullptr, bcq_FC_node.input());
   ASSERT_EQ(nullptr, bcq_FC_node.weights_scales());
   ASSERT_EQ(nullptr, bcq_FC_node.weights_binary());
   ASSERT_EQ(nullptr, bcq_FC_node.bias());
 
-  ASSERT_EQ(bcq_FC_node.fusedActivationFunction(), luci::FusedActFunc::UNDEFINED);
-  ASSERT_EQ(bcq_FC_node.weights_hidden_size(), 0);
+  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, bcq_FC_node.fusedActivationFunction());
+  ASSERT_EQ(0, bcq_FC_node.weights_hidden_size());
 }

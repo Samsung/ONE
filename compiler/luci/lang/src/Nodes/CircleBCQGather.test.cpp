@@ -24,13 +24,13 @@ TEST(CircleBCQGatherTest, constructor)
 {
   luci::CircleBCQGather bcq_gather_node;
 
-  ASSERT_EQ(bcq_gather_node.dialect(), luci::CircleDialect::get());
-  ASSERT_EQ(bcq_gather_node.opcode(), luci::CircleOpcode::BCQ_GATHER);
+  ASSERT_EQ(luci::CircleDialect::get(), bcq_gather_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::BCQ_GATHER, bcq_gather_node.opcode());
 
   ASSERT_EQ(nullptr, bcq_gather_node.input_scales());
   ASSERT_EQ(nullptr, bcq_gather_node.input_binary());
   ASSERT_EQ(nullptr, bcq_gather_node.indices());
 
-  ASSERT_EQ(bcq_gather_node.axis(), 0);
-  ASSERT_EQ(bcq_gather_node.input_hidden_size(), 0);
+  ASSERT_EQ(0, bcq_gather_node.axis());
+  ASSERT_EQ(0, bcq_gather_node.input_hidden_size());
 }
