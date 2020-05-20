@@ -106,6 +106,7 @@ private:
     REG_TFL_OP(SLICE, TFliteOpSlice);
     REG_TFL_OP(SOFTMAX, TFliteOpSoftmax);
     REG_TFL_OP(SPACE_TO_BATCH_ND, TFliteOpSpaceToBatchND);
+    REG_TFL_OP(SPACE_TO_DEPTH, TFliteOpSpaceToDepth);
     REG_TFL_OP(SPLIT, TFliteOpSplit);
     REG_TFL_OP(SPLIT_V, TFliteOpSplitV);
     REG_TFL_OP(SQRT, TFliteOpSqrt);
