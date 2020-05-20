@@ -23,6 +23,7 @@
 #include "ir/Shape.h"
 #include <memory>
 #include <misc/feature/IndexIterator.h>
+#include <typeinfo>
 #include "util/feature/nchw/Reader.h"
 #include "util/feature/nchw/View.h"
 #include "util/feature/nhwc/Reader.h"
@@ -61,7 +62,8 @@ public:
       if (src_tensor != dst_tensor)
       {
         // TODO Change to permute in parallel
-        assert(src_tensor->data_type() == dst_tensor->data_type());
+        assert(underlying_type(src_tensor->data_type()) ==
+               underlying_type(dst_tensor->data_type()));
         switch (src_tensor->data_type())
         {
           case ir::DataType::FLOAT32:
@@ -82,7 +84,7 @@ public:
             permute<int8_t>(src_tensor, dst_tensor, *rank_it);
             break;
           default:
-            throw std::runtime_error("NYI");
+            throw std::runtime_error("IPermuteFunction: Not supported data type");
             break;
         }
       }
@@ -249,6 +251,30 @@ private:
       });
     };
     src->access(fn);
+  }
+
+  // NOTE The typeid expression is lvalue expression which refers to an object with static storage
+  //      duration, of the polymorphic type const std::type_info or of some type derived from it.
+  //      So std::type_info is non-copyable
+  const std::type_info &underlying_type(ir::DataType type) const
+  {
+    switch (type)
+    {
+      case ir::DataType::FLOAT32:
+        return typeid(float);
+      case ir::DataType::INT32:
+        return typeid(int32_t);
+      case ir::DataType::UINT32:
+        return typeid(uint32_t);
+      case ir::DataType::BOOL8:
+      case ir::DataType::QUANT8_ASYMM:
+      case ir::DataType::UINT8:
+        return typeid(uint8_t);
+      case ir::DataType::QUANT8_SYMM:
+        return typeid(int8_t);
+      default:
+        throw std::runtime_error("IPermuteFunction: Not supported data type");
+    }
   }
 
 protected:
