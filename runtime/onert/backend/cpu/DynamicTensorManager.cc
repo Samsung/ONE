@@ -34,12 +34,27 @@ void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape
   auto tensor = (*_tensors)[ind];
   assert(tensor);
 
-  setShape(tensor.get(), new_shape);
+  auto allocTensorMem = [&]() {
+    setShape(tensor.get(), new_shape);
 
-  auto capacity = tensor->total_size();
-  auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
+    auto capacity = tensor->total_size();
+    auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
 
-  tensor->setBuffer(alloc);
+    tensor->setBuffer(alloc);
+  };
+
+  if (tensor->buffer() == nullptr)
+  {
+    allocTensorMem();
+  }
+  // when buffer was already allocated and new_shape requires different size
+  else if (tensor->total_size() != new_shape.num_elements() * sizeOfDataType(tensor->data_type()))
+  {
+    _dynamic_mem_mgr->deallocate(ind);
+
+    allocTensorMem();
+  }
+  // when buffer with same size was already allocated, do nothing
 }
 
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
