@@ -949,11 +949,7 @@ public:
       LUCI_ASSERT(const_shape_node, "Only support CircleConst for shape of CircleReshape");
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
 
-      if (const_shape_node->rank() != 1)
-        INTERNAL_EXN_V("Only support rank 1 CircleConst",
-                       oops::to_uint32(const_shape_node->rank()));
-
-      shape_by_input.rank(const_shape_node->dim(0).value());
+      shape_by_input.rank(const_shape_node->size<S32>());
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {
