@@ -485,7 +485,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleGather *node, locop::No
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleGatherNd *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleGatherNd *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("params", tbl()->lookup(node->params()));
   s.args().append("indices", tbl()->lookup(node->indices()));
