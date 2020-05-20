@@ -22,13 +22,13 @@ namespace tflchef
 {
 
 void TFliteOpSpaceToDepth::filler(const tflite::Operator *op, TFliteImport *import,
-                                    tflchef::ModelRecipe *model_recipe) const
+                                  tflchef::ModelRecipe *model_recipe) const
 {
   // Nothing to do with filler
 }
 
 tflchef::Operation *TFliteOpSpaceToDepth::build(const tflite::Operator *op, TFliteImport *import,
-                                                  tflchef::ModelRecipe *model_recipe) const
+                                                tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
 

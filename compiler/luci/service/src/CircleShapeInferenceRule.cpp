@@ -1147,7 +1147,8 @@ public:
     if (block_size < 2)
       INTERNAL_EXN("Block size must be >= 2");
 
-    if ((height % block_size) || (width % block_size)) {
+    if ((height % block_size) || (width % block_size))
+    {
       INTERNAL_EXN("The input tensor's height and width must be divisible by block_size");
     }
 
