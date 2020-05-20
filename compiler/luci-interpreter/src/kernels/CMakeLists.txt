@@ -14,6 +14,7 @@ set(SOURCES
     Concatenation.cpp
     FullyConnected.h
     FullyConnected.cpp
+    MaxPool2D.cpp
     Reshape.h
     Reshape.cpp
     Softmax.h
@@ -38,6 +39,7 @@ set(TEST_SOURCES
     TestUtils.cpp
     Concatenation.test.cpp
     FullyConnected.test.cpp
+    MaxPool2D.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp)
 
