@@ -97,6 +97,22 @@ JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutp
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeGetInputTensorInfo
+ * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo
+  (JNIEnv *, jobject, jlong, jint, jobject);
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeGetOutputTensorInfo
+ * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo
+  (JNIEnv *, jobject, jlong, jint, jobject);
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
  * Method:    nativeSetAvailableBackends
  * Signature: (JLjava/lang/String;)Z
  */

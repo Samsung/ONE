@@ -5,21 +5,41 @@ import android.support.annotation.Nullable;
 
 public final class Session implements AutoCloseable {
 
-    private NativeSessionWrapper _session = null;
-
     // TODO backends -> enum & bit
     public Session(@NonNull String nnpkg_path, @Nullable String backends) {
-        _session = new NativeSessionWrapper(nnpkg_path, backends);
+        _native_sess = new NativeSessionWrapper(nnpkg_path, backends);
     }
 
     public boolean prepare() {
-        return _session.prepare();
+        return _native_sess.prepare();
     }
 
-    public boolean run(Tensor[] inputs, Tensor[] outputs) {
-        _session.setInputs(inputs);
-        _session.setOutputs(outputs);
-        return _session.run();
+    public boolean setInputs(Tensor[] inputs) {
+        return _native_sess.setInputs(inputs);
+    }
+        
+    public boolean setOutputs(Tensor[] outputs) {
+        return _native_sess.setOutputs(outputs);
+    }
+
+    public boolean run() {
+        return _native_sess.run();
+    }
+
+    public int getInputSize() {
+        return _native_sess.getInputSize();
+    }
+
+    public int getOutputSize() {
+        return _native_sess.getOutputSize();
+    }
+
+    public TensorInfo getInputTensorInfo(int index) {
+        return _native_sess.getInputTensorInfo(index);
+    }
+
+    public TensorInfo getOutputTensorInfo(int index) {
+        return _native_sess.getOutputTensorInfo(index);
     }
 
     @Override
@@ -33,6 +53,8 @@ public final class Session implements AutoCloseable {
 
     @Override
     public void close() {
-        _session = null;
+        _native_sess = null;
     }
+
+    private NativeSessionWrapper _native_sess = null;
 }

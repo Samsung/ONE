@@ -4,14 +4,15 @@ import java.nio.ByteBuffer;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 final class NativeSessionWrapper implements AutoCloseable {
 
-    static final String NATIVE_SO = "onert-native-api.so";
+    static final String TAG = "ONERT_NATIVE";
 
     static
     {
-        System.load(NATIVE_SO);
+        System.loadLibrary("onert-native-api");
     }
 
     static final String DEFAULT_BACKENDS = "cpu";
@@ -70,6 +71,26 @@ final class NativeSessionWrapper implements AutoCloseable {
         return nativeRun(_handle);
     }
 
+    int getInputSize() {
+        return nativeGetInputSize(_handle);
+    }
+
+    int getOutputSize() {
+        return nativeGetOutputSize(_handle);
+    }
+
+    TensorInfo getInputTensorInfo(int index) {
+        InternalTensorInfo info = new InternalTensorInfo();
+        nativeGetInputTensorInfo(_handle, index, info);
+        return newTensorInfo(info);
+    }
+
+    TensorInfo getOutputTensorInfo(int index) {
+        InternalTensorInfo info = new InternalTensorInfo();
+        nativeGetOutputTensorInfo(_handle, index, info);
+        return newTensorInfo(info);
+    }
+
     @Override
     protected void finalize() throws Throwable {
         try {
@@ -87,7 +108,7 @@ final class NativeSessionWrapper implements AutoCloseable {
     private long _handle = 0l;
     private String _backends = null;
 
-    private int convertTensorType(Tensor.Type type) {
+    private int convertTensorType(TensorInfo.Type type) {
         int ret = 0;
         switch (type) {
             case FLOAT32: 
@@ -106,6 +127,39 @@ final class NativeSessionWrapper implements AutoCloseable {
         return ret;
     }
 
+    private TensorInfo.Type convertOneRTTensorType(int type) {
+        TensorInfo.Type ret;
+        switch (type) {
+            case 0:
+                ret = TensorInfo.Type.FLOAT32; break;
+            case 1:
+                ret = TensorInfo.Type.INT32; break;
+            case 2:
+                ret = TensorInfo.Type.QUANT8_ASYMM; break;
+            case 3:
+                ret = TensorInfo.Type.BOOL; break;
+            case 4:
+                ret = TensorInfo.Type.UINT8; break;
+            default:
+                ret = TensorInfo.Type.UNKNOWN; break;
+        }
+        return ret;
+    }
+
+    // TODO How to handle enum in jni properly
+    class InternalTensorInfo {
+        int type;
+        int rank;
+        int[] shape;
+    };
+
+    private TensorInfo newTensorInfo(InternalTensorInfo info) {
+        TensorInfo.Type type = convertOneRTTensorType(info.type);
+        int rank = info.rank;
+        int[] shape = info.shape;
+        return new TensorInfo(type, rank, shape);
+    }
+
     // onert-native-api
     private native long nativeCreateSession();
     private native void nativeCloseSession(long handle);
@@ -118,5 +172,7 @@ final class NativeSessionWrapper implements AutoCloseable {
     private native boolean nativeSetOutputLayout(long handle, int index, int layout);
     private native int nativeGetInputSize(long handle);
     private native int nativeGetOutputSize(long handle);
+    private native boolean nativeGetInputTensorInfo(long handle, int index, InternalTensorInfo info);
+    private native boolean nativeGetOutputTensorInfo(long handle, int index, InternalTensorInfo info);
     private native boolean nativeSetAvailableBackends(long handle, String backends);
 }

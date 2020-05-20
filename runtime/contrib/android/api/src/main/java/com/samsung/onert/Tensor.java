@@ -7,59 +7,37 @@ import android.support.annotation.Nullable;
 
 // TODO LAYOUT
 public final class Tensor implements AutoCloseable {
-    public enum Type {
-        FLOAT32,
-        INT32,
-        QUANT8_ASYMM,
-        BOOL,
-        UINT8
+
+    public Tensor(@NonNull TensorInfo info) {
+        _info = info;
     }
 
-    public static int getTypeSize(Type type) {
-        int size = 0;
-        switch (type) {
-            case FLOAT32:
-            case INT32:
-                size = 4;
-                break;
-            case QUANT8_ASYMM:
-            case BOOL: // Note. different from java's one
-            case UINT8:
-                size = 1;
-                break;
-            default:
-                size = -1;
-                break;
-        }
-        return size;
-    }
-
-    public Tensor(@NonNull int[] shape, @NonNull Type type) {
-        _shape = shape;
-        _type = type;
+    public Tensor(@NonNull int[] shape, @NonNull TensorInfo.Type type) {
+        _info = new TensorInfo(type, shape.length, shape);
     }
 
     public int[] shape() {
-        return _shape;
+        return _info.shape;
     }
 
-    public Type type() {
-        return _type;
+    public TensorInfo.Type type() {
+        return _info.type;
     }
 
     public ByteBuffer buffer() {
         return _buffer;
     }
 
-    // ByteBuffer Should be done by allocateDirect
+    // ByteBuffer Should be done by ByteBuffer.allocateDirect
     public void buffer(ByteBuffer buffer) {
         _buffer = buffer;
     }
 
     public int getByteSize() {
-        int size = getTypeSize(_type);
-        for (int i = 0; i < _shape.length; ++i) {
-            size *= _shape[i];
+        int size = TensorInfo.getTypeSize(_info.type);
+        int[] shape = _info.shape;
+        for (int i = 0; i < shape.length; ++i) {
+            size *= shape[i];
         }
         return size;
     }
@@ -88,7 +66,6 @@ public final class Tensor implements AutoCloseable {
         _buffer = null;
     }
 
-    private int[] _shape = null;
-    private Type _type = null;
+    private TensorInfo _info = null;
     private ByteBuffer _buffer = null;
 }

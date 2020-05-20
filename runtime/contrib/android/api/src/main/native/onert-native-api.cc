@@ -147,7 +147,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   }
   NNFW_TYPE type = static_cast<NNFW_TYPE>(jtype);
 
-  jbyte *buffer = (jbyte *) env->GetDirectBufferAddress(jbuf);
+  jbyte *buffer = reinterpret_cast<jbyte *>(env->GetDirectBufferAddress(jbuf));
   if (buffer == nullptr)
   {
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] buffer is null", __PRETTY_FUNCTION__);
@@ -200,7 +200,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   }
   NNFW_TYPE type = static_cast<NNFW_TYPE>(jtype);
 
-  jbyte *buffer = (jbyte *) env->GetDirectBufferAddress(jbuf);
+  jbyte *buffer = reinterpret_cast<jbyte *>(env->GetDirectBufferAddress(jbuf));
   if (buffer == nullptr)
   {
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] buffer is null", __PRETTY_FUNCTION__);
@@ -376,5 +376,157 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
                         "%s] nnfw_set_available_backends is failed", __PRETTY_FUNCTION__);
     return false;
   }
+  return true;
+}
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeGetInputTensorInfo
+ * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex, jobject jinfo)
+{
+  nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
+  if (sess == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess is null", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  if (jindex < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    return false;
+  }
+  uint32_t index = static_cast<uint32_t>(jindex);
+
+  nnfw_tensorinfo tensor_info;
+  if (nnfw_input_tensorinfo(sess, index, &tensor_info) == NNFW_STATUS_ERROR) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] nnfw_input_tensorinfo is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  jclass info_cls = env->FindClass("com/samsung/onert/NativeSessionWrapper$InternalTensorInfo");
+  if (info_cls == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] java info class is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  // type
+  jfieldID type_field = env->GetFieldID(info_cls, "type", "I");
+  if (type_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's type field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jint jtype = static_cast<jint>(tensor_info.dtype);
+  env->SetIntField(jinfo, type_field, jtype);
+
+  // rank
+  jfieldID rank_field = env->GetFieldID(info_cls, "rank", "I");
+  if (rank_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's rank field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jint jrank = tensor_info.rank;
+  env->SetIntField(jinfo, rank_field, jrank);
+
+  // shape
+  jfieldID shape_field = env->GetFieldID(info_cls, "shape", "[I");
+  if (shape_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's shape field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jintArray jshape = env->NewIntArray(jrank);
+  if (jshape == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's shape[] allocation is failed", __PRETTY_FUNCTION__);
+    return false;
+
+  }
+  env->SetIntArrayRegion(jshape, 0, jrank, (tensor_info.dims));
+  env->SetObjectField(jinfo, shape_field, jshape);
+
+  return true;
+}
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeGetOutputTensorInfo
+ * Signature: (JILcom/samsung/onert/NativeSessionWrapper/InternalTensorInfo;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex, jobject jinfo)
+{
+  nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
+  if (sess == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess is null", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  if (jindex < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    return false;
+  }
+  uint32_t index = static_cast<uint32_t>(jindex);
+
+  nnfw_tensorinfo tensor_info;
+  if (nnfw_output_tensorinfo(sess, index, &tensor_info) == NNFW_STATUS_ERROR) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] nnfw_output_tensorinfo is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  jclass info_cls = env->FindClass("com/samsung/onert/NativeSessionWrapper$InternalTensorInfo");
+  if (info_cls == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] java info class is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  // type
+  jfieldID type_field = env->GetFieldID(info_cls, "type", "I");
+  if (type_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's type field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jint jtype = static_cast<jint>(tensor_info.dtype);
+  env->SetIntField(jinfo, type_field, jtype);
+
+  // rank
+  jfieldID rank_field = env->GetFieldID(info_cls, "rank", "I");
+  if (rank_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's rank field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jint jrank = tensor_info.rank;
+  env->SetIntField(jinfo, rank_field, jrank);
+
+  // shape
+  jfieldID shape_field = env->GetFieldID(info_cls, "shape", "[I");
+  if (shape_field == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's shape field id is failed", __PRETTY_FUNCTION__);
+    return false;
+  }
+  jintArray jshape = env->NewIntArray(jrank);
+  if (jshape == nullptr) {
+    __android_log_print(ANDROID_LOG_ERROR, TAG,
+                        "%s] TensorInfo's shape[] allocation is failed", __PRETTY_FUNCTION__);
+    return false;
+
+  }
+  env->SetIntArrayRegion(jshape, 0, jrank, (tensor_info.dims));
+  env->SetObjectField(jinfo, shape_field, jshape);
+
   return true;
 }
