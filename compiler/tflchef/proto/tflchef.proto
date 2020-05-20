@@ -143,6 +143,10 @@ message ReducerOptions {
   optional bool keep_dims = 1 [ default = false ];
 }
 
+message SpaceToDepthOptions {
+  optional int32 block_size = 1;
+}
+
 message LogicalOrOptions {
   // None
 }
@@ -357,7 +361,7 @@ message Operation {
   // ResizeBilinearOptions 161
   // CallOptions 162
   // SkipGramOptions 163
-  // SpaceToDepthOptions 164
+  optional SpaceToDepthOptions space_to_depth_options = 164;
   // EmbeddingLookupSparseOptions 165
   // SequenceRNNOptions 166
   optional TopKV2Options topk_v2_options = 167;

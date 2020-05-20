@@ -64,6 +64,7 @@
 #include "Op/Slice.h"
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
+#include "Op/SpaceToDepth.h"
 #include "Op/Split.h"
 #include "Op/SplitV.h"
 #include "Op/Sqrt.h"
