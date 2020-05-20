@@ -85,6 +85,8 @@
 #include "Nodes/CircleWhile.h"
 #include "Nodes/CircleZerosLike.h"
 // Circle only
+#include "Nodes/CircleBCQFullyConnected.h"
+#include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
 #include "Nodes/CircleInput.h"
