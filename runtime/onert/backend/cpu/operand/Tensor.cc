@@ -28,6 +28,7 @@ namespace operand
 size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 {
   size_t rank = num_dimensions();
+  rank = rank == 0 ? 1 : rank;
   size_t offset = 0;
   for (size_t i = 0; i < rank; ++i)
   {
