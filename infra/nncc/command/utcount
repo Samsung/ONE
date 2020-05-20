@@ -16,6 +16,8 @@ loco locop locomotiv logo-core logo \
 safemain mio-circle mio-tflite \
 tflite2circle \
 luci \
+luci-interpreter \
+luci-value-test \
 circle2circle"
 
 function count_all()
