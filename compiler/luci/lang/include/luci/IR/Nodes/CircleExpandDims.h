@@ -27,7 +27,7 @@ namespace luci
 {
 
 /**
- * @brief RESHAPE in Circle
+ * @brief EXPAND_DIMS in Circle
  */
 class CircleExpandDims final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::EXPAND_DIMS>>
 {
