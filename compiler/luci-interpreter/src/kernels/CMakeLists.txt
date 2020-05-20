@@ -40,6 +40,7 @@ set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
     Concatenation.test.cpp
+    DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
     MaxPool2D.test.cpp
     Reshape.test.cpp

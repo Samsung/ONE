@@ -37,7 +37,7 @@ DepthwiseConv2D::DepthwiseConv2D(const Tensor *input, const Tensor *filter, cons
 
 void DepthwiseConv2D::configure()
 {
-  // TensorFlow Lite (as of v2.2.0) supports following combinations of types:
+  // TensorFlow Lite (as of v2.2.0) supports the following combinations of types:
   //     | input filter bias  output |
   // ----+---------------------------+
   // (1) | float float  float float  |
