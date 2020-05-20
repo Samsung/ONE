@@ -20,6 +20,9 @@
 #include "ir/operation/AvgPool2D.h"
 #include "ir/operation/MaxPool2D.h"
 #include "util/ShapeInference.h"
+#include "util/logging.h"
+
+#include <sstream>
 
 namespace onert
 {
@@ -207,6 +210,29 @@ Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool
   - Write methods except visit()
   - For visit() of each operator, find each op's C file
 */
+
+void StaticInferer::dump()
+{
+  auto get_shape_str = [](const ir::Shape &shape) {
+    std::stringstream sstream;
+    sstream << "shape : {";
+    for (int i = 0; i < shape.rank(); i++)
+    {
+      if (i == 0)
+        sstream << shape.dim(i);
+      else
+        sstream << " " << shape.dim(i);
+    }
+    sstream << "}";
+    return sstream.str();
+  };
+
+  _operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
+                           << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                           << get_shape_str(operand.info().shape()) << std::endl;
+  });
+}
 
 // TODO move this into Add.cc
 void StaticInferer::visit(const ir::operation::Add &op)
