@@ -243,6 +243,21 @@ public:
   }
 };
 
+class L2NormPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_L2NormOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class LeakyReluPrinter : public OpPrinter
 {
 public:
@@ -556,6 +571,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  _op_map[circle::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();
   _op_map[circle::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
