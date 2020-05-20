@@ -31,6 +31,7 @@
 #include "Nodes/CircleCustom.h"
 #include "Nodes/CircleDepthwiseConv2D.h"
 #include "Nodes/CircleDiv.h"
+#include "Nodes/CircleElu.h"
 #include "Nodes/CircleEqual.h"
 #include "Nodes/CircleExp.h"
 #include "Nodes/CircleFill.h"
