@@ -610,13 +610,14 @@ public:
       INTERNAL_EXN_V("Non-scalar axis in OP", node->opnum());
     }
     int32_t axis = const_axis->at<S32>(0);
-    LUCI_ASSERT((axis < x_shape.rank()) && (axis > -1 - static_cast<int32_t>(x_shape.rank())),
+    LUCI_ASSERT((axis < static_cast<int32_t>(x_shape.rank())) &&
+                    (axis > -1 - static_cast<int32_t>(x_shape.rank())),
                 "Axis has to be between [-(D+1), D], where D is rank of input.");
-    axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
+    size_t positive_axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
     loco::TensorShape output_shape;
     output_shape.rank(x_shape.rank() + 1);
-    int i = 0;
-    for (; i < axis; i++)
+    size_t i = 0;
+    for (; i < positive_axis; i++)
       output_shape.dim(i) = x_shape.dim(i);
     output_shape.dim(i) = loco::Dimension(1);
     for (; i < x_shape.rank(); i++)

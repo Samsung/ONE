@@ -28,7 +28,6 @@
 
 # External directory
 /externals
-/.idea
 
 # tflkit info files
 /tools/tflkit/*.info
