@@ -41,6 +41,7 @@ struct IConfig
 
   virtual bool supportDynamicTensor() = 0;
   virtual bool supportFP16() = 0;
+  virtual bool supportExternalTensor() { return false; } // XXX Remove default impl
 
   // Timer is used for backend profiling. In case of default (nullptr) timer profiler won't work.
   virtual std::unique_ptr<util::ITimer> timer() { return nullptr; }
