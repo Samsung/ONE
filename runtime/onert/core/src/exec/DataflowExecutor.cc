@@ -150,7 +150,7 @@ void DataflowExecutor::executeImpl()
     auto op_seq_index = _job_to_op_seq[job_index];
     auto op_seq = &_lowered_graph->op_seqs().at(op_seq_index);
     const backend::Backend *backend =
-        _lowered_graph->getLowerInfo()->operation.at(op_seq_index)->backend();
+        _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
 
     _subject.notifyJobBegin(this, op_seq, backend);
 

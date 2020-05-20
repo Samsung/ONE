@@ -137,8 +137,8 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
 const operation::LowerInfo *LoweredGraph::getLowerInfo(const OpSequenceIndex &op_seq_index) const
 {
-  auto itr = _lower_info_map.operation.find(op_seq_index);
-  if (itr == _lower_info_map.operation.end())
+  auto itr = _lower_info_map.op_seq.find(op_seq_index);
+  if (itr == _lower_info_map.op_seq.end())
     return nullptr;
   return itr->second.get();
 }
@@ -146,12 +146,12 @@ const operation::LowerInfo *LoweredGraph::getLowerInfo(const OpSequenceIndex &op
 void LoweredGraph::setLowerInfo(const OpSequenceIndex &op_seq_index,
                                 std::unique_ptr<operation::LowerInfo> &&lower_info)
 {
-  _lower_info_map.operation.insert(std::make_pair(op_seq_index, std::move(lower_info)));
+  _lower_info_map.op_seq.insert(std::make_pair(op_seq_index, std::move(lower_info)));
 }
 
 void LoweredGraph::removeLowerInfo(const OpSequenceIndex &op_seq_index)
 {
-  auto &op_seq_lower_info = _lower_info_map.operation;
+  auto &op_seq_lower_info = _lower_info_map.op_seq;
   assert(op_seq_lower_info.find(op_seq_index) != op_seq_lower_info.end());
   for (auto it = op_seq_lower_info.begin(); it != op_seq_lower_info.end(); ++it)
   {
