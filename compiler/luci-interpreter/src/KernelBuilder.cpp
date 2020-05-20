@@ -62,6 +62,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *
   params.depth_multiplier = node->depthMultiplier();
   params.stride_height = node->stride()->h();
   params.stride_width = node->stride()->w();
+  // TODO Set dilations from the IR when it provides them.
   params.dilation_height_factor = 1;
   params.dilation_width_factor = 1;
   params.activation = node->fusedActivationFunction();

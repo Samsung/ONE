@@ -47,12 +47,11 @@ void DepthwiseConv2D::configure()
   // (5) | int16 int8   int64 int16  | quantized per channel 16x8
   //
   // We only support (1) and (3) for now.
-
   if (_input->element_type() == DataType::FLOAT32 && _filter->element_type() == DataType::FLOAT32)
   {
     assert(_bias == nullptr || _bias->element_type() == DataType::FLOAT32);
   }
-  else if (_input->element_type() == DataType::U8 && _input->element_type() == DataType::U8)
+  else if (_input->element_type() == DataType::U8 && _filter->element_type() == DataType::U8)
   {
     assert(_bias == nullptr || _bias->element_type() == DataType::S32);
   }
@@ -158,6 +157,7 @@ void DepthwiseConv2D::evalQuantized() const
   params.dilation_height_factor = _params.dilation_height_factor;
   params.dilation_width_factor = _params.dilation_width_factor;
   params.depth_multiplier = _params.depth_multiplier;
+  // The kernel expects input and filter zero points to be negated.
   params.input_offset = -_input->zero_point();    // Note the '-'.
   params.weights_offset = -_filter->zero_point(); // Note the '-'.
   params.output_offset = _output->zero_point();
