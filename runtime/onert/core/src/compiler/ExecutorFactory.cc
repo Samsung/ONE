@@ -34,6 +34,9 @@
 #include "backend/controlflow/KernelGenerator.h"
 #include <memory>
 
+#include "backend/controlflow/operand/Tensor.h"
+#include "backend/controlflow/TensorRegistry.h"
+
 namespace onert
 {
 namespace compiler
@@ -121,8 +124,8 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
         const auto &op = *elem.node;
         for (const auto &index : op.getInputs() + op.getOutputs())
         {
-          if ((lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()).contains(index))
-            continue;
+          //if ((lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()).contains(index))
+          //  continue;
           if (!tensor_builder->isRegistered(index))
           {
             const auto &operand_lower_info =
@@ -149,25 +152,36 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
   }
 }
 
-std::vector<std::shared_ptr<backend::UserTensor>> ExecutorFactory::initializeTensors(ir::LoweredGraph &lowered_graph, const ir::OperandIndexSequence &indices)
+std::vector<std::shared_ptr<backend::ITensor>> ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph, const ir::OperandIndexSequence &indices)
 {
-  std::vector<std::shared_ptr<backend::UserTensor>> ret;
+  // Build ControlFlow
+  std::vector<std::shared_ptr<backend::ITensor>> ret;
 
-  backend::TensorBuilderSet tensor_builders;
+  backend::TensorBuilderSet tensor_builders; // All tensor builders except controlflow
+  std::shared_ptr<backend::ITensorBuilder> cf_tensor_builder;
   for (const auto &e : lowered_graph.backend_contexts())
   {
-    tensor_builders.insert(e.second->tensor_builder);
+    auto tensor_builder = e.second->tensor_builder;
+    if (e.first->config()->id() == backend::controlflow::Config::ID)
+      cf_tensor_builder = tensor_builder;
+    else
+      tensor_builders.insert(tensor_builder);
   }
+  assert(cf_tensor_builder);
 
   for (auto ind : indices)
   {
     const auto &input = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_shared<backend::UserTensor>(input.info(), ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
+    auto tensor = std::make_shared<backend::controlflow::operand::UserTensor>(input.info(), ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
+    std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(cf_tensor_builder->tensorRegistry())->setManagedTensor(ind, tensor);
     ret.push_back(tensor);
+
     for (auto &tensor_builder : tensor_builders)
     {
-      assert(!tensor_builder->isRegistered(ind)); // I/O tensors must not be registered
-      tensor_builder->setExternalTensor(ind, tensor);
+      if (tensor_builder->isRegistered(ind))
+      {
+        tensor_builder->setExternalTensor(ind, tensor);
+      }
     }
   }
   return ret;
@@ -211,8 +225,15 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
-  auto input_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getInputs());
-  auto output_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getOutputs());
+
+  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  if (options.is_primary_subgraph)
+  {
+    input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
+    output_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getOutputs());
+  }
+
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
 
@@ -301,8 +322,13 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
-  auto input_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getInputs());
-  auto output_tensors = initializeTensors(*lowered_graph, lowered_graph->graph().getOutputs());
+  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  if (options.is_primary_subgraph)
+  {
+    input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
+    output_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getOutputs());
+  }
 
   backend::TensorBuilderSet tensor_builders;
   for (const auto &e : lowered_graph->backend_contexts())

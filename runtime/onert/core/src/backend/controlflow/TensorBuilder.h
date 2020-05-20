@@ -22,6 +22,7 @@
 #include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
 #include "StaticTensorManager.h"
+#include "TensorRegistry.h"
 #include <unordered_map>
 
 namespace onert
@@ -68,7 +69,10 @@ public:
 
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
+  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
+
 private:
+  const std::shared_ptr<TensorRegistry> _tensor_reg;
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::Layout> _tensor_layout_map;

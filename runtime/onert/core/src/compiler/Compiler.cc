@@ -259,6 +259,8 @@ void Compiler::compile(void)
     auto &lowered_subg = pair.second;
     auto indexed_ranks = lowered_subg->indexed_ranks();
 
+    _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
+
     onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
     dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
 

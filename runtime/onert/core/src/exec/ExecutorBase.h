@@ -50,8 +50,8 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-               const std::vector<std::shared_ptr<backend::UserTensor>> &input_tensors,
-               const std::vector<std::shared_ptr<backend::UserTensor>> &output_tensors,
+               const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
+               const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                const backend::TensorBuilderSet &tensor_builders);
 
   virtual ~ExecutorBase() = default;
@@ -105,8 +105,8 @@ protected:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
-  std::vector<std::shared_ptr<backend::UserTensor>> _input_tensors;
-  std::vector<std::shared_ptr<backend::UserTensor>> _output_tensors;
+  std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
+  std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;

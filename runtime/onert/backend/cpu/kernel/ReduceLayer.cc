@@ -80,7 +80,7 @@ void evalType(const ITensor *input, ITensor *output, const std::vector<int> &axe
 
 // Template specialization for bool type
 template <>
-void evalType<bool>(const operand::Tensor *input, operand::Tensor *output,
+void evalType<bool>(const ITensor *input, ITensor *output,
                     const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
                     ReduceType reduce_type)
 {
