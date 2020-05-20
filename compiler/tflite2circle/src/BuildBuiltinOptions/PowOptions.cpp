@@ -25,8 +25,6 @@ namespace tflite2circle
 flatbuffers::Offset<circle::PowOptions> build_circle_PowOptions(flatbuffers::FlatBufferBuilder &fb,
                                                                 const tflite::Operator *op)
 {
-  auto tflite_builtin_options = op->builtin_options_as_PowOptions();
-  assert(tflite_builtin_options);
   circle::PowOptionsBuilder builtin_options_builder{fb};
   return builtin_options_builder.Finish();
 }
