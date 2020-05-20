@@ -403,6 +403,7 @@ message Operation {
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
   optional NotEqualOptions notequal_options = 201;
+
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
 }
