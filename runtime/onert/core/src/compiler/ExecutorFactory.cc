@@ -73,7 +73,7 @@ void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
   // Build lists for operations
   lowered_graph->op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
-        auto &op_seq_li = lowered_graph->getLowerInfo()->operation;
+        auto &op_seq_li = lowered_graph->getLowerInfo()->op_seq;
         auto backend = op_seq_li.at(op_seq_index)->backend();
         for (auto &element : op_seq.operations())
         {
