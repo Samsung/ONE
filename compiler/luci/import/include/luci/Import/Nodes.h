@@ -63,6 +63,7 @@
 #include "Nodes/CircleSlice.h"
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
+#include "Nodes/CircleSpaceToDepth.h"
 #include "Nodes/CircleSplit.h"
 #include "Nodes/CircleSplitV.h"
 #include "Nodes/CircleSquare.h"
