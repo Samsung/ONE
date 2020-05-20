@@ -117,7 +117,9 @@ public:
 
   void dimension(size_t index, size_t dim) override
   {
-    if (!(index < static_cast<size_t>(_info.shape().rank())))
+    auto rank = _info.shape().rank();
+    rank = rank == 0 ? 1 : rank;
+    if (!(index < static_cast<size_t>(rank)))
     {
       throw std::runtime_error("index should be less than rank");
     }
