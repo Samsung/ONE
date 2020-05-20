@@ -20,9 +20,16 @@
 
 flatbuffers::Offset<void> SpaceToDepthChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
-  tflite::SpaceToDepthOptionsBuilder space_to_depth_options_builder{fbb};
+  auto &operation = (*_operation);
 
-  return space_to_depth_options_builder.Finish().Union();
+  assert(operation.has_space_to_depth_options());
+
+  auto tflite_block_size = operation.space_to_depth_options().block_size();
+
+  tflite::SpaceToDepthOptionsBuilder std_options_builder{fbb};
+  std_options_builder.add_block_size(tflite_block_size);
+
+  return std_options_builder.Finish().Union();
 }
 
 std::unique_ptr<OpChef> SpaceToDepthChefFactory::create(const tflchef::Operation *operation) const

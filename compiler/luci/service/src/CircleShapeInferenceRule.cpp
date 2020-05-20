@@ -1143,6 +1143,10 @@ public:
     int32_t depth = input_shape.dim(3).value();
 
     int block_size = node->block_size();
+
+    if (block_size < 2)
+      INTERNAL_EXN("Block size must be >= 2");
+
     if ((height % block_size) || (width % block_size)) {
       INTERNAL_EXN("The input tensor's height and width must be divisible by block_size");
     }

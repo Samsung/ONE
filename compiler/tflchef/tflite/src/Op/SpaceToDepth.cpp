@@ -34,6 +34,13 @@ tflchef::Operation *TFliteOpSpaceToDepth::build(const tflite::Operator *op, TFli
 
   operation->set_type("SpaceToDepth");
 
+  auto op_params = op->builtin_options_as_SpaceToDepthOptions();
+  assert(op_params != nullptr);
+
+  auto op_options = operation->mutable_space_to_depth_options();
+
+  op_options->set_block_size(op_params->block_size());
+
   return operation;
 }
 
