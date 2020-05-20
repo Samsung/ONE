@@ -124,7 +124,7 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   // set output shape and output buffer
   setShape(output, output_shape);
 
-  // assert(output->buffer() == nullptr);
+  assert(output->buffer() == nullptr);
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
