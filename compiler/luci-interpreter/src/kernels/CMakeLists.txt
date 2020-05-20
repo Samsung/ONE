@@ -10,6 +10,8 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    Concatenation.h
+    Concatenation.cpp
     FullyConnected.h
     FullyConnected.cpp
     Reshape.h
@@ -34,6 +36,7 @@ target_link_libraries(luci_interpreter_kernels
 set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
+    Concatenation.test.cpp
     FullyConnected.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp)
