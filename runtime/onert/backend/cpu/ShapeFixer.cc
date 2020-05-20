@@ -29,7 +29,6 @@
 #include "kernel/MaxPoolLayer.h"
 #include "kernel/MulLayer.h"
 #include "kernel/OperationUtils.h"
-#include "kernel/PermuteLayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/SoftMaxLayer.h"
 #include "kernel/SubLayer.h"
@@ -124,8 +123,6 @@ void ShapeFixer::visit(const ir::operation::Div &node)
     throw std::runtime_error{"ShapeFixer: NYI for quantized Div"};
   }
 }
-
-void ShapeFixer::visit(const ir::operation::Permute &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Custom &) { /* DO NOTHING */}
 
