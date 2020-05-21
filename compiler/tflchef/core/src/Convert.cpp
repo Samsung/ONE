@@ -72,3 +72,18 @@ tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value)
 
   throw std::runtime_error{"Unknown tensor type"};
 }
+
+tflite::MirrorPadMode as_tflite_mirrorpadmode(const tflchef::MirrorPadMode &value)
+{
+  switch (value)
+  {
+    case tflchef::REFLECT:
+      return tflite::MirrorPadMode_REFLECT;
+    case tflchef::SYMMETRIC:
+      return tflite::MirrorPadMode_SYMMETRIC;
+    default:
+      break;
+  }
+
+  throw std::runtime_error{"Unknown mirrorpad mode"};
+}
