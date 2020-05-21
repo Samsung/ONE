@@ -24,6 +24,13 @@
 #include "util/logging.h"
 #include "util/Utils.h"
 
+#define OP_REQUIRES(EXP)                                                                         \
+  do                                                                                             \
+  {                                                                                              \
+    if (!(EXP))                                                                                  \
+      throw std::runtime_error("OperationValidator failed at line " + std::to_string(__LINE__)); \
+  } while (0)
+
 namespace onert
 {
 namespace compiler
@@ -54,10 +61,7 @@ void OperationValidator::visit(const ir::operation::Abs &node)
 
   const auto input_index{node.getInputs().at(0)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::AvgPool2D &node)
@@ -68,10 +72,7 @@ void OperationValidator::visit(const ir::operation::AvgPool2D &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::AvgPool2D::Input::INPUT)};
 
-  UNUSED_RELEASE(ofm_index);
-  UNUSED_RELEASE(ifm_index);
-
-  assert(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
 }
 
 void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
@@ -88,20 +89,16 @@ void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
 
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(block_size_index);
+  // All requirement as per NNAPI specification.
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(block_size_index).shape().rank() == 1);
 
-  // All assertions as per NNAPI specification.
-  assert(_ctx.at(ifm_index).shape().rank() == 4);
-  assert(_ctx.at(ofm_index).shape().rank() == 4);
-  assert(_ctx.at(block_size_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
 
-  assert(_ctx.at(block_size_index).shape().dim(0) == 2);
+  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
 
-  assert(_ctx.at(block_size_index).isConstant());
-
-  assert(input_shape.C == output_shape.C);
+  OP_REQUIRES(input_shape.C == output_shape.C);
 }
 
 void OperationValidator::visit(const ir::operation::Cast &node)
@@ -112,10 +109,7 @@ void OperationValidator::visit(const ir::operation::Cast &node)
 
   const auto input_index{node.getInputs().at(0)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Comparison &node)
@@ -126,12 +120,8 @@ void OperationValidator::visit(const ir::operation::Comparison &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
   const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(lhs_index);
-  UNUSED_RELEASE(rhs_index);
-
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  assert(_ctx.at(output_index).typeInfo().type() == ir::DataType::BOOL8);
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::BOOL8);
 }
 
 void OperationValidator::visit(const ir::operation::Softmax &node)
@@ -144,10 +134,7 @@ void OperationValidator::visit(const ir::operation::Softmax &node)
 
   const auto input_index{node.getInputs().at(0)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 
 void OperationValidator::visit(const ir::operation::InstanceNorm &node)
@@ -160,15 +147,10 @@ void OperationValidator::visit(const ir::operation::InstanceNorm &node)
   const auto gamma_index{node.getInputs().at(ir::operation::InstanceNorm::Input::GAMMA)};
   const auto beta_index{node.getInputs().at(ir::operation::InstanceNorm::Input::BETA)};
 
-  UNUSED_RELEASE(ofm_index);
-  UNUSED_RELEASE(ifm_index);
-  UNUSED_RELEASE(gamma_index);
-  UNUSED_RELEASE(beta_index);
-
-  assert(_ctx.at(ifm_index).shape().rank() == 4);
-  assert(_ctx.at(ifm_index).shape() == _ctx.at(ofm_index).shape());
-  assert(_ctx.at(gamma_index).shape().rank() == 1);
-  assert(_ctx.at(beta_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ifm_index).shape() == _ctx.at(ofm_index).shape());
+  OP_REQUIRES(_ctx.at(gamma_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(beta_index).shape().rank() == 1);
 }
 
 void OperationValidator::visit(const ir::operation::Permute &node)
@@ -181,10 +163,7 @@ void OperationValidator::visit(const ir::operation::Permute &node)
 
   const auto input_index{node.getInputs().at(0)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 
 void OperationValidator::visit(const ir::operation::ReduceSum &node)
@@ -196,20 +175,11 @@ void OperationValidator::visit(const ir::operation::ReduceSum &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto &axes = node.param().axes;
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(axes);
-
   const auto input_shape = _ctx.at(input_index).shape();
   const auto output_shape = _ctx.at(output_index).shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
-
-  assert(input_shape.rank() <= 4);
-  assert(output_shape.rank() <= input_shape.rank());
+  OP_REQUIRES(input_shape.rank() <= 4);
+  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
 
   // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
   // supports cases reducing height and width or reducing depth.
@@ -227,20 +197,20 @@ void OperationValidator::visit(const ir::operation::ReduceSum &node)
     if (output_shape.rank() == 2)
     {
       // Reducing HW
-      assert(input_shape.dim(0) == output_shape.dim(0) &&
-             input_shape.dim(3) == output_shape.dim(1));
+      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
+                  input_shape.dim(3) == output_shape.dim(1));
     }
     else if (output_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(input and output) == 1) or (Reducing W and C(input and output) == 1)
-      assert((input_shape.dim(0) == output_shape.dim(0) &&
-              input_shape.dim(1) == output_shape.dim(1) &&
-              input_shape.dim(2) == output_shape.dim(2)) ||
-             (input_shape.dim(0) == output_shape.dim(0) &&
-              (input_shape.dim(1) == output_shape.dim(1) ||
-               input_shape.dim(2) == output_shape.dim(1)) &&
-              input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
+                   input_shape.dim(1) == output_shape.dim(1) &&
+                   input_shape.dim(2) == output_shape.dim(2)) ||
+                  (input_shape.dim(0) == output_shape.dim(0) &&
+                   (input_shape.dim(1) == output_shape.dim(1) ||
+                    input_shape.dim(2) == output_shape.dim(1)) &&
+                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
     }
   }
 }
@@ -257,12 +227,8 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto &input_shape = _ctx.at(input_index).shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(perm);
-
-  assert(input_shape.rank() == static_cast<int>(perm.size()));
-  assert(input_shape.rank() == output_shape.rank());
+  OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
+  OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 
 void OperationValidator::visit(const ir::operation::ReduceAny &node)
@@ -272,17 +238,11 @@ void OperationValidator::visit(const ir::operation::ReduceAny &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::ReduceAny::Input::INPUT)};
-  const auto &axes = node.param().axes;
-
   auto output_shape = _ctx.at(output_index).shape();
   auto input_shape = _ctx.at(input_index).shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(axes);
-
-  assert(input_shape.rank() <= 4);
-  assert(output_shape.rank() <= input_shape.rank());
+  OP_REQUIRES(input_shape.rank() <= 4);
+  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
 
   // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
   // supports cases reducing height and width or reducing depth.
@@ -300,20 +260,20 @@ void OperationValidator::visit(const ir::operation::ReduceAny &node)
     if (output_shape.rank() == 2)
     {
       // Reducing HW
-      assert(input_shape.dim(0) == output_shape.dim(0) &&
-             input_shape.dim(3) == output_shape.dim(1));
+      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
+                  input_shape.dim(3) == output_shape.dim(1));
     }
     else if (output_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      assert((input_shape.dim(0) == output_shape.dim(0) &&
-              input_shape.dim(1) == output_shape.dim(1) &&
-              input_shape.dim(2) == output_shape.dim(2)) ||
-             (input_shape.dim(0) == output_shape.dim(0) &&
-              (input_shape.dim(1) == output_shape.dim(1) ||
-               input_shape.dim(2) == output_shape.dim(1)) &&
-              input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
+                   input_shape.dim(1) == output_shape.dim(1) &&
+                   input_shape.dim(2) == output_shape.dim(2)) ||
+                  (input_shape.dim(0) == output_shape.dim(0) &&
+                   (input_shape.dim(1) == output_shape.dim(1) ||
+                    input_shape.dim(2) == output_shape.dim(1)) &&
+                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
     }
   }
 }
@@ -325,17 +285,11 @@ void OperationValidator::visit(const ir::operation::ReduceMax &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  const auto &axes = node.param().axes;
-
   auto output_shape = _ctx.at(output_index).shape();
   auto input_shape = _ctx.at(input_index).shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(axes);
-
-  assert(input_shape.rank() <= 4);
-  assert(output_shape.rank() <= input_shape.rank());
+  OP_REQUIRES(input_shape.rank() <= 4);
+  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
 
   // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
   // supports cases reducing height and width or reducing depth.
@@ -353,20 +307,20 @@ void OperationValidator::visit(const ir::operation::ReduceMax &node)
     if (output_shape.rank() == 2)
     {
       // Reducing HW
-      assert(input_shape.dim(0) == output_shape.dim(0) &&
-             input_shape.dim(3) == output_shape.dim(1));
+      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
+                  input_shape.dim(3) == output_shape.dim(1));
     }
     else if (output_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      assert((input_shape.dim(0) == output_shape.dim(0) &&
-              input_shape.dim(1) == output_shape.dim(1) &&
-              input_shape.dim(2) == output_shape.dim(2)) ||
-             (input_shape.dim(0) == output_shape.dim(0) &&
-              (input_shape.dim(1) == output_shape.dim(1) ||
-               input_shape.dim(2) == output_shape.dim(1)) &&
-              input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
+                   input_shape.dim(1) == output_shape.dim(1) &&
+                   input_shape.dim(2) == output_shape.dim(2)) ||
+                  (input_shape.dim(0) == output_shape.dim(0) &&
+                   (input_shape.dim(1) == output_shape.dim(1) ||
+                    input_shape.dim(2) == output_shape.dim(1)) &&
+                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
     }
   }
 }
@@ -392,35 +346,26 @@ void OperationValidator::visit(const ir::operation::RNN &node)
   const auto batch_size = _ctx.at(output_index).shape().dim(0);
   const auto num_units = _ctx.at(output_index).shape().dim(1);
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(hidden_state_out_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(weights_index);
-  UNUSED_RELEASE(recurrent_weights_index);
-  UNUSED_RELEASE(bias_index);
-  UNUSED_RELEASE(hidden_state_in_index);
-  UNUSED_RELEASE(batch_size);
-  UNUSED_RELEASE(num_units);
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 2 &&
+              _ctx.at(hidden_state_out_index).shape().rank() == 2 &&
+              _ctx.at(input_index).shape().rank() == 2 &&
+              _ctx.at(weights_index).shape().rank() == 2 &&
+              _ctx.at(recurrent_weights_index).shape().rank() == 2 &&
+              _ctx.at(hidden_state_in_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(bias_index).shape().rank() == 1);
 
-  assert(_ctx.at(output_index).shape().rank() == 2 &&
-         _ctx.at(hidden_state_out_index).shape().rank() == 2 &&
-         _ctx.at(input_index).shape().rank() == 2 && _ctx.at(weights_index).shape().rank() == 2 &&
-         _ctx.at(recurrent_weights_index).shape().rank() == 2 &&
-         _ctx.at(hidden_state_in_index).shape().rank() == 2);
-  assert(_ctx.at(bias_index).shape().rank() == 1);
+  OP_REQUIRES(batch_size == _ctx.at(input_index).shape().dim(0) &&
+              batch_size == _ctx.at(hidden_state_in_index).shape().dim(0) &&
+              batch_size == _ctx.at(hidden_state_out_index).shape().dim(0));
+  OP_REQUIRES(_ctx.at(input_index).shape().dim(1) == _ctx.at(weights_index).shape().dim(1));
 
-  assert(batch_size == _ctx.at(input_index).shape().dim(0) &&
-         batch_size == _ctx.at(hidden_state_in_index).shape().dim(0) &&
-         batch_size == _ctx.at(hidden_state_out_index).shape().dim(0));
-  assert(_ctx.at(input_index).shape().dim(1) == _ctx.at(weights_index).shape().dim(1));
-
-  assert(num_units == _ctx.at(weights_index).shape().dim(0) &&
-         num_units == _ctx.at(recurrent_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(bias_index).shape().dim(0));
-  assert(num_units == _ctx.at(output_index).shape().dim(1) &&
-         num_units == _ctx.at(recurrent_weights_index).shape().dim(1) &&
-         num_units == _ctx.at(hidden_state_in_index).shape().dim(1) &&
-         num_units == _ctx.at(hidden_state_out_index).shape().dim(1));
+  OP_REQUIRES(num_units == _ctx.at(weights_index).shape().dim(0) &&
+              num_units == _ctx.at(recurrent_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(bias_index).shape().dim(0));
+  OP_REQUIRES(num_units == _ctx.at(output_index).shape().dim(1) &&
+              num_units == _ctx.at(recurrent_weights_index).shape().dim(1) &&
+              num_units == _ctx.at(hidden_state_in_index).shape().dim(1) &&
+              num_units == _ctx.at(hidden_state_out_index).shape().dim(1));
 }
 
 void OperationValidator::visit(const ir::operation::Round &node)
@@ -428,14 +373,11 @@ void OperationValidator::visit(const ir::operation::Round &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Round::Input::INPUT)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
@@ -453,25 +395,20 @@ void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
 
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(block_size_index);
-  UNUSED_RELEASE(paddings_index);
+  // All requirement as per NNAPI specification.
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(block_size_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(paddings_index).shape().rank() == 2);
 
-  // All assertions as per NNAPI specification.
-  assert(_ctx.at(ifm_index).shape().rank() == 4);
-  assert(_ctx.at(ofm_index).shape().rank() == 4);
-  assert(_ctx.at(block_size_index).shape().rank() == 1);
-  assert(_ctx.at(paddings_index).shape().rank() == 2);
+  OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
+  OP_REQUIRES(_ctx.at(paddings_index).shape().dim(0) == 2);
+  OP_REQUIRES(_ctx.at(paddings_index).shape().dim(1) == 2);
 
-  assert(_ctx.at(block_size_index).shape().dim(0) == 2);
-  assert(_ctx.at(paddings_index).shape().dim(0) == 2);
-  assert(_ctx.at(paddings_index).shape().dim(1) == 2);
+  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
+  OP_REQUIRES(_ctx.at(paddings_index).isConstant());
 
-  assert(_ctx.at(block_size_index).isConstant());
-  assert(_ctx.at(paddings_index).isConstant());
-
-  assert(input_shape.C == output_shape.C);
+  OP_REQUIRES(input_shape.C == output_shape.C);
 }
 
 void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
@@ -487,17 +424,13 @@ void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
   const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
   const auto block_size = node.param().block_size;
 
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(block_size);
-
   // All assertions as per NNAPI specification.
-  assert(_ctx.at(ifm_index).shape().rank() == 4);
-  assert(_ctx.at(ofm_index).shape().rank() == 4);
-  assert((block_size >= 1) && (input_shape.H % block_size == 0) &&
-         (input_shape.W % block_size == 0));
-  assert(input_shape.N == output_shape.N);
-  assert(input_shape.C * block_size * block_size == output_shape.C);
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES((block_size >= 1) && (input_shape.H % block_size == 0) &&
+              (input_shape.W % block_size == 0));
+  OP_REQUIRES(input_shape.N == output_shape.N);
+  OP_REQUIRES(input_shape.C * block_size * block_size == output_shape.C);
 }
 
 void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
@@ -510,14 +443,10 @@ void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
   const auto &lookups_obj = _ctx.at(lookups_index);
   const auto &values_obj = _ctx.at(values_index);
 
-  UNUSED_RELEASE(output_obj);
-  UNUSED_RELEASE(lookups_obj);
-  UNUSED_RELEASE(values_obj);
-
   // Verify operand here, not at SimpleEmbeddingLookup::configure() to avoid acl's modifying
   // TensorShape sometimes(Issue: https://github.sec.samsung.net/STAR/nnfw/issues/729)
   {
-    assert(lookups_obj.typeInfo().type() == ir::DataType::INT32);
+    OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
 
     if (_ctx.at(output_index).info().isDynamic())
       return;
@@ -526,20 +455,16 @@ void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
     const auto &lookups_shape = lookups_obj.shape();
     const auto &values_shape = values_obj.shape();
 
-    UNUSED_RELEASE(output_shape);
-    UNUSED_RELEASE(lookups_shape);
-    UNUSED_RELEASE(values_shape);
-
-    assert(lookups_shape.rank() == 1);
-    assert(values_shape.rank() >= 2);
+    OP_REQUIRES(lookups_shape.rank() == 1);
+    OP_REQUIRES(values_shape.rank() >= 2);
 
     // output should be a n-D tensor with the same rank and shape as the values tensor, except for
     // the first dimension which has the same size as lookups' only dimension.
-    assert(output_shape.rank() == values_shape.rank());
-    assert(output_shape.dim(0) == lookups_shape.dim(0));
+    OP_REQUIRES(output_shape.rank() == values_shape.rank());
+    OP_REQUIRES(output_shape.dim(0) == lookups_shape.dim(0));
     for (int n = 1; n < output_shape.rank(); ++n)
     {
-      assert(output_shape.dim(n) == values_shape.dim(n));
+      OP_REQUIRES(output_shape.dim(n) == values_shape.dim(n));
     }
   }
 }
@@ -549,14 +474,11 @@ void OperationValidator::visit(const ir::operation::Exp &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Exp::Input::INPUT)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::ExpandDims &node)
@@ -565,16 +487,12 @@ void OperationValidator::visit(const ir::operation::ExpandDims &node)
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(axis_index);
-
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
-  assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
 
   if (_ctx.at(axis_index).info().isDynamic())
     return;
-  assert(_ctx.at(axis_index).shape().rank() <= 1);
+  OP_REQUIRES(_ctx.at(axis_index).shape().rank() <= 1);
 }
 
 void OperationValidator::visit(const ir::operation::Fill &node)
@@ -584,10 +502,6 @@ void OperationValidator::visit(const ir::operation::Fill &node)
 
   const auto input_index{node.getInputs().at(0)};
   const auto value_index{node.getInputs().at(1)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(value_index);
 }
 
 void OperationValidator::visit(const ir::operation::Floor &node)
@@ -595,14 +509,11 @@ void OperationValidator::visit(const ir::operation::Floor &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Floor::Input::INPUT)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::HashtableLookup &node)
@@ -621,38 +532,30 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
   const auto &keys_obj = _ctx.at(keys_index);
   const auto &values_obj = _ctx.at(values_index);
 
-  assert(lookups_obj.typeInfo().type() == ir::DataType::INT32);
-  assert(keys_obj.typeInfo().type() == ir::DataType::INT32);
-  assert(hits_obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(keys_obj.typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM);
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
 
   const auto &output_shape = output_obj.shape();
-  const auto &hits_shape = hits_obj.shape();
-
   const auto &lookups_shape = lookups_obj.shape();
   const auto &keys_shape = keys_obj.shape();
   const auto &values_shape = values_obj.shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(hits_shape);
-  UNUSED_RELEASE(lookups_shape);
-  UNUSED_RELEASE(keys_shape);
-  UNUSED_RELEASE(values_shape);
-
-  assert(values_shape.rank() == output_shape.rank());
-  assert(lookups_shape.rank() == 1);
-  assert(keys_shape.rank() == 1);
-  assert(values_shape.dim(0) == keys_shape.dim(0));
-  assert(lookups_shape.dim(0) == output_shape.dim(0));
+  OP_REQUIRES(values_shape.rank() == output_shape.rank());
+  OP_REQUIRES(lookups_shape.rank() == 1);
+  OP_REQUIRES(keys_shape.rank() == 1);
+  OP_REQUIRES(values_shape.dim(0) == keys_shape.dim(0));
+  OP_REQUIRES(lookups_shape.dim(0) == output_shape.dim(0));
 }
 
 void OperationValidator::visit(const ir::operation::TransposeConv &node)
 {
   // param check
-  assert((node.param().padding.type == ir::PaddingType::SAME) ||
-         (node.param().padding.type == ir::PaddingType::VALID));
+  OP_REQUIRES((node.param().padding.type == ir::PaddingType::SAME) ||
+              (node.param().padding.type == ir::PaddingType::VALID));
 
   // shape check
   const auto ofm_index{node.getOutputs().at(0)};
@@ -663,9 +566,9 @@ void OperationValidator::visit(const ir::operation::TransposeConv &node)
   const auto ker_index{node.getInputs().at(ir::operation::TransposeConv::Input::KERNEL)};
 
   // Only 4D tensors are supported
-  assert(_ctx.at(ofm_index).shape().rank() == 4);
-  assert(_ctx.at(ofm_index).shape().rank() == _ctx.at(ifm_index).shape().rank());
-  assert(_ctx.at(ofm_index).shape().rank() == _ctx.at(ker_index).shape().rank());
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ifm_index).shape().rank());
+  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ker_index).shape().rank());
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
@@ -678,13 +581,9 @@ void OperationValidator::visit(const ir::operation::TransposeConv &node)
   // O -> C
   const auto ker_shape = _ctx.at(ker_index).shape().asFeature(ir::Layout::NHWC);
 
-  UNUSED_RELEASE(ofm_shape);
-  UNUSED_RELEASE(ifm_shape);
-  UNUSED_RELEASE(ker_shape);
-
-  assert(ifm_shape.N == ofm_shape.N);
-  assert(ifm_shape.C == ker_shape.C);
-  assert(ker_shape.N == ofm_shape.C);
+  OP_REQUIRES(ifm_shape.N == ofm_shape.N);
+  OP_REQUIRES(ifm_shape.C == ker_shape.C);
+  OP_REQUIRES(ker_shape.N == ofm_shape.C);
 }
 
 void OperationValidator::visit(const ir::operation::Gather &node)
@@ -696,20 +595,13 @@ void OperationValidator::visit(const ir::operation::Gather &node)
   const auto ifm_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
 
-  const auto axis = node.param().axis;
-
   const auto ifm_shape = _ctx.at(ifm_index).shape();
   const auto indices_shape = _ctx.at(indices_index).shape();
   const auto ofm_shape = _ctx.at(ofm_index).shape();
 
-  UNUSED_RELEASE(ifm_shape);
-  UNUSED_RELEASE(indices_shape);
-  UNUSED_RELEASE(ofm_shape);
-  UNUSED_RELEASE(axis);
-
-  assert(ifm_shape.rank() <= 4);
-  assert(indices_shape.rank() <= 3);
-  assert(ofm_shape.rank() <= 4);
+  OP_REQUIRES(ifm_shape.rank() <= 4);
+  OP_REQUIRES(indices_shape.rank() <= 3);
+  OP_REQUIRES(ofm_shape.rank() <= 4);
 }
 
 void OperationValidator::visit(const ir::operation::Dequantize &node)
@@ -718,16 +610,13 @@ void OperationValidator::visit(const ir::operation::Dequantize &node)
 
   const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM);
-  assert(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
+  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
-  assert(_ctx.at(input_index).shape().rank() <= 4);
-  assert(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Mean &node)
@@ -757,17 +646,17 @@ void OperationValidator::visit(const ir::operation::Mean &node)
     if (ofm_shape.rank() == 2)
     {
       // Reducing HW
-      assert(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
+      OP_REQUIRES(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
     }
     else if (ofm_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      assert((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
-              ifm_shape.dim(2) == ofm_shape.dim(2)) ||
-             (ifm_shape.dim(0) == ofm_shape.dim(0) &&
-              (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
-              ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
+      OP_REQUIRES((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
+                   ifm_shape.dim(2) == ofm_shape.dim(2)) ||
+                  (ifm_shape.dim(0) == ofm_shape.dim(0) &&
+                   (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
+                   ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
     }
   }
 }
@@ -777,9 +666,7 @@ void OperationValidator::visit(const ir::operation::DepthToSpace &node)
   // param check
   int32_t block_size = node.param().block_size;
 
-  UNUSED_RELEASE(block_size);
-
-  assert(block_size > 0);
+  OP_REQUIRES(block_size > 0);
 
   // shape check
   const auto output_index{node.getOutputs().at(0)};
@@ -792,18 +679,15 @@ void OperationValidator::visit(const ir::operation::DepthToSpace &node)
   const auto output_shape = _ctx.at(output_index).shape().asFeature(frontend_layout);
   const auto input_shape = _ctx.at(input_index).shape().asFeature(frontend_layout);
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 4);
 
-  assert(_ctx.at(input_index).shape().rank() == 4);
-  assert(_ctx.at(output_index).shape().rank() == 4);
-
-  { // assertions block
-    assert(output_shape.N == input_shape.N);
-    assert(output_shape.H == input_shape.H * block_size);
-    assert(output_shape.W == input_shape.W * block_size);
-    assert(input_shape.C % (block_size * block_size) == 0);
-    assert(output_shape.C == input_shape.C / (block_size * block_size));
+  {
+    OP_REQUIRES(output_shape.N == input_shape.N);
+    OP_REQUIRES(output_shape.H == input_shape.H * block_size);
+    OP_REQUIRES(output_shape.W == input_shape.W * block_size);
+    OP_REQUIRES(input_shape.C % (block_size * block_size) == 0);
+    OP_REQUIRES(output_shape.C == input_shape.C / (block_size * block_size));
   }
 }
 
@@ -812,7 +696,7 @@ void OperationValidator::visit(const ir::operation::Pack &node)
   // param check
   const auto num{node.param().num};
   const auto axis{node.param().axis};
-  assert(num == static_cast<int32_t>(node.getInputs().size()));
+  OP_REQUIRES(num == static_cast<int32_t>(node.getInputs().size()));
 
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
@@ -825,15 +709,10 @@ void OperationValidator::visit(const ir::operation::Pack &node)
   const auto input1_index{node.getInputs().at(0)};
   const auto input_shape = _ctx.at(input1_index).shape();
 
-  UNUSED_RELEASE(num);
-  UNUSED_RELEASE(axis);
-  UNUSED_RELEASE(output_rank);
-
-  assert(axis >= -output_rank && axis < output_rank);
+  OP_REQUIRES(axis >= -output_rank && axis < output_rank);
   for (const auto &index : node.getInputs())
   {
-    UNUSED_RELEASE(index);
-    assert(input_shape == _ctx.at(index).shape());
+    OP_REQUIRES(input_shape == _ctx.at(index).shape());
   }
 }
 
@@ -844,17 +723,12 @@ void OperationValidator::visit(const ir::operation::ReduceMin &node)
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto &axes = node.param().axes;
 
   auto ifm_shape = _ctx.at(ifm_index).shape();
   auto ofm_shape = _ctx.at(ofm_index).shape();
 
-  UNUSED_RELEASE(ifm_shape);
-  UNUSED_RELEASE(ofm_shape);
-  UNUSED_RELEASE(axes);
-
-  assert(ifm_shape.rank() <= 4);
-  assert(ofm_shape.rank() <= ifm_shape.rank());
+  OP_REQUIRES(ifm_shape.rank() <= 4);
+  OP_REQUIRES(ofm_shape.rank() <= ifm_shape.rank());
 
   // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
   // supports cases reducing height and width or reducing depth.
@@ -872,17 +746,17 @@ void OperationValidator::visit(const ir::operation::ReduceMin &node)
     if (ofm_shape.rank() == 2)
     {
       // Reducing HW
-      assert(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
+      OP_REQUIRES(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
     }
     else if (ofm_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      assert((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
-              ifm_shape.dim(2) == ofm_shape.dim(2)) ||
-             (ifm_shape.dim(0) == ofm_shape.dim(0) &&
-              (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
-              ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
+      OP_REQUIRES((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
+                   ifm_shape.dim(2) == ofm_shape.dim(2)) ||
+                  (ifm_shape.dim(0) == ofm_shape.dim(0) &&
+                   (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
+                   ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
     }
   }
 }
@@ -940,75 +814,50 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
       node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
 
-  UNUSED_RELEASE(scratch_buffer_index);
-  UNUSED_RELEASE(output_state_out_index);
-  UNUSED_RELEASE(cell_state_out_index);
-  UNUSED_RELEASE(output_index);
+  OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().rank() == 2 &&
+              _ctx.at(output_state_out_index).shape().rank() == 2 &&
+              _ctx.at(cell_state_out_index).shape().rank() == 2 &&
+              _ctx.at(output_index).shape().rank() == 2 &&
+              _ctx.at(input_index).shape().rank() == 2 &&
+              _ctx.at(input_to_input_weights_index).shape().rank() == 2 &&
+              _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
+              _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
+              _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
+              _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2 &&
+              _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
+              _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
+              _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
+              _ctx.at(projection_weights_index).shape().rank() == 2 &&
+              _ctx.at(output_state_in_index).shape().rank() == 2 &&
+              _ctx.at(cell_state_in_index).shape().rank() == 2);
 
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(input_to_input_weights_index);
-  UNUSED_RELEASE(input_to_forget_weights_index);
-  UNUSED_RELEASE(input_to_cell_weights_index);
-  UNUSED_RELEASE(input_to_output_weights_index);
-  UNUSED_RELEASE(recurrent_to_input_weights_index);
-  UNUSED_RELEASE(recurrent_to_forget_weights_index);
-  UNUSED_RELEASE(recurrent_to_cell_weights_index);
-  UNUSED_RELEASE(recurrent_to_output_weights_index);
-  UNUSED_RELEASE(cell_to_input_weights_index);
-  UNUSED_RELEASE(cell_to_forget_weights_index);
-  UNUSED_RELEASE(cell_to_output_weights_index);
-  UNUSED_RELEASE(input_gate_bias_index);
-  UNUSED_RELEASE(forget_gate_bias_index);
-  UNUSED_RELEASE(cell_bias_index);
-  UNUSED_RELEASE(output_gate_bias_index);
-  UNUSED_RELEASE(projection_weights_index);
-  UNUSED_RELEASE(projection_bias_index);
-  UNUSED_RELEASE(output_state_in_index);
-  UNUSED_RELEASE(cell_state_in_index);
-
-  assert(_ctx.at(scratch_buffer_index).shape().rank() == 2 &&
-         _ctx.at(output_state_out_index).shape().rank() == 2 &&
-         _ctx.at(cell_state_out_index).shape().rank() == 2 &&
-         _ctx.at(output_index).shape().rank() == 2 && _ctx.at(input_index).shape().rank() == 2 &&
-         _ctx.at(input_to_input_weights_index).shape().rank() == 2 &&
-         _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
-         _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
-         _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
-         _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2 &&
-         _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
-         _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
-         _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
-         _ctx.at(projection_weights_index).shape().rank() == 2 &&
-         _ctx.at(output_state_in_index).shape().rank() == 2 &&
-         _ctx.at(cell_state_in_index).shape().rank() == 2);
-
-  assert(_ctx.at(cell_to_input_weights_index).shape().rank() == 1 &&
-         _ctx.at(cell_to_forget_weights_index).shape().rank() == 1 &&
-         _ctx.at(cell_to_output_weights_index).shape().rank() == 1 &&
-         _ctx.at(input_gate_bias_index).shape().rank() == 1 &&
-         _ctx.at(forget_gate_bias_index).shape().rank() == 1 &&
-         _ctx.at(cell_bias_index).shape().rank() == 1 &&
-         _ctx.at(output_gate_bias_index).shape().rank() == 1 &&
-         _ctx.at(projection_bias_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(cell_to_input_weights_index).shape().rank() == 1 &&
+              _ctx.at(cell_to_forget_weights_index).shape().rank() == 1 &&
+              _ctx.at(cell_to_output_weights_index).shape().rank() == 1 &&
+              _ctx.at(input_gate_bias_index).shape().rank() == 1 &&
+              _ctx.at(forget_gate_bias_index).shape().rank() == 1 &&
+              _ctx.at(cell_bias_index).shape().rank() == 1 &&
+              _ctx.at(output_gate_bias_index).shape().rank() == 1 &&
+              _ctx.at(projection_bias_index).shape().rank() == 1);
 
   // CIFG assertion
-  assert((_ctx.at(input_to_input_weights_index).shape().dim(0) == 0 &&
-          _ctx.at(input_to_input_weights_index).shape().dim(1) == 0 &&
-          _ctx.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
-          _ctx.at(recurrent_to_input_weights_index).shape().dim(1) == 0 &&
-          _ctx.at(input_gate_bias_index).shape().dim(0) == 0 &&
-          _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0) ||
-         (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-          _ctx.at(input_to_input_weights_index).shape().dim(1) != 0 &&
-          _ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-          _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0 &&
-          _ctx.at(input_gate_bias_index).shape().dim(0) != 0));
+  OP_REQUIRES((_ctx.at(input_to_input_weights_index).shape().dim(0) == 0 &&
+               _ctx.at(input_to_input_weights_index).shape().dim(1) == 0 &&
+               _ctx.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
+               _ctx.at(recurrent_to_input_weights_index).shape().dim(1) == 0 &&
+               _ctx.at(input_gate_bias_index).shape().dim(0) == 0 &&
+               _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0) ||
+              (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+               _ctx.at(input_to_input_weights_index).shape().dim(1) != 0 &&
+               _ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+               _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0 &&
+               _ctx.at(input_gate_bias_index).shape().dim(0) != 0));
 
   // Peephole assertion
-  assert((_ctx.at(cell_to_forget_weights_index).shape().dim(0) == 0 &&
-          _ctx.at(cell_to_output_weights_index).shape().dim(0) == 0) ||
-         (_ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0 &&
-          _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0));
+  OP_REQUIRES((_ctx.at(cell_to_forget_weights_index).shape().dim(0) == 0 &&
+               _ctx.at(cell_to_output_weights_index).shape().dim(0) == 0) ||
+              (_ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0 &&
+               _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0));
 
   bool has_input_to_input_weights = _ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
                                     _ctx.at(input_to_input_weights_index).shape().dim(1) != 0;
@@ -1036,93 +885,78 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
   // NOTE The projection weights may have data but the projection bias may not.
   bool has_projection_param = has_projection_weights;
 
-  UNUSED_RELEASE(has_input_to_input_weights);
-  UNUSED_RELEASE(has_recurrent_to_input_weights);
-  UNUSED_RELEASE(has_input_gate_bias);
-  UNUSED_RELEASE(has_cell_to_input_weights);
-  UNUSED_RELEASE(has_cell_to_forget_weights);
-  UNUSED_RELEASE(has_cell_to_output_weights);
-  UNUSED_RELEASE(has_projection_weights);
-  UNUSED_RELEASE(has_projection_bias);
-  UNUSED_RELEASE(has_cifg_param);
-  UNUSED_RELEASE(has_peephole_param);
-  UNUSED_RELEASE(has_projection_param);
-
   const auto batch_size = _ctx.at(input_index).shape().dim(0);
-  UNUSED_RELEASE(batch_size);
-  assert(batch_size == _ctx.at(output_state_in_index).shape().dim(0) &&
-         batch_size == _ctx.at(cell_state_in_index).shape().dim(0) &&
-         batch_size == _ctx.at(scratch_buffer_index).shape().dim(0) &&
-         batch_size == _ctx.at(output_state_out_index).shape().dim(0) &&
-         batch_size == _ctx.at(cell_state_out_index).shape().dim(0) &&
-         batch_size == _ctx.at(output_index).shape().dim(0));
+  OP_REQUIRES(batch_size == _ctx.at(output_state_in_index).shape().dim(0) &&
+              batch_size == _ctx.at(cell_state_in_index).shape().dim(0) &&
+              batch_size == _ctx.at(scratch_buffer_index).shape().dim(0) &&
+              batch_size == _ctx.at(output_state_out_index).shape().dim(0) &&
+              batch_size == _ctx.at(cell_state_out_index).shape().dim(0) &&
+              batch_size == _ctx.at(output_index).shape().dim(0));
 
   const auto input_size = _ctx.at(input_index).shape().dim(1);
-  UNUSED_RELEASE(input_size);
-  assert(input_size == _ctx.at(input_to_forget_weights_index).shape().dim(1) &&
-         input_size == _ctx.at(input_to_cell_weights_index).shape().dim(1) &&
-         input_size == _ctx.at(input_to_output_weights_index).shape().dim(1));
+  OP_REQUIRES(input_size == _ctx.at(input_to_forget_weights_index).shape().dim(1) &&
+              input_size == _ctx.at(input_to_cell_weights_index).shape().dim(1) &&
+              input_size == _ctx.at(input_to_output_weights_index).shape().dim(1));
 
   const auto num_units = _ctx.at(cell_state_out_index).shape().dim(1);
-  UNUSED_RELEASE(num_units);
-  assert(num_units == _ctx.at(input_to_forget_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(input_to_cell_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(input_to_output_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(recurrent_to_forget_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(recurrent_to_cell_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(recurrent_to_output_weights_index).shape().dim(0) &&
-         num_units == _ctx.at(forget_gate_bias_index).shape().dim(0) &&
-         num_units == _ctx.at(cell_bias_index).shape().dim(0) &&
-         num_units == _ctx.at(output_gate_bias_index).shape().dim(0) &&
-         num_units == _ctx.at(cell_state_in_index).shape().dim(1) &&
-         (((num_units * 3) == _ctx.at(scratch_buffer_index).shape().dim(1)) ||
-          ((num_units * 4) == _ctx.at(scratch_buffer_index).shape().dim(1))));
+  OP_REQUIRES(num_units == _ctx.at(input_to_forget_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(input_to_cell_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(input_to_output_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(recurrent_to_forget_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(recurrent_to_cell_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(recurrent_to_output_weights_index).shape().dim(0) &&
+              num_units == _ctx.at(forget_gate_bias_index).shape().dim(0) &&
+              num_units == _ctx.at(cell_bias_index).shape().dim(0) &&
+              num_units == _ctx.at(output_gate_bias_index).shape().dim(0) &&
+              num_units == _ctx.at(cell_state_in_index).shape().dim(1) &&
+              (((num_units * 3) == _ctx.at(scratch_buffer_index).shape().dim(1)) ||
+               ((num_units * 4) == _ctx.at(scratch_buffer_index).shape().dim(1))));
 
   const auto output_size = _ctx.at(output_index).shape().dim(1);
-  UNUSED_RELEASE(output_size);
-  assert(output_size == _ctx.at(recurrent_to_forget_weights_index).shape().dim(1) &&
-         output_size == _ctx.at(recurrent_to_cell_weights_index).shape().dim(1) &&
-         output_size == _ctx.at(recurrent_to_output_weights_index).shape().dim(1) &&
-         output_size == _ctx.at(output_state_in_index).shape().dim(1) &&
-         output_size == _ctx.at(output_state_out_index).shape().dim(1));
+  OP_REQUIRES(output_size == _ctx.at(recurrent_to_forget_weights_index).shape().dim(1) &&
+              output_size == _ctx.at(recurrent_to_cell_weights_index).shape().dim(1) &&
+              output_size == _ctx.at(recurrent_to_output_weights_index).shape().dim(1) &&
+              output_size == _ctx.at(output_state_in_index).shape().dim(1) &&
+              output_size == _ctx.at(output_state_out_index).shape().dim(1));
 
   if (has_cifg_param)
   {
-    assert(input_size == _ctx.at(input_to_input_weights_index).shape().dim(1));
-    assert(num_units == _ctx.at(input_to_input_weights_index).shape().dim(0) &&
-           num_units == _ctx.at(recurrent_to_input_weights_index).shape().dim(0) &&
-           (num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0) ||
-            _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0 /* non-peephole */) &&
-           num_units == _ctx.at(input_gate_bias_index).shape().dim(0));
-    assert(output_size == _ctx.at(recurrent_to_input_weights_index).shape().dim(1));
-    assert(has_input_to_input_weights && has_recurrent_to_input_weights && has_input_gate_bias);
+    OP_REQUIRES(input_size == _ctx.at(input_to_input_weights_index).shape().dim(1));
+    OP_REQUIRES(num_units == _ctx.at(input_to_input_weights_index).shape().dim(0) &&
+                num_units == _ctx.at(recurrent_to_input_weights_index).shape().dim(0) &&
+                (num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0) ||
+                 _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0 /* non-peephole */) &&
+                num_units == _ctx.at(input_gate_bias_index).shape().dim(0));
+    OP_REQUIRES(output_size == _ctx.at(recurrent_to_input_weights_index).shape().dim(1));
+    OP_REQUIRES(has_input_to_input_weights && has_recurrent_to_input_weights &&
+                has_input_gate_bias);
     if (has_cell_to_input_weights)
     {
       // NOTE The cell_to_input_weights exist only in case of non-CIFG and peephole.
-      assert(has_peephole_param);
+      OP_REQUIRES(has_peephole_param);
     }
-    assert(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
+    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
   }
   else
   {
-    assert(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
+    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
   }
 
   if (has_peephole_param)
   {
-    assert(num_units == _ctx.at(cell_to_forget_weights_index).shape().dim(0) &&
-           num_units == _ctx.at(cell_to_output_weights_index).shape().dim(0) &&
-           (num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0) ||
-            _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0 /* CIFG */));
+    OP_REQUIRES(num_units == _ctx.at(cell_to_forget_weights_index).shape().dim(0) &&
+                num_units == _ctx.at(cell_to_output_weights_index).shape().dim(0) &&
+                (num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0) ||
+                 _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0 /* CIFG */));
   }
 
   if (has_projection_param)
   {
-    assert(num_units == _ctx.at(projection_weights_index).shape().dim(1));
-    assert(output_size == _ctx.at(projection_weights_index).shape().dim(0));
+    OP_REQUIRES(num_units == _ctx.at(projection_weights_index).shape().dim(1));
+    OP_REQUIRES(output_size == _ctx.at(projection_weights_index).shape().dim(0));
     if (has_projection_bias)
     {
-      assert(output_size == _ctx.at(projection_bias_index).shape().dim(0));
+      OP_REQUIRES(output_size == _ctx.at(projection_bias_index).shape().dim(0));
     }
   }
 }
@@ -1130,7 +964,7 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
 void OperationValidator::visit(const ir::operation::Unpack &node)
 {
   const auto num{node.param().num};
-  assert(num == static_cast<int32_t>(node.getOutputs().size()));
+  OP_REQUIRES(num == static_cast<int32_t>(node.getOutputs().size()));
   const auto axis{node.param().axis};
 
   const auto output_index{node.getInputs().at(0)};
@@ -1142,17 +976,13 @@ void OperationValidator::visit(const ir::operation::Unpack &node)
   const auto &input_shape = _ctx.at(input_index).shape();
   const auto input_rank = static_cast<int32_t>(input_shape.rank());
 
-  UNUSED_RELEASE(num);
-  UNUSED_RELEASE(axis);
-  UNUSED_RELEASE(input_rank);
-
-  assert(axis >= -input_rank && axis < input_rank);
+  OP_REQUIRES(axis >= -input_rank && axis < input_rank);
 }
 
 void OperationValidator::visit(const ir::operation::Pad &node)
 {
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
-  assert(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
 
   const auto output_index{node.getInputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
@@ -1163,14 +993,10 @@ void OperationValidator::visit(const ir::operation::Pad &node)
   const auto &pad_shape = _ctx.at(pad_index).shape();
   const auto input_rank = static_cast<int32_t>(_ctx.at(input_index).shape().rank());
 
-  UNUSED_RELEASE(pad_shape);
-  UNUSED_RELEASE(input_rank);
-  UNUSED_RELEASE(output_index);
-
-  assert(pad_shape.rank() == 2);
-  assert(pad_shape.dim(0) == input_rank);
-  assert(pad_shape.dim(1) == 2);
-  assert(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+  OP_REQUIRES(pad_shape.rank() == 2);
+  OP_REQUIRES(pad_shape.dim(0) == input_rank);
+  OP_REQUIRES(pad_shape.dim(1) == 2);
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
 void OperationValidator::visit(const ir::operation::Min &node)
@@ -1181,12 +1007,8 @@ void OperationValidator::visit(const ir::operation::Min &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(lhs_index);
-  UNUSED_RELEASE(rhs_index);
-
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
 void OperationValidator::visit(const ir::operation::Max &node)
@@ -1197,12 +1019,8 @@ void OperationValidator::visit(const ir::operation::Max &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(lhs_index);
-  UNUSED_RELEASE(rhs_index);
-
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
 void OperationValidator::visit(const ir::operation::Select &node)
@@ -1214,12 +1032,7 @@ void OperationValidator::visit(const ir::operation::Select &node)
   const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
   const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
 
-  UNUSED_RELEASE(condition_index);
-  UNUSED_RELEASE(input_true_index);
-  UNUSED_RELEASE(input_false_index);
-  UNUSED_RELEASE(output_index);
-
-  assert(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
+  OP_REQUIRES(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
 }
 
 void OperationValidator::visit(const ir::operation::StridedSlice &node)
@@ -1230,18 +1043,12 @@ void OperationValidator::visit(const ir::operation::StridedSlice &node)
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
 
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(starts_index);
-  UNUSED_RELEASE(ends_index);
-  UNUSED_RELEASE(strides_index);
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
 
-  assert(_ctx.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() <= 4);
 }
 
 void OperationValidator::visit(const ir::operation::Split &node)
@@ -1252,18 +1059,13 @@ void OperationValidator::visit(const ir::operation::Split &node)
   const auto &input_rank = node.param().rank;
   const auto &axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
 
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(num_splits);
-  UNUSED_RELEASE(input_rank);
-  UNUSED_RELEASE(axis);
-
-  assert(num_splits > 0 && num_splits <= 0xFFFF);
-  assert(axis >= 0 && axis < input_rank);
-  assert(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
+  OP_REQUIRES(num_splits > 0 && num_splits <= 0xFFFF);
+  OP_REQUIRES(axis >= 0 && axis < input_rank);
+  OP_REQUIRES(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
 
   if (_ctx.at(input_index).info().isDynamic())
     return;
-  assert(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
+  OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
 void OperationValidator::visit(const ir::operation::Cos &node)
@@ -1273,11 +1075,7 @@ void OperationValidator::visit(const ir::operation::Cos &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Sin &node)
@@ -1287,11 +1085,7 @@ void OperationValidator::visit(const ir::operation::Sin &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::RSQRT &node)
@@ -1301,11 +1095,7 @@ void OperationValidator::visit(const ir::operation::RSQRT &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Shape &node)
@@ -1315,11 +1105,7 @@ void OperationValidator::visit(const ir::operation::Shape &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 1);
 }
 
 void OperationValidator::visit(const ir::operation::ReduceProd &node)
@@ -1329,17 +1115,11 @@ void OperationValidator::visit(const ir::operation::ReduceProd &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
-  const auto &axes = node.param().axes;
-
   auto output_shape = _ctx.at(output_index).shape();
   auto input_shape = _ctx.at(input_index).shape();
 
-  UNUSED_RELEASE(output_shape);
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(axes);
-
-  assert(input_shape.rank() <= 4);
-  assert(output_shape.rank() <= input_shape.rank());
+  OP_REQUIRES(input_shape.rank() <= 4);
+  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
 
   // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
   // supports cases reducing height and width or reducing depth.
@@ -1357,20 +1137,20 @@ void OperationValidator::visit(const ir::operation::ReduceProd &node)
     if (output_shape.rank() == 2)
     {
       // Reducing HW
-      assert(input_shape.dim(0) == output_shape.dim(0) &&
-             input_shape.dim(3) == output_shape.dim(1));
+      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
+                  input_shape.dim(3) == output_shape.dim(1));
     }
     else if (output_shape.rank() == 3)
     {
       // Reducing C or
       // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      assert((input_shape.dim(0) == output_shape.dim(0) &&
-              input_shape.dim(1) == output_shape.dim(1) &&
-              input_shape.dim(2) == output_shape.dim(2)) ||
-             (input_shape.dim(0) == output_shape.dim(0) &&
-              (input_shape.dim(1) == output_shape.dim(1) ||
-               input_shape.dim(2) == output_shape.dim(1)) &&
-              input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
+                   input_shape.dim(1) == output_shape.dim(1) &&
+                   input_shape.dim(2) == output_shape.dim(2)) ||
+                  (input_shape.dim(0) == output_shape.dim(0) &&
+                   (input_shape.dim(1) == output_shape.dim(1) ||
+                    input_shape.dim(2) == output_shape.dim(1)) &&
+                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
     }
   }
 }
@@ -1381,24 +1161,19 @@ void OperationValidator::visit(const ir::operation::Reverse &node)
   const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
 
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(axis_index);
-  UNUSED_RELEASE(output_index);
-
-  assert(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::While &node)
 {
   // This validator does not check shape. So checking isDynamic() is skipped.
 
-  assert(node.getInputs().size() == node.getOutputs().size());
-  UNUSED_RELEASE(node);
+  OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
   // TODO Add to validate with subgraphs
 }
 
@@ -1409,11 +1184,7 @@ void OperationValidator::visit(const ir::operation::Neg &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Log &node)
@@ -1423,11 +1194,7 @@ void OperationValidator::visit(const ir::operation::Log &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::LogicalNot &node)
@@ -1437,11 +1204,7 @@ void OperationValidator::visit(const ir::operation::LogicalNot &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
-
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-
-  assert(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::SquaredDifference &node)
@@ -1450,12 +1213,9 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
 
-  UNUSED_RELEASE(lhs_index);
-  UNUSED_RELEASE(rhs_index);
-
   // Check for Type equivalence
-  assert(_ctx.at(output_index).typeInfo().type() == _ctx.at(lhs_index).typeInfo().type());
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(lhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
 
   // Check for dimension constraints
   if (_ctx.at(output_index).info().isDynamic())
@@ -1465,7 +1225,7 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
   auto lhs_shape = _ctx.at(lhs_index).shape();
   auto rhs_shape = _ctx.at(rhs_index).shape();
   // Check for output rank
-  assert(output_shape.rank() == std::max(lhs_shape.rank(), rhs_shape.rank()));
+  OP_REQUIRES(output_shape.rank() == std::max(lhs_shape.rank(), rhs_shape.rank()));
   auto min_rank = std::min(lhs_shape.rank(), rhs_shape.rank());
 
   for (int idx = 1; idx <= min_rank; idx++)
@@ -1474,28 +1234,23 @@ void OperationValidator::visit(const ir::operation::SquaredDifference &node)
     int r_idx = rhs_shape.rank() - idx;
     int out_idx = output_shape.rank() - idx;
 
-    assert((l_idx >= 0) && (r_idx >= 0) && (out_idx >= 0));
+    OP_REQUIRES((l_idx >= 0) && (r_idx >= 0) && (out_idx >= 0));
 
     auto l_dims = lhs_shape.dim(l_idx);
     auto r_dims = rhs_shape.dim(r_idx);
     auto out_dims = output_shape.dim(out_idx);
-    // Prevent build errors arising from unused variables.
-    UNUSED_RELEASE(l_dims);
-    UNUSED_RELEASE(r_dims);
-    UNUSED_RELEASE(out_dims);
-    assert(((l_dims == r_dims) && (out_dims == l_dims)) ||
-           ((l_dims == 1) && (out_dims == r_dims)) || ((r_dims == 1) && (out_dims == l_dims)));
+
+    OP_REQUIRES(((l_dims == r_dims) && (out_dims == l_dims)) ||
+                ((l_dims == 1) && (out_dims == r_dims)) || ((r_dims == 1) && (out_dims == l_dims)));
   }
   auto &tmp_shape = (lhs_shape.rank() > rhs_shape.rank()) ? lhs_shape : rhs_shape;
   for (int idx = min_rank + 1; idx <= output_shape.rank(); idx++)
   {
     int out_idx = output_shape.rank() - idx;
     int tmp_idx = tmp_shape.rank() - idx;
-    // Prevent build errors arising from unused variables.
-    UNUSED_RELEASE(out_idx);
-    UNUSED_RELEASE(tmp_idx);
-    assert((out_idx >= 0) && (tmp_idx >= 0) &&
-           (output_shape.dim(out_idx) == tmp_shape.dim(tmp_idx)));
+
+    OP_REQUIRES((out_idx >= 0) && (tmp_idx >= 0) &&
+                (output_shape.dim(out_idx) == tmp_shape.dim(tmp_idx)));
   }
 }
 void OperationValidator::visit(const ir::operation::Tile &node)
@@ -1507,12 +1262,8 @@ void OperationValidator::visit(const ir::operation::Tile &node)
   const auto input_index{node.getInputs().at(0)};
   const auto multiple_index{node.getInputs().at(1)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(multiple_index);
-
-  assert(_ctx.at(multiple_index).shape().rank() == 1);
-  assert(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+  OP_REQUIRES(_ctx.at(multiple_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
 void OperationValidator::visit(const ir::operation::LogicalOr &node)
