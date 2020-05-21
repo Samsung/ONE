@@ -17,6 +17,7 @@
 #include "luci/Import/Nodes/CircleFullyConnected.h"
 
 #include <luci/IR/Nodes/CircleFullyConnected.h>
+#include <luci/IR/Nodes/CircleOutput.h>
 
 #include <loco.h>
 #include <oops/UserExn.h>
@@ -39,7 +40,16 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
   auto *node = graph->nodes()->create<CircleFullyConnected>();
   node->input(inputs[0]);
   node->weights(inputs[1]);
-  node->bias(inputs[2]);
+  node->bias(inputs[2]); // bias is optional
+
+  // TODO Find and move to appropriate place for setting optional input
+  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
+  {
+    // bias is not used for type inference, but node itself should have a type
+    bias->dtype(loco::DataType::FLOAT32);
+
+    // bias is not used for shape inference
+  }
 
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
