@@ -18,6 +18,7 @@
 
 #include <backend/BackendContext.h>
 #include <util/Utils.h>
+#include "kernel/IfLayer.h"
 #include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
 
@@ -46,6 +47,37 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
   }
+}
+
+void KernelGenerator::visit(const ir::operation::If &node)
+{
+  const auto then_subg_index = node.param().then_subg_index;
+  const auto else_subg_index = node.param().else_subg_index;
+
+  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  for (const auto input_index : node.getInputs())
+  {
+    auto input_alloc = getTensor(input_index);
+
+    input_tensors.emplace_back(input_alloc);
+  }
+
+  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  for (const auto output_index : node.getOutputs())
+  {
+    auto output_alloc = getTensor(output_index);
+
+    output_tensors.emplace_back(output_alloc);
+  }
+
+  // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
+  // creating executor recusively
+  const auto cond_tensor = input_tensors.front();
+  input_tensors.erase(input_tensors.begin());
+  auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
+      cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map);
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Permute &node)
