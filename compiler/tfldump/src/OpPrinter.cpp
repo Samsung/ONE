@@ -271,7 +271,6 @@ public:
   }
 };
 
-
 class MulPrinter : public OpPrinter
 {
 public:
