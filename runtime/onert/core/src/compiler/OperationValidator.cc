@@ -502,6 +502,9 @@ void OperationValidator::visit(const ir::operation::Fill &node)
 
   const auto input_index{node.getInputs().at(0)};
   const auto value_index{node.getInputs().at(1)};
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_index);
+  UNUSED_RELEASE(value_index);
 }
 
 void OperationValidator::visit(const ir::operation::Floor &node)
@@ -1031,6 +1034,9 @@ void OperationValidator::visit(const ir::operation::Select &node)
   const auto condition_index{node.getInputs().at(ir::operation::Select::Input::CONDITION)};
   const auto input_true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
   const auto input_false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
+  UNUSED_RELEASE(output_index);
+  UNUSED_RELEASE(input_true_index);
+  UNUSED_RELEASE(input_false_index);
 
   OP_REQUIRES(_ctx.at(condition_index).typeInfo().type() == ir::DataType::BOOL8);
 }
@@ -1042,6 +1048,10 @@ void OperationValidator::visit(const ir::operation::StridedSlice &node)
   const auto starts_index{node.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
+
+  UNUSED_RELEASE(starts_index);
+  UNUSED_RELEASE(ends_index);
+  UNUSED_RELEASE(strides_index);
 
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 
@@ -1105,6 +1115,7 @@ void OperationValidator::visit(const ir::operation::Shape &node)
     return;
 
   const auto input_index{node.getInputs().at(0)};
+  UNUSED_RELEASE(input_index);
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == 1);
 }
 
