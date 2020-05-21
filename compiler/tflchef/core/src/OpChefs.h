@@ -41,6 +41,7 @@
 #include "Op/GreaterEqual.h"
 #include "Op/If.h"
 #include "Op/Less.h"
+#include "Op/Log.h"
 #include "Op/LogicalAnd.h"
 #include "Op/LogicalOr.h"
 #include "Op/LogicalNot.h"

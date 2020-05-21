@@ -512,6 +512,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  // There is no Option for LOG
   // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
