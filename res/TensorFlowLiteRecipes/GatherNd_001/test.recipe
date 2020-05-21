@@ -1,0 +1,31 @@
+operand {
+  name: "param"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 1 dim: 2 dim: 1 }
+  filler { tag: "explicit" arg: "0" arg: "0" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 dim: 3 }
+}
+
+# indices last dim is less than param rank, so gather_nd takes slices into `param`.
+# thus indices [[[0], [0]]] take param[0] slice twice
+# so output is [[[param[0]], [param[0]]]] with shape [1, 2, 4, 4, 3]
+
+operation {
+  type: "GatherNd"
+  gather_nd_options {}
+  input: "param"
+  input: "indices"
+  output: "ofm"
+}
+input: "param"
+input: "indices"
+output: "ofm"
