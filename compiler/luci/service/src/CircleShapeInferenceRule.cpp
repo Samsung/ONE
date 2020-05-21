@@ -920,9 +920,6 @@ public:
       case loco::DataType::S32:
         GET_RANGE_PARAM(loco::DataType::S32)
         break;
-      case loco::DataType::S64:
-        GET_RANGE_PARAM(loco::DataType::S64)
-        break;
       default:
         INTERNAL_EXN("Range data type not supported");
     }
