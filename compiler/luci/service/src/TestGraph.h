@@ -115,6 +115,12 @@ private:
   void setInput(luci::CircleRelu *node, luci::CircleNode *input) { node->features(input); };
   void setInput(luci::CircleSqueeze *node, luci::CircleNode *input) { node->input(input); };
 
+  void setInput(luci::CircleGatherNd *node, luci::CircleNode *params, luci::CircleNode *indices)
+  {
+    node->params(params);
+    node->indices(indices);
+  };
+
   // arity 2
   void setInput(luci::CircleNode *, luci::CircleNode *, luci::CircleNode *)
   {

@@ -26,6 +26,8 @@
 #include <loco/Service/CanonicalShapeInferenceRule.h>
 #include <loco/Service/MultiDialectShapeInferenceRule.h>
 
+#include <oops/InternalExn.h>
+
 #include <gtest/gtest.h>
 
 #include <memory>
@@ -412,4 +414,124 @@ TEST(CircleShapeInferenceRuleTest, CircleSqueezeAll)
     ASSERT_EQ(4, shape.dim(0));
     ASSERT_EQ(3, shape.dim(1));
   }
+}
+
+TEST(CircleShapeInferenceRuleTest, CircleGatherNd_simple)
+{
+  luci::test::TestGraph graph;
+  auto indices_const = graph.append<luci::CircleConst>();
+  auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
+  graph.complete();
+
+  {
+    auto input_node = graph.input_node;
+    input_node->shape({1, 4, 4, 3});
+    luci::test::graph_input_shape(input_node);
+  }
+  {
+    auto output_node = graph.output_node;
+    output_node->shape({1, 2, 2, 3});
+    luci::test::graph_output_shape(output_node);
+  }
+
+  {
+    indices_const->shape({1, 2, 3});
+  }
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+
+  // shape inference
+  while (shape_pass(graph.graph()) == true)
+    ;
+
+  // Verify
+  {
+    ASSERT_TRUE(loco::shape_known(gather_nd_node));
+
+    auto shape = loco::shape_get(gather_nd_node).as<loco::TensorShape>();
+    ASSERT_EQ(3, shape.rank());
+    ASSERT_EQ(1, shape.dim(0));
+    ASSERT_EQ(2, shape.dim(1));
+    ASSERT_EQ(3, shape.dim(2));
+  }
+}
+
+TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
+{
+  luci::test::TestGraph graph;
+  auto indices_const = graph.append<luci::CircleConst>();
+  auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
+  graph.complete();
+
+  {
+    auto input_node = graph.input_node;
+    input_node->shape({1, 4, 4, 3});
+    luci::test::graph_input_shape(input_node);
+  }
+  {
+    auto output_node = graph.output_node;
+    output_node->shape({1, 2, 4, 4, 3});
+    luci::test::graph_output_shape(output_node);
+  }
+
+  {
+    indices_const->shape({1, 2, 1});
+  }
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+
+  // shape inference
+  while (shape_pass(graph.graph()) == true)
+    ;
+
+  // Verify
+  {
+    ASSERT_TRUE(loco::shape_known(gather_nd_node));
+
+    auto shape = loco::shape_get(gather_nd_node).as<loco::TensorShape>();
+    ASSERT_EQ(5, shape.rank());
+    ASSERT_EQ(1, shape.dim(0));
+    ASSERT_EQ(2, shape.dim(1));
+    ASSERT_EQ(4, shape.dim(2));
+    ASSERT_EQ(4, shape.dim(3));
+    ASSERT_EQ(3, shape.dim(4));
+  }
+}
+
+TEST(CircleShapeInferenceRuleTest, CircleGatherNd_failed)
+{
+  luci::test::TestGraph graph;
+  auto indices_const = graph.append<luci::CircleConst>();
+  auto gather_nd_node = graph.append<luci::CircleGatherNd>(graph.input_node, indices_const);
+  graph.complete();
+
+  {
+    auto input_node = graph.input_node;
+    input_node->shape({1, 4, 4, 3});
+    luci::test::graph_input_shape(input_node);
+  }
+  {
+    // Does not matter, because test should fail anyway
+    auto output_node = graph.output_node;
+    output_node->shape({0, 0, 0});
+    luci::test::graph_output_shape(output_node);
+  }
+
+  {
+    indices_const->shape({1, 2, 5});
+  }
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(gather_nd_node));
+
+  // had to pack into lambda to check throw
+  auto lambda = [&]() {
+    // shape inference
+    while (shape_pass(graph.graph()) == true)
+      ;
+  };
+
+  ASSERT_THROW(lambda(), oops::InternalExn);
 }

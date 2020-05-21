@@ -707,6 +707,54 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleGatherNd *node) final
+  {
+    loco::TensorShape output_shape;
+
+    const auto params_shape = loco::shape_get(node->params()).as<loco::TensorShape>();
+    const auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
+
+    const auto params_rank = params_shape.rank();
+    const auto indices_rank = indices_shape.rank();
+
+    // see https://www.tensorflow.org/api_docs/python/tf/gather_nd
+    // output.shape = indices.shape[:-1] + params.shape[indices.shape[-1]:]
+    // batch_dims isn't supported in tflite
+
+    // TODO: replace exceptions with setting shape to unknown?
+
+    if (!indices_shape.dim(indices_rank - 1).known())
+      INTERNAL_EXN("Last indices dimension is unknown");
+
+    auto indices_last_dim = indices_shape.dim(indices_rank - 1).value();
+
+    if (indices_last_dim > params_rank)
+      INTERNAL_EXN("Last indices dimension should be <= params rank");
+
+    const uint32_t output_rank = indices_rank + params_rank - indices_last_dim - 1;
+
+    output_shape.rank(output_rank);
+
+    uint32_t output_index = 0;
+    for (uint32_t i = 0; i < indices_rank - 1; ++i)
+    {
+      auto &dim = indices_shape.dim(i);
+      if (!dim.known())
+        INTERNAL_EXN("Unknown indices dimension is unsupported");
+      output_shape.dim(output_index++).set(dim.value());
+    }
+
+    for (uint32_t i = indices_last_dim; i < params_rank; ++i)
+    {
+      auto &dim = params_shape.dim(i);
+      if (!dim.known())
+        INTERNAL_EXN("Unknown params dimension is unsupported");
+      output_shape.dim(output_index++).set(dim.value());
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleGreater *node) final
   {
     const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
