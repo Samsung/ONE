@@ -27,6 +27,7 @@ namespace tflchef
 tflchef::TensorType as_tflchef_type(const tflite::TensorType type);
 tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType type);
 tflchef::Padding as_tflchef_padding(const tflite::Padding padding);
+tflchef::MirrorPadMode as_tflchef_mirrorpadmode(const tflite::MirrorPadMode mode);
 
 /**
  * @brief extract buffer data to std::vector<DT>

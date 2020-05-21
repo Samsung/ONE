@@ -76,4 +76,17 @@ tflchef::Padding as_tflchef_padding(const tflite::Padding padding)
   }
 }
 
+tflchef::MirrorPadMode as_tflchef_mirrorpadmode(const tflite::MirrorPadMode mode)
+{
+  switch (mode)
+  {
+    case tflite::MirrorPadMode_REFLECT:
+      return tflchef::REFLECT;
+    case tflite::MirrorPadMode_SYMMETRIC:
+      return tflchef::SYMMETRIC;
+    default:
+      throw std::runtime_error{"Unknown mirrorpad mode"};
+  }
+}
+
 } // namespace tflchef

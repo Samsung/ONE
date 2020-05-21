@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-/**
- * @file  Convert.h
- * @brief This header declares various as_tflite_TYPE functions
- */
-#ifndef __CONVERT_H__
-#define __CONVERT_H__
+#ifndef __BBO_MIRROR_PAD_OPTIONS_H__
+#define __BBO_MIRROR_PAD_OPTIONS_H__
 
-#include <tflchef.pb.h>
 #include <mio/tflite/schema_generated.h>
+#include <mio/circle/schema_generated.h>
 
-tflite::Padding as_tflite_padding(const tflchef::Padding &value);
-tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &value);
-tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value);
-tflite::MirrorPadMode as_tflite_mirrorpadmode(const tflchef::MirrorPadMode &value);
+namespace tflite2circle
+{
 
-#endif // __CONVERT_H__
+flatbuffers::Offset<circle::MirrorPadOptions>
+build_circle_MirrorPadOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
+
+} // namespace tflite2circle
+
+#endif // __BBO_MIRROR_PAD_OPTIONS_H__

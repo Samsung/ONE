@@ -57,6 +57,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                            // 40
   CIRCLE_NODE(MINIMUM, CircleMinimumGraphBuilder);                      // 57
+  CIRCLE_NODE(MIRROR_PAD, CircleMirrorPadGraphBuilder);                 // 100
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                              // 18
   CIRCLE_NODE(NOT_EQUAL, CircleNotEqualGraphBuilder);                   // 72
   CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                       // 85
@@ -137,7 +138,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_RESIZE_NEAREST_NEIGHBOR = 97,
   // BuiltinOperator_LEAKY_RELU = 98,
-  // BuiltinOperator_MIRROR_PAD = 100,
   // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_CEIL = 104,
   // BuiltinOperator_REVERSE_V2 = 105,

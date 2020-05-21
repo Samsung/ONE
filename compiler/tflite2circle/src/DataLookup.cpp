@@ -110,4 +110,17 @@ circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *o
   }
 }
 
+circle::MirrorPadMode get_circle_mirrorpad_mode(tflite::MirrorPadMode tfl_mode)
+{
+  switch (tfl_mode)
+  {
+    case tflite::MirrorPadMode_REFLECT:
+      return circle::MirrorPadMode_REFLECT;
+    case tflite::MirrorPadMode_SYMMETRIC:
+      return circle::MirrorPadMode_SYMMETRIC;
+    default:
+      throw std::runtime_error("tflite2circle: wrong mirrorpad mode.");
+  }
+}
+
 } // namespace tflite2circle
