@@ -41,6 +41,7 @@
 #include "Nodes/CircleGreaterEqual.h"
 #include "Nodes/CircleIf.h"
 #include "Nodes/CircleLess.h"
+#include "Nodes/CircleLog.h"
 #include "Nodes/CircleLogicalAnd.h"
 #include "Nodes/CircleLogicalNot.h"
 #include "Nodes/CircleLogicalOr.h"
