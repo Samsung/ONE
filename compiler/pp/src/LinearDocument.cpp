@@ -63,9 +63,9 @@ const std::string &LinearDocument::line(uint32_t n) const
     {
       return _lines.at(lines() - n - 1);
     }
+    default:
+      throw std::runtime_error{"Not supported Direction"};
   }
-
-  throw std::runtime_error{"unreachable"};
 }
 
 } // namespace pp
