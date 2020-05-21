@@ -18,6 +18,7 @@
 
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
+#include "luci/Pass/QuantizeWithMinMaxPass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -27,6 +28,7 @@
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 
 #include "ProgressReporter.h"
+#include "CircleOptimizerUtils.h"
 
 #include <logo/Phase.h>
 
@@ -107,9 +109,16 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
   }
+  // TODO: Quantization is a one-shot algorithm
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
-    // TODO: Add QuantizeWithMinMaxPass phase with parameters
+    auto input_dtype =
+        _options->param(Options::AlgorithmParameters::QuantizeWithMinMax_input_dtype);
+    auto output_dtype =
+        _options->param(Options::AlgorithmParameters::QuantizeWithMinMax_output_dtype);
+
+    phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(str_to_dtype(input_dtype),
+                                                                      str_to_dtype(output_dtype)));
   }
 
   // Shape inference is needed for added nodes doing above transformations
