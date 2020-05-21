@@ -44,7 +44,6 @@
 #include "kernel/OperationUtils.h"
 #include "kernel/PackLayer.h"
 #include "kernel/PadLayer.h"
-#include "kernel/PermuteLayer.h"
 #include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReshapeLayer.h"
@@ -66,6 +65,7 @@
 #include "kernel/LogicalNotLayer.h"
 #include "kernel/ZerosLikeLayer.h"
 #include "kernel/SquaredDiffLayer.h"
+#include "kernel/LogicalOrLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -112,16 +112,12 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 
-    // NOTE Permute node has tensors of the other backends
-    if (node.opcode() != ir::OpCode::Permute)
+    for (const auto &ind : node.getInputs() + node.getOutputs())
     {
-      for (const auto &ind : node.getInputs() + node.getOutputs())
+      auto tensor = _tensor_builder->at(ind);
+      if (tensor)
       {
-        auto tensor = _tensor_builder->at(ind);
-        if (tensor)
-        {
-          tensor->increase_ref();
-        }
+        tensor->increase_ref();
       }
     }
   }
@@ -518,57 +514,6 @@ void KernelGenerator::visit(const ir::operation::Div &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::DivLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Permute &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
-
-  const auto &shape = _ctx.at(output_index).shape();
-  const auto input_backend_ctx = node.param().input_backend_ctx;
-  const auto output_backend_ctx = node.param().output_backend_ctx;
-  const auto data_type = node.getDataType();
-
-  auto output_tensor = output_backend_ctx->tensor_builder->tensorAt(output_index);
-  auto input_tensor = input_backend_ctx->tensor_builder->tensorAt(input_index);
-  assert(output_tensor != nullptr);
-  assert(input_tensor != nullptr);
-
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::PermuteLayer>();
-
-  // TODO Support NCHW frontend
-  auto out_shape = shape;
-  if (shape.rank() == 4 && output_tensor->layout() == ir::Layout::NCHW)
-  {
-    out_shape.dim(1) = shape.dim(3);
-    out_shape.dim(2) = shape.dim(1);
-    out_shape.dim(3) = shape.dim(2);
-  }
-
-  const auto permute_type = node.getPermuteType();
-  // Check Permutation Type
-  const auto inferPermuteType = [&]() {
-    if (input_tensor->layout() == ir::Layout::NHWC && output_tensor->layout() == ir::Layout::NCHW)
-    {
-      return ir::operation::Permute::Type::NHWC_TO_NCHW;
-    }
-    else if (input_tensor->layout() == ir::Layout::NCHW &&
-             output_tensor->layout() == ir::Layout::NHWC)
-    {
-      return ir::operation::Permute::Type::NCHW_TO_NHWC;
-    }
-    else
-    {
-      return ir::operation::Permute::Type::COPY;
-    }
-  }();
-  UNUSED_RELEASE(inferPermuteType);
-  assert(permute_type == inferPermuteType);
-
-  fn->configure(input_tensor, output_tensor, out_shape, permute_type, data_type);
 
   _return_fn = std::move(fn);
 }
@@ -1157,6 +1102,23 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalNotLayer>();
 
   fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::LogicalOr &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(0)};
+  const auto rhs_index{node.getInputs().at(1)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
+  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalOrLayer>();
+
+  fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
 
   _return_fn = std::move(fn);
 }

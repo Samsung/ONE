@@ -46,7 +46,6 @@ public:
   uint8_t *buffer() const final { return handle()->buffer(); }
   size_t total_size() const final { return info()->total_size(); }
   size_t dimension(size_t index) const final;
-  size_t num_dimensions() const override;
   size_t calcOffset(const ir::Coordinates &coords) const final;
   ir::Layout layout() const final;
   ir::DataType data_type() const final;

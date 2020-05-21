@@ -55,8 +55,6 @@ public:
     assert(_buffer == nullptr && _allocator == nullptr);
     _allocator = alloc;
   }
-  float scale() const { return _info.typeInfo().scale(); }
-  int32_t offset() const { return _info.typeInfo().offset(); }
 
 public:
   uint8_t *buffer() const override
@@ -117,7 +115,9 @@ public:
 
   void dimension(size_t index, size_t dim) override
   {
-    if (!(index < static_cast<size_t>(_info.shape().rank())))
+    auto rank = _info.shape().rank();
+    rank = rank == 0 ? 1 : rank;
+    if (!(index < static_cast<size_t>(rank)))
     {
       throw std::runtime_error("index should be less than rank");
     }

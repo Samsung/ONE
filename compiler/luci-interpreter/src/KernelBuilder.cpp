@@ -16,7 +16,11 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/AveragePool2D.h"
+#include "kernels/Concatenation.h"
+#include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
+#include "kernels/MaxPool2D.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 
@@ -25,9 +29,64 @@
 namespace luci_interpreter
 {
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->value());
+  Tensor *output = getOutputTensor(node);
+
+  Pool2DParams params{};
+  params.padding = node->padding();
+  params.filter_height = node->filter()->h();
+  params.filter_width = node->filter()->w();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::AveragePool2D>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
+{
+  std::vector<const Tensor *> inputs(node->numValues());
+  for (uint32_t i = 0; i < node->numValues(); ++i)
+  {
+    inputs[i] = getInputTensor(node->values(i));
+  }
+  Tensor *output = getOutputTensor(node);
+
+  ConcatenationParams params{};
+  params.axis = node->axis();
+
+  return std::make_unique<kernels::Concatenation>(inputs, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
 {
   throw std::runtime_error("Const node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *filter = getInputTensor(node->filter());
+  const Tensor *bias = getInputTensor(node->bias());
+  Tensor *output = getOutputTensor(node);
+
+  DepthwiseConv2DParams params{};
+  params.padding = node->padding();
+  params.depth_multiplier = node->depthMultiplier();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  // TODO Set dilations from the IR when it provides them.
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
@@ -48,6 +107,24 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
 {
   throw std::runtime_error("Input node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->value());
+  Tensor *output = getOutputTensor(node);
+
+  Pool2DParams params{};
+  params.padding = node->padding();
+  params.filter_height = node->filter()->h();
+  params.filter_width = node->filter()->w();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::MaxPool2D>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)

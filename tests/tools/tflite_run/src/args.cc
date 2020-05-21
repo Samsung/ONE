@@ -46,6 +46,7 @@ void Args::Initialize(void)
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false), "Write report")
+    ("validate", po::value<bool>()->default_value(true), "Validate tflite model")
     ;
   // clang-format on
 
@@ -160,6 +161,11 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("write_report"))
   {
     _write_report = vm["write_report"].as<bool>();
+  }
+
+  if (vm.count("validate"))
+  {
+    _tflite_validate = vm["validate"].as<bool>();
   }
 }
 

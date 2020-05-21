@@ -242,6 +242,10 @@ struct SegmentSumOptions;
 
 struct BatchMatMulOptions;
 
+struct BCQGatherOptions;
+
+struct BCQFullyConnectedOptions;
+
 struct InstanceNormOptions;
 
 struct OperatorCode;
@@ -551,12 +555,14 @@ enum BuiltinOperator
   BuiltinOperator_DENSIFY = 124,
   BuiltinOperator_SEGMENT_SUM = 125,
   BuiltinOperator_BATCH_MATMUL = 126,
+  BuiltinOperator_BCQ_GATHER = 252,
+  BuiltinOperator_BCQ_FULLY_CONNECTED = 253,
   BuiltinOperator_INSTANCE_NORM = 254,
   BuiltinOperator_MIN = BuiltinOperator_ADD,
   BuiltinOperator_MAX = BuiltinOperator_INSTANCE_NORM
 };
 
-inline const BuiltinOperator (&EnumValuesBuiltinOperator())[128]
+inline const BuiltinOperator (&EnumValuesBuiltinOperator())[130]
 {
   static const BuiltinOperator values[] = {BuiltinOperator_ADD,
                                            BuiltinOperator_AVERAGE_POOL_2D,
@@ -685,6 +691,8 @@ inline const BuiltinOperator (&EnumValuesBuiltinOperator())[128]
                                            BuiltinOperator_DENSIFY,
                                            BuiltinOperator_SEGMENT_SUM,
                                            BuiltinOperator_BATCH_MATMUL,
+                                           BuiltinOperator_BCQ_GATHER,
+                                           BuiltinOperator_BCQ_FULLY_CONNECTED,
                                            BuiltinOperator_INSTANCE_NORM};
   return values;
 }
@@ -943,8 +951,8 @@ inline const char *const *EnumNamesBuiltinOperator()
                                       "",
                                       "",
                                       "",
-                                      "",
-                                      "",
+                                      "BCQ_GATHER",
+                                      "BCQ_FULLY_CONNECTED",
                                       "INSTANCE_NORM",
                                       nullptr};
   return names;
@@ -1060,12 +1068,14 @@ enum BuiltinOptions
   BuiltinOptions_DensifyOptions = 99,
   BuiltinOptions_SegmentSumOptions = 100,
   BuiltinOptions_BatchMatMulOptions = 101,
+  BuiltinOptions_BCQGatherOptions = 252,
+  BuiltinOptions_BCQFullyConnectedOptions = 253,
   BuiltinOptions_InstanceNormOptions = 254,
   BuiltinOptions_MIN = BuiltinOptions_NONE,
   BuiltinOptions_MAX = BuiltinOptions_InstanceNormOptions
 };
 
-inline const BuiltinOptions (&EnumValuesBuiltinOptions())[103]
+inline const BuiltinOptions (&EnumValuesBuiltinOptions())[105]
 {
   static const BuiltinOptions values[] = {BuiltinOptions_NONE,
                                           BuiltinOptions_Conv2DOptions,
@@ -1169,6 +1179,8 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[103]
                                           BuiltinOptions_DensifyOptions,
                                           BuiltinOptions_SegmentSumOptions,
                                           BuiltinOptions_BatchMatMulOptions,
+                                          BuiltinOptions_BCQGatherOptions,
+                                          BuiltinOptions_BCQFullyConnectedOptions,
                                           BuiltinOptions_InstanceNormOptions};
   return values;
 }
@@ -1427,8 +1439,8 @@ inline const char *const *EnumNamesBuiltinOptions()
                                       "",
                                       "",
                                       "",
-                                      "",
-                                      "",
+                                      "BCQGatherOptions",
+                                      "BCQFullyConnectedOptions",
                                       "InstanceNormOptions",
                                       nullptr};
   return names;
@@ -1948,6 +1960,16 @@ template <> struct BuiltinOptionsTraits<SegmentSumOptions>
 template <> struct BuiltinOptionsTraits<BatchMatMulOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_BatchMatMulOptions;
+};
+
+template <> struct BuiltinOptionsTraits<BCQGatherOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_BCQGatherOptions;
+};
+
+template <> struct BuiltinOptionsTraits<BCQFullyConnectedOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_BCQFullyConnectedOptions;
 };
 
 template <> struct BuiltinOptionsTraits<InstanceNormOptions>
@@ -7449,6 +7471,110 @@ CreateBatchMatMulOptions(flatbuffers::FlatBufferBuilder &_fbb, bool adjoint_lhs 
   return builder_.Finish();
 }
 
+struct BCQGatherOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  enum
+  {
+    VT_INPUT_HIDDEN_SIZE = 4,
+    VT_AXIS = 6
+  };
+  int32_t input_hidden_size() const { return GetField<int32_t>(VT_INPUT_HIDDEN_SIZE, 0); }
+  int32_t axis() const { return GetField<int32_t>(VT_AXIS, 0); }
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyField<int32_t>(verifier, VT_INPUT_HIDDEN_SIZE) &&
+           VerifyField<int32_t>(verifier, VT_AXIS) && verifier.EndTable();
+  }
+};
+
+struct BCQGatherOptionsBuilder
+{
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_input_hidden_size(int32_t input_hidden_size)
+  {
+    fbb_.AddElement<int32_t>(BCQGatherOptions::VT_INPUT_HIDDEN_SIZE, input_hidden_size, 0);
+  }
+  void add_axis(int32_t axis) { fbb_.AddElement<int32_t>(BCQGatherOptions::VT_AXIS, axis, 0); }
+  explicit BCQGatherOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  BCQGatherOptionsBuilder &operator=(const BCQGatherOptionsBuilder &);
+  flatbuffers::Offset<BCQGatherOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BCQGatherOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BCQGatherOptions>
+CreateBCQGatherOptions(flatbuffers::FlatBufferBuilder &_fbb, int32_t input_hidden_size = 0,
+                       int32_t axis = 0)
+{
+  BCQGatherOptionsBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  builder_.add_input_hidden_size(input_hidden_size);
+  return builder_.Finish();
+}
+
+struct BCQFullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  enum
+  {
+    VT_WEIGHTS_HIDDEN_SIZE = 4,
+    VT_FUSED_ACTIVATION_FUNCTION = 6
+  };
+  int32_t weights_hidden_size() const { return GetField<int32_t>(VT_WEIGHTS_HIDDEN_SIZE, 0); }
+  ActivationFunctionType fused_activation_function() const
+  {
+    return static_cast<ActivationFunctionType>(GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyField<int32_t>(verifier, VT_WEIGHTS_HIDDEN_SIZE) &&
+           VerifyField<int8_t>(verifier, VT_FUSED_ACTIVATION_FUNCTION) && verifier.EndTable();
+  }
+};
+
+struct BCQFullyConnectedOptionsBuilder
+{
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_weights_hidden_size(int32_t weights_hidden_size)
+  {
+    fbb_.AddElement<int32_t>(BCQFullyConnectedOptions::VT_WEIGHTS_HIDDEN_SIZE, weights_hidden_size,
+                             0);
+  }
+  void add_fused_activation_function(ActivationFunctionType fused_activation_function)
+  {
+    fbb_.AddElement<int8_t>(BCQFullyConnectedOptions::VT_FUSED_ACTIVATION_FUNCTION,
+                            static_cast<int8_t>(fused_activation_function), 0);
+  }
+  explicit BCQFullyConnectedOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  BCQFullyConnectedOptionsBuilder &operator=(const BCQFullyConnectedOptionsBuilder &);
+  flatbuffers::Offset<BCQFullyConnectedOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BCQFullyConnectedOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BCQFullyConnectedOptions> CreateBCQFullyConnectedOptions(
+    flatbuffers::FlatBufferBuilder &_fbb, int32_t weights_hidden_size = 0,
+    ActivationFunctionType fused_activation_function = ActivationFunctionType_NONE)
+{
+  BCQFullyConnectedOptionsBuilder builder_(_fbb);
+  builder_.add_weights_hidden_size(weights_hidden_size);
+  builder_.add_fused_activation_function(fused_activation_function);
+  return builder_.Finish();
+}
+
 struct InstanceNormOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
 {
   enum
@@ -8217,6 +8343,18 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
                ? static_cast<const BatchMatMulOptions *>(builtin_options())
                : nullptr;
   }
+  const BCQGatherOptions *builtin_options_as_BCQGatherOptions() const
+  {
+    return builtin_options_type() == BuiltinOptions_BCQGatherOptions
+               ? static_cast<const BCQGatherOptions *>(builtin_options())
+               : nullptr;
+  }
+  const BCQFullyConnectedOptions *builtin_options_as_BCQFullyConnectedOptions() const
+  {
+    return builtin_options_type() == BuiltinOptions_BCQFullyConnectedOptions
+               ? static_cast<const BCQFullyConnectedOptions *>(builtin_options())
+               : nullptr;
+  }
   const InstanceNormOptions *builtin_options_as_InstanceNormOptions() const
   {
     return builtin_options_type() == BuiltinOptions_InstanceNormOptions
@@ -8796,6 +8934,18 @@ template <>
 inline const BatchMatMulOptions *Operator::builtin_options_as<BatchMatMulOptions>() const
 {
   return builtin_options_as_BatchMatMulOptions();
+}
+
+template <> inline const BCQGatherOptions *Operator::builtin_options_as<BCQGatherOptions>() const
+{
+  return builtin_options_as_BCQGatherOptions();
+}
+
+template <>
+inline const BCQFullyConnectedOptions *
+Operator::builtin_options_as<BCQFullyConnectedOptions>() const
+{
+  return builtin_options_as_BCQFullyConnectedOptions();
 }
 
 template <>
@@ -9876,6 +10026,16 @@ inline bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *ob
     case BuiltinOptions_BatchMatMulOptions:
     {
       auto ptr = reinterpret_cast<const BatchMatMulOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_BCQGatherOptions:
+    {
+      auto ptr = reinterpret_cast<const BCQGatherOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_BCQFullyConnectedOptions:
+    {
+      auto ptr = reinterpret_cast<const BCQFullyConnectedOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case BuiltinOptions_InstanceNormOptions:

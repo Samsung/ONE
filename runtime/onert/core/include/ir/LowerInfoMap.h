@@ -32,7 +32,7 @@ namespace ir
 
 struct LowerInfoMap
 {
-  std::unordered_map<OpSequenceIndex, std::unique_ptr<operation::LowerInfo>> operation;
+  std::unordered_map<OpSequenceIndex, std::unique_ptr<operation::LowerInfo>> op_seq;
   OperandIndexMap<std::unique_ptr<operand::LowerInfo>> operand;
 };
 

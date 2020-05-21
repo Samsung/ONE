@@ -243,6 +243,20 @@ public:
   }
 };
 
+class MirrorPadPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_MirrorPadOptions())
+    {
+      os << "    ";
+      os << "mode(" << EnumNameMirrorPadMode(params->mode()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class MulPrinter : public OpPrinter
 {
 public:
@@ -453,6 +467,37 @@ public:
   }
 };
 
+class BCQFullyConnectedPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_BCQFullyConnectedOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << "weights_hidden_size(" << params->weights_hidden_size() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
+class BCQGatherPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_BCQGatherOptions())
+    {
+      os << "    ";
+      os << "axis(" << params->axis() << ") ";
+      os << "weights_hidden_size(" << params->input_hidden_size() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
@@ -469,6 +514,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
   // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
@@ -494,6 +540,10 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
+
+  // Circle only
+  _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique<BCQFullyConnectedPrinter>();
+  _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique<BCQGatherPrinter>();
 }
 
 } // namespace circledump
