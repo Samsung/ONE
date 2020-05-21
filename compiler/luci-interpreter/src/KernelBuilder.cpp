@@ -17,6 +17,7 @@
 #include "KernelBuilder.h"
 
 #include "kernels/Concatenation.h"
+#include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Reshape.h"
@@ -45,6 +46,28 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *no
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
 {
   throw std::runtime_error("Const node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *filter = getInputTensor(node->filter());
+  const Tensor *bias = getInputTensor(node->bias());
+  Tensor *output = getOutputTensor(node);
+
+  DepthwiseConv2DParams params{};
+  params.padding = node->padding();
+  params.depth_multiplier = node->depthMultiplier();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  // TODO Set dilations from the IR when it provides them.
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
