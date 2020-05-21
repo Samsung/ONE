@@ -70,6 +70,19 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
   }
 }
 
+circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode)
+{
+  switch (mode)
+  {
+    case luci::MirrorPadMode::REFLECT:
+      return circle::MirrorPadMode::MirrorPadMode_REFLECT;
+    case luci::MirrorPadMode::SYMMETRIC:
+      return circle::MirrorPadMode::MirrorPadMode_SYMMETRIC;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::MirrorPadMode", oops::to_uint32(mode));
+  }
+}
+
 } // namespace luci
 
 namespace luci
