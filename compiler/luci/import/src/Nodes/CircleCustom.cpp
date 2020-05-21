@@ -44,9 +44,10 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   const circle::OperatorCodeT &opcode = *opcodes[opcode_index];
 
   auto *node = graph->nodes()->create<CircleCustom>(inputs.size());
+  uint32_t input_idx = 0;
   for (const int32_t input_tensor_index : inputs)
   {
-    node->inputs(input_tensor_index, context->nodefinder()->node(input_tensor_index));
+    node->inputs(input_idx++, context->nodefinder()->node(input_tensor_index));
   }
   node->custom_options(std::vector<uint8_t>{op.custom_options.begin(), op.custom_options.end()});
   node->custom_code(opcode.custom_code);
