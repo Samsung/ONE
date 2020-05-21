@@ -47,10 +47,15 @@ void AddLayer::addFloat32()
     return;
   }
 
+  std::cout << "ADDLAYER LHS : " << *reinterpret_cast<const float *>(_lhs->buffer()) << std::endl;
+  std::cout << "ADDLAYER RHS : " << *reinterpret_cast<const float *>(_rhs->buffer()) << std::endl;
+
   nnfw::cker::BinaryArithmeticOp(
       op_params, convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
       convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+
+  std::cout << "ADDLAYER OUT : " << *reinterpret_cast<const float *>(_output->buffer()) << std::endl;
 }
 
 void AddLayer::addQuant8()

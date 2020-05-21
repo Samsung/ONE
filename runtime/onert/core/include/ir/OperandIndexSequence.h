@@ -44,6 +44,12 @@ public:
   const OperandIndex &at(IOIndex set_index) const { return _set.at(set_index.value()); }
   const OperandIndex &at(uint32_t index) const { return _set.at(index); }
   bool contains(const OperandIndex &index) const;
+  /**
+   * @brief Replace first occurence
+   *
+   * @param from Index value to replace
+   * @param to Index value to be replaced with
+   */
   void replace(const OperandIndex &from, const OperandIndex &to);
 
 public:

@@ -51,7 +51,14 @@ bool OperandIndexSequence::contains(const OperandIndex &index) const
 
 void OperandIndexSequence::replace(const OperandIndex &from, const OperandIndex &to)
 {
-  std::replace(_set.begin(), _set.end(), from, to);
+  for (auto &v : _set)
+  {
+    if (v == from)
+    {
+      v = to;
+      break;
+    }
+  }
 }
 
 OperandIndexSequence OperandIndexSequence::operator+(const OperandIndexSequence &other) const

@@ -83,7 +83,7 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _static_tensor_mgr->at(ind);
+  return _tensor_reg->getITensor(ind);
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }

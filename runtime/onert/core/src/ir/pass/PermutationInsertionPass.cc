@@ -185,6 +185,9 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   }();
   auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, input_backend_ctx,
                                                output_backend_ctx, permute_type);
+  VERBOSE(PermutationInsertionPass) << "Permute Op inserted " << std::endl;
+  VERBOSE(PermutationInsertionPass) << "  - Input  : Backend '" << input_backend_ctx->backend()->config()->id() << "' Operand " << operand_index.value() << std::endl;
+  VERBOSE(PermutationInsertionPass) << "  - Output : Backend '" << output_backend_ctx->backend()->config()->id() << "' Operand " << out_operand_index.value() << std::endl;
 
   auto node_index = _graph.operations().push(std::move(insert_node));
   const auto &node = _graph.operations().at(node_index);
