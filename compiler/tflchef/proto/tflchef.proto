@@ -315,7 +315,7 @@ message NotEqualOptions {
 }
 
 message LeakyReluOptions {
-  optional float alpha = 1 [default = 0.0];
+  optional float alpha = 1 [default = 0.2];
 }
 
 message Operation {

@@ -41,7 +41,7 @@ public:
   void alpha(float alpha) { _alpha = alpha; }
 
 private:
-  float _alpha;
+  float _alpha = 0.2f;
 };
 
 } // namespace luci
