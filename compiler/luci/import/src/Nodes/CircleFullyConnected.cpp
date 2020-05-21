@@ -42,7 +42,7 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
   node->weights(inputs[1]);
   node->bias(inputs[2]); // bias is optional
 
-  if(auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
+  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
   {
     // bias is not used for type inference, but node itself should have a type
     bias->dtype(loco::DataType::FLOAT32);
