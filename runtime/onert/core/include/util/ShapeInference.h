@@ -100,6 +100,7 @@ public:
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
+  void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
@@ -115,6 +116,13 @@ private:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+
+private:
+  /**
+   * @brief Performs shape inference for unary op whose output shape is
+   *        always same with input shape
+   */
+  void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
   ir::Operands &_operands;
@@ -141,6 +149,7 @@ public:
 public:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
+  void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   // TODO write op starting from C
   // TODO write op starting from D
@@ -156,6 +165,13 @@ public:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+
+private:
+  /**
+   * @brief Performs shape inference and memory allocation for unary op whose output shape is
+   *        always same with input shape
+   */
+  void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
   /**

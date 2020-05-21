@@ -2,6 +2,7 @@ GeneratedTests.*float16*
 GeneratedTests.*weights_as_inputs
 GeneratedTests.*zero_sized*
 GeneratedTests.abs_
+GeneratedTests.abs_dynamic
 GeneratedTests.abs__relaxed
 GeneratedTests.add_dynamic
 GeneratedTests.batch_to_space*

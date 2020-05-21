@@ -211,6 +211,26 @@ Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool
   - For visit() of each operator, find each op's C file
 */
 
+void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx)
+{
+  const auto &input = _operands.at(input_idx);
+
+  // get mutable output operand
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  // if input is dynamic, output also becomes dynamic
+  if (input.info().isDynamic())
+  {
+    output.info().setDynamic();
+    return;
+  }
+
+  // re-sizing output shape
+  ir::Shape new_shape = input.info().shape();
+  output.info().shape(new_shape);
+}
+
 void StaticInferer::dump()
 {
   auto get_shape_str = [](const ir::Shape &shape) {
@@ -268,6 +288,26 @@ void StaticInferer::visit(const ir::operation::Concat &op)
   - Write methods except visit()
   - For visit() of each operator, find each op's C file
  */
+
+void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
+{
+  // check if output is not dynamic
+  auto output_ind = op.getOutputs().at(0);
+  auto *output = _tensor_registry->getITensor(output_ind);
+  if (!output->is_dynamic())
+    return;
+
+  // getting output shape
+  auto *input = _tensor_registry->getITensor(input_ind);
+  auto output_shape = getShape(input);
+
+  // set output shape and output buffer
+  setShape(output, output_shape);
+
+  // assert(output->buffer() == nullptr);
+  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  assert(output->buffer() != nullptr);
+}
 
 } // namespace shape_inference
 } // namespace onert

@@ -3,6 +3,7 @@ GeneratedTests.abs_1D_float_nnfw
 GeneratedTests.abs_2D_float_nnfw
 GeneratedTests.abs_3D_float_nnfw
 GeneratedTests.abs_4D_float_nnfw
+GeneratedTests.abs_dynamic
 GeneratedTests.add_broadcast_quant8
 GeneratedTests.add_dynamic
 GeneratedTests.add_quant8
