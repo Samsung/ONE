@@ -330,6 +330,20 @@ public:
   }
 };
 
+class SpaceToDepthPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_SpaceToDepthOptions())
+    {
+      os << "    ";
+      os << "BlockSize(" << std_params->block_size() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class SqueezePrinter : public OpPrinter
 {
 public:
@@ -499,6 +513,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for SIN
   // There is no Option for SLICE
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
+  _op_map[tflite::BuiltinOperator_SPACE_TO_DEPTH] = make_unique<SpaceToDepthPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
   _op_map[tflite::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
   _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
