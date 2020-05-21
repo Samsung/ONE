@@ -203,6 +203,10 @@ message ExpOptions {
   // None
 }
 
+message ExpandDimsOptions {
+  // None
+}
+
 message UnpackOptions {
   optional int32 num = 1;
   optional int32 axis = 2 [default = 0];
@@ -407,6 +411,7 @@ message Operation {
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
   optional NotEqualOptions notequal_options = 201;
+  optional ExpandDimsOptions expand_dims_options = 202;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
