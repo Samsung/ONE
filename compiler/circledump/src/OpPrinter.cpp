@@ -243,6 +243,20 @@ public:
   }
 };
 
+class MirrorPadPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_MirrorPadOptions())
+    {
+      os << "    ";
+      os << "mode(" << EnumNameMirrorPadMode(params->mode()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class MulPrinter : public OpPrinter
 {
 public:
@@ -500,6 +514,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
   // There is no Option for LOGISTIC
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
