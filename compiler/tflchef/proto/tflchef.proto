@@ -290,6 +290,13 @@ message LessOptions {
   // None
 }
 
+message LocalResponseNormalizationOptions {
+  optional int32 radius = 1 [default = 5];
+  optional float bias = 2 [default = 1.0];
+  optional float alpha = 3 [default = 1.0];
+  optional float beta = 4 [default = 0.5];
+}
+
 message SqueezeOptions {
   repeated int32 squeeze_dim = 1;
 }
@@ -378,7 +385,7 @@ message Operation {
   // SVDFOptions 156
   // RNNOptions 157
   // L2NormOptions 158
-  // LocalResponseNormalizationOptions 159
+  optional LocalResponseNormalizationOptions local_response_normalization_options = 159;
   // LSTMOptions 160
   // ResizeBilinearOptions 161
   // CallOptions 162
