@@ -30,6 +30,11 @@ namespace backend
 namespace cpu
 {
 
+// TODO Find optimized algorithm to manage memory.
+
+/**
+ * @brief Class to manage dynamic tensor and its memory
+ */
 class DynamicTensorManager : public backend::IDynamicTensorManager
 {
 public:
@@ -37,6 +42,12 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
+  /**
+   * @brief Allocate memory for dynamic tensor.
+   *        If allocated memory is already set to the tensor and
+   *          if size of existing tensor's memory and new shape is same, memory will not allocated.
+   *          if different, previous memory will be deallocated and memory will be allocated.
+   */
   void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;

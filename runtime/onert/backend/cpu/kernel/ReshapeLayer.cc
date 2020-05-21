@@ -32,8 +32,6 @@ ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr
 
 void ReshapeLayer::reshapeGeneric()
 {
-  // TODO use _shape to calculate shape of output when _shape is not nullptr && not constant
-
   size_t count = _input->total_size();
   memcpy(_output->buffer(), _input->buffer(), count);
 }

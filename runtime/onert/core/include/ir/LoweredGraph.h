@@ -28,6 +28,11 @@ namespace onert
 namespace ir
 {
 
+/**
+ * @brief Class that contains lowering information on graph.
+ *        In addition, after lowering, operands in graph will be set to "dynamic"
+ *        if the shape of output of an operation cannot be decided at compilation time.
+ */
 class LoweredGraph
 {
 public:

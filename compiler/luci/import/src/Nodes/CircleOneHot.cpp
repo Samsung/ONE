@@ -45,11 +45,11 @@ bool CircleOneHotGraphBuilder::validate(const ValidateArgs &args) const
 
   if (options->axis < -1 || options->axis > static_cast<int32_t>(indices->shape.size()))
     return false;
-  if (depth->shape.size() != 1)
+  if (depth->shape.size() != 0)
     return false;
-  if (on_value->shape.size() != 1)
+  if (on_value->shape.size() != 0)
     return false;
-  if (off_value->shape.size() != 1)
+  if (off_value->shape.size() != 0)
     return false;
   if (on_value->type != off_value->type)
     return false;

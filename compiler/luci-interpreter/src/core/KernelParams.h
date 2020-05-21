@@ -29,8 +29,34 @@ namespace luci_interpreter
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
 
+struct ConcatenationParams
+{
+  int axis;
+};
+
+struct DepthwiseConv2DParams
+{
+  Padding padding;
+  int32_t depth_multiplier; // TODO Remove, as it can be calculated.
+  int32_t stride_height;
+  int32_t stride_width;
+  int32_t dilation_height_factor;
+  int32_t dilation_width_factor;
+  Activation activation;
+};
+
 struct FullyConnectedParams
 {
+  Activation activation;
+};
+
+struct Pool2DParams
+{
+  Padding padding;
+  int32_t filter_height;
+  int32_t filter_width;
+  int32_t stride_height;
+  int32_t stride_width;
   Activation activation;
 };
 

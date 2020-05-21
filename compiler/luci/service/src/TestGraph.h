@@ -121,6 +121,12 @@ private:
     assert(false && "NYI");
   };
 
+  void setInput(luci::CircleExpandDims *node, luci::CircleNode *arg1, luci::CircleNode *arg2)
+  {
+    node->input(arg1);
+    node->axis(arg2);
+  };
+
   void setInput(luci::CircleTranspose *node, luci::CircleNode *arg1, luci::CircleNode *arg2)
   {
     node->a(arg1);

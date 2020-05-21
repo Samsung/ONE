@@ -65,6 +65,14 @@ function command_exists() {
   command -v $1 > /dev/null 2>&1
 }
 
+function exclude_symbolic_links() {
+  # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
+  if [[ ${#FILES_TO_CHECK} -ne 0 ]]; then
+    FILES_EXCLUDE_SYMLINKS=$(file ${FILES_TO_CHECK} | grep -v "symbolic link" | cut -d':' -f1)
+    FILES_TO_CHECK=${FILES_EXCLUDE_SYMLINKS}
+  fi
+}
+
 function check_newline() {
   # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
   if [[ ${#FILES_TO_CHECK} -ne 0 ]]; then
@@ -224,6 +232,7 @@ for DIR_NOT_TO_BE_TESTED in $(git ls-files -co --exclude-standard '*/.FORMATDENY
   DIRECTORIES_NOT_TO_BE_TESTED+=($(dirname "${DIR_NOT_TO_BE_TESTED}"))
 done
 
+exclude_symbolic_links
 check_newline
 check_permission
 check_cpp_files

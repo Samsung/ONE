@@ -95,6 +95,8 @@ public:
    */
   void infer(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
 
+  void dump();
+
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added

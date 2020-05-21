@@ -599,6 +599,32 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleExpandDims *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+    auto x_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto const_axis = loco::must_cast<luci::CircleConst *>(node->axis());
+    LUCI_ASSERT(const_axis->dtype() == S32, "Only support int32 CircleConst for axis");
+    if (const_axis->rank() != 0)
+    {
+      INTERNAL_EXN_V("Non-scalar axis in OP", node->opnum());
+    }
+    int32_t axis = const_axis->at<S32>(0);
+    LUCI_ASSERT((axis < static_cast<int32_t>(x_shape.rank())) &&
+                    (axis > -1 - static_cast<int32_t>(x_shape.rank())),
+                "Axis has to be between [-(D+1), D], where D is rank of input.");
+    size_t positive_axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
+    loco::TensorShape output_shape;
+    output_shape.rank(x_shape.rank() + 1);
+    size_t i = 0;
+    for (; i < positive_axis; i++)
+      output_shape.dim(i) = x_shape.dim(i);
+    output_shape.dim(i) = loco::Dimension(1);
+    for (; i < x_shape.rank(); i++)
+      output_shape.dim(i + 1) = x_shape.dim(i);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleFill *node) final
   {
     loco::TensorShape shape;
@@ -704,6 +730,14 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleLess *node) final
+  {
+    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleLogicalAnd *node) final
   {
     const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -770,6 +804,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleNotEqual *node) final
+  {
+    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleOneHot *node) final
   {
     const loco::DataType S32 = loco::DataType::S32;
@@ -778,8 +820,8 @@ public:
     // TODO support depth with other types
     auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
     LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
-    if (depth->rank() != 1)
-      INTERNAL_EXN_V("Only support rank 1 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
+    if (depth->rank() != 0)
+      INTERNAL_EXN_V("Only support rank 0 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
     loco::TensorShape output_shape;
     output_shape.rank(indices_shape.rank() + 1);
     auto axis = node->axis();
@@ -933,11 +975,7 @@ public:
       LUCI_ASSERT(const_shape_node, "Only support CircleConst for shape of CircleReshape");
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
 
-      if (const_shape_node->rank() != 1)
-        INTERNAL_EXN_V("Only support rank 1 CircleConst",
-                       oops::to_uint32(const_shape_node->rank()));
-
-      shape_by_input.rank(const_shape_node->dim(0).value());
+      shape_by_input.rank(const_shape_node->size<S32>());
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {

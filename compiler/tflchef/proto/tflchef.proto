@@ -59,6 +59,12 @@ enum Activation {
   RELU6 = 3;
 }
 
+// This enum value corresponds to MirrorPadMode in TensorFlow Lite schema
+enum MirrorPadMode {
+  REFLECT = 0;
+  SYMMETRIC = 1;
+}
+
 message Conv2DOptions
 {
   optional Padding padding = 1 [default = VALID];
@@ -131,12 +137,20 @@ message PadOptions {
   // None
 }
 
+message MirrorPadOptions {
+  optional MirrorPadMode mode = 1 [default = REFLECT];
+}
+
 message SoftmaxOptions {
   optional float beta = 1 [default = 0.0];
 }
 
 message MulOptions {
   optional Activation activation = 1 [default = NONE];
+}
+
+message RangeOptions {
+  // None
 }
 
 message ReducerOptions {
@@ -196,6 +210,10 @@ message SliceOptions {
 }
 
 message ExpOptions {
+  // None
+}
+
+message ExpandDimsOptions {
   // None
 }
 
@@ -292,6 +310,10 @@ message GatherNdOptions {
   // None
 }
 
+message NotEqualOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -347,7 +369,7 @@ message Operation {
   optional FloorModOptions floormod_options = 147;
   optional OneHotOptions onehot_options = 148;
   optional LessOptions less_options = 149;
-  // optional ReducerOptions reducemax_options = 150;
+  optional ReducerOptions reduce_max_options = 150;
   optional MaximumMinimumOptions minimum_options = 151;
   optional ReducerOptions reduce_any_options = 152;
   optional ZerosLikeOptions zeros_like_options = 153;
@@ -379,10 +401,10 @@ message Operation {
   // BidirectionalSequenceLSTMOptions 179
   // BidirectionalSequenceRNNOptions 180
   // UnidirectionalSequenceLSTMOptions 181
-  // RangeOptions 182
+  optional RangeOptions range_options = 182;
   // ResizeNearestNeighborOptions 183
   // LeakyReluOptions 184
-  // MirrorPadOptions 185
+  optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
   // ReverseV2Options 187
   // AddNOptions 188
@@ -398,6 +420,8 @@ message Operation {
   // NonMaxSuppressionV4Options 198
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
+  optional NotEqualOptions notequal_options = 201;
+  optional ExpandDimsOptions expand_dims_options = 202;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

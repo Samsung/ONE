@@ -10,8 +10,16 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    AveragePool2D.h
+    AveragePool2D.cpp
+    Concatenation.h
+    Concatenation.cpp
+    DepthwiseConv2D.h
+    DepthwiseConv2D.cpp
     FullyConnected.h
     FullyConnected.cpp
+    MaxPool2D.h
+    MaxPool2D.cpp
     Reshape.h
     Reshape.cpp
     Softmax.h
@@ -34,7 +42,11 @@ target_link_libraries(luci_interpreter_kernels
 set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
+    AveragePool2D.test.cpp
+    Concatenation.test.cpp
+    DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
+    MaxPool2D.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp)
 
