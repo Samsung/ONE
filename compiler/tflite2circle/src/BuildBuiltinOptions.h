@@ -64,6 +64,7 @@
 #include "BuildBuiltinOptions/SliceOptions.h"
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
 #include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
+#include "BuildBuiltinOptions/SpaceToDepthOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
 #include "BuildBuiltinOptions/SplitVOptions.h"
 #include "BuildBuiltinOptions/SquaredDifferenceOptions.h"
