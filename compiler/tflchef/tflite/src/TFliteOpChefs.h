@@ -42,6 +42,7 @@
 #include "Op/GreaterEqual.h"
 #include "Op/LeakyRelu.h"
 #include "Op/Less.h"
+#include "Op/LocalResponseNormalization.h"
 #include "Op/LogicalAnd.h"
 #include "Op/LogicalNot.h"
 #include "Op/LogicalOr.h"
