@@ -103,9 +103,9 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
 // Shape inference
 //
 
-Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
+ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 {
-  return {broadcastShapes(lhs_shape, rhs_shape)};
+  return broadcastShapes(lhs_shape, rhs_shape);
 }
 
 // TODO move this when Avgpool.cc is created in util/shapeinf
@@ -232,27 +232,6 @@ void StaticInferer::dump()
                            << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
                            << get_shape_str(operand.info().shape()) << std::endl;
   });
-}
-
-// TODO move this into Add.cc
-void StaticInferer::visit(const ir::operation::Add &op)
-{
-  const auto lhs_idx{op.getInputs().at(ir::operation::Add::Input::LHS)};
-  const auto &lhs = _operands.at(lhs_idx);
-  const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
-  const auto &rhs = _operands.at(rhs_idx);
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
-  {
-    output.info().setDynamic();
-    return;
-  }
-
-  // re-sizing output shape
-  ir::Shape new_shape = broadcastShapes(lhs.info().shape(), rhs.info().shape());
-  output.info().shape(new_shape);
 }
 
 // TODO move this into Concat.cc

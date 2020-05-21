@@ -25,8 +25,7 @@ TEST(ShapeInference, Elementwise)
 {
   Shape lhs_shape{1, 299, 299, 3};
   Shape rhs_shape{3};
-  auto infered_shapes = onert::shape_inference::inferEltwiseShape(lhs_shape, rhs_shape);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferEltwiseShape(lhs_shape, rhs_shape);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.dim(0), 1);
