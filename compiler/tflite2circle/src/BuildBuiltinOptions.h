@@ -41,6 +41,7 @@
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
+#include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"
 #include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
