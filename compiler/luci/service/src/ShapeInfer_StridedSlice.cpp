@@ -22,6 +22,7 @@
 #include <loco/IR/DataType.h>
 #include <loco/IR/NodeShape.h>
 #include <oops/InternalExn.h>
+#include <loco/Service/ShapeInference.h>
 
 #include <cmath>
 #include <cstdint>
@@ -62,7 +63,8 @@ struct StridedSliceParams
 // Use until std::clamp() is available from C++17.
 inline int Clamp(const int v, const int lo, const int hi)
 {
-  LUCI_ASSERT(!(hi < lo), "Clamp hi < lo");
+  printf("Clamp %d %d %d\n", v, lo, hi);
+  LUCI_ASSERT(lo <= hi, "Clamp hi < lo");
   if (hi < v)
     return hi;
   if (v < lo)
@@ -79,6 +81,11 @@ inline int StartForAxis(const StridedSliceParams &params, const loco::TensorShap
   const auto begin_mask = params.begin_mask;
   const auto *start_indices = params.start_indices;
   const auto *strides = params.strides;
+  const int axis_size = static_cast<int>(input_shape.dim(axis).value());
+  if (axis_size == 0)
+  {
+    return 0;
+  }
   // Begin with the specified index.
   int start = start_indices[axis];
 
@@ -100,7 +107,6 @@ inline int StartForAxis(const StridedSliceParams &params, const loco::TensorShap
   }
 
   // Handle negative indices
-  int axis_size = input_shape.dim(axis).value();
   if (start < 0)
   {
     start += axis_size;
@@ -124,6 +130,11 @@ inline int StopForAxis(const StridedSliceParams &params, const loco::TensorShape
   const auto shrink_axis_mask = params.shrink_axis_mask;
   const auto *stop_indices = params.stop_indices;
   const auto *strides = params.strides;
+  const int axis_size = static_cast<int>(input_shape.dim(axis).value());
+  if (axis_size == 0)
+  {
+    return 0;
+  }
 
   // Begin with the specified index
   const bool shrink_axis = shrink_axis_mask & (1 << axis);
@@ -155,7 +166,6 @@ inline int StopForAxis(const StridedSliceParams &params, const loco::TensorShape
   }
 
   // Handle negative indices
-  const int axis_size = input_shape.dim(axis).value();
   if (stop < 0)
   {
     stop += axis_size;
@@ -219,15 +229,6 @@ StridedSliceParams BuildStridedSliceParams(const luci::CircleStridedSlice *node)
   return op_params;
 }
 
-loco::TensorShape node_shape(const luci::CircleNode *node)
-{
-  loco::TensorShape shape;
-  shape.rank(node->rank());
-  for (uint32_t r = 0; r < node->rank(); ++r)
-    shape.dim(r) = loco::Dimension(node->dim(r).value());
-  return shape;
-}
-
 } // namespace
 
 namespace luci
@@ -241,22 +242,35 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
 
   uint32_t shape_size = 0;
   auto op_params = BuildStridedSliceParams(node);
-  auto input_shape = node_shape(input_node);
+  loco::TensorShape input_shape = loco::shape_get(input_node).as<loco::TensorShape>();
 
   LUCI_ASSERT(op_params.begin_node->dtype() == S32, "Only support S32 for begin_node");
   LUCI_ASSERT(op_params.end_node->dtype() == S32, "Only support S32 for end_node");
   LUCI_ASSERT(op_params.strides_node->dtype() == S32, "Only support S32 for strides_node");
 
-  output_shape.rank(node->rank());
+  assert(node->ellipsis_mask() == 0);
+  assert(node->new_axis_mask() == 0);
+
+  uint32_t num_input_axes = input_shape.rank();
+  assert(op_params.begin_node->size<S32>() <= num_input_axes);
+  assert(op_params.end_node->size<S32>() <= num_input_axes);
+  assert(op_params.strides_node->size<S32>() <= num_input_axes);
+  for (uint32_t i = 0; i < op_params.strides_node->size<S32>(); i++)
+  {
+    assert(op_params.strides_node->at<S32>(i) != 0);
+  }
 
   std::array<int32_t, 16> output_shape_data;
 
-  for (uint32_t idx = 0; idx < node->rank(); ++idx)
+  for (uint32_t idx = 0; idx < input_shape.rank(); ++idx)
   {
     int32_t stride = op_params.strides_node->at<S32>(idx);
     LUCI_ASSERT(stride != 0, "Stride value has to be non-zero");
     int32_t begin = StartForAxis(op_params, input_shape, idx);
     int32_t end = StopForAxis(op_params, input_shape, idx, begin);
+
+    // This is valid for both positive and negative strides
+    int32_t dim_shape = std::ceil((end - begin) / static_cast<float>(stride));
 
     // When shrinking an axis, the end position does not matter (and can be
     // incorrect when negative indexing is used, see Issue #19260). Always use
@@ -265,13 +279,9 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
     const bool shrink_axis = node->shrink_axis_mask() & (1 << idx);
     if (shrink_axis)
     {
-      end = begin + 1;
+      assert(dim_shape == 1);
     }
-
-    // This is valid for both positive and negative strides
-    int32_t dim_shape = std::ceil((end - begin) / static_cast<float>(stride));
-    dim_shape = dim_shape < 0 ? 0 : dim_shape;
-    if (!shrink_axis)
+    else
     {
       output_shape_data[shape_size] = dim_shape;
       shape_size++;

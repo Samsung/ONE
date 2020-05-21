@@ -377,11 +377,15 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       assert(operand.has_name());
 
       assert(operand.has_type());
-      assert(operand.has_shape());
 
-      std::vector<int32_t> dims = as_dims(operand.shape());
+      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
+      std::vector<int32_t> dims;
+      if (operand.has_shape())
+      {
+        dims = as_dims(operand.shape());
+        shape = flatbuffer_builder->CreateVector(dims);
+      }
 
-      auto shape = flatbuffer_builder->CreateVector(dims);
       auto name = flatbuffer_builder->CreateString(operand.name());
 
       buffer_index = 0;
@@ -399,7 +403,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
         assert(chef != nullptr);
 
         // Create Data
-        auto data_vec = chef->generate(element_count(dims));
+        int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
+        auto data_vec = chef->generate(count);
         auto data = flatbuffer_builder->CreateVector(data_vec);
 
         // Create Buffer
@@ -624,11 +629,15 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
       assert(operand.has_name());
 
       assert(operand.has_type());
-      assert(operand.has_shape());
 
-      std::vector<int32_t> dims = as_dims(operand.shape());
+      std::vector<int32_t> dims;
+      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
+      if (operand.has_shape())
+      {
+        dims = as_dims(operand.shape());
+        shape = flatbuffer_builder->CreateVector(dims);
+      }
 
-      auto shape = flatbuffer_builder->CreateVector(dims);
       auto name = flatbuffer_builder->CreateString(operand.name());
 
       // Create Buffer if filler is specified
@@ -644,7 +653,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
         assert(chef != nullptr);
 
         // Create Data
-        auto data_vec = chef->generate(element_count(dims));
+        int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
+        auto data_vec = chef->generate(count);
         auto data = flatbuffer_builder->CreateVector(data_vec);
 
         // Create Buffer
