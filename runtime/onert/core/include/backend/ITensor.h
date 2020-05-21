@@ -78,6 +78,7 @@ public:
 
 /**
  * @brief Set the shape of tenser to new_shape
+ * @note  Higer dimension will be placed on front.
  */
 void setShape(ITensor *tensor, const ir::Shape &new_shape);
 
