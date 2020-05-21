@@ -69,6 +69,8 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
 // left-shift (when the multiplier is >1)
 void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
+Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
+
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
 {
   if (tensor == nullptr)

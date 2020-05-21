@@ -50,6 +50,11 @@ struct FullyConnectedParams
   Activation activation;
 };
 
+struct MulParams
+{
+  Activation activation;
+};
+
 struct Pool2DParams
 {
   Padding padding;
