@@ -49,6 +49,7 @@
 #include "Op/Mean.h"
 #include "Op/Minimum.h"
 #include "Op/Mul.h"
+#include "Op/NotEqual.h"
 #include "Op/OneHot.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"

@@ -296,6 +296,10 @@ message GatherNdOptions {
   // None
 }
 
+message NotEqualOptions {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -402,6 +406,7 @@ message Operation {
   // NonMaxSuppressionV4Options 198
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
+  optional NotEqualOptions notequal_options = 201;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

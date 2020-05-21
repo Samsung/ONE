@@ -85,6 +85,7 @@ private:
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
     REG_TFL_OP(MEAN, TFliteOpMean);
     REG_TFL_OP(MINIMUM, TFliteOpMinimum);
+    REG_TFL_OP(NOT_EQUAL, TFliteOpNotEqual);
     REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
     REG_TFL_OP(PAD, TFliteOpPad);
