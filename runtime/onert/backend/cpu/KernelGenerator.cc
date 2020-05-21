@@ -65,6 +65,7 @@
 #include "kernel/LogicalNotLayer.h"
 #include "kernel/ZerosLikeLayer.h"
 #include "kernel/SquaredDiffLayer.h"
+#include "kernel/LogicalOrLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1101,6 +1102,23 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalNotLayer>();
 
   fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::LogicalOr &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(0)};
+  const auto rhs_index{node.getInputs().at(1)};
+
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
+  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalOrLayer>();
+
+  fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
 
   _return_fn = std::move(fn);
 }

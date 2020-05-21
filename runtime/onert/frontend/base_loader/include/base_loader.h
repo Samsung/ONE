@@ -147,6 +147,7 @@ protected:
   void loadLogicalNot(const Operator *op, ir::Graph &subg);
   void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
+  void loadLogicalOr(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1461,6 +1462,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
     throw std::runtime_error("Tile: non-constant 'multiples' is not supported.");
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Tile(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalOr(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalOr(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
