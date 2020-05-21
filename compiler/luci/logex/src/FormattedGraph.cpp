@@ -217,6 +217,7 @@ private:
   IMPLEMENT(luci::CircleGreaterEqual)
   IMPLEMENT(luci::CircleIf)
   IMPLEMENT(luci::CircleLess)
+  IMPLEMENT(luci::CircleLocalResponseNormalization)
   IMPLEMENT(luci::CircleLogicalAnd)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
@@ -553,6 +554,17 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLess *node, locop::Node
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalization *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("radius", pepper::str(node->radius()));
+  s.args().append("bias", pepper::str(node->bias()));
+  s.args().append("alpha", pepper::str(node->alpha()));
+  s.args().append("beta", pepper::str(node->beta()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
