@@ -68,6 +68,7 @@ public:
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
   void visit(luci::CircleGather *) final;
+  void visit(luci::CircleGatherNd *) final;
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
@@ -481,6 +482,24 @@ void OperationExporter::visit(luci::CircleGather *node)
   // Make GATHER operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_GatherOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleGatherNd *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_GATHER_ND);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->params()),
+                                  get_tensor_index(node->indices())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateGatherNdOptions(builder);
+
+  // Make GATHER_ND operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_GatherNdOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
