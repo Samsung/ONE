@@ -46,4 +46,4 @@ struct ExpandDimsChefFactory final : public OpChefFactory
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };
 
-#endif // __OP_ABS_H__
+#endif // __OP_EXPAND_DIMS_H__
