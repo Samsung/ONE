@@ -1,0 +1,26 @@
+operand {
+  name: "param"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 dim: 2 }
+}
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 2 dim: 2 }
+  filler { tag: "explicit" arg: "0" arg: "1" arg: "1" arg: "0" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+}
+operation {
+  type: "GatherNd"
+  gather_nd_options {}
+  input: "param"
+  input: "indices"
+  output: "ofm"
+}
+input: "param"
+input: "indices"
+output: "ofm"
