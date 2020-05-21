@@ -142,8 +142,6 @@ GeneratedTests.relu6_float_1
 GeneratedTests.relu6_float_2
 GeneratedTests.relu6_quant8_1
 GeneratedTests.relu6_quant8_2
-GeneratedTests.relu_float_1
-GeneratedTests.relu_float_2
 GeneratedTests.relu_quant8_1
 GeneratedTests.relu_quant8_2
 GeneratedTests.reshape_quant8_weights_as_inputs

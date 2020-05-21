@@ -46,6 +46,7 @@
 #include "kernel/PadLayer.h"
 #include "kernel/PowLayer.h"
 #include "kernel/ReduceLayer.h"
+#include "kernel/ReLULayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/ReverseLayer.h"
 #include "kernel/RoundLayer.h"
@@ -810,6 +811,21 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
 
   fn->configure(input_alloc, output_alloc, kernel::ReduceType::kMin, node.param().axes,
                 node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ReLU &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<kernel::ReLULayer>();
+
+  fn->configure(input_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }
