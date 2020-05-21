@@ -110,6 +110,19 @@ const char *to_str(luci::Padding padding)
   }
 }
 
+const char *to_str(luci::MirrorPadMode mode)
+{
+  switch (mode)
+  {
+    case luci::MirrorPadMode::REFLECT:
+      return "REFLECT";
+    case luci::MirrorPadMode::SYMMETRIC:
+      return "SYMMETRIC";
+    default:
+      return "Error";
+  }
+}
+
 std::string to_str(const luci::Stride *stride)
 {
   return pepper::str(stride->h(), ",", stride->w());
@@ -212,6 +225,7 @@ private:
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
   IMPLEMENT(luci::CircleMinimum)
+  IMPLEMENT(luci::CircleMirrorPad)
   IMPLEMENT(luci::CircleMul)
   IMPLEMENT(luci::CircleNotEqual)
   IMPLEMENT(luci::CircleOneHot)
@@ -614,6 +628,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMinimum *node, locop::N
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMirrorPad *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("paddings", tbl()->lookup(node->paddings()));
+  s.args().append("mode", to_str(node->mode()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
