@@ -21,6 +21,7 @@
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/MaxPool2D.h"
+#include "kernels/Mul.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 
@@ -125,6 +126,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::MaxPool2D>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  MulParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::Mul>(input1, input2, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
