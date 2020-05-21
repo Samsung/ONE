@@ -152,8 +152,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
 
   // Prepare scanning
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if ((lowered_graph.graph().getInputs() + lowered_graph.graph().getOutputs()).contains(ind))
-      return;
     const auto lower_info = lowered_graph.getLowerInfo(ind);
     // TODO Remove if onert doesn't support anymore such as
     // GeneratedTests.reshape_quant8_weights_as_inputs
@@ -191,12 +189,10 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
 
   // If a tensor is model output, increase the use of the tensor.
   // This aim is same to above one.
-  /*
   for (const auto &ind : graph.getOutputs())
   {
     uses_map[ind]++;
   }
-  */
 
   // Start scanning to do notify{First|Last}Use for each tensor
 
@@ -211,7 +207,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
   }
 
   // Allocate Model's inputs
-  /*
   VERBOSE(LINEAR) << "TENSORS as MODEL INPUT" << std::endl;
   for (const auto &ind : graph.getInputs())
   {
@@ -220,7 +215,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
       continue;
     tensor_builder->notifyFirstUse(ind);
   }
-  */
 
   // At each operation,
   // 1. Scan DEF of outputs. If the DEF, allocate it
@@ -233,8 +227,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
     {
       for (const auto &ind : op.node->getOutputs())
       {
-        if (lowered_graph.graph().getOutputs().contains(ind))
-          continue;
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
         {
@@ -245,8 +237,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
 
       for (const auto &ind : op.node->getInputs())
       {
-        if (lowered_graph.graph().getInputs().contains(ind))
-          continue;
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);
         uses_map[ind]--;
@@ -259,7 +249,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
   }
 
   // Dispose and validate
-  /*
   for (const auto &ind : graph.getOutputs())
   {
     --uses_map[ind];
@@ -268,7 +257,6 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
       tensor_builder_map[ind]->notifyLastUse(ind);
     }
   }
-  */
 
   for (const auto &ind : constants)
   {

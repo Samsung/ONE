@@ -67,7 +67,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   // There are two cases to load default backend
   // 1. whether controlflow operation exist in subgraphs for controlflow kernel
   // 2. whether to load 2 or more backends for Permute kernel between different backends
-  if (cf_ops.size() != 0 || options.backend_list.size() > 1)
   {
     options.backend_list.emplace_back(backend::controlflow::Config::ID);
   }
@@ -216,6 +215,7 @@ void Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
   _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _options.is_primary_subgraph = (index == ir::SubgraphIndex{0}); // XXX Need better way
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
@@ -259,7 +259,7 @@ void Compiler::compile(void)
     auto &lowered_subg = pair.second;
     auto indexed_ranks = lowered_subg->indexed_ranks();
 
-    _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
+    _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0}); // XXX Need better way
 
     onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
     dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));

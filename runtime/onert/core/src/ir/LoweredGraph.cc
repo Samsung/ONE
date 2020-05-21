@@ -280,7 +280,6 @@ void LoweredGraph::makeOpSequences(
 void LoweredGraph::manipulateLowerInfo(
     OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info)
 {
-#if 0
   const auto controlflow_backend = compiler::BackendManager::get().getControlflow();
   for (auto index : _graph.getInputs())
   {
@@ -302,7 +301,6 @@ void LoweredGraph::manipulateLowerInfo(
       });
     }
   }
-#endif
 
 #if 0
   // nullptr means external tensor
@@ -317,6 +315,20 @@ void LoweredGraph::manipulateLowerInfo(
   {
     auto &&lower_info = operands_lower_info.at(index);
     lower_info->addUsePermuteFactor(operand::PermuteFactor{io_backend, Layout::NHWC /* XXX Get frontend layout */});
+  }
+#endif
+
+#if 0
+  const auto cf_backend = compiler::BackendManager::get().getControlflow();
+  for (auto index : _graph.getInputs())
+  {
+    auto &&lower_info = operands_lower_info.at(index);
+    lower_info->addDefPermuteFactor(operand::PermuteFactor{cf_backend, Layout::NHWC /* XXX Get frontend layout */});
+  }
+  for (auto index : _graph.getOutputs())
+  {
+    auto &&lower_info = operands_lower_info.at(index);
+    lower_info->addUsePermuteFactor(operand::PermuteFactor{cf_backend, Layout::NHWC /* XXX Get frontend layout */});
   }
 #endif
 

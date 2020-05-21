@@ -87,8 +87,7 @@ public:
     if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
     {
       // NOTE : OVERWRITE!
-      _managed.erase(itr);
-      //throw std::runtime_error{"Tried to set an external tensor but a managed tensor already exists."};
+      //_managed.erase(itr);
     }
     _external[ind] = tensor;
   }

@@ -154,7 +154,6 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
 
 std::vector<std::shared_ptr<backend::ITensor>> ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph, const ir::OperandIndexSequence &indices)
 {
-  // Build ControlFlow
   std::vector<std::shared_ptr<backend::ITensor>> ret;
 
   backend::TensorBuilderSet tensor_builders; // All tensor builders except controlflow
@@ -171,11 +170,16 @@ std::vector<std::shared_ptr<backend::ITensor>> ExecutorFactory::initializeModelI
 
   for (auto ind : indices)
   {
-    const auto &input = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_shared<backend::controlflow::operand::UserTensor>(input.info(), ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
-    std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(cf_tensor_builder->tensorRegistry())->setManagedTensor(ind, tensor);
+    const auto &operand = lowered_graph.graph().operands().at(ind);
+    auto tensor = std::make_shared<backend::controlflow::operand::UserTensor>(operand.info(), ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
+
+    // Add tensor to controlflow TensorRegistry.
+    auto cf_tensor_reg = std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(cf_tensor_builder->tensorRegistry());
+    assert(cf_tensor_reg);
+    cf_tensor_reg->setManagedTensor(ind, tensor);
     ret.push_back(tensor);
 
+    // Set other tensors as external tensors
     for (auto &tensor_builder : tensor_builders)
     {
       if (tensor_builder->isRegistered(ind))
@@ -322,6 +326,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
+
   std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
   if (options.is_primary_subgraph)
