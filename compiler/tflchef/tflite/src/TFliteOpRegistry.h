@@ -78,6 +78,7 @@ private:
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
     REG_TFL_OP(LESS, TFliteOpLess);
+    REG_TFL_OP(LOCAL_RESPONSE_NORMALIZATION, TFliteOpLocalResponseNormalization);
     REG_TFL_OP(LOGICAL_AND, TFliteOpLogicalAnd);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
