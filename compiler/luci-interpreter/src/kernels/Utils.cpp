@@ -17,6 +17,7 @@
 
 #include "kernels/Utils.h"
 
+#include <cassert>
 #include <cmath>
 #include <limits>
 #include <stdexcept>
@@ -146,6 +147,17 @@ void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
     q_fixed = 0;
   }
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
+}
+
+void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
+                                         int *left_shift)
+{
+  assert(double_multiplier < 1.0);
+  assert(double_multiplier > 0.0);
+  int shift;
+  quantizeMultiplier(double_multiplier, quantized_multiplier, &shift);
+  assert(shift <= 0);
+  *left_shift = shift;
 }
 
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape)

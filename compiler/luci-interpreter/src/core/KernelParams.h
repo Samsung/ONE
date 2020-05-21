@@ -29,6 +29,11 @@ namespace luci_interpreter
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
 
+struct AddParams
+{
+  Activation activation;
+};
+
 struct ConcatenationParams
 {
   int axis;

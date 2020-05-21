@@ -16,6 +16,7 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/Add.h"
 #include "kernels/AveragePool2D.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
@@ -30,6 +31,20 @@
 
 namespace luci_interpreter
 {
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  AddParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::Add>(input1, input2, output, params);
+}
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
 {

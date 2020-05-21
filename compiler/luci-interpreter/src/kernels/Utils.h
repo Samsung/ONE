@@ -69,6 +69,14 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
 // left-shift (when the multiplier is >1)
 void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of NEGATIVE its exponent ---
+// this is intended as a RIGHT-shift.
+//
+// Restricted to the case where the multiplier < 1 (and non-negative).
+void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
+                                         int *left_shift);
+
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
 
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
