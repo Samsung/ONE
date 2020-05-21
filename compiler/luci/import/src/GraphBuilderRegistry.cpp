@@ -64,6 +64,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                       // 85
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                            // 83
   CIRCLE_NODE(PAD, CirclePadGraphBuilder);                              // 34
+  CIRCLE_NODE(POW, CirclePowGraphBuilder);                              // 78
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                          // 96
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                 // 91
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);               // 81
@@ -128,7 +129,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
   // BuiltinOperator_LOG = 73,
   // BuiltinOperator_SQRT = 75,
-  // BuiltinOperator_POW = 78,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_REDUCE_MAX = 82,
