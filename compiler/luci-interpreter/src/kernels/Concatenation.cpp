@@ -58,7 +58,7 @@ void Concatenation::configure()
       }
       else
       {
-        assert(tensor->shape().dim(i) == t0->shape().dim(i));
+        assert(tensor->shape().dim(d) == t0->shape().dim(d));
       }
     }
   }
