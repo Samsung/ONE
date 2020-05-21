@@ -162,9 +162,6 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   out_operand_li->addUsePermuteFactor(factor);
   _lowered_graph.setLowerInfo(out_operand_index, std::move(out_operand_li));
 
-  auto input_backend_ctx = _lowered_graph.backend_contexts().at(input_backend).get();
-  auto output_backend_ctx = _lowered_graph.backend_contexts().at(output_backend).get();
-
   // Insert permute operation to the graph
   const auto input_layout =
       _lowered_graph.getLowerInfo(operand_index)->def_factors().getOnlyElement().layout();
@@ -184,8 +181,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
       return Permute::Type::COPY;
     }
   }();
-  auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, input_backend_ctx,
-                                               output_backend_ctx, permute_type);
+  auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, permute_type);
 
   auto node_index = _graph.operations().push(std::move(insert_node));
   const auto &node = _graph.operations().at(node_index);

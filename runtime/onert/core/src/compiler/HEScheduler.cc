@@ -270,7 +270,9 @@ int64_t HEScheduler::getOpTime(const backend::Backend *backend, const std::strin
 int64_t HEScheduler::getPermuteTime(const backend::Backend *src_backend,
                                     const backend::Backend *dst_backend, bool quant, uint32_t size)
 {
+  // TODO Change it to getOperationExecTime()
   const auto time = _exec_time->getPermuteTime(src_backend, dst_backend, quant, size);
+
   if (time != _exec_time->NOT_FOUND)
     return time;
 
@@ -410,6 +412,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
         {
           continue;
         }
+        // TODO Change it to controlflow backend
         auto transfer_cost =
             getPermuteTime(backend, other_backend, quant, operand.info().total_size());
         avg_transfer_cost += transfer_cost;

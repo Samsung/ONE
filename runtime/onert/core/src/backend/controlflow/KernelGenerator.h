@@ -50,6 +50,9 @@ public:
   void visit(const ir::operation::While &) override;
 
 private:
+  std::shared_ptr<backend::ITensor> getTensor(const ir::OperandIndex &index);
+
+private:
   const ir::Operands &_operand_ctx;
   TensorBuilderSet _tensor_builder_set;
   std::shared_ptr<exec::ExecutorMap> _executor_map;
