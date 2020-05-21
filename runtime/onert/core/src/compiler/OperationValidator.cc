@@ -1169,6 +1169,11 @@ void OperationValidator::visit(const ir::operation::Reverse &node)
   OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
+void OperationValidator::visit(const ir::operation::If &)
+{
+  // TODO Add to validate with subgraphs
+}
+
 void OperationValidator::visit(const ir::operation::While &node)
 {
   // This validator does not check shape. So checking isDynamic() is skipped.

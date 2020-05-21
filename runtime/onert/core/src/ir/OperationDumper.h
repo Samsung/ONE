@@ -109,6 +109,7 @@ public:
   void visit(const operation::Min &) override;
   void visit(const operation::Max &) override;
   void visit(const operation::OneHot &) override;
+  void visit(const operation::If &) override;
   void visit(const operation::While &) override;
   void visit(const operation::ZerosLike &) override;
 };
