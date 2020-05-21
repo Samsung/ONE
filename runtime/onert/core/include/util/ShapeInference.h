@@ -56,7 +56,7 @@ Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker
                                  const ir::operation::DepthwiseConv2D::Param &param,
                                  ir::Layout layout = ir::Layout::NHWC);
 
-Shapes inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
+ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
 
 Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
@@ -141,7 +141,7 @@ public:
 public:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
-  // TODO write op starting from A
+  void visit(const ir::operation::Add &op);
   // TODO write op starting from C
   // TODO write op starting from D
   // TODO write op starting from E
