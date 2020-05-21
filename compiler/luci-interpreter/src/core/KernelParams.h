@@ -34,6 +34,16 @@ struct ConcatenationParams
   int axis;
 };
 
+struct Conv2DParams
+{
+  Padding padding;
+  int32_t stride_height;
+  int32_t stride_width;
+  int32_t dilation_height_factor;
+  int32_t dilation_width_factor;
+  Activation activation;
+};
+
 struct DepthwiseConv2DParams
 {
   Padding padding;

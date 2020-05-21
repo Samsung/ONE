@@ -14,6 +14,8 @@ set(SOURCES
     AveragePool2D.cpp
     Concatenation.h
     Concatenation.cpp
+    Conv2D.h
+    Conv2D.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
     FullyConnected.h
@@ -46,6 +48,7 @@ set(TEST_SOURCES
     TestUtils.cpp
     AveragePool2D.test.cpp
     Concatenation.test.cpp
+    Conv2D.test.cpp
     DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
     MaxPool2D.test.cpp
