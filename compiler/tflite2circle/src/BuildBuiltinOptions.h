@@ -33,6 +33,7 @@
 #include "BuildBuiltinOptions/ExpandDimsOptions.h"
 #include "BuildBuiltinOptions/ExpOptions.h"
 #include "BuildBuiltinOptions/FillOptions.h"
+#include "BuildBuiltinOptions/FloorDivOptions.h"
 #include "BuildBuiltinOptions/FloorModOptions.h"
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GatherOptions.h"
