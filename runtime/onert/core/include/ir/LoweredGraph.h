@@ -55,7 +55,7 @@ private:
                        const compiler::CompilerOptions &options);
 
   void
-  manipulateLowerInfo(OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info);
+  manipulateLowerInfo(OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info, bool is_primary);
   void dumpLowerInfo();
   bool mergeable(const OpSequenceIndex &op_seq_index, const OperationIndex &node_index,
                  Layout layout);

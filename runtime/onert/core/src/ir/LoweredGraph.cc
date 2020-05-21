@@ -101,7 +101,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     cl_pass.run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
-    manipulateLowerInfo(operands_lower_info);
+    manipulateLowerInfo(operands_lower_info, options.is_primary_subgraph);
 
     dumpLowerInfo();
   }
@@ -278,16 +278,33 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info)
+    OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info, bool is_primary)
 {
   const auto controlflow_backend = compiler::BackendManager::get().getControlflow();
   for (auto index : _graph.getInputs())
   {
-    // Pick just any one from the uses, here the first one is chosen
-    // For the other uses, Permute operations will be inserted later
     auto &&lower_info = operands_lower_info.at(index);
-    if (!lower_info->use_factors().empty())
-      lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
+    if (is_primary)
+    {
+      // TODO Rather than handling primary graph specially, let the permute inserted and remove it later
+      lower_info->addDefPermuteFactor(operand::PermuteFactor{controlflow_backend, Layout::NHWC});
+    }
+    else
+    {
+      // Pick just any one from the uses, here the first one is chosen
+      // For the other uses, Permute operations will be inserted later
+      if (!lower_info->use_factors().empty())
+        lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
+    }
+  }
+  for (auto index : _graph.getOutputs())
+  {
+    auto &&lower_info = operands_lower_info.at(index);
+    if (is_primary)
+    {
+      // TODO Rather than handling primary graph specially, let the permute inserted and remove it later
+      lower_info->addUsePermuteFactor(operand::PermuteFactor{controlflow_backend, Layout::NHWC});
+    }
   }
   for (auto index : _graph.getOutputs())
   {
