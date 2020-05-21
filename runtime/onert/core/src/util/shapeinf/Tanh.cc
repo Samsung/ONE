@@ -58,7 +58,6 @@ void DynamicInferer::visit(const ir::operation::Tanh &op)
   // set output shape and output buffer
   setShape(output, output_shape);
 
-  assert(output->buffer() == nullptr);
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
