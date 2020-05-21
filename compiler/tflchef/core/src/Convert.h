@@ -27,5 +27,6 @@
 tflite::Padding as_tflite_padding(const tflchef::Padding &value);
 tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &value);
 tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value);
+tflite::MirrorPadMode as_tflite_mirrorpadmode(const tflchef::MirrorPadMode &value);
 
 #endif // __CONVERT_H__

@@ -59,6 +59,12 @@ enum Activation {
   RELU6 = 3;
 }
 
+// This enum value corresponds to MirrorPadMode in TensorFlow Lite schema
+enum MirrorPadMode {
+  REFLECT = 0;
+  SYMMETRIC = 1;
+}
+
 message Conv2DOptions
 {
   optional Padding padding = 1 [default = VALID];
@@ -129,6 +135,10 @@ message PackOptions {
 
 message PadOptions {
   // None
+}
+
+message MirrorPadOptions {
+  optional MirrorPadMode mode = 1 [default = REFLECT];
 }
 
 message SoftmaxOptions {
@@ -394,7 +404,7 @@ message Operation {
   optional RangeOptions range_options = 182;
   // ResizeNearestNeighborOptions 183
   // LeakyReluOptions 184
-  // MirrorPadOptions 185
+  optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
   // ReverseV2Options 187
   // AddNOptions 188
