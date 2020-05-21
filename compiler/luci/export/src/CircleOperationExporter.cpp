@@ -63,6 +63,7 @@ public:
   void visit(luci::CircleDiv *) final;
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleExp *) final;
+  void visit(luci::CircleExpandDims *) final;
   void visit(luci::CircleFill *) final;
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
@@ -70,6 +71,7 @@ public:
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleLess *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
@@ -82,6 +84,7 @@ public:
   void visit(luci::CircleNotEqual *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
+  void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceProd *) final;
   void visit(luci::CirclePad *) final;
@@ -114,6 +117,8 @@ public:
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
   // Circle only
+  void visit(luci::CircleBCQFullyConnected *) final;
+  void visit(luci::CircleBCQGather *) final;
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
   void visit(luci::CircleInput *) final {}
@@ -394,6 +399,19 @@ void OperationExporter::visit(luci::CircleExp *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleExpandDims *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_EXPAND_DIMS);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateExpOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ExpOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleFill *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_FILL);
@@ -537,6 +555,23 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_IfOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLess *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LESS);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateLessOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_LessOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
@@ -722,6 +757,20 @@ void OperationExporter::visit(luci::CirclePad *node)
   auto options = CreatePadOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_PadOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleRange *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RANGE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->start()), get_tensor_index(node->limit()),
+                                  get_tensor_index(node->delta())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateRangeOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_RangeOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -1262,6 +1311,45 @@ void OperationExporter::visit(luci::CircleZerosLike *node)
   auto options = CreateZerosLikeOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ZerosLikeOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BCQ_FULLY_CONNECTED);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->input()), get_tensor_index(node->weights_scales()),
+      get_tensor_index(node->weights_binary()), get_tensor_index(node->bias())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateBCQFullyConnectedOptions(builder, node->weights_hidden_size(),
+                                                to_circle_actfunc(node->fusedActivationFunction()));
+
+  // Make BCQ_FULLY_CONNECTED operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BCQFullyConnectedOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleBCQGather *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BCQ_GATHER);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input_scales()),
+                                  get_tensor_index(node->input_binary()),
+                                  get_tensor_index(node->indices())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateBCQGatherOptions(builder, node->input_hidden_size(), node->axis());
+
+  // Make BCQ_GATHER operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BCQGatherOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

@@ -63,9 +63,11 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
     cf_ops.insert(ops.cbegin(), ops.cend());
   });
   CompilerOptions options;
-
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  if (cf_ops.size() != 0)
+  // There are two cases to load default backend
+  // 1. whether controlflow operation exist in subgraphs for controlflow kernel
+  // 2. whether to load 2 or more backends for Permute kernel between different backends
+  if (cf_ops.size() != 0 || options.backend_list.size() > 1)
   {
     options.backend_list.emplace_back(backend::controlflow::Config::ID);
   }
@@ -192,12 +194,14 @@ void Compiler::compile(void)
   setInputToDynamicTensor(_subgraphs->primary());
 
   // Compilable check
+  // TODO: Support hybrid execution -
+  //       execution between interpreter and compiled executor (including control flow)
   if (!checkCompilable())
   {
-    // TODO Support multiple executors for interpreter
     _executors = std::make_shared<exec::ExecutorMap>();
-    _executors->insert(std::make_pair(
-        ir::SubgraphIndex{0}, std::make_unique<interp::InterpExecutor>(*primary_subgraph())));
+    _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      _executors->insert(std::make_pair(index, std::make_unique<interp::InterpExecutor>(subg)));
+    });
     _state = State::COMPILED;
     return;
   }
@@ -213,12 +217,12 @@ void Compiler::compile(void)
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
-  _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &graph) {
-    onert::dumper::dot::DotDumper dot_dumper(graph, dump_level);
+  _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
-    lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(graph, _options);
+    lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(subg, _options);
 
     // Check backend(s) for subgraph support FP16
     bool backends_support_fp16 = true;
@@ -234,7 +238,7 @@ void Compiler::compile(void)
       Fp32ToFp16Converter(*lowered_subgs[index]).run();
     }
 
-    graph.setSubgraphs(nullptr);
+    subg.setSubgraphs(nullptr);
   });
 
   _subgraphs.reset();

@@ -29,7 +29,6 @@
 #include "kernel/MaxPoolLayer.h"
 #include "kernel/MulLayer.h"
 #include "kernel/OperationUtils.h"
-#include "kernel/PermuteLayer.h"
 #include "kernel/ReshapeLayer.h"
 #include "kernel/SoftMaxLayer.h"
 #include "kernel/SubLayer.h"
@@ -125,8 +124,6 @@ void ShapeFixer::visit(const ir::operation::Div &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::Permute &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::Custom &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Logistic &) { /* DO NOTHING */}
@@ -208,6 +205,8 @@ void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
 void ShapeFixer::visit(const ir::operation::ZerosLike &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Tile &) { /* DO NOTHING */}
+
+void ShapeFixer::visit(const ir::operation::LogicalOr &) { /* DO NOTHING */}
 
 } // namespace cpu
 } // namespace backend

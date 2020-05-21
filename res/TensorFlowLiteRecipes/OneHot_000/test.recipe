@@ -1,28 +1,28 @@
 operand {
   name: "indices"
   type: INT32
-  shape: { dim: 3 }
+  shape { dim: 3 }
 }
 operand {
   name: "depth"
   type: INT32
-  shape: {}
-  filler: { tag: "explicit" arg: "3" }
+  shape {}
+  filler { tag: "explicit" arg: "3" }
 }
 operand {
   name: "on_value"
   type: FLOAT32
-  shape: {}
+  shape {}
 }
 operand {
   name: "off_value"
   type: FLOAT32
-  shape: {}
+  shape {}
 }
 operand {
   name: "ofm"
   type: FLOAT32
-  shape: { dim: 3 dim: 3 }
+  shape { dim: 3 dim: 3 }
 }
 operation {
   type: "OneHot"
@@ -36,7 +36,6 @@ operation {
   output: "ofm"
 }
 input: "indices"
-input: "depth"
 input: "on_value"
 input: "off_value"
 output: "ofm"

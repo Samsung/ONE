@@ -781,6 +781,31 @@ void OperationDumper::visit(const OneHot &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const If &node)
+{
+  VERBOSE(LIR) << "* If" << std::endl;
+  std::string inputs;
+  const auto &input_indices = node.getInputs();
+  for (auto it = std::begin(input_indices); it != std::end(input_indices); ++it)
+  {
+    inputs += std::to_string(it->value());
+    if (std::next(it) != std::end(input_indices))
+      inputs += ", ";
+  }
+  VERBOSE(LIR) << "  - Inputs : "
+               << "Then subgraph (" << node.param().then_subg_index.value() << ") Else subgraph ("
+               << node.param().else_subg_index.value() << ") Inputs(" << inputs << ")" << std::endl;
+  std::string outputs;
+  const auto &output_indices = node.getOutputs();
+  for (auto it = std::begin(output_indices); it != std::end(output_indices); ++it)
+  {
+    outputs += std::to_string(it->value());
+    if (std::next(it) != std::end(output_indices))
+      outputs += ", ";
+  }
+  VERBOSE(LIR) << "  - Output : Outputs(" << outputs << ")" << std::endl;
+}
+
 void OperationDumper::visit(const While &node)
 {
   VERBOSE(LIR) << "* While" << std::endl;

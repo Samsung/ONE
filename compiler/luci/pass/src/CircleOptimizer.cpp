@@ -41,13 +41,34 @@ class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
 public:
   void enable(Algorithm) final;
+  void param(AlgorithmParameters, const std::string &) final;
+  const std::string param(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
+  std::map<AlgorithmParameters, const std::string> _algorithm_params;
 };
 
 void OptimizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
+
+void OptimizeOptionsImpl::param(AlgorithmParameters param, const std::string &str)
+{
+  _algorithm_params.insert(std::pair<AlgorithmParameters, const std::string>(param, str));
+}
+
+const std::string OptimizeOptionsImpl::param(AlgorithmParameters param) const
+{
+  auto param_str = _algorithm_params.find(param);
+  if (param_str != _algorithm_params.end())
+  {
+    return param_str->second;
+  }
+  else
+  {
+    return std::string();
+  }
+}
 
 bool OptimizeOptionsImpl::query(Algorithm algo)
 {
@@ -86,6 +107,11 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
   }
+  if (_options->query(Options::Algorithm::QuantizeWithMinMax))
+  {
+    // TODO: Add QuantizeWithMinMaxPass phase with parameters
+  }
+
   // Shape inference is needed for added nodes doing above transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
