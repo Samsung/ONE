@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 
+#include "flatbuffers/flexbuffers.h"
+
 #include <luci/IR/CircleNodes.h>
 
 namespace
@@ -34,9 +36,9 @@ void resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->y(cop->inputs(1));
     // TODO find much better way of parsing custom_options
     // adj
-    assert(custom_options.size() == 30);
-    batch_matmul->adj_x(custom_options[22]);
-    batch_matmul->adj_y(custom_options[23]);
+    auto map = flexbuffers::GetRoot(custom_options).AsMap();
+    batch_matmul->adj_x(map["adj_x"].AsBool());
+    batch_matmul->adj_y(map["adj_y"].AsBool());
 
     replace(cop).with(batch_matmul);
   }

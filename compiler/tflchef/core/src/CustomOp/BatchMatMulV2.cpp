@@ -16,6 +16,8 @@
 
 #include "BatchMatMulV2.h"
 
+#include "flatbuffers/flexbuffers.h"
+
 flatbuffers::Offset<void> BatchMatMulV2Chef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   return flatbuffers::Offset<void>();
@@ -28,20 +30,31 @@ BatchMatMulV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 
   assert(operation.type() == "BatchMatMulV2");
 
-  uint8_t adj_x = operation.batch_matmul_options().adjoint_lhs() ? 1 : 0;
-  uint8_t adj_y = operation.batch_matmul_options().adjoint_rhs() ? 1 : 0;
+  /**
+   * REGISTER_OP("BatchMatMulV2")
+    .Input("x: T")
+    .Input("y: T")
+    .Output("output: T")
+    .Attr(
+        "T: {bfloat16, half, float, double, int32, int64, complex64, "
+        "complex128}")
+    .Attr("adj_x: bool = false")
+    .Attr("adj_y: bool = false")
+    .SetShapeFn(shape_inference::BatchMatMulV2Shape);
+   */
 
-  // TODO This works only with float32
-  // TODO Find a way to decode custom options
-  std::vector<uint8_t> custom_options_vec = {'a',   'd',  'j',  '_', 'x',  0x0, 'a',
-                                             'd',   'j',  '_',  'y', 0x0,  'T', 0x0,
-                                             0x3,   0x3,  0x10, 0xb, 0x3,  0x1, 0x3,
-                                             0x0,   // TensorType
-                                             adj_x, // adj_x
-                                             adj_y, // adj_y
-                                             0x4,   0x68, 0x68, 0x6, 0x24, 0x1};
+  auto flex_buffers = std::make_unique<flexbuffers::Builder>();
+  size_t map_start = flex_buffers->StartMap();
 
-  auto circle_custom_options = fbb.CreateVector(custom_options_vec);
+  flex_buffers->Bool("adj_x", operation.batch_matmul_options().adjoint_lhs());
+  flex_buffers->Bool("adj_y", operation.batch_matmul_options().adjoint_rhs());
+  // TODO Support more data types
+  flex_buffers->Int("T", tflite::TensorType_FLOAT32);
+
+  flex_buffers->EndMap(map_start);
+  flex_buffers->Finish();
+
+  auto circle_custom_options = fbb.CreateVector(flex_buffers->GetBuffer());
   return circle_custom_options;
 }
 
