@@ -126,6 +126,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     shape_inference::StaticInferer inferer(_graph.operands());
     _op_seqs.iterate(
         [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
+    inferer.dump();
   }
 
   // Graph verifications
