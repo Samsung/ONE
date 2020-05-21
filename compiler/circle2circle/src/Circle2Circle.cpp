@@ -47,6 +47,12 @@ void print_help(const char *progname)
   std::cerr << "Require two following parameters (input_dtype, output_dtype)" << std::endl;
   std::cerr << "                            ";
   std::cerr << "Ex: --quantize_with_minmax float32 uint8" << std::endl;
+  std::cerr << "   --quantize_dequantize_weights : Enable QuantizeDequantizeWeights Pass"
+            << std::endl;
+  std::cerr << "                            ";
+  std::cerr << "Require two following parameters (input_dtype, output_dtype)" << std::endl;
+  std::cerr << "                            ";
+  std::cerr << "Ex: --quantize_dequantize_weights float32 uint8" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -81,6 +87,25 @@ int entry(int argc, char **argv)
   };
 
   // TODO use better parsing library (ex: boost.program_options)
+  argparse["--quantize_dequantize_weights"] = [&options](const char **argv) {
+    options->enable(Algorithms::QuantizeDequantizeWeights);
+
+    if (argv[0] == nullptr || argv[1] == nullptr)
+      throw std::runtime_error("--quantize_dequantize_weights must have two following parameters.");
+
+    std::string input_dtype = argv[0];
+    std::string output_dtype = argv[1];
+
+    if (input_dtype.empty() || output_dtype.empty() ||
+        input_dtype.substr(0, 2).compare("--") == 0 || output_dtype.substr(0, 2).compare("--") == 0)
+      throw std::runtime_error("Wrong algorithm parameters for --quantize_dequantize_weights.");
+
+    options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
+    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
+    return 2;
+  };
+
+  // TODO use better parsing library (ex: boost.program_options)
   argparse["--quantize_with_minmax"] = [&options](const char **argv) {
     options->enable(Algorithms::QuantizeWithMinMax);
 
@@ -94,8 +119,8 @@ int entry(int argc, char **argv)
         input_dtype.substr(0, 2).compare("--") == 0 || output_dtype.substr(0, 2).compare("--") == 0)
       throw std::runtime_error("Wrong algorithm parameters for --quantize_with_minmax.");
 
-    options->param(AlgorithmParameters::QuantizeWithMinMax_input_dtype, input_dtype);
-    options->param(AlgorithmParameters::QuantizeWithMinMax_output_dtype, output_dtype);
+    options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
+    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
     return 2;
   };
 

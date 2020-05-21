@@ -35,13 +35,14 @@ public:
       FuseBCQ,
       FuseInstanceNorm,
       ResolveCustomOpBatchMatMul,
-      QuantizeWithMinMax,
+      QuantizeDequantizeWeights,
+      QuantizeWithMinMax
     };
 
     enum AlgorithmParameters
     {
-      QuantizeWithMinMax_input_dtype,
-      QuantizeWithMinMax_output_dtype
+      Quantize_input_dtype,
+      Quantize_output_dtype
     };
 
     virtual ~Options() = default;
