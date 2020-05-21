@@ -20,7 +20,7 @@ namespace tflite2circle
 {
 
 flatbuffers::Offset<circle::FloorDivOptions>
-build_circle_FloorDivOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
+build_circle_FloorDivOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *)
 {
   circle::FloorDivOptionsBuilder builtin_options_builder{fb};
   return builtin_options_builder.Finish();
