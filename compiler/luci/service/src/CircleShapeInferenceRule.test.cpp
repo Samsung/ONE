@@ -500,7 +500,7 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_slices)
   }
 }
 
-TEST(CircleShapeInferenceRuleTest, CircleGatherNd_neg)
+TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
 {
   luci::test::TestGraph graph;
   auto indices_const = graph.append<luci::CircleConst>();
