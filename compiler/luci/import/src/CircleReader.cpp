@@ -136,6 +136,19 @@ Padding luci_padding(const circle::Padding padding)
   return Padding::UNDEFINED;
 }
 
+MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
+{
+  switch (mode)
+  {
+    case circle::MirrorPadMode::MirrorPadMode_REFLECT:
+      return MirrorPadMode::REFLECT;
+    case circle::MirrorPadMode::MirrorPadMode_SYMMETRIC:
+      return MirrorPadMode::SYMMETRIC;
+  }
+  assert(false);
+  return MirrorPadMode::UNDEFINED;
+}
+
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization)
 {
