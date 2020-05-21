@@ -16,6 +16,7 @@
 
 #include "KernelBuilder.h"
 
+#include "kernels/AveragePool2D.h"
 #include "kernels/Concatenation.h"
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
@@ -27,6 +28,24 @@
 
 namespace luci_interpreter
 {
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->value());
+  Tensor *output = getOutputTensor(node);
+
+  Pool2DParams params{};
+  params.padding = node->padding();
+  params.filter_height = node->filter()->h();
+  params.filter_width = node->filter()->w();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::AveragePool2D>(input, output, params);
+}
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *node)
 {
