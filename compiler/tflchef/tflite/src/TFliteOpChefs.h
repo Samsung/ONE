@@ -54,6 +54,7 @@
 #include "Op/OneHot.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"
+#include "Op/Pow.h"
 #include "Op/Range.h"
 #include "Op/ReduceAny.h"
 #include "Op/ReduceMax.h"
