@@ -185,6 +185,18 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CirclePad *node) final { return loco::dtype_get(node->input()); }
 
+  loco::DataType visit(const luci::CirclePow *node) final
+  {
+    // TODO make sure types cannot differ
+    auto x_type = loco::dtype_get(node->x());
+    auto y_type = loco::dtype_get(node->y());
+
+    if (x_type != y_type)
+      INTERNAL_EXN("Different datatype for x and y are not supported");
+
+    return x_type;
+  }
+
   loco::DataType visit(const luci::CircleRange *node) final
   {
     return loco::dtype_get(node->start());
