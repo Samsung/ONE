@@ -56,6 +56,7 @@
 #include "Nodes/CirclePad.h"
 #include "Nodes/CircleRange.h"
 #include "Nodes/CircleReduceAny.h"
+#include "Nodes/CircleReduceMax.h"
 #include "Nodes/CircleReduceProd.h"
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleReluN1To1.h"
