@@ -50,7 +50,10 @@ std::string opcode_name(const circle::OperatorCode *opcode)
     if (!opcode->custom_code())
       return "(invalid custom)";
 
-    return opcode->custom_code()->c_str();
+    std::string custom_op = "CUSTOM(";
+    custom_op += opcode->custom_code()->c_str();
+    custom_op += ")";
+    return custom_op;
   }
 
   circle::BuiltinOperator code = opcode->builtin_code();
