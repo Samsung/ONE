@@ -25,12 +25,6 @@ namespace backend
 namespace acl_common
 {
 
-size_t IACLTensor::num_dimensions() const
-{
-  throw std::runtime_error("No definition of num_dimensions()");
-  return 0;
-}
-
 size_t IACLTensor::dimension(size_t index) const
 {
   // Assume that the front is higher dimensional.
