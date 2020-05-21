@@ -1,0 +1,47 @@
+operand {
+  name: "start"
+  type: FLOAT32
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+
+operand {
+  name: "limit"
+  type: FLOAT32
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "10"
+  }
+}
+
+operand {
+  name: "delta"
+  type: FLOAT32
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "4"
+  }
+}
+
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+
+operation {
+  type: "Range"
+  range_options {
+  }
+  input: "start"
+  input: "limit"
+  input: "delta"
+  output: "ofm"
+}
+
+output: "ofm"
