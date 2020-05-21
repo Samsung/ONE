@@ -43,7 +43,8 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(EXP, CircleExpGraphBuilder);                              // 47
   CIRCLE_NODE(EXPAND_DIMS, CircleExpandDimsGraphBuilder);               // 70
   CIRCLE_NODE(FILL, CircleFillGraphBuilder);                            // 94
-  CIRCLE_NODE(FLOOR_MOD, CircleFloorModGraphBuilder)                    // 95
+  CIRCLE_NODE(FLOOR_DIV, CircleFloorDivGraphBuilder);                   // 90
+  CIRCLE_NODE(FLOOR_MOD, CircleFloorModGraphBuilder);                   // 95
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);       // 9
   CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                        // 36
   CIRCLE_NODE(GATHER_ND, CircleGatherNdGraphBuilder);                   // 107
@@ -135,7 +136,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_REDUCE_MAX = 82,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_REDUCE_MIN = 89,
-  // BuiltinOperator_FLOOR_DIV = 90,
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_RESIZE_NEAREST_NEIGHBOR = 97,
   // BuiltinOperator_LEAKY_RELU = 98,
