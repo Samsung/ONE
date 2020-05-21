@@ -71,6 +71,11 @@ flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuil
 */
 circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *op);
 
+/**
+ * @brief Returns circle MirrorPadMode according to tflite.
+*/
+circle::MirrorPadMode get_circle_mirrorpad_mode(tflite::MirrorPadMode tfl_mode);
+
 } // namespace tflite2circle
 
 #endif // __DATA_LOOKUP_H__
