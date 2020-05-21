@@ -117,6 +117,8 @@ public:
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
   // Circle only
+  void visit(luci::CircleBCQFullyConnected *) final;
+  void visit(luci::CircleBCQGather *) final;
   void visit(luci::CircleInstanceNorm *) final;
   // Virtual
   void visit(luci::CircleInput *) final {}
@@ -1309,6 +1311,45 @@ void OperationExporter::visit(luci::CircleZerosLike *node)
   auto options = CreateZerosLikeOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ZerosLikeOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BCQ_FULLY_CONNECTED);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->input()), get_tensor_index(node->weights_scales()),
+      get_tensor_index(node->weights_binary()), get_tensor_index(node->bias())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateBCQFullyConnectedOptions(builder, node->weights_hidden_size(),
+                                                to_circle_actfunc(node->fusedActivationFunction()));
+
+  // Make BCQ_FULLY_CONNECTED operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BCQFullyConnectedOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleBCQGather *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BCQ_GATHER);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input_scales()),
+                                  get_tensor_index(node->input_binary()),
+                                  get_tensor_index(node->indices())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateBCQGatherOptions(builder, node->input_hidden_size(), node->axis());
+
+  // Make BCQ_GATHER operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_BCQGatherOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
