@@ -62,6 +62,7 @@
 #include "Nodes/CirclePow.h"
 #include "Nodes/CircleRange.h"
 #include "Nodes/CircleReduceAny.h"
+#include "Nodes/CircleReduceMax.h"
 #include "Nodes/CircleReduceProd.h"
 #include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleRelu.h"
