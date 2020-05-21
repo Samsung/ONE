@@ -108,6 +108,8 @@ GeneratedTests.expand_dims
 GeneratedTests.expand_dims_2
 GeneratedTests.expand_dims_3
 GeneratedTests.expand_dims_4
+GeneratedTests.expand_dims_dynamic_case1
+GeneratedTests.expand_dims_dynamic_case2
 GeneratedTests.expand_dims_int32
 GeneratedTests.expand_dims_int32_2
 GeneratedTests.expand_dims_int32_3

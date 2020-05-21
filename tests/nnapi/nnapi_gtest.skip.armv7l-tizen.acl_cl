@@ -10,6 +10,8 @@ GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp__relaxed
+GeneratedTests.expand_dims_dynamic_case1
+GeneratedTests.expand_dims_dynamic_case2
 GeneratedTests.fully_connected_hybrid*
 GeneratedTests.logical_not*
 GeneratedTests.logical_or_broadcast

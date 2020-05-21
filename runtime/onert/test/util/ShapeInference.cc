@@ -215,6 +215,59 @@ TEST(ShapeInference, Concat)
   ASSERT_EQ(infered_out_shape.dim(4), 50);
 }
 
+TEST(ShapeInference, ExpandDims)
+{
+  Shape in_shape{30, 40};
+
+  auto check = [&](int32_t axis, Shape &expected) {
+    auto actual = onert::shape_inference::inferExpandDimsShape(in_shape, axis);
+
+    ASSERT_EQ(actual.rank(), 3);
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+      ASSERT_EQ(actual.dim(dim), expected.dim(dim));
+  };
+
+  { // boundary
+    int32_t axis = 0;
+    Shape expected{1, 30, 40};
+    check(axis, expected);
+  }
+  { // boundary
+    int32_t axis = 2;
+    Shape expected{30, 40, 1};
+    check(axis, expected);
+  }
+  { // inside
+    int32_t axis = 1;
+    Shape expected{30, 1, 40};
+    check(axis, expected);
+  }
+  { // negative boundary
+    int32_t axis = -1;
+    Shape expected{30, 40, 1};
+    check(axis, expected);
+  }
+  { // negative boundary
+    int32_t axis = -3;
+    Shape expected{1, 30, 40};
+    check(axis, expected);
+  }
+}
+
+TEST(ShapeInference, neg_ExpandDims)
+{
+  Shape in_shape{30, 40};
+
+  { // over boundary
+    int32_t axis = 3;
+    ASSERT_THROW(onert::shape_inference::inferExpandDimsShape(in_shape, axis), std::runtime_error);
+  }
+  { // over boundary
+    int32_t axis = -4;
+    ASSERT_THROW(onert::shape_inference::inferExpandDimsShape(in_shape, axis), std::runtime_error);
+  }
+}
+
 TEST(ShapeInference, FullyConnected)
 {
   Shape in_shape{3, 4, 5, 6};
