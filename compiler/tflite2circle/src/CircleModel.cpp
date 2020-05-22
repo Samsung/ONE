@@ -67,8 +67,12 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
     for (auto it : *tflite_tensors)
     {
       // shape
-      std::vector<int32_t> shape_vec{it->shape()->begin(), it->shape()->end()};
-      auto shape = fb->CreateVector(shape_vec);
+      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
+      if (it->shape())
+      {
+        auto shape_vec = std::vector<int32_t>({it->shape()->begin(), it->shape()->end()});
+        shape = fb->CreateVector(shape_vec);
+      }
       // name
       flatbuffers::Offset<flatbuffers::String> name;
       if (it->name())
