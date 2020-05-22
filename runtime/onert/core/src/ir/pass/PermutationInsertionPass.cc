@@ -64,10 +64,8 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     {
       // If some conditions are met, it doesn't have to insert Permute
       // XXX This is just for draft, test if this work
-      if (factor.layout() == def_factor.layout() &&
-          factor.backend()->config()->id() == "cpu" && def_factor.backend()->config()->id() == "controlflow" || // XXX
-          def_factor.backend()->config()->id() == "cpu" && factor.backend()->config()->id() == "controlflow"
-          )
+      if (factor.layout() == def_factor.layout() && factor.backend()->config()->id() == "cpu" &&
+          def_factor.backend()->config()->id() == "controlflow")
       {
         factor_to_index.emplace(factor, index);
         continue;
@@ -198,8 +196,12 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, input_backend_ctx,
                                                output_backend_ctx, permute_type);
   VERBOSE(PermutationInsertionPass) << "Permute Op inserted " << std::endl;
-  VERBOSE(PermutationInsertionPass) << "  - Input  : Backend '" << input_backend_ctx->backend()->config()->id() << "' Operand " << operand_index.value() << std::endl;
-  VERBOSE(PermutationInsertionPass) << "  - Output : Backend '" << output_backend_ctx->backend()->config()->id() << "' Operand " << out_operand_index.value() << std::endl;
+  VERBOSE(PermutationInsertionPass) << "  - Input  : Backend '"
+                                    << input_backend_ctx->backend()->config()->id() << "' Operand "
+                                    << operand_index.value() << std::endl;
+  VERBOSE(PermutationInsertionPass) << "  - Output : Backend '"
+                                    << output_backend_ctx->backend()->config()->id() << "' Operand "
+                                    << out_operand_index.value() << std::endl;
 
   auto node_index = _graph.operations().push(std::move(insert_node));
   const auto &node = _graph.operations().at(node_index);

@@ -41,12 +41,10 @@ public:
 
   void convQuant8();
 
-  void configure(const ITensor *input, const ITensor *kernel,
-                 const ITensor *bias, const uint32_t paddingLeft,
-                 const uint32_t paddingRight, const uint32_t paddingTop,
+  void configure(const ITensor *input, const ITensor *kernel, const ITensor *bias,
+                 const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideW, const uint32_t strideH,
-                 const uint32_t multiplier, const ir::Activation activation,
-                 ITensor *output);
+                 const uint32_t multiplier, const ir::Activation activation, ITensor *output);
 
   void run();
   void runSync()

@@ -39,8 +39,7 @@ public:
   }
 
 public:
-  void configure(const ITensor *input, const ITensor *indices,
-                 ITensor *output, int32_t axis);
+  void configure(const ITensor *input, const ITensor *indices, ITensor *output, int32_t axis);
 
   void run();
   void runSync()

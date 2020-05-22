@@ -52,7 +52,8 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
 }
 
-void TensorBuilder::setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor)
+void TensorBuilder::setExternalTensor(const ir::OperandIndex &ind,
+                                      const std::shared_ptr<ITensor> &tensor)
 {
   _tensor_reg->setExternalTensor(ind, tensor);
 }

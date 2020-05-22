@@ -44,8 +44,8 @@ public:
 
   void oneHotQuant8();
 
-  void configure(const ITensor *indices, ITensor *output, int32_t depth,
-                 float on_value, float off_value, int32_t axis);
+  void configure(const ITensor *indices, ITensor *output, int32_t depth, float on_value,
+                 float off_value, int32_t axis);
 
   void run();
   void runSync()

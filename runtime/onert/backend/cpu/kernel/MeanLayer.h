@@ -40,8 +40,8 @@ public:
 
   void MeanQuant8();
 
-  void configure(const ITensor *input, ITensor *output,
-                 const std::vector<int> &axes, bool keep_dims);
+  void configure(const ITensor *input, ITensor *output, const std::vector<int> &axes,
+                 bool keep_dims);
 
   void run();
   void runSync()

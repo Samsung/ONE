@@ -132,10 +132,9 @@ inline int32_t getAxis(uint32_t rank, int32_t axis, ir::Layout frontend_layout)
 
 void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
-void GetQuantizedConvolutionMultiplier(const ITensor *inputDescr,
-                                       const ITensor *filterDescr,
-                                       const ITensor *biasDescr,
-                                       const ITensor *outputDescr, double *multiplier);
+void GetQuantizedConvolutionMultiplier(const ITensor *inputDescr, const ITensor *filterDescr,
+                                       const ITensor *biasDescr, const ITensor *outputDescr,
+                                       double *multiplier);
 
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
                                       int *left_shift);

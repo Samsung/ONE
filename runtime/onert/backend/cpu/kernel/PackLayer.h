@@ -40,8 +40,7 @@ public:
 
   void packQuant8();
 
-  void configure(const std::vector<const ITensor *> &inputs, int32_t axis,
-                 ITensor *output);
+  void configure(const std::vector<const ITensor *> &inputs, int32_t axis, ITensor *output);
 
   void run();
   void runSync()

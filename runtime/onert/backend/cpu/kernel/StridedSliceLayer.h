@@ -37,10 +37,9 @@ public:
   StridedSliceLayer();
 
 public:
-  void configure(const ITensor *input, const ITensor *begin,
-                 const ITensor *end, const ITensor *strides,
-                 ITensor *output, const int32_t begin_mask, const int32_t end_mask,
-                 const int32_t shrink_axis_mask, const int32_t rank);
+  void configure(const ITensor *input, const ITensor *begin, const ITensor *end,
+                 const ITensor *strides, ITensor *output, const int32_t begin_mask,
+                 const int32_t end_mask, const int32_t shrink_axis_mask, const int32_t rank);
 
   void run();
   void runSync()

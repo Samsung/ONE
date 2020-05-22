@@ -30,8 +30,7 @@ ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _axis(nullptr), _output(nu
   // DO NOTHING
 }
 
-void ExpandDimsLayer::configure(const ITensor *input, const ITensor *axis,
-                                ITensor *output)
+void ExpandDimsLayer::configure(const ITensor *input, const ITensor *axis, ITensor *output)
 {
   _input = input;
   _axis = axis;

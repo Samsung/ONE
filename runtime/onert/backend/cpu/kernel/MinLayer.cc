@@ -48,8 +48,7 @@ void MinLayer::minQuant8()
   throw std::runtime_error("Min NYI for quantized");
 }
 
-void MinLayer::configure(const ITensor *lhs, const ITensor *rhs,
-                         ITensor *output)
+void MinLayer::configure(const ITensor *lhs, const ITensor *rhs, ITensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

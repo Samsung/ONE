@@ -42,8 +42,8 @@ public:
 public:
   void powFloat32();
 
-  void configure(const ITensor *lhs, const ITensor *rhs,
-                 const ir::Activation activation, ITensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs, const ir::Activation activation,
+                 ITensor *output);
 
   void run();
   void runSync()

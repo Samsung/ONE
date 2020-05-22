@@ -38,8 +38,7 @@ public:
 public:
   void reshapeGeneric();
 
-  void configure(const ITensor *input, const ITensor *shape,
-                 ITensor *output);
+  void configure(const ITensor *input, const ITensor *shape, ITensor *output);
 
   void run();
   void runSync()

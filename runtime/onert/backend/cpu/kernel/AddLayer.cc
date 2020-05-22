@@ -55,7 +55,8 @@ void AddLayer::addFloat32()
       convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
 
-  std::cout << "ADDLAYER OUT : " << *reinterpret_cast<const float *>(_output->buffer()) << std::endl;
+  std::cout << "ADDLAYER OUT : " << *reinterpret_cast<const float *>(_output->buffer())
+            << std::endl;
 }
 
 void AddLayer::addQuant8()
@@ -71,8 +72,8 @@ void AddLayer::addQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void AddLayer::configure(const ITensor *lhs, const ITensor *rhs,
-                         const ir::Activation activation, ITensor *output)
+void AddLayer::configure(const ITensor *lhs, const ITensor *rhs, const ir::Activation activation,
+                         ITensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

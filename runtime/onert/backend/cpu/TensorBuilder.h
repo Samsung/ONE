@@ -49,7 +49,8 @@ public:
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                           ir::Layout backend_layout, bool as_const) override;
-  void setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor) override;
+  void setExternalTensor(const ir::OperandIndex &ind,
+                         const std::shared_ptr<ITensor> &tensor) override;
 
   void notifyFirstUse(const ir::OperandIndex &) override;
   void notifyLastUse(const ir::OperandIndex &) override;

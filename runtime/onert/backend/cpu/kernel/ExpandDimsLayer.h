@@ -36,8 +36,7 @@ public:
   ExpandDimsLayer();
 
 public:
-  void configure(const ITensor *input, const ITensor *axis,
-                 ITensor *output);
+  void configure(const ITensor *input, const ITensor *axis, ITensor *output);
 
   void run();
   void runSync()

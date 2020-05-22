@@ -36,8 +36,8 @@ public:
   SelectLayer();
 
 public:
-  void configure(const ITensor *cond, const ITensor *input_true,
-                 const ITensor *input_false, ITensor *output);
+  void configure(const ITensor *cond, const ITensor *input_true, const ITensor *input_false,
+                 ITensor *output);
 
   void run();
   void runSync()

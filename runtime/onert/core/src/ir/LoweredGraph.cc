@@ -235,7 +235,7 @@ void LoweredGraph::makeOpSequences(
 
         for (auto operand : node.getInputs())
         {
-          //if (graph().getInputs().contains(operand))
+          // if (graph().getInputs().contains(operand))
           //  continue;
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
@@ -286,7 +286,8 @@ void LoweredGraph::manipulateLowerInfo(
     auto &&lower_info = operands_lower_info.at(index);
     if (is_primary)
     {
-      // TODO Rather than handling primary graph specially, let the permute inserted and remove it later
+      // TODO Rather than handling primary graph specially, let the permute inserted and remove it
+      // later
       lower_info->addDefPermuteFactor(operand::PermuteFactor{controlflow_backend, Layout::NHWC});
     }
     else
@@ -302,7 +303,8 @@ void LoweredGraph::manipulateLowerInfo(
     auto &&lower_info = operands_lower_info.at(index);
     if (is_primary)
     {
-      // TODO Rather than handling primary graph specially, let the permute inserted and remove it later
+      // TODO Rather than handling primary graph specially, let the permute inserted and remove it
+      // later
       lower_info->addUsePermuteFactor(operand::PermuteFactor{controlflow_backend, Layout::NHWC});
     }
   }

@@ -66,8 +66,8 @@ void MulLayer::mulQuant8()
   throw std::runtime_error{"Mull NYI for quantized"};
 }
 
-void MulLayer::configure(const ITensor *lhs, const ITensor *rhs,
-                         const ir::Activation activation, ITensor *output)
+void MulLayer::configure(const ITensor *lhs, const ITensor *rhs, const ir::Activation activation,
+                         ITensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

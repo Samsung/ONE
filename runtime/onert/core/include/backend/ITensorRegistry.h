@@ -47,9 +47,8 @@ struct ITensorRegistry
    * @param ind Index
    * @return std::shared_ptr<ITensor> ITensor to return
    */
-	virtual std::shared_ptr<ITensor> getExternalTensor(const ir::OperandIndex &ind) = 0;
+  virtual std::shared_ptr<ITensor> getExternalTensor(const ir::OperandIndex &ind) = 0;
 };
-
 
 // XXX accesing map with operator[] creates a shared_ptr(nullptr).
 
@@ -58,27 +57,24 @@ struct ITensorRegistry
  *
  * @tparam T_Tensor Tensor type. Must be a subclass of @c onert::backend::ITensor .
  */
-template <typename T_Tensor>
-class TensorRegistryTemplate : public ITensorRegistry
+template <typename T_Tensor> class TensorRegistryTemplate : public ITensorRegistry
 {
 public:
-	std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
+  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
   {
     static_assert(std::is_base_of<ITensor, T_Tensor>::value, "T_Tensor must derive from ITensor.");
     auto external_tensor = _external[ind];
-    if (external_tensor) return external_tensor;
+    if (external_tensor)
+      return external_tensor;
     return _managed[ind];
   }
 
-	std::shared_ptr<ITensor> getExternalTensor(const ir::OperandIndex &ind) override
+  std::shared_ptr<ITensor> getExternalTensor(const ir::OperandIndex &ind) override
   {
     return _external[ind];
   }
 
-	std::shared_ptr<T_Tensor> getManagedTensor(const ir::OperandIndex &ind)
-  {
-    return _managed[ind];
-  }
+  std::shared_ptr<T_Tensor> getManagedTensor(const ir::OperandIndex &ind) { return _managed[ind]; }
 
   void setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor)
   {
@@ -97,7 +93,8 @@ public:
     VERBOSE(TensorRegistryTemplate_setManagedTensor) << ind.value() << std::endl;
     auto itr = _external.find(ind);
     if (itr != _external.end() && itr->second != nullptr && tensor != nullptr)
-      throw std::runtime_error{"Tried to set a managed tensor but an external tensor already exists."};
+      throw std::runtime_error{
+          "Tried to set a managed tensor but an external tensor already exists."};
     _managed[ind] = tensor;
   }
 

@@ -27,7 +27,8 @@ namespace backend
 namespace controlflow
 {
 
-TensorBuilder::TensorBuilder() : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager()}
+TensorBuilder::TensorBuilder()
+    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager()}
 {
   // DO NOTHING
 }

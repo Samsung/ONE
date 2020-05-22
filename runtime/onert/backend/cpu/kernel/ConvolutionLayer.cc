@@ -65,7 +65,7 @@ void ConvolutionLayer::convFloat32()
     {
       auto kernel_tensor = dynamic_cast<const operand::Tensor *>(_kernel);
       if (kernel_tensor)
-      // TODO Remove const_cast
+        // TODO Remove const_cast
         const_cast<operand::Tensor *>(kernel_tensor)->decrease_ref();
     }
     _prepare = true;
@@ -120,12 +120,12 @@ void ConvolutionLayer::convQuant8()
          reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConvolutionLayer::configure(const ITensor *input, const ITensor *kernel,
-                                 const ITensor *bias, const ir::PaddingType paddingType,
-                                 const uint32_t paddingLeft, const uint32_t paddingRight,
-                                 const uint32_t paddingTop, const uint32_t paddingBottom,
-                                 const uint32_t strideWidth, const uint32_t strideHeight,
-                                 const ir::Activation activation, ITensor *output)
+void ConvolutionLayer::configure(const ITensor *input, const ITensor *kernel, const ITensor *bias,
+                                 const ir::PaddingType paddingType, const uint32_t paddingLeft,
+                                 const uint32_t paddingRight, const uint32_t paddingTop,
+                                 const uint32_t paddingBottom, const uint32_t strideWidth,
+                                 const uint32_t strideHeight, const ir::Activation activation,
+                                 ITensor *output)
 {
   _input = input;
   _kernel = kernel;

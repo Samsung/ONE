@@ -36,8 +36,7 @@ public:
   ArgMinMaxLayer() : _input(nullptr), _output(nullptr), _axis(-1), _is_arg_max(true) {}
 
 public:
-  void configure(const ITensor *indices, ITensor *output, int32_t axis,
-                 bool is_arg_max);
+  void configure(const ITensor *indices, ITensor *output, int32_t axis, bool is_arg_max);
 
   void run();
   void runSync()

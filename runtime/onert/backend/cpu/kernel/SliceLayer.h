@@ -36,8 +36,7 @@ public:
   SliceLayer();
 
 public:
-  void configure(const ITensor *input, const ITensor *begin,
-                 const ITensor *size, ITensor *output);
+  void configure(const ITensor *input, const ITensor *begin, const ITensor *size, ITensor *output);
 
   void run();
   void runSync()
@@ -52,9 +51,8 @@ private:
   void sliceQuant8();
 
   template <typename T>
-  void GetBeginAndSizeVectors(int dimensions, const ITensor *begin,
-                              const ITensor *size, std::vector<int> *begins,
-                              std::vector<int> *sizes);
+  void GetBeginAndSizeVectors(int dimensions, const ITensor *begin, const ITensor *size,
+                              std::vector<int> *begins, std::vector<int> *sizes);
 
 private:
   const ITensor *_input;

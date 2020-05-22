@@ -52,8 +52,8 @@ void PowLayer::powFloat32()
       convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void PowLayer::configure(const ITensor *lhs, const ITensor *rhs,
-                         ir::Activation activation, ITensor *output)
+void PowLayer::configure(const ITensor *lhs, const ITensor *rhs, ir::Activation activation,
+                         ITensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

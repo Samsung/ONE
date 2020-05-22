@@ -43,8 +43,8 @@ public:
 
   void padQuant8();
 
-  void configure(const ITensor *input, ITensor *output, const int32_t *padData,
-                 int32_t padRank, uint8_t *constantValueData = nullptr);
+  void configure(const ITensor *input, ITensor *output, const int32_t *padData, int32_t padRank,
+                 uint8_t *constantValueData = nullptr);
 
   void run();
   void runSync()

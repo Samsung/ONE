@@ -35,8 +35,7 @@ class FillLayer : public ::onert::exec::IFunction
 public:
   FillLayer();
 
-  void configure(const ITensor *input, const ITensor *value,
-                 ITensor *output);
+  void configure(const ITensor *input, const ITensor *value, ITensor *output);
 
   void run();
   void runSync()

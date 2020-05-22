@@ -96,8 +96,7 @@ void DepthwiseConvolutionLayer::convQuant8()
       reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void DepthwiseConvolutionLayer::configure(const ITensor *input,
-                                          const ITensor *kernel,
+void DepthwiseConvolutionLayer::configure(const ITensor *input, const ITensor *kernel,
                                           const ITensor *bias, const uint32_t paddingLeft,
                                           const uint32_t paddingRight, const uint32_t paddingTop,
                                           const uint32_t paddingBottom, const uint32_t strideWidth,

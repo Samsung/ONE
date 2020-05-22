@@ -54,8 +54,8 @@ void TransposeLayer::transposeQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TransposeLayer::configure(const ITensor *input, ITensor *output,
-                               const std::vector<int> &perm, int32_t rank)
+void TransposeLayer::configure(const ITensor *input, ITensor *output, const std::vector<int> &perm,
+                               int32_t rank)
 {
   _input = input;
   _rank = rank;

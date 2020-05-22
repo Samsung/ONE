@@ -106,8 +106,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 }
 
 void FullyConnectedLayer::configure(const ITensor *input, const ITensor *weights,
-                                    const ITensor *bias, ir::Activation activation,
-                                    ITensor *output)
+                                    const ITensor *bias, ir::Activation activation, ITensor *output)
 {
   _input = input;
   _weights = weights;

@@ -40,8 +40,7 @@ public:
 
   void transposeQuant8();
 
-  void configure(const ITensor *input, ITensor *output,
-                 const std::vector<int> &perm, int32_t rank);
+  void configure(const ITensor *input, ITensor *output, const std::vector<int> &perm, int32_t rank);
 
   void run();
   void runSync() { run(); }

@@ -44,8 +44,7 @@ template <typename T> std::function<bool(T, T)> GetComparefunction(bool is_arg_m
 }
 }
 
-void ArgMinMaxLayer::configure(const ITensor *input, ITensor *output, int32_t axis,
-                               bool is_arg_max)
+void ArgMinMaxLayer::configure(const ITensor *input, ITensor *output, int32_t axis, bool is_arg_max)
 {
   _input = input;
   _output = output;

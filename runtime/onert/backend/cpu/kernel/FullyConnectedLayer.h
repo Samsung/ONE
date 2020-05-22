@@ -52,8 +52,8 @@ public:
 
   void fullyConnectedHybrid();
 
-  void configure(const ITensor *input, const ITensor *weights,
-                 const ITensor *bias, ir::Activation activation, ITensor *output);
+  void configure(const ITensor *input, const ITensor *weights, const ITensor *bias,
+                 ir::Activation activation, ITensor *output);
 
   void run();
   void runSync()

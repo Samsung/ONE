@@ -76,13 +76,13 @@ bool DataflowExecutor::noWaitingJobs()
                      [](const std::unique_ptr<Job> &job) { return job == nullptr; });
 }
 
-DataflowExecutor::DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                   const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
-                   const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
-                                   const backend::TensorBuilderSet &tensor_builders,
-                                   compiler::CodeMap &&code_map)
-    : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders}, _code_map{std::move(code_map)},
-      _profiling{false}
+DataflowExecutor::DataflowExecutor(
+    std::unique_ptr<ir::LoweredGraph> lowered_graph,
+    const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
+    const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+    const backend::TensorBuilderSet &tensor_builders, compiler::CodeMap &&code_map)
+    : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_builders},
+      _code_map{std::move(code_map)}, _profiling{false}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 

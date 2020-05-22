@@ -33,8 +33,8 @@ namespace
 {
 
 template <typename T>
-void evalLogic(const ITensor *input, ITensor *output, const std::vector<int> &axes,
-               bool keep_dims, T init_value, nnfw::cker::Reduce &reduce_kernel,
+void evalLogic(const ITensor *input, ITensor *output, const std::vector<int> &axes, bool keep_dims,
+               T init_value, nnfw::cker::Reduce &reduce_kernel,
                T reducer(const T current, const T in))
 {
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
@@ -50,8 +50,8 @@ void evalLogic(const ITensor *input, ITensor *output, const std::vector<int> &ax
 }
 
 template <typename T>
-void evalType(const ITensor *input, ITensor *output, const std::vector<int> &axes,
-              bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+void evalType(const ITensor *input, ITensor *output, const std::vector<int> &axes, bool keep_dims,
+              nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -80,9 +80,8 @@ void evalType(const ITensor *input, ITensor *output, const std::vector<int> &axe
 
 // Template specialization for bool type
 template <>
-void evalType<bool>(const ITensor *input, ITensor *output,
-                    const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
-                    ReduceType reduce_type)
+void evalType<bool>(const ITensor *input, ITensor *output, const std::vector<int> &axes,
+                    bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -97,8 +96,8 @@ void evalType<bool>(const ITensor *input, ITensor *output,
 }
 
 template <ReduceType reduce_type>
-void evalGeneric(const ITensor *input, ITensor *output,
-                 const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
+void evalGeneric(const ITensor *input, ITensor *output, const std::vector<int> &axes,
+                 bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
 {
   switch (input->data_type())
   {
@@ -123,8 +122,8 @@ ReduceLayer::ReduceLayer()
 
 ReduceLayer::~ReduceLayer() = default;
 
-void ReduceLayer::configure(const ITensor *input, ITensor *output,
-                            ReduceType reduceType, const std::vector<int> &axes, bool keep_dims)
+void ReduceLayer::configure(const ITensor *input, ITensor *output, ReduceType reduceType,
+                            const std::vector<int> &axes, bool keep_dims)
 {
   _input = input;
   _output = output;
