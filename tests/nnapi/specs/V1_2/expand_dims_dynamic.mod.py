@@ -15,7 +15,10 @@
 # limitations under the License.
 #
 
-# If axis is from input, expand_dims produces dynamic tensor as its output
+#
+# If axis is from input, the output shape of expand_dims cannot be decided at compilation time.
+# Therefore, its output is "dynamic tensor"
+#
 
 # case 1
 input0 = Input("input0", "TENSOR_FLOAT32", "{2, 2}")
