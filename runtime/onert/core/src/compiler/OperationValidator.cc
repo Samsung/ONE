@@ -1288,12 +1288,8 @@ void OperationValidator::visit(const ir::operation::LogicalOr &node)
   const auto lhs_index{node.getInputs().at(0)};
   const auto rhs_index{node.getInputs().at(1)};
 
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(lhs_index);
-  UNUSED_RELEASE(rhs_index);
-
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  assert(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
 } // namespace compiler
