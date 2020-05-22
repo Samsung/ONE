@@ -6,16 +6,19 @@ operand {
 operand {
   name: "depth"
   type: INT32
+  # shape is intentionally omitted here
   filler { tag: "explicit" arg: "0" }
 }
 operand {
   name: "on_value"
   type: INT32
+  # shape is intentionally omitted here
   filler { tag: "explicit" arg: "1" }
 }
 operand {
   name: "off_value"
   type: INT32
+  # shape is intentionally omitted here
   filler { tag: "explicit" arg: "0" }
 }
 operand {
