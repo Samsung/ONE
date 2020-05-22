@@ -219,6 +219,7 @@ public:
   virtual ~DynamicMemoryManager() = default;
 
   std::shared_ptr<Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
+  void deallocate(const ir::OperandIndex &ind);
   void deallocate(void);
 
 private:
