@@ -53,6 +53,7 @@ public:
 public:
   void replaceInput(const OperandIndex &from, const OperandIndex &to);
   void replaceOutput(const OperandIndex &from, const OperandIndex &to);
+  OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getInputs() const { return _inputs; }
   const OperandIndexSequence &getOutputs() const { return _outputs; }
   // It's for only input/output tensors but const data.

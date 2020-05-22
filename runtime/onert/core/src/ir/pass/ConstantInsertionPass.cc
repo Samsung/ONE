@@ -35,8 +35,9 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
   const auto layout = op_seq_lower_info->layout();
   const auto factor = operand::PermuteFactor{backend, layout};
 
-  for (const auto input : node.getInputs())
+  for (auto it = node.getInputs().mbegin(); it != node.getInputs().mend(); ++it)
   {
+    const auto input = *it;
     auto &object = _graph.operands().at(input);
 
     if (object.isConstant())
@@ -59,8 +60,8 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
         _lowered_graph.op_seqs().at(op_sequence_index).replaceInput(input, replaced_input);
       }
 
-      // Update node
-      node.replaceInput(input, replaced_input);
+      // Update current input operand only. Don't update all input node in this operation.
+      *it = replaced_input;
 
       // Update operand
       auto &replaced_object = _graph.operands().at(replaced_input);
