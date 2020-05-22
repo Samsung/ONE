@@ -182,7 +182,7 @@ std::vector<std::shared_ptr<backend::ITensor>> ExecutorFactory::initializeModelI
     // Set other tensors as external tensors
     for (auto &tensor_builder : tensor_builders)
     {
-      if (tensor_builder->isRegistered(ind))
+      //if (tensor_builder->isRegistered(ind)) // XXX Workaround : register all controlflow backend tensors
       {
         tensor_builder->setExternalTensor(ind, tensor);
       }

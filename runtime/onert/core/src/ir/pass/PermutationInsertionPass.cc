@@ -59,8 +59,20 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     }
 
     auto insert_set = operand_li->use_factors() - operand_li->def_factors();
+    auto def_factor = operand_li->def_factors().getOnlyElement();
     for (auto factor : insert_set)
     {
+      // If some conditions are met, it doesn't have to insert Permute
+      // XXX This is just for draft, test if this work
+      if (factor.layout() == def_factor.layout() &&
+          factor.backend()->config()->id() == "cpu" && def_factor.backend()->config()->id() == "controlflow" || // XXX
+          def_factor.backend()->config()->id() == "cpu" && factor.backend()->config()->id() == "controlflow"
+          )
+      {
+        factor_to_index.emplace(factor, index);
+        continue;
+      }
+
       const auto permute_operation_index = insertPermute(index, factor);
       permute_indexes.push_back(permute_operation_index);
       VERBOSE(PermutationInsertionPass) << "Insert 'Permute' operation for operand "
