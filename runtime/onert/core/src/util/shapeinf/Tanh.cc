@@ -46,17 +46,17 @@ void DynamicInferer::visit(const ir::operation::Tanh &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto output = _tensor_registry->getITensor(output_ind);
   if (!output->is_dynamic())
     return;
 
   // getting output shape
   auto input_ind = op.getInputs().at(ir::operation::Tanh::Input::INPUT);
-  auto *input = _tensor_registry->getITensor(input_ind);
-  auto output_shape = getShape(input);
+  auto input = _tensor_registry->getITensor(input_ind);
+  auto output_shape = getShape(input.get());
 
   // set output shape and output buffer
-  setShape(output, output_shape);
+  setShape(output.get(), output_shape);
 
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
