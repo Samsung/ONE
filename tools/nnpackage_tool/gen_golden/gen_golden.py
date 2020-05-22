@@ -157,7 +157,7 @@ if __name__ == '__main__':
     # dump input and output in h5
     import h5py
     supported_dtypes = ("float32", "uint8", "bool", "int32")
-    h5dtypes = {"float32": ">f4", "uint8": "u1", "bool": "u1", "int32": ">i4"}
+    h5dtypes = {"float32": ">f4", "uint8": "u1", "bool": "u1", "int32": "int32"}
     with h5py.File(out_dir + "input.h5", 'w') as hf:
         name_grp = hf.create_group("name")
         val_grp = hf.create_group("value")
