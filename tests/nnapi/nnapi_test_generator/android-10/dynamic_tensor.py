@@ -88,8 +88,8 @@ class DynamicInputGenerator:
         new_shape_str = "{" + str(len(model_input_shape_list)) + "}"
         self.new_shape   = Input("new_shape", "TENSOR_INT32", new_shape_str)
 
-        # shape not known since it is dynamic.. Just use {1}
-        self.test_input = Internal("internal1", "TENSOR_FLOAT32", "{1}")
+        # shape not known since it is dynamic. Use a scalar {} just like TFL Converter.
+        self.test_input = Internal("internal1", "TENSOR_FLOAT32", "{}")
         model.Operation("RESHAPE", self.model_input, self.new_shape).To(self.test_input)
 
     # convert, e.g., [1, 2, 3] to "{1, 2, 3}"
