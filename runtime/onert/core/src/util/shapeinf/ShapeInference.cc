@@ -304,7 +304,6 @@ void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Oper
   // set output shape and output buffer
   setShape(output, output_shape);
 
-  // assert(output->buffer() == nullptr);
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
