@@ -19,8 +19,6 @@
 
 #include "CircleReader.h"
 
-#include <luci/IR/CircleNode.h>
-
 #include <loco.h>
 
 #include <map>
