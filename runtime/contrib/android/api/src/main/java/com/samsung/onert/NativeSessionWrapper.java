@@ -92,12 +92,14 @@ final class NativeSessionWrapper implements AutoCloseable {
                 tb.clear();
                 Log.d(TAG, String.format("ByteBuffer tb after clear()")); printByteBufferForDebug(tb);
                 ByteBuffer bb = asByteBuffer((int[])inputs[i]);
+                bb.clear();
                 Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb);
                 tb.put(bb);
                 Log.d(TAG, String.format("ByteBuffer tb after put()")); printByteBufferForDebug(tb);
                 Log.d(TAG, String.format("ByteBuffer bb after put()")); printByteBufferForDebug(bb);
             }
         }
+        Log.d(TAG, "\n");
     }
 
     // TODO Support other types of output
@@ -130,6 +132,7 @@ final class NativeSessionWrapper implements AutoCloseable {
                 Log.d(TAG, String.format("int[] oia after arraycopy")); printIntArrayForDebug(oia);
             }
         }
+        Log.d(TAG, "\n");
     }
 
     // TODO Layout
@@ -291,7 +294,8 @@ final class NativeSessionWrapper implements AutoCloseable {
     private static int[] asIntArray(ByteBuffer bb) {
         Log.d(TAG, "asIntArray() bb");
         printByteBufferForDebug(bb);
-        bb.flip();
+        //bb.flip();
+        bb.rewind();
         int size = (bb.limit()) / Integer.BYTES +
                    ((bb.limit() % Integer.BYTES == 0) ? 0 : 1);
         assert size > 0;

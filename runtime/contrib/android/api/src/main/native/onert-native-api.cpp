@@ -159,6 +159,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
     }
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s", ss.str().c_str());
   }
+  __android_log_print(ANDROID_LOG_ERROR, TAG, "\n");
 
   return true;
 }
