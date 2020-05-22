@@ -17,11 +17,14 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
 
+#include "DynamicTensorManager.h"
+#include "StaticTensorManager.h"
+#include "TensorRegistry.h"
 #include "operand/Tensor.h"
 
 #include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
-#include "StaticTensorManager.h"
+
 #include <unordered_map>
 
 namespace onert
@@ -31,16 +34,12 @@ namespace backend
 namespace controlflow
 {
 
-// This TensorBuilder supports only constant tensor
 class TensorBuilder : public ITensorBuilder
 {
 public:
   TensorBuilder();
 
-  /**
-   * @brief Returns true if this TensorBuilder support dynamic tensor
-   */
-  bool supportDynamicTensor() override;
+  bool supportDynamicTensor() override { return true; }
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -60,16 +59,35 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
+  /**
+   * @brief Get tensor with a specific OperandIndex
+   *
+   * @return shared_ptr<ITensor> if a tensor with given OperandIndex exists. nullptr otherwise.
+   */
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
 
   void iterate(const IterateFunction &fn) override;
 
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
+  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
+
+  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
+
+  /**
+   * @brief Get tensor with a specific OperandIndex.
+   * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
+   *        If not, program will crash with assert or exception.
+   * @return shared_ptr<operand::Tensor>
+   */
   std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
 
+  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
+
 private:
+  const std::shared_ptr<TensorRegistry> _tensor_reg;
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
+  std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
   ir::OperandIndexSequence _constants;
@@ -79,4 +97,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif //  __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__
+#endif // __ONERT_BACKEND_CONTROLFLOW_TENSOR_BUILDER_H__

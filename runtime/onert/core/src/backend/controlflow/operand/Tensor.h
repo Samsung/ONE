@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 #include <backend/ITensor.h>
 #include <ir/OperandInfo.h>
-#include <util/Utils.h>
 
 namespace onert
 {
@@ -39,7 +38,7 @@ public:
 
 public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout)
-      : _info(info), _layout(layout), _buffer(nullptr), _allocator(nullptr)
+      : _info(info), _layout(layout), _buffer(nullptr), _num_references(0), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -53,11 +52,9 @@ public:
   }
   void setBuffer(const std::shared_ptr<Allocator> &alloc)
   {
-    assert(_allocator == nullptr);
+    assert(_buffer == nullptr && _allocator == nullptr);
     _allocator = alloc;
   }
-  float scale() const { return _info.typeInfo().scale(); }
-  int32_t offset() const { return _info.typeInfo().offset(); }
 
 public:
   uint8_t *buffer() const override
@@ -83,14 +80,62 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
+  float data_scale() const { return _info.typeInfo().scale(); }
+  int32_t data_offset() const { return _info.typeInfo().offset(); }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
-  bool is_dynamic() const override { return false; }
+  bool is_dynamic() const override { return _info.isDynamic(); }
+  void set_dynamic() override { _info.setDynamic(); }
+
+  void increase_ref()
+  {
+    assert(is_dynamic() ||
+           // when not dynamic
+           (_buffer != nullptr || _allocator != nullptr));
+
+    ++_num_references;
+  }
+  void decrease_ref()
+  {
+    assert(_buffer != nullptr || _allocator != nullptr);
+    assert(_num_references > 0);
+    --_num_references;
+    // Only constant tensor has allocator pointer
+    if (_num_references == 0)
+    {
+      if (_buffer != nullptr)
+        _buffer = nullptr;
+      else
+      {
+        _allocator->release();
+        _allocator = nullptr;
+      }
+    }
+  }
+
+  void dimension(size_t index, size_t dim) override
+  {
+    auto rank = _info.shape().rank();
+    rank = rank == 0 ? 1 : rank;
+    if (!(index < static_cast<size_t>(rank)))
+    {
+      throw std::runtime_error("index should be less than rank");
+    }
+
+    _info.shape().dim(index) = dim;
+  }
+
+  void num_dimensions(size_t rank) override
+  {
+    ir::Shape new_shape(rank); // all dims are initialized to 0 (invalid dim)
+    _info.shape(new_shape);
+  };
 
 private:
   ir::OperandInfo _info;
   ir::Layout _layout;
   uint8_t *_buffer;
+  int32_t _num_references;
   std::shared_ptr<Allocator> _allocator;
 };
 
