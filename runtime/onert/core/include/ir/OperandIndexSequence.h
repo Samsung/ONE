@@ -52,6 +52,11 @@ public:
 public:
   std::vector<OperandIndex>::const_iterator begin(void) const { return _set.begin(); }
   std::vector<OperandIndex>::const_iterator end(void) const { return _set.end(); }
+  // Standard c++ uses `cbegin` for const_iterator and `begin` for mutable iterator.
+  // However, our project uses `begin` for const_iterator in several data structures.
+  // Thus, I introduced `mbegin` for mutable iterator.
+  std::vector<OperandIndex>::iterator mbegin(void) { return _set.begin(); }
+  std::vector<OperandIndex>::iterator mend(void) { return _set.end(); }
 
 private:
   std::vector<OperandIndex> _set;
