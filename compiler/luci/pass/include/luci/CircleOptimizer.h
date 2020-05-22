@@ -34,7 +34,8 @@ public:
     {
       FuseInstanceNorm,
       ResolveCustomOpBatchMatMul,
-      QuantizeWithMinMax
+      QuantizeWithMinMax,
+      FuseBCQ,
     };
 
     enum AlgorithmParameters

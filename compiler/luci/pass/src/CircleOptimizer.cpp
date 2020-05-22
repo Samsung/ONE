@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 // TODO add more passes
@@ -110,6 +111,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
     // TODO: Add QuantizeWithMinMaxPass phase with parameters
+  }
+  if (_options->query(Options::Algorithm::FuseBCQ))
+  {
+    phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations
