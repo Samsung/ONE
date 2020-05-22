@@ -73,6 +73,20 @@ $
 
 You can use range such as `107-120` in `opcodelist.txt` instead of using each operator index
 
+### Subgraph
+
+You can select subgraph to select operation. Default subgraph index is 0
+
+```
+$ cat /home/nnfw/opcodelist.txt
+11-13
+
+$ ./tools/tflitefile_tool/select_operator.py multi_subgraph.tflite
+opcodelist.txt test.tflite -g 1
+```
+
+Above selects operation index 11, 12, 13 in subgraph 1
+
 ## Colaboration model parser and model generator
 
 1. Get imformation about base model using model parser
