@@ -256,20 +256,20 @@ public:
   }
 };
 
-class LocalResponseNormalizationPrinter : public OpPrinter
-public:
-  void options(const tflite::Operator *op, std::ostream &os) const override
+class LocalResponseNormalizationPrinter
+    : public OpPrinter public : void
+                                options(const tflite::Operator *op, std::ostream &os) const override
+{
+  if (auto *params = op->builtin_options_as_LocalResponseNormalizationOptions())
   {
-    if (auto *params = op->builtin_options_as_LocalResponseNormalizationOptions())
-    {
-      os << "    ";
-      os << "radius(" << params->radius() << ") ";
-      os << "bias(" << params->bias() << ") ";
-      os << "alpha(" << params->alpha() << ") ";
-      os << "beta(" << params->beta() << ") ";
-      os << std::endl;
-    }
+    os << "    ";
+    os << "radius(" << params->radius() << ") ";
+    os << "bias(" << params->bias() << ") ";
+    os << "alpha(" << params->alpha() << ") ";
+    os << "beta(" << params->beta() << ") ";
+    os << std::endl;
   }
+}
 };
 
 class MirrorPadPrinter : public OpPrinter
