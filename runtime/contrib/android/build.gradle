@@ -26,4 +26,6 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+    delete "${rootDir}/api/build"
+    delete "${rootDir}/api/.cxx"
 }

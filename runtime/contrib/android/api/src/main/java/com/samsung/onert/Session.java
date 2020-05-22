@@ -1,5 +1,9 @@
 package com.samsung.onert;
 
+// java
+import java.util.HashMap;
+
+// android
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -14,32 +18,26 @@ public final class Session implements AutoCloseable {
         return _native_sess.prepare();
     }
 
-    public boolean setInputs(Tensor[] inputs) {
-        return _native_sess.setInputs(inputs);
+    public void prepareInputs() {
+        _native_sess.prepareInputs();
+        _native_sess.setInputs();
     }
-        
-    public boolean setOutputs(Tensor[] outputs) {
-        return _native_sess.setOutputs(outputs);
+
+    public void prepareOutputs() {
+        _native_sess.prepareOutputs();
+        _native_sess.setOutputs();
+    }
+
+    public void source(Object[] inputs) {
+        _native_sess.source(inputs);
+    }
+
+    public void sink(HashMap<Integer, Object> outputs) {
+        _native_sess.sink(outputs);
     }
 
     public boolean run() {
         return _native_sess.run();
-    }
-
-    public int getInputSize() {
-        return _native_sess.getInputSize();
-    }
-
-    public int getOutputSize() {
-        return _native_sess.getOutputSize();
-    }
-
-    public TensorInfo getInputTensorInfo(int index) {
-        return _native_sess.getInputTensorInfo(index);
-    }
-
-    public TensorInfo getOutputTensorInfo(int index) {
-        return _native_sess.getOutputTensorInfo(index);
     }
 
     @Override

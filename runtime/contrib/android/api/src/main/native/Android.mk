@@ -7,9 +7,8 @@ endif
 
 LOCAL_MODULE := onert-native-api
 LOCAL_SRC_FILES := \
-		onert-native-api.cc
+		onert-native-api.cpp
 LOCAL_C_INCLUDES := $(ONERT_API_INC_DIR)
-
 LOCAL_CXXFLAGS := -std=c++14 -O3 -fPIC -frtti -fexceptions
 LOCAL_SHARED_LIBRARIES := $(PREBUILT_LIB)
 LOCAL_LDLIBS := -llog -landroid

@@ -4,16 +4,33 @@ import java.nio.ByteBuffer;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 // TODO LAYOUT
 public final class Tensor implements AutoCloseable {
 
-    public Tensor(@NonNull TensorInfo info) {
+    static final String TAG = "ONERT_NATIVE";
+
+    public static boolean validateBuffer(ByteBuffer buffer) {
+        if (buffer == null)
+            return false;
+        if (!buffer.isDirect())
+            return false;
+        return true;
+    }
+
+    public Tensor(int index, @NonNull TensorInfo info) {
+        _index = index;
         _info = info;
     }
 
-    public Tensor(@NonNull int[] shape, @NonNull TensorInfo.Type type) {
+    public Tensor(int index, @NonNull int[] shape, @NonNull TensorInfo.Type type) {
+        _index = index;
         _info = new TensorInfo(type, shape.length, shape);
+    }
+
+    public int index() {
+        return _index;
     }
 
     public int[] shape() {
@@ -24,32 +41,16 @@ public final class Tensor implements AutoCloseable {
         return _info.type;
     }
 
-    public ByteBuffer buffer() {
-        return _buffer;
-    }
-
-    // ByteBuffer Should be done by ByteBuffer.allocateDirect
     public void buffer(ByteBuffer buffer) {
         _buffer = buffer;
     }
 
-    public int getByteSize() {
-        int size = TensorInfo.getTypeSize(_info.type);
-        int[] shape = _info.shape;
-        for (int i = 0; i < shape.length; ++i) {
-            size *= shape[i];
-        }
-        return size;
+    public ByteBuffer buffer() {
+        return _buffer;
     }
 
-    public boolean validate() {
-        if (_buffer == null)
-            return false;
-        if (!_buffer.isDirect())
-            return false;
-        if (_buffer.capacity() != getByteSize())
-            return false;
-        return true;
+    public int getByteSize() {
+        return TensorInfo.getByteSize(_info);
     }
 
     @Override
@@ -63,9 +64,10 @@ public final class Tensor implements AutoCloseable {
 
     @Override
     public void close() {
-        _buffer = null;
+        //_buffer = null;
     }
 
+    private final int _index;
     private TensorInfo _info = null;
     private ByteBuffer _buffer = null;
 }

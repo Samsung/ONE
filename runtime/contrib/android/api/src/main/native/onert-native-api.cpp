@@ -2,8 +2,25 @@
 
 #include <android/log.h>
 #include <nnfw.h>
+#include <unordered_map>
+#include <sstream>
+
+namespace {
 
 static const char *TAG = "ONERT_NATIVE";
+
+// Session* -> vector<Output>
+// Output: buf, bufsize, type
+struct TempOutput {
+  char *buf;
+  size_t bufsize;
+  NNFW_TYPE type;
+};
+
+using TempOutputMap = std::unordered_map<uint32_t, TempOutput>;
+static std::unordered_map<nnfw_session *, TempOutputMap> g_sess_2_output;
+
+} // namespace
 
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
@@ -20,7 +37,7 @@ JNIEXPORT jlong JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCreate
                         "%s] nnfw_create_session is failed", __PRETTY_FUNCTION__);
     return -1;
   }
-  jlong ret = reinterpret_cast<jlong>(sess);
+  auto ret = reinterpret_cast<jlong>(sess);
   return ret;
 }
 
@@ -115,6 +132,34 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
                         "%s] nnfw_run is failed", __PRETTY_FUNCTION__);
     return false;
   }
+
+  // TODO DEBUG
+  __android_log_print(ANDROID_LOG_ERROR, TAG,
+                      "%s] after nnfw_run output temp buffer", __PRETTY_FUNCTION__);
+
+  auto &tom = g_sess_2_output.at(sess);
+  for (const auto &it : tom) {
+    std::stringstream ss;
+    auto index = it.first;
+    auto &output = it.second;
+    ss << "Output #" << index << ": ";
+    if (output.type == 0)
+    {
+      for (int i = 0; i < output.bufsize; i += 4) {
+        float *fp = reinterpret_cast<float *>(&(output.buf[i]));
+        ss << *fp << " ";
+      }
+    }
+    else
+    {
+      for (int i = 0; i < output.bufsize; i += 4) {
+        int *ip = reinterpret_cast<int *>(&(output.buf[i]));
+        ss << *ip << " ";
+      }
+    }
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s", ss.str().c_str());
+  }
+
   return true;
 }
 
@@ -138,7 +183,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   if (jtype < 0)
   {
@@ -159,7 +204,10 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] length(%d) is wrong", __PRETTY_FUNCTION__, jbufsize);
     return false;
   }
-  size_t length = static_cast<size_t>(jbufsize);
+  auto length = static_cast<size_t>(jbufsize);
+
+  __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d), type(%d), buf(%p), buf_sz(%lu)",
+                      __PRETTY_FUNCTION__, index, jtype, buffer, length);
 
   if (nnfw_set_input(sess, index, type, buffer, length) == NNFW_STATUS_ERROR)
   {
@@ -174,10 +222,10 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 /*
  * Class:     com_samsung_onert_NativeSessionWrapper
  * Method:    nativeSetOutput
- * Signature: (JIILjava/nio/ByteBuffer;I)Z
+ * Signature: (JII)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput
-  (JNIEnv *env, jobject thiz, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex, jint jtype)
 {
   nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
   if (sess == nullptr)
@@ -191,7 +239,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   if (jtype < 0)
   {
@@ -200,25 +248,30 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   }
   NNFW_TYPE type = static_cast<NNFW_TYPE>(jtype);
 
-  jbyte *buffer = reinterpret_cast<jbyte *>(env->GetDirectBufferAddress(jbuf));
-  if (buffer == nullptr)
+  if (g_sess_2_output.find(sess) == g_sess_2_output.end())
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] buffer is null", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess doesn't exist for TempOutput", __PRETTY_FUNCTION__);
     return false;
   }
 
-  if (jbufsize < 0)
+  auto &tom = g_sess_2_output.at(sess);
+  if (tom.find(index) == tom.end())
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] length(%d) is wrong", __PRETTY_FUNCTION__, jbufsize);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] %d doesn't exist for TempOutput", __PRETTY_FUNCTION__, index);
     return false;
   }
-  size_t length = static_cast<size_t>(jbufsize);
 
-  if (nnfw_set_output(sess, index, type, buffer, length) == NNFW_STATUS_ERROR)
+  auto buf = tom.at(index).buf;
+  auto bufsize = tom.at(index).bufsize;
+  tom.at(index).type = type;
+
+  __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d), type(%d), buf(%p), buf_sz(%lu)",
+                      __PRETTY_FUNCTION__, index, jtype, buf, bufsize);
+
+  if (nnfw_set_output(sess, index, type, buf, bufsize) == NNFW_STATUS_ERROR)
   {
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] nnfw_set_output is failed", __PRETTY_FUNCTION__);
     return false;
-
   }
 
   return true;
@@ -244,7 +297,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   if (jlayout < 0)
   {
@@ -282,7 +335,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   if (jlayout < 0)
   {
@@ -399,7 +452,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   nnfw_tensorinfo tensor_info;
   if (nnfw_input_tensorinfo(sess, index, &tensor_info) == NNFW_STATUS_ERROR) {
@@ -475,7 +528,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
     return false;
   }
-  uint32_t index = static_cast<uint32_t>(jindex);
+  auto index = static_cast<uint32_t>(jindex);
 
   nnfw_tensorinfo tensor_info;
   if (nnfw_output_tensorinfo(sess, index, &tensor_info) == NNFW_STATUS_ERROR) {
@@ -529,4 +582,133 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
   env->SetObjectField(jinfo, shape_field, jshape);
 
   return true;
+}
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeNewTempOutputBuf
+ * Signature: (JII)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeNewTempOutputBuf
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex, jint jbufsize)
+{
+  nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
+  if (sess == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess is null", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  if (jindex < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    return false;
+  }
+  auto index = static_cast<uint32_t>(jindex);
+
+  if (jbufsize < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] bufsize(%d) is wrong", __PRETTY_FUNCTION__, jbufsize);
+    return false;
+  }
+  auto bufsize = static_cast<size_t>(jbufsize);
+
+  if (g_sess_2_output.find(sess) == g_sess_2_output.end())
+  {
+     TempOutputMap tom;
+     tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, static_cast<NNFW_TYPE>(0)});
+     g_sess_2_output.emplace(sess, tom);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] new TempOutputBuf for #(%u) on buf(%p) bufsize(%lu)",
+                        __PRETTY_FUNCTION__, index, tom.at(index).buf, tom.at(index).bufsize);
+  }
+  else
+  {
+    auto &tom = g_sess_2_output.at(sess);
+    tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, static_cast<NNFW_TYPE>(0)});
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] new TempOutputBuf for #(%u) on buf(%p) bufsize(%lu)",
+                        __PRETTY_FUNCTION__, index, tom.at(index).buf, tom.at(index).bufsize);
+  }
+  
+  return true;
+}
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeDeleteTempOutputBuf
+ * Signature: (JI)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteTempOutputBuf
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex)
+{
+  nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
+  if (sess == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess is null", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  if (jindex < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    return false;
+  }
+  auto index = static_cast<size_t>(jindex);
+
+  if (g_sess_2_output.find(sess) == g_sess_2_output.end())
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess doesn't exist for TempOutput", __PRETTY_FUNCTION__);
+    return false;
+  }
+
+  auto &tom = g_sess_2_output.at(sess);
+  if (tom.find(index) == tom.end())
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] %lu doesn't exist for TempOutput", __PRETTY_FUNCTION__, index);
+    return false;
+  }
+
+  __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] delete TempOutputBuf for #(%lu) on buf(%p) bufsize(%lu)",
+                      __PRETTY_FUNCTION__, index, tom.at(index).buf, tom.at(index).bufsize);
+  delete[] tom.at(index).buf;
+  tom.erase(index);
+  return true;
+}
+
+/*
+ * Class:     com_samsung_onert_NativeSessionWrapper
+ * Method:    nativeGetOutputBuf
+ * Signature: (JI)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputBuf
+  (JNIEnv *env, jobject thiz, jlong handle, jint jindex)
+{
+  nnfw_session *sess = reinterpret_cast<nnfw_session *>(handle);
+  if (sess == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess is null", __PRETTY_FUNCTION__);
+    return nullptr;
+  }
+
+  if (jindex < 0)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    return nullptr;
+  }
+  auto index = static_cast<size_t>(jindex);
+
+  if (g_sess_2_output.find(sess) == g_sess_2_output.end())
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] sess doesn't exist for TempOutput", __PRETTY_FUNCTION__);
+    return nullptr;
+  }
+
+  auto &tom = g_sess_2_output.at(sess);
+  if (tom.find(index) == tom.end())
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] %ld doesn't exist for TempOutput", __PRETTY_FUNCTION__, index);
+    return nullptr;
+  }
+
+  auto &to = tom.at(index);
+  return env->NewDirectByteBuffer(static_cast<void*>(to.buf),static_cast<jlong>(to.bufsize));
 }
