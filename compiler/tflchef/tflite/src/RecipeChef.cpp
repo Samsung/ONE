@@ -104,11 +104,14 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
     operand->set_name(tensor_name(tensor));
     operand->set_type(as_tflchef_type(tensor->type()));
 
-    std::vector<int32_t> dims = as_index_vector(tensor->shape());
-    ::tflchef::TensorShape *shape = operand->mutable_shape();
-    for (auto dim : dims)
+    if (tensor->shape())
     {
-      shape->add_dim(dim);
+      std::vector<int32_t> dims = as_index_vector(tensor->shape());
+      ::tflchef::TensorShape *shape = operand->mutable_shape();
+      for (auto dim : dims)
+      {
+        shape->add_dim(dim);
+      }
     }
 
     // filler for weights, bias and so on
