@@ -222,7 +222,19 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp32ToFp16(const ir::OpSequenc
 {
   // OpSeq's input set is included in the first operation's input set
   const ir::OperandIndexSequence op_seq_inputs = op_seq.getInputs(); // copied
-  for (const auto &op_seq_input_ind : op_seq_inputs)
+
+  // Remove duplicated input
+  // NOTE Please do not change sequence of op_seq_inputs. It can change the sequence of inputs of
+  // Subgraph
+  ir::OperandIndexSequence no_dup_inputs;
+  for (const auto &ind : op_seq_inputs)
+  {
+    if (!no_dup_inputs.contains(ind))
+    {
+      no_dup_inputs.append(ind);
+    }
+  }
+  for (const auto &op_seq_input_ind : no_dup_inputs)
   {
     if (checkOperandType(op_seq_input_ind) == false)
       continue;
@@ -290,7 +302,19 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp16ToFp32(const ir::OpSequenc
 {
   // OpSeq's output set is included in the last operation's output set
   const ir::OperandIndexSequence op_seq_outputs = op_seq.getOutputs(); // copied
-  for (const auto &op_seq_output_ind : op_seq_outputs)
+
+  // Remove duplicated input
+  // NOTE Please do not change sequence of op_seq_outputs. It can change the sequence of outputs of
+  // Subgraph
+  ir::OperandIndexSequence no_dup_outputs;
+  for (const auto &ind : op_seq_outputs)
+  {
+    if (!no_dup_outputs.contains(ind))
+    {
+      no_dup_outputs.append(ind);
+    }
+  }
+  for (const auto &op_seq_output_ind : no_dup_outputs)
   {
     if (checkOperandType(op_seq_output_ind) == false)
       continue;
@@ -535,8 +559,8 @@ void Fp32ToFp16Converter::manipulateInput(const ir::OpSequenceIndex &op_seq_ind,
 
   auto &new_op_obj = operands.at(new_op_ind);
 
-  op_seq.replaceInput(op_seq_input_ind, new_op_ind);
-  first_node.replaceInput(op_seq_input_ind, new_op_ind);
+  op_seq.replaceInputs(op_seq_input_ind, new_op_ind);
+  first_node.replaceInputs(op_seq_input_ind, new_op_ind);
 
   // op_seq_obj doesn't have uses/def
   input_obj.removeUse(first_node_ind);
@@ -562,8 +586,8 @@ void Fp32ToFp16Converter::manipulateOutput(const ir::OpSequenceIndex &op_seq_ind
 
   auto &new_op_obj = operands.at(new_op_ind);
 
-  op_seq.replaceOutput(op_seq_output_ind, new_op_ind);
-  last_node.replaceOutput(op_seq_output_ind, new_op_ind);
+  op_seq.replaceOutputs(op_seq_output_ind, new_op_ind);
+  last_node.replaceOutputs(op_seq_output_ind, new_op_ind);
 
   // op_seq_obj doesn't have uses/def
   output_obj.removeDef(last_node_ind);
@@ -668,7 +692,7 @@ void Fp32ToFp16Converter::removeContiguousConvertOpSequences()
   auto list_to_delete_op_seqs = getListOpSequences(opseq_map_to_delete);
   auto list_to_delete_ops = findOperationsToDelete(list_to_delete_op_seqs);
 
-  // Before deleting, manipulateInputs of OpSeq & Operation
+  // Before deleting, manipulateInput of OpSeq & Operation
   manipulateContiguousOpSequences(input_to_op_seqs, opseq_map_to_delete);
 
   // Delete OpSequences & Operations & obj's use/def & operands

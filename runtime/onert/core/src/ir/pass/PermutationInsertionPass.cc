@@ -102,10 +102,16 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
       if (index != new_index)
       {
         // Update from op_seq
-        _lowered_graph.op_seqs().at(op_seq_index).replaceInput(index, new_index);
+        // An Opsequnce's can have inputs as the same operand.
+        // But, there is no problem that the same inputs must be replaced all at once because an
+        // Opsequnce's inputs have the same PermuteFactor.
+        _lowered_graph.op_seqs().at(op_seq_index).replaceInputs(index, new_index);
 
         // Update from operation
-        operation.replaceInput(index, new_index);
+        // An operation can have inputs as the same operand.
+        // But, there is no problem that the same inputs must be replaced all at once because An
+        // operation's inputs have the same PermuteFactor.
+        operation.replaceInputs(index, new_index);
 
         // Update from operand
         remove_list.push_back(

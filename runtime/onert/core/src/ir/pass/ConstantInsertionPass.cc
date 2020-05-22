@@ -57,7 +57,9 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       // Update op_seq
       if (_lowered_graph.op_seqs().at(op_sequence_index).getInputs().contains(input))
       {
-        _lowered_graph.op_seqs().at(op_sequence_index).replaceInput(input, replaced_input);
+        // If op_seqs has inputs as the same constant operand and the inputs is replaced all at
+        // once, there is no problem because this doesn't change using iterator.
+        _lowered_graph.op_seqs().at(op_sequence_index).replaceInputs(input, replaced_input);
       }
 
       // Update current input operand only. Don't update all input node in this operation.
