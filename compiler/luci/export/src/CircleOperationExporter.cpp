@@ -100,6 +100,7 @@ public:
   void visit(luci::CircleRelu6 *) final;
   void visit(luci::CircleReluN1To1 *) final;
   void visit(luci::CircleReshape *) final;
+  void visit(luci::CircleResizeNearestNeighbor *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleSelect *) final;
   void visit(luci::CircleShape *) final;
@@ -980,6 +981,27 @@ void OperationExporter::visit(luci::CircleReshape *node)
   // Create the operator.
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ReshapeOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleResizeNearestNeighbor *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR);
+
+  // Create inputs and outputs.
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->size())};
+
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+
+  // Create options.
+  auto options = CreateResizeNearestNeighborOptions(builder, node->align_corners());
+
+  // Create the operator.
+  auto op_offset =
+      CreateOperator(builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_ResizeNearestNeighborOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
