@@ -66,18 +66,14 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       auto &replaced_object = _graph.operands().at(replaced_input);
       replaced_object.appendUse(node_index);
 
-      // Remove this node from def and uses of origin operand
-      if (object.getDef().contains(node_index))
-      {
-        object.removeDef(node_index);
-      }
+      // Remove this node from uses of origin operand
+      // Constant operand has no def.
+      assert(object.getDef().size() == 0);
       object.removeUse(node_index);
 
       // Remove origin operand
-      if (object.getDef().size() == 0 && object.getUses().size() == 0)
-      {
+      if (object.getUses().size() == 0)
         _graph.removeOperand(input);
-      }
     }
   }
 
