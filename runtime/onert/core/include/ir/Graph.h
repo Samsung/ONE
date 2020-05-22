@@ -70,6 +70,7 @@ public:
 
 private:
   void initializeUseDef();
+  void sweepGarbageOperands();
 
   // Custom operations support
 public:

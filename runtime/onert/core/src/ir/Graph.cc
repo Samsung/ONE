@@ -25,6 +25,7 @@
 #include "ir/operation/LowerInfo.h"
 #include "ir/operand/LowerInfo.h"
 #include "ir/operand/PermuteFactor.h"
+#include "ir/OperandIndexMap.h"
 #include "ir/GraphIterator.h"
 #include "backend/IConfig.h"
 
@@ -72,8 +73,8 @@ void Graph::finishBuilding(void)
   assert(isBuildingPhase());
   _phase = Phase::MODEL;
 
-  // Initialize operand use-def
   initializeUseDef();
+  sweepGarbageOperands();
 
   // Call graph verifications for the MODEL phase
   {
@@ -95,6 +96,33 @@ void Graph::initializeUseDef()
     for (auto input : inputs)
     {
       operands().at(input).appendUse(index);
+    }
+  });
+}
+
+void Graph::sweepGarbageOperands()
+{
+  // Remove operands that are not used by any operations, except Graph inputs/outputs
+  ir::OperandIndexMap<bool> visited;
+
+  operations().iterate([&](const OperationIndex &, const Operation &node) {
+    for (auto ind : node.getInputs() + node.getOutputs())
+    {
+      visited[ind] = true;
+    }
+  });
+
+  // Graph's inputs/outputs are always reachable
+  for (auto ind : getInputs() + getOutputs())
+  {
+    visited[ind] = true;
+  }
+
+  operands().iterate([&](const OperandIndex &ind, const Operand &) {
+    if (!visited[ind])
+    {
+      VERBOSE(Graph::sweepGarbageOperands) << "Sweep garbage operand " << ind.value() << std::endl;
+      operands().remove(ind);
     }
   });
 }
