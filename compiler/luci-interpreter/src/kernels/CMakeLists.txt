@@ -10,6 +10,8 @@ if (NOT TensorFlowSource_FOUND OR
 endif ()
 
 set(SOURCES
+    Add.h
+    Add.cpp
     AveragePool2D.h
     AveragePool2D.cpp
     Concatenation.h
@@ -46,6 +48,7 @@ target_link_libraries(luci_interpreter_kernels
 set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
+    Add.test.cpp
     AveragePool2D.test.cpp
     Concatenation.test.cpp
     Conv2D.test.cpp
