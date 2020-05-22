@@ -23,7 +23,6 @@ CMAKE_DEPENDENT_OPTION(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated 
                        OFF)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
 option(BUILD_TFLITE_RUN "Build tflite-run" ON)
-option(BUILD_TFLITE_BENCHMARK "Build tflite benchmark" ON)
 option(BUILD_TFLITE_BENCHMARK_MODEL "Build tflite benchmark model" OFF)
 option(BUILD_NNPACKAGE_RUN "Build nnpackge_run" ON)
 option(BUILD_TFLITE_LOADER "Build TensorFlow Lite loader" ON)
