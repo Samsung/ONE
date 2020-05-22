@@ -85,10 +85,22 @@ if __name__ == '__main__':
         output_dtypes = [graph.get_tensor_by_name(name).dtype for name in output_names]
 
         # gen random input values
-        input_values = [
-            np.random.random_sample(size=graph.get_tensor_by_name(name).shape)
-            for name in input_names
-        ]
+        for idx in range(len(input_names)):
+            this_shape = graph.get_tensor_by_name(input_names[idx]).shape
+            this_dtype = input_dtypes[idx]
+            if this_dtype == np.uint8:
+                input_values.append(
+                    np.array(np.random.randint(0, 255, this_shape, this_dtype)))
+            elif this_dtype == np.float32:
+                input_values.append(
+                    np.array(np.random.random_sample(this_shape), this_dtype))
+            elif this_dtype == np.bool_:
+                # generate random integer from [0, 2)
+                input_values.append(
+                    np.array(np.random.randint(2, size=this_shape), this_dtype))
+            elif this_dtype == np.int32:
+                input_values.append(
+                    np.array(np.random.randint(-(2**15), 2**15, this_shape, "int32")))
 
         # get output values by running
         config = tf.compat.v1.ConfigProto()
