@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ir/OperationIndexList.h"
+#include "ir/OperationIndexSet.h"
 
 #include <algorithm>
 
@@ -23,14 +23,14 @@ namespace onert
 namespace ir
 {
 
-OperationIndexList::OperationIndexList(std::initializer_list<OperationIndex> list) : _list(list)
+OperationIndexSet::OperationIndexSet(std::initializer_list<OperationIndex> list) : _set(list)
 {
   // DO NOTHING
 }
 
-bool OperationIndexList::contains(const OperationIndex &index) const
+bool OperationIndexSet::contains(const OperationIndex &index) const
 {
-  return std::find(_list.begin(), _list.end(), index) != _list.end();
+  return std::find(_set.begin(), _set.end(), index) != _set.end();
 }
 
 } // namespace ir

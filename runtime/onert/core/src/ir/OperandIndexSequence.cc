@@ -23,7 +23,7 @@ namespace onert
 namespace ir
 {
 
-OperandIndexSequence::OperandIndexSequence(std::initializer_list<OperandIndex> list) : _set(list)
+OperandIndexSequence::OperandIndexSequence(std::initializer_list<OperandIndex> list) : _vec(list)
 {
   // DO NOTHING
 }
@@ -32,7 +32,7 @@ OperandIndexSequence::OperandIndexSequence(std::initializer_list<int32_t> list)
 {
   for (auto val : list)
   {
-    _set.emplace_back(static_cast<uint32_t>(val));
+    _vec.emplace_back(static_cast<uint32_t>(val));
   }
 }
 
@@ -40,18 +40,18 @@ OperandIndexSequence::OperandIndexSequence(std::initializer_list<uint32_t> list)
 {
   for (auto val : list)
   {
-    _set.emplace_back(val);
+    _vec.emplace_back(val);
   }
 }
 
 bool OperandIndexSequence::contains(const OperandIndex &index) const
 {
-  return std::find(_set.begin(), _set.end(), index) != _set.end();
+  return std::find(_vec.begin(), _vec.end(), index) != _vec.end();
 }
 
 void OperandIndexSequence::replace(const OperandIndex &from, const OperandIndex &to)
 {
-  std::replace(_set.begin(), _set.end(), from, to);
+  std::replace(_vec.begin(), _vec.end(), from, to);
 }
 
 OperandIndexSequence OperandIndexSequence::operator+(const OperandIndexSequence &other) const

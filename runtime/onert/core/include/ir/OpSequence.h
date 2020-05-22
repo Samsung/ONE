@@ -58,8 +58,11 @@ public:
   const OperandIndexSequence &getOutputs() const { return _outputs; }
   void setInputs(const OperandIndexSequence &indexes) { _inputs = indexes; }
   void setOutputs(const OperandIndexSequence &indexes) { _outputs = indexes; }
-  void replaceInput(const OperandIndex &from, const OperandIndex &to) { _inputs.replace(from, to); }
-  void replaceOutput(const OperandIndex &from, const OperandIndex &to)
+  void replaceInputs(const OperandIndex &from, const OperandIndex &to)
+  {
+    _inputs.replace(from, to);
+  }
+  void replaceOutputs(const OperandIndex &from, const OperandIndex &to)
   {
     _outputs.replace(from, to);
   }

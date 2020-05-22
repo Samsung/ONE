@@ -51,10 +51,10 @@ bool DAGChecker::verify(const Graph &graph) const
     visited[index] = true;
     on_stack[index] = true;
 
-    for (auto output : node.getOutputs())
+    for (auto output : node.getOutputs().asUnique())
     {
       const auto &operand = graph.operands().at(output);
-      for (const auto &use : operand.getUses().list())
+      for (const auto &use : operand.getUses())
       {
         dfs_recursive(use, graph.operations().at(use));
       }

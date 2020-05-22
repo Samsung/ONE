@@ -25,7 +25,7 @@
 #include "ir/Data.h"
 #include "ir/DataType.h"
 #include "ir/OperandInfo.h"
-#include "ir/OperationIndexList.h"
+#include "ir/OperationIndexSet.h"
 
 namespace onert
 {
@@ -48,11 +48,11 @@ public:
   OperandInfo &info(void) { return _info; }
   size_t operandSize(void) const;
 
-  const OperationIndexList &getUses() const { return _uses; }
-  const OperationIndexList &getDef() const { return _def; }
-  void appendUse(const OperationIndex &idx);
+  const OperationIndexSet &getUses() const { return _uses; }
+  const OperationIndexSet &getDef() const { return _def; }
+  void insertUse(const OperationIndex &idx);
   void removeUse(const OperationIndex &idx);
-  void appendDef(const OperationIndex &idx);
+  void insertDef(const OperationIndex &idx);
   void removeDef(const OperationIndex &idx);
 
 public:
@@ -105,8 +105,8 @@ private:
   std::shared_ptr<Data> _data;
   bool _const;
 
-  OperationIndexList _uses;
-  OperationIndexList _def; // size is 0 (constant) or 1 (from def operation)
+  OperationIndexSet _uses;
+  OperationIndexSet _def; // size is 0 (constant) or 1 (from def operation)
 };
 
 } // namespace ir

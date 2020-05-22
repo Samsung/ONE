@@ -333,9 +333,9 @@ void LoweredGraph::dumpLowerInfo()
         return "{ " + str + "}";
       };
 
-      auto operation_index_to_string = [](const OperationIndexList &operations) {
+      auto operation_index_to_string = [](const OperationIndexSet &operations) {
         std::string str;
-        for (auto op : operations.list())
+        for (auto op : operations)
         {
           str += std::to_string(op.value());
           str += " ";
@@ -401,11 +401,10 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     std::unordered_set<OperationIndex> branched_set;
 
     // Check for branching up
-    const auto &inputs = op_seq.getInputs();
-    for (const auto &input : inputs)
+    for (const auto &input : op_seq.getInputs().asUnique())
     {
       const auto &input_obj = _graph.operands().at(input);
-      for (const auto &def : input_obj.getDef().list())
+      for (const auto &def : input_obj.getDef())
       {
         branched_set.insert(def);
         if (branched_set.size() > 1)
@@ -417,11 +416,10 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     branched_set.clear();
 
     // Check for branching down
-    const auto &outputs = node.getOutputs();
-    for (const auto &output : outputs)
+    for (const auto &output : node.getOutputs().asUnique())
     {
       const auto &output_obj = _graph.operands().at(output);
-      for (const auto &use : output_obj.getUses().list())
+      for (const auto &use : output_obj.getUses())
       {
         branched_set.insert(use);
         if (branched_set.size() > 1)
