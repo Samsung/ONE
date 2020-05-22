@@ -38,6 +38,15 @@ public final class TensorInfo implements AutoCloseable {
         return size;
     }
 
+    public static int getSize(TensorInfo info) {
+        int size = 1;
+        int[] shape = info.shape;
+        for (int i = 0; i < shape.length; ++i) {
+            size *= shape[i];
+        }
+        return size;
+    }
+
     public TensorInfo() {}
 
     public TensorInfo(Type t, int r, int[] s) {

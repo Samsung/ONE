@@ -53,6 +53,10 @@ public final class Tensor implements AutoCloseable {
         return TensorInfo.getByteSize(_info);
     }
 
+    public int getSize() {
+        return TensorInfo.getSize(_info);
+    }
+
     @Override
     protected void finalize() throws Throwable {
         try {

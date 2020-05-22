@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.FloatBuffer;
 import java.nio.ByteOrder;
 
 // android
@@ -81,9 +82,9 @@ final class NativeSessionWrapper implements AutoCloseable {
                 tb.clear();
                 Log.d(TAG, String.format("ByteBuffer tb after clear()")); printByteBufferForDebug(tb);
                 ByteBuffer bb = (ByteBuffer)inputs[i];
-                Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb);
+                Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb); printFloatBuffer(bb, t.getSize());
                 tb.put(bb); // copied
-                Log.d(TAG, String.format("ByteBuffer tb after put()")); printByteBufferForDebug(tb);
+                Log.d(TAG, String.format("ByteBuffer tb after put()")); printByteBufferForDebug(tb); printFloatBuffer(tb, t.getSize());
                 Log.d(TAG, String.format("ByteBuffer bb after put()")); printByteBufferForDebug(bb);
             }
             else { // if not, handle it as int[]
@@ -104,9 +105,10 @@ final class NativeSessionWrapper implements AutoCloseable {
         Log.d(TAG, "##### sink()");
         final int count = outputs.size();
         for (int i = 0; i < count; ++i) {
+            Tensor t = _outputs[i];
             Log.d(TAG, String.format("#%d Tensor's ByteBuffer", i));
             ByteBuffer bb = nativeGetOutputBuf(_handle, i); // from jni
-            Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb);
+            Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb); printFloatBuffer(bb, t.getSize());
             //bb.flip();
             //Log.d(TAG, String.format("ByteBuffer bb after flip()")); printByteBufferForDebug(bb);
             bb.rewind();
@@ -117,7 +119,7 @@ final class NativeSessionWrapper implements AutoCloseable {
                 obb.clear();
                 Log.d(TAG, String.format("ByteBuffer obb after clear()")); printByteBufferForDebug(obb);
                 obb.put(bb); // copied
-                Log.d(TAG, String.format("ByteBuffer obb after put()")); printByteBufferForDebug(obb);
+                Log.d(TAG, String.format("ByteBuffer obb after put()")); printByteBufferForDebug(obb); printFloatBuffer(obb, t.getSize());
             }
             else { // if not, handle it as int[]
                 int[] ia = asIntArray(bb);
@@ -281,10 +283,14 @@ final class NativeSessionWrapper implements AutoCloseable {
         bb.clear();
 
         bb.asIntBuffer().put(int_arr);
+        Log.d(TAG, "asByteArray() bb");
+        printByteBufferForDebug(bb);
         return bb;
     }
 
     private static int[] asIntArray(ByteBuffer bb) {
+        Log.d(TAG, "asIntArray() bb");
+        printByteBufferForDebug(bb);
         bb.flip();
         int size = (bb.limit()) / Integer.BYTES +
                    ((bb.limit() % Integer.BYTES == 0) ? 0 : 1);
@@ -306,6 +312,30 @@ final class NativeSessionWrapper implements AutoCloseable {
     private static void printIntArrayForDebug(int[] ia) {
         Log.d(TAG,
               String.format("IntArray(%d) %s", ia.length, Arrays.toString(ia)));
+    }
+    
+    private static void printArray(int[] array) {
+        printIntArrayForDebug(array);
+        Log.d(TAG, "PRINT_DATA_size: " + array.length);
+    }
+
+    private static void printFloatBuffer(ByteBuffer bb, int size) {
+        try {
+            printByteBufferForDebug(bb);
+            Log.d(TAG, "PRINT_DATA_size: " + size + ", capacity: " + bb.capacity());
+            bb.position(0);
+            FloatBuffer fb = bb.asFloatBuffer();
+
+            //fb.position(0);
+            int print_size = Math.min(size, 30);
+            float[] data = new float[print_size];
+            fb.get(data, 0, print_size);
+            Log.d(TAG, "PRINT_DATA :" + Arrays.toString(data));
+            //fb.position(0);
+            bb.position(0);
+        } catch (Exception e) {
+            Log.d(TAG, "PRINT_DATA_EXCEPTION : " + e.toString());
+        }
     }
 
     // onert-native-api
