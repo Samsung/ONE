@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ namespace tflchef
 {
 
 void TFliteOpELU::filler(const tflite::Operator *op, TFliteImport *import,
-                          tflchef::ModelRecipe *model_recipe) const
+                         tflchef::ModelRecipe *model_recipe) const
 {
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpELU::build(const tflite::Operator *op, TFliteImport *import,
-                                        tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpELU::build(const tflite::Operator *, TFliteImport *import,
+                                       tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
 
