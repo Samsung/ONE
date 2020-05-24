@@ -48,6 +48,7 @@
 #include "Op/Maximum.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"
+#include "Op/Neg.h"
 #include "Op/Minimum.h"
 #include "Op/MirrorPad.h"
 #include "Op/NotEqual.h"
