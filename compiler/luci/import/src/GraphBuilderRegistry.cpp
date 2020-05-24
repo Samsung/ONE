@@ -51,6 +51,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                      // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);           // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                // 118
+  CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                 // 98,
   CIRCLE_NODE(LESS, CircleLessGraphBuilder);                            // 58
   CIRCLE_NODE(LOGICAL_AND, CircleLogicalAndGraphBuilder);               // 86
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);               // 87
@@ -138,7 +139,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_RESIZE_NEAREST_NEIGHBOR = 97,
-  // BuiltinOperator_LEAKY_RELU = 98,
   // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_CEIL = 104,
   // BuiltinOperator_REVERSE_V2 = 105,
