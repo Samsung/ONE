@@ -73,6 +73,7 @@ public:
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
@@ -590,6 +591,23 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_IfOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLeakyRelu *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LEAKY_RELU);
+  std::vector<int32_t> inputs{get_tensor_index(node->features())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateLeakyReluOptions(builder, node->alpha());
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_LeakyReluOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
