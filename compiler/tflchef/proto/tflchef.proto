@@ -326,6 +326,10 @@ message PowOptions {
   // None
 }
 
+message LeakyReluOptions {
+  optional float alpha = 1 [default = 0.2];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -415,7 +419,7 @@ message Operation {
   // UnidirectionalSequenceLSTMOptions 181
   optional RangeOptions range_options = 182;
   // ResizeNearestNeighborOptions 183
-  // LeakyReluOptions 184
+  optional LeakyReluOptions leaky_relu_options = 184;
   optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
   // ReverseV2Options 187
