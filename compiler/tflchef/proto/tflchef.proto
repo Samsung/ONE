@@ -341,6 +341,10 @@ message ResizeNearestNeighborOptions {
   optional bool align_corners = 1 [default = false];
 }
 
+message DepthToSpaceOptions {
+  optional int32 block_size = 1;
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -443,7 +447,7 @@ message Operation {
   // QuantizeOptions 194
   // MatrixSetDiagOptions 195
   // HardSwishOptions 196
-  // DepthToSpaceOptions 197
+  optional DepthToSpaceOptions depth_to_space_options = 197;
   // NonMaxSuppressionV4Options 198
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
