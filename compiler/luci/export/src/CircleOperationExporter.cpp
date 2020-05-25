@@ -1033,7 +1033,7 @@ void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
 
 void OperationExporter::visit(luci::CircleSpaceToDepth *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPACE_TO_BATCH_ND);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPACE_TO_DEPTH);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
 
