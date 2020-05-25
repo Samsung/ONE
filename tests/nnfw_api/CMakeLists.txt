@@ -22,4 +22,4 @@ target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)
 
-install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest)
+install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest_standalone)

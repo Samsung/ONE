@@ -29,8 +29,9 @@ namespace onert
 namespace compiler
 {
 
-ManualScheduler::ManualScheduler(const compiler::ManualSchedulerOptions &options)
-    : _options{options}
+ManualScheduler::ManualScheduler(const backend::BackendContexts &backend_contexts,
+                                 const compiler::ManualSchedulerOptions &options)
+    : _backend_contexts{backend_contexts}, _options{options}
 {
 }
 
@@ -39,12 +40,8 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   auto backend_resolver = std::make_unique<compiler::BackendResolver>();
 
   // 1. Backend for All operations
-  const backend::Backend *backend_all = BackendManager::get().get(_options.backend_for_all);
-  if (!backend_all)
-  {
-    backend_all = BackendManager::get().getAll().at(0);
-  }
-  VERBOSE(ManualScheduler) << "Default backend for all ops: " << _options.backend_for_all
+  const backend::Backend *backend_all = resolveBackend(_options.backend_for_all);
+  VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
                            << std::endl;
 
   graph.operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
@@ -55,7 +52,9 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
   for (auto &pair : _options.opcode_to_backend)
   {
-    op_type_map.emplace(pair.first, BackendManager::get().get(pair.second));
+    op_type_map.emplace(
+        pair.first, BackendManager::get().get(
+                        pair.second)); // TODO Ensure this backend is available in backend contexts
   }
   // By default, Custom uses cpu backend
   op_type_map[ir::OpCode::Custom] = BackendManager::get().get("cpu");
@@ -77,7 +76,9 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     try
     {
       graph.operations().at(key); // Check if exist, or this will throw
-      backend_resolver->setBackend(key, BackendManager::get().get(val));
+      backend_resolver->setBackend(
+          key, BackendManager::get().get(
+                   val)); // TODO Ensure this backend is available in backend contexts
     }
     catch (...)
     {
@@ -97,6 +98,18 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   });
 
   return backend_resolver;
+}
+
+const backend::Backend *ManualScheduler::resolveBackend(const std::string &id)
+{
+  // Ensure if the backend is available in the backend
+  const backend::Backend *backend = BackendManager::get().get(id);
+  if (!backend || _backend_contexts.find(backend) == _backend_contexts.end())
+  {
+    // Use fallback backend (a random backend that is available)
+    backend = _backend_contexts.begin()->first;
+  }
+  return backend;
 }
 
 } // namespace compiler
