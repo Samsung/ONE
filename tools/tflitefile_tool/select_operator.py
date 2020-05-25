@@ -991,13 +991,13 @@ def GenerateSubgraph(new_builder, selected_subgraph, opcode_list, new_input_tens
     return tflite.SubGraph.SubGraphEnd(new_builder)
 
 
-def GenerateSubgraphs(new_builder, sample_model, opcode_list, new_input_tensor,
+def GenerateSubgraphs(args, new_builder, sample_model, opcode_list, new_input_tensor,
                       new_output_tensor, used_tensors_dic, used_buffers_dic,
                       used_operators_dic):
     new_subgraph_list = []
 
-    # We think only main graph
-    selected_subgraph = sample_model.Subgraphs(0)
+    # We think only one subgraph
+    selected_subgraph = sample_model.Subgraphs(args.subgraph)
     new_subgraph = GenerateSubgraph(new_builder, selected_subgraph, opcode_list,
                                     new_input_tensor, new_output_tensor, used_tensors_dic,
                                     used_buffers_dic, used_operators_dic)
@@ -1055,7 +1055,7 @@ def GenerateBuffers(new_builder, sample_model, used_buffers_dic):
     return new_builder.EndVector(new_buffer_num)
 
 
-def GenerateModel(new_builder, sample_model, opcode_list, new_input_tensors,
+def GenerateModel(args, new_builder, sample_model, opcode_list, new_input_tensors,
                   new_output_tensors, used_tensors_dic, used_buffers_dic,
                   used_operators_dic):
     # uint
@@ -1065,7 +1065,7 @@ def GenerateModel(new_builder, sample_model, opcode_list, new_input_tensors,
     operator_codes = GenerateOperatorCodes(new_builder, sample_model, used_operators_dic)
 
     # subgraphs
-    subgraphs = GenerateSubgraphs(new_builder, sample_model, opcode_list,
+    subgraphs = GenerateSubgraphs(args, new_builder, sample_model, opcode_list,
                                   new_input_tensors, new_output_tensors, used_tensors_dic,
                                   used_buffers_dic, used_operators_dic)
 
@@ -1107,6 +1107,7 @@ def main(args):
     input_model_file = args.input_model
     oplist_file = args.opcode_list
     output_model_file = args.output_model
+    subgraph = args.subgraph
 
     # Parse operator list file
     opcode_list = GetOperatorList(oplist_file)
@@ -1116,7 +1117,7 @@ def main(args):
     sample_buf = input_model_file.read()
     sample_buf = bytearray(sample_buf)
     sample_model = tflite.Model.Model.GetRootAsModel(sample_buf, 0)
-    sample_subgraph = sample_model.Subgraphs(0)
+    sample_subgraph = sample_model.Subgraphs(subgraph)
 
     # Collect used tensor & used operator
     used_tensors = []
@@ -1214,9 +1215,9 @@ def main(args):
     # Create new model file
     new_builder = flatbuffers.Builder(1024)
 
-    new_model = GenerateModel(new_builder, sample_model, opcode_list, new_input_tensors,
-                              new_output_tensors, used_tensors_dic, used_buffers_dic,
-                              used_operators_dic)
+    new_model = GenerateModel(args, new_builder, sample_model, opcode_list,
+                              new_input_tensors, new_output_tensors, used_tensors_dic,
+                              used_buffers_dic, used_operators_dic)
 
     Finish(new_builder, new_model)
     new_buf = new_builder.Output()
@@ -1237,6 +1238,14 @@ if __name__ == '__main__':
         help="text file including selected operator list")
     arg_parser.add_argument(
         "output_model", type=argparse.FileType('wb'), help="output tflite model file")
+    arg_parser.add_argument(
+        '-g', '--subgraph', type=int, default=0, help="subgraph to use (default: 0)")
+
+    # TODO
+    #   Select multiple subgraph
+    #   Select subgraph by using opcode list file
+    #   Select opcode list by using argument
+
     args = arg_parser.parse_args()
 
     # Call main function
