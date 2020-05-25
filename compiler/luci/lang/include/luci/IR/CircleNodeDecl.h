@@ -53,9 +53,14 @@ struct CircleNode : public loco::Node,
     _quantparam = std::move(quantparam);
   }
 
+  bool no_shape(void) const { return _no_shape; }
+  void no_shape(bool ns) { _no_shape = ns; }
+
 private:
   NodeName _name;
   std::unique_ptr<CircleQuantParam> _quantparam;
+  /// @brief _no_shape is true if tensor has no shape
+  bool _no_shape{false};
 };
 
 template <CircleOpcode Code> struct CircleNodeImpl : public CircleNode
