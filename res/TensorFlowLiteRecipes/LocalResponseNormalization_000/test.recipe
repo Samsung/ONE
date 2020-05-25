@@ -1,0 +1,23 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 20 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 20 }
+}
+operation {
+  type: "LocalResponseNormalization"
+  local_response_normalization_options {
+    radius: 5
+    bias: 1.0
+    alpha: 1.0
+    beta: 0.5
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
