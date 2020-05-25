@@ -472,7 +472,15 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
       return NNFW_STATUS_ERROR;
     }
 
-    _source->set("BACKENDS", backends);
+    // The session must be in the state after model load
+    if (!_compiler)
+      return NNFW_STATUS_ERROR;
+
+    auto &options = _compiler->options();
+
+    using namespace onert::util;
+
+    options.backend_list = nnfw::misc::split(std::string{backends}, ';');
   }
   catch (const std::exception &e)
   {
