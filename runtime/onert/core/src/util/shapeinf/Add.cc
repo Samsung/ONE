@@ -45,22 +45,22 @@ void DynamicInferer::visit(const ir::operation::Add &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto output = _tensor_registry->getITensor(output_ind);
   if (!output->is_dynamic())
     return;
 
   // getting output shape
   const auto lhs_ind{op.getInputs().at(ir::operation::Add::Input::LHS)};
-  auto *lhs = _tensor_registry->getITensor(lhs_ind);
-  auto lhs_shape = getShape(lhs);
+  auto lhs = _tensor_registry->getITensor(lhs_ind);
+  auto lhs_shape = getShape(lhs.get());
 
   const auto rhs_ind{op.getInputs().at(ir::operation::Add::Input::RHS)};
-  auto *rhs = _tensor_registry->getITensor(rhs_ind);
-  auto rhs_shape = getShape(rhs);
+  auto rhs = _tensor_registry->getITensor(rhs_ind);
+  auto rhs_shape = getShape(rhs.get());
 
   // set output shape and output buffer
   ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
-  setShape(output, new_shape);
+  setShape(output.get(), new_shape);
 
   _dynamic_tensor_manager->allocate(output_ind, new_shape);
   assert(output->buffer() != nullptr);

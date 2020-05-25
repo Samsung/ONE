@@ -36,7 +36,7 @@ struct ITensorRegistry
    * @brief Returns pointer of ITensor
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
-  virtual ITensor *getITensor(const ir::OperandIndex &) = 0;
+  virtual std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &) = 0;
 };
 
 } // namespace backend

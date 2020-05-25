@@ -38,7 +38,7 @@ public:
    * @brief Returns pointer of ITensor
    * @note  Returned tensor cannot be used longer than dynamic tensor manager
    */
-  ITensor *getITensor(const ir::OperandIndex &ind) override { return at(ind).get(); }
+  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override { return at(ind); }
 };
 
 } // namespace cpu

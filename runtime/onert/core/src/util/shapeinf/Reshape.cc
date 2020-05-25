@@ -83,7 +83,7 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto output = _tensor_registry->getITensor(output_ind);
   if (!output->is_dynamic())
     return;
 
@@ -117,12 +117,12 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
     auto input = _tensor_registry->getITensor(input_ind);
     assert(input);
 
-    if (!isReshapableShape(input, output_shape))
+    if (!isReshapableShape(input.get(), output_shape))
       throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
   }
 
   // set output shape and output buffer
-  setShape(output, output_shape);
+  setShape(output.get(), output_shape);
 
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
