@@ -75,17 +75,17 @@ void DynamicInferer::visit(const ir::operation::ExpandDims &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto output = _tensor_registry->getITensor(output_ind).get();
   if (!output->is_dynamic())
     return;
 
   // getting output shape
   auto input_ind = op.getInputs().at(ir::operation::ExpandDims::INPUT);
-  auto *input = _tensor_registry->getITensor(input_ind);
+  auto input = _tensor_registry->getITensor(input_ind).get();
   ir::Shape input_shape = getShape(input);
 
   auto axis_ind = op.getInputs().at(ir::operation::ExpandDims::AXIS);
-  auto *axis = _tensor_registry->getITensor(axis_ind);
+  auto axis = _tensor_registry->getITensor(axis_ind);
   auto axis_buf = reinterpret_cast<const int32_t *>(axis->buffer());
   assert(axis_buf);
 
