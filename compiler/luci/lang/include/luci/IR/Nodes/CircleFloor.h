@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief FLOOR in Circle
  */
-class CircleFloor final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::FLOOR>>
+class CircleFloor final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::FLOOR>>
 {
 public:
   loco::Node *x(void) const { return at(0)->node(); }

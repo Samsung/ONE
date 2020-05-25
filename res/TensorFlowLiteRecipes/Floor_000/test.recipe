@@ -10,8 +10,6 @@ operand {
 }
 operation {
   type: "Floor"
-  floordiv_options {
-  }
   input: "ifm"
   output: "ofm"
 }
