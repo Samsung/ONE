@@ -38,24 +38,6 @@ BackendManager &BackendManager::get()
   return object;
 }
 
-template <typename T, class... Types>
-void BackendManager::loadObjectFromPlugin(std::shared_ptr<T> &object_of_plugin_class,
-                                          const std::string obj_creator_func_name, void *handle,
-                                          Types &&... args)
-{
-  T *(*allocate_obj)(Types && ... Args);
-  // load object creator function
-  allocate_obj = (T * (*)(Types && ... Args))dlsym(handle, obj_creator_func_name.c_str());
-  if (allocate_obj == nullptr)
-  {
-    fprintf(stderr, "BackendManager: unable to open function %s: %s\n",
-            obj_creator_func_name.c_str(), dlerror());
-    abort();
-  }
-
-  object_of_plugin_class.reset(allocate_obj(args...));
-}
-
 void BackendManager::loadControlflowBackend()
 {
   // Add controlflow Backend
