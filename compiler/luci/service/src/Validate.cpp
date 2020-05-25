@@ -29,6 +29,19 @@
 namespace
 {
 
+std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape)
+{
+  os << "[";
+  for (uint32_t r = 0; r < tensor_shape.rank(); ++r)
+  {
+    if (r)
+      os << ",";
+    os << tensor_shape.dim(r).value();
+  }
+  os << "]";
+  return os;
+}
+
 /**
  * @brief  returns a node that is CircleOutput with index is out_index in nodes
  */
@@ -65,13 +78,13 @@ bool validate_shape_dtype(loco::Graph *g)
     assert(loco::shape_known(circle_node));
 
     // check if output node shape is same as graph output shape
-    auto co_shape = loco::shape_get(circle_node);
+    auto co_tensor_shape = loco::shape_get(circle_node).as<loco::TensorShape>();
     auto go_tensor_shape = graph_out->shape();
     assert(go_tensor_shape);
-    auto go_shape = loco::NodeShape(*go_tensor_shape);
-    if (!(co_shape == go_shape))
+    if (!(co_tensor_shape == *go_tensor_shape))
     {
       INFO(l) << "Shape for #" << out_index << " not same " << std::endl;
+      INFO(l) << co_tensor_shape << " vs " << *go_tensor_shape << std::endl;
       return false;
     }
 
