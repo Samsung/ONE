@@ -54,6 +54,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
+  CIRCLE_NODE(L2_NORMALIZATION, CircleL2Normalize);                                        // 11
   CIRCLE_NODE(L2_POOL_2D, CircleL2Pool2DGraphBuilder);                                     // 12
   CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                                    // 98,
   CIRCLE_NODE(LESS, CircleLessGraphBuilder);                                               // 58
@@ -112,7 +113,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DEQUANTIZE = 6,
   // BuiltinOperator_EMBEDDING_LOOKUP = 7,
   // BuiltinOperator_HASHTABLE_LOOKUP = 10,
-  // BuiltinOperator_L2_NORMALIZATION = 11,
   // BuiltinOperator_LSH_PROJECTION = 15,
   // BuiltinOperator_LSTM = 16,
   // BuiltinOperator_RELU6 = 21,
