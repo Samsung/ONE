@@ -210,6 +210,8 @@ void ShapeFixer::visit(const ir::operation::Tile &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::LogicalOr &) { /* DO NOTHING */}
 
+void ShapeFixer::visit(const ir::operation::BatchToSpaceND &) { /* DO NOTHING */}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

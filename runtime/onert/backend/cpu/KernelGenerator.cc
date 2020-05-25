@@ -20,6 +20,7 @@
 #include "kernel/AddLayer.h"
 #include "kernel/ArgMinMaxLayer.h"
 #include "kernel/AvgPoolLayer.h"
+#include "kernel/BatchToSpaceNDLayer.h"
 #include "kernel/CastLayer.h"
 #include "kernel/CompareLayer.h"
 #include "kernel/ConcatLayer.h"
@@ -1201,6 +1202,28 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   fn->configure(input_alloc, multiples_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
+
+void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
+{
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::BatchToSpaceND::INPUT)};
+  const auto block_size_index{node.getInputs().at(
+      ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)}; // BLOCK_SIZE == BLOCK_SHAPE
+  const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::CROPS_DATA)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto block_size_alloc = _tensor_builder->at(block_size_index).get();
+  auto crops_alloc = _tensor_builder->at(crops_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::BatchToSpaceNDLayer>();
+
+  fn->configure(input_alloc, output_alloc, block_size_alloc, crops_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

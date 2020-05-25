@@ -29,10 +29,14 @@ namespace operation
 class BatchToSpaceND : public Operation
 {
 public:
+  // nnapi support : INPUT & BLOCK_SIZE
+  // tflite support : INPUT, BLOCK_SHAPE, CROPS_DATA
   enum Input
   {
     INPUT = 0,
-    BLOCK_SIZE = 1
+    BLOCK_SIZE = 1,
+    BLOCK_SHAPE = BLOCK_SIZE,
+    CROPS_DATA = 2
   };
 
 public:

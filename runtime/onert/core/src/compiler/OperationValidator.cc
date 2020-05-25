@@ -84,6 +84,7 @@ void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
   const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+  const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::CROPS_DATA)};
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
