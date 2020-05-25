@@ -7,7 +7,7 @@ operand {
   name: "depth"
   type: INT32
   # shape is intentionally omitted here
-  filler { tag: "explicit" arg: "0" }
+  filler { tag: "explicit" arg: "1" }
 }
 operand {
   name: "on_value"
@@ -24,7 +24,7 @@ operand {
 operand {
   name: "ofm"
   type: INT32
-  shape { dim: 4 dim: 3 }
+  shape { dim: 4 dim: 1 }
 }
 operation {
   type: "OneHot"
