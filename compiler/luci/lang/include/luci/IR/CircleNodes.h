@@ -71,6 +71,7 @@
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleReluN1To1.h"
 #include "Nodes/CircleReshape.h"
+#include "Nodes/CircleResizeNearestNeighbor.h"
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleSelect.h"
 #include "Nodes/CircleShape.h"
