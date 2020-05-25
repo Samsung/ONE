@@ -453,6 +453,14 @@ void OperationDumper::visit(const PReLU &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ReduceAll &node)
+{
+  VERBOSE(LIR) << "* ReduceAll" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceAll::Input::INPUT).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const ReduceAny &node)
 {
   VERBOSE(LIR) << "* ReduceAny" << std::endl;
