@@ -72,6 +72,8 @@ struct IExecutor
    * @note      This method should be thread-safe
    */
   virtual void execute(const IODescription &desc) = 0;
+
+  virtual void fillOutputShapes(std::unordered_map<ir::IOIndex, ir::Shape> *output_shapes) = 0;
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;

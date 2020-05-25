@@ -80,6 +80,8 @@ public:
     return _output_tensors;
   }
 
+  void fillOutputShapes(std::unordered_map<ir::IOIndex, ir::Shape> *output_shapes) override;
+
 private:
   std::unique_ptr<ISource> source(const ir::IOIndex &index, const ir::TypeInfo &type,
                                   const void *buffer, size_t length, ir::Layout io_layout);
@@ -156,6 +158,7 @@ protected:
   std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
+  bool _execution_done;
 };
 
 } // namespace exec
