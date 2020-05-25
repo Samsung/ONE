@@ -101,6 +101,12 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
     nodeout->topkv2(node);
     nodeout->index(n);
 
+    // mark no_shape
+    auto tensors_ptr = context->reader()->tensors_ptr();
+    assert(tensors_ptr != nullptr);
+    if (tensors_ptr->Get(outputs[n]) == nullptr)
+      nodeout->no_shape(true);
+
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
 }

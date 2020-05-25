@@ -100,6 +100,12 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
       throw oops::UserExn("Unsupported tensor type", circle::EnumNameTensorType(const_tensor.type));
   }
 
+  // (4) mark no_shape
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
+  if (!tensors_ptr->Get(tensor_index)->shape())
+    const_node->no_shape(true);
+
   return const_node;
 }
 

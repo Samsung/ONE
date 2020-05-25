@@ -58,6 +58,12 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
     copy_tensor_attributes(output_tensor, node);
   }
 
+  // mark no_shape
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
+  if (tensors_ptr->Get(outputs[0]) == nullptr)
+    node->no_shape(true);
+
   context->nodefinder()->enroll(outputs[0], node);
 }
 
