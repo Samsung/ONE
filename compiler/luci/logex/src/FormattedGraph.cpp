@@ -210,6 +210,7 @@ private:
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleExpandDims)
   IMPLEMENT(luci::CircleFill)
+  IMPLEMENT(luci::CircleFloor)
   IMPLEMENT(luci::CircleFloorDiv)
   IMPLEMENT(luci::CircleFloorMod)
   IMPLEMENT(luci::CircleFullyConnected)
@@ -469,6 +470,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleExpandDims *node,
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("axis", tbl()->lookup(node->axis()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFloor *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
