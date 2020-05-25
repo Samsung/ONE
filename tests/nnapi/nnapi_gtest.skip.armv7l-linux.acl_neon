@@ -1,6 +1,6 @@
 GeneratedTests.abs_
 GeneratedTests.abs_dynamic_nnfw
-GeneratedTests.add_dynamic
+GeneratedTests.add_dynamic_nnfw
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
 GeneratedTests.cast_float16_to_float32_relaxed
