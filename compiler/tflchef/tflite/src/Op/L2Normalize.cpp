@@ -22,13 +22,13 @@ namespace tflchef
 {
 
 void TFliteOpL2Normalize::filler(const tflite::Operator *op, TFliteImport *import,
-                         tflchef::ModelRecipe *model_recipe) const
+                                 tflchef::ModelRecipe *model_recipe) const
 {
   // Nothing to do with filler
 }
 
 tflchef::Operation *TFliteOpL2Normalize::build(const tflite::Operator *op, TFliteImport *import,
-                                       tflchef::ModelRecipe *model_recipe) const
+                                               tflchef::ModelRecipe *model_recipe) const
 {
   auto op_params = op->builtin_options_as_L2NormOptions();
   auto operation = model_recipe->add_operation();

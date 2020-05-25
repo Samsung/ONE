@@ -28,7 +28,10 @@ public:
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_L2_NORMALIZATION; }
+  tflite::BuiltinOperator code(void) const override
+  {
+    return tflite::BuiltinOperator_L2_NORMALIZATION;
+  }
 
   tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_L2NormOptions; }
 

@@ -574,7 +574,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSu
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleL2Normalize *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleL2Normalize *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));

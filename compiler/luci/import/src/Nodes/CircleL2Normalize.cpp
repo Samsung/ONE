@@ -42,8 +42,8 @@ bool CircleL2NormalizeGraphBuilder::validate(const ValidateArgs &args) const
 }
 
 CircleNode *CircleL2NormalizeGraphBuilder::build_node(const circle::OperatorT &op,
-                                                       const std::vector<CircleNode *> &inputs,
-                                                       loco::Graph *graph) const
+                                                      const std::vector<CircleNode *> &inputs,
+                                                      loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleL2Normalize>();
   node->x(inputs[0]);

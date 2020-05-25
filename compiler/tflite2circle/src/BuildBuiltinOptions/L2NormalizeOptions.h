@@ -23,9 +23,8 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::L2NormOptions> build_circle_L2NormOptions(
-    flatbuffers::FlatBufferBuilder &fb,
-    const tflite::Operator *op);
+flatbuffers::Offset<circle::L2NormOptions>
+build_circle_L2NormOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
 
