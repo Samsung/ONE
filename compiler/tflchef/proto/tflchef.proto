@@ -294,6 +294,9 @@ message GreaterOptions {
   // None 
 }
 
+message L2NormOptions {
+  optional Activation activation = 1 [default = NONE];
+}
 message LessOptions {
   // None
 }
@@ -400,7 +403,7 @@ message Operation {
   // LSHProjectionOptions 155
   // SVDFOptions 156
   // RNNOptions 157
-  // L2NormOptions 158
+  optional L2NormOptions l2norm_options = 158;
   optional LocalResponseNormalizationOptions local_response_normalization_options = 159;
   // LSTMOptions 160
   // ResizeBilinearOptions 161
