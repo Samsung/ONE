@@ -21,6 +21,8 @@
 #include "core/KernelParams.h"
 #include "core/Tensor.h"
 
+#include <memory>
+
 namespace luci_interpreter
 {
 
@@ -45,6 +47,7 @@ private:
   const Tensor *const _filter;
   const Tensor *const _bias;
   Tensor *const _output;
+  std::unique_ptr<Tensor> _im2col;
   int32_t _padding_height{};
   int32_t _padding_width{};
 };
