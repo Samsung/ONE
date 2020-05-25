@@ -133,6 +133,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
     return false;
   }
 
+  /*
   // TODO DEBUG
   __android_log_print(ANDROID_LOG_ERROR, TAG,
                       "%s] after nnfw_run output temp buffer", __PRETTY_FUNCTION__);
@@ -160,6 +161,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
     __android_log_print(ANDROID_LOG_ERROR, TAG, "%s", ss.str().c_str());
   }
   __android_log_print(ANDROID_LOG_ERROR, TAG, "\n");
+  */
 
   return true;
 }

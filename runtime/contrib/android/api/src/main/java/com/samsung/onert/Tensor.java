@@ -68,7 +68,7 @@ public final class Tensor implements AutoCloseable {
 
     @Override
     public void close() {
-        //_buffer = null;
+        _buffer = null;
     }
 
     private final int _index;

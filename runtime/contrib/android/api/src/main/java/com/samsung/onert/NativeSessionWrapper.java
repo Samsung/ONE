@@ -17,9 +17,11 @@ final class NativeSessionWrapper implements AutoCloseable {
 
     static final String TAG = "ONERT_NATIVE";
 
+    static final String LIB_NAME = "onert-native-api";
+
     static
     {
-        System.loadLibrary("onert-native-api");
+        System.loadLibrary(LIB_NAME);
     }
 
     static final String DEFAULT_BACKENDS = "cpu";
@@ -71,68 +73,42 @@ final class NativeSessionWrapper implements AutoCloseable {
 
     // TODO Support other types of input
     void source(Object[] inputs) {
-        Log.d(TAG, "##### source()");
         final int count = inputs.length;
         for (int i = 0; i < count; ++i) {
             Tensor t = _inputs[i];
             ByteBuffer tb = t.buffer(); // from out of onert such as sample apps
-            Log.d(TAG, String.format("#%d Tensor's ByteBuffer", i));
             if (isByteBuffer(inputs[i])) {
-                Log.d(TAG, String.format("ByteBuffer tb")); printByteBufferForDebug(tb);
                 tb.clear();
-                Log.d(TAG, String.format("ByteBuffer tb after clear()")); printByteBufferForDebug(tb);
                 ByteBuffer bb = (ByteBuffer)inputs[i];
-                Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb); printFloatBuffer(bb, t.getSize());
                 tb.put(bb); // copied
-                Log.d(TAG, String.format("ByteBuffer tb after put()")); printByteBufferForDebug(tb); printFloatBuffer(tb, t.getSize());
-                Log.d(TAG, String.format("ByteBuffer bb after put()")); printByteBufferForDebug(bb);
             }
             else { // if not, handle it as int[]
-                Log.d(TAG, String.format("ByteBuffer tb")); printByteBufferForDebug(tb);
                 tb.clear();
-                Log.d(TAG, String.format("ByteBuffer tb after clear()")); printByteBufferForDebug(tb);
                 ByteBuffer bb = asByteBuffer((int[])inputs[i]);
                 bb.clear();
-                Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb);
                 tb.put(bb);
-                Log.d(TAG, String.format("ByteBuffer tb after put()")); printByteBufferForDebug(tb);
-                Log.d(TAG, String.format("ByteBuffer bb after put()")); printByteBufferForDebug(bb);
             }
         }
-        Log.d(TAG, "\n");
     }
 
     // TODO Support other types of output
     void sink(HashMap<Integer, Object> outputs) {
-        Log.d(TAG, "##### sink()");
         final int count = outputs.size();
         for (int i = 0; i < count; ++i) {
             Tensor t = _outputs[i];
-            Log.d(TAG, String.format("#%d Tensor's ByteBuffer", i));
-            ByteBuffer bb = nativeGetOutputBuf(_handle, i); // from jni
-            Log.d(TAG, String.format("ByteBuffer bb")); printByteBufferForDebug(bb); printFloatBuffer(bb, t.getSize());
-            //bb.flip();
-            //Log.d(TAG, String.format("ByteBuffer bb after flip()")); printByteBufferForDebug(bb);
+            ByteBuffer bb = getOutputByteBuffer(i);
             bb.rewind();
-            Log.d(TAG, String.format("ByteBuffer bb after rewind()")); printByteBufferForDebug(bb);
             if (isByteBuffer(outputs.get(i))) {
                 ByteBuffer obb = (ByteBuffer)outputs.get(i); // to out of onert such as sample apps
-                Log.d(TAG, String.format("ByteBuffer obb")); printByteBufferForDebug(obb);
                 obb.clear();
-                Log.d(TAG, String.format("ByteBuffer obb after clear()")); printByteBufferForDebug(obb);
                 obb.put(bb); // copied
-                Log.d(TAG, String.format("ByteBuffer obb after put()")); printByteBufferForDebug(obb); printFloatBuffer(obb, t.getSize());
             }
             else { // if not, handle it as int[]
                 int[] ia = asIntArray(bb);
-                Log.d(TAG, String.format("int[] ia")); printIntArrayForDebug(ia);
                 int[] oia = (int[])outputs.get(i);
-                Log.d(TAG, String.format("int[] oia")); printIntArrayForDebug(oia);
                 System.arraycopy(ia, 0, oia, 0, ia.length);
-                Log.d(TAG, String.format("int[] oia after arraycopy")); printIntArrayForDebug(oia);
             }
         }
-        Log.d(TAG, "\n");
     }
 
     // TODO Layout
@@ -273,6 +249,12 @@ final class NativeSessionWrapper implements AutoCloseable {
         return new TensorInfo(type, rank, shape);
     }
 
+    private ByteBuffer getOutputByteBuffer(int index) {
+        ByteBuffer bb = nativeGetOutputBuf(_handle, index); // from jni
+        bb.order(ByteOrder.nativeOrder());
+        return bb;
+    }
+
     private static boolean isByteBuffer(Object o) {
         return o instanceof ByteBuffer;
     }
@@ -286,15 +268,10 @@ final class NativeSessionWrapper implements AutoCloseable {
         bb.clear();
 
         bb.asIntBuffer().put(int_arr);
-        Log.d(TAG, "asByteArray() bb");
-        printByteBufferForDebug(bb);
         return bb;
     }
 
     private static int[] asIntArray(ByteBuffer bb) {
-        Log.d(TAG, "asIntArray() bb");
-        printByteBufferForDebug(bb);
-        //bb.flip();
         bb.rewind();
         int size = (bb.limit()) / Integer.BYTES +
                    ((bb.limit() % Integer.BYTES == 0) ? 0 : 1);
