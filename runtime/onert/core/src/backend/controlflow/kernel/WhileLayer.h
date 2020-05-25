@@ -18,8 +18,8 @@
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_WHILE_LAYER_H__
 
 #include <backend/ITensor.h>
-#include <exec/IPermuteFunction.h>
 #include <exec/IExecutor.h>
+#include <exec/IFunction.h>
 
 namespace onert
 {
@@ -30,7 +30,7 @@ namespace controlflow
 namespace kernel
 {
 
-class WhileLayer : public ::onert::exec::IPermuteFunction
+class WhileLayer : public ::onert::exec::IFunction
 {
 public:
   WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
@@ -41,16 +41,22 @@ public:
 public:
   void configure();
 
-  void optimize() override
+  void run() override;
+
+  void runSync() override
   {
     // TODO Optimize
+    // this abstract method is used just for profiling and called for
+    // backend::acl_common::AclFunction
+    run();
   }
-
-  void run() override;
 
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;
+  const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
+  const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
+  std::vector<size_t> _ranks;
   const std::shared_ptr<exec::ExecutorMap> &_executor_map;
 };
 

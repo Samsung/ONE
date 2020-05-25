@@ -35,11 +35,9 @@ WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tens
                        const ir::SubgraphIndex &body_subg_index,
                        const std::shared_ptr<exec::ExecutorMap> &executor_map)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
-      _executor_map{executor_map}
+      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
-  _src_tensors = input_tensors;
-  _dst_tensors = output_tensors;
   for (size_t i = 0; i < input_tensors.size(); ++i)
   {
     auto rank = input_tensors.at(i)->num_dimensions();
@@ -71,10 +69,10 @@ void WhileLayer::run()
   const auto &body_input_tensors = body_exec->getInputTensors();
   const auto &body_output_tensors = body_exec->getOutputTensors();
 
-  PermuteLayer permute_op_input_to_cond_input{_src_tensors, cond_input_tensors, _ranks};
+  PermuteLayer permute_op_input_to_cond_input{_input_tensors, cond_input_tensors, _ranks};
   PermuteLayer permute_cond_input_to_body_input{cond_input_tensors, body_input_tensors, _ranks};
   PermuteLayer permute_body_output_to_cond_input{body_output_tensors, cond_input_tensors, _ranks};
-  PermuteLayer permute_cond_input_to_op_output{cond_input_tensors, _dst_tensors, _ranks};
+  PermuteLayer permute_cond_input_to_op_output{cond_input_tensors, _output_tensors, _ranks};
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input.prepare();
