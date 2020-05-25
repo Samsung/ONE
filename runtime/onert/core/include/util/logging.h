@@ -60,4 +60,8 @@ static Context &ctx = Context::get();
   if (::onert::util::logging::ctx.enabled()) \
   std::cout << "[" << #name << "] "
 
+#define VERBOSE_F()                          \
+  if (::onert::util::logging::ctx.enabled()) \
+  std::cout << "[" << __func__ << "] "
+
 #endif // __ONERT_UTIL_LOGGING_H__
