@@ -37,6 +37,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);          // 2
   CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                       // 3
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                              // 108
+  CIRCLE_NODE(DEPTH_TO_SPACE, CircleDepthToSpaceGraphBuilder);          // 5
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);    // 4
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                              // 42
   CIRCLE_NODE(ELU, CircleEluGraphBuilder);                              // 111
