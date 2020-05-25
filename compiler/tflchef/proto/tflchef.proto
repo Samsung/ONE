@@ -337,6 +337,10 @@ message LeakyReluOptions {
   optional float alpha = 1 [default = 0.2];
 }
 
+message ResizeNearestNeighborOptions {
+  optional bool align_corners = 1 [default = false];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -425,7 +429,7 @@ message Operation {
   // BidirectionalSequenceRNNOptions 180
   // UnidirectionalSequenceLSTMOptions 181
   optional RangeOptions range_options = 182;
-  // ResizeNearestNeighborOptions 183
+  optional ResizeNearestNeighborOptions resize_nearest_neighbor_options = 183;
   optional LeakyReluOptions leaky_relu_options = 184;
   optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
