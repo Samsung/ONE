@@ -61,6 +61,9 @@ private:
   using CircleOperators_t = std::vector<std::unique_ptr<circle::OperatorT>>;
   using CircleOperatorCodes_t = std::vector<std::unique_ptr<circle::OperatorCodeT>>;
 
+  using CircleSubGraphsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::SubGraph>>;
+  using CircleTensorsPtr_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
+
 public:
   CircleReader() = default;
 
@@ -72,6 +75,8 @@ public:
   const std::vector<int32_t> &inputs() const { return _current_subgraph->inputs; }
   const std::vector<int32_t> &outputs() const { return _current_subgraph->outputs; }
   const std::string &name() const { return _current_subgraph->name; }
+
+  const CircleTensorsPtr_t *tensors_ptr() const { return _tensors_ptr; }
 
   uint32_t num_subgraph() const { return _model->subgraphs.size(); }
 
@@ -85,6 +90,9 @@ public:
 private:
   std::unique_ptr<const circle::ModelT> _model;
   const circle::SubGraphT *_current_subgraph{nullptr};
+
+  const circle::Model *_model_ptr{nullptr};
+  const CircleTensorsPtr_t *_tensors_ptr{nullptr};
 };
 
 } // namespace luci
