@@ -35,6 +35,36 @@ void TFliteOpOneHot::filler(const tflite::Operator *op, TFliteImport *import,
     auto vec = extract_buffer<int32_t>(buffer);
     import->set_tensor_filler(inputs[1], vec);
   }
+
+  // on/off can be dtype of input/output. let's support INT32/FLOAT32 for now
+  for (int32_t index = 2; index <= 3; ++index)
+  {
+    const tflite::Tensor *tensor = import->tensors()->Get(inputs[index]);
+    const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+    if (buffer && buffer->data())
+    {
+      switch (tensor->type())
+      {
+        case tflite::TensorType::TensorType_INT32:
+        {
+          auto vec = extract_buffer<int32_t>(buffer);
+          import->set_tensor_filler(inputs[index], vec);
+          break;
+        }
+
+        case tflite::TensorType::TensorType_FLOAT32:
+        {
+          auto vec = extract_buffer<float>(buffer);
+          import->set_tensor_filler(inputs[index], vec);
+          break;
+        }
+
+        default:
+          assert(false);
+          break;
+      }
+    }
+  }
 }
 
 tflchef::Operation *TFliteOpOneHot::build(const tflite::Operator *op, TFliteImport *import,
