@@ -59,6 +59,11 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     luci::copy_tensor_attributes(tensor, input_node);
 
+    auto tensors_ptr = reader.tensors_ptr();
+    assert(tensors_ptr != nullptr);
+    if (!tensors_ptr->Get(input)->shape())
+      input_node->no_shape(true);
+
     INFO(l) << "[luci] NodeFinder INPUT(" << input << ") = " << input_node << std::endl;
     nodefinder->enroll(input, input_node);
 

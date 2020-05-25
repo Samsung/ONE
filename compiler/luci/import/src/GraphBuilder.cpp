@@ -55,6 +55,12 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   {
     context->nodefinder()->enroll(outputs[0], node);
   }
+
+  // mark no_shape
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
+  if (tensors_ptr->Get(outputs[0]) == nullptr)
+    node->no_shape(true);
 }
 
 } // namespace luci
