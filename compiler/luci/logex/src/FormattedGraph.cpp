@@ -218,6 +218,7 @@ private:
   IMPLEMENT(luci::CircleGreater)
   IMPLEMENT(luci::CircleGreaterEqual)
   IMPLEMENT(luci::CircleIf)
+  IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLess)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLogicalAnd)
@@ -570,6 +571,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSu
 
   s.state(locop::NodeSummary::State::Complete);
 
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleL2Normalize *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
