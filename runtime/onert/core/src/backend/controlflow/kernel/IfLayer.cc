@@ -18,7 +18,7 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
-#include "PermuteTensorsLayer.h"
+#include "PermuteLayer.h"
 
 namespace onert
 {
@@ -82,10 +82,9 @@ void IfLayer::run()
 
     const auto &then_input_tensors = then_exec->getInputTensors();
     const auto &then_output_tensors = then_exec->getOutputTensors();
-    PermuteTensorsLayer permute_op_input_to_then_input{_input_tensors, then_input_tensors,
-                                                       input_ranks};
-    PermuteTensorsLayer permute_then_output_to_op_output{then_output_tensors, _output_tensors,
-                                                         output_ranks};
+    PermuteLayer permute_op_input_to_then_input{_input_tensors, then_input_tensors, input_ranks};
+    PermuteLayer permute_then_output_to_op_output{then_output_tensors, _output_tensors,
+                                                  output_ranks};
 
     // Remove copying of unused tensor
     permute_op_input_to_then_input.prepare();
@@ -106,10 +105,9 @@ void IfLayer::run()
 
     const auto &else_input_tensors = else_exec->getInputTensors();
     const auto &else_output_tensors = else_exec->getOutputTensors();
-    PermuteTensorsLayer permute_op_input_to_else_input{_input_tensors, else_input_tensors,
-                                                       input_ranks};
-    PermuteTensorsLayer permute_else_output_to_op_output{else_output_tensors, _output_tensors,
-                                                         output_ranks};
+    PermuteLayer permute_op_input_to_else_input{_input_tensors, else_input_tensors, input_ranks};
+    PermuteLayer permute_else_output_to_op_output{else_output_tensors, _output_tensors,
+                                                  output_ranks};
 
     // Remove copying of unused tensor
     permute_op_input_to_else_input.prepare();
