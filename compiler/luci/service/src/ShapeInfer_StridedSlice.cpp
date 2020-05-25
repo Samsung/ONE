@@ -269,8 +269,6 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
     // This is valid for both positive and negative strides
     int32_t stride = strides_node->at<S32>(idx);
     int32_t dim_shape = std::ceil(static_cast<float>(end - begin) / stride);
-
-    printf("begin, end, stride : dim_shape = %d, %d, %d : %d\n", begin, end, stride, dim_shape);
     assert(dim_shape > 0);
 
     // When shrinking an axis, the end position does not matter (and can be
