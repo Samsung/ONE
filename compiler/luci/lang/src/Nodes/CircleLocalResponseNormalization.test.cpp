@@ -29,4 +29,8 @@ TEST(CircleLocalResponseNormalizationTest, constructor_P)
             local_response_normalization_node.opcode());
 
   ASSERT_EQ(nullptr, local_response_normalization_node.input());
+  ASSERT_EQ(5, local_response_normalization_node.radius());
+  ASSERT_EQ(1.0f, local_response_normalization_node.bias());
+  ASSERT_EQ(1.0f, local_response_normalization_node.alpha());
+  ASSERT_EQ(0.5f, local_response_normalization_node.beta());
 }
