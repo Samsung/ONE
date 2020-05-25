@@ -226,6 +226,9 @@ bool CircleReader::parse(const circle::Model *model)
 
   _model.reset(model->UnPack());
 
+  // for direct pointer access
+  _model_ptr = model;
+
   return true;
 }
 
@@ -238,6 +241,12 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   }
 
   _current_subgraph = _model->subgraphs[sgindex].get();
+
+  // for direct pointer access
+  auto subgraphs = _model_ptr->subgraphs();
+  const circle::SubGraph *subgraph = (*subgraphs)[sgindex];
+
+  _tensors_ptr = subgraph->tensors();
 
   return true;
 }
