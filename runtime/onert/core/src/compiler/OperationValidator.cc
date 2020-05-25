@@ -1292,5 +1292,20 @@ void OperationValidator::visit(const ir::operation::LogicalOr &node)
   OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::Input::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::Input::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::Input::DELTA)};
+
+  // Check for dimension constraints
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  OP_REQUIRES(_ctx.at(start_index).shape().rank() == 0);
+  OP_REQUIRES(_ctx.at(limit_index).shape().rank() == 0);
+  OP_REQUIRES(_ctx.at(delta_index).shape().rank() == 0);
+}
 } // namespace compiler
 } // namespace onert
