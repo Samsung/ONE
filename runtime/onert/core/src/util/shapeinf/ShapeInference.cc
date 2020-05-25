@@ -211,6 +211,27 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
   - For visit() of each operator, find each op's C file
 */
 
+void StaticInferer::handleBinaryArithmeticOp(const ir::Operation &op,
+                                             const ir::OperandIndex lhs_idx,
+                                             const ir::OperandIndex rhs_idx)
+{
+  const auto &lhs = _operands.at(lhs_idx);
+  const auto &rhs = _operands.at(rhs_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  if (lhs.info().isDynamic() || rhs.info().isDynamic())
+  {
+    output.info().setDynamic();
+    return;
+  }
+
+  // re-sizing output shape
+  ir::Shape new_shape = inferEltwiseShape(lhs.info().shape(), rhs.info().shape());
+  output.info().shape(new_shape);
+}
+
 void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx)
 {
   const auto &input = _operands.at(input_idx);
@@ -288,6 +309,30 @@ void StaticInferer::visit(const ir::operation::Concat &op)
   - Write methods except visit()
   - For visit() of each operator, find each op's C file
  */
+
+void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
+                                              const ir::OperandIndex lhs_idx,
+                                              const ir::OperandIndex rhs_idx)
+{
+  // check if output is not dynamic
+  auto output_idx = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_idx);
+  if (!output->is_dynamic())
+    return;
+
+  auto lhs = _tensor_registry->getITensor(lhs_idx);
+  auto lhs_shape = getShape(lhs.get());
+
+  auto rhs = _tensor_registry->getITensor(rhs_idx);
+  auto rhs_shape = getShape(rhs.get());
+
+  // set output shape and output buffer
+  ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
+  setShape(output.get(), new_shape);
+
+  _dynamic_tensor_manager->allocate(output_idx, new_shape);
+  assert(output->buffer() != nullptr);
+}
 
 void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
 {

@@ -121,6 +121,12 @@ private:
 
 private:
   /**
+   * @brief Performs shape inference for arithmetic operation
+   */
+  void handleBinaryArithmeticOp(const ir::Operation &op, const ir::OperandIndex lhs_idx,
+                                const ir::OperandIndex rhs_idx);
+
+  /**
    * @brief Performs shape inference for unary op whose output shape is
    *        always same with input shape
    */
@@ -169,6 +175,11 @@ public:
   // TODO write op starting from Z
 
 private:
+  /**
+   * @brief Performs shape inference and memory allocation for arithmetic operation
+   */
+  void handleBinaryArithmeticOp(const ir::Operation &op, const ir::OperandIndex lhs_idx,
+                                const ir::OperandIndex rhs_idx);
   /**
    * @brief Performs shape inference and memory allocation for unary op whose output shape is
    *        always same with input shape
