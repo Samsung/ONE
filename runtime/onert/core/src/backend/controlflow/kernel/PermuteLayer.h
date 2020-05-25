@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTE_LAYER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTE_LAYER_H__
+#ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
+#define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 
 #include <exec/IPermuteFunction.h>
 
@@ -28,22 +28,40 @@ namespace controlflow
 namespace kernel
 {
 
-class PermuteLayer : public ::onert::exec::IPermuteFunction
+class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
-  PermuteLayer() = default;
-
-public:
-  void configure(std::shared_ptr<backend::ITensor> input, std::shared_ptr<backend::ITensor> output,
-                 size_t rank);
+  PermuteLayer(const std::vector<std::shared_ptr<onert::backend::ITensor>> &src_tensors,
+               const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors,
+               std::vector<size_t> ranks)
+  {
+    assert(src_tensors.size() == dst_tensors.size());
+    assert(src_tensors.size() == ranks.size());
+    _src_tensors = src_tensors;
+    _dst_tensors = dst_tensors;
+    _ranks = ranks;
+  }
 
   void optimize() override
   {
-    if (_src_tensors.at(0) == _dst_tensors.at(0))
+    // Remove copying of tensor as nullptr
+    auto src_it = _src_tensors.begin();
+    auto dst_it = _dst_tensors.begin();
+    auto rank_it = _ranks.begin();
+    while (src_it != _src_tensors.end())
     {
-      _src_tensors.clear();
-      _dst_tensors.clear();
-      _ranks.clear();
+      if ((*src_it == *dst_it) || (*src_it == nullptr || *dst_it == nullptr))
+      {
+        src_it = _src_tensors.erase(src_it);
+        dst_it = _dst_tensors.erase(dst_it);
+        rank_it = _ranks.erase(rank_it);
+      }
+      else
+      {
+        ++src_it;
+        ++dst_it;
+        ++rank_it;
+      }
     }
   }
 };
@@ -53,4 +71,4 @@ public:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTE_LAYER_H__
+#endif // __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__

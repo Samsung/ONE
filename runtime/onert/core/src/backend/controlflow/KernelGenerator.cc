@@ -86,12 +86,11 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto input_index{node.getInputs().at(0)};
 
   const auto &shape = _operand_ctx.at(output_index).shape();
-  auto output_tensor = getTensor(output_index);
-  auto input_tensor = getTensor(input_index);
+  std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
+  std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
+  std::vector<size_t> ranks{static_cast<size_t>(shape.rank())};
 
-  auto fn = std::make_unique<::onert::backend::controlflow::kernel::PermuteLayer>();
-
-  fn->configure(input_tensor, output_tensor, shape.rank());
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, ranks);
 
   _return_fn = std::move(fn);
 }
