@@ -521,6 +521,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for RELU6
   // There is no Option for RELU_N1_TO_1
   _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
+  _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SELECT
