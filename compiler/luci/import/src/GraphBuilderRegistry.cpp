@@ -81,6 +81,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                          // 65
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                      // 25
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);     // 38
+  CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);          // 26
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                          // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                       // 102
   CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                        // 92
@@ -111,7 +112,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_RELU6 = 21,
   // BuiltinOperator_RESIZE_BILINEAR = 23,
   // BuiltinOperator_RNN = 24,
-  // BuiltinOperator_SPACE_TO_DEPTH = 26,
   // BuiltinOperator_SVDF = 27,
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
   // BuiltinOperator_SKIP_GRAM = 30,
