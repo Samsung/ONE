@@ -22,6 +22,7 @@
 #include <loco/IR/DataType.h>
 #include <loco/IR/NodeShape.h>
 #include <oops/InternalExn.h>
+#include <loco/Service/ShapeInference.h>
 
 #include <cmath>
 #include <cstdint>
@@ -53,14 +54,10 @@ struct StridedSliceParams
   int16 end_mask;
   int16 new_axis_mask;
   int16 shrink_axis_mask;
-
-  luci::CircleConst *begin_node;
-  luci::CircleConst *end_node;
-  luci::CircleConst *strides_node;
 };
 
 // Use until std::clamp() is available from C++17.
-inline int Clamp(const int v, const int lo, const int hi)
+inline int Clamp(const int32_t v, const int32_t lo, const int32_t hi)
 {
   LUCI_ASSERT(!(hi < lo), "Clamp hi < lo");
   if (hi < v)
@@ -74,33 +71,37 @@ inline int Clamp(const int v, const int lo, const int hi)
 // positive integer between [0, axis_size - 1] that can be used to index
 // directly into the data.
 inline int StartForAxis(const StridedSliceParams &params, const loco::TensorShape &input_shape,
-                        int axis)
+                        uint32_t axis)
 {
   const auto begin_mask = params.begin_mask;
   const auto *start_indices = params.start_indices;
   const auto *strides = params.strides;
+  const int32_t axis_size = static_cast<int>(input_shape.dim(axis).value());
+  if (axis_size == 0)
+  {
+    return 0;
+  }
   // Begin with the specified index.
-  int start = start_indices[axis];
+  int32_t start = start_indices[axis];
 
   // begin_mask override
-  if (begin_mask & 1 << axis)
+  if (begin_mask & (1 << axis))
   {
     if (strides[axis] > 0)
     {
       // Forward iteration - use the first element. These values will get
       // clamped below (Note: We could have set them to 0 and axis_size-1, but
       // use lowest() and max() to maintain symmetry with StopForAxis())
-      start = std::numeric_limits<int>::lowest();
+      start = std::numeric_limits<int32_t>::lowest();
     }
     else
     {
       // Backward iteration - use the last element.
-      start = std::numeric_limits<int>::max();
+      start = std::numeric_limits<int32_t>::max();
     }
   }
 
   // Handle negative indices
-  int axis_size = input_shape.dim(axis).value();
   if (start < 0)
   {
     start += axis_size;
@@ -124,10 +125,15 @@ inline int StopForAxis(const StridedSliceParams &params, const loco::TensorShape
   const auto shrink_axis_mask = params.shrink_axis_mask;
   const auto *stop_indices = params.stop_indices;
   const auto *strides = params.strides;
+  const int axis_size = static_cast<int32_t>(input_shape.dim(axis).value());
+  if (axis_size == 0)
+  {
+    return 0;
+  }
 
   // Begin with the specified index
   const bool shrink_axis = shrink_axis_mask & (1 << axis);
-  int stop = stop_indices[axis];
+  int32_t stop = stop_indices[axis];
 
   // When shrinking an axis, the end position does not matter (and can be
   // incorrect when negative indexing is used, see Issue #19260). Always use
@@ -145,17 +151,16 @@ inline int StopForAxis(const StridedSliceParams &params, const loco::TensorShape
     {
       // Forward iteration - use the last element. These values will get
       // clamped below
-      stop = std::numeric_limits<int>::max();
+      stop = std::numeric_limits<int32_t>::max();
     }
     else
     {
       // Backward iteration - use the first element.
-      stop = std::numeric_limits<int>::lowest();
+      stop = std::numeric_limits<int32_t>::lowest();
     }
   }
 
   // Handle negative indices
-  const int axis_size = input_shape.dim(axis).value();
   if (stop < 0)
   {
     stop += axis_size;
@@ -187,19 +192,17 @@ StridedSliceParams BuildStridedSliceParams(const luci::CircleStridedSlice *node)
     INTERNAL_EXN_V("Cannot support StridedSlice rank > ", kMaxDim);
   }
 
-  op_params.start_indices_count = node->rank();
-  op_params.stop_indices_count = node->rank();
-  op_params.strides_count = node->rank();
+  auto begin_node = loco::must_cast<luci::CircleConst *>(node->begin());
+  auto end_node = loco::must_cast<luci::CircleConst *>(node->end());
+  auto strides_node = loco::must_cast<luci::CircleConst *>(node->strides());
 
-  auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
-  auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
-  auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
-  if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
-  {
-    INTERNAL_EXN("StridedSlice begin/end/strides nodes are not Constant");
-  }
+  uint32_t dims_count = begin_node->size<S32>();
 
-  for (uint32_t i = 0; i < node->rank(); ++i)
+  op_params.start_indices_count = dims_count;
+  op_params.stop_indices_count = dims_count;
+  op_params.strides_count = dims_count;
+
+  for (uint32_t i = 0; i < dims_count; ++i)
   {
     op_params.start_indices[i] = begin_node->at<S32>(i);
     op_params.stop_indices[i] = end_node->at<S32>(i);
@@ -212,20 +215,7 @@ StridedSliceParams BuildStridedSliceParams(const luci::CircleStridedSlice *node)
   op_params.new_axis_mask = 0;
   op_params.shrink_axis_mask = node->shrink_axis_mask();
 
-  op_params.begin_node = begin_node;
-  op_params.end_node = end_node;
-  op_params.strides_node = strides_node;
-
   return op_params;
-}
-
-loco::TensorShape node_shape(const luci::CircleNode *node)
-{
-  loco::TensorShape shape;
-  shape.rank(node->rank());
-  for (uint32_t r = 0; r < node->rank(); ++r)
-    shape.dim(r) = loco::Dimension(node->dim(r).value());
-  return shape;
 }
 
 } // namespace
@@ -239,24 +229,49 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
 
   auto input_node = loco::must_cast<luci::CircleNode *>(node->input());
 
-  uint32_t shape_size = 0;
+  auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
+  auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
+  auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
+  if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
+  {
+    INTERNAL_EXN("StridedSlice begin/end/strides nodes are not Constant");
+  }
+
+  LUCI_ASSERT(begin_node->dtype() == S32, "Only support S32 for begin_node");
+  LUCI_ASSERT(end_node->dtype() == S32, "Only support S32 for end_node");
+  LUCI_ASSERT(strides_node->dtype() == S32, "Only support S32 for strides_node");
+
+  assert(node->ellipsis_mask() == 0);
+  assert(node->new_axis_mask() == 0);
+
   auto op_params = BuildStridedSliceParams(node);
-  auto input_shape = node_shape(input_node);
+  loco::TensorShape input_shape = loco::shape_get(input_node).as<loco::TensorShape>();
 
-  LUCI_ASSERT(op_params.begin_node->dtype() == S32, "Only support S32 for begin_node");
-  LUCI_ASSERT(op_params.end_node->dtype() == S32, "Only support S32 for end_node");
-  LUCI_ASSERT(op_params.strides_node->dtype() == S32, "Only support S32 for strides_node");
+  uint32_t num_input_axes = input_shape.rank();
+  assert(begin_node->size<S32>() <= num_input_axes);
+  assert(end_node->size<S32>() <= num_input_axes);
+  assert(strides_node->size<S32>() <= num_input_axes);
+  for (uint32_t i = 0; i < strides_node->size<S32>(); i++)
+  {
+    LUCI_ASSERT(strides_node->at<S32>(i) != 0, "Stride value has to be non-zero");
+  }
 
-  output_shape.rank(node->rank());
-
+  uint32_t shape_size = 0;
   std::array<int32_t, 16> output_shape_data;
 
-  for (uint32_t idx = 0; idx < node->rank(); ++idx)
+  for (uint32_t idx = 0; idx < num_input_axes; ++idx)
   {
-    int32_t stride = op_params.strides_node->at<S32>(idx);
-    LUCI_ASSERT(stride != 0, "Stride value has to be non-zero");
     int32_t begin = StartForAxis(op_params, input_shape, idx);
     int32_t end = StopForAxis(op_params, input_shape, idx, begin);
+    if (end < 0)
+      end = input_shape.dim(idx).value() + end + 1;
+
+    // This is valid for both positive and negative strides
+    int32_t stride = strides_node->at<S32>(idx);
+    int32_t dim_shape = std::ceil(static_cast<float>(end - begin) / stride);
+
+    printf("begin, end, stride : dim_shape = %d, %d, %d : %d\n", begin, end, stride, dim_shape);
+    assert(dim_shape > 0);
 
     // When shrinking an axis, the end position does not matter (and can be
     // incorrect when negative indexing is used, see Issue #19260). Always use
@@ -265,16 +280,11 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
     const bool shrink_axis = node->shrink_axis_mask() & (1 << idx);
     if (shrink_axis)
     {
-      end = begin + 1;
+      assert(dim_shape == 1);
     }
-
-    // This is valid for both positive and negative strides
-    int32_t dim_shape = std::ceil((end - begin) / static_cast<float>(stride));
-    dim_shape = dim_shape < 0 ? 0 : dim_shape;
-    if (!shrink_axis)
+    else
     {
-      output_shape_data[shape_size] = dim_shape;
-      shape_size++;
+      output_shape_data[shape_size++] = dim_shape;
     }
   }
 
