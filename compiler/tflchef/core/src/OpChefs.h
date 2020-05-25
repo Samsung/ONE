@@ -33,6 +33,7 @@
 #include "Op/Exp.h"
 #include "Op/ExpandDims.h"
 #include "Op/Fill.h"
+#include "Op/Floor.h"
 #include "Op/FloorDiv.h"
 #include "Op/FloorMod.h"
 #include "Op/FullyConnected.h"
