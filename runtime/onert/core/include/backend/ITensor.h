@@ -86,7 +86,7 @@ void setShape(ITensor *tensor, const ir::Shape &new_shape);
  * @brief Get ir::Shape of tensor
  * @note  Higer dimension will be placed on front.
  */
-ir::Shape getShape(ITensor *tensor);
+ir::Shape getShape(const ITensor *tensor);
 
 } // namespace backend
 } // namespace onert
