@@ -519,35 +519,37 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
   using namespace onert::util;
 
-  if (key == config::TRACE_FILEPATH)
+  const std::string skey = key;
+
+  if (skey == config::TRACE_FILEPATH)
   {
     options.trace_filepath = value;
   }
-  else if (key == config::GRAPH_DOT_DUMP)
+  else if (skey == config::GRAPH_DOT_DUMP)
   {
     options.graph_dump_level = toInt(value);
   }
-  else if (key == config::OP_SEQ_MAX_NODE)
+  else if (skey == config::OP_SEQ_MAX_NODE)
   {
     options.op_seq_max_node = toInt(value);
   }
-  else if (key == config::EXECUTOR)
+  else if (skey == config::EXECUTOR)
   {
     options.executor = value;
   }
-  else if (key == config::OP_BACKEND_ALLOPS)
+  else if (skey == config::OP_BACKEND_ALLOPS)
   {
     options.manual_scheduler_options.backend_for_all = value;
   }
-  else if (key == config::USE_SCHEDULER)
+  else if (skey == config::USE_SCHEDULER)
   {
     options.he_scheduler = toBool(value);
   }
-  else if (key == config::PROFILING_MODE)
+  else if (skey == config::PROFILING_MODE)
   {
     options.he_profiling_mode = toBool(value);
   }
-  else if (key == config::DISABLE_COMPILE)
+  else if (skey == config::DISABLE_COMPILE)
   {
     options.disable_compile = toBool(value);
   }
