@@ -47,10 +47,10 @@ void prepareAvgPool2D(ExecEnv *env, const ir::Operation &node)
     // Handle unspecified output shape
     const auto &avgpool_node =
         nnfw::misc::polymorphic_downcast<const ir::operation::AvgPool2D &>(node);
-    const auto infered_output_shapes =
+    const auto infered_output_shape =
         shape_inference::inferAvgPoolShape(in_tensor->tensorInfo().shape(), avgpool_node.param());
-    env->allocateIfNeeded(out_index, ir::OperandInfo::createStaticInfo(infered_output_shapes[0],
-                                                                       output_info.typeInfo()));
+    env->allocateIfNeeded(
+        out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
   }
   else
   {

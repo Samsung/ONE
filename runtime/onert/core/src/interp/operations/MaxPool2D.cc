@@ -47,10 +47,10 @@ void prepareMaxPool2D(ExecEnv *env, const ir::Operation &node)
     // Handle unspecified output shape
     const auto &maxpool_node =
         nnfw::misc::polymorphic_downcast<const ir::operation::MaxPool2D &>(node);
-    const auto infered_output_shapes =
+    const auto infered_output_shape =
         shape_inference::inferMaxPoolShape(in_tensor->tensorInfo().shape(), maxpool_node.param());
-    env->allocateIfNeeded(out_index, ir::OperandInfo::createStaticInfo(infered_output_shapes[0],
-                                                                       output_info.typeInfo()));
+    env->allocateIfNeeded(
+        out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
   }
   else
   {

@@ -109,15 +109,15 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 }
 
 // TODO move this when Avgpool.cc is created in util/shapeinf
-Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
-                         const ir::Layout layout)
+ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
+                            const ir::Layout layout)
 {
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
                                                   param.padding, param.stride);
   // Pooling don't change number of channels and batch size
-  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
+  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
 // TODO move this when Concat.cc is created in util/shapeinf
@@ -143,8 +143,8 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
 }
 
 // TODO move this when Conv2D.cc is created in util/shapeinf
-Shapes inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                        const ir::operation::Conv2D::Param &param, ir::Layout layout)
+ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
+                           const ir::operation::Conv2D::Param &param, ir::Layout layout)
 {
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
@@ -156,13 +156,13 @@ Shapes inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
                                                   param.padding, param.stride);
 
-  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N}};
+  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N};
 }
 
 // TODO move this when DepthwiseConv2D.cc is created in util/shapeinf
-Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                 const ir::operation::DepthwiseConv2D::Param &param,
-                                 ir::Layout layout)
+ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
+                                    const ir::operation::DepthwiseConv2D::Param &param,
+                                    ir::Layout layout)
 {
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
@@ -175,11 +175,11 @@ Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
                                                   param.padding, param.stride);
 
-  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.C}};
+  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.C};
 }
 
 // TODO move this when FullyConnected.cc is created in util/shapeinf
-Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
+ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
 {
   assert(in_shape.rank() >= 2);
   assert(ker_shape.rank() == 2);
@@ -190,19 +190,19 @@ Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_
   const auto batch_size = input_size_with_batch / input_size;
   assert(input_size_with_batch % input_size == 0);
 
-  return {{ir::Shape({static_cast<int32_t>(batch_size), num_units})}};
+  return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }
 
 // TODO move this when MaxPool.cc is created in util/shapeinf
-Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                         const ir::Layout layout)
+ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
+                            const ir::Layout layout)
 {
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
                                                   param.padding, param.stride);
   // Pooling don't change number of channels and batch size
-  return {ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C}};
+  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
 /*

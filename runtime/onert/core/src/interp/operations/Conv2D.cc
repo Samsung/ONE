@@ -55,10 +55,10 @@ void prepareConv2D(ExecEnv *env, const ir::Operation &node)
   {
     // Handle unspecified output shape
     const auto &conv_node = nnfw::misc::polymorphic_downcast<const ir::operation::Conv2D &>(node);
-    const auto infered_output_shapes = shape_inference::inferConv2DShape(
+    const auto infered_output_shape = shape_inference::inferConv2DShape(
         in_tensor->tensorInfo().shape(), kernel_tensor->tensorInfo().shape(), conv_node.param());
-    env->allocateIfNeeded(out_index, ir::OperandInfo::createStaticInfo(infered_output_shapes[0],
-                                                                       output_info.typeInfo()));
+    env->allocateIfNeeded(
+        out_index, ir::OperandInfo::createStaticInfo(infered_output_shape, output_info.typeInfo()));
   }
   else
   {
