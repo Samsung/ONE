@@ -286,12 +286,11 @@ inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape
   }
 }
 
-inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                const float *input1_data, const Shape &input2_shape, const float *input2_data,
-                const Shape &output_shape, float *output_data)
+inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
+                           const float *input1_data, const float *input2_data, float *output_data)
 {
   int i = 0;
-  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+
 #ifdef USE_NEON
   const auto activation_min = vdupq_n_f32(params.float_activation_min);
   const auto activation_max = vdupq_n_f32(params.float_activation_max);
@@ -339,6 +338,134 @@ inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape
     output_data[i] =
         ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
   }
+}
+
+inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                const float *input1_data, const Shape &input2_shape, const float *input2_data,
+                const Shape &output_shape, float *output_data)
+{
+  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  MulElementwise(flat_size, params, input1_data, input2_data, output_data);
+}
+
+// Broadcast mul that can often be used for inner loop of broadcast Mul.
+// This function will handle scalar_value (LHS) * vector_values (RHS).
+// Since it's a float function, input params does not matter here.
+inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
+                               const float broadcast_value, const float *input2_data,
+                               float *output_data)
+{
+  int i = 0;
+#ifdef USE_NEON
+  const float32x4_t output_activation_min_vector = vdupq_n_f32(params.float_activation_min);
+  const float32x4_t output_activation_max_vector = vdupq_n_f32(params.float_activation_max);
+  const float32x4_t broadcast_value_dup = vdupq_n_f32(broadcast_value);
+  for (; i <= size - 4; i += 4)
+  {
+    const float32x4_t input2_val_original = vld1q_f32(input2_data + i);
+
+    const float32x4_t output = vmulq_f32(input2_val_original, broadcast_value_dup);
+
+    const float32x4_t clamped =
+        vmaxq_f32(output_activation_min_vector, vminq_f32(output_activation_max_vector, output));
+    vst1q_f32(output_data + i, clamped);
+  }
+#endif // NEON
+
+  for (; i < size; ++i)
+  {
+    float x = broadcast_value * input2_data[i];
+    output_data[i] =
+        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
+  }
+}
+
+inline void BroadcastMulFivefold(const BinaryArithmeticOpParam &params,
+                                 const Shape & /* unswitched_input1_shape */,
+                                 const float *unswitched_input1_data,
+                                 const Shape & /* unswitched_input2_shape */,
+                                 const float *unswitched_input2_data,
+                                 const Shape & /* output_shape */, float *output_data)
+{
+  const bool use_unswitched =
+      params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast;
+
+  const float *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
+  const float *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
+
+  // Fivefold nested loops. The second input resets its position for each
+  // iteration of the second loop. The first input resets its position at the
+  // beginning of the fourth loop. The innermost loop is an elementwise Mul of
+  // sections of the arrays.
+  float *output_data_ptr = output_data;
+  const float *input1_data_ptr = input1_data;
+  const float *input2_data_reset = input2_data;
+  int y0 = params.broadcast_shape[0];
+  int y1 = params.broadcast_shape[1];
+  int y2 = params.broadcast_shape[2];
+  int y3 = params.broadcast_shape[3];
+  int y4 = params.broadcast_shape[4];
+  if (y4 > 1)
+  {
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const float *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          for (int i3 = 0; i3 < y3; ++i3)
+          {
+            MulElementwise(y4, params, input1_data_ptr, input2_data_ptr, output_data_ptr);
+            input2_data_ptr += y4;
+            output_data_ptr += y4;
+          }
+          input1_data_ptr += y4;
+        }
+      }
+      input2_data_reset = input2_data_ptr;
+    }
+  }
+  else
+  {
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const float *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          // The input may be switched here, but the common parameters here
+          // do not matter as they will not influence the float math execution.
+          MulSimpleBroadcast(y3, params, *input1_data_ptr, input2_data_ptr, output_data_ptr);
+          input2_data_ptr += y3;
+          output_data_ptr += y3;
+          ++input1_data_ptr;
+        }
+      }
+      input2_data_reset = input2_data_ptr;
+    }
+  }
+}
+
+inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                 const float *input1_data, const Shape &input2_shape,
+                                 const float *input2_data, const Shape &output_shape,
+                                 float *output_data)
+{
+  if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
+  {
+    // TODO: Use GetBinaryArithmeticFn
+    const std::function<float(const float &, const float &)> fn =
+        [](const float &a, const float &b) -> float { return a * b; };
+    reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
+                                               input2_data, output_shape, output_data, fn);
+    return;
+  }
+  BroadcastMulFivefold(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                       output_data);
 }
 
 } // namespace optimized
