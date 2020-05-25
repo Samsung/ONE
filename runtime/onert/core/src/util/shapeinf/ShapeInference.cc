@@ -293,16 +293,16 @@ void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Oper
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
-  auto *output = _tensor_registry->getITensor(output_ind);
+  auto output = _tensor_registry->getITensor(output_ind);
   if (!output->is_dynamic())
     return;
 
   // getting output shape
-  auto *input = _tensor_registry->getITensor(input_ind);
-  auto output_shape = getShape(input);
+  auto input = _tensor_registry->getITensor(input_ind);
+  auto output_shape = getShape(input.get());
 
   // set output shape and output buffer
-  setShape(output, output_shape);
+  setShape(output.get(), output_shape);
 
   _dynamic_tensor_manager->allocate(output_ind, output_shape);
   assert(output->buffer() != nullptr);
