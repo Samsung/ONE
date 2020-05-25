@@ -44,7 +44,9 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           break;
         }
       }
-      assert(tensor != nullptr);
+
+      // Controlflow opeartion can make subgraph has unused input.
+      assert(tensor != nullptr || _lowered_graph->graph().getInputs().contains(ind));
       list.push_back(tensor);
     }
     return list;

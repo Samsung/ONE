@@ -285,8 +285,12 @@ void LoweredGraph::manipulateLowerInfo(
     // Pick just any one from the uses, here the first one is chosen
     // For the other uses, Permute operations will be inserted later
     auto &&lower_info = operands_lower_info.at(index);
-    assert(lower_info->use_factors().size() > 0);
-    lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
+    if (!(lower_info->def_factors().size() == 0 && lower_info->use_factors().size() == 0))
+    {
+      // In case of not that Graph's input is not used in any operation and not the graph's output.
+      // In other words, it is not unused input in Graph.
+      lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
+    }
   }
   for (auto index : _graph.getOutputs())
   {
