@@ -28,7 +28,7 @@ This section explains the steps to create a pull request (PR).
    your contribution into multiple small, but focused pull requests in this case. Unfortunately, it
    is possible that maintainers reject your pull request as it is hard for them to understand the
    intuition behind these changes. So, it is optional, but recommended for contributors to present
-   the full [draft](https://github.com/Samsung/ONE/pulls?q=is%3Apr+is%3Aopen+label%3ADRAFT) of your 
+   the full [draft](https://github.com/Samsung/ONE/pulls?q=is%3Apr+label%3ADRAFT+) of your 
    contribution and have a discussion with maintainers before creating PR(s).
 
 1. Create a commit
