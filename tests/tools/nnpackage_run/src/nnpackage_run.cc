@@ -102,10 +102,6 @@ int main(const int argc, char **argv)
 
   nnfw_session *session = nullptr;
   NNPR_ENSURE_STATUS(nnfw_create_debug_session(&session));
-  char *available_backends = std::getenv("BACKENDS");
-  if (available_backends)
-    NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
-  NNPR_ENSURE_STATUS(resolve_op_backend(session));
 
   // ModelLoad
   if (mp)
@@ -115,6 +111,11 @@ int main(const int argc, char **argv)
   t_model_load = benchmark::nowMicros() - t_model_load;
   if (mp)
     mp->end(benchmark::Phase::MODEL_LOAD);
+
+  char *available_backends = std::getenv("BACKENDS");
+  if (available_backends)
+    NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
+  NNPR_ENSURE_STATUS(resolve_op_backend(session));
 
   uint32_t num_inputs;
   NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
