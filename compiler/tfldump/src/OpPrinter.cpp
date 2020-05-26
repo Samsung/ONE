@@ -174,6 +174,21 @@ public:
   }
 };
 
+class ResizeBilinearPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *resize_params = op->builtin_options_as_ResizeBilinearOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "align_corners(" << resize_params->align_corners() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class ResizeNearestNeighborPrinter : public OpPrinter
 {
 public:
@@ -558,6 +573,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
   _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
       make_unique<ResizeNearestNeighborPrinter>();
   // There is no Option for SELECT
