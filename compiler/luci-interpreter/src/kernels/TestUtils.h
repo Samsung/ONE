@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_KERNELS_TESTUTILS_H
 #define LUCI_INTERPRETER_KERNELS_TESTUTILS_H
 
-#include "core/Tensor.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>

@@ -19,7 +19,7 @@
 #define LUCI_INTERPRETER_KERNELS_UTILS_H
 
 #include "core/KernelParams.h"
-#include "core/Tensor.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <tensorflow/lite/kernels/internal/types.h>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "core/Tensor.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <cstring>
 #include <stdexcept>

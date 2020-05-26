@@ -17,6 +17,8 @@
 #ifndef LUCI_INTERPRETER_INTERPRETER_H
 #define LUCI_INTERPRETER_INTERPRETER_H
 
+#include "luci_interpreter/core/Tensor.h"
+
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 
