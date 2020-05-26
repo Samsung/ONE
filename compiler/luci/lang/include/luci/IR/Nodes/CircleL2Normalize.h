@@ -27,10 +27,11 @@ namespace luci
 {
 
 /**
- * @brief L2NORMALIZE in Circle
+ * @brief L2_NORMALIZATION in Circle
  */
-class CircleL2Normalize final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::L2NORMALIZE>>,
-                                public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
+class CircleL2Normalize final
+    : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::L2_NORMALIZATION>>,
+      public LuciNodeMixin<LuciNodeTrait::FusedActFunc>
 {
 public:
   loco::Node *x(void) const { return at(0)->node(); }
