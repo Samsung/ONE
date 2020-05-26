@@ -18,6 +18,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Log.h>
 
 #include <oops/UserExn.h>
 
@@ -227,7 +228,8 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
   // Quantize input tensors of each node
   bool visit(luci::CircleNode *node)
   {
-    std::cout << "QuantizeActivation visit node: " << node->name() << std::endl;
+    LOGGER(l);
+    INFO(l) << "QuantizeActivation visit node: " << node->name() << std::endl;
     auto arity = node->arity();
     for (uint32_t i = 0; i < arity; i++)
     {
@@ -327,7 +329,8 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
   // Quantize input tensors of each node
   bool visit(luci::CircleNode *node)
   {
-    std::cout << "QuantizeWeights visit node: " << node->name() << std::endl;
+    LOGGER(l);
+    INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
     auto arity = node->arity();
     for (uint32_t i = 0; i < arity; i++)
     {
@@ -369,7 +372,8 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
-  std::cout << "QuantizeWithMinMaxPass Start" << std::endl;
+  LOGGER(l);
+  INFO(l) << "QuantizeWithMinMaxPass Start" << std::endl;
 
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
@@ -406,7 +410,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     graph_output->dtype(loco::DataType::U8);
   }
 
-  std::cout << "QuantizeWithMinMaxPass End" << std::endl;
+  INFO(l) << "QuantizeWithMinMaxPass End" << std::endl;
   return false; // one time run
 }
 

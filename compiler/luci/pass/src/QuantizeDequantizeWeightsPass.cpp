@@ -18,6 +18,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Log.h>
 
 #include <oops/UserExn.h>
 
@@ -158,7 +159,8 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
   // Quantize and dequantize input tensors of each node
   bool visit(luci::CircleNode *node)
   {
-    std::cout << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
+    LOGGER(l);
+    INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
     auto arity = node->arity();
     for (uint32_t i = 0; i < arity; i++)
     {
@@ -207,7 +209,8 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
 
 bool QuantizeDequantizeWeightsPass::run(loco::Graph *g)
 {
-  std::cout << "QuantizeDequantizeWeightsPass Start" << std::endl;
+  LOGGER(l);
+  INFO(l) << "QuantizeDequantizeWeightsPass Start" << std::endl;
 
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
@@ -217,7 +220,7 @@ bool QuantizeDequantizeWeightsPass::run(loco::Graph *g)
     circle_node->accept(&qw);
   }
 
-  std::cout << "QuantizeDequantizeWeightsPass End" << std::endl;
+  INFO(l) << "QuantizeDequantizeWeightsPass End" << std::endl;
   return false; // one time run
 }
 
