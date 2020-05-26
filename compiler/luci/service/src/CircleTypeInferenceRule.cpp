@@ -271,6 +271,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->tensor());
   }
 
+  loco::DataType visit(const luci::CircleResizeBilinear *) final { return loco::DataType::FLOAT32; }
+
   loco::DataType visit(const luci::CircleResizeNearestNeighbor *node) final
   {
     return loco::dtype_get(node->input());
