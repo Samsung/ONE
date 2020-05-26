@@ -352,7 +352,7 @@ void OperationExporter::visit(luci::CircleDepthToSpace *node)
 
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateDepthToSpaceOptions(builder);
+  auto options = CreateDepthToSpaceOptions(builder, node->block_size());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_DepthToSpaceOptions, options.Union());
   gd._operators.push_back(op_offset);
