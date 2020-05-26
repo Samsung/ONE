@@ -35,7 +35,7 @@ tflchef::Operation *TFliteOpL2Normalize::build(const tflite::Operator *op, TFlit
 
   operation->set_type("L2Normalize");
 
-  auto op_options = operation->mutable_add_options();
+  auto op_options = operation->mutable_l2norm_options();
 
   op_options->set_activation(as_tflchef_activation(op_params->fused_activation_function()));
 

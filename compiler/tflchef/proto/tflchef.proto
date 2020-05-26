@@ -297,6 +297,7 @@ message GreaterOptions {
 message L2NormOptions {
   optional Activation activation = 1 [default = NONE];
 }
+
 message LessOptions {
   // None
 }
