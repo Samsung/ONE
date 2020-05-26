@@ -535,3 +535,47 @@ TEST(CircleShapeInferenceRuleTest, CircleGatherNd_NEG)
 
   ASSERT_THROW(lambda(), oops::InternalExn);
 }
+
+TEST(CircleShapeInferenceRuleTest, CircleResizeNearestNeighbor)
+{
+  luci::test::TestGraph graph;
+  auto size_const = graph.append<luci::CircleConst>();
+  size_const->dtype(loco::DataType::S32);
+  size_const->rank(1);
+  size_const->dim(0) = 2;
+  size_const->size<loco::DataType::S32>(2);
+  size_const->at<loco::DataType::S32>(0) = 16;
+  size_const->at<loco::DataType::S32>(1) = 16;
+  auto resize_node = graph.append<luci::CircleResizeNearestNeighbor>(graph.input_node, size_const);
+  graph.complete();
+
+  {
+    auto input_node = graph.input_node;
+    input_node->shape({1, 4, 4, 3});
+    luci::test::graph_input_shape(input_node);
+  }
+  {
+    auto output_node = graph.output_node;
+    output_node->from(resize_node);
+    luci::test::graph_output_shape(output_node);
+  }
+
+  // pre-check
+  ASSERT_FALSE(loco::shape_known(resize_node));
+
+  // shape inference
+  while (shape_pass(graph.graph()) == true)
+    ;
+
+  // Verify
+  {
+    ASSERT_TRUE(loco::shape_known(resize_node));
+
+    auto shape = loco::shape_get(resize_node).as<loco::TensorShape>();
+    ASSERT_EQ(4, shape.rank());
+    ASSERT_EQ(1, shape.dim(0));
+    ASSERT_EQ(16, shape.dim(1));
+    ASSERT_EQ(16, shape.dim(2));
+    ASSERT_EQ(3, shape.dim(3));
+  }
+}
