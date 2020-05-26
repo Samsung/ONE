@@ -252,6 +252,22 @@ public:
     {
       os << "    ";
       os << "alpha(" << params->alpha() << ") ";
+    }
+  }
+};
+
+class LocalResponseNormalizationPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_LocalResponseNormalizationOptions())
+    {
+      os << "    ";
+      os << "radius(" << params->radius() << ") ";
+      os << "bias(" << params->bias() << ") ";
+      os << "alpha(" << params->alpha() << ") ";
+      os << "beta(" << params->beta() << ") ";
       os << std::endl;
     }
   }
@@ -510,6 +526,8 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
+  _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
+      make_unique<LocalResponseNormalizationPrinter>();
   // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
@@ -521,6 +539,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for RELU6
   // There is no Option for RELU_N1_TO_1
   _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
+  _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   // There is no Option for SELECT

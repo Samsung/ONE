@@ -61,6 +61,7 @@ public:
   void visit(luci::CircleCustom *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDiv *) final;
+  void visit(luci::CircleElu *) final;
   void visit(luci::CircleEqual *) final;
   void visit(luci::CircleExp *) final;
   void visit(luci::CircleExpandDims *) final;
@@ -90,6 +91,7 @@ public:
   void visit(luci::CirclePack *) final;
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
+  void visit(luci::CircleReduceMax *) final;
   void visit(luci::CircleReduceProd *) final;
   void visit(luci::CirclePad *) final;
   void visit(luci::CirclePow *) final;
@@ -104,6 +106,7 @@ public:
   void visit(luci::CircleSlice *) final;
   void visit(luci::CircleSoftmax *) final;
   void visit(luci::CircleSpaceToBatchND *) final;
+  void visit(luci::CircleSpaceToDepth *) final;
   void visit(luci::CircleSplit *) final;
   void visit(luci::CircleSplitV *) final;
   void visit(luci::CircleSqrt *) final;
@@ -371,6 +374,17 @@ void OperationExporter::visit(luci::CircleDiv *node)
   auto options = CreateDivOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_DivOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleElu *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ELU);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->features())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
@@ -868,6 +882,19 @@ void OperationExporter::visit(luci::CircleReduceAny *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleReduceMax *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_MAX);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateReducerOptions(builder, node->keep_dims());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReducerOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleReduceProd *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_PROD);
@@ -1027,6 +1054,20 @@ void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
   auto options = CreateSpaceToBatchNDOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SpaceToBatchNDOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSpaceToDepth *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPACE_TO_DEPTH);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSpaceToDepthOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SpaceToDepthOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

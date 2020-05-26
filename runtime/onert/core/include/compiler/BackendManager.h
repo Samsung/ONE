@@ -59,22 +59,6 @@ private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
   /**
-   * @brief Allocate an object of a class of a plugin by loading a plugin function, that does
-   * allocation, and calling it
-   *
-   * @param object_of_plugin_class target object
-   * @param obj_creator_func_name name of the plugin function, that allocates an object
-   * @param handle handle of the plugin
-   * @param args arguments to pass to constructor of the plugin class
-   *
-   * @return
-   */
-  template <typename T, class... Types>
-  void loadObjectFromPlugin(std::shared_ptr<T> &object_of_plugin_class,
-                            const std::string obj_creator_func_name, void *handle,
-                            Types &&... args);
-
-  /**
    * @brief load controlflow backend
    *
    * @param backend backend to be loaded

@@ -18,7 +18,7 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
-#include "PermuteTensorsLayer.h"
+#include "PermuteLayer.h"
 
 namespace onert
 {
@@ -71,12 +71,10 @@ void WhileLayer::run()
   const auto &body_input_tensors = body_exec->getInputTensors();
   const auto &body_output_tensors = body_exec->getOutputTensors();
 
-  PermuteTensorsLayer permute_op_input_to_cond_input{_src_tensors, cond_input_tensors, _ranks};
-  PermuteTensorsLayer permute_cond_input_to_body_input{cond_input_tensors, body_input_tensors,
-                                                       _ranks};
-  PermuteTensorsLayer permute_body_output_to_cond_input{body_output_tensors, cond_input_tensors,
-                                                        _ranks};
-  PermuteTensorsLayer permute_cond_input_to_op_output{cond_input_tensors, _dst_tensors, _ranks};
+  PermuteLayer permute_op_input_to_cond_input{_src_tensors, cond_input_tensors, _ranks};
+  PermuteLayer permute_cond_input_to_body_input{cond_input_tensors, body_input_tensors, _ranks};
+  PermuteLayer permute_body_output_to_cond_input{body_output_tensors, cond_input_tensors, _ranks};
+  PermuteLayer permute_cond_input_to_op_output{cond_input_tensors, _dst_tensors, _ranks};
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input.prepare();

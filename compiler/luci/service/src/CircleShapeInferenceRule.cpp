@@ -586,6 +586,13 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleElu *node) final
+  {
+    auto input_shape = loco::shape_get(node->features()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleEqual *node) final
   {
     const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
@@ -1074,6 +1081,12 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleReduceMax *node) final
+  {
+    auto output_shape = infer_reducer(node->input(), node->axis(), node->keep_dims());
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleReduceProd *node) final
   {
     auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
@@ -1315,6 +1328,37 @@ public:
     shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
 
     return loco::NodeShape{shape_output};
+  }
+
+  loco::NodeShape visit(const luci::CircleSpaceToDepth *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    LUCI_ASSERT(input_shape.rank() == 4, "Only input rank 4 is supported");
+
+    // Only data format NHWC is supported
+    int32_t height = input_shape.dim(1).value();
+    int32_t width = input_shape.dim(2).value();
+    int32_t depth = input_shape.dim(3).value();
+
+    int block_size = node->block_size();
+
+    if (block_size < 2)
+      INTERNAL_EXN("Block size must be >= 2");
+
+    if ((height % block_size) || (width % block_size))
+    {
+      INTERNAL_EXN("The input tensor's height and width must be divisible by block_size");
+    }
+
+    loco::TensorShape output_shape;
+    output_shape.rank(4);
+
+    output_shape.dim(0) = input_shape.dim(0).value();
+    output_shape.dim(1) = height / block_size;
+    output_shape.dim(2) = width / block_size;
+    output_shape.dim(3) = block_size * block_size * depth;
+
+    return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleSplit *node) final
@@ -1626,7 +1670,7 @@ public:
       output_shape.dim(outdim_index++) = input_shape.dim(i);
     for (uint32_t i = 0; i < indices_shape.rank(); ++i)
       output_shape.dim(outdim_index++) = indices_shape.dim(i);
-    for (uint32_t i = axis + 1; i < indices_shape.rank(); ++i)
+    for (uint32_t i = axis + 1; i < input_shape.rank(); ++i)
       output_shape.dim(outdim_index++) = input_shape.dim(i);
 
     return loco::NodeShape{output_shape};

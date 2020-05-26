@@ -108,6 +108,8 @@ GeneratedTests.expand_dims
 GeneratedTests.expand_dims_2
 GeneratedTests.expand_dims_3
 GeneratedTests.expand_dims_4
+GeneratedTests.expand_dims_dynamic_nnfw_1
+GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.expand_dims_int32
 GeneratedTests.expand_dims_int32_2
 GeneratedTests.expand_dims_int32_3
@@ -454,7 +456,7 @@ GeneratedTests.tanh_v1_2
 GeneratedTests.tanh_v1_2_2
 GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
-GeneratedTests.tanh_v1_dynamic
+GeneratedTests.tanh_v1_dynamic_nnfw
 GeneratedTests.tile_1
 GeneratedTests.tile_1_float16
 GeneratedTests.tile_1_quant8

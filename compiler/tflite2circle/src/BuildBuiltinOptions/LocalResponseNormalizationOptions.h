@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-#include "PermuteLayer.h"
+#ifndef __BBO_LOCAL_RESPONSE_NORMALIZATION_OPTIONS_H__
+#define __BBO_LOCAL_RESPONSE_NORMALIZATION_OPTIONS_H__
 
-namespace onert
-{
-namespace backend
-{
-namespace controlflow
-{
-namespace kernel
+#include <mio/tflite/schema_generated.h>
+#include <mio/circle/schema_generated.h>
+
+namespace tflite2circle
 {
 
-void PermuteLayer::configure(std::shared_ptr<backend::ITensor> input,
-                             std::shared_ptr<backend::ITensor> output, size_t rank)
-{
-  _src_tensors.emplace_back(input);
-  _dst_tensors.emplace_back(output);
-  _ranks.emplace_back(rank);
-}
+flatbuffers::Offset<circle::LocalResponseNormalizationOptions>
+build_circle_LocalResponseNormalizationOptions(flatbuffers::FlatBufferBuilder &fb,
+                                               const tflite::Operator *op);
 
-} // namespace kernel
-} // namespace controlflow
-} // namespace backend
-} // namespace onert
+} // namespace tflite2circle
+
+#endif // __BBO_LOCAL_RESPONSE_NORMALIZATION_OPTIONS_H__

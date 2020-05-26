@@ -43,6 +43,7 @@
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/LeakyReluOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
+#include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"
 #include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
@@ -60,6 +61,7 @@
 #include "BuildBuiltinOptions/PowOptions.h"
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
+#include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/SelectOptions.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"

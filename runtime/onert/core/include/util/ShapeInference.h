@@ -58,6 +58,8 @@ ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &
 
 ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
 
+ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
+
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
 // TODO write op starting from G
@@ -103,7 +105,7 @@ private:
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
-  // TODO write op starting from E
+  void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   // TODO write op starting from L
@@ -144,7 +146,7 @@ public:
   void visit(const ir::operation::Add &op);
   // TODO write op starting from C
   // TODO write op starting from D
-  // TODO write op starting from E
+  void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   // TODO write op starting from L

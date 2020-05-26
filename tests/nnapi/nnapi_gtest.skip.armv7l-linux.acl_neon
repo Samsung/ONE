@@ -1,4 +1,5 @@
 GeneratedTests.abs_
+GeneratedTests.abs_dynamic
 GeneratedTests.add_dynamic
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
@@ -41,6 +42,8 @@ GeneratedTests.depthwise_conv_relaxed
 GeneratedTests.equal_boolean
 GeneratedTests.exp_
 GeneratedTests.exp_2D_float_nnfw
+GeneratedTests.expand_dims_dynamic_nnfw_1
+GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
 GeneratedTests.fully_connected_float_2_relaxed
@@ -137,7 +140,7 @@ GeneratedTests.svdf_state
 GeneratedTests.tanh_v1_2
 GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
-GeneratedTests.tanh_v1_dynamic
+GeneratedTests.tanh_v1_dynamic_nnfw
 GeneratedTests.tile_1
 GeneratedTests.tile_1_float16
 GeneratedTests.tile_1_quant8

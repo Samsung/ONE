@@ -207,6 +207,7 @@ private:
   IMPLEMENT(luci::CircleCustom)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
   IMPLEMENT(luci::CircleDiv)
+  IMPLEMENT(luci::CircleElu)
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleExpandDims)
   IMPLEMENT(luci::CircleFill)
@@ -237,6 +238,7 @@ private:
   IMPLEMENT(luci::CirclePow)
   IMPLEMENT(luci::CircleRange)
   IMPLEMENT(luci::CircleReduceAny)
+  IMPLEMENT(luci::CircleReduceMax)
   IMPLEMENT(luci::CircleReduceProd)
   IMPLEMENT(luci::CircleRelu)
   IMPLEMENT(luci::CircleRelu6)
@@ -249,6 +251,7 @@ private:
   IMPLEMENT(luci::CircleSlice)
   IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSpaceToBatchND)
+  IMPLEMENT(luci::CircleSpaceToDepth)
   IMPLEMENT(luci::CircleSplit)
   IMPLEMENT(luci::CircleSplitV)
   IMPLEMENT(luci::CircleSqrt)
@@ -453,6 +456,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDiv *node, locop::NodeS
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleElu *node, locop::NodeSummary &s) const
+{
+  s.args().append("features", tbl()->lookup(node->features()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -751,6 +761,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceAny *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceMax *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("axis", tbl()->lookup(node->axis()));
+  s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceProd *node,
                                        locop::NodeSummary &s) const
 {
@@ -846,6 +866,17 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSpaceToBatchND *node,
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("block_shape", tbl()->lookup(node->block_shape()));
   s.args().append("paddings", tbl()->lookup(node->paddings()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSpaceToDepth *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("block_size", pepper::str(node->block_size()));
 
   s.state(locop::NodeSummary::State::Complete);
 

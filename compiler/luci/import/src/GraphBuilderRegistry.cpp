@@ -39,6 +39,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                              // 108
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);    // 4
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                              // 42
+  CIRCLE_NODE(ELU, CircleEluGraphBuilder);                              // 111
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                          // 71
   CIRCLE_NODE(EXP, CircleExpGraphBuilder);                              // 47
   CIRCLE_NODE(EXPAND_DIMS, CircleExpandDimsGraphBuilder);               // 70
@@ -70,6 +71,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(POW, CirclePowGraphBuilder);                              // 78
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                          // 96
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                 // 91
+  CIRCLE_NODE(REDUCE_MAX, CircleReduceMaxGraphBuilder);                 // 82
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);               // 81
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                            // 19
   CIRCLE_NODE(RELU_N1_TO_1, CircleReluN1To1GraphBuilder);               // 20
@@ -81,6 +83,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                          // 65
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                      // 25
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);     // 38
+  CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);          // 26
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                          // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                       // 102
   CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                        // 92
@@ -111,7 +114,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_RELU6 = 21,
   // BuiltinOperator_RESIZE_BILINEAR = 23,
   // BuiltinOperator_RNN = 24,
-  // BuiltinOperator_SPACE_TO_DEPTH = 26,
   // BuiltinOperator_SVDF = 27,
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
   // BuiltinOperator_SKIP_GRAM = 30,
@@ -134,7 +136,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SQRT = 75,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
-  // BuiltinOperator_REDUCE_MAX = 82,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_SQUARE = 92,
@@ -145,7 +146,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ADD_N = 106,
   // BuiltinOperator_WHERE = 109,
   // BuiltinOperator_RANK = 110,
-  // BuiltinOperator_ELU = 111,
   // BuiltinOperator_REVERSE_SEQUENCE = 112,
   // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
