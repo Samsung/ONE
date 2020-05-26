@@ -597,6 +597,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for PAD
+  // There is no Option for PRELU
   // There is no Option for RELU
   // There is no Option for RELU6
   // There is no Option for RELU_N1_TO_1
