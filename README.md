@@ -1,10 +1,10 @@
-# ONE (On-device Neural Engine)
+# **ONE** (On-device Neural Engine)
 
 A high-performance, on-device neural network inference framework.
 
 ## Goal
 
-This project ONE aims at providing a high-performance, on-device neural network (NN) inference
+This project **ONE** aims at providing a high-performance, on-device neural network (NN) inference
 framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP or NPU.
 
 We develop a runtime that runs on a Linux kernel-based OS platform such as Ubuntu, Tizen, or 
@@ -24,7 +24,7 @@ as Tensorflow or PyTorch in a unified form at runtime.
 
 ## Feature Request
 
-You can suggest development of ONE's features that are not yet available.
+You can suggest development of **ONE**'s features that are not yet available.
 
 The functions requested so far can be checked in the [popular feature request](https://github.com/Samsung/ONE/issues?q=label%3AFEATURE_REQUEST+) list.
 
