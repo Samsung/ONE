@@ -868,7 +868,7 @@ void OperationExporter::visit(luci::CirclePow *node)
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreatePadOptions(builder);
+  auto options = CreatePowOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_PowOptions, options.Union());
   gd._operators.push_back(op_offset);
