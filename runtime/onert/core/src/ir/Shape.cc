@@ -102,9 +102,6 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
 
 bool haveUnspecifiedDims(const ir::Shape &shape)
 {
-  if (shape.rank() == 0)
-    return false;
-
   for (int n = 0; n < shape.rank(); n++)
     if (shape.dim(n) == 0)
       return true;
