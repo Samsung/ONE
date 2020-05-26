@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_CIRCLE_OPTIMIZER_UTILS_H
-#define LUCI_CIRCLE_OPTIMIZER_UTILS_H
+#ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
+#define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 
 #include <loco.h>
 
@@ -28,4 +28,4 @@ loco::DataType str_to_dtype(const std::string &);
 
 } // namespace luci
 
-#endif // LUCI_CIRCLE_OPTIMIZER_UTILS_H
+#endif // __LUCI_CIRCLE_OPTIMIZER_UTILS_H__

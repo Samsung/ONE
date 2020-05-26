@@ -20,8 +20,6 @@
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
 
-#include <oops/UserExn.h>
-
 #include <iostream>
 #include <cmath>
 
@@ -173,7 +171,7 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
 
       if (is_weights(circle_node))
       {
-        auto circle_const = dynamic_cast<luci::CircleConst *>(circle_node);
+        auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
 
         // Find min/max on the fly
         float min, max;
