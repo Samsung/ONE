@@ -68,6 +68,7 @@
 #include "Op/ReLU6.h"
 #include "Op/ReLUN1To1.h"
 #include "Op/Reshape.h"
+#include "Op/ResizeBilinear.h"
 #include "Op/ResizeNearestNeighbor.h"
 #include "Op/Rsqrt.h"
 #include "Op/Select.h"

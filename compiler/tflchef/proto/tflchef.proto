@@ -341,6 +341,10 @@ message ResizeNearestNeighborOptions {
   optional bool align_corners = 1 [default = false];
 }
 
+message ResizeBilinearOptions {
+  optional bool align_corners = 1 [default = false];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -407,7 +411,7 @@ message Operation {
   // L2NormOptions 158
   optional LocalResponseNormalizationOptions local_response_normalization_options = 159;
   // LSTMOptions 160
-  // ResizeBilinearOptions 161
+  optional ResizeBilinearOptions resize_bilinear_options = 161;
   // CallOptions 162
   // SkipGramOptions 163
   optional SpaceToDepthOptions space_to_depth_options = 164;
