@@ -117,7 +117,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 
-    for (const auto &ind : node.getInputs() + node.getOutputs())
+    for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
     {
       auto tensor = _tensor_builder->at(ind);
       if (tensor)

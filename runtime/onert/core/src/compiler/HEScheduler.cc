@@ -35,7 +35,7 @@ namespace compiler
 static uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operation &node)
 {
   uint32_t size = 0;
-  for (const auto &ind : node.getInputs() + node.getOutputs())
+  for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
   {
     size += graph.operands().at(ind).info().total_size();
   }
@@ -44,7 +44,7 @@ static uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::O
 
 static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
 {
-  for (const auto &input : node.getInputs())
+  for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
   {
     const auto &obj = graph.operands().at(input);
     if (obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)

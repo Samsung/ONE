@@ -37,7 +37,7 @@ void ConstantLoweringPass::callback(const OperationIndex &node_index, Operation 
   const auto factor = operand::PermuteFactor{backend, layout};
 
   // Now this runtime does not support the node making output of operation as constant
-  for (const auto input : node.getInputs() | Remove::DUPLICATED)
+  for (const auto input : node.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
   {
     auto &object = _graph.operands().at(input);
     if (object.isConstant())
