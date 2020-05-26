@@ -123,8 +123,8 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
   os << std::endl;
 
   // dump operands(tensors)
-  os << "Operands: T(subgraph index : tensor index) TYPE (shape) B(buffer index) OperandName"
-     << std::endl;
+  os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
+     << "B(buffer index) OperandName" << std::endl;
   for (uint32_t i = 0; i < tensors->Length(); ++i)
   {
     // TODO refactor to some better structure
@@ -137,6 +137,11 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     os << "T(" << reader.subgraph_index() << ":" << i << ") " << circleread::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
+    if (tensor->shape_signature())
+    {
+      std::vector<int32_t> dims_sig = circleread::as_index_vector(tensor->shape_signature());
+      os << "(" << dims_sig << ") ";
+    }
     os << "B(" << tensor->buffer() << ") ";
     os << circleread::tensor_name(tensor) << std::endl;
 
