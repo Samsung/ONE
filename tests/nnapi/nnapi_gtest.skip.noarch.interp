@@ -72,6 +72,7 @@ GeneratedTests.conv_quant8_overflow_weights_as_inputs
 GeneratedTests.conv_quant8_weights_as_inputs
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
+GeneratedTests.cos_ex_dynamic_nnfw
 GeneratedTests.depth_to_space_float_1
 GeneratedTests.depth_to_space_float_2
 GeneratedTests.depth_to_space_float_3
