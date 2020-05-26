@@ -657,7 +657,7 @@ OperationFactory::OperationFactory()
 
     operation::Transpose::Param param;
     param.perm.assign(perm.cbegin(), perm.cend());
-    param.rank = operands.at(inputs.at(0)).shape().rank();
+    param.rank = perm.size();
 
     return new operation::Transpose{inputs, outputs, param};
   };

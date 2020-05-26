@@ -266,3 +266,60 @@ TEST(ShapeInference, FullyConnected)
   ASSERT_EQ(infered_out_shape.dim(0), 36);
   ASSERT_EQ(infered_out_shape.dim(1), 3);
 }
+
+TEST(ShapeInference, Transpose)
+{
+  auto check = [&](Shape &in_shape, std::vector<int> perm, Shape &expected) {
+    // pre-conditions
+    ASSERT_EQ(in_shape.rank(), perm.size());
+    ASSERT_EQ(expected.rank(), perm.size());
+    auto inferred_out_shape = onert::shape_inference::inferTransposeShape(in_shape, perm);
+    // post-conditions
+    ASSERT_EQ(inferred_out_shape.rank(), perm.size());
+    for (int32_t dim = 0; dim < expected.rank(); dim++)
+    {
+      ASSERT_EQ(inferred_out_shape.dim(dim), expected.dim(dim));
+    }
+  };
+  // check for 2-D
+  {
+    Shape in_shape{2, 3};
+    std::vector<int> perm = {1, 0};
+    Shape expected{3, 2};
+    // int32_t rank = 2;
+    check(in_shape, perm, expected);
+  }
+  // check for 3-D
+  {
+    Shape in_shape{1, 2, 3};
+    std::vector<int> perm = {2, 0, 1};
+    Shape expected{3, 1, 2};
+    // int32_t rank = 3;
+    check(in_shape, perm, expected);
+  }
+  // check for 4-D
+  {
+    Shape in_shape{1, 2, 3, 4};
+    std::vector<int> perm = {1, 3, 0, 2};
+    Shape expected{2, 4, 1, 3};
+    // int32_t rank = 4;
+    check(in_shape, perm, expected);
+  }
+}
+
+TEST(ShapeInference, neg_Transpose)
+{
+  Shape in_shape{1, 2, 3};
+  // Invalid parameter size
+  {
+    std::vector<int> perm = {2, 0, 1, 0};
+    // int32_t rank = 3;
+    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm), std::runtime_error);
+  }
+  // Invalid parameter value
+  {
+    std::vector<int> perm = {2, 0, 3};
+    // int32_t rank = 3;
+    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm), std::runtime_error);
+  }
+}

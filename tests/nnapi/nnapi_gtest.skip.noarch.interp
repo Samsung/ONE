@@ -482,6 +482,7 @@ GeneratedTests.topk_v2_4
 GeneratedTests.topk_v2_5
 GeneratedTests.topk_v2_6
 GeneratedTests.transpose
+GeneratedTests.transpose_dynamic_nnfw
 GeneratedTests.transpose_2D_nnfw
 GeneratedTests.transpose_3D_nnfw
 GeneratedTests.transpose_float_1

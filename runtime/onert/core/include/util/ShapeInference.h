@@ -68,6 +68,8 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
 ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
                             ir::Layout layout = ir::Layout::NHWC);
 
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
+
 // TODO write op starting from N
 // TODO write op starting from P
 // TODO write op starting from R
@@ -116,6 +118,7 @@ private:
   void visit(const ir::operation::Reshape &op);
   // TODO write op starting from S
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Transpose &op);
   // TODO write op starting from U
   // TODO write op starting from Z
 
@@ -165,6 +168,7 @@ public:
   void visit(const ir::operation::Reshape &op);
   // TODO write op starting from S
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Transpose &op);
   // TODO write op starting from U
   // TODO write op starting from Z
 
