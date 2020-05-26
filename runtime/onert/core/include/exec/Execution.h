@@ -139,7 +139,7 @@ public:
    */
   bool isFinished(void) const;
 
-  const ir::Shape &getOutputShape(ir::IOIndex ind);
+  ir::Shape getOutputShape(ir::IOIndex ind) const;
 
 private:
   const std::unique_ptr<IExecutor> &primary_executor() const
@@ -153,7 +153,6 @@ private:
   IODescription _io_desc;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
-  std::unordered_map<ir::IOIndex, ir::Shape> _output_shapes;
 };
 
 } // namespace exec

@@ -235,7 +235,7 @@ bool ANeuralNetworksExecution::getOutputOperandRank(uint32_t index, uint32_t *ra
       return false;
     }
 
-    auto &shape = _execution->getOutputShape(output_index);
+    const auto shape = _execution->getOutputShape(output_index);
     *rank = shape.rank();
   }
   catch (const std::exception &e)
@@ -267,7 +267,7 @@ bool ANeuralNetworksExecution::getOutputOperandDimensions(uint32_t index, uint32
       return false;
     }
 
-    auto &shape = _execution->getOutputShape(output_index);
+    const auto shape = _execution->getOutputShape(output_index);
     for (int i = 0; i < shape.rank(); i++)
     {
       auto dim = shape.dim(i);

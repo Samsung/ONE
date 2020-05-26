@@ -113,8 +113,6 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   interp::Interpreter interp(std::move(interp_env));
   interp.run();
 
-  _execution_done = true;
-
   /*****************************************************************************
    * Invoked interpreter run is finished
    ****************************************************************************/
@@ -122,21 +120,6 @@ void InterpExecutor::execute(const exec::IODescription &desc)
   // If interpreter execute submodel
   //  1. Get tensor output of submodel into tensor_map to save result
   //  2. Generate new ExecEnv for next interpretation
-}
-
-void InterpExecutor::fillOutputShapes(std::unordered_map<ir::IOIndex, ir::Shape> *output_shapes)
-{
-  if (!_execution_done)
-    throw std::runtime_error("Cannot get the shape of output tensor before execution is done");
-
-  for (uint32_t n = 0; n < _graph.getOutputs().size(); n++)
-  {
-    ir::IOIndex index{n};
-    const auto output_index = _graph.getOutputs().at(index);
-    const auto &output = _graph.operands().at(output_index);
-
-    output_shapes->emplace(index, output.shape());
-  }
 }
 
 } // namespace interp

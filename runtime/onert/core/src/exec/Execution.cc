@@ -158,21 +158,14 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
-const ir::Shape &Execution::getOutputShape(ir::IOIndex ind)
+ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
   if (!isFinished())
     throw std::runtime_error("Cannot get output shape before execution is finished");
 
-  if (_output_shapes.size() == 0)
-  {
-    primary_executor()->fillOutputShapes(&_output_shapes);
-  }
+  const auto &output_desc = _io_desc.outputs.at(ind.value());
 
-  auto find = _output_shapes.find(ind);
-  if (find == _output_shapes.end())
-    throw std::runtime_error("Cannot get find requested output index");
-
-  return find->second;
+  return output_desc->info.shape();
 }
 
 } // namespace exec

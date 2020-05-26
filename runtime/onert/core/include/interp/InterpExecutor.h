@@ -39,7 +39,7 @@ class ITensor;
 class InterpExecutor final : public exec::IExecutor
 {
 public:
-  explicit InterpExecutor(const ir::Graph &graph) : _graph(graph), _execution_done(false)
+  explicit InterpExecutor(const ir::Graph &graph) : _graph(graph)
   {
     // DO NOTHING
   }
@@ -59,12 +59,9 @@ public:
    */
   void execute(const exec::IODescription &desc) final;
 
-  void fillOutputShapes(std::unordered_map<ir::IOIndex, ir::Shape> *output_shapes) override;
-
 private:
   const ir::Graph &_graph;
   ir::OperandIndexMap<std::shared_ptr<ITensor>> _tensor_map;
-  bool _execution_done;
 };
 
 } // namespace interp

@@ -24,8 +24,7 @@ namespace exec
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
                            const backend::TensorBuilderSet &tensor_builders)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex(),
-      _execution_done(false)
+    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
   auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
     std::vector<std::shared_ptr<backend::ITensor>> list;
@@ -157,19 +156,6 @@ void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Sha
                            "check if the tensor's backend supports dynamic tensor.");
 }
 
-void ExecutorBase::fillOutputShapes(std::unordered_map<ir::IOIndex, ir::Shape> *output_shapes)
-{
-  if (!_execution_done)
-    throw std::runtime_error("Cannot get the shape of output tensor before execution is done");
-
-  for (uint32_t n = 0; n < _output_tensors.size(); n++)
-  {
-    ir::IOIndex output_index{n};
-    auto shape = getShape(_output_tensors[n].get());
-    output_shapes->emplace(output_index, shape);
-  }
-}
-
 void ExecutorBase::execute()
 {
   // For thread-safe, use mutex
@@ -246,7 +232,12 @@ void ExecutorBase::execute(const IODescription &desc)
     {
       continue;
     }
-    const auto &output = *desc.outputs.at(n);
+    auto &output = *desc.outputs.at(n);
+
+    // set shape of outputDesc to tensor shape since tensor can be dynamic
+    const auto output_tensor_shape = getShape(_output_tensors[n].get());
+    output.info.shape(output_tensor_shape);
+
     sinks.at(n) =
         sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
 
@@ -254,8 +245,6 @@ void ExecutorBase::execute(const IODescription &desc)
 
     _output_tensors[n]->access(getter);
   }
-
-  _execution_done = true;
 }
 
 } // namespace exec
