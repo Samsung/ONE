@@ -37,7 +37,7 @@ Sooner or later, the maintainer will tag the `FEATURE_REQUEST` label and appear 
 
 We expect one of the most frequent feature requests would be the operator kernel implementation.
 It is good to make a request, but it is better if you contribute by yourself. See the following guide,
-[How to Implement Operator Kernel](docs/nnfw/howto/HowToAddNewOperation.md), for help.
+[How to add a new operation](docs/howto/how-to-add-a-new-operation.md), for help.
 
 We are looking forward to your participation.
 Thank you in advance!
