@@ -1,24 +1,33 @@
 # How To Introduce a New Operation Into Runtime
 
-## Index
-
-- [Core](#core)
-- [Frontend](#frontend)
-  + [Loaders](#loaders)
-    - [Base Loader](#base-loader)
-    - [TFLite Loader](#tflite-loader)
-    - [Circle Loader](#circle-loader)
-  + [NNAPI](#nnapi)
-- [Backend](#backend)
-  + [ShapeFixer](#shapefixer)
-  + [KernelGenerator](#kernelgenerator)
-  + [TensorRegister](#tensorregister-(in-some-cases))
-  + [Constantinitializer](#constantinitializer-(in-some-cases))
-- [Samples](#samples)
-
 **ONE**'s runtime has three main modules: **core**, **frontend** and **backend**. This document
 provides some lightweight guidance about how to introduce a new operation into these modules to make
 onert support the operation.
+
+## Index
+
+- [How To Introduce a New Operation Into Runtime](#how-to-introduce-a-new-operation-into-runtime)
+  - [Index](#index)
+  - [Core](#core)
+  - [Frontend](#frontend)
+    - [Loaders](#loaders)
+      - [Base Loader](#base-loader)
+      - [TFLite Loader](#tflite-loader)
+      - [Circle Loader](#circle-loader)
+    - [NNAPI](#nnapi)
+  - [Backend](#backend)
+    - [ShapeFixer](#shapefixer)
+      - [acl_cl](#acl_cl)
+      - [acl_neon](#acl_neon)
+      - [cpu](#cpu)
+    - [KernelGenerator](#kernelgenerator)
+      - [acl_cl](#acl_cl-1)
+      - [acl_neon](#acl_neon-1)
+      - [cpu](#cpu-1)
+    - [TensorRegister (in some cases)](#tensorregister-in-some-cases)
+    - [ConstantInitializer (in some cases)](#constantinitializer-in-some-cases)
+      - [cpu](#cpu-2)
+  - [Samples (to be updated)](#samples-to-be-updated)
 
 ## Core
 
