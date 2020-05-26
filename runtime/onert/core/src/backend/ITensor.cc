@@ -28,7 +28,7 @@ void setShape(ITensor *tensor, const ir::Shape &new_shape)
     tensor->dimension(i, new_shape.dim(i));
 }
 
-ir::Shape getShape(ITensor *tensor)
+ir::Shape getShape(const ITensor *tensor)
 {
   onert::ir::Shape shape(tensor->num_dimensions());
   for (uint32_t d = 0; d < tensor->num_dimensions(); d++)
