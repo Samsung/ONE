@@ -1,5 +1,8 @@
-[![Documentation
-Status](https://readthedocs.org/projects/nnfw/badge/?version=latest)](https://nnfw.readthedocs.io/en/latest/?badge=latest)
+[![GitHub release (latest
+SemVer)](https://img.shields.io/github/v/release/Samsung/ONE)](https://github.com/Samsung/ONE/releases)
+[![Documentation Status](https://readthedocs.org/projects/nnfw/badge/?version=latest)](https://nnfw.readthedocs.io/en/latest/?badge=latest)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Samsung/ONE?color=light%20green)
+[![Gitter](https://img.shields.io/gitter/room/Samsung/ONE?color=orange)](https://gitter.im/Samsung/ONE)
 
 # **ONE** (On-device Neural Engine)
 
