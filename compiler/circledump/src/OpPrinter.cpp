@@ -604,8 +604,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
-  _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] =
-      make_unique<ResizeBilinearPrinter>();
+  _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
   _op_map[circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
       make_unique<ResizeNearestNeighborPrinter>();
   // There is no Option for SELECT
