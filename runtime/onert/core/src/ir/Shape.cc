@@ -100,5 +100,13 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
   return backend_shape;
 }
 
+bool haveUnspecifiedDims(const ir::Shape &shape)
+{
+  for (int n = 0; n < shape.rank(); n++)
+    if (shape.dim(n) == 0)
+      return true;
+  return false;
+}
+
 } // namespace ir
 } // namespace onert

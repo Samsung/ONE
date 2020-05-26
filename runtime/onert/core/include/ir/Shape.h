@@ -96,6 +96,19 @@ inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() !
 
 Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout);
 
+/**
+* @brief Find out if tha rank in this shape is "maybe" unspecified.
+*        Note that when rank == 0, shape could represent scalar or unspecified rank
+* \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
+*/
+inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
+
+/**
+* @brief Find out if any dimension is unspecified. If the rank is not specified, it returns false.
+* \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
+*/
+bool haveUnspecifiedDims(const ir::Shape &shape);
+
 } // namespace ir
 } // namespace onert
 
