@@ -104,7 +104,7 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
 
 /**
-* @brief Find out if any dimension is unspecified.
+* @brief Find out if any dimension is unspecified. If the rank is not specified, it returns false.
 * \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
 */
 bool haveUnspecifiedDims(const ir::Shape &shape);
