@@ -6,6 +6,7 @@ set(SOURCES
     Interpreter.cpp
     KernelBuilder.h
     KernelBuilder.cpp
+    KernelMap.h
     TensorMap.h)
 
 add_library(luci_interpreter SHARED ${SOURCES})

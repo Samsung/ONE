@@ -30,8 +30,8 @@
 namespace luci_interpreter
 {
 
+class KernelMap;
 class TensorMap;
-class Kernel;
 
 class Interpreter
 {
@@ -48,10 +48,11 @@ public:
 
 private:
   void createTensors(const loco::Graph *graph);
-  void createExecutionSequence(const loco::Graph *main_graph);
+  void createKernels(const loco::Graph *graph);
 
+  const loco::Graph *_main_graph = nullptr;
   std::unique_ptr<TensorMap> _tensor_map;
-  std::vector<std::unique_ptr<Kernel>> _execution_sequence;
+  std::unique_ptr<KernelMap> _kernel_map;
 };
 
 } // namespace luci_interpreter
