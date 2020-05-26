@@ -43,30 +43,30 @@ using Shapes = std::vector<ir::Shape>;
 // Define shape calculation for operations. List them in alphabetic order.
 // Remove TODO when the function name matching the alphabet is added
 
-Shapes inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
-                         ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
+                            ir::Layout layout = ir::Layout::NHWC);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
 
-Shapes inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                        const ir::operation::Conv2D::Param &param,
-                        ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
+                           const ir::operation::Conv2D::Param &param,
+                           ir::Layout layout = ir::Layout::NHWC);
 
-Shapes inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                 const ir::operation::DepthwiseConv2D::Param &param,
-                                 ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
+                                    const ir::operation::DepthwiseConv2D::Param &param,
+                                    ir::Layout layout = ir::Layout::NHWC);
 
 ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
-Shapes inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
+ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
 // TODO write op starting from G
 // TODO write op starting from L
 
-Shapes inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                         ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
+                            ir::Layout layout = ir::Layout::NHWC);
 
 // TODO write op starting from N
 // TODO write op starting from P

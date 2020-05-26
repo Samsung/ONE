@@ -48,8 +48,7 @@ TEST(ShapeInference, Pool2DNodeSame)
   Padding padding{PaddingType::SAME};
 
   operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_shapes = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -58,8 +57,7 @@ TEST(ShapeInference, Pool2DNodeSame)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
   operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -75,8 +73,7 @@ TEST(ShapeInference, Pool2DNodeValid)
   Padding padding{PaddingType::VALID};
 
   operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_shapes = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -85,8 +82,7 @@ TEST(ShapeInference, Pool2DNodeValid)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
   operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -103,8 +99,7 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   Padding padding{4, 3, 2, 1};
 
   operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_shapes = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -113,8 +108,7 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
   operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -129,8 +123,7 @@ TEST(ShapeInference, Conv2D)
   Shape ker_shape{30, 3, 6, 20};
 
   operation::Conv2D::Param param{Stride{3, 7}, Padding{PaddingType::VALID}, Activation::NONE};
-  auto infered_shapes = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -139,8 +132,7 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 
   param = operation::Conv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -149,8 +141,7 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 
   param = operation::Conv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -166,9 +157,8 @@ TEST(ShapeInference, DepthwiseConv2D)
 
   operation::DepthwiseConv2D::Param param{Stride{3, 7}, Padding{PaddingType::VALID}, 3,
                                           Activation::NONE};
-  auto infered_shapes =
+  auto infered_out_shape =
       onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
-  auto infered_out_shape = infered_shapes[0];
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -178,8 +168,7 @@ TEST(ShapeInference, DepthwiseConv2D)
 
   param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, 3,
                                             Activation::NONE};
-  infered_shapes = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -188,8 +177,7 @@ TEST(ShapeInference, DepthwiseConv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
 
   param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, 3, Activation::NONE};
-  infered_shapes = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
-  infered_out_shape = infered_shapes[0];
+  infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -272,8 +260,7 @@ TEST(ShapeInference, FullyConnected)
 {
   Shape in_shape{3, 4, 5, 6};
   Shape ker_shape{3, 10};
-  auto infered_shapes = onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape);
-  auto infered_out_shape = infered_shapes[0];
+  auto infered_out_shape = onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape);
 
   ASSERT_EQ(infered_out_shape.rank(), 2);
   ASSERT_EQ(infered_out_shape.dim(0), 36);
