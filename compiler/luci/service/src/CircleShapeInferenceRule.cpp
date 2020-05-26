@@ -1670,7 +1670,7 @@ public:
       output_shape.dim(outdim_index++) = input_shape.dim(i);
     for (uint32_t i = 0; i < indices_shape.rank(); ++i)
       output_shape.dim(outdim_index++) = indices_shape.dim(i);
-    for (uint32_t i = axis + 1; i < indices_shape.rank(); ++i)
+    for (uint32_t i = axis + 1; i < input_shape.rank(); ++i)
       output_shape.dim(outdim_index++) = input_shape.dim(i);
 
     return loco::NodeShape{output_shape};
