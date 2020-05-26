@@ -343,6 +343,7 @@ GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
+GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw

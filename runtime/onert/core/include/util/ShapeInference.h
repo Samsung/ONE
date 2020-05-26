@@ -123,6 +123,7 @@ private:
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
+  void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
@@ -181,6 +182,7 @@ public:
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
+  void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
