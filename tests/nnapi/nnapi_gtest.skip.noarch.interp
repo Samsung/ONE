@@ -107,6 +107,7 @@ GeneratedTests.exp_1D_float_nnfw
 GeneratedTests.exp_2D_float_nnfw
 GeneratedTests.exp_3D_float_nnfw
 GeneratedTests.exp_4D_float_nnfw
+GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims
 GeneratedTests.expand_dims_2
 GeneratedTests.expand_dims_3

@@ -114,6 +114,7 @@ private:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
@@ -171,6 +172,7 @@ public:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
