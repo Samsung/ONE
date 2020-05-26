@@ -110,8 +110,8 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
   auto operators = reader.operators();
 
   // dump operands(tensors)
-  os << "Operands: T(subgraph index : tensor index) TYPE (shape) B(buffer index) OperandName"
-     << std::endl;
+  os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
+     << "B(buffer index) OperandName" << std::endl;
   for (uint32_t i = 0; i < tensors->Length(); ++i)
   {
     // TODO refactor to some better structure
@@ -124,6 +124,11 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
     os << "T(" << reader.subgraph_index() << ":" << i << ") " << tflread::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
+    if (tensor->shape_signature())
+    {
+      std::vector<int32_t> dims_sig = tflread::as_index_vector(tensor->shape_signature());
+      os << "(" << dims_sig << ") ";
+    }
     os << "B(" << tensor->buffer() << ") ";
     os << tflread::tensor_name(tensor) << std::endl;
 
