@@ -63,6 +63,7 @@
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
 #include "Nodes/CirclePow.h"
+#include "Nodes/CirclePRelu.h"
 #include "Nodes/CircleRange.h"
 #include "Nodes/CircleReduceAny.h"
 #include "Nodes/CircleReduceMax.h"
