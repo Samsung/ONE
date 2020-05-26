@@ -119,7 +119,7 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
       for (const auto op_idx : op_seq)
       {
         const auto &op = lowered_graph->graph().operations().at(op_idx);
-        for (const auto &index : op.getInputs() + op.getOutputs())
+        for (const auto &index : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
         {
           if (!tensor_builder->isRegistered(index))
           {

@@ -92,7 +92,7 @@ void Graph::initializeUseDef()
       operands().at(output).insertDef(index);
     }
 
-    auto inputs = node.getInputs();
+    auto inputs = node.getInputs() | ir::Remove::UNDEFINED;
     for (auto input : inputs)
     {
       operands().at(input).insertUse(index);

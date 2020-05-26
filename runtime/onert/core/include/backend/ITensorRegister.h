@@ -50,13 +50,13 @@ protected:
   virtual std::shared_ptr<ITensorBuilder> tensor_builder() const = 0;
 
 protected:
-#define OP(InternalName)                                         \
-  void visit(const ir::operation::InternalName &node) override   \
-  {                                                              \
-    for (const auto &ind : node.getInputs() + node.getOutputs()) \
-    {                                                            \
-      defaultRegisterTensorInfo(ind);                            \
-    }                                                            \
+#define OP(InternalName)                                                                   \
+  void visit(const ir::operation::InternalName &node) override                             \
+  {                                                                                        \
+    for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs()) \
+    {                                                                                      \
+      defaultRegisterTensorInfo(ind);                                                      \
+    }                                                                                      \
   }
 #include "ir/Operations.lst"
 #undef OP

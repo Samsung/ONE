@@ -333,12 +333,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
   for (const std::int32_t idx : *op->inputs())
   {
     // Optional tensors are not supported yet except for FULLY_CONNECTED.
-    auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-    if (isOptionalInputTensor(idx))
-      throw std::runtime_error(std::string("loader doesn't support optional input tensor yet for ")
-                                   .append(EnumNameBuiltinOperator(builtin_code)));
-
-    inputs.append(_tensor_to_operand[idx]);
+    auto check_optional_input = [&]() {
+      auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+      std::vector<BuiltinOperator> allowed = {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
+      if (isOptionalInputTensor(idx) &&
+          std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
+        throw std::runtime_error(
+            std::string("loader doesn't support optional input tensor yet for ")
+                .append(EnumNameBuiltinOperator(builtin_code)));
+    };
+    check_optional_input();
+    inputs.append(tensorIdxToOperandIdx(idx));
   }
 
   for (const std::int32_t idx : *op->outputs())

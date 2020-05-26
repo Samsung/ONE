@@ -77,7 +77,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
   auto &operations = graph.operations();
   uint32_t mismatches = 0;
   operations.iterate([&](const OperationIndex &index, const Operation &node) {
-    for (auto operand_index : node.getInputs())
+    for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &operand = graph.operands().at(operand_index);
       mismatches += (operand.getUses().contains(index) ? 0 : 1);

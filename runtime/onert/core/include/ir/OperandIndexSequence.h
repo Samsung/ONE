@@ -29,7 +29,8 @@ namespace ir
 
 enum class Remove
 {
-  DUPLICATED = 0x1
+  DUPLICATED = 1,
+  UNDEFINED = 2
 };
 
 class OperandIndexSequence
@@ -59,6 +60,14 @@ public:
         ir::OperandIndexSequence seq;
         for (const auto &ind : _vec)
           if (!seq.contains(ind))
+            seq.append(ind);
+        return seq;
+      }
+      case ir::Remove::UNDEFINED:
+      {
+        ir::OperandIndexSequence seq;
+        for (const auto &ind : _vec)
+          if (!ind.undefined())
             seq.append(ind);
         return seq;
       }
