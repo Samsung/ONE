@@ -76,6 +76,7 @@ public:
   void visit(luci::CircleIf *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
+  void visit(luci::CircleLocalResponseNormalization *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
@@ -639,6 +640,24 @@ void OperationExporter::visit(luci::CircleLess *node)
   auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
                                   circle::BuiltinOptions_LessOptions, options.Union());
 
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateLocalResponseNormalizationOptions(builder);
+
+  // Make LOCAL_RESPONSE_NORMALIZATION operator
+  auto op_offset =
+      CreateOperator(builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_LocalResponseNormalizationOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
