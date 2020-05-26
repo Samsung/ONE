@@ -16,19 +16,14 @@
 
 #include "onert-native-internal.h"
 
-namespace {
+namespace
+{
 
 std::unordered_map<nnfw_session *, jni::TempOutputMap> g_sess_2_output;
 
-inline nnfw_session *getSession(Handle handle)
-{
-  return reinterpret_cast<nnfw_session *>(handle);
-}
+inline nnfw_session *getSession(Handle handle) { return reinterpret_cast<nnfw_session *>(handle); }
 
-inline jni::SessionMap &getSessionMap()
-{
-  return g_sess_2_output;
-}
+inline jni::SessionMap &getSessionMap() { return g_sess_2_output; }
 
 inline bool containsInTempOutput(nnfw_session *sess)
 {
@@ -41,10 +36,7 @@ inline bool containsInTempOutput(Handle handle)
   return containsInTempOutput(sess);
 }
 
-inline jni::TempOutputMap &getTempOutputMap(nnfw_session *sess)
-{
-  return g_sess_2_output.at(sess);
-}
+inline jni::TempOutputMap &getTempOutputMap(nnfw_session *sess) { return g_sess_2_output.at(sess); }
 
 inline jni::TempOutputMap &getTempOutputMap(Handle handle)
 {
@@ -55,7 +47,8 @@ inline jni::TempOutputMap &getTempOutputMap(Handle handle)
 size_t getByteSizeOfDataType(NNFW_TYPE dtype)
 {
   size_t size = 0;
-  switch (dtype) {
+  switch (dtype)
+  {
     case NNFW_TYPE_TENSOR_FLOAT32:
     case NNFW_TYPE_TENSOR_INT32:
       size = 4;
@@ -83,7 +76,8 @@ size_t getByteSize(const nnfw_tensorinfo &tensor_info)
 
 } // namespace
 
-namespace jni {
+namespace jni
+{
 
 Handle createSession()
 {
@@ -122,13 +116,15 @@ bool run(Handle handle)
 bool setInput(Handle handle, const TensorParams &params)
 {
   nnfw_session *sess = getSession(handle);
-  return (nnfw_set_input(sess, params.index, params.type, params.buffer, params.buffer_size) == NNFW_STATUS_NO_ERROR);
+  return (nnfw_set_input(sess, params.index, params.type, params.buffer, params.buffer_size) ==
+          NNFW_STATUS_NO_ERROR);
 }
 
 bool setOutput(Handle handle, TensorParams &params)
 {
   nnfw_session *sess = getSession(handle);
-  return (nnfw_set_output(sess, params.index, params.type, params.buffer, params.buffer_size) == NNFW_STATUS_NO_ERROR);
+  return (nnfw_set_output(sess, params.index, params.type, params.buffer, params.buffer_size) ==
+          NNFW_STATUS_NO_ERROR);
 }
 
 bool setInputLayout(Handle handle, const LayoutParams &params)
@@ -193,9 +189,9 @@ bool newTempOutputBuf(Handle handle, uint32_t index)
 
   if (containsInTempOutput(sess) == false)
   {
-     TempOutputMap tom;
-     tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, tensor_info.dtype});
-     getSessionMap().emplace(sess, tom);
+    TempOutputMap tom;
+    tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, tensor_info.dtype});
+    getSessionMap().emplace(sess, tom);
   }
   else
   {

@@ -18,7 +18,8 @@
 
 #include <android/log.h>
 
-namespace {
+namespace
+{
 
 // android log tag
 const char *TAG = "ONERT_NATIVE";
@@ -36,30 +37,34 @@ ReflectInfo g_cached_reflect_info;
 jboolean cacheReflectInfo(JNIEnv *env)
 {
   jclass info_cls = env->FindClass("com/samsung/onert/NativeSessionWrapper$InternalTensorInfo");
-  if (info_cls == nullptr) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] java info class is failed", __PRETTY_FUNCTION__);
+  if (info_cls == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] java info class is failed",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   jfieldID type_fld = env->GetFieldID(info_cls, "type", "I");
-  if (type_fld == nullptr) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] TensorInfo's type field id is failed", __PRETTY_FUNCTION__);
+  if (type_fld == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] TensorInfo's type field id is failed",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   jfieldID rank_fld = env->GetFieldID(info_cls, "rank", "I");
-  if (rank_fld == nullptr) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] TensorInfo's rank field id is failed", __PRETTY_FUNCTION__);
+  if (rank_fld == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] TensorInfo's rank field id is failed",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   jfieldID shape_fld = env->GetFieldID(info_cls, "shape", "[I");
-  if (shape_fld == nullptr) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] TensorInfo's shape field id is failed", __PRETTY_FUNCTION__);
+  if (shape_fld == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] TensorInfo's shape field id is failed",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
@@ -73,7 +78,8 @@ jboolean cacheReflectInfo(JNIEnv *env)
 
 } // namespace
 
-namespace jni_helper {
+namespace jni_helper
+{
 
 jboolean verifyHandle(jlong handle)
 {
@@ -85,18 +91,21 @@ jboolean verifyHandle(jlong handle)
   return JNI_TRUE;
 }
 
-jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jint jbufsize, jni::TensorParams &params)
+jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jint jbufsize,
+                         jni::TensorParams &params)
 {
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   params.index = static_cast<uint32_t>(jindex);
 
   if (jtype < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] type(%d) is wrong", __PRETTY_FUNCTION__, jtype);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] type(%d) is wrong", __PRETTY_FUNCTION__,
+                        jtype);
     return JNI_FALSE;
   }
   params.type = static_cast<NNFW_TYPE>(jtype);
@@ -111,7 +120,8 @@ jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jin
 
   if (jbufsize < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] length(%d) is wrong", __PRETTY_FUNCTION__, jbufsize);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] length(%d) is wrong", __PRETTY_FUNCTION__,
+                        jbufsize);
     return JNI_FALSE;
   }
   params.buffer_size = static_cast<size_t>(jbufsize);
@@ -123,14 +133,16 @@ jboolean getTensorParams(jint jindex, jint jtype, jlong handle, jni::TensorParam
 {
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   auto index = static_cast<uint32_t>(jindex);
 
   if (jtype < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] type(%d) is wrong", __PRETTY_FUNCTION__, jtype);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] type(%d) is wrong", __PRETTY_FUNCTION__,
+                        jtype);
     return JNI_FALSE;
   }
   auto type = static_cast<NNFW_TYPE>(jtype);
@@ -138,7 +150,8 @@ jboolean getTensorParams(jint jindex, jint jtype, jlong handle, jni::TensorParam
   const jni::TempOutput *to = jni::getTempOutputBuf(handle, index);
   if (to == nullptr)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed to get TempOutput", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed to get TempOutput",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
@@ -154,14 +167,16 @@ jboolean getLayoutParams(jint jindex, jint jlayout, jni::LayoutParams &params)
 {
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   params.index = static_cast<uint32_t>(jindex);
 
   if (jlayout < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] layout(%d) is wrong", __PRETTY_FUNCTION__, jlayout);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] layout(%d) is wrong", __PRETTY_FUNCTION__,
+                        jlayout);
     return JNI_FALSE;
   }
   params.layout = static_cast<NNFW_LAYOUT>(jlayout);
@@ -175,8 +190,7 @@ jboolean setTensorInfoToJava(JNIEnv *env, const nnfw_tensorinfo &tensor_info, jo
   {
     if (cacheReflectInfo(env) == JNI_FALSE)
     {
-      __android_log_print(ANDROID_LOG_ERROR, TAG,
-                          "%s] failed", __PRETTY_FUNCTION__);
+      __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed", __PRETTY_FUNCTION__);
       return JNI_FALSE;
     }
   }
@@ -193,11 +207,11 @@ jboolean setTensorInfoToJava(JNIEnv *env, const nnfw_tensorinfo &tensor_info, jo
 
   jfieldID shape_fld = g_cached_reflect_info.shape;
   jintArray jshape = env->NewIntArray(jrank);
-  if (jshape == nullptr) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] TensorInfo's shape[] allocation is failed", __PRETTY_FUNCTION__);
+  if (jshape == nullptr)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] TensorInfo's shape[] allocation is failed",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
-
   }
   env->SetIntArrayRegion(jshape, 0, jrank, (tensor_info.dims));
   env->SetObjectField(jinfo, shape_fld, jshape);
@@ -209,14 +223,15 @@ jboolean getInputTensorInfo(jlong handle, jint jindex, jni::TensorInfo &info)
 {
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   auto index = static_cast<uint32_t>(jindex);
 
-  if (jni::getInputTensorInfo(handle, index, info) == false) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+  if (jni::getInputTensorInfo(handle, index, info) == false)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
@@ -227,14 +242,15 @@ jboolean getOutputTensorInfo(jlong handle, jint jindex, jni::TensorInfo &info)
 {
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   auto index = static_cast<uint32_t>(jindex);
 
-  if (jni::getOutputTensorInfo(handle, index, info) == false) {
-    __android_log_print(ANDROID_LOG_ERROR, TAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+  if (jni::getOutputTensorInfo(handle, index, info) == false)
+  {
+    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 

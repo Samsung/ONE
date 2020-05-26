@@ -31,7 +31,8 @@ typedef long Handle;
 typedef long long Handle;
 #endif
 
-namespace jni {
+namespace jni
+{
 
 // for output temp tensor
 struct TempOutput

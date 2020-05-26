@@ -20,10 +20,12 @@
 
 #include "onert-native-internal.h"
 
-namespace jni_helper {
+namespace jni_helper
+{
 
 jboolean verifyHandle(jlong handle);
-jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jint jbufsize, jni::TensorParams &params);
+jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jint jbufsize,
+                         jni::TensorParams &params);
 jboolean getTensorParams(jint jindex, jint jtype, jlong handle, jni::TensorParams &params);
 jboolean getLayoutParams(jint jindex, jint jlayout, jni::LayoutParams &params);
 jboolean setTensorInfoToJava(JNIEnv *env, const nnfw_tensorinfo &tensor_info, jobject jinfo);

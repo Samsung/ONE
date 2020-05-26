@@ -21,27 +21,29 @@
 #include "onert-native-internal.h"
 #include "onert-native-helper.h"
 
-namespace {
+namespace
+{
 
 // android log tag
 const char *JTAG = "ONERT_NATIVE";
 
 } // namespace
 
-JNIEXPORT jlong JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCreateSession
-  (JNIEnv *, jobject)
+JNIEXPORT jlong JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCreateSession(JNIEnv *,
+                                                                                        jobject)
 {
   Handle sess = jni::createSession();
   if (sess == 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] nnfw_create_session is failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] nnfw_create_session is failed",
+                        __PRETTY_FUNCTION__);
   }
   return sess;
 }
 
-JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCloseSession
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCloseSession(JNIEnv *,
+                                                                                      jobject,
+                                                                                      jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return;
@@ -49,14 +51,15 @@ JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeCloseSe
   jni::closeSession(handle);
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeLoadModelFromFile
-  (JNIEnv *env, jobject, jlong handle, jstring jnnpkg_path)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeLoadModelFromFile(
+    JNIEnv *env, jobject, jlong handle, jstring jnnpkg_path)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   const char *nnpkg_path = env->GetStringUTFChars(jnnpkg_path, 0);
-  __android_log_print(ANDROID_LOG_DEBUG, JTAG, "%s] nnpkg_path: %s", __PRETTY_FUNCTION__, nnpkg_path);
+  __android_log_print(ANDROID_LOG_DEBUG, JTAG, "%s] nnpkg_path: %s", __PRETTY_FUNCTION__,
+                      nnpkg_path);
 
   bool result = jni::loadModel(handle, nnpkg_path);
 
@@ -64,48 +67,46 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeLoa
 
   if (result == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativePrepare
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativePrepare(JNIEnv *,
+                                                                                     jobject,
+                                                                                     jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   if (jni::prepare(handle) == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeRun(JNIEnv *, jobject,
+                                                                                 jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   if (jni::run(handle) == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInput
-  (JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInput(
+    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   jni::TensorParams params;
   if (jni_helper::getTensorParams(env, jindex, jtype, jbuf, jbufsize, params) == JNI_FALSE)
@@ -115,22 +116,24 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   }
 
   __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d), type(%d), buf(%p), buf_sz(%lu)",
-                      __PRETTY_FUNCTION__, params.index, params.type, params.buffer, params.buffer_size);
+                      __PRETTY_FUNCTION__, params.index, params.type, params.buffer,
+                      params.buffer_size);
 
   if (jni::setInput(handle, params) == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setOutput", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setOutput",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput
-  (JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput(
+    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   // NOTE nativeNewTempOutputBuf should be done before setOutput
 
@@ -142,22 +145,24 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   }
 
   __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d), type(%d), buf(%p), buf_sz(%lu)",
-                      __PRETTY_FUNCTION__, params.index, params.type, params.buffer, params.buffer_size);
+                      __PRETTY_FUNCTION__, params.index, params.type, params.buffer,
+                      params.buffer_size);
 
   if (jni::setOutput(handle, params) == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setOutput", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setOutput",
+                        __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInputLayout
-  (JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetInputLayout(
+    JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   jni::LayoutParams params;
   if (jni_helper::getLayoutParams(jindex, jlayout, params) == JNI_FALSE)
@@ -175,11 +180,11 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutputLayout
-  (JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutputLayout(
+    JNIEnv *, jobject, jlong handle, jint jindex, jint jlayout)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   jni::LayoutParams params;
   if (jni_helper::getLayoutParams(jindex, jlayout, params) == JNI_FALSE)
@@ -197,11 +202,12 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
   return JNI_TRUE;
 }
 
-JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputSize
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputSize(JNIEnv *,
+                                                                                      jobject,
+                                                                                      jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return -1; 
+    return -1;
 
   int size = 0;
   if ((size = jni::getInputSize(handle)) < 0)
@@ -213,11 +219,12 @@ JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInpu
   return static_cast<jint>(size);
 }
 
-JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputSize
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputSize(JNIEnv *,
+                                                                                       jobject,
+                                                                                       jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return -1; 
+    return -1;
 
   int size = 0;
   if ((size = jni::getOutputSize(handle)) < 0)
@@ -229,11 +236,11 @@ JNIEXPORT jint JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutp
   return static_cast<jint>(size);
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetAvailableBackends
-  (JNIEnv *env, jobject, jlong handle, jstring jbackends)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetAvailableBackends(
+    JNIEnv *env, jobject, jlong handle, jstring jbackends)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   const char *backends = env->GetStringUTFChars(jbackends, 0);
   __android_log_print(ANDROID_LOG_DEBUG, JTAG, "%s] backends: %s", __PRETTY_FUNCTION__, backends);
@@ -244,70 +251,66 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 
   if (result == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo
-  (JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetInputTensorInfo(
+    JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   jni::TensorInfo tensor_info;
   if (jni_helper::getInputTensorInfo(handle, jindex, tensor_info) == JNI_FALSE)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   if (jni_helper::setTensorInfoToJava(env, tensor_info, jinfo) == JNI_FALSE)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo
-  (JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputTensorInfo(
+    JNIEnv *env, jobject, jlong handle, jint jindex, jobject jinfo)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   jni::TensorInfo tensor_info;
   if (jni_helper::getOutputTensorInfo(handle, jindex, tensor_info) == JNI_FALSE)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   if (jni_helper::setTensorInfoToJava(env, tensor_info, jinfo) == JNI_FALSE)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                        "%s] failed", __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeNewTempOutputBuf
-  (JNIEnv *env, jobject thiz, jlong handle, jint jindex)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeNewTempOutputBuf(
+    JNIEnv *env, jobject thiz, jlong handle, jint jindex)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   auto index = static_cast<uint32_t>(jindex);
@@ -319,21 +322,23 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeNew
   }
 
   const jni::TempOutput *to = jni::getTempOutputBuf(handle, index);
-  __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] new TempOutputBuf for #(%u) on buf(%p) bufsize(%lu)",
-                              __PRETTY_FUNCTION__, index, to->buf, to->bufsize);
-  
+  __android_log_print(ANDROID_LOG_ERROR, JTAG,
+                      "%s] new TempOutputBuf for #(%u) on buf(%p) bufsize(%lu)",
+                      __PRETTY_FUNCTION__, index, to->buf, to->bufsize);
+
   return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteTempOutputBuf
-  (JNIEnv *, jobject, jlong handle, jint jindex)
+JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteTempOutputBuf(
+    JNIEnv *, jobject, jlong handle, jint jindex)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return JNI_FALSE;
   }
   auto index = static_cast<size_t>(jindex);
@@ -347,11 +352,11 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDel
   return JNI_TRUE;
 }
 
-JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteAllTempOutputBuf
-  (JNIEnv *, jobject, jlong handle)
+JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteAllTempOutputBuf(
+    JNIEnv *, jobject, jlong handle)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return; 
+    return;
 
   int output_size = jni::getOutputSize(handle);
   for (int i = 0; i < output_size; ++i)
@@ -364,15 +369,16 @@ JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteA
   }
 }
 
-JNIEXPORT jobject JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputBuf
-  (JNIEnv *env, jobject, jlong handle, jint jindex)
+JNIEXPORT jobject JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputBuf(
+    JNIEnv *env, jobject, jlong handle, jint jindex)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE; 
+    return JNI_FALSE;
 
   if (jindex < 0)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__, jindex);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
+                        jindex);
     return nullptr;
   }
   auto index = static_cast<size_t>(jindex);
@@ -384,5 +390,5 @@ JNIEXPORT jobject JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetO
     return nullptr;
   }
 
-  return env->NewDirectByteBuffer(static_cast<void*>(to->buf), static_cast<jlong>(to->bufsize));
+  return env->NewDirectByteBuffer(static_cast<void *>(to->buf), static_cast<jlong>(to->bufsize));
 }
