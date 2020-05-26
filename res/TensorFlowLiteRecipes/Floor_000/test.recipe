@@ -1,0 +1,17 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operation {
+  type: "Floor"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
