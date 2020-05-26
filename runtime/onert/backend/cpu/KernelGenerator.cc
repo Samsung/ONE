@@ -297,7 +297,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto weight_alloc = _tensor_builder->at(weight_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  auto bias_alloc = bias_index.undefined() ? nullptr : _tensor_builder->at(bias_index).get();
 
   auto fn = std::make_unique<::onert::backend::cpu::kernel::FullyConnectedLayer>();
 

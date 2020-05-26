@@ -59,8 +59,11 @@ void ConstantInitializer::visit(const ir::operation::FullyConnected &node)
   registerCopyInitializer(weight_index, weight_obj);
 
   const auto &bias_index = node.getInputs().at(ir::operation::FullyConnected::BIAS);
-  const auto &bias_obj = _operands.at(bias_index);
-  registerCopyInitializer(bias_index, bias_obj);
+  if (!bias_index.undefined())
+  {
+    const auto &bias_obj = _operands.at(bias_index);
+    registerCopyInitializer(bias_index, bias_obj);
+  }
 }
 
 } // namespace cpu

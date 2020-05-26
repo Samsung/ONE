@@ -81,7 +81,9 @@ inline nnfw::cker::Shape convertToExtendedCkerShape(const operand::Tensor *tenso
 
 inline nnfw::cker::Shape convertTensorToCkerShape(const operand::Tensor *tensor)
 {
-  assert(tensor);
+  if (tensor == nullptr)
+    return nnfw::cker::Shape();
+
   assert(tensor->layout() == ir::Layout::NHWC);
   std::vector<int32_t> raw_shape;
   raw_shape.resize(tensor->num_dimensions());

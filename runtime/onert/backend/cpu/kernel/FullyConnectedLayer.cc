@@ -50,8 +50,8 @@ void FullyConnectedLayer::fullyConnectedFloat32()
       op_params, convertTensorToCkerShape(_input),
       reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_weights),
       reinterpret_cast<const float *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const float *>(_bias->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<float *>(_output->buffer()));
+      reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 // executionMutex is used to protect concurrent access of non-threadsafe resources
@@ -81,8 +81,8 @@ void FullyConnectedLayer::fullyConnectedQuant8()
       op_params, convertTensorToCkerShape(_input),
       reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_weights),
       reinterpret_cast<const uint8_t *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const int32_t *>(_bias->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<uint8_t *>(_output->buffer()));
+      reinterpret_cast<const int32_t *>(_bias ? _bias->buffer() : nullptr),
+      convertTensorToCkerShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void FullyConnectedLayer::fullyConnectedHybrid()
@@ -101,8 +101,8 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       op_params, convertTensorToCkerShape(_input),
       reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_weights),
       reinterpret_cast<const int8_t *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const float *>(_bias->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
 }
 
 void FullyConnectedLayer::configure(const operand::Tensor *input, const operand::Tensor *weights,
