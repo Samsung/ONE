@@ -1,6 +1,6 @@
 # How to Contribute
 
-_ONE_ always welcomes your contribution, but there are basic guidelines that you should follow in
+**ONE** always welcomes your contribution, but there are basic guidelines that you should follow in
 order to make your contribution be accepted.
 
 This document explains such guidelines for beginners.
@@ -17,7 +17,7 @@ This section explains the steps to create a pull request (PR).
 1. Create an issue
 
    Maintainers will accept your contribution only when it is well aligned with the 
-   [roadmap](./overview/roadmap.md) and design principles of _ONE_. So, it is optional, but 
+   [roadmap](./overview/roadmap.md) and design principles of **ONE**. So, it is optional, but 
    recommended for contributors to create an issue and have a discussion with maintainers before 
    writing code.
 
@@ -39,7 +39,7 @@ This section explains the steps to create a pull request (PR).
 
 1. Check code format locally
 
-   _ONE_ has its code formatting rules, and any pull request that violates these rules will be
+   **ONE** has its code formatting rules, and any pull request that violates these rules will be
    **rejected** by CI. So, it is optional, but recommended for contributor to check code format
    locally before submission.
 
