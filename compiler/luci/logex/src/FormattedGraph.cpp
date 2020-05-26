@@ -840,7 +840,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeNearestNeighbor *
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("size", tbl()->lookup(node->size()));
   s.args().append("align_corners", node->align_corners() ? "true" : "false");
-  s.state(locop::NodeSummary::State::PartiallyKnown);
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 
