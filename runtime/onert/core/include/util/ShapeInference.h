@@ -109,14 +109,17 @@ private:
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
+  void visit(const ir::operation::If &op);
   // TODO write op starting from L
   // TODO write op starting from M
   // TODO write op starting from N
-  // TODO write op starting from P
+  void visit(const ir::operation::Permute &op);
+  // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
+  void visit(const ir::operation::While &op);
   // TODO write op starting from Z
 
 private:
@@ -161,7 +164,8 @@ public:
   // TODO write op starting from L
   // TODO write op starting from M
   // TODO write op starting from N
-  // TODO write op starting from P
+  void visit(const ir::operation::Permute &op);
+  // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
