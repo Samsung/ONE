@@ -599,7 +599,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLeakyRelu *node,
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalization *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalization *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("radius", pepper::str(node->radius()));
