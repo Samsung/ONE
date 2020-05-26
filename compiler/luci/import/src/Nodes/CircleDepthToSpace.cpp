@@ -42,7 +42,7 @@ bool CircleDepthToSpaceGraphBuilder::validate(const ValidateArgs &args) const
 
   if (tensors[outputs[0]]->type != tensors[inputs[0]]->type)
   {
-  return false;
+    return false;
   }
 
   if (options->block_size < 2)

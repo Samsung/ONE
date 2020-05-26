@@ -10,7 +10,7 @@ operand {
 }
 operation {
   type: "DepthToSpace"
-  space_to_depth_options {
+  depth_to_space_options {
     block_size: 2
   }
   input: "ifm"

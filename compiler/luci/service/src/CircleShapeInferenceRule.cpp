@@ -530,7 +530,7 @@ public:
     return loco::NodeShape{shape};
   }
 
- loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
+  loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
     LUCI_ASSERT(input_shape.rank() == 4, "Only input rank 4 is supported");

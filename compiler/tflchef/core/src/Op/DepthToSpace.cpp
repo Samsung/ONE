@@ -36,8 +36,7 @@ flatbuffers::Offset<void> DepthToSpaceChef::value(flatbuffers::FlatBufferBuilder
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef>
-DepthToSpaceChefFactory::create(const tflchef::Operation *operation) const
+std::unique_ptr<OpChef> DepthToSpaceChefFactory::create(const tflchef::Operation *operation) const
 {
   return std::unique_ptr<OpChef>{new DepthToSpaceChef{operation}};
 }
