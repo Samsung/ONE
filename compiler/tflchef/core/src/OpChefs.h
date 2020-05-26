@@ -42,6 +42,7 @@
 #include "Op/Greater.h"
 #include "Op/GreaterEqual.h"
 #include "Op/If.h"
+#include "Op/L2Normalize.h"
 #include "Op/LeakyRelu.h"
 #include "Op/Less.h"
 #include "Op/LocalResponseNormalization.h"
