@@ -34,7 +34,7 @@ test_node_input = dynamic_layer.getTestNodeInput() # first input of Add is dynam
 
 # model definition
 i2 = Input("op2", "TENSOR_FLOAT32", "{1, 4}") # second input of Add. 4 float32s
-t1 = Internal("op3", "TENSOR_FLOAT32", "{}") # result of first Add1. dynamic and shape is not known
+t1 = Internal("op3", "TENSOR_FLOAT32", "{}") # result of first Add. dynamic and shape is not known
 act = Int32Scalar("act", 0) # an int32_t scalar activation
 o1 = Output("op3", "TENSOR_FLOAT32", "{3, 4}")
 
