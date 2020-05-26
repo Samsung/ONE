@@ -51,3 +51,9 @@ TEST_F(ValidationTestSessionCreated, neg_run_001)
   // nnfw_load_model_from_file and nnfw_prepare was not called
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSessionCreated, neg_set_input_001)
+{
+  // Invalid state
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+}
