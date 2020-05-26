@@ -158,5 +158,15 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
+ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
+{
+  if (!isFinished())
+    throw std::runtime_error("Cannot get output shape before execution is finished");
+
+  const auto &output_desc = _io_desc.outputs.at(ind.value());
+
+  return output_desc->info.shape();
+}
+
 } // namespace exec
 } // namespace onert

@@ -232,7 +232,13 @@ void ExecutorBase::execute(const IODescription &desc)
     {
       continue;
     }
-    const auto &output = *desc.outputs.at(n);
+    auto &output = *desc.outputs.at(n);
+
+    // set shape of outputDesc to tensor shape since tensor can be dynamic
+    const auto output_tensor_shape = getShape(_output_tensors[n].get());
+    output.info.shape(
+        convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
+
     sinks.at(n) =
         sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
 

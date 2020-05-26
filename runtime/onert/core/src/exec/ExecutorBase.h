@@ -22,6 +22,7 @@
 #include "Source.h"
 #include "exec/ExecutionObservers.h"
 #include "Sink.h"
+#include "ShapeConverter.h"
 #include "exec/IExecutor.h"
 #include "ir/LoweredGraph.h"
 #include "ir/LowerInfoMap.h"
@@ -116,11 +117,12 @@ private:
     const auto &operand = _graph.operands().at(operand_index);
     const auto tensor = _output_tensors[index.value()];
     const auto tensor_layout = tensor->layout();
+    const auto tensor_shape = convertShape(getShape(tensor.get()), tensor->layout(), io_layout);
 
     if (((tensor_layout == ir::Layout::NCHW) && (io_layout == ir::Layout::NHWC)) ||
         ((tensor_layout == ir::Layout::NHWC) && (io_layout == ir::Layout::NCHW)))
     {
-      return std::make_unique<PermutateSink<T>>(buffer, length, operand.shape(), io_layout);
+      return std::make_unique<PermutateSink<T>>(buffer, length, tensor_shape, io_layout);
     }
     // TODO Change this to return error
     assert(io_layout != ir::Layout::UNKNOWN ||

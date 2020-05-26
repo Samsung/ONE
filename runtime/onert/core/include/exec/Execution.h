@@ -139,6 +139,8 @@ public:
    */
   bool isFinished(void) const;
 
+  ir::Shape getOutputShape(ir::IOIndex ind) const;
+
 private:
   const std::unique_ptr<IExecutor> &primary_executor() const
   {
