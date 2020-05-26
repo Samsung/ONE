@@ -1062,6 +1062,16 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CirclePRelu *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto alpha_shape = loco::shape_get(node->alpha()).as<loco::TensorShape>();
+
+    auto output_shape = broadcast_shape(input_shape, alpha_shape);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleRange *node) final
   {
     loco::TensorShape output_shape;
