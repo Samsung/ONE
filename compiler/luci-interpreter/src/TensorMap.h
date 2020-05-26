@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_TENSORMAP_H
 #define LUCI_INTERPRETER_TENSORMAP_H
 
-#include "core/Tensor.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <loco/IR/Node.forward.h>
 

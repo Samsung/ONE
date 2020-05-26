@@ -19,13 +19,11 @@
 
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
-#include "core/Tensor.h"
 
 #include <memory>
 
 namespace luci_interpreter
 {
-
 namespace kernels
 {
 

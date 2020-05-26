@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_CORE_TENSOR_H
 #define LUCI_INTERPRETER_CORE_TENSOR_H
 
-#include "core/DataType.h"
+#include "luci_interpreter/core/DataType.h"
 
 #include <cassert>
 #include <cstddef>

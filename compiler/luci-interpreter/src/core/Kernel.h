@@ -17,6 +17,8 @@
 #ifndef LUCI_INTERPRETER_CORE_KERNEL_H
 #define LUCI_INTERPRETER_CORE_KERNEL_H
 
+#include "luci_interpreter/core/Tensor.h"
+
 namespace luci_interpreter
 {
 

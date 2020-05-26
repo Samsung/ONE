@@ -18,11 +18,9 @@
 #define LUCI_INTERPRETER_KERNELS_RESHAPE_H
 
 #include "core/Kernel.h"
-#include "core/Tensor.h"
 
 namespace luci_interpreter
 {
-
 namespace kernels
 {
 
