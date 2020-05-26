@@ -14,3 +14,5 @@ target_include_directories(record-minmax PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(record-minmax ${Boost_LIBRARIES})
 target_link_libraries(record-minmax safemain)
+target_link_libraries(record-minmax luci_import)
+target_link_libraries(record-minmax luci_export)

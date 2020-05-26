@@ -4,7 +4,7 @@ _record-minmax_ is a tool to embed min/max values of activations to the circle m
 
 ## Usage
 
-This will run with the path to the input model (.circle), input data (.h5), and the output model (.circle).
+This will run with the path to the input model (.circle), a pack of input data (.h5), and the output model (.circle).
 
 ```
 $ ./record-minmax <path_to_input_model> <path_to_input_data> <path_to_output_model>

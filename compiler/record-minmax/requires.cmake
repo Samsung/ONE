@@ -1,1 +1,2 @@
+require("luci")
 require("safemain")

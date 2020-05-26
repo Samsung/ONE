@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-#include "Args.h"
-#include "RecordMinMax.h"
+#include "CircleExpContract.h"
 
-int entry(const int argc, char **argv)
+#include <oops/InternalExn.h>
+
+#include <fstream>
+#include <iostream>
+
+namespace record_minmax
 {
-  using namespace record_minmax;
 
-  Args args(argc, argv);
-  auto input_model_path = args.getInputModelFilePath();
-  auto input_data_path = args.getInputDataFilePath();
-  auto output_model_path = args.getOutputModelFilePath();
+bool CircleExpContract::store(const char *ptr, const size_t size) const
+{
+  if (!ptr)
+    INTERNAL_EXN("Graph was not serialized by FlatBuffer for some reason");
 
-  RecordMinMax rmm(input_model_path);
+  std::ofstream fs(_filepath.c_str(), std::ofstream::binary);
+  fs.write(ptr, size);
 
-  // Profile min/max while executing the given input data
-  rmm.profileData(input_data_path);
-
-  // Save profiled values to the model
-  rmm.saveModel(output_model_path);
-
-  return EXIT_SUCCESS;
+  return fs.good();
 }
+
+} // namespace record_minmax
