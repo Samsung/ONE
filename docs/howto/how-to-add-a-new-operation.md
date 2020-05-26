@@ -2,8 +2,8 @@
 
 ## Compiler
 
-- How to introduce a new operation into compiler
+- [How to introduce a new operation into compiler](how-to-introduce-a-new-operation-into-compiler.md)
 
 ## Runtime
 
-- How to introduce a new operatoin into runtime
+- [How to introduce a new operatoin into runtime](how-to-introduce-a-new-operation-into-runtime.md)
