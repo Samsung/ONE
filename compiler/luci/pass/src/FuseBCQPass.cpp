@@ -33,6 +33,12 @@
 namespace
 {
 
+/**
+ * @brief Circle nodes including BCQ information and a circle node to which BCQ will be applied
+ *        are connected with their name. And their names include common prefix.
+ *        However, after pb file is converted to tflite file, some nodes' name are changed.
+ *        Thus this function will return original common prefix.
+ */
 const std::string node_name_prefix(luci::NodeName node_name)
 {
   std::string prefix = node_name;
@@ -103,13 +109,13 @@ public:
 
     // Be careful for order, '_alphas_const' and '_bits_const' appear twice.
     if (node_name.find("_num_quantized_bits_const") != std::string::npos)
-      const_nodes_num_quantized_bits_const[prefix] = node;
+      _const_nodes_num_quantized_bits_const[prefix] = node;
     else if (node_name.find("_per_col_alphas_const") != std::string::npos)
-      const_nodes_per_col_alphas_const[prefix] = node;
+      _const_nodes_per_col_alphas_const[prefix] = node;
     else if (node_name.find("_alphas_const") != std::string::npos)
-      const_nodes_alphas_const[prefix] = node;
+      _const_nodes_alphas_const[prefix] = node;
     else if (node_name.find("_bits_const") != std::string::npos)
-      const_nodes_bits_const[prefix] = node;
+      _const_nodes_bits_const[prefix] = node;
   }
 
   bool has_BCQ_info(luci::CircleConst *node)
@@ -117,12 +123,12 @@ public:
     const auto prefix = node_name_prefix(node->name());
     bool has_info = true;
 
-    has_info &= (const_nodes_alphas_const.find(prefix) != const_nodes_alphas_const.end());
-    has_info &= (const_nodes_bits_const.find(prefix) != const_nodes_bits_const.end());
-    has_info &= (const_nodes_num_quantized_bits_const.find(prefix) !=
-                 const_nodes_num_quantized_bits_const.end());
+    has_info &= (_const_nodes_alphas_const.find(prefix) != _const_nodes_alphas_const.end());
+    has_info &= (_const_nodes_bits_const.find(prefix) != _const_nodes_bits_const.end());
+    has_info &= (_const_nodes_num_quantized_bits_const.find(prefix) !=
+                 _const_nodes_num_quantized_bits_const.end());
     has_info &=
-        (const_nodes_per_col_alphas_const.find(prefix) != const_nodes_per_col_alphas_const.end());
+        (_const_nodes_per_col_alphas_const.find(prefix) != _const_nodes_per_col_alphas_const.end());
 
     return has_info;
   }
@@ -130,13 +136,13 @@ public:
   luci::CircleConst *get_alphas(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return const_nodes_alphas_const[prefix];
+    return _const_nodes_alphas_const[prefix];
   }
 
   luci::CircleConst *get_binary(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return const_nodes_bits_const[prefix];
+    return _const_nodes_bits_const[prefix];
   }
 
   luci::CircleConst *get_packed_binary(luci::CircleConst *node)
@@ -202,7 +208,7 @@ public:
       return noOp;
     };
 
-    for (auto &n : const_nodes_alphas_const)
+    for (auto &n : _const_nodes_alphas_const)
     {
       auto node = n.second;
 
@@ -215,19 +221,19 @@ public:
       }
     }
 
-    for (auto &n : const_nodes_num_quantized_bits_const)
+    for (auto &n : _const_nodes_num_quantized_bits_const)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
 
-    for (auto &n : const_nodes_bits_const)
+    for (auto &n : _const_nodes_bits_const)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
 
-    for (auto &n : const_nodes_per_col_alphas_const)
+    for (auto &n : _const_nodes_per_col_alphas_const)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
@@ -278,12 +284,13 @@ public:
   }
 
 private:
-  std::map<std::string, luci::CircleConst *> const_nodes_alphas_const;
-  std::map<std::string, luci::CircleConst *> const_nodes_bits_const;
-  std::map<std::string, luci::CircleConst *> const_nodes_num_quantized_bits_const;
-  std::map<std::string, luci::CircleConst *> const_nodes_per_col_alphas_const;
+  std::map<std::string, luci::CircleConst *> _const_nodes_alphas_const;
+  std::map<std::string, luci::CircleConst *> _const_nodes_bits_const;
+  std::map<std::string, luci::CircleConst *> _const_nodes_num_quantized_bits_const;
+  std::map<std::string, luci::CircleConst *> _const_nodes_per_col_alphas_const;
 };
-}
+
+} // namespace
 
 namespace luci
 {
