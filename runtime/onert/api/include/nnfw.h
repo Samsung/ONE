@@ -229,8 +229,10 @@ NNFW_STATUS nnfw_run(nnfw_session *session);
 /**
  * @brief     Set input buffer
  *
- * This function should be called after {@link nnfw_prepare}, and before first inference
- * on session by {@link nnfw_run}. Application can reuse buffer for many inferences.
+ * This function must be called after {@link nnfw_prepare}, \p buffer given to this function can be
+ * reused for many inferences. \p length must be greater or equal than the operand requires. To
+ * specify an optional input, you can either not call this for that input or call this with \p
+ * buffer of NULL and \p length of 0.
  *
  * @param[in] session Session to the input is to be set
  * @param[in] index   Index of input to be set (0-indexed)
