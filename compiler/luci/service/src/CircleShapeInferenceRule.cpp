@@ -835,7 +835,7 @@ public:
 
     return loco::NodeShape{x_shape};
   }
-  
+
   loco::NodeShape visit(const luci::CircleLogicalAnd *node) final
   {
     const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
