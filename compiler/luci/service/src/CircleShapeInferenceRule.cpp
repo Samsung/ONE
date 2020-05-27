@@ -1141,8 +1141,8 @@ public:
 
   /**
    * @note  CircleReshape has new shape info in two places: 2nd input and attribute.
-   *        This shape inference forces both to exist, and match each other.
-   *        When this condition satisfied, it return the inferred shape
+   *        This shape inference uses shape from input 'shape' node when it's constant.
+   *        If not, shape will be from node itself. shape from attribute is not used.
    *
    * TODO Change this policy when not appropriate
    */
