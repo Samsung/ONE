@@ -495,18 +495,6 @@ void OperationValidator::visit(const ir::operation::ExpandDims &node)
   OP_REQUIRES(_ctx.at(axis_index).shape().rank() <= 1);
 }
 
-void OperationValidator::visit(const ir::operation::Fill &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto input_index{node.getInputs().at(0)};
-  const auto value_index{node.getInputs().at(1)};
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(value_index);
-}
-
 void OperationValidator::visit(const ir::operation::Floor &node)
 {
   const auto output_index{node.getOutputs().at(0)};
