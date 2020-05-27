@@ -19,7 +19,6 @@
 
 #include "fixtures.h"
 #include "NNPackages.h"
-#include "ModelTestHelper.h"
 
 using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>;
 
