@@ -204,7 +204,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
 
     for (auto input : inputs)
     {
-      os << "    I T(" << input << ") ";
+      os << "    I T(" << reader.subgraph_index() << ":" << input << ") ";
       if (input >= 0)
       {
         auto tensor = tensors->Get(input);
@@ -214,7 +214,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     }
     for (auto output : outputs)
     {
-      os << "    O T(" << output << ") ";
+      os << "    O T(" << reader.subgraph_index() << ":" << output << ") ";
       if (output >= 0)
       {
         auto tensor = tensors->Get(output);
@@ -232,14 +232,14 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
   {
     auto tensor = tensors->Get(input);
     std::string name = circleread::tensor_name(tensor);
-    os << "I T(" << input << ") " << name << std::endl;
+    os << "I T(" << reader.subgraph_index() << ":" << input << ") " << name << std::endl;
   }
 
   for (const auto output : reader.outputs())
   {
     auto tensor = tensors->Get(output);
     std::string name = circleread::tensor_name(tensor);
-    os << "O T(" << output << ") " << name << std::endl;
+    os << "O T(" << reader.subgraph_index() << ":" << output << ") " << name << std::endl;
   }
 
   os << std::endl;
