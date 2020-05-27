@@ -84,6 +84,7 @@ private:
     REG_TFL_OP(LEAKY_RELU, TFliteOpLeakyRelu);
     REG_TFL_OP(LESS, TFliteOpLess);
     REG_TFL_OP(LOCAL_RESPONSE_NORMALIZATION, TFliteOpLocalResponseNormalization);
+    REG_TFL_OP(LOG, TFliteOpLog);
     REG_TFL_OP(LOGICAL_AND, TFliteOpLogicalAnd);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
