@@ -624,9 +624,15 @@ public:
   {
     const loco::DataType S32 = loco::DataType::S32;
     auto x_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    if (x_shape.rank() == 0)
+    {
+      // This maybe for unknown shape. We use shape from the node itself.
+      auto shape = own_shape(node);
+      return loco::NodeShape{shape};
+    }
     auto const_axis = loco::must_cast<luci::CircleConst *>(node->axis());
     LUCI_ASSERT(const_axis->dtype() == S32, "Only support int32 CircleConst for axis");
-    if (const_axis->rank() != 0)
+    if (const_axis->rank() != 0 && const_axis->rank() != 1)
     {
       INTERNAL_EXN_V("Non-scalar axis in OP", node->opnum());
     }
@@ -652,19 +658,25 @@ public:
     {
       LUCI_ASSERT(node->dims(), "dims input should not be nullptr");
 
-      // Only support node's shape() is CircleConst with S32
-      // TODO support other node with other types
-      auto dims_node = loco::must_cast<luci::CircleConst *>(node->dims());
-      LUCI_ASSERT(dims_node->dtype() == loco::DataType::S32, "Only support int32 CircleConst");
-
-      if (dims_node->rank() != 1)
-        INTERNAL_EXN_V("Only support rank 1 CircleConst", oops::to_uint32(dims_node->rank()));
-
-      shape.rank(dims_node->dim(0).value());
-
-      for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+      auto dims_node = dynamic_cast<luci::CircleConst *>(node->dims());
+      if (dims_node != nullptr)
       {
-        shape.dim(axis) = dims_node->at<loco::DataType::S32>(axis);
+        // Only support node with S32
+        LUCI_ASSERT(dims_node->dtype() == loco::DataType::S32, "Only support int32 CircleConst");
+
+        if (dims_node->rank() != 1)
+          INTERNAL_EXN_V("Only support rank 1 CircleConst", oops::to_uint32(dims_node->rank()));
+
+        shape.rank(dims_node->dim(0).value());
+
+        for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+        {
+          shape.dim(axis) = dims_node->at<loco::DataType::S32>(axis);
+        }
+      }
+      else
+      {
+        shape = own_shape(node);
       }
     }
 
@@ -1173,11 +1185,7 @@ public:
       else
       {
         // We use shape from the node itself
-        shape_by_input.rank(node->rank());
-        for (uint32_t axis = 0; axis < node->rank(); ++axis)
-        {
-          shape_by_input.dim(axis) = node->dim(axis).value();
-        }
+        shape_by_input = own_shape(node);
       }
     }
 
