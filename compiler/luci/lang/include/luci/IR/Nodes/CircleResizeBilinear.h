@@ -45,8 +45,12 @@ public:
   bool align_corners() const { return _align_corners; }
   void align_corners(bool value) { _align_corners = value; }
 
+  bool half_pixel_centers() const { return _half_pixel_centers; }
+  void half_pixel_centers(bool value) { _half_pixel_centers = value; }
+
 private:
   bool _align_corners = false;
+  bool _half_pixel_centers = false;
 };
 
 } // namespace luci
