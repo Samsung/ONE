@@ -21,6 +21,7 @@
 #include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
 #include <ir/Operands.h>
+#include <ir/Operations.h>
 
 namespace onert
 {
@@ -32,7 +33,7 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Operands &operand_ctx);
+  KernelGenerator(const ir::Operands &operand_ctx, const ir::Operations &operations_ctx);
 
   void setTensorBuilderSet(const TensorBuilderSet &tensor_builder_set)
   {
@@ -55,6 +56,7 @@ private:
 
 private:
   const ir::Operands &_operand_ctx;
+  const ir::Operations &_operations_ctx;
   TensorBuilderSet _tensor_builder_set;
   std::shared_ptr<exec::ExecutorMap> _executor_map;
 };

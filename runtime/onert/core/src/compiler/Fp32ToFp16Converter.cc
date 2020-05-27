@@ -254,7 +254,8 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp32ToFp16(const ir::OpSequenc
     _list_fp32_to_fp16.insert(new_op_seq_ind);
 
     VERBOSE(Fp32ToFp16Converter) << "NEW   |Fp32To16]"
-                                 << _lowered_graph.op_seqs().at(new_op_seq_ind).getStr()
+                                 << ir::getStrFromOpSeq(_lowered_graph.op_seqs().at(new_op_seq_ind),
+                                                        _lowered_graph.graph().operations())
                                  << std::endl;
   }
 }
@@ -326,7 +327,8 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp16ToFp32(const ir::OpSequenc
     _list_fp16_to_fp32.insert(new_op_seq_ind);
 
     VERBOSE(Fp32ToFp16Converter) << "NEW   |Fp16To32]"
-                                 << _lowered_graph.op_seqs().at(new_op_seq_ind).getStr()
+                                 << ir::getStrFromOpSeq(_lowered_graph.op_seqs().at(new_op_seq_ind),
+                                                        _lowered_graph.graph().operations())
                                  << std::endl;
   }
 }
@@ -381,12 +383,13 @@ void Fp32ToFp16Converter::convertOperands()
 void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
 {
   auto &operands = _lowered_graph.graph().operands();
+  const auto &operations = _lowered_graph.graph().operations();
   const auto &op_seq_inputs = _lowered_graph.graph().getInputs();
   const auto &op_seq_outputs = _lowered_graph.graph().getOutputs();
 
-  for (auto &elem : op_seq)
+  for (auto &op_idx : op_seq)
   {
-    auto &node = *(elem.node);
+    const auto &node = operations.at(op_idx);
     for (auto &ind : node.getInputs())
     {
       if (node.opcode() == ir::OpCode::ConvertFp32ToFp16 || op_seq_inputs.contains(ind))
@@ -450,7 +453,8 @@ void Fp32ToFp16Converter::printOpSequences(const std::string &pre_msg, const std
   }
 
   _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-    VERBOSE(Fp32ToFp16Converter) << op_seq.getStr() << std::endl;
+    VERBOSE(Fp32ToFp16Converter) << ir::getStrFromOpSeq(op_seq, _lowered_graph.graph().operations())
+                                 << std::endl;
   });
 
   if (post_msg.empty() == false)
@@ -471,7 +475,7 @@ bool Fp32ToFp16Converter::checkOperandsOfOpSequence(const ir::OpSequence &op_seq
   const auto &operations = _lowered_graph.graph().operations();
 
   // the first node's input
-  const auto &first_node_ind = op_seq.operations().at(0).index;
+  const auto &first_node_ind = op_seq.operations().at(0);
   const auto &first_node = operations.at(first_node_ind);
   const auto &first_node_inputs = first_node.getInputs();
   for (const auto &op_seq_input_ind : op_seq.getInputs())
@@ -482,7 +486,7 @@ bool Fp32ToFp16Converter::checkOperandsOfOpSequence(const ir::OpSequence &op_seq
 
   // the last node's output
   size_t last_ind = op_seq.size() - 1;
-  const auto &last_node_ind = op_seq.operations().at(last_ind).index;
+  const auto &last_node_ind = op_seq.operations().at(last_ind);
   const auto &last_node = operations.at(last_node_ind);
   const auto &last_node_outputs = last_node.getOutputs();
   for (const auto &op_seq_output_ind : op_seq.getOutputs())
@@ -534,7 +538,7 @@ void Fp32ToFp16Converter::manipulateInput(const ir::OpSequenceIndex &op_seq_ind,
 
   auto &op_seq = _lowered_graph.op_seqs().at(op_seq_ind);
 
-  auto &first_node_ind = op_seq.operations().at(0).index;
+  auto &first_node_ind = op_seq.operations().at(0);
   auto &first_node = operations.at(first_node_ind);
   assert(first_node.getInputs().contains(op_seq_input_ind));
 
@@ -562,7 +566,7 @@ void Fp32ToFp16Converter::manipulateOutput(const ir::OpSequenceIndex &op_seq_ind
   auto &op_seq = _lowered_graph.op_seqs().at(op_seq_ind);
 
   size_t last_ind = op_seq.size() - 1;
-  auto &last_node_ind = op_seq.operations().at(last_ind).index;
+  auto &last_node_ind = op_seq.operations().at(last_ind);
   auto &last_node = operations.at(last_node_ind);
   assert(last_node.getOutputs().contains(op_seq_output_ind));
 
@@ -629,7 +633,7 @@ ir::OpSequenceIndex Fp32ToFp16Converter::newOpSequence(const ir::OpSequenceIndex
   auto layout = lower_info->layout();
 
   auto op_seq = std::make_unique<ir::OpSequence>(layout);
-  op_seq->appendOperation(node_index, node);
+  op_seq->appendOperation(node_index);
   op_seq->setOutputs(node.getOutputs());
   op_seq->setInputs(node.getInputs());
 
@@ -818,7 +822,7 @@ Fp32ToFp16Converter::findOperationsToDelete(const OpSeqIndexList &list_to_delete
     const auto &op_seq = op_seqs.at(op_seq_ind);
     assert(op_seq.size() == 1);
 
-    const auto &first_node_ind = op_seq.operations().at(0).index;
+    const auto &first_node_ind = op_seq.operations().at(0);
     const auto &first_node = operations.at(first_node_ind);
     assert(first_node.opcode() == ir::OpCode::ConvertFp32ToFp16 ||
            first_node.opcode() == ir::OpCode::ConvertFp16ToFp32);
@@ -898,7 +902,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     assert(op_seq.size() == 1);
     VERBOSE(Fp32ToFp16Converter) << "Delete OpSeq #" << op_seq_ind.value() << std::endl;
 
-    auto &first_node_ind = op_seq.operations().at(0).index;
+    auto &first_node_ind = op_seq.operations().at(0);
     auto &first_node = operations.at(first_node_ind);
     assert(first_node.opcode() == ir::OpCode::ConvertFp32ToFp16 ||
            first_node.opcode() == ir::OpCode::ConvertFp16ToFp32);

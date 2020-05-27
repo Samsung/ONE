@@ -37,12 +37,10 @@ struct OperationVisitor
   // This OpSequence node should be handled specially so that
   // Op.lst doesn't have OpSequence
   // TODO Remove by pushing it down to derived classes.
-  virtual void visit(const OpSequence &op_seq)
+  virtual void visit(const OpSequence &)
   {
-    for (const auto &e : op_seq.operations())
-    {
-      e.node->accept(*this);
-    }
+    throw std::runtime_error{
+        "OperationVisitor: This does not privide visit function in OpSequence"};
   }
 };
 

@@ -85,10 +85,11 @@ namespace cpu
 {
 
 KernelGenerator::KernelGenerator(
-    const ir::Operands &operand_ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
+    const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+    const std::shared_ptr<TensorBuilder> &tensor_builder,
     const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder)
-    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builder),
-      _current_op_seq_layout(ir::Layout::UNKNOWN)
+    : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
+      _kernel_builder(kernel_builder), _current_op_seq_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
 }
@@ -103,15 +104,16 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
       _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
-  _return_fn_seq = _tensor_builder->supportDynamicTensor()
-                       ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
-                             op_seq, std::move(dyn_shape_inferer), dyn_tensor_manager)
-                       : std::make_unique<exec::FunctionSequence>();
+  _return_fn_seq =
+      _tensor_builder->supportDynamicTensor()
+          ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+                op_seq, _operations_ctx, std::move(dyn_shape_inferer), dyn_tensor_manager)
+          : std::make_unique<exec::FunctionSequence>();
 
   _current_op_seq_layout = op_seq.getLayout();
-  for (const auto &e : op_seq.operations())
+  for (const auto &operation_idx : op_seq.operations())
   {
-    const auto &node = *(e.node);
+    const auto &node = _operations_ctx.at(operation_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 

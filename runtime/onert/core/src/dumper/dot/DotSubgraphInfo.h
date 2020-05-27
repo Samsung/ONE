@@ -20,6 +20,7 @@
 #include <unordered_set>
 
 #include "ir/Index.h"
+#include <ir/Operations.h>
 #include "ir/OpSequence.h"
 #include "util/Set.h"
 
@@ -34,7 +35,8 @@ class DotSubgraphInfo
 {
 public:
   DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
-                  const util::Set<ir::OperandIndex> &shown_operands);
+                  const util::Set<ir::OperandIndex> &shown_operands,
+                  const ir::Operations &operations_ctx);
 
   ir::OpSequenceIndex index() const { return _index; }
   std::string label() const { return _label; }

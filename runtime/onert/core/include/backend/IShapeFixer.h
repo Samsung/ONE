@@ -38,9 +38,6 @@ public:
 
 protected:
   using OperationVisitor::visit;
-
-public:
-  void fix(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
 };
 
 } // namespace backend

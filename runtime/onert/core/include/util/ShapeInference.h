@@ -25,7 +25,7 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
-#include "ir/Operands.h"
+#include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
@@ -85,7 +85,8 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
 class StaticInferer : public ir::OperationVisitor
 {
 public:
-  StaticInferer(ir::Operands &operands) : _operands(operands) { /* empty */}
+  StaticInferer(ir::Graph &graph)
+      : _operands(graph.operands()), _operations(graph.operations()) { /* empty */}
   virtual ~StaticInferer() = default;
 
 public:
@@ -95,7 +96,13 @@ public:
    *        when running kernel.
    * @param op_seq sequence of operations
    */
-  void infer(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
+  void infer(const ir::OpSequence &op_seq)
+  {
+    for (const auto &operation_idx : op_seq.operations())
+    {
+      _operations.at(operation_idx).accept(*this);
+    }
+  }
 
   void dump();
 
@@ -131,6 +138,7 @@ private:
 
 private:
   ir::Operands &_operands;
+  ir::Operations &_operations;
 };
 
 // TODO After implement several Ops, check if this class can be merged with StaticInferer
