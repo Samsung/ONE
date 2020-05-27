@@ -75,6 +75,25 @@ void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Sh
   tensor->set_dynamic();
 }
 
+void DynamicTensorManager::planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind)
+{
+  (void)op;
+  (void)operand_ind;
+  // TODO write code here
+}
+
+void DynamicTensorManager::deallocInput(const ir::Operation *op)
+{
+  (void)op;
+  // TODO write code here
+}
+
+void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
+{
+  (void)output_ind;
+  // TODO write code here
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

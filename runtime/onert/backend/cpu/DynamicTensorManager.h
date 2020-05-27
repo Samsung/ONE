@@ -22,6 +22,8 @@
 
 #include <backend/IDynamicTensorManager.h>
 #include <ir/OperandInfo.h>
+#include <ir/Operation.h>
+#include <ir/Index.h>
 
 namespace onert
 {
@@ -51,6 +53,10 @@ public:
   void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
+
+  void planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind) override;
+  void deallocInput(const ir::Operation *op) override;
+  void deallocSubgraphOutput(ir::OperandIndex ind) override;
 
 private:
   /**
