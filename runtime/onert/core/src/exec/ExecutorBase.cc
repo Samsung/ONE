@@ -245,6 +245,12 @@ void ExecutorBase::execute(const IODescription &desc)
     auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
 
     _output_tensors[n]->access(getter);
+
+    // deallocate output tensors if it is dynamic
+
+    // TODO write code, e.g,
+    //
+    // dyn_tensor_mgr->deallocSubgraphOutput(output_ind);
   }
 }
 

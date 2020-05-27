@@ -20,6 +20,7 @@
 #include "ITensorManager.h"
 
 #include <ir/Index.h>
+#include <ir/Operation.h>
 #include <ir/Shape.h>
 #include <backend/ITensor.h>
 
@@ -47,6 +48,24 @@ public:
    * @note  This should be called before execution.
    */
   virtual void changeShape(const ir::OperandIndex &, const ir::Shape &) = 0;
+
+  /**
+   * @brief Plans when to delete a tensor. Note this planning is done at compilation time.
+   */
+  virtual void planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind) = 0;
+
+  /**
+   * @brief Deallocate input tensors of op if an input tensor is a dynamic tensor and it won't
+   *        be used anymore
+   * @note  This will work after calling planDealloc
+   */
+  virtual void deallocInput(const ir::Operation *op) = 0;
+
+  /**
+   * @brief Deallocate an output tensor if the tensor is a dynamic tensor
+   * @note  This will work after calling planDealloc
+   */
+  virtual void deallocSubgraphOutput(ir::OperandIndex ind) = 0;
 };
 
 } // namespace backend

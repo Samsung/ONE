@@ -252,7 +252,15 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
         uses_map[ind]--;
         if (uses_map[ind] == 0)
         {
+          // plan for deallocation of static tensor
           tensor_builder_map[ind]->notifyLastUse(ind);
+
+          // plan for deallocation of dynamic tensor
+          if (tensor_builder_map[ind]->supportDynamicTensor())
+          {
+            assert(tensor_builder_map[ind]->dynamicTensorManager());
+            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op.node, ind);
+          }
         }
       }
     }
