@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "bitset": "cpp",
+        "memory": "cpp",
+        "random": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "map": "cpp",
+        "unordered_map": "cpp",
+        "xstring": "cpp",
+        "*.def": "cpp",
+        "*.lst": "cpp",
+        "functional": "cpp",
+        "*.h++": "cpp",
+        "cassert": "cpp",
+        "iostream": "cpp",
+        "list": "cpp"
+    }
+}
