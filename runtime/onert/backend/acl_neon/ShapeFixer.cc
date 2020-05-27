@@ -52,10 +52,6 @@ ShapeFixer::ShapeFixer(const ir::Operands &ctx,
   assert(tensor_builder);
 }
 
-void ShapeFixer::visit(const ir::operation::Abs &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ArgMax &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::BatchToSpaceND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -63,22 +59,6 @@ void ShapeFixer::visit(const ir::operation::BatchToSpaceND &node)
   _tensor_builder->dimCorrection(ofm_index, false);
   _tensor_builder->dimCorrection(ifm_index, false);
 }
-
-void ShapeFixer::visit(const ir::operation::Cast &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Conv2D &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::DepthToSpace &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::DepthwiseConv2D &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Dequantize &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::MaxPool2D &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Mean &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::AvgPool2D &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Concat &node)
 {
@@ -95,12 +75,6 @@ void ShapeFixer::visit(const ir::operation::EmbeddingLookup &node)
   _tensor_builder->dimCorrection(values_index, false);
   _tensor_builder->dimCorrection(output_index, false);
 }
-
-void ShapeFixer::visit(const ir::operation::Exp &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ExpandDims &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Floor &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::FullyConnected &node)
 {
@@ -130,14 +104,6 @@ void ShapeFixer::visit(const ir::operation::Gather &node)
   _tensor_builder->dimCorrection(indices_index, false);
 }
 
-void ShapeFixer::visit(const ir::operation::InstanceNorm &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::L2Normalization &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::L2Pool2D &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::LocalResponseNormalization &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::LogicalAnd &node)
 {
   const auto input0_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT0)};
@@ -155,8 +121,6 @@ void ShapeFixer::visit(const ir::operation::LogicalAnd &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::LogicalNot &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::LogicalOr &node)
 {
   const auto input0_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT0)};
@@ -173,10 +137,6 @@ void ShapeFixer::visit(const ir::operation::LogicalOr &node)
     const_cast<ir::Shape &>(_ctx.at(input1_index).shape()).extendRank(broadcast_rank);
   }
 }
-
-void ShapeFixer::visit(const ir::operation::Logistic &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::LSTM &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Pack &node)
 {
@@ -218,10 +178,6 @@ void ShapeFixer::visit(const ir::operation::Mul &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::Neg &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Permute &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::PReLU &node)
 {
   const auto ifm_index{node.getInputs().at(ir::operation::PReLU::Input::INPUT)};
@@ -236,18 +192,6 @@ void ShapeFixer::visit(const ir::operation::PReLU &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::ReduceMax &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ReduceMin &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ReduceSum &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ReLU &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ReLU1 &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::ReLU6 &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::Reshape &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -256,10 +200,6 @@ void ShapeFixer::visit(const ir::operation::Reshape &node)
   _tensor_builder->dimCorrection(input_index, false);
   _tensor_builder->dimCorrection(output_index, false);
 }
-
-void ShapeFixer::visit(const ir::operation::ResizeBilinear &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::RNN &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Comparison &node)
 {
@@ -278,8 +218,6 @@ void ShapeFixer::visit(const ir::operation::Comparison &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::RSQRT &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::Squeeze &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -287,10 +225,6 @@ void ShapeFixer::visit(const ir::operation::Squeeze &node)
   _tensor_builder->dimCorrection(input_index, false);
   _tensor_builder->dimCorrection(output_index, false);
 }
-
-void ShapeFixer::visit(const ir::operation::Tanh &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Slice &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::StridedSlice &node)
 {
@@ -300,8 +234,6 @@ void ShapeFixer::visit(const ir::operation::StridedSlice &node)
   _tensor_builder->dimCorrection(ifm_index, false);
 }
 
-void ShapeFixer::visit(const ir::operation::Softmax &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::SpaceToBatchND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -310,8 +242,6 @@ void ShapeFixer::visit(const ir::operation::SpaceToBatchND &node)
   _tensor_builder->dimCorrection(ifm_index, false);
 }
 
-void ShapeFixer::visit(const ir::operation::SpaceToDepth &) { /* DO NOTHING */}
-
 void ShapeFixer::visit(const ir::operation::Split &node)
 {
   const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
@@ -319,8 +249,6 @@ void ShapeFixer::visit(const ir::operation::Split &node)
   for (const auto &output : node.getOutputs())
     _tensor_builder->dimCorrection(output, false);
 }
-
-void ShapeFixer::visit(const ir::operation::SQRT &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::SquaredDifference &node)
 {
@@ -354,10 +282,6 @@ void ShapeFixer::visit(const ir::operation::Sub &node)
     const_cast<ir::Shape &>(_ctx.at(rhs_index).shape()).extendRank(broadcast_rank);
   }
 }
-
-void ShapeFixer::visit(const ir::operation::TransposeConv &) { /* DO NOTHING */}
-
-void ShapeFixer::visit(const ir::operation::Transpose &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Unpack &node)
 {
@@ -431,8 +355,6 @@ void ShapeFixer::visit(const ir::operation::Max &node)
     const_cast<ir::Shape &>(_ctx.at(rhs_index).shape()).extendRank(broadcast_rank);
   }
 }
-
-void ShapeFixer::visit(const ir::operation::OneHot &) { /* Do NOTHING */}
 
 } // namespace acl_neon
 } // namespace backend
