@@ -151,7 +151,7 @@ Interpreter::Interpreter(const luci::Module *module)
   for (const loco::Node *loco_node :
        loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_main_graph))))
   {
-    const auto *node = dynamic_cast<const luci::CircleNode *>(loco_node);
+    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
     assert(node != nullptr);
 
     // These nodes are auxiliary.
