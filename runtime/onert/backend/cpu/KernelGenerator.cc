@@ -45,6 +45,7 @@
 #include "kernel/PackLayer.h"
 #include "kernel/PadLayer.h"
 #include "kernel/PowLayer.h"
+#include "kernel/RangeLayer.h"
 #include "kernel/ReduceLayer.h"
 #include "kernel/ReLULayer.h"
 #include "kernel/ReshapeLayer.h"
@@ -1166,7 +1167,24 @@ void KernelGenerator::visit(const ir::operation::ZerosLike &node)
   auto fn = std::make_unique<::onert::backend::cpu::kernel::ZerosLikeLayer>();
 
   fn->configure(input_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
 
+void KernelGenerator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::DELTA)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto start_alloc = _tensor_builder->at(start_index).get();
+  auto limit_alloc = _tensor_builder->at(limit_index).get();
+  auto delta_alloc = _tensor_builder->at(delta_index).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::RangeLayer>();
+
+  fn->configure(start_alloc, limit_alloc, delta_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
 

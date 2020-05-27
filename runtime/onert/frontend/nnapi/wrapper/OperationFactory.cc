@@ -2022,6 +2022,21 @@ OperationFactory::OperationFactory()
     return new operation::Round{inputs, outputs};
   };
 
+  _map[ANEURALNETWORKS_RANGE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //  0 -> start Tensor Index
+    //  1 -> limit Tensor Index
+    //  2 -> delta Tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+
+    return new operation::Range{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_POW] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
 

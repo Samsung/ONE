@@ -149,6 +149,7 @@ protected:
   void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadLogicalOr(const Operator *op, ir::Graph &subg);
+  void loadRange(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1465,6 +1466,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadZerosLike(const Operator *op,
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ZerosLike(inputs, outputs));
+
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadRange(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Range(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1701,6 +1715,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_TILE:
       loadTile(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_RANGE:
+      loadRange(op, subg);
       return;
     default:
       throw std::runtime_error(

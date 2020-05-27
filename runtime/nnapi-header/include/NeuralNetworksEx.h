@@ -441,8 +441,40 @@ typedef enum {
    */
   ANEURALNETWORKS_ZEROS_LIKE_EX = 50031,
 
+  /**
+   * Computes cosine of x element-wise
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A tensor.
+   *
+   * Outputs:
+   * * 0: The output tensor, of the same {@link OperandCode} and dimensions as
+   *      the input tensor.
+   */
   ANEURALNETWORKS_COS_EX = 50032,
 
+  /**
+   * Creates a sequence of numbers
+   * that begins at 'start' and extends by increments of 'delta' up to but not including 'limit'.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32, ANEURALNETWORKS_TENSOR_INT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A 0-D Tensor (scalar). 'start' acts as first entry in the range
+   * * 1: A 0-D Tensor (scalar). 'limit' acts as upper limit of sequence
+   * * 2: A 0-D Tensor (scalar). 'delta' acts as number that increments 'start'
+   *
+   * Outputs:
+   * * 0: An 1-D output tensor
+   */
   ANEURALNETWORKS_RANGE_EX = 50033,
 
   ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX = 50034,
