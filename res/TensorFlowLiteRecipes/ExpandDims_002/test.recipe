@@ -1,0 +1,30 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  # shape is intentionally omitted
+}
+
+operand {
+  name: "ifm2"
+  type: INT32
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+
+operand {
+  name: "ofm"
+  type: FLOAT32
+  # shape is intentionally omitted
+}
+
+operation {
+  type: "ExpandDims"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+output: "ofm"
