@@ -78,6 +78,7 @@ public:
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
   void visit(luci::CircleLocalResponseNormalization *) final;
+  void visit(luci::CircleLog *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
@@ -681,6 +682,18 @@ void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
   auto op_offset =
       CreateOperator(builder, op_idx, inputs, outputs,
                      circle::BuiltinOptions_LocalResponseNormalizationOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLog *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOG);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  // Make LOG operator; LOG does not have Options
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 

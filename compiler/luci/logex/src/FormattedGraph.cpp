@@ -223,6 +223,7 @@ private:
   IMPLEMENT(luci::CircleLess)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLocalResponseNormalization)
+  IMPLEMENT(luci::CircleLog)
   IMPLEMENT(luci::CircleLogicalAnd)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
@@ -617,6 +618,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalizat
   s.args().append("bias", pepper::str(node->bias()));
   s.args().append("alpha", pepper::str(node->alpha()));
   s.args().append("beta", pepper::str(node->beta()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLog *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
