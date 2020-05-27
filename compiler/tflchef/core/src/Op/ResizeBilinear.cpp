@@ -31,6 +31,7 @@ flatbuffers::Offset<void> ResizeBilinearChef::value(flatbuffers::FlatBufferBuild
   tflite::ResizeBilinearOptionsBuilder options_builder{fbb};
 
   options_builder.add_align_corners(options.align_corners());
+  options_builder.add_half_pixel_centers(options.half_pixel_centers());
 
   return options_builder.Finish().Union();
 }

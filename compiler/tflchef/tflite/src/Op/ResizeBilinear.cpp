@@ -51,6 +51,7 @@ tflchef::Operation *TFliteOpResizeBilinear::build(const tflite::Operator *op, TF
   auto op_options = operation->mutable_resize_bilinear_options();
 
   op_options->set_align_corners(op_params->align_corners());
+  op_options->set_half_pixel_centers(op_params->half_pixel_centers());
 
   return operation;
 }
