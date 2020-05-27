@@ -31,6 +31,7 @@
 #include "compiler/OperandContext.h"
 #include "exec/ExecTime.h"
 #include "exec/IFunction.h"
+#include <exec/IPermuteFunction.h>
 #include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"
@@ -59,8 +60,12 @@ public:
 
   /**
    * @brief Execute without IODescription
+   *
+   * @param src_tensor Tensor list that will be copied to input tensors of this
+   * @param pre_fn The permutation function that copy from src_tensor to input tensors of this
    */
-  void execute();
+  void execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
+               const std::shared_ptr<IPermuteFunction> &pre_fn);
 
   void execute(const IODescription &desc) final;
 

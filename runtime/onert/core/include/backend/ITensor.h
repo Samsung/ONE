@@ -52,10 +52,7 @@ public:
    *        the outpus shape cannot be known and the output shape is calculated during
    *        kernel execution-time.
    */
-  virtual bool is_dynamic() const
-  {
-    throw std::runtime_error("This backend does not support dynamic tensor");
-  }
+  virtual bool is_dynamic() const = 0;
 
   /// @brief set this tensor dynamic
   virtual void set_dynamic()

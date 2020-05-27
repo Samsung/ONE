@@ -69,19 +69,22 @@ void WhileLayer::run()
   const auto &body_input_tensors = body_exec->getInputTensors();
   const auto &body_output_tensors = body_exec->getOutputTensors();
 
-  PermuteLayer permute_op_input_to_cond_input{_input_tensors, cond_input_tensors, _ranks};
-  PermuteLayer permute_cond_input_to_body_input{cond_input_tensors, body_input_tensors, _ranks};
-  PermuteLayer permute_body_output_to_cond_input{body_output_tensors, cond_input_tensors, _ranks};
-  PermuteLayer permute_cond_input_to_op_output{cond_input_tensors, _output_tensors, _ranks};
+  const auto permute_op_input_to_cond_input =
+      std::make_shared<PermuteLayer>(_input_tensors, cond_input_tensors, _ranks);
+  const auto permute_cond_input_to_body_input =
+      std::make_shared<PermuteLayer>(cond_input_tensors, body_input_tensors, _ranks);
+  const auto permute_body_output_to_cond_input =
+      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors, _ranks);
+  const auto permute_cond_input_to_op_output =
+      std::make_shared<PermuteLayer>(cond_input_tensors, _output_tensors, _ranks);
 
   // Remove copying of unused tensor
-  permute_op_input_to_cond_input.prepare();
-  permute_cond_input_to_body_input.prepare();
-  permute_body_output_to_cond_input.prepare();
-  permute_cond_input_to_op_output.prepare();
+  permute_op_input_to_cond_input->prepare();
+  permute_cond_input_to_body_input->prepare();
+  permute_body_output_to_cond_input->prepare();
+  permute_cond_input_to_op_output->prepare();
 
-  permute_op_input_to_cond_input.run();
-  cond_exec->execute();
+  cond_exec->execute(_input_tensors, permute_op_input_to_cond_input);
 
   assert(cond_exec->getOutputTensors().size() == 1);
   auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
@@ -94,12 +97,10 @@ void WhileLayer::run()
   // Loop while Cond subgraph's output is true
   while (getResultCond(cond_output_tensor.get()))
   {
-    permute_cond_input_to_body_input.run();
-    body_exec->execute();
-    permute_body_output_to_cond_input.run();
-    cond_exec->execute();
+    body_exec->execute(cond_input_tensors, permute_cond_input_to_body_input);
+    cond_exec->execute(body_output_tensors, permute_body_output_to_cond_input);
   }
-  permute_cond_input_to_op_output.run();
+  permute_cond_input_to_op_output->run();
 }
 
 } // namespace kernel
