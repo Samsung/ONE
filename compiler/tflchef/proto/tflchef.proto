@@ -347,6 +347,7 @@ message ResizeNearestNeighborOptions {
 
 message ResizeBilinearOptions {
   optional bool align_corners = 1 [default = false];
+  optional bool half_pixel_centers = 2 [default = false];
 }
 
 message Operation {
