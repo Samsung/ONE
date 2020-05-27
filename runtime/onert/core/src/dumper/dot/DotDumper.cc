@@ -136,7 +136,7 @@ void DotDumper::dump(const std::string &tag)
         node->setAttribute("fillcolor", fillcolor);
       }
 
-      for (auto operation_index : object.getUses().list())
+      for (auto operation_index : object.getUses())
       {
         auto &operation = operations.at(operation_index);
         auto child = std::make_shared<Operation>(operation_index, operation);

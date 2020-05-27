@@ -36,30 +36,42 @@ public:
   OperandIndexSequence(std::initializer_list<uint32_t> list);
 
 public:
-  void append(const OperandIndex &index) { _set.emplace_back(index); }
-  void append(const OperandIndexSequence &l) { _set.insert(_set.end(), l.begin(), l.end()); }
+  void append(const OperandIndex &index) { _vec.emplace_back(index); }
+  void append(const OperandIndexSequence &l) { _vec.insert(_vec.end(), l.begin(), l.end()); }
 
 public:
-  uint32_t size() const { return static_cast<uint32_t>(_set.size()); }
-  const OperandIndex &at(IOIndex set_index) const { return _set.at(set_index.value()); }
-  const OperandIndex &at(uint32_t index) const { return _set.at(index); }
+  uint32_t size() const { return static_cast<uint32_t>(_vec.size()); }
+  const OperandIndex &at(IOIndex set_index) const { return _vec.at(set_index.value()); }
+  const OperandIndex &at(uint32_t index) const { return _vec.at(index); }
   bool contains(const OperandIndex &index) const;
   void replace(const OperandIndex &from, const OperandIndex &to);
+  OperandIndexSequence asUnique(void) const
+  {
+    ir::OperandIndexSequence unique;
+    for (const auto &ind : _vec)
+    {
+      if (!unique.contains(ind))
+      {
+        unique.append(ind);
+      }
+    }
+    return unique;
+  }
 
 public:
   OperandIndexSequence operator+(const OperandIndexSequence &other) const;
 
 public:
-  std::vector<OperandIndex>::const_iterator begin(void) const { return _set.begin(); }
-  std::vector<OperandIndex>::const_iterator end(void) const { return _set.end(); }
+  std::vector<OperandIndex>::const_iterator begin(void) const { return _vec.begin(); }
+  std::vector<OperandIndex>::const_iterator end(void) const { return _vec.end(); }
   // Standard c++ uses `cbegin` for const_iterator and `begin` for mutable iterator.
   // However, our project uses `begin` for const_iterator in several data structures.
   // Thus, I introduced `mbegin` for mutable iterator.
-  std::vector<OperandIndex>::iterator mbegin(void) { return _set.begin(); }
-  std::vector<OperandIndex>::iterator mend(void) { return _set.end(); }
+  std::vector<OperandIndex>::iterator mbegin(void) { return _vec.begin(); }
+  std::vector<OperandIndex>::iterator mend(void) { return _vec.end(); }
 
 private:
-  std::vector<OperandIndex> _set;
+  std::vector<OperandIndex> _vec;
 };
 
 } // namespace ir

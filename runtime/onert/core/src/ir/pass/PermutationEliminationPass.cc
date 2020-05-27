@@ -53,7 +53,7 @@ void PermutationEliminationPass::eliminateInput(const OperandIndex &inp_index, O
     return;
   }
 
-  for (auto input_use : uses.list())
+  for (auto input_use : uses)
   {
     auto &perm_operation = _graph.operations().at(input_use);
     auto perm_inputs = perm_operation.getInputs();
@@ -101,7 +101,7 @@ void PermutationEliminationPass::eliminateOutput(const OperandIndex &out_index, 
     return;
   }
 
-  for (auto output_def : defs.list())
+  for (auto output_def : defs)
   {
     auto &perm_operation = _graph.operations().at(output_def);
     auto perm_outputs = perm_operation.getOutputs();

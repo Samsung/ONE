@@ -222,7 +222,11 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp32ToFp16(const ir::OpSequenc
 {
   // OpSeq's input set is included in the first operation's input set
   const ir::OperandIndexSequence op_seq_inputs = op_seq.getInputs(); // copied
-  for (const auto &op_seq_input_ind : op_seq_inputs)
+
+  // Remove duplicated input index
+  // NOTE Please do not change sequence of op_seq_inputs. It can change the sequence of inputs of
+  // Subgraph
+  for (const auto &op_seq_input_ind : op_seq_inputs.asUnique())
   {
     if (checkOperandType(op_seq_input_ind) == false)
       continue;
@@ -290,7 +294,11 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp16ToFp32(const ir::OpSequenc
 {
   // OpSeq's output set is included in the last operation's output set
   const ir::OperandIndexSequence op_seq_outputs = op_seq.getOutputs(); // copied
-  for (const auto &op_seq_output_ind : op_seq_outputs)
+
+  // Remove duplicated input
+  // NOTE Please do not change sequence of op_seq_outputs. It can change the sequence of outputs of
+  // Subgraph
+  for (const auto &op_seq_output_ind : op_seq_outputs.asUnique())
   {
     if (checkOperandType(op_seq_output_ind) == false)
       continue;
@@ -535,12 +543,13 @@ void Fp32ToFp16Converter::manipulateInput(const ir::OpSequenceIndex &op_seq_ind,
 
   auto &new_op_obj = operands.at(new_op_ind);
 
-  op_seq.replaceInput(op_seq_input_ind, new_op_ind);
-  first_node.replaceInput(op_seq_input_ind, new_op_ind);
+  // The same inputs having the index as op_seq_input_ind are replaced all at once
+  op_seq.replaceInputs(op_seq_input_ind, new_op_ind);
+  first_node.replaceInputs(op_seq_input_ind, new_op_ind);
 
   // op_seq_obj doesn't have uses/def
   input_obj.removeUse(first_node_ind);
-  new_op_obj.appendUse(first_node_ind);
+  new_op_obj.insertUse(first_node_ind);
 }
 
 void Fp32ToFp16Converter::manipulateOutput(const ir::OpSequenceIndex &op_seq_ind,
@@ -562,12 +571,13 @@ void Fp32ToFp16Converter::manipulateOutput(const ir::OpSequenceIndex &op_seq_ind
 
   auto &new_op_obj = operands.at(new_op_ind);
 
-  op_seq.replaceOutput(op_seq_output_ind, new_op_ind);
-  last_node.replaceOutput(op_seq_output_ind, new_op_ind);
+  // The same outputs having the index as op_seq_output_ind are replaced all at once
+  op_seq.replaceOutputs(op_seq_output_ind, new_op_ind);
+  last_node.replaceOutputs(op_seq_output_ind, new_op_ind);
 
   // op_seq_obj doesn't have uses/def
   output_obj.removeDef(last_node_ind);
-  new_op_obj.appendDef(last_node_ind);
+  new_op_obj.insertDef(last_node_ind);
 }
 
 ir::OperationIndex
@@ -584,8 +594,8 @@ Fp32ToFp16Converter::newOperationConvertFp32ToFp16(const ir::OperandIndex &op_se
       new ir::operation::ConvertFp32ToFp16({op_seq_input_ind}, {new_op_ind}));
   const auto new_node_ind = operations.push(std::move(new_node));
 
-  input_obj.appendUse(new_node_ind);
-  new_op_obj.appendDef(new_node_ind);
+  input_obj.insertUse(new_node_ind);
+  new_op_obj.insertDef(new_node_ind);
 
   return new_node_ind;
 }
@@ -604,8 +614,8 @@ Fp32ToFp16Converter::newOperationConvertFp16ToFp32(const ir::OperandIndex &op_se
       new ir::operation::ConvertFp16ToFp32({new_op_ind}, {op_seq_output_ind}));
   const auto new_node_ind = operations.push(std::move(new_node));
 
-  new_op_obj.appendUse(new_node_ind);
-  output_obj.appendDef(new_node_ind);
+  new_op_obj.insertUse(new_node_ind);
+  output_obj.insertDef(new_node_ind);
 
   return new_node_ind;
 }
@@ -895,7 +905,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     VERBOSE(Fp32ToFp16Converter) << "Delete Node #" << first_node_ind.value() << std::endl;
 
     // Uses
-    for (auto &ind : first_node.getInputs())
+    for (auto &ind : first_node.getInputs().asUnique())
     {
       auto &obj = operands.at(ind);
       obj.removeUse(first_node_ind);
@@ -904,7 +914,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     }
 
     // Def
-    for (auto &ind : first_node.getOutputs())
+    for (auto &ind : first_node.getOutputs().asUnique())
     {
       auto &obj = operands.at(ind);
       obj.removeDef(first_node_ind);

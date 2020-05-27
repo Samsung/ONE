@@ -38,7 +38,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   const auto &output_obj = _graph.operands().at(output_ind);
 
   assert(output_obj.getDef().size() == 1);
-  const auto &node_index = output_obj.getDef().list().front();
+  const auto &node_index = *output_obj.getDef().begin();
   const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
 
   const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
@@ -132,10 +132,10 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     const auto backend = op_seq_li->backend();
     const operand::PermuteFactor removed_factor{backend, backend_layout};
     const operand::PermuteFactor new_factor{backend, frontend_layout};
-    for (const auto &input : node.getInputs())
+    for (const auto &input : node.getInputs().asUnique())
     {
       bool canRemove = true;
-      for (const auto &use : _graph.operands().at(input).getUses().list())
+      for (const auto &use : _graph.operands().at(input).getUses())
       {
         if (use != node_index)
         {
@@ -165,7 +165,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       }
     }
 
-    for (const auto &output : node.getOutputs())
+    for (const auto &output : node.getOutputs().asUnique())
     {
       auto lower_info = _lowered_graph.getLowerInfo(output);
       lower_info->removeDefPermuteFactor(removed_factor);

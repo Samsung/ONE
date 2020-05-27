@@ -173,7 +173,7 @@ private:
   const ir::Graph *_graph{nullptr};
   std::vector<const backend::Backend *>
       _all_backends; // TODO Remove this and use _backend_contexts instead
-  const backend::Backend *_cpu_backend{nullptr};
+  const backend::Backend *_cpu_backend{nullptr}; // TODO Change this to controlflow_backend
   bool _is_profiling_mode;
   bool _is_linear_exec;
   bool _is_parallel_exec;
