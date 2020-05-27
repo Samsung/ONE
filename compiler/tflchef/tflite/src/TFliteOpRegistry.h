@@ -133,6 +133,7 @@ private:
     REG_TFL_OP(TILE, TFliteOpTile);
     REG_TFL_OP(TOPK_V2, TFliteOpTopKV2);
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
+    REG_TFL_OP(TRANSPOSE_CONV, TFliteOpTransposeConv);
     REG_TFL_OP(UNPACK, TFliteOpUnpack);
     REG_TFL_OP(ZEROS_LIKE, TFliteOpZerosLike);
 
