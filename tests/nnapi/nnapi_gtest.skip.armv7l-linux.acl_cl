@@ -63,6 +63,7 @@ GeneratedTests.lstm3_state2
 GeneratedTests.lstm3_state3
 GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
+GeneratedTests.mul_dynamic_nnfw
 GeneratedTests.neg
 GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
