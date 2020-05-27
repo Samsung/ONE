@@ -170,6 +170,7 @@ struct DataChefRegistry final : public Registry<DataChefFactory>
 DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
 {
   static DataChefRegistry s32;
+  static DataChefRegistry s64;
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
   static DataChefRegistry boolean;
@@ -178,6 +179,8 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
   {
     case tflchef::INT32:
       return s32;
+    case tflchef::INT64:
+      return s64;
     case tflchef::FLOAT32:
       return fp32;
     case tflchef::UINT8:
