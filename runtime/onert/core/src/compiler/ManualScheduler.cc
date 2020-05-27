@@ -50,7 +50,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
     return nullptr;
   }();
-  assert(!fallback); // There must be at least one fallback
+  assert(fallback != nullptr); // There must be at least one fallback
 
   // 1. Backend for All operations
   const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);
