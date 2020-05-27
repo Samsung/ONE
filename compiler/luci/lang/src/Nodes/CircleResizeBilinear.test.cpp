@@ -30,4 +30,5 @@ TEST(CircleResizeBilinearTest, constructor)
   ASSERT_EQ(nullptr, resize.input());
   ASSERT_EQ(nullptr, resize.size());
   ASSERT_EQ(false, resize.align_corners());
+  ASSERT_EQ(false, resize.half_pixel_centers());
 }
