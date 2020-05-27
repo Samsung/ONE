@@ -56,6 +56,8 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   const auto input_index = primary_subgraph().getInputs().at(index);
   const auto info = primary_subgraph().operands().at(input_index).info();
 
+  // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
+
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
   // note: input_shape_sig contains shape passed by nnfw_apply_tensorinfo()
