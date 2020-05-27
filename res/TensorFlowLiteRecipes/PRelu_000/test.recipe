@@ -17,6 +17,7 @@ operation {
   type: "PRelu"
   input: "ifm1"
   input: "ifm2"
+  output: "ofm"
 }
 input: "ifm1"
 input: "ifm2"
