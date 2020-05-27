@@ -29,6 +29,7 @@ build_circle_ResizeBilinearOptions(flatbuffers::FlatBufferBuilder &fb, const tfl
 
   circle::ResizeBilinearOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_align_corners(tflite_builtin_options->align_corners());
+  builtin_options_builder.add_half_pixel_centers(tflite_builtin_options->half_pixel_centers());
   return builtin_options_builder.Finish();
 }
 
