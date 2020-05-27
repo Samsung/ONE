@@ -39,6 +39,7 @@ public:
   {
     ADD,
     INPUT_RESHAPING_ADD,
+    DYNAMIC_TENSOR_RESHAPE,
     COUNT
   };
 
