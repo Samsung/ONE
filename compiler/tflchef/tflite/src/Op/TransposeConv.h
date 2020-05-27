@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __BBO_TRANSPOSE_CONV_OPTIONS_H__
-#define __BBO_TRANSPOSE_CONV_OPTIONS_H__
+#ifndef __TFLITE_OP_TRANSPOSE_CONV_H__
+#define __TFLITE_OP_TRANSPOSE_CONV_H__
 
-#include <mio/tflite/schema_generated.h>
-#include <mio/circle/schema_generated.h>
+#include "TFliteOpChef.h"
 
-namespace tflite2circle
+namespace tflchef
 {
 
-flatbuffers::Offset<circle::TransposeConvOptions>
-build_circle_TransposeConvOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
+/**
+ * @brief tflchef operator builder for TransposeConv
+ */
+class TFliteOpTransposeConv : public TFliteOpChef
+{
+public:
+  void filler(const tflite::Operator *op, TFliteImport *import,
+              tflchef::ModelRecipe *model_recipe) const override;
+  tflchef::Operation *build(const tflite::Operator *op, TFliteImport *import,
+                            tflchef::ModelRecipe *model_recipe) const override;
+};
 
-} // namespace tflite2circle
+} // namespace tflchef
 
-#endif // __BBO_TRANSPOSE_CONV_OPTIONS_H__
+#endif // __TFLITE_OP_TRANSPOSE_CONV_H__
