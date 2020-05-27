@@ -27,6 +27,7 @@
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
 #include "BuildBuiltinOptions/Conv2DOptions.h"
 #include "BuildBuiltinOptions/CosOptions.h"
+#include "BuildBuiltinOptions/DepthToSpaceOptions.h"
 #include "BuildBuiltinOptions/DepthwiseConv2DOptions.h"
 #include "BuildBuiltinOptions/DivOptions.h"
 #include "BuildBuiltinOptions/EqualOptions.h"
