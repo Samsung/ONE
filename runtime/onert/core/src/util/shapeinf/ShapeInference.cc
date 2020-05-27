@@ -120,28 +120,6 @@ ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgP
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
-// TODO move this when Concat.cc is created in util/shapeinf
-ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
-{
-  const int32_t concat_axis = param.axis;
-  const auto &first_in_shape = in_shapes[0];
-
-  // Check that all shapes are equal except for concat axis dimension
-  for (const auto &in_shape : in_shapes)
-  {
-    assert(in_shape.rank() == first_in_shape.rank());
-    for (int64_t dim_idx = 0; dim_idx < in_shape.rank(); ++dim_idx)
-      assert(dim_idx == concat_axis || in_shape.dim(dim_idx) == first_in_shape.dim(dim_idx));
-  }
-
-  // Calculate output shape
-  ir::Shape out_shape(first_in_shape);
-  out_shape.dim(concat_axis) = 0;
-  for (const auto &in_shape : in_shapes)
-    out_shape.dim(concat_axis) += in_shape.dim(concat_axis);
-  return out_shape;
-}
-
 // TODO move this when Conv2D.cc is created in util/shapeinf
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
                            const ir::operation::Conv2D::Param &param, ir::Layout layout)
@@ -252,35 +230,6 @@ void StaticInferer::dump()
                            << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
                            << get_shape_str(operand.info().shape()) << std::endl;
   });
-}
-
-// TODO move this into Concat.cc
-void StaticInferer::visit(const ir::operation::Concat &op)
-{
-  const auto input_count = op.getInputs().size();
-
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  Shapes input_shapes;
-  for (uint32_t i = 0; i < input_count; i++)
-  {
-    const auto input_idx{op.getInputs().at(i)};
-    const auto &input = _operands.at(input_idx);
-
-    if (input.info().isDynamic())
-    {
-      output.info().setDynamic();
-      return;
-    }
-
-    input_shapes.emplace_back(input.shape());
-  }
-
-  ir::Shape out_shape = inferConcatShape(input_shapes, op.param());
-
-  // re-sizing output shape
-  output.info().shape(out_shape);
 }
 
 /*
