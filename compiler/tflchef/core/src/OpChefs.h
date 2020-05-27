@@ -98,5 +98,6 @@
 #include "Op/ZerosLike.h"
 
 #include "CustomOp/BatchMatMulV2.h"
+#include "CustomOp/MatrixBandPart.h"
 
 #endif // __OP_CHEFS_H__
