@@ -28,4 +28,5 @@ TEST(CircleDepthToSpaceTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::DEPTH_TO_SPACE, std_node.opcode());
 
   ASSERT_EQ(nullptr, std_node.input());
+  ASSERT_EQ(0, std_node.block_size());
 }
