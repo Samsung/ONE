@@ -1,4 +1,4 @@
-nnas_find_package(Boost REQUIRED COMPONENTS program_options)
+nnas_find_package(Boost QUIET COMPONENTS program_options)
 if(NOT Boost_FOUND)
   message(STATUS "Build record-minmax: FAILED (missing Boost::program_options)")
   return()
