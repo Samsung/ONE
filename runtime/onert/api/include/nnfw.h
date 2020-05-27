@@ -177,6 +177,8 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session);
 /**
  * @brief     Load model from nnpackage file or directory
  *
+ * The length of \p package_file_path must not execeed 1024 bytes including zero at the end.
+ *
  * @param[in] session           nnfw_session loading the given nnpackage file/dir
  * @param[in] package_file_path Path to the nnpackage file or unzipped directory to be loaded
  *

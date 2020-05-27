@@ -35,6 +35,7 @@
  */
 #define MAX_BACKEND_NAME_LENGTH 32
 #define MAX_OP_NAME_LENGTH 64
+#define MAX_PATH_LENGTH 1024
 
 // Is null-terminating in length ?
 static bool null_terminating(const char *str, uint32_t length)
@@ -76,6 +77,18 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 {
   if (!isStateInitialized())
     return NNFW_STATUS_ERROR;
+
+  if (!package_dir)
+  {
+    std::cerr << "package_dir is null." << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!null_terminating(package_dir, MAX_PATH_LENGTH))
+  {
+    std::cerr << "nnpackage path is too long: " << package_dir << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
   // TODO : add support for zipped package file load
   DIR *dir;
