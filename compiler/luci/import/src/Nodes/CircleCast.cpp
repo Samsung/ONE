@@ -33,15 +33,17 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto *options = args.op.builtin_options.AsCastOptions();
+  if (options != nullptr)
+  {
+    const auto &tensors = args.reader.tensors();
 
-  const auto &tensors = args.reader.tensors();
-
-  const auto &tensor_in = tensors.at(inputs[0]);
-  if (tensor_in->type != options->in_data_type)
-    return false;
-  const auto &tensor_out = tensors.at(outputs[0]);
-  if (tensor_out->type != options->out_data_type)
-    return false;
+    const auto &tensor_in = tensors.at(inputs[0]);
+    if (tensor_in->type != options->in_data_type)
+      return false;
+    const auto &tensor_out = tensors.at(outputs[0]);
+    if (tensor_out->type != options->out_data_type)
+      return false;
+  }
 
   return true;
 }
@@ -54,8 +56,18 @@ CircleNode *CircleCastGraphBuilder::build_node(const circle::OperatorT &op,
   node->x(inputs[0]);
 
   const auto *options = op.builtin_options.AsCastOptions();
-  node->in_data_type(luci_datatype(options->in_data_type));
-  node->out_data_type(luci_datatype(options->out_data_type));
+  if (options != nullptr)
+  {
+    node->in_data_type(luci_datatype(options->in_data_type));
+    node->out_data_type(luci_datatype(options->out_data_type));
+  }
+  else
+  {
+    node->in_data_type(inputs[0]->dtype());
+    node->out_data_type(loco::DataType::Unknown);
+    // type inference should use node->dtype() for Unknown
+    // export should use BuiltinOptions_NONE for Unknown
+  }
 
   return node;
 }
