@@ -59,28 +59,31 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   // Divide op_seq based on target operation
   {
     auto &prev_op_seq = _lowered_graph.op_seqs().at(op_seq_index);
+    auto &operations = _lowered_graph.graph().operations();
 
     // Create new op_seq and move information from existing op_seq to new op_seq if target
     // node is the end of op_seq
     auto it = prev_op_seq.begin();
     // Find iterator of target node in op_seq
-    while ((it++)->index != node_index)
+    while (*(it++) != node_index)
       ;
     if (it != prev_op_seq.end())
     {
+      const auto &target_op_idx = *it;
+      const auto &target_node = operations.at(target_op_idx);
       const auto &next_op_seq_index =
-          _lowered_graph.op_seqs().emplace(it->index, *it->node, prev_op_seq.getLayout());
+          _lowered_graph.op_seqs().emplace(target_op_idx, prev_op_seq.getLayout());
       auto &next_op_seq = _lowered_graph.op_seqs().at(next_op_seq_index);
-      next_op_seq.setInputs(it->node->getInputs());
-      next_op_seq.setOutputs(it->node->getOutputs());
+      next_op_seq.setInputs(target_node.getInputs());
+      next_op_seq.setOutputs(target_node.getOutputs());
 
       std::vector<OperationIndex> remove_list;
-      remove_list.emplace_back(it->index);
+      remove_list.emplace_back(target_op_idx);
       while (++it != prev_op_seq.end())
       {
-        next_op_seq.appendOperation(it->index, *it->node);
-        next_op_seq.setOutputs(it->node->getOutputs());
-        remove_list.emplace_back(it->index);
+        next_op_seq.appendOperation(target_op_idx);
+        next_op_seq.setOutputs(target_node.getOutputs());
+        remove_list.emplace_back(target_op_idx);
       }
 
       prev_op_seq.setOutputs(node.getOutputs());
@@ -112,12 +115,13 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     {
       // Update op_seq of target operation if the op_seq exists
       auto &prev_op_seq = _lowered_graph.op_seqs().at(op_seq_index);
-      const auto last_node = (--prev_op_seq.end())->node;
-      prev_op_seq.setOutputs(last_node->getOutputs());
+      const auto &last_node_idx = *(--prev_op_seq.end());
+      const auto &last_node = _lowered_graph.graph().operations().at(last_node_idx);
+      prev_op_seq.setOutputs(last_node.getOutputs());
     }
 
     // Create new op_seq and set information to the op_seq
-    auto new_op_seq_index = _lowered_graph.op_seqs().emplace(node_index, node, frontend_layout);
+    auto new_op_seq_index = _lowered_graph.op_seqs().emplace(node_index, frontend_layout);
     auto &new_op_seq = _lowered_graph.op_seqs().at(new_op_seq_index);
     new_op_seq.setInputs(node.getInputs());
     new_op_seq.setOutputs(node.getOutputs());

@@ -30,19 +30,7 @@ namespace onert
 namespace ir
 {
 
-// To support ValueSwappable, Element doesn't have members which are classes
-// as value(or can have members which are classes as value and the classes
-// support Swappable)
-struct Element
-{
-  OperationIndex index;
-  const Operation *node;
-
-  Element(const OperationIndex *i, const Operation *n) : index{*i}, node{n}
-  {
-    // DO NOTHING
-  }
-};
+class Operations;
 
 class OpSequence
 {
@@ -67,19 +55,13 @@ public:
     _outputs.replace(from, to);
   }
 
-  void appendOperation(const OperationIndex &index, const Operation &node)
-  {
-    _operations.emplace_back(&index, &node);
-  }
+  void appendOperation(const OperationIndex &index) { _operations.emplace_back(index); }
 
-  std::vector<Element> &operations(void) { return _operations; }
+  std::vector<OperationIndex> &operations(void) { return _operations; }
 
-  const std::vector<Element> &operations(void) const { return _operations; }
+  const std::vector<OperationIndex> &operations(void) const { return _operations; }
 
   uint32_t size(void) const { return _operations.size(); }
-
-  // TODO: Impl Dumper instead of this method
-  std::string getStr(void) const;
 
 public:
   void remove(const OperationIndex &index);
@@ -88,8 +70,8 @@ public:
   Layout getLayout() const { return _layout; }
 
 public:
-  std::vector<Element>::const_iterator begin() const { return _operations.begin(); }
-  std::vector<Element>::const_iterator end() const { return _operations.end(); }
+  std::vector<OperationIndex>::const_iterator begin() const { return _operations.begin(); }
+  std::vector<OperationIndex>::const_iterator end() const { return _operations.end(); }
 
 private:
   bool exist(const OperationIndex &index) const;
@@ -97,11 +79,13 @@ private:
 private:
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
-  std::vector<Element> _operations;
+  std::vector<OperationIndex> _operations;
 
 private:
   Layout _layout;
 };
+
+std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations);
 
 } // namespace ir
 } // namespace onert

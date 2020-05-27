@@ -23,6 +23,7 @@
 #include <backend/CustomKernelBuilder.h>
 #include <backend/IKernelGenerator.h>
 #include <ir/Operands.h>
+#include <ir/Operations.h>
 
 namespace onert
 {
@@ -34,7 +35,8 @@ namespace cpu
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Operands &ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+                  const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder);
 
   using IKernelGenerator::visit;
@@ -101,6 +103,7 @@ public:
 
 private:
   const ir::Operands &_ctx;
+  const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   ir::Layout _current_op_seq_layout;
