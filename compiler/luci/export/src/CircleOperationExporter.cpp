@@ -66,6 +66,7 @@ public:
   void visit(luci::CircleExp *) final;
   void visit(luci::CircleExpandDims *) final;
   void visit(luci::CircleFill *) final;
+  void visit(luci::CircleFloor *) final;
   void visit(luci::CircleFloorDiv *) final;
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
@@ -451,6 +452,17 @@ void OperationExporter::visit(luci::CircleFill *node)
   // Create the operator.
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_FillOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleFloor *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_FLOOR);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
