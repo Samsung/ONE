@@ -1,0 +1,24 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 2 dim: 1 dim: 4 dim: 5 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 dim: 1 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 dim: 5}
+}
+operation {
+  type: "FloorMod"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
