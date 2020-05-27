@@ -20,7 +20,7 @@ echo
 ONEAPI_TEST_MODEL_INSTALLER=tests/scripts/oneapi_test/install_oneapi_test_nnpackages.sh
 TEST_BIN=Product/out/unittest_standalone/nnfw_api_gtest
 $ONEAPI_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
-ONERT_LOG_ENABLE=1 ${TEST_BIN}
+${TEST_BIN}
 echo
 echo "==== Run oneapi_test end ===="
 echo

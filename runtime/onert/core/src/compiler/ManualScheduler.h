@@ -29,15 +29,16 @@ class ManualScheduler : public IScheduler
 {
 public:
   ManualScheduler(const backend::BackendContexts &backend_contexts,
-                  const compiler::ManualSchedulerOptions &options);
+                  const compiler::CompilerOptions &options);
   std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) override;
 
 private:
-  const backend::Backend *resolveBackend(const std::string &id);
+  const backend::Backend *resolveBackend(const std::string &id,
+                                         const backend::Backend *fallback = nullptr);
 
 private:
   const backend::BackendContexts &_backend_contexts;
-  compiler::ManualSchedulerOptions _options;
+  compiler::CompilerOptions _options;
 };
 
 } // namespace compiler

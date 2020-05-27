@@ -72,7 +72,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
   }
   else
   {
-    auto scheduler = compiler::ManualScheduler(_backend_contexts, options.manual_scheduler_options);
+    auto scheduler = compiler::ManualScheduler(_backend_contexts, options);
     _backend_resolver = scheduler.schedule(_graph);
   }
 
