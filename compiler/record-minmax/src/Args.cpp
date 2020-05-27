@@ -32,9 +32,9 @@ void Args::Initialize(void)
   po::options_description desc("Allowed options");
 
   desc.add_options()("help,h", "Print available options")(
-      "input_model,i", po::value<std::string>()->default_value(""), "Input model filename")(
-      "input_data,d", po::value<std::string>()->default_value(""), "Input data filename")(
-      "output_model,o", po::value<std::string>()->default_value(""), "Output model filename");
+      "input_model,i", po::value<std::string>()->default_value(""), "Input model filepath")(
+      "input_data,d", po::value<std::string>()->default_value(""), "Input data filepath")(
+      "output_model,o", po::value<std::string>()->default_value(""), "Output model filepath");
 
   _positional.add("input_model", 1).add("input_data", 1).add("output_model", 1);
   _options.add(desc);
@@ -59,18 +59,18 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("input_model"))
   {
-    _input_model_filename = vm["input_model"].as<std::string>();
+    _input_model_filepath = vm["input_model"].as<std::string>();
 
-    if (_input_model_filename.empty())
+    if (_input_model_filepath.empty())
     {
       std::cerr << "Please specify input model file. Run with `--help` for usage." << std::endl;
       exit(EXIT_FAILURE);
     }
     else
     {
-      if (access(_input_model_filename.c_str(), F_OK) == -1)
+      if (access(_input_model_filepath.c_str(), F_OK) == -1)
       {
-        std::cerr << "input model file not found: " << _input_model_filename << std::endl;
+        std::cerr << "input model file not found: " << _input_model_filepath << std::endl;
         exit(EXIT_FAILURE);
       }
     }
@@ -78,18 +78,18 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("input_data"))
   {
-    _input_data_filename = vm["input_data"].as<std::string>();
+    _input_data_filepath = vm["input_data"].as<std::string>();
 
-    if (_input_data_filename.empty())
+    if (_input_data_filepath.empty())
     {
       std::cerr << "Please specify input data file. Run with `--help` for usage." << std::endl;
       exit(EXIT_FAILURE);
     }
     else
     {
-      if (access(_input_data_filename.c_str(), F_OK) == -1)
+      if (access(_input_data_filepath.c_str(), F_OK) == -1)
       {
-        std::cerr << "input data file not found: " << _input_data_filename << std::endl;
+        std::cerr << "input data file not found: " << _input_data_filepath << std::endl;
         exit(EXIT_FAILURE);
       }
     }
@@ -97,9 +97,9 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("output_model"))
   {
-    _output_model_filename = vm["output_model"].as<std::string>();
+    _output_model_filepath = vm["output_model"].as<std::string>();
 
-    if (_output_model_filename.empty())
+    if (_output_model_filepath.empty())
     {
       std::cerr << "Please specify output model file. Run with `--help` for usage." << std::endl;
       exit(EXIT_FAILURE);
@@ -107,4 +107,4 @@ void Args::Parse(const int argc, char **argv)
   }
 }
 
-} // end of namespace record_minmax
+} // namespace record_minmax

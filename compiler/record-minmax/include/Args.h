@@ -31,9 +31,9 @@ public:
   Args(const int argc, char **argv);
   void print(void);
 
-  const std::string &getInputModelFilename(void) const { return _input_model_filename; }
-  const std::string &getInputDataFilename(void) const { return _input_data_filename; }
-  const std::string &getOutputModelFilename(void) const { return _output_model_filename; }
+  const std::string &getInputModelFilePath(void) const { return _input_model_filepath; }
+  const std::string &getInputDataFilePath(void) const { return _input_data_filepath; }
+  const std::string &getOutputModelFilePath(void) const { return _output_model_filepath; }
 
 private:
   void Initialize();
@@ -43,11 +43,11 @@ private:
   po::positional_options_description _positional;
   po::options_description _options;
 
-  std::string _input_model_filename;
-  std::string _input_data_filename;
-  std::string _output_model_filename;
+  std::string _input_model_filepath;
+  std::string _input_data_filepath;
+  std::string _output_model_filepath;
 };
 
-} // end of namespace record_minmax
+} // namespace record_minmax
 
 #endif // __RECORD_MINMAX_ARGS_H__

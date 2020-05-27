@@ -21,9 +21,9 @@ int entry(const int argc, char **argv)
   using namespace record_minmax;
 
   Args args(argc, argv);
-  auto input_model_path = args.getInputModelFilename();
-  auto input_data_path = args.getInputDataFilename();
-  auto output_model_path = args.getOutputModelFilename();
+  auto input_model_path = args.getInputModelFilePath();
+  auto input_data_path = args.getInputDataFilePath();
+  auto output_model_path = args.getOutputModelFilePath();
 
   // TODO: Implement record_minmax functionality
 
