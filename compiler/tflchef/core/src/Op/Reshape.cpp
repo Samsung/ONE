@@ -41,7 +41,8 @@ flatbuffers::Offset<void> ReshapeChef::value(flatbuffers::FlatBufferBuilder &fbb
 {
   auto &operation = (*_operation);
 
-  assert(operation.has_reshape_options());
+  if (!operation.has_reshape_options())
+    return 0;
 
   auto options = operation.reshape_options();
   auto shapes = vector_new_shape(options);
