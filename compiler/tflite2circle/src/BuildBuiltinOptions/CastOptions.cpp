@@ -26,7 +26,9 @@ flatbuffers::Offset<circle::CastOptions>
 build_circle_CastOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
 {
   auto tflite_builtin_options = op->builtin_options_as_CastOptions();
-  assert(tflite_builtin_options);
+  if (tflite_builtin_options == nullptr)
+    return 0;
+
   circle::CastOptionsBuilder builtin_options_builder{fb};
   builtin_options_builder.add_in_data_type(
       get_circle_tensortype(tflite_builtin_options->in_data_type()));
