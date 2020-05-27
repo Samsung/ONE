@@ -21,6 +21,7 @@
 
 template <> float to_number(const std::string &s) { return std::stof(s); }
 template <> int to_number(const std::string &s) { return std::stoi(s); }
+template <> int64_t to_number(const std::string &s) { return std::stoll(s); }
 template <> uint8_t to_number(const std::string &s)
 {
   int temp = std::stoi(s);
