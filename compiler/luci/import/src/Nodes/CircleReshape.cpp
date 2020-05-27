@@ -66,7 +66,14 @@ CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
   if (shape_node == nullptr)
   {
     const auto *options = op.builtin_options.AsReshapeOptions();
-    shape_node = create_shape_node(options->new_shape, graph);
+    if (options != nullptr)
+      shape_node = create_shape_node(options->new_shape, graph);
+    else
+    {
+      shape_node = graph->nodes()->create<CircleOutputDummy>();
+      shape_node->dtype(loco::DataType::S32);
+      shape_node->rank(0);
+    }
   }
 
   auto *node = graph->nodes()->create<CircleReshape>();
@@ -74,7 +81,8 @@ CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
   node->shape(shape_node);
 
   const auto *options = op.builtin_options.AsReshapeOptions();
-  setup_shape_attribute(options->new_shape, node);
+  if (options)
+    setup_shape_attribute(options->new_shape, node);
 
   return node;
 }
