@@ -696,8 +696,11 @@ public:
   loco::NodeShape visit(const luci::CircleFloorMod *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    assert(x_shape == loco::shape_get(node->y()).as<loco::TensorShape>());
-    return loco::NodeShape{x_shape};
+    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+
+    auto output_shape = broadcast_shape(x_shape, y_shape);
+
+    return output_shape;
   }
 
   loco::NodeShape visit(const luci::CircleFullyConnected *node) final
