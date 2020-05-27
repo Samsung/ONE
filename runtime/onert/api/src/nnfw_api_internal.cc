@@ -230,6 +230,20 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
 NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
                                      size_t length)
 {
+  if (!isStatePrepared())
+  {
+    std::cerr << "Error during nnfw_session::set_output : invalid state" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr
+        << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
+        << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   try
   {
     _execution->setOutput(onert::ir::IOIndex(index), buffer, length);

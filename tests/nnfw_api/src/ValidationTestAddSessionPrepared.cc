@@ -61,4 +61,23 @@ TEST_F(ValidationTestAddSessionPrepared, neg_set_input_002)
             NNFW_STATUS_ERROR);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, set_output_001)
+{
+  char buffer[32];
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
+            NNFW_STATUS_NO_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_output_001)
+{
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 1), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_output_002)
+{
+  char input[1]; // buffer size is too small
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
+            NNFW_STATUS_ERROR);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting
