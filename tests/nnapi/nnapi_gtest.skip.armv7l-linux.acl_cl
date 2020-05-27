@@ -27,6 +27,7 @@ GeneratedTests.conv_quant8_weights_as_inputs
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.cos_ex_dynamic_nnfw
+GeneratedTests.div_dynamic_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims_dynamic_nnfw_1

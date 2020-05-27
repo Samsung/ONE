@@ -42,6 +42,7 @@ GeneratedTests.depthwise_conv2d_float_large_2_relaxed
 GeneratedTests.depthwise_conv2d_float_large_relaxed
 GeneratedTests.depthwise_conv2d_float_relaxed
 GeneratedTests.depthwise_conv_relaxed
+GeneratedTests.div_dynamic_nnfw
 GeneratedTests.equal_boolean
 GeneratedTests.exp_
 GeneratedTests.exp_2D_float_nnfw

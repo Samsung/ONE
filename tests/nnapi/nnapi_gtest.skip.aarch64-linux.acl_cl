@@ -31,6 +31,7 @@ GeneratedTests.exp_
 GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims_dynamic_nnfw_1
 GeneratedTests.expand_dims_dynamic_nnfw_2
+GeneratedTests.div_dynamic_nnfw
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
 GeneratedTests.fully_connected_float_2_weights_as_inputs

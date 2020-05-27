@@ -86,6 +86,7 @@ GeneratedTests.depthwise_conv2d_quant8_large_weights_as_inputs
 GeneratedTests.depthwise_conv2d_quant8_weights_as_inputs
 GeneratedTests.dequantize
 GeneratedTests.div_
+GeneratedTests.div_dynamic_nnfw
 GeneratedTests.div_broadcast_float
 GeneratedTests.div_broadcast_float_4D_2D_nnfw
 GeneratedTests.embedding_lookup
