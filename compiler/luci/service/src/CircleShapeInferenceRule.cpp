@@ -34,6 +34,19 @@
 namespace
 {
 
+std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape)
+{
+  os << "[";
+  for (uint32_t r = 0; r < tensor_shape.rank(); ++r)
+  {
+    if (r)
+      os << ",";
+    os << tensor_shape.dim(r).value();
+  }
+  os << "]";
+  return os;
+}
+
 // Call this for CircleAvgPool2D and CircleMaxPool2D only
 template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType *node)
 {
@@ -1135,6 +1148,8 @@ public:
    */
   loco::NodeShape visit(const luci::CircleReshape *node) final
   {
+    LOGGER(l);
+
     const loco::DataType S32 = loco::DataType::S32;
 
     loco::TensorShape shape_by_input;
@@ -1143,15 +1158,26 @@ public:
 
       // Only support node's shape() is CircleConst with S32
       // TODO support other node with other types
-      auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->shape());
-      LUCI_ASSERT(const_shape_node, "Only support CircleConst for shape of CircleReshape");
-      LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
-
-      shape_by_input.rank(const_shape_node->size<S32>());
-
-      for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+      auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
+      if (const_shape_node != nullptr)
       {
-        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+        LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
+
+        shape_by_input.rank(const_shape_node->size<S32>());
+
+        for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+        {
+          shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+        }
+      }
+      else
+      {
+        // We use shape from the node itself
+        shape_by_input.rank(node->rank());
+        for (uint32_t axis = 0; axis < node->rank(); ++axis)
+        {
+          shape_by_input.dim(axis) = node->dim(axis).value();
+        }
       }
     }
 
@@ -1165,8 +1191,12 @@ public:
       }
     }
 
-    LUCI_ASSERT(shape_by_input == shape_by_attr,
-                "Warning: Two new shape information mismatched for CircleReshape");
+    if (!(shape_by_input == shape_by_attr))
+    {
+      INFO(l) << "CircleReshape: Two new shape information mismatched : " << std::endl;
+      INFO(l) << "   shape_by_input : " << shape_by_input << std::endl;
+      INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
+    }
 
     loco::TensorShape output_shape = shape_by_input;
 
