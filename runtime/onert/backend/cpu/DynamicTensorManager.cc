@@ -92,9 +92,9 @@ void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandInd
   }
 }
 
-void DynamicTensorManager::deallocInput(const ir::Operation *op)
+void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 {
-  auto find = _dealloc_tensor_map.find(op);
+  auto find = _dealloc_tensor_map.find(op_ind);
   if (find == _dealloc_tensor_map.end())
     return;
 
@@ -105,8 +105,8 @@ void DynamicTensorManager::deallocInput(const ir::Operation *op)
       continue;
 
     _dynamic_mem_mgr->deallocate(input_ind);
-    VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value() << " (input of "
-                                  << op->name() << ")" << std::endl;
+    VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
+                                  << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
   }
 }
 

@@ -62,7 +62,7 @@ public:
    *        be used anymore
    * @note  This will work after calling planDealloc
    */
-  virtual void deallocInput(const ir::Operation *op) = 0;
+  virtual void deallocInput(ir::OperationIndex op_ind) = 0;
 
   /**
    * @brief Deallocate an output tensor if the tensor is a dynamic tensor

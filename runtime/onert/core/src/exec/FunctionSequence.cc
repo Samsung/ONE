@@ -80,7 +80,7 @@ void FunctionSequenceForDynamicBackend::run()
     function->run();
 
     // deallocate input tensors which is no longer used
-    _dyn_tensor_manager->deallocInput(op);
+    _dyn_tensor_manager->deallocInput(op_iter->index);
 
     op_iter++;
   }
