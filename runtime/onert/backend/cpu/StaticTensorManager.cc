@@ -77,7 +77,7 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, bool as_const)
 {
   assert(_tensors->find(ind) == _tensors->end());
-  auto tensor = std::make_shared<operand::Tensor>(tensor_info);
+  auto tensor = std::make_shared<Tensor>(tensor_info);
   (*_tensors)[ind] = tensor;
   _as_constants[ind] = as_const;
 }

@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 
 #include "TensorBuilder.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/CustomKernelBuilder.h>
 #include <backend/IKernelGenerator.h>

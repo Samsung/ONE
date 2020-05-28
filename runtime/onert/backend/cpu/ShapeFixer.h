@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_CPU_SHAPE_FIXER_H__
 
 #include "TensorBuilder.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/IShapeFixer.h>
 #include <ir/Operands.h>

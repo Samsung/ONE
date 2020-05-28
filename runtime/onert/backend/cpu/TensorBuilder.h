@@ -20,7 +20,7 @@
 #include "DynamicTensorManager.h"
 #include "StaticTensorManager.h"
 #include "TensorRegistry.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
@@ -78,9 +78,9 @@ public:
    * @brief Get tensor with a specific OperandIndex.
    * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
    *        If not, program will crash with assert or exception.
-   * @return shared_ptr<operand::Tensor>
+   * @return shared_ptr<Tensor>
    */
-  std::shared_ptr<operand::Tensor> at(const ir::OperandIndex &ind);
+  std::shared_ptr<Tensor> at(const ir::OperandIndex &ind);
 
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
