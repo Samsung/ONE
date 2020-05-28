@@ -19,6 +19,7 @@
 
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
+#include <loco/IR/DataType.h>
 
 #include <cstdint>
 
@@ -28,10 +29,16 @@ namespace luci_interpreter
 // Inject commonly used types into `luci_interpreter` namespace for convenience.
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
+using DataType = loco::DataType;
 
 struct AddParams
 {
   Activation activation;
+};
+
+struct ArgMaxParams
+{
+  DataType output_type;
 };
 
 struct ConcatenationParams

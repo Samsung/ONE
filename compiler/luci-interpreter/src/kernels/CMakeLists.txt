@@ -13,6 +13,8 @@ endif ()
 set(SOURCES
     Add.h
     Add.cpp
+    ArgMax.h
+    ArgMax.cpp
     AveragePool2D.h
     AveragePool2D.cpp
     Concatenation.h
@@ -52,6 +54,7 @@ set(TEST_SOURCES
     TestUtils.h
     TestUtils.cpp
     Add.test.cpp
+    ArgMax.test.cpp
     AveragePool2D.test.cpp
     Concatenation.test.cpp
     Conv2D.test.cpp
