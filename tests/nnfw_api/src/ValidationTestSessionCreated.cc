@@ -40,6 +40,20 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_002)
       NNFW_STATUS_ERROR);
 }
 
+TEST_F(ValidationTestSessionCreated, neg_load_session_003)
+{
+  ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestSessionCreated, neg_load_session_004)
+{
+  // Too long path
+  const std::string long_path(1024, 'x');
+  ASSERT_EQ(nnfw_load_model_from_file(
+                _session, NNPackages::get().getModelAbsolutePath(long_path.c_str()).c_str()),
+            NNFW_STATUS_ERROR);
+}
+
 TEST_F(ValidationTestSessionCreated, neg_prepare_001)
 {
   // nnfw_load_model_from_file was not called
