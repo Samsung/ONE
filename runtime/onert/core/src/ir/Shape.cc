@@ -73,9 +73,10 @@ void Shape::extendRank(int to_rank)
 
 uint64_t Shape::num_elements() const
 {
-  // All of the nodes must have non-negative dimension
-  assert(std::all_of(_dimensions.begin(), _dimensions.end(),
-                     [](const int32_t &v) { return (v >= 0); }));
+  // if dimension is 0, it means unspecified and cannot calculate the total number of elements
+  if (std::any_of(_dimensions.begin(), _dimensions.end(),
+                  [](const int32_t &v) { return (v == 0); }))
+    throw std::runtime_error("num_elements() cannot calculate when a dimension is unspecified");
 
   return std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),
                          std::multiplies<uint64_t>());

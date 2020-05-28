@@ -54,6 +54,9 @@ public:
 
   int32_t &dim(int i) { return _dimensions.at(i); }
 
+  /**
+   * @brief Returns number of elements when rank or dim is specified
+   */
   uint64_t num_elements() const;
 
 public:
