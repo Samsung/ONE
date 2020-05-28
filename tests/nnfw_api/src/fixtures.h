@@ -46,6 +46,12 @@ protected:
   void SetUp() override {}
 };
 
+class RegressionTest : public ::testing::Test
+{
+protected:
+  void SetUp() override {}
+};
+
 class ValidationTestSingleSession : public ValidationTest
 {
 protected:
