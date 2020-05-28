@@ -58,3 +58,17 @@ TEST_F(ValidationTestSingleSession, neg_set_output_002)
   ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
             NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSingleSession, neg_get_input_size)
+{
+  uint32_t size = 10000;
+  ASSERT_EQ(nnfw_input_size(nullptr, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(size, 10000);
+}
+
+TEST_F(ValidationTestSingleSession, neg_get_output_size)
+{
+  uint32_t size = 10000;
+  ASSERT_EQ(nnfw_output_size(nullptr, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(size, 10000);
+}
