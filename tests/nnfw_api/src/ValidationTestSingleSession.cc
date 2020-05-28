@@ -45,3 +45,16 @@ TEST_F(ValidationTestSingleSession, neg_set_input_002)
   ASSERT_EQ(nnfw_set_input(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
             NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSingleSession, neg_set_output_001)
+{
+  // Invalid session
+  ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestSingleSession, neg_set_output_002)
+{
+  char buffer[32];
+  ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
+            NNFW_STATUS_ERROR);
+}
