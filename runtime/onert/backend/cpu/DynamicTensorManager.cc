@@ -16,6 +16,8 @@
 
 #include "DynamicTensorManager.h"
 
+#include "util/logging.h"
+
 namespace onert
 {
 namespace backend
@@ -90,8 +92,12 @@ void DynamicTensorManager::deallocInput(const ir::Operation *op)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  (void)output_ind;
-  // TODO write code here
+  if (!_tensors->at(output_ind)->is_dynamic())
+    return;
+
+  _dynamic_mem_mgr->deallocate(output_ind);
+  VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
+                                << " (output of a subgraph)" << std::endl;
 }
 
 } // namespace cpu

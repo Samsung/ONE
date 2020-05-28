@@ -61,7 +61,14 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
       {
         tensor = tensor_builder->tensorAt(ind);
         if (tensor != nullptr)
+        {
+          if (tensor_builder->supportDynamicTensor())
+          {
+            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+            _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+          }
           break;
+        }
       }
       assert(tensor != nullptr);
       list.push_back(tensor);
@@ -247,10 +254,17 @@ void ExecutorBase::execute(const IODescription &desc)
     _output_tensors[n]->access(getter);
 
     // deallocate output tensors if it is dynamic
+    {
+      auto find = _output_to_dyn_alloc_info.find(_output_tensors[n]);
+      if (find != _output_to_dyn_alloc_info.end())
+      {
+        auto &dyn_alloc_info = find->second;
+        auto *dyn_tensor_mgr = dyn_alloc_info.dyn_tensor_manager;
+        auto outut_ind = dyn_alloc_info.ind;
 
-    // TODO write code, e.g,
-    //
-    // dyn_tensor_mgr->deallocSubgraphOutput(output_ind);
+        dyn_tensor_mgr->deallocSubgraphOutput(outut_ind);
+      }
+    }
   }
 }
 
