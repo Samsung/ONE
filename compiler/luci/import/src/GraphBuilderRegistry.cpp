@@ -101,6 +101,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                                               // 69
   CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                                          // 48
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
+  CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                                             // 119
   CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeGraphBuilder);                                    // 93
@@ -132,7 +133,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
-  // BuiltinOperator_TRANSPOSE_CONV = 67,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
   // BuiltinOperator_LOG = 73,
   // BuiltinOperator_SQRT = 75,
