@@ -1,0 +1,37 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "MatrixBandPart/num_lower"
+  type: INT64
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "MatrixBandPart/num_upper"
+  type: INT64
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operation {
+  type: "MatrixBandPart"
+  input: "ifm"
+  input: "MatrixBandPart/num_lower"
+  input: "MatrixBandPart/num_upper"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
