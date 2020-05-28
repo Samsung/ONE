@@ -401,7 +401,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     std::unordered_set<OperationIndex> branched_set;
 
     // Check for branching up
-    for (const auto &input : op_seq.getInputs().asUnique())
+    for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED)
     {
       const auto &input_obj = _graph.operands().at(input);
       for (const auto &def : input_obj.getDef())
@@ -416,7 +416,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     branched_set.clear();
 
     // Check for branching down
-    for (const auto &output : node.getOutputs().asUnique())
+    for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
     {
       const auto &output_obj = _graph.operands().at(output);
       for (const auto &use : output_obj.getUses())

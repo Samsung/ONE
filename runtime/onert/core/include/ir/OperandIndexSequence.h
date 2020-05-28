@@ -27,6 +27,11 @@ namespace onert
 namespace ir
 {
 
+enum class Remove
+{
+  DUPLICATED = 0x1
+};
+
 class OperandIndexSequence
 {
 public:
@@ -45,17 +50,20 @@ public:
   const OperandIndex &at(uint32_t index) const { return _vec.at(index); }
   bool contains(const OperandIndex &index) const;
   void replace(const OperandIndex &from, const OperandIndex &to);
-  OperandIndexSequence asUnique(void) const
+  OperandIndexSequence operator|(ir::Remove filter) const
   {
-    ir::OperandIndexSequence unique;
-    for (const auto &ind : _vec)
+    switch (filter)
     {
-      if (!unique.contains(ind))
+      case ir::Remove::DUPLICATED:
       {
-        unique.append(ind);
+        ir::OperandIndexSequence seq;
+        for (const auto &ind : _vec)
+          if (!seq.contains(ind))
+            seq.append(ind);
+        return seq;
       }
     }
-    return unique;
+    return *this;
   }
 
 public:
