@@ -78,6 +78,7 @@ public:
   void visit(luci::CircleIf *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
+  void visit(luci::CircleLessEqual *) final;
   void visit(luci::CircleLocalResponseNormalization *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
@@ -678,6 +679,23 @@ void OperationExporter::visit(luci::CircleLess *node)
 
   auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
                                   circle::BuiltinOptions_LessOptions, options.Union());
+
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLessEqual *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LESS_EQUAL);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateLessEqualOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_LessEqualOptions, options.Union());
 
   gd._operators.push_back(op_offset);
 }
