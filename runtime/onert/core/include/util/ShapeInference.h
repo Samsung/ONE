@@ -114,7 +114,7 @@ private:
   // TODO write op starting from N
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
-  // TODO write op starting from S
+  void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
@@ -163,7 +163,7 @@ public:
   // TODO write op starting from N
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
-  // TODO write op starting from S
+  void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
