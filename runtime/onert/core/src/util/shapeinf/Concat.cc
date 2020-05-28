@@ -25,15 +25,19 @@ namespace shape_inference
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
 {
-  const int32_t concat_axis = param.axis;
+  const int32_t concat_axis = param.axis >= 0 ? param.axis : in_shapes[0].rank() + param.axis;
   const auto &first_in_shape = in_shapes[0];
 
   // Check that all shapes are equal except for concat axis dimension
   for (const auto &in_shape : in_shapes)
   {
-    assert(in_shape.rank() == first_in_shape.rank());
+    if (in_shape.rank() != first_in_shape.rank())
+      throw std::runtime_error("Rank in all input tensors should be same");
+
     for (int64_t dim_idx = 0; dim_idx < in_shape.rank(); ++dim_idx)
-      assert(dim_idx == concat_axis || in_shape.dim(dim_idx) == first_in_shape.dim(dim_idx));
+      if (!(dim_idx == concat_axis || in_shape.dim(dim_idx) == first_in_shape.dim(dim_idx)))
+        throw std::runtime_error("All tensor should have same dimension "
+                                 "except dimension on passed axis");
   }
 
   // Calculate output shape
