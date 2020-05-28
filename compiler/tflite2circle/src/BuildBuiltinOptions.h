@@ -84,6 +84,7 @@
 #include "BuildBuiltinOptions/TileOptions.h"
 #include "BuildBuiltinOptions/TopKV2Options.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
+#include "BuildBuiltinOptions/TransposeConvOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
 #include "BuildBuiltinOptions/ZerosLikeOptions.h"
