@@ -65,6 +65,11 @@ private:
    */
   std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
+
+  // contains list of dynamic tensor index, which can be deallocated after running operation
+  // note: this map could contain static tensor index too. Careful use is required.
+  std::unordered_map<const ir::Operation *, std::unordered_set<ir::OperandIndex>>
+      _dealloc_tensor_map;
 };
 
 } // namespace cpu

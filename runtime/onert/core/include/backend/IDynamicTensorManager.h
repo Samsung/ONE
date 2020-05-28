@@ -50,7 +50,10 @@ public:
   virtual void changeShape(const ir::OperandIndex &, const ir::Shape &) = 0;
 
   /**
-   * @brief Plans when to delete a tensor. Note this planning is done at compilation time.
+   * @brief Plan when to delete a tensor. Note this planning is done at compilation time.
+   * @param op            operation
+   * @param operand_ind   operand index of input operand of first param op. Operand can be static
+   *                      or dynamic since tensor type may not be clearly known at compilation time.
    */
   virtual void planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind) = 0;
 
