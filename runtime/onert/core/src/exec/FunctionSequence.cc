@@ -79,9 +79,8 @@ void FunctionSequenceForDynamicBackend::run()
     // run kernel
     function->run();
 
-    // TODO Add code to deallocate tensor if the tensor will not be used, e.g.,
-    //
-    // _dyn_tensor_manager->deallocInput(op);
+    // deallocate input tensors which is no longer used
+    _dyn_tensor_manager->deallocInput(op);
 
     op_iter++;
   }

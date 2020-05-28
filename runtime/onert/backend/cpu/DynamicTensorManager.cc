@@ -94,8 +94,20 @@ void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandInd
 
 void DynamicTensorManager::deallocInput(const ir::Operation *op)
 {
-  (void)op;
-  // TODO write code here
+  auto find = _dealloc_tensor_map.find(op);
+  if (find == _dealloc_tensor_map.end())
+    return;
+
+  auto &input_set = find->second;
+  for (auto input_ind : input_set)
+  {
+    if (!_tensors->at(input_ind)->is_dynamic())
+      continue;
+
+    _dynamic_mem_mgr->deallocate(input_ind);
+    VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value() << " (input of "
+                                  << op->name() << ")" << std::endl;
+  }
 }
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
