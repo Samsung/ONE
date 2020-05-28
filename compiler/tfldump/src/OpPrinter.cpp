@@ -560,6 +560,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
+  // There is no Option for LOG
   // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
