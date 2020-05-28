@@ -75,9 +75,9 @@ void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Sh
   tensor->set_dynamic();
 }
 
-void DynamicTensorManager::planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind)
+void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
 {
-  auto find = _dealloc_tensor_map.find(op);
+  auto find = _dealloc_tensor_map.find(op_ind);
   if (find != _dealloc_tensor_map.end())
   {
     auto &input_set = find->second;
@@ -86,7 +86,7 @@ void DynamicTensorManager::planDealloc(const ir::Operation *op, ir::OperandIndex
   else
   {
     _dealloc_tensor_map.emplace(
-        std::make_pair(op, std::unordered_set<ir::OperandIndex>{operand_ind}));
+        std::make_pair(op_ind, std::unordered_set<ir::OperandIndex>{operand_ind}));
   }
 }
 
