@@ -23,6 +23,7 @@ operation {
   output: "ofm"
   resize_bilinear_options {
     align_corners: false
+    half_pixel_centers: false
   }
 }
 input: "ifm1"
