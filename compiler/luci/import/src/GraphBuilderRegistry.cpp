@@ -80,6 +80,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                                               // 19
   CIRCLE_NODE(RELU_N1_TO_1, CircleReluN1To1GraphBuilder);                                  // 20
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                                         // 22
+  CIRCLE_NODE(RESIZE_BILINEAR, CircleResizeBilinearGraphBuilder);                          // 23
   CIRCLE_NODE(RESIZE_NEAREST_NEIGHBOR, CircleResizeNearestNeighborGraphBuilder);           // 97
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                                           // 64
@@ -115,7 +116,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_LSH_PROJECTION = 15,
   // BuiltinOperator_LSTM = 16,
   // BuiltinOperator_RELU6 = 21,
-  // BuiltinOperator_RESIZE_BILINEAR = 23,
   // BuiltinOperator_RNN = 24,
   // BuiltinOperator_SVDF = 27,
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
