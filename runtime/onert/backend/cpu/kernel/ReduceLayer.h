@@ -46,6 +46,7 @@ enum class ReduceType
   kMax,
   kMin,
   kAny,
+  kAll,
 };
 
 class ReduceLayer : public ::onert::exec::IFunction

@@ -91,6 +91,11 @@ void evalType<bool>(const operand::Tensor *input, operand::Tensor *output,
           input, output, axes, keep_dims, false, reduce_kernel,
           [](const bool current, const bool in) -> bool { return in || current; });
       break;
+    case ReduceType::kAll:
+      return evalLogic<bool>(
+          input, output, axes, keep_dims, true, reduce_kernel,
+          [](const bool current, const bool in) -> bool { return in && current; });
+      break;
     default:
       throw std::runtime_error{"Reduce: Unsupported reduce type"};
   }
@@ -151,6 +156,9 @@ void ReduceLayer::run()
       break;
     case ReduceType::kAny:
       evalGeneric<ReduceType::kAny>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      break;
+    case ReduceType::kAll:
+      evalGeneric<ReduceType::kAll>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
       break;
     default:
       throw std::runtime_error{"ReduceSum: Unsupported reduce type"};

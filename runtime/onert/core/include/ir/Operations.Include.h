@@ -42,6 +42,7 @@
 #include "ir/operation/Div.h"
 #include "ir/operation/Exp.h"
 #include "ir/operation/ExpandDims.h"
+#include "ir/operation/ReduceAll.h"
 #include "ir/operation/ReduceAny.h"
 #include "ir/operation/ReduceMax.h"
 #include "ir/operation/Comparison.h"
