@@ -54,6 +54,28 @@ struct ITensorBuilder
    */
   virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                   ir::Layout backend_layout, bool as_const) = 0;
+
+  /**
+   * @brief Check if the tensor has been registered with @c registerTensorInfo
+   *
+   * @return true If the tensor has been registered
+   * @return false Otherwise
+   */
+  virtual bool isRegistered(const ir::OperandIndex &) const = 0;
+
+  /**
+   * @brief Get tensor registry
+   *
+   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
+   *
+   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
+   */
+  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry()
+  {
+    throw std::runtime_error("tensorRegistry(): NYI");
+  }
+
+public: // methods for static tensor allocation
   /**
    * @brief Let the tensor builder know first use(start of lifetime) of a tensor
    *        Must be called before calling @c prepare
@@ -67,13 +89,6 @@ struct ITensorBuilder
    *        NOTE: Useful only for static models
    */
   virtual void notifyLastUse(const ir::OperandIndex &) = 0;
-  /**
-   * @brief Check if the tensor has been registered with @c registerTensorInfo
-   *
-   * @return true If the tensor has been registered
-   * @return false Otherwise
-   */
-  virtual bool isRegistered(const ir::OperandIndex &) const = 0;
   /**
    * @brief Prepare the tensors
    *        Before calling this, all the tensors must be registered
@@ -113,6 +128,7 @@ struct ITensorBuilder
    */
   virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
 
+public: // methods for dynamic tensor allocation
   /**
    * @brief Get dynamicTensorManager. If a backend does not support dynamic tensor, exception
    *        will be thrown.
@@ -136,18 +152,6 @@ struct ITensorBuilder
   virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void)
   {
     throw std::runtime_error("releaseDynamicTensorManager() for this backend is not supported");
-  }
-
-  /**
-   * @brief Get tensor registry
-   *
-   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
-   *
-   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
-   */
-  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry()
-  {
-    throw std::runtime_error("tensorRegistry(): NYI");
   }
 };
 
