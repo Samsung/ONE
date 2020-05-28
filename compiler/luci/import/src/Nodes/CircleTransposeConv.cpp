@@ -38,10 +38,12 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
                                                         loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleTransposeConv>();
-  node->input(inputs[0]);
-  node->filter(inputs[1]);
 
   assert(inputs.size() == 3);
+
+  node->inputSizes(inputs[0]);
+  node->filter(inputs[1]);
+  node->outBackprop(inputs[2]);
 
   const auto *options = op.builtin_options.AsTransposeConvOptions();
   node->padding(luci_padding(options->padding));

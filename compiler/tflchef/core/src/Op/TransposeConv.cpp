@@ -19,7 +19,6 @@
 
 #include <cassert>
 
-
 flatbuffers::Offset<void> TransposeConvChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
@@ -31,15 +30,14 @@ flatbuffers::Offset<void> TransposeConvChef::value(flatbuffers::FlatBufferBuilde
   tflite::TransposeConvOptionsBuilder options_builder{fbb};
 
   options_builder.add_padding(tflite_padding);
-  
+
   options_builder.add_stride_h(operation.transpose_conv_options().stride_h());
   options_builder.add_stride_w(operation.transpose_conv_options().stride_w());
 
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef>
-TransposeConvChefFactory::create(const tflchef::Operation *operation) const
+std::unique_ptr<OpChef> TransposeConvChefFactory::create(const tflchef::Operation *operation) const
 {
   return std::unique_ptr<OpChef>{new TransposeConvChef{operation}};
 }

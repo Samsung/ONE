@@ -26,11 +26,17 @@ void TFliteOpTransposeConv::filler(const tflite::Operator *op, TFliteImport *imp
 {
   const auto &inputs = *op->inputs();
 
-  const tflite::Tensor *tensor = import->tensors()->Get(inputs[1]);
-  assert(tensor->type() == tflite::TensorType::TensorType_FLOAT32);
+  const tflite::Tensor *tensor = import->tensors()->Get(inputs[0]);
+  assert(tensor->type() == tflite::TensorType::TensorType_INT32);
   const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
   auto vec = extract_buffer<int32_t>(buffer);
-  import->set_tensor_filler(inputs[1], vec);
+  import->set_tensor_filler(inputs[0], vec);
+
+  tensor = import->tensors()->Get(inputs[1]);
+  assert(tensor->type() == tflite::TensorType::TensorType_FLOAT32);
+  buffer = import->buffers()->Get(tensor->buffer());
+  auto vec_float = extract_buffer<float>(buffer);
+  import->set_tensor_filler(inputs[1], vec_float);
 }
 
 tflchef::Operation *TFliteOpTransposeConv::build(const tflite::Operator *op, TFliteImport *import,

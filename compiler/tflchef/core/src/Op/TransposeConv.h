@@ -28,7 +28,10 @@ public:
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_TRANSPOSE_CONV; }
+  tflite::BuiltinOperator code(void) const override
+  {
+    return tflite::BuiltinOperator_TRANSPOSE_CONV;
+  }
 
   tflite::BuiltinOptions type(void) const override
   {
