@@ -156,6 +156,7 @@ protected:
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
+  std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
 };
