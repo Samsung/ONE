@@ -57,6 +57,7 @@ GeneratedTests.cast_quant8_to_float32
 GeneratedTests.cast_quant8_to_float32_relaxed
 GeneratedTests.cast_quant8_to_int32
 GeneratedTests.cast_quant8_to_quant8
+GeneratedTests.concat_dynamic_nnfw
 GeneratedTests.concat_quant8_1
 GeneratedTests.concat_quant8_2
 GeneratedTests.concat_quant8_3

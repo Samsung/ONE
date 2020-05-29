@@ -153,7 +153,7 @@ public:
   // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
-  // TODO write op starting from C
+  void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
