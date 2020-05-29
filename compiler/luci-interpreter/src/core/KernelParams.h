@@ -80,6 +80,11 @@ struct Pool2DParams
   Activation activation;
 };
 
+struct ReducerParams
+{
+  bool keep_dims;
+};
+
 struct SoftmaxParams
 {
   float beta;
