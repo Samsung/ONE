@@ -2041,11 +2041,30 @@ bool CircleShapeInferenceRule::recognize(const loco::Dialect *d) const
 
 bool CircleShapeInferenceRule::infer(const loco::Node *node, loco::NodeShape &shape) const
 {
+  LOGGER(l);
+
   assert(node->dialect() == CircleDialect::get());
 
   ShapeInferenceAlgorithm alg;
   auto circle_node = loco::must_cast<const CircleNode *>(node);
-  shape = circle_node->accept(&alg);
+
+  bool is_shape_undefined = (circle_node->shape_status() == ShapeStatus::UNDEFINED);
+  bool is_shape_none = (circle_node->shape_status() == ShapeStatus::NOSHAPE);
+  bool is_scalar = (circle_node->rank() == 0);
+
+  if (is_shape_undefined)
+    shape = circle_node->accept(&alg);
+  else
+  {
+    if (is_shape_none || is_scalar)
+      shape = own_shape(circle_node);
+    else
+      shape = circle_node->accept(&alg);
+  }
+
+  INFO(l) << ">> Node: " << circle_node->name();
+  INFO(l) << "        own_shape: " << own_shape(circle_node)
+          << "         -> infer: " << shape.as<loco::TensorShape>();
 
   return true;
 }
