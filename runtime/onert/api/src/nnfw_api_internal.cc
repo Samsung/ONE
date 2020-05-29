@@ -86,7 +86,7 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 
   if (!null_terminating(package_dir, MAX_PATH_LENGTH))
   {
-    std::cerr << "nnpackage path is too long: " << package_dir << std::endl;
+    std::cerr << "nnpackage path is too long" << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
