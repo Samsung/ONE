@@ -271,6 +271,9 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
 
 NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 {
+  if (isStateInitialized()) // Model is not loaded
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (number == nullptr)
@@ -290,6 +293,9 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 
 NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 {
+  if (isStateInitialized()) // Model is not loaded
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (number == nullptr)

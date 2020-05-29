@@ -77,3 +77,17 @@ TEST_F(ValidationTestSessionCreated, neg_set_output_001)
   // Invalid state
   ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSessionCreated, neg_get_input_size)
+{
+  uint32_t size = 10000;
+  ASSERT_EQ(nnfw_input_size(_session, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(size, 10000);
+}
+
+TEST_F(ValidationTestSessionCreated, neg_get_output_size)
+{
+  uint32_t size = 10000;
+  ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(size, 10000);
+}
