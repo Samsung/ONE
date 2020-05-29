@@ -69,6 +69,8 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -97,15 +99,14 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
 
     auto *nodeout = graph->nodes()->create<CircleTopKV2Out>();
     copy_tensor_attributes(output_tensor, nodeout);
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[n]) == nullptr)
+      nodeout->shape_status(ShapeStatus::NOSHAPE);
+    else
+      nodeout->shape_status(ShapeStatus::VALID);
 
     nodeout->topkv2(node);
     nodeout->index(n);
-
-    // mark no_shape
-    auto tensors_ptr = context->reader()->tensors_ptr();
-    assert(tensors_ptr != nullptr);
-    if (tensors_ptr->Get(outputs[n]) == nullptr)
-      nodeout->no_shape(true);
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }

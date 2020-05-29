@@ -76,6 +76,8 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   // NOTE Unpack has only one input so running a loop is not necessary
   //      This is provided as a reference for other Ops as a reference
@@ -110,15 +112,14 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
 
     auto *nodeout = graph->nodes()->create<CircleUnpackOut>();
     copy_tensor_attributes(output_tensor, nodeout);
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[n]) == nullptr)
+      nodeout->shape_status(ShapeStatus::NOSHAPE);
+    else
+      nodeout->shape_status(ShapeStatus::VALID);
 
     nodeout->unpack(node);
     nodeout->index(n);
-
-    // mark no_shape
-    auto tensors_ptr = context->reader()->tensors_ptr();
-    assert(tensors_ptr != nullptr);
-    if (tensors_ptr->Get(outputs[n]) == nullptr)
-      nodeout->no_shape(true);
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }

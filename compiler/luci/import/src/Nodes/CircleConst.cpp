@@ -58,6 +58,8 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   auto const_node = graph->nodes()->create<CircleConst>();
   const circle::TensorT &const_tensor = *tensors[tensor_index];
   copy_tensor_attributes(const_tensor, const_node);
+  // tensors_ptr shape can be nullptr but we just set as valid
+  const_node->shape_status(luci::ShapeStatus::VALID);
 
   INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << std::endl;
 
@@ -99,12 +101,6 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
     default:
       throw oops::UserExn("Unsupported tensor type", circle::EnumNameTensorType(const_tensor.type));
   }
-
-  // (4) mark no_shape
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
-  if (!tensors_ptr->Get(tensor_index)->shape())
-    const_node->no_shape(true);
 
   return const_node;
 }

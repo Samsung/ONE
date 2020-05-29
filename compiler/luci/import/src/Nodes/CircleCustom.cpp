@@ -37,6 +37,8 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   // Create CircleCustom
   const auto &opcodes = context->reader()->opcodes();
@@ -56,13 +58,12 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   {
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     copy_tensor_attributes(output_tensor, node);
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[0]) == nullptr)
+      node->shape_status(ShapeStatus::NOSHAPE);
+    else
+      node->shape_status(ShapeStatus::VALID);
   }
-
-  // mark no_shape
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
-  if (tensors_ptr->Get(outputs[0]) == nullptr)
-    node->no_shape(true);
 
   context->nodefinder()->enroll(outputs[0], node);
 }

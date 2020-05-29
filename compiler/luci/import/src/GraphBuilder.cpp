@@ -26,6 +26,8 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -48,6 +50,11 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   {
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     copy_tensor_attributes(output_tensor, node);
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[0]) == nullptr)
+      node->shape_status(ShapeStatus::NOSHAPE);
+    else
+      node->shape_status(ShapeStatus::VALID);
   }
 
   // Register node's only output.
@@ -55,12 +62,6 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   {
     context->nodefinder()->enroll(outputs[0], node);
   }
-
-  // mark no_shape
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
-  if (tensors_ptr->Get(outputs[0]) == nullptr)
-    node->no_shape(true);
 }
 
 } // namespace luci
