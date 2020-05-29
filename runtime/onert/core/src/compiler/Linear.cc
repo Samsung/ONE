@@ -259,7 +259,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
           if (tensor_builder_map[ind]->supportDynamicTensor())
           {
             assert(tensor_builder_map[ind]->dynamicTensorManager());
-            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op.node, ind);
+            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op.index, ind);
           }
         }
       }

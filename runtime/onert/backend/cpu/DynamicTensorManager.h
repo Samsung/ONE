@@ -54,7 +54,7 @@ public:
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
 
-  void planDealloc(const ir::Operation *op, ir::OperandIndex operand_ind) override;
+  void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) override;
   void deallocInput(const ir::Operation *op) override;
   void deallocSubgraphOutput(ir::OperandIndex ind) override;
 
@@ -65,6 +65,10 @@ private:
    */
   std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
+
+  // contains list of dynamic tensor index, which can be deallocated after running operation
+  // note: this map could contain static tensor index too. Careful use is required.
+  std::unordered_map<ir::OperationIndex, std::unordered_set<ir::OperandIndex>> _dealloc_tensor_map;
 };
 
 } // namespace cpu
