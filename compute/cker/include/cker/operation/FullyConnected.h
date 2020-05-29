@@ -148,7 +148,14 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   const int num_units = filter_shape.Dims(0);
 
   // Output = bias if bias tensor exists.
-  VectorBatchVectorAssign(bias_data, num_units, batch_size, output_data);
+  if (bias_data)
+  {
+    VectorBatchVectorAssign(bias_data, num_units, batch_size, output_data);
+  }
+  else
+  {
+    ZeroVector(output_data, batch_size * num_units);
+  }
 
   // Save matrix multiplication computation for all zero input.
   if (IsZeroVector(input_data, total_input_size))
