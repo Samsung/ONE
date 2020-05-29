@@ -51,10 +51,8 @@ public:
   {
     assert(_src_tensors.size() > 0);
     assert(_src_tensors.size() == _dst_tensors.size());
-    assert(_src_tensors.size() == _ranks.size());
     auto src_it = _src_tensors.begin();
     auto dst_it = _dst_tensors.begin();
-    auto rank_it = _ranks.begin();
     while (src_it != _src_tensors.end())
     {
       const auto src_tensor = *src_it;
@@ -64,24 +62,26 @@ public:
         // TODO Change to permute in parallel
         assert(underlying_type(src_tensor->data_type()) ==
                underlying_type(dst_tensor->data_type()));
+        auto rank = src_tensor->num_dimensions();
+        assert(rank == dst_tensor->num_dimensions());
         switch (src_tensor->data_type())
         {
           case ir::DataType::FLOAT32:
-            permute<float>(src_tensor, dst_tensor, *rank_it);
+            permute<float>(src_tensor, dst_tensor, rank);
             break;
           case ir::DataType::INT32:
-            permute<int32_t>(src_tensor, dst_tensor, *rank_it);
+            permute<int32_t>(src_tensor, dst_tensor, rank);
             break;
           case ir::DataType::UINT32:
-            permute<uint32_t>(src_tensor, dst_tensor, *rank_it);
+            permute<uint32_t>(src_tensor, dst_tensor, rank);
             break;
           case ir::DataType::BOOL8:
           case ir::DataType::QUANT8_ASYMM:
           case ir::DataType::UINT8:
-            permute<uint8_t>(src_tensor, dst_tensor, *rank_it);
+            permute<uint8_t>(src_tensor, dst_tensor, rank);
             break;
           case ir::DataType::QUANT8_SYMM:
-            permute<int8_t>(src_tensor, dst_tensor, *rank_it);
+            permute<int8_t>(src_tensor, dst_tensor, rank);
             break;
           default:
             throw std::runtime_error("IPermuteFunction: Not supported data type");
@@ -90,7 +90,6 @@ public:
       }
       src_it++;
       dst_it++;
-      rank_it++;
     }
   }
 

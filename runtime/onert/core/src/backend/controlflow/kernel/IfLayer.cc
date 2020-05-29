@@ -59,19 +59,6 @@ void IfLayer::run()
     return ret;
   };
 
-  std::vector<size_t> input_ranks;
-  for (size_t i = 0; i < _input_tensors.size(); ++i)
-  {
-    auto rank = _input_tensors.at(i)->num_dimensions();
-    input_ranks.emplace_back(rank);
-  }
-  std::vector<size_t> output_ranks;
-  for (size_t i = 0; i < _output_tensors.size(); ++i)
-  {
-    auto rank = _output_tensors.at(i)->num_dimensions();
-    output_ranks.emplace_back(rank);
-  }
-
   if (getResultCond(_cond_tensor.get()))
   {
     auto then_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_then_subg_index).get());
@@ -83,9 +70,9 @@ void IfLayer::run()
     const auto &then_input_tensors = then_exec->getInputTensors();
     const auto &then_output_tensors = then_exec->getOutputTensors();
     const auto permute_op_input_to_then_input =
-        std::make_shared<PermuteLayer>(_input_tensors, then_input_tensors, input_ranks);
+        std::make_shared<PermuteLayer>(_input_tensors, then_input_tensors);
     const auto permute_then_output_to_op_output =
-        std::make_shared<PermuteLayer>(then_output_tensors, _output_tensors, output_ranks);
+        std::make_shared<PermuteLayer>(then_output_tensors, _output_tensors);
 
     // Remove copying of unused tensor
     permute_op_input_to_then_input->prepare();
@@ -106,9 +93,9 @@ void IfLayer::run()
     const auto &else_input_tensors = else_exec->getInputTensors();
     const auto &else_output_tensors = else_exec->getOutputTensors();
     const auto permute_op_input_to_else_input =
-        std::make_shared<PermuteLayer>(_input_tensors, else_input_tensors, input_ranks);
+        std::make_shared<PermuteLayer>(_input_tensors, else_input_tensors);
     const auto permute_else_output_to_op_output =
-        std::make_shared<PermuteLayer>(else_output_tensors, _output_tensors, output_ranks);
+        std::make_shared<PermuteLayer>(else_output_tensors, _output_tensors);
 
     // Remove copying of unused tensor
     permute_op_input_to_else_input->prepare();

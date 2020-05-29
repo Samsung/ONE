@@ -32,14 +32,11 @@ class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
   PermuteLayer(const std::vector<std::shared_ptr<onert::backend::ITensor>> &src_tensors,
-               const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors,
-               std::vector<size_t> ranks)
+               const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors)
   {
     assert(src_tensors.size() == dst_tensors.size());
-    assert(src_tensors.size() == ranks.size());
     _src_tensors = src_tensors;
     _dst_tensors = dst_tensors;
-    _ranks = ranks;
   }
 
   void optimize() override
@@ -47,20 +44,17 @@ public:
     // Remove copying of tensor as nullptr
     auto src_it = _src_tensors.begin();
     auto dst_it = _dst_tensors.begin();
-    auto rank_it = _ranks.begin();
     while (src_it != _src_tensors.end())
     {
       if ((*src_it == *dst_it) || (*src_it == nullptr || *dst_it == nullptr))
       {
         src_it = _src_tensors.erase(src_it);
         dst_it = _dst_tensors.erase(dst_it);
-        rank_it = _ranks.erase(rank_it);
       }
       else
       {
         ++src_it;
         ++dst_it;
-        ++rank_it;
       }
     }
   }
