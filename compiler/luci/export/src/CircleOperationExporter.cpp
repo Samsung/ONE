@@ -59,6 +59,7 @@ public:
   void visit(luci::CircleConv2D *) final;
   void visit(luci::CircleCos *) final;
   void visit(luci::CircleCustom *) final;
+  void visit(luci::CircleDepthToSpace *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDiv *) final;
   void visit(luci::CircleElu *) final;
@@ -354,6 +355,20 @@ void OperationExporter::visit(luci::CircleCustom *node)
   circle_custom_options = builder.CreateVector(custom_options_vec);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE,
                                   flatbuffers::Offset<void>(), circle_custom_options);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleDepthToSpace *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_DEPTH_TO_SPACE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateDepthToSpaceOptions(builder, node->block_size());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_DepthToSpaceOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
