@@ -102,7 +102,7 @@ void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
     auto *nodeout = graph->nodes()->create<CircleSplitOut>();
     copy_tensor_attributes(output_tensor, nodeout);
     // mark shape_status
-    if (tensors_ptr->Get(outputs[n]) == nullptr)
+    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
       nodeout->shape_status(ShapeStatus::NOSHAPE);
     else
       nodeout->shape_status(ShapeStatus::VALID);

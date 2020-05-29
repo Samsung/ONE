@@ -51,7 +51,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     copy_tensor_attributes(output_tensor, node);
     // mark shape_status
-    if (tensors_ptr->Get(outputs[0]) == nullptr)
+    if (tensors_ptr->Get(outputs[0])->shape() == nullptr)
       node->shape_status(ShapeStatus::NOSHAPE);
     else
       node->shape_status(ShapeStatus::VALID);
