@@ -27,9 +27,11 @@ namespace record_minmax
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax(const std::string &input_model_path);
+  explicit RecordMinMax() = default;
 
   ~RecordMinMax() = default;
+
+  void initialize(const std::string &input_model_path);
 
   void profileData(const std::string &input_data_path);
 

@@ -26,7 +26,10 @@ int entry(const int argc, char **argv)
   auto input_data_path = args.getInputDataFilePath();
   auto output_model_path = args.getOutputModelFilePath();
 
-  RecordMinMax rmm(input_model_path);
+  RecordMinMax rmm;
+
+  // Initialize interpreter and observer
+  rmm.initialize(input_model_path);
 
   // Profile min/max while executing the given input data
   rmm.profileData(input_data_path);

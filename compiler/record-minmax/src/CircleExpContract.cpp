@@ -29,7 +29,7 @@ bool CircleExpContract::store(const char *ptr, const size_t size) const
   if (!ptr)
     INTERNAL_EXN("Graph was not serialized by FlatBuffer for some reason");
 
-  std::ofstream fs(_filepath.c_str(), std::ofstream::binary);
+  std::ofstream fs(_filepath, std::ofstream::binary);
   fs.write(ptr, size);
 
   return fs.good();

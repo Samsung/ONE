@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+#include "RecordMinMax.h"
+#include "CircleExpContract.h"
+
 #include <luci/Importer.h>
 #include <luci/CircleExporter.h>
-
-#include "CircleExpContract.h"
-#include "RecordMinMax.h"
 
 #include <fstream>
 #include <stdexcept>
@@ -26,7 +26,7 @@
 namespace record_minmax
 {
 
-RecordMinMax::RecordMinMax(const std::string &input_model_path)
+void RecordMinMax::initialize(const std::string &input_model_path)
 {
   // Load model from the file
   std::ifstream fs(input_model_path, std::ifstream::binary);
@@ -66,6 +66,6 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
   {
     throw std::runtime_error("ERROR: Failed to export '" + output_model_path + "'");
   }
-};
+}
 
 } // namespace record_minmax
