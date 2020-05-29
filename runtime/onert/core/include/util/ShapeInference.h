@@ -124,7 +124,7 @@ private:
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from P
+  void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);
@@ -187,7 +187,7 @@ public:
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from P
+  void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);

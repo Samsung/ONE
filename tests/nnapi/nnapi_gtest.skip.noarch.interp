@@ -258,6 +258,7 @@ GeneratedTests.pack_ex_2D_float_1
 GeneratedTests.pack_ex_2D_float_2
 GeneratedTests.pack_ex_2D_int_1
 GeneratedTests.pack_ex_2D_int_2
+GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pad_quant8_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
