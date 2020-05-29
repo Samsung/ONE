@@ -19,7 +19,7 @@
 
 #include "ir/OperandIndexMap.h"
 #include "backend/ITensorRegistry.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <memory>
 
@@ -30,8 +30,7 @@ namespace backend
 namespace cpu
 {
 
-class TensorRegistry : public ITensorRegistry,
-                       public ir::OperandIndexMap<std::shared_ptr<operand::Tensor>>
+class TensorRegistry : public ITensorRegistry, public ir::OperandIndexMap<std::shared_ptr<Tensor>>
 {
 public:
   /**

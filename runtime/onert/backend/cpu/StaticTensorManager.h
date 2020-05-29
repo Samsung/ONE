@@ -19,7 +19,7 @@
 
 #include "MemoryManager.h"
 #include "TensorRegistry.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/ITensorManager.h>
 #include <ir/OperandIndexMap.h>
