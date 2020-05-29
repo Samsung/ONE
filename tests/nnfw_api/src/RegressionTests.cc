@@ -30,7 +30,7 @@ TEST_F(RegressionTest, github_1535)
   nnfw_session *session2 = nullptr;
   ASSERT_EQ(nnfw_create_session(&session2), NNFW_STATUS_NO_ERROR);
   ASSERT_EQ(nnfw_load_model_from_file(session2, package_path.c_str()), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_available_backends(session2, "acl_cl"), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_set_available_backends(session2, "cpu"), NNFW_STATUS_NO_ERROR);
   ASSERT_EQ(nnfw_prepare(session2), NNFW_STATUS_NO_ERROR);
 
   ASSERT_EQ(nnfw_close_session(session1), NNFW_STATUS_NO_ERROR);
