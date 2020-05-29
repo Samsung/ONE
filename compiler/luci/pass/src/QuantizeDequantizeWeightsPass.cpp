@@ -174,7 +174,8 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
         auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
 
         // Find min/max on the fly
-        float min, max;
+        float min = std::numeric_limits<float>::max();
+        float max = std::numeric_limits<float>::min();
         for (uint32_t i = 0; i < circle_const->size<loco::DataType::FLOAT32>(); i++)
         {
           auto data = circle_const->at<loco::DataType::FLOAT32>(i);
