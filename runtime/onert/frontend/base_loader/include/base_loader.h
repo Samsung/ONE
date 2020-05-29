@@ -154,6 +154,7 @@ protected:
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadLogicalOr(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
+  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1048,12 +1049,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
 
   enum class BuiltinOP
   {
-    ReduceAll,
+    ReduceAll = 0,
+    FusedBatchNorm = 1
   };
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
       {"All", BuiltinOP::ReduceAll},
+      {"BN", BuiltinOP::FusedBatchNorm},
   };
 
   try
@@ -1064,6 +1067,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     {
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
+        break;
+      case BuiltinOP::FusedBatchNorm:
+        loadFusedBatchNorm(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1583,6 +1589,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalOr(const Operator *op,
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalOr(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::FusedBatchNorm(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 

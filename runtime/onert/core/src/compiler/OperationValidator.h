@@ -64,6 +64,7 @@ public:
   void visit(const ir::operation::Exp &node) override;
   void visit(const ir::operation::ExpandDims &node) override;
   void visit(const ir::operation::Floor &node) override;
+  void visit(const ir::operation::FusedBatchNorm &node) override;
   void visit(const ir::operation::HashtableLookup &node) override;
   void visit(const ir::operation::TransposeConv &node) override;
   void visit(const ir::operation::Gather &node) override;

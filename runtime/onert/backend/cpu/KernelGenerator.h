@@ -98,6 +98,7 @@ public:
   void visit(const ir::operation::Tile &) override;
   void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::Range &) override;
+  void visit(const ir::operation::FusedBatchNorm &) override;
 
 private:
   const ir::Operands &_ctx;

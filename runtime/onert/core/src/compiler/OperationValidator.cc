@@ -507,6 +507,21 @@ void OperationValidator::visit(const ir::operation::Floor &node)
   OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
+void OperationValidator::visit(const ir::operation::FusedBatchNorm &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_X)};
+  const auto scale_index{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_SCALE)};
+  const auto offset_index{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_OFFSET)};
+
+  const auto output_index{node.getOutputs().at(ir::operation::FusedBatchNorm::Output::OUTPUT_Y)};
+
+  UNUSED_RELEASE(input_index);
+  UNUSED_RELEASE(scale_index);
+  UNUSED_RELEASE(offset_index);
+
+  UNUSED_RELEASE(output_index);
+}
+
 void OperationValidator::visit(const ir::operation::HashtableLookup &node)
 {
   const auto output_index{node.getOutputs().at(ir::operation::HashtableLookup::Output::OUTPUT)};

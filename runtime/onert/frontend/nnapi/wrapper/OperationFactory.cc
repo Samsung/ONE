@@ -2117,6 +2117,33 @@ OperationFactory::OperationFactory()
   };
 }
 
+_map[ANEURALNETWORKS_FUSEBATCHNORM_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 6 && init_param.output_count == 6);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> A 4-D Tensor for input data.
+    //  1 -> A 1-D Tensor for scaling factor, to scale the normalized x.
+    //  2 -> A 1-D Tensor for offset, to shift to the normalized x.
+    //  3 -> A small float number added to the variance of x.
+    //  4 -> A 1-D Tensor for population mean. Used for inference only; must be empty for training.
+    //  5 -> A 1-D Tensor for population variance. Used for inference only; must be empty for training.
+
+    // Each output should be interpreted as follows:
+    //
+    //  0 -> A 4-D Tensor for output data.
+    //  1 -> A 1-D Tensor for the computed batch mean, to be used by TensorFlow to compute the running mean.
+    //  2 -> A 1-D Tensor for the computed batch variance, to be used by TensorFlow to compute the running variance.
+    //  3 -> A 1-D Tensor for the computed batch mean, to be reused in the gradient computation.
+    //  4 -> A 1-D Tensor for the computed batch variance (inverted variance in the cuDNN case), to be reused in the gradient computation.
+    //  5 -> A 1-D Tensor for some intermediate results, to be reused in the gradient computation for better efficiency.
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::FusedBatchNorm{inputs, outputs};
+  };
+
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
                                     const OperationFactory::Param &param, Operands &operands)
 {

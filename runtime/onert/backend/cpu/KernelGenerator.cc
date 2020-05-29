@@ -1232,6 +1232,38 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   fn->configure(input_alloc, multiples_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
+
+void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
+{
+  const auto input_x{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_X)};
+  const auto input_scale{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_SCALE)};
+  const auto input_offset{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_OFFSET)};
+  const auto input_epsilon{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_EPSILON)};
+  const auto input_mean{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_MEAN)};
+  const auto input_variance{node.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT_VARIANCE)};
+
+  const auto output_y{node.getOutputs().at(ir::operation::FusedBatchNorm::Output::OUTPUT_Y)};
+  const auto output_mean{node.getOutputs().at(ir::operation::FusedBatchNorm::Output::OUTPUT_BATCH_MEAN)};
+  const auto output_variance{node.getOutputs().at(ir::operation::FusedBatchNorm::Output::OUTPUT_BATCH_VARIANCE)};
+
+  auto intput_x_alloc = _tensor_builder->at(input_x).get();
+  auto intput_scale_alloc = _tensor_builder->at(input_scale).get();
+  auto intput_offset_alloc = _tensor_builder->at(input_offset).get();
+  auto intput_epsilon_alloc = _tensor_builder->at(input_epsilon).get();
+  auto intput_mean_alloc = _tensor_builder->at(input_mean).get();
+  auto intput_variance_alloc = _tensor_builder->at(input_variance).get();
+
+  auto output_y_alloc = _tensor_builder->at(output_y).get();
+  auto output_mean_alloc = _tensor_builder->at(output_mean).get();
+  auto output_variance_alloc = _tensor_builder->at(output_variance).get();
+
+  auto fn = std::make_unique<::onert::backend::cpu::kernel::FusedBatchNormLayer>();
+
+  fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert
