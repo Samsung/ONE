@@ -549,6 +549,7 @@ public:
     LUCI_ASSERT(input_shape.rank() == 4, "Only input rank 4 is supported");
 
     // Only data format NHWC is supported
+    // TODO need to clarify what to do with layout in this operator
     int32_t height = input_shape.dim(1).value();
     int32_t width = input_shape.dim(2).value();
     int32_t depth = input_shape.dim(3).value();
