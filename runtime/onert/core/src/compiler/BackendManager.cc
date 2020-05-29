@@ -72,18 +72,15 @@ void BackendManager::loadBackend(const std::string &backend)
   }
   else
   {
-    const std::string backend_plugin = "libbackend_" + backend + ".so";
-    void *handle = dlopen(backend_plugin.c_str(), RTLD_LAZY | RTLD_LOCAL);
+    const std::string backend_so = "libbackend_" + backend + ".so";
+    void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
     if (handle == nullptr)
     {
-      VERBOSE(BackendManager::loadBackend) << "loadBackend failed to load plugin of "
-                                           << backend.c_str() << " backend: " << dlerror()
-                                           << std::endl;
+      VERBOSE_F() << "Failed to load backend '" << backend << "' - " << dlerror() << std::endl;
       return;
     }
 
-    VERBOSE(BackendManager::loadBackend) << "loaded " << backend_plugin << " as a plugin of "
-                                         << backend << " backend\n";
+    VERBOSE_F() << "Successfully loaded '" << backend << "' - " << backend_so << "\n";
 
     {
       // load object creator function
@@ -110,9 +107,8 @@ void BackendManager::loadBackend(const std::string &backend)
       bool initialized = backend_object->config()->initialize(); // Call initialize here?
       if (!initialized)
       {
-        VERBOSE(BackendManager::loadBackend)
-            << backend.c_str() << " backend initialization failed. Don't use this backend"
-            << std::endl;
+        VERBOSE_F() << backend.c_str() << " backend initialization failed. Don't use this backend"
+                    << std::endl;
         dlclose(handle);
         return;
       }
