@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPERAND_TENSOR_H__
-#define __ONERT_BACKEND_CPU_OPERAND_TENSOR_H__
+#ifndef __ONERT_BACKEND_CPU_TENSOR_H__
+#define __ONERT_BACKEND_CPU_TENSOR_H__
 
 #include "Allocator.h"
 
@@ -140,4 +140,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPERAND_TENSOR_H__
+#endif // __ONERT_BACKEND_CPU_TENSOR_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_KERNEL_LOGICALNOTLAYER_H__
-#define __ONERT_BACKEND_CPU_KERNEL_LOGICALNOTLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_LOGICALNOTLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_LOGICALNOTLAYER_H__
 
 #include "../Tensor.h"
 
@@ -59,4 +59,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_KERNEL_LOGICALNOTLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_LOGICALNOTLAYER_H__

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_KERNEL_ARGMINMAXLAYER_H__
-#define __ONERT_BACKEND_CPU_KERNEL_ARGMINMAXLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__
 
 #include "../Tensor.h"
 
@@ -58,4 +58,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_KERNEL_ARGMINMAXLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__

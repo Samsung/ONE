@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ExpandDi__ONERT_BACKEND_CPU_KERNEL_EXPANDDIMS_LAYER_H__ms
-#define ExpandDi__ONERT_BACKEND_CPU_KERNEL_EXPANDDIMS_LAYER_H__ms
+#ifndef ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
+#define ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
 
 #include "../Tensor.h"
 
@@ -57,4 +57,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // ExpandDi__ONERT_BACKEND_CPU_KERNEL_EXPANDDIMS_LAYER_H__ms
+#endif // ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
