@@ -166,7 +166,8 @@ TEST(CircleShapeInferenceRuleTest, avgpool2d_same)
   ASSERT_FALSE(loco::shape_known(avg_node));
 
   // shape inference
-  shape_pass(graph.graph());
+  while (shape_pass(graph.graph()) == true)
+    ;
 
   // Verify
   {
