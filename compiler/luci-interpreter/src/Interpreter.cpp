@@ -22,6 +22,7 @@
 
 #include <loco/IR/Algorithm.h>
 
+#include <algorithm>
 #include <stdexcept>
 
 namespace luci_interpreter
@@ -199,19 +200,38 @@ void Interpreter::interpret()
        loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_main_graph))))
   {
     const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-    assert(node != nullptr);
 
-    // These nodes are auxiliary and are not executed.
-    if (node->opcode() == luci::CircleOpcode::CONST ||
-        node->opcode() == luci::CircleOpcode::CIRCLEINPUT ||
-        node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
+    // Compute the result for the node. CircleConst, CircleInput and CircleOutput nodes
+    // are auxiliary, there is nothing to compute for them.
+    if (node->opcode() != luci::CircleOpcode::CONST &&
+        node->opcode() != luci::CircleOpcode::CIRCLEINPUT &&
+        node->opcode() != luci::CircleOpcode::CIRCLEOUTPUT)
     {
-      continue;
+      Kernel *kernel = _kernel_map->getKernel(node);
+      kernel->execute();
     }
 
-    Kernel *kernel = _kernel_map->getKernel(node);
-    kernel->execute();
+    // Notify the observers that the node's output tensor has changed. This is not done
+    // for CircleOutput nodes because they do not produce any tensors.
+    if (node->opcode() != luci::CircleOpcode::CIRCLEOUTPUT)
+    {
+      for (ExecutionObserver *observer : _observers)
+      {
+        observer->postTensorWrite(node, _tensor_map->getTensor(node));
+      }
+    }
   }
 }
+
+void Interpreter::attachObserver(ExecutionObserver *observer)
+{
+  if (std::find(_observers.cbegin(), _observers.cend(), observer) != _observers.cend())
+    throw std::runtime_error("Observer is already attached.");
+  _observers.push_back(observer);
+}
+
+ExecutionObserver::~ExecutionObserver() = default;
+
+void ExecutionObserver::postTensorWrite(const luci::CircleNode *, const Tensor *) {}
 
 } // namespace luci_interpreter

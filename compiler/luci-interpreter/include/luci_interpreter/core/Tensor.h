@@ -111,7 +111,7 @@ public:
 
   template <typename T> T *data() { return reinterpret_cast<T *>(_data.get()); }
 
-  const std::string &name() { return _name; }
+  const std::string &name() const { return _name; }
 
   void readData(void *data_ptr, size_t data_size) const;
 
