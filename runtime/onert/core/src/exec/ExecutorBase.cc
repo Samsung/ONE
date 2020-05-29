@@ -198,13 +198,7 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
         }
         else
         {
-          const auto operand_ind = dyn_alloc_info->second.ind;
-          if (orig_input_shape != changed_input_shape)
-          {
-            dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
-            // TODO Move changeInputShape() above allocate()
-            changeInputShape(operand_ind, changed_input_shape);
-          }
+          input_tensor->set_dynamic();
         }
       }
     }

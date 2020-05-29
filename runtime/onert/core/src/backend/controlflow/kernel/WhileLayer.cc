@@ -31,18 +31,19 @@ namespace kernel
 
 WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
                        std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+                       const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                        const ir::SubgraphIndex &cond_subg_index,
                        const ir::SubgraphIndex &body_subg_index,
                        const std::shared_ptr<exec::ExecutorMap> &executor_map)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
-      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map}
+      _input_tensors{input_tensors}, _output_tensors{output_tensors},
+      _outputs_dyn_alloc_info{outputs_dyn_alloc_info}, _executor_map{executor_map}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
 }
 
 void WhileLayer::run()
 {
-  // TODO Support dynamic tensor
   // Copy _src_tensors -> inputs of cond subg
   // Run cond subg
   // Start loop while output of cond subg is ture
@@ -59,17 +60,21 @@ void WhileLayer::run()
   }
 
   const auto &cond_input_tensors = cond_exec->getInputTensors();
-  const auto &body_input_tensors = body_exec->getInputTensors();
-  const auto &body_output_tensors = body_exec->getOutputTensors();
-
+  const auto &cond_inputs_dyn_alloc = cond_exec->getInputsDynamicAllocInfo();
   const auto permute_op_input_to_cond_input =
-      std::make_shared<PermuteLayer>(_input_tensors, cond_input_tensors);
+      std::make_shared<PermuteLayer>(_input_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
+
+  const auto &body_input_tensors = body_exec->getInputTensors();
+  const auto &body_inputs_dyn_alloc = body_exec->getInputsDynamicAllocInfo();
   const auto permute_cond_input_to_body_input =
-      std::make_shared<PermuteLayer>(cond_input_tensors, body_input_tensors);
-  const auto permute_body_output_to_cond_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors);
+      std::make_shared<PermuteLayer>(cond_input_tensors, body_input_tensors, body_inputs_dyn_alloc);
+
+  const auto &body_output_tensors = body_exec->getOutputTensors();
+  const auto permute_body_output_to_cond_input = std::make_shared<PermuteLayer>(
+      body_output_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
+
   const auto permute_cond_input_to_op_output =
-      std::make_shared<PermuteLayer>(cond_input_tensors, _output_tensors);
+      std::make_shared<PermuteLayer>(cond_input_tensors, _output_tensors, _outputs_dyn_alloc_info);
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input->prepare();
@@ -92,6 +97,19 @@ void WhileLayer::run()
   {
     body_exec->execute(cond_input_tensors, permute_cond_input_to_body_input);
     cond_exec->execute(body_output_tensors, permute_body_output_to_cond_input);
+  }
+
+  assert(_output_tensors.size() == cond_input_tensors.size());
+  for (size_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    const auto output_tensor = _output_tensors.at(i);
+    const auto orig_output_shape = getShape(output_tensor.get());
+    const auto changed_output_shape = getShape(cond_input_tensors.at(i).get());
+    if (orig_output_shape != changed_output_shape &&
+        _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
+    {
+      output_tensor->set_dynamic();
+    }
   }
   permute_cond_input_to_op_output->run();
 }
