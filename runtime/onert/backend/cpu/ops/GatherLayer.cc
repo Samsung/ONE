@@ -52,7 +52,7 @@ void GatherLayer::run()
           reinterpret_cast<const int32_t *>(_indices->buffer()), convertTensorToCkerShape(_output),
           reinterpret_cast<float *>(_output->buffer()));
       break;
-    case OperandType::QUANT8_ASYMM:
+    case OperandType::QUANT_UINT8_ASYMM:
       nnfw::cker::Gather<uint8_t>(
           op_params, convertTensorToCkerShape(_input),
           reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_indices),

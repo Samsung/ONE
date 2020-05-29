@@ -102,12 +102,12 @@ namespace acl_common
       return ::arm_compute::DataType::S32;
     case ir::DataType::UINT32:
       return ::arm_compute::DataType::U32;
-    case ir::DataType::QUANT8_ASYMM:
+    case ir::DataType::QUANT_UINT8_ASYMM:
       return ::arm_compute::DataType::QASYMM8;
     case ir::DataType::BOOL8:
     case ir::DataType::UINT8:
       return ::arm_compute::DataType::U8;
-    case ir::DataType::QUANT8_SYMM:
+    case ir::DataType::QUANT_INT8_SYMM:
       return ::arm_compute::DataType::S8;
     case ir::DataType::FLOAT16:
       return ::arm_compute::DataType::F16;
@@ -211,11 +211,11 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
     case ::arm_compute::DataType::U32:
       return ir::DataType::UINT32;
     case ::arm_compute::DataType::QASYMM8:
-      return ir::DataType::QUANT8_ASYMM;
+      return ir::DataType::QUANT_UINT8_ASYMM;
     case ::arm_compute::DataType::U8:
       return ir::DataType::UINT8;
     case ::arm_compute::DataType::QSYMM8:
-      return ir::DataType::QUANT8_SYMM;
+      return ir::DataType::QUANT_INT8_SYMM;
     case ::arm_compute::DataType::F16:
       return ir::DataType::FLOAT16;
     default:

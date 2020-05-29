@@ -229,8 +229,8 @@ uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
       size = 4;
       break;
     case OperandType::BOOL8:
-    case OperandType::QUANT8_ASYMM:
-    case OperandType::QUANT8_SYMM:
+    case OperandType::QUANT_UINT8_ASYMM:
+    case OperandType::QUANT_INT8_SYMM:
       size = 1;
       break;
     default:

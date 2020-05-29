@@ -1340,7 +1340,7 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   assert(_ctx.at(paddings_index).data());
 
   std::unique_ptr<::arm_compute::IFunction> fn;
-  if (_ctx.at(ofm_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+  if (_ctx.at(ofm_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
   {
     // NOTE CLSpaceToBatchLayer has a bug that padding's values are 0 even when zero point of
     // QASYMM8 is not 0.

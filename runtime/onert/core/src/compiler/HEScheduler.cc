@@ -47,7 +47,7 @@ static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
   for (const auto &input : node.getInputs())
   {
     const auto &obj = graph.operands().at(input);
-    if (obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+    if (obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
     {
       return true;
     }
@@ -406,7 +406,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
   for (const auto &output : node.getOutputs())
   {
     const auto &operand = _graph->operands().at(output);
-    const bool quant = operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM;
+    const bool quant = operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;
     // average data transfer cost of this operand's data
     int64_t avg_transfer_cost = 1;
     for (const auto *backend : _all_backends)
@@ -598,7 +598,7 @@ int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Opera
   for (const auto &input_operand_idx : node.getInputs())
   {
     const auto &input_operand = _graph->operands().at(input_operand_idx);
-    const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM;
+    const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;
 
     for (const auto &input_node_idx : input_operand.getDef())
     {

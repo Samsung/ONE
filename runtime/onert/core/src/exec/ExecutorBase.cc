@@ -109,10 +109,10 @@ std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir
     case DataType::UINT32:
       return source<uint32_t>(index, buffer, length, io_layout);
     case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
     case DataType::UINT8:
       return source<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
       return source<int8_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");
@@ -132,10 +132,10 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
     case DataType::UINT32:
       return sink<uint32_t>(index, buffer, length, io_layout);
     case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
     case DataType::UINT8:
       return sink<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
       return sink<int8_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");

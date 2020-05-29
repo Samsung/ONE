@@ -231,7 +231,7 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
     case TensorType::TensorType_BOOL:
       return ir::DataType::BOOL8;
     case TensorType::TensorType_UINT8:
-      return ir::DataType::QUANT8_ASYMM;
+      return ir::DataType::QUANT_UINT8_ASYMM;
     default:
       throw std::runtime_error(
           std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
@@ -559,9 +559,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Gr
   const auto &input_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::INPUT));
   auto &weights_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::WEIGHT));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
-      weights_operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+      weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
   {
-    weights_operand.type(ir::DataType::QUANT8_SYMM);
+    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
   }
 
   ir::operation::FullyConnected::Param param;
@@ -1240,7 +1240,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCast(const Operator *op, ir::
   loadOperationIO(op, inputs, outputs);
 
   auto qasymm8ToUint8 = [](ir::Operand &operand) {
-    if (operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+    if (operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
     {
       operand.type(ir::DataType::UINT8);
     }

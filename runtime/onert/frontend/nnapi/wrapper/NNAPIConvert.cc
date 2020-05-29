@@ -33,9 +33,9 @@ DataType NNAPIConvert::getDataType(OperandCode type)
     case ANEURALNETWORKS_UINT32:
       return DataType::UINT32;
     case ANEURALNETWORKS_TENSOR_QUANT8_ASYMM:
-      return DataType::QUANT8_ASYMM;
+      return DataType::QUANT_UINT8_ASYMM;
     case ANEURALNETWORKS_TENSOR_QUANT8_SYMM:
-      return DataType::QUANT8_SYMM;
+      return DataType::QUANT_INT8_SYMM;
     case ANEURALNETWORKS_BOOL:
     case ANEURALNETWORKS_TENSOR_BOOL8:
       return DataType::BOOL8;

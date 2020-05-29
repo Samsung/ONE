@@ -76,11 +76,11 @@ public:
             permute<uint32_t>(src_tensor, dst_tensor, *rank_it);
             break;
           case ir::DataType::BOOL8:
-          case ir::DataType::QUANT8_ASYMM:
+          case ir::DataType::QUANT_UINT8_ASYMM:
           case ir::DataType::UINT8:
             permute<uint8_t>(src_tensor, dst_tensor, *rank_it);
             break;
-          case ir::DataType::QUANT8_SYMM:
+          case ir::DataType::QUANT_INT8_SYMM:
             permute<int8_t>(src_tensor, dst_tensor, *rank_it);
             break;
           default:
@@ -267,10 +267,10 @@ private:
       case ir::DataType::UINT32:
         return typeid(uint32_t);
       case ir::DataType::BOOL8:
-      case ir::DataType::QUANT8_ASYMM:
+      case ir::DataType::QUANT_UINT8_ASYMM:
       case ir::DataType::UINT8:
         return typeid(uint8_t);
-      case ir::DataType::QUANT8_SYMM:
+      case ir::DataType::QUANT_INT8_SYMM:
         return typeid(int8_t);
       default:
         throw std::runtime_error("IPermuteFunction: Not supported data type");
