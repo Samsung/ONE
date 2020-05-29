@@ -67,6 +67,8 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -118,11 +120,7 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
         node->quantparam(std::move(quantparam));
     }
 
-    // mark no_shape
-    auto tensors_ptr = context->reader()->tensors_ptr();
-    assert(tensors_ptr != nullptr);
-    if (tensors_ptr->Get(outputs[n]) == nullptr)
-      nodeout->no_shape(true);
+    // Note: leave shape_status to UNKNOWN to run shape inference
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
