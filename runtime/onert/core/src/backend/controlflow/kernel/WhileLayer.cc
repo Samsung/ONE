@@ -38,13 +38,6 @@ WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tens
       _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
-  for (size_t i = 0; i < input_tensors.size(); ++i)
-  {
-    auto rank = input_tensors.at(i)->num_dimensions();
-    // TODO Remove this when applying dynamic tensor
-    assert(rank == output_tensors.at(i)->num_dimensions());
-    _ranks.emplace_back(rank);
-  }
 }
 
 void WhileLayer::run()
@@ -70,13 +63,13 @@ void WhileLayer::run()
   const auto &body_output_tensors = body_exec->getOutputTensors();
 
   const auto permute_op_input_to_cond_input =
-      std::make_shared<PermuteLayer>(_input_tensors, cond_input_tensors, _ranks);
+      std::make_shared<PermuteLayer>(_input_tensors, cond_input_tensors);
   const auto permute_cond_input_to_body_input =
-      std::make_shared<PermuteLayer>(cond_input_tensors, body_input_tensors, _ranks);
+      std::make_shared<PermuteLayer>(cond_input_tensors, body_input_tensors);
   const auto permute_body_output_to_cond_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors, _ranks);
+      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors);
   const auto permute_cond_input_to_op_output =
-      std::make_shared<PermuteLayer>(cond_input_tensors, _output_tensors, _ranks);
+      std::make_shared<PermuteLayer>(cond_input_tensors, _output_tensors);
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input->prepare();
