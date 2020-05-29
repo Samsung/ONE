@@ -207,7 +207,7 @@ NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
 /**
  * @brief    Set input model's tensor info for resizing
  *
- * This function can be called in any time after calling {@link nnfw_model_load_from_file}. Changing
+ * This function can be called at any time after calling {@link nnfw_model_load_from_file}. Changing
  * input tensor's shape will cause shape inference for the model. There are two different types of
  * shape inference - static and dynamic. Which one to use is depend on the current state of the
  * session.
