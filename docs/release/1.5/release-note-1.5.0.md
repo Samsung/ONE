@@ -12,7 +12,7 @@
 
 ### Compiler supports more operations
 
-The following operations are supported on CPU backend :
+The following operations are supported :
 
 - Abs, Add, ArgMax, AvgPool2D, BatchToSpaceND, Cast, Concat, Const, Conv2D, Cos,
 Custom, DepthwiseConv2D, Div, Elu, Equal, Exp, ExpandDims, Fill, FloorDiv,
