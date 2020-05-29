@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef __LUCI_IR_PROPERTY_SHAPE_STATUS_H__
+#define __LUCI_IR_PROPERTY_SHAPE_STATUS_H__
+
+namespace luci
+{
+
+/**
+ * @brief  ShapeStatus is to remember circle node shape status.
+ * @note   This is not an attribute from the file but inner status of a node.
+ *         Shape with [] is scalar but somtimes it acts as dynamic shape.
+ */
+enum class ShapeStatus
+{
+  UNDEFINED, // Shape status is undefined
+
+  NOSHAPE, // shape is unknown; to distinguish from scala
+  VALID,   // shape is valid
+};
+
+} // namespace luci
+
+#endif // __LUCI_IR_PROPERTY_SHAPE_STATUS_H__
