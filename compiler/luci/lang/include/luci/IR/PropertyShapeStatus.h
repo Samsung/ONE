@@ -23,13 +23,13 @@ namespace luci
 /**
  * @brief  ShapeStatus is to remember circle node shape status.
  * @note   This is not an attribute from the file but inner status of a node.
- *         Shape with [] is scalar but somtimes it acts as dynamic shape.
+ *         Shape with [] is scalar but sometimes it acts as dynamic shape.
  */
 enum class ShapeStatus
 {
   UNDEFINED, // Shape status is undefined
 
-  NOSHAPE, // shape is unknown; to distinguish from scala
+  NOSHAPE, // shape is unknown; to distinguish from scalar
   VALID,   // shape is valid
 };
 
