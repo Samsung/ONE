@@ -196,8 +196,7 @@ void Mean::evalQuantized() const
   // Declare these temporary tensors somewhere else?
   Tensor *temp_index = new Tensor(DataType::S32, Shape({input_num_dims}), {}, "");
   Tensor *resolved_axis = new Tensor(DataType::S32, Shape({num_axis}), {}, "");
-  Tensor *temp_sum =
-      new Tensor(DataType::FLOAT32, Shape({_output->shape().num_elements()}), {}, "");
+  Tensor *temp_sum = new Tensor(DataType::S32, Shape({_output->shape().num_elements()}), {}, "");
 
   tflite::MeanParams params{};
   params.axis_count = num_axis;
