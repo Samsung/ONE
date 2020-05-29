@@ -131,8 +131,7 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
   tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
   if (node->shape_status() == ShapeStatus::VALID)
     tensor_info.shape(to_shape_description(luci::node_shape(node)));
-  else
-    tensor_info.shape_status(node->shape_status());
+  tensor_info.shape_status(node->shape_status());
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
