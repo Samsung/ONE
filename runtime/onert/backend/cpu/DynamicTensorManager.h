@@ -55,7 +55,7 @@ public:
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
 
   void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) override;
-  void deallocInput(const ir::Operation *op) override;
+  void deallocInput(ir::OperationIndex op_ind) override;
   void deallocSubgraphOutput(ir::OperandIndex ind) override;
 
 private:

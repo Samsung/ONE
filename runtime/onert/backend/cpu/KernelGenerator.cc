@@ -99,12 +99,13 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_builder->tensorRegistry());
 
+  auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
   auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
-      _ctx, _tensor_builder->dynamicTensorManager(), _tensor_builder->tensorRegistry());
+      _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
   _return_fn_seq = _tensor_builder->supportDynamicTensor()
                        ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
-                             op_seq, std::move(dyn_shape_inferer))
+                             op_seq, std::move(dyn_shape_inferer), dyn_tensor_manager)
                        : std::make_unique<exec::FunctionSequence>();
 
   _current_op_seq_layout = op_seq.getLayout();
