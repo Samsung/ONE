@@ -2,10 +2,10 @@
 
 ## Feature Highlights
 
-- `ONE Compiler`
+- **ONE** Compiler
     - Compiler supports more operations
 
-- `ONE Runtime`
+- **ONE** Runtime
     - CPU backend supports more operations
 
 ## ONE Compiler
