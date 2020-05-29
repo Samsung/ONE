@@ -68,6 +68,7 @@
 #include "Op/Range.h"
 #include "Op/ReduceAny.h"
 #include "Op/ReduceMax.h"
+#include "Op/ReduceMin.h"
 #include "Op/ReduceProd.h"
 #include "Op/ReLU.h"
 #include "Op/ReLU6.h"
