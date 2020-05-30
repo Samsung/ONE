@@ -30,8 +30,14 @@
 namespace luci_interpreter
 {
 
-class KernelMap;
-class TensorMap;
+class ExecutionObserver
+{
+public:
+  virtual ~ExecutionObserver();
+
+  // Called when the value of a tensor has been updated during execution.
+  virtual void postTensorWrite(const luci::CircleNode *node, const Tensor *tensor);
+};
 
 class Interpreter
 {
@@ -46,13 +52,16 @@ public:
 
   void interpret();
 
+  void attachObserver(ExecutionObserver *observer);
+
 private:
   void createTensors(const loco::Graph *graph);
   void createKernels(const loco::Graph *graph);
 
   const loco::Graph *_main_graph = nullptr;
-  std::unique_ptr<TensorMap> _tensor_map;
-  std::unique_ptr<KernelMap> _kernel_map;
+  std::unique_ptr<class TensorMap> _tensor_map;
+  std::unique_ptr<class KernelMap> _kernel_map;
+  std::vector<ExecutionObserver *> _observers;
 };
 
 } // namespace luci_interpreter
