@@ -67,8 +67,6 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
-  auto tensors_ptr = context->reader()->tensors_ptr();
-  assert(tensors_ptr != nullptr);
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
