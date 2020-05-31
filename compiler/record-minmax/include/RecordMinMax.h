@@ -14,28 +14,33 @@
  * limitations under the License.
  */
 
-#include "Args.h"
-#include "RecordMinMax.h"
+#ifndef __RECORD_MINMAX_H__
+#define __RECORD_MINMAX_H__
 
-int entry(const int argc, char **argv)
+#include <luci/IR/Module.h>
+
+#include <memory>
+
+namespace record_minmax
 {
-  using namespace record_minmax;
 
-  Args args(argc, argv);
-  auto input_model_path = args.getInputModelFilePath();
-  auto input_data_path = args.getInputDataFilePath();
-  auto output_model_path = args.getOutputModelFilePath();
+class RecordMinMax
+{
+public:
+  explicit RecordMinMax() = default;
 
-  RecordMinMax rmm;
+  ~RecordMinMax() = default;
 
-  // Initialize interpreter and observer
-  rmm.initialize(input_model_path);
+  void initialize(const std::string &input_model_path);
 
-  // Profile min/max while executing the given input data
-  rmm.profileData(input_data_path);
+  void profileData(const std::string &input_data_path);
 
-  // Save profiled values to the model
-  rmm.saveModel(output_model_path);
+  void saveModel(const std::string &output_model_path);
 
-  return EXIT_SUCCESS;
-}
+private:
+  std::unique_ptr<luci::Module> _module;
+};
+
+} // namespace record_minmax
+
+#endif // __RECORD_MINMAX_H__
