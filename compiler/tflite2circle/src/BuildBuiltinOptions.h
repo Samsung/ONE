@@ -43,6 +43,7 @@
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/L2NormalizeOptions.h"
+// L2Pool2D uses Pool2DOptions
 #include "BuildBuiltinOptions/LeakyReluOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
 #include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"

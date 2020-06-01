@@ -76,6 +76,7 @@ public:
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleL2Pool2D *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
   void visit(luci::CircleLocalResponseNormalization *) final;
@@ -166,8 +167,9 @@ template <class CirclePool2D>
 void OperationExporter::export_pool_2d(CirclePool2D *node, circle::BuiltinOperator builtin_op)
 {
   LUCI_ASSERT(builtin_op == circle::BuiltinOperator_MAX_POOL_2D ||
+                  builtin_op == circle::BuiltinOperator_L2_POOL_2D ||
                   builtin_op == circle::BuiltinOperator_AVERAGE_POOL_2D,
-              "Should be MaxPool or AvgPool");
+              "Should be L2Pool, MaxPool or AvgPool");
   LUCI_ASSERT(node->padding() != luci::Padding::UNDEFINED, "Padding is not set");
 
   uint32_t op_idx = md.registerBuiltinOpcode(builtin_op);
@@ -646,6 +648,11 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_IfOptions, options.Union());
   gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleL2Pool2D *node)
+{
+  export_pool_2d<luci::CircleL2Pool2D>(node, circle::BuiltinOperator_L2_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleLeakyRelu *node)
