@@ -94,12 +94,12 @@ public:
   void visit(luci::CircleNotEqual *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
+  void visit(luci::CirclePad *) final;
+  void visit(luci::CirclePow *) final;
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceMax *) final;
   void visit(luci::CircleReduceProd *) final;
-  void visit(luci::CirclePad *) final;
-  void visit(luci::CirclePow *) final;
   void visit(luci::CircleRelu *) final;
   void visit(luci::CircleRelu6 *) final;
   void visit(luci::CircleReluN1To1 *) final;
