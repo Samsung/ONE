@@ -27,7 +27,7 @@ namespace
 
 using namespace testing;
 
-TEST(MeanTestFloat, KeepDims)
+TEST(MeanTest, FloatKeepDims)
 {
   std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
                                    9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
@@ -50,7 +50,7 @@ TEST(MeanTestFloat, KeepDims)
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
 }
 
-TEST(MeanTestFloat, KeepDims4DMean)
+TEST(MeanTest, FloatKeepDims4DMean)
 {
   std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
                                    9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
@@ -73,7 +73,7 @@ TEST(MeanTestFloat, KeepDims4DMean)
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
 }
 
-TEST(MeanTestFloat, NotKeepDims)
+TEST(MeanTest, FloatNotKeepDims)
 {
   std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
                                    9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,

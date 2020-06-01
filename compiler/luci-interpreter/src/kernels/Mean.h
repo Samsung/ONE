@@ -30,7 +30,7 @@ namespace kernels
 class Mean : public KernelWithParams<ReducerParams>
 {
 public:
-  Mean(const Tensor *input, const Tensor *axis, Tensor *output, const ReducerParams &params);
+  Mean(const Tensor *input, const Tensor *axes, Tensor *output, const ReducerParams &params);
 
   void configure() override;
   void execute() const override;
@@ -41,10 +41,10 @@ private:
 
 private:
   const Tensor *const _input;
-  const Tensor *const _axis;
+  const Tensor *const _axes;
   Tensor *const _output;
   std::unique_ptr<Tensor> _temp_index;
-  std::unique_ptr<Tensor> _resolved_axis;
+  std::unique_ptr<Tensor> _resolved_axes;
   std::unique_ptr<Tensor> _temp_sum;
 };
 

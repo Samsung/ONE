@@ -172,13 +172,13 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
   assert(node->arity() == 2);
 
   const Tensor *input = getInputTensor(node->input());
-  const Tensor *axis = getInputTensor(node->reduction_indices());
+  const Tensor *axes = getInputTensor(node->reduction_indices());
   Tensor *output = getOutputTensor(node);
 
   ReducerParams params{};
   params.keep_dims = node->keep_dims();
 
-  return std::make_unique<kernels::Mean>(input, axis, output, params);
+  return std::make_unique<kernels::Mean>(input, axes, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
