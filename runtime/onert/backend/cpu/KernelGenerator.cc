@@ -1172,7 +1172,7 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 void KernelGenerator::visit(const ir::operation::ZerosLike &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
+  const auto input_index{node.getInputs().at(ir::operation::ZerosLike::INPUT)};
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
