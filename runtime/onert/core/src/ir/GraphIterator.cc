@@ -61,7 +61,7 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
       return;
     visited[index] = true;
 
-    for (const auto output : node.getOutputs().asUnique())
+    for (const auto output : node.getOutputs() | Remove::DUPLICATED)
     {
       const auto &operand = graph.operands().at(output);
       for (const auto &use : operand.getUses())

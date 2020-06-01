@@ -51,7 +51,7 @@ bool DAGChecker::verify(const Graph &graph) const
     visited[index] = true;
     on_stack[index] = true;
 
-    for (auto output : node.getOutputs().asUnique())
+    for (auto output : node.getOutputs() | Remove::DUPLICATED)
     {
       const auto &operand = graph.operands().at(output);
       for (const auto &use : operand.getUses())

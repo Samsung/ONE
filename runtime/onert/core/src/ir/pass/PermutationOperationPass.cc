@@ -132,7 +132,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     const auto backend = op_seq_li->backend();
     const operand::PermuteFactor removed_factor{backend, backend_layout};
     const operand::PermuteFactor new_factor{backend, frontend_layout};
-    for (const auto &input : node.getInputs().asUnique())
+    for (const auto &input : node.getInputs() | Remove::DUPLICATED)
     {
       bool canRemove = true;
       for (const auto &use : _graph.operands().at(input).getUses())
@@ -165,7 +165,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       }
     }
 
-    for (const auto &output : node.getOutputs().asUnique())
+    for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
     {
       auto lower_info = _lowered_graph.getLowerInfo(output);
       lower_info->removeDefPermuteFactor(removed_factor);

@@ -56,7 +56,7 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lower
     //            |
     //           [4]
     op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_idx, const ir::OpSequence &op_seq) {
-      for (auto input : op_seq.getInputs().asUnique())
+      for (auto input : op_seq.getInputs() | ir::Remove::DUPLICATED)
       {
         // only valid_inputs
         const auto &operand = operands.at(input);
@@ -87,7 +87,7 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lower
       visited[index] = true;
 
       // The outputs should be not constants
-      for (auto output : op_seq.getOutputs().asUnique())
+      for (auto output : op_seq.getOutputs() | ir::Remove::DUPLICATED)
       {
         const auto it = input_to_op_seqs.find(output);
         if (it != input_to_op_seqs.end())
@@ -199,7 +199,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
 
   // If a tensor is model output, increase the use of the tensor.
   // This aim is same to above one.
-  for (const auto &ind : graph.getOutputs().asUnique())
+  for (const auto &ind : graph.getOutputs() | ir::Remove::DUPLICATED)
   {
     uses_map[ind]++;
   }
@@ -218,7 +218,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
 
   // Allocate Model's inputs
   VERBOSE(LINEAR) << "TENSORS as MODEL INPUT" << std::endl;
-  for (const auto &ind : graph.getInputs().asUnique())
+  for (const auto &ind : graph.getInputs() | ir::Remove::DUPLICATED)
   {
     auto tensor_builder = tensor_builder_map[ind];
     if (!tensor_builder) // for GeneratedTests.xxx_weights_as_inputs
@@ -235,7 +235,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
     const auto &op_seq = lowered_graph.op_seqs().at(op_seq_ind);
     for (const auto &op : op_seq.operations())
     {
-      for (const auto &ind : op.node->getOutputs().asUnique())
+      for (const auto &ind : op.node->getOutputs() | ir::Remove::DUPLICATED)
       {
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
@@ -245,7 +245,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
         }
       }
 
-      for (const auto &ind : op.node->getInputs().asUnique())
+      for (const auto &ind : op.node->getInputs() | ir::Remove::DUPLICATED)
       {
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);
@@ -267,7 +267,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
   }
 
   // Dispose and validate
-  for (const auto &ind : graph.getOutputs().asUnique())
+  for (const auto &ind : graph.getOutputs() | ir::Remove::DUPLICATED)
   {
     --uses_map[ind];
     if (uses_map[ind] == 0) // To prevent notifyLastUse from being called twice
