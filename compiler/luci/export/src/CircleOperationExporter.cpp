@@ -388,7 +388,7 @@ void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
   auto options = CreateDepthwiseConv2DOptions(builder, padding, node->stride()->w(),
                                               node->stride()->h(), node->depthMultiplier(),
                                               to_circle_actfunc(node->fusedActivationFunction()),
-                                              node->dilation()->w(),node->dilation()->h());
+                                              node->dilation()->w(), node->dilation()->h());
 
   // Make DEPTHWISE_CONV_2D operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,

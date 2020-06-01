@@ -558,8 +558,8 @@ public:
     uint32_t stride_width = node->stride()->w();
     uint32_t ker_height = ker_shape.dim(1).value();
     uint32_t ker_width = ker_shape.dim(2).value();
-    uint32_t dilation_height = node->stride()->h();
-    uint32_t dilation_width = node->stride()->w();
+    uint32_t dilation_height = node->dilation()->h();
+    uint32_t dilation_width = node->dilation()->w();
     uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
     uint32_t effective_ker_width = dilation_width * (ker_width - 1) + 1;
 

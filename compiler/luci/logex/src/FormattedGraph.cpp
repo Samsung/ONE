@@ -452,7 +452,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDepthwiseConv2D *node,
   s.args().append("padding", to_str(node->padding()));
   s.args().append("depthMultiplier", std::to_string(node->depthMultiplier()));
   s.args().append("fused", to_str(node->fusedActivationFunction()));
-  
+
   s.state(locop::NodeSummary::State::Complete);
 
   return true;

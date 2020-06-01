@@ -36,6 +36,8 @@ flatbuffers::Offset<void> DepthwiseConv2DChef::value(flatbuffers::FlatBufferBuil
   options_builder.add_stride_h(options.stride_h());
   options_builder.add_depth_multiplier(options.depth_multiplier());
   options_builder.add_fused_activation_function(tflite_activation);
+  options_builder.add_dilation_w_factor(options.dilation_w_factor());
+  options_builder.add_dilation_h_factor(options.dilation_h_factor());
 
   return options_builder.Finish().Union();
 }
