@@ -63,7 +63,7 @@ std::vector<float> readData(const string &path)
   return vec;
 }
 
-std::vector<float> randomData(RandomGenerator &randgen, const uint64_t size)
+std::vector<float> randomData(nnfw::misc::RandomGenerator &randgen, const uint64_t size)
 {
   std::vector<float> vec(size);
   for (uint64_t i = 0; i < size; i++)
@@ -210,7 +210,7 @@ int main(const int argc, char **argv)
   }
 
   const int seed = 1; /* TODO Add an option for seed value */
-  RandomGenerator randgen{seed, 0.0f, 2.0f};
+  nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     if (generate_data)

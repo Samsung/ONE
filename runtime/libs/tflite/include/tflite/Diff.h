@@ -25,6 +25,7 @@
 
 #include "tensorflow/lite/interpreter.h"
 
+#include "misc/RandomGenerator.h"
 #include "misc/tensor/Index.h"
 #include "misc/tensor/Diff.h"
 #include "misc/tensor/Shape.h"
@@ -87,60 +88,6 @@ private:
 #include "tflite/interp/Builder.h"
 #include "tflite/Quantization.h"
 
-#include <random>
-
-/**
- * @brief Class to generate random values
- */
-class RandomGenerator
-{
-public:
-  /**
-   * @brief Construct a new RandomGenerator object
-   * @param[in] seed          Random seed value
-   * @param[in] mean          Mean value of normal random number generation
-   * @param[in] stddev        Standard deviation of random number generation
-   * @param[in] quantization  TfLiteQuantizationParams type to represent quantization value
-   *                          (not used yet)
-   */
-  RandomGenerator(uint32_t seed, float mean, float stddev,
-                  const TfLiteQuantizationParams quantization = make_default_quantization())
-      : _rand{seed}, _dist{mean, stddev}, _quantization{quantization}
-  {
-    (void)_quantization;
-  }
-
-public:
-  /**
-   * @brief  Generate random numbers for type T
-   * @param[in] s Shape value
-   * @param[in] i Index value
-   * @return Random generated value
-   * @note   This is same as T generate(void) as two input parameters are not used
-   */
-  template <typename T>
-  T generate(const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)
-  {
-    return generate<T>();
-  }
-
-  /**
-   * @brief  Generate random numbers for type T
-   * @return Random generated value
-   */
-  template <typename T> T generate(void) { return _dist(_rand); }
-
-private:
-  std::minstd_rand _rand;
-  std::normal_distribution<float> _dist;
-  // unused
-  const TfLiteQuantizationParams _quantization;
-};
-
-template <> uint8_t RandomGenerator::generate<uint8_t>(void);
-template <> bool RandomGenerator::generate<bool>(void);
-template <> int32_t RandomGenerator::generate<int32_t>(void);
-
 /**
  * @brief Structure for NNAPI correctness test
  */
@@ -164,9 +111,8 @@ public:
    * @param[in] param         RandomTestParam object for test runner
    * @param[in] quantization  TfLiteQuantizationParams type to represent quantization value
    */
-  RandomTestRunner(uint32_t seed, const RandomTestParam &param,
-                   const TfLiteQuantizationParams quantization = make_default_quantization())
-      : _randgen{seed, 0.0f, 2.0f, quantization}, _param{param}
+  RandomTestRunner(uint32_t seed, const RandomTestParam &param)
+      : _randgen{seed, 0.0f, 2.0f}, _param{param}
   {
     // DO NOTHING
   }
@@ -184,10 +130,10 @@ public:
    * @brief  Get RandomGenerator reference
    * @return RandomGenerator reference
    */
-  RandomGenerator &generator() { return _randgen; };
+  nnfw::misc::RandomGenerator &generator() { return _randgen; };
 
 private:
-  RandomGenerator _randgen;
+  nnfw::misc::RandomGenerator _randgen;
   const RandomTestParam _param;
 
 public:
