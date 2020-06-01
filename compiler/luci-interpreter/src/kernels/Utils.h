@@ -105,11 +105,14 @@ template <typename T> T *getTensorData(Tensor *tensor)
 
 // A list of tensors in a format that can be used by kernels like split and
 // concatenation.
-template <typename T> class VectorOfTensors
+template <typename T, bool is_const> class VectorOfTensors
 {
 public:
+  using ElementT = typename std::conditional<is_const, const T, T>::type;
+  using TensorT = typename std::conditional<is_const, const Tensor, Tensor>::type;
+
   // Build with the tensors in 'tensor_list'.
-  explicit VectorOfTensors(const std::vector<const Tensor *> &tensor_list)
+  explicit VectorOfTensors(const std::vector<TensorT *> &tensor_list)
   {
     const int num_tensors = tensor_list.size();
 
@@ -117,7 +120,7 @@ public:
     all_shape_.reserve(num_tensors);
     all_shape_ptr_.reserve(num_tensors);
 
-    for (const Tensor *tensor : tensor_list)
+    for (TensorT *tensor : tensor_list)
     {
       all_data_.push_back(getTensorData<T>(tensor));
       all_shape_.push_back(getTensorShape(tensor));
@@ -135,7 +138,7 @@ public:
   // example:
   //   float* const* f = v.data();
   //   f[0][1] is the second element of the first tensor.
-  const T *const *data() const { return all_data_.data(); }
+  ElementT *const *data() const { return all_data_.data(); }
 
   // Return a pointer the shape pointers of all tensors in the list. For
   // example:
@@ -144,21 +147,23 @@ public:
   const tflite::RuntimeShape *const *shapes() const { return all_shape_ptr_.data(); }
 
 private:
-  std::vector<const T *> all_data_;
+  std::vector<ElementT *> all_data_;
   std::vector<tflite::RuntimeShape> all_shape_;
   std::vector<tflite::RuntimeShape *> all_shape_ptr_;
 };
 
 // A list of quantized tensors in a format that can be used by kernels like
 // split and concatenation.
-class VectorOfQuantizedTensors : public VectorOfTensors<uint8_t>
+template <bool is_const> class VectorOfQuantizedTensors : public VectorOfTensors<uint8_t, is_const>
 {
 public:
+  using typename VectorOfTensors<uint8_t, is_const>::TensorT;
+
   // Build with the tensors in 'tensor_list'.
-  explicit VectorOfQuantizedTensors(const std::vector<const Tensor *> &tensor_list)
-      : VectorOfTensors<uint8_t>(tensor_list)
+  explicit VectorOfQuantizedTensors(const std::vector<TensorT *> &tensor_list)
+      : VectorOfTensors<uint8_t, is_const>(tensor_list)
   {
-    for (const Tensor *tensor : tensor_list)
+    for (TensorT *tensor : tensor_list)
     {
       zero_point_.push_back(tensor->zero_point());
       scale_.push_back(tensor->scale());
