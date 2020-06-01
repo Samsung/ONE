@@ -1239,7 +1239,8 @@ void OperationExporter::visit(luci::CircleScatterNd *node)
 void OperationExporter::visit(luci::CircleSegmentSum *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SEGMENT_SUM);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->segment_ids())};
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->segment_ids())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);

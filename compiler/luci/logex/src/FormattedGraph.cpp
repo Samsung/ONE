@@ -956,7 +956,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleScatterNd *node,
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleSegmentSum *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSegmentSum *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("segment_ids", tbl()->lookup(node->segment_ids()));

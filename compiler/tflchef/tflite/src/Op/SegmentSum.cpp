@@ -35,7 +35,6 @@ void TFliteOpSegmentSum::filler(const tflite::Operator *op, TFliteImport *import
     auto vec = extract_buffer<int32_t>(buffer);
     import->set_tensor_filler(inputs[1], vec);
   }
-
 }
 tflchef::Operation *TFliteOpSegmentSum::build(const tflite::Operator *op, TFliteImport *import,
                                               tflchef::ModelRecipe *model_recipe) const

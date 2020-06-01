@@ -37,8 +37,8 @@ public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 
-  loco::Node * segment_ids(void) const { return at(1)->node(); }
-  void  segment_ids(loco::Node *node) { at(1)->node(node); }
+  loco::Node *segment_ids(void) const { return at(1)->node(); }
+  void segment_ids(loco::Node *node) { at(1)->node(node); }
 };
 
 } // namespace luci

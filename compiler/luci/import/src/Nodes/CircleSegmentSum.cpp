@@ -36,7 +36,7 @@ bool CircleSegmentSumGraphBuilder::validate(const ValidateArgs &args) const
   const auto &tensor_in = tensors.at(inputs[0]);
   const auto &tensor_out = tensors.at(outputs[0]);
   const auto &tensor_ids = tensors.at(inputs[1]);
-  
+
   switch (tensor_ids->type)
   {
     case circle::TensorType_INT32:

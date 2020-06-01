@@ -30,7 +30,10 @@ public:
 public:
   tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_SEGMENT_SUM; }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_SegmentSumOptions; }
+  tflite::BuiltinOptions type(void) const override
+  {
+    return tflite::BuiltinOptions_SegmentSumOptions;
+  }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 
