@@ -69,16 +69,14 @@ do
   unset EXECUTOR
 done
 
+# Current support acl_cl backend testlist only
+# TODO Support more backends
+TFLITE_LOADER_TESTLIST="tests/scripts/list/tflite_loader_list.${TEST_ARCH}.txt"
 if [[ $TFLITE_LOADER = "1" ]]; then
-  # Test tflite_loader
-  pushd ${ROOT_PATH} > /dev/null
-  ./tests/scripts/test-driver.sh \
-    --frameworktest \
-    --framework_driverbin="$ROOT_PATH/Product/out/bin/tflite_loader_test_tool" \
-    --frameworktest_list_file=tests/scripts/list/tflite_loader_list.${TEST_ARCH}.txt \
-    --reportdir="$ROOT_PATH/report/tfliteloader" .
+  TFLiteLoaderTest "${BACKEND}" "${TFLITE_LOADER_TESTLIST}" "${REPORT_BASE}/loader/${EXECUTOR}"
 
   # Test custom op
+  pushd ${ROOT_PATH} > /dev/null
   ./Product/out/tests/FillFrom_runner
   popd > /dev/null
 fi
