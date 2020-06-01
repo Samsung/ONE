@@ -76,6 +76,7 @@ public:
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleL2Normalize *) final;
   void visit(luci::CircleL2Pool2D *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
@@ -647,6 +648,23 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_IfOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleL2Normalize *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_L2_NORMALIZATION);
+  std::vector<int32_t> inputs{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateL2NormOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_L2NormOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
