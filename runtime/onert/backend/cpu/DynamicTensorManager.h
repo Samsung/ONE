@@ -44,6 +44,9 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
+  void applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
+
+  // TODO Remove this method. This will be replaced with applyShape(..)
   /**
    * @brief Allocate memory for dynamic tensor.
    *        If allocated memory is already set to the tensor and
@@ -52,6 +55,8 @@ public:
    */
   void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
+
+  // TODO Deprecate this
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
 
   void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) override;

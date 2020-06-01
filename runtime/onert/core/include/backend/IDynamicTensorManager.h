@@ -39,6 +39,19 @@ struct IDynamicTensorManager : public ITensorManager
 
 public:
   /**
+   * @brief Set new shape and allocate memory for dynamic tensor.
+   *        If a tensor is dynamic tensor and previously allocated memory exists,
+   *        it will be deallocated.
+   *        If a tensor is static tensor (with previously allocated memory by StaticTensorManager),
+   *        tensor->buffer() will be overwrite to the dynamically allocated memory
+   * @param ind             operand index of a tensor
+   * @param new_shape       tensor's new shape. While allocating memory for this new_shape,
+   *                        tensor's shape is set to new_shape
+   */
+  virtual void applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape) = 0;
+
+  // TODO Remove This. This will be replaced with applyShape(..)
+  /**
    * @brief Allocate memory for dynamic tensor
    */
   virtual void allocate(const ir::OperandIndex &, const ir::Shape &) = 0;

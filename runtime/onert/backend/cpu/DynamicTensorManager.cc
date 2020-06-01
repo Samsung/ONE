@@ -31,6 +31,57 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
   // DO NOTHING
 }
 
+void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
+{
+  auto tensor = (*_tensors)[ind];
+  assert(tensor);
+
+  bool previously_dynamic = tensor->is_dynamic();
+
+  auto allocTensorMem = [&](bool overwrite = false) {
+    auto capacity = tensor->total_size();
+    auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
+
+    if (overwrite)
+      tensor->overwriteBuffer(alloc);
+    else
+      tensor->setBuffer(alloc);
+  };
+
+  if (!previously_dynamic)
+  {
+    // TODO deallocate tensor->buffer()
+    // issue is that staticTensorManager might have allocate this memory
+    setShape(tensor.get(), new_shape);
+    tensor->set_dynamic();
+    allocTensorMem(true);
+  }
+  else if (tensor->buffer() == nullptr)
+  {
+    setShape(tensor.get(), new_shape);
+    tensor->set_dynamic();
+    allocTensorMem();
+  }
+  // when buffer was already allocated and new_shape requires different size
+  else
+  {
+    auto previous_size = tensor->total_size();
+    auto new_size = new_shape.num_elements() * sizeOfDataType(tensor->data_type());
+    if (previous_size != new_size)
+    {
+      _dynamic_mem_mgr->deallocate(ind);
+
+      setShape(tensor.get(), new_shape);
+      tensor->set_dynamic();
+      allocTensorMem();
+    }
+    else
+    { // when buffer with same size was already allocated, do nothing
+    }
+  }
+}
+
+// TODO Remove this method, which will be replaced by applyShape
 void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
   auto tensor = (*_tensors)[ind];
@@ -67,6 +118,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
   (*_tensors)[ind] = tensor;
 }
 
+// TODO Deprecate this
 void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
   auto tensor = (*_tensors)[ind];

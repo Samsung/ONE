@@ -44,6 +44,11 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
+  void applyShape(const ir::OperandIndex & /*ind*/, const ir::Shape & /*new_shape*/) override
+  {
+    // TODO Write code later
+  }
+
   /**
    * @brief Allocate memory for dynamic tensor.
    *        If allocated memory is already set to the tensor and
