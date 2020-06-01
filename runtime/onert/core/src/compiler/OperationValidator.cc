@@ -525,7 +525,7 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
 
   OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
   OP_REQUIRES(keys_obj.typeInfo().type() == ir::DataType::INT32);
-  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -601,7 +601,7 @@ void OperationValidator::visit(const ir::operation::Dequantize &node)
 
   const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
 
-  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
 
   if (_ctx.at(output_index).info().isDynamic())

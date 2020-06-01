@@ -61,7 +61,7 @@ void TileLayer::run()
   {
     tileFloat32();
   }
-  else if (_input->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     tileQuant8();
   }

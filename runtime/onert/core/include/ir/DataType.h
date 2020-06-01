@@ -32,10 +32,10 @@ enum class DataType
   FLOAT32 = 0,
   INT32 = 1,
   UINT32 = 2,
-  QUANT8_ASYMM = 3,
+  QUANT_UINT8_ASYMM = 3,
   BOOL8 = 4,
   UINT8 = 5,
-  QUANT8_SYMM = 6,
+  QUANT_INT8_SYMM = 6,
   FLOAT16 = 7,
 };
 
@@ -50,10 +50,10 @@ inline size_t sizeOfDataType(DataType data_type)
     case DataType::UINT32:
       return sizeof(uint32_t);
     case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
     case DataType::UINT8:
       return sizeof(uint8_t);
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
       return sizeof(int8_t);
     case DataType::FLOAT16:
       return sizeof(float16);

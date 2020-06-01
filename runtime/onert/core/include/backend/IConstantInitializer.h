@@ -218,10 +218,10 @@ public:
         _init_map[index] = copyInit<uint32_t>;
         break;
       case DataType::BOOL8:
-      case DataType::QUANT8_ASYMM:
+      case DataType::QUANT_UINT8_ASYMM:
         _init_map[index] = copyInit<uint8_t>;
         break;
-      case DataType::QUANT8_SYMM:
+      case DataType::QUANT_INT8_SYMM:
         _init_map[index] = copyInit<int8_t>;
         break;
       case DataType::FLOAT16:
@@ -258,10 +258,10 @@ public:
         _init_map[index] = std::bind(permuteInit<uint32_t>, _1, _2, _current_op_seq_layout);
         break;
       case DataType::BOOL8:
-      case DataType::QUANT8_ASYMM:
+      case DataType::QUANT_UINT8_ASYMM:
         _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_op_seq_layout);
         break;
-      case DataType::QUANT8_SYMM:
+      case DataType::QUANT_INT8_SYMM:
         _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_op_seq_layout);
         break;
       case DataType::FLOAT16:

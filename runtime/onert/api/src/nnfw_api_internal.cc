@@ -363,14 +363,14 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
       return NNFW_TYPE_TENSOR_FLOAT32;
     case DataType::INT32:
       return NNFW_TYPE_TENSOR_INT32;
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
       return NNFW_TYPE_TENSOR_QUANT8_ASYMM;
     case DataType::BOOL8:
       return NNFW_TYPE_TENSOR_BOOL;
     case DataType::UINT8:
       return NNFW_TYPE_TENSOR_UINT8;
     case DataType::UINT32:
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
     default:
       throw std::runtime_error("Error: Model has type that runtime API does not support.");
   }

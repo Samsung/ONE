@@ -119,7 +119,7 @@ void FullyConnectedLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    if (_weights->data_type() == OperandType::QUANT8_SYMM)
+    if (_weights->data_type() == OperandType::QUANT_INT8_SYMM)
     {
       fullyConnectedHybrid();
     }
@@ -128,7 +128,7 @@ void FullyConnectedLayer::run()
       fullyConnectedFloat32();
     }
   }
-  else if (_input->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     fullyConnectedQuant8();
   }

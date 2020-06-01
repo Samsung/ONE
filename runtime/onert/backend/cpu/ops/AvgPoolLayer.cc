@@ -102,7 +102,7 @@ void AvgPoolLayer::run()
   {
     averagePoolFloat32();
   }
-  else if (_input->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     averagePoolQuant8();
   }

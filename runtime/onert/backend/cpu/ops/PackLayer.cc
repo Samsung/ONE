@@ -85,7 +85,7 @@ void PackLayer::run()
   {
     packFloat32();
   }
-  else if (_output->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     packQuant8();
   }

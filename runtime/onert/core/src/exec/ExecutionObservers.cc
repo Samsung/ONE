@@ -51,7 +51,7 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
 
   // fill ExecTime:
   bool is_quantized = exec->graph().operands().at(node->getInputs().at(0)).typeInfo().type() ==
-                      ir::DataType::QUANT8_ASYMM;
+                      ir::DataType::QUANT_UINT8_ASYMM;
 
   uint32_t size = 0;
   for (const auto &ind : node->getInputs() + node->getOutputs())

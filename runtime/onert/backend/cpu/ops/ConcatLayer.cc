@@ -121,7 +121,7 @@ void ConcatLayer::run()
   {
     concatenationFloat32();
   }
-  else if (_output->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     concatenationQuant8();
   }

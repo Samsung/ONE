@@ -65,7 +65,7 @@ void ShapeLayer::configure(const Tensor *input, Tensor *output)
 void ShapeLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32 ||
-      _input->data_type() == OperandType::QUANT8_ASYMM)
+      _input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     shape();
   }

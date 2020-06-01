@@ -419,12 +419,12 @@ OperationFactory::OperationFactory()
     //  0 -> input Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0]};
 
-    // NNAPI uses QUANT8_ASYMM to represent UINT8 type for ANEURALNETWORKS_CAST's input/output
-    if (operands.at(inputs.at(0)).typeInfo().type() == DataType::QUANT8_ASYMM)
+    // NNAPI uses QUANT_UINT8_ASYMM to represent UINT8 type for ANEURALNETWORKS_CAST's input/output
+    if (operands.at(inputs.at(0)).typeInfo().type() == DataType::QUANT_UINT8_ASYMM)
     {
       replaceDataType(operands, inputs.at(0), DataType::UINT8);
     }
-    if (operands.at(outputs.at(0)).typeInfo().type() == DataType::QUANT8_ASYMM)
+    if (operands.at(outputs.at(0)).typeInfo().type() == DataType::QUANT_UINT8_ASYMM)
     {
       replaceDataType(operands, outputs.at(0), DataType::UINT8);
     }

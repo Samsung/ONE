@@ -163,7 +163,7 @@ void CompareLayer::run()
   {
     compareScalar<uint8_t>(_lhs, _rhs, _output, _op_type);
   }
-  else if (_lhs->data_type() == OperandType::QUANT8_ASYMM)
+  else if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     compareQuant8();
   }

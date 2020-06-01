@@ -51,7 +51,7 @@ public:
       case ir::DataType::INT32:
         api_type.dtype = NNFW_TYPE_TENSOR_INT32;
         break;
-      case ir::DataType::QUANT8_ASYMM:
+      case ir::DataType::QUANT_UINT8_ASYMM:
         api_type.dtype = NNFW_TYPE_TENSOR_QUANT8_ASYMM;
         break;
       case ir::DataType::BOOL8:
