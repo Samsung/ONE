@@ -163,13 +163,56 @@ void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Sha
                            "check if the tensor's backend supports dynamic tensor.");
 }
 
-void ExecutorBase::execute()
+void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
+                           const std::shared_ptr<IPermuteFunction> &pre_fn)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
+
+  assert(src_tensors.size() == _graph.getInputs().size());
+  assert(src_tensors.size() == _input_tensors.size());
+  for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
+  {
+    // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
+    // This code find the info to allocate dynamic tensor, and allocate memory based on the source
+    // tensor's shape set by caller.
+    const auto src_tensor = src_tensors[n];
+    auto input_tensor = _input_tensors[n];
+    // If src_tensor or input_tensor is nullptr, pre_fn does not copy the tensors
+    if (src_tensor != nullptr && input_tensor != nullptr)
+    {
+      auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
+      const auto orig_input_shape = getShape(input_tensor.get());
+      const auto changed_input_shape =
+          convertShape(getShape(src_tensor.get()), src_tensor->layout(), input_tensor->layout());
+      if (orig_input_shape != changed_input_shape)
+      {
+        if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
+        {
+          // The input_tensor is a dynamic tensor of backend that doesn't support dynamic tensor
+          throw std::runtime_error("Unknown dim is found at execution time for a backend that "
+                                   "does not support dynamic tensor");
+        }
+        else
+        {
+          const auto operand_ind = dyn_alloc_info->second.ind;
+          if (orig_input_shape != changed_input_shape)
+          {
+            dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
+            // TODO Move changeInputShape() above allocate()
+            changeInputShape(operand_ind, changed_input_shape);
+          }
+        }
+      }
+    }
+  }
+
+  // TODO Move calling permute_fn.run() into executeImpl()
+  assert(pre_fn);
+  pre_fn->run();
 
   executeImpl();
 }
