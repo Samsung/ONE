@@ -71,7 +71,9 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
   {
-    input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+    auto input_node = context->nodefinder()->node(input_tensor_index);
+    assert(input_node != nullptr);
+    input_nodes.push_back(input_node);
   }
 
   uint32_t input_count = inputs.size();
