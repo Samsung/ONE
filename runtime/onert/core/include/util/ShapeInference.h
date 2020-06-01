@@ -117,7 +117,7 @@ private:
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
-  // TODO write op starting from L
+  void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
   // TODO write op starting from N
   // TODO write op starting from P
@@ -168,7 +168,7 @@ public:
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
-  // TODO write op starting from L
+  void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
   // TODO write op starting from N
   // TODO write op starting from P
