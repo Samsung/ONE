@@ -64,3 +64,11 @@ TEST_F(ValidationTestAddModelLoaded, neg_get_output_size)
 {
   ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestAddModelLoaded, neg_load_model)
+{
+  // load model twice
+  ASSERT_EQ(nnfw_load_model_from_file(
+                _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
+            NNFW_STATUS_ERROR);
+}

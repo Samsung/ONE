@@ -72,3 +72,11 @@ TEST_F(ValidationTestSingleSession, neg_get_output_size)
   ASSERT_EQ(nnfw_output_size(nullptr, &size), NNFW_STATUS_ERROR);
   ASSERT_EQ(size, 10000);
 }
+
+TEST_F(ValidationTestSingleSession, neg_load_model)
+{
+  // Invalid state
+  ASSERT_EQ(nnfw_load_model_from_file(
+                nullptr, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
+            NNFW_STATUS_ERROR);
+}

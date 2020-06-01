@@ -25,6 +25,12 @@ TEST_F(ValidationTestSessionCreated, load_session_001)
             NNFW_STATUS_NO_ERROR);
 }
 
+TEST_F(ValidationTestSessionCreated, close_and_create_again)
+{
+  ASSERT_EQ(nnfw_close_session(_session), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
+}
+
 TEST_F(ValidationTestSessionCreated, neg_load_session_001)
 {
   ASSERT_EQ(nnfw_load_model_from_file(
