@@ -23,6 +23,12 @@ TEST_F(ValidationTestSingleSession, create_001)
   ASSERT_EQ(nnfw_close_session(_session), NNFW_STATUS_NO_ERROR);
 }
 
+TEST_F(ValidationTestSingleSession, query_info_u32)
+{
+  uint32_t val = 0;
+  ASSERT_EQ(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, &val), NNFW_STATUS_NO_ERROR);
+}
+
 TEST_F(ValidationTestSingleSession, neg_create_001)
 {
   ASSERT_EQ(nnfw_create_session(nullptr), NNFW_STATUS_ERROR);
@@ -79,4 +85,9 @@ TEST_F(ValidationTestSingleSession, neg_load_model)
   ASSERT_EQ(nnfw_load_model_from_file(
                 nullptr, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
             NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestSingleSession, neg_query_info_u32)
+{
+  ASSERT_EQ(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, nullptr), NNFW_STATUS_ERROR);
 }

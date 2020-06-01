@@ -24,6 +24,11 @@ TEST_F(ValidationTestAddModelLoaded, prepare_001)
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 }
 
+TEST_F(ValidationTestAddModelLoaded, set_available_backends_001)
+{
+  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+}
+
 TEST_F(ValidationTestAddModelLoaded, get_input_size)
 {
   uint32_t size = 0;
