@@ -72,6 +72,7 @@
 #include "BuildBuiltinOptions/ReverseSequenceOptions.h"
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/ScatterNdOptions.h"
+#include "BuildBuiltinOptions/SegmentSumOptions.h"
 #include "BuildBuiltinOptions/SelectOptions.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
