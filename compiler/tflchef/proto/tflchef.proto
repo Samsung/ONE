@@ -98,6 +98,8 @@ message DepthwiseConv2DOptions
   optional int32 stride_h = 3 [default = 1];
   optional int32 depth_multiplier = 4 [default = 1];
   optional Activation activation = 5 [default = NONE];
+  optional int32 dilation_w_factor = 6 [default = 1]
+  optional int32 dilation_h_factor = 7 [default = 1]
 }
 
 message SubOptions {
