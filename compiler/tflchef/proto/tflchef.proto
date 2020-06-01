@@ -462,6 +462,7 @@ message Operation {
   // ScatterNdOptions 200
   optional NotEqualOptions notequal_options = 201;
   optional ExpandDimsOptions expand_dims_options = 202;
+  optional Pool2DOptions l2pool2d_options = 203;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
