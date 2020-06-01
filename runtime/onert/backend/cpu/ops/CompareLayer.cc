@@ -45,39 +45,39 @@ void compareScalar(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType 
     {
       case OpType::Equal:
         Broadcast4DSlowEqual(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::NotEqual:
         Broadcast4DSlowNotEqual(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::Greater:
         Broadcast4DSlowGreater(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::GreaterEqual:
         Broadcast4DSlowGreaterEqual(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::Less:
-        Broadcast4DSlowLess(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+        Broadcast4DSlowLess(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                            getExtendedTensorShape(output),
+                            reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::LessEqual:
         Broadcast4DSlowLessEqual(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       default:
         throw std::runtime_error{"Invalid OpType for CompareLayer"};
@@ -88,40 +88,38 @@ void compareScalar(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType 
     switch (op_type)
     {
       case OpType::Equal:
-        EqualNoScaling(convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                       convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                       convertToExtendedCkerShape(output),
-                       reinterpret_cast<bool *>(output->buffer()));
+        EqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                       getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                       getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::NotEqual:
-        NotEqualNoScaling(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+        NotEqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                          getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                          getExtendedTensorShape(output),
+                          reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::Greater:
-        GreaterNoScaling(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+        GreaterNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                         getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                         getExtendedTensorShape(output),
+                         reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::GreaterEqual:
         GreaterEqualNoScaling(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::Less:
-        LessNoScaling(convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                      convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                      convertToExtendedCkerShape(output),
-                      reinterpret_cast<bool *>(output->buffer()));
+        LessNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                      getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                      getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
         break;
       case OpType::LessEqual:
-        LessEqualNoScaling(
-            convertToExtendedCkerShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            convertToExtendedCkerShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            convertToExtendedCkerShape(output), reinterpret_cast<bool *>(output->buffer()));
+        LessEqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                           getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                           getExtendedTensorShape(output),
+                           reinterpret_cast<bool *>(output->buffer()));
         break;
       default:
         throw std::runtime_error{"Invalid OpType for CompareLayer"};

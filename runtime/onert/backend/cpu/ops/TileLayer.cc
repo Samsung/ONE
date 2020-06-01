@@ -36,8 +36,7 @@ TileLayer::TileLayer() : _input(nullptr), _multipliers(nullptr), _output(nullptr
 
 void TileLayer::tileFloat32()
 {
-  TileOneDimension(convertTensorToCkerShape(_input),
-                   reinterpret_cast<const float *>(_input->buffer()),
+  TileOneDimension(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
                    reinterpret_cast<const int *>(_multipliers->buffer()),
                    reinterpret_cast<float *>(_output->buffer()), 0);
 }

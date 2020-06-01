@@ -35,10 +35,9 @@ PadLayer::PadLayer()
 
 void PadLayer::padFloat32()
 {
-  nnfw::cker::Pad(_padData, _padRank, convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()),
-                  _constantValueData.f);
+  nnfw::cker::Pad(_padData, _padRank, getTensorShape(_input),
+                  reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+                  reinterpret_cast<float *>(_output->buffer()), _constantValueData.f);
 }
 void PadLayer::padQuant8() { throw std::runtime_error("Quantized Pad isn't supported NYI"); }
 

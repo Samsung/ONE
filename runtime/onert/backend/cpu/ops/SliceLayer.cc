@@ -72,7 +72,7 @@ void SliceLayer::sliceFloat32()
     op_params.size[i] = sizes[3 - i];
   }
 
-  nnfw::cker::Slice(op_params, convertToExtendedCkerShape(_input),
+  nnfw::cker::Slice(op_params, getExtendedTensorShape(_input),
                     reinterpret_cast<const float *>(_input->buffer()),
                     reinterpret_cast<float *>(_output->buffer()));
 }

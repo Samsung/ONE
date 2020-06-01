@@ -57,7 +57,7 @@ uint32_t getNumberOfElements(const Tensor *tensor);
 
 uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx);
 
-inline nnfw::cker::Shape convertToExtendedCkerShape(const Tensor *tensor)
+inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
 {
   assert(tensor);
   std::vector<int32_t> raw_shape;
@@ -79,7 +79,7 @@ inline nnfw::cker::Shape convertToExtendedCkerShape(const Tensor *tensor)
   return nnfw::cker::GetShape(raw_shape);
 }
 
-inline nnfw::cker::Shape convertTensorToCkerShape(const Tensor *tensor)
+inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
 {
   if (tensor == nullptr)
     return nnfw::cker::Shape();

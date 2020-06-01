@@ -48,7 +48,7 @@ void PackLayer::packFloat32()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(convertTensorToCkerShape(_inputs[i]));
+    inputDims.push_back(getTensorShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -59,7 +59,7 @@ void PackLayer::packFloat32()
     inputFloatPtrs.emplace_back(reinterpret_cast<const float *>(input->buffer()));
   }
 
-  nnfw::cker::Pack<float>(op_params, inputFloatPtrs.data(), convertTensorToCkerShape(_output),
+  nnfw::cker::Pack<float>(op_params, inputFloatPtrs.data(), getTensorShape(_output),
                           reinterpret_cast<float *>(_output->buffer()));
 }
 

@@ -47,12 +47,11 @@ void SelectLayer::configure(const Tensor *cond, const Tensor *input_true, const 
 void SelectLayer::run()
 {
 
-#define KERNEL_SELECT(type, op)                                                                 \
-  nnfw::cker::op(                                                                               \
-      convertTensorToCkerShape(_cond), reinterpret_cast<uint8_t *>(_cond->buffer()),            \
-      convertTensorToCkerShape(_input_true), reinterpret_cast<type *>(_input_true->buffer()),   \
-      convertTensorToCkerShape(_input_false), reinterpret_cast<type *>(_input_false->buffer()), \
-      convertTensorToCkerShape(_output), reinterpret_cast<type *>(_output->buffer()));
+#define KERNEL_SELECT(type, op)                                                                  \
+  nnfw::cker::op(getTensorShape(_cond), reinterpret_cast<uint8_t *>(_cond->buffer()),            \
+                 getTensorShape(_input_true), reinterpret_cast<type *>(_input_true->buffer()),   \
+                 getTensorShape(_input_false), reinterpret_cast<type *>(_input_false->buffer()), \
+                 getTensorShape(_output), reinterpret_cast<type *>(_output->buffer()));
 
 #define KERNEL_SWITCH(type, op)                                                   \
   switch (type)                                                                   \

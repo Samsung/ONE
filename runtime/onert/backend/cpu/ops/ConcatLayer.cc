@@ -49,7 +49,7 @@ void ConcatLayer::concatenationFloat32()
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(convertTensorToCkerShape(_inputs[i]));
+    inputDims.push_back(getTensorShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -61,7 +61,7 @@ void ConcatLayer::concatenationFloat32()
   }
 
   nnfw::cker::Concatenation<float>(op_params, inputDimsPtr.data(), inputFloatPtrs.data(),
-                                   convertTensorToCkerShape(_output),
+                                   getTensorShape(_output),
                                    reinterpret_cast<float *>(_output->buffer()));
 }
 void ConcatLayer::concatenationQuant8()
@@ -90,7 +90,7 @@ void ConcatLayer::concatenationQuant8()
   inputDims.reserve(num_inputs);
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    inputDims.push_back(convertTensorToCkerShape(_inputs[i]));
+    inputDims.push_back(getTensorShape(_inputs[i]));
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
@@ -101,7 +101,7 @@ void ConcatLayer::concatenationQuant8()
   }
 
   nnfw::cker::ConcatenationWithScaling(op_params, inputDimsPtr.data(), inputDataPtrs.data(),
-                                       convertTensorToCkerShape(_output),
+                                       getTensorShape(_output),
                                        reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 

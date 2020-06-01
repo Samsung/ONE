@@ -31,19 +31,18 @@ namespace ops
 
 void MaxLayer::maxFloat32()
 {
-  nnfw::cker::Max<float>(
-      convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-      convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Max<float>(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+                         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+                         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void MaxLayer::maxQuant8()
 {
   // TODO Check whether cker for quant8 max produces correct results
   // nnfw::cker::Max<uint8_t>(
-  //     convertTensorToCkerShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
-  //     convertTensorToCkerShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
-  //     convertTensorToCkerShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
+  //     getTensorShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
+  //     getTensorShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
+  //     getTensorShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
 
   throw std::runtime_error("Max NYI for quantized");
 }
