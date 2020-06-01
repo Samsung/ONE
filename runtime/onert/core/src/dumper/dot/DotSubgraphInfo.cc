@@ -26,13 +26,15 @@ namespace dot
 {
 
 DotSubgraphInfo::DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq,
-                                 const util::Set<ir::OperandIndex> &shown_operands)
+                                 const util::Set<ir::OperandIndex> &shown_operands,
+                                 const ir::Operations &operations_ctx)
     : _index{index}
 {
-  for (const auto &element : op_seq.operations())
+  for (const auto &op_idx : op_seq.operations())
   {
-    _operations.insert(element.index);
-    for (auto o : element.node->getInputs())
+    _operations.insert(op_idx);
+    const auto &node = operations_ctx.at(op_idx);
+    for (auto o : node.getInputs())
     {
       // Must be a shown operand, not op_seq's inputs
       if (shown_operands.contains(o) && !op_seq.getInputs().contains(o))
@@ -40,7 +42,7 @@ DotSubgraphInfo::DotSubgraphInfo(const ir::OpSequenceIndex &index, const ir::OpS
         _operands.insert(o);
       }
     }
-    for (auto o : element.node->getOutputs())
+    for (auto o : node.getOutputs())
     {
       // Must be a shown operand, not op_seq's inputs
       if (shown_operands.contains(o) && !op_seq.getOutputs().contains(o))

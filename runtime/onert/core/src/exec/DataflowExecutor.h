@@ -56,7 +56,7 @@ public:
   void setProfilingMode(bool profiling) { _profiling = profiling; }
 
 protected:
-  int64_t calculateRank(const std::vector<ir::Element> &operations);
+  int64_t calculateRank(const std::vector<ir::OperationIndex> &operations);
   void emplaceToReadyJobs(const uint32_t &id);
 
 protected:

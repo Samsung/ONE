@@ -75,9 +75,9 @@ void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto &op_seq_li = lowered_graph->getLowerInfo()->op_seq;
         auto backend = op_seq_li.at(op_seq_index)->backend();
-        for (auto &element : op_seq.operations())
+        for (auto &operation_idx : op_seq.operations())
         {
-          backend_assets[backend].operation_list.emplace_back(element.index, op_seq.getLayout());
+          backend_assets[backend].operation_list.emplace_back(operation_idx, op_seq.getLayout());
         }
       });
 
@@ -116,9 +116,9 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
     else
     {
       // Default registration
-      for (const auto elem : op_seq)
+      for (const auto op_idx : op_seq)
       {
-        const auto &op = *elem.node;
+        const auto &op = lowered_graph->graph().operations().at(op_idx);
         for (const auto &index : op.getInputs() + op.getOutputs())
         {
           if (!tensor_builder->isRegistered(index))
@@ -251,7 +251,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath);
+        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 
@@ -362,7 +362,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
         backends.push_back(pair.first);
       }
       auto et = std::make_shared<exec::ExecTime>(backends);
-      std::unique_ptr<exec::IExecutionObserver> obs = std::make_unique<exec::ProfileObserver>(et);
+      std::unique_ptr<exec::IExecutionObserver> obs =
+          std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph());
       dataflow_exec->addObserver(std::move(obs));
       dataflow_exec->setProfilingMode(true);
     }
@@ -372,7 +373,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   if (!options.trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath);
+        std::make_unique<exec::ChromeTracingObserver>(options.trace_filepath, exec->graph());
     exec->addObserver(std::move(ctp));
   }
 

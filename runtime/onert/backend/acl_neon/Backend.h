@@ -47,11 +47,12 @@ public:
                                              bool is_linear_executor) const override
   {
     const auto &operands = graph.operands();
+    const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
     auto tb = std::make_shared<TensorBuilder>(operands, createTensorManager(is_linear_executor));
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, tb);
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb);
     context->shape_fixer = std::make_shared<ShapeFixer>(operands, tb);
     context->tensor_register = nullptr;
     context->optimizer = std::make_shared<Optimizer>(context.get());

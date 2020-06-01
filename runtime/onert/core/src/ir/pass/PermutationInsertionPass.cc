@@ -195,7 +195,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
 
   // OpSequence
   {
-    auto op_seq_index = _lowered_graph.op_seqs().emplace(node_index, node, permute_node_layout);
+    auto op_seq_index = _lowered_graph.op_seqs().emplace(node_index, permute_node_layout);
     auto &op_seq = _lowered_graph.op_seqs().at(op_seq_index);
     op_seq.setInputs(node.getInputs());
     op_seq.setOutputs(node.getOutputs());

@@ -29,10 +29,13 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx)
-    : _operand_ctx{operand_ctx}, _tensor_builder_set{nullptr}, _executor_map{nullptr}
+KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx,
+                                 const ir::Operations &operations_ctx)
+    : _operand_ctx{operand_ctx}, _operations_ctx{operations_ctx}, _tensor_builder_set{nullptr},
+      _executor_map{nullptr}
 {
   UNUSED_RELEASE(_operand_ctx);
+  UNUSED_RELEASE(_operations_ctx);
   UNUSED_RELEASE(_tensor_builder_set);
   UNUSED_RELEASE(_executor_map);
 }
@@ -41,9 +44,9 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
-  for (const auto &e : op_seq.operations())
+  for (const auto &op_idx : op_seq.operations())
   {
-    const auto &node = *(e.node);
+    const auto &node = _operations_ctx.at(op_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
   }

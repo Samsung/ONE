@@ -32,7 +32,8 @@ namespace acl_neon
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Operands &ctx, const std::shared_ptr<TensorBuilder> &tensor_builder);
+  KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+                  const std::shared_ptr<TensorBuilder> &tensor_builder);
 
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::Abs &) override;
@@ -102,6 +103,7 @@ public:
 
 private:
   const ir::Operands &_ctx;
+  const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   ir::Layout _current_op_seq_layout;
 };

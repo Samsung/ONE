@@ -131,11 +131,11 @@ void Linear::dump(const ir::LoweredGraph &lowered_graph,
     VERBOSE(Linear) << "Final OpSequence" << std::endl;
     for (const auto index : order)
     {
-
       const auto &op_seq = lowered_graph.op_seqs().at(index);
       const auto lower_info = lowered_graph.getLowerInfo(index);
-      VERBOSE(Linear) << "* OP_SEQ " << toString(lower_info->backend()) << " " << op_seq.getStr()
-                      << std::endl;
+      const auto &operations = lowered_graph.graph().operations();
+      VERBOSE(Linear) << "* OP_SEQ " << toString(lower_info->backend()) << " "
+                      << ir::getStrFromOpSeq(op_seq, operations) << std::endl;
     }
   }
 }
@@ -233,9 +233,9 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
   for (const auto op_seq_ind : order)
   {
     const auto &op_seq = lowered_graph.op_seqs().at(op_seq_ind);
-    for (const auto &op : op_seq.operations())
+    for (const auto &op_idx : op_seq.operations())
     {
-      for (const auto &ind : op.node->getOutputs() | ir::Remove::DUPLICATED)
+      for (const auto &ind : graph.operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED)
       {
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
@@ -245,21 +245,21 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
         }
       }
 
-      for (const auto &ind : op.node->getInputs() | ir::Remove::DUPLICATED)
+      for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED)
       {
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);
         uses_map[ind]--;
         if (uses_map[ind] == 0)
         {
-          // plan for deallocation of static tensor
+          // plan for deallocation of static tensornode
           tensor_builder_map[ind]->notifyLastUse(ind);
 
           // plan for deallocation of dynamic tensor
           if (tensor_builder_map[ind]->supportDynamicTensor())
           {
             assert(tensor_builder_map[ind]->dynamicTensorManager());
-            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op.index, ind);
+            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op_idx, ind);
           }
         }
       }

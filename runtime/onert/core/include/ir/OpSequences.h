@@ -36,11 +36,10 @@ public:
    * @brief Create an instance of OpSequence with given op and push it to objects
    *
    * @param[in] op_idx Operation index that is emplaced
-   * @param[in] op Operation that is emplaced
    * @param[in] layout OpSequence's layout
    * @return OpSequenceIndex
    */
-  OpSequenceIndex emplace(const OperationIndex &op_index, const Operation &op, Layout layout);
+  OpSequenceIndex emplace(const OperationIndex &op_index, Layout layout);
 
   /**
    * @brief Push an instance of OpSequence to objects
@@ -68,8 +67,9 @@ public:
    * @brief Dump OpSequences
    *
    * @param msg Message that will be displayed
+   * @param graph Graph that has information used for dump
    */
-  void dump(const std::string &msg) const;
+  void dump(const std::string &msg, const Operations &operations) const;
   /**
    * @brief Remove an operation from OpSequence
    *

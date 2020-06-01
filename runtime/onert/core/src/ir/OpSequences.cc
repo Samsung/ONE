@@ -26,11 +26,10 @@ namespace onert
 namespace ir
 {
 
-OpSequenceIndex OpSequences::emplace(const OperationIndex &index, const Operation &node,
-                                     Layout layout)
+OpSequenceIndex OpSequences::emplace(const OperationIndex &index, Layout layout)
 {
   std::unique_ptr<OpSequence> op_seq = std::make_unique<OpSequence>(layout);
-  op_seq->appendOperation(index, node);
+  op_seq->appendOperation(index);
   return push(std::move(op_seq));
 }
 
@@ -52,11 +51,11 @@ OpSequenceIndex OpSequences::getOperation(const OperationIndex &operation_index)
 }
 
 // TODO: Extract this into external helper function
-void OpSequences::dump(const std::string &msg) const
+void OpSequences::dump(const std::string &msg, const Operations &operations) const
 {
   VERBOSE(OpSequences) << "OpSequences(" << msg << ")" << std::endl;
   iterate([&](const OpSequenceIndex &idx, const OpSequence &op_seq) {
-    VERBOSE(OpSequences) << idx.value() << "] " << op_seq.getStr() << std::endl;
+    VERBOSE(OpSequences) << idx.value() << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
   });
 }
 
@@ -75,9 +74,9 @@ OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index
 {
   OpSequenceIndex ret;
   iterate([&](const OpSequenceIndex &index, const OpSequence &object) {
-    for (const auto &elem : object.operations())
+    for (const auto &op_idx : object.operations())
     {
-      if (elem.index == operation_index)
+      if (op_idx == operation_index)
         ret = index;
     }
   });

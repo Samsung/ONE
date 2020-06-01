@@ -15,6 +15,8 @@
  */
 
 #include "ir/OpSequence.h"
+
+#include "ir/Operations.h"
 #include "ir/OperationVisitor.h"
 #include <sstream>
 
@@ -49,18 +51,18 @@ OpSequence::OpSequence(Layout layout) : _layout{layout}
 void OpSequence::accept(OperationVisitor &v) const { v.visit(*this); }
 
 // TODO: Impl Dumper instead of this method
-std::string OpSequence::getStr() const
+std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations)
 {
   // "  OpSequence IN(0,1,2) -> { op0(0,1,2:3), op1(3:4), op2(4:5) } -> OUT(5)"
   std::stringstream ss;
-  ss << "  OpSequence IN(" << getStrFromIndice(getInputs()) << ") -> {";
-  for (const auto &elem : _operations)
+  ss << "  OpSequence IN(" << getStrFromIndice(op_seq.getInputs()) << ") -> {";
+  for (const auto &op_idx : op_seq)
   {
-    ss << " " << elem.index.value() << "(" << elem.node->name() << ":"
-       << getStrFromIndice(elem.node->getInputs()) << ":"
-       << getStrFromIndice(elem.node->getOutputs()) << ")";
+    ss << " " << op_idx.value() << "(" << operations.at(op_idx).name() << ":"
+       << getStrFromIndice(operations.at(op_idx).getInputs()) << ":"
+       << getStrFromIndice(operations.at(op_idx).getOutputs()) << ")";
   }
-  ss << " } -> OUT(" << getStrFromIndice(getOutputs()) << ")";
+  ss << " } -> OUT(" << getStrFromIndice(op_seq.getOutputs()) << ")";
   return ss.str();
 }
 
@@ -69,7 +71,7 @@ void OpSequence::remove(const OperationIndex &index)
   assert(exist(index));
   for (auto it = _operations.cbegin(); it != _operations.cend(); ++it)
   {
-    if (it->index == index)
+    if (*it == index)
     {
       _operations.erase(it);
       break;
@@ -79,9 +81,9 @@ void OpSequence::remove(const OperationIndex &index)
 
 bool OpSequence::exist(const OperationIndex &index) const
 {
-  for (const auto &element : _operations)
+  for (const auto &inner_op_idx : _operations)
   {
-    if (element.index == index)
+    if (inner_op_idx == index)
     {
       return true;
     }
