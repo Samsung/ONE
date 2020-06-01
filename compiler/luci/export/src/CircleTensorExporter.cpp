@@ -53,9 +53,6 @@ public:
   const ShapeDescription &shape(void) const { return _shape; }
   void shape(const ShapeDescription &shape) { _shape = shape; }
 
-  void no_shape(void) { _no_shape = true; }
-  bool no_shape(void) const { return _no_shape; }
-
   luci::ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(luci::ShapeStatus ss) { _shape_status = ss; }
 
@@ -71,7 +68,6 @@ private:
 
   circle::TensorType _dtype{circle::TensorType_FLOAT32};
   ShapeDescription _shape{};
-  bool _no_shape{false};
   luci::ShapeStatus _shape_status{luci::ShapeStatus::UNDEFINED};
 
   luci::CircleConst *_content = nullptr;
