@@ -23,7 +23,7 @@ OneHot, Pack, Pad, Pow, Range, ReduceAny(Any), ReduceMax(Max), ReduceProd,
 ReduceSum(Sum), ReLU, RELU_N1_TO_1, Reshape, ResizeNearestneighbor, Rsqrt,
 Select, Shape, Sin, Slice, Softmax, SpaceToBatchND, SpaceToDepth, Split, SplitV,
 Square, SquaredDifference, Squeeze, StridedSlice, Sub, Tanh, Tile, TopKV2,
-Transpose, Unpack(Unstack), While, , ZerosLike
+Transpose, Unpack(Unstack), While, ZerosLike
 
 ## ONE Runtime
 
