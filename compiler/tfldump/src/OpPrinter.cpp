@@ -557,6 +557,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
