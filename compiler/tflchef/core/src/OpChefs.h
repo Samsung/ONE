@@ -84,6 +84,7 @@
 #include "Op/Round.h"
 #include "Op/Rsqrt.h"
 #include "Op/ScatterNd.h"
+#include "Op/SegmentSum.h"
 #include "Op/Select.h"
 #include "Op/Shape.h"
 #include "Op/Sin.h"
