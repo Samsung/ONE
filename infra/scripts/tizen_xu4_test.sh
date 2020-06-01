@@ -24,16 +24,22 @@ function install_model()
     # download tflite model files
     pushd $HOST_HOME
     tests/scripts/framework/run_test.sh --download=on
+    # TODO Since this command removes model file(.zip),
+    # We must always download the file unlike model file(.tflite).
+    # Because caching applies only to tflite file.
     find tests -name "*.zip" -exec rm {} \;
     tar -zcf cache.tar.gz tests/scripts/framework/cache
     $SDB_CMD push cache.tar.gz $TEST_ROOT/.
     rm -rf cache.tar.gz
     $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT
 
-    # download api test model file
+    # download api test model file for nnfw_api_gtest
     MODEL_CACHE_DIR=$(mktemp -d)
     tests/scripts/oneapi_test/install_oneapi_test_nnpackages.sh --install-dir $MODEL_CACHE_DIR
-    $SDB_CMD push $MODEL_CACHE_DIR/* $TEST_ROOT/Product/out/unittest/
+    tar -zcf $MODEL_CACHE_DIR/api_model_test.tar.gz -C $MODEL_CACHE_DIR .
+    $SDB_CMD push $MODEL_CACHE_DIR/api_model_test.tar.gz $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/
+    $SDB_CMD shell tar -zxf $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/api_model_test.tar.gz \
+    -C $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/
     rm -rf $MODEL_CACHE_DIR
     popd
 }
