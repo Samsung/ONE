@@ -146,6 +146,7 @@ GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
 GeneratedTests.softmax_dynamic_nnfw
 GeneratedTests.sqrt_
+GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8
 GeneratedTests.svdf
