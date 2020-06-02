@@ -131,7 +131,12 @@ addread(While_001)
 addread(ZerosLike_000)
 
 addread(Net_Dangle_001)
+addread(Net_InstanceNorm_001)
+addread(Net_InstanceNorm_002)
 addread(Net_UnpackAdd_001)
+
+# from res/CircleRecipes
+addread(InstanceNorm_000)
 
 addwrite(Abs_000)
 addwrite(Add_000)
@@ -266,4 +271,9 @@ addwrite(While_001)
 addwrite(ZerosLike_000)
 
 addwrite(Net_Dangle_001)
+addwrite(Net_InstanceNorm_001)
+addwrite(Net_InstanceNorm_002)
 addwrite(Net_UnpackAdd_001)
+
+# from res/CircleRecipes
+addwrite(InstanceNorm_000)
