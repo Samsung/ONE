@@ -63,12 +63,18 @@ message BatchMatMulOptions {
   optional bool adjoint_rhs = 2 [default = false];
 }
 
+message InstanceNormOptions {
+  optional float epsilon = 1 [default = 1e-05];
+  optional Activation activation = 2 [default = NONE];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
   repeated string output = 3;
 
   optional BatchMatMulOptions batch_matmul_options = 100;
+  optional InstanceNormOptions instance_norm_options = 101;
 }
 
 // For additional subgraphs
