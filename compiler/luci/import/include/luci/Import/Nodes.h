@@ -45,6 +45,7 @@
 #include "Nodes/CircleGreater.h"
 #include "Nodes/CircleGreaterEqual.h"
 #include "Nodes/CircleIf.h"
+#include "Nodes/CircleInstanceNorm.h"
 #include "Nodes/CircleL2Normalize.h"
 #include "Nodes/CircleL2Pool2D.h"
 #include "Nodes/CircleLeakyRelu.h"
