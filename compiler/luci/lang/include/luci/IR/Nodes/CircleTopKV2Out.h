@@ -35,8 +35,8 @@ public:
   CircleTopKV2Out() = default;
 
 public:
-  loco::Node *topkv2(void) const { return at(0)->node(); }
-  void topkv2(loco::Node *node) { at(0)->node(node); }
+  loco::Node *input(void) const { return at(0)->node(); }
+  void input(loco::Node *node) { at(0)->node(node); }
 
 public:
   int32_t index(void) const { return _index; }

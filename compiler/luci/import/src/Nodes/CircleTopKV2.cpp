@@ -105,7 +105,7 @@ void CircleTopKV2GraphBuilder::build(const circle::OperatorT &op,
     else
       nodeout->shape_status(ShapeStatus::VALID);
 
-    nodeout->topkv2(node);
+    nodeout->input(node);
     nodeout->index(n);
 
     context->nodefinder()->enroll(outputs[n], nodeout);

@@ -35,8 +35,8 @@ public:
   CircleUnpackOut() = default;
 
 public:
-  loco::Node *unpack(void) const { return at(0)->node(); }
-  void unpack(loco::Node *node) { at(0)->node(node); }
+  loco::Node *input(void) const { return at(0)->node(); }
+  void input(loco::Node *node) { at(0)->node(node); }
 
 public:
   int32_t index(void) const { return _index; }
