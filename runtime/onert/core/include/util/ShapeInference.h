@@ -114,14 +114,17 @@ private:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
+  void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
-  // TODO write op starting from N
+  void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
+  void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
@@ -171,14 +174,17 @@ public:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
+  void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
-  // TODO write op starting from N
+  void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
+  void visit(const ir::operation::Round &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U

@@ -107,6 +107,7 @@ GeneratedTests.exp_1D_float_nnfw
 GeneratedTests.exp_2D_float_nnfw
 GeneratedTests.exp_3D_float_nnfw
 GeneratedTests.exp_4D_float_nnfw
+GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims
 GeneratedTests.expand_dims_2
 GeneratedTests.expand_dims_3
@@ -169,6 +170,7 @@ GeneratedTests.local_response_norm_float_2
 GeneratedTests.local_response_norm_float_3
 GeneratedTests.local_response_norm_float_4
 GeneratedTests.log_4D_float_nnfw
+GeneratedTests.log_dynamic_nnfw
 GeneratedTests.logical_and_1D_nnfw
 GeneratedTests.logical_and_2D_nnfw
 GeneratedTests.logical_and_3D_nnfw
@@ -236,6 +238,7 @@ GeneratedTests.neg_3D_float_nnfw
 GeneratedTests.neg_3D_int_nnfw
 GeneratedTests.neg_4D_float_nnfw
 GeneratedTests.neg_4D_int_nnfw
+GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_boolean
 GeneratedTests.not_equal_broadcast
 GeneratedTests.not_equal_broadcast_4D_2D_float_nnfw
@@ -341,6 +344,7 @@ GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
+GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw
