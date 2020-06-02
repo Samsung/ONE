@@ -59,84 +59,50 @@ void IfLayer::run()
     return ret;
   };
 
-  // TODO Unify duplicated code
+  exec::ExecutorBase *subg_exec = nullptr;
   if (getResultCond(_cond_tensor.get()))
   {
-    auto then_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_then_subg_index).get());
-    if (then_exec == nullptr)
-    {
-      throw std::runtime_error{"If: Invalid then subgraph"};
-    }
-
-    const auto &then_input_tensors = then_exec->getInputTensors();
-    const auto &then_inputs_dyn_alloc_info = then_exec->getInputsDynamicAllocInfo();
-
-    const auto permute_op_input_to_then_input = std::make_shared<PermuteLayer>(
-        _input_tensors, then_input_tensors, then_inputs_dyn_alloc_info);
-
-    const auto &then_output_tensors = then_exec->getOutputTensors();
-    const auto permute_then_output_to_op_output = std::make_shared<PermuteLayer>(
-        then_output_tensors, _output_tensors, _outputs_dyn_alloc_info);
-
-    // Remove copying of unused tensor
-    permute_op_input_to_then_input->prepare();
-    permute_then_output_to_op_output->prepare();
-
-    // Copy & run
-    assert(_input_tensors.size() == then_input_tensors.size());
-    then_exec->execute(_input_tensors, permute_op_input_to_then_input);
-    assert(_output_tensors.size() == then_output_tensors.size());
-    for (size_t i = 0; i < _output_tensors.size(); ++i)
-    {
-      const auto output_tensor = _output_tensors.at(i);
-      const auto orig_output_shape = getShape(output_tensor.get());
-      const auto changed_output_shape = getShape(then_output_tensors.at(i).get());
-      if (orig_output_shape != changed_output_shape &&
-          _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
-      {
-        output_tensor->set_dynamic();
-      }
-    }
-    permute_then_output_to_op_output->run();
+    subg_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_then_subg_index).get());
   }
   else
   {
-    auto else_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_else_subg_index).get());
-    if (else_exec == nullptr)
-    {
-      throw std::runtime_error{"If: Invalid else subgraph"};
-    }
-
-    const auto &else_input_tensors = else_exec->getInputTensors();
-    const auto &else_inputs_dyn_alloc_info = else_exec->getInputsDynamicAllocInfo();
-    const auto permute_op_input_to_else_input = std::make_shared<PermuteLayer>(
-        _input_tensors, else_input_tensors, else_inputs_dyn_alloc_info);
-
-    const auto &else_output_tensors = else_exec->getOutputTensors();
-    const auto permute_else_output_to_op_output = std::make_shared<PermuteLayer>(
-        else_output_tensors, _output_tensors, _outputs_dyn_alloc_info);
-
-    // Remove copying of unused tensor
-    permute_op_input_to_else_input->prepare();
-    permute_else_output_to_op_output->prepare();
-
-    // Copy & run
-    assert(_input_tensors.size() == else_input_tensors.size());
-    else_exec->execute(_input_tensors, permute_op_input_to_else_input);
-    assert(_output_tensors.size() == else_output_tensors.size());
-    for (size_t i = 0; i < _output_tensors.size(); ++i)
-    {
-      const auto output_tensor = _output_tensors.at(i);
-      const auto orig_output_shape = getShape(output_tensor.get());
-      const auto changed_output_shape = getShape(else_output_tensors.at(i).get());
-      if (orig_output_shape != changed_output_shape &&
-          _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
-      {
-        output_tensor->set_dynamic();
-      }
-    }
-    permute_else_output_to_op_output->run();
+    subg_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_else_subg_index).get());
   }
+  if (subg_exec == nullptr)
+  {
+    throw std::runtime_error{"If: Invalid dynamic casting of subg_exec"};
+  }
+
+  const auto &subg_input_tensors = subg_exec->getInputTensors();
+  const auto &subg_inputs_dyn_alloc_info = subg_exec->getInputsDynamicAllocInfo();
+
+  const auto permute_op_input_to_subg_input = std::make_shared<PermuteLayer>(
+      _input_tensors, subg_input_tensors, subg_inputs_dyn_alloc_info);
+
+  const auto &subg_output_tensors = subg_exec->getOutputTensors();
+  const auto permute_subg_output_to_op_output =
+      std::make_shared<PermuteLayer>(subg_output_tensors, _output_tensors, _outputs_dyn_alloc_info);
+
+  // Remove copying of unused tensor
+  permute_op_input_to_subg_input->prepare();
+  permute_subg_output_to_op_output->prepare();
+
+  // Copy & run
+  assert(_input_tensors.size() == subg_input_tensors.size());
+  subg_exec->execute(_input_tensors, permute_op_input_to_subg_input);
+  assert(_output_tensors.size() == subg_output_tensors.size());
+  for (size_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    const auto output_tensor = _output_tensors.at(i);
+    const auto orig_output_shape = getShape(output_tensor.get());
+    const auto changed_output_shape = getShape(subg_output_tensors.at(i).get());
+    if (orig_output_shape != changed_output_shape &&
+        _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
+    {
+      output_tensor->set_dynamic();
+    }
+  }
+  permute_subg_output_to_op_output->run();
 }
 
 } // namespace kernel
