@@ -1992,7 +1992,7 @@ public:
   {
     const loco::DataType S32 = loco::DataType::S32;
 
-    auto topkv2 = dynamic_cast<const luci::CircleTopKV2 *>(node->topkv2());
+    auto topkv2 = dynamic_cast<const luci::CircleTopKV2 *>(node->input());
     if (topkv2 == nullptr)
       INTERNAL_EXN("CircleSplit IR is not configured correctly");
 
@@ -2017,7 +2017,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
   {
-    auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->unpack());
+    auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->input());
     if (unpack == nullptr)
     {
       INTERNAL_EXN("CircleUnpack IR is not configured correctly");

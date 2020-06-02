@@ -496,7 +496,7 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   {
     // First output is same as input
     if (node->index() == 0)
-      return loco::dtype_get(node->topkv2());
+      return loco::dtype_get(node->input());
     // Second outout is always S32
     assert(node->index() == 1);
     return loco::DataType::S32;
@@ -504,7 +504,7 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleUnpackOut *node) final
   {
-    return loco::dtype_get(node->unpack());
+    return loco::dtype_get(node->input());
   }
 
   loco::DataType visit(const luci::CircleWhileOut *node) final
