@@ -30,6 +30,7 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
+// Get tensor size in bytes
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
 {
   uint32_t tensor_size = loco::size(node->dtype());

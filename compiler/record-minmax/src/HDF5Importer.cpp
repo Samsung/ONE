@@ -81,20 +81,14 @@ void HDF5Importer::read(int32_t rid, int32_t iid, DataType *dtype, void *buffer)
   switch (*dtype)
   {
     case DataType::FLOAT32:
-    {
       readTensor<float>(tensor, static_cast<float *>(buffer));
       break;
-    }
     case DataType::S32:
-    {
       readTensor<int32_t>(tensor, static_cast<int32_t *>(buffer));
       break;
-    }
     case DataType::S64:
-    {
       readTensor<int64_t>(tensor, static_cast<int64_t *>(buffer));
       break;
-    }
     default:
       throw std::runtime_error{"Unsupported data type for input data (.h5)"};
   }

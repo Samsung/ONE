@@ -1,6 +1,7 @@
 find_package(HDF5 COMPONENTS CXX QUIET)
 
 if(NOT HDF5_FOUND)
+  message(STATUS "Build record-minmax: FAILED (missing HDF5)")
   return()
 endif(NOT HDF5_FOUND)
 
