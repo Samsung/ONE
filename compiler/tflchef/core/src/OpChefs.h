@@ -97,6 +97,7 @@
 #include "Op/Tile.h"
 #include "Op/TopKV2.h"
 #include "Op/Transpose.h"
+#include "Op/TransposeConv.h"
 #include "Op/Unpack.h"
 #include "Op/While.h"
 #include "Op/ZerosLike.h"

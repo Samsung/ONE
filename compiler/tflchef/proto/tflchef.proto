@@ -354,6 +354,12 @@ message DepthToSpaceOptions {
   optional int32 block_size = 1;
 }
 
+message TransposeConvOptions {
+  optional Padding padding = 1 [default = VALID];
+  optional int32 stride_w = 2 [default = 1];
+  optional int32 stride_h = 3 [default = 1];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -433,7 +439,7 @@ message Operation {
   // PadV2Options 171
   // LessEqualOptions 172
   optional SliceOptions slice_options = 173;
-  // TransposeConvOptions 174
+  optional TransposeConvOptions transpose_conv_options = 174;
   // SparseToDenseOptions 175
   optional PowOptions pow_options = 176;
   // ArgMinOptions 177
