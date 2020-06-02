@@ -151,10 +151,6 @@ function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
 
   message(STATUS "Build ARMCompute with ${SCONS_PATH} ('${SCONS_OPTIONS}'")
 
-  # Copy externals/SConstruct to externals/acl/ for Tizen build support.
-  # TODO The change of externals/SConstruct should be upstreamed to ARM Compute Library community layer.
-  # execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_LIST_DIR}/ARMCompute/SConstruct" "${ARMComputeSource_DIR}")
-
   # Build ARMCompute libraries with SCONS
   # NOTE ARMCompute SConstruct unconditioanlly appends "arm-linux-gnueabihf-" prefix for linux
   execute_process(COMMAND /usr/bin/env CC=gcc CXX=g++ "${SCONS_PATH}" ${SCONS_OPTIONS}
