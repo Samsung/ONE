@@ -142,13 +142,16 @@ GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
 GeneratedTests.tanh_v1_dynamic_nnfw
 GeneratedTests.tile_1
+GeneratedTests.tile_1_dynamic_float32_nnfw
 GeneratedTests.tile_1_float16
 GeneratedTests.tile_1_quant8
 GeneratedTests.tile_2
+GeneratedTests.tile_2_dynamic_float32_nnfw
 GeneratedTests.tile_2_float16
 GeneratedTests.tile_2_quant8
 GeneratedTests.tile_2_int32
 GeneratedTests.tile_3
+GeneratedTests.tile_3_dynamic_float32_nnfw
 GeneratedTests.tile_3_float16
 GeneratedTests.tile_3_quant8
 GeneratedTests.tile_3_int32
