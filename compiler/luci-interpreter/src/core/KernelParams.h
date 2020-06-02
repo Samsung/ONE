@@ -29,7 +29,6 @@ namespace luci_interpreter
 // Inject commonly used types into `luci_interpreter` namespace for convenience.
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
-using DataType = loco::DataType;
 
 struct AddParams
 {

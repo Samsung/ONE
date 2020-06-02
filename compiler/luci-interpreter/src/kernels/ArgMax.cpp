@@ -49,12 +49,13 @@ void ArgMax::configure()
   int j = 0;
   for (int i = 0; i < num_dims; i++)
   {
-    if (i == axis[0])
+    if (i == axis)
       continue;
     output_shape.dim(j++) = input_shape.dim(i);
   }
-  // TODO output type setting needed.
-  //_param contains output shape on output_type.
+
+  assert(_output->element_type() == _params.output_type);
+
   _output->resize(output_shape);
 }
 
