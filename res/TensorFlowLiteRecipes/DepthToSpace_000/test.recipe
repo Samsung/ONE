@@ -1,0 +1,20 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+}
+operation {
+  type: "DepthToSpace"
+  depth_to_space_options {
+    block_size: 2
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
