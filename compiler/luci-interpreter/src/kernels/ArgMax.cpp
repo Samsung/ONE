@@ -30,7 +30,6 @@ ArgMax::ArgMax(const Tensor *input, const Tensor *axis, Tensor *output, const Ar
 
 void ArgMax::configure()
 {
-  assert(_axis->shape().num_elements() == 1);
   assert(_axis->element_type() == DataType::S32 || _axis->element_type() == DataType::S64);
   assert(_input->shape().num_dims() >= 1);
   const Shape &input_shape = _input->shape();
@@ -39,11 +38,10 @@ void ArgMax::configure()
 
   // If axis value is negative, then update by adding input_shape's num_dims.
   // If updated value also negative, then assert.
+  assert(_axis->shape().num_elements() == 1);
   int axis = getTensorData<int32_t>(_axis)[0];
   if (axis < 0)
-  {
     axis = axis + num_dims;
-  }
   assert(axis >= 0);
 
   int j = 0;
