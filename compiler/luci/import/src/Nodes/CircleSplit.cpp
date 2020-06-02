@@ -107,7 +107,7 @@ void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
     else
       nodeout->shape_status(ShapeStatus::VALID);
 
-    nodeout->input(node);
+    nodeout->split(node);
     nodeout->index(n);
 
     context->nodefinder()->enroll(outputs[n], nodeout);

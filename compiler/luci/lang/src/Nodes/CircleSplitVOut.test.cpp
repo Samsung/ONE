@@ -27,6 +27,6 @@ TEST(CircleSplitVOutTest, constructor)
   ASSERT_EQ(luci::CircleDialect::get(), vout_node.dialect());
   ASSERT_EQ(luci::CircleOpcode::CIRCLESPLITVOUT, vout_node.opcode());
 
-  ASSERT_EQ(nullptr, vout_node.input());
+  ASSERT_EQ(nullptr, vout_node.splitV());
   ASSERT_EQ(-1, vout_node.index());
 }

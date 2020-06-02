@@ -109,7 +109,7 @@ void CircleSplitVGraphBuilder::build(const circle::OperatorT &op,
     else
       nodeout->shape_status(ShapeStatus::VALID);
 
-    nodeout->input(node);
+    nodeout->splitV(node);
     nodeout->index(n);
 
     context->nodefinder()->enroll(outputs[n], nodeout);

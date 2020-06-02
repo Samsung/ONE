@@ -1880,7 +1880,7 @@ public:
   {
     const loco::DataType S32 = loco::DataType::S32;
 
-    auto split = dynamic_cast<const luci::CircleSplit *>(node->input());
+    auto split = dynamic_cast<const luci::CircleSplit *>(node->split());
     if (split == nullptr)
       INTERNAL_EXN("CircleSplit IR is not configured correctly");
 
@@ -1914,7 +1914,7 @@ public:
   {
     const loco::DataType S32 = loco::DataType::S32;
 
-    auto split = dynamic_cast<const luci::CircleSplitV *>(node->input());
+    auto split = dynamic_cast<const luci::CircleSplitV *>(node->splitV());
     if (split == nullptr)
       INTERNAL_EXN("CircleSplit IR is not configured correctly");
 

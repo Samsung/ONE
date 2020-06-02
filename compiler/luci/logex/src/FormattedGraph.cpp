@@ -1130,7 +1130,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleZerosLike *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitOut *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("input", tbl()->lookup(node->split()));
 
   s.state(locop::NodeSummary::State::Complete);
 
@@ -1140,7 +1140,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitOut *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitVOut *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("input", tbl()->lookup(node->splitV()));
 
   s.state(locop::NodeSummary::State::Complete);
 

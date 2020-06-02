@@ -35,8 +35,8 @@ public:
   CircleSplitVOut() = default;
 
 public:
-  loco::Node *input(void) const { return at(0)->node(); }
-  void input(loco::Node *node) { at(0)->node(node); }
+  loco::Node *splitV(void) const { return at(0)->node(); }
+  void splitV(loco::Node *node) { at(0)->node(node); }
 
 public:
   int32_t index(void) const { return _index; }
