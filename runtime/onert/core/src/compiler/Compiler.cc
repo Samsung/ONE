@@ -120,12 +120,12 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
  * @brief Set input tensors with unknown dim to dynamic tensor.
  *        This will make shape inference during compilation work correctly.
  */
-void setInputToDynamicTensor(const std::shared_ptr<onert::ir::Graph> &primary_subgraph)
+void setInputToDynamicTensor(ir::Graph &subgraph)
 {
-  auto input_inds = primary_subgraph->getInputs();
+  const auto &input_inds = subgraph.getInputs();
   for (auto input_ind : input_inds)
   {
-    auto &input = primary_subgraph->operands().at(input_ind);
+    auto &input = subgraph.operands().at(input_ind);
     if (input.info().shape().hasUnknownDim())
       input.info().setDynamic();
   }
@@ -196,9 +196,6 @@ void Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
-  // mark an input tensor "dynamic" when the tensor has unknown dim
-  setInputToDynamicTensor(_subgraphs->primary());
-
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
@@ -226,6 +223,9 @@ void Compiler::compile(void)
   _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
+
+    // mark an input tensor "dynamic" when the tensor has unknown dim
+    setInputToDynamicTensor(subg);
 
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(subg, _options);
