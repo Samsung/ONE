@@ -830,6 +830,12 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleL2Normalize *node) final
+  {
+    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleL2Pool2D *node) final
   {
     return infer_pool_2d_shape(node);
