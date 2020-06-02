@@ -17,6 +17,7 @@
 #include "Reshape.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -27,33 +28,29 @@ void TFliteOpReshape::filler(const tflite::Operator *op, TFliteImport *import,
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
 
   bool hasShape = (inputs.size() == 2);
-  assert(inputs.size() == 1 || hasShape);
-
   if (hasShape)
   {
-    auto op_params = op->builtin_options_as_ReshapeOptions();
-    std::vector<int32_t> new_shape = as_index_vector(op_params->new_shape());
-    import->set_tensor_filler(inputs.at(1), new_shape);
+    fill_tensor_to_import(inputs[1], import);
   }
 }
 
 tflchef::Operation *TFliteOpReshape::build(const tflite::Operator *op, TFliteImport *import,
                                            tflchef::ModelRecipe *model_recipe) const
 {
-  auto op_params = op->builtin_options_as_ReshapeOptions();
-  assert(op_params != nullptr);
-
   auto operation = model_recipe->add_operation();
 
   operation->set_type("Reshape");
 
-  auto op_options = operation->mutable_reshape_options();
-
-  std::vector<int32_t> new_shape = as_index_vector(op_params->new_shape());
-
-  for (auto shape : new_shape)
+  auto op_params = op->builtin_options_as_ReshapeOptions();
+  if (op_params != nullptr)
   {
-    op_options->add_new_shape(shape);
+    auto op_options = operation->mutable_reshape_options();
+
+    std::vector<int32_t> new_shape = as_index_vector(op_params->new_shape());
+    for (auto shape : new_shape)
+    {
+      op_options->add_new_shape(shape);
+    }
   }
 
   return operation;
