@@ -14,10 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __OP_CHEFS_H__
-#define __OP_CHEFS_H__
+#ifndef __CIRCLE_OP_INSTANCE_NORM_H__
+#define __CIRCLE_OP_INSTANCE_NORM_H__
 
-#include "Op/BatchMatMul.h"
-#include "Op/InstanceNorm.h"
+#include "CircleOpChef.h"
 
-#endif // __OP_CHEFS_H__
+namespace circlechef
+{
+
+/**
+ * @brief circlechef operator builder for INSTANCE_NORM
+ */
+class CircleOpInstanceNorm : public CircleOpChef
+{
+public:
+  void filler(const circle::Operator *op, CircleImport *import,
+              circlechef::ModelRecipe *model_recipe) const override;
+  circlechef::Operation *build(const circle::Operator *op, CircleImport *import,
+                               circlechef::ModelRecipe *model_recipe) const override;
+};
+
+} // namespace circlechef
+
+#endif // __CIRCLE_OP_INSTANCE_NORM_H__

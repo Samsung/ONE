@@ -56,6 +56,7 @@ private:
   _circleop_map[circle::BuiltinOperator_##OPCODE] = std::make_unique<CLASS>()
 
     REG_TFL_OP(BATCH_MATMUL, CircleOpBatchMatMul);
+    REG_TFL_OP(INSTANCE_NORM, CircleOpInstanceNorm);
 #undef REG_TFL_OP
   }
 
