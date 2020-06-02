@@ -1,4 +1,4 @@
-# circle2circle-dredd-pbtxt-test
+# circle2circle-dredd-recipe-test
 
 It tests the non-functional conditions of the optimized circle binary resulting from circle2circle.
 
