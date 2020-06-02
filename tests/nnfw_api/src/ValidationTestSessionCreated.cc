@@ -60,6 +60,24 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_004)
             NNFW_STATUS_ERROR);
 }
 
+TEST_F(ValidationTestSessionCreated, neg_load_invalid_package_1)
+{
+  ASSERT_EQ(
+      nnfw_load_model_from_file(
+          _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD_NO_MANIFEST).c_str()),
+      NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestSessionCreated, neg_load_invalid_package_2)
+{
+  ASSERT_EQ(nnfw_load_model_from_file(
+                _session,
+                NNPackages::get().getModelAbsolutePath(NNPackages::ADD_INVALID_MANIFEST).c_str()),
+            NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+}
+
 TEST_F(ValidationTestSessionCreated, neg_prepare_001)
 {
   // nnfw_load_model_from_file was not called
