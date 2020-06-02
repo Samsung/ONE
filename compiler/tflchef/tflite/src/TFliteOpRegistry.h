@@ -96,6 +96,7 @@ private:
     REG_TFL_OP(NEG, TFliteOpNeg);
     REG_TFL_OP(MINIMUM, TFliteOpMinimum);
     REG_TFL_OP(MIRROR_PAD, TFliteOpMirrorPad);
+    REG_TFL_OP(MUL, TFliteOpMul);
     REG_TFL_OP(NOT_EQUAL, TFliteOpNotEqual);
     REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
