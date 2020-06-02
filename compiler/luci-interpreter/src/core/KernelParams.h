@@ -19,7 +19,7 @@
 
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
-#include <loco/IR/DataType.h>
+#include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
 

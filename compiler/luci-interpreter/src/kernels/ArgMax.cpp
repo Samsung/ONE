@@ -36,7 +36,16 @@ void ArgMax::configure()
   const Shape &input_shape = _input->shape();
   const int num_dims = input_shape.num_dims();
   Shape output_shape(num_dims - 1);
-  const auto *axis = getTensorData<int32_t>(_axis);
+
+  // If axis value is negative, then update by adding input_shape's num_dims.
+  // If updated value also negative, then assert.
+  int axis = getTensorData<int32_t>(_axis)[0];
+  if (axis < 0)
+  {
+    axis = axis + num_dims;
+  }
+  assert(axis >= 0);
+
   int j = 0;
   for (int i = 0; i < num_dims; i++)
   {
@@ -48,6 +57,7 @@ void ArgMax::configure()
   //_param contains output shape on output_type.
   _output->resize(output_shape);
 }
+
 void ArgMax::execute() const
 {
 
@@ -123,7 +133,8 @@ void ArgMax::execute() const
         throw std::runtime_error("Unsupported output type.");
     }
   }
+#undef TF_LITE_ARG_MAX
 }
 
-} // end of kernels namespace
-} // end of luci_interpreter namespace
+} // namespace kernels
+} // namespace luci_interpreter

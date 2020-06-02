@@ -39,7 +39,7 @@ private:
   Tensor *const _output;
 };
 
-} // end of namespace kernels
-} // end of namespace luci_interpreter
+} // namespace kernels
+} // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_KERNELS_ARGMAX_H

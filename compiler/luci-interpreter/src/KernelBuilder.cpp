@@ -51,7 +51,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleArgMax *node)
 {
   assert(node->arity() == 2);
-
+  if (dynamic_cast<const luci::CircleConst *>(node->dimension()) == nullptr)
+    throw std::runtime_error("Dynamic dimension is not yet supported.");
   const Tensor *input1 = getInputTensor(node->input());
   const Tensor *input2 = getInputTensor(node->dimension());
   Tensor *output = getOutputTensor(node);
