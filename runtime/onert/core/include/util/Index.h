@@ -20,6 +20,7 @@
 #include <functional>
 #include <limits>
 #include <stdint.h>
+#include <string>
 
 namespace onert
 {
