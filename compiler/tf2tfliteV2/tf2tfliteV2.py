@@ -48,8 +48,13 @@ def _get_parser():
 
     # Input and output path.
     parser.add_argument(
-        "--input_path", type=str, help="Full filepath of the input file.", required=True)
+        "-i",
+        "--input_path",
+        type=str,
+        help="Full filepath of the input file.",
+        required=True)
     parser.add_argument(
+        "-o",
         "--output_path",
         type=str,
         help="Full filepath of the output file.",
@@ -57,15 +62,18 @@ def _get_parser():
 
     # Input and output arrays.
     parser.add_argument(
+        "-ia",
         "--input_arrays",
         type=str,
         help="Names of the input arrays, comma-separated.",
         required=True)
     parser.add_argument(
+        "-is",
         "--input_shapes",
         type=str,
         help="Shapes corresponding to --input_arrays, colon-separated.")
     parser.add_argument(
+        "-oa",
         "--output_arrays",
         type=str,
         help="Names of the output arrays, comma-separated.",
