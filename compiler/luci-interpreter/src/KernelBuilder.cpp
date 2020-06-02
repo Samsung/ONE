@@ -23,6 +23,7 @@
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/MaxPool2D.h"
+#include "kernels/Mean.h"
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
 #include "kernels/Reshape.h"
@@ -164,6 +165,23 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::MaxPool2D>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
+{
+  assert(node->arity() == 2);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->reduction_indices()) == nullptr)
+    throw std::runtime_error("Dynamic axes is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *axes = getInputTensor(node->reduction_indices());
+  Tensor *output = getOutputTensor(node);
+
+  ReducerParams params{};
+  params.keep_dims = node->keep_dims();
+
+  return std::make_unique<kernels::Mean>(input, axes, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)

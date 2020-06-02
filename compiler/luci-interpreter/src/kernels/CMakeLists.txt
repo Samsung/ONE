@@ -25,6 +25,8 @@ set(SOURCES
     FullyConnected.cpp
     MaxPool2D.h
     MaxPool2D.cpp
+    Mean.h
+    Mean.cpp
     Mul.h
     Mul.cpp
     Pad.h
@@ -58,6 +60,7 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
     MaxPool2D.test.cpp
+    Mean.test.cpp
     Mul.test.cpp
     Pad.test.cpp
     Reshape.test.cpp
