@@ -151,11 +151,11 @@ add_custom_command(
 list(APPEND TEST_DEPS "${RULE_LIB_BINARY_PATH}")
 
 # Generate dependencies
-add_custom_target(circle2circle_dredd_pbtxt_test ALL DEPENDS ${TEST_DEPS})
+add_custom_target(circle2circle_dredd_recipe_test ALL DEPENDS ${TEST_DEPS})
 
 # Run tests
 add_test(
-  NAME circle2circle_dredd_pbtxt_test
+  NAME circle2circle_dredd_recipe_test
   COMMAND "${TEST_RUNNER}"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
