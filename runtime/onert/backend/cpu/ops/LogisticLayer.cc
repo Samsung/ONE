@@ -36,9 +36,8 @@ LogisticLayer::LogisticLayer() : _input(nullptr), _output(nullptr)
 
 void LogisticLayer::logisticFloat32()
 {
-  nnfw::cker::Logistic(
-      convertTensorToCkerShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Logistic(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void LogisticLayer::logisticQuant8()

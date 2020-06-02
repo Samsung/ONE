@@ -30,10 +30,9 @@ namespace ops
 {
 void LogicalOrLayer::lorBool8()
 {
-  nnfw::cker::LogicalOr<bool>(
-      convertTensorToCkerShape(_lhs), reinterpret_cast<const bool *>(_lhs->buffer()),
-      convertTensorToCkerShape(_rhs), reinterpret_cast<const bool *>(_rhs->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<bool *>(_output->buffer()));
+  nnfw::cker::LogicalOr<bool>(getTensorShape(_lhs), reinterpret_cast<const bool *>(_lhs->buffer()),
+                              getTensorShape(_rhs), reinterpret_cast<const bool *>(_rhs->buffer()),
+                              getTensorShape(_output), reinterpret_cast<bool *>(_output->buffer()));
 }
 
 void LogicalOrLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)

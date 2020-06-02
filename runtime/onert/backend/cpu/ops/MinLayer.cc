@@ -31,19 +31,18 @@ namespace ops
 
 void MinLayer::minFloat32()
 {
-  nnfw::cker::Min<float>(
-      convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-      convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Min<float>(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+                         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+                         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void MinLayer::minQuant8()
 {
   // TODO Check whether cker for quant8 min produces correct results
   // nnfw::cker::Min<uint8_t>(
-  //     convertTensorToCkerShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
-  //     convertTensorToCkerShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
-  //     convertTensorToCkerShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
+  //     getTensorShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
+  //     getTensorShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
+  //     getTensorShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
 
   throw std::runtime_error("Min NYI for quantized");
 }

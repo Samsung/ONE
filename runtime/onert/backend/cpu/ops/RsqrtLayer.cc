@@ -35,9 +35,8 @@ RsqrtLayer::RsqrtLayer() : _input(nullptr), _output(nullptr)
 
 void RsqrtLayer::rsqrtFloat32()
 {
-  nnfw::cker::Rsqrt(
-      convertTensorToCkerShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Rsqrt(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                    getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void RsqrtLayer::rsqrtQuant8() { throw std::runtime_error{"NYI : QASYMM8 not supported"}; }

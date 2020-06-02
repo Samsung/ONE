@@ -36,16 +36,15 @@ MeanLayer::MeanLayer() : _input(nullptr), _output(nullptr), _axes(), _keep_dims(
 
 void MeanLayer::MeanFloat32()
 {
-  nnfw::cker::Mean(
-      convertTensorToCkerShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()), _axes);
+  nnfw::cker::Mean(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                   getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), _axes);
 }
 
 void MeanLayer::MeanQuant8()
 {
-  nnfw::cker::MeanQ8Asymm(convertTensorToCkerShape(_input),
+  nnfw::cker::MeanQ8Asymm(getTensorShape(_input),
                           reinterpret_cast<const uint8_t *>(_input->buffer()), _input->data_scale(),
-                          _input->data_offset(), convertTensorToCkerShape(_output),
+                          _input->data_offset(), getTensorShape(_output),
                           reinterpret_cast<uint8_t *>(_output->buffer()), _output->data_scale(),
                           _output->data_offset(), _axes);
 }

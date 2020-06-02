@@ -40,16 +40,15 @@ void PowLayer::powFloat32()
   if (!HaveSameShapes(_lhs, _rhs))
   {
     nnfw::cker::BroadcastBinaryArithmeticOp(
-        op_params, convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-        convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-        convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::powImpl(
-      convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-      convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::powImpl(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+                      getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+                      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void PowLayer::configure(const Tensor *lhs, const Tensor *rhs, ir::Activation activation,

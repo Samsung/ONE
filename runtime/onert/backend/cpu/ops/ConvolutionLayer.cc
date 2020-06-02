@@ -57,9 +57,8 @@ void ConvolutionLayer::convFloat32()
   if (!_prepare)
   {
     bool is_replaced_weights = false;
-    kernel.prepare(convertTensorToCkerShape(_kernel),
-                   reinterpret_cast<const float *>(_kernel->buffer()), op_params.padding_type,
-                   is_replaced_weights);
+    kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
+                   op_params.padding_type, is_replaced_weights);
 
     if (is_replaced_weights)
     {
@@ -68,11 +67,10 @@ void ConvolutionLayer::convFloat32()
     }
     _prepare = true;
   }
-  kernel(op_params, convertTensorToCkerShape(_input),
-         reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_kernel),
-         reinterpret_cast<const float *>(_kernel->buffer()), convertTensorToCkerShape(_bias),
-         reinterpret_cast<const float *>(_bias->buffer()), convertTensorToCkerShape(_output),
-         reinterpret_cast<float *>(_output->buffer()));
+  kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+         getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
+         getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
+         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void ConvolutionLayer::convQuant8()
@@ -107,15 +105,14 @@ void ConvolutionLayer::convQuant8()
   nnfw::cker::Conv &kernel = *_conv_kernel;
   if (!_prepare)
   {
-    kernel.prepareQuant(convertTensorToCkerShape(_input), convertTensorToCkerShape(_kernel),
-                        convertTensorToCkerShape(_output), _strideWidth, _strideHeight);
+    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
+                        _strideWidth, _strideHeight);
     _prepare = true;
   }
-  kernel(op_params, convertTensorToCkerShape(_input),
-         reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_kernel),
-         reinterpret_cast<const uint8_t *>(_kernel->buffer()), convertTensorToCkerShape(_bias),
-         reinterpret_cast<const int32_t *>(_bias->buffer()), convertTensorToCkerShape(_output),
-         reinterpret_cast<uint8_t *>(_output->buffer()));
+  kernel(op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+         getTensorShape(_kernel), reinterpret_cast<const uint8_t *>(_kernel->buffer()),
+         getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias->buffer()),
+         getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,

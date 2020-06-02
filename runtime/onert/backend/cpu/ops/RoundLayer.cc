@@ -35,9 +35,8 @@ RoundLayer::RoundLayer() : _input(nullptr), _output(nullptr)
 
 void RoundLayer::roundFloat32()
 {
-  nnfw::cker::Round(
-      convertTensorToCkerShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Round(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                    getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void RoundLayer::configure(const Tensor *input, Tensor *output)

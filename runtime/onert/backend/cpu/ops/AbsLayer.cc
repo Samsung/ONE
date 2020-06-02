@@ -36,9 +36,8 @@ AbsLayer::AbsLayer() : _input(nullptr), _output(nullptr)
 
 void AbsLayer::absFloat32()
 {
-  nnfw::cker::Abs(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Abs(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void AbsLayer::absQuant8() { throw std::runtime_error{"NYI"}; }

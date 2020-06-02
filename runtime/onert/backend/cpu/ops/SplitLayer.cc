@@ -47,7 +47,7 @@ void SplitLayer::splitFloat32()
 
   for (uint32_t i = 0; i < _num_splits; i++)
   {
-    outputDims.push_back(convertTensorToCkerShape(_outputs[i]));
+    outputDims.push_back(getTensorShape(_outputs[i]));
     outputDimsPtr.push_back(&outputDims[i]);
   }
 
@@ -58,9 +58,9 @@ void SplitLayer::splitFloat32()
     outputFloatPtrs.emplace_back(reinterpret_cast<float *>(output->buffer()));
   }
 
-  nnfw::cker::Split<float>(op_params, convertTensorToCkerShape(_input),
-                           reinterpret_cast<float *>(_input->buffer()),
-                           convertTensorToCkerShape(_outputs[0]), outputFloatPtrs.data());
+  nnfw::cker::Split<float>(op_params, getTensorShape(_input),
+                           reinterpret_cast<float *>(_input->buffer()), getTensorShape(_outputs[0]),
+                           outputFloatPtrs.data());
 }
 
 void SplitLayer::splitQuant8() { throw std::runtime_error{"Split: NYI quant8 type"}; }

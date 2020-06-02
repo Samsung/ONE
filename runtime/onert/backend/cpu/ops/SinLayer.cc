@@ -34,9 +34,8 @@ SinLayer::SinLayer() : _input(nullptr), _output(nullptr)
 
 void SinLayer::sinFloat32()
 {
-  nnfw::cker::Sin(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Sin(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void SinLayer::sinQuant8() { throw std::runtime_error{"NYI"}; }

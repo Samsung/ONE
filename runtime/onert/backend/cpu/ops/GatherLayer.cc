@@ -47,24 +47,21 @@ void GatherLayer::run()
   {
     case OperandType::FLOAT32:
       nnfw::cker::Gather<float>(
-          op_params, convertTensorToCkerShape(_input),
-          reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_indices),
-          reinterpret_cast<const int32_t *>(_indices->buffer()), convertTensorToCkerShape(_output),
-          reinterpret_cast<float *>(_output->buffer()));
+          op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
+          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
       break;
     case OperandType::QUANT_UINT8_ASYMM:
       nnfw::cker::Gather<uint8_t>(
-          op_params, convertTensorToCkerShape(_input),
-          reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_indices),
-          reinterpret_cast<const int32_t *>(_indices->buffer()), convertTensorToCkerShape(_output),
-          reinterpret_cast<uint8_t *>(_output->buffer()));
+          op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
+          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
       break;
     case OperandType::INT32:
       nnfw::cker::Gather<int32_t>(
-          op_params, convertTensorToCkerShape(_input),
-          reinterpret_cast<const int32_t *>(_input->buffer()), convertTensorToCkerShape(_indices),
-          reinterpret_cast<const int32_t *>(_indices->buffer()), convertTensorToCkerShape(_output),
-          reinterpret_cast<int32_t *>(_output->buffer()));
+          op_params, getTensorShape(_input), reinterpret_cast<const int32_t *>(_input->buffer()),
+          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
+          getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error("Gather NYI for this operand type!");

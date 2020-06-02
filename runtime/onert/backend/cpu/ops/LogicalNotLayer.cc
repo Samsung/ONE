@@ -36,9 +36,8 @@ LogicalNotLayer::LogicalNotLayer() : _input(nullptr), _output(nullptr)
 
 void LogicalNotLayer::logicalNotBool8()
 {
-  nnfw::cker::LogicalNot(
-      convertTensorToCkerShape(_input), reinterpret_cast<const bool *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<bool *>(_output->buffer()));
+  nnfw::cker::LogicalNot(getTensorShape(_input), reinterpret_cast<const bool *>(_input->buffer()),
+                         getTensorShape(_output), reinterpret_cast<bool *>(_output->buffer()));
 }
 
 void LogicalNotLayer::configure(const Tensor *input, Tensor *output)
