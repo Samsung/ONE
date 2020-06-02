@@ -97,6 +97,7 @@ public:
   void visit(luci::CirclePack *) final;
   void visit(luci::CirclePad *) final;
   void visit(luci::CirclePow *) final;
+  void visit(luci::CirclePRelu *) final;
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceMax *) final;
@@ -947,6 +948,18 @@ void OperationExporter::visit(luci::CirclePow *node)
   auto options = CreatePowOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_PowOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CirclePRelu *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_PRELU);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->alpha())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  // Make PRelu operator; PRelu does not have Options
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
