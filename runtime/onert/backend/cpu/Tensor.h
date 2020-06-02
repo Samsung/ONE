@@ -54,6 +54,9 @@ public:
     _allocator = alloc;
   }
 
+  // This works just as setBuffer but it simply overwrite existing Allocator without nullptr check
+  void overwriteBuffer(const std::shared_ptr<cpu_common::Allocator> &alloc) { _allocator = alloc; }
+
 public:
   uint8_t *buffer() const override
   {

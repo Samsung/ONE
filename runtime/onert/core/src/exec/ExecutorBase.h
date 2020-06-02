@@ -136,6 +136,7 @@ private:
     return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
   }
 
+  // TODO Deprecate this
   void changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape) override;
 
 protected:
@@ -164,6 +165,9 @@ protected:
   std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
+
+private:
+  void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);
 };
 
 } // namespace exec
