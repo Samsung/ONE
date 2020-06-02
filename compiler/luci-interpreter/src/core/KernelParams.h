@@ -19,6 +19,7 @@
 
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
+#include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
 
@@ -32,6 +33,11 @@ using Padding = luci::Padding;
 struct AddParams
 {
   Activation activation;
+};
+
+struct ArgMaxParams
+{
+  DataType output_type;
 };
 
 struct ConcatenationParams
