@@ -211,16 +211,28 @@ int main(const int argc, char **argv)
 
   const int seed = 1; /* TODO Add an option for seed value */
   nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
-  for (uint32_t i = 0; i < num_inputs; i++)
+  try
   {
-    if (generate_data)
+    for (uint32_t i = 0; i < num_inputs; i++)
     {
-      uint64_t sz = test_graph->operands().at(test_graph->getInputs().at(i)).shape().num_elements();
-      inputs[i] = randomData(randgen, sz);
+      if (generate_data)
+      {
+        uint64_t sz =
+            test_graph->operands().at(test_graph->getInputs().at(i)).shape().num_elements();
+        inputs[i] = randomData(randgen, sz);
+      }
+      else /* read_data */
+        inputs[i] = readData(data_files[i]);
     }
-    else /* read_data */
-      inputs[i] = readData(data_files[i]);
   }
+  catch (std::exception &e)
+  {
+    std::cerr << "[ ERROR ] "
+              << "Failure during input data generation" << std::endl;
+    std::cerr << e.what() << std::endl;
+    exit(-1);
+  }
+
   std::cout << "[Execution] Input data is defined!" << std::endl;
   std::vector<std::vector<float>> outputs;
   // Run graph
