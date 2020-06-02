@@ -1150,7 +1150,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitVOut *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("topkv2", tbl()->lookup(node->topkv2()));
+  s.args().append("topkv2", tbl()->lookup(node->input()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1158,7 +1158,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("unpack", tbl()->lookup(node->unpack()));
+  s.args().append("unpack", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 

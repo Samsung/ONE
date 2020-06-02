@@ -27,6 +27,6 @@ TEST(CircleTopKV2OutTest, constructor)
   ASSERT_EQ(luci::CircleDialect::get(), topout_node.dialect());
   ASSERT_EQ(luci::CircleOpcode::CIRCLETOPKV2OUT, topout_node.opcode());
 
-  ASSERT_EQ(nullptr, topout_node.topkv2());
+  ASSERT_EQ(nullptr, topout_node.input());
   ASSERT_EQ(-1, topout_node.index());
 }
