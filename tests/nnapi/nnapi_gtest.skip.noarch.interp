@@ -124,6 +124,7 @@ GeneratedTests.expand_dims_quant8_3
 GeneratedTests.expand_dims_quant8_4
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
+GeneratedTests.fill_ex_dynamic_float32
 GeneratedTests.floor_
 GeneratedTests.fully_connected_hybrid_1_nnfw
 GeneratedTests.fully_connected_hybrid_2_nnfw
