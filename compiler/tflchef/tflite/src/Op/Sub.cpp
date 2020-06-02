@@ -17,6 +17,7 @@
 #include "Sub.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -24,7 +25,13 @@ namespace tflchef
 void TFliteOpSub::filler(const tflite::Operator *op, TFliteImport *import,
                          tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  // Sub may have constant input
+
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+  assert(inputs.size() == 2);
+
+  fill_tensor_to_import(inputs[0], import);
+  fill_tensor_to_import(inputs[1], import);
 }
 
 tflchef::Operation *TFliteOpSub::build(const tflite::Operator *op, TFliteImport *import,
