@@ -111,6 +111,7 @@
 // Virtual nodes
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+#include "Nodes/CircleCustomOut.h"
 #include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleUnpackOut.h"
 #include "Nodes/CircleSplitOut.h"
