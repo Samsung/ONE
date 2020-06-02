@@ -142,6 +142,7 @@ private:
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::While &op);
@@ -218,6 +219,7 @@ public:
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::ZerosLike &op);
