@@ -89,13 +89,13 @@ void Graph::initializeUseDef()
     auto outputs = node.getOutputs();
     for (auto output : outputs)
     {
-      operands().at(output).appendDef(index);
+      operands().at(output).insertDef(index);
     }
 
     auto inputs = node.getInputs();
     for (auto input : inputs)
     {
-      operands().at(input).appendUse(index);
+      operands().at(input).insertUse(index);
     }
   });
 }

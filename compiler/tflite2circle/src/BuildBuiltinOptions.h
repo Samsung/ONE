@@ -27,6 +27,7 @@
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
 #include "BuildBuiltinOptions/Conv2DOptions.h"
 #include "BuildBuiltinOptions/CosOptions.h"
+#include "BuildBuiltinOptions/DepthToSpaceOptions.h"
 #include "BuildBuiltinOptions/DepthwiseConv2DOptions.h"
 #include "BuildBuiltinOptions/DivOptions.h"
 #include "BuildBuiltinOptions/EqualOptions.h"
@@ -41,6 +42,8 @@
 #include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
+#include "BuildBuiltinOptions/L2NormalizeOptions.h"
+// L2Pool2D uses Pool2DOptions
 #include "BuildBuiltinOptions/LeakyReluOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
 #include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"
@@ -59,8 +62,10 @@
 #include "BuildBuiltinOptions/RangeOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
 #include "BuildBuiltinOptions/PowOptions.h"
+// There is no PReluOptions
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
+#include "BuildBuiltinOptions/ResizeBilinearOptions.h"
 #include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/SelectOptions.h"

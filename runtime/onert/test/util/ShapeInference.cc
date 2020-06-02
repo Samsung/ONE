@@ -188,19 +188,65 @@ TEST(ShapeInference, DepthwiseConv2D)
 
 TEST(ShapeInference, Concat)
 {
-  Shape in1{10, 20, 30, 3, 50};
-  Shape in2{10, 20, 30, 2, 50};
-  Shape in3{10, 20, 30, 2, 50};
+  {
+    Shape in1{10, 20, 30, 3, 50};
+    Shape in2{10, 20, 30, 2, 50};
+    Shape in3{10, 20, 30, 2, 50};
 
-  operation::Concat::Param param{3};
-  auto infered_out_shape = onert::shape_inference::inferConcatShape({in1, in2, in3}, param);
+    operation::Concat::Param param{3};
+    auto infered_out_shape = onert::shape_inference::inferConcatShape({in1, in2, in3}, param);
 
-  ASSERT_EQ(infered_out_shape.rank(), 5);
-  ASSERT_EQ(infered_out_shape.dim(0), 10);
-  ASSERT_EQ(infered_out_shape.dim(1), 20);
-  ASSERT_EQ(infered_out_shape.dim(2), 30);
-  ASSERT_EQ(infered_out_shape.dim(3), 7);
-  ASSERT_EQ(infered_out_shape.dim(4), 50);
+    ASSERT_EQ(infered_out_shape.rank(), 5);
+    ASSERT_EQ(infered_out_shape.dim(0), 10);
+    ASSERT_EQ(infered_out_shape.dim(1), 20);
+    ASSERT_EQ(infered_out_shape.dim(2), 30);
+    ASSERT_EQ(infered_out_shape.dim(3), 7);
+    ASSERT_EQ(infered_out_shape.dim(4), 50);
+  }
+  {
+    // case 1. when axis < 0
+    Shape in1{10, 20, 2};
+    Shape in2{10, 20, 3};
+
+    operation::Concat::Param param{-1};
+    auto infered_out_shape = onert::shape_inference::inferConcatShape({in1, in2}, param);
+
+    ASSERT_EQ(infered_out_shape.rank(), 3);
+    ASSERT_EQ(infered_out_shape.dim(0), 10);
+    ASSERT_EQ(infered_out_shape.dim(1), 20);
+    ASSERT_EQ(infered_out_shape.dim(2), 5);
+  }
+  {
+    // case 2. when axis < 0
+    Shape in1{2, 20, 2};
+    Shape in2{3, 20, 2};
+
+    operation::Concat::Param param{-3};
+    auto infered_out_shape = onert::shape_inference::inferConcatShape({in1, in2}, param);
+
+    ASSERT_EQ(infered_out_shape.rank(), 3);
+    ASSERT_EQ(infered_out_shape.dim(0), 5);
+    ASSERT_EQ(infered_out_shape.dim(1), 20);
+    ASSERT_EQ(infered_out_shape.dim(2), 2);
+  }
+}
+
+TEST(ShapeInference, neg_Concat)
+{
+  {
+    operation::Concat::Param param{2};
+    Shape in1{10, 1, 3};
+    Shape in2{10, 2, 4}; // dim[1] should be 1 but 2
+
+    EXPECT_ANY_THROW(onert::shape_inference::inferConcatShape({in1, in2}, param));
+  }
+  { // wrong rank
+    operation::Concat::Param param{2};
+    Shape in1{10, 2, 3, 4};
+    Shape in2{10, 2, 4}; // rank should be 4
+
+    EXPECT_ANY_THROW(onert::shape_inference::inferConcatShape({in1, in2}, param));
+  }
 }
 
 TEST(ShapeInference, ExpandDims)

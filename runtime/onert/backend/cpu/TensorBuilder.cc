@@ -100,7 +100,7 @@ std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
   auto found = _tensor_reg->find(ind);
   assert(found != _tensor_reg->end());

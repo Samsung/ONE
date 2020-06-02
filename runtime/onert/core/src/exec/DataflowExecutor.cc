@@ -25,19 +25,20 @@ namespace onert
 namespace exec
 {
 
-int64_t DataflowExecutor::calculateRank(const std::vector<ir::Element> &operations)
+int64_t DataflowExecutor::calculateRank(const std::vector<ir::OperationIndex> &operations)
 {
   int64_t rank = 0;
   if (!_indexed_ranks)
   {
     return rank;
   }
-  for (const auto &element : operations)
+  for (const auto &operation_idx : operations)
   {
-    auto it = _indexed_ranks->find(element.index);
+    auto it = _indexed_ranks->find(operation_idx);
     if (it == _indexed_ranks->end())
     {
-      assert(element.node->opcode() == ir::OpCode::Permute && operations.size() == 1);
+      assert(_graph.operations().at(operation_idx).opcode() == ir::OpCode::Permute &&
+             operations.size() == 1);
       // run Permute ASAP for next operations to be ready for other backends
       return std::numeric_limits<int64_t>::max();
     }

@@ -59,6 +59,7 @@ public:
   void visit(luci::CircleConv2D *) final;
   void visit(luci::CircleCos *) final;
   void visit(luci::CircleCustom *) final;
+  void visit(luci::CircleDepthToSpace *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
   void visit(luci::CircleDiv *) final;
   void visit(luci::CircleElu *) final;
@@ -66,6 +67,7 @@ public:
   void visit(luci::CircleExp *) final;
   void visit(luci::CircleExpandDims *) final;
   void visit(luci::CircleFill *) final;
+  void visit(luci::CircleFloor *) final;
   void visit(luci::CircleFloorDiv *) final;
   void visit(luci::CircleFloorMod *) final;
   void visit(luci::CircleFullyConnected *) final;
@@ -74,8 +76,11 @@ public:
   void visit(luci::CircleGreater *) final;
   void visit(luci::CircleGreaterEqual *) final;
   void visit(luci::CircleIf *) final;
+  void visit(luci::CircleL2Normalize *) final;
+  void visit(luci::CircleL2Pool2D *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
+  void visit(luci::CircleLocalResponseNormalization *) final;
   void visit(luci::CircleLogicalAnd *) final;
   void visit(luci::CircleLogicalNot *) final;
   void visit(luci::CircleLogicalOr *) final;
@@ -86,6 +91,7 @@ public:
   void visit(luci::CircleMinimum *) final;
   void visit(luci::CircleMirrorPad *) final;
   void visit(luci::CircleMul *) final;
+  void visit(luci::CircleNeg *) final;
   void visit(luci::CircleNotEqual *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
@@ -99,6 +105,8 @@ public:
   void visit(luci::CircleRelu6 *) final;
   void visit(luci::CircleReluN1To1 *) final;
   void visit(luci::CircleReshape *) final;
+  void visit(luci::CircleResizeBilinear *) final;
+  void visit(luci::CircleResizeNearestNeighbor *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleSelect *) final;
   void visit(luci::CircleShape *) final;
@@ -160,8 +168,9 @@ template <class CirclePool2D>
 void OperationExporter::export_pool_2d(CirclePool2D *node, circle::BuiltinOperator builtin_op)
 {
   LUCI_ASSERT(builtin_op == circle::BuiltinOperator_MAX_POOL_2D ||
+                  builtin_op == circle::BuiltinOperator_L2_POOL_2D ||
                   builtin_op == circle::BuiltinOperator_AVERAGE_POOL_2D,
-              "Should be MaxPool or AvgPool");
+              "Should be L2Pool, MaxPool or AvgPool");
   LUCI_ASSERT(node->padding() != luci::Padding::UNDEFINED, "Padding is not set");
 
   uint32_t op_idx = md.registerBuiltinOpcode(builtin_op);
@@ -245,10 +254,19 @@ void OperationExporter::visit(luci::CircleCast *node)
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateCastOptions(builder, to_circle_tensortype(node->in_data_type()),
-                                   to_circle_tensortype(node->out_data_type()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_CastOptions, options.Union());
+
+  flatbuffers::Offset<Operator> op_offset;
+  if (node->out_data_type() != loco::DataType::Unknown)
+  {
+    auto options = CreateCastOptions(builder, to_circle_tensortype(node->in_data_type()),
+                                     to_circle_tensortype(node->out_data_type()));
+    op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_CastOptions,
+                               options.Union());
+  }
+  else
+  {
+    op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  }
   gd._operators.push_back(op_offset);
 }
 
@@ -340,6 +358,20 @@ void OperationExporter::visit(luci::CircleCustom *node)
   circle_custom_options = builder.CreateVector(custom_options_vec);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE,
                                   flatbuffers::Offset<void>(), circle_custom_options);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleDepthToSpace *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_DEPTH_TO_SPACE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateDepthToSpaceOptions(builder, node->block_size());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_DepthToSpaceOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -448,6 +480,17 @@ void OperationExporter::visit(luci::CircleFill *node)
   // Create the operator.
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_FillOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleFloor *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_FLOOR);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
@@ -608,6 +651,28 @@ void OperationExporter::visit(luci::CircleIf *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleL2Normalize *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_L2_NORMALIZATION);
+  std::vector<int32_t> inputs{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateL2NormOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_L2NormOptions, options.Union());
+
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleL2Pool2D *node)
+{
+  export_pool_2d<luci::CircleL2Pool2D>(node, circle::BuiltinOperator_L2_POOL_2D);
+}
+
 void OperationExporter::visit(luci::CircleLeakyRelu *node)
 {
   uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LEAKY_RELU);
@@ -639,6 +704,24 @@ void OperationExporter::visit(luci::CircleLess *node)
   auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
                                   circle::BuiltinOptions_LessOptions, options.Union());
 
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateLocalResponseNormalizationOptions(builder);
+
+  // Make LOCAL_RESPONSE_NORMALIZATION operator
+  auto op_offset =
+      CreateOperator(builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_LocalResponseNormalizationOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
@@ -776,6 +859,19 @@ void OperationExporter::visit(luci::CircleMul *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleNeg *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_NEG);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateNegOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_NegOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleNotEqual *node)
 {
   uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_NOT_EQUAL);
@@ -848,7 +944,7 @@ void OperationExporter::visit(luci::CirclePow *node)
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreatePadOptions(builder);
+  auto options = CreatePowOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_PowOptions, options.Union());
   gd._operators.push_back(op_offset);
@@ -961,6 +1057,48 @@ void OperationExporter::visit(luci::CircleReshape *node)
   // Create the operator.
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ReshapeOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleResizeBilinear *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RESIZE_BILINEAR);
+
+  // Create inputs and outputs.
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->size())};
+
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+
+  // Create options.
+  auto options =
+      CreateResizeBilinearOptions(builder, node->align_corners(), node->half_pixel_centers());
+
+  // Create the operator.
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ResizeBilinearOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleResizeNearestNeighbor *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR);
+
+  // Create inputs and outputs.
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->size())};
+
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+
+  // Create options.
+  auto options = CreateResizeNearestNeighborOptions(builder, node->align_corners());
+
+  // Create the operator.
+  auto op_offset =
+      CreateOperator(builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_ResizeNearestNeighborOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

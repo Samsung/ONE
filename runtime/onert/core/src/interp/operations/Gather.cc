@@ -67,11 +67,11 @@ void prepareGather(ExecEnv *env, const ir::Operation &node)
     throw std::runtime_error{"Interp(Gather): Invalid output data type"};
   }
 
-  if (input_tensor->data_type() == ir::DataType::QUANT8_ASYMM &&
+  if (input_tensor->data_type() == ir::DataType::QUANT_UINT8_ASYMM &&
       input_tensor->tensorInfo().typeInfo() != output_tensor->tensorInfo().typeInfo())
   {
     throw std::runtime_error{
-        "Interp(Gather): Cannot handle different I/O QUANT8_ASYMM scale/offset"};
+        "Interp(Gather): Cannot handle different I/O QUANT_UINT8_ASYMM scale/offset"};
   }
 }
 
@@ -118,7 +118,7 @@ void invokeGather(const ExecEnv *env, const ir::Operation &node)
     case ir::DataType::INT32:
       invoke<int32_t>(input_tensor, indices_tensor, output_tensor, axis);
       break;
-    case ir::DataType::QUANT8_ASYMM:
+    case ir::DataType::QUANT_UINT8_ASYMM:
       invoke<uint8_t>(input_tensor, indices_tensor, output_tensor, axis);
       break;
     default:

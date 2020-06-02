@@ -38,8 +38,8 @@ public:
   loco::Node *tensor(void) const { return at(0)->node(); }
   void tensor(loco::Node *node) { at(0)->node(node); }
 
-  // TODO Make this input optional. That is, loco system does not emit error
-  //      with this input being null
+  // NOTE shape is optional and can be CircleConst or any other type
+  //      and also can be CircleOutputDummy when reshape option does not exist
   loco::Node *shape(void) const { return at(1)->node(); }
   void shape(loco::Node *node) { at(1)->node(node); }
 

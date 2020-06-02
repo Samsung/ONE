@@ -125,6 +125,12 @@ public:
    */
   bool valid() const { return _index != UNDEFINED; }
   /**
+   * @brief Check whether the value is undefined
+   *
+   * @return true if undefined, false otherwise
+   */
+  bool undefined() const { return _index == UNDEFINED; }
+  /**
    * @brief Return underlying value
    *
    * @return T Underlying value

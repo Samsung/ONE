@@ -44,7 +44,9 @@ struct InputDesc
 
 struct OutputDesc
 {
-  const ir::OperandInfo info;
+  // not `const` because shape should be modified after execution in case when output is
+  // a dynamic tensor
+  ir::OperandInfo info;
   void *buffer;
   const size_t size;
   const ir::Layout layout;

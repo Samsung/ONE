@@ -69,17 +69,20 @@ void FunctionSequenceForDynamicBackend::run()
   if (_op_seq.size() != _functions.size())
     throw std::runtime_error("operation and functions should be mapped one by one");
 
-  auto op_iter = _op_seq.begin();
+  auto op_seq_iter = _op_seq.begin();
   for (const auto &function : _functions)
   {
     // set shape of output and allocate memory when needed
-    auto *op = op_iter->node;
-    op->accept(*_dyn_shape_inferer);
+    auto &op = _operations_ctx.at(*op_seq_iter);
+    op.accept(*_dyn_shape_inferer);
 
     // run kernel
     function->run();
 
-    op_iter++;
+    // deallocate input tensors which is no longer used
+    _dyn_tensor_manager->deallocInput(*op_seq_iter);
+
+    op_seq_iter++;
   }
 }
 

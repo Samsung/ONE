@@ -174,6 +174,37 @@ public:
   }
 };
 
+class ResizeBilinearPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *resize_params = op->builtin_options_as_ResizeBilinearOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "align_corners(" << resize_params->align_corners() << ")";
+      os << "half_pixel_centers(" << resize_params->half_pixel_centers() << ")";
+      os << std::endl;
+    }
+  }
+};
+
+class ResizeNearestNeighborPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *resize_params = op->builtin_options_as_ResizeNearestNeighborOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "align_corners(" << resize_params->align_corners() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthwiseConv2DPrinter : public OpPrinter
 {
 public:
@@ -521,13 +552,16 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DIV] = make_unique<DivPrinter>();
+  // There is no Option for FLOOR
   // There is no Option for FLOOR_MOD
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
+  _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
+  // There is no Option for LOG
   // There is no Option for LOGISTIC
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
@@ -542,6 +576,9 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
+  _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
+  _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
+      make_unique<ResizeNearestNeighborPrinter>();
   // There is no Option for SELECT
   _op_map[tflite::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN

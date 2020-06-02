@@ -38,16 +38,16 @@ size_t Operand::operandSize(void) const
   return element_size * elements;
 }
 
-void Operand::appendUse(const OperationIndex &idx) { _uses.append(idx); }
+void Operand::insertUse(const OperationIndex &idx) { _uses.insert(idx); }
 
 void Operand::removeUse(const OperationIndex &idx) { _uses.remove(idx); }
 
-void Operand::appendDef(const OperationIndex &idx)
+void Operand::insertDef(const OperationIndex &idx)
 {
   assert(!isConstant());
   assert(_def.size() == 0);
 
-  _def.append(idx);
+  _def.insert(idx);
 }
 
 void Operand::removeDef(const OperationIndex &idx)

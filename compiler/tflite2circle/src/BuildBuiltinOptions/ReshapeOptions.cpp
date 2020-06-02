@@ -25,7 +25,9 @@ flatbuffers::Offset<circle::ReshapeOptions>
 build_circle_ReshapeOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
 {
   auto tflite_builtin_options = op->builtin_options_as_ReshapeOptions();
-  assert(tflite_builtin_options);
+  if (tflite_builtin_options == nullptr)
+    return 0;
+
   std::vector<int32_t> new_shape_vec{tflite_builtin_options->new_shape()->begin(),
                                      tflite_builtin_options->new_shape()->end()};
   auto new_shape = fb.CreateVector(new_shape_vec);

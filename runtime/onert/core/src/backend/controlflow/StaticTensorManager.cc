@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// This file will be removed or unified with backend/cpu_common/StaticTensorManager.h
+// This file will be removed or unified with backend/cpu/StaticTensorManager.cc
 
 #include "StaticTensorManager.h"
 
@@ -27,15 +27,15 @@ namespace backend
 namespace controlflow
 {
 
-StaticTensorManager::StaticTensorManager()
-    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}
+StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg)
+    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
 
 void StaticTensorManager::allocateConsts(void)
 {
-  for (auto &pair : _tensors)
+  for (auto &pair : (*_tensors))
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -55,11 +55,11 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : _tensors)
+  for (auto &pair : (*_tensors))
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
-    if (!_as_constants[ind])
+    if (!_as_constants[ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
@@ -78,36 +78,37 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info,
                                       const ir::Layout &backend_layout, bool as_const)
 {
-  assert(_tensors.find(ind) == _tensors.end());
+  assert(_tensors->find(ind) == _tensors->end());
   auto tensor = std::make_shared<operand::Tensor>(tensor_info, backend_layout);
-  _tensors[ind] = tensor;
+  (*_tensors)[ind] = tensor;
   _as_constants[ind] = as_const;
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
-  assert(_tensors.find(ind) != _tensors.end());
+  assert(_tensors->find(ind) != _tensors->end());
+
+  // This method is called only when a tensor has proper shape
+  assert(!(*_tensors)[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
 }
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
-  assert(_tensors.find(ind) != _tensors.end());
+  assert(_tensors->find(ind) != _tensors->end());
+
+  // This method is called only when a tensor is not dynamic
+  assert(!(*_tensors)[ind]->is_dynamic());
+
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
 }
 
-std::shared_ptr<operand::Tensor> StaticTensorManager::at(const ir::OperandIndex &ind)
-{
-  if (_tensors.find(ind) == _tensors.end())
-    return nullptr;
-  return _tensors.at(ind);
-}
-
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (const auto &it : _tensors)
+  for (const auto &it : (*_tensors))
     fn(it.first);
 }
 

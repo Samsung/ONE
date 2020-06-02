@@ -65,11 +65,17 @@ download_tests()
             wget -nv $MODELFILE_URL
             if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
                 unzip -o $MODELFILE_NAME
+                rm *.zip
             fi
             popd
         fi
 
     done
+}
+
+realpath()
+{
+  readlink -e -- "$@"
 }
 
 usage()

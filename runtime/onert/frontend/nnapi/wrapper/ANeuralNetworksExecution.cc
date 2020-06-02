@@ -102,7 +102,7 @@ bool ANeuralNetworksExecution::haveUnspecifiedDims(const onert::ir::OperandIndex
 {
   const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
-  return operand_shape.num_elements() == 0;
+  return onert::ir::haveUnspecifiedDims(operand_shape);
 }
 
 size_t ANeuralNetworksExecution::getOperandSize(const onert::ir::OperandIndex index) noexcept
@@ -219,23 +219,20 @@ bool ANeuralNetworksExecution::getOutputOperandRank(uint32_t index, uint32_t *ra
   try
   {
     onert::ir::IOIndex output_index{index};
-    const auto operand_index = getOutputOperandIndex(index);
-    bool unspecified = haveUnspecifiedDims(operand_index);
-
-    // TODO Get unspecified output operand's rank
-    if (unspecified)
-    {
-      throw std::runtime_error{"Unsupport feature"};
-    }
 
     // Check execution is finished
-    // Output rank and shape may be decided after execution if output is unspecified operand
     if (!_execution->isFinished())
     {
       return false;
     }
 
-    *rank = _execution->primary_subgraph().operands().at(operand_index).shape().rank();
+    const auto shape = _execution->getOutputShape(output_index);
+    if (onert::ir::haveUnspecifiedDims(shape))
+    {
+      throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};
+    }
+
+    *rank = shape.rank();
   }
   catch (const std::exception &e)
   {
@@ -252,21 +249,19 @@ bool ANeuralNetworksExecution::getOutputOperandDimensions(uint32_t index, uint32
   try
   {
     onert::ir::IOIndex output_index{index};
-    const auto operand_index = getOutputOperandIndex(index);
-    bool unspecified = haveUnspecifiedDims(operand_index);
-    if (unspecified)
-    {
-      throw std::runtime_error{"NYI: Models with unspecified output dimensions"};
-    }
 
     // Check execution is finished
-    // Output rank and shape may be decided after execution if output is unspecified operand
     if (!_execution->isFinished())
     {
       return false;
     }
 
-    auto shape = _execution->primary_subgraph().operands().at(operand_index).shape();
+    const auto shape = _execution->getOutputShape(output_index);
+    if (onert::ir::haveUnspecifiedDims(shape))
+    {
+      throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};
+    }
+
     for (int i = 0; i < shape.rank(); i++)
     {
       auto dim = shape.dim(i);

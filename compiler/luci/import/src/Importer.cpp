@@ -47,6 +47,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
   const auto &operators = reader.operators();
   const auto &tensors = reader.tensors();
+  auto tensors_ptr = reader.tensors_ptr();
+  assert(tensors_ptr != nullptr);
 
   // graph inputs; there are no input nodes in TFlite but just Tensors
   // creating virtual input nodes will make possible to connect nodes that uses them
@@ -58,11 +60,10 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     const circle::TensorT &tensor = *tensors[input];
 
     luci::copy_tensor_attributes(tensor, input_node);
-
-    auto tensors_ptr = reader.tensors_ptr();
-    assert(tensors_ptr != nullptr);
-    if (!tensors_ptr->Get(input)->shape())
-      input_node->no_shape(true);
+    if (tensors_ptr->Get(input)->shape() == nullptr)
+      input_node->shape_status(luci::ShapeStatus::NOSHAPE);
+    else
+      input_node->shape_status(luci::ShapeStatus::VALID);
 
     INFO(l) << "[luci] NodeFinder INPUT(" << input << ") = " << input_node << std::endl;
     nodefinder->enroll(input, input_node);
@@ -144,6 +145,10 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       output_node->from(output_dummy);
 
       luci::copy_tensor_attributes(tensor, output_dummy);
+      if (tensors_ptr->Get(output)->shape() == nullptr)
+        output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
+      else
+        output_dummy->shape_status(luci::ShapeStatus::VALID);
     }
 
     INFO(l) << "[luci] NodeFinder OUTPUT(" << output << ") = " << output_node << std::endl;

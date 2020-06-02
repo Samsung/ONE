@@ -27,15 +27,11 @@ namespace backend
 namespace controlflow
 {
 
-TensorBuilder::TensorBuilder() : _static_tensor_mgr{new StaticTensorManager()}
+TensorBuilder::TensorBuilder()
+    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
 {
-  // DO NOTHING
-}
-
-bool TensorBuilder::supportDynamicTensor()
-{
-  // TODO Support dynamic tensor
-  return false;
+  /* empty */
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
@@ -43,25 +39,39 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 {
   _tensor_info_map.emplace(ind, info);
 
-  _tensor_layout_map.insert({ind, backend_layout});
-
   if (as_const)
     _constants.append(ind);
+
+  _tensor_layout_map.insert({ind, backend_layout});
+
+  if (info.isDynamic())
+  {
+    _dynamic_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind]);
+  }
+  else
+  {
+    _static_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind], _constants.contains(ind));
+  }
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
-  const auto size = tensor_info.total_size();
-  _static_tensor_mgr->buildTensor(ind, tensor_info, _tensor_layout_map[ind],
-                                  _constants.contains(ind));
-  _static_tensor_mgr->claimPlan(ind, size);
+
+  if (!at(ind)->is_dynamic())
+  {
+    const auto size = tensor_info.total_size();
+    _static_tensor_mgr->claimPlan(ind, size);
+  }
 }
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  _static_tensor_mgr->releasePlan(ind);
+  if (!at(ind)->is_dynamic())
+  {
+    _static_tensor_mgr->releasePlan(ind);
+  }
 }
 
 bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
@@ -83,21 +93,30 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _static_tensor_mgr->at(ind);
+  auto found = _tensor_reg->find(ind);
+  if (found == _tensor_reg->end())
+    return nullptr;
+
+  return found->second;
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<operand::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  auto ret = _static_tensor_mgr->at(ind);
-  assert(ret != nullptr);
-  return ret;
+  auto found = _tensor_reg->find(ind);
+  assert(found != _tensor_reg->end());
+  return found->second;
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 {
   return std::move(_static_tensor_mgr);
+}
+
+std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
+{
+  return std::move(_dynamic_tensor_mgr);
 }
 
 } // namespace controlflow

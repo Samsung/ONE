@@ -108,13 +108,8 @@ void Interpreter::run()
 
     // Find prepared operations by scan use of current operand
     std::stack<ir::OperationIndex> operation_stack;
-    auto use_operators = std::list<ir::OperationIndex>(
-        _env->graph().operands().at(current_operand_index).getUses().list());
-    // Remove operation index duplication
-    // If one operation uses same operand tensor for multiple input,
-    // use-list have duplicated operation index
-    use_operators.unique();
-    for (auto use_operator : use_operators)
+    const auto use_operators = _env->graph().operands().at(current_operand_index).getUses();
+    for (const auto &use_operator : use_operators)
     {
       // Assumption: all parameters are ready to use
       bool operator_ready = true;
@@ -162,7 +157,7 @@ void Interpreter::run()
       {
         const auto use_operators = _env->graph().operands().at(input_index).getUses();
         bool dead_buffer = true;
-        for (auto use_operator : use_operators.list())
+        for (const auto &use_operator : use_operators)
         {
           if (executed.find(use_operator) == executed.end())
           {

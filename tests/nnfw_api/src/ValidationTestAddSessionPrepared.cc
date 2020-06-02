@@ -42,4 +42,80 @@ TEST_F(ValidationTestAddSessionPrepared, run_001)
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, set_input_001)
+{
+  char input[32];
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
+            NNFW_STATUS_NO_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, get_input_size)
+{
+  uint32_t size = 0;
+  ASSERT_EQ(nnfw_input_size(_session, &size), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(size, 1);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, get_output_size)
+{
+  uint32_t size = 0;
+  ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(size, 1);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_input_001)
+{
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 1), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_input_002)
+{
+  char input[1]; // buffer size is too small
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
+            NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, set_output_001)
+{
+  char buffer[32];
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
+            NNFW_STATUS_NO_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_output_001)
+{
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 1), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_output_002)
+{
+  char input[1]; // buffer size is too small
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
+            NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_get_input_size)
+{
+  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_get_output_size)
+{
+  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_load_model)
+{
+  // Load model twice
+  ASSERT_EQ(nnfw_load_model_from_file(
+                _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
+            NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_prepare)
+{
+  // Call Prepare twice
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting

@@ -23,7 +23,8 @@ flatbuffers::Offset<void> CastChef::value(flatbuffers::FlatBufferBuilder &fbb) c
 {
   auto &operation = (*_operation);
 
-  assert(operation.has_cast_options());
+  if (!operation.has_cast_options())
+    return 0;
 
   auto tflite_in_data_type = as_tflite_tensortype(operation.cast_options().in_data_type());
   auto tflite_out_data_type = as_tflite_tensortype(operation.cast_options().out_data_type());

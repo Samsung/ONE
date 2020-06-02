@@ -77,7 +77,7 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     std::list<OperationIndex> remove_list;
 
     auto uses = object.getUses();
-    for (auto use : uses.list())
+    for (auto use : uses)
     {
       // If permute operation, ignore it
       if (std::find(permute_indexes.begin(), permute_indexes.end(), use) != permute_indexes.end())
@@ -92,25 +92,27 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
       const backend::Backend *backend = op_seq_li->backend();
       assert(backend);
       auto use_node_inputs = operation.getInputs();
-      // Controlflow operation can have the same operand as 2 or more inputs
-      if (backend->config()->id() != backend::controlflow::Config::ID)
-      {
-        assert(use_node_inputs.contains(index));
-      }
+      assert(use_node_inputs.contains(index));
 
       auto new_index = factor_to_index.at({backend, op_seq_layout});
       if (index != new_index)
       {
         // Update from op_seq
-        _lowered_graph.op_seqs().at(op_seq_index).replaceInput(index, new_index);
+        // Replace the same inputs of an OpSequence at once for the following reasons:
+        // 1. An OpSequence's inputs are the same inputs of first operation
+        // 2. An OpSequence may have inputs as the same operand (2 or more).
+        // 3. The same inputs of OpSequence have the same PermuteFactor.
+        _lowered_graph.op_seqs().at(op_seq_index).replaceInputs(index, new_index);
 
         // Update from operation
-        operation.replaceInput(index, new_index);
+        // Replace the same inputs of an operation at once for the following reasons:
+        // No. 2 and 3 above
+        operation.replaceInputs(index, new_index);
 
         // Update from operand
         remove_list.push_back(
             use); // Removal should be done in another loop since we are in the loop
-        _graph.operands().at(new_index).appendUse(use);
+        _graph.operands().at(new_index).insertUse(use);
       }
     }
 
@@ -193,7 +195,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
 
   // OpSequence
   {
-    auto op_seq_index = _lowered_graph.op_seqs().emplace(node_index, node, permute_node_layout);
+    auto op_seq_index = _lowered_graph.op_seqs().emplace(node_index, permute_node_layout);
     auto &op_seq = _lowered_graph.op_seqs().at(op_seq_index);
     op_seq.setInputs(node.getInputs());
     op_seq.setOutputs(node.getOutputs());
@@ -203,8 +205,8 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
 
   // Update Use/Def info
   {
-    _graph.operands().at(operand_index).appendUse(node_index);
-    _graph.operands().at(out_operand_index).appendDef(node_index);
+    _graph.operands().at(operand_index).insertUse(node_index);
+    _graph.operands().at(out_operand_index).insertDef(node_index);
   }
   return node_index;
 }

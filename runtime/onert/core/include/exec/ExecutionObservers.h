@@ -47,7 +47,10 @@ public:
 class ProfileObserver : public IExecutionObserver
 {
 public:
-  explicit ProfileObserver(std::shared_ptr<ExecTime> et) : _et(std::move(et)) {}
+  explicit ProfileObserver(std::shared_ptr<ExecTime> et, const ir::Graph &graph)
+      : _et(std::move(et)), _graph(graph)
+  {
+  }
   void handleBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
   void handleEnd(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
 
@@ -56,12 +59,13 @@ public:
 private:
   std::unique_ptr<util::ITimer> _timer;
   std::shared_ptr<ExecTime> _et;
+  const ir::Graph &_graph;
 };
 
 class ChromeTracingObserver : public IExecutionObserver
 {
 public:
-  ChromeTracingObserver(const std::string &filepath);
+  ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph);
   ~ChromeTracingObserver();
   void handleBegin(IExecutor *) override;
   void handleBegin(IExecutor *, const ir::OpSequence *, const backend::Backend *) override;
@@ -69,12 +73,13 @@ public:
   void handleEnd(IExecutor *) override;
 
 private:
-  static std::string opSequenceTag(const ir::OpSequence *op_seq);
+  static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);
 
 private:
   std::ofstream _ofs;
   EventRecorder _recorder;
   EventCollector _collector;
+  const ir::Graph &_graph;
 };
 
 } // namespace exec

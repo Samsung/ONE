@@ -23,47 +23,14 @@ namespace shape_inference
 
 void StaticInferer::visit(const ir::operation::Add &op)
 {
-  const auto lhs_idx{op.getInputs().at(ir::operation::Add::Input::LHS)};
-  const auto &lhs = _operands.at(lhs_idx);
-  const auto rhs_idx{op.getInputs().at(ir::operation::Add::Input::RHS)};
-  const auto &rhs = _operands.at(rhs_idx);
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
-  {
-    output.info().setDynamic();
-    return;
-  }
-
-  // re-sizing output shape
-  ir::Shape new_shape = inferEltwiseShape(lhs.info().shape(), rhs.info().shape());
-  output.info().shape(new_shape);
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
+                           op.getInputs().at(ir::operation::Add::Input::RHS));
 }
 
 void DynamicInferer::visit(const ir::operation::Add &op)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
-    return;
-
-  // getting output shape
-  const auto lhs_ind{op.getInputs().at(ir::operation::Add::Input::LHS)};
-  auto lhs = _tensor_registry->getITensor(lhs_ind);
-  auto lhs_shape = getShape(lhs.get());
-
-  const auto rhs_ind{op.getInputs().at(ir::operation::Add::Input::RHS)};
-  auto rhs = _tensor_registry->getITensor(rhs_ind);
-  auto rhs_shape = getShape(rhs.get());
-
-  // set output shape and output buffer
-  ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
-  setShape(output.get(), new_shape);
-
-  _dynamic_tensor_manager->allocate(output_ind, new_shape);
-  assert(output->buffer() != nullptr);
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
+                           op.getInputs().at(ir::operation::Add::Input::RHS));
 }
 
 } // namespace shape_inference

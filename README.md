@@ -1,3 +1,9 @@
+[![GitHub release (latest
+SemVer)](https://img.shields.io/github/v/release/Samsung/ONE)](https://github.com/Samsung/ONE/releases)
+[![Documentation Status](https://readthedocs.org/projects/nnfw/badge/?version=latest)](https://nnfw.readthedocs.io/en/latest/?badge=latest)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Samsung/ONE?color=light%20green)
+[![Gitter](https://img.shields.io/gitter/room/Samsung/ONE?color=orange)](https://gitter.im/Samsung/ONE)
+
 # **ONE** (On-device Neural Engine)
 
 A high-performance, on-device neural network inference framework.
@@ -37,7 +43,7 @@ Sooner or later, the maintainer will tag the `FEATURE_REQUEST` label and appear 
 
 We expect one of the most frequent feature requests would be the operator kernel implementation.
 It is good to make a request, but it is better if you contribute by yourself. See the following guide,
-[How to Implement Operator Kernel](docs/nnfw/howto/HowToAddNewOperation.md), for help.
+[How to add a new operation](docs/howto/how-to-add-a-new-operation.md), for help.
 
 We are looking forward to your participation.
 Thank you in advance!

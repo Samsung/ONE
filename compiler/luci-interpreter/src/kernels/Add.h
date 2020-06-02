@@ -19,7 +19,6 @@
 
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
-#include "core/Tensor.h"
 
 namespace luci_interpreter
 {

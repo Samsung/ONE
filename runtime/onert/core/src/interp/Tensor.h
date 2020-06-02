@@ -122,6 +122,7 @@ public:
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override;
+  bool is_dynamic() const override { return false; }
   bool has_padding() const override { return false; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   const ir::OperandInfo &tensorInfo() const override { return _info; }
@@ -161,6 +162,7 @@ public:
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override;
+  bool is_dynamic() const override { return false; }
   bool has_padding() const override { return false; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   const ir::OperandInfo &tensorInfo() const override { return _info; }

@@ -131,3 +131,32 @@ function NNPackageTest()
 
   popd > /dev/null
 }
+
+# $1: (required) backend
+# $2: (required) test list file relative path from nnfw root directory
+#                pass empty string if there is no skiplist
+# $3: (required) relative path to report from nnfw root directory
+function TFLiteLoaderTest()
+{
+  [[ $# -ne 3 ]] && echo "TFLiteLoaderTest: Invalid function argument setting" && exit 1
+
+  pushd ${ROOT_PATH} > /dev/null
+
+  export BACKENDS=$1
+  if [[ "$2" == "" ]]; then
+    ./tests/scripts/test-driver.sh \
+      --frameworktest \
+      --framework_driverbin="$ROOT_PATH/Product/out/bin/tflite_loader_test_tool" \
+      --reportdir=$ROOT_PATH/$3
+      .
+  else
+    ./tests/scripts/test-driver.sh \
+      --frameworktest \
+      --framework_driverbin="$ROOT_PATH/Product/out/bin/tflite_loader_test_tool" \
+      --frameworktest_list_file=tests/scripts/list/tflite_loader_list.${TEST_ARCH}.txt \
+      --reportdir=$ROOT_PATH/$3
+  fi
+  unset BACKENDS
+
+  popd > /dev/null
+}

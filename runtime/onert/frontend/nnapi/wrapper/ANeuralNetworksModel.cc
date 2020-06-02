@@ -115,9 +115,9 @@ bool ANeuralNetworksModel::addOperation(ANeuralNetworksOperationType type, uint3
       auto &weights_operand =
           _graph->operands().at(node->getInputs().at(onert::ir::operation::FullyConnected::WEIGHT));
       if (input_operand.typeInfo().type() == onert::ir::DataType::FLOAT32 &&
-          weights_operand.typeInfo().type() == onert::ir::DataType::QUANT8_ASYMM)
+          weights_operand.typeInfo().type() == onert::ir::DataType::QUANT_UINT8_ASYMM)
       {
-        weights_operand.type(onert::ir::DataType::QUANT8_SYMM);
+        weights_operand.type(onert::ir::DataType::QUANT_INT8_SYMM);
       }
     }
   }

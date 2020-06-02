@@ -37,16 +37,7 @@ public:
   virtual ~IShapeFixer() = default;
 
 protected:
-#define OP(InternalName)                                                           \
-  void visit(const ir::operation::InternalName &) override                         \
-  {                                                                                \
-    throw std::runtime_error("ShapeFixer: NYI for operation '" #InternalName "'"); \
-  }
-#include "ir/Operations.lst"
-#undef OP
-
-public:
-  void fix(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
+  using OperationVisitor::visit;
 };
 
 } // namespace backend

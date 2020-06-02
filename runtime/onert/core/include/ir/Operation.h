@@ -51,8 +51,8 @@ public:
   virtual OpCode opcode() const = 0;
 
 public:
-  void replaceInput(const OperandIndex &from, const OperandIndex &to);
-  void replaceOutput(const OperandIndex &from, const OperandIndex &to);
+  void replaceInputs(const OperandIndex &from, const OperandIndex &to);
+  void replaceOutputs(const OperandIndex &from, const OperandIndex &to);
   OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getInputs() const { return _inputs; }
   const OperandIndexSequence &getOutputs() const { return _outputs; }

@@ -1,6 +1,7 @@
 GeneratedTests.abs_
 GeneratedTests.abs_dynamic_nnfw
-GeneratedTests.add_dynamic
+GeneratedTests.add_dynamic_nnfw
+GeneratedTests.cast_dynamic_float32_to_int32_nnfw
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
 GeneratedTests.cast_float16_to_float32_relaxed
@@ -12,6 +13,7 @@ GeneratedTests.cast_float32_to_float16_relaxed
 GeneratedTests.cast_int32_to_float16
 GeneratedTests.cast_int32_to_quant8_overflow
 GeneratedTests.cast_quant8_to_float16
+GeneratedTests.concat_dynamic_nnfw
 GeneratedTests.conv_float_channels_weights_as_inputs
 GeneratedTests.conv_float_channels_weights_as_inputs_relaxed
 GeneratedTests.conv_float_large_weights_as_inputs
@@ -25,6 +27,7 @@ GeneratedTests.conv_quant8_weights_as_inputs
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.exp_
+GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims_dynamic_nnfw_1
 GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.fill_ex_1D_float
@@ -39,10 +42,12 @@ GeneratedTests.gather_float16_6
 GeneratedTests.gather_float16_7
 GeneratedTests.gather_float16_8
 GeneratedTests.log_4D_float_nnfw
+GeneratedTests.log_dynamic_nnfw
 GeneratedTests.logical_not
 GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_not_4D_nnfw
 GeneratedTests.logical_or_broadcast
+GeneratedTests.logistic_dynamic_nnfw
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
 GeneratedTests.lsh_projection_weights_as_inputs
@@ -57,10 +62,18 @@ GeneratedTests.lstm3_state3
 GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
 GeneratedTests.neg
+GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
+GeneratedTests.range_ex_float_1
+GeneratedTests.range_ex_float_2
+GeneratedTests.reduce_all
+GeneratedTests.reduce_all_2
+GeneratedTests.reduce_all_2D_nnfw
+GeneratedTests.reduce_all_3
+GeneratedTests.reduce_all_4D_nnfw
 GeneratedTests.reduce_any
 GeneratedTests.reduce_any_2
 GeneratedTests.reduce_any_2D_nnfw
@@ -83,6 +96,7 @@ GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
+GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
@@ -106,6 +120,7 @@ GeneratedTests.slice_7
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
+GeneratedTests.softmax_dynamic_nnfw
 GeneratedTests.sqrt_
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8

@@ -47,7 +47,7 @@ static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
   for (const auto &input : node.getInputs())
   {
     const auto &obj = graph.operands().at(input);
-    if (obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+    if (obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
     {
       return true;
     }
@@ -106,11 +106,11 @@ static bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
       continue;
 
     // This operand is output of operation, not weight or bias
-    if (operand.getDef().list().size() > 0)
+    if (operand.getDef().size() > 0)
       ++prev_op_cnt;
 
     // Current node has multiple inputs as concat or at the beginning of the separated branch
-    if (prev_op_cnt > 1 || operand.getUses().list().size() > 1)
+    if (prev_op_cnt > 1 || operand.getUses().size() > 1)
     {
       return false;
     }
@@ -204,7 +204,12 @@ void HEScheduler::scheduleBranch(const ir::OperationIndex &index,
       return;
     }
     const auto &only_out_operand = _graph->operands().at(*node.getOutputs().begin());
-    loc_index = only_out_operand.getUses().list().front();
+    // One of the last nodes
+    if (only_out_operand.getUses().size() == 0)
+    {
+      return;
+    }
+    loc_index = *only_out_operand.getUses().begin();
     /* verify, that next node is neither beginning nor ending node of a branch*/
     const auto &next_node = _graph->operations().at(loc_index);
     if (!isMergeable(*_graph, next_node))
@@ -401,7 +406,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
   for (const auto &output : node.getOutputs())
   {
     const auto &operand = _graph->operands().at(output);
-    const bool quant = operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM;
+    const bool quant = operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;
     // average data transfer cost of this operand's data
     int64_t avg_transfer_cost = 1;
     for (const auto *backend : _all_backends)
@@ -419,7 +424,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
       }
     }
     avg_transfer_cost /= _all_backends.size();
-    for (const auto &use : operand.getUses().list())
+    for (const auto &use : operand.getUses())
     {
       const auto cur_child_rank = DFSMaxRank(use);
       max_child_rank = std::max(max_child_rank, cur_child_rank + avg_transfer_cost);
@@ -593,9 +598,9 @@ int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Opera
   for (const auto &input_operand_idx : node.getInputs())
   {
     const auto &input_operand = _graph->operands().at(input_operand_idx);
-    const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM;
+    const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;
 
-    for (const auto &input_node_idx : input_operand.getDef().list())
+    for (const auto &input_node_idx : input_operand.getDef())
     {
       // Data transfer cost from parent's node backend to current node's backend:
       auto parent_backend = _backend_resolver->getBackend(input_node_idx);

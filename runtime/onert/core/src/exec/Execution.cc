@@ -56,6 +56,8 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   const auto input_index = primary_subgraph().getInputs().at(index);
   const auto info = primary_subgraph().operands().at(input_index).info();
 
+  // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
+
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
   // note: input_shape_sig contains shape passed by nnfw_apply_tensorinfo()
@@ -157,6 +159,16 @@ void Execution::waitFinish()
 }
 
 bool Execution::isFinished(void) const { return finished; }
+
+ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
+{
+  if (!isFinished())
+    throw std::runtime_error("Cannot get output shape before execution is finished");
+
+  const auto &output_desc = _io_desc.outputs.at(ind.value());
+
+  return output_desc->info.shape();
+}
 
 } // namespace exec
 } // namespace onert

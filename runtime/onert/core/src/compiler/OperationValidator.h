@@ -63,7 +63,6 @@ public:
   void visit(const ir::operation::EmbeddingLookup &node) override;
   void visit(const ir::operation::Exp &node) override;
   void visit(const ir::operation::ExpandDims &node) override;
-  void visit(const ir::operation::Fill &node) override;
   void visit(const ir::operation::Floor &node) override;
   void visit(const ir::operation::HashtableLookup &node) override;
   void visit(const ir::operation::TransposeConv &node) override;
@@ -95,6 +94,7 @@ public:
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::Tile &node) override;
   void visit(const ir::operation::LogicalOr &node) override;
+  void visit(const ir::operation::Range &node) override;
 
 private:
   // TODO Remove _ctx field

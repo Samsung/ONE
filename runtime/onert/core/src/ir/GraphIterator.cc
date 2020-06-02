@@ -61,10 +61,10 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
       return;
     visited[index] = true;
 
-    for (auto output : node.getOutputs())
+    for (const auto output : node.getOutputs() | Remove::DUPLICATED)
     {
       const auto &operand = graph.operands().at(output);
-      for (const auto &use : operand.getUses().list())
+      for (const auto &use : operand.getUses())
       {
         dfs_recursive(use, graph.operations().at(use));
       }

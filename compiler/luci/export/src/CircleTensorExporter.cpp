@@ -53,8 +53,8 @@ public:
   const ShapeDescription &shape(void) const { return _shape; }
   void shape(const ShapeDescription &shape) { _shape = shape; }
 
-  void no_shape(void) { _no_shape = true; }
-  bool no_shape(void) const { return _no_shape; }
+  luci::ShapeStatus shape_status(void) const { return _shape_status; }
+  void shape_status(luci::ShapeStatus ss) { _shape_status = ss; }
 
 public:
   luci::CircleConst *content(void) const { return _content; }
@@ -68,7 +68,7 @@ private:
 
   circle::TensorType _dtype{circle::TensorType_FLOAT32};
   ShapeDescription _shape{};
-  bool _no_shape{false};
+  luci::ShapeStatus _shape_status{luci::ShapeStatus::UNDEFINED};
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
@@ -125,10 +125,9 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.name(tensor_name);
   tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
-  if (node->no_shape())
-    tensor_info.no_shape();
-  else
+  if (node->shape_status() == ShapeStatus::VALID)
     tensor_info.shape(to_shape_description(luci::node_shape(node)));
+  tensor_info.shape_status(node->shape_status());
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
@@ -229,7 +228,7 @@ void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &build
 {
   // Create and register output tensor shape
   flatbuffers::Offset<Vector<int32_t>> shape_offset;
-  if (!info.no_shape())
+  if (info.shape_status() == ShapeStatus::VALID)
     shape_offset = encodeShape(builder, info.shape());
 
   // encode and register output tensor buffer

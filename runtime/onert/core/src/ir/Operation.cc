@@ -41,12 +41,12 @@ void Operation::setInputs(const OperandIndexSequence &indexes)
 
 void Operation::setOutputs(const OperandIndexSequence &indexes) { _outputs = indexes; }
 
-void Operation::replaceInput(const OperandIndex &from, const OperandIndex &to)
+void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {
   _inputs.replace(from, to);
 }
 
-void Operation::replaceOutput(const OperandIndex &from, const OperandIndex &to)
+void Operation::replaceOutputs(const OperandIndex &from, const OperandIndex &to)
 {
   _outputs.replace(from, to);
 }

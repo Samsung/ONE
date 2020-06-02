@@ -43,9 +43,11 @@ using ::onert::backend::acl_common::asAclClFunction;
 using ActivationBuilder = ::onert::backend::acl_common::AclActivationBuilder<
     ::arm_compute::ICLTensor, ::arm_compute::CLActivationLayer, acl_common::AclClFunction>;
 
-KernelGenerator::KernelGenerator(const ir::Operands &ctx,
+KernelGenerator::KernelGenerator(const ir::Operands &operands_ctx,
+                                 const ir::Operations &operations_ctx,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder)
-    : _ctx(ctx), _tensor_builder(tensor_builder), _current_op_seq_layout(ir::Layout::UNKNOWN)
+    : _ctx(operands_ctx), _operations_ctx(operations_ctx), _tensor_builder(tensor_builder),
+      _current_op_seq_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
 }
@@ -57,9 +59,9 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(!_return_fn_seq);
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
   _current_op_seq_layout = op_seq.getLayout();
-  for (const auto &e : op_seq.operations())
+  for (const auto &operation_idx : op_seq.operations())
   {
-    const auto &node = *(e.node);
+    const auto &node = _operations_ctx.at(operation_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
   }
@@ -1340,7 +1342,7 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   assert(_ctx.at(paddings_index).data());
 
   std::unique_ptr<::arm_compute::IFunction> fn;
-  if (_ctx.at(ofm_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+  if (_ctx.at(ofm_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
   {
     // NOTE CLSpaceToBatchLayer has a bug that padding's values are 0 even when zero point of
     // QASYMM8 is not 0.

@@ -139,6 +139,19 @@ private:
     node->perm(arg2);
   };
 
+  void setInput(luci::CircleResizeBilinear *node, luci::CircleNode *input, luci::CircleNode *size)
+  {
+    node->input(input);
+    node->size(size);
+  };
+
+  void setInput(luci::CircleResizeNearestNeighbor *node, luci::CircleNode *input,
+                luci::CircleNode *size)
+  {
+    node->input(input);
+    node->size(size);
+  };
+
   // arity 3
   void setInput(luci::CircleNode *, luci::CircleNode *, luci::CircleNode *, luci::CircleNode *)
   {

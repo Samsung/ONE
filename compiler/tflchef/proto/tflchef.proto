@@ -294,6 +294,10 @@ message GreaterOptions {
   // None 
 }
 
+message L2NormOptions {
+  optional Activation activation = 1 [default = NONE];
+}
+
 message LessOptions {
   // None
 }
@@ -339,6 +343,15 @@ message LeakyReluOptions {
 
 message ResizeNearestNeighborOptions {
   optional bool align_corners = 1 [default = false];
+}
+
+message ResizeBilinearOptions {
+  optional bool align_corners = 1 [default = false];
+  optional bool half_pixel_centers = 2 [default = false];
+}
+
+message DepthToSpaceOptions {
+  optional int32 block_size = 1;
 }
 
 message Operation {
@@ -404,10 +417,10 @@ message Operation {
   // LSHProjectionOptions 155
   // SVDFOptions 156
   // RNNOptions 157
-  // L2NormOptions 158
+  optional L2NormOptions l2norm_options = 158;
   optional LocalResponseNormalizationOptions local_response_normalization_options = 159;
   // LSTMOptions 160
-  // ResizeBilinearOptions 161
+  optional ResizeBilinearOptions resize_bilinear_options = 161;
   // CallOptions 162
   // SkipGramOptions 163
   optional SpaceToDepthOptions space_to_depth_options = 164;
@@ -443,12 +456,14 @@ message Operation {
   // QuantizeOptions 194
   // MatrixSetDiagOptions 195
   // HardSwishOptions 196
-  // DepthToSpaceOptions 197
+  optional DepthToSpaceOptions depth_to_space_options = 197;
   // NonMaxSuppressionV4Options 198
   // NonMaxSuppressionV5Options 199
   // ScatterNdOptions 200
   optional NotEqualOptions notequal_options = 201;
   optional ExpandDimsOptions expand_dims_options = 202;
+  optional Pool2DOptions l2pool2d_options = 203;
+  optional ReducerOptions all_options = 204;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

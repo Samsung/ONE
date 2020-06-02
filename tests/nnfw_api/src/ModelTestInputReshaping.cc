@@ -19,7 +19,6 @@
 
 #include "fixtures.h"
 #include "NNPackages.h"
-#include "ModelTestHelper.h"
 
 using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>;
 
@@ -35,14 +34,8 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 {
   NNFW_STATUS res = NNFW_STATUS_ERROR;
 
-  // model is already loaded by fixture
-
-  if (!(onlyForCpuBackend(_session) && onlyForLinearExecutor(_session)))
-  {
-    // let's skip this test
-    SUCCEED();
-    return;
-  }
+  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_set_config(_session, "EXECUTOR", "Linear"), NNFW_STATUS_NO_ERROR);
 
   // input and output values
   const std::vector<float> input1 = {0, 1, 2, 3, 4, 5, 6, 7}; // of changed shape [4, 2]

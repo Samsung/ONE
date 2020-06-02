@@ -25,7 +25,7 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
-#include "ir/Operands.h"
+#include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
@@ -87,7 +87,8 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
 class StaticInferer : public ir::OperationVisitor
 {
 public:
-  StaticInferer(ir::Operands &operands) : _operands(operands) { /* empty */}
+  StaticInferer(ir::Graph &graph)
+      : _operands(graph.operands()), _operations(graph.operations()) { /* empty */}
   virtual ~StaticInferer() = default;
 
 public:
@@ -97,7 +98,13 @@ public:
    *        when running kernel.
    * @param op_seq sequence of operations
    */
-  void infer(const ir::OpSequence &op_seq) { op_seq.accept(*this); };
+  void infer(const ir::OpSequence &op_seq)
+  {
+    for (const auto &operation_idx : op_seq.operations())
+    {
+      _operations.at(operation_idx).accept(*this);
+    }
+  }
 
   void dump();
 
@@ -106,23 +113,33 @@ private:
   // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
+  void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
-  // TODO write op starting from L
+  void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
-  // TODO write op starting from N
+  void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
-  // TODO write op starting from S
+  void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Transpose &op);
   // TODO write op starting from U
   // TODO write op starting from Z
 
 private:
+  /**
+   * @brief Performs shape inference for arithmetic operation
+   */
+  void handleBinaryArithmeticOp(const ir::Operation &op, const ir::OperandIndex lhs_idx,
+                                const ir::OperandIndex rhs_idx);
+
   /**
    * @brief Performs shape inference for unary op whose output shape is
    *        always same with input shape
@@ -131,6 +148,7 @@ private:
 
 private:
   ir::Operands &_operands;
+  ir::Operations &_operations;
 };
 
 // TODO After implement several Ops, check if this class can be merged with StaticInferer
@@ -156,23 +174,32 @@ public:
   // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
-  // TODO write op starting from C
+  void visit(const ir::operation::Cast &op);
+  void visit(const ir::operation::Concat &op);
   // TODO write op starting from D
+  void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
-  // TODO write op starting from L
+  void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::Logistic &op);
   // TODO write op starting from M
-  // TODO write op starting from N
+  void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
-  // TODO write op starting from S
+  void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Transpose &op);
   // TODO write op starting from U
   // TODO write op starting from Z
 
 private:
+  /**
+   * @brief Performs shape inference and memory allocation for arithmetic operation
+   */
+  void handleBinaryArithmeticOp(const ir::Operation &op, const ir::OperandIndex lhs_idx,
+                                const ir::OperandIndex rhs_idx);
   /**
    * @brief Performs shape inference and memory allocation for unary op whose output shape is
    *        always same with input shape

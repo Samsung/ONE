@@ -61,21 +61,8 @@ std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
 
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
-  std::set<ir::OpCode> cf_ops;
-  subgs.iterate([&](const ir::SubgraphIndex &, const ir::Graph &graph) {
-    const auto ops = getControlFlowOp(graph);
-    cf_ops.insert(ops.cbegin(), ops.cend());
-  });
   CompilerOptions options;
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  // There are two cases to load default backend
-  // 1. whether controlflow operation exist in subgraphs for controlflow kernel
-  // 2. whether to load 2 or more backends for Permute kernel between different backends
-  if (cf_ops.size() != 0 || options.backend_list.size() > 1)
-  {
-    options.backend_list.emplace_back(backend::controlflow::Config::ID);
-  }
-
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   options.op_seq_max_node = util::getConfigInt(util::config::OP_SEQ_MAX_NODE);
@@ -103,11 +90,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   }
 #include "ir/Operations.lst"
 #undef OP
-
-    for (auto cf_op : cf_ops)
-    {
-      ms_options.opcode_to_backend[cf_op] = backend::controlflow::Config::ID;
-    }
 
     // Index to Backend
     // TODO Support multiple subgraphs for manual scheduling
@@ -171,6 +153,26 @@ void Compiler::checkProfilerConditions()
 
 void Compiler::compile(void)
 {
+  std::set<ir::OpCode> cf_ops;
+  _subgraphs->iterate([&](const ir::SubgraphIndex &, const ir::Graph &graph) {
+    const auto ops = getControlFlowOp(graph);
+    cf_ops.insert(ops.cbegin(), ops.cend());
+  });
+
+  // There are two cases to load controlflow backend
+  // 1. whether controlflow operation exist in subgraphs for controlflow kernel
+  // 2. whether to load 2 or more backends for Permute kernel between different backends
+  if (cf_ops.size() != 0 || _options.backend_list.size() > 1)
+  {
+    _options.backend_list.emplace_back(backend::controlflow::Config::ID);
+  }
+
+  // Opcode to Backend
+  for (auto cf_op : cf_ops)
+  {
+    _options.manual_scheduler_options.opcode_to_backend[cf_op] = backend::controlflow::Config::ID;
+  }
+
   {
     VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;

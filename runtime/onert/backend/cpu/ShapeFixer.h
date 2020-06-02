@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_CPU_SHAPE_FIXER_H__
 
 #include "TensorBuilder.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/IShapeFixer.h>
 #include <ir/Operands.h>
@@ -35,62 +35,11 @@ class ShapeFixer : public IShapeFixer
 public:
   ShapeFixer(const ir::Operands &ctx);
 
-  void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::MaxPool2D &) override;
-  void visit(const ir::operation::AvgPool2D &) override;
-  void visit(const ir::operation::Concat &) override;
-  void visit(const ir::operation::Fill &) override;
-  void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::Reshape &) override;
-  void visit(const ir::operation::Squeeze &) override;
-  void visit(const ir::operation::Softmax &) override;
   void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::Div &) override;
-  void visit(const ir::operation::Custom &) override;
-  void visit(const ir::operation::Exp &) override;
-  void visit(const ir::operation::ExpandDims &) override;
-  void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::Max &) override;
-  void visit(const ir::operation::Min &) override;
-  void visit(const ir::operation::Tanh &) override;
-  void visit(const ir::operation::Pack &) override;
-  void visit(const ir::operation::Unpack &) override;
-  void visit(const ir::operation::OneHot &) override;
-  void visit(const ir::operation::Cast &) override;
-  void visit(const ir::operation::Transpose &) override;
-  void visit(const ir::operation::ReduceSum &) override;
-  void visit(const ir::operation::ReduceAny &) override;
-  void visit(const ir::operation::ReduceMax &) override;
-  void visit(const ir::operation::ReduceMin &) override;
-  void visit(const ir::operation::ReLU &) override;
-  void visit(const ir::operation::Select &) override;
-  void visit(const ir::operation::Slice &) override;
-  void visit(const ir::operation::StridedSlice &) override;
-  void visit(const ir::operation::Split &) override;
-  void visit(const ir::operation::SquaredDifference &) override;
-  void visit(const ir::operation::Abs &) override;
-  void visit(const ir::operation::Cos &) override;
-  void visit(const ir::operation::Sin &) override;
-  void visit(const ir::operation::RSQRT &) override;
-  void visit(const ir::operation::Shape &) override;
-  void visit(const ir::operation::ReduceProd &) override;
-  void visit(const ir::operation::Reverse &) override;
-  void visit(const ir::operation::Neg &) override;
-  void visit(const ir::operation::ArgMax &) override;
-  void visit(const ir::operation::Mean &) override;
-  void visit(const ir::operation::Log &) override;
-  void visit(const ir::operation::Round &) override;
-  void visit(const ir::operation::Pow &) override;
-  void visit(const ir::operation::LogicalNot &) override;
-  void visit(const ir::operation::ZerosLike &) override;
-  void visit(const ir::operation::Tile &) override;
-  void visit(const ir::operation::LogicalOr &) override;
 
 private:
   const ir::Operands &_ctx;

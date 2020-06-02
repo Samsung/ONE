@@ -35,6 +35,7 @@
  */
 #define MAX_BACKEND_NAME_LENGTH 32
 #define MAX_OP_NAME_LENGTH 64
+#define MAX_PATH_LENGTH 1024
 
 // Is null-terminating in length ?
 static bool null_terminating(const char *str, uint32_t length)
@@ -74,6 +75,21 @@ nnfw_session::~nnfw_session() = default;
 
 NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 {
+  if (!isStateInitialized())
+    return NNFW_STATUS_ERROR;
+
+  if (!package_dir)
+  {
+    std::cerr << "package_dir is null." << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!null_terminating(package_dir, MAX_PATH_LENGTH))
+  {
+    std::cerr << "nnpackage path is too long" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   // TODO : add support for zipped package file load
   DIR *dir;
   if (!(dir = opendir(package_dir)))
@@ -121,23 +137,32 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
 
+  _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::prepare()
 {
+  // NOTE. If users want to run prepare() more than one time, this could be removed.
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during model prepare : ";
+    if (isStateInitialized())
+    {
+      std::cerr << "prepare should be run once";
+    }
+    else
+    {
+      std::cerr << "invalid state";
+    }
+    std::cerr << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   if (!_subgraphs || !primary_subgraph() || primary_subgraph()->isBuildingPhase())
   {
     std::cerr << "Error during model prepare : "
               << "prepare should be run after load_model" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  // NOTE. If users want to run prepare() more than one time, this could be removed.
-  if (!_source || _execution)
-  {
-    std::cerr << "Error during model prepare : "
-              << "prepare should be run once" << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -159,12 +184,13 @@ NNFW_STATUS nnfw_session::prepare()
     return NNFW_STATUS_ERROR;
   }
 
+  _state = State::PREPARED;
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::run()
 {
-  if (!_execution)
+  if (!isStatePrepared())
   {
     std::cerr << "Error during nnfw_session::run : "
               << "run should be run after prepare" << std::endl;
@@ -180,12 +206,28 @@ NNFW_STATUS nnfw_session::run()
     std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
+  _state = State::PREPARED;
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
                                     size_t length)
 {
+  if (!isStatePrepared())
+  {
+    std::cerr << "Error during nnfw_session::set_input : invalid state" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr
+        << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
+        << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   try
   {
     _execution->setInput(onert::ir::IOIndex(index), buffer, length);
@@ -201,6 +243,20 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
 NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
                                      size_t length)
 {
+  if (!isStatePrepared())
+  {
+    std::cerr << "Error during nnfw_session::set_output : invalid state" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr
+        << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
+        << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   try
   {
     _execution->setOutput(onert::ir::IOIndex(index), buffer, length);
@@ -215,6 +271,9 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
 
 NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 {
+  if (isStateInitialized()) // Model is not loaded
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (number == nullptr)
@@ -234,6 +293,9 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 
 NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 {
+  if (isStateInitialized()) // Model is not loaded
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (number == nullptr)
@@ -301,14 +363,14 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
       return NNFW_TYPE_TENSOR_FLOAT32;
     case DataType::INT32:
       return NNFW_TYPE_TENSOR_INT32;
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
       return NNFW_TYPE_TENSOR_QUANT8_ASYMM;
     case DataType::BOOL8:
       return NNFW_TYPE_TENSOR_BOOL;
     case DataType::UINT8:
       return NNFW_TYPE_TENSOR_UINT8;
     case DataType::UINT32:
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
     default:
       throw std::runtime_error("Error: Model has type that runtime API does not support.");
   }
@@ -465,16 +527,15 @@ static std::string get_op_backend_string(std::string op)
 
 NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 {
+  if (!isStateModelLoaded())
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (!backends || null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
     {
       return NNFW_STATUS_ERROR;
     }
-
-    // The session must be in the state after model load
-    if (!_compiler)
-      return NNFW_STATUS_ERROR;
 
     auto &options = _compiler->options();
 
@@ -519,8 +580,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
 
 NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 {
-  // The session must be in the state after model load
-  if (!_compiler)
+  if (!isStateModelLoaded())
     return NNFW_STATUS_ERROR;
 
   auto &options = _compiler->options();
@@ -586,8 +646,7 @@ onert::ir::Graph *nnfw_session::primary_subgraph()
 
 NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)
 {
-  // The session must be in the state after model load
-  if (!_compiler)
+  if (!isStateModelLoaded())
     return NNFW_STATUS_ERROR;
 
   auto &options = _compiler->options();
@@ -626,4 +685,49 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
   }
 
   return NNFW_STATUS_NO_ERROR;
+}
+
+bool nnfw_session::isStateInitialized()
+{
+  if (_state == State::INITIALIZED)
+  {
+    assert(!_subgraphs);
+    assert(!_compiler);
+    assert(!_execution);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool nnfw_session::isStateModelLoaded()
+{
+  if (_state == State::MODEL_LOADED)
+  {
+    assert(_subgraphs);
+    assert(_compiler);
+    assert(!_execution);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool nnfw_session::isStatePrepared()
+{
+  if (_state == State::PREPARED)
+  {
+    assert(!_subgraphs);
+    assert(_compiler);
+    assert(_execution);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }

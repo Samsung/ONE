@@ -50,6 +50,7 @@ public:
   ir::Layout layout() const final;
   ir::DataType data_type() const final;
   bool has_padding() const override { return info()->has_padding(); }
+  bool is_dynamic() const override { return false; }
 
 public:
   virtual const arm_compute::ITensor *handle() const = 0;

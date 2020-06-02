@@ -35,9 +35,8 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
   const auto layout = op_seq_lower_info->layout();
   const auto factor = operand::PermuteFactor{backend, layout};
 
-  for (auto it = node.getInputs().mbegin(); it != node.getInputs().mend(); ++it)
+  for (const auto input : node.getInputs() | Remove::DUPLICATED)
   {
-    const auto input = *it;
     auto &object = _graph.operands().at(input);
 
     if (object.isConstant())
@@ -47,8 +46,8 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       {
         auto new_object = object;
         // TODO Remove const_case
-        const_cast<std::list<OperationIndex> &>(new_object.getDef().list()).clear();
-        const_cast<std::list<OperationIndex> &>(new_object.getUses().list()).clear();
+        const_cast<OperationIndexSet &>(new_object.getDef()).clear();
+        const_cast<OperationIndexSet &>(new_object.getUses()).clear();
         const auto new_index = _graph.operands().emplace(new_object);
         _replace_operands_map[key] = new_index;
       }
@@ -57,15 +56,18 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       // Update op_seq
       if (_lowered_graph.op_seqs().at(op_sequence_index).getInputs().contains(input))
       {
-        _lowered_graph.op_seqs().at(op_sequence_index).replaceInput(input, replaced_input);
+        // All inputs of op_seq have the same PermuteFactor because those inputs are inputs of first
+        // operation
+        _lowered_graph.op_seqs().at(op_sequence_index).replaceInputs(input, replaced_input);
       }
 
-      // Update current input operand only. Don't update all input node in this operation.
-      *it = replaced_input;
+      // Update the same inputs of a node at once because inputs of an operation have the same
+      // PermuteFactor
+      node.replaceInputs(input, replaced_input);
 
       // Update operand
       auto &replaced_object = _graph.operands().at(replaced_input);
-      replaced_object.appendUse(node_index);
+      replaced_object.insertUse(node_index);
 
       // Remove this node from uses of origin operand
       // Constant operand has no def.

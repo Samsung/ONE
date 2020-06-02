@@ -47,6 +47,7 @@ public:
                                              bool) const override
   {
     const auto &operands = graph.operands();
+    const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
     // ControlFlow backend may not build tensors for itself because the backend's operation uses
     // tensors of other baceknd instead
@@ -68,7 +69,7 @@ public:
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands);
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations);
     context->shape_fixer = std::shared_ptr<IShapeFixer>(std::make_shared<EmptyShapeFixer>());
     context->tensor_register = nullptr;
     context->optimizer = nullptr;

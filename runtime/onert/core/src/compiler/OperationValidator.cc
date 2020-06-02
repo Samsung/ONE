@@ -495,18 +495,6 @@ void OperationValidator::visit(const ir::operation::ExpandDims &node)
   OP_REQUIRES(_ctx.at(axis_index).shape().rank() <= 1);
 }
 
-void OperationValidator::visit(const ir::operation::Fill &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto input_index{node.getInputs().at(0)};
-  const auto value_index{node.getInputs().at(1)};
-  UNUSED_RELEASE(output_index);
-  UNUSED_RELEASE(input_index);
-  UNUSED_RELEASE(value_index);
-}
-
 void OperationValidator::visit(const ir::operation::Floor &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -537,7 +525,7 @@ void OperationValidator::visit(const ir::operation::HashtableLookup &node)
 
   OP_REQUIRES(lookups_obj.typeInfo().type() == ir::DataType::INT32);
   OP_REQUIRES(keys_obj.typeInfo().type() == ir::DataType::INT32);
-  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(hits_obj.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
 
   if (_ctx.at(output_index).info().isDynamic())
     return;
@@ -613,7 +601,7 @@ void OperationValidator::visit(const ir::operation::Dequantize &node)
 
   const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
 
-  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT8_ASYMM);
+  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
 
   if (_ctx.at(output_index).info().isDynamic())
@@ -1292,5 +1280,20 @@ void OperationValidator::visit(const ir::operation::LogicalOr &node)
   OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::Input::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::Input::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::Input::DELTA)};
+
+  // Check for dimension constraints
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  OP_REQUIRES(_ctx.at(start_index).shape().rank() == 0);
+  OP_REQUIRES(_ctx.at(limit_index).shape().rank() == 0);
+  OP_REQUIRES(_ctx.at(delta_index).shape().rank() == 0);
+}
 } // namespace compiler
 } // namespace onert

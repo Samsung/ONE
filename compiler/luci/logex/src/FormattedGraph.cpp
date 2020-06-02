@@ -211,6 +211,7 @@ private:
   IMPLEMENT(luci::CircleExp)
   IMPLEMENT(luci::CircleExpandDims)
   IMPLEMENT(luci::CircleFill)
+  IMPLEMENT(luci::CircleFloor)
   IMPLEMENT(luci::CircleFloorDiv)
   IMPLEMENT(luci::CircleFloorMod)
   IMPLEMENT(luci::CircleFullyConnected)
@@ -221,6 +222,7 @@ private:
   IMPLEMENT(luci::CircleIf)
   IMPLEMENT(luci::CircleLess)
   IMPLEMENT(luci::CircleLeakyRelu)
+  IMPLEMENT(luci::CircleLocalResponseNormalization)
   IMPLEMENT(luci::CircleLogicalAnd)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
@@ -231,6 +233,7 @@ private:
   IMPLEMENT(luci::CircleMinimum)
   IMPLEMENT(luci::CircleMirrorPad)
   IMPLEMENT(luci::CircleMul)
+  IMPLEMENT(luci::CircleNeg)
   IMPLEMENT(luci::CircleNotEqual)
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
@@ -244,6 +247,8 @@ private:
   IMPLEMENT(luci::CircleRelu6)
   IMPLEMENT(luci::CircleReluN1To1)
   IMPLEMENT(luci::CircleReshape)
+  IMPLEMENT(luci::CircleResizeBilinear)
+  IMPLEMENT(luci::CircleResizeNearestNeighbor)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleSelect)
   IMPLEMENT(luci::CircleShape)
@@ -483,6 +488,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleExpandDims *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleFloor *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleFloorDiv *node,
                                        locop::NodeSummary &s) const
 {
@@ -598,6 +610,18 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLeakyRelu *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalization *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("radius", pepper::str(node->radius()));
+  s.args().append("bias", pepper::str(node->bias()));
+  s.args().append("alpha", pepper::str(node->alpha()));
+  s.args().append("beta", pepper::str(node->beta()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleLogicalAnd *node,
                                        locop::NodeSummary &s) const
 {
@@ -690,6 +714,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleMul *node, locop::NodeS
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleNeg *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -809,6 +840,27 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReshape *node, locop::N
   s.args().append("shape", tbl()->lookup(node->shape()));
   // TODO Show newShape info
   s.state(locop::NodeSummary::State::PartiallyKnown);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeBilinear *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("size", tbl()->lookup(node->size()));
+  s.args().append("align_corners", node->align_corners() ? "true" : "false");
+  s.args().append("half_pixel_centers", node->half_pixel_centers() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeNearestNeighbor *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("size", tbl()->lookup(node->size()));
+  s.args().append("align_corners", node->align_corners() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
   return true;
 }
 

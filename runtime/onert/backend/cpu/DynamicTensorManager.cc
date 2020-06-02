@@ -16,6 +16,8 @@
 
 #include "DynamicTensorManager.h"
 
+#include "util/logging.h"
+
 namespace onert
 {
 namespace backend
@@ -61,7 +63,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info)
 {
   assert(_tensors->find(ind) == _tensors->end());
-  auto tensor = std::make_shared<operand::Tensor>(tensor_info);
+  auto tensor = std::make_shared<Tensor>(tensor_info);
   (*_tensors)[ind] = tensor;
 }
 
@@ -73,6 +75,49 @@ void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Sh
   setShape(tensor.get(), new_shape);
   // once the shape is changed, the output of operations using this tensor should be re-calculated
   tensor->set_dynamic();
+}
+
+void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
+{
+  auto find = _dealloc_tensor_map.find(op_ind);
+  if (find != _dealloc_tensor_map.end())
+  {
+    auto &input_set = find->second;
+    input_set.emplace(operand_ind);
+  }
+  else
+  {
+    _dealloc_tensor_map.emplace(
+        std::make_pair(op_ind, std::unordered_set<ir::OperandIndex>{operand_ind}));
+  }
+}
+
+void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
+{
+  auto find = _dealloc_tensor_map.find(op_ind);
+  if (find == _dealloc_tensor_map.end())
+    return;
+
+  auto &input_set = find->second;
+  for (auto input_ind : input_set)
+  {
+    if (!_tensors->at(input_ind)->is_dynamic())
+      continue;
+
+    _dynamic_mem_mgr->deallocate(input_ind);
+    VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
+                                  << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
+  }
+}
+
+void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
+{
+  if (!_tensors->at(output_ind)->is_dynamic())
+    return;
+
+  _dynamic_mem_mgr->deallocate(output_ind);
+  VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
+                                << " (output of a subgraph)" << std::endl;
 }
 
 } // namespace cpu

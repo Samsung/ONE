@@ -297,6 +297,16 @@ std::shared_ptr<Allocator> DynamicMemoryManager::allocate(const ir::OperandIndex
   return mem_alloc;
 }
 
+void DynamicMemoryManager::deallocate(const ir::OperandIndex &ind)
+{
+  auto find = _mem_alloc_map.find(ind);
+  if (find == _mem_alloc_map.end())
+    throw std::runtime_error("Cannot find Allocator for the requested index");
+
+  auto alloc = find->second;
+  alloc.reset();
+}
+
 void DynamicMemoryManager::deallocate(void)
 {
   for (auto &mem_alloc : _mem_alloc_map)

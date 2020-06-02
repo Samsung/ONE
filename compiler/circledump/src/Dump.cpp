@@ -123,8 +123,8 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
   os << std::endl;
 
   // dump operands(tensors)
-  os << "Operands: T(subgraph index : tensor index) TYPE (shape) B(buffer index) OperandName"
-     << std::endl;
+  os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
+     << "B(buffer index) OperandName" << std::endl;
   for (uint32_t i = 0; i < tensors->Length(); ++i)
   {
     // TODO refactor to some better structure
@@ -137,6 +137,11 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     os << "T(" << reader.subgraph_index() << ":" << i << ") " << circleread::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
+    if (tensor->shape_signature())
+    {
+      std::vector<int32_t> dims_sig = circleread::as_index_vector(tensor->shape_signature());
+      os << "(" << dims_sig << ") ";
+    }
     os << "B(" << tensor->buffer() << ") ";
     os << circleread::tensor_name(tensor) << std::endl;
 
@@ -199,7 +204,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
 
     for (auto input : inputs)
     {
-      os << "    I T(" << input << ") ";
+      os << "    I T(" << reader.subgraph_index() << ":" << input << ") ";
       if (input >= 0)
       {
         auto tensor = tensors->Get(input);
@@ -209,7 +214,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     }
     for (auto output : outputs)
     {
-      os << "    O T(" << output << ") ";
+      os << "    O T(" << reader.subgraph_index() << ":" << output << ") ";
       if (output >= 0)
       {
         auto tensor = tensors->Get(output);
@@ -227,14 +232,14 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
   {
     auto tensor = tensors->Get(input);
     std::string name = circleread::tensor_name(tensor);
-    os << "I T(" << input << ") " << name << std::endl;
+    os << "I T(" << reader.subgraph_index() << ":" << input << ") " << name << std::endl;
   }
 
   for (const auto output : reader.outputs())
   {
     auto tensor = tensors->Get(output);
     std::string name = circleread::tensor_name(tensor);
-    os << "O T(" << output << ") " << name << std::endl;
+    os << "O T(" << reader.subgraph_index() << ":" << output << ") " << name << std::endl;
   }
 
   os << std::endl;

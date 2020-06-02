@@ -20,6 +20,8 @@
 #include "ir/Graph.h"
 #include "ir/Operations.Include.h"
 
+#include "flatbuffers/flexbuffers.h"
+
 #include <map>
 #include <memory>
 #include <fstream>
@@ -70,6 +72,7 @@ protected:
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
+  ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -110,6 +113,7 @@ protected:
   void loadTanh(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadMean(const Operator *op, ir::Graph &subg);
+  void loadReduceAll(const Operator *op, ir::Graph &subg);
   void loadReduceAny(const Operator *op, ir::Graph &subg);
   void loadReduceMax(const Operator *op, ir::Graph &subg);
   void loadReverseV2(const Operator *op, ir::Graph &subg);
@@ -149,6 +153,7 @@ protected:
   void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadLogicalOr(const Operator *op, ir::Graph &subg);
+  void loadRange(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -226,11 +231,18 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
     case TensorType::TensorType_BOOL:
       return ir::DataType::BOOL8;
     case TensorType::TensorType_UINT8:
-      return ir::DataType::QUANT8_ASYMM;
+      return ir::DataType::QUANT_UINT8_ASYMM;
     default:
       throw std::runtime_error(
           std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
   }
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+ir::OperandIndex
+BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
+{
+  return tensorIdx == -1 ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -331,7 +343,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
 
   for (const std::int32_t idx : *op->outputs())
   {
-    outputs.append(_tensor_to_operand[idx]);
+    outputs.append(tensorIdxToOperandIdx(idx));
   }
 }
 
@@ -547,9 +559,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Gr
   const auto &input_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::INPUT));
   auto &weights_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::WEIGHT));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
-      weights_operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+      weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
   {
-    weights_operand.type(ir::DataType::QUANT8_SYMM);
+    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
   }
 
   ir::operation::FullyConnected::Param param;
@@ -803,6 +815,41 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  auto input = inputs.at(0);
+  auto axes = inputs.at(1);
+
+  // FIXME Handle ReducerOptions.
+  if (!subg.operands().at(axes).isConstant())
+    throw std::runtime_error("ReduceAll: non-constant 'axes' is not supported.");
+
+  ir::operation::ReduceAll::Param param;
+  param.axes = subg.operands().at(axes).template asVector<int>();
+  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
+
+  if (op->custom_options() == nullptr)
+  {
+    param.keep_dims = false;
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.keep_dims = attr_map["keep_dims"].AsBool();
+  }
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll({input}, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -993,28 +1040,57 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
-  loadOperationIO(op, inputs, outputs);
-
-  auto *op_code = _model->operator_codes()->Get(op->opcode_index());
-  auto custom_op_id = op_code->custom_code()->str();
-
-  auto constraint = ir::OperandConstraint::createExact(inputs.size());
-
   assert(op->custom_options_format() == CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS &&
          "Unsupported custom operation options format");
 
-  size_t custom_op_data_size = op->custom_options()->size();
-  auto custom_op_data = new char[custom_op_data_size];
-  std::copy(op->custom_options()->begin(), op->custom_options()->end(), custom_op_data);
+  auto *op_code = _model->operator_codes()->Get(op->opcode_index());
+  auto custom_op_name = op_code->custom_code()->str();
 
-  ir::operation::Custom::Userdata userdata{};
-  userdata.data = custom_op_data;
-  userdata.size = custom_op_data_size;
+  enum class BuiltinOP
+  {
+    ReduceAll,
+  };
 
-  auto new_op =
-      std::make_unique<ir::operation::Custom>(constraint, inputs, outputs, custom_op_id, userdata);
+  // Mapping from custom op name string to BuiltinOP enum
+  std::map<std::string, BuiltinOP> builtin_map = {
+      {"All", BuiltinOP::ReduceAll},
+  };
 
-  subg.addOperation(std::move(new_op));
+  try
+  {
+    // Throw out_of_range if it is unknown custom op
+    auto custom_op_id = builtin_map.at(custom_op_name);
+    switch (custom_op_id)
+    {
+      case BuiltinOP::ReduceAll:
+        loadReduceAll(op, subg);
+        break;
+      default:
+        throw std::runtime_error{
+            "Loader: Custom OP map is defined but operation loader function is not defined"};
+    }
+
+    return;
+  }
+  catch (...)
+  {
+    loadOperationIO(op, inputs, outputs);
+
+    auto constraint = ir::OperandConstraint::createExact(inputs.size());
+
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = new char[custom_op_data_size];
+    std::copy(op->custom_options()->begin(), op->custom_options()->end(), custom_op_data);
+
+    ir::operation::Custom::Userdata userdata{};
+    userdata.data = custom_op_data;
+    userdata.size = custom_op_data_size;
+
+    auto new_op = std::make_unique<ir::operation::Custom>(constraint, inputs, outputs,
+                                                          custom_op_name, userdata);
+
+    subg.addOperation(std::move(new_op));
+  }
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -1164,7 +1240,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCast(const Operator *op, ir::
   loadOperationIO(op, inputs, outputs);
 
   auto qasymm8ToUint8 = [](ir::Operand &operand) {
-    if (operand.typeInfo().type() == ir::DataType::QUANT8_ASYMM)
+    if (operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
     {
       operand.type(ir::DataType::UINT8);
     }
@@ -1233,14 +1309,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
 
   // Set input and output tensors
   ir::OperandIndexSequence inputs, outputs;
-  inputs.append(_tensor_to_operand[op->inputs()->Get(INDICES)]);
-  outputs.append(_tensor_to_operand[op->outputs()->Get(0)]);
+  inputs.append(tensorIdxToOperandIdx(op->inputs()->Get(INDICES)));
+  outputs.append(tensorIdxToOperandIdx(op->outputs()->Get(0)));
 
   // Set parameters
   // depth, on_value and off_value are scalar though it is passed as inputs
-  auto depth_opidx = _tensor_to_operand[op->inputs()->Get(DEPTH)];
-  auto on_value_opidx = _tensor_to_operand[op->inputs()->Get(ON_VALUE)];
-  auto off_value_opidx = _tensor_to_operand[op->inputs()->Get(OFF_VALUE)];
+  auto depth_opidx = tensorIdxToOperandIdx(op->inputs()->Get(DEPTH));
+  auto on_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(ON_VALUE));
+  auto off_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(OFF_VALUE));
   const auto depth = subg.operands().at(depth_opidx).template asScalar<int>();
   const auto on_value = subg.operands().at(on_value_opidx).template asScalar<float>();
   const auto off_value = subg.operands().at(off_value_opidx).template asScalar<float>();
@@ -1465,6 +1541,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadZerosLike(const Operator *op,
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ZerosLike(inputs, outputs));
+
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadRange(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Range(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1701,6 +1790,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_TILE:
       loadTile(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_RANGE:
+      loadRange(op, subg);
       return;
     default:
       throw std::runtime_error(

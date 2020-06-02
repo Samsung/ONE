@@ -37,13 +37,13 @@ void ConstantLoweringPass::callback(const OperationIndex &node_index, Operation 
   const auto factor = operand::PermuteFactor{backend, layout};
 
   // Now this runtime does not support the node making output of operation as constant
-  for (const auto input : node.getInputs())
+  for (const auto input : node.getInputs() | Remove::DUPLICATED)
   {
     auto &object = _graph.operands().at(input);
     if (object.isConstant())
     {
-      // All constant operand are already assinged at each backend. So a constant has `def` and
-      // `use` as the same PermuteFactor
+      // All constant operand are already assinged at each backend by ContantInsertionPass. So a
+      // constant has `def` and `use` as the same PermuteFactor
       _lowered_graph.setLowerInfo(input, std::make_unique<operand::LowerInfo>());
       _lowered_graph.getLowerInfo(input)->addDefPermuteFactor(factor);
       _lowered_graph.getLowerInfo(input)->addUsePermuteFactor(factor);

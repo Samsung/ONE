@@ -136,7 +136,7 @@ void DotDumper::dump(const std::string &tag)
         node->setAttribute("fillcolor", fillcolor);
       }
 
-      for (auto operation_index : object.getUses().list())
+      for (auto operation_index : object.getUses())
       {
         auto &operation = operations.at(operation_index);
         auto child = std::make_shared<Operation>(operation_index, operation);
@@ -155,15 +155,15 @@ void DotDumper::dump(const std::string &tag)
       auto fillcolor = backend_to_fillcolor(lower_info->backend());
       std::string label =
           std::to_string(index.value()) + " [" + lower_info->backend()->config()->id() + "]";
-      DotSubgraphInfo subgraph_info{index, op_seq, shown_operand_set};
+      DotSubgraphInfo subgraph_info{index, op_seq, shown_operand_set, _graph.operations()};
       subgraph_info.label(label);
       subgraph_info.fillcolor(fillcolor);
       dot_builder.addOpSequence(subgraph_info);
 
       // Set fillcolor of all operations in the op_seq
-      for (const auto &op : op_seq.operations())
+      for (const auto &op_idx : op_seq.operations())
       {
-        auto found = operation_nodes.find(op.index);
+        auto found = operation_nodes.find(op_idx);
         if (found != operation_nodes.end())
         {
           auto &&op = found->second;

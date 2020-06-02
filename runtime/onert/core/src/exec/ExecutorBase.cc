@@ -61,7 +61,14 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
       {
         tensor = tensor_builder->tensorAt(ind);
         if (tensor != nullptr)
+        {
+          if (tensor_builder->supportDynamicTensor())
+          {
+            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+            _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+          }
           break;
+        }
       }
       assert(tensor != nullptr);
       list.push_back(tensor);
@@ -102,10 +109,10 @@ std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir
     case DataType::UINT32:
       return source<uint32_t>(index, buffer, length, io_layout);
     case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
     case DataType::UINT8:
       return source<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
       return source<int8_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");
@@ -125,10 +132,10 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
     case DataType::UINT32:
       return sink<uint32_t>(index, buffer, length, io_layout);
     case DataType::BOOL8:
-    case DataType::QUANT8_ASYMM:
+    case DataType::QUANT_UINT8_ASYMM:
     case DataType::UINT8:
       return sink<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT8_SYMM:
+    case DataType::QUANT_INT8_SYMM:
       return sink<int8_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");
@@ -156,13 +163,56 @@ void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Sha
                            "check if the tensor's backend supports dynamic tensor.");
 }
 
-void ExecutorBase::execute()
+void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
+                           const std::shared_ptr<IPermuteFunction> &pre_fn)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
+
+  assert(src_tensors.size() == _graph.getInputs().size());
+  assert(src_tensors.size() == _input_tensors.size());
+  for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
+  {
+    // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
+    // This code find the info to allocate dynamic tensor, and allocate memory based on the source
+    // tensor's shape set by caller.
+    const auto src_tensor = src_tensors[n];
+    auto input_tensor = _input_tensors[n];
+    // If src_tensor or input_tensor is nullptr, pre_fn does not copy the tensors
+    if (src_tensor != nullptr && input_tensor != nullptr)
+    {
+      auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
+      const auto orig_input_shape = getShape(input_tensor.get());
+      const auto changed_input_shape =
+          convertShape(getShape(src_tensor.get()), src_tensor->layout(), input_tensor->layout());
+      if (orig_input_shape != changed_input_shape)
+      {
+        if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
+        {
+          // The input_tensor is a dynamic tensor of backend that doesn't support dynamic tensor
+          throw std::runtime_error("Unknown dim is found at execution time for a backend that "
+                                   "does not support dynamic tensor");
+        }
+        else
+        {
+          const auto operand_ind = dyn_alloc_info->second.ind;
+          if (orig_input_shape != changed_input_shape)
+          {
+            dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
+            // TODO Move changeInputShape() above allocate()
+            changeInputShape(operand_ind, changed_input_shape);
+          }
+        }
+      }
+    }
+  }
+
+  // TODO Move calling permute_fn.run() into executeImpl()
+  assert(pre_fn);
+  pre_fn->run();
 
   executeImpl();
 }
@@ -232,13 +282,32 @@ void ExecutorBase::execute(const IODescription &desc)
     {
       continue;
     }
-    const auto &output = *desc.outputs.at(n);
+    auto &output = *desc.outputs.at(n);
+
+    // set shape of outputDesc to tensor shape since tensor can be dynamic
+    const auto output_tensor_shape = getShape(_output_tensors[n].get());
+    output.info.shape(
+        convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
+
     sinks.at(n) =
         sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
 
     auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
 
     _output_tensors[n]->access(getter);
+
+    // deallocate output tensors if it is dynamic
+    {
+      auto find = _output_to_dyn_alloc_info.find(_output_tensors[n]);
+      if (find != _output_to_dyn_alloc_info.end())
+      {
+        auto &dyn_alloc_info = find->second;
+        auto *dyn_tensor_mgr = dyn_alloc_info.dyn_tensor_manager;
+        auto outut_ind = dyn_alloc_info.ind;
+
+        dyn_tensor_mgr->deallocSubgraphOutput(outut_ind);
+      }
+    }
   }
 }
 

@@ -51,6 +51,14 @@ class Compiler;
 
 struct nnfw_session
 {
+private:
+  enum class State
+  {
+    INITIALIZED,  //< Session is initialized and nothing has done to it
+    MODEL_LOADED, //< Model is loaded
+    PREPARED,     //< Prepared(compiled) for execution
+  };
+
 public:
   nnfw_session();
   ~nnfw_session();
@@ -83,8 +91,12 @@ public:
 
 private:
   onert::ir::Graph *primary_subgraph();
+  bool isStateInitialized();
+  bool isStateModelLoaded();
+  bool isStatePrepared();
 
 private:
+  State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::Execution> _execution;

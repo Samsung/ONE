@@ -170,6 +170,7 @@ struct DataChefRegistry final : public Registry<DataChefFactory>
 DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
 {
   static DataChefRegistry s32;
+  static DataChefRegistry s64;
   static DataChefRegistry fp32;
   static DataChefRegistry u8;
   static DataChefRegistry boolean;
@@ -178,6 +179,8 @@ DataChefRegistry &data_chef_registry(const circlechef::TensorType &type)
   {
     case circlechef::INT32:
       return s32;
+    case circlechef::INT64:
+      return s64;
     case circlechef::FLOAT32:
       return fp32;
     case circlechef::UINT8:

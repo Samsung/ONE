@@ -453,6 +453,14 @@ void OperationDumper::visit(const PReLU &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ReduceAll &node)
+{
+  VERBOSE(LIR) << "* ReduceAll" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceAll::Input::INPUT).value()
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
 void OperationDumper::visit(const ReduceAny &node)
 {
   VERBOSE(LIR) << "* ReduceAny" << std::endl;
@@ -572,6 +580,15 @@ void OperationDumper::visit(const Round &node)
   VERBOSE(LIR) << "* Round" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Round::Input::INPUT).value() << ")"
                << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Range &node)
+{
+  VERBOSE(LIR) << "* Range" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Range::Input::START).value() << ")"
+               << " Limit(" << node.getInputs().at(Range::Input::LIMIT).value() << ")"
+               << " Delta(" << node.getInputs().at(Range::Input::DELTA).value() << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0).value() << ")" << std::endl;
 }
 

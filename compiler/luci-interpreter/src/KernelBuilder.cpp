@@ -24,6 +24,7 @@
 #include "kernels/FullyConnected.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mul.h"
+#include "kernels/Pad.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 
@@ -182,6 +183,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
 {
   throw std::runtime_error("Output node cannot be executed.");
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
+{
+  assert(node->arity() == 2);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->paddings()) == nullptr)
+    throw std::runtime_error("Dynamic padding is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *paddings = getInputTensor(node->paddings());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Pad>(input, paddings, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)

@@ -5,7 +5,7 @@ GeneratedTests.abs_3D_float_nnfw
 GeneratedTests.abs_4D_float_nnfw
 GeneratedTests.abs_dynamic_nnfw
 GeneratedTests.add_broadcast_quant8
-GeneratedTests.add_dynamic
+GeneratedTests.add_dynamic_nnfw
 GeneratedTests.add_quant8
 GeneratedTests.argmax_1
 GeneratedTests.argmax_1_quant8
@@ -28,6 +28,7 @@ GeneratedTests.avg_pool_quant8_5
 GeneratedTests.batch_to_space
 GeneratedTests.batch_to_space_float_1
 GeneratedTests.batch_to_space_quant8_1
+GeneratedTests.cast_dynamic_float32_to_int32_nnfw
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
 GeneratedTests.cast_float16_to_float32_relaxed
@@ -57,6 +58,7 @@ GeneratedTests.cast_quant8_to_float32
 GeneratedTests.cast_quant8_to_float32_relaxed
 GeneratedTests.cast_quant8_to_int32
 GeneratedTests.cast_quant8_to_quant8
+GeneratedTests.concat_dynamic_nnfw
 GeneratedTests.concat_quant8_1
 GeneratedTests.concat_quant8_2
 GeneratedTests.concat_quant8_3
@@ -105,6 +107,7 @@ GeneratedTests.exp_1D_float_nnfw
 GeneratedTests.exp_2D_float_nnfw
 GeneratedTests.exp_3D_float_nnfw
 GeneratedTests.exp_4D_float_nnfw
+GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims
 GeneratedTests.expand_dims_2
 GeneratedTests.expand_dims_3
@@ -167,6 +170,7 @@ GeneratedTests.local_response_norm_float_2
 GeneratedTests.local_response_norm_float_3
 GeneratedTests.local_response_norm_float_4
 GeneratedTests.log_4D_float_nnfw
+GeneratedTests.log_dynamic_nnfw
 GeneratedTests.logical_and_1D_nnfw
 GeneratedTests.logical_and_2D_nnfw
 GeneratedTests.logical_and_3D_nnfw
@@ -186,6 +190,7 @@ GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_broadcast_4D_2D_nnfw
 GeneratedTests.logical_or_broadcast_nnfw
 GeneratedTests.logical_or_simple
+GeneratedTests.logistic_dynamic_nnfw
 GeneratedTests.logistic_quant8_1
 GeneratedTests.logistic_quant8_2
 GeneratedTests.lsh_projection
@@ -233,6 +238,7 @@ GeneratedTests.neg_3D_float_nnfw
 GeneratedTests.neg_3D_int_nnfw
 GeneratedTests.neg_4D_float_nnfw
 GeneratedTests.neg_4D_int_nnfw
+GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_boolean
 GeneratedTests.not_equal_broadcast
 GeneratedTests.not_equal_broadcast_4D_2D_float_nnfw
@@ -267,6 +273,13 @@ GeneratedTests.prelu_weight_as_input_quant8
 GeneratedTests.prelu_weight_as_input_quant8_2
 GeneratedTests.prelu_weight_as_input_quant8_3
 GeneratedTests.prelu_weight_as_input_quant8_4
+GeneratedTests.range_ex_float_1
+GeneratedTests.range_ex_float_2
+GeneratedTests.reduce_all
+GeneratedTests.reduce_all_2
+GeneratedTests.reduce_all_2D_nnfw
+GeneratedTests.reduce_all_3
+GeneratedTests.reduce_all_4D_nnfw
 GeneratedTests.reduce_any
 GeneratedTests.reduce_any_2
 GeneratedTests.reduce_any_2D_nnfw
@@ -331,6 +344,7 @@ GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
+GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
 GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw
@@ -358,6 +372,7 @@ GeneratedTests.slice_7
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
+GeneratedTests.softmax_dynamic_nnfw
 GeneratedTests.softmax_quant8_1
 GeneratedTests.softmax_quant8_2
 GeneratedTests.space_to_batch

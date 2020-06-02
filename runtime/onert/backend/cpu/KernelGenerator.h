@@ -18,11 +18,12 @@
 #define __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 
 #include "TensorBuilder.h"
-#include "operand/Tensor.h"
+#include "Tensor.h"
 
 #include <backend/CustomKernelBuilder.h>
 #include <backend/IKernelGenerator.h>
 #include <ir/Operands.h>
+#include <ir/Operations.h>
 
 namespace onert
 {
@@ -34,7 +35,8 @@ namespace cpu
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Operands &ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+                  const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder);
 
   using IKernelGenerator::visit;
@@ -70,6 +72,7 @@ public:
   void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::ReduceSum &) override;
+  void visit(const ir::operation::ReduceAll &) override;
   void visit(const ir::operation::ReduceAny &) override;
   void visit(const ir::operation::ReduceMax &) override;
   void visit(const ir::operation::ReduceMin &) override;
@@ -96,9 +99,11 @@ public:
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Tile &) override;
   void visit(const ir::operation::LogicalOr &) override;
+  void visit(const ir::operation::Range &) override;
 
 private:
   const ir::Operands &_ctx;
+  const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   ir::Layout _current_op_seq_layout;

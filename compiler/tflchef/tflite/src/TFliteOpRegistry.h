@@ -64,6 +64,7 @@ private:
     REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);
     REG_TFL_OP(CONV_2D, TFliteOpConv2D);
     REG_TFL_OP(COS, TFliteOpCos);
+    REG_TFL_OP(DEPTH_TO_SPACE, TFliteOpDepthToSpace);
     REG_TFL_OP(DEPTHWISE_CONV_2D, TFliteOpDepthwiseConv2D);
     REG_TFL_OP(DIV, TFliteOpDiv);
     REG_TFL_OP(ELU, TFliteOpELU);
@@ -79,9 +80,12 @@ private:
     REG_TFL_OP(GATHER_ND, TFliteOpGatherNd);
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
+    REG_TFL_OP(L2_NORMALIZATION, TFliteOpL2Normalize);
+    REG_TFL_OP(L2_POOL_2D, TFliteOpL2Pool2D);
     REG_TFL_OP(LEAKY_RELU, TFliteOpLeakyRelu);
     REG_TFL_OP(LESS, TFliteOpLess);
     REG_TFL_OP(LOCAL_RESPONSE_NORMALIZATION, TFliteOpLocalResponseNormalization);
+    REG_TFL_OP(LOG, TFliteOpLog);
     REG_TFL_OP(LOGICAL_AND, TFliteOpLogicalAnd);
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
@@ -97,6 +101,7 @@ private:
     REG_TFL_OP(PACK, TFliteOpPack);
     REG_TFL_OP(PAD, TFliteOpPad);
     REG_TFL_OP(POW, TFliteOpPow);
+    REG_TFL_OP(PRELU, TFliteOpPRelu);
     REG_TFL_OP(RANGE, TFliteOpRange);
     REG_TFL_OP(REDUCE_ANY, TFliteOpReduceAny);
     REG_TFL_OP(REDUCE_MAX, TFliteOpReduceMax);
@@ -105,6 +110,7 @@ private:
     REG_TFL_OP(RELU6, TFliteOpReLU6);
     REG_TFL_OP(RELU_N1_TO_1, TFliteOpReLUN1To1);
     REG_TFL_OP(RESHAPE, TFliteOpReshape);
+    REG_TFL_OP(RESIZE_BILINEAR, TFliteOpResizeBilinear);
     REG_TFL_OP(RESIZE_NEAREST_NEIGHBOR, TFliteOpResizeNearestNeighbor);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
     REG_TFL_OP(SELECT, TFliteOpSelect);

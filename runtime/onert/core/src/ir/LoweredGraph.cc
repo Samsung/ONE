@@ -72,7 +72,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
   }
   else
   {
-    auto scheduler = compiler::ManualScheduler(options.manual_scheduler_options);
+    auto scheduler = compiler::ManualScheduler(_backend_contexts, options);
     _backend_resolver = scheduler.schedule(_graph);
   }
 
@@ -92,7 +92,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
       std::reverse(std::begin(op_seq.operations()), std::end(op_seq.operations()));
     });
 
-    _op_seqs.dump("merged and sorted operations without permutation");
+    _op_seqs.dump("merged and sorted operations without permutation", _graph.operations());
 
     pass::ConstantInsertionPass ci_pass(*this);
     ci_pass.run();
@@ -118,12 +118,12 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     // pe_pass.run();
 
     // TODO merge perm op_seqs if possible
-    _op_seqs.dump("merged and sorted operations with permutation");
+    _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
   }
 
   // Shape inference.
   {
-    shape_inference::StaticInferer inferer(_graph.operands());
+    shape_inference::StaticInferer inferer(_graph);
     _op_seqs.iterate(
         [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
     inferer.dump();
@@ -199,7 +199,7 @@ OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &
   auto op_seq = std::make_unique<OpSequence>(_graph.layout());
 
   // Add an operation
-  op_seq->appendOperation(node_index, node);
+  op_seq->appendOperation(node_index);
 
   // Update input/output
   op_seq->setOutputs(node.getOutputs());
@@ -267,7 +267,7 @@ void LoweredGraph::makeOpSequences(
         }
         else
         {
-          op_seq->appendOperation(node_index, node);
+          op_seq->appendOperation(node_index);
           op_seq->setInputs(node.getInputs());
 
           VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " merges "
@@ -333,9 +333,9 @@ void LoweredGraph::dumpLowerInfo()
         return "{ " + str + "}";
       };
 
-      auto operation_index_to_string = [](const OperationIndexList &operations) {
+      auto operation_index_to_string = [](const OperationIndexSet &operations) {
         std::string str;
-        for (auto op : operations.list())
+        for (auto op : operations)
         {
           str += std::to_string(op.value());
           str += " ";
@@ -401,11 +401,10 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     std::unordered_set<OperationIndex> branched_set;
 
     // Check for branching up
-    const auto &inputs = op_seq.getInputs();
-    for (const auto &input : inputs)
+    for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED)
     {
       const auto &input_obj = _graph.operands().at(input);
-      for (const auto &def : input_obj.getDef().list())
+      for (const auto &def : input_obj.getDef())
       {
         branched_set.insert(def);
         if (branched_set.size() > 1)
@@ -417,11 +416,10 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     branched_set.clear();
 
     // Check for branching down
-    const auto &outputs = node.getOutputs();
-    for (const auto &output : outputs)
+    for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
     {
       const auto &output_obj = _graph.operands().at(output);
-      for (const auto &use : output_obj.getUses().list())
+      for (const auto &use : output_obj.getUses())
       {
         branched_set.insert(use);
         if (branched_set.size() > 1)
@@ -439,14 +437,13 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     const auto &node_outputs = node.getOutputs();
 
     // op_seq's operations are in order so that we just check the first and the last
-    std::vector<Element> op_seq_ops{op_seq.operations()[0]};
+    std::vector<OperationIndex> op_seq_ops{op_seq.operations()[0]};
     if (op_seq.operations().size() > 1)
       op_seq_ops.emplace_back(op_seq.operations()[op_seq.operations().size() - 1]);
 
-    for (const auto &elem : op_seq_ops)
+    for (const auto &n_index : op_seq_ops)
     {
-      const auto &n_index = elem.index;
-      const auto &n = *elem.node;
+      const auto &n = _graph.operations().at(n_index);
 
       // node's output == op_seq's input?
       const auto &n_inputs = n.getInputs();

@@ -45,16 +45,16 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
   const auto timer_res = _timer->getTime();
 
   // NOTE This assumes there is just one operation in a op_seq
-  auto node = op_seq->operations().at(0).node;
-  auto node_name = node->name();
+  const auto &node = _graph.operations().at(op_seq->operations().at(0));
+  auto node_name = node.name();
   VERBOSE(ProfileInfo) << "Time for " << node_name << " : " << timer_res << std::endl;
 
   // fill ExecTime:
-  bool is_quantized = exec->graph().operands().at(node->getInputs().at(0)).typeInfo().type() ==
-                      ir::DataType::QUANT8_ASYMM;
+  bool is_quantized = exec->graph().operands().at(node.getInputs().at(0)).typeInfo().type() ==
+                      ir::DataType::QUANT_UINT8_ASYMM;
 
   uint32_t size = 0;
-  for (const auto &ind : node->getInputs() + node->getOutputs())
+  for (const auto &ind : node.getInputs() + node.getOutputs())
   {
     size += exec->graph().operands().at(ind).info().total_size();
   }
@@ -69,8 +69,8 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
   }
 };
 
-ChromeTracingObserver::ChromeTracingObserver(const std::string &filepath)
-    : _ofs{filepath, std::ofstream::out}, _recorder{}, _collector{&_recorder}
+ChromeTracingObserver::ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph)
+    : _ofs{filepath, std::ofstream::out}, _recorder{}, _collector{&_recorder}, _graph{graph}
 {
 }
 
@@ -85,16 +85,16 @@ void ChromeTracingObserver::handleBegin(IExecutor *, const ir::OpSequence *op_se
                                         const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(
-      EventCollector::Event{EventCollector::Edge::BEGIN, backend_id, opSequenceTag(op_seq)});
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::BEGIN, backend_id,
+                                           opSequenceTag(op_seq, _graph.operations())});
 }
 
 void ChromeTracingObserver::handleEnd(IExecutor *, const ir::OpSequence *op_seq,
                                       const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(
-      EventCollector::Event{EventCollector::Edge::END, backend_id, opSequenceTag(op_seq)});
+  _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, backend_id,
+                                           opSequenceTag(op_seq, _graph.operations())});
 }
 
 void ChromeTracingObserver::handleEnd(IExecutor *)
@@ -102,14 +102,16 @@ void ChromeTracingObserver::handleEnd(IExecutor *)
   _collector.onEvent(EventCollector::Event{EventCollector::Edge::END, "runtime", "Graph"});
 }
 
-std::string ChromeTracingObserver::opSequenceTag(const ir::OpSequence *op_seq)
+std::string ChromeTracingObserver::opSequenceTag(const ir::OpSequence *op_seq,
+                                                 const ir::Operations &operations)
 {
   if (op_seq->size() == 0)
     return "Empty OpSequence";
 
-  auto first_op = op_seq->operations().at(0);
-  std::string tag = "$" + std::to_string(first_op.index.value());
-  tag += " " + first_op.node->name();
+  const auto &first_op_idx = op_seq->operations().at(0);
+  const auto &first_op_node = operations.at(first_op_idx);
+  std::string tag = "$" + std::to_string(first_op_idx.value());
+  tag += " " + first_op_node.name();
   if (op_seq->size() > 1)
   {
     tag += " (+" + std::to_string(op_seq->size() - 1) + ")";

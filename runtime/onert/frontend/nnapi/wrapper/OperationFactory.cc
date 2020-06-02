@@ -419,12 +419,12 @@ OperationFactory::OperationFactory()
     //  0 -> input Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0]};
 
-    // NNAPI uses QUANT8_ASYMM to represent UINT8 type for ANEURALNETWORKS_CAST's input/output
-    if (operands.at(inputs.at(0)).typeInfo().type() == DataType::QUANT8_ASYMM)
+    // NNAPI uses QUANT_UINT8_ASYMM to represent UINT8 type for ANEURALNETWORKS_CAST's input/output
+    if (operands.at(inputs.at(0)).typeInfo().type() == DataType::QUANT_UINT8_ASYMM)
     {
       replaceDataType(operands, inputs.at(0), DataType::UINT8);
     }
-    if (operands.at(outputs.at(0)).typeInfo().type() == DataType::QUANT8_ASYMM)
+    if (operands.at(outputs.at(0)).typeInfo().type() == DataType::QUANT_UINT8_ASYMM)
     {
       replaceDataType(operands, outputs.at(0), DataType::UINT8);
     }
@@ -926,6 +926,29 @@ OperationFactory::OperationFactory()
     replaceDataType(operands, outputs.at(0), DataType::BOOL8);
 
     return new operation::Comparison{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_REDUCE_ALL] = [](const OperationFactory::Param &init_param,
+                                        Operands &operands) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> Axis Tensor Index
+    //  2 -> keep_dims Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    std::vector<std::int32_t> axes =
+        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+
+    operation::ReduceAll::Param param;
+    param.axes.assign(axes.cbegin(), axes.cend());
+    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
+    param.rank = operands.at(inputs.at(0)).shape().rank();
+
+    return new operation::ReduceAll{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_REDUCE_ANY] = [](const OperationFactory::Param &init_param,
@@ -2020,6 +2043,21 @@ OperationFactory::OperationFactory()
     OperandIndexSequence inputs{init_param.inputs[0]};
 
     return new operation::Round{inputs, outputs};
+  };
+
+  _map[ANEURALNETWORKS_RANGE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //  0 -> start Tensor Index
+    //  1 -> limit Tensor Index
+    //  2 -> delta Tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+
+    return new operation::Range{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_POW] = [](const OperationFactory::Param &init_param, Operands &) {

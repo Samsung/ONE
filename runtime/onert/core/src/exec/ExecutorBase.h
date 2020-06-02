@@ -22,6 +22,7 @@
 #include "Source.h"
 #include "exec/ExecutionObservers.h"
 #include "Sink.h"
+#include "ShapeConverter.h"
 #include "exec/IExecutor.h"
 #include "ir/LoweredGraph.h"
 #include "ir/LowerInfoMap.h"
@@ -30,6 +31,7 @@
 #include "compiler/OperandContext.h"
 #include "exec/ExecTime.h"
 #include "exec/IFunction.h"
+#include <exec/IPermuteFunction.h>
 #include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"
@@ -58,8 +60,12 @@ public:
 
   /**
    * @brief Execute without IODescription
+   *
+   * @param src_tensor Tensor list that will be copied to input tensors of this
+   * @param pre_fn The permutation function that copy from src_tensor to input tensors of this
    */
-  void execute();
+  void execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
+               const std::shared_ptr<IPermuteFunction> &pre_fn);
 
   void execute(const IODescription &desc) final;
 
@@ -116,11 +122,12 @@ private:
     const auto &operand = _graph.operands().at(operand_index);
     const auto tensor = _output_tensors[index.value()];
     const auto tensor_layout = tensor->layout();
+    const auto tensor_shape = convertShape(getShape(tensor.get()), tensor->layout(), io_layout);
 
     if (((tensor_layout == ir::Layout::NCHW) && (io_layout == ir::Layout::NHWC)) ||
         ((tensor_layout == ir::Layout::NHWC) && (io_layout == ir::Layout::NCHW)))
     {
-      return std::make_unique<PermutateSink<T>>(buffer, length, operand.shape(), io_layout);
+      return std::make_unique<PermutateSink<T>>(buffer, length, tensor_shape, io_layout);
     }
     // TODO Change this to return error
     assert(io_layout != ir::Layout::UNKNOWN ||
@@ -154,6 +161,7 @@ protected:
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
+  std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
 };

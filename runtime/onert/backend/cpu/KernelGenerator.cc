@@ -16,57 +16,58 @@
 
 #include "KernelGenerator.h"
 
-#include "kernel/AbsLayer.h"
-#include "kernel/AddLayer.h"
-#include "kernel/ArgMinMaxLayer.h"
-#include "kernel/AvgPoolLayer.h"
-#include "kernel/CastLayer.h"
-#include "kernel/CompareLayer.h"
-#include "kernel/ConcatLayer.h"
-#include "kernel/ConvolutionLayer.h"
-#include "kernel/CosLayer.h"
-#include "kernel/DepthwiseConvolutionLayer.h"
-#include "kernel/DivLayer.h"
-#include "kernel/ExpLayer.h"
-#include "kernel/ExpandDimsLayer.h"
-#include "kernel/FillLayer.h"
-#include "kernel/FullyConnectedLayer.h"
-#include "kernel/GatherLayer.h"
-#include "kernel/LogLayer.h"
-#include "kernel/LogisticLayer.h"
-#include "kernel/MaxLayer.h"
-#include "kernel/MaxPoolLayer.h"
-#include "kernel/MeanLayer.h"
-#include "kernel/MinLayer.h"
-#include "kernel/MulLayer.h"
-#include "kernel/NegLayer.h"
-#include "kernel/OneHotLayer.h"
-#include "kernel/OperationUtils.h"
-#include "kernel/PackLayer.h"
-#include "kernel/PadLayer.h"
-#include "kernel/PowLayer.h"
-#include "kernel/ReduceLayer.h"
-#include "kernel/ReLULayer.h"
-#include "kernel/ReshapeLayer.h"
-#include "kernel/ReverseLayer.h"
-#include "kernel/RoundLayer.h"
-#include "kernel/RsqrtLayer.h"
-#include "kernel/SelectLayer.h"
-#include "kernel/ShapeLayer.h"
-#include "kernel/SinLayer.h"
-#include "kernel/SliceLayer.h"
-#include "kernel/SoftMaxLayer.h"
-#include "kernel/StridedSliceLayer.h"
-#include "kernel/SplitLayer.h"
-#include "kernel/SubLayer.h"
-#include "kernel/TanhLayer.h"
-#include "kernel/TileLayer.h"
-#include "kernel/TransposeLayer.h"
-#include "kernel/UnpackLayer.h"
-#include "kernel/LogicalNotLayer.h"
-#include "kernel/ZerosLikeLayer.h"
-#include "kernel/SquaredDiffLayer.h"
-#include "kernel/LogicalOrLayer.h"
+#include "ops/AbsLayer.h"
+#include "ops/AddLayer.h"
+#include "ops/ArgMinMaxLayer.h"
+#include "ops/AvgPoolLayer.h"
+#include "ops/CastLayer.h"
+#include "ops/CompareLayer.h"
+#include "ops/ConcatLayer.h"
+#include "ops/ConvolutionLayer.h"
+#include "ops/CosLayer.h"
+#include "ops/DepthwiseConvolutionLayer.h"
+#include "ops/DivLayer.h"
+#include "ops/ExpLayer.h"
+#include "ops/ExpandDimsLayer.h"
+#include "ops/FillLayer.h"
+#include "ops/FullyConnectedLayer.h"
+#include "ops/GatherLayer.h"
+#include "ops/LogLayer.h"
+#include "ops/LogisticLayer.h"
+#include "ops/MaxLayer.h"
+#include "ops/MaxPoolLayer.h"
+#include "ops/MeanLayer.h"
+#include "ops/MinLayer.h"
+#include "ops/MulLayer.h"
+#include "ops/NegLayer.h"
+#include "ops/OneHotLayer.h"
+#include "ops/OperationUtils.h"
+#include "ops/PackLayer.h"
+#include "ops/PadLayer.h"
+#include "ops/PowLayer.h"
+#include "ops/RangeLayer.h"
+#include "ops/ReduceLayer.h"
+#include "ops/ReLULayer.h"
+#include "ops/ReshapeLayer.h"
+#include "ops/ReverseLayer.h"
+#include "ops/RoundLayer.h"
+#include "ops/RsqrtLayer.h"
+#include "ops/SelectLayer.h"
+#include "ops/ShapeLayer.h"
+#include "ops/SinLayer.h"
+#include "ops/SliceLayer.h"
+#include "ops/SoftMaxLayer.h"
+#include "ops/StridedSliceLayer.h"
+#include "ops/SplitLayer.h"
+#include "ops/SubLayer.h"
+#include "ops/TanhLayer.h"
+#include "ops/TileLayer.h"
+#include "ops/TransposeLayer.h"
+#include "ops/UnpackLayer.h"
+#include "ops/LogicalNotLayer.h"
+#include "ops/ZerosLikeLayer.h"
+#include "ops/SquaredDiffLayer.h"
+#include "ops/LogicalOrLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -84,10 +85,11 @@ namespace cpu
 {
 
 KernelGenerator::KernelGenerator(
-    const ir::Operands &operand_ctx, const std::shared_ptr<TensorBuilder> &tensor_builder,
+    const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
+    const std::shared_ptr<TensorBuilder> &tensor_builder,
     const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder)
-    : _ctx(operand_ctx), _tensor_builder(tensor_builder), _kernel_builder(kernel_builder),
-      _current_op_seq_layout(ir::Layout::UNKNOWN)
+    : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
+      _kernel_builder(kernel_builder), _current_op_seq_layout(ir::Layout::UNKNOWN)
 {
   // DO NOTHING
 }
@@ -98,18 +100,20 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_builder->tensorRegistry());
 
+  auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
   auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
-      _ctx, _tensor_builder->dynamicTensorManager(), _tensor_builder->tensorRegistry());
+      _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
-  _return_fn_seq = _tensor_builder->supportDynamicTensor()
-                       ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
-                             op_seq, std::move(dyn_shape_inferer))
-                       : std::make_unique<exec::FunctionSequence>();
+  _return_fn_seq =
+      _tensor_builder->supportDynamicTensor()
+          ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+                op_seq, _operations_ctx, std::move(dyn_shape_inferer), dyn_tensor_manager)
+          : std::make_unique<exec::FunctionSequence>();
 
   _current_op_seq_layout = op_seq.getLayout();
-  for (const auto &e : op_seq.operations())
+  for (const auto &operation_idx : op_seq.operations())
   {
-    const auto &node = *(e.node);
+    const auto &node = _operations_ctx.at(operation_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
 
@@ -150,7 +154,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   auto ker_alloc = _tensor_builder->at(ker_index).get();
   auto bias_alloc = _tensor_builder->at(bias_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ConvolutionLayer>();
+  auto fn = std::make_unique<ops::ConvolutionLayer>();
 
   fn->configure(ifm_alloc, ker_alloc, bias_alloc, padding_type, padding.left, padding.right,
                 padding.top, padding.bottom, stride.horizontal, stride.vertical, activation,
@@ -185,7 +189,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   auto ker_alloc = _tensor_builder->at(ker_index).get();
   auto bias_alloc = _tensor_builder->at(bias_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::DepthwiseConvolutionLayer>();
+  auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
 
   fn->configure(ifm_alloc, ker_alloc, bias_alloc, padding.left, padding.right, padding.top,
                 padding.bottom, stride.horizontal, stride.vertical, multiplier, activation,
@@ -212,7 +216,7 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::MaxPoolLayer>();
+  auto fn = std::make_unique<ops::MaxPoolLayer>();
 
   fn->configure(ifm_alloc, padding.left, padding.right, padding.top, padding.bottom,
                 stride.horizontal, stride.vertical, kw, kh, activation, ofm_alloc);
@@ -237,7 +241,7 @@ void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::AvgPoolLayer>();
+  auto fn = std::make_unique<ops::AvgPoolLayer>();
 
   fn->configure(ifm_alloc, padding.left, padding.right, padding.top, padding.bottom,
                 stride.horizontal, stride.vertical, kw, kh, activation, ofm_alloc);
@@ -250,16 +254,15 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = _ctx.at(ofm_index).shape().rank();
-  const auto axis =
-      ::onert::backend::cpu::kernel::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
   auto output_alloc = _tensor_builder->at(ofm_index).get();
 
-  std::vector<const operand::Tensor *> input_tensors;
+  std::vector<const Tensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_builder->at(ifm_idx).get());
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ConcatLayer>();
+  auto fn = std::make_unique<ops::ConcatLayer>();
 
   fn->configure(input_tensors, axis, output_alloc);
 
@@ -276,7 +279,7 @@ void KernelGenerator::visit(const ir::operation::Fill &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto value_alloc = _tensor_builder->at(value_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::FillLayer>();
+  auto fn = std::make_unique<ops::FillLayer>();
 
   fn->configure(input_alloc, value_alloc, output_alloc);
 
@@ -296,9 +299,9 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto weight_alloc = _tensor_builder->at(weight_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  auto bias_alloc = bias_index.undefined() ? nullptr : _tensor_builder->at(bias_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::FullyConnectedLayer>();
+  auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
   fn->configure(input_alloc, weight_alloc, bias_alloc, activation, output_alloc);
 
@@ -314,7 +317,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
 
   // optional 2nd input
-  operand::Tensor *shape_alloc = nullptr;
+  Tensor *shape_alloc = nullptr;
 
   if (node.getInputs().size() == 2)
   {
@@ -322,7 +325,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
     shape_alloc = _tensor_builder->at(shape_index).get();
   }
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+  auto fn = std::make_unique<ops::ReshapeLayer>();
 
   fn->configure(input_alloc, shape_alloc, output_alloc);
   _return_fn = std::move(fn);
@@ -337,7 +340,7 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
 
   // Squeeze can share same kernel with reshape
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ReshapeLayer>();
+  auto fn = std::make_unique<ops::ReshapeLayer>();
 
   fn->configure(input_alloc, nullptr, output_alloc);
 
@@ -354,7 +357,7 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SoftMaxLayer>();
+  auto fn = std::make_unique<ops::SoftMaxLayer>();
 
   fn->configure(input_alloc, beta, output_alloc);
 
@@ -373,7 +376,7 @@ void KernelGenerator::visit(const ir::operation::Add &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::AddLayer>();
+  auto fn = std::make_unique<ops::AddLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
 
@@ -392,7 +395,7 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
 
   auto comparison_type = node.param().comparison_type;
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::CompareLayer>();
+  auto fn = std::make_unique<ops::CompareLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, comparison_type, ofm_alloc);
 
@@ -429,7 +432,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (input_shape.rank() + axis_raw) : axis_raw);
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::GatherLayer>();
+  auto fn = std::make_unique<ops::GatherLayer>();
 
   fn->configure(input_alloc, indices_alloc, output_alloc, axis_value);
 
@@ -449,7 +452,7 @@ void KernelGenerator::visit(const ir::operation::Sub &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SubLayer>();
+  auto fn = std::make_unique<ops::SubLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
 
@@ -469,7 +472,7 @@ void KernelGenerator::visit(const ir::operation::Mul &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::MulLayer>();
+  auto fn = std::make_unique<ops::MulLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
 
@@ -492,7 +495,7 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   assert(indices_alloc->data_type() == OperandType::INT32);
   assert(axis <= static_cast<int>(indices_alloc->num_dimensions()));
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::OneHotLayer>();
+  auto fn = std::make_unique<ops::OneHotLayer>();
 
   fn->configure(indices_alloc, output_alloc, depth, on_value, off_value, axis);
 
@@ -512,7 +515,7 @@ void KernelGenerator::visit(const ir::operation::Div &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::DivLayer>();
+  auto fn = std::make_unique<ops::DivLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
 
@@ -565,7 +568,7 @@ void KernelGenerator::visit(const ir::operation::Exp &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ExpLayer>();
+  auto fn = std::make_unique<ops::ExpLayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -582,7 +585,7 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto axis_alloc = _tensor_builder->at(axis_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ExpandDimsLayer>();
+  auto fn = std::make_unique<ops::ExpandDimsLayer>();
 
   fn->configure(input_alloc, axis_alloc, output_alloc);
 
@@ -597,7 +600,7 @@ void KernelGenerator::visit(const ir::operation::Logistic &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogisticLayer>();
+  auto fn = std::make_unique<ops::LogisticLayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -612,7 +615,7 @@ void KernelGenerator::visit(const ir::operation::Tanh &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::TanhLayer>();
+  auto fn = std::make_unique<ops::TanhLayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -624,18 +627,17 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = node.param().rank;
-  const auto axis =
-      ::onert::backend::cpu::kernel::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
   assert(-rank <= axis && axis < rank);
 
   auto output_alloc = _tensor_builder->at(ofm_index).get();
 
-  std::vector<const operand::Tensor *> input_tensors;
+  std::vector<const Tensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_builder->at(ifm_idx).get());
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::PackLayer>();
+  auto fn = std::make_unique<ops::PackLayer>();
 
   fn->configure(input_tensors, axis, output_alloc);
 
@@ -647,18 +649,17 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   const auto input_index{node.getInputs().at(0)};
 
   const auto rank = node.param().rank;
-  const auto axis =
-      ::onert::backend::cpu::kernel::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
   assert(-rank <= axis && axis < rank);
 
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  std::vector<operand::Tensor *> output_tensors;
+  std::vector<Tensor *> output_tensors;
   for (auto &output_idx : node.getOutputs())
     output_tensors.emplace_back(_tensor_builder->at(output_idx).get());
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::UnpackLayer>();
+  auto fn = std::make_unique<ops::UnpackLayer>();
 
   uint32_t axis_resolved = (axis < 0 ? axis + rank : axis);
 
@@ -679,7 +680,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   auto pad_rank = _ctx.at(pad_index).shape().dim(0);
   auto pad_base = reinterpret_cast<const int32_t *>(_ctx.at(pad_index).data()->base());
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::PadLayer>();
+  auto fn = std::make_unique<ops::PadLayer>();
 
   fn->configure(input, output, pad_base, pad_rank);
 
@@ -696,7 +697,7 @@ void KernelGenerator::visit(const ir::operation::Max &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::MaxLayer>();
+  auto fn = std::make_unique<ops::MaxLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
 
@@ -713,7 +714,7 @@ void KernelGenerator::visit(const ir::operation::Min &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::MinLayer>();
+  auto fn = std::make_unique<ops::MinLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
 
@@ -728,7 +729,7 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::CastLayer>();
+  auto fn = std::make_unique<ops::CastLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -744,7 +745,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto rank = node.param().rank;
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::TransposeLayer>();
+  auto fn = std::make_unique<ops::TransposeLayer>();
 
   fn->configure(input_alloc, output_alloc, node.param().perm, rank);
 
@@ -759,9 +760,25 @@ void KernelGenerator::visit(const ir::operation::ReduceSum &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReduceLayer>();
+  auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kSum, node.param().axes,
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kSum, node.param().axes,
+                node.param().keep_dims);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ReduceAll &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<ops::ReduceLayer>();
+
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAll, node.param().axes,
                 node.param().keep_dims);
 
   _return_fn = std::move(fn);
@@ -775,9 +792,9 @@ void KernelGenerator::visit(const ir::operation::ReduceAny &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReduceLayer>();
+  auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kAny, node.param().axes,
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAny, node.param().axes,
                 node.param().keep_dims);
 
   _return_fn = std::move(fn);
@@ -791,9 +808,9 @@ void KernelGenerator::visit(const ir::operation::ReduceMax &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReduceLayer>();
+  auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kMax, node.param().axes,
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMax, node.param().axes,
                 node.param().keep_dims);
 
   _return_fn = std::move(fn);
@@ -807,9 +824,9 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReduceLayer>();
+  auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kMin, node.param().axes,
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMin, node.param().axes,
                 node.param().keep_dims);
 
   _return_fn = std::move(fn);
@@ -823,7 +840,7 @@ void KernelGenerator::visit(const ir::operation::ReLU &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReLULayer>();
+  auto fn = std::make_unique<ops::ReLULayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -842,7 +859,7 @@ void KernelGenerator::visit(const ir::operation::Select &node)
   auto true_alloc = _tensor_builder->at(true_index).get();
   auto false_alloc = _tensor_builder->at(false_index).get();
 
-  auto fn = std::make_unique<kernel::SelectLayer>();
+  auto fn = std::make_unique<ops::SelectLayer>();
 
   fn->configure(condition_alloc, true_alloc, false_alloc, output_alloc);
 
@@ -861,7 +878,7 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   auto begins_alloc = _tensor_builder->at(begins_index).get();
   auto sizes_alloc = _tensor_builder->at(sizes_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SliceLayer>();
+  auto fn = std::make_unique<ops::SliceLayer>();
 
   fn->configure(input_alloc, begins_alloc, sizes_alloc, output_alloc);
 
@@ -887,7 +904,7 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   auto shrink_axis_mask = node.param().shrink_axis_mask;
   auto rank = node.param().rank;
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::StridedSliceLayer>();
+  auto fn = std::make_unique<ops::StridedSliceLayer>();
 
   fn->configure(input_alloc, starts_alloc, ends_alloc, strides_alloc, output_alloc, begin_mask,
                 end_mask, shrink_axis_mask, rank);
@@ -901,19 +918,18 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   assert(num_splits == static_cast<int>(node.getOutputs().size()));
 
   const auto rank = node.param().rank;
-  const auto axis =
-      ::onert::backend::cpu::kernel::getAxis(rank, node.param().axis, _current_op_seq_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
   auto axis_resolved = axis < 0 ? axis + rank : axis;
   assert(0 <= axis_resolved && axis_resolved < rank);
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   auto in_tensor = _tensor_builder->at(input_idx).get();
 
-  std::vector<operand::Tensor *> out_tensors;
+  std::vector<Tensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
     out_tensors.emplace_back(_tensor_builder->at(output_idx).get());
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SplitLayer>();
+  auto fn = std::make_unique<ops::SplitLayer>();
 
   fn->configure(in_tensor, num_splits, axis_resolved, out_tensors);
 
@@ -928,7 +944,7 @@ void KernelGenerator::visit(const ir::operation::Abs &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::AbsLayer>();
+  auto fn = std::make_unique<ops::AbsLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -943,7 +959,7 @@ void KernelGenerator::visit(const ir::operation::Sin &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SinLayer>();
+  auto fn = std::make_unique<ops::SinLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -958,7 +974,7 @@ void KernelGenerator::visit(const ir::operation::Cos &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::CosLayer>();
+  auto fn = std::make_unique<ops::CosLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -973,7 +989,7 @@ void KernelGenerator::visit(const ir::operation::RSQRT &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::RsqrtLayer>();
+  auto fn = std::make_unique<ops::RsqrtLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -988,7 +1004,7 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ShapeLayer>();
+  auto fn = std::make_unique<ops::ShapeLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -1003,9 +1019,9 @@ void KernelGenerator::visit(const ir::operation::ReduceProd &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<kernel::ReduceLayer>();
+  auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, kernel::ReduceType::kProd, node.param().axes,
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kProd, node.param().axes,
                 node.param().keep_dims);
 
   _return_fn = std::move(fn);
@@ -1021,7 +1037,7 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto axis_alloc = _tensor_builder->at(axis_index).get();
 
-  auto fn = std::make_unique<kernel::ReverseLayer>();
+  auto fn = std::make_unique<ops::ReverseLayer>();
 
   fn->configure(input_alloc, axis_alloc, output_alloc);
 
@@ -1036,7 +1052,7 @@ void KernelGenerator::visit(const ir::operation::Neg &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::NegLayer>();
+  auto fn = std::make_unique<ops::NegLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -1053,7 +1069,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ArgMinMaxLayer>();
+  auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
   fn->configure(input_alloc, output_alloc, axis, /* is_arg_max */ true);
 
@@ -1070,7 +1086,7 @@ void KernelGenerator::visit(const ir::operation::Pow &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::PowLayer>();
+  auto fn = std::make_unique<ops::PowLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ir::Activation::NONE, output_alloc);
 
@@ -1085,7 +1101,7 @@ void KernelGenerator::visit(const ir::operation::Log &node)
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogLayer>();
+  auto fn = std::make_unique<ops::LogLayer>();
 
   fn->configure(ifm_alloc, ofm_alloc);
 
@@ -1100,7 +1116,7 @@ void KernelGenerator::visit(const ir::operation::Round &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::RoundLayer>();
+  auto fn = std::make_unique<ops::RoundLayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -1115,7 +1131,7 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalNotLayer>();
+  auto fn = std::make_unique<ops::LogicalNotLayer>();
 
   fn->configure(input_alloc, output_alloc);
 
@@ -1132,7 +1148,7 @@ void KernelGenerator::visit(const ir::operation::LogicalOr &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::LogicalOrLayer>();
+  auto fn = std::make_unique<ops::LogicalOrLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
 
@@ -1149,7 +1165,7 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::MeanLayer>();
+  auto fn = std::make_unique<ops::MeanLayer>();
 
   fn->configure(input_alloc, output_alloc, axes, keep_dims);
   _return_fn = std::move(fn);
@@ -1158,15 +1174,32 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 void KernelGenerator::visit(const ir::operation::ZerosLike &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
+  const auto input_index{node.getInputs().at(ir::operation::ZerosLike::INPUT)};
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::ZerosLikeLayer>();
+  auto fn = std::make_unique<ops::ZerosLikeLayer>();
 
   fn->configure(input_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
 
+void KernelGenerator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::DELTA)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto start_alloc = _tensor_builder->at(start_index).get();
+  auto limit_alloc = _tensor_builder->at(limit_index).get();
+  auto delta_alloc = _tensor_builder->at(delta_index).get();
+
+  auto fn = std::make_unique<ops::RangeLayer>();
+
+  fn->configure(start_alloc, limit_alloc, delta_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
 
@@ -1180,7 +1213,7 @@ void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
   auto lhs_alloc = _tensor_builder->at(lhs_index).get();
   auto rhs_alloc = _tensor_builder->at(rhs_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::SqDiffLayer>();
+  auto fn = std::make_unique<ops::SqDiffLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
   _return_fn = std::move(fn);
@@ -1196,7 +1229,7 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   auto input_alloc = _tensor_builder->at(input_index).get();
   auto multiples_alloc = _tensor_builder->at(multiples_index).get();
 
-  auto fn = std::make_unique<::onert::backend::cpu::kernel::TileLayer>();
+  auto fn = std::make_unique<ops::TileLayer>();
 
   fn->configure(input_alloc, multiples_alloc, output_alloc);
   _return_fn = std::move(fn);
