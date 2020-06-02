@@ -234,7 +234,7 @@ void LoweredGraph::makeOpSequences(
         // TODO Change setting layout of each backend at another place
         auto backend_layout = backend->config()->supportLayout(node, frontend_layout);
 
-        for (auto operand : node.getInputs())
+        for (auto operand : node.getInputs() | ir::Remove::UNDEFINED)
         {
           auto &&lower_info = operands_lower_info.at(operand);
           lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
@@ -280,7 +280,7 @@ void LoweredGraph::manipulateLowerInfo(
     OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info)
 {
   const auto controlflow_backend = compiler::BackendManager::get().getControlflow();
-  for (auto index : _graph.getInputs())
+  for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
     // Pick just any one from the uses, here the first one is chosen
     // For the other uses, Permute operations will be inserted later
@@ -401,7 +401,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     std::unordered_set<OperationIndex> branched_set;
 
     // Check for branching up
-    for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED)
+    for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       const auto &input_obj = _graph.operands().at(input);
       for (const auto &def : input_obj.getDef())
@@ -446,8 +446,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
       const auto &n = _graph.operations().at(n_index);
 
       // node's output == op_seq's input?
-      const auto &n_inputs = n.getInputs();
-      for (auto input : n_inputs)
+      for (const auto input : n.getInputs() | ir::Remove::UNDEFINED)
       {
         if (node_outputs.contains(input))
         {
@@ -459,8 +458,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
       }
 
       // node's input == op_seq's output?
-      const auto &n_outputs = n.getOutputs();
-      for (auto output : n_outputs)
+      for (const auto output : n.getOutputs())
       {
         if (node_inputs.contains(output))
         {
