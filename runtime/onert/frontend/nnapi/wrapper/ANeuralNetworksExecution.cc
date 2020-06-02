@@ -102,7 +102,7 @@ bool ANeuralNetworksExecution::haveUnspecifiedDims(const onert::ir::OperandIndex
 {
   const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
-  return operand_shape.num_elements() == 0;
+  return onert::ir::haveUnspecifiedDims(operand_shape);
 }
 
 size_t ANeuralNetworksExecution::getOperandSize(const onert::ir::OperandIndex index) noexcept
