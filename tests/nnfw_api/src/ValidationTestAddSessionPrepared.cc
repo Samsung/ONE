@@ -112,4 +112,10 @@ TEST_F(ValidationTestAddSessionPrepared, neg_load_model)
             NNFW_STATUS_ERROR);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, neg_prepare)
+{
+  // Call Prepare twice
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting
