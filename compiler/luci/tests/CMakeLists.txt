@@ -65,6 +65,35 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
 endforeach(RECIPE)
 
+# Generate from res/CircleRecipes
+# NOTE duplicate names should not exist or test may be incorrect
+nncc_find_resource(CircleRecipes)
+set(CIRCLERECIPES_DIR "${CircleRecipes_DIR}")
+
+file(GLOB RECIPES2 RELATIVE ${CIRCLERECIPES_DIR} "${CIRCLERECIPES_DIR}/*/test.recipe")
+
+foreach(RECIPE IN ITEMS ${RECIPES2})
+  get_filename_component(RECIPE_PREFIX ${RECIPE} DIRECTORY)
+
+  set(RECIPE_SOURCE_FILE "${RECIPE_PREFIX}.recipe")
+  set(CIRCLE_OUTPUT_FILE "${RECIPE_PREFIX}.circle")
+
+  # Copy .recipe
+  add_custom_command(OUTPUT "${RECIPE_SOURCE_FILE}"
+                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                             "${CIRCLERECIPES_DIR}/${RECIPE}" "${RECIPE_SOURCE_FILE}"
+                     DEPENDS "${CIRCLERECIPES_DIR}/${RECIPE}"
+                     COMMENT "Generating ${RECIPE_SOURCE_FILE}")
+
+  # Generate .circle
+  add_custom_command(OUTPUT "${CIRCLE_OUTPUT_FILE}"
+                     COMMAND circlechef-file "${RECIPE_SOURCE_FILE}" "${CIRCLE_OUTPUT_FILE}"
+                     DEPENDS circlechef-file "${RECIPE_SOURCE_FILE}"
+                     COMMENT "Generating ${CIRCLE_OUTPUT_FILE}")
+
+  list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
+endforeach(RECIPE)
+
 # Add a dummy target to create a target-level dependency.
 # TODO Find a way to create dependency between CTest tests (added below) and generated testfiles.
 add_custom_target(luci_testfiles ALL DEPENDS ${TESTFILES})
