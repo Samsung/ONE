@@ -132,6 +132,7 @@ private:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+  void visit(const ir::operation::ZerosLike &op);
 
 private:
   /**
@@ -195,6 +196,7 @@ public:
   void visit(const ir::operation::Tanh &op);
   // TODO write op starting from U
   // TODO write op starting from Z
+  void visit(const ir::operation::ZerosLike &op);
 
 private:
   /**
