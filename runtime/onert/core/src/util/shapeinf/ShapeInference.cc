@@ -22,6 +22,7 @@
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
+#include <cassert>
 #include <sstream>
 
 namespace onert
@@ -263,42 +264,67 @@ void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                               const ir::OperandIndex lhs_idx,
                                               const ir::OperandIndex rhs_idx)
 {
-  // check if output is not dynamic
-  auto output_idx = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_idx);
-  if (!output->is_dynamic())
-    return;
-
   auto lhs = _tensor_registry->getITensor(lhs_idx);
   auto lhs_shape = getShape(lhs.get());
 
   auto rhs = _tensor_registry->getITensor(rhs_idx);
   auto rhs_shape = getShape(rhs.get());
 
-  // set output shape and output buffer
-  ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
-  setShape(output.get(), new_shape);
+  /*
+    Here, the state after compilation (satic shape inference) could be one of the following:
 
-  _dynamic_tensor_manager->allocate(output_idx, new_shape);
+              lhs       rhs              output     execution-time shape inf required
+      ------------------------------------------    ---------------------------------
+      case 1) static    static           static      X
+      case 2) one or both are dynamic    dynamic     O
+
+    Then nnfw_apply_tensorinf() could change one or both inputs dynamic.
+    So, in this method, we have one more state and we have to re-calculate shape for this shape.
+
+      case 3) one or both are dynamic    static      O
+
+    So, only when all inputs are static, we can skip dynamic shape inference.
+  */
+  if ((!lhs->is_dynamic()) && (!rhs->is_dynamic()))
+    return;
+
+  auto output_idx = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_idx);
+
+  ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
+
+  _dynamic_tensor_manager->applyShape(output_idx, new_shape);
   assert(output->buffer() != nullptr);
 }
 
 void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
-    return;
-
-  // getting output shape
+  // check if input is not dynamic
   auto input = _tensor_registry->getITensor(input_ind);
   auto output_shape = getShape(input.get());
 
-  // set output shape and output buffer
-  setShape(output.get(), output_shape);
+  /*
+    Here, the state after compilation (satic shape inference) could be one of the following:
 
-  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+              input      output    execution-time shape inf required
+      -------------------------    ---------------------------------
+      case 1) static     static      X
+      case 2) dynamic    dynamic     O
+
+    Then nnfw_apply_tensorinf() could change input dynamic.
+    So, in this method, we have one more state and we have to re-calculate shape for this shape.
+
+      case 3) dynamic    static      O
+
+    So, only when input is static, we can skip dynamic shape inference.
+  */
+  if (!input->is_dynamic())
+    return;
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
 

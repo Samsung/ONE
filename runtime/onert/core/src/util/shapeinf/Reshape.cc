@@ -84,7 +84,29 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
+
+  auto input_ind = op.getInputs().at(ir::operation::Reshape::Input::INPUT);
+  auto input = _tensor_registry->getITensor(input_ind);
+
+  /*
+    Here, the state after compilation (satic shape inference) could be one of the following:
+
+              input1     input2      output     execution-time shape inf required
+              -----------------------------     --------------------------------
+      case 1) static     const       static       X
+      case 2) static    placeholder  dynamic      O
+      case 3) dynamic    const       dynamic      O
+      case 4) dynamic   placeholder  dynamic      O
+
+    Then nnfw_apply_tensorinf() could change input dynamic.
+    So, in this method, we could have one more state and we have to re-calculate shape
+    for this shape.
+
+      case 5) dynamic    const       static       O
+
+    So, only when both input1 and ouput are static, we can skip dynamic shape inference.
+  */
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
   // from op, access the buffer of second input to read new shape
@@ -112,19 +134,10 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
     output_shape.dim(d) = new_shape_buf[d];
 
   // sanity check
-  {
-    auto input_ind = op.getInputs().at(ir::operation::Reshape::Input::INPUT);
-    auto input = _tensor_registry->getITensor(input_ind);
-    assert(input);
+  if (!isReshapableShape(input.get(), output_shape))
+    throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
 
-    if (!isReshapableShape(input.get(), output_shape))
-      throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
-  }
-
-  // set output shape and output buffer
-  setShape(output.get(), output_shape);
-
-  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
 

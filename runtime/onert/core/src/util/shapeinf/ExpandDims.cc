@@ -73,15 +73,35 @@ void StaticInferer::visit(const ir::operation::ExpandDims &op)
 
 void DynamicInferer::visit(const ir::operation::ExpandDims &op)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
-    return;
-
-  // getting output shape
+  // check if input is not dynamic
   auto input_ind = op.getInputs().at(ir::operation::ExpandDims::INPUT);
   auto input = _tensor_registry->getITensor(input_ind);
+
+  // check if output is not dynamic, meaning when 1st input is static and 2nd input is const
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  /*
+    Here, the state after compilation (satic shape inference) could be one of the following:
+
+              input1     input2      output     execution-time shape inf required
+              -----------------------------     --------------------------------
+      case 1) static     const       static      X
+      case 2) static    placeholder  dynamic     O
+      case 3) dynamic    const       dynamic     O
+      case 4) dynamic   placeholder  dynamic     O
+
+    Then nnfw_apply_tensorinf() could change input dynamic.
+    So, in this method, we could have one more state and we have to re-calculate shape
+    for this shape.
+
+      case 5) dynamic    const       static       O
+
+    So, only when input1 and ouput are static, we can skip dynamic shape inference.
+  */
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+    return;
+
   ir::Shape input_shape = getShape(input.get());
 
   auto axis_ind = op.getInputs().at(ir::operation::ExpandDims::AXIS);
@@ -91,11 +111,7 @@ void DynamicInferer::visit(const ir::operation::ExpandDims &op)
 
   auto output_shape = onert::shape_inference::inferExpandDimsShape(input_shape, axis_buf[0]);
 
-  // set output shape and output buffer
-  setShape(output.get(), output_shape);
-
-  // assert(output->buffer() == nullptr);
-  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
 
