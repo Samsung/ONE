@@ -320,7 +320,8 @@ void OperationExporter::visit(luci::CircleConv2D *node)
   auto outputs = builder.CreateVector(outputs_vec);
   circle::Padding padding = getOpPadding(node->padding());
   auto options = CreateConv2DOptions(builder, padding, node->stride()->w(), node->stride()->h(),
-                                     to_circle_actfunc(node->fusedActivationFunction()));
+                                     to_circle_actfunc(node->fusedActivationFunction()),
+                                     node->dilation()->w(), node->dilation()->h());
 
   // Make CONV_2D operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,

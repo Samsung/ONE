@@ -22,6 +22,7 @@
 
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
+#include "luci/IR/AttrDilation.h"
 #include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/LuciNodeMixins.h"
 
@@ -52,9 +53,13 @@ public:
   const Stride *stride(void) const { return &_stride; }
   Stride *stride(void) { return &_stride; }
 
+  const Dilation *dilation(void) const { return &_dilation; }
+  Dilation *dilation(void) { return &_dilation; }
+
 private:
   Padding _padding = Padding::UNDEFINED;
   Stride _stride;
+  Dilation _dilation;
 };
 
 } // namespace luci
