@@ -274,6 +274,21 @@ public:
   }
 };
 
+class L2NormPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_L2NormOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class LeakyReluPrinter : public OpPrinter
 {
 public:
@@ -558,6 +573,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
