@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-#include "MemoryPlannerFactory.h"
+#ifndef __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_FACTORY_H__
+#define __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_FACTORY_H__
+
+#include "backend/cpu_common/IMemoryPlanner.h"
+
+#include <string>
 
 namespace onert
 {
@@ -23,29 +28,20 @@ namespace backend
 namespace cpu_common
 {
 
-MemoryPlannerFactory &MemoryPlannerFactory::get()
+class MemoryPlannerFactory
 {
-  static MemoryPlannerFactory instance;
-  return instance;
-}
+public:
+  static MemoryPlannerFactory &get();
 
-IMemoryPlanner *MemoryPlannerFactory::create(const std::string &key)
-{
-  if (key == "FirstFit")
-  {
-    return new FirstFitPlanner;
-  }
-  else if (key == "Bump")
-  {
-    return new BumpPlanner;
-  }
-  else if (key == "WIC")
-  {
-    return new WICPlanner;
-  }
-  return new FirstFitPlanner; // Default Planner
-}
+private:
+  MemoryPlannerFactory() = default;
+
+public:
+  IMemoryPlanner *create(const std::string &key);
+};
 
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_FACTORY_H__

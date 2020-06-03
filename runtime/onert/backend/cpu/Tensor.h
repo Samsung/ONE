@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_TENSOR_H__
 #define __ONERT_BACKEND_CPU_TENSOR_H__
 
-#include "Allocator.h"
+#include "backend/cpu_common/Allocator.h"
 
 #include <backend/ITensor.h>
 #include <ir/OperandInfo.h>

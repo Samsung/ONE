@@ -19,7 +19,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
 
-#include "MemoryManager.h"
+#include "backend/cpu_common/MemoryManager.h"
 #include "TensorRegistry.h"
 
 #include <backend/IDynamicTensorManager.h>
@@ -69,7 +69,7 @@ private:
    * @brief Memory manager for dynamic tensor.
    * @todo  DynamicMemoryManager is not optimized. Optimized one is needed
    */
-  std::shared_ptr<DynamicMemoryManager> _dynamic_mem_mgr;
+  std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 
   // contains list of dynamic tensor index, which can be deallocated after running operation

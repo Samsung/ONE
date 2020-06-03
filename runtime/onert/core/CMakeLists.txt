@@ -1,4 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cc")
+file(GLOB_RECURSE TESTS "*.test.cc")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -20,3 +22,18 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
         DESTINATION "include/onert"
         FILES_MATCHING PATTERN "*.h" PATTERN "*.lst"
         )
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+# Unit Tests
+set(TEST_ONERT_BACKEND_CPU_COMMON test_onert_backend_cpu_common)
+
+add_executable(${TEST_ONERT_BACKEND_CPU_COMMON} ${TESTS})
+
+target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} onert_core)
+target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} gtest gtest_main dl ${LIB_PTHREAD})
+
+add_test(${TEST_ONERT_BACKEND_CPU_COMMON} ${TEST_ONERT_BACKEND_CPU_COMMON})
+install(TARGETS ${TEST_ONERT_BACKEND_CPU_COMMON} DESTINATION unittest)
