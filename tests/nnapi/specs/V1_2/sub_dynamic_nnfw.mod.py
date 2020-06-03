@@ -21,7 +21,7 @@ model = Model()
 
 model_input1_shape = [3, 4]   # first input shape of Sub. 12 float32s
 
-dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input1_shape)
+dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input1_shape, "TENSOR_FLOAT32")
 
 test_node_input = dynamic_layer.getTestNodeInput() # first input of Sub is dynamic tensor
 
