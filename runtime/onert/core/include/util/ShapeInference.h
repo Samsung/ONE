@@ -111,6 +111,7 @@ private:
   // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
+  void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
@@ -173,6 +174,7 @@ public:
   // Remove TODO when any op starting from the alphabet is added
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
+  void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
