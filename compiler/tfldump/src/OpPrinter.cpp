@@ -627,7 +627,6 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[tflite::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
-
   // There is no Option for TOPK_V2
   _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
