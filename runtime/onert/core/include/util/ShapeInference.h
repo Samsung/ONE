@@ -115,14 +115,14 @@ private:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
-  // TODO write op starting from D
+  void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
-  // TODO write op starting from M
+  void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
@@ -178,14 +178,14 @@ public:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
-  // TODO write op starting from D
+  void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   // TODO write op starting from F
   // TODO write op starting from G
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
-  // TODO write op starting from M
+  void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from P
   void visit(const ir::operation::Reshape &op);
