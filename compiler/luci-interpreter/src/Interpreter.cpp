@@ -64,15 +64,44 @@ static const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
   }
 }
 
+static bool isExecutableNode(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // These nodes denote inputs / outputs of a graph.
+    case luci::CircleOpcode::CONST:
+    case luci::CircleOpcode::CIRCLEINPUT:
+    case luci::CircleOpcode::CIRCLEOUTPUT:
+    // The following nodes denote outputs of multiple-output nodes.
+    case luci::CircleOpcode::CIRCLESPLITOUT:
+      return false;
+    default:
+      return true;
+  }
+}
+
+static bool isTensorProducingNode(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // Output nodes do not produce tensors.
+    case luci::CircleOpcode::CIRCLEOUTPUT:
+    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
+    // are produced by the corresponding *Out nodes instead.
+    case luci::CircleOpcode::SPLIT:
+      return false;
+    default:
+      return true;
+  }
+}
+
 void Interpreter::createTensors(const loco::Graph *graph)
 {
   for (uint32_t i = 0; i < graph->nodes()->size(); ++i)
   {
-    const auto *node = dynamic_cast<const luci::CircleNode *>(graph->nodes()->at(i));
-    assert(node != nullptr);
+    const auto *node = loco::must_cast<const luci::CircleNode *>(graph->nodes()->at(i));
 
-    // Output nodes do not produce new tensors.
-    if (node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
+    if (!isTensorProducingNode(node))
       continue;
 
     // Only Input and Const nodes have shapes. Shapes of intermediate tensors will be inferred.
@@ -114,17 +143,10 @@ void Interpreter::createKernels(const loco::Graph *graph)
 
   for (uint32_t i = 0; i < graph->nodes()->size(); ++i)
   {
-    const auto *node = dynamic_cast<const luci::CircleNode *>(graph->nodes()->at(i));
-    assert(node != nullptr);
+    const auto *node = loco::must_cast<const luci::CircleNode *>(graph->nodes()->at(i));
 
-    if (node->opcode() == luci::CircleOpcode::CONST ||
-        node->opcode() == luci::CircleOpcode::CIRCLEINPUT ||
-        node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
-    {
-      continue;
-    }
-
-    _kernel_map->setKernel(node, node->accept(&kernel_builder));
+    if (isExecutableNode(node))
+      _kernel_map->setKernel(node, node->accept(&kernel_builder));
   }
 }
 
@@ -153,18 +175,12 @@ Interpreter::Interpreter(const luci::Module *module)
        loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_main_graph))))
   {
     const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-    assert(node != nullptr);
 
-    // These nodes are auxiliary.
-    if (node->opcode() == luci::CircleOpcode::CONST ||
-        node->opcode() == luci::CircleOpcode::CIRCLEINPUT ||
-        node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
+    if (isExecutableNode(node))
     {
-      continue;
+      Kernel *kernel = _kernel_map->getKernel(node);
+      kernel->configure();
     }
-
-    Kernel *kernel = _kernel_map->getKernel(node);
-    kernel->configure();
   }
 }
 
@@ -201,19 +217,14 @@ void Interpreter::interpret()
   {
     const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
 
-    // Compute the result for the node. CircleConst, CircleInput and CircleOutput nodes
-    // are auxiliary, there is nothing to compute for them.
-    if (node->opcode() != luci::CircleOpcode::CONST &&
-        node->opcode() != luci::CircleOpcode::CIRCLEINPUT &&
-        node->opcode() != luci::CircleOpcode::CIRCLEOUTPUT)
+    if (isExecutableNode(node))
     {
       Kernel *kernel = _kernel_map->getKernel(node);
       kernel->execute();
     }
 
-    // Notify the observers that the node's output tensor has changed. This is not done
-    // for CircleOutput nodes because they do not produce any tensors.
-    if (node->opcode() != luci::CircleOpcode::CIRCLEOUTPUT)
+    // Notify the observers that the node's output tensor has changed.
+    if (isTensorProducingNode(node))
     {
       for (ExecutionObserver *observer : _observers)
       {

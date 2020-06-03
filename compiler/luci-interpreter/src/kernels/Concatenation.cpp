@@ -104,7 +104,7 @@ template <typename T> void Concatenation::evalGeneric() const
   if (axis < 0)
     axis += _output->shape().num_dims();
 
-  VectorOfTensors<T> inputs(_inputs);
+  VectorOfTensors<T, true> inputs(_inputs);
   tflite::ConcatenationParams params{};
   params.axis = axis;
   params.inputs_count = _inputs.size();
@@ -118,7 +118,7 @@ void Concatenation::evalQuantized() const
   if (axis < 0)
     axis += _output->shape().num_dims();
 
-  VectorOfQuantizedTensors inputs(_inputs);
+  VectorOfQuantizedTensors<true> inputs(_inputs);
   tflite::ConcatenationParams params{};
   params.axis = axis;
   params.input_zeropoint = inputs.zero_point();

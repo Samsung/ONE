@@ -30,11 +30,27 @@
 #include "kernels/Pad.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
+#include "kernels/Split.h"
 
 #include <stdexcept>
 
 namespace luci_interpreter
 {
+
+template <typename CircleNodeOut>
+static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode *node)
+{
+  std::vector<const CircleNodeOut *> output_nodes;
+  for (const loco::Node *loco_node : loco::succs(node))
+  {
+    output_nodes.push_back(loco::must_cast<const CircleNodeOut *>(loco_node));
+  }
+  std::sort(output_nodes.begin(), output_nodes.end(),
+            [](const CircleNodeOut *node1, const CircleNodeOut *node2) {
+              return node1->index() < node2->index();
+            });
+  return {output_nodes.cbegin(), output_nodes.cend()};
+}
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 {
@@ -95,7 +111,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConcatenation *no
   ConcatenationParams params{};
   params.axis = node->axis();
 
-  return std::make_unique<kernels::Concatenation>(inputs, output, params);
+  return std::make_unique<kernels::Concatenation>(std::move(inputs), output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConst *)
@@ -270,6 +286,23 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
   params.beta = node->beta();
 
   return std::make_unique<kernels::Softmax>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
+{
+  auto output_nodes = collectOutputNodes<luci::CircleSplitOut>(node);
+  assert(node->arity() == 2);
+  assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
+
+  if (dynamic_cast<const luci::CircleConst *>(node->split_dim()) == nullptr)
+    throw std::runtime_error("Dynamic axis is not yet supported.");
+
+  const Tensor *axis = getInputTensor(node->split_dim());
+  const Tensor *input = getInputTensor(node->input());
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  // NOTE 'num_splits' attribute is ignored.
+  return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
 }
 
 } // namespace luci_interpreter
