@@ -30,6 +30,6 @@ TEST(CircleConv2Dest, constructor_P)
   ASSERT_EQ(nullptr, conv2d_node.input());
   ASSERT_EQ(nullptr, conv2d_node.filter());
   ASSERT_EQ(nullptr, conv2d_node.bias());
-  ASSERT_EQ(1,       conv2d_node.dilation()->h());
-  ASSERT_EQ(1,       conv2d_node.dilation()->w());
+  ASSERT_EQ(1, conv2d_node.dilation()->h());
+  ASSERT_EQ(1, conv2d_node.dilation()->w());
 }
