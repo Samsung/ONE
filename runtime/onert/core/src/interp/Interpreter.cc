@@ -52,6 +52,11 @@ public:
                          << " operation (id: " << idx.value() << ")" << std::endl;
 
     const auto nodeOpCode = node.opcode();
+    if (_kernels.find(nodeOpCode) == _kernels.end())
+    {
+      throw std::runtime_error{"Interpreter: Operation " + nodeName + " is not yet implemented"};
+    }
+
     if (_kernels[nodeOpCode]->prepare != nullptr)
     {
       _kernels[nodeOpCode]->prepare(_env, node);
