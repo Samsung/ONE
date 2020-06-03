@@ -13,6 +13,7 @@ GeneratedTests.argmax_2
 GeneratedTests.argmax_2_quant8
 GeneratedTests.argmax_3
 GeneratedTests.argmax_3_quant8
+GeneratedTests.argmax_dynamic_nnfw
 GeneratedTests.argmax_float_1_nnfw
 GeneratedTests.argmax_float_2_nnfw
 GeneratedTests.argmax_int32_nnfw
