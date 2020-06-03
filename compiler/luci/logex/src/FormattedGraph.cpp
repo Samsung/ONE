@@ -414,6 +414,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleConv2D *node, locop::No
   s.args().append("bias", tbl()->lookup(node->bias()));
 
   s.args().append("stride(h,w)", to_str(node->stride()));
+  s.args().append("dilation(h,w)", to_str(node->dilation()));
+
   s.args().append("padding", to_str(node->padding()));
   s.args().append("fused", to_str(node->fusedActivationFunction()));
 
