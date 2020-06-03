@@ -20,6 +20,7 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
+#include "luci/IR/AttrDilation.h"
 #include "luci/IR/AttrFilter.h"
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
@@ -57,10 +58,14 @@ public:
   int32_t depthMultiplier(void) const { return _depth_multiplier; }
   void depthMultiplier(int32_t arg) { _depth_multiplier = arg; }
 
+  const Dilation *dilation(void) const { return &_dilation; }
+  Dilation *dilation(void) { return &_dilation; }
+
 private:
   Padding _padding = Padding::UNDEFINED;
   Stride _stride;
   int32_t _depth_multiplier = 0;
+  Dilation _dilation;
 };
 
 } // namespace luci
