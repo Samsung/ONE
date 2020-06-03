@@ -268,7 +268,7 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
     for (const auto &sig_dim : *tensor_shape_sig)
     {
       if (sig_dim == -1)
-        shape.dim(i) = UNSPECIFIED_DIM;
+        shape.dim(i) = ir::Shape::UNSPECIFIED_DIM;
       i++;
     }
   }
