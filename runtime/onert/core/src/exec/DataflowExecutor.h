@@ -53,7 +53,6 @@ public:
                    const backend::TensorBuilderSet &tensor_builders, compiler::CodeMap &&code_map);
 
   void executeImpl() override;
-  void setProfilingMode(bool profiling) { _profiling = profiling; }
 
 protected:
   int64_t calculateRank(const std::vector<ir::OperationIndex> &operations);
@@ -87,7 +86,6 @@ protected:
 
   /// @brief Which job runs which op and function.
   std::unordered_map<uint32_t, ir::OpSequenceIndex> _job_to_op_seq;
-  bool _profiling;
 };
 
 } // namespace exec
