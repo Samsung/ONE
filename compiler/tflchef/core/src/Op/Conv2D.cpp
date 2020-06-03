@@ -25,14 +25,18 @@ flatbuffers::Offset<void> Conv2DChef::value(flatbuffers::FlatBufferBuilder &fbb)
 
   assert(operation.has_conv2d_options());
 
-  auto tflite_padding = as_tflite_padding(operation.conv2d_options().padding());
-  auto tflite_activation = as_tflite_activation(operation.conv2d_options().activation());
+  auto conv2d_options = operation.conv2d_options();
+
+  auto tflite_padding = as_tflite_padding(conv2d_options.padding());
+  auto tflite_activation = as_tflite_activation(conv2d_options.activation());
 
   tflite::Conv2DOptionsBuilder conv2d_options_builder{fbb};
   conv2d_options_builder.add_padding(tflite_padding);
-  conv2d_options_builder.add_stride_h(operation.conv2d_options().stride_h());
-  conv2d_options_builder.add_stride_w(operation.conv2d_options().stride_w());
+  conv2d_options_builder.add_stride_h(conv2d_options.stride_h());
+  conv2d_options_builder.add_stride_w(conv2d_options.stride_w());
   conv2d_options_builder.add_fused_activation_function(tflite_activation);
+  conv2d_options_builder.add_dilation_w_factor(conv2d_options.dilation_w_factor());
+  conv2d_options_builder.add_dilation_h_factor(conv2d_options.dilation_h_factor());
 
   return conv2d_options_builder.Finish().Union();
 }
