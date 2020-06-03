@@ -75,7 +75,7 @@ from test_generator import Internal
 
 class DynamicInputGenerator:
 
-    def __init__(self, model, model_input_shape_list, tensor_type):
+    def __init__(self, model, model_input_shape_list, tensor_type='TENSOR_FLOAT32'):
         self.new_shape = 0
         self.model_input = 0
         self.test_input = 0
