@@ -123,6 +123,8 @@ private:
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
+  void visit(const ir::operation::Max &op);
+  void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from O
@@ -192,6 +194,8 @@ public:
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
+  void visit(const ir::operation::Min &op);
+  void visit(const ir::operation::Max &op);
   void visit(const ir::operation::Neg &op);
   // TODO write op starting from O
   void visit(const ir::operation::Pack &op);
