@@ -215,6 +215,7 @@ GeneratedTests.max_pool_quant8_3
 GeneratedTests.max_pool_quant8_4
 GeneratedTests.maximum_broadcast
 GeneratedTests.maximum_broadcast_quant8
+GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple
 GeneratedTests.maximum_simple_quant8
