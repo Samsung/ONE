@@ -78,10 +78,33 @@ void StaticInferer::visit(const ir::operation::Concat &op)
 
 void DynamicInferer::visit(const ir::operation::Concat &op)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
+  /*
+    The state after compilation (satic shape inference) could be one of the following:
+
+              inputs                  output        execution-time shape inf required
+      ------------------------------------------    ---------------------------------
+      case 1) all static              static         X
+      case 2) at least on is dynamic  dynamic        O
+
+    Then nnfw_apply_tensorinf() could change one or both inputs dynamic.
+    So, in this method, we have one more state and we have to re-calculate shape for this shape.
+
+      case 3) at least on is dynamic  static         O
+
+    So, only when all inputs are static, we can skip dynamic shape inference.
+  */
+  bool all_static = true;
+  for (auto input_ind : op.getInputs())
+  {
+    auto input = _tensor_registry->getITensor(input_ind);
+    if (input->is_dynamic())
+    {
+      all_static = false;
+      break;
+    }
+  }
+
+  if (all_static)
     return;
 
   // sanity check
@@ -124,13 +147,11 @@ void DynamicInferer::visit(const ir::operation::Concat &op)
     in_shapes.emplace_back(shape);
   }
 
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
   auto output_shape = onert::shape_inference::inferConcatShape(in_shapes, op.param());
 
-  // set output shape and output buffer
-  setShape(output.get(), output_shape);
-
-  // assert(output->buffer() == nullptr);
-  _dynamic_tensor_manager->allocate(output_ind, output_shape);
+  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
 }
 
 } // namespace shape_inference

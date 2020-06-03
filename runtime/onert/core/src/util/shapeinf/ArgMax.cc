@@ -64,25 +64,24 @@ void StaticInferer::visit(const ir::operation::ArgMax &op)
 
 void DynamicInferer::visit(const ir::operation::ArgMax &op)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
-    return;
-
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = getShape(input.get());
+
+  if (!input->is_dynamic())
+    return;
 
   const auto rank = input_shape.rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = argMaxShapes(input_shape, axis, rank);
-  setShape(output.get(), new_shape);
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
 
-  _dynamic_tensor_manager->allocate(output_ind, new_shape);
+  ir::Shape new_shape = argMaxShapes(input_shape, axis, rank);
+
+  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
 
