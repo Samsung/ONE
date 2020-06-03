@@ -77,6 +77,10 @@ void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, cons
 
 void StridedSliceLayer::run()
 {
+  if (_input->is_dynamic())
+  {
+    _rank = _input->num_dimensions();
+  }
   if (_input->data_type() == OperandType::FLOAT32)
   {
     stridedSliceFloat32();
