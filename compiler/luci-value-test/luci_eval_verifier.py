@@ -66,7 +66,7 @@ try:
             raise SystemExit("Execution result of " + tflite_model +
                              " does not match with " + circle_model)
     else:
-        raise SystemExit("Unsupported data type")
+        raise SystemExit("Unsupported data type: ", output_details["dtype"])
 except:
     print(traceback.format_exc())
     quit(255)
