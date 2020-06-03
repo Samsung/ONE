@@ -21,12 +21,30 @@
 #include <string>
 #include <cassert>
 
+using Shape = luci_interpreter::Shape;
 using DataType = luci_interpreter::DataType;
 
 namespace
 {
 
-DataType to_internal_dtype(H5::DataType h5_type)
+Shape toInternalShape(const H5::DataSpace &dataspace)
+{
+  int rank = dataspace.getSimpleExtentNdims();
+
+  std::vector<hsize_t> dims;
+  dims.resize(rank, 0);
+  dataspace.getSimpleExtentDims(dims.data());
+
+  Shape res(rank);
+  for (int axis = 0; axis < rank; ++axis)
+  {
+    res.dim(axis) = dims[axis];
+  }
+
+  return res;
+}
+
+DataType toInternalDtype(const H5::DataType &h5_type)
 {
   if (h5_type == H5::PredType::IEEE_F32BE || h5_type == H5::PredType::IEEE_F32LE)
   {
@@ -44,17 +62,15 @@ DataType to_internal_dtype(H5::DataType h5_type)
   return DataType::Unknown;
 }
 
-template <typename T> void readTensor(H5::DataSet &tensor, T *buffer);
-
-template <> void readTensor<float>(H5::DataSet &tensor, float *buffer)
+void readTensorData(H5::DataSet &tensor, float *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_FLOAT);
 }
-template <> void readTensor<int32_t>(H5::DataSet &tensor, int32_t *buffer)
+void readTensorData(H5::DataSet &tensor, int32_t *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_INT);
 }
-template <> void readTensor<int64_t>(H5::DataSet &tensor, int64_t *buffer)
+void readTensorData(H5::DataSet &tensor, int64_t *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_LONG);
 }
@@ -64,30 +80,34 @@ template <> void readTensor<int64_t>(H5::DataSet &tensor, int64_t *buffer)
 namespace record_minmax
 {
 
-int32_t HDF5Importer::numInputs(int32_t rid)
+int32_t HDF5Importer::numInputs(int32_t record_idx)
 {
-  auto records = _value_grp.openGroup(std::to_string(rid));
+  auto records = _value_grp.openGroup(std::to_string(record_idx));
   return records.getNumObjs();
 }
 
-void HDF5Importer::read(int32_t rid, int32_t iid, DataType *dtype, void *buffer)
+void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
+                              void *buffer)
 {
-  auto record = _value_grp.openGroup(std::to_string(rid));
-  auto tensor = record.openDataSet(std::to_string(iid));
+  auto record = _value_grp.openGroup(std::to_string(record_idx));
+  auto tensor = record.openDataSet(std::to_string(input_idx));
 
   auto tensor_dtype = tensor.getDataType();
-  *dtype = to_internal_dtype(tensor_dtype);
+  *dtype = toInternalDtype(tensor_dtype);
+
+  auto tensor_shape = tensor.getSpace();
+  *shape = toInternalShape(tensor_shape);
 
   switch (*dtype)
   {
     case DataType::FLOAT32:
-      readTensor<float>(tensor, static_cast<float *>(buffer));
+      readTensorData(tensor, static_cast<float *>(buffer));
       break;
     case DataType::S32:
-      readTensor<int32_t>(tensor, static_cast<int32_t *>(buffer));
+      readTensorData(tensor, static_cast<int32_t *>(buffer));
       break;
     case DataType::S64:
-      readTensor<int64_t>(tensor, static_cast<int64_t *>(buffer));
+      readTensorData(tensor, static_cast<int64_t *>(buffer));
       break;
     default:
       throw std::runtime_error{"Unsupported data type for input data (.h5)"};

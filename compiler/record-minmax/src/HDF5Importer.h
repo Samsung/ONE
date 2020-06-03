@@ -21,6 +21,7 @@
 
 #include <H5Cpp.h>
 
+using Shape = luci_interpreter::Shape;
 using DataType = luci_interpreter::DataType;
 
 namespace record_minmax
@@ -38,25 +39,33 @@ namespace record_minmax
 class HDF5Importer
 {
 public:
-  HDF5Importer(const std::string &path) : _file{path, H5F_ACC_RDONLY}
+  explicit HDF5Importer(const std::string &path) : _file{path, H5F_ACC_RDONLY}
   {
-    _value_grp = _file.openGroup("value");
+    // Do nothing
   }
 
 public:
   /**
-   * @brief Reads tensor data from file and store it into buffer
-   * @details A tensor in the file can be indexed with two integers (rid, iid)
-   * @param rid : index of the record
-   * @param iid : index of the input
+   * @brief importGroup has to be called before readTensor is called
+   *        Otherwise, readTensor will throw an exception
+   */
+  void importGroup() { _value_grp = _file.openGroup("value"); }
+
+  /**
+   * @brief Read tensor data from file and store it into buffer
+   * @details A tensor in the file can be retrieved with (record_idx, input_idx)
+   * @param record_idx : index of the record
+   * @param input_idx : index of the input
    * @param dtype : pointer to write the tensor's data type
+   * @param shape : pointer to write the tensor's shape
    * @param buffer : pointer to write the tensor's data
    */
-  void read(int32_t rid, int32_t iid, DataType *dtype, void *buffer);
+  void readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
+                  void *buffer);
 
   int32_t numRecords() { return _value_grp.getNumObjs(); }
 
-  int32_t numInputs(int32_t rid);
+  int32_t numInputs(int32_t record_idx);
 
 private:
   H5::H5File _file;

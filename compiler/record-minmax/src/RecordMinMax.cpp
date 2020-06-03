@@ -30,13 +30,35 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
-// Get tensor size in bytes
+/**
+ * @brief  getTensorSize will return size in bytes
+ */
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
 {
   uint32_t tensor_size = loco::size(node->dtype());
   for (uint32_t i = 0; i < node->rank(); ++i)
     tensor_size *= node->dim(i).value();
   return tensor_size;
+}
+
+/**
+ * @brief  verifyTypeShape checks the type and the shape of CircleInput
+ *         This throws an exception if type or shape does not match
+ */
+bool verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
+{
+  // Type check
+  if (dtype != input_node->dtype())
+    throw std::runtime_error("Wrong input type.");
+
+  if (shape.num_dims() != input_node->rank())
+    throw std::runtime_error("Input rank mismatch.");
+
+  for (uint32_t i = 0; i < shape.num_dims(); i++)
+  {
+    if (shape.dim(i) != input_node->dim(i).value())
+      throw std::runtime_error("Input shape mismatch.");
+  }
 }
 
 } // namespace
@@ -70,25 +92,28 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 void RecordMinMax::profileData(const std::string &input_data_path)
 {
   HDF5Importer importer(input_data_path);
+  importer.importGroup();
 
   const auto num_records = importer.numRecords();
   const auto input_nodes = loco::input_nodes(_module->graph());
   const auto num_inputs = input_nodes.size();
 
-  for (int32_t i = 0; i < num_records; i++)
+  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
   {
-    if (num_inputs != importer.numInputs(i))
+    if (num_inputs != importer.numInputs(record_idx))
       throw std::runtime_error("Wrong number of inputs.");
 
-    for (int32_t j = 0; j < num_inputs; j++)
+    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
     {
-      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[j]);
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+      assert(input_node->index() == input_idx);
       DataType dtype;
+      Shape shape(input_node->rank());
       std::vector<char> input_data(getTensorSize(input_node));
-      importer.read(i, j, &dtype, input_data.data());
+      importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
 
-      if (dtype != input_node->dtype())
-        throw std::runtime_error("Wrong input type.");
+      // Check the type and the shape of the input data is valid
+      verifyTypeShape(input_node, dtype, shape);
 
       // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
       //       We can redcue the copy by directly writing data from file to interpreter inputs
