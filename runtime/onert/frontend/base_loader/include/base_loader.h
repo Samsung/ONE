@@ -18,6 +18,7 @@
 #define __BASE_LOADER_BASE_LOADER_H__
 
 #include "ir/Graph.h"
+#include "ir/Shape.h"
 #include "ir/Operations.Include.h"
 
 #include "flatbuffers/flexbuffers.h"
@@ -263,13 +264,11 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   const auto *tensor_shape_sig = tensor->shape_signature();
   if (tensor_shape_sig != nullptr)
   {
-    constexpr int32_t unspecified_dim = -1;
-
     int i = 0;
     for (const auto &sig_dim : *tensor_shape_sig)
     {
       if (sig_dim == -1)
-        shape.dim(i) = unspecified_dim;
+        shape.dim(i) = UNSPECIFIED_DIM;
       i++;
     }
   }
