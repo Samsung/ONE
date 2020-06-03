@@ -30,7 +30,7 @@ macro(nnas_include PREFIX)
   include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
 endmacro(nnas_include)
 
-# 'find_package()' wrapper to find in cmake/packages folder
+# Runtime 'find_package()' wrapper to find in cmake/packages folder
 #
 # Example:
 #  nnfw_find_package(Boost): Load settings from 'BoostConfig.cmake' file
@@ -38,9 +38,13 @@ endmacro(nnas_include)
 #  nnfw_find_package(Boost QUIET): Load settings silently, without warnings
 #  nnfw_find_package(Boost REQUIRED): Load settings but stop with error when failed
 macro(nnfw_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH PATHS ${CMAKE_SOURCE_DIR}/cmake/packages ${ARGN})
+  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
+    PATHS ${CMAKE_SOURCE_DIR}/cmake/packages
+    ${ARGN}
+  )
 endmacro(nnfw_find_package)
-# TODO Remove nnfw_find_pacakge
+
+# Common 'find_package()' wrapper to find in infra/cmake/packages folder
 macro(nnas_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
     PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages

@@ -2,7 +2,7 @@ if(NOT BUILD_BENCHMARK_ACL)
   return()
 endif(NOT BUILD_BENCHMARK_ACL)
 
-nnas_find_package(ARMCompute REQUIRED)
+nnfw_find_package(ARMCompute REQUIRED)
 
 add_library(arm_compute_benchmark SHARED "src/Benchmark.cpp")
 target_include_directories(arm_compute_benchmark PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
