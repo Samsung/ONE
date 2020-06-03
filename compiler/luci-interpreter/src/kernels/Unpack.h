@@ -32,9 +32,10 @@ public:
 
   void configure() override;
   void execute() const override;
-  template <typename T> void executeImpl() const;
 
 private:
+  template <typename T> void executeImpl() const;
+
   const Tensor *const _input;
   const std::vector<Tensor *> _outputs;
 };
