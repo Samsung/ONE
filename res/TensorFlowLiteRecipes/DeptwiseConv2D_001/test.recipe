@@ -20,16 +20,16 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 64 dim: 8 }
+  shape { dim: 1 dim: 60 dim: 60 dim: 8 }
 }
 operation {
   type: "DepthwiseConv2D"
   depthwiseconv2d_options {
-    padding: SAME
+    padding: VALID
     stride_w: 1
     stride_h: 1
-    dilation_w_factor: 1
-    dilation_h_factor: 1
+    dilation_w_factor: 2
+    dilation_h_factor: 2
     depth_multiplier: 1
     activation : RELU6
   }
