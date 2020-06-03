@@ -1,0 +1,184 @@
+node {
+  name: "x"
+  op: "Placeholder"
+  attr {
+    key: "_user_specified_name"
+    value {
+      s: "x"
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+        dim {
+          size: 4
+        }
+        dim {
+          size: 4
+        }
+        dim {
+          size: 3
+        }
+      }
+    }
+  }
+}
+node {
+  name: "kernel"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 3
+          }
+          dim {
+            size: 3
+          }
+        }
+        tensor_content: "\000\000\200?\000\000\200?\000\000\200?\000\000\000\000\217\016\312\276M\r\002@\260\347\221?\242\243\024\277\000\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Tensordot/Reshape/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\020\000\000\000\003\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Tensordot/Reshape"
+  op: "Reshape"
+  input: "x"
+  input: "Tensordot/Reshape/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "Tensordot/MatMul"
+  op: "MatMul"
+  input: "Tensordot/Reshape"
+  input: "kernel"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "Tensordot/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\001\000\000\000\004\000\000\000\004\000\000\000\003\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Tensordot"
+  op: "Reshape"
+  input: "Tensordot/MatMul"
+  input: "Tensordot/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "Identity"
+  op: "Identity"
+  input: "Tensordot"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+versions {
+  producer: 175
+}
