@@ -9,7 +9,7 @@ function(_TensorFlowSource_import)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   set(TENSORFLOW_URL ${EXTERNAL_DOWNLOAD_SERVER}/tensorflow/tensorflow/archive/v1.13.1.tar.gz)
-  ExternalSource_Get("tensorflow" ${DOWNLOAD_TENSORFLOW} ${TENSORFLOW_URL})
+  ExternalSource_Download("tensorflow" ${TENSORFLOW_URL})
 
   set(TensorFlowSource_DIR ${tensorflow_SOURCE_DIR} PARENT_SCOPE)
   set(TensorFlowSource_FOUND ${tensorflow_SOURCE_GET} PARENT_SCOPE)

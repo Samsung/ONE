@@ -107,33 +107,3 @@ function(ExternalSource_Download PREFIX)
 
   set(${PREFIX}_SOURCE_DIR "${OUT_DIR}" PARENT_SCOPE)
 endfunction(ExternalSource_Download)
-
-function(ExternalSource_Get PREFIX DOWNLOAD_FLAG URL)
-  nnas_include(StampTools)
-
-  set(CACHE_DIR "${NNAS_EXTERNALS_DIR}")
-  set(OUT_DIR "${CACHE_DIR}/${PREFIX}")
-  set(STAMP_PATH "${CACHE_DIR}/${PREFIX}.stamp")
-
-  if(NOT EXISTS "${CACHE_DIR}")
-    file(MAKE_DIRECTORY "${CACHE_DIR}")
-  endif(NOT EXISTS "${CACHE_DIR}")
-
-  # Compare URL in STAMP file and the given URL
-  Stamp_Check(URL_CHECK "${STAMP_PATH}" "${URL}")
-
-  # TODO Check MD5 for correctness
-
-  set(SOURCE_GET TRUE)
-
-  if(NOT EXISTS "${OUT_DIR}" OR NOT URL_CHECK)
-    if(NOT DOWNLOAD_FLAG)
-      set(SOURCE_GET FALSE)
-    else(NOT DOWNLOAD_FLAG)
-      ExternalSource_Download(${PREFIX} ${URL} ${ARGN})
-    endif(NOT DOWNLOAD_FLAG)
-  endif()
-
-  set(${PREFIX}_SOURCE_GET ${SOURCE_GET} PARENT_SCOPE)
-  set(${PREFIX}_SOURCE_DIR "${OUT_DIR}" PARENT_SCOPE)
-endfunction(ExternalSource_Get)
