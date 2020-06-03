@@ -35,10 +35,14 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+  void populateLookupTable();
+  void setTableValue(uint8_t value, uint8_t idx) { _table[idx] = value; };
+  uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
 
 private:
   const Tensor *const _input;
   Tensor *const _output;
+  uint8_t _table[256];
 };
 
 } // namespace kernels
