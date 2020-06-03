@@ -35,7 +35,7 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
   const auto layout = op_seq_lower_info->layout();
   const auto factor = operand::PermuteFactor{backend, layout};
 
-  for (const auto input : node.getInputs() | Remove::DUPLICATED)
+  for (const auto input : node.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
   {
     auto &object = _graph.operands().at(input);
 

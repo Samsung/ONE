@@ -118,7 +118,7 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
     else
       nodeout->shape_status(ShapeStatus::VALID);
 
-    nodeout->unpack(node);
+    nodeout->input(node);
     nodeout->index(n);
 
     context->nodefinder()->enroll(outputs[n], nodeout);

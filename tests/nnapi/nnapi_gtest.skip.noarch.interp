@@ -13,6 +13,7 @@ GeneratedTests.argmax_2
 GeneratedTests.argmax_2_quant8
 GeneratedTests.argmax_3
 GeneratedTests.argmax_3_quant8
+GeneratedTests.argmax_dynamic_nnfw
 GeneratedTests.argmax_float_1_nnfw
 GeneratedTests.argmax_float_2_nnfw
 GeneratedTests.argmax_int32_nnfw
@@ -73,6 +74,7 @@ GeneratedTests.conv_quant8_overflow_weights_as_inputs
 GeneratedTests.conv_quant8_weights_as_inputs
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
+GeneratedTests.cos_ex_dynamic_nnfw
 GeneratedTests.depth_to_space_float_1
 GeneratedTests.depth_to_space_float_2
 GeneratedTests.depth_to_space_float_3
@@ -85,6 +87,7 @@ GeneratedTests.depthwise_conv2d_quant8_large_weights_as_inputs
 GeneratedTests.depthwise_conv2d_quant8_weights_as_inputs
 GeneratedTests.dequantize
 GeneratedTests.div_
+GeneratedTests.div_dynamic_nnfw
 GeneratedTests.div_broadcast_float
 GeneratedTests.div_broadcast_float_4D_2D_nnfw
 GeneratedTests.embedding_lookup
@@ -212,6 +215,7 @@ GeneratedTests.max_pool_quant8_3
 GeneratedTests.max_pool_quant8_4
 GeneratedTests.maximum_broadcast
 GeneratedTests.maximum_broadcast_quant8
+GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple
 GeneratedTests.maximum_simple_quant8
@@ -226,10 +230,12 @@ GeneratedTests.mean_quant8_1
 GeneratedTests.mean_quant8_2
 GeneratedTests.minimum_broadcast
 GeneratedTests.minimum_broadcast_quant8
+GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple
 GeneratedTests.minimum_simple_quant8
 GeneratedTests.mul_broadcast_quant8
+GeneratedTests.mul_dynamic_nnfw
 GeneratedTests.mul_quant8
 GeneratedTests.neg
 GeneratedTests.neg_1D_float_nnfw
@@ -254,6 +260,7 @@ GeneratedTests.pack_ex_2D_float_1
 GeneratedTests.pack_ex_2D_float_2
 GeneratedTests.pack_ex_2D_int_1
 GeneratedTests.pack_ex_2D_int_2
+GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pad_quant8_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
@@ -460,6 +467,7 @@ GeneratedTests.strided_slice_quant8_6
 GeneratedTests.strided_slice_quant8_7
 GeneratedTests.strided_slice_quant8_8
 GeneratedTests.strided_slice_quant8_9
+GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_broadcast_quant8
 GeneratedTests.sub_v1_2_quant8
 GeneratedTests.sub_v1_2_zero_sized
@@ -512,3 +520,4 @@ GeneratedTests.unpack_ex_3D_int_1
 GeneratedTests.unpack_ex_3D_int_2
 GeneratedTests.zeros_like_ex_2D_float
 GeneratedTests.zeros_like_ex_4D_int32
+GeneratedTests.zeros_like_ex_dynamic_float32

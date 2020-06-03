@@ -37,7 +37,7 @@
 namespace nnpkg_run
 {
 
-template <class T> void randomData(RandomGenerator &randgen, void *data, uint64_t size)
+template <class T> void randomData(nnfw::misc::RandomGenerator &randgen, void *data, uint64_t size)
 {
   for (uint64_t i = 0; i < size; i++)
     reinterpret_cast<T *>(data)[i] = randgen.generate<T>();
@@ -173,7 +173,7 @@ int main(const int argc, char **argv)
   auto generateInputs = [session, num_inputs, &inputs]() {
     // generate random data
     const int seed = 1;
-    RandomGenerator randgen{seed, 0.0f, 2.0f};
+    nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;

@@ -19,6 +19,7 @@
 
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
+#include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
 
@@ -32,6 +33,11 @@ using Padding = luci::Padding;
 struct AddParams
 {
   Activation activation;
+};
+
+struct ArgMaxParams
+{
+  DataType output_type;
 };
 
 struct ConcatenationParams
@@ -78,6 +84,11 @@ struct Pool2DParams
   int32_t stride_height;
   int32_t stride_width;
   Activation activation;
+};
+
+struct ReducerParams
+{
+  bool keep_dims;
 };
 
 struct SoftmaxParams

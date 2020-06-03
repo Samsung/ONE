@@ -56,7 +56,6 @@ private:
   const ir::SubgraphIndex _body_subg_index;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
-  std::vector<size_t> _ranks;
   const std::shared_ptr<exec::ExecutorMap> &_executor_map;
 };
 

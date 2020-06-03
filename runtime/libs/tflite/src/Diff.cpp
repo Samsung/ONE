@@ -262,52 +262,6 @@ bool TfLiteInterpMatchApp::run(::tflite::Interpreter &interp, ::tflite::Interpre
 
 using namespace std::placeholders;
 
-template <> uint8_t RandomGenerator::generate<uint8_t>(void)
-{
-  // The value of type_range is 255.
-  float type_range = static_cast<float>(std::numeric_limits<uint8_t>::max()) -
-                     static_cast<float>(std::numeric_limits<uint8_t>::min());
-  // Most _dist values range from -5.0 to 5.0.
-  float min_range = -5.0f;
-  float max_range = 5.0f;
-  // NOTE shifted_relative_val has Gaussian distribution that origin mean was 0 and standard
-  // deviation was 2. And then its values are distributed and shift to that mean is 127.5 and range
-  // is about [0, 255].
-  float shifted_relative_val = (_dist(_rand) - min_range) * type_range / (max_range - min_range);
-
-  // shifted_relative_val is adjusted to be mapped to end points of the range, if it is out of range
-  // values.
-  if (shifted_relative_val < 0.0f)
-  {
-    return 0;
-  }
-  else if (shifted_relative_val > type_range)
-  {
-    return 255;
-  }
-
-  // Convert shifted_relative_val from float to uint8
-  return static_cast<uint8_t>(shifted_relative_val);
-}
-
-template <> bool RandomGenerator::generate<bool>(void)
-{
-  std::uniform_int_distribution<> dist(0, 1); // [0, 1]
-  return dist(_rand);
-}
-
-template <> int32_t RandomGenerator::generate<int32_t>(void)
-{
-  // Instead of INT_MAX, 4096 is chosen because int32_t input does not mean
-  // that the model can have any value in int32_t can hold.
-  // For example, one_hot operation gets indices as int32_t tensor.
-  // However, we usually expect it would hold a value in [0..depth).
-  // In our given model, depth was 10137.
-  const int int32_random_max = 4096;
-  std::uniform_int_distribution<> dist(0, int32_random_max);
-  return dist(_rand);
-}
-
 #include "tflite/TensorLogger.h"
 //
 // Random Test Runner
@@ -381,9 +335,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<uint8_t (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                       const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<uint8_t>);
+    auto fp = static_cast<uint8_t (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<uint8_t>);
     const nnfw::misc::tensor::Object<uint8_t> data(tfl_interp_view.shape(),
                                                    std::bind(fp, _randgen, _1, _2));
     assert(tfl_interp_view.shape() == data.shape());
@@ -406,9 +360,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<uint8_t (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                       const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<uint8_t>);
+    auto fp = static_cast<uint8_t (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<uint8_t>);
     const nnfw::misc::tensor::Object<uint8_t> data(tfl_interp_view.shape(),
                                                    std::bind(fp, _randgen, _1, _2));
     assert(tfl_interp_view.shape() == data.shape());
@@ -431,9 +385,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<float (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                     const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<float>);
+    auto fp = static_cast<float (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<float>);
     const nnfw::misc::tensor::Object<float> data(tfl_interp_view.shape(),
                                                  std::bind(fp, _randgen, _1, _2));
 
@@ -457,9 +411,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<float (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                     const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<float>);
+    auto fp = static_cast<float (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<float>);
     const nnfw::misc::tensor::Object<float> data(tfl_interp_view.shape(),
                                                  std::bind(fp, _randgen, _1, _2));
 
@@ -483,9 +437,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<bool (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                    const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<bool>);
+    auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<bool>);
     const nnfw::misc::tensor::Object<bool> data(tfl_interp_view.shape(),
                                                 std::bind(fp, _randgen, _1, _2));
 
@@ -509,9 +463,9 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
     assert(tfl_interp_view.shape() == nnapi_view.shape());
 
-    auto fp = static_cast<bool (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                    const ::nnfw::misc::tensor::Index &)>(
-        &RandomGenerator::generate<bool>);
+    auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
+        const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+        &nnfw::misc::RandomGenerator::generate<bool>);
     const nnfw::misc::tensor::Object<bool> data(tfl_interp_view.shape(),
                                                 std::bind(fp, _randgen, _1, _2));
 

@@ -36,9 +36,8 @@ ExpLayer::ExpLayer() : _input(nullptr), _output(nullptr)
 
 void ExpLayer::expFloat32()
 {
-  nnfw::cker::Exp(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Exp(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void ExpLayer::expQuant8()

@@ -29,7 +29,8 @@ namespace ir
 
 enum class Remove
 {
-  DUPLICATED = 0x1
+  DUPLICATED = 1,
+  UNDEFINED = 2
 };
 
 class OperandIndexSequence
@@ -62,12 +63,21 @@ public:
             seq.append(ind);
         return seq;
       }
+      case ir::Remove::UNDEFINED:
+      {
+        ir::OperandIndexSequence seq;
+        for (const auto &ind : _vec)
+          if (!ind.undefined())
+            seq.append(ind);
+        return seq;
+      }
     }
     return *this;
   }
 
 public:
   OperandIndexSequence operator+(const OperandIndexSequence &other) const;
+  friend std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &op_seq);
 
 public:
   std::vector<OperandIndex>::const_iterator begin(void) const { return _vec.begin(); }

@@ -220,9 +220,11 @@ private:
   IMPLEMENT(luci::CircleGreater)
   IMPLEMENT(luci::CircleGreaterEqual)
   IMPLEMENT(luci::CircleIf)
-  IMPLEMENT(luci::CircleLess)
+  IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLeakyRelu)
+  IMPLEMENT(luci::CircleLess)
   IMPLEMENT(luci::CircleLocalResponseNormalization)
+  IMPLEMENT(luci::CircleLog)
   IMPLEMENT(luci::CircleLogicalAnd)
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
@@ -593,6 +595,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleIf *node, locop::NodeSu
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleL2Normalize *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleLess *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
@@ -618,6 +629,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLocalResponseNormalizat
   s.args().append("bias", pepper::str(node->bias()));
   s.args().append("alpha", pepper::str(node->alpha()));
   s.args().append("beta", pepper::str(node->beta()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLog *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1150,7 +1168,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSplitVOut *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("topkv2", tbl()->lookup(node->topkv2()));
+  s.args().append("topkv2", tbl()->lookup(node->input()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1158,7 +1176,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
 bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
                                        locop::NodeSummary &s) const
 {
-  s.args().append("unpack", tbl()->lookup(node->unpack()));
+  s.args().append("unpack", tbl()->lookup(node->input()));
 
   s.state(locop::NodeSummary::State::Complete);
 

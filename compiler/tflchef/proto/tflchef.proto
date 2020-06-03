@@ -98,6 +98,8 @@ message DepthwiseConv2DOptions
   optional int32 stride_h = 3 [default = 1];
   optional int32 depth_multiplier = 4 [default = 1];
   optional Activation activation = 5 [default = NONE];
+  optional int32 dilation_w_factor = 6 [default = 1];
+  optional int32 dilation_h_factor = 7 [default = 1];
 }
 
 message SubOptions {
@@ -354,6 +356,12 @@ message DepthToSpaceOptions {
   optional int32 block_size = 1;
 }
 
+message TransposeConvOptions {
+  optional Padding padding = 1 [default = VALID];
+  optional int32 stride_w = 2 [default = 1];
+  optional int32 stride_h = 3 [default = 1];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -433,7 +441,7 @@ message Operation {
   // PadV2Options 171
   // LessEqualOptions 172
   optional SliceOptions slice_options = 173;
-  // TransposeConvOptions 174
+  optional TransposeConvOptions transpose_conv_options = 174;
   // SparseToDenseOptions 175
   optional PowOptions pow_options = 176;
   // ArgMinOptions 177
@@ -464,6 +472,7 @@ message Operation {
   optional ExpandDimsOptions expand_dims_options = 202;
   optional Pool2DOptions l2pool2d_options = 203;
   optional ReducerOptions all_options = 204;
+  optional ReducerOptions reduce_min_options = 205;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

@@ -47,11 +47,10 @@ void FullyConnectedLayer::fullyConnectedFloat32()
   op_params.activation = convertActivationType(_activation);
 
   nnfw::cker::FullyConnected(
-      op_params, convertTensorToCkerShape(_input),
-      reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_weights),
-      reinterpret_cast<const float *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 // executionMutex is used to protect concurrent access of non-threadsafe resources
@@ -78,11 +77,10 @@ void FullyConnectedLayer::fullyConnectedQuant8()
   op_params.quantized_activation_max = output_activation_max;
 
   nnfw::cker::FullyConnected(
-      op_params, convertTensorToCkerShape(_input),
-      reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_weights),
-      reinterpret_cast<const uint8_t *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const int32_t *>(_bias ? _bias->buffer() : nullptr),
-      convertTensorToCkerShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+      op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+      getTensorShape(_weights), reinterpret_cast<const uint8_t *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void FullyConnectedLayer::fullyConnectedHybrid()
@@ -90,7 +88,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   nnfw::cker::FCTempArena &temp_arena = *_temp_arena;
   if (!temp_arena.prepared)
   {
-    temp_arena.prepare(convertTensorToCkerShape(_input), convertTensorToCkerShape(_weights));
+    temp_arena.prepare(getTensorShape(_input), getTensorShape(_weights));
   }
 
   nnfw::cker::FullyConnectedParams op_params;
@@ -98,11 +96,10 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   op_params.weights_scale = _weights->data_scale();
 
   nnfw::cker::FullyConnectedHybrid(
-      op_params, convertTensorToCkerShape(_input),
-      reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_weights),
-      reinterpret_cast<const int8_t *>(_weights->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_weights), reinterpret_cast<const int8_t *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
 }
 
 void FullyConnectedLayer::configure(const Tensor *input, const Tensor *weights, const Tensor *bias,

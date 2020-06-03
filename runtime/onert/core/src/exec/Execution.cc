@@ -40,13 +40,9 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
 
   auto shape_sig = _io_desc.input_shape_signature.find(index);
   if (shape_sig != _io_desc.input_shape_signature.end())
-    throw std::runtime_error("Duplicate attempt to change input shape");
-
-  _io_desc.input_shape_signature[index] = new_shape;
-
-  // Modifying Tensor
-  const auto input_index = primary_subgraph().getInputs().at(index);
-  primary_executor()->changeInputShape(input_index, new_shape);
+    shape_sig->second = new_shape; // update with new_shape
+  else
+    _io_desc.input_shape_signature.emplace(std::make_pair(index, new_shape));
 }
 
 // TODO Remove default parameter

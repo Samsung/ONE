@@ -42,7 +42,7 @@ void ZerosLikeLayer::run()
   if (!HaveSameShapes(_input, _output))
     throw std::runtime_error{"ZerosLike: input and output shape don't match."};
 
-  auto element_size = convertTensorToCkerShape(_input).FlatSize();
+  auto element_size = getTensorShape(_input).FlatSize();
 
   switch (_input->data_type())
   {

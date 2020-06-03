@@ -36,21 +36,21 @@ void DivLayer::divFloat32()
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
-  const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(
-      convertTensorToCkerShape(_lhs), convertTensorToCkerShape(_rhs), &op_params);
+  const bool need_broadcast =
+      nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
     nnfw::cker::BroadcastBinaryArithmeticOp(
-        op_params, convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-        convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-        convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+        op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 
   nnfw::cker::BinaryArithmeticOp(
-      op_params, convertTensorToCkerShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-      convertTensorToCkerShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+      getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void DivLayer::divQuant8()

@@ -43,9 +43,9 @@ void TransposeLayer::transposeFloat32()
     param.perm[i] = _perm[i];
   }
 
-  nnfw::cker::Transpose(
-      param, convertTensorToCkerShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Transpose(param, getTensorShape(_input),
+                        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+                        reinterpret_cast<float *>(_output->buffer()));
 }
 
 void TransposeLayer::transposeQuant8()

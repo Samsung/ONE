@@ -274,6 +274,21 @@ public:
   }
 };
 
+class L2NormPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_L2NormOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class LeakyReluPrinter : public OpPrinter
 {
 public:
@@ -558,6 +573,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[tflite::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();
   _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique<LeakyReluPrinter>();
   _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =
       make_unique<LocalResponseNormalizationPrinter>();
@@ -569,11 +585,13 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for PAD
+  // There is no Option for PRELU
   // There is no Option for RELU
   // There is no Option for RELU6
   // There is no Option for RELU_N1_TO_1
   _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique<ReducerPrinter>();
+  _op_map[tflite::BuiltinOperator_REDUCE_MIN] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique<ReducerPrinter>();
   _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique<ReshapePrinter>();
   _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();

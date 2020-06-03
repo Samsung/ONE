@@ -34,9 +34,8 @@ CosLayer::CosLayer() : _input(nullptr), _output(nullptr)
 
 void CosLayer::cosFloat32()
 {
-  nnfw::cker::Cos(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Cos(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void CosLayer::cosQuant8() { throw std::runtime_error{"NYI"}; }

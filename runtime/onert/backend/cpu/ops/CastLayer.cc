@@ -38,8 +38,8 @@ void CastLayer::configure(const Tensor *input, Tensor *output)
 
 template <typename FromT, typename ToT> void CastLayer::castTensor(const FromT *in, ToT *out)
 {
-  auto input_shape = convertTensorToCkerShape(_input);
-  auto output_shape = convertTensorToCkerShape(_output);
+  auto input_shape = getTensorShape(_input);
+  auto output_shape = getTensorShape(_output);
   const auto num_elements = MatchingFlatSize(input_shape, output_shape);
 
   std::transform(in, in + num_elements, out, [](FromT a) { return static_cast<ToT>(a); });

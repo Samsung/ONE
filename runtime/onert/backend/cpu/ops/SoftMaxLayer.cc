@@ -88,9 +88,8 @@ void SoftMaxLayer::softmaxFloat32()
   {
     nnfw::cker::SoftmaxParams op_params;
     op_params.beta = _beta;
-    nnfw::cker::Softmax(op_params, convertTensorToCkerShape(_input),
-                        reinterpret_cast<const float *>(_input->buffer()),
-                        convertTensorToCkerShape(_output),
+    nnfw::cker::Softmax(op_params, getTensorShape(_input),
+                        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
                         reinterpret_cast<float *>(_output->buffer()));
   }
   else

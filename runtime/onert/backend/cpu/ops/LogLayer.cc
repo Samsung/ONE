@@ -36,9 +36,8 @@ LogLayer::LogLayer() : _input(nullptr), _output(nullptr)
 
 void LogLayer::logFloat32()
 {
-  nnfw::cker::Log(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Log(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void LogLayer::logQuant8() { throw std::runtime_error{"NYI"}; }

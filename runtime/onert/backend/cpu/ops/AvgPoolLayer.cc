@@ -52,10 +52,9 @@ void AvgPoolLayer::averagePoolFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
-  nnfw::cker::AveragePool(op_params, convertTensorToCkerShape(_input),
+  nnfw::cker::AveragePool(op_params, getTensorShape(_input),
                           reinterpret_cast<const float *>(_input->buffer()),
-                          convertTensorToCkerShape(_output),
-                          reinterpret_cast<float *>(_output->buffer()));
+                          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 void AvgPoolLayer::averagePoolQuant8()
 {
@@ -67,10 +66,9 @@ void AvgPoolLayer::averagePoolQuant8()
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
 
-  nnfw::cker::AveragePool(op_params, convertTensorToCkerShape(_input),
+  nnfw::cker::AveragePool(op_params, getTensorShape(_input),
                           reinterpret_cast<const uint8_t *>(_input->buffer()),
-                          convertTensorToCkerShape(_output),
-                          reinterpret_cast<uint8_t *>(_output->buffer()));
+                          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void AvgPoolLayer::configure(const Tensor *input, const uint32_t paddingLeft,

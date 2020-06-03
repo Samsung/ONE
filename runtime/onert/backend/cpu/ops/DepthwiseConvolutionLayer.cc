@@ -52,11 +52,10 @@ void DepthwiseConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::DepthwiseConv(
-      op_params, convertTensorToCkerShape(_input),
-      reinterpret_cast<const float *>(_input->buffer()), convertTensorToCkerShape(_kernel),
-      reinterpret_cast<const float *>(_kernel->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const float *>(_bias->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<float *>(_output->buffer()));
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void DepthwiseConvolutionLayer::convQuant8()
@@ -89,11 +88,10 @@ void DepthwiseConvolutionLayer::convQuant8()
   op_params.quantized_activation_max = output_activation_max;
 
   nnfw::cker::DepthwiseConv(
-      op_params, convertTensorToCkerShape(_input),
-      reinterpret_cast<const uint8_t *>(_input->buffer()), convertTensorToCkerShape(_kernel),
-      reinterpret_cast<const uint8_t *>(_kernel->buffer()), convertTensorToCkerShape(_bias),
-      reinterpret_cast<const int32_t *>(_bias->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<uint8_t *>(_output->buffer()));
+      op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
+      getTensorShape(_kernel), reinterpret_cast<const uint8_t *>(_kernel->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias->buffer()),
+      getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void DepthwiseConvolutionLayer::configure(const Tensor *input, const Tensor *kernel,

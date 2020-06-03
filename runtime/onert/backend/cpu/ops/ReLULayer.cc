@@ -36,9 +36,8 @@ ReLULayer::ReLULayer() : _input(nullptr), _output(nullptr)
 
 void ReLULayer::reluFloat32()
 {
-  nnfw::cker::ReLU(convertTensorToCkerShape(_input),
-                   reinterpret_cast<const float *>(_input->buffer()),
-                   convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::ReLU(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                   getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void ReLULayer::reluQuant8()

@@ -543,6 +543,38 @@ public:
     return loco::NodeShape{shape};
   }
 
+  loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    LUCI_ASSERT(input_shape.rank() == 4, "Only input rank 4 is supported");
+
+    // Only data format NHWC is supported
+    // TODO need to clarify what to do with layout in this operator
+    int32_t height = input_shape.dim(1).value();
+    int32_t width = input_shape.dim(2).value();
+    int32_t depth = input_shape.dim(3).value();
+
+    int block_size = node->block_size();
+
+    if (block_size < 2)
+      INTERNAL_EXN("Block size must be >= 2");
+
+    if (depth % (block_size * block_size))
+    {
+      INTERNAL_EXN("The input tensor's depth must be divisible by block_size^2");
+    }
+
+    loco::TensorShape output_shape;
+    output_shape.rank(4);
+
+    output_shape.dim(0) = input_shape.dim(0).value();
+    output_shape.dim(1) = height * block_size;
+    output_shape.dim(2) = width * block_size;
+    output_shape.dim(3) = depth / (block_size * block_size);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleDepthwiseConv2D *node) final
   {
     auto ifm_shape = loco::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
@@ -830,6 +862,12 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleL2Normalize *node) final
+  {
+    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleL2Pool2D *node) final
   {
     return infer_pool_2d_shape(node);
@@ -853,6 +891,13 @@ public:
   {
     const auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
     return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleLog *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{x_shape};
   }
 
   loco::NodeShape visit(const luci::CircleLogicalAnd *node) final
@@ -1976,7 +2021,7 @@ public:
   {
     const loco::DataType S32 = loco::DataType::S32;
 
-    auto topkv2 = dynamic_cast<const luci::CircleTopKV2 *>(node->topkv2());
+    auto topkv2 = dynamic_cast<const luci::CircleTopKV2 *>(node->input());
     if (topkv2 == nullptr)
       INTERNAL_EXN("CircleSplit IR is not configured correctly");
 
@@ -2001,7 +2046,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
   {
-    auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->unpack());
+    auto unpack = dynamic_cast<const luci::CircleUnpack *>(node->input());
     if (unpack == nullptr)
     {
       INTERNAL_EXN("CircleUnpack IR is not configured correctly");

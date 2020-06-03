@@ -213,7 +213,7 @@ int main(const int argc, char **argv)
   else
   {
     const int seed = 1; /* TODO Add an option for seed value */
-    RandomGenerator randgen{seed, 0.0f, 2.0f};
+    nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
 
     // No input specified. So we fill the input tensors with random values.
     for (const auto &o : interpreter->inputs())
@@ -253,9 +253,9 @@ int main(const int argc, char **argv)
         // Generate bool input
         auto tensor_view = nnfw::tflite::TensorView<bool>::make(*interpreter, o);
 
-        auto fp = static_cast<bool (RandomGenerator::*)(const ::nnfw::misc::tensor::Shape &,
-                                                        const ::nnfw::misc::tensor::Index &)>(
-            &RandomGenerator::generate<bool>);
+        auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
+            const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+            &nnfw::misc::RandomGenerator::generate<bool>);
         const nnfw::misc::tensor::Object<bool> data(tensor_view.shape(),
                                                     std::bind(fp, randgen, _1, _2));
 

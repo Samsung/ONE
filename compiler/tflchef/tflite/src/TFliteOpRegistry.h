@@ -90,12 +90,13 @@ private:
     REG_TFL_OP(LOGICAL_NOT, TFliteOpLogicalNot);
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
     REG_TFL_OP(LOGISTIC, TFliteOpLogistic);
-    REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
+    REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
     REG_TFL_OP(MEAN, TFliteOpMean);
-    REG_TFL_OP(NEG, TFliteOpNeg);
     REG_TFL_OP(MINIMUM, TFliteOpMinimum);
     REG_TFL_OP(MIRROR_PAD, TFliteOpMirrorPad);
+    REG_TFL_OP(MUL, TFliteOpMul);
+    REG_TFL_OP(NEG, TFliteOpNeg);
     REG_TFL_OP(NOT_EQUAL, TFliteOpNotEqual);
     REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
@@ -105,6 +106,7 @@ private:
     REG_TFL_OP(RANGE, TFliteOpRange);
     REG_TFL_OP(REDUCE_ANY, TFliteOpReduceAny);
     REG_TFL_OP(REDUCE_MAX, TFliteOpReduceMax);
+    REG_TFL_OP(REDUCE_MIN, TFliteOpReduceMin);
     REG_TFL_OP(REDUCE_PROD, TFliteOpReduceProd);
     REG_TFL_OP(RELU, TFliteOpReLU);
     REG_TFL_OP(RELU6, TFliteOpReLU6);
@@ -133,6 +135,7 @@ private:
     REG_TFL_OP(TILE, TFliteOpTile);
     REG_TFL_OP(TOPK_V2, TFliteOpTopKV2);
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
+    REG_TFL_OP(TRANSPOSE_CONV, TFliteOpTransposeConv);
     REG_TFL_OP(UNPACK, TFliteOpUnpack);
     REG_TFL_OP(ZEROS_LIKE, TFliteOpZerosLike);
 

@@ -5,7 +5,7 @@ if(${BUILD_GTEST})
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   set(GTEST_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/googletest/archive/release-1.8.0.tar.gz)
-  ExternalSource_Get("gtest" TRUE ${GTEST_URL})
+  ExternalSource_Download("gtest" ${GTEST_URL})
 
   # gtest_SOURCE_DIR is used in gtest subdirectorty's cmake
   set(sourcedir_gtest ${gtest_SOURCE_DIR})

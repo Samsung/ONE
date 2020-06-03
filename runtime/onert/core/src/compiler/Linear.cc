@@ -56,7 +56,7 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lower
     //            |
     //           [4]
     op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_idx, const ir::OpSequence &op_seq) {
-      for (auto input : op_seq.getInputs() | ir::Remove::DUPLICATED)
+      for (auto input : op_seq.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
         // only valid_inputs
         const auto &operand = operands.at(input);
@@ -235,7 +235,8 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
     const auto &op_seq = lowered_graph.op_seqs().at(op_seq_ind);
     for (const auto &op_idx : op_seq.operations())
     {
-      for (const auto &ind : graph.operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED)
+      for (const auto &ind : graph.operations().at(op_idx).getOutputs() | ir::Remove::DUPLICATED |
+                                 ir::Remove::UNDEFINED)
       {
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
@@ -245,7 +246,8 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
         }
       }
 
-      for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED)
+      for (const auto &ind : graph.operations().at(op_idx).getInputs() | ir::Remove::DUPLICATED |
+                                 ir::Remove::UNDEFINED)
       {
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);

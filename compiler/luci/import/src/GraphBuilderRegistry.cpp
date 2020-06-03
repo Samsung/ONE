@@ -54,11 +54,13 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
+  CIRCLE_NODE(INSTANCE_NORM, CircleInstanceNormGraphBuilder);                              // 254
   CIRCLE_NODE(L2_NORMALIZATION, CircleL2NormalizeGraphBuilder);                            // 11
   CIRCLE_NODE(L2_POOL_2D, CircleL2Pool2DGraphBuilder);                                     // 12
   CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                                    // 98,
   CIRCLE_NODE(LESS, CircleLessGraphBuilder);                                               // 58
   CIRCLE_NODE(LOCAL_RESPONSE_NORMALIZATION, CircleLocalResponseNormalizationGraphBuilder); // 13
+  CIRCLE_NODE(LOG, CircleLogGraphBuilder);                                                 // 73
   CIRCLE_NODE(LOGICAL_AND, CircleLogicalAndGraphBuilder);                                  // 86
   CIRCLE_NODE(LOGICAL_NOT, CircleLogicalNotGraphBuilder);                                  // 87
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);                                    // 84
@@ -75,6 +77,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                                               // 83
   CIRCLE_NODE(PAD, CirclePadGraphBuilder);                                                 // 34
   CIRCLE_NODE(POW, CirclePowGraphBuilder);                                                 // 78
+  CIRCLE_NODE(PRELU, CirclePReluGraphBuilder);                                             // 54,
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                                             // 96
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                                    // 91
   CIRCLE_NODE(REDUCE_MAX, CircleReduceMaxGraphBuilder);                                    // 82
@@ -128,13 +131,11 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_LOG_SOFTMAX = 50,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
-  // BuiltinOperator_PRELU = 54,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_TRANSPOSE_CONV = 67,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_LOG = 73,
   // BuiltinOperator_SQRT = 75,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
@@ -160,7 +161,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DENSIFY = 124,
   // BuiltinOperator_SEGMENT_SUM = 125,
   // BuiltinOperator_BATCH_MATMUL = 126,
-  // BuiltinOperator_INSTANCE_NORM = 254,
 }
 
 } // namespace luci

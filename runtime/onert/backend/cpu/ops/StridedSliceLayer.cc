@@ -43,13 +43,11 @@ void StridedSliceLayer::stridedSliceFloat32()
       reinterpret_cast<uint32_t *>(_strides->buffer()), _begin_mask, _end_mask, _shrink_axis_mask,
       _rank);
 
-  nnfw::cker::checkOutputSize(op_params, convertTensorToCkerShape(_input),
-                              convertTensorToCkerShape(_output), _rank);
+  nnfw::cker::checkOutputSize(op_params, getTensorShape(_input), getTensorShape(_output), _rank);
 
-  nnfw::cker::StridedSlice(op_params, convertTensorToCkerShape(_input),
+  nnfw::cker::StridedSlice(op_params, getTensorShape(_input),
                            reinterpret_cast<const float *>(_input->buffer()),
-                           convertTensorToCkerShape(_output),
-                           reinterpret_cast<float *>(_output->buffer()));
+                           getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void StridedSliceLayer::stridedSliceQuant8()

@@ -52,9 +52,8 @@ void MaxPoolLayer::maxPoolFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
-  nnfw::cker::MaxPool(op_params, convertTensorToCkerShape(_input),
-                      reinterpret_cast<const float *>(_input->buffer()),
-                      convertTensorToCkerShape(_output),
+  nnfw::cker::MaxPool(op_params, getTensorShape(_input),
+                      reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
                       reinterpret_cast<float *>(_output->buffer()));
 }
 void MaxPoolLayer::maxPoolQuant8()
@@ -67,9 +66,8 @@ void MaxPoolLayer::maxPoolQuant8()
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
 
-  nnfw::cker::MaxPool(op_params, convertTensorToCkerShape(_input),
-                      reinterpret_cast<const uint8_t *>(_input->buffer()),
-                      convertTensorToCkerShape(_output),
+  nnfw::cker::MaxPool(op_params, getTensorShape(_input),
+                      reinterpret_cast<const uint8_t *>(_input->buffer()), getTensorShape(_output),
                       reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 

@@ -46,21 +46,21 @@ void FillLayer::run()
   switch (_output->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Fill<float *>(
-          convertTensorToCkerShape(_input), reinterpret_cast<int *>(_input->buffer()),
-          reinterpret_cast<float *>(_value->buffer()), convertTensorToCkerShape(_output),
-          reinterpret_cast<float *>(_output->buffer()));
+      nnfw::cker::Fill<float *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
+                                reinterpret_cast<float *>(_value->buffer()),
+                                getTensorShape(_output),
+                                reinterpret_cast<float *>(_output->buffer()));
       break;
     case OperandType::INT32:
-      nnfw::cker::Fill<int32_t *>(
-          convertTensorToCkerShape(_input), reinterpret_cast<int *>(_input->buffer()),
-          reinterpret_cast<int32_t *>(_value->buffer()), convertTensorToCkerShape(_output),
-          reinterpret_cast<int32_t *>(_output->buffer()));
+      nnfw::cker::Fill<int32_t *>(getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
+                                  reinterpret_cast<int32_t *>(_value->buffer()),
+                                  getTensorShape(_output),
+                                  reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     case OperandType::UINT32:
       nnfw::cker::Fill<uint32_t *>(
-          convertTensorToCkerShape(_input), reinterpret_cast<int *>(_input->buffer()),
-          reinterpret_cast<uint32_t *>(_value->buffer()), convertTensorToCkerShape(_output),
+          getTensorShape(_input), reinterpret_cast<int *>(_input->buffer()),
+          reinterpret_cast<uint32_t *>(_value->buffer()), getTensorShape(_output),
           reinterpret_cast<uint32_t *>(_output->buffer()));
       break;
     default:

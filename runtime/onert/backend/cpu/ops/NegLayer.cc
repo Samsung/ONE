@@ -36,9 +36,8 @@ NegLayer::NegLayer() : _input(nullptr), _output(nullptr)
 
 void NegLayer::negFloat32()
 {
-  nnfw::cker::Neg(convertTensorToCkerShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()),
-                  convertTensorToCkerShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Neg(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+                  getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void NegLayer::negQuant8() { throw std::runtime_error{"NYI"}; }

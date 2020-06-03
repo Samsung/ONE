@@ -39,9 +39,8 @@ void evalLogic(const Tensor *input, Tensor *output, const std::vector<int> &axes
 {
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
   bool result = reduce_kernel.ReduceGeneric<T>(
-      convertTensorToCkerShape(input), reinterpret_cast<const T *>(input->buffer()),
-      convertTensorToCkerShape(output), reinterpret_cast<T *>(output->buffer()), axes, keep_dims,
-      init_value, reducer);
+      getTensorShape(input), reinterpret_cast<const T *>(input->buffer()), getTensorShape(output),
+      reinterpret_cast<T *>(output->buffer()), axes, keep_dims, init_value, reducer);
 
   if (!result)
   {

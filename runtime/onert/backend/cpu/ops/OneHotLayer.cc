@@ -31,10 +31,10 @@ namespace ops
 
 void OneHotLayer::oneHotFloat32()
 {
-  nnfw::cker::OneHot<float, int32_t>(
-      _depth, _on_value, _off_value, _axis, convertTensorToCkerShape(_indices),
-      reinterpret_cast<const int32_t *>(_indices->buffer()), convertTensorToCkerShape(_output),
-      reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::OneHot<float, int32_t>(_depth, _on_value, _off_value, _axis, getTensorShape(_indices),
+                                     reinterpret_cast<const int32_t *>(_indices->buffer()),
+                                     getTensorShape(_output),
+                                     reinterpret_cast<float *>(_output->buffer()));
 }
 
 void OneHotLayer::oneHotQuant8() { throw std::runtime_error{"OneHot NYI for quantized"}; }
