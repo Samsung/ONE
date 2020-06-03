@@ -263,11 +263,13 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   const auto *tensor_shape_sig = tensor->shape_signature();
   if (tensor_shape_sig != nullptr)
   {
+    constexpr int32_t unspecified_dim = -1;
+
     int i = 0;
     for (const auto &sig_dim : *tensor_shape_sig)
     {
       if (sig_dim == -1)
-        shape.dim(i) = -1;
+        shape.dim(i) = unspecified_dim;
       i++;
     }
   }

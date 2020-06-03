@@ -45,10 +45,12 @@ TEST(ShapeTest, basic_test)
 TEST(ShapeTest, neg_basic_test)
 {
   {
+    constexpr int32_t unspecified_dim = -1;
+
     onert::ir::Shape shape(2);
 
     shape.dim(0) = 1;
-    shape.dim(1) = 0; // unspecified
+    shape.dim(1) = unspecified_dim;
 
     ASSERT_EQ(shape.rank(), 2);
     ASSERT_EQ(onert::ir::rankMaybeUnspecified(shape), false);
