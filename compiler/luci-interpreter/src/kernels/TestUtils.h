@@ -39,7 +39,7 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
 
 Tensor makeOutputTensor(DataType element_type);
 
-// Returns the corresponding TensorType given the type T.
+// Returns the corresponding DataType given the type T.
 template <typename T> DataType getElementType()
 {
   if (std::is_same<T, float>::value)
