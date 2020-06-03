@@ -34,7 +34,7 @@ void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
 {
   Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis});
   Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(T));
+  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
 
   std::vector<Tensor> output_tensors;
   output_tensors.reserve(num_splits);

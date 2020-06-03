@@ -33,17 +33,17 @@ Split::Split(const Tensor *axis, const Tensor *input, std::vector<Tensor *> outp
 void Split::configure()
 {
   assert(_axis->shape().num_elements() == 1);
-  int axis_value = getTensorData<int32_t>(_axis)[0];
-  if (axis_value < 0)
-    axis_value += _input->shape().num_dims();
-  assert(axis_value >= 0 && axis_value < _input->shape().num_dims());
+  _axis_value = getTensorData<int32_t>(_axis)[0];
+  if (_axis_value < 0)
+    _axis_value += _input->shape().num_dims();
+  assert(_axis_value >= 0 && _axis_value < _input->shape().num_dims());
 
-  const int32_t input_size = _input->shape().dim(axis_value);
+  const int32_t input_size = _input->shape().dim(_axis_value);
   assert(input_size % _outputs.size() == 0);
   const int32_t slice_size = input_size / _outputs.size();
 
   Shape output_shape = _input->shape();
-  output_shape.dim(axis_value) = slice_size;
+  output_shape.dim(_axis_value) = slice_size;
   for (Tensor *_output : _outputs)
   {
     _output->resize(output_shape);
@@ -52,13 +52,9 @@ void Split::configure()
 
 void Split::execute() const
 {
-  int axis_value = getTensorData<int32_t>(_axis)[0];
-  if (axis_value < 0)
-    axis_value += _input->shape().num_dims();
-
   tflite::SplitParams params{};
   params.num_split = _outputs.size();
-  params.axis = axis_value;
+  params.axis = _axis_value;
 
 #define TF_LITE_SPLIT(scalar)                                                                   \
   {                                                                                             \

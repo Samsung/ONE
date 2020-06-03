@@ -37,6 +37,7 @@ private:
   const Tensor *const _axis;
   const Tensor *const _input;
   const std::vector<Tensor *> _outputs;
+  int32_t _axis_value{};
 };
 
 } // namespace kernels
