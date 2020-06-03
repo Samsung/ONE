@@ -42,7 +42,7 @@ model = Model()
 
 model_input_shape = [1, 2, 3]
 
-dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input_shape)
+dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input_shape, "TENSOR_FLOAT32")
 
 test_node_input = dynamic_layer.getTestNodeInput()
 

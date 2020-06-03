@@ -75,13 +75,13 @@ from test_generator import Internal
 
 class DynamicInputGenerator:
 
-    def __init__(self, model, model_input_shape_list):
+    def __init__(self, model, model_input_shape_list, tensor_type):
         self.new_shape = 0
         self.model_input = 0
         self.test_input = 0
 
         # any shape that can be reshaped into model_input_shape
-        self.model_input = Input("model_input", "TENSOR_FLOAT32",
+        self.model_input = Input("model_input", tensor_type,
                                  self.__getShapeInStr(model_input_shape_list))
 
         # add Reshape to make input of Abs dynamic
@@ -89,7 +89,7 @@ class DynamicInputGenerator:
         self.new_shape   = Input("new_shape", "TENSOR_INT32", new_shape_str)
 
         # shape not known since it is dynamic. Use a scalar {} just like TFL Converter.
-        self.test_input = Internal("internal1", "TENSOR_FLOAT32", "{}")
+        self.test_input = Internal("internal1", tensor_type, "{}")
         model.Operation("RESHAPE", self.model_input, self.new_shape).To(self.test_input)
 
     # convert, e.g., [1, 2, 3] to "{1, 2, 3}"
