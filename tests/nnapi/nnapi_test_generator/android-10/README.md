@@ -17,8 +17,11 @@ Original code is at https://android.googlesource.com/platform/frameworks/ml/+/re
     `((frameworks/ml/nn/(runtime/test/)?)|(vendor/google/[a-z]*/test/))` => `(tests/nnapi/src/)`
   - Support EX operation
   - Comment out `TEST_AVAILABLE_SINCE()` macro generation
+  - Use `/usr/bin/env` instead of `/usr/bin/python3`
 - Update `test_generator.py`
   - Comment out dynamic shape output test generation
+- Additional script `dynamic_tensor.py`
+  - Generate dynamic input shape inference test
 
 ---
 
