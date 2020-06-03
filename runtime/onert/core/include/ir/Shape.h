@@ -25,10 +25,6 @@
 #include <vector>
 #include <algorithm>
 
-#ifdef UNSPECIFIED_DIM
-#error UNSPECIFIED_DIM is already defined
-#endif
-
 namespace onert
 {
 namespace ir
