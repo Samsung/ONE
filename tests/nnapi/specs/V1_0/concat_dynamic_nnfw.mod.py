@@ -21,7 +21,7 @@ import dynamic_tensor
 model = Model()
 
 input1_shape = [2, 3]
-dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, input1_shape)
+dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, input1_shape, "TENSOR_FLOAT32")
 
 input1 = dynamic_layer.getTestNodeInput()
 input2 = Input("op2", "TENSOR_FLOAT32", "{2, 3}")
