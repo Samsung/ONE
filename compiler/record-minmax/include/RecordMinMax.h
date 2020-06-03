@@ -18,6 +18,7 @@
 #define __RECORD_MINMAX_H__
 
 #include <luci/IR/Module.h>
+#include <luci_interpreter/Interpreter.h>
 
 #include <memory>
 
@@ -39,6 +40,7 @@ public:
 
 private:
   std::unique_ptr<luci::Module> _module;
+  std::unique_ptr<luci_interpreter::Interpreter> _interpreter;
 };
 
 } // namespace record_minmax
