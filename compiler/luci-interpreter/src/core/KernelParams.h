@@ -96,6 +96,11 @@ struct SoftmaxParams
   float beta;
 };
 
+struct UnpackParams
+{
+  int axis;
+};
+
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_CORE_KERNELPARAMS_H
