@@ -19,7 +19,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_STATICTENSOR_MANAGER_H__
 
-#include "MemoryManager.h"
+#include "backend/cpu_common/MemoryManager.h"
 #include "TensorRegistry.h"
 #include "operand/Tensor.h"
 
@@ -54,8 +54,8 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
-  std::unique_ptr<DynamicMemoryManager> _const_mgr;
-  std::unique_ptr<MemoryManager> _nonconst_mgr;
+  std::unique_ptr<cpu_common::DynamicMemoryManager> _const_mgr;
+  std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
 };

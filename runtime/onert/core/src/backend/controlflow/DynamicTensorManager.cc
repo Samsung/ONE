@@ -28,7 +28,7 @@ namespace controlflow
 {
 
 DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _dynamic_mem_mgr{new DynamicMemoryManager()}, _tensors{reg}
+    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }

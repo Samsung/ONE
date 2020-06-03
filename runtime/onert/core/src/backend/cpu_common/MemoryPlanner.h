@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,63 +14,28 @@
  * limitations under the License.
  */
 
-// This file will be removed or unified with backend/cpu_common/MemoryManager.h
+/**
+ * @file        MemoryPlanner.h
+ * @brief       This file contains Memory Planning related classes
+ */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_MEMORY_MANAGER_H__
-#define __ONERT_BACKEND_CONTROLFLOW_MEMORY_MANAGER_H__
+#ifndef __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
+#define __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
 
-#include "backend/IMemoryManager.h"
-#include "operand/Allocator.h"
-#include "ir/OperandIndexMap.h"
 #include <map>
+#include <unordered_set>
+#include <memory>
+
+#include "backend/cpu_common/Allocator.h"
+#include "backend/cpu_common/IMemoryPlanner.h"
+#include "ir/OperandIndexMap.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace controlflow
+namespace cpu_common
 {
-
-/**
- * @brief Structure to have memory offset and size
- */
-struct Block
-{
-  uint32_t offset;
-  size_t size;
-};
-
-/**
- * @brief Interface to plan memory
- */
-struct IMemoryPlanner
-{
-  using MemoryPlans = ir::OperandIndexMap<Block>;
-
-  /**
-   * @brief Claim memory for operand
-   * @param[in] index The operand index
-   * @param[in] size The size of the memory
-   */
-  virtual void claim(const ir::OperandIndex &, size_t) = 0;
-  /**
-   * @brief Release memory for operand
-   * @param[in] index The operand index
-   */
-  virtual void release(const ir::OperandIndex &) = 0;
-  /**
-   * @brief Get capacity for memory planning
-   * @return The value of capacity
-   */
-  virtual uint32_t capacity() = 0;
-  /**
-   * @brief Get MemoryPlans
-   * @return MemoryPlans
-   */
-  virtual MemoryPlans &memory_plans() = 0;
-
-  virtual ~IMemoryPlanner() = default;
-};
 
 /**
  * @brief Class to plan memory by bump way
@@ -188,46 +153,8 @@ private:
   std::multimap<uint32_t, ir::OperandIndex> _claim_table;
 };
 
-class MemoryManager : public backend::IMemoryManager
-{
-public:
-  MemoryManager();
-  MemoryManager(const std::string);
-  virtual ~MemoryManager() = default;
-
-  void allocate(void) override;
-  uint8_t *getBuffer(const ir::OperandIndex &ind) const;
-  void deallocate(void) override { _mem_alloc->release(); }
-
-  void claimPlan(const ir::OperandIndex &ind, uint32_t size);
-  void releasePlan(const ir::OperandIndex &ind);
-
-private:
-  IMemoryPlanner *createMemoryPlanner();
-  IMemoryPlanner *createMemoryPlanner(const std::string);
-
-private:
-  ir::OperandIndexMap<Block> _tensor_mem_map;
-  std::shared_ptr<IMemoryPlanner> _mem_planner;
-  std::shared_ptr<Allocator> _mem_alloc;
-};
-
-class DynamicMemoryManager
-{
-public:
-  DynamicMemoryManager() = default;
-  virtual ~DynamicMemoryManager() = default;
-
-  std::shared_ptr<Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
-  void deallocate(const ir::OperandIndex &ind);
-  void deallocate(void);
-
-private:
-  ir::OperandIndexMap<std::shared_ptr<Allocator>> _mem_alloc_map;
-};
-
-} // namespace controlflow
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CONTROLFLOW_MEMORY_MANAGER_H__
+#endif // __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__

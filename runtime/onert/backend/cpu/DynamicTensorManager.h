@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
 
-#include "MemoryManager.h"
+#include <backend/cpu_common/MemoryManager.h>
 #include "TensorRegistry.h"
 
 #include <backend/IDynamicTensorManager.h>

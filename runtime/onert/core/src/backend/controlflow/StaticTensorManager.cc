@@ -28,7 +28,8 @@ namespace controlflow
 {
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg}
+    : _const_mgr{new cpu_common::DynamicMemoryManager()},
+      _nonconst_mgr{new cpu_common::MemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
