@@ -88,9 +88,8 @@ void DynamicInferer::visit(const ir::operation::Pack &op)
   assert(0 <= axis && axis < rank);
 
   ir::Shape new_shape = packShapes(input_shape, axis, rank, num);
-  setShape(output.get(), new_shape);
 
-  _dynamic_tensor_manager->allocate(output_ind, new_shape);
+  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
 
