@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "StaticTensorManager.h"
+#include "backend/cpu_common/StaticTensorManager.h"
 
 #include <util/logging.h>
 
@@ -22,12 +22,11 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _const_mgr{new cpu_common::DynamicMemoryManager()},
-      _nonconst_mgr{new cpu_common::MemoryManager()}, _tensors{reg}
+    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -110,6 +109,6 @@ void StaticTensorManager::iterate(const std::function<void(const ir::OperandInde
     fn(it.first);
 }
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert

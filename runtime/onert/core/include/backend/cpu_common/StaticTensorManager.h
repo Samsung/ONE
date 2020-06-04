@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
+#define __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__
 
-#include <backend/cpu_common/MemoryManager.h>
+#include "MemoryManager.h"
+
+#include "backend/ITensorManager.h"
+#include "ir/OperandIndexMap.h"
+#include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
-#include "Tensor.h"
-
-#include <backend/ITensorManager.h>
-#include <ir/OperandIndexMap.h>
-#include <ir/OperandInfo.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 class StaticTensorManager : public backend::ITensorManager
@@ -51,14 +50,14 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
-  std::unique_ptr<cpu_common::DynamicMemoryManager> _const_mgr;
-  std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
+  std::unique_ptr<DynamicMemoryManager> _const_mgr;
+  std::unique_ptr<MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
 };
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_CPU_COMMON_STATICTENSOR_MANAGER_H__

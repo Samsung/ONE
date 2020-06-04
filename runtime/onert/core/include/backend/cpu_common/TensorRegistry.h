@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_TENSOR_REGISTRY__
-#define __ONERT_BACKEND_CPU_TENSOR_REGISTRY__
+#ifndef __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
+#define __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
 
 #include "ir/OperandIndexMap.h"
 #include "backend/ITensorRegistry.h"
@@ -27,7 +27,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 class TensorRegistry : public ITensorRegistry, public ir::OperandIndexMap<std::shared_ptr<Tensor>>
@@ -40,8 +40,8 @@ public:
   std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override { return at(ind); }
 };
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_TENSOR_REGISTRY__
+#endif // __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
