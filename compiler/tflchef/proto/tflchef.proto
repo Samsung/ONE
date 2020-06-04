@@ -381,6 +381,10 @@ message ReverseSequenceOptions {
   optional int32 batch_dim = 2 [default = 0];
 }
 
+message RankOptions {
+  // NONE
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -477,7 +481,7 @@ message Operation {
   // AddNOptions 188
   optional GatherNdOptions gather_nd_options = 189;
   // WhereOptions 190
-  // RankOptions 191
+  optional RankOptions rank_options = 191;
   optional ReverseSequenceOptions reverse_sequence_options = 192;
   // MatrixDiagOptions 193
   // QuantizeOptions 194
