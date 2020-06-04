@@ -739,15 +739,16 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
 void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERM)};
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
-  auto rank = node.param().rank;
+  auto perm_alloc = _tensor_builder->at(perm_index).get();
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
-  fn->configure(input_alloc, output_alloc, node.param().perm, rank);
+  fn->configure(input_alloc, perm_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

@@ -590,8 +590,8 @@ public:
     uint32_t stride_width = node->stride()->w();
     uint32_t ker_height = ker_shape.dim(1).value();
     uint32_t ker_width = ker_shape.dim(2).value();
-    uint32_t dilation_height = 1;
-    uint32_t dilation_width = 1;
+    uint32_t dilation_height = node->dilation()->h();
+    uint32_t dilation_width = node->dilation()->w();
     uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
     uint32_t effective_ker_width = dilation_width * (ker_width - 1) + 1;
 
@@ -1129,6 +1129,16 @@ public:
     auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
 
     auto output_shape = broadcast_shape(x_shape, y_shape);
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CirclePRelu *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto alpha_shape = loco::shape_get(node->alpha()).as<loco::TensorShape>();
+
+    auto output_shape = broadcast_shape(input_shape, alpha_shape);
 
     return loco::NodeShape{output_shape};
   }

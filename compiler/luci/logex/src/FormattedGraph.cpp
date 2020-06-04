@@ -241,6 +241,7 @@ private:
   IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
   IMPLEMENT(luci::CirclePow)
+  IMPLEMENT(luci::CirclePRelu)
   IMPLEMENT(luci::CircleRange)
   IMPLEMENT(luci::CircleReduceAny)
   IMPLEMENT(luci::CircleReduceMax)
@@ -450,6 +451,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDepthwiseConv2D *node,
   s.args().append("bias", tbl()->lookup(node->bias()));
 
   s.args().append("stride(h,w)", to_str(node->stride()));
+  s.args().append("dilation(h,w)", to_str(node->dilation()));
   s.args().append("padding", to_str(node->padding()));
   s.args().append("depthMultiplier", std::to_string(node->depthMultiplier()));
   s.args().append("fused", to_str(node->fusedActivationFunction()));
@@ -786,6 +788,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CirclePow *node, locop::NodeS
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CirclePRelu *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("alpha", tbl()->lookup(node->alpha()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

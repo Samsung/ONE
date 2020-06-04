@@ -36,6 +36,8 @@ using FeatureShape = nnfw::misc::feature::Shape;
 struct Shape
 {
 public:
+  static const int32_t UNSPECIFIED_DIM = -1;
+
   Shape() = default;
 
   explicit Shape(int rank) : _dimensions(rank) {}

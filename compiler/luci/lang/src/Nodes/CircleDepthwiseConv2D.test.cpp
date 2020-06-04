@@ -33,6 +33,8 @@ TEST(CircleDepthwiseConv2DTest, constructor_P)
   ASSERT_EQ(luci::Padding::UNDEFINED, dw_conv2d_node.padding());
   ASSERT_EQ(1, dw_conv2d_node.stride()->h());
   ASSERT_EQ(1, dw_conv2d_node.stride()->w());
+  ASSERT_EQ(1, dw_conv2d_node.dilation()->h());
+  ASSERT_EQ(1, dw_conv2d_node.dilation()->w());
   ASSERT_EQ(0, dw_conv2d_node.depthMultiplier());
   ASSERT_EQ(luci::FusedActFunc::UNDEFINED, dw_conv2d_node.fusedActivationFunction());
 }

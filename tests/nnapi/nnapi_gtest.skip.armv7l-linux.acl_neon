@@ -16,7 +16,8 @@ GeneratedTests.cast_float32_to_quant8_overflow_relaxed
 GeneratedTests.cast_int32_to_float16
 GeneratedTests.cast_int32_to_quant8_overflow
 GeneratedTests.cast_quant8_to_float16
-GeneratedTests.concat_dynamic_nnfw
+GeneratedTests.exp_dynamic_case1_nnfw
+GeneratedTests.exp_dynamic_case2_nnfw
 GeneratedTests.conv_1_h3_w2_SAME_relaxed
 GeneratedTests.conv_1_h3_w2_VALID_relaxed
 GeneratedTests.conv_3_h3_w2_SAME_relaxed
@@ -141,6 +142,7 @@ GeneratedTests.select_v2_ex_broadcast_less_4d
 GeneratedTests.select_v2_ex_float
 GeneratedTests.sin_1D_float_nnfw
 GeneratedTests.sin_4D_float_nnfw
+GeneratedTests.sin_dynamic_nnfw
 GeneratedTests.slice
 GeneratedTests.slice_2
 GeneratedTests.slice_3

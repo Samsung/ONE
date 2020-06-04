@@ -502,6 +502,22 @@ public:
   }
 };
 
+class TransposeConvPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_TransposeConvOptions())
+    {
+      os << "    ";
+      os << "Padding(" << params->padding() << ") ";
+      os << "Stride.W(" << params->stride_w() << ") ";
+      os << "Stride.H(" << params->stride_h() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class WhilePrinter : public OpPrinter
 {
 public:
@@ -610,6 +626,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique<StridedSlicePrinter>();
   _op_map[tflite::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[tflite::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
+  _op_map[tflite::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
   // There is no Option for TOPK_V2
   _op_map[tflite::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();

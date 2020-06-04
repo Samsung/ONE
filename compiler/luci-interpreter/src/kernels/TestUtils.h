@@ -39,6 +39,16 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
 
 Tensor makeOutputTensor(DataType element_type);
 
+// Returns the corresponding DataType given the type T.
+template <typename T> DataType getElementType()
+{
+  if (std::is_same<T, float>::value)
+    return DataType::FLOAT32;
+  if (std::is_same<T, uint8_t>::value)
+    return DataType::U8;
+  return DataType::Unknown;
+}
+
 template <typename T> std::vector<T> extractTensorData(const Tensor &tensor)
 {
   const auto *data_ptr = tensor.data<T>();

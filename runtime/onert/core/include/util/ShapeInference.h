@@ -135,6 +135,7 @@ private:
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
@@ -206,6 +207,7 @@ public:
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);

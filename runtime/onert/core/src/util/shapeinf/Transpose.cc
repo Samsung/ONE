@@ -15,7 +15,7 @@
  */
 
 #include "util/ShapeInference.h"
-
+#include <iostream>
 namespace onert
 {
 namespace shape_inference
@@ -46,22 +46,19 @@ void StaticInferer::visit(const ir::operation::Transpose &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
+  const auto perm_idx{op.getInputs().at(ir::operation::Transpose::Input::PERM)};
+  const auto &perm = _operands.at(perm_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-  const auto perm{op.param().perm};
   // const auto rank{op.param().rank};
   // if input is dynamic, or perm vector is not yet filled, output also becomes dynamic
-  if (input.info().isDynamic())
+  if (input.info().isDynamic() || perm.info().isDynamic())
   {
     output.info().setDynamic();
     return;
   }
-
-  // set output shape, based on input and params
-  ir::Shape new_shape = inferTransposeShape(input.info().shape(), perm);
-  output.info().shape(new_shape);
 }
 
 // DynamicInferer at execution time
@@ -77,11 +74,20 @@ void DynamicInferer::visit(const ir::operation::Transpose &op)
   auto input_ind = op.getInputs().at(ir::operation::Transpose::Input::INPUT);
   auto input_tensor = _tensor_registry->getITensor(input_ind);
   auto input_shape = getShape(input_tensor.get());
+  auto perm_ind = op.getInputs().at(ir::operation::Transpose::Input::PERM);
 
-  const auto perm{op.param().perm};
-  // const auto rank{op.param().rank};
+  ir::Shape new_shape;
+  auto perm_tensor = _tensor_registry->getITensor(perm_ind);
+  assert(perm_tensor);
+  int *perm_values = reinterpret_cast<int *>(perm_tensor->buffer());
+  std::vector<int> perm_vec;
+  for (size_t idx = 0; idx < perm_tensor->dimension(0); idx++)
+  {
+    perm_vec.push_back(perm_values[idx]);
+  }
+  new_shape = inferTransposeShape(input_shape, perm_vec);
+
   // set output shape, based on input and params
-  ir::Shape new_shape = inferTransposeShape(input_shape, perm);
   setShape(output.get(), new_shape);
 
   _dynamic_tensor_manager->allocate(output_ind, new_shape);

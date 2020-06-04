@@ -222,12 +222,14 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto &perm{node.param().perm};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERM)};
 
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto &input_shape = _ctx.at(input_index).shape();
+  const auto &perm_shape = _ctx.at(perm_index).shape();
 
-  OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
+  OP_REQUIRES(perm_shape.rank() == 1);
+  OP_REQUIRES(input_shape.rank() == perm_shape.dim(0));
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 

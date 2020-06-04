@@ -40,15 +40,15 @@ public:
 
   void transposeQuant8();
 
-  void configure(const Tensor *input, Tensor *output, const std::vector<int> &perm, int32_t rank);
+  void configure(const Tensor *input, const Tensor *perm, Tensor *output);
 
   void run();
   void runSync() { run(); }
 
 private:
   const Tensor *_input;
+  const Tensor *_perm;
   Tensor *_output;
-  std::vector<int> _perm;
   int32_t _rank;
 };
 

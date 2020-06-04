@@ -23,6 +23,7 @@
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
+#include <vector>
 
 namespace luci_interpreter
 {
@@ -40,6 +41,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleConst *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleDepthwiseConv2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleFullyConnected *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMaxPool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMean *node) override;
@@ -48,6 +50,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CirclePad *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleReshape *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleSplit *node) override;
 
 private:
   const Tensor *getInputTensor(const loco::Node *node) const
@@ -68,6 +71,15 @@ private:
     Tensor *tensor = _tensor_map.getTensor(node);
     assert(tensor != nullptr);
     return tensor;
+  }
+
+  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const
+  {
+    std::vector<Tensor *> tensors;
+    tensors.reserve(nodes.size());
+    for (const loco::Node *node : nodes)
+      tensors.push_back(getOutputTensor(node));
+    return tensors;
   }
 
 private:

@@ -25,6 +25,8 @@ set(SOURCES
     DepthwiseConv2D.cpp
     FullyConnected.h
     FullyConnected.cpp
+    Logistic.h
+    Logistic.cpp
     MaxPool2D.h
     MaxPool2D.cpp
     Mean.h
@@ -37,8 +39,10 @@ set(SOURCES
     Reshape.cpp
     Softmax.h
     Softmax.cpp
-    Utils.h
-    Utils.cpp)
+    Split.h
+    Split.cpp)
+
+list(APPEND SOURCES Utils.h Utils.cpp)
 
 add_library(luci_interpreter_kernels STATIC ${SOURCES})
 set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -53,8 +57,6 @@ target_link_libraries(luci_interpreter_kernels
 
 
 set(TEST_SOURCES
-    TestUtils.h
-    TestUtils.cpp
     Add.test.cpp
     ArgMax.test.cpp
     AveragePool2D.test.cpp
@@ -62,12 +64,16 @@ set(TEST_SOURCES
     Conv2D.test.cpp
     DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
+    Logistic.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
     Mul.test.cpp
     Pad.test.cpp
     Reshape.test.cpp
-    Softmax.test.cpp)
+    Softmax.test.cpp
+    Split.test.cpp)
+
+list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
 
 GTest_AddTest(luci_interpreter_kernels_test ${TEST_SOURCES})
 target_link_libraries(luci_interpreter_kernels_test luci_interpreter_kernels)

@@ -34,27 +34,15 @@ public:
   enum Input
   {
     INPUT = 0, // for an n-D tensor, specifying the tensor to be transposed.
-  };
-
-  struct Param
-  {
-    std::vector<int> perm;
-    int32_t rank;
+    PERM,
   };
 
 public:
-  Transpose(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-            const Param &param);
+  Transpose(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Transpose; }
-
-public:
-  const Param &param() const { return _param; }
-
-private:
-  Param _param;
 };
 
 } // namespace operation
