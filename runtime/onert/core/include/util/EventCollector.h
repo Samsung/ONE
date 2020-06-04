@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __EVENT_COLLECTOR_H__
-#define __EVENT_COLLECTOR_H__
+#ifndef __ONERT_UTIL_EVENT_COLLECTOR_H__
+#define __ONERT_UTIL_EVENT_COLLECTOR_H__
 
-#include "misc/EventRecorder.h"
+#include "util/EventRecorder.h"
 
 class EventCollector
 {
@@ -48,4 +48,4 @@ protected:
   EventRecorder *_rec;
 };
 
-#endif // __EVENT_COLLECTOR_H__
+#endif // __ONERT_UTIL_EVENT_COLLECTOR_H__
