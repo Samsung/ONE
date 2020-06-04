@@ -82,6 +82,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(POW, CirclePowGraphBuilder);                                                 // 78
   CIRCLE_NODE(PRELU, CirclePReluGraphBuilder);                                             // 54,
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                                             // 96
+  CIRCLE_NODE(RANK, CircleRankGraphBuilder);                                               // 110
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                                    // 91
   CIRCLE_NODE(REDUCE_MAX, CircleReduceMaxGraphBuilder);                                    // 82
   CIRCLE_NODE(REDUCE_MIN, CircleReduceMinGraphBuilder);                                    // 89
@@ -152,6 +153,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ADD_N = 106,
   // BuiltinOperator_WHERE = 109,
   // BuiltinOperator_RANK = 110,
+  // BuiltinOperator_REVERSE_SEQUENCE = 112,
   // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_MATRIX_SET_DIAG = 115,
