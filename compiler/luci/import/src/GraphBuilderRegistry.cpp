@@ -31,6 +31,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(ADD, CircleAddGraphBuilder);                                                 // 0
   CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                                          // 56
   CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);                           // 1
+  CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulGraphBuilder);                                      // 126
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);                        // 37
   CIRCLE_NODE(CAST, CircleCastGraphBuilder);                                               // 53
   CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                                           // 32
@@ -160,7 +161,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_SELECT_V2 = 123,
   // BuiltinOperator_DENSIFY = 124,
   // BuiltinOperator_SEGMENT_SUM = 125,
-  // BuiltinOperator_BATCH_MATMUL = 126,
 }
 
 } // namespace luci
