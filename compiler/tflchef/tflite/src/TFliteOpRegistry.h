@@ -107,6 +107,7 @@ private:
     REG_TFL_OP(POW, TFliteOpPow);
     REG_TFL_OP(PRELU, TFliteOpPRelu);
     REG_TFL_OP(RANGE, TFliteOpRange);
+    REG_TFL_OP(RANK, TFliteOpRank);
     REG_TFL_OP(REDUCE_ANY, TFliteOpReduceAny);
     REG_TFL_OP(REDUCE_MAX, TFliteOpReduceMax);
     REG_TFL_OP(REDUCE_MIN, TFliteOpReduceMin);
