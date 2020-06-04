@@ -83,6 +83,7 @@
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleResizeBilinear.h"
 #include "Nodes/CircleResizeNearestNeighbor.h"
+#include "Nodes/CircleRound.h"
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleScatterNd.h"
 #include "Nodes/CircleSelect.h"
