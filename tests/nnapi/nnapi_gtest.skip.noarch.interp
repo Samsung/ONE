@@ -347,6 +347,7 @@ GeneratedTests.reduce_sum_4
 GeneratedTests.reduce_sum_4D_float_nnfw
 GeneratedTests.reduce_sum_4D_float_reducing_C_nnfw
 GeneratedTests.reduce_sum_4D_float_reducing_HW_nnfw
+GeneratedTests.reduce_sum_dynamic_nnfw
 GeneratedTests.relu1_quant8_1
 GeneratedTests.relu1_quant8_2
 GeneratedTests.relu6_quant8_1
