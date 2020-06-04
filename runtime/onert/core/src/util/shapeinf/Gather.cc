@@ -21,7 +21,7 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape GatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
+ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                        int rank)
 {
   ir::Shape out_shape;
@@ -69,7 +69,7 @@ void StaticInferer::visit(const ir::operation::Gather &op)
   assert(0 <= axis && axis < rank);
 
   // re-sizing output shape
-  ir::Shape new_shape = GatherShapes(input.info().shape(), indices.info().shape(), axis, rank);
+  ir::Shape new_shape = gatherShapes(input.info().shape(), indices.info().shape(), axis, rank);
   output.info().shape(new_shape);
 }
 
@@ -91,7 +91,7 @@ void DynamicInferer::visit(const ir::operation::Gather &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = GatherShapes(input_shape, indices_shape, axis, rank);
+  ir::Shape new_shape = gatherShapes(input_shape, indices_shape, axis, rank);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
