@@ -1250,7 +1250,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-loco::NodeShape visit(const luci::CircleRank *node) final
+  loco::NodeShape visit(const luci::CircleRank *) final
   {
     loco::TensorShape shape_output;
     shape_output.rank(0);
