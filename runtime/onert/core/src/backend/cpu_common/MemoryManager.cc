@@ -18,7 +18,7 @@
 
 #include <cassert>
 
-#include <MemoryPlannerFactory.h>
+#include "MemoryPlannerFactory.h"
 #include "util/ConfigSource.h"
 
 namespace onert

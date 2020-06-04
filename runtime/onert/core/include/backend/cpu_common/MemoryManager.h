@@ -17,8 +17,9 @@
 #ifndef __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__
 
+#include "Allocator.h"
 #include "backend/IMemoryManager.h"
-#include "MemoryPlanner.h"
+#include "IMemoryPlanner.h"
 #include "ir/OperandIndexMap.h"
 
 namespace onert
@@ -43,13 +44,13 @@ public:
   void releasePlan(const ir::OperandIndex &ind);
 
 private:
-  cpu_common::IMemoryPlanner *createMemoryPlanner();
-  cpu_common::IMemoryPlanner *createMemoryPlanner(const std::string);
+  IMemoryPlanner *createMemoryPlanner();
+  IMemoryPlanner *createMemoryPlanner(const std::string);
 
 private:
-  ir::OperandIndexMap<cpu_common::Block> _tensor_mem_map;
-  std::shared_ptr<cpu_common::IMemoryPlanner> _mem_planner;
-  std::shared_ptr<cpu_common::Allocator> _mem_alloc;
+  ir::OperandIndexMap<Block> _tensor_mem_map;
+  std::shared_ptr<IMemoryPlanner> _mem_planner;
+  std::shared_ptr<Allocator> _mem_alloc;
 };
 
 class DynamicMemoryManager
@@ -58,12 +59,12 @@ public:
   DynamicMemoryManager() = default;
   virtual ~DynamicMemoryManager() = default;
 
-  std::shared_ptr<cpu_common::Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
+  std::shared_ptr<Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
   void deallocate(const ir::OperandIndex &ind);
   void deallocate(void);
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<cpu_common::Allocator>> _mem_alloc_map;
+  ir::OperandIndexMap<std::shared_ptr<Allocator>> _mem_alloc_map;
 };
 
 } // namespace cpu_common
