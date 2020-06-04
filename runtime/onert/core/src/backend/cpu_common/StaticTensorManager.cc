@@ -73,10 +73,11 @@ void StaticTensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
 void StaticTensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
 
 void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
-                                      const ir::OperandInfo &tensor_info, bool as_const)
+                                      const ir::OperandInfo &tensor_info, ir::Layout backend_layout,
+                                      bool as_const)
 {
   assert(_tensors->find(ind) == _tensors->end());
-  auto tensor = std::make_shared<Tensor>(tensor_info);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
   (*_tensors)[ind] = tensor;
   _as_constants[ind] = as_const;
 }
