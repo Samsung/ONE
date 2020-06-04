@@ -22,7 +22,7 @@
 #include <mutex>
 
 #include <ostream>
-#include <sstream>
+#include <vector>
 
 struct Event
 {
@@ -57,12 +57,13 @@ public:
   void emit(const CounterEvent &evt);
 
 public:
-  bool empty() { return _ss.str().empty(); }
+  bool empty() { return _duration_events.empty() && _counter_events.empty(); }
   void writeToFile(std::ostream &os);
 
 private:
   std::mutex _mu;
-  std::stringstream _ss;
+  std::vector<DurationEvent> _duration_events;
+  std::vector<CounterEvent> _counter_events;
 };
 
 #endif // __EVENT_RECORDER_H__
