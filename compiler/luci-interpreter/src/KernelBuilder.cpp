@@ -32,6 +32,7 @@
 #include "kernels/Softmax.h"
 #include "kernels/Split.h"
 #include "kernels/Unpack.h"
+#include "kernels/Transpose.h"
 
 #include <stdexcept>
 
@@ -320,6 +321,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)
 
   // NOTE 'num' attribute is ignored.
   return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
+{
+  assert(node->arity() == 2);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->perm()) == nullptr)
+    throw std::runtime_error("Dynamic perm is not yet supported.");
+  const Tensor *input = getInputTensor(node->a());
+  const Tensor *perm = getInputTensor(node->perm());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Transpose>(input, perm, output);
 }
 
 } // namespace luci_interpreter
