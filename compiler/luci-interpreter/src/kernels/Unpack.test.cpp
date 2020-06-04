@@ -33,9 +33,7 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
            std::vector<std::initializer_list<T>> exp_output_data)
 {
   constexpr DataType element_type = getElementType<T>();
-  if (axis < 0)
-    axis += input_shape.num_dims();
-  const int num_outputs = input_shape.dim(axis);
+  const int num_outputs = input_shape.dim(axis < 0 ? axis + input_shape.num_dims() : axis);
 
   Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
   std::vector<Tensor> output_tensors;
