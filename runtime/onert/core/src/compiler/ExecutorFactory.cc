@@ -222,6 +222,15 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
    ***********************/
 
   auto order = Linear::linearize(*lowered_graph);
+
+  // Shape inference.
+  {
+    shape_inference::StaticInferer inferer(lowered_graph->graph());
+    lowered_graph->op_seqs().iterate(
+        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
+    inferer.dump();
+  }
+
   runTensorRegistration(lowered_graph.get(), order);
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
@@ -314,6 +323,15 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   }
 
   auto order = Linear::linearize(*lowered_graph);
+
+  // Shape inference.
+  {
+    shape_inference::StaticInferer inferer(lowered_graph->graph());
+    lowered_graph->op_seqs().iterate(
+        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
+    inferer.dump();
+  }
+
   runTensorRegistration(lowered_graph.get(), order);
 
   backend::TensorBuilderSet tensor_builders;
