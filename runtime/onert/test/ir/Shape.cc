@@ -30,7 +30,7 @@ TEST(ShapeTest, basic_test)
     ASSERT_EQ(shape.rank(), 3);
     ASSERT_EQ(shape.num_elements(), 6);
     ASSERT_EQ(onert::ir::rankMaybeUnspecified(shape), false);
-    ASSERT_EQ(onert::ir::haveUnspecifiedDims(shape), false);
+    ASSERT_EQ(shape.hasUnspecifiedDims(), false);
   }
   {
     onert::ir::Shape shape; // scalar or rank is unspecified
@@ -38,7 +38,7 @@ TEST(ShapeTest, basic_test)
     ASSERT_EQ(shape.rank(), 0);
     ASSERT_EQ(shape.num_elements(), 1);
     ASSERT_EQ(onert::ir::rankMaybeUnspecified(shape), true);
-    ASSERT_EQ(onert::ir::haveUnspecifiedDims(shape), false);
+    ASSERT_EQ(shape.hasUnspecifiedDims(), false);
   }
 }
 
@@ -52,7 +52,7 @@ TEST(ShapeTest, neg_basic_test)
 
     ASSERT_EQ(shape.rank(), 2);
     ASSERT_EQ(onert::ir::rankMaybeUnspecified(shape), false);
-    ASSERT_EQ(onert::ir::haveUnspecifiedDims(shape), true);
+    ASSERT_EQ(shape.hasUnspecifiedDims(), true);
     EXPECT_ANY_THROW(shape.num_elements());
   }
 }
