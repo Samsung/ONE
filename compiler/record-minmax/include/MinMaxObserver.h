@@ -44,7 +44,7 @@ public:
       MinMaxVectors vectors;
       vectors.min_vector.push_back(min);
       vectors.max_vector.push_back(max);
-      _minmax_map.emplace(node, std::move(vectors));
+      _minmax_map.emplace(node, vectors);
     }
     else
     {
