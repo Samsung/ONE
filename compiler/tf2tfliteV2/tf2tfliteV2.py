@@ -131,6 +131,7 @@ def _v1_convert(flags):
         _parse_array(flags.output_arrays), input_shapes)
 
     converter.allow_custom_ops = True
+    converter.enable_mlir_converter = True
 
     tflite_model = converter.convert()
     open(flags.output_path, "wb").write(tflite_model)
@@ -160,6 +161,7 @@ def _v2_convert(flags):
     converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
 
     converter.allow_custom_ops = True
+    converter.enable_mlir_converter = True
     converter.experimental_new_converter = True
 
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]

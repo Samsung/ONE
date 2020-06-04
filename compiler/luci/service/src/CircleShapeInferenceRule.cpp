@@ -303,6 +303,19 @@ loco::TensorShape infer_reducer(const loco::Node *input, const loco::Node *indic
 }
 
 /**
+ * @brief vector_from_constant will return int64_t vector from CircleConst node
+ */
+template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::CircleConst *const_node)
+{
+  std::vector<int64_t> result;
+
+  for (uint32_t idx = 0; idx < const_node->size<T>(); ++idx)
+    result.push_back(const_node->at<T>(idx));
+
+  return result;
+}
+
+/**
  * @brief Class to infer the shape of CircleNode
  *
  * @note All CircleNode's inputs and outputs are always loco::Domain::Tensor
@@ -750,8 +763,12 @@ public:
     // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
     // Weight: [# of units, K]
     // Output: [D1 * D2 * ... * Dn / K, # of units]
-    LUCI_ASSERT(input_shape.rank() >= 2, "Input rank should be at least 2");
-    LUCI_ASSERT(weights_shape.rank() == 2, "Incompatible weights rank for fully connected");
+    if (input_shape.rank() < 2 || weights_shape.rank() != 2)
+    {
+      // Return node own shape if shape inference is not possible
+      auto out_shape = own_shape(node);
+      return loco::NodeShape{out_shape};
+    }
 
     uint32_t input_size = 1;
     for (uint32_t i = 0; i < input_shape.rank(); i++)
@@ -1410,29 +1427,41 @@ public:
   loco::NodeShape visit(const luci::CircleSlice *node) final
   {
     const loco::DataType S32 = loco::DataType::S32;
+    const loco::DataType S64 = loco::DataType::S64;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
 
-    // Only support begin() with S32 type CircleConst for now
     auto const_begin = loco::must_cast<luci::CircleConst *>(node->begin());
-    LUCI_ASSERT(const_begin->dtype() == S32, "Only support int32 begin()");
-
-    // Only support size() with S32 type CircleConst for now
     auto const_size = loco::must_cast<luci::CircleConst *>(node->size());
-    LUCI_ASSERT(const_size->dtype() == S32, "Only support int32 size()");
-
-    assert(input_shape.rank() == const_begin->size<S32>());
-    assert(input_shape.rank() == const_size->size<S32>());
 
     loco::TensorShape output_shape;
+    std::vector<int64_t> vect_begin; // to hold both S32/S64, we use int64_t
+    std::vector<int64_t> vect_size;
 
-    output_shape.rank(const_begin->size<S32>());
-    for (uint32_t idx = 0; idx < const_begin->size<S32>(); ++idx)
+    if (const_begin->dtype() == S32)
+      vect_begin = vector_from_constant<S32>(const_begin);
+    else if (const_begin->dtype() == S64)
+      vect_begin = vector_from_constant<S64>(const_begin);
+    else
+      LUCI_ASSERT(false, "Only support int32/int64 for begin()");
+
+    if (const_size->dtype() == S32)
+      vect_size = vector_from_constant<S32>(const_size);
+    else if (const_size->dtype() == S64)
+      vect_size = vector_from_constant<S64>(const_size);
+    else
+      LUCI_ASSERT(false, "Only support int32/int64 for size()");
+
+    assert(input_shape.rank() == vect_begin.size());
+    assert(input_shape.rank() == vect_size.size());
+
+    output_shape.rank(vect_begin.size());
+    for (uint32_t idx = 0; idx < vect_begin.size(); ++idx)
     {
-      int size = const_size->at<S32>(idx);
+      auto size = vect_size.at(idx);
       if (size == -1)
       {
-        size = input_shape.dim(idx).value() - const_begin->at<S32>(idx);
+        size = input_shape.dim(idx).value() - vect_begin.at(idx);
       }
       output_shape.dim(idx) = size;
     }
@@ -1691,10 +1720,8 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  /// @brief Returns output shape of transpose. Use loco::ConstGen and luci::CircleConst for ConstT.
-  template <class ConstT>
   loco::TensorShape output_shape_of_transpose(loco::TensorShape input_shape,
-                                              const ConstT *perm_node)
+                                              const luci::CircleConst *perm_node)
   {
     loco::TensorShape output_shape;
     output_shape.rank(input_shape.rank());
@@ -1715,19 +1742,14 @@ public:
   {
     auto input_shape = loco::shape_get(node->a()).as<loco::TensorShape>();
 
-    auto canon_perm = dynamic_cast<loco::ConstGen *>(node->perm());
     auto circle_perm = dynamic_cast<luci::CircleConst *>(node->perm());
 
-    if (canon_perm)
-    {
-      return loco::NodeShape{output_shape_of_transpose(input_shape, canon_perm)};
-    }
-    else if (circle_perm)
+    if (circle_perm)
     {
       return loco::NodeShape{output_shape_of_transpose(input_shape, circle_perm)};
     }
     else
-      INTERNAL_EXN("perm of CircleTranspose should be either ConstGen or CircleConst");
+      INTERNAL_EXN("perm of CircleTranspose should be CircleConst");
   }
 
   loco::NodeShape visit(const luci::CircleTransposeConv *node) final
