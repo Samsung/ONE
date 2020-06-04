@@ -77,6 +77,7 @@
 #include "Op/Reshape.h"
 #include "Op/ResizeBilinear.h"
 #include "Op/ResizeNearestNeighbor.h"
+#include "Op/Round.h"
 #include "Op/Rsqrt.h"
 #include "Op/Select.h"
 #include "Op/Shape.h"
