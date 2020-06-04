@@ -76,7 +76,7 @@ void DynamicInferer::visit(const ir::operation::Tile &op)
   auto multiplier_idx = op.getInputs().at(ir::operation::Tile::Input::MULTIPLES);
   auto multiplier = _tensor_registry->getITensor(multiplier_idx);
 
-  if ((!input->is_dynamic() && multiplier->is_dynamic()) && (!output->is_dynamic()))
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
   auto input_shape = getShape(input.get());

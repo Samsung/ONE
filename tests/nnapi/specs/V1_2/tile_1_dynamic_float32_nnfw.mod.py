@@ -21,11 +21,10 @@
 #
 
 input0 = Input("input0", "TENSOR_FLOAT32", "{3}")
-multi0 =  Input("input1", "TENSOR_INT32", "{1}")
+multi0 =  Input("input1", "TENSOR_INT32", "{}")
 output0 = Output("output", "TENSOR_FLOAT32", "{6}")
-model0 = Model().Operation("TILE", input0, multi0).To(output0)
 
-data = [1.2, -3.4, 5.6, 7.8]
+model0 = Model().Operation("TILE", input0, multi0).To(output0)
 
 Example({
     input0: [1.2, -3.4, 5.6],
