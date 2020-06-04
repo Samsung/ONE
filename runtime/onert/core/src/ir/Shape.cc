@@ -75,8 +75,8 @@ uint64_t Shape::num_elements() const
 {
   // if dimension is 0, it means unspecified and cannot calculate the total number of elements
   if (std::any_of(_dimensions.begin(), _dimensions.end(),
-                  [](const int32_t &v) { return (v == 0); }))
-    throw std::runtime_error("num_elements() cannot calculate when a dimension is unspecified");
+                  [](const int32_t &v) { return v == UNSPECIFIED_DIM; }))
+    throw std::runtime_error("num_elements() cannot calculate when any dimension is unspecified");
 
   return std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),
                          std::multiplies<uint64_t>());
@@ -104,7 +104,7 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
 bool haveUnspecifiedDims(const ir::Shape &shape)
 {
   for (int n = 0; n < shape.rank(); n++)
-    if (shape.dim(n) == 0)
+    if (shape.dim(n) == Shape::UNSPECIFIED_DIM)
       return true;
   return false;
 }
