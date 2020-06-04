@@ -1,0 +1,21 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+
+operand {
+  name: "ofm"
+  type: INT32
+  shape { }
+}
+
+operation {
+  type: "Rank"
+  rank_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
