@@ -111,14 +111,14 @@ void EventRecorder::emit(const DurationEvent &evt)
 {
   std::lock_guard<std::mutex> lock{_mu};
 
-  _ss << "    " << object(evt) << ",\n";
+  _duration_events.push_back(evt);
 }
 
 void EventRecorder::emit(const CounterEvent &evt)
 {
   std::lock_guard<std::mutex> lock{_mu};
 
-  _ss << "    " << object(evt) << ",\n";
+  _counter_events.push_back(evt);
 }
 
 void EventRecorder::writeToFile(std::ostream &os)
@@ -128,7 +128,15 @@ void EventRecorder::writeToFile(std::ostream &os)
   os << "{\n";
   os << "  " << quote("traceEvents") << ": [\n";
 
-  os << _ss.str();
+  for (auto &evt : _duration_events)
+  {
+    os << "    " << object(evt) << ",\n";
+  }
+
+  for (auto &evt : _counter_events)
+  {
+    os << "    " << object(evt) << ",\n";
+  }
 
   os << "    { }\n";
   os << "  ]\n";
