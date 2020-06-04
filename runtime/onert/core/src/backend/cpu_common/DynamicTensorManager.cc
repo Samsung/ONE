@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DynamicTensorManager.h"
+#include "backend/cpu_common/DynamicTensorManager.h"
 
 #include "util/logging.h"
 
@@ -22,11 +22,11 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{reg}
+    : _dynamic_mem_mgr{new DynamicMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -172,6 +172,6 @@ void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
                                 << " (output of a subgraph)" << std::endl;
 }
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert

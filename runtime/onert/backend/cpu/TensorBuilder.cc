@@ -28,8 +28,9 @@ namespace cpu
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
+    : _tensor_reg{new cpu_common::TensorRegistry()},
+      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
+      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
 {
   /* empty */
 }
@@ -100,7 +101,7 @@ std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
   auto found = _tensor_reg->find(ind);
   assert(found != _tensor_reg->end());
