@@ -8,6 +8,8 @@ SemVer)](https://img.shields.io/github/v/release/Samsung/ONE)](https://github.co
 
 A high-performance, on-device neural network inference framework.
 
+[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/0)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/0)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/1)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/1)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/2)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/2)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/3)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/3)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/4)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/4)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/5)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/5)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/6)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/6)[![](https://sourcerer.io/fame/lemmaa/Samsung/ONE/images/7)](https://sourcerer.io/fame/lemmaa/Samsung/ONE/links/7)
+
 ## Goal
 
 This project **ONE** aims at providing a high-performance, on-device neural network (NN) inference
