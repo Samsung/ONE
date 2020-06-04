@@ -43,7 +43,6 @@ public:
   void configure(const Tensor *input, Tensor *output, const std::vector<int> &perm, int32_t rank);
 
   void run();
-  void runSync() { run(); }
 
 private:
   const Tensor *_input;

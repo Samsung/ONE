@@ -37,7 +37,6 @@ public:
   void configure(const Tensor *start, const Tensor *limit, const Tensor *delta, Tensor *output);
 
   void run();
-  void runSync() { run(); }
 
 private:
   const Tensor *_start;

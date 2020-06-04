@@ -41,7 +41,6 @@ public:
   void configure(const Tensor *_lhs, const Tensor *_rhs, Tensor *output);
 
   void run();
-  void runSync() { run(); }
 
 private:
   void lorBool8();
