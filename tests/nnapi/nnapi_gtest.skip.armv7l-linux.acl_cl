@@ -105,6 +105,7 @@ GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
 GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
+GeneratedTests.rsqrt_dynamic_nnfw
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
 GeneratedTests.select_v1_2_one_dim
