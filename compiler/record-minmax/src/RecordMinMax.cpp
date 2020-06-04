@@ -16,6 +16,7 @@
 
 #include "RecordMinMax.h"
 #include "CircleExpContract.h"
+#include "MinMaxObserver.h"
 #include "HDF5Importer.h"
 
 #include <luci/Importer.h>
@@ -23,6 +24,7 @@
 
 #include <fstream>
 #include <stdexcept>
+#include <iostream>
 
 using Shape = luci_interpreter::Shape;
 using DataType = luci_interpreter::DataType;
@@ -86,7 +88,9 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   // Initialize interpreter
   _interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
 
-  // TODO: Attach observer to the interpreter
+  _observer = std::make_unique<MinMaxObserver>();
+
+  _interpreter->attachObserver(_observer.get());
 }
 
 void RecordMinMax::profileData(const std::string &input_data_path)
@@ -102,6 +106,9 @@ void RecordMinMax::profileData(const std::string &input_data_path)
   {
     if (num_inputs != importer.numInputs(record_idx))
       throw std::runtime_error("Wrong number of inputs.");
+
+    if (record_idx % 100 == 0)
+      std::cout << "Recording " << record_idx << "'th data" << std::endl;
 
     for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
     {
@@ -123,8 +130,10 @@ void RecordMinMax::profileData(const std::string &input_data_path)
     _interpreter->interpret();
   }
 
-  // TODO: Determine the final min/max for each activation
-  //       E.g., using clipping, averaging
+  auto minmax_map = _observer->minMaxData()->getMap();
+  (void *)minmax_map;
+
+  // Derive min/max values from minmax_map
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
