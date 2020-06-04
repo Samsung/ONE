@@ -19,7 +19,7 @@ operation {
   input: "ifm2"
   output: "ofm"
   batch_matmul_options {
-    adjoint_lhs: true
+    adjoint_lhs: false
     adjoint_rhs: false
   }
 }
