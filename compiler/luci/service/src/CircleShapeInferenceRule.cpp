@@ -1250,6 +1250,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleRank *node) final
+  {
+    loco::TensorShape shape_output;
+    shape_output.rank(0);
+
+    return loco::NodeShape{shape_output};
+  }
+
   loco::NodeShape visit(const luci::CircleReduceAny *node) final
   {
     auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());

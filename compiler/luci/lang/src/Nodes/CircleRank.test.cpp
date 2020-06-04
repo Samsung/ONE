@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-#include "Rank.h"
+#include "luci/IR/Nodes/CircleRank.h"
 
-flatbuffers::Offset<void> RankChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+#include "luci/IR/CircleDialect.h"
+
+#include <gtest/gtest.h>
+
+TEST(CircleRankTest, constructor_P)
 {
-  tflite::RankOptionsBuilder options_builder{fbb};
+  luci::CircleRank rank_node;
 
-  return options_builder.Finish().Union();
-}
+  ASSERT_EQ(luci::CircleDialect::get(), rank_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::RANK, rank_node.opcode());
 
-std::unique_ptr<OpChef> RankChefFactory::create(const tflchef::Operation *operation) const
-{
-  return std::unique_ptr<OpChef>{new RankChef{operation}};
+  ASSERT_EQ(nullptr, rank_node.input());
 }

@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-#include "Rank.h"
+#ifndef __LUCI_IMPORT_OP_CIRCLE_RANK_H__
+#define __LUCI_IMPORT_OP_CIRCLE_RANK_H__
 
-flatbuffers::Offset<void> RankChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+#include "luci/Import/GraphBuilder.h"
+
+namespace luci
 {
-  tflite::RankOptionsBuilder options_builder{fbb};
 
-  return options_builder.Finish().Union();
-}
-
-std::unique_ptr<OpChef> RankChefFactory::create(const tflchef::Operation *operation) const
+class CircleRankGraphBuilder : public GraphBuilder
 {
-  return std::unique_ptr<OpChef>{new RankChef{operation}};
-}
+public:
+  bool validate(const ValidateArgs &args) const final;
+
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const final;
+};
+
+} // namespace luci
+
+#endif // __LUCI_IMPORT_OP_CIRCLE_RANK_H__

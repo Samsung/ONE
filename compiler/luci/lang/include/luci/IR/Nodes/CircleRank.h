@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-#include "Rank.h"
+#ifndef __LUCI_IR_CIRCLERANK_H__
+#define __LUCI_IR_CIRCLERANK_H__
 
-flatbuffers::Offset<void> RankChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+#include "luci/IR/CircleNodeDecl.h"
+#include "luci/IR/CircleOpcode.h"
+
+#include "luci/IR/LuciNodeMixins.h"
+
+namespace luci
 {
-  tflite::RankOptionsBuilder options_builder{fbb};
 
-  return options_builder.Finish().Union();
-}
-
-std::unique_ptr<OpChef> RankChefFactory::create(const tflchef::Operation *operation) const
+/**
+ * @brief RANK in Circle
+ */
+class CircleRank final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::RANK>>
 {
-  return std::unique_ptr<OpChef>{new RankChef{operation}};
-}
+public:
+  loco::Node *input(void) const { return at(0)->node(); }
+  void input(loco::Node *node) { at(0)->node(node); }
+};
+
+} // namespace luci
+
+#endif // __LUCI_IR_CIRCLERANK_H__
