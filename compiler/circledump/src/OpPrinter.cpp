@@ -60,6 +60,22 @@ public:
   }
 };
 
+class BatchMatMulPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_BatchMatMulOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "adjoint_lhs(" << params->adjoint_lhs() << ") ";
+      os << "adjoint_rhs(" << params->adjoint_rhs() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class CastPrinter : public OpPrinter
 {
 public:
@@ -609,6 +625,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_BATCH_MATMUL] = make_unique<BatchMatMulPrinter>();
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
