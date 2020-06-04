@@ -357,6 +357,7 @@ GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw
 GeneratedTests.rsqrt_3D_float_nnfw
 GeneratedTests.rsqrt_4D_float_nnfw
+GeneratedTests.rsqrt_dynamic_nnfw
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
 GeneratedTests.select_v1_2_one_dim
