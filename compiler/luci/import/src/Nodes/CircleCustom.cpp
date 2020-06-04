@@ -54,15 +54,33 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   node->custom_options(std::vector<uint8_t>{op.custom_options.begin(), op.custom_options.end()});
   node->custom_code(opcode.custom_code);
 
-  assert(outputs.size() == 1);
+  uint32_t output_count = outputs.size();
+
+  assert(output_count > 0);
   {
+    // Let's use attributes from output 0 for this node
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
-    copy_tensor_attributes(output_tensor, node);
+    node->name(tensor_name(output_tensor));
+    node->dtype(luci_datatype(output_tensor.type));
+  }
+
+  // Create virtual outputs of Custom
+  for (uint32_t n = 0; n < output_count; ++n)
+  {
+    const circle::TensorT &output_tensor = *tensors[outputs[n]];
+
+    auto *nodeout = graph->nodes()->create<CircleCustomOut>();
+    copy_tensor_attributes(output_tensor, nodeout);
     // mark shape_status
-    if (tensors_ptr->Get(outputs[0])->shape() == nullptr)
-      node->shape_status(ShapeStatus::NOSHAPE);
+    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
+      nodeout->shape_status(ShapeStatus::NOSHAPE);
     else
-      node->shape_status(ShapeStatus::VALID);
+      nodeout->shape_status(ShapeStatus::VALID);
+
+    nodeout->input(node);
+    nodeout->index(n);
+
+    context->nodefinder()->enroll(outputs[n], nodeout);
   }
 
   context->nodefinder()->enroll(outputs[0], node);

@@ -144,6 +144,7 @@ public:
   void visit(luci::CircleOutputDummy *) final {}
   void visit(luci::CircleOutputExclude *) final {}
   // Virtual for multiple-outputs
+  void visit(luci::CircleCustomOut *) final {}
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleSplitOut *) final {}
   void visit(luci::CircleSplitVOut *) final {}
@@ -345,13 +346,36 @@ void OperationExporter::visit(luci::CircleCos *node)
 
 void OperationExporter::visit(luci::CircleCustom *node)
 {
+  auto custom_outputs = loco::succs(node);
+
   uint32_t op_idx = md.registerCustomOpcode(node->custom_code());
   std::vector<int32_t> inputs_vec;
-  for (uint32_t i = 0; i < node->numInputs(); i++)
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t index = 0; index < node->numInputs(); index++)
   {
-    inputs_vec.push_back(get_tensor_index(node->inputs(i)));
+    inputs_vec.push_back(get_tensor_index(node->inputs(index)));
   }
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  for (uint32_t index = 0; index < custom_outputs.size(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : custom_outputs)
+    {
+      auto custom_out = loco::must_cast<luci::CircleCustomOut *>(out);
+      if (custom_out->index() == static_cast<int32_t>(index))
+      {
+        outputs_vec.push_back(get_tensor_index(custom_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Custom output");
+    }
+  }
+
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
