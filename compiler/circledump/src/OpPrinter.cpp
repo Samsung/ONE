@@ -109,6 +109,20 @@ public:
   }
 };
 
+class DepthToSpacePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_DepthToSpaceOptions())
+    {
+      os << "    ";
+      os << "BlockSize(" << std_params->block_size() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class DivPrinter : public OpPrinter
 {
 public:
@@ -629,6 +643,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
+  _op_map[circle::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   _op_map[circle::BuiltinOperator_DIV] = make_unique<DivPrinter>();
   // There is no Option for FLOOR
@@ -675,7 +690,6 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
-
   // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
