@@ -54,7 +54,8 @@ public:
    *          if different, previous memory will be deallocated and memory will be allocated.
    */
   void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
+                   ir::Layout backend_layout);
 
   // TODO Deprecate this
   void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
