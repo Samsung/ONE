@@ -41,6 +41,8 @@ set(SOURCES
     Softmax.cpp
     Split.h
     Split.cpp
+    Transpose.h
+    Transpose.cpp
     Unpack.h
     Unpack.cpp)
 
@@ -74,6 +76,7 @@ set(TEST_SOURCES
     Reshape.test.cpp
     Softmax.test.cpp
     Split.test.cpp
+    Transpose.test.cpp
     Unpack.test.cpp)
 
 list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
