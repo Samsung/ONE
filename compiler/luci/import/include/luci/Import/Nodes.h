@@ -89,6 +89,7 @@
 #include "Nodes/CircleSpaceToDepth.h"
 #include "Nodes/CircleSplit.h"
 #include "Nodes/CircleSplitV.h"
+#include "Nodes/CircleSqrt.h"
 #include "Nodes/CircleSquare.h"
 #include "Nodes/CircleSquaredDifference.h"
 #include "Nodes/CircleSqueeze.h"

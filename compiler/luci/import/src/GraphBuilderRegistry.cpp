@@ -98,6 +98,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);                             // 26
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                                             // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                                          // 102
+  CIRCLE_NODE(SQRT, CircleSqrtGraphBuilder);                                               // 75
   CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                                           // 92
   CIRCLE_NODE(SQUARED_DIFFERENCE, CircleSquaredDifferenceGraphBuilder);                    // 99
   CIRCLE_NODE(SQUEEZE, CircleSqueezeGraphBuilder);                                         // 43
@@ -137,7 +138,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_SQRT = 75,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_ONE_HOT = 85,
