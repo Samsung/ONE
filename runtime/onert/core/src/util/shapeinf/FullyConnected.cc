@@ -40,19 +40,19 @@ void StaticInferer::visit(const ir::operation::FullyConnected &op)
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
 
+  const auto ker_idx{op.getInputs().at(ir::operation::FullyConnected::Input::WEIGHT)};
+  const auto &ker = _operands.at(ker_idx);
+
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
+  // if input or ker is dynamic, output also becomes dynamic
+  if (input.info().isDynamic() || ker.info().isDynamic())
   {
     output.info().setDynamic();
     return;
   }
-
-  const auto ker_idx{op.getInputs().at(ir::operation::FullyConnected::Input::WEIGHT)};
-  const auto &ker = _operands.at(ker_idx);
 
   // re-sizing output shape
   ir::Shape new_shape = inferFullyConnectedShape(input.info().shape(), ker.info().shape());
@@ -64,11 +64,11 @@ void DynamicInferer::visit(const ir::operation::FullyConnected &op)
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
 
-  if (!input->is_dynamic())
-    return;
-
   const auto ker_idx{op.getInputs().at(ir::operation::FullyConnected::Input::WEIGHT)};
   const auto &ker = _tensor_registry->getITensor(ker_idx);
+
+  if (!input->is_dynamic() && !ker->is_dynamic())
+    return;
 
   auto input_shape = getShape(input.get());
   auto ker_shape = getShape(ker.get());
