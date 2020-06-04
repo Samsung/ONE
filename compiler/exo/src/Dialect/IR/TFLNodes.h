@@ -540,7 +540,7 @@ public:
   Stride *stride(void) { return &_stride; }
 
 private:
-  Padding _padding;
+  Padding _padding{Padding::UNDEFINED};
   Stride _stride;
 };
 

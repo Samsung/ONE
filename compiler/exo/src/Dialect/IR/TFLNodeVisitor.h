@@ -18,7 +18,6 @@
 #define __LOCOEX_IR_TFLNODE_VISITOR_H__
 
 #include "TFLNode.h"
-#include "TFLNodes.h"
 
 #include <oops/InternalExn.h>
 
