@@ -1720,11 +1720,12 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  /// @brief Returns output shape of transpose. Use loco::ConstGen and luci::CircleConst for ConstT.
-  template <class ConstT>
-  loco::TensorShape output_shape_of_transpose(loco::TensorShape input_shape,
-                                              const ConstT *perm_node)
+  loco::NodeShape visit(const luci::CircleTranspose *node) final
   {
+    auto input_shape = loco::shape_get(node->a()).as<loco::TensorShape>();
+
+    auto perm_node = loco::must_cast<luci::CircleConst *>(node->perm());
+
     loco::TensorShape output_shape;
     output_shape.rank(input_shape.rank());
 
@@ -1738,25 +1739,6 @@ public:
     }
 
     return output_shape;
-  }
-
-  loco::NodeShape visit(const luci::CircleTranspose *node) final
-  {
-    auto input_shape = loco::shape_get(node->a()).as<loco::TensorShape>();
-
-    auto canon_perm = dynamic_cast<loco::ConstGen *>(node->perm());
-    auto circle_perm = dynamic_cast<luci::CircleConst *>(node->perm());
-
-    if (canon_perm)
-    {
-      return loco::NodeShape{output_shape_of_transpose(input_shape, canon_perm)};
-    }
-    else if (circle_perm)
-    {
-      return loco::NodeShape{output_shape_of_transpose(input_shape, circle_perm)};
-    }
-    else
-      INTERNAL_EXN("perm of CircleTranspose should be either ConstGen or CircleConst");
   }
 
   loco::NodeShape visit(const luci::CircleTransposeConv *node) final
