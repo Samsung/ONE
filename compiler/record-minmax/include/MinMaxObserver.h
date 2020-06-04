@@ -41,26 +41,26 @@ public:
     const auto iter = _minmax_map.find(node);
     if (iter == _minmax_map.end())
     {
-      auto vectors = std::make_unique<MinMaxVectors>();
-      vectors->min_vector.push_back(min);
-      vectors->max_vector.push_back(max);
+      MinMaxVectors vectors;
+      vectors.min_vector.push_back(min);
+      vectors.max_vector.push_back(max);
       _minmax_map.emplace(node, std::move(vectors));
     }
     else
     {
-      auto vectors = iter->second.get();
-      vectors->min_vector.push_back(min);
-      vectors->max_vector.push_back(max);
+      auto vectors = iter->second;
+      vectors.min_vector.push_back(min);
+      vectors.max_vector.push_back(max);
     }
   }
 
-  const std::unordered_map<const luci::CircleNode *, std::unique_ptr<MinMaxVectors>> *getMap() const
+  const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *getMap() const
   {
     return &_minmax_map;
   }
 
 private:
-  std::unordered_map<const luci::CircleNode *, std::unique_ptr<MinMaxVectors>> _minmax_map;
+  std::unordered_map<const luci::CircleNode *, MinMaxVectors> _minmax_map;
 };
 
 class MinMaxObserver : public luci_interpreter::ExecutionObserver
@@ -70,8 +70,6 @@ public:
   {
     // Do nothing
   }
-
-  ~MinMaxObserver() {}
 
   void postTensorWrite(const luci::CircleNode *node,
                        const luci_interpreter::Tensor *tensor) override;

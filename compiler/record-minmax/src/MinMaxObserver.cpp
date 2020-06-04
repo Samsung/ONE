@@ -55,17 +55,13 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
   if (tensor->element_type() != DataType::FLOAT32)
     throw std::runtime_error("Tensor's data type is not float");
 
-  float min = std::numeric_limits<float>::max();
-  float max = std::numeric_limits<float>::min();
-
   const auto data = tensor->data<float>();
   const auto num_elements = tensor->shape().num_elements();
-  for (uint32_t i = 0; i < num_elements; i++)
-  {
-    float element = data[i];
-    min = element < min ? element : min;
-    max = element > max ? element : max;
-  }
+
+  std::vector<float> buf(data, data + num_elements);
+  auto minmax = std::minmax_element(buf.begin(), buf.end());
+  float min = *minmax.first;
+  float max = *minmax.second;
 
   _minmax_data.recordMinMax(node, min, max);
 }
