@@ -260,6 +260,13 @@ NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
   return session->apply_tensorinfo(index, tensor_info);
 }
 
+NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
+                                      const nnfw_tensorinfo *tensor_info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_input_tensorinfo(index, tensor_info);
+}
+
 /*
  * Set available backends
  *

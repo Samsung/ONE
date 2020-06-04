@@ -430,6 +430,12 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti)
+{
+  nnfw_tensorinfo ti_copy = *ti;
+  return apply_tensorinfo(index, ti_copy);
+}
+
 NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
   try
