@@ -102,6 +102,10 @@ message DepthwiseConv2DOptions
   optional int32 dilation_h_factor = 7 [default = 1];
 }
 
+message ScatterNdOptions {
+  // None
+}
+
 message SubOptions {
   optional Activation activation = 1 [default = NONE];
 }
@@ -467,7 +471,7 @@ message Operation {
   optional DepthToSpaceOptions depth_to_space_options = 197;
   // NonMaxSuppressionV4Options 198
   // NonMaxSuppressionV5Options 199
-  // ScatterNdOptions 200
+  optional ScatterNdOptions scatter_nd_options = 200;
   optional NotEqualOptions notequal_options = 201;
   optional ExpandDimsOptions expand_dims_options = 202;
   optional Pool2DOptions l2pool2d_options = 203;

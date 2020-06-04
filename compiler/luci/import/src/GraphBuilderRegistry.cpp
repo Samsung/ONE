@@ -89,6 +89,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESIZE_BILINEAR, CircleResizeBilinearGraphBuilder);                          // 23
   CIRCLE_NODE(RESIZE_NEAREST_NEIGHBOR, CircleResizeNearestNeighborGraphBuilder);           // 97
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76
+  CIRCLE_NODE(SCATTER_ND, CircleScatterNdGraphBuilder);                                    // 122
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                                           // 64
   CIRCLE_NODE(SHAPE, CircleShapeGraphBuilder);                                             // 77
   CIRCLE_NODE(SIN, CircleSinGraphBuilder);                                                 // 66
@@ -157,7 +158,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
-  // BuiltinOperator_SCATTER_ND = 122,
   // BuiltinOperator_SELECT_V2 = 123,
   // BuiltinOperator_DENSIFY = 124,
   // BuiltinOperator_SEGMENT_SUM = 125,
