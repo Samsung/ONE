@@ -17,8 +17,8 @@
 #ifndef __ONERT_UTIL_EVENT_COLLECTOR_GLOBAL_H__
 #define __ONERT_UTIL_EVENT_COLLECTOR_GLOBAL_H__
 
-#include "misc/EventRecorder.h"
-#include "misc/EventCollector.h"
+#include "util/EventRecorder.h"
+#include "util/EventCollector.h"
 
 namespace onert
 {

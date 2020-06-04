@@ -22,8 +22,8 @@
 #include "ExecTime.h"
 #include "util/ITimer.h"
 #include "IExecutor.h"
-#include "misc/EventCollector.h"
-#include "misc/EventRecorder.h"
+#include "util/EventCollector.h"
+#include "util/EventRecorder.h"
 
 namespace onert
 {

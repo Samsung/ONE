@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __EVENT_RECORDER_H__
-#define __EVENT_RECORDER_H__
+#ifndef __ONERT_UTIL_EVENT_RECORDER_H__
+#define __ONERT_UTIL_EVENT_RECORDER_H__
 
 #include <map>
 #include <memory>
@@ -66,4 +66,4 @@ private:
   std::vector<CounterEvent> _counter_events;
 };
 
-#endif // __EVENT_RECORDER_H__
+#endif // __ONERT_UTIL_EVENT_RECORDER_H__
