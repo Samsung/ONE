@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_ADDLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_ADDLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/cpu_common/Tensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -28,6 +28,7 @@ namespace backend
 {
 namespace cpu
 {
+using Tensor = cpu_common::Tensor;
 namespace ops
 {
 
