@@ -53,8 +53,11 @@ void StaticInferer::visit(const ir::operation::Gather &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
+  const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
+  const auto &indices = _operands.at(indices_idx);
+
   // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
+  if (input.info().isDynamic() || indices.info().isDynamic())
   {
     output.info().setDynamic();
     return;
@@ -65,8 +68,6 @@ void StaticInferer::visit(const ir::operation::Gather &op)
 
   assert(0 <= axis && axis < rank);
 
-  const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
-  const auto &indices = _operands.at(indices_idx);
   // re-sizing output shape
   ir::Shape new_shape = GatherShapes(input.info().shape(), indices.info().shape(), axis, rank);
   output.info().shape(new_shape);
@@ -78,17 +79,17 @@ void DynamicInferer::visit(const ir::operation::Gather &op)
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = getShape(input.get());
 
-  if (!input->is_dynamic())
+  const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
+  const auto &indices = _tensor_registry->getITensor(indices_idx);
+  auto indices_shape = getShape(indices.get());
+
+  if (!(input->is_dynamic()) && !(indices->is_dynamic()))
     return;
 
   const auto rank = input_shape.rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
   assert(0 <= axis && axis < rank);
-
-  const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
-  const auto &indices = _tensor_registry->getITensor(indices_idx);
-  auto indices_shape = getShape(indices.get());
 
   ir::Shape new_shape = GatherShapes(input_shape, indices_shape, axis, rank);
 
