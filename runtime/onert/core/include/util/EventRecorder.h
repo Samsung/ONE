@@ -50,6 +50,13 @@ struct CounterEvent : public Event
 class EventRecorder
 {
 public:
+  enum class WriteFormat
+  {
+    CHROME_TRACING,
+    SNPE_BENCHMARK
+  };
+
+public:
   EventRecorder() = default;
 
 public:
@@ -59,9 +66,15 @@ public:
 public:
   bool empty() { return _duration_events.empty() && _counter_events.empty(); }
   void writeToFile(std::ostream &os);
+  void setWriteFormat(WriteFormat write_format) { _write_format = write_format; }
+
+private:
+  void writeSNPEBenchmark(std::ostream &os);
+  void writeChromeTrace(std::ostream &os);
 
 private:
   std::mutex _mu;
+  WriteFormat _write_format{WriteFormat::CHROME_TRACING};
   std::vector<DurationEvent> _duration_events;
   std::vector<CounterEvent> _counter_events;
 };
