@@ -303,6 +303,19 @@ loco::TensorShape infer_reducer(const loco::Node *input, const loco::Node *indic
 }
 
 /**
+ * @brief vector_from_constant will return int64_t vector from CircleConst node
+ */
+template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::CircleConst *const_node)
+{
+  std::vector<int64_t> result;
+
+  for (uint32_t idx = 0; idx < const_node->size<T>(); ++idx)
+    result.push_back(const_node->at<T>(idx));
+
+  return result;
+}
+
+/**
  * @brief Class to infer the shape of CircleNode
  *
  * @note All CircleNode's inputs and outputs are always loco::Domain::Tensor
@@ -1410,29 +1423,41 @@ public:
   loco::NodeShape visit(const luci::CircleSlice *node) final
   {
     const loco::DataType S32 = loco::DataType::S32;
+    const loco::DataType S64 = loco::DataType::S64;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
 
-    // Only support begin() with S32 type CircleConst for now
     auto const_begin = loco::must_cast<luci::CircleConst *>(node->begin());
-    LUCI_ASSERT(const_begin->dtype() == S32, "Only support int32 begin()");
-
-    // Only support size() with S32 type CircleConst for now
     auto const_size = loco::must_cast<luci::CircleConst *>(node->size());
-    LUCI_ASSERT(const_size->dtype() == S32, "Only support int32 size()");
-
-    assert(input_shape.rank() == const_begin->size<S32>());
-    assert(input_shape.rank() == const_size->size<S32>());
 
     loco::TensorShape output_shape;
+    std::vector<int64_t> vect_begin; // to hold both S32/S64, we use int64_t
+    std::vector<int64_t> vect_size;
 
-    output_shape.rank(const_begin->size<S32>());
-    for (uint32_t idx = 0; idx < const_begin->size<S32>(); ++idx)
+    if (const_begin->dtype() == S32)
+      vect_begin = vector_from_constant<S32>(const_begin);
+    else if (const_begin->dtype() == S64)
+      vect_begin = vector_from_constant<S64>(const_begin);
+    else
+      LUCI_ASSERT(false, "Only support int32/int64 for begin()");
+
+    if (const_size->dtype() == S32)
+      vect_size = vector_from_constant<S32>(const_size);
+    else if (const_size->dtype() == S64)
+      vect_size = vector_from_constant<S64>(const_size);
+    else
+      LUCI_ASSERT(false, "Only support int32/int64 for size()");
+
+    assert(input_shape.rank() == vect_begin.size());
+    assert(input_shape.rank() == vect_size.size());
+
+    output_shape.rank(vect_begin.size());
+    for (uint32_t idx = 0; idx < vect_begin.size(); ++idx)
     {
-      int size = const_size->at<S32>(idx);
+      auto size = vect_size.at(idx);
       if (size == -1)
       {
-        size = input_shape.dim(idx).value() - const_begin->at<S32>(idx);
+        size = input_shape.dim(idx).value() - vect_begin.at(idx);
       }
       output_shape.dim(idx) = size;
     }
