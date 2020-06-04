@@ -35,22 +35,20 @@ Transpose::Transpose(const Tensor *input, const Tensor *perm, Tensor *output)
 
 void Transpose::configure()
 {
-  // Transpose op only supports 1D-5D input arrays.
+  // Transpose op only supports 1D-4D input arrays.
   int dims = _input->shape().num_dims();
   const int *perm_data = getTensorData<int32_t>(_perm);
 
-  assert(_input->shape().num_dims() <= 5);
+  assert(_input->shape().num_dims() <= 4);
   assert(_input->element_type() == _output->element_type());
 
   assert(_perm->shape().num_dims() == 1);
   assert(_perm->shape().dim(0) == dims);
-  for (int i = 0; i < dims; i++)
-  {
-    assert(perm_data[i] < dims && perm_data[i] >= 0);
-  }
+
   Shape output_shape(dims);
   for (int i = 0; i < dims; i++)
   {
+    assert(perm_data[i] < dims && perm_data[i] >= 0);
     output_shape.dim(i) = _input->shape().dim(perm_data[i]);
   }
 
@@ -68,14 +66,13 @@ void Transpose::execute() const
   switch (_input->element_type())
   {
     case DataType::FLOAT32:
-      tflite::reference_ops::Transpose(params, getTensorShape(_input),
-                                       getTensorData<int32_t>(_input), getTensorShape(_output),
-                                       getTensorData<int32_t>(_output));
+      tflite::reference_ops::Transpose(params, getTensorShape(_input), getTensorData<float>(_input),
+                                       getTensorShape(_output), getTensorData<float>(_output));
       break;
     case DataType::U8:
       tflite::reference_ops::Transpose(params, getTensorShape(_input),
-                                       getTensorData<int8_t>(_input), getTensorShape(_output),
-                                       getTensorData<int8_t>(_output));
+                                       getTensorData<uint8_t>(_input), getTensorShape(_output),
+                                       getTensorData<uint8_t>(_output));
       break;
     default:
       throw std::runtime_error("Unsupported type.");
