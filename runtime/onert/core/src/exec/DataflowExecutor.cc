@@ -80,8 +80,7 @@ bool DataflowExecutor::noWaitingJobs()
 DataflowExecutor::DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
                                    const backend::TensorBuilderSet &tensor_builders,
                                    compiler::CodeMap &&code_map)
-    : ExecutorBase{std::move(lowered_graph), tensor_builders}, _code_map{std::move(code_map)},
-      _profiling{false}
+    : ExecutorBase{std::move(lowered_graph), tensor_builders}, _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
 
@@ -155,10 +154,7 @@ void DataflowExecutor::executeImpl()
 
     _subject.notifyJobBegin(this, op_seq, backend);
 
-    if (_profiling)
-      job->fn()->runSync();
-    else
-      job->run();
+    job->run();
 
     _subject.notifyJobEnd(this, op_seq, backend);
     notify(job_index);
