@@ -21,17 +21,16 @@
 # returns output of reshape, which is dynamic tensor
 
 '''
-Testing Shape op when the input is dynamic.
-
-      input [2, 2, 4]  shape [3]  (value of shape will be [2, 2, 4])
+Testing RSQRT op when the input is dynamic.
+      input [4, 9, 16]  shape [3]  (value of shape will be [3])
           |             |
           +-------------+
           |
        Reshape (added by DynamicInputGenerator since it generates its output to be dynamic)
           |
-          | dynamic tensor at compilation time but the shape will be [2, 2, 4] at execution time
+          | dynamic tensor at compilation time but the shape will be [3] at execution time
           |
-         Shape
+         Round
           |
         output (dynamic tensor, [3] at execution time)
 '''
@@ -40,25 +39,19 @@ import dynamic_tensor
 
 model = Model()
 
-model_input_shape = [2, 2, 4]
+model_input_shape = [4]
 
 dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input_shape, "TENSOR_FLOAT32")
 
 test_node_input = dynamic_layer.getTestNodeInput()
 
-# write Shape test. input is `test_input`
-
 # note output shape is used by expected output's shape
-model_output = Output("output", "TENSOR_INT32", "{3}")
+model_output = Output("output", "TENSOR_FLOAT32", "{4}")
 
-model.Operation("SHAPE_EX", test_node_input).To(model_output)
+model.Operation("RSQRT", test_node_input).To(model_output)
 
-model_input_data = [1, 2, 3, 4,
-                    5, 6, 7, 8,
-                    9, 10, 11, 12,
-                    13, 14, 15, 16]
-
-model_output_data = [2, 2, 4]
+model_input_data = [36.0, 90.0, 43.0, 36.0]
+model_output_data = [0.166667, 0.105409, 0.152499, 0.166667]
 
 Example({
     # use these two as input
