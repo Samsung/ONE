@@ -141,6 +141,7 @@ addread(Net_InstanceNorm_002)
 addread(Net_UnpackAdd_001)
 
 # from res/CircleRecipes
+addread(BatchMatMul_000)
 addread(InstanceNorm_000)
 
 addwrite(Abs_000)
@@ -286,4 +287,5 @@ addwrite(Net_InstanceNorm_002)
 addwrite(Net_UnpackAdd_001)
 
 # from res/CircleRecipes
+addwrite(BatchMatMul_000)
 addwrite(InstanceNorm_000)
