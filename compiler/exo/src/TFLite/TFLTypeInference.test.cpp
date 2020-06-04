@@ -91,7 +91,7 @@ private:
 
 private:
   loco::Graph _graph;
-  loco::Node *_last;
+  loco::Node *_last{nullptr};
 };
 
 struct TypeInferenceTest : public Sequential, public ::testing::Test
