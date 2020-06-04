@@ -750,8 +750,12 @@ public:
     // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
     // Weight: [# of units, K]
     // Output: [D1 * D2 * ... * Dn / K, # of units]
-    LUCI_ASSERT(input_shape.rank() >= 2, "Input rank should be at least 2");
-    LUCI_ASSERT(weights_shape.rank() == 2, "Incompatible weights rank for fully connected");
+    if (input_shape.rank() < 2 || weights_shape.rank() != 2)
+    {
+      // Return node own shape if shape inference is not possible
+      auto out_shape = own_shape(node);
+      return loco::NodeShape{out_shape};
+    }
 
     uint32_t input_size = 1;
     for (uint32_t i = 0; i < input_shape.rank(); i++)
