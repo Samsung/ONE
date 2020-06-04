@@ -25,7 +25,7 @@ tar -zxf ${ARCHIVE_PATH}/coverage-data.tar.gz
 
 CMD="GCOV_PATH=arm-linux-gnueabihf-gcov NNAS_WORKSPACE=Product ./nnas gen-coverage-report runtime compute &&
      tar -zcf coverage/coverage_report.tar.gz coverage/html &&
-     python tools/lcov-to-cobertura-xml/lcov_cobertura.py coverage/coverage.info -o coverage/nnfw_coverage.xml"
+     python runtime/3rdparty/lcov-to-cobertura-xml/lcov_cobertura.py coverage/coverage.info -o coverage/nnfw_coverage.xml"
 
 ./nnfw docker-run-user bash -c "$CMD"
 
