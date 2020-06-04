@@ -31,6 +31,7 @@
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 #include "kernels/Split.h"
+#include "kernels/Unpack.h"
 
 #include <stdexcept>
 
@@ -303,6 +304,22 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
 
   // NOTE 'num_splits' attribute is ignored.
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)
+{
+  auto output_nodes = collectOutputNodes<luci::CircleUnpackOut>(node);
+  assert(node->arity() == 1);
+  assert(output_nodes.size() == static_cast<size_t>(node->num()));
+
+  const Tensor *input = getInputTensor(node->value());
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  UnpackParams params{};
+  params.axis = node->axis();
+
+  // NOTE 'num' attribute is ignored.
+  return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
 }
 
 } // namespace luci_interpreter

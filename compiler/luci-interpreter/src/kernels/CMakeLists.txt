@@ -40,7 +40,9 @@ set(SOURCES
     Softmax.h
     Softmax.cpp
     Split.h
-    Split.cpp)
+    Split.cpp
+    Unpack.h
+    Unpack.cpp)
 
 list(APPEND SOURCES Utils.h Utils.cpp)
 
@@ -71,7 +73,8 @@ set(TEST_SOURCES
     Pad.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp
-    Split.test.cpp)
+    Split.test.cpp
+    Unpack.test.cpp)
 
 list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
 
