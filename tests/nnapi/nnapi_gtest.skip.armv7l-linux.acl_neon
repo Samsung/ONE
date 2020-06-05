@@ -108,6 +108,7 @@ GeneratedTests.matrix_band_part_ex_4D_float
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
+GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw

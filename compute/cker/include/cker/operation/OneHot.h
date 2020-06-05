@@ -29,6 +29,9 @@ template <typename T, typename TI>
 void OneHot(const int32_t depth, const T on_value, const T off_value, int32_t axis,
             const Shape &indices_shape, const TI *indices_data, const Shape &, T *output_data)
 {
+  if (axis == -1)
+    axis = indices_shape.DimensionsCount();
+
   // prefix_dim_size == # of elements before the axis
   // depth == # of elements per axis
   // suffix_dim_size == # of elements after the axis
