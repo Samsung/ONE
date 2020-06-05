@@ -12,14 +12,6 @@ function(_Nonius_import)
     target_include_directories(nonius INTERFACE "${NoniusSource_DIR}/include")
   endif(NOT TARGET nonius)
 
-  if(BUILD_KBENCHMARK)
-    # Copy html_report_template.g.h++ file to externals/nonius.
-    # This header file is modified to show the html summary view according to the layer in kbenchmark.
-    execute_process(COMMAND ${CMAKE_COMMAND} -E copy
-                    "${CMAKE_CURRENT_LIST_DIR}/Nonius/html_report_template.g.h++"
-                    "${NoniusSource_DIR}/include/nonius/detail")
-  endif(BUILD_KBENCHMARK)
-
   set(Nonius_FOUND TRUE PARENT_SCOPE)
 endfunction(_Nonius_import)
 
