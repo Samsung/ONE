@@ -20,6 +20,7 @@
 #include "Op/Abs.h"
 #include "Op/Add.h"
 #include "Op/ArgMax.h"
+#include "Op/ArgMin.h"
 #include "Op/AveragePool2D.h"
 #include "Op/BatchToSpaceND.h"
 #include "Op/Cast.h"

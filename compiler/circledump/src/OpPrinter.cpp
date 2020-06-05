@@ -60,6 +60,20 @@ public:
   }
 };
 
+class ArgMinPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ArgMinOptions())
+    {
+      os << "    ";
+      os << "OutputType(" << EnumNameTensorType(params->output_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class BatchMatMulPrinter : public OpPrinter
 {
 public:

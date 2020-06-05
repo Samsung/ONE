@@ -112,6 +112,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                                             // 119
   CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeGraphBuilder);                                    // 93
+  CIRCLE_NODE(ARG_MIN, CircleArgMinGraphBuilder);                                          // 79
 
 #undef CIRCLE_NODE
 

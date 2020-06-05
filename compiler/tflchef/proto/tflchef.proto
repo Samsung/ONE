@@ -362,6 +362,10 @@ message TransposeConvOptions {
   optional int32 stride_h = 3 [default = 1];
 }
 
+message ArgMinOptions {
+  optional TensorType output_type = 1 [default = INT64];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -444,7 +448,7 @@ message Operation {
   optional TransposeConvOptions transpose_conv_options = 174;
   // SparseToDenseOptions 175
   optional PowOptions pow_options = 176;
-  // ArgMinOptions 177
+  optional ArgMinOptions argmin_options = 177;
   // FakeQuantOptions 178
   // BidirectionalSequenceLSTMOptions 179
   // BidirectionalSequenceRNNOptions 180
