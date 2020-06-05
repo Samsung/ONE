@@ -28,7 +28,7 @@ void StaticInferer::visit(const ir::operation::Sin &op)
 
 void DynamicInferer::visit(const ir::operation::Sin &op)
 {
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::INPUT));
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::Input::INPUT));
 }
 
 } // namespace shape_inference
