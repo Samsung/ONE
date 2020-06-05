@@ -38,20 +38,9 @@ public:
   // Record min/max of node
   void recordMinMax(const luci::CircleNode *node, float min, float max)
   {
-    const auto iter = _minmax_map.find(node);
-    if (iter == _minmax_map.end())
-    {
-      MinMaxVectors vectors;
-      vectors.min_vector.push_back(min);
-      vectors.max_vector.push_back(max);
-      _minmax_map.emplace(node, vectors);
-    }
-    else
-    {
-      auto vectors = iter->second;
-      vectors.min_vector.push_back(min);
-      vectors.max_vector.push_back(max);
-    }
+    MinMaxVectors &vectors = _minmax_map[node];
+    vectors.min_vector.push_back(min);
+    vectors.max_vector.push_back(max);
   }
 
   const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *getMap() const
