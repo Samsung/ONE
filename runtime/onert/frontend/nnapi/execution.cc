@@ -96,7 +96,7 @@ int ANeuralNetworksExecution_setInput(ANeuralNetworksExecution *execution, int32
   // LSTM operation's some inputs can be optional input
   if ((buffer == nullptr) && (length == 0))
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (execution->hasUnspecifiedDims(operand_index))
     {
       return ANEURALNETWORKS_NO_ERROR;
     }
@@ -131,7 +131,7 @@ int ANeuralNetworksExecution_setInput(ANeuralNetworksExecution *execution, int32
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (execution->hasUnspecifiedDims(operand_index))
     {
       VERBOSE(NNAPI::Execution) << "setInput: Unspecified dimension value" << std::endl;
       return ANEURALNETWORKS_BAD_DATA;
@@ -208,7 +208,7 @@ int ANeuralNetworksExecution_setOutput(ANeuralNetworksExecution *execution, int3
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (execution->hasUnspecifiedDims(operand_index))
     {
       VERBOSE(NNAPI::Execution) << "setOutput: Unspecified dimension value" << std::endl;
       return ANEURALNETWORKS_BAD_DATA;
@@ -323,7 +323,7 @@ int ANeuralNetworksExecution_setInputFromMemory(ANeuralNetworksExecution *execut
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (execution->hasUnspecifiedDims(operand_index))
     {
       VERBOSE(NNAPI::Execution) << "setInputFromMemory: Unspecified dimension value" << std::endl;
       return ANEURALNETWORKS_BAD_DATA;
@@ -399,7 +399,7 @@ int ANeuralNetworksExecution_setOutputFromMemory(ANeuralNetworksExecution *execu
   }
   else
   {
-    if (execution->haveUnspecifiedDims(operand_index))
+    if (execution->hasUnspecifiedDims(operand_index))
     {
       VERBOSE(NNAPI::Execution) << "setOutputFromMemory: Unspecified dimension value" << std::endl;
       return ANEURALNETWORKS_BAD_DATA;

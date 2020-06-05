@@ -41,12 +41,6 @@ public:
   void configure(const Tensor *input1, const Tensor *input2, Tensor *output);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   const Tensor *_input1;

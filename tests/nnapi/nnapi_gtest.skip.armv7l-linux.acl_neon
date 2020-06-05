@@ -16,8 +16,7 @@ GeneratedTests.cast_float32_to_quant8_overflow_relaxed
 GeneratedTests.cast_int32_to_float16
 GeneratedTests.cast_int32_to_quant8_overflow
 GeneratedTests.cast_quant8_to_float16
-GeneratedTests.exp_dynamic_case1_nnfw
-GeneratedTests.exp_dynamic_case2_nnfw
+GeneratedTests.concat_dynamic_nnfw
 GeneratedTests.conv_1_h3_w2_SAME_relaxed
 GeneratedTests.conv_1_h3_w2_VALID_relaxed
 GeneratedTests.conv_3_h3_w2_SAME_relaxed
@@ -53,6 +52,7 @@ GeneratedTests.expand_dims_dynamic_nnfw_1
 GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
+GeneratedTests.fully_connected_dynamic_nnfw
 GeneratedTests.fully_connected_float_2_relaxed
 GeneratedTests.fully_connected_float_4d_simple_relaxed
 GeneratedTests.fully_connected_float_large_relaxed
@@ -130,6 +130,7 @@ GeneratedTests.round_ex_1D_float
 GeneratedTests.round_ex_4D_float
 GeneratedTests.round_ex_dynamic_nnfw
 GeneratedTests.rsqrt
+GeneratedTests.rsqrt_dynamic_nnfw
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
 GeneratedTests.select_v1_2_one_dim
@@ -140,6 +141,7 @@ GeneratedTests.select_v2_ex_broadcast_1d_single_value
 GeneratedTests.select_v2_ex_broadcast_2d_one
 GeneratedTests.select_v2_ex_broadcast_less_4d
 GeneratedTests.select_v2_ex_float
+GeneratedTests.shape_ex_dynamic_nnfw
 GeneratedTests.sin_1D_float_nnfw
 GeneratedTests.sin_4D_float_nnfw
 GeneratedTests.sin_dynamic_nnfw
@@ -189,7 +191,9 @@ GeneratedTests.topk_v2_3
 GeneratedTests.topk_v2_4
 GeneratedTests.topk_v2_5
 GeneratedTests.topk_v2_6
-GeneratedTests.transpose_dynamic_nnfw
+GeneratedTests.transpose_dynamic_case1_nnfw
+GeneratedTests.transpose_dynamic_case2_nnfw
+GeneratedTests.unpack_ex_dynamic_nnfw
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8
 GeneratedTests.transpose_v1_2_zero_sized

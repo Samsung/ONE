@@ -166,7 +166,7 @@ template <class LatterT> locoex::TFLConst *Fuser<LatterT>::create_fused_bias_con
 {
   // we have to create a new bias const by adding/substracting bias and const node (of TFLAdd or
   // TFLSub)
-  auto bias = dynamic_cast<locoex::TFLConst *>(_former->bias());
+  auto bias = loco::must_cast<locoex::TFLConst *>(_former->bias());
   assert(bias->dtype() == loco::DataType::FLOAT32 &&
          _const_node->dtype() == loco::DataType::FLOAT32);
 
@@ -344,7 +344,7 @@ bool FuseBiasAddPass::run(loco::Graph *g)
   {
     if (node->dialect() == locoex::TFLDialect::get())
     {
-      auto tfl_node = dynamic_cast<locoex::TFLNode *>(node);
+      auto tfl_node = loco::must_cast<locoex::TFLNode *>(node);
       tfl_node->accept(&collector);
     }
   }

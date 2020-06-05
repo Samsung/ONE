@@ -102,6 +102,7 @@ public:
   void visit(luci::CircleRange *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceMax *) final;
+  void visit(luci::CircleReduceMin *) final;
   void visit(luci::CircleReduceProd *) final;
   void visit(luci::CircleRelu *) final;
   void visit(luci::CircleRelu6 *) final;
@@ -144,6 +145,7 @@ public:
   void visit(luci::CircleOutputDummy *) final {}
   void visit(luci::CircleOutputExclude *) final {}
   // Virtual for multiple-outputs
+  void visit(luci::CircleCustomOut *) final {}
   void visit(luci::CircleIfOut *) final {}
   void visit(luci::CircleSplitOut *) final {}
   void visit(luci::CircleSplitVOut *) final {}
@@ -345,13 +347,36 @@ void OperationExporter::visit(luci::CircleCos *node)
 
 void OperationExporter::visit(luci::CircleCustom *node)
 {
+  auto custom_outputs = loco::succs(node);
+
   uint32_t op_idx = md.registerCustomOpcode(node->custom_code());
   std::vector<int32_t> inputs_vec;
-  for (uint32_t i = 0; i < node->numInputs(); i++)
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t index = 0; index < node->numInputs(); index++)
   {
-    inputs_vec.push_back(get_tensor_index(node->inputs(i)));
+    inputs_vec.push_back(get_tensor_index(node->inputs(index)));
   }
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  for (uint32_t index = 0; index < custom_outputs.size(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : custom_outputs)
+    {
+      auto custom_out = loco::must_cast<luci::CircleCustomOut *>(out);
+      if (custom_out->index() == static_cast<int32_t>(index))
+      {
+        outputs_vec.push_back(get_tensor_index(custom_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Custom output");
+    }
+  }
+
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
@@ -1008,6 +1033,19 @@ void OperationExporter::visit(luci::CircleReduceAny *node)
 void OperationExporter::visit(luci::CircleReduceMax *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_MAX);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateReducerOptions(builder, node->keep_dims());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReducerOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleReduceMin *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_MIN);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);

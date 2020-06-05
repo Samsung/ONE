@@ -6,7 +6,7 @@ if(NOT ANDROID)
   return()
 endif(NOT ANDROID)
 
-nnas_find_package(ARMCompute REQUIRED)
+nnfw_find_package(ARMCompute REQUIRED)
 
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 

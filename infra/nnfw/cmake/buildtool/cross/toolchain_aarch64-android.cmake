@@ -22,5 +22,12 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
 # Use the toolchain file that NDK provides
 include(${NDK_DIR}/build/cmake/android.toolchain.cmake)
 
+# ndk always enable debug flag -g, but we don't want debug info in release build
+# https://github.com/android/ndk/issues/243
+string(REPLACE "-g" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE "-g" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_C_FLAGS_DEBUG "-g ${CMAKE_C_FLAGS_DEBUG}")
+set(CMAKE_CXX_FLAGS_DEBUG "-g ${CMAKE_CXX_FLAGS_DEBUG}")
+
 set(TARGET_OS "android")
 set(TARGET_ARCH "aarch64")

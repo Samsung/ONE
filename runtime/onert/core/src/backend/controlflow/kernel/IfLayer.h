@@ -44,14 +44,6 @@ public:
 
   void run() override;
 
-  void runSync() override
-  {
-    // TODO Optimize
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
-
 private:
   const std::shared_ptr<backend::ITensor> _cond_tensor;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;

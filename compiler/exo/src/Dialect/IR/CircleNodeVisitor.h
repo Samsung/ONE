@@ -18,7 +18,6 @@
 #define __LOCOEX_IR_CIRCLENODE_VISITOR_H__
 
 #include "CircleNode.h"
-#include "CircleNodes.h"
 
 #include <oops/InternalExn.h>
 

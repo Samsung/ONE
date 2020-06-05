@@ -43,14 +43,6 @@ public:
 
   void run() override;
 
-  void runSync() override
-  {
-    // TODO Optimize
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
-
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;

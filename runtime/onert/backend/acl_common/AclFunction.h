@@ -19,7 +19,6 @@
 
 #include <exec/IFunction.h>
 #include <arm_compute/runtime/IFunction.h>
-#include <arm_compute/runtime/CL/CLScheduler.h>
 #include <memory>
 
 namespace onert
@@ -42,7 +41,6 @@ public:
 
 public:
   void run() override { _func->run(); }
-  void runSync() override { run(); }
   void prepare() override { _func->prepare(); }
 
 private:
@@ -53,13 +51,6 @@ class AclClFunction : public AclFunction
 {
 public:
   using AclFunction::AclFunction;
-
-public:
-  void runSync() final
-  {
-    run();
-    arm_compute::CLScheduler::get().sync();
-  }
 };
 
 } // namespace acl_common

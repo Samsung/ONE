@@ -651,7 +651,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   const auto rank = node.param().rank;
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
-  assert(-rank <= axis && axis < rank);
+  assert(rank == 0 || (-rank <= axis && axis < rank));
 
   auto input_alloc = _tensor_builder->at(input_index).get();
 

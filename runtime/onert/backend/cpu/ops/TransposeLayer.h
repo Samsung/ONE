@@ -43,7 +43,6 @@ public:
   void configure(const Tensor *input, const Tensor *perm, Tensor *output);
 
   void run();
-  void runSync() { run(); }
 
 private:
   const Tensor *_input;

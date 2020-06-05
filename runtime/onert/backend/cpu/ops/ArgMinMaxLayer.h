@@ -39,12 +39,6 @@ public:
   void configure(const Tensor *indices, Tensor *output, int32_t axis, bool is_arg_max);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   const Tensor *_input;

@@ -139,7 +139,7 @@ bool TensorBroadcastConverter::run(loco::Graph *graph)
   {
     if (node->dialect() == locoex::TFLDialect::get())
     {
-      auto tfl_node = dynamic_cast<locoex::TFLNode *>(node);
+      auto tfl_node = loco::must_cast<locoex::TFLNode *>(node);
       tfl_node->accept(&collector);
     }
   }

@@ -36,7 +36,7 @@ using FeatureShape = nnfw::misc::feature::Shape;
 struct Shape
 {
 public:
-  static const int32_t UNSPECIFIED_DIM = -1;
+  static int32_t const UNSPECIFIED_DIM;
 
   Shape() = default;
 
@@ -83,13 +83,15 @@ public:
   void extendRank(int to_rank);
 
   /**
-   * @brief Check if shape has unknown dim (-1)
+   * @brief Find out if any dimension is unspecified. If the rank is not specified, it returns
+   * false.
+   * \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
    * @note  base_loader set dim to -1 when there is unknown dim in input tensor
    */
-  bool hasUnknownDim() const
+  bool hasUnspecifiedDims() const
   {
-    constexpr int32_t UNKNOWN_DIM = -1;
-    return (std::find(_dimensions.begin(), _dimensions.end(), UNKNOWN_DIM) != _dimensions.end());
+    return (std::find(_dimensions.begin(), _dimensions.end(), UNSPECIFIED_DIM) !=
+            _dimensions.end());
   }
 
 private:
@@ -107,12 +109,6 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
 * \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
 */
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
-
-/**
-* @brief Find out if any dimension is unspecified. If the rank is not specified, it returns false.
-* \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
-*/
-bool haveUnspecifiedDims(const ir::Shape &shape);
 
 } // namespace ir
 } // namespace onert

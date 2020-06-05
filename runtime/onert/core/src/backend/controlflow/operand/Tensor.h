@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_OPERAND_TENSOR_H__
 #define __ONERT_BACKEND_CONTROLFLOW_OPERAND_TENSOR_H__
 
-#include "Allocator.h"
+#include "backend/cpu_common/Allocator.h"
 
 #include <backend/ITensor.h>
 #include <ir/OperandInfo.h>
@@ -50,7 +50,7 @@ public:
     assert(_buffer == nullptr && _allocator == nullptr);
     _buffer = buffer;
   }
-  void setBuffer(const std::shared_ptr<Allocator> &alloc)
+  void setBuffer(const std::shared_ptr<cpu_common::Allocator> &alloc)
   {
     assert(_buffer == nullptr && _allocator == nullptr);
     _allocator = alloc;
@@ -136,7 +136,7 @@ private:
   ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
-  std::shared_ptr<Allocator> _allocator;
+  std::shared_ptr<cpu_common::Allocator> _allocator;
 };
 
 } // namespace operand

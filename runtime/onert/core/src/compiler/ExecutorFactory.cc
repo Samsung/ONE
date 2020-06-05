@@ -36,6 +36,38 @@
 
 namespace onert
 {
+namespace
+{
+
+class SyncFunction final : public exec::IFunction
+{
+public:
+  virtual ~SyncFunction() = default;
+  SyncFunction(std::unique_ptr<exec::IFunction> fn, const std::shared_ptr<backend::IConfig> config)
+      : _fn{std::move(fn)}, _config{config}
+  {
+    assert(_fn);
+    assert(_config);
+  }
+
+  void run() override
+  {
+    _fn->run();
+    _config->sync();
+  }
+
+  void prepare() override { _fn->prepare(); }
+
+private:
+  std::unique_ptr<exec::IFunction> _fn;
+  std::shared_ptr<backend::IConfig> _config;
+};
+
+} // namespace
+} // namespace onert
+
+namespace onert
+{
 namespace compiler
 {
 
@@ -214,6 +246,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
+    if (options.he_profiling_mode)
+    {
+      fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+    }
     builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
   });
 
@@ -313,6 +349,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
+    if (options.he_profiling_mode)
+    {
+      fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+    }
     builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
   });
 
@@ -365,7 +405,6 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
       std::unique_ptr<exec::IExecutionObserver> obs =
           std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph());
       dataflow_exec->addObserver(std::move(obs));
-      dataflow_exec->setProfilingMode(true);
     }
     exec = dataflow_exec;
   }

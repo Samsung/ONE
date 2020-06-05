@@ -60,6 +60,22 @@ public:
   }
 };
 
+class BatchMatMulPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_BatchMatMulOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "adjoint_lhs(" << params->adjoint_lhs() << ") ";
+      os << "adjoint_rhs(" << params->adjoint_rhs() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class CastPrinter : public OpPrinter
 {
 public:
@@ -88,6 +104,20 @@ public:
       os << "Stride.H(" << conv_params->stride_h() << ") ";
       os << "Activation("
          << EnumNameActivationFunctionType(conv_params->fused_activation_function()) << ")";
+      os << std::endl;
+    }
+  }
+};
+
+class DepthToSpacePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_DepthToSpaceOptions())
+    {
+      os << "    ";
+      os << "BlockSize(" << std_params->block_size() << ")";
       os << std::endl;
     }
   }
@@ -609,9 +639,11 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
+  _op_map[circle::BuiltinOperator_BATCH_MATMUL] = make_unique<BatchMatMulPrinter>();
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
+  _op_map[circle::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   _op_map[circle::BuiltinOperator_DIV] = make_unique<DivPrinter>();
   // There is no Option for FLOOR
@@ -658,7 +690,6 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_SUB] = make_unique<SubPrinter>();
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
-
   // There is no Option for TOPK_V2
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();

@@ -52,7 +52,6 @@ public:
   virtual ~FunctionSequence() = default;
 
   void run() override;
-  void runSync() override;
   void prepare() override;
 
   /**
@@ -63,6 +62,14 @@ public:
   void append(std::unique_ptr<IFunction> &&function);
 
   void iterate(const std::function<void(IFunction &)> &fn);
+
+  template <typename T, typename... Args> void wrap(Args &&... args)
+  {
+    for (auto &function : _functions)
+    {
+      function = std::make_unique<T>(std::move(function), args...);
+    }
+  }
 
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;

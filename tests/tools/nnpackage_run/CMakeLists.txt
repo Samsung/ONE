@@ -17,7 +17,7 @@ list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/h5formatter.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
 
-nnas_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED)
 nnfw_find_package(Ruy QUIET)
 
 add_executable(nnpackage_run ${NNPACKAGE_RUN_SRCS})
