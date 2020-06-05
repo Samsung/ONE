@@ -2130,6 +2130,28 @@ OperationFactory::OperationFactory()
 
     return new operation::MatrixBandPart{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_BATCH_MATMUL_EX] = [](const OperationFactory::Param &init_param,
+                                             Operands &operands) {
+    assert(init_param.input_count == 4 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Lhs Tensor Index
+    //  1 -> Rhs Tensor Index
+    //  2 -> adj_x boolean scalar Index
+    //  3 -> adj_y boolean scalar Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    operation::BatchMatMul::Param param;
+    param.adj_x = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<bool>();
+    param.adj_y = operands.at(OperandIndex{init_param.inputs[3]}).asScalar<bool>();
+
+    return new operation::BatchMatMul{inputs, outputs, param};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

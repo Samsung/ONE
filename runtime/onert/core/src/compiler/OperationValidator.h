@@ -46,6 +46,7 @@ public:
 public:
   void visit(const ir::operation::Abs &node) override;
   void visit(const ir::operation::AvgPool2D &node) override;
+  void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::Cast &node) override;
   void visit(const ir::operation::Comparison &node) override;

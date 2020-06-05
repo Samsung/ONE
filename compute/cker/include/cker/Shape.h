@@ -33,9 +33,9 @@ namespace cker
 class Shape
 {
 public:
-  // Shapes with dimensions up to 4 are stored directly in the structure, while
+  // Shapes with dimensions up to 5 are stored directly in the structure, while
   // larger shapes are separately allocated.
-  static constexpr int kMaxSmallSize = 4;
+  static constexpr int kMaxSmallSize = 5;
 
   Shape &operator=(Shape const &) = delete;
 

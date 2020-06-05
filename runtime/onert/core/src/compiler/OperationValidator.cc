@@ -75,6 +75,15 @@ void OperationValidator::visit(const ir::operation::AvgPool2D &node)
   OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
 }
 
+void OperationValidator::visit(const ir::operation::BatchMatMul &node)
+{
+  const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
+  const auto rhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::RHS));
+
+  // Constant lhs and rhs is not implemented yet
+  OP_REQUIRES(!_ctx.at(lhs_index).isConstant() && !_ctx.at(rhs_index).isConstant());
+}
+
 void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};

@@ -125,6 +125,7 @@ protected:
   void loadGather(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
   void loadSpaceToBatchND(const Operator *op, ir::Graph &subg);
+  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBatchToSpaceND(const Operator *op, ir::Graph &subg);
   void loadReduceSum(const Operator *op, ir::Graph &subg);
   void loadSqueeze(const Operator *op, ir::Graph &subg);
@@ -996,6 +997,34 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToBatchND(const Operator
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::BatchMatMul::Param param;
+
+  if (op->custom_options() == nullptr)
+  {
+    param.adj_x = false;
+    param.adj_y = false;
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.adj_x = attr_map["adj_x"].AsBool();
+    param.adj_y = attr_map["adj_y"].AsBool();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchMatMul{inputs, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator *op,
                                                                   ir::Graph &subg)
 {
@@ -1107,12 +1136,15 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   enum class BuiltinOP
   {
     ReduceAll,
-    MatrixBandPart
+    MatrixBandPart,
+    BatchMatMul
   };
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-      {"All", BuiltinOP::ReduceAll}, {"MatrixBandPart", BuiltinOP::MatrixBandPart},
+      {"All", BuiltinOP::ReduceAll},
+      {"MatrixBandPart", BuiltinOP::MatrixBandPart},
+      {"BatchMatMulV2", BuiltinOP::BatchMatMul},
   };
 
   try
@@ -1126,6 +1158,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::MatrixBandPart:
         loadMatrixBandPart(op, subg);
+        break;
+      case BuiltinOP::BatchMatMul:
+        loadBatchMatMul(op, subg);
         break;
       default:
         throw std::runtime_error{

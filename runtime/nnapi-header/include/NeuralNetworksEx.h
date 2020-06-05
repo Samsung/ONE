@@ -479,7 +479,7 @@ typedef enum {
 
   ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX = 50034,
 
-  ANEURALNETWORKS_BATCH_MATMUL_V2_EX = 50035,
+  ANEURALNETWORKS_BATCH_MATMUL_EX = 50035,
 
   /**
    * Copy a tensor setting everything outside a central band in each innermost matrix.
