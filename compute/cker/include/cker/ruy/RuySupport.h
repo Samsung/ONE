@@ -47,12 +47,6 @@ public:
 
   ruy::Context *ruy_context() const { return ruy_context_.get(); }
 
-  static inline RuyContext &GetRuyContext()
-  {
-    static RuyContext instance;
-    return instance;
-  }
-
   void SetMaxNumThreads(int max_num_threads)
   {
     const int target_num_threads =
@@ -64,10 +58,18 @@ private:
   const std::unique_ptr<ruy::Context> ruy_context_;
 };
 
+namespace
+{
+RuyContext *ruy_context_wrapper_;
+}
+
 inline ruy::Context *GetRuyContext()
 {
-  auto &ctx = RuyContext::GetRuyContext();
-  return ctx.ruy_context();
+  if (ruy_context_wrapper_ == nullptr)
+  {
+    ruy_context_wrapper_ = new RuyContext();
+  }
+  return ruy_context_wrapper_->ruy_context();
 }
 
 template <typename Scalar, typename DataPointer>
