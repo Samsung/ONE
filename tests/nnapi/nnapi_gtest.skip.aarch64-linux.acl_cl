@@ -159,6 +159,7 @@ GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8
 GeneratedTests.transpose_v1_2_zero_sized
 GeneratedTests.transpose_v1_2_zero_sized_quant8
+GeneratedTests.unpack_ex_dynamic_nnfw
 GeneratedTests.zeros_like_ex_2D_float
 GeneratedTests.zeros_like_ex_4D_int32
 GeneratedTests.zeros_like_ex_dynamic_float32
