@@ -44,6 +44,6 @@ fi
 
 export DOCKER_ENV_VARS=" -e MODELFILE_SERVER=$MODELFILE_SERVER"
 ./nnfw docker-run-user ./infra/scripts/test_ubuntu_runtime.sh --backend cpu
-./nnfw docker-run-user ./infra/scripts/test_ubuntu_runtime_interp.sh
+./nnfw docker-run-user ./infra/scripts/test_ubuntu_runtime.sh --interp
 
 popd > /dev/null
