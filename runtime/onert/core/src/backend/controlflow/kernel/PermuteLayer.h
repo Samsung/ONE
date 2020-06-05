@@ -18,6 +18,8 @@
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 
 #include <exec/IPermuteFunction.h>
+#include <backend/ITensorBuilder.h>
+#include <exec/IExecutor.h>
 
 namespace onert
 {
@@ -31,8 +33,10 @@ namespace kernel
 class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
-  PermuteLayer(const std::vector<std::shared_ptr<onert::backend::ITensor>> &src_tensors,
-               const std::vector<std::shared_ptr<onert::backend::ITensor>> &dst_tensors)
+  PermuteLayer(const std::vector<std::shared_ptr<ITensor>> &src_tensors,
+               const std::vector<std::shared_ptr<ITensor>> &dst_tensors,
+               const exec::DynAllocInfoMap &dst_dyn_alloc_info_map)
+      : _dst_dyn_alloc_info_map{dst_dyn_alloc_info_map}
   {
     assert(src_tensors.size() == dst_tensors.size());
     _src_tensors = src_tensors;
@@ -58,6 +62,11 @@ public:
       }
     }
   }
+
+  void run() override;
+
+private:
+  const exec::DynAllocInfoMap _dst_dyn_alloc_info_map;
 };
 
 } // namespace kernel

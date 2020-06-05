@@ -21,6 +21,7 @@
 #include "kernel/IfLayer.h"
 #include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
+#include "exec/ExecutorBase.h"
 
 namespace onert
 {
@@ -66,11 +67,18 @@ void KernelGenerator::visit(const ir::operation::If &node)
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  exec::DynAllocInfoMap outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
     auto output_alloc = getTensor(output_index);
 
     output_tensors.emplace_back(output_alloc);
+    const auto output_tensor_builder = getTensorBuilder(output_index);
+    if (output_tensor_builder->supportDynamicTensor())
+    {
+      auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
+      outputs_dyn_alloc_info[output_alloc] = exec::DynAllocInfo{output_index, output_dyn_manager};
+    }
   }
 
   // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
@@ -78,7 +86,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map);
+      cond_tensor, input_tensors, output_tensors, outputs_dyn_alloc_info, then_subg_index,
+      else_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
@@ -88,10 +97,20 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
+  // Add PermuteLayer
   std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
+  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
+  const auto output_tensor_builder = getTensorBuilder(output_index);
+  assert(output_tensor_builder != nullptr);
+  if (output_tensor_builder->supportDynamicTensor())
+  {
+    outputs_dyn_alloc_info[output_tensors.at(0)] =
+        exec::DynAllocInfo{output_index, output_tensor_builder->dynamicTensorManager()};
+  }
 
-  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors);
+  auto fn =
+      std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, outputs_dyn_alloc_info);
 
   _return_fn = std::move(fn);
 }
@@ -112,17 +131,26 @@ void KernelGenerator::visit(const ir::operation::While &node)
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
     auto output_alloc = getTensor(output_index);
 
     output_tensors.emplace_back(output_alloc);
+
+    const auto output_tensor_builder = getTensorBuilder(output_index);
+    if (output_tensor_builder->supportDynamicTensor())
+    {
+      auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
+      outputs_dyn_alloc_info[output_alloc] = exec::DynAllocInfo{output_index, output_dyn_manager};
+    }
   }
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map);
+      input_tensors, output_tensors, outputs_dyn_alloc_info, cond_subg_index, body_subg_index,
+      _executor_map);
 
   _return_fn = std::move(fn);
 }
@@ -136,6 +164,24 @@ std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIn
     if (tensor)
     {
       ret = tensor;
+      break;
+    }
+  }
+  assert(ret != nullptr);
+  return ret;
+}
+
+std::shared_ptr<backend::ITensorBuilder>
+KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
+{
+  std::shared_ptr<backend::ITensorBuilder> ret;
+  for (auto tensor_builder : _tensor_builder_set)
+  {
+    auto tensor = tensor_builder->tensorAt(index);
+    if (tensor)
+    {
+      ret = tensor_builder;
+      break;
     }
   }
   assert(ret != nullptr);
