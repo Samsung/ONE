@@ -25,7 +25,7 @@ flatbuffers::Offset<void> Conv2DChef::value(flatbuffers::FlatBufferBuilder &fbb)
 
   assert(operation.has_conv2d_options());
 
-  auto conv2d_options = operation.conv2d_options();
+  const auto &conv2d_options = operation.conv2d_options();
 
   auto tflite_padding = as_tflite_padding(conv2d_options.padding());
   auto tflite_activation = as_tflite_activation(conv2d_options.activation());
