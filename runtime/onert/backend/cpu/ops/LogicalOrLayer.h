@@ -38,7 +38,7 @@ public:
   }
 
 public:
-  void configure(const Tensor *_lhs, const Tensor *_rhs, Tensor *output);
+  void configure(const ITensor *_lhs, const ITensor *_rhs, ITensor *output);
 
   void run();
 
@@ -46,9 +46,9 @@ private:
   void lorBool8();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
 };
 
 } // namespace ops

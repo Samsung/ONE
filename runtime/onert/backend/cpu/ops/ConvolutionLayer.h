@@ -52,19 +52,19 @@ public:
 
   void convQuant8();
 
-  void configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
+  void configure(const ITensor *input, const ITensor *kernel, const ITensor *bias,
                  const ir::PaddingType paddingType, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideW, const uint32_t strideH,
-                 const ir::Activation activation, Tensor *output);
+                 const ir::Activation activation, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_kernel;
-  const Tensor *_bias;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_kernel;
+  const ITensor *_bias;
+  ITensor *_output;
 
   ir::PaddingType _paddingType;
   uint32_t _paddingLeft;

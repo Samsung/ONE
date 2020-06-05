@@ -40,16 +40,16 @@ public:
 
   void splitQuant8();
 
-  void configure(const Tensor *input, uint16_t num_splits, int16_t axis,
-                 std::vector<Tensor *> &outputs);
+  void configure(const ITensor *input, uint16_t num_splits, int16_t axis,
+                 std::vector<ITensor *> &outputs);
 
   void run();
 
 private:
-  const Tensor *_input;
+  const ITensor *_input;
   uint16_t _num_splits;
   int16_t _axis;
-  std::vector<Tensor *> _outputs;
+  std::vector<ITensor *> _outputs;
 };
 
 } // namespace ops

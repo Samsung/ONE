@@ -44,15 +44,15 @@ public:
 
   void mulQuant8();
 
-  void configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                 Tensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs, const ir::Activation activation,
+                 ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
 
   ir::Activation _activation{ir::Activation::NONE};
 };

@@ -38,14 +38,14 @@ public:
 public:
   void SqDiffFloat32();
 
-  void configure(const Tensor *input1, const Tensor *input2, Tensor *output);
+  void configure(const ITensor *input1, const ITensor *input2, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input1;
-  const Tensor *_input2;
-  Tensor *_output;
+  const ITensor *_input1;
+  const ITensor *_input2;
+  ITensor *_output;
 };
 
 } // namespace ops

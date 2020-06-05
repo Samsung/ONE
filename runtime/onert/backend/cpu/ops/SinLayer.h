@@ -34,7 +34,7 @@ class SinLayer : public ::onert::exec::IFunction
 public:
   SinLayer();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
 
@@ -42,8 +42,8 @@ private:
   void sinFloat32();
   void sinQuant8();
 
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace ops

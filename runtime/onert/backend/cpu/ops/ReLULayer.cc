@@ -46,7 +46,7 @@ void ReLULayer::reluQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void ReLULayer::configure(const Tensor *input, Tensor *output)
+void ReLULayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

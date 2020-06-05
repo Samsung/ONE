@@ -33,8 +33,8 @@ RangeLayer::RangeLayer() : _start(nullptr), _limit(nullptr), _delta(nullptr), _o
   // DO NOTHING
 }
 
-void RangeLayer::configure(const Tensor *start, const Tensor *limit, const Tensor *delta,
-                           Tensor *output)
+void RangeLayer::configure(const ITensor *start, const ITensor *limit, const ITensor *delta,
+                           ITensor *output)
 {
   _start = start;
   _limit = limit;

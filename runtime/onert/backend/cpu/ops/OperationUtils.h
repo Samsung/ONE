@@ -51,13 +51,13 @@ union DataPtr {
   void *v;
 };
 
-uint32_t getNumberOfDimensions(const Tensor *tensor);
+uint32_t getNumberOfDimensions(const ITensor *tensor);
 
-uint32_t getNumberOfElements(const Tensor *tensor);
+uint32_t getNumberOfElements(const ITensor *tensor);
 
-uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx);
+uint32_t getSizeOfDimension(const ITensor *tensor, uint32_t dimensionIdx);
 
-inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
+inline nnfw::cker::Shape getExtendedTensorShape(const ITensor *tensor)
 {
   assert(tensor);
   std::vector<int32_t> raw_shape;
@@ -79,7 +79,7 @@ inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
   return nnfw::cker::GetShape(raw_shape);
 }
 
-inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
+inline nnfw::cker::Shape getTensorShape(const ITensor *tensor)
 {
   if (tensor == nullptr)
     return nnfw::cker::Shape();
@@ -134,8 +134,8 @@ inline int32_t getAxis(uint32_t rank, int32_t axis, ir::Layout frontend_layout)
 
 void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
-void GetQuantizedConvolutionMultiplier(const Tensor *inputDescr, const Tensor *filterDescr,
-                                       const Tensor *biasDescr, const Tensor *outputDescr,
+void GetQuantizedConvolutionMultiplier(const ITensor *inputDescr, const ITensor *filterDescr,
+                                       const ITensor *biasDescr, const ITensor *outputDescr,
                                        double *multiplier);
 
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
@@ -144,10 +144,10 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
 void CalculateActivationRangeFloat(ir::Activation activation, float *activation_min,
                                    float *activation_max);
 
-void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const ITensor *output,
                                    int32_t *act_min, int32_t *act_max);
 
-bool HaveSameShapes(const Tensor *input1, const Tensor *input2);
+bool HaveSameShapes(const ITensor *input1, const ITensor *input2);
 
 int32_t CalculateInputRadius(int input_integer_bits, int input_left_shift);
 

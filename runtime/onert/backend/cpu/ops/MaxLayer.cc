@@ -47,7 +47,7 @@ void MaxLayer::maxQuant8()
   throw std::runtime_error("Max NYI for quantized");
 }
 
-void MaxLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)
+void MaxLayer::configure(const ITensor *lhs, const ITensor *rhs, ITensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

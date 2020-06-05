@@ -43,14 +43,14 @@ public:
 
   void padQuant8();
 
-  void configure(const Tensor *input, Tensor *output, const int32_t *padData, int32_t padRank,
+  void configure(const ITensor *input, ITensor *output, const int32_t *padData, int32_t padRank,
                  uint8_t *constantValueData = nullptr);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 
   int32_t _padData[8];
   int32_t _padRank;

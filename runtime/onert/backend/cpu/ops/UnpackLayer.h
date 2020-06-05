@@ -40,14 +40,14 @@ public:
 
   void unpackQuant8();
 
-  void configure(const Tensor *input, uint32_t axis, int32_t num_output,
-                 std::vector<Tensor *> &output);
+  void configure(const ITensor *input, uint32_t axis, int32_t num_output,
+                 std::vector<ITensor *> &output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  std::vector<Tensor *> _outputs;
+  const ITensor *_input;
+  std::vector<ITensor *> _outputs;
   uint32_t _axis;
   int32_t _num_output;
 };

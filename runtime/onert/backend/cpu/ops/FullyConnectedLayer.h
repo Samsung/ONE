@@ -52,16 +52,16 @@ public:
 
   void fullyConnectedHybrid();
 
-  void configure(const Tensor *input, const Tensor *weights, const Tensor *bias,
-                 ir::Activation activation, Tensor *output);
+  void configure(const ITensor *input, const ITensor *weights, const ITensor *bias,
+                 ir::Activation activation, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_weights;
-  const Tensor *_bias;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_weights;
+  const ITensor *_bias;
+  ITensor *_output;
 
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;

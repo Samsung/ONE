@@ -35,14 +35,14 @@ class FillLayer : public ::onert::exec::IFunction
 public:
   FillLayer();
 
-  void configure(const Tensor *input, const Tensor *value, Tensor *output);
+  void configure(const ITensor *input, const ITensor *value, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_value;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_value;
+  ITensor *_output;
 };
 
 } // namespace ops

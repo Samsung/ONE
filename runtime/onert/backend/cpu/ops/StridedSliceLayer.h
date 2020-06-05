@@ -37,9 +37,9 @@ public:
   StridedSliceLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *begin, const Tensor *end, const Tensor *strides,
-                 Tensor *output, const int32_t begin_mask, const int32_t end_mask,
-                 const int32_t shrink_axis_mask, const int32_t rank);
+  void configure(const ITensor *input, const ITensor *begin, const ITensor *end,
+                 const ITensor *strides, ITensor *output, const int32_t begin_mask,
+                 const int32_t end_mask, const int32_t shrink_axis_mask, const int32_t rank);
 
   void run();
 
@@ -48,11 +48,11 @@ private:
   void stridedSliceQuant8();
 
 private:
-  const Tensor *_input;
-  const Tensor *_begin;
-  const Tensor *_end;
-  const Tensor *_strides;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_begin;
+  const ITensor *_end;
+  const ITensor *_strides;
+  ITensor *_output;
 
   int32_t _begin_mask;
   int32_t _ellipsis_mask;

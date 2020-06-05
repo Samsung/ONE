@@ -54,7 +54,7 @@ void ReverseLayer::run()
   }
 }
 
-void ReverseLayer::configure(const Tensor *input, const Tensor *axis, Tensor *output)
+void ReverseLayer::configure(const ITensor *input, const ITensor *axis, ITensor *output)
 {
   _input = input;
   _axis = axis;

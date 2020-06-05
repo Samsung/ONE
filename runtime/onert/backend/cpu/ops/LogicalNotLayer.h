@@ -36,7 +36,7 @@ public:
   LogicalNotLayer();
 
 public:
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
 
@@ -44,8 +44,8 @@ private:
   void logicalNotBool8();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace ops

@@ -49,7 +49,7 @@ void MeanLayer::MeanQuant8()
                           _output->data_offset(), _axes);
 }
 
-void MeanLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &axes,
+void MeanLayer::configure(const ITensor *input, ITensor *output, const std::vector<int> &axes,
                           bool keep_dims)
 {
   _input = input;

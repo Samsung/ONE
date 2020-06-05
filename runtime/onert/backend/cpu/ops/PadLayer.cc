@@ -41,7 +41,7 @@ void PadLayer::padFloat32()
 }
 void PadLayer::padQuant8() { throw std::runtime_error("Quantized Pad isn't supported NYI"); }
 
-void PadLayer::configure(const Tensor *input, Tensor *output, const int32_t *padData,
+void PadLayer::configure(const ITensor *input, ITensor *output, const int32_t *padData,
                          int32_t padRank, uint8_t *constantValueData)
 {
   _input = input;

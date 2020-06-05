@@ -43,14 +43,14 @@ public:
 
   void maxQuant8();
 
-  void configure(const Tensor *lhs, const Tensor *rhs, Tensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
 };
 
 } // namespace ops

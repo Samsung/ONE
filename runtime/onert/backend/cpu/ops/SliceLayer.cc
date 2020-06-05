@@ -35,7 +35,7 @@ SliceLayer::SliceLayer() : _input(nullptr), _begin(nullptr), _size(nullptr), _ou
 }
 
 template <typename T>
-void SliceLayer::GetBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
+void SliceLayer::GetBeginAndSizeVectors(int dimensions, const ITensor *begin, const ITensor *size,
                                         std::vector<int> *begins, std::vector<int> *sizes)
 {
   for (int idx = dimensions - 1; idx >= 0; --idx)
@@ -83,8 +83,8 @@ void SliceLayer::sliceQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void SliceLayer::configure(const Tensor *input, const Tensor *begin, const Tensor *size,
-                           Tensor *output)
+void SliceLayer::configure(const ITensor *input, const ITensor *begin, const ITensor *size,
+                           ITensor *output)
 {
   _input = input;
   _output = output;

@@ -66,8 +66,8 @@ void DivLayer::divQuant8()
   throw std::runtime_error{"Div NYI for quantized"};
 }
 
-void DivLayer::configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                         Tensor *output)
+void DivLayer::configure(const ITensor *lhs, const ITensor *rhs, const ir::Activation activation,
+                         ITensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

@@ -38,13 +38,13 @@ public:
 public:
   void shape();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace ops

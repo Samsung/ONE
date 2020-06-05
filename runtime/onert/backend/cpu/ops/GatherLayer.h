@@ -39,14 +39,14 @@ public:
   }
 
 public:
-  void configure(const Tensor *input, const Tensor *indices, Tensor *output, int32_t axis);
+  void configure(const ITensor *input, const ITensor *indices, ITensor *output, int32_t axis);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_indices;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_indices;
+  ITensor *_output;
 
   int32_t _axis;
 };

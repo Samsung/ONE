@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 
-void GatherLayer::configure(const Tensor *input, const Tensor *indices, Tensor *output,
+void GatherLayer::configure(const ITensor *input, const ITensor *indices, ITensor *output,
                             int32_t axis)
 {
   _input = input;

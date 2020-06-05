@@ -36,13 +36,13 @@ public:
   ArgMinMaxLayer() : _input(nullptr), _output(nullptr), _axis(-1), _is_arg_max(true) {}
 
 public:
-  void configure(const Tensor *indices, Tensor *output, int32_t axis, bool is_arg_max);
+  void configure(const ITensor *indices, ITensor *output, int32_t axis, bool is_arg_max);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
   int32_t _axis;
   bool _is_arg_max;
 };

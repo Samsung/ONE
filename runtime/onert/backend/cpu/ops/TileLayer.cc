@@ -47,7 +47,7 @@ void TileLayer::tileQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TileLayer::configure(const Tensor *input, const Tensor *multipliers, Tensor *output)
+void TileLayer::configure(const ITensor *input, const ITensor *multipliers, ITensor *output)
 {
   _input = input;
   _multipliers = multipliers;

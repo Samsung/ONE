@@ -40,14 +40,14 @@ public:
 
   void tileQuant8();
 
-  void configure(const Tensor *input, const Tensor *_multipliers, Tensor *output);
+  void configure(const ITensor *input, const ITensor *_multipliers, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_multipliers;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_multipliers;
+  ITensor *_output;
 };
 
 } // namespace ops

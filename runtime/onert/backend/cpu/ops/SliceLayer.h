@@ -36,7 +36,7 @@ public:
   SliceLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *begin, const Tensor *size, Tensor *output);
+  void configure(const ITensor *input, const ITensor *begin, const ITensor *size, ITensor *output);
 
   void run();
 
@@ -45,14 +45,14 @@ private:
   void sliceQuant8();
 
   template <typename T>
-  void GetBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
+  void GetBeginAndSizeVectors(int dimensions, const ITensor *begin, const ITensor *size,
                               std::vector<int> *begins, std::vector<int> *sizes);
 
 private:
-  const Tensor *_input;
-  const Tensor *_begin;
-  const Tensor *_size;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_begin;
+  const ITensor *_size;
+  ITensor *_output;
 };
 
 } // namespace ops

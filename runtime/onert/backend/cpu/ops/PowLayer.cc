@@ -51,8 +51,8 @@ void PowLayer::powFloat32()
                       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void PowLayer::configure(const Tensor *lhs, const Tensor *rhs, ir::Activation activation,
-                         Tensor *output)
+void PowLayer::configure(const ITensor *lhs, const ITensor *rhs, ir::Activation activation,
+                         ITensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

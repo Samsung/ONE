@@ -41,7 +41,7 @@ void SqDiffLayer::SqDiffFloat32()
                      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void SqDiffLayer::configure(const Tensor *input1, const Tensor *input2, Tensor *output)
+void SqDiffLayer::configure(const ITensor *input1, const ITensor *input2, ITensor *output)
 {
   _input1 = input1;
   _input2 = input2;

@@ -44,14 +44,14 @@ public:
 
   void oneHotQuant8();
 
-  void configure(const Tensor *indices, Tensor *output, int32_t depth, float on_value,
+  void configure(const ITensor *indices, ITensor *output, int32_t depth, float on_value,
                  float off_value, int32_t axis);
 
   void run();
 
 private:
-  const Tensor *_indices;
-  Tensor *_output;
+  const ITensor *_indices;
+  ITensor *_output;
 
   int32_t _depth;
   float _on_value;

@@ -40,7 +40,7 @@ void LogicalNotLayer::logicalNotBool8()
                          getTensorShape(_output), reinterpret_cast<bool *>(_output->buffer()));
 }
 
-void LogicalNotLayer::configure(const Tensor *input, Tensor *output)
+void LogicalNotLayer::configure(const ITensor *input, ITensor *output)
 {
   _input = input;
   _output = output;

@@ -35,7 +35,7 @@ void LogicalOrLayer::lorBool8()
                               getTensorShape(_output), reinterpret_cast<bool *>(_output->buffer()));
 }
 
-void LogicalOrLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)
+void LogicalOrLayer::configure(const ITensor *lhs, const ITensor *rhs, ITensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

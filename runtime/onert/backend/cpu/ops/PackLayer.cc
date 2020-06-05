@@ -69,7 +69,7 @@ void PackLayer::packQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void PackLayer::configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output)
+void PackLayer::configure(const std::vector<const ITensor *> &inputs, int32_t axis, ITensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

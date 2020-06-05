@@ -34,15 +34,15 @@ class RsqrtLayer : public ::onert::exec::IFunction
 public:
   RsqrtLayer();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const ITensor *input, ITensor *output);
 
   void run();
 
 private:
   void rsqrtFloat32();
   void rsqrtQuant8();
-  const Tensor *_input;
-  Tensor *_output;
+  const ITensor *_input;
+  ITensor *_output;
 };
 
 } // namespace ops

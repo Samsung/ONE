@@ -38,14 +38,14 @@ public:
 public:
   void reshapeGeneric();
 
-  void configure(const Tensor *input, const Tensor *shape, Tensor *output);
+  void configure(const ITensor *input, const ITensor *shape, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_shape;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_shape;
+  ITensor *_output;
 };
 
 } // namespace ops

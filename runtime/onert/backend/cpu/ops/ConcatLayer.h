@@ -40,13 +40,13 @@ public:
 
   void concatenationQuant8();
 
-  void configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output);
+  void configure(const std::vector<const ITensor *> &inputs, int32_t axis, ITensor *output);
 
   void run();
 
 private:
-  std::vector<const Tensor *> _inputs;
-  Tensor *_output;
+  std::vector<const ITensor *> _inputs;
+  ITensor *_output;
   int32_t _axis;
 };
 

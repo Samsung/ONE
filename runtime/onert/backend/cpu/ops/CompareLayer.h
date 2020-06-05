@@ -39,15 +39,15 @@ public:
 public:
   void compareQuant8();
 
-  void configure(const Tensor *lhs, const Tensor *rhs,
-                 const ir::operation::Comparison::ComparisonType op_type, Tensor *output);
+  void configure(const ITensor *lhs, const ITensor *rhs,
+                 const ir::operation::Comparison::ComparisonType op_type, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const ITensor *_lhs;
+  const ITensor *_rhs;
+  ITensor *_output;
   ir::operation::Comparison::ComparisonType _op_type;
 };
 

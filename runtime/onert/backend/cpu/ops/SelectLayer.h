@@ -36,16 +36,16 @@ public:
   SelectLayer();
 
 public:
-  void configure(const Tensor *cond, const Tensor *input_true, const Tensor *input_false,
-                 Tensor *output);
+  void configure(const ITensor *cond, const ITensor *input_true, const ITensor *input_false,
+                 ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_cond;
-  const Tensor *_input_true;
-  const Tensor *_input_false;
-  Tensor *_output;
+  const ITensor *_cond;
+  const ITensor *_input_true;
+  const ITensor *_input_false;
+  ITensor *_output;
 };
 
 } // namespace ops

@@ -62,8 +62,10 @@ void ConvolutionLayer::convFloat32()
 
     if (is_replaced_weights)
     {
-      // TODO Remove const_cast
-      const_cast<Tensor *>(_kernel)->decrease_ref();
+      auto kernel_tensor = dynamic_cast<const Tensor *>(_kernel);
+      if (kernel_tensor)
+        // TODO Remove const_cast
+        const_cast<Tensor *>(kernel_tensor)->decrease_ref();
     }
     _prepare = true;
   }
@@ -115,12 +117,12 @@ void ConvolutionLayer::convQuant8()
          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
+void ConvolutionLayer::configure(const ITensor *input, const ITensor *kernel, const ITensor *bias,
                                  const ir::PaddingType paddingType, const uint32_t paddingLeft,
                                  const uint32_t paddingRight, const uint32_t paddingTop,
                                  const uint32_t paddingBottom, const uint32_t strideWidth,
                                  const uint32_t strideHeight, const ir::Activation activation,
-                                 Tensor *output)
+                                 ITensor *output)
 {
   _input = input;
   _kernel = kernel;

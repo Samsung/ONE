@@ -34,15 +34,15 @@ class RangeLayer : public ::onert::exec::IFunction
 public:
   RangeLayer();
 
-  void configure(const Tensor *start, const Tensor *limit, const Tensor *delta, Tensor *output);
+  void configure(const ITensor *start, const ITensor *limit, const ITensor *delta, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_start;
-  const Tensor *_limit;
-  const Tensor *_delta;
-  Tensor *_output;
+  const ITensor *_start;
+  const ITensor *_limit;
+  const ITensor *_delta;
+  ITensor *_output;
 };
 
 } // namespace ops

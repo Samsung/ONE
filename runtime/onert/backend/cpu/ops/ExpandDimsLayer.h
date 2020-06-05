@@ -36,14 +36,14 @@ public:
   ExpandDimsLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *axis, Tensor *output);
+  void configure(const ITensor *input, const ITensor *axis, ITensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_axis;
-  Tensor *_output;
+  const ITensor *_input;
+  const ITensor *_axis;
+  ITensor *_output;
 };
 
 } // namespace ops
