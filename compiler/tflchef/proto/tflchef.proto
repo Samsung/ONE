@@ -304,6 +304,10 @@ message LessOptions {
   // None
 }
 
+message LessEqualOptions {
+  // None
+}
+
 message LocalResponseNormalizationOptions {
   optional int32 radius = 1 [default = 5];
   optional float bias = 2 [default = 1.0];
@@ -439,7 +443,7 @@ message Operation {
   // DequantizeOptions 169
   optional NegOptions neg_options = 170;
   // PadV2Options 171
-  // LessEqualOptions 172
+  optional LessEqualOptions lessequal_options = 172;
   optional SliceOptions slice_options = 173;
   optional TransposeConvOptions transpose_conv_options = 174;
   // SparseToDenseOptions 175

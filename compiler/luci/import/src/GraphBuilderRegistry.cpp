@@ -60,6 +60,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(L2_POOL_2D, CircleL2Pool2DGraphBuilder);                                     // 12
   CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                                    // 98,
   CIRCLE_NODE(LESS, CircleLessGraphBuilder);                                               // 58
+  CIRCLE_NODE(LESS_EQUAL, CircleLessEqualGraphBuilder);                                    // 63
   CIRCLE_NODE(LOCAL_RESPONSE_NORMALIZATION, CircleLocalResponseNormalizationGraphBuilder); // 13
   CIRCLE_NODE(LOG, CircleLogGraphBuilder);                                                 // 73
   CIRCLE_NODE(LOGICAL_AND, CircleLogicalAndGraphBuilder);                                  // 86
@@ -137,7 +138,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
-  // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,

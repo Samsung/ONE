@@ -224,6 +224,7 @@ private:
   IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLess)
+  IMPLEMENT(luci::CircleLessEqual)
   IMPLEMENT(luci::CircleLocalResponseNormalization)
   IMPLEMENT(luci::CircleLog)
   IMPLEMENT(luci::CircleLogicalAnd)
@@ -619,6 +620,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleL2Normalize *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleLess *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLessEqual *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
