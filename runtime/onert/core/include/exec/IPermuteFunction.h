@@ -92,13 +92,6 @@ public:
     }
   }
 
-  virtual void runSync() override
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
-
   virtual void prepare() override { optimize(); }
 
   virtual void optimize() = 0;

@@ -41,7 +41,6 @@ public:
 
 public:
   void run() override { _func->run(); }
-  void runSync() override { run(); }
   void prepare() override { _func->prepare(); }
 
 private:
@@ -52,9 +51,6 @@ class AclClFunction : public AclFunction
 {
 public:
   using AclFunction::AclFunction;
-
-public:
-  void runSync() final { run(); }
 };
 
 } // namespace acl_common

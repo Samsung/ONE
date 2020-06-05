@@ -42,12 +42,6 @@ public:
                  const int32_t shrink_axis_mask, const int32_t rank);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   void stridedSliceFloat32();

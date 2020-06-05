@@ -50,7 +50,6 @@ public:
   virtual void configure(backend::custom::CustomKernelConfigParams &&inParams);
 
   void run() override;
-  void runSync() override { run(); }
 };
 
 } // namespace custom
