@@ -25,10 +25,12 @@ namespace luci
 
 void IndexNodeFinder::enroll(TensorIndex idx, CircleNode *node)
 {
-  if (_table.find(idx) != _table.end())
+  auto iter = _table.find(idx);
+  if (iter != _table.end())
   {
     LOGGER(l);
-    INFO(l) << "[luci] NodeFinder SKIP (" << idx << ") " << node << std::endl;
+    INFO(l) << "[luci] NodeFinder SKIP (" << idx << ") " << node << ":" << node->name()
+            << " existing: " << iter->second << ":" << iter->second->name() << std::endl;
     return;
   }
 
