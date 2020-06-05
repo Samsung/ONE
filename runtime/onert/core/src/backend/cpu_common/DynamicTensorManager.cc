@@ -111,10 +111,11 @@ void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape
 }
 
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
-                                       const ir::OperandInfo &tensor_info)
+                                       const ir::OperandInfo &tensor_info,
+                                       ir::Layout backend_layout)
 {
   assert(_tensors->find(ind) == _tensors->end());
-  auto tensor = std::make_shared<Tensor>(tensor_info);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
   (*_tensors)[ind] = tensor;
 }
 
