@@ -117,14 +117,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     // pass::PermutationEliminationPass pe_pass(*this);
     // pe_pass.run();
 
-    // TODO merge perm op_seqs if possible
     _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
   }
 
   // Shape inference.
   {
     shape_inference::StaticInferer inferer(_graph);
-    _op_seqs.iterate(
+    iterateTopolOpSeqs(
         [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
     inferer.dump();
   }
@@ -189,6 +188,37 @@ void LoweredGraph::setLowerInfo(const OperandIndex &index,
 void LoweredGraph::removeLowerInfo(const OperandIndex &index)
 {
   _lower_info_map.operand.erase(index);
+}
+
+void LoweredGraph::iterateTopolOpSeqs(
+    const std::function<void(const OpSequenceIndex &, const OpSequence &)> &fn) const
+{
+  // Topological Sorting for OpSequences
+  std::vector<OpSequenceIndex> topol_sorted;
+  PostDfsIterator<true>{}.iterateOpSeqs(
+      *this,
+      [&](const OpSequenceIndex &index, const OpSequence &) { topol_sorted.emplace_back(index); });
+  std::reverse(topol_sorted.begin(), topol_sorted.end());
+  for (const auto op_seq_idx : topol_sorted)
+  {
+    const auto &op_seq = _op_seqs.at(op_seq_idx);
+    fn(op_seq_idx, op_seq);
+  }
+}
+
+void LoweredGraph::iterateTopolOpSeqs(
+    const std::function<void(const OpSequenceIndex &, OpSequence &)> &fn)
+{
+  // Topological Sorting for OpSequences
+  std::vector<OpSequenceIndex> topol_sorted;
+  PostDfsIterator<false>{}.iterateOpSeqs(
+      *this, [&](const OpSequenceIndex &index, OpSequence &) { topol_sorted.emplace_back(index); });
+  std::reverse(topol_sorted.begin(), topol_sorted.end());
+  for (const auto op_seq_idx : topol_sorted)
+  {
+    auto &op_seq = _op_seqs.at(op_seq_idx);
+    fn(op_seq_idx, op_seq);
+  }
 }
 
 OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &node_index,
