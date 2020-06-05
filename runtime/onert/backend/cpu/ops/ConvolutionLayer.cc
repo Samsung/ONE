@@ -16,6 +16,7 @@
 
 #include "ConvolutionLayer.h"
 
+#include "ir/Padding.h"
 #include <cker/operation/Conv.h>
 
 namespace onert
@@ -27,10 +28,9 @@ namespace cpu
 namespace ops
 {
 ConvolutionLayer::ConvolutionLayer()
-    : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
-      _paddingType(ir::PaddingType::EXPLICIT), _paddingLeft(0), _paddingTop(0), _paddingRight(0),
-      _paddingBottom(0), _strideWidth(0), _strideHeight(0), _activation(ir::Activation::NONE),
-      _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
+    : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr), _paddingLeft(0),
+      _paddingTop(0), _paddingRight(0), _paddingBottom(0), _strideWidth(0), _strideHeight(0),
+      _activation(ir::Activation::NONE), _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
 {
   // DO NOTHING
 }
@@ -43,7 +43,7 @@ void ConvolutionLayer::convFloat32()
   CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
 
   nnfw::cker::ConvParams op_params;
-  op_params.padding_type = getPaddingType(_paddingType);
+  op_params.padding_type = getPaddingType(_padding.type);
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.stride_width = _strideWidth;
@@ -91,7 +91,7 @@ void ConvolutionLayer::convQuant8()
   op_params.stride_height = _strideHeight;
   op_params.dilation_width_factor = 1;
   op_params.dilation_height_factor = 1;
-  op_params.padding_type = getPaddingType(_paddingType);
+  op_params.padding_type = getPaddingType(_padding.type);
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.input_offset = -_input->data_offset();
@@ -116,7 +116,23 @@ void ConvolutionLayer::convQuant8()
 }
 
 void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
-                                 const ir::PaddingType paddingType, const uint32_t paddingLeft,
+                                 const ir::Padding padding, const ir::Activation activation,
+                                 const uint32_t strideWidth, const uint32_t strideHeight,
+                                 const ir::Layout current_op_seq_layout, Tensor *output)
+{
+  _input = input;
+  _kernel = kernel;
+  _bias = bias;
+  _padding = padding;
+  _activation = activation;
+  _strideWidth = strideWidth;
+  _strideHeight = strideHeight;
+  _current_op_seq_layout = current_op_seq_layout;
+  _output = output;
+}
+
+void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
+                                 const ir::Padding padding, const uint32_t paddingLeft,
                                  const uint32_t paddingRight, const uint32_t paddingTop,
                                  const uint32_t paddingBottom, const uint32_t strideWidth,
                                  const uint32_t strideHeight, const ir::Activation activation,
@@ -125,7 +141,7 @@ void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, cons
   _input = input;
   _kernel = kernel;
   _bias = bias;
-  _paddingType = paddingType;
+  _padding = padding;
   _paddingLeft = paddingLeft;
   _paddingRight = paddingRight;
   _paddingTop = paddingTop;
@@ -138,6 +154,26 @@ void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, cons
 
 void ConvolutionLayer::run()
 {
+  if (_input->is_dynamic() || _kernel->is_dynamic())
+  {
+    const auto ifm_shape = getShape(_input).asFeature(_current_op_seq_layout);
+    const auto ofm_shape = getShape(_output).asFeature(_current_op_seq_layout);
+    // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
+    const auto ker_shape = getShape(_kernel);
+    const auto ker_height = ker_shape.dim(1);
+    const auto ker_width = ker_shape.dim(2);
+
+    ir::Stride stride;
+    stride.vertical = _strideWidth;
+    stride.horizontal = _strideWidth;
+
+    const auto padding =
+        ir::calculatePadding(_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
+    _paddingLeft = padding.left;
+    _paddingRight = padding.right;
+    _paddingTop = padding.top;
+    _paddingBottom = padding.bottom;
+  }
   if (_input->data_type() == OperandType::FLOAT32)
   {
     convFloat32();

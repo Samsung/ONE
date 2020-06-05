@@ -79,6 +79,10 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
 // TODO write op starting from U
 // TODO write op starting from Z
 
+std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
+                                               const int ker_w, const ir::Padding pad,
+                                               const ir::Stride stride);
+
 /**
  * @brief Class to infer shape before running kernels. It does the following:
  *        - re-calculate and set output shape at compile time (before running kernels)
@@ -123,6 +127,7 @@ private:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
+  void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
@@ -209,6 +214,7 @@ public:
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
+  void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
