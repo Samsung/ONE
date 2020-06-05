@@ -123,6 +123,7 @@ private:
   // TODO write op starting from G
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Max &op);
   void visit(const ir::operation::Min &op);
@@ -196,6 +197,7 @@ public:
   // TODO write op starting from F
   // TODO write op starting from G
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Min &op);
