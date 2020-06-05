@@ -33,87 +33,10 @@ namespace compiler
 std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lowered_graph)
 {
   std::vector<ir::OpSequenceIndex> order;
-  {
-    const ir::Graph &graph = lowered_graph.graph();
-    const ir::OpSequences &op_seqs = lowered_graph.op_seqs();
-    const ir::Operands &operands = graph.operands();
-    // op_seqs can't access a op_seq by an operand so that input_to_op_seqs can offer it
-    std::unordered_map<ir::OperandIndex, std::list<ir::OpSequenceIndex>> input_to_op_seqs;
-
-    // Get the relations between input/op_seq to be used for dfs-post-iter
-    //
-    //      [0]               # input -> _input_to_op_seqs[0] = {OP_SEQS0}
-    //       |
-    //     [OP_SEQS0]
-    //       |
-    //      [1]---------.     # input -> _input_to_op_seqs[1] = {OP_SEQS1, OP_SEQS2}
-    //       |          |
-    //  [OP_SEQS1]  [OP_SEQS2]
-    //       |          |
-    //      [2]        [3]    # input -> _input_to_op_seqs[2] = {OP_SEQS3}
-    //       \         /      # input -> _input_to_op_seqs[3] = {OP_SEQS3}
-    //       [OP_SEQS3]
-    //            |
-    //           [4]
-    op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_idx, const ir::OpSequence &op_seq) {
-      for (auto input : op_seq.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
-      {
-        // only valid_inputs
-        const auto &operand = operands.at(input);
-        if (operand.isConstant())
-          continue;
-
-        auto it = input_to_op_seqs.find(input);
-        if (it == input_to_op_seqs.end())
-        {
-          std::list<ir::OpSequenceIndex> list{op_seq_idx};
-          input_to_op_seqs[input] = list;
-        }
-        else
-        {
-          it->second.push_back(op_seq_idx);
-        }
-      }
-    });
-
-    std::unordered_map<ir::OpSequenceIndex, bool> visited;
-    op_seqs.iterate(
-        [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) { visited[index] = false; });
-
-    std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> dfs_recursive =
-        [&](const ir::OpSequenceIndex &index, const ir::OpSequence &op_seq) -> void {
-      if (visited[index])
-        return;
-      visited[index] = true;
-
-      // The outputs should be not constants
-      for (auto output : op_seq.getOutputs() | ir::Remove::DUPLICATED)
-      {
-        const auto it = input_to_op_seqs.find(output);
-        if (it != input_to_op_seqs.end())
-        {
-          const auto &op_seq_index_list = it->second;
-          for (const auto &index : op_seq_index_list)
-          {
-            auto &op_seq = op_seqs.at(index);
-            dfs_recursive(index, op_seq);
-          }
-        }
-      }
-
-      order.emplace_back(index);
-    };
-
-    op_seqs.iterate(dfs_recursive);
-
-    // All of the nodes must have been visited.
-    assert(
-        std::all_of(visited.begin(), visited.end(),
-                    [](const std::pair<const ir::OpSequenceIndex, bool> &v) { return v.second; }));
-
-    // NOTE. Now these op_seq are on the reverse order
-    std::reverse(order.begin(), order.end());
-  }
+  lowered_graph.iterateTopolOpSeqs(
+      [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) -> void {
+        order.emplace_back(index);
+      });
   return order;
 }
 

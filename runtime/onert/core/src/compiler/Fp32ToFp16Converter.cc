@@ -452,7 +452,7 @@ void Fp32ToFp16Converter::printOpSequences(const std::string &pre_msg, const std
     VERBOSE(Fp32ToFp16Converter) << pre_msg << std::endl;
   }
 
-  _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
+  _lowered_graph.iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
     VERBOSE(Fp32ToFp16Converter) << ir::getStrFromOpSeq(op_seq, _lowered_graph.graph().operations())
                                  << std::endl;
   });
