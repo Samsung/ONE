@@ -27,7 +27,7 @@ namespace exec
 #ifdef RUY_PROFILER
 namespace
 {
-char *seq_to_label(const onert::ir::OpSequence *op_seq, onert::ir::Operations &operations)
+char *seq_to_label(const onert::ir::OpSequence *op_seq, const onert::ir::Operations &operations)
 {
   auto node_name = operations.at(*op_seq->begin()).name();
   char *cstr = new char[node_name.length() + 1];
@@ -46,7 +46,7 @@ void LinearExecutor::executeImpl()
     const auto backend = code.lower_info->backend();
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-    ruy::profiler::ScopeLabel label(seq_to_label(op_seq), _graph.operations());
+    ruy::profiler::ScopeLabel label(seq_to_label(op_seq, _graph.operations()));
 #endif
     _subject.notifyJobBegin(this, op_seq, backend);
     code.fn_seq->run();
