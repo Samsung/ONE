@@ -23,8 +23,8 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::SelectOptions>
-build_circle_SelectOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
+flatbuffers::Offset<circle::ReverseSequenceOptions>
+build_circle_ReverseSequenceOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op);
 
 } // namespace tflite2circle
 

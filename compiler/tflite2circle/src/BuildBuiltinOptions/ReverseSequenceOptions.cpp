@@ -25,8 +25,8 @@ build_circle_ReverseSequenceOptions(flatbuffers::FlatBufferBuilder &fb, const tf
   auto tflite_builtin_options = op->builtin_options_as_ReverseSequenceOptions();
   assert(tflite_builtin_options);
   circle::ReverseSequenceOptionsBuilder builtin_options_builder{fb};
-  builtin_options_builder.add_seq_dim(tflite_builtin_options->seq_dim);
-  builtin_options_builder.add_batch_dim(tflite_builtin_options->batch_dim);
+  builtin_options_builder.add_seq_dim(tflite_builtin_options->seq_dim());
+  builtin_options_builder.add_batch_dim(tflite_builtin_options->batch_dim());
   return builtin_options_builder.Finish();
 }
 
