@@ -28,6 +28,7 @@ GeneratedTests.conv_quant8_weights_as_inputs
 GeneratedTests.cos_ex_1D_float_nnfw
 GeneratedTests.cos_ex_4D_float_nnfw
 GeneratedTests.cos_ex_dynamic_nnfw
+GeneratedTests.equal_dynamic_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp_dynamic_nnfw
 GeneratedTests.expand_dims_dynamic_nnfw_1
@@ -45,6 +46,10 @@ GeneratedTests.gather_float16_5
 GeneratedTests.gather_float16_6
 GeneratedTests.gather_float16_7
 GeneratedTests.gather_float16_8
+GeneratedTests.greater_dynamic_float_nnfw
+GeneratedTests.greater_equal_dynamic_float_nnfw
+GeneratedTests.less_dynamic_float_nnfw
+GeneratedTests.less_equal_dynamic_float_nnfw
 GeneratedTests.log_4D_float_nnfw
 GeneratedTests.log_dynamic_nnfw
 GeneratedTests.logical_not
@@ -70,6 +75,7 @@ GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
 GeneratedTests.neg
 GeneratedTests.neg_dynamic_nnfw
+GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
