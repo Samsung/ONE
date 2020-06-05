@@ -131,6 +131,7 @@ private:
   // TODO write op starting from O
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
+  void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
@@ -205,6 +206,7 @@ public:
   // TODO write op starting from O
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
+  void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);

@@ -98,6 +98,7 @@ GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
+GeneratedTests.pow_dynamic_nnfw
 GeneratedTests.range_ex_float_1
 GeneratedTests.range_ex_float_2
 GeneratedTests.reduce_all
