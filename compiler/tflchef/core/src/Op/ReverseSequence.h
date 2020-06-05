@@ -28,9 +28,15 @@ public:
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_REVERSE_SEQUENCE; }
+  tflite::BuiltinOperator code(void) const override
+  {
+    return tflite::BuiltinOperator_REVERSE_SEQUENCE;
+  }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_ReverseSequenceOptions; }
+  tflite::BuiltinOptions type(void) const override
+  {
+    return tflite::BuiltinOptions_ReverseSequenceOptions;
+  }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 

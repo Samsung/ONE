@@ -19,17 +19,27 @@
 namespace tflchef
 {
 
-void TFliteOpReverseSequence::filler(const tflite::Operator *, TFliteImport *, tflchef::ModelRecipe *) const
+void TFliteOpReverseSequence::filler(const tflite::Operator *, TFliteImport *,
+                                     tflchef::ModelRecipe *) const
 {
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpReverseSequence::build(const tflite::Operator *, TFliteImport *,
+tflchef::Operation *TFliteOpReverseSequence::build(const tflite::Operator *op, TFliteImport *,
                                                    tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
 
   operation->set_type("ReverseSequence");
+
+  auto op_params = op->builtin_options_as_ReverseSequenceOptions();
+
+  assert(op_params != nullptr);
+
+  auto op_options = operation->mutable_reverse_sequence_options();
+
+  op_options->set_seq_dim(op_params->seq_dim());
+  op_options->set_batch_dim(op_params->batch_dim());
 
   return operation;
 }

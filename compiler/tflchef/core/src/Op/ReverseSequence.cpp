@@ -35,7 +35,8 @@ flatbuffers::Offset<void> ReverseSequenceChef::value(flatbuffers::FlatBufferBuil
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef> ReverseSequenceChefFactory::create(const tflchef::Operation *operation) const
+std::unique_ptr<OpChef>
+ReverseSequenceChefFactory::create(const tflchef::Operation *operation) const
 {
   return std::unique_ptr<OpChef>{new ReverseSequenceChef{operation}};
 }
