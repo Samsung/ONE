@@ -228,9 +228,9 @@ void EventRecorder::writeSNPEBenchmark(std::ostream &os)
       {
         auto &name = kv.first;
         auto &val = kv.second;
-        json_tid[name]["Avg_Size"] = val.sum / val.count;
-        json_tid[name]["Max_Size"] = val.max;
-        json_tid[name]["Min_Size"] = val.min;
+        json_tid[name]["Avg_Time"] = val.sum / val.count;
+        json_tid[name]["Max_Time"] = val.max;
+        json_tid[name]["Min_Time"] = val.min;
         json_tid[name]["Runtime"] = tid;
       }
     }
