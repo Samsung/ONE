@@ -88,16 +88,11 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   }
 
   // Create CircleConst nodes for constant tensors.
-  const auto &buffers = reader.buffers();
   for (uint32_t i = 0; i < tensors.size(); ++i)
   {
-    const circle::TensorT &tensor = *tensors[i];
-    const std::vector<uint8_t> &buffer = buffers[tensor.buffer]->data;
-    if (!buffer.empty())
-    {
-      luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
+    luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
+    if (const_node != nullptr)
       nodefinder->enroll(i, const_node);
-    }
   }
 
   // Import the operators.
