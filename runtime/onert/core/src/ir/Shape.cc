@@ -26,6 +26,8 @@ namespace onert
 namespace ir
 {
 
+int32_t const Shape::UNSPECIFIED_DIM = -1;
+
 FeatureShape Shape::asFeature(Layout layout) const
 {
   assert(rank() == 4);
@@ -99,14 +101,6 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
     backend_shape.dim(3) = shape.dim(1);
   }
   return backend_shape;
-}
-
-bool haveUnspecifiedDims(const ir::Shape &shape)
-{
-  for (int n = 0; n < shape.rank(); n++)
-    if (shape.dim(n) == Shape::UNSPECIFIED_DIM)
-      return true;
-  return false;
 }
 
 } // namespace ir
