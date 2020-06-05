@@ -56,12 +56,6 @@ public:
     _config->sync();
   }
 
-  void runSync() override
-  {
-    _fn->run();
-    _config->sync();
-  }
-
   void prepare() override { _fn->prepare(); }
 
 private:

@@ -48,12 +48,6 @@ public:
                  const ir::Activation activation, Tensor *output);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   const Tensor *_input;

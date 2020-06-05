@@ -126,7 +126,7 @@ void setInputToDynamicTensor(ir::Graph &subgraph)
   for (auto input_ind : input_inds)
   {
     auto &input = subgraph.operands().at(input_ind);
-    if (input.info().shape().hasUnknownDim())
+    if (input.info().shape().hasUnspecifiedDims())
       input.info().setDynamic();
   }
 }

@@ -37,12 +37,18 @@ public:
    */
   enum TestPackages
   {
+    // for validation test
     ADD,
+    ADD_NO_MANIFEST,      //< Contains "Add" model but no manifest file
+    ADD_INVALID_MANIFEST, //< Contains "Add" model but the manifest file is broken JSON
+
+    // for dynamic tensor test
     INPUT_RESHAPING_ADD,
     DYNAMIC_TENSOR_RESHAPE,
     UNKNOWN_DIM_INPUT_CONCAT,
-    ADD_NO_MANIFEST,      //< Contains "Add" model but no manifest file
-    ADD_INVALID_MANIFEST, //< Contains "Add" model but the manifest file is broken JSON
+    ADD_UNSPECIFIED_RANK_INPUTS,
+    NEG,
+
     COUNT
   };
 

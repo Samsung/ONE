@@ -4,7 +4,7 @@ endif (NOT BUILD_OPENCL_TOOL)
 
 list(APPEND OPENCL_INFO_SOURCE "src/opencl_info.cc")
 
-nnas_find_package(ARMCompute QUIET)
+nnfw_find_package(ARMCompute QUIET)
 if(NOT ARMCompute_FOUND)
   message(WARNING "Cannot find ARM Compute Library")
   return()

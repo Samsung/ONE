@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "Tensor.h"
+#include "backend/cpu_common/Tensor.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 size_t Tensor::calcOffset(const ir::Coordinates &coords) const
@@ -38,6 +38,6 @@ size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 
 void Tensor::access(const std::function<void(ITensor &)> &fn) { fn(*this); }
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert

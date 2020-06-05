@@ -42,7 +42,6 @@ public:
     _fn->run();
     _teardown();
   }
-  void runSync() override { throw("runSync is needed just for profiling in Dataflow executor"); }
 
 private:
   IFunction *_fn;

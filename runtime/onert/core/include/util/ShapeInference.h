@@ -25,6 +25,7 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
+#include "ir/operation/RSQRT.h"
 #include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
@@ -118,7 +119,7 @@ private:
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
-  // TODO write op starting from F
+  void visit(const ir::operation::FullyConnected &op);
   // TODO write op starting from G
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
@@ -133,6 +134,7 @@ private:
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::RSQRT &op);
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
@@ -191,7 +193,7 @@ public:
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
-  // TODO write op starting from F
+  void visit(const ir::operation::FullyConnected &op);
   // TODO write op starting from G
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::Logistic &op);
@@ -205,6 +207,7 @@ public:
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
+  void visit(const ir::operation::RSQRT &op);
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);

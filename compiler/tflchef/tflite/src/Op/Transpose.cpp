@@ -36,16 +36,11 @@ void TFliteOpTranspose::filler(const tflite::Operator *op, TFliteImport *import,
 tflchef::Operation *TFliteOpTranspose::build(const tflite::Operator *op, TFliteImport *import,
                                              tflchef::ModelRecipe *model_recipe) const
 {
-  auto op_params = op->builtin_options_as<tflite::TransposeOptions>();
-  assert(op_params != nullptr);
-  (void)op_params;
-
   auto operation = model_recipe->add_operation();
 
   operation->set_type("Transpose");
 
-  auto op_options = operation->mutable_transpose_options();
-  (void)op_options;
+  // No options for Transpose
 
   return operation;
 }

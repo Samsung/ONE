@@ -52,7 +52,6 @@ public:
   virtual ~FunctionSequence() = default;
 
   void run() override;
-  void runSync() override;
   void prepare() override;
 
   /**

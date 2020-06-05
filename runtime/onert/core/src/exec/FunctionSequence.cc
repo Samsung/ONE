@@ -35,14 +35,6 @@ void FunctionSequence::run()
   }
 }
 
-void FunctionSequence::runSync()
-{
-  for (const auto &function : _functions)
-  {
-    function->runSync();
-  }
-}
-
 void FunctionSequence::prepare()
 {
   for (const auto &function : _functions)

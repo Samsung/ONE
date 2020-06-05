@@ -1,4 +1,4 @@
-nnas_find_package(ARMCompute QUIET)
+nnfw_find_package(ARMCompute QUIET)
 
 if(NOT ARMCompute_FOUND)
   message(STATUS "Check ARM Compute library extension build: need ARM Compute library")

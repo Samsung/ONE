@@ -128,6 +128,7 @@ GeneratedTests.expand_dims_quant8_4
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
 GeneratedTests.floor_
+GeneratedTests.fully_connected_dynamic_nnfw
 GeneratedTests.fully_connected_hybrid_1_nnfw
 GeneratedTests.fully_connected_hybrid_2_nnfw
 GeneratedTests.fully_connected_quant8
@@ -357,6 +358,7 @@ GeneratedTests.rsqrt_1D_float_nnfw
 GeneratedTests.rsqrt_2D_float_nnfw
 GeneratedTests.rsqrt_3D_float_nnfw
 GeneratedTests.rsqrt_4D_float_nnfw
+GeneratedTests.rsqrt_dynamic_nnfw
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
 GeneratedTests.select_v1_2_one_dim

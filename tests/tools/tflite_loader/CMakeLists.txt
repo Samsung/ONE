@@ -11,7 +11,7 @@ endif(NOT BUILD_ONERT)
 list(APPEND SOURCES "src/tflite_loader.cc")
 list(APPEND SOURCES "src/args.cc")
 
-nnas_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED)
 
 add_executable(tflite_loader_test_tool ${SOURCES})
 target_include_directories(tflite_loader_test_tool PRIVATE ${Boost_INCLUDE_DIRS})

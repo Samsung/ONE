@@ -82,6 +82,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                                             // 96
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                                    // 91
   CIRCLE_NODE(REDUCE_MAX, CircleReduceMaxGraphBuilder);                                    // 82
+  CIRCLE_NODE(REDUCE_MIN, CircleReduceMinGraphBuilder);                                    // 89
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);                                  // 81
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                                               // 19
   CIRCLE_NODE(RELU_N1_TO_1, CircleReluN1To1GraphBuilder);                                  // 20
@@ -98,6 +99,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);                             // 26
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                                             // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                                          // 102
+  CIRCLE_NODE(SQRT, CircleSqrtGraphBuilder);                                               // 75
   CIRCLE_NODE(SQUARE, CircleSquareGraphBuilder);                                           // 92
   CIRCLE_NODE(SQUARED_DIFFERENCE, CircleSquaredDifferenceGraphBuilder);                    // 99
   CIRCLE_NODE(SQUEEZE, CircleSqueezeGraphBuilder);                                         // 43
@@ -138,11 +140,9 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_SQRT = 75,
   // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_ONE_HOT = 85,
-  // BuiltinOperator_REDUCE_MIN = 89,
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_CEIL = 104,
