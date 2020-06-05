@@ -71,6 +71,8 @@ message Conv2DOptions
   optional int32 stride_w = 2 [default = 1];
   optional int32 stride_h = 3 [default = 1];
   optional Activation activation = 4 [default = NONE];
+  optional int32 dilation_w_factor = 5 [default = 1];
+  optional int32 dilation_h_factor = 6 [default = 1];
 }
 
 message Pool2DOptions {
