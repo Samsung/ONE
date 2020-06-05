@@ -19,7 +19,8 @@
 namespace tflchef
 {
 
-void TFliteOpReverseSequence::filler(const tflite::Operator *, TFliteImport *, tflchef::ModelRecipe *) const
+void TFliteOpReverseSequence::filler(const tflite::Operator *, TFliteImport *,
+                                     tflchef::ModelRecipe *) const
 {
   // Nothing to do with filler
 }
@@ -32,7 +33,7 @@ tflchef::Operation *TFliteOpReverseSequence::build(const tflite::Operator *op, T
   operation->set_type("ReverseSequence");
 
   auto op_params = op->builtin_options_as_ReverseSequenceOptions();
-  
+
   assert(op_params != nullptr);
 
   auto op_options = operation->mutable_reverse_sequence_options();

@@ -6,7 +6,7 @@ operand {
 operand {
   name: "seq_lengths"
   type: INT32
-  shape { dim: 4}
+  shape { dim: 4 }
 }
 operand {
   name: "ofm"
@@ -24,4 +24,5 @@ operation {
   output: "ofm"
 }
 input: "ifm"
+input: "seq_lengths"
 output: "ofm"

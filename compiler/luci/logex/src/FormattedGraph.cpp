@@ -905,7 +905,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeNearestNeighbor *
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleReverseSequence *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleReverseSequence *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("seq_lengths", tbl()->lookup(node->seq_lengths()));
