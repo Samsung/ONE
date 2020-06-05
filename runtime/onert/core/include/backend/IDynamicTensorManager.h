@@ -50,18 +50,6 @@ public:
    */
   virtual void applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape) = 0;
 
-  // TODO Remove This. This will be replaced with applyShape(..)
-  /**
-   * @brief Allocate memory for dynamic tensor
-   */
-  virtual void allocate(const ir::OperandIndex &, const ir::Shape &) = 0;
-
-  /**
-   * @brief Change shape of tensor, which makes the tensor "dynamic"
-   * @note  This should be called before execution.
-   */
-  virtual void changeShape(const ir::OperandIndex &, const ir::Shape &) = 0;
-
   /**
    * @brief Plan when to delete a tensor. Note this planning is done at compilation time.
    * @param op_ind        operation index

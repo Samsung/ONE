@@ -141,9 +141,6 @@ private:
     return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
   }
 
-  // TODO Deprecate this
-  void changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape) override;
-
 protected:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;

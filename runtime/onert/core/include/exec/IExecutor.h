@@ -54,14 +54,6 @@ struct IExecutor
   virtual const ir::Graph &graph() = 0;
 
   /**
-   * @brief Change input tensor shape right before execution
-   */
-  virtual void changeInputShape(const ir::OperandIndex &, const ir::Shape &)
-  {
-    throw std::runtime_error("changeInputShape is not yet implemented for this executor.");
-  }
-
-  /**
    * @brief     Set an ordering on operations
    * @param[in] ranks   The table encoding the ordering
    */
