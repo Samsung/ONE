@@ -81,35 +81,6 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
   }
 }
 
-// TODO Remove this method, which will be replaced by applyShape
-void DynamicTensorManager::allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape)
-{
-  auto tensor = (*_tensors)[ind];
-  assert(tensor);
-
-  auto allocTensorMem = [&]() {
-    setShape(tensor.get(), new_shape);
-
-    auto capacity = tensor->total_size();
-    auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
-
-    tensor->setBuffer(alloc);
-  };
-
-  if (tensor->buffer() == nullptr)
-  {
-    allocTensorMem();
-  }
-  // when buffer was already allocated and new_shape requires different size
-  else if (tensor->total_size() != new_shape.num_elements() * sizeOfDataType(tensor->data_type()))
-  {
-    _dynamic_mem_mgr->deallocate(ind);
-
-    allocTensorMem();
-  }
-  // when buffer with same size was already allocated, do nothing
-}
-
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
@@ -117,17 +88,6 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
   assert(_tensors->find(ind) == _tensors->end());
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
   (*_tensors)[ind] = tensor;
-}
-
-// TODO Deprecate this
-void DynamicTensorManager::changeShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
-{
-  auto tensor = (*_tensors)[ind];
-  assert(tensor);
-
-  setShape(tensor.get(), new_shape);
-  // once the shape is changed, the output of operations using this tensor should be re-calculated
-  tensor->set_dynamic();
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
