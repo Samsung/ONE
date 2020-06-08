@@ -207,6 +207,21 @@ public:
   }
 };
 
+class ReverseSequencePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_ReverseSequenceOptions())
+    {
+      os << "    ";
+      os << "seq_dim(" << std_params->seq_dim() << ") ";
+      os << "batch_dim(" << std_params->batch_dim() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthToSpacePrinter : public OpPrinter
 {
 public:
@@ -630,6 +645,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
   _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
       make_unique<ResizeNearestNeighborPrinter>();
+  _op_map[tflite::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
   // There is no Option for SELECT
   _op_map[tflite::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN
