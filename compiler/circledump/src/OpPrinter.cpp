@@ -60,6 +60,20 @@ public:
   }
 };
 
+class ArgMinPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ArgMinOptions())
+    {
+      os << "    ";
+      os << "OutputType(" << EnumNameTensorType(params->output_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class BatchMatMulPrinter : public OpPrinter
 {
 public:
@@ -640,6 +654,7 @@ OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
+  _op_map[circle::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_BATCH_MATMUL] = make_unique<BatchMatMulPrinter>();
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
