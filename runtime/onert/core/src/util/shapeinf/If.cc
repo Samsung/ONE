@@ -23,18 +23,78 @@ namespace shape_inference
 
 void StaticInferer::visit(const ir::operation::If &op)
 {
-  for (const auto input_idx : op.getInputs())
+  auto &then_graph = _lowered_subgs.at(op.param().then_subg_index)->graph();
+  auto &else_graph = _lowered_subgs.at(op.param().else_subg_index)->graph();
+  const std::vector<ir::OperandIndex> inputs{op.getInputs().begin() + 1, op.getInputs().end()};
+  const auto &outputs = op.getOutputs();
+
+  // re-sizing input shapes of then subgraph
+  const auto &then_inputs = then_graph.getInputs();
+  assert(inputs.size() == then_inputs.size());
+  for (size_t i = 0; i < inputs.size(); ++i)
   {
-    if (_operands.at(input_idx).info().isDynamic())
+    auto &then_input = then_graph.operands().at(then_inputs.at(i));
+    if (_operands.at(inputs.at(i)).info().isDynamic())
     {
-      for (const auto output_idx : op.getOutputs())
-      {
-        _operands.at(output_idx).info().setDynamic();
-      }
-      return;
+      then_input.info().setDynamic();
+    }
+    else
+    {
+      auto new_shape = _operands.at(inputs.at(i)).info().shape();
+      then_input.info().shape(new_shape);
     }
   }
-  // If operation cannot infer shape of outputs without outputs of child subgraph
+
+  // re-sizing input shapes of else subgraph
+  const auto &else_inputs = else_graph.getInputs();
+  assert(inputs.size() == else_inputs.size());
+  for (size_t i = 0; i < inputs.size(); ++i)
+  {
+    auto &else_input = else_graph.operands().at(else_inputs.at(i));
+    if (_operands.at(inputs.at(i)).info().isDynamic())
+    {
+      else_input.info().setDynamic();
+    }
+    else
+    {
+      const auto &new_shape = _operands.at(inputs.at(i)).info().shape();
+      else_input.info().shape(new_shape);
+    }
+  }
+
+  // re-sizing operands of then subgraph
+  StaticInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
+  _lowered_subgs.at(op.param().then_subg_index)
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
+        then_inferer.infer(op_seq);
+      });
+
+  // re-sizing operands of else subgraph
+  StaticInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
+  _lowered_subgs.at(op.param().else_subg_index)
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
+        else_inferer.infer(op_seq);
+      });
+
+  // re-sizing output shapes
+  const auto &then_outputs = _lowered_subgs.at(op.param().then_subg_index)->graph().getOutputs();
+  const auto &else_outputs = _lowered_subgs.at(op.param().else_subg_index)->graph().getOutputs();
+  assert(outputs.size() == then_outputs.size());
+  assert(outputs.size() == else_outputs.size());
+  for (size_t i = 0; i < outputs.size(); ++i)
+  {
+    const auto &then_output_shape = then_graph.operands().at(then_outputs.at(i)).info().shape();
+    const auto &else_output_shape = else_graph.operands().at(else_outputs.at(i)).info().shape();
+    auto &output = _operands.at(outputs.at(i));
+    if (then_output_shape != else_output_shape)
+    {
+      output.info().shape(then_output_shape);
+    }
+    else
+    {
+      output.info().setDynamic();
+    }
+  }
 }
 
 } // namespace shape_inference
