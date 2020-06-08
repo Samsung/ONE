@@ -115,6 +115,7 @@ private:
     REG_TFL_OP(RESIZE_BILINEAR, TFliteOpResizeBilinear);
     REG_TFL_OP(RESIZE_NEAREST_NEIGHBOR, TFliteOpResizeNearestNeighbor);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
+    REG_TFL_OP(SCATTER_ND, TFliteOpScatterNd);
     REG_TFL_OP(SELECT, TFliteOpSelect);
     REG_TFL_OP(SHAPE, TFliteOpShape);
     REG_TFL_OP(SIN, TFliteOpSin);

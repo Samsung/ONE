@@ -78,6 +78,7 @@
 #include "Op/ResizeBilinear.h"
 #include "Op/ResizeNearestNeighbor.h"
 #include "Op/Rsqrt.h"
+#include "Op/ScatterNd.h"
 #include "Op/Select.h"
 #include "Op/Shape.h"
 #include "Op/Sin.h"
