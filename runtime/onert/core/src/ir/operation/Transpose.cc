@@ -29,8 +29,9 @@ namespace operation
 
 void Transpose::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Transpose::Transpose(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+Transpose::Transpose(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                     const Param &param)
+    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 

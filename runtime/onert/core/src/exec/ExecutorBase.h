@@ -79,12 +79,17 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
 
-  const std::vector<std::shared_ptr<backend::ITensor>> &getInputTensors() { return _input_tensors; }
+  const std::vector<std::shared_ptr<backend::ITensor>> &getInputTensors() const
+  {
+    return _input_tensors;
+  }
 
-  const std::vector<std::shared_ptr<backend::ITensor>> &getOutputTensors()
+  const std::vector<std::shared_ptr<backend::ITensor>> &getOutputTensors() const
   {
     return _output_tensors;
   }
+
+  const DynAllocInfoMap &getInputsDynamicAllocInfo() const { return _input_to_dyn_alloc_info; }
 
 private:
   std::unique_ptr<ISource> source(const ir::IOIndex &index, const ir::TypeInfo &type,
@@ -136,33 +141,15 @@ private:
     return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
   }
 
-  // TODO Deprecate this
-  void changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape) override;
-
 protected:
-  /**
-   * @brief Dynamic allocation info for input tensors
-   *        When user sets shape of input having unknown dims after compilation, memory for the
-   *        input should be allocated before executing kernels. This struct contains information
-   *        to allocate memory.
-   */
-  struct DynAllocInfo
-  {
-    /// @brief index of input tensor whose memory needs to be allocated at execution time
-    ir::OperandIndex ind;
-
-    /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
-    backend::IDynamicTensorManager *dyn_tensor_manager;
-  };
-
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
-  std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _input_to_dyn_alloc_info;
-  std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo> _output_to_dyn_alloc_info;
+  DynAllocInfoMap _input_to_dyn_alloc_info;
+  DynAllocInfoMap _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
 

@@ -14,33 +14,24 @@
  * limitations under the License.
  */
 
-#include "Tensor.h"
+#include "util/ShapeInference.h"
 
 namespace onert
 {
-namespace backend
-{
-namespace controlflow
-{
-namespace operand
+namespace shape_inference
 {
 
-size_t Tensor::calcOffset(const ir::Coordinates &coords) const
+void StaticInferer::visit(const ir::operation::Pow &op)
 {
-  size_t rank = num_dimensions();
-  rank = rank == 0 ? 1 : rank;
-  size_t offset = 0;
-  for (size_t i = 0; i < rank; ++i)
-  {
-    offset = offset * dimension(i) + coords[i];
-  }
-  offset *= sizeOfDataType(data_type());
-  return offset;
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Pow::Input::LHS),
+                           op.getInputs().at(ir::operation::Pow::Input::RHS));
 }
 
-void Tensor::access(const std::function<void(ITensor &)> &fn) { fn(*this); }
+void DynamicInferer::visit(const ir::operation::Pow &op)
+{
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Pow::Input::LHS),
+                           op.getInputs().at(ir::operation::Pow::Input::RHS));
+}
 
-} // namespace operand
-} // namespace controlflow
-} // namespace backend
+} // namespace shape_inference
 } // namespace onert

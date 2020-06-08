@@ -49,6 +49,8 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const final;
   ir::Layout layout() const final;
   ir::DataType data_type() const final;
+  float data_scale() const override;
+  int32_t data_offset() const override;
   bool has_padding() const override { return info()->has_padding(); }
   bool is_dynamic() const override { return false; }
 

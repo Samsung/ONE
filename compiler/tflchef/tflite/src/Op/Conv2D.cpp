@@ -50,7 +50,8 @@ tflchef::Operation *TFliteOpConv2D::build(const tflite::Operator *op, TFliteImpo
   op_options->set_stride_h(op_params->stride_h());
   op_options->set_stride_w(op_params->stride_w());
   op_options->set_padding(as_tflchef_padding(op_params->padding()));
-  // TODO support dilation
+  op_options->set_dilation_w_factor(op_params->dilation_w_factor());
+  op_options->set_dilation_h_factor(op_params->dilation_h_factor());
 
   return operation;
 }

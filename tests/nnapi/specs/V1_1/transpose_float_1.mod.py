@@ -1,6 +1,6 @@
 model = Model()
 i1 = Input("input", "TENSOR_FLOAT32", "{2, 3, 4, 5}")
-perms = Input("perms", "TENSOR_INT32", "{4}")
+perms = Parameter("perms", "TENSOR_INT32", "{4}", [2, 0, 1, 3])
 output = Output("output", "TENSOR_FLOAT32", "{4, 2, 3, 5}")
 
 model = model.Operation("TRANSPOSE", i1, perms).To(output)
@@ -16,9 +16,7 @@ input0 = {i1: # input 0
            72,  73,  74,  75,  76,  77,  78,  79,  80,  81,  82,  83,
            84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,
            96,  97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107,
-           108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119],
-           perms: # perms input
-          [2, 0, 1, 3]}
+           108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]}
 
 output0 = {output: # output 0
           [0,  1,  2,  3,  4,  20, 21, 22, 23, 24, 40,  41,  42,  43,  44,

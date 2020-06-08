@@ -35,8 +35,8 @@ public:
   Tensor() = delete;
 
 public:
-  Tensor(const ir::OperandInfo &info)
-      : _info(info), _buffer(nullptr), _num_references(0), _allocator(nullptr)
+  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
+      : _info(info), _layout(layout), _buffer(nullptr), _num_references(0), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -79,10 +79,10 @@ public:
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
-  ir::Layout layout() const override { return ir::Layout::NHWC; }
+  ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  float data_scale() const { return _info.typeInfo().scale(); }
-  int32_t data_offset() const { return _info.typeInfo().offset(); }
+  float data_scale() const override { return _info.typeInfo().scale(); }
+  int32_t data_offset() const override { return _info.typeInfo().offset(); }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool is_dynamic() const override { return _info.isDynamic(); }
@@ -134,6 +134,7 @@ public:
 
 private:
   ir::OperandInfo _info;
+  ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
   std::shared_ptr<Allocator> _allocator;

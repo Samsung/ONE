@@ -635,7 +635,8 @@ OperationFactory::OperationFactory()
     return new operation::StridedSlice{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_TRANSPOSE] = [](const OperationFactory::Param &init_param, Operands &) {
+  _map[ANEURALNETWORKS_TRANSPOSE] = [](const OperationFactory::Param &init_param,
+                                       Operands &operands) {
     // TODO make this work with init_param.input_count == 1 (when permutation vector is optional)
 
     // Inputs
@@ -649,9 +650,16 @@ OperationFactory::OperationFactory()
     assert(init_param.input_count == 2);
     assert(init_param.output_count == 1);
 
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence inputs{init_param.inputs[0]};
     OperandIndexSequence outputs{init_param.outputs[0]};
-    return new operation::Transpose{inputs, outputs};
+    std::vector<std::int32_t> perm =
+        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+
+    operation::Transpose::Param param;
+    param.perm.assign(perm.cbegin(), perm.cend());
+    param.rank = perm.size();
+
+    return new operation::Transpose{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_MUL] = [](const OperationFactory::Param &init_param, Operands &operands) {

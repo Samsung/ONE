@@ -60,6 +60,18 @@ ir::DataType IACLTensor::data_type() const
   return acl_common::asRuntimeDataType(info()->data_type());
 }
 
+float IACLTensor::data_scale() const
+{
+  // FIXME What if quantization info is non-uniform?
+  return info()->quantization_info().uniform().scale;
+}
+
+int32_t IACLTensor::data_offset() const
+{
+  // FIXME What if quantization info is non-uniform?
+  return info()->quantization_info().uniform().offset;
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

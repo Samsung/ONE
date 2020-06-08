@@ -25,6 +25,7 @@
 #include "IFunction.h"
 #include "IODescription.h"
 #include "ir/OperationIndexMap.h"
+#include "backend/IDynamicTensorManager.h"
 
 namespace onert
 {
@@ -53,14 +54,6 @@ struct IExecutor
   virtual const ir::Graph &graph() = 0;
 
   /**
-   * @brief Change input tensor shape right before execution
-   */
-  virtual void changeInputShape(const ir::OperandIndex &, const ir::Shape &)
-  {
-    throw std::runtime_error("changeInputShape is not yet implemented for this executor.");
-  }
-
-  /**
    * @brief     Set an ordering on operations
    * @param[in] ranks   The table encoding the ordering
    */
@@ -75,6 +68,23 @@ struct IExecutor
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
+
+// TODO Move this structure to suitable place
+/**
+ * @brief Dynamic allocation info for input tensors
+ *        When user sets shape of input having unknown dims after compilation, memory for the input
+ * should be allocated before executing kernels. This struct contains information to allocate
+ * memory.
+ */
+struct DynAllocInfo
+{
+  /// @brief index of input tensor whose memory needs to be allocated at execution time
+  ir::OperandIndex ind;
+  /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
+  backend::IDynamicTensorManager *dyn_tensor_manager;
+};
+
+using DynAllocInfoMap = std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo>;
 
 } // namespace exec
 } // namespace onert

@@ -6,8 +6,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 BACKEND="cpu"
 TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 TEST_OS="linux"
+TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
 TFLITE_LOADER="0"
 LINEAR_ONLY="0"
+RUN_INTERP="0"
 
 function Usage()
 {
@@ -43,6 +45,10 @@ do
       LINEAR_ONLY="1"
       shift
       ;;
+    --interp)
+      RUN_INTERP="1"
+      shift;
+      ;;
     *)
       # Ignore
       shift
@@ -51,22 +57,48 @@ do
 done
 
 CheckTestPrepared
-echo "[[ ${TEST_ARCH}-${TEST_OS}: ${BACKEND} backend test ]]"
-UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.${BACKEND}"
+
+if [ $RUN_INTERP = "1" ]; then
+  TEST_PLATFORM="noarch"
+  TEST_ARCH="noarch"
+  BACKEND="interp"
+  echo "[[ Interpreter test ]]"
+else
+  echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
+fi
+
+UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
 FRAMEWORK_TESTLIST="tests/scripts/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
+
 if [ $LINEAR_ONLY = "1" ]; then
   EXECUTORS=("Linear")
+fi
+if [ $RUN_INTERP = "1" ]; then
+  EXECUTORS=("Interpreter")
 fi
 
 for EXECUTOR in "${EXECUTORS[@]}";
 do
   echo "[EXECUTOR]: ${EXECUTOR}"
-  export EXECUTOR="${EXECUTOR}"
-  Unittests "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_BASE}/${EXECUTOR}"
-  TFLiteModelVerification "${BACKEND}" "${FRAMEWORK_TESTLIST}" "${REPORT_BASE}/${EXECUTOR}"
-  unset EXECUTOR
+  REPORT_PATH="${REPORT_BASE}/${EXECUTOR}"
+
+  if [ $EXECUTOR = "Interpreter" ]; then
+    export DISABLE_COMPILE=1
+    BACKEND=""
+  else
+    export EXECUTOR="${EXECUTOR}"
+  fi
+
+  Unittests "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
+  TFLiteModelVerification "${BACKEND}" "${FRAMEWORK_TESTLIST}" "${REPORT_PATH}"
+
+  if [ $EXECUTOR = "Interpreter" ]; then
+    unset DISABLE_COMPILE
+  else
+    unset EXECUTOR
+  fi
 done
 
 # Current support acl_cl backend testlist only

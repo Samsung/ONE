@@ -50,7 +50,8 @@ CircleNode *CircleConv2DGraphBuilder::build_node(const circle::OperatorT &op,
   node->stride()->w(options->stride_w);
   node->stride()->h(options->stride_h);
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
-  // FIXME Check dilation_w_factor, dilation_h_factor.
+  node->dilation()->w(options->dilation_w_factor);
+  node->dilation()->h(options->dilation_h_factor);
 
   return node;
 }

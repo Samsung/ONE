@@ -71,15 +71,12 @@ void StaticInferer::visit(const ir::operation::Pack &op)
 
 void DynamicInferer::visit(const ir::operation::Pack &op)
 {
-  // check if output is not dynamic
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  if (!output->is_dynamic())
-    return;
-
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = getShape(input.get());
+
+  if (!input->is_dynamic())
+    return;
 
   const auto rank = op.param().rank;
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
@@ -87,10 +84,12 @@ void DynamicInferer::visit(const ir::operation::Pack &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = packShapes(input_shape, axis, rank, num);
-  setShape(output.get(), new_shape);
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
 
-  _dynamic_tensor_manager->allocate(output_ind, new_shape);
+  ir::Shape new_shape = packShapes(input_shape, axis, rank, num);
+
+  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
 

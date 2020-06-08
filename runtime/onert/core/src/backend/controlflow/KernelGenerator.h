@@ -53,6 +53,7 @@ public:
 
 private:
   std::shared_ptr<backend::ITensor> getTensor(const ir::OperandIndex &index);
+  std::shared_ptr<backend::ITensorBuilder> getTensorBuilder(const ir::OperandIndex &index);
 
 private:
   const ir::Operands &_operand_ctx;

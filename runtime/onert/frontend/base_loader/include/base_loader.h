@@ -785,9 +785,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
 
   loadOperationIO(op, inputs, outputs);
   auto input = inputs.at(0);
-  auto perms = inputs.at(1);
+  auto perm = inputs.at(1);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input, perms}, outputs));
+  if (!subg.operands().at(perm).isConstant())
+    throw std::runtime_error("Transpose: non-constant 'perm' is not supported.");
+
+  ir::operation::Transpose::Param param;
+  param.perm = subg.operands().at(perm).template asVector<int>();
+  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input}, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

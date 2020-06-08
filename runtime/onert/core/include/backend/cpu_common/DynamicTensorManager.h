@@ -46,18 +46,8 @@ public:
 
   void applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
 
-  // TODO Remove this method. This will be replaced with applyShape(..)
-  /**
-   * @brief Allocate memory for dynamic tensor.
-   *        If allocated memory is already set to the tensor and
-   *          if size of existing tensor's memory and new shape is same, memory will not allocated.
-   *          if different, previous memory will be deallocated and memory will be allocated.
-   */
-  void allocate(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
-
-  // TODO Deprecate this
-  void changeShape(const ir::OperandIndex &, const ir::Shape &) override;
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
+                   ir::Layout backend_layout);
 
   void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) override;
   void deallocInput(ir::OperationIndex op_ind) override;

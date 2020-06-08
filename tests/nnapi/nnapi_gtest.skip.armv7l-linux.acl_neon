@@ -45,6 +45,7 @@ GeneratedTests.depthwise_conv2d_float_relaxed
 GeneratedTests.depthwise_conv_relaxed
 GeneratedTests.div_dynamic_nnfw
 GeneratedTests.equal_boolean
+GeneratedTests.equal_dynamic_float_nnfw
 GeneratedTests.exp_
 GeneratedTests.exp_2D_float_nnfw
 GeneratedTests.exp_dynamic_nnfw
@@ -57,6 +58,7 @@ GeneratedTests.fully_connected_float_2_relaxed
 GeneratedTests.fully_connected_float_4d_simple_relaxed
 GeneratedTests.fully_connected_float_large_relaxed
 GeneratedTests.fully_connected_float_relaxed
+GeneratedTests.gather_dynamic_nnfw
 GeneratedTests.gather_float16
 GeneratedTests.gather_float16_2
 GeneratedTests.gather_float16_3
@@ -65,13 +67,18 @@ GeneratedTests.gather_float16_5
 GeneratedTests.gather_float16_6
 GeneratedTests.gather_float16_7
 GeneratedTests.gather_float16_8
+GeneratedTests.greater_dynamic_float_nnfw
 GeneratedTests.greater_equal_boolean
+GeneratedTests.greater_equal_dynamic_float_nnfw
 GeneratedTests.less_boolean
+GeneratedTests.less_dynamic_float_nnfw
+GeneratedTests.less_equal_dynamic_float_nnfw
 GeneratedTests.log_4D_float_nnfw
 GeneratedTests.log_dynamic_nnfw
 GeneratedTests.logical_not
 GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_not_4D_nnfw
+GeneratedTests.logical_or_dynamic_nnfw
 GeneratedTests.logistic_dynamic_nnfw
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
@@ -89,6 +96,7 @@ GeneratedTests.lstm_state2
 GeneratedTests.neg
 GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_boolean
+GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
@@ -97,6 +105,7 @@ GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
 GeneratedTests.pow_broadcast_float_nnfw_3
+GeneratedTests.pow_dynamic_nnfw
 GeneratedTests.range_ex_float_1
 GeneratedTests.range_ex_float_2
 GeneratedTests.reduce_all
@@ -157,6 +166,7 @@ GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
 GeneratedTests.softmax_dynamic_nnfw
 GeneratedTests.sqrt_
+GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8
@@ -169,13 +179,16 @@ GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
 GeneratedTests.tanh_v1_dynamic_nnfw
 GeneratedTests.tile_1
+GeneratedTests.tile_1_dynamic_float32_nnfw
 GeneratedTests.tile_1_float16
 GeneratedTests.tile_1_quant8
 GeneratedTests.tile_2
+GeneratedTests.tile_2_dynamic_float32_nnfw
 GeneratedTests.tile_2_float16
 GeneratedTests.tile_2_quant8
 GeneratedTests.tile_2_int32
 GeneratedTests.tile_3
+GeneratedTests.tile_3_dynamic_float32_nnfw
 GeneratedTests.tile_3_float16
 GeneratedTests.tile_3_quant8
 GeneratedTests.tile_3_int32
@@ -191,8 +204,7 @@ GeneratedTests.topk_v2_3
 GeneratedTests.topk_v2_4
 GeneratedTests.topk_v2_5
 GeneratedTests.topk_v2_6
-GeneratedTests.transpose_dynamic_case1_nnfw
-GeneratedTests.transpose_dynamic_case2_nnfw
+GeneratedTests.transpose_dynamic_nnfw
 GeneratedTests.unpack_ex_dynamic_nnfw
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8

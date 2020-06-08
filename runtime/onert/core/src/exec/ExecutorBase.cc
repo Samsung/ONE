@@ -144,28 +144,6 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
   }
 }
 
-// TODO Deprecate this
-void ExecutorBase::changeInputShape(const ir::OperandIndex &index, const ir::Shape &new_shape)
-{
-  for (auto &input_tensor : _input_tensors)
-  {
-    auto dyn_alloc_info = _input_to_dyn_alloc_info.find(input_tensor);
-    if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
-      continue;
-
-    // when user-provided input change is stored in _input_to_dyn_alloc_info
-    if (index == dyn_alloc_info->second.ind)
-    {
-      auto dyn_tensor_manager = dyn_alloc_info->second.dyn_tensor_manager;
-      assert(dyn_tensor_manager);
-      dyn_tensor_manager->changeShape(index, new_shape);
-      return;
-    }
-  }
-  throw std::runtime_error("changeInputShape(): Cannot find such index or "
-                           "check if the tensor's backend supports dynamic tensor.");
-}
-
 void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
                            const std::shared_ptr<IPermuteFunction> &pre_fn)
 {
@@ -201,13 +179,7 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
         }
         else
         {
-          const auto operand_ind = dyn_alloc_info->second.ind;
-          if (orig_input_shape != changed_input_shape)
-          {
-            dyn_alloc_info->second.dyn_tensor_manager->allocate(operand_ind, changed_input_shape);
-            // TODO Move changeInputShape() above allocate()
-            changeInputShape(operand_ind, changed_input_shape);
-          }
+          input_tensor->set_dynamic();
         }
       }
     }

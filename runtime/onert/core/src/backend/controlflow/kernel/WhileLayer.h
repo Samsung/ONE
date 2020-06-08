@@ -35,6 +35,7 @@ class WhileLayer : public ::onert::exec::IFunction
 public:
   WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
              std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+             const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
              const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
@@ -48,6 +49,7 @@ private:
   const ir::SubgraphIndex _body_subg_index;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
+  const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
   const std::shared_ptr<exec::ExecutorMap> &_executor_map;
 };
 

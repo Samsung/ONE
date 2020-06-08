@@ -26,6 +26,7 @@
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/RSQRT.h"
+#include "ir/operation/StridedSlice.h"
 #include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
@@ -116,15 +117,17 @@ private:
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::Cast &op);
+  void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::FullyConnected &op);
-  // TODO write op starting from G
+  void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Max &op);
   void visit(const ir::operation::Min &op);
@@ -133,6 +136,7 @@ private:
   // TODO write op starting from O
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
+  void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
@@ -140,10 +144,11 @@ private:
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Transpose &op);
-  // TODO write op starting from U
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::While &op);
@@ -193,14 +198,16 @@ public:
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::Cast &op);
+  void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::FullyConnected &op);
-  // TODO write op starting from G
+  void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Min &op);
@@ -209,6 +216,7 @@ public:
   // TODO write op starting from O
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
+  void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
@@ -216,11 +224,11 @@ public:
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Transpose &op);
-  // TODO write op starting from U
-  // TODO write op starting from Z
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::ZerosLike &op);

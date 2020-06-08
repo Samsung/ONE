@@ -1825,23 +1825,17 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto perm_idx{node.getInputs().at(ir::operation::Transpose::Input::PERM)};
-
-  if (!_ctx.at(perm_idx).isConstant())
-  {
-    throw std::runtime_error("dynamic perm is not supported for acl-neon");
-  }
+  const auto &perm{node.param().perm};
 
   auto ofm_alloc = _tensor_builder->at(ofm_idx).get();
   const auto ifm_alloc = _tensor_builder->at(ifm_idx).get();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_alloc->layout();
 
-  const auto perm = _ctx.at(perm_idx);
-  const auto ifm = _ctx.at(ifm_idx);
-
+  const auto rank = node.param().rank;
+  std::vector<std::int32_t> pv(perm.cbegin(), perm.cend());
   auto backend_pv = ::onert::backend::acl_common::getARMComputePermutationVector(
-      ifm.shape().rank(), perm.asVector<int32_t>(), frontend_layout, backend_layout);
+      rank, pv, frontend_layout, backend_layout);
 
   std::unique_ptr<::arm_compute::IFunction> fn;
 

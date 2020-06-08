@@ -380,10 +380,9 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 {
   // sanity check
   {
-    if (!primary_subgraph() || primary_subgraph()->isBuildingPhase())
+    if (!(isStateModelLoaded() || isStatePrepared()))
     {
-      std::cerr << "Error during apply_tensorinfo : "
-                << "prepare should be run after load_model" << std::endl;
+      std::cerr << "Error during apply_tensorinfo : should be run after load_model" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -403,8 +402,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     }
   }
 
-  // when called before nnfw_session::prepare()
-  if (!_execution)
+  if (!isStatePrepared())
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
@@ -715,6 +713,7 @@ bool nnfw_session::isStateModelLoaded()
     assert(_subgraphs);
     assert(_compiler);
     assert(!_execution);
+    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   else
@@ -730,6 +729,7 @@ bool nnfw_session::isStatePrepared()
     assert(!_subgraphs);
     assert(_compiler);
     assert(_execution);
+    assert(!primary_subgraph()->isBuildingPhase());
     return true;
   }
   else
