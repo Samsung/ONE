@@ -33,6 +33,7 @@
 #include "kernels/Split.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
+#include "kernels/TransposeConv.h"
 
 #include <stdexcept>
 
@@ -305,6 +306,27 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
 
   // NOTE 'num_splits' attribute is ignored.
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
+{
+  assert(node->arity() == 3);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->inputSizes()) == nullptr)
+    throw std::runtime_error("Dynamic OutputShape is not yet supported.");
+
+  const Tensor *inputSizes = getInputTensor(node->inputSizes());
+  const Tensor *filter = getInputTensor(node->filter());
+  const Tensor *outBackprop = getInputTensor(node->outBackprop());
+
+  Tensor *output = getOutputTensor(node);
+
+  TransposeConvParams params{};
+  params.padding = node->padding();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+
+  return std::make_unique<kernels::TransposeConv>(inputSizes, filter, outBackprop, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)
