@@ -1,0 +1,28 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 8 }
+}
+operand {
+  name: "seq_lengths"
+  type: INT32
+  shape { dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 8 }
+}
+operation {
+  type: "ReverseSequence"
+  reverse_sequence_options {
+    seq_dim: 0
+    batch_dim: 0
+  }
+  input: "ifm"
+  input: "seq_lengths"
+  output: "ofm"
+}
+input: "ifm"
+input: "seq_lengths"
+output: "ofm"
