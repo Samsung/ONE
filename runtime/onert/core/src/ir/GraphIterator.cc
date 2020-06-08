@@ -24,14 +24,6 @@ namespace onert
 namespace ir
 {
 
-// Explicit instantiations to have implementation in the source file.
-
-template class DefaultIterator<true>;
-template class DefaultIterator<false>;
-
-template class PostDfsIterator<true>;
-template class PostDfsIterator<false>;
-
 //
 // Graph::DefaultIterator
 //
@@ -113,6 +105,17 @@ void PostDfsIterator<is_const>::iterateOpSeqs(LoweredGraphRef lowered_graph,
   assert(std::all_of(visited.begin(), visited.end(),
                      [](const std::pair<const OpSequenceIndex, bool> &v) { return v.second; }));
 }
+
+// Explicit instantiations to have implementation in the source file.
+// NOTE If these instatiations were in the top of this file, `iterate` is compiled and saved in
+//      `GraphIterator.cc.o` but `iterateOpSeqs`. This happens only when cross-building for Android.
+//      (Maybe a bug of NDK toolchain(clang)?)
+
+template class DefaultIterator<true>;
+template class DefaultIterator<false>;
+
+template class PostDfsIterator<true>;
+template class PostDfsIterator<false>;
 
 } // namespace ir
 } // namespace onert
