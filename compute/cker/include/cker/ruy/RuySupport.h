@@ -60,7 +60,7 @@ private:
 
 namespace
 {
-RuyContext *ruy_context_wrapper_;
+thread_local RuyContext *ruy_context_wrapper_;
 }
 
 inline ruy::Context *GetRuyContext()
