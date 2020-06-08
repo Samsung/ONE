@@ -51,21 +51,18 @@ template <> void pack<float>(tensorflow::TensorProto *input_tensor)
   }
   else if (input_tensor->float_val().size() == input_flat_size)
   {
-    // clang-format off
-  // TODO fix indentation
-  input_tensor->clear_tensor_content();
+    input_tensor->clear_tensor_content();
 
-  std::vector<float> tensor_content;
-  for (int i = 0; i < input_flat_size; ++i)
-  {
-    tensor_content.push_back(input_tensor->float_val(i));
-  }
+    std::vector<float> tensor_content;
+    for (int i = 0; i < input_flat_size; ++i)
+    {
+      tensor_content.push_back(input_tensor->float_val(i));
+    }
 
-  input_tensor->set_tensor_content(std::string(
-      reinterpret_cast<const char *>(tensor_content.data()), sizeof(float) * input_flat_size));
+    input_tensor->set_tensor_content(std::string(
+        reinterpret_cast<const char *>(tensor_content.data()), sizeof(float) * input_flat_size));
 
-  input_tensor->clear_float_val();
-    // clang-format on
+    input_tensor->clear_float_val();
   }
   else
   {
