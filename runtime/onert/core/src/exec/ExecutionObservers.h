@@ -21,7 +21,7 @@
 #include "ir/OpSequence.h"
 #include "ExecTime.h"
 #include "util/ITimer.h"
-#include "IExecutor.h"
+#include "exec/IExecutor.h"
 #include "util/EventCollector.h"
 #include "util/EventRecorder.h"
 
