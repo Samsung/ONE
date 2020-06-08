@@ -364,6 +364,10 @@ message TransposeConvOptions {
   optional int32 stride_h = 3 [default = 1];
 }
 
+message WhereOptions {
+ // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -459,7 +463,7 @@ message Operation {
   // ReverseV2Options 187
   // AddNOptions 188
   optional GatherNdOptions gather_nd_options = 189;
-  // WhereOptions 190
+  optional WhereOptions where_options = 190;
   // RankOptions 191
   // ReverseSequenceOptions 192
   // MatrixDiagOptions 193

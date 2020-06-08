@@ -137,6 +137,7 @@ private:
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
     REG_TFL_OP(TRANSPOSE_CONV, TFliteOpTransposeConv);
     REG_TFL_OP(UNPACK, TFliteOpUnpack);
+    REG_TFL_OP(WHERE, TFliteOpWhere);
     REG_TFL_OP(ZEROS_LIKE, TFliteOpZerosLike);
 
 #undef REG_TFL_OP

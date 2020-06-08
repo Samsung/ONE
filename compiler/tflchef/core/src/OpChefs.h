@@ -100,6 +100,7 @@
 #include "Op/Transpose.h"
 #include "Op/TransposeConv.h"
 #include "Op/Unpack.h"
+#include "Op/Where.h"
 #include "Op/While.h"
 #include "Op/ZerosLike.h"
 
