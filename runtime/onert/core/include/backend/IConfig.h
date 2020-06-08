@@ -32,20 +32,43 @@ namespace backend
 struct IConfig
 {
   virtual ~IConfig() = default;
-
+  /**
+   * @brief Returns ID of the backend
+   *
+   * @return std::string ID of this backend
+   */
   virtual std::string id() = 0;
+  /**
+   * @brief Initialize the backend. This is called as soon as the backend is loaded.
+   *
+   * @return true  Initialization succeeded
+   * @return false Initialization failed, so it cannot use this backend
+   */
   virtual bool initialize() = 0;
-  // Support permute kernel
-  virtual bool supportPermutation() = 0;
+  /**
+   * @brief Returns supported layout for the given \p node and \p frontend_layout
+   *
+   * @param node Operation
+   * @param frontend_layout The layout defined in the model
+   * @return ir::Layout The layout that the backend kernel actually uses
+   */
   virtual ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
+  /**
+   * @brief The function that is called after each OpSequence run on profiling mode.
+   *        This may be useful for profiling GPU-based or special computing units.
+   */
+  virtual void sync() const {}
+  /**
+   * @brief Returns Timer object for this backend. For some computing units, it may need its own
+   * Timer implementation.
+   *
+   * @return std::unique_ptr<util::ITimer> Timer object for this backend
+   */
+  virtual std::unique_ptr<util::ITimer> timer() { return nullptr; }
 
+  virtual bool supportPermutation() = 0;
   virtual bool supportDynamicTensor() = 0;
   virtual bool supportFP16() = 0;
-
-  virtual void sync() const {}
-
-  // Timer is used for backend profiling. In case of default (nullptr) timer profiler won't work.
-  virtual std::unique_ptr<util::ITimer> timer() { return nullptr; }
 };
 
 } // namespace backend
