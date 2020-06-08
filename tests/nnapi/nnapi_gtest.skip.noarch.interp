@@ -446,6 +446,7 @@ GeneratedTests.split_quant8_2_relaxed
 GeneratedTests.split_quant8_3
 GeneratedTests.split_quant8_4
 GeneratedTests.sqrt_
+GeneratedTests.squared_difference_ex_dynamic_nnfw
 GeneratedTests.sqrt_1D_float_nnfw
 GeneratedTests.sqrt_2D_float_nnfw
 GeneratedTests.sqrt_3D_float_nnfw
