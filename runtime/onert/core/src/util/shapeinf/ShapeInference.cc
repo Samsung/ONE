@@ -232,11 +232,18 @@ void StaticInferer::dump()
     return sstream.str();
   };
 
-  _operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-    VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
-                           << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-                           << get_shape_str(operand.info().shape()) << std::endl;
-  });
+  for (const auto &pair : _lowered_subgs)
+  {
+    const auto index = pair.first;
+    const auto &lowered_subg = pair.second;
+    VERBOSE(StaticInferer) << "SubGraph #" << index.value() << std::endl;
+    lowered_subg->graph().operands().iterate(
+        [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+          VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
+                                 << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                                 << get_shape_str(operand.info().shape()) << std::endl;
+        });
+  }
 }
 
 /*

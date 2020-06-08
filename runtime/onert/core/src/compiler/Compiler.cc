@@ -33,6 +33,7 @@
 #include "interp/InterpExecutor.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
+#include "util/ShapeInference.h"
 #include "ir/OperationDumper.h"
 #include "misc/string_helpers.h"
 
@@ -248,6 +249,16 @@ void Compiler::compile(void)
   });
 
   _subgraphs.reset();
+
+  // Shape inference.
+  {
+    shape_inference::StaticInferer inferer(lowered_subgs);
+    lowered_subgs.at(ir::SubgraphIndex{0})
+        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
+          inferer.infer(op_seq);
+        });
+    inferer.dump();
+  }
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
