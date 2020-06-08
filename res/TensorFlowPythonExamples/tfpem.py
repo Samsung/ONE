@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # TensorFlow Python Example Manager
 
 import tensorflow as tf
