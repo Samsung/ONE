@@ -17,6 +17,8 @@
 
 #include "util/ShapeInference.h"
 
+#include <cmath>
+
 namespace onert
 {
 namespace shape_inference

@@ -19,16 +19,20 @@
 #include "ir/operation/ConvertFp16ToFp32.h"
 #include "util/logging.h"
 
+#include <Half.h>
+
+using float16 = Half;
+
 namespace
 {
 
 const std::string kAclClBackendConfigId = "acl_cl";
 
-void copyDataFromFp32ToFp16(const float *from, onert::ir::float16 *into, size_t num_elements)
+void copyDataFromFp32ToFp16(const float *from, float16 *into, size_t num_elements)
 {
   for (size_t i = 0; i < num_elements; ++i)
   {
-    into[i] = static_cast<onert::ir::float16>(from[i]);
+    into[i] = static_cast<float16>(from[i]);
   }
 }
 
@@ -430,10 +434,10 @@ void Fp32ToFp16Converter::convertDatas()
       assert(data != nullptr);
 
       size_t num_elements = obj.operandSize() / ir::sizeOfDataType(type);
-      size_t new_ptr_size = num_elements * sizeof(ir::float16);
+      size_t new_ptr_size = num_elements * sizeof(float16);
       auto new_ptr = std::make_unique<uint8_t[]>(new_ptr_size);
       copyDataFromFp32ToFp16(reinterpret_cast<const float *>(data->base()),
-                             reinterpret_cast<ir::float16 *>(new_ptr.get()), num_elements);
+                             reinterpret_cast<float16 *>(new_ptr.get()), num_elements);
       obj.releaseData();
 
       auto new_data = std::make_unique<ir::CachedData>(new_ptr.get(), new_ptr_size);

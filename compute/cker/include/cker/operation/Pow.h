@@ -20,6 +20,8 @@
 
 #include "cker/Shape.h"
 
+#include <cmath>
+
 namespace nnfw
 {
 namespace cker
