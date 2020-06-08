@@ -113,6 +113,12 @@ public:
       case circle::BuiltinOperator::BuiltinOperator_INSTANCE_NORM:
         loadInstanceNorm(op, subg);
         return;
+      case circle::BuiltinOperator::BuiltinOperator_BCQ_FULLY_CONNECTED:
+        loadBCQFullyConnected(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_BCQ_GATHER:
+        loadBCQGather(op, subg);
+        return;
       default:
         BaseLoader::loadOperation(op, subg);
         return;
