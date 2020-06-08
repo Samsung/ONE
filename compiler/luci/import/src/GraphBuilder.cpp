@@ -16,11 +16,15 @@
 
 #include "luci/Import/GraphBuilder.h"
 
+#include <luci/Log.h>
+
 namespace luci
 {
 
 void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
 {
+  LOGGER(l);
+
   assert(context != nullptr);
 
   const std::vector<int32_t> &inputs = op.inputs;
@@ -34,7 +38,10 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   {
     if (input_tensor_index >= 0)
     {
-      input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+      auto input = context->nodefinder()->node(input_tensor_index);
+      if (input == nullptr)
+        INFO(l) << "[luci] Warning: input node is null " << input_tensor_index << std::endl;
+      input_nodes.push_back(input);
     }
     else
     {
