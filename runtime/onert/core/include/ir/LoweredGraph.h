@@ -51,6 +51,9 @@ public:
   void removeLowerInfo(const OperandIndex &index);
   OpSequences &op_seqs() { return _op_seqs; }
   const OpSequences &op_seqs() const { return _op_seqs; }
+  void iterateTopolOpSeqs(
+      const std::function<void(const OpSequenceIndex &, const OpSequence &)> &fn) const;
+  void iterateTopolOpSeqs(const std::function<void(const OpSequenceIndex &, OpSequence &)> &fn);
   const backend::BackendContexts &backend_contexts() { return _backend_contexts; }
   const backend::BackendContexts &backend_contexts() const { return _backend_contexts; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
