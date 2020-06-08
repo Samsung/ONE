@@ -106,6 +106,7 @@
 #include "Op/Transpose.h"
 #include "Op/TransposeConv.h"
 #include "Op/Unpack.h"
+#include "Op/Where.h"
 #include "Op/ZerosLike.h"
 
 #endif // __TFLITE_OP_CHEFS_H__
