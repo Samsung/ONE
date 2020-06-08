@@ -17,7 +17,7 @@
 #include "GraphIterator.h"
 
 #include "ir/OperationIndexMap.h"
-#include "ir/Graph.h"
+#include "ir/LoweredGraph.h"
 
 namespace onert
 {
@@ -78,6 +78,40 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
   // All of the operations(nodes) must have been visited.
   assert(std::all_of(visited.begin(), visited.end(),
                      [](const std::pair<const OperationIndex, bool> &v) { return v.second; }));
+}
+
+template <bool is_const>
+void PostDfsIterator<is_const>::iterateOpSeqs(LoweredGraphRef lowered_graph,
+                                              const OpSeqIterFn &fn) const
+{
+  std::unordered_map<OpSequenceIndex, bool> visited;
+  lowered_graph.op_seqs().iterate(
+      [&](const OpSequenceIndex &index, OpSequenceRef) { visited[index] = false; });
+
+  std::function<void(const OpSequenceIndex &, OpSequenceRef)> dfs_recursive =
+      [&](const OpSequenceIndex &index, OpSequenceRef op_seq) -> void {
+    if (visited[index])
+      return;
+    visited[index] = true;
+
+    for (const auto output : op_seq.getOutputs() | Remove::DUPLICATED)
+    {
+      const auto &operand = lowered_graph.graph().operands().at(output);
+      for (const auto &use : operand.getUses())
+      {
+        const auto use_op_seq_index = lowered_graph.op_seqs().getOperation(use);
+        dfs_recursive(use_op_seq_index, lowered_graph.op_seqs().at(use_op_seq_index));
+      }
+    }
+
+    fn(index, op_seq);
+  };
+
+  lowered_graph.op_seqs().iterate(dfs_recursive);
+
+  // All of the operations(nodes) must have been visited.
+  assert(std::all_of(visited.begin(), visited.end(),
+                     [](const std::pair<const OpSequenceIndex, bool> &v) { return v.second; }));
 }
 
 } // namespace ir
