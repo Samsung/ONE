@@ -873,9 +873,9 @@ public:
 
   loco::NodeShape visit(const luci::CircleIf *node) final
   {
-    // Shape of CircleIf is not used. Just use input 1
-    assert(node->arity() > 1);
-    const auto input_shape = loco::shape_get(node->input(1)).as<loco::TensorShape>();
+    // Shape of CircleIf is not used. Just use input 0
+    assert(node->input_count() > 0);
+    const auto input_shape = loco::shape_get(node->input(0)).as<loco::TensorShape>();
     return loco::NodeShape{input_shape};
   }
 
