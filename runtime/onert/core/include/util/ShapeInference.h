@@ -27,7 +27,7 @@
 #include "ir/operation/Reshape.h"
 #include "ir/operation/RSQRT.h"
 #include "ir/operation/StridedSlice.h"
-#include "ir/Graph.h"
+#include "ir/LoweredGraph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
@@ -88,8 +88,13 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
 class StaticInferer : public ir::OperationVisitor
 {
 public:
-  StaticInferer(ir::Graph &graph)
-      : _operands(graph.operands()), _operations(graph.operations()) { /* empty */}
+  StaticInferer(
+      const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
+      : _lowered_subgs(lowered_subgs),
+        _operands(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operands()),
+        _operations(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operations())
+  { /* empty */
+  }
   virtual ~StaticInferer() = default;
 
 public:
@@ -170,8 +175,10 @@ private:
   void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
-  ir::Operands &_operands;
-  ir::Operations &_operations;
+  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &_lowered_subgs;
+  // _operands and _operations can be changed by controlflow operation
+  ir::Operands &_operands;     // operands of current subgraph
+  ir::Operations &_operations; // operations of current subgraph
 };
 
 // TODO After implement several Ops, check if this class can be merged with StaticInferer
