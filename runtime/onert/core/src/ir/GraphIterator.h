@@ -68,7 +68,7 @@ public:
       typename std::conditional<is_const, const LoweredGraph &, LoweredGraph &>::type;
   using OpSequenceRef = typename std::conditional<is_const, const OpSequence &, OpSequence &>::type;
   using OpSeqIndexRef = const OpSequenceIndex &;
-  using OpSeqIterFn = std::function<void(OpSeqIndexRef, OpSequenceRef &)>;
+  using OpSeqIterFn = std::function<void(OpSeqIndexRef, OpSequenceRef)>;
 
 public:
   void iterate(GraphRef graph, const IterFn &fn) const;
