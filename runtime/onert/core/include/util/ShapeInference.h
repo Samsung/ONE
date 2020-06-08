@@ -26,6 +26,7 @@
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/RSQRT.h"
+#include "ir/operation/StridedSlice.h"
 #include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
@@ -141,6 +142,7 @@ private:
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Unpack &op);
@@ -218,6 +220,7 @@ public:
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Unpack &op);

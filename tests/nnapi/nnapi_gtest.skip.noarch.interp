@@ -458,6 +458,7 @@ GeneratedTests.squeeze_float_1_relaxed
 GeneratedTests.squeeze_quant8_1
 GeneratedTests.squeeze_relaxed
 GeneratedTests.strided_slice
+GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.strided_slice_float_1
 GeneratedTests.strided_slice_float_10
 GeneratedTests.strided_slice_float_11
