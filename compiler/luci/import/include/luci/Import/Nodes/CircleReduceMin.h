@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __EVENT_COLLECTOR_H__
-#define __EVENT_COLLECTOR_H__
+#ifndef __LUCI_IMPORT_OP_CIRCLE_REDUCE_MIN_H__
+#define __LUCI_IMPORT_OP_CIRCLE_REDUCE_MIN_H__
 
-#include "misc/EventRecorder.h"
+#include "luci/Import/GraphBuilder.h"
 
-class EventCollector
+namespace luci
+{
+
+class CircleReduceMinGraphBuilder : public GraphBuilder
 {
 public:
-  enum class Edge
-  {
-    BEGIN,
-    END
-  };
+  bool validate(const ValidateArgs &args) const final;
 
-  struct Event
-  {
-    Edge edge;
-    std::string backend;
-    std::string label;
-  };
-
-public:
-  EventCollector(EventRecorder *rec) : _rec{rec}
-  {
-    // DO NOTHING
-  }
-
-public:
-  void onEvent(const Event &event);
-
-protected:
-  EventRecorder *_rec;
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const final;
 };
 
-#endif // __EVENT_COLLECTOR_H__
+} // namespace luci
+
+#endif // __LUCI_IMPORT_OP_CIRCLE_REDUCE_MIN_H__

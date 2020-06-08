@@ -219,6 +219,20 @@ public:
   }
 };
 
+class DepthToSpacePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_DepthToSpaceOptions())
+    {
+      os << "    ";
+      os << "BlockSize(" << std_params->block_size() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthwiseConv2DPrinter : public OpPrinter
 {
 public:
@@ -595,6 +609,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
+  _op_map[tflite::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();
   _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DIV] = make_unique<DivPrinter>();
   // There is no Option for FLOOR

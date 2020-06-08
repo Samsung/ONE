@@ -87,7 +87,7 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
                                             const onert::ir::OperandIndex index) noexcept
 {
   // Passed shape should be specified
-  if (haveUnspecifiedDims(index))
+  if (hasUnspecifiedDims(index))
   {
     return false;
   }
@@ -98,11 +98,11 @@ bool ANeuralNetworksExecution::compareShape(const ANeuralNetworksOperandType *ty
   return operand_shape == shape_from_type;
 }
 
-bool ANeuralNetworksExecution::haveUnspecifiedDims(const onert::ir::OperandIndex index) noexcept
+bool ANeuralNetworksExecution::hasUnspecifiedDims(const onert::ir::OperandIndex index) noexcept
 {
   const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
-  return onert::ir::haveUnspecifiedDims(operand_shape);
+  return operand_shape.hasUnspecifiedDims();
 }
 
 size_t ANeuralNetworksExecution::getOperandSize(const onert::ir::OperandIndex index) noexcept
@@ -227,7 +227,7 @@ bool ANeuralNetworksExecution::getOutputOperandRank(uint32_t index, uint32_t *ra
     }
 
     const auto shape = _execution->getOutputShape(output_index);
-    if (onert::ir::haveUnspecifiedDims(shape))
+    if (shape.hasUnspecifiedDims())
     {
       throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};
     }
@@ -257,7 +257,7 @@ bool ANeuralNetworksExecution::getOutputOperandDimensions(uint32_t index, uint32
     }
 
     const auto shape = _execution->getOutputShape(output_index);
-    if (onert::ir::haveUnspecifiedDims(shape))
+    if (shape.hasUnspecifiedDims())
     {
       throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};
     }

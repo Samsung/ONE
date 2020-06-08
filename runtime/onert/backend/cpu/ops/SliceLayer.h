@@ -39,12 +39,6 @@ public:
   void configure(const Tensor *input, const Tensor *begin, const Tensor *size, Tensor *output);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   void sliceFloat32();

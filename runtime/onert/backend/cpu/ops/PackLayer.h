@@ -43,12 +43,6 @@ public:
   void configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output);
 
   void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
 
 private:
   std::vector<const Tensor *> _inputs;

@@ -22,7 +22,7 @@ if(NOT DEFINED TFLITE_MODEL_PATH)
   return()
 endif()
 
-nnas_find_package(ARMCompute REQUIRED)
+nnfw_find_package(ARMCompute REQUIRED)
 
 if(NOT CORE_LIBRARY OR NOT RUNTIME_LIBRARY)
   message(STATUS "Sample app is disabled as ARM Compute Library is missing")
@@ -45,7 +45,7 @@ if (ANDROID_BOOST_ROOT)
   set(BOOST_ROOT ${ANDROID_BOOST_ROOT})
 endif (ANDROID_BOOST_ROOT)
 
-nnas_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED)
 
 add_library(android_benchmark_native SHARED cpp/ndk_main.cpp)
 target_compile_definitions(android_benchmark_native PRIVATE MODEL_NAME="${TFLITE_MODEL_FILENAME}")

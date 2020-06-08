@@ -27,7 +27,6 @@ class IFunction
 public:
   virtual ~IFunction() = default;
   virtual void run() = 0;
-  virtual void runSync() = 0;
   virtual void prepare() {}
 };
 

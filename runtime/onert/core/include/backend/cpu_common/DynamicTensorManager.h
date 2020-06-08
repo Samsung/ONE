@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
-#define __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
+#ifndef __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
+#define __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
 
-#include <backend/cpu_common/MemoryManager.h>
+#include "MemoryManager.h"
 #include "TensorRegistry.h"
 
 #include <backend/IDynamicTensorManager.h>
@@ -29,7 +29,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace cpu_common
 {
 
 // TODO Find optimized algorithm to manage memory.
@@ -68,7 +68,7 @@ private:
    * @brief Memory manager for dynamic tensor.
    * @todo  DynamicMemoryManager is not optimized. Optimized one is needed
    */
-  std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
+  std::shared_ptr<DynamicMemoryManager> _dynamic_mem_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 
   // contains list of dynamic tensor index, which can be deallocated after running operation
@@ -76,8 +76,8 @@ private:
   std::unordered_map<ir::OperationIndex, std::unordered_set<ir::OperandIndex>> _dealloc_tensor_map;
 };
 
-} // namespace cpu
+} // namespace cpu_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_DYNAMICTENSOR_MANAGER_H__
+#endif // __ONERT_BACKEND_CPU_COMMON_DYNAMICTENSOR_MANAGER_H__
