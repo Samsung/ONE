@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 # Copyright (C) 2018 The TensorFlow Authors
 #
