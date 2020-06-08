@@ -1,3 +1,4 @@
+require("circlechef")
 require("circle2circle")
 require("circle-inspect")
 require("circle-verify")

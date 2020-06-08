@@ -1,6 +1,7 @@
 nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
+list(APPEND REQUIRED_TARGETS circlechef)
 list(APPEND REQUIRED_TARGETS circle-inspect)
 list(APPEND REQUIRED_TARGETS circle-verify)
 list(APPEND REQUIRED_TARGETS circle2circle)
@@ -10,8 +11,12 @@ list(APPEND REQUIRED_TARGETS tflite2circle)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
 nncc_find_resource(TensorFlowLiteRecipes)
+nncc_find_resource(CircleRecipes)
 
-set(RECIPE_REPO "${TensorFlowLiteRecipes_DIR}")
+set(TFLITE_RECIPE_REPO "${TensorFlowLiteRecipes_DIR}")
+set(CIRCLE_RECIPE_REPO "${CircleRecipes_DIR}")
+unset(RECIPE_REPO)
+
 set(TEST_RECIPE_FILENAME "test.recipe")
 set(TEST_RULE_FILENAME "test.rule")
 
@@ -23,8 +28,14 @@ set(oneValueArgs "")
 set(multiValueArgs PASS)
 
 macro(Add RECIPE)
-  if(NOT EXISTS "${RECIPE_REPO}/${RECIPE}/test.recipe")
-    message(FATAL_ERROR "Missing recipe of '${RECIPE}' test")
+  if(NOT EXISTS "${TFLITE_RECIPE_REPO}/${RECIPE}/test.recipe")
+    if(NOT EXISTS "${CIRCLE_RECIPE_REPO}/${RECIPE}/test.recipe")
+      message(FATAL_ERROR "Missing recipe of '${RECIPE}' test")
+    else()
+      set(RECIPE_REPO ${CIRCLE_RECIPE_REPO})
+    endif()
+  else()
+    set(RECIPE_REPO ${TFLITE_RECIPE_REPO})
   endif()
 
   if(NOT EXISTS "${RECIPE_REPO}/${RECIPE}/test.rule")
@@ -69,19 +80,30 @@ macro(Add RECIPE)
     COMMENT "Generate ${RULE_FILE}"
   )
 
-  # Generate .tflite
-  add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
-    COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-    DEPENDS ${RECIPE_BINARY_PATH}
-    COMMENT "Generate ${TFLITE_FILE}"
-  )
+  if(${RECIPE_REPO} STREQUAL ${TFLITE_RECIPE_REPO})
+    # Generate .tflite
+    add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
+      COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
+      DEPENDS ${RECIPE_BINARY_PATH}
+      COMMENT "Generate ${TFLITE_FILE}"
+    )
 
-  # Generate .circle
-  add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
-    COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
-    DEPENDS ${TFLITE_OUTPUT_PATH}
-    COMMENT "Generate ${CIRCLE_FILE}"
-  )
+    # Generate .circle
+    add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+      COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
+      DEPENDS ${TFLITE_OUTPUT_PATH}
+      COMMENT "Generate ${CIRCLE_FILE}"
+    )
+
+    list(APPEND TEST_DEPS ${TFLITE_OUTPUT_PATH})
+  else()
+   # Generate .circle
+    add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+      COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
+      DEPENDS ${RECIPE_BINARY_PATH}
+      COMMENT "Generate ${CIRCLE_FILE}"
+    )
+  endif()
 
   # Generate optimized .circle
   add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
@@ -91,7 +113,7 @@ macro(Add RECIPE)
   )
 
   list(APPEND TEST_DEPS ${RECIPE_BINARY_PATH} ${RULE_BINARY_PATH}
-                        ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH})
+                        ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
 endmacro(Add)
 
