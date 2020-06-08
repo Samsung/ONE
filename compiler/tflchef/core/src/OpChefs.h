@@ -47,6 +47,7 @@
 #include "Op/L2Pool2D.h"
 #include "Op/LeakyRelu.h"
 #include "Op/Less.h"
+#include "Op/LessEqual.h"
 #include "Op/LocalResponseNormalization.h"
 #include "Op/Log.h"
 #include "Op/LogicalAnd.h"
