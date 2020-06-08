@@ -29,14 +29,11 @@ namespace luci
 namespace
 {
 
-void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t *zp)
+void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
+                           float &nudged_min, float &nudged_max)
 {
   assert(min != max);
-  if (min == max)
-  {
-    *scaling_factor = 1;
-    *zp = 0;
-  }
+
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = 255;
   const double qmin_double = kMinScale;
@@ -52,7 +49,7 @@ void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t 
   const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
                                        ? zero_point_from_min
                                        : zero_point_from_max;
-  int8_t nudged_zero_point = 0;
+  uint8_t nudged_zero_point = 0;
   if (zero_point_double <= qmin_double)
   {
     nudged_zero_point = kMinScale;
@@ -63,14 +60,18 @@ void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t 
   }
   else
   {
-    nudged_zero_point = static_cast<int8_t>(std::round(zero_point_double));
+    nudged_zero_point = static_cast<uint8_t>(std::round(zero_point_double));
   }
-  *scaling_factor = scale;
-  *zp = nudged_zero_point;
+
+  nudged_min = static_cast<float>((qmin_double - nudged_zero_point) * scale);
+  nudged_max = static_cast<float>((qmax_double - nudged_zero_point) * scale);
+
+  scaling_factor = scale;
+  zp = nudged_zero_point;
 }
 
-void asym_wquant_with_minmax(CircleConst *node, float min, float max, float *scaling_factor,
-                             int64_t *zp)
+void wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &scaling_factor,
+                                  int64_t &zp, float &nudged_min, float &nudged_max)
 {
 
   const int32_t kMinScale = 0;
@@ -84,25 +85,48 @@ void asym_wquant_with_minmax(CircleConst *node, float min, float max, float *sca
     for (int i = 0; i < static_cast<int32_t>(size); ++i)
       node->at<loco::DataType::U8>(i) = 0;
 
-    *scaling_factor = 1;
-    *zp = 0;
+    scaling_factor = 1;
+    zp = 0;
     return;
   }
 
-  compute_asym_scale_zp(min, max, scaling_factor, zp);
-  const float scaling_factor_inv = 1.0 / *scaling_factor;
+  compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
-    quantized_values[i] = static_cast<int32_t>(
-        std::round(*zp + node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+    // clipping
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    data = data < nudged_min ? nudged_min : data;
+    data = data > nudged_max ? nudged_max : data;
+    quantized_values[i] =
+        static_cast<int32_t>(std::round((data - nudged_min) * scaling_factor_inv));
   }
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
   node->size<loco::DataType::U8>(size); // resize tensor
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
+void wdequant_with_minmax_per_layer(CircleConst *node, float scaling_factor, float nudged_min)
+{
+
+  uint32_t size = node->size<loco::DataType::U8>();
+  std::vector<float> dequantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    auto data = node->at<loco::DataType::U8>(i);
+    dequantized_values[i] = static_cast<float>(data) * scaling_factor + nudged_min;
+  }
+
+  node->dtype(loco::DataType::FLOAT32);      // change the type of tensor
+  node->size<loco::DataType::FLOAT32>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::FLOAT32>(i) = dequantized_values[i];
   }
 }
 
@@ -112,7 +136,7 @@ bool is_quantized(const CircleNode *node)
          node->dtype() == loco::DataType::S32;  // bias
 }
 
-// Check if node is weights of conv2d, depthwise_conv2d, or fully_connected layer
+// Check if node is weights of conv2d, transepose_conv2d, depthwise_conv2d, or fully_connected layer
 bool is_weights(CircleNode *node)
 {
   auto circle_const = dynamic_cast<CircleConst *>(node);
@@ -131,6 +155,10 @@ bool is_weights(CircleNode *node)
 
     auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
     if (dw_conv != nullptr && dw_conv->filter() == circle_const)
+      return true;
+
+    auto tw_conv = dynamic_cast<CircleTransposeConv *>(out);
+    if (tw_conv != nullptr && tw_conv->filter() == circle_const)
       return true;
 
     auto fc = dynamic_cast<CircleFullyConnected *>(out);
@@ -173,7 +201,7 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
       {
         auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
 
-        // Find min/max on the fly
+        // Find min/max per layer-wise
         float min = std::numeric_limits<float>::max();
         float max = std::numeric_limits<float>::min();
         for (uint32_t i = 0; i < circle_const->size<loco::DataType::FLOAT32>(); i++)
@@ -184,20 +212,18 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
         }
         float scaling_factor;
         int64_t zp;
+        float nudged_min;
+        float nudged_max;
 
-        // TODO: Implement quantize and dequantize
-        // Code needs to be changed
-        ////////////////////////////////////////////////////// FROM HERE
-
-        asym_wquant_with_minmax(circle_const, min, max, &scaling_factor, &zp);
+        wquant_with_minmax_per_layer(circle_const, min, max, scaling_factor, zp, nudged_min,
+                                     nudged_max);
+        wdequant_with_minmax_per_layer(circle_const, scaling_factor, nudged_min);
         auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->min.push_back(min);
-        quantparam->max.push_back(max);
+        quantparam->min.push_back(nudged_min);
+        quantparam->max.push_back(nudged_max);
         quantparam->scale.push_back(scaling_factor);
         quantparam->zerop.push_back(zp);
         circle_node->quantparam(std::move(quantparam));
-
-        ////////////////////////////////////////////////////// TO HERE
       }
     }
     return false;
