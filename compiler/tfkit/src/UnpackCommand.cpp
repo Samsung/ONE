@@ -139,6 +139,41 @@ template <> void unpack<int8_t>(tensorflow::TensorProto *input_tensor)
   }
 }
 
+template <> void unpack<bool>(tensorflow::TensorProto *input_tensor)
+{
+  const auto &input_shape = input_tensor->tensor_shape();
+  assert(input_shape.dim_size() <= 6);
+  int input_flat_size = tfkit::tf::GetElementCount(input_shape);
+
+  // Adjust where shape is not set but actual value exist
+  if (input_tensor->tensor_content().size() > 0 && input_flat_size == -1)
+  {
+    input_flat_size = input_tensor->tensor_content().size() / sizeof(bool);
+  }
+
+  if (input_tensor->tensor_content().size() == 0)
+  {
+    // Do nothing as there is no tensor content to unpack
+  }
+  else if (input_tensor->tensor_content().size() == input_flat_size * sizeof(bool))
+  {
+    input_tensor->clear_bool_val();
+
+    const bool *tensor_content =
+        reinterpret_cast<const bool *>(input_tensor->tensor_content().data());
+    for (int i = 0; i < input_flat_size; i++)
+    {
+      input_tensor->add_bool_val(tensor_content[i]);
+    }
+    input_tensor->clear_tensor_content();
+  }
+  else
+  {
+    throw std::runtime_error{"Number of elements mismatch in unpack<bool>."};
+    // TODO: support for these
+  }
+}
+
 void unpack(tensorflow::GraphDef &graph_def)
 {
   auto nodes = graph_def.mutable_node();
@@ -161,6 +196,9 @@ void unpack(tensorflow::GraphDef &graph_def)
           break;
         case tensorflow::DT_INT8:
           unpack<int8_t>(tensor);
+          break;
+        case tensorflow::DT_BOOL:
+          unpack<bool>(tensor);
           break;
         default:
           throw std::runtime_error{"Unsupported dtype"};
