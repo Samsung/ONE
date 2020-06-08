@@ -1389,6 +1389,31 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleScatterNd *node) final
+  {
+    loco::TensorShape output_shape;
+
+    auto shape_node = loco::must_cast<luci::CircleConst *>(node->shape());
+
+    const loco::DataType S32 = loco::DataType::S32;
+    const loco::DataType S64 = loco::DataType::S64;
+
+    std::vector<int64_t> vect_shape;
+
+    if (shape_node->dtype() == S32)
+      vect_shape = vector_from_constant<S32>(shape_node);
+    else if (shape_node->dtype() == S64)
+      vect_shape = vector_from_constant<S64>(shape_node);
+    else
+      LUCI_ASSERT(false, "Only support int32/int64 for shape()");
+
+    output_shape.rank(vect_shape.size());
+    for (uint32_t i = 0; i < vect_shape.size(); ++i)
+      output_shape.dim(i) = vect_shape[i];
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSelect *node) final
   {
     auto t_shape = loco::shape_get(node->t()).as<loco::TensorShape>();
