@@ -161,16 +161,10 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   auto const_node = graph->nodes()->create<CircleConst>();
   copy_tensor_attributes(const_tensor, const_node);
   const_node->shape_status(luci::ShapeStatus::VALID);
-  if (num_elements == 0)
+  INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << " "
+          << const_dims << std::endl;
+  if (num_elements > 0)
   {
-    INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << " "
-            << const_dims << std::endl;
-  }
-  else
-  {
-    INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << " "
-            << const_dims << std::endl;
-
     switch (luci_datatype(const_tensor.type))
     {
       case loco::DataType::FLOAT32:
