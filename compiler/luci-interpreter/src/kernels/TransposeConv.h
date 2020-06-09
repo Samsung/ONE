@@ -39,12 +39,11 @@ private:
   void evalQuantized() const;
 
 private:
-  const Tensor *const _outputShape;
+  const Tensor *const _output_shape;
   const Tensor *const _weights;
-  const Tensor *const _inputData;
+  const Tensor *const _input_data;
   Tensor *const _output;
 
-  std::unique_ptr<Tensor> _im2col;
   std::unique_ptr<Tensor> _scratch_tensor;
 
   // The scaling factor from input to output (aka the 'real multiplier') can
@@ -56,9 +55,6 @@ private:
   // uint8_t these would be 0 and 255.
   int32_t _output_activation_min;
   int32_t _output_activation_max;
-
-  bool _has_col2im = false;
-  bool _weights_are_transposed = false;
 };
 
 } // namespace kernels

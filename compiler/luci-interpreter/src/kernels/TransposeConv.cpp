@@ -32,35 +32,26 @@ namespace kernels
 TransposeConv::TransposeConv(const Tensor *outputShape, const Tensor *weights,
                              const Tensor *inputData, Tensor *output,
                              const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>(params), _outputShape(outputShape), _weights(weights),
-      _inputData(inputData), _output(output)
+    : KernelWithParams<TransposeConvParams>(params), _output_shape(outputShape), _weights(weights),
+      _input_data(inputData), _output(output)
 {
 }
 
 void TransposeConv::configure()
 {
-  assert(_outputShape->shape().num_dims() == 1);
-  assert(_inputData->shape().num_dims() == 4);
+  assert(_output_shape->shape().num_dims() == 1);
+  assert(_input_data->shape().num_dims() == 4);
   assert(_weights->shape().num_dims() == 4);
-  assert(_inputData->element_type() == DataType::FLOAT32 ||
-         _inputData->element_type() == DataType::U8);
-  assert(_inputData->element_type() == _output->element_type());
-  assert(_inputData->shape().dim(3) == _weights->shape().dim(3));
-  if (_inputData->element_type() == DataType::FLOAT32)
-  {
-    Shape im2col_shape(2);
-    im2col_shape.dim(0) = _inputData->shape().dim(1) * _inputData->shape().dim(2);
-    im2col_shape.dim(1) =
-        _weights->shape().dim(0) * _weights->shape().dim(1) * _weights->shape().dim(2);
-    _im2col = std::make_unique<Tensor>(_inputData->element_type(), im2col_shape,
-                                       AffineQuantization{}, "");
-  }
-  if (_inputData->element_type() == DataType::U8)
+  assert(_input_data->element_type() == DataType::FLOAT32 ||
+         _input_data->element_type() == DataType::U8);
+  assert(_input_data->element_type() == _output->element_type());
+  assert(_input_data->shape().dim(3) == _weights->shape().dim(3));
+  if (_input_data->element_type() == DataType::U8)
   {
     _scratch_tensor =
         std::make_unique<Tensor>(DataType::S32, _output->shape(), AffineQuantization{}, "");
     double real_multiplier = 0.0;
-    const double input_product_scale = _inputData->scale() * _weights->scale();
+    const double input_product_scale = _input_data->scale() * _weights->scale();
     assert(input_product_scale >= 0);
     real_multiplier = input_product_scale / _output->scale();
     int exponent;
@@ -70,9 +61,9 @@ void TransposeConv::configure()
     _output_activation_max = std::numeric_limits<uint8_t>::max();
   }
 
-  int dims = _outputShape->shape().dim(0);
+  int dims = _output_shape->shape().dim(0);
   Shape output_shape(dims);
-  const float *shape_data = getTensorData<float>(_outputShape);
+  const int32_t *shape_data = getTensorData<int32_t>(_output_shape);
   for (int i = 0; i < dims; i++)
     output_shape.dim(i) = shape_data[i];
   _output->resize(output_shape);
@@ -80,7 +71,7 @@ void TransposeConv::configure()
 
 void TransposeConv::execute() const
 {
-  switch (_inputData->element_type())
+  switch (_input_data->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -118,16 +109,15 @@ void TransposeConv::evalFloat() const
   op_params.stride_height = params().stride_height;
   op_params.stride_width = params().stride_width;
   op_params.output_multiplier = _output_multiplier;
-  tflite::reference_ops::TransposeConv(op_params, getTensorShape(_inputData),
-                                       getTensorData<float>(_inputData), getTensorShape(_weights),
-                                       getTensorData<float>(_weights), getTensorShape(_output),
-                                       getTensorData<float>(_output), getTensorShape(_im2col.get()),
-                                       getTensorData<float>(_im2col.get()));
+  tflite::reference_ops::TransposeConv(
+      op_params, getTensorShape(_input_data), getTensorData<float>(_input_data),
+      getTensorShape(_weights), getTensorData<float>(_weights), getTensorShape(_output),
+      getTensorData<float>(_output), tflite::RuntimeShape(), (float *)nullptr);
 }
 
 void TransposeConv::evalQuantized() const
 {
-  int32_t input_offset = -_inputData->zero_point();
+  int32_t input_offset = -_input_data->zero_point();
   int32_t filter_offset = -_weights->zero_point();
   int32_t output_offset = _weights->zero_point();
   const int width = _output->shape().dim(2);
@@ -159,7 +149,7 @@ void TransposeConv::evalQuantized() const
   op_params.quantized_activation_max = _output_activation_max;
 
   tflite::reference_ops::TransposeConv(
-      op_params, getTensorShape(_inputData), getTensorData<uint8>(_inputData),
+      op_params, getTensorShape(_input_data), getTensorData<uint8>(_input_data),
       getTensorShape(_weights), getTensorData<uint8>(_weights), getTensorShape(_output),
       getTensorData<uint8>(_output), tflite::RuntimeShape(), (uint8 *)nullptr,
       getTensorData<int32_t>(_scratch_tensor.get()));
