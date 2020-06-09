@@ -112,6 +112,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
   CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
+  CIRCLE_NODE(WHERE, CircleWhereGraphBuilder);                                             // 109
   CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                                             // 119
   CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeGraphBuilder);                                    // 93
 
@@ -147,7 +148,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CEIL = 104,
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_ADD_N = 106,
-  // BuiltinOperator_WHERE = 109,
   // BuiltinOperator_RANK = 110,
   // BuiltinOperator_REVERSE_SEQUENCE = 112,
   // BuiltinOperator_MATRIX_DIAG = 113,
