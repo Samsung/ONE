@@ -36,7 +36,7 @@ public:
   ConcatLayer();
 
 public:
-  void concatenationFloat32();
+  template <typename T> void concatenationGeneral();
 
   void concatenationQuant8();
 
