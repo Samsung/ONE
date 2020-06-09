@@ -134,7 +134,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
-  
+
   jni::TensorParams params;
   if (jni_helper::getTensorParams(env, jindex, jtype, jbuf, jbufsize, params) == JNI_FALSE)
   {
