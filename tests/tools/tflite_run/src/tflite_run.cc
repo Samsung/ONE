@@ -357,6 +357,9 @@ int main(const int argc, char **argv)
     std::string backend_name = default_backend_cand;
     {
       model_basename = basename(args.getTFLiteFilename().c_str());
+      // should remove extension(such as .tflite)
+      size_t lastindex = model_basename.find_last_of(".");
+      model_basename = model_basename.substr(0, lastindex);
       exec_basename = basename(argv[0]);
     }
     benchmark::writeResult(result, exec_basename, model_basename, backend_name);
