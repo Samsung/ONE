@@ -116,17 +116,19 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
     phase.emplace_back(std::make_unique<luci::QuantizeDequantizeWeightsPass>(
-        str_to_dtype(input_dtype), str_to_dtype(output_dtype)));
+        str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity)));
   }
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
-    phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(str_to_dtype(input_dtype),
-                                                                      str_to_dtype(output_dtype)));
+    phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(
+        str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity)));
   }
   if (_options->query(Options::Algorithm::FuseBCQ))
   {

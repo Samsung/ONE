@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
-#define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
-
-#include "luci/Pass/QuantizeDequantizeWeightsPass.h"
-#include "luci/Pass/QuantizeWithMinMaxPass.h"
-
-#include <loco.h>
-
-#include <algorithm>
+#ifndef __LUCI_QUANTIZATION_PARAMETERS_H__
+#define __LUCI_QUANTIZATION_PARAMETERS_H__
 
 namespace luci
 {
 
-loco::DataType str_to_dtype(const std::string &);
-
-QuantizationGranularity str_to_granularity(const std::string &);
+enum QuantizationGranularity
+{
+  LayerWise = 0,
+  ChannelWise = 1,
+};
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
+#endif // __LUCI_QUANTIZATION_PARAMETERS_H__

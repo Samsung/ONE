@@ -21,6 +21,8 @@
 
 #include <logo/Pass.h>
 
+#include <luci/Pass/QuantizationParameters.h>
+
 namespace luci
 {
 
@@ -30,8 +32,9 @@ namespace luci
 class QuantizeWithMinMaxPass : public logo::Pass
 {
 public:
-  QuantizeWithMinMaxPass(loco::DataType input_dtype, loco::DataType output_dtype)
-      : _input_dtype{input_dtype}, _output_dtype{output_dtype}
+  QuantizeWithMinMaxPass(loco::DataType input_dtype, loco::DataType output_dtype,
+                         QuantizationGranularity granularity)
+      : _input_dtype{input_dtype}, _output_dtype{output_dtype}, _granularity{granularity}
   {
     // DO NOTHING
   }
@@ -43,6 +46,7 @@ public:
 private:
   loco::DataType _input_dtype;
   loco::DataType _output_dtype;
+  QuantizationGranularity _granularity;
 };
 
 } // namespace luci
