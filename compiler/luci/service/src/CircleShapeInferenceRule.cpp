@@ -1802,14 +1802,18 @@ public:
     
     // TODO for arity 1
 
+    loco::TensorShape output_shape;
+
     if (node->arity() == 3)
     {
+      auto cond_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
       auto x_shape = loco::shape_get(node->values(1)).as<loco::TensorShape>();
       auto y_shape = loco::shape_get(node->values(2)).as<loco::TensorShape>();
-      auto output_shape = broadcast_shape(x_shape, y_shape);
-      return loco::NodeShape{output_shape};
+      output_shape = broadcast_shape(x_shape, y_shape);
+      output_shape = broadcast_shape(cond_shape,output_shape);
     }
 
+  return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleWhile *node) final
