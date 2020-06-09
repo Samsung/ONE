@@ -325,9 +325,9 @@ void LoweredGraph::manipulateLowerInfo(
   for (auto index : _graph.getOutputs())
   {
     auto &&lower_info = operands_lower_info.at(index);
-    if (_graph.operands().at(index).isConstant())
+    if (lower_info->def_factors().size() == 0)
     {
-      // In case of that a constant is Graph's output and not input or output of any operation
+      // In case of that an operand is Graph's output and not input or output of any operation
       lower_info->addDefPermuteFactor(operand::PermuteFactor{
           controlflow_backend,
           Layout::NHWC // TODO Get frontend layout of this node from IR
