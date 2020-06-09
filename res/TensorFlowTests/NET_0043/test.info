@@ -1,0 +1,2 @@
+input,  input_shape:0, TF_FLOAT, [4]
+output, add:0,         TF_FLOAT, []

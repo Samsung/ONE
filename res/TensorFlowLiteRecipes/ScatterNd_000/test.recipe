@@ -1,0 +1,40 @@
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 2 dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "0" arg: "2"
+  }
+}
+operand {
+  name: "updates"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 dim: 4 }
+}
+operand {
+  name: "shape"
+  type: INT32
+  shape: { dim: 3 }
+  filler: {
+    tag: "constant"
+    arg: "4" arg: "4" arg: "4"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 dim: 4 }
+}
+operation {
+  type: "ScatterNd"
+  scatter_nd_options {
+  }
+  input: "indices"
+  input: "updates"
+  input: "shape"
+  output: "ofm"
+}
+input: "indices"
+input: "updates"
+output: "ofm"

@@ -28,6 +28,8 @@ namespace ir
 
 class Graph;
 class Operation;
+class LoweredGraph;
+class OpSequence;
 
 template <bool is_const> class Iterator
 {
@@ -62,9 +64,15 @@ public:
   using IndexRef = typename Iterator<is_const>::IndexRef;
   using NodeRef = typename Iterator<is_const>::NodeRef;
   using IterFn = typename Iterator<is_const>::IterFn;
+  using LoweredGraphRef =
+      typename std::conditional<is_const, const LoweredGraph &, LoweredGraph &>::type;
+  using OpSequenceRef = typename std::conditional<is_const, const OpSequence &, OpSequence &>::type;
+  using OpSeqIndexRef = const OpSequenceIndex &;
+  using OpSeqIterFn = std::function<void(OpSeqIndexRef, OpSequenceRef)>;
 
 public:
   void iterate(GraphRef graph, const IterFn &fn) const;
+  void iterateOpSeqs(LoweredGraphRef lowered_graph, const OpSeqIterFn &f) const;
 };
 using PostDfsConstIterator = PostDfsIterator<true>;
 

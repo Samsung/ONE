@@ -26,6 +26,7 @@
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/RSQRT.h"
+#include "ir/operation/StridedSlice.h"
 #include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
@@ -135,14 +136,17 @@ private:
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
   void visit(const ir::operation::RSQRT &op);
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::While &op);
@@ -212,14 +216,17 @@ public:
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
   void visit(const ir::operation::RSQRT &op);
   void visit(const ir::operation::Shape &op);
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
+  void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::ZerosLike &op);

@@ -13,6 +13,12 @@ Even though we alreay have _tf2tflite_, we cannot cover all opeartors in TensorF
 ```
 python tf2tfliteV2.py \
 > --v1 \
+> -i frozen_graph.pb -o converted.tflite
+> -I model_inputs -O model_outputs
+```
+```
+python tf2tfliteV2.py \
+> --v1 \
 > --input_path=frozen_graph.pb \
 > --output_path=converted.tflite \
 > --input_arrays=model_inputs \
@@ -41,15 +47,15 @@ python tf2tfliteV2.py \
   -h, --help            show this help message and exit
   --v1                  Use TensorFlow Lite Converter 1.x
   --v2                  Use TensorFlow Lite Converter 2.x
-  --input_path INPUT_PATH
+  -i INPUT_PATH, --input_path INPUT_PATH
                         Full filepath of the input file.
-  --output_path OUTPUT_PATH
+  -o OUTPUT_PATH, --output_path OUTPUT_PATH
                         Full filepath of the output file.
-  --input_arrays INPUT_ARRAYS
+  -I INPUT_ARRAYS, --input_arrays INPUT_ARRAYS
                         Names of the input arrays, comma-separated.
-  --input_shapes INPUT_SHAPES
+  -s INPUT_SHAPES, --input_shapes INPUT_SHAPES
                         Shapes corresponding to --input_arrays, colon-
                         separated.
-  --output_arrays OUTPUT_ARRAYS
+  -O OUTPUT_ARRAYS, --output_arrays OUTPUT_ARRAYS
                         Names of the output arrays, comma-separated.
 ```

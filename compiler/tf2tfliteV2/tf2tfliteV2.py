@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 # Copyright (C) 2018 The TensorFlow Authors
 #
@@ -62,18 +64,18 @@ def _get_parser():
 
     # Input and output arrays.
     parser.add_argument(
-        "-ia",
+        "-I",
         "--input_arrays",
         type=str,
         help="Names of the input arrays, comma-separated.",
         required=True)
     parser.add_argument(
-        "-is",
+        "-s",
         "--input_shapes",
         type=str,
         help="Shapes corresponding to --input_arrays, colon-separated.")
     parser.add_argument(
-        "-oa",
+        "-O",
         "--output_arrays",
         type=str,
         help="Names of the output arrays, comma-separated.",

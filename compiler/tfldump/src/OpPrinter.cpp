@@ -60,6 +60,20 @@ public:
   }
 };
 
+class ArgMinPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ArgMinOptions())
+    {
+      os << "    ";
+      os << "OutputType(" << EnumNameTensorType(params->output_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class CastPrinter : public OpPrinter
 {
 public:
@@ -593,6 +607,7 @@ OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[tflite::BuiltinOperator_ADD] = make_unique<AddPrinter>();
   _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
+  _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();

@@ -130,6 +130,8 @@ GeneratedTests.reduce_prod_4
 GeneratedTests.reduce_prod_4D_float_nnfw
 GeneratedTests.reduce_prod_4D_float_reducing_C_nnfw
 GeneratedTests.reduce_prod_4D_float_reducing_HW_nnfw
+GeneratedTests.reduce_sum_dynamic_1_nnfw
+GeneratedTests.reduce_sum_dynamic_2_nnfw
 GeneratedTests.reshape_quant8_weights_as_inputs
 GeneratedTests.reshape_weights_as_inputs
 GeneratedTests.reverse_ex_1d
@@ -174,6 +176,7 @@ GeneratedTests.space_to_batch_quant8_2
 GeneratedTests.space_to_batch_quant8_2_nnfw
 GeneratedTests.space_to_batch_quant8_3
 GeneratedTests.sqrt_
+GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8
@@ -186,13 +189,16 @@ GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
 GeneratedTests.tanh_v1_dynamic_nnfw
 GeneratedTests.tile_1
+GeneratedTests.tile_1_dynamic_float32_nnfw
 GeneratedTests.tile_1_float16
 GeneratedTests.tile_1_quant8
 GeneratedTests.tile_2
+GeneratedTests.tile_2_dynamic_float32_nnfw
 GeneratedTests.tile_2_float16
 GeneratedTests.tile_2_quant8
 GeneratedTests.tile_2_int32
 GeneratedTests.tile_3
+GeneratedTests.tile_3_dynamic_float32_nnfw
 GeneratedTests.tile_3_float16
 GeneratedTests.tile_3_quant8
 GeneratedTests.tile_3_int32

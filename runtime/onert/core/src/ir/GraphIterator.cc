@@ -17,20 +17,12 @@
 #include "GraphIterator.h"
 
 #include "ir/OperationIndexMap.h"
-#include "ir/Graph.h"
+#include "ir/LoweredGraph.h"
 
 namespace onert
 {
 namespace ir
 {
-
-// Explicit instantiations to have implementation in the source file.
-
-template class DefaultIterator<true>;
-template class DefaultIterator<false>;
-
-template class PostDfsIterator<true>;
-template class PostDfsIterator<false>;
 
 //
 // Graph::DefaultIterator
@@ -79,6 +71,51 @@ void PostDfsIterator<is_const>::iterate(GraphRef graph, const IterFn &fn) const
   assert(std::all_of(visited.begin(), visited.end(),
                      [](const std::pair<const OperationIndex, bool> &v) { return v.second; }));
 }
+
+template <bool is_const>
+void PostDfsIterator<is_const>::iterateOpSeqs(LoweredGraphRef lowered_graph,
+                                              const OpSeqIterFn &fn) const
+{
+  std::unordered_map<OpSequenceIndex, bool> visited;
+  lowered_graph.op_seqs().iterate(
+      [&](const OpSequenceIndex &index, OpSequenceRef) { visited[index] = false; });
+
+  std::function<void(const OpSequenceIndex &, OpSequenceRef)> dfs_recursive =
+      [&](const OpSequenceIndex &index, OpSequenceRef op_seq) -> void {
+    if (visited[index])
+      return;
+    visited[index] = true;
+
+    for (const auto output : op_seq.getOutputs() | Remove::DUPLICATED)
+    {
+      const auto &operand = lowered_graph.graph().operands().at(output);
+      for (const auto &use : operand.getUses())
+      {
+        const auto use_op_seq_index = lowered_graph.op_seqs().getOperation(use);
+        dfs_recursive(use_op_seq_index, lowered_graph.op_seqs().at(use_op_seq_index));
+      }
+    }
+
+    fn(index, op_seq);
+  };
+
+  lowered_graph.op_seqs().iterate(dfs_recursive);
+
+  // All of the operations(nodes) must have been visited.
+  assert(std::all_of(visited.begin(), visited.end(),
+                     [](const std::pair<const OpSequenceIndex, bool> &v) { return v.second; }));
+}
+
+// Explicit instantiations to have implementation in the source file.
+// NOTE If these instatiations were in the top of this file, `iterate` is compiled and saved in
+//      `GraphIterator.cc.o` but `iterateOpSeqs`. This happens only when cross-building for Android.
+//      (Maybe a bug of NDK toolchain(clang)?)
+
+template class DefaultIterator<true>;
+template class DefaultIterator<false>;
+
+template class PostDfsIterator<true>;
+template class PostDfsIterator<false>;
 
 } // namespace ir
 } // namespace onert

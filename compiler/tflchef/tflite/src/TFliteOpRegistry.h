@@ -58,6 +58,7 @@ private:
     REG_TFL_OP(ABS, TFliteOpAbs);
     REG_TFL_OP(ADD, TFliteOpAdd);
     REG_TFL_OP(ARG_MAX, TFliteOpArgMax);
+    REG_TFL_OP(ARG_MIN, TFliteOpArgMin);
     REG_TFL_OP(AVERAGE_POOL_2D, TFliteOpAveragePool2D);
     REG_TFL_OP(BATCH_TO_SPACE_ND, TFliteOpBatchToSpaceND);
     REG_TFL_OP(CAST, TFliteOpCast);
@@ -115,6 +116,7 @@ private:
     REG_TFL_OP(RESIZE_BILINEAR, TFliteOpResizeBilinear);
     REG_TFL_OP(RESIZE_NEAREST_NEIGHBOR, TFliteOpResizeNearestNeighbor);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
+    REG_TFL_OP(SCATTER_ND, TFliteOpScatterNd);
     REG_TFL_OP(SELECT, TFliteOpSelect);
     REG_TFL_OP(SHAPE, TFliteOpShape);
     REG_TFL_OP(SIN, TFliteOpSin);

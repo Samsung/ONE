@@ -18,7 +18,7 @@
 #include "tensorflow/lite/model.h"
 
 #include "tflite/interp/FlatBufferBuilder.h"
-#include "tflite/Diff.h"
+#include "tflite/RandomTestRunner.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -51,7 +51,7 @@ int main(const int argc, char **argv)
 
   try
   {
-    return RandomTestRunner::make(0).run(builder);
+    return nnfw::tflite::RandomTestRunner::make(0).run(builder);
   }
   catch (const std::exception &e)
   {

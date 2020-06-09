@@ -36,7 +36,7 @@ TFLiteModelVerification "acl_cl" "tests/scripts/list/frameworktest_list.armv7l.a
 unset TRACE_FILEPATH
 
 # Interpreter
-./infra/scripts/test_ubuntu_runtime_interp.sh
+./infra/scripts/test_ubuntu_runtime.sh --interp
 
 # nnpackage test suite
 if [[ -e ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz ]]; then
