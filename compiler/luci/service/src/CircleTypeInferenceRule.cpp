@@ -145,9 +145,9 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleIf *node) final
   {
-    // Type of If is not used. Just use input 1
-    assert(node->arity() > 1);
-    return loco::dtype_get(node->input(1));
+    // Type of If is not used. Just use input 0
+    assert(node->input_count() > 0);
+    return loco::dtype_get(node->input(0));
   }
 
   loco::DataType visit(const luci::CircleL2Normalize *node) final
