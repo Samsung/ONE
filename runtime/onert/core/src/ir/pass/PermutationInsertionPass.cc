@@ -64,8 +64,6 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     {
       const auto permute_operation_index = insertPermute(index, factor);
       permute_indexes.push_back(permute_operation_index);
-      VERBOSE(PermutationInsertionPass) << "Insert 'Permute' operation for operand "
-                                        << index.value() << std::endl;
       const auto &permute_operation = _graph.operations().at(permute_operation_index);
       const auto permuted_operand_index = permute_operation.getOutputs().at(0);
       factor_to_index.emplace(factor, permuted_operand_index);
@@ -192,6 +190,10 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
 
   auto node_index = _graph.operations().push(std::move(insert_node));
   const auto &node = _graph.operations().at(node_index);
+
+  VERBOSE_F() << "Permute Op inserted, node index : " << node_index << std::endl;
+  VERBOSE_F() << "  - Input (original) Operand : " << operand_index << std::endl;
+  VERBOSE_F() << "  - Output(inserted) Operand : " << out_operand_index << std::endl;
 
   // OpSequence
   {
