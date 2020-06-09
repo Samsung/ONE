@@ -442,6 +442,7 @@ GeneratedTests.split_4D_int32_3_nnfw
 GeneratedTests.split_4D_int32_4_nnfw
 GeneratedTests.split_4D_int32_5_nnfw
 GeneratedTests.split_4D_quant8_nnfw
+GeneratedTests.split_dynamic_float_nnfw
 GeneratedTests.split_float_1
 GeneratedTests.split_float_2
 GeneratedTests.split_float_3

@@ -922,7 +922,6 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto rank = node.param().rank;
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
   auto axis_resolved = axis < 0 ? axis + rank : axis;
-  assert(0 <= axis_resolved && axis_resolved < rank);
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   auto in_tensor = _tensor_builder->at(input_idx).get();

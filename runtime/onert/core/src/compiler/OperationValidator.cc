@@ -1071,6 +1071,9 @@ void OperationValidator::visit(const ir::operation::Split &node)
 {
   const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
 
+  if (_ctx.at(input_index).info().isDynamic())
+    return;
+
   const auto &num_splits = node.param().num_splits;
   const auto &input_rank = node.param().rank;
   const auto &axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
@@ -1079,8 +1082,6 @@ void OperationValidator::visit(const ir::operation::Split &node)
   OP_REQUIRES(axis >= 0 && axis < input_rank);
   OP_REQUIRES(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
 
-  if (_ctx.at(input_index).info().isDynamic())
-    return;
   OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
