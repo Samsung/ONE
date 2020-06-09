@@ -85,11 +85,15 @@ TEST(TransposeConvTest, FloatTwoFiltersTest)
 
 TEST(TransposeConvTest, Uint8Simple)
 {
-  // Need to Implement GetDequantizedOutput Function.
+  // TODO
+  // Implement GetDequantizedOutput Function.
+  // Create Test for Uint8 Case
 }
 TEST(TransposeConvTest, Uint8FiltersTest)
 {
-  // Need to Implement GetDequantizedOutput Function.
+  // TODO
+  // Implement GetDequantizedOutput Function.
+  // Create Test for Uint8 Case
 }
 
 } // namespace
