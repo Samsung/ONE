@@ -1,0 +1,30 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 5 dim: 6 }
+}
+operand {
+  name: "ofm"
+  type: INT64
+  shape { dim: 4 dim: 6 }
+}
+operand {
+  name: "argmin/dim"
+  type: INT32
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+}
+operation {
+  type: "ArgMin"
+  argmin_options {
+    output_type: INT64
+  }
+  input: "ifm"
+  input: "argmin/dim"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

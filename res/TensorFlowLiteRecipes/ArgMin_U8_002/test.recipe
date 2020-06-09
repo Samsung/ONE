@@ -1,0 +1,31 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 4 dim: 5 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: INT64
+  shape { dim: 4 }
+}
+operand {
+  name: "argmin/dim"
+  type: INT32
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+}
+operation {
+  type: "ArgMin"
+  argmin_options {
+    output_type: INT64
+  }
+  input: "ifm"
+  input: "argmin/dim"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
