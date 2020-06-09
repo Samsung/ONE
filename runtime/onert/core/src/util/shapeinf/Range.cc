@@ -21,6 +21,7 @@ namespace onert
 namespace shape_inference
 {
 // helper function
+template <float *> ir::Shape inferRangeShape(float *start_val, float *limit_val, float *delta_val);
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val)
 {
   ir::Shape out_shape(static_cast<int>(1));
@@ -86,6 +87,7 @@ void DynamicInferer::visit(const ir::operation::Range &op)
                                             reinterpret_cast<int32_t *>(limit_tensor->buffer()),
                                             reinterpret_cast<int32_t *>(delta_tensor->buffer()));
   }
+  setShape(output.get(), new_shape);
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
