@@ -114,10 +114,10 @@ void TransposeConv::evalFloat() const
   int32_t offset = 0;
   tflite::ConvParams op_params;
   op_params.padding_type = tflite::PaddingType::kSame;
-  op_params.padding_values.height = ComputePaddingWithOffset(
+  op_params.padding_values.height = computePaddingWithOffset(
       params().stride_height, 1, height, filter_height, unused_output_height, &offset);
   op_params.padding_values.height_offset = offset;
-  op_params.padding_values.width = ComputePaddingWithOffset(
+  op_params.padding_values.width = computePaddingWithOffset(
       params().stride_width, 1, width, filter_width, unused_output_width, &offset);
   op_params.padding_values.width_offset = offset;
   op_params.stride_height = params().stride_height;
@@ -149,9 +149,9 @@ void TransposeConv::evalQuantized() const
   int32_t offset = 0;
   tflite::ConvParams op_params;
   op_params.padding_type = tflite::PaddingType::kSame;
-  op_params.padding_values.height = ComputePaddingWithOffset(
+  op_params.padding_values.height = computePaddingWithOffset(
       params().stride_height, 1, height, filter_height, unused_output_height, &offset);
-  op_params.padding_values.width = ComputePaddingWithOffset(
+  op_params.padding_values.width = computePaddingWithOffset(
       params().stride_width, 1, width, filter_width, unused_output_width, &offset);
   op_params.stride_height = params().stride_height;
   op_params.stride_width = params().stride_width;
