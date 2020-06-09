@@ -303,6 +303,8 @@ GeneratedTests.prelu_weight_as_input_quant8_3
 GeneratedTests.prelu_weight_as_input_quant8_4
 GeneratedTests.range_ex_float_1
 GeneratedTests.range_ex_float_2
+GeneratedTests.range_ex_float_1_dynamic_nnfw
+GeneratedTests.range_ex_float_2_dynamic_nnfw
 GeneratedTests.reduce_all
 GeneratedTests.reduce_all_2
 GeneratedTests.reduce_all_2D_nnfw
