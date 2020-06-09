@@ -136,6 +136,10 @@ message ArgMaxOptions {
   optional TensorType output_type = 1 [default = INT64];
 }
 
+message ArgMinOptions {
+  optional TensorType output_type = 1 [default = INT64];
+}
+
 message PackOptions {
   optional int32 values_count = 1;
   optional int32 axis = 2 [default = 0];
@@ -450,7 +454,7 @@ message Operation {
   optional TransposeConvOptions transpose_conv_options = 174;
   // SparseToDenseOptions 175
   optional PowOptions pow_options = 176;
-  // ArgMinOptions 177
+  optional ArgMinOptions argmin_options = 177;
   // FakeQuantOptions 178
   // BidirectionalSequenceLSTMOptions 179
   // BidirectionalSequenceRNNOptions 180
