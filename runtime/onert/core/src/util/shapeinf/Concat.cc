@@ -23,7 +23,21 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
+// TODO move validation into OperationValidators
+bool validate_rank(const Shapes &in_shapes)
+{
+  const auto &first_in_shape = in_shapes[0];
+
+  // Check that all shapes are equal except for concat axis dimension
+  for (const auto &in_shape : in_shapes)
+  {
+    if (in_shape.rank() != first_in_shape.rank())
+      return false;
+  }
+  return true;
+}
+
+bool validate_dimensions(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
 {
   const int32_t concat_axis = param.axis >= 0 ? param.axis : in_shapes[0].rank() + param.axis;
   const auto &first_in_shape = in_shapes[0];
@@ -31,14 +45,17 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
   // Check that all shapes are equal except for concat axis dimension
   for (const auto &in_shape : in_shapes)
   {
-    if (in_shape.rank() != first_in_shape.rank())
-      throw std::runtime_error("Rank in all input tensors should be same");
-
     for (int64_t dim_idx = 0; dim_idx < in_shape.rank(); ++dim_idx)
       if (!(dim_idx == concat_axis || in_shape.dim(dim_idx) == first_in_shape.dim(dim_idx)))
-        throw std::runtime_error("All tensor should have same dimension "
-                                 "except dimension on passed axis");
+        return false;
   }
+  return true;
+}
+
+ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param)
+{
+  const int32_t concat_axis = param.axis >= 0 ? param.axis : in_shapes[0].rank() + param.axis;
+  const auto &first_in_shape = in_shapes[0];
 
   // Calculate output shape
   ir::Shape out_shape(first_in_shape);
@@ -50,6 +67,7 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
 
 void StaticInferer::visit(const ir::operation::Concat &op)
 {
+  bool hasChangeableShape = false;
   const auto input_count = op.getInputs().size();
 
   const auto output_idx = op.getOutputs().at(0);
@@ -68,6 +86,24 @@ void StaticInferer::visit(const ir::operation::Concat &op)
     }
 
     input_shapes.emplace_back(input.shape());
+
+    if (input.shape().hasChangeableDim())
+      hasChangeableShape = true;
+  }
+
+  if (!validate_rank(input_shapes))
+    throw std::runtime_error("Rank in all input tensors should be same");
+
+  if (!validate_dimensions(input_shapes, op.param()))
+  {
+    if (hasChangeableShape)
+    {
+      output.info().setDynamic();
+      return;
+    }
+    else
+      throw std::runtime_error(
+          "All tensor should have same dimension except dimension on passed axis");
   }
 
   ir::Shape out_shape = inferConcatShape(input_shapes, op.param());

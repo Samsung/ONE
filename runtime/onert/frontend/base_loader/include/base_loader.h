@@ -266,16 +266,16 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
       shape.append(dim);
     }
   }
-  // Shape Signature : when val is -1, that means that dim is unknown
-  const auto *tensor_shape_sig = tensor->shape_signature();
-  if (tensor_shape_sig != nullptr)
+  // Shape signature
+  const auto *shape_signature = tensor->shape_signature();
+  if (shape_signature != nullptr)
   {
-    int i = 0;
-    for (const auto &sig_dim : *tensor_shape_sig)
+    int axis = 0;
+    for (const auto &shape_sig : *shape_signature)
     {
-      if (sig_dim == -1)
-        shape.dim(i) = ir::Shape::UNSPECIFIED_DIM;
-      i++;
+      if (shape_sig == -1)
+        shape.addChangeableDim(axis);
+      axis++;
     }
   }
   // Type

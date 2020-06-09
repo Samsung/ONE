@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 namespace onert
 {
@@ -94,8 +95,36 @@ public:
             _dimensions.end());
   }
 
+  void addChangeableDim(int axis) { _changeable_dims.emplace(axis); }
+
+  bool hasChangeableDim() const { return (_changeable_dims.size() > 0); }
+
 private:
   std::vector<int32_t> _dimensions;
+
+  /**
+   * @brief _changeable_dims contains axes of dimensions which is likely to be changed
+   *        (case 2 below)
+   *
+   *     an axis k, there are following cases:
+   *        case 1) normal case. shape.dim(k) == _changeable_dims does not contain k
+   *                - This means that dim of axis k is shape.dim(k)
+   *        case 2) shape.dim(k) == 1 && _signature contains k
+   *                - This means that shape.dim(k) is treated as 1 but it is likely
+   *                  to be changed by applications
+   *                - This is used for unknown dim of model input. If any value for this unknown
+   *                  dim is given by calling nnfw_apply_input_tensorinfo(), use the new shape
+   *                  provided; otherwise, treat the dim as 1
+   *                - This is from TFLite
+   *
+   *        Since TFLite treats unknown dim as 1. the following returns [1, 2] as its output shape:
+   *                - tf.add(tf.placeholder[None, 2], tf.placeholder[1, 2])
+   *        However, the following needs to be handled carefully
+   *                - tf.concat(tf.placeholder[None, None], tf.placeholder[2, 2])
+   *                  - at compilation time, shape [1, 1] and [2,2] does not match with concat.
+   *                    However, this should not generate an error
+   */
+  std::set<int32_t> _changeable_dims;
 };
 
 inline bool operator==(const Shape &lhs, const Shape &rhs) { return lhs.dims() == rhs.dims(); }

@@ -231,24 +231,6 @@ TEST(ShapeInference, Concat)
   }
 }
 
-TEST(ShapeInference, neg_Concat)
-{
-  {
-    operation::Concat::Param param{2};
-    Shape in1{10, 1, 3};
-    Shape in2{10, 2, 4}; // dim[1] should be 1 but 2
-
-    EXPECT_ANY_THROW(onert::shape_inference::inferConcatShape({in1, in2}, param));
-  }
-  { // wrong rank
-    operation::Concat::Param param{2};
-    Shape in1{10, 2, 3, 4};
-    Shape in2{10, 2, 4}; // rank should be 4
-
-    EXPECT_ANY_THROW(onert::shape_inference::inferConcatShape({in1, in2}, param));
-  }
-}
-
 TEST(ShapeInference, ExpandDims)
 {
   Shape in_shape{30, 40};
