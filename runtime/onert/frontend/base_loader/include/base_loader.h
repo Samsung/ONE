@@ -268,7 +268,11 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
     for (const auto &sig_dim : *tensor_shape_sig)
     {
       if (sig_dim == -1)
-        shape.dim(i) = ir::Shape::UNSPECIFIED_DIM;
+      {
+        // TODO: save `-1` in tensor signature.
+        // signature is used to allow resizing only for unknown dim.
+        // tensor dim itself should not be overwriiten with `-1`.
+      }
       i++;
     }
   }
