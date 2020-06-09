@@ -280,9 +280,7 @@ int main(const int argc, char **argv)
   std::string nnpkg_basename;
   std::string backend_name = (available_backends) ? available_backends : default_backend_cand;
   {
-    // I don't use PATH_MAX since it is not guaranteed value.
-    // Instead, I've chosen smaller size than linux default 4096.
-    char buf[1024];
+    char buf[PATH_MAX];
     char *res = realpath(nnpackage_path.c_str(), buf);
     if (res)
     {
