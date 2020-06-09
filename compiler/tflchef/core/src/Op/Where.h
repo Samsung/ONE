@@ -38,7 +38,7 @@ private:
   const tflchef::Operation *_operation;
 };
 
-struct WhileChefFactory final : public OpChefFactory
+struct WhereChefFactory final : public OpChefFactory
 {
   std::unique_ptr<OpChef> create(const tflchef::Operation *operation) const override;
 };

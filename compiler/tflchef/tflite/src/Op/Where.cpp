@@ -19,8 +19,7 @@
 namespace tflchef
 {
 
-void TFliteOpWhere::filler(const tflite::Operator *, TFliteImport *,
-                           tflchef::ModelRecipe *) const
+void TFliteOpWhere::filler(const tflite::Operator *, TFliteImport *, tflchef::ModelRecipe *) const
 {
   // Nothing to do with fillers here
 }
