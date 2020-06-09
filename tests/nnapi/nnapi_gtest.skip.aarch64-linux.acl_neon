@@ -165,6 +165,7 @@ GeneratedTests.slice_5
 GeneratedTests.slice_6
 GeneratedTests.slice_7
 GeneratedTests.slice_8
+GeneratedTests.slice_dynamic_nnfw
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
 GeneratedTests.softmax_dynamic_nnfw
