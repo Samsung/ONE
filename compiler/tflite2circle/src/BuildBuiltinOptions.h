@@ -68,6 +68,7 @@
 #include "BuildBuiltinOptions/ReshapeOptions.h"
 #include "BuildBuiltinOptions/ResizeBilinearOptions.h"
 #include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
+#include "BuildBuiltinOptions/ReverseSequenceOptions.h"
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/ScatterNdOptions.h"
 #include "BuildBuiltinOptions/SelectOptions.h"
