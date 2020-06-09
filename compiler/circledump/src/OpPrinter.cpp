@@ -251,6 +251,21 @@ public:
   }
 };
 
+class ReverseSequencePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_ReverseSequenceOptions())
+    {
+      os << "    ";
+      os << "seq_dim(" << params->seq_dim() << ") ";
+      os << "batch_dim(" << params->batch_dim() << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthwiseConv2DPrinter : public OpPrinter
 {
 public:
@@ -693,6 +708,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] = make_unique<ResizeBilinearPrinter>();
   _op_map[circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
       make_unique<ResizeNearestNeighborPrinter>();
+  _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
   // There is no Option for SELECT
   _op_map[circle::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN
