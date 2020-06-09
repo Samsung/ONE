@@ -25,12 +25,12 @@ namespace luci
 
 bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs  = args.op.inputs;
+  const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
   auto in_size = inputs.size();
 
-  if ((in_size != 1) || (in_size != 3))
+  if ((in_size != 1) && (in_size != 3))
     return false;
 
   if (outputs.size() != 1)
@@ -38,6 +38,7 @@ bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &tensors = args.reader.tensors();
   const auto &tensor_0 = tensors.at(inputs[0]);
+  const auto &tensor_out = tensors.at(outputs[0]);
 
   if (tensor_0->type != circle::TensorType_BOOL)
     return false;
