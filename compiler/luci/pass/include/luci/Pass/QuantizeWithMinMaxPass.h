@@ -21,6 +21,8 @@
 
 #include <logo/Pass.h>
 
+#include <luci/Pass/QuantizationParameters.h>
+
 namespace luci
 {
 
@@ -29,13 +31,6 @@ namespace luci
  */
 class QuantizeWithMinMaxPass : public logo::Pass
 {
-public:
-  enum QuantizationGranularity
-  {
-    LayerWise = 0,
-    ChannelWise = 1,
-  };
-
 public:
   QuantizeWithMinMaxPass(loco::DataType input_dtype, loco::DataType output_dtype,
                          QuantizationGranularity granularity)
