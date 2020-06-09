@@ -143,4 +143,4 @@ for i in "${model_lists[@]}"; do
   sleep 20 # for avoiding cpu overheated
 done # ${model_lists}
 
-${scripts_dir}/merge_result_of_benchmark_nnpkg.py -i . -o . -l ${scripts_dir}/list/benchmark_nnpkg_model_list.txt
+${scripts_dir}/merge_result_of_benchmark_nnpkg.py -i . -o . -l ${list}

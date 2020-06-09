@@ -73,6 +73,16 @@ inline void printResult(const Result &result, bool print_memory)
   std::cout << "- PEAK "
             << "      takes " << result.getPeakHwm() << " kb" << std::endl;
   std::cout << "===================================" << std::endl;
+  std::cout << "PSS" << std::endl;
+  std::cout << "- " << getPhaseString(Phase::MODEL_LOAD) << " takes " << result.getModelLoadPss()
+            << " kb" << std::endl;
+  std::cout << "- " << getPhaseString(Phase::PREPARE) << "    takes " << result.getPreparePss()
+            << " kb" << std::endl;
+  std::cout << "- " << getPhaseString(Phase::EXECUTE) << "    takes " << result.getExecutePss()
+            << " kb" << std::endl;
+  std::cout << "- PEAK "
+            << "      takes " << result.getPeakPss() << " kb" << std::endl;
+  std::cout << "===================================" << std::endl;
 }
 
 // TODO Support not only csv but also other datafile format such as xml, json, ...
@@ -87,7 +97,9 @@ inline void writeResult(const Result &result, const std::string &exec, const std
          << result.getExecuteTimeMin() / 1e3 << result.getExecuteTimeMax() / 1e3
          << result.getExecuteTimeMean() / 1e3 << result.getModelLoadRss() << result.getPrepareRss()
          << result.getExecuteRss() << result.getPeakRss() << result.getModelLoadHwm()
-         << result.getPrepareHwm() << result.getExecuteHwm() << result.getPeakHwm();
+         << result.getPrepareHwm() << result.getExecuteHwm() << result.getPeakHwm()
+         << result.getModelLoadPss() << result.getPreparePss() << result.getExecutePss()
+         << result.getPeakPss();
 
   bool done = writer.done();
 
