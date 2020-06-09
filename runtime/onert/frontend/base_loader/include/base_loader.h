@@ -155,6 +155,8 @@ protected:
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadLogicalOr(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
+  void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
+  void loadBCQGather(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1037,6 +1039,42 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceSum(const Operator *op,
   param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{{input}, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBCQGather(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQGather::Param param;
+  const auto *options = op->builtin_options_as_BCQGatherOptions();
+  param.input_hidden_size = options->input_hidden_size();
+  param.axis = options->axis();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BCQGather(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBCQFullyConnected(const Operator *op,
+                                                                     ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQFullyConnected::Param param;
+  const auto *options = op->builtin_options_as_BCQFullyConnectedOptions();
+  param.weights_hidden_size = options->weights_hidden_size();
+  param.activation = convertActivation(options->fused_activation_function());
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BCQFullyConnected(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

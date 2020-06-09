@@ -199,6 +199,20 @@ public:
   void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
 
 public:
+  void registerCustomInitializer(const ir::OperandIndex &index, const ir::Operand &obj,
+                                 void (*customInit)(const onert::ir::Operand &model_obj,
+                                                    onert::backend::ITensor &obj))
+  {
+    // For only CONSTANTS
+    // TODO Add to check if tensor has been allocated
+    if (!obj.isConstant())
+      return;
+
+    using namespace std::placeholders;
+    _init_map[index] = std::bind(customInit, _1, _2);
+  }
+
+public:
   bool exist(const ir::OperandIndex &ind) { return _init_map.find(ind) != _init_map.end(); }
 
 protected:
