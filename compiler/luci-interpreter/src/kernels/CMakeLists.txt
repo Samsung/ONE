@@ -23,6 +23,8 @@ set(SOURCES
     Conv2D.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
+    Elu.h
+    Elu.cpp
     FullyConnected.h
     FullyConnected.cpp
     Logistic.h
@@ -67,6 +69,7 @@ set(TEST_SOURCES
     Concatenation.test.cpp
     Conv2D.test.cpp
     DepthwiseConv2D.test.cpp
+    Elu.test.cpp
     FullyConnected.test.cpp
     Logistic.test.cpp
     MaxPool2D.test.cpp
