@@ -195,83 +195,8 @@ protected:
   virtual std::shared_ptr<ITensorBuilder> tensor_builder() const = 0;
 
 public:
-  void registerCopyInitializer(const ir::OperandIndex &index, const ir::Operand &obj)
-  {
-    // For only CONSTANTS
-    // TODO Add to check if tensor has been allocated
-    if (!obj.isConstant())
-      return;
-
-    const auto type = obj.typeInfo().type();
-    using ir::DataType;
-    using ir::float16;
-
-    switch (type)
-    {
-      case DataType::FLOAT32:
-        _init_map[index] = copyInit<float>;
-        break;
-      case DataType::INT32:
-        _init_map[index] = copyInit<int32_t>;
-        break;
-      case DataType::UINT32:
-        _init_map[index] = copyInit<uint32_t>;
-        break;
-      case DataType::BOOL8:
-      case DataType::QUANT_UINT8_ASYMM:
-        _init_map[index] = copyInit<uint8_t>;
-        break;
-      case DataType::QUANT_INT8_SYMM:
-        _init_map[index] = copyInit<int8_t>;
-        break;
-      case DataType::FLOAT16:
-        _init_map[index] = copyInit<float16>;
-        break;
-      default:
-        throw std::runtime_error("Not supported, yet");
-        break;
-    }
-  }
-
-public:
-  void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj)
-  {
-    // For only CONSTANTS
-    // TODO Add to check if tensor has been allocated
-    if (!obj.isConstant())
-      return;
-
-    const auto type = obj.typeInfo().type();
-    using ir::DataType;
-    using ir::float16;
-    using namespace std::placeholders;
-
-    switch (type)
-    {
-      case DataType::FLOAT32:
-        _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_op_seq_layout);
-        break;
-      case DataType::INT32:
-        _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_op_seq_layout);
-        break;
-      case DataType::UINT32:
-        _init_map[index] = std::bind(permuteInit<uint32_t>, _1, _2, _current_op_seq_layout);
-        break;
-      case DataType::BOOL8:
-      case DataType::QUANT_UINT8_ASYMM:
-        _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_op_seq_layout);
-        break;
-      case DataType::QUANT_INT8_SYMM:
-        _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_op_seq_layout);
-        break;
-      case DataType::FLOAT16:
-        _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_op_seq_layout);
-        break;
-      default:
-        throw std::runtime_error("Not supported, yet");
-        break;
-    }
-  }
+  void registerCopyInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
+  void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
 
 public:
   bool exist(const ir::OperandIndex &ind) { return _init_map.find(ind) != _init_map.end(); }

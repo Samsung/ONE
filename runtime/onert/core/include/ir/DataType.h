@@ -17,15 +17,12 @@
 #ifndef __ONERT_IR_DATATYPE_H__
 #define __ONERT_IR_DATATYPE_H__
 
-#include <stdexcept>
-#include <Half.h>
+#include <cstdlib>
 
 namespace onert
 {
 namespace ir
 {
-
-using float16 = Half;
 
 enum class DataType
 {
@@ -39,28 +36,7 @@ enum class DataType
   FLOAT16 = 7,
 };
 
-inline size_t sizeOfDataType(DataType data_type)
-{
-  switch (data_type)
-  {
-    case DataType::FLOAT32:
-      return sizeof(float);
-    case DataType::INT32:
-      return sizeof(int32_t);
-    case DataType::UINT32:
-      return sizeof(uint32_t);
-    case DataType::BOOL8:
-    case DataType::QUANT_UINT8_ASYMM:
-    case DataType::UINT8:
-      return sizeof(uint8_t);
-    case DataType::QUANT_INT8_SYMM:
-      return sizeof(int8_t);
-    case DataType::FLOAT16:
-      return sizeof(float16);
-    default:
-      throw std::runtime_error{"Unsupported type size"};
-  }
-}
+size_t sizeOfDataType(DataType data_type);
 
 } // namespace ir
 } // namespace onert
