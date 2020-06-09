@@ -16,13 +16,19 @@
 
 #include "ReverseSequence.h"
 
+#include "Convert.h"
+#include "FillerHelper.h"
+
 namespace tflchef
 {
 
-void TFliteOpReverseSequence::filler(const tflite::Operator *, TFliteImport *,
+void TFliteOpReverseSequence::filler(const tflite::Operator *op, TFliteImport *import,
                                      tflchef::ModelRecipe *) const
 {
-  // Nothing to do with filler
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+  assert(inputs.size() == 2);
+
+  fill_tensor_to_import(inputs[1], import);
 }
 
 tflchef::Operation *TFliteOpReverseSequence::build(const tflite::Operator *op, TFliteImport *,
