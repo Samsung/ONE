@@ -1,0 +1,67 @@
+operand {
+  name: "input"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "weight"
+  type: UINT8
+  shape { dim: 3 dim: 3 }
+  quant { min: 0 max: 1 scale: 0.000553869 zero_point: 0 }
+}
+operand {
+  name: "reshaped"
+  type: FLOAT32
+  shape { dim: 16 dim: 3 }
+}
+operand {
+  name: "outf"
+  type: FLOAT32
+  shape { dim: 16 dim: 3 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+operation {
+  type: "Reshape"
+  reshape_options {
+    new_shape: 16
+    new_shape: 3
+  }
+  input: "input"
+  output: "reshaped"
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "reshaped"
+  input: "weight"
+  input: "bias"
+  output: "outf"
+}
+
+operation {
+  type: "Reshape"
+  input: "outf"
+  output: "out"
+  reshape_options {
+    new_shape: 1
+    new_shape: 4
+    new_shape: 4
+    new_shape: 3
+  }
+}
+
+input: "input"
+input: "weight"
+input: "bias"
+output: "out"
