@@ -2013,24 +2013,8 @@ public:
 
   loco::NodeShape visit(const luci::CircleWhere *node) final
   {
-    // TODO for arity 1
-
-    loco::TensorShape output_shape;
-
-    LUCI_ASSERT(node->arity() == 3, "While support only for 3 inputs")
-
-    auto cond_shape = loco::shape_get(node->cond()).as<loco::TensorShape>();
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    auto x_cond_shape = broadcast_shape(x_shape, cond_shape);
-    auto y_cond_shape = broadcast_shape(y_shape, cond_shape);
-
-    LUCI_ASSERT(x_shape == y_cond_shape, "x_shape has a shape broadcastable with condition and y");
-    LUCI_ASSERT(y_shape == x_cond_shape, "y_shape has a shape broadcastable with condition and y");
-
-    output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleWhile *node) final

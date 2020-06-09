@@ -28,38 +28,21 @@ bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
-  auto in_size = inputs.size();
-
-  if ((in_size != 1) && (in_size != 3))
+  if (inputs.size() != 1)
     return false;
 
   if (outputs.size() != 1)
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_0 = tensors.at(inputs[0]);
+  const auto &tensor_condition = tensors.at(inputs[0]);
   const auto &tensor_out = tensors.at(outputs[0]);
 
-  if (tensor_0->type != circle::TensorType_BOOL)
+  if (tensor_condition->type != circle::TensorType_BOOL)
     return false;
 
-  if (in_size == 1)
-  {
-    if (tensor_out->type != circle::TensorType_INT64)
-      return false;
-  }
-
-  if (in_size == 3)
-  {
-    const auto &tensor_x = tensors.at(inputs[1]);
-    const auto &tensor_y = tensors.at(inputs[2]);
-
-    if (tensor_x->type != tensor_y->type)
-      return false;
-
-    if (tensor_out->type != tensor_x->type)
-      return false;
-  }
+  if (tensor_out->type != circle::TensorType_INT64)
+    return false;
 
   return true;
 }
@@ -68,14 +51,8 @@ CircleNode *CircleWhereGraphBuilder::build_node(const circle::OperatorT &,
                                                 const std::vector<CircleNode *> &inputs,
                                                 loco::Graph *graph) const
 {
-  bool has_xy_inputs = (inputs.size() == 3);
-  auto *node = graph->nodes()->create<CircleWhere>(has_xy_inputs);
-  node->cond(inputs[0]);
-  if (has_xy_inputs)
-  {
-    node->x(inputs[1]);
-    node->y(inputs[2]);
-  }
+  auto *node = graph->nodes()->create<CircleWhere>();
+  node->condition(inputs[0]);
 
   return node;
 }

@@ -1785,14 +1785,8 @@ void OperationExporter::visit(luci::CircleUnpack *node)
 void OperationExporter::visit(luci::CircleWhere *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHERE);
-  std::vector<int32_t> inputs_vec = {get_tensor_index(node->cond())};
-  if (node->arity() == 3)
-  {
-    inputs_vec.push_back(get_tensor_index(node->x()));
-    inputs_vec.push_back(get_tensor_index(node->y()));
-  }
-
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  std::vector<int32_t> inputs_vec = {get_tensor_index(node->condition())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
 
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);

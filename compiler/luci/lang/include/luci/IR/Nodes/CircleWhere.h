@@ -20,7 +20,7 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
-#include "luci/IR/VariadicArityNode.h"
+#include "luci/IR/LuciNodeMixins.h"
 
 #include <cassert>
 
@@ -30,34 +30,14 @@ namespace luci
 /**
  * @brief WHERE in Circle
  */
-class CircleWhere final : public VariadicArityNode<CircleNodeImpl<CircleOpcode::WHERE>>
+class CircleWhere final : public FixedArityNode<1, CircleNodeImpl<CircleOpcode::WHERE>>
 {
 public:
-  CircleWhere(bool provide_xy)
-      : VariadicArityNode<CircleNodeImpl<CircleOpcode::WHERE>>(provide_xy ? 3 : 1)
-  {
-    // NOTHING TO DO
-  }
+  CircleWhere() = default;
 
 public:
-  loco::Node *cond() const { return at(0)->node(); }
-  void cond(loco::Node *node) { at(0)->node(node); }
-
-  loco::Node *x() const
-  {
-    if (arity() == 3)
-      return at(1)->node();
-    return nullptr;
-  }
-  void x(Node *node) { at(1)->node(node); }
-
-  loco::Node *y() const
-  {
-    if (arity() == 3)
-      return at(2)->node();
-    return nullptr;
-  }
-  void y(Node *node) { at(2)->node(node); }
+  loco::Node *condition() const { return at(0)->node(); }
+  void condition(loco::Node *node) { at(0)->node(node); }
 };
 
 } // namespace luci

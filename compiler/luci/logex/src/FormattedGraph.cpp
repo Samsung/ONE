@@ -1265,12 +1265,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::No
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleWhere *node, locop::NodeSummary &s) const
 {
-  s.args().append("cond", tbl()->lookup(node->cond()));
-  if (node->arity() == 3)
-  {
-    s.args().append("x", tbl()->lookup(node->x()));
-    s.args().append("y", tbl()->lookup(node->y()));
-  }
+  s.args().append("condition", tbl()->lookup(node->condition()));
   s.state(locop::NodeSummary::State::Complete);
 
   return true;
