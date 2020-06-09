@@ -49,7 +49,7 @@ public:
 
   static inline RuyContext &GetRuyContext()
   {
-    static RuyContext instance;
+    static thread_local RuyContext instance;
     return instance;
   }
 
