@@ -63,38 +63,30 @@ void DynamicInferer::visit(const ir::operation::Range &op)
   // from op, access the buffer of second input to read new shape
   auto start_idx = op.getInputs().at(ir::operation::Range::Input::START);
   auto start_tensor = _tensor_registry->getITensor(start_idx);
-  auto start_shape = getShape(start_tensor.get());
 
   auto limit_idx = op.getInputs().at(ir::operation::Range::Input::LIMIT);
   auto limit_tensor = _tensor_registry->getITensor(limit_idx);
-  auto limit_shape = getShape(limit_tensor.get());
 
   auto delta_idx = op.getInputs().at(ir::operation::Range::Input::DELTA);
   auto delta_tensor = _tensor_registry->getITensor(delta_idx);
-  auto delta_shape = getShape(delta_tensor.get());
 
   if (!start_tensor->is_dynamic() && !limit_tensor->is_dynamic() && !delta_tensor->is_dynamic())
     return;
 
+  ir::Shape new_shape;
   if (output->data_type() == ir::DataType::FLOAT32)
   {
-    ir::Shape new_shape =
-        inferRangeShape<float *>(reinterpret_cast<float *>(start_tensor->buffer()),
-                                 reinterpret_cast<float *>(limit_tensor->buffer()),
-                                 reinterpret_cast<float *>(delta_tensor->buffer()));
-    setShape(output.get(), new_shape);
-    _dynamic_tensor_manager->applyShape(output_ind, new_shape);
+    new_shape = inferRangeShape<float *>( reinterpret_cast<float *>(start_tensor->buffer()),
+                                          reinterpret_cast<float *>(limit_tensor->buffer()),
+                                          reinterpret_cast<float *>(delta_tensor->buffer()));
   }
   else if (output->data_type() == ir::DataType::INT32)
   {
-    ir::Shape new_shape =
-        inferRangeShape<int32_t *>(reinterpret_cast<int32_t *>(start_tensor->buffer()),
-                                   reinterpret_cast<int32_t *>(limit_tensor->buffer()),
-                                   reinterpret_cast<int32_t *>(delta_tensor->buffer()));
-    setShape(output.get(), new_shape);
-
-    _dynamic_tensor_manager->applyShape(output_ind, new_shape);
+    new_shape = inferRangeShape<int32_t *>( reinterpret_cast<int32_t *>(start_tensor->buffer()),
+                                            reinterpret_cast<int32_t *>(limit_tensor->buffer()),
+                                            reinterpret_cast<int32_t *>(delta_tensor->buffer()));
   }
+  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
 } // namespace shape_inference

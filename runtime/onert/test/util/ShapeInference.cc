@@ -313,6 +313,34 @@ TEST(ShapeInference, FullyConnected)
   ASSERT_EQ(infered_out_shape.dim(1), 3);
 }
 
+TEST(ShapeInference, Range)
+{
+  auto check = [&](float *start, float *limit, float *delta, Shape &expected) {
+    auto actual = onert::shape_inference::inferRangeShape<float *>(start, limit, delta);
+
+    ASSERT_EQ(actual.rank(), 1);
+    ASSERT_EQ(actual.dim(0), expected.dim(0));
+  };
+
+  {
+    float start = 1;
+    float limit = 10;
+    float delta = 0.2;
+
+    Shape expected{45};
+    check(&start, &limit, &delta, expected);
+  }
+
+  {
+    float start = 11;
+    float limit = 2;
+    float delta = -3;
+
+    Shape expected{3};
+    check(&start, &limit, &delta, expected);
+  }
+}
+
 TEST(ShapeInference, Transpose)
 {
   auto check = [&](Shape &in_shape, std::vector<int> perm, Shape &expected) {
