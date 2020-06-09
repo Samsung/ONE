@@ -58,4 +58,30 @@ loco::DataType str_to_dtype(const std::string &str)
   return loco::DataType::Unknown;
 }
 
+template <>
+QuantizeDequantizeWeightsPass::QuantizationGranularity
+str_to_granularity<QuantizeDequantizeWeightsPass::QuantizationGranularity>(const std::string &str)
+{
+  if (to_lower_case(str).compare("layer") == 0)
+    return QuantizeDequantizeWeightsPass::QuantizationGranularity::LayerWise;
+
+  if (to_lower_case(str).compare("channel") == 0)
+    return QuantizeDequantizeWeightsPass::QuantizationGranularity::ChannelWise;
+
+  throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
+}
+
+template <>
+QuantizeWithMinMaxPass::QuantizationGranularity
+str_to_granularity<QuantizeWithMinMaxPass::QuantizationGranularity>(const std::string &str)
+{
+  if (to_lower_case(str).compare("layer") == 0)
+    return QuantizeWithMinMaxPass::QuantizationGranularity::LayerWise;
+
+  if (to_lower_case(str).compare("channel") == 0)
+    return QuantizeWithMinMaxPass::QuantizationGranularity::ChannelWise;
+
+  throw std::runtime_error("Quantization granularity must be either 'layer' or 'channel'");
+}
+
 } // namespace luci

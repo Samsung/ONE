@@ -17,6 +17,9 @@
 #ifndef __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 #define __LUCI_CIRCLE_OPTIMIZER_UTILS_H__
 
+#include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/QuantizeWithMinMaxPass.h"
+
 #include <loco.h>
 
 #include <algorithm>
@@ -25,6 +28,16 @@ namespace luci
 {
 
 loco::DataType str_to_dtype(const std::string &);
+
+template <typename T> T str_to_granularity(const std::string &) = delete;
+
+template <>
+QuantizeDequantizeWeightsPass::QuantizationGranularity
+str_to_granularity<QuantizeDequantizeWeightsPass::QuantizationGranularity>(const std::string &);
+
+template <>
+QuantizeWithMinMaxPass::QuantizationGranularity
+str_to_granularity<QuantizeWithMinMaxPass::QuantizationGranularity>(const std::string &);
 
 } // namespace luci
 

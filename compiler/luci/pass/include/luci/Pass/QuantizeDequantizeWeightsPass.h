@@ -30,8 +30,16 @@ namespace luci
 class QuantizeDequantizeWeightsPass : public logo::Pass
 {
 public:
-  QuantizeDequantizeWeightsPass(loco::DataType input_dtype, loco::DataType output_dtype)
-      : _input_dtype{input_dtype}, _output_dtype{output_dtype}
+  enum QuantizationGranularity
+  {
+    LayerWise = 0,
+    ChannelWise = 1,
+  };
+
+public:
+  QuantizeDequantizeWeightsPass(loco::DataType input_dtype, loco::DataType output_dtype,
+                                QuantizationGranularity granularity)
+      : _input_dtype{input_dtype}, _output_dtype{output_dtype}, _granularity{granularity}
   {
     // DO NOTHING
   }
@@ -43,6 +51,7 @@ public:
 private:
   loco::DataType _input_dtype;
   loco::DataType _output_dtype;
+  QuantizationGranularity _granularity;
 };
 
 } // namespace luci

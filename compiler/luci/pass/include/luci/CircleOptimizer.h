@@ -42,7 +42,8 @@ public:
     enum AlgorithmParameters
     {
       Quantize_input_dtype,
-      Quantize_output_dtype
+      Quantize_output_dtype,
+      Quantize_granularity // layer-wise or channel-wise
     };
 
     virtual ~Options() = default;
