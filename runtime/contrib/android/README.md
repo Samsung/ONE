@@ -16,14 +16,14 @@ ONE/runtime/contrib/android$ find . -name "*.aar"
 import com.samsung.onert.Session;
 import com.samsung.onert.Tensor;
 
-Session session = new Session("/sdcard/nnpkg/model", "cpu;acl_neon;acl_cl");
+// for now, the only cpu backend has been supported
+Session session = new Session("/sdcard/nnpkg/model/", "cpu");
 session.prepare();
 
-Tensor[] inputs = session.prepareInputs();
-session.setInputs(inputs);
+Tensor[] inputs, outputs;
 
-Tensor[] outputs = session.prepareOutputs();
-session.setOutputs(inputs);
+session.setInputs(inputs);
+session.setOutputs(outputs);
 
 // source inputs from outside
 // inputs[i].buffer().put(outside_buffer);
