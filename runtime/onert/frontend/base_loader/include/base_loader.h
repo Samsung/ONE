@@ -138,6 +138,7 @@ protected:
   void loadMaximum(const Operator *op, ir::Graph &subg);
   void loadCast(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
+  void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
   void loadAbs(const Operator *op, ir::Graph &subg);
   void loadCos(const Operator *op, ir::Graph &subg);
@@ -1139,7 +1140,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   {
     ReduceAll,
     MatrixBandPart,
-    BatchMatMul
+    BatchMatMul,
+    Einsum
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1147,6 +1149,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"All", BuiltinOP::ReduceAll},
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
+      {"Einsum", BuiltinOP::Einsum},
   };
 
   try
@@ -1163,6 +1166,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::BatchMatMul:
         loadBatchMatMul(op, subg);
+        break;
+      case BuiltinOP::Einsum:
+        loadEinsum(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1389,6 +1395,37 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op
   }
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Comparison(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::Einsum::Param param;
+
+  if (inputs.size() != 2)
+  {
+    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
+  }
+
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"Einsum: empty equation"};
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.equation = attr_map["equation"].ToString();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 

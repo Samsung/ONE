@@ -27,6 +27,7 @@
 #include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/DivLayer.h"
+#include "ops/EinsumLayer.h"
 #include "ops/ExpLayer.h"
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
@@ -520,6 +521,24 @@ void KernelGenerator::visit(const ir::operation::Div &node)
   auto fn = std::make_unique<ops::DivLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Einsum &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+
+  auto output_alloc = _tensor_builder->at(ofm_index).get();
+  std::vector<const Tensor *> input_allocs;
+  for (auto &ifm_idx : node.getInputs())
+    input_allocs.emplace_back(_tensor_builder->at(ifm_idx).get());
+
+  const auto equation = node.param().equation;
+
+  auto fn = std::make_unique<ops::EinsumLayer>();
+
+  fn->configure(input_allocs, equation, output_alloc);
 
   _return_fn = std::move(fn);
 }

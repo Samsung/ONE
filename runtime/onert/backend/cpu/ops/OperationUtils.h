@@ -84,6 +84,9 @@ inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
   if (tensor == nullptr)
     return nnfw::cker::Shape();
 
+  if (tensor->num_dimensions() == 0)
+    return nnfw::cker::Shape(1, 1);
+
   assert(tensor->layout() == ir::Layout::NHWC);
   std::vector<int32_t> raw_shape;
   raw_shape.resize(tensor->num_dimensions());
