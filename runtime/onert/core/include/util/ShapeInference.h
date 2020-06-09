@@ -74,7 +74,7 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
 // TODO write op starting from P
 // TODO write op starting from R
 // TODO write op starting from S
-// TODO write op starting from T
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
 // TODO write op starting from U
 // TODO write op starting from Z
 
@@ -147,6 +147,7 @@ private:
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Tile &op);
+  void visit(const ir::operation::Transpose &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::While &op);
@@ -227,6 +228,7 @@ public:
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Tile &op);
+  void visit(const ir::operation::Transpose &op);
   void visit(const ir::operation::Unpack &op);
   // TODO write op starting from V
   void visit(const ir::operation::ZerosLike &op);
