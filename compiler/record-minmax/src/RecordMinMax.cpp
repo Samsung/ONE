@@ -21,8 +21,12 @@
 
 #include <luci/Importer.h>
 #include <luci/CircleExporter.h>
+#include <luci/IR/CircleQuantParam.h>
 
+#include <algorithm>
+#include <cmath>
 #include <fstream>
+#include <numeric>
 #include <stdexcept>
 #include <iostream>
 
@@ -31,6 +35,40 @@ using DataType = luci_interpreter::DataType;
 
 namespace
 {
+
+/**
+ * @brief  clipAndAverage does the following things
+ *         (1) Discard the top/bottom clip_ratio (%) values from vector
+ *             Ex: top_clip_ratio = 5, bottom_clip_ratio = 3
+ *                 discard top 5 % values and bottom 3 % values from vector
+ *         (2) Calculate the average of remaining values
+ */
+float clipAndAverage(std::vector<float> &vector, float top_clip_ratio, float bottom_clip_ratio)
+{
+  if (bottom_clip_ratio < 0 || bottom_clip_ratio >= 100)
+    throw std::runtime_error(
+        "Clip ratio (bottom) must be greater than or equal to 0 and less than 100");
+
+  if (top_clip_ratio < 0 || top_clip_ratio >= 100)
+    throw std::runtime_error(
+        "Clip ratio (top) must be greater than or equal to 0 and less than 100");
+
+  int clip_top = std::floor(vector.size() * top_clip_ratio / 100.0);
+  int clip_bottom = std::floor(vector.size() * bottom_clip_ratio / 100.0);
+  int clipped_items = clip_top + clip_bottom;
+
+  if (clipped_items >= vector.size())
+    throw std::runtime_error("The number of clipped items must be less than that of recorded data");
+
+  // Sort
+  std::sort(vector.begin(), vector.end());
+
+  // Clip and Average
+  double res = std::accumulate(vector.begin() + clip_bottom, vector.end() - clip_top, 0.0) /
+               (vector.size() - clipped_items);
+
+  return static_cast<float>(res);
+}
 
 /**
  * @brief  getTensorSize will return size in bytes
@@ -131,15 +169,32 @@ void RecordMinMax::profileData(const std::string &input_data_path)
   }
 
   auto minmax_map = _observer->minMaxData()->getMap();
-  (void *)minmax_map;
+  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
+  {
+    auto node = iter->first;
+    auto minmax = iter->second;
 
-  // Derive min/max values from minmax_map
+    // Default: Values are averaged without clipping (clip ratio = 0 %).
+    // TODO: Allow users to adjust clip ratios.
+    float min =
+        clipAndAverage(minmax.min_vector, /* top_clip_ratio */ 0.0, /* bottom_clip_ratio */ 0.0);
+    float max =
+        clipAndAverage(minmax.max_vector, /* top_clip_ratio */ 0.0, /* bottom_clip_ratio */ 0.0);
+    // Note: min_vector and max_vector are changed inside clipAndAverage
+
+    auto quantparam = std::make_unique<luci::CircleQuantParam>();
+    quantparam->min.push_back(min);
+    quantparam->max.push_back(max);
+
+    assert(node->quantparam() == nullptr);
+
+    auto mutable_node = const_cast<luci::CircleNode *>(node);
+    mutable_node->quantparam(std::move(quantparam));
+  }
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
 {
-  // TODO: Write min/max data to activation tensors in CircleNodes
-
   // Export to output Circle file
   luci::CircleExporter exporter;
   CircleExpContract contract(_module.get(), output_model_path);
