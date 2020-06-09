@@ -96,12 +96,24 @@ protected:
 
     set_input_output(new_shape, output_element_num, &actual_output);
 
+    nnfw_tensorinfo info;
+    ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &info), NNFW_STATUS_NO_ERROR);
+    std::cout << "RANKS BEFORE : " << info.rank << " " << new_shape.size() << std::endl;
+
     // Do inference
     NNFW_STATUS res = nnfw_run(_session);
 
     if (no_run_error)
     {
       ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+
+      // output shape check
+      nnfw_tensorinfo info;
+      ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &info), NNFW_STATUS_NO_ERROR);
+      std::cout << "RANKS AFTER  : " << info.rank << " " << new_shape.size() << std::endl;
+      ASSERT_EQ(info.rank, new_shape.size());
+      for (uint32_t d = 0; d < info.rank; ++d)
+        ASSERT_EQ(info.dims[d], new_shape[d]);
 
       // output value check
       for (int i = 0; i < expected_output.size(); ++i)

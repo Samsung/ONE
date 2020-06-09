@@ -190,7 +190,7 @@ NNFW_STATUS nnfw_session::prepare()
 
 NNFW_STATUS nnfw_session::run()
 {
-  if (!isStatePrepared())
+  if (!isStatePreparedOrFinishedRun())
   {
     std::cerr << "Error during nnfw_session::run : "
               << "run should be run after prepare" << std::endl;
@@ -207,14 +207,14 @@ NNFW_STATUS nnfw_session::run()
     return NNFW_STATUS_ERROR;
   }
 
-  _state = State::PREPARED;
+  _state = State::FINISHED_RUN;
   return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
                                     size_t length)
 {
-  if (!isStatePrepared())
+  if (!isStatePreparedOrFinishedRun())
   {
     std::cerr << "Error during nnfw_session::set_input : invalid state" << std::endl;
     return NNFW_STATUS_ERROR;
@@ -243,7 +243,7 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
 NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
                                      size_t length)
 {
-  if (!isStatePrepared())
+  if (!isStatePreparedOrFinishedRun())
   {
     std::cerr << "Error during nnfw_session::set_output : invalid state" << std::endl;
     return NNFW_STATUS_ERROR;
@@ -380,7 +380,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 {
   // sanity check
   {
-    if (!(isStateModelLoaded() || isStatePrepared()))
+    if (isStateInitialized())
     {
       std::cerr << "Error during apply_tensorinfo : should be run after load_model" << std::endl;
       return NNFW_STATUS_ERROR;
@@ -402,7 +402,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     }
   }
 
-  if (!isStatePrepared())
+  if (!isStatePreparedOrFinishedRun())
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
@@ -416,7 +416,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     // overwrite input shape with the shape from ti
     input.info().shape(new_shape);
   }
-  else // when called after nnfw_session::prepare() but before excute()
+  else // when called after nnfw_session::prepare()
   {
     onert::ir::Shape new_shape(ti.rank);
     for (int32_t i = 0; i < ti.rank; i++)
@@ -469,22 +469,29 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 
 NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
+  if (isStateInitialized())
+    return NNFW_STATUS_ERROR;
+
+  if (ti == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::output_tensorinfo, tensorinfo is null pointer."
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (index >= primary_subgraph()->getOutputs().size())
+  {
+    std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   try
   {
-    if (ti == nullptr)
-    {
-      std::cerr << "Error during nnfw_session::output_tensorinfo, tensorinfo is null pointer."
-                << std::endl;
-      return NNFW_STATUS_ERROR;
-    }
-    if (index >= primary_subgraph()->getOutputs().size())
-    {
-      std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
-                << std::endl;
-      return NNFW_STATUS_ERROR;
-    }
     auto opidx = primary_subgraph()->getOutputs().at(index);
     auto shape = primary_subgraph()->operands().at(opidx).shape();
+    if (isStateFinishedRun())
+      shape = _execution->getOutputShape(onert::ir::IOIndex{index});
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
@@ -497,6 +504,7 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     std::cerr << "Error during nnfw_session::output_tensorinfo : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
   return NNFW_STATUS_NO_ERROR;
 }
 NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
@@ -736,4 +744,25 @@ bool nnfw_session::isStatePrepared()
   {
     return false;
   }
+}
+
+bool nnfw_session::isStateFinishedRun()
+{
+  if (_state == State::FINISHED_RUN)
+  {
+    assert(!_subgraphs);
+    assert(_compiler);
+    assert(_execution);
+    assert(!primary_subgraph()->isBuildingPhase());
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool nnfw_session::isStatePreparedOrFinishedRun()
+{
+  return isStatePrepared() || isStateFinishedRun();
 }
