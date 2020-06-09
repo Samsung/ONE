@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,12 +46,15 @@ void TransposeConv::configure()
          _inputData->element_type() == DataType::U8);
   assert(_inputData->element_type() == _output->element_type());
   assert(_inputData->shape().dim(3) == _weights->shape().dim(3));
-  Shape im2col_shape(2);
-  im2col_shape.dim(0) = _inputData->shape().dim(1) * _inputData->shape().dim(2);
-  im2col_shape.dim(1) =
-      _weights->shape().dim(0) * _weights->shape().dim(1) * _weights->shape().dim(2);
-  _im2col =
-      std::make_unique<Tensor>(_inputData->element_type(), im2col_shape, AffineQuantization{}, "");
+  if (_inputData->element_type() == DataType::FLOAT32)
+  {
+    Shape im2col_shape(2);
+    im2col_shape.dim(0) = _inputData->shape().dim(1) * _inputData->shape().dim(2);
+    im2col_shape.dim(1) =
+        _weights->shape().dim(0) * _weights->shape().dim(1) * _weights->shape().dim(2);
+    _im2col = std::make_unique<Tensor>(_inputData->element_type(), im2col_shape,
+                                       AffineQuantization{}, "");
+  }
   if (_inputData->element_type() == DataType::U8)
   {
     _scratch_tensor =
@@ -68,18 +72,9 @@ void TransposeConv::configure()
 
   int dims = _outputShape->shape().dim(0);
   Shape output_shape(dims);
-  if (_inputData->element_type() == DataType::FLOAT32)
-  {
-    const float *shape_data = getTensorData<float>(_outputShape);
-    for (int i = 0; i < dims; i++)
-      output_shape.dim(i) = shape_data[i];
-  }
-  else
-  {
-    const uint8_t *shape_data = getTensorData<uint8_t>(_outputShape);
-    for (int i = 0; i < dims; i++)
-      output_shape.dim(i) = shape_data[i];
-  }
+  const float *shape_data = getTensorData<float>(_outputShape);
+  for (int i = 0; i < dims; i++)
+    output_shape.dim(i) = shape_data[i];
   _output->resize(output_shape);
 }
 
@@ -166,8 +161,8 @@ void TransposeConv::evalQuantized() const
   tflite::reference_ops::TransposeConv(
       op_params, getTensorShape(_inputData), getTensorData<uint8>(_inputData),
       getTensorShape(_weights), getTensorData<uint8>(_weights), getTensorShape(_output),
-      getTensorData<uint8>(_output), getTensorShape(_im2col.get()),
-      getTensorData<uint8>(_im2col.get()), getTensorData<int32_t>(_scratch_tensor.get()));
+      getTensorData<uint8>(_output), tflite::RuntimeShape(), (uint8 *)nullptr,
+      getTensorData<int32_t>(_scratch_tensor.get()));
 }
 
 } // namespace kernels

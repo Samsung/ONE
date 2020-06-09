@@ -315,9 +315,9 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *no
   if (dynamic_cast<const luci::CircleConst *>(node->inputSizes()) == nullptr)
     throw std::runtime_error("Dynamic OutputShape is not yet supported.");
 
-  const Tensor *inputSizes = getInputTensor(node->inputSizes());
+  const Tensor *input_sizes = getInputTensor(node->inputSizes());
   const Tensor *filter = getInputTensor(node->filter());
-  const Tensor *outBackprop = getInputTensor(node->outBackprop());
+  const Tensor *out_backprop = getInputTensor(node->outBackprop());
 
   Tensor *output = getOutputTensor(node);
 
@@ -326,7 +326,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *no
   params.stride_height = node->stride()->h();
   params.stride_width = node->stride()->w();
 
-  return std::make_unique<kernels::TransposeConv>(inputSizes, filter, outBackprop, output, params);
+  return std::make_unique<kernels::TransposeConv>(input_sizes, filter, out_backprop, output,
+                                                  params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)

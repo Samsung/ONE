@@ -47,7 +47,6 @@ private:
   std::unique_ptr<Tensor> _im2col;
   std::unique_ptr<Tensor> _scratch_tensor;
 
-  Padding _padding;
   // The scaling factor from input to output (aka the 'real multiplier') can
   // be represented as a fixed point multiplier plus a left shift.
   int32_t _output_multiplier;
