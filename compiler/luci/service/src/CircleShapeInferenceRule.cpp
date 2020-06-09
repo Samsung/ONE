@@ -1798,13 +1798,13 @@ public:
 
   loco::NodeShape visit(const luci::CircleWhere *node) final
   {
-    assert(node->arity() > 0);
+    assert(node->numValues() > 0);
 
     // TODO for arity 1
 
     loco::TensorShape output_shape;
 
-    if (node->arity() == 3)
+    if (node->numValues() == 3)
     {
       auto cond_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
       auto x_shape = loco::shape_get(node->values(1)).as<loco::TensorShape>();
