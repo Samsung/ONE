@@ -146,6 +146,7 @@ public:
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
   void visit(luci::CircleUnpack *) final;
+  void visit(luci::CircleWhere *) final;
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
   // Circle only
@@ -1778,6 +1779,23 @@ void OperationExporter::visit(luci::CircleUnpack *node)
   auto options = CreateUnpackOptions(builder, node->num(), node->axis());
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_UnpackOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleWhere *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHERE);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  for (uint32_t i = 0; i < node->numValues(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->values(i)));
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateWhereOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_WhereOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

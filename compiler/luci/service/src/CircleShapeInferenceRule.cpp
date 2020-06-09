@@ -2011,6 +2011,22 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleWhere *node) final
+  {
+    assert(node->arity() > 0);
+    
+    // TODO for arity 1
+
+    if (node->arity() == 3)
+    {
+      auto x_shape = loco::shape_get(node->values(1)).as<loco::TensorShape>();
+      auto y_shape = loco::shape_get(node->values(2)).as<loco::TensorShape>();
+      auto output_shape = broadcast_shape(x_shape, y_shape);
+      return loco::NodeShape{output_shape};
+    }
+
+  }
+
   loco::NodeShape visit(const luci::CircleWhile *node) final
   {
     // Shape of CircleWhile is not used. Just use input 0

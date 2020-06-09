@@ -456,6 +456,17 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->value());
   }
 
+  loco::DataType visit(const luci::CircleWhere *node) final
+  {
+    assert(node->arity() > 0);
+
+    if (node->arity() == 1)
+      return loco::DataType::S64;
+
+    if (node->arity() == 3)
+      return loco::dtype_get(node->values[1]);
+  }
+
   loco::DataType visit(const luci::CircleWhile *node) final
   {
     // Type of While is not used. Just use input 0

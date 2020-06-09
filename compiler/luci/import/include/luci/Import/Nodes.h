@@ -116,6 +116,7 @@
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleTransposeConv.h"
 #include "Nodes/CircleUnpack.h"
+#include "Nodes/CircleWhere.h"
 #include "Nodes/CircleWhile.h"
 #include "Nodes/CircleZerosLike.h"
 
