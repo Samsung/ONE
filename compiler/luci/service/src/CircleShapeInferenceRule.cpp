@@ -1799,7 +1799,7 @@ public:
   loco::NodeShape visit(const luci::CircleWhere *node) final
   {
     assert(node->arity() > 0);
-    
+
     // TODO for arity 1
 
     loco::TensorShape output_shape;
@@ -1812,13 +1812,15 @@ public:
       auto x_cond_shape = broadcast_shape(x_shape, cond_shape);
       auto y_cond_shape = broadcast_shape(y_shape, cond_shape);
 
-      LUCI_ASSERT(x_shape == y_cond_shape, "x_shape has a shape broadcastable with condition and y");
-      LUCI_ASSERT(y_shape == x_cond_shape, "y_shape has a shape broadcastable with condition and y");
+      LUCI_ASSERT(x_shape == y_cond_shape,
+                  "x_shape has a shape broadcastable with condition and y");
+      LUCI_ASSERT(y_shape == x_cond_shape,
+                  "y_shape has a shape broadcastable with condition and y");
 
-      output_shape = broadcast_shape(x_shape,y_shape);
+      output_shape = broadcast_shape(x_shape, y_shape);
     }
 
-  return loco::NodeShape{output_shape};
+    return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleWhile *node) final

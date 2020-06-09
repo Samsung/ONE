@@ -25,7 +25,7 @@ namespace luci
 
 bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs  = args.op.inputs;
+  const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
   auto in_size = inputs.size();
