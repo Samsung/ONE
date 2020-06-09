@@ -103,3 +103,4 @@
 #include "ir/operation/Range.h"
 #include "ir/operation/BCQFullyConnected.h"
 #include "ir/operation/BCQGather.h"
+#include "ir/operation/MatrixBandPart.h"

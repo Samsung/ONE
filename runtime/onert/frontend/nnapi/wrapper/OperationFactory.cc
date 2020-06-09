@@ -2115,6 +2115,21 @@ OperationFactory::OperationFactory()
 
     return new operation::Tile{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_MATRIX_BAND_PART_EX] = [](const OperationFactory::Param &init_param,
+                                                 Operands &) {
+    assert(init_param.input_count == 3);
+    assert(init_param.output_count == 1);
+    // Each input should be interpreted as follows:
+    //
+    // 0 -> A tensor, input
+    // 1 -> A 0-D tensor, number of lower diagnonals to keep
+    // 2 -> A 0-D tensor, number of upper diagnonals to keep
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::MatrixBandPart{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
