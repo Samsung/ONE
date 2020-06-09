@@ -79,9 +79,18 @@ void OperationValidator::visit(const ir::operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
   const auto rhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::RHS));
+  const auto out_index{node.getOutputs().at(0)};
 
   // Constant lhs and rhs is not implemented yet
   OP_REQUIRES(!_ctx.at(lhs_index).isConstant() && !_ctx.at(rhs_index).isConstant());
+
+  if (_ctx.at(out_index).info().isDynamic())
+    return;
+
+  OP_REQUIRES(_ctx.at(lhs_index).shape().rank() <= 4);
+  OP_REQUIRES(_ctx.at(rhs_index).shape().rank() <= 4);
+  OP_REQUIRES(_ctx.at(lhs_index).shape().rank() >= 2);
+  OP_REQUIRES(_ctx.at(rhs_index).shape().rank() >= 2);
 }
 
 void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
