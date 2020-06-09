@@ -46,10 +46,12 @@ namespace
 float clipAndAverage(std::vector<float> &vector, float top_clip_ratio, float bottom_clip_ratio)
 {
   if (bottom_clip_ratio < 0 || bottom_clip_ratio >= 100)
-    throw std::runtime_error("Clip ratio (bottom) must be between 0 and 100");
+    throw std::runtime_error(
+        "Clip ratio (bottom) must be greater than or equal to 0 and less than 100");
 
   if (top_clip_ratio < 0 || top_clip_ratio >= 100)
-    throw std::runtime_error("Clip ratio (top) must be between 0 and 100");
+    throw std::runtime_error(
+        "Clip ratio (top) must be greater than or equal to 0 and less than 100");
 
   int clip_top = std::floor(vector.size() * top_clip_ratio / 100.0);
   int clip_bottom = std::floor(vector.size() * bottom_clip_ratio / 100.0);
