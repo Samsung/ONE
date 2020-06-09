@@ -792,6 +792,11 @@ public:
     const auto positions_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
     int32_t axis = node->axis();
 
+    // If CircleGather input has a dynamic shape, it can't inference this shape. So, it returns the
+    // shape that node already has.
+    if (input_shape.rank() == 0 || positions_shape.rank() == 0)
+      return own_shape(node);
+
     if (axis < 0)
       axis += input_shape.rank();
 
