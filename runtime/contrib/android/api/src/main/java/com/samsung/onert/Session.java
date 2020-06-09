@@ -1,9 +1,5 @@
 package com.samsung.onert;
 
-// java
-import java.util.HashMap;
-import java.nio.ByteBuffer;
-
 // android
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,25 +15,28 @@ public final class Session implements AutoCloseable {
         return _native_sess.prepare();
     }
 
-    public Tensor[] prepareInputs() {
-        return _native_sess.prepareInputs();
-    }
-
     public void setInputs(Tensor[] inputs) {
         _native_sess.setInputs(inputs);
-    }
-
-    public Tensor[] prepareOutputs() {
-        return _native_sess.prepareOutputs();
     }
 
     public void setOutputs(Tensor[] outputs) {
         _native_sess.setOutputs(outputs);
     }
 
-    // TODO Hidden this method in setOutputs
-    public ByteBuffer getOutputByteBuffer(int index) {
-        return _native_sess.getOutputByteBuffer(index);
+    public int getInputSize() {
+        return _native_sess.getInputSize();
+    }
+
+    public int getOutputSize() {
+        return _native_sess.getOutputSize();
+    }
+
+    public TensorInfo getInputTensorInfo(int index) {
+        return _native_sess.getInputTensorInfo(index);
+    }
+
+    public TensorInfo getOutputTensorInfo(int index) {
+        return _native_sess.getOutputTensorInfo(index);
     }
 
     public boolean run() {

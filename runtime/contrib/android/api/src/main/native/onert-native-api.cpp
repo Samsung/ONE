@@ -130,15 +130,13 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 }
 
 JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSetOutput(
-    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype)
+    JNIEnv *env, jobject, jlong handle, jint jindex, jint jtype, jobject jbuf, jint jbufsize)
 {
   if (jni_helper::verifyHandle(handle) == JNI_FALSE)
     return JNI_FALSE;
-
-  // NOTE nativeNewTempOutputBuf should be done before setOutput
-
+  
   jni::TensorParams params;
-  if (jni_helper::getTensorParams(jindex, jtype, handle, params) == JNI_FALSE)
+  if (jni_helper::getTensorParams(env, jindex, jtype, jbuf, jbufsize, params) == JNI_FALSE)
   {
     __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed getTensorParams", __PRETTY_FUNCTION__);
     return JNI_FALSE;
@@ -299,96 +297,4 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGet
   }
 
   return JNI_TRUE;
-}
-
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeNewTempOutputBuf(
-    JNIEnv *env, jobject thiz, jlong handle, jint jindex)
-{
-  if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE;
-
-  if (jindex < 0)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
-                        jindex);
-    return JNI_FALSE;
-  }
-  auto index = static_cast<uint32_t>(jindex);
-
-  if (jni::newTempOutputBuf(handle, index) == false)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
-    return JNI_FALSE;
-  }
-
-  const jni::TempOutput *to = jni::getTempOutputBuf(handle, index);
-  __android_log_print(ANDROID_LOG_ERROR, JTAG,
-                      "%s] new TempOutputBuf for #(%u) on buf(%p) bufsize(%lu)",
-                      __PRETTY_FUNCTION__, index, to->buf, to->bufsize);
-
-  return JNI_TRUE;
-}
-
-JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteTempOutputBuf(
-    JNIEnv *, jobject, jlong handle, jint jindex)
-{
-  if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE;
-
-  if (jindex < 0)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
-                        jindex);
-    return JNI_FALSE;
-  }
-  auto index = static_cast<size_t>(jindex);
-
-  if (jni::deleteTempOutputBuf(handle, index) == false)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
-    return JNI_FALSE;
-  }
-
-  return JNI_TRUE;
-}
-
-JNIEXPORT void JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeDeleteAllTempOutputBuf(
-    JNIEnv *, jobject, jlong handle)
-{
-  if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return;
-
-  int output_size = jni::getOutputSize(handle);
-  for (int i = 0; i < output_size; ++i)
-  {
-    if (jni::deleteTempOutputBuf(handle, i) == false)
-    {
-      __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
-      return;
-    }
-  }
-}
-
-JNIEXPORT jobject JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeGetOutputBuf(
-    JNIEnv *env, jobject, jlong handle, jint jindex)
-{
-  if (jni_helper::verifyHandle(handle) == JNI_FALSE)
-    return JNI_FALSE;
-
-  if (jindex < 0)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
-                        jindex);
-    return nullptr;
-  }
-  auto index = static_cast<size_t>(jindex);
-
-  const jni::TempOutput *to = jni::getTempOutputBuf(handle, index);
-  if (to == nullptr)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed", __PRETTY_FUNCTION__);
-    return nullptr;
-  }
-
-  return env->NewDirectByteBuffer(static_cast<void *>(to->buf), static_cast<jlong>(to->bufsize));
 }

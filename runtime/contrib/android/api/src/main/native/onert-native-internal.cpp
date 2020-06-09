@@ -19,30 +19,7 @@
 namespace
 {
 
-std::unordered_map<nnfw_session *, jni::TempOutputMap> g_sess_2_output;
-
 inline nnfw_session *getSession(Handle handle) { return reinterpret_cast<nnfw_session *>(handle); }
-
-inline jni::SessionMap &getSessionMap() { return g_sess_2_output; }
-
-inline bool containsInTempOutput(nnfw_session *sess)
-{
-  return (g_sess_2_output.find(sess) != g_sess_2_output.end());
-}
-
-inline bool containsInTempOutput(Handle handle)
-{
-  nnfw_session *sess = getSession(handle);
-  return containsInTempOutput(sess);
-}
-
-inline jni::TempOutputMap &getTempOutputMap(nnfw_session *sess) { return g_sess_2_output.at(sess); }
-
-inline jni::TempOutputMap &getTempOutputMap(Handle handle)
-{
-  nnfw_session *sess = getSession(handle);
-  return getTempOutputMap(sess);
-}
 
 size_t getByteSizeOfDataType(NNFW_TYPE dtype)
 {
@@ -175,62 +152,6 @@ bool getOutputTensorInfo(Handle handle, uint32_t index, TensorInfo &info)
 {
   nnfw_session *sess = getSession(handle);
   return (nnfw_output_tensorinfo(sess, index, &info) == NNFW_STATUS_NO_ERROR);
-}
-
-bool newTempOutputBuf(Handle handle, uint32_t index)
-{
-  nnfw_session *sess = getSession(handle);
-
-  TensorInfo tensor_info;
-  if (nnfw_output_tensorinfo(sess, index, &tensor_info) == NNFW_STATUS_ERROR)
-    return false;
-
-  auto bufsize = getByteSize(tensor_info);
-
-  if (containsInTempOutput(sess) == false)
-  {
-    TempOutputMap tom;
-    tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, tensor_info.dtype});
-    getSessionMap().emplace(sess, tom);
-  }
-  else
-  {
-    auto &tom = getSessionMap().at(sess);
-    tom.emplace(index, TempOutput{new char[bufsize]{}, bufsize, tensor_info.dtype});
-  }
-
-  return true;
-}
-
-bool deleteTempOutputBuf(Handle handle, uint32_t index)
-{
-  nnfw_session *sess = getSession(handle);
-
-  if (containsInTempOutput(sess) == false)
-    return false;
-
-  auto &tom = getSessionMap().at(sess);
-  if (tom.find(index) == tom.end())
-    return false;
-
-  delete[] tom.at(index).buf;
-  tom.erase(index);
-
-  return true;
-}
-
-const TempOutput *getTempOutputBuf(Handle handle, uint32_t index)
-{
-  nnfw_session *sess = getSession(handle);
-
-  if (containsInTempOutput(sess) == false)
-    return nullptr;
-
-  auto &tom = getSessionMap().at(sess);
-  if (tom.find(index) == tom.end())
-    return nullptr;
-
-  return &(tom.at(index));
 }
 
 } // namespace jni
