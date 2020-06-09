@@ -52,7 +52,8 @@ public:
   Result(double model_load_time, double prepare_time, const std::vector<double> &execute_times)
       : _model_load_time(model_load_time), _prepare_time(prepare_time), _model_load_rss(0),
         _prepare_rss(0), _execute_rss(0), _peak_rss(0), _model_load_hwm(0), _prepare_hwm(0),
-        _execute_hwm(0), _peak_hwm(0)
+        _execute_hwm(0), _peak_hwm(0), _model_load_pss(0), _prepare_pss(0), _execute_pss(0),
+        _peak_pss(0)
   {
     // execute
     double sum = 0.0;
@@ -89,6 +90,7 @@ public:
 
     const auto &rss = memory_poller->getRssMap();
     const auto &hwm = memory_poller->getHwmMap();
+    const auto &pss = memory_poller->getPssMap();
 
     // rss
     assert(rss.size() > 0);
@@ -109,6 +111,16 @@ public:
     _prepare_hwm = hwm.at(Phase::PREPARE);
     _execute_hwm = hwm.at(Phase::EXECUTE);
     _peak_hwm = maxMemory(hwm);
+
+    // pss
+    assert(pss.size() > 0);
+    assert(pss.find(Phase::MODEL_LOAD) != pss.end());
+    assert(pss.find(Phase::PREPARE) != pss.end());
+    assert(pss.find(Phase::EXECUTE) != pss.end());
+    _model_load_pss = pss.at(Phase::MODEL_LOAD);
+    _prepare_pss = pss.at(Phase::PREPARE);
+    _execute_pss = pss.at(Phase::EXECUTE);
+    _peak_pss = maxMemory(pss);
   }
 
 public:
@@ -129,6 +141,11 @@ public:
   uint32_t getExecuteHwm() const { return _execute_hwm; }
   uint32_t getPeakHwm() const { return _peak_hwm; }
 
+  uint32_t getModelLoadPss() const { return _model_load_pss; }
+  uint32_t getPreparePss() const { return _prepare_pss; }
+  uint32_t getExecutePss() const { return _execute_pss; }
+  uint32_t getPeakPss() const { return _peak_pss; }
+
 private:
   double _model_load_time;
   double _prepare_time;
@@ -146,6 +163,11 @@ private:
   uint32_t _prepare_hwm;
   uint32_t _execute_hwm;
   uint32_t _peak_hwm;
+
+  uint32_t _model_load_pss;
+  uint32_t _prepare_pss;
+  uint32_t _execute_pss;
+  uint32_t _peak_pss;
 };
 
 } // namespace benchmark

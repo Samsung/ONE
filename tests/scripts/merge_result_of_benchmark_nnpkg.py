@@ -47,6 +47,10 @@ def global_init():
         "Prepare_HWM",
         "Execute_HWM",
         "Peak_HWM",
+        "ModelLoad_PSS",
+        "Prepare_PSS",
+        "Execute_PSS",
+        "Peak_PSS",
     ]
 
     g_new_header = g_header + [
@@ -56,6 +60,8 @@ def global_init():
         'Peak_RSS_Ratio_Vs_Tflite_Cpu',
         'Peak_HWM_Diff_Vs_Tflite_Cpu',
         'Peak_HWM_Ratio_Vs_Tflite_Cpu',
+        'Peak_PSS_Diff_Vs_Tflite_Cpu',
+        'Peak_PSS_Ratio_Vs_Tflite_Cpu',
     ]
 
     # if new backend comes from csv, it will be stored in g_backends
@@ -88,6 +94,10 @@ class Data(object):
         self.Prepare_HWM = 0
         self.Execute_HWM = 0
         self.Peak_HWM = 0  # too
+        self.ModelLoad_PSS = 0
+        self.Prepare_PSS = 0
+        self.Execute_PSS = 0
+        self.Peak_PSS = 0  # too
         self.Empty = empty
 
         if csv_reader is not None:
@@ -126,6 +136,10 @@ class Data(object):
             self.Prepare_HWM = int(row[12])
             self.Execute_HWM = int(row[13])
             self.Peak_HWM = int(row[14])
+            self.ModelLoad_PSS = int(row[15])
+            self.Prepare_PSS = int(row[16])
+            self.Execute_PSS = int(row[17])
+            self.Peak_PSS = int(row[18])
 
             # if new backend comes,
             if self.Backend not in g_backends:
@@ -148,6 +162,8 @@ class Data(object):
         row.append(val)  # 'Peak_RSS_Ratio_Vs_Tflite_Cpu'
         row.append(0)  # 'Peak_HWM_Diff_Vs_Tflite_Cpu'
         row.append(val)  # 'Peak_HWM_Ratio_Vs_Tflite_Cpu'
+        row.append(0)  # 'Peak_PSS_Diff_Vs_Tflite_Cpu'
+        row.append(val)  # 'Peak_PSS_Ratio_Vs_Tflite_Cpu'
         return row
 
     def RowVs(self, vs_data):
@@ -155,6 +171,7 @@ class Data(object):
         vs_exec_mean = vs_data.Execute_Time_Mean
         vs_peak_rss = vs_data.Peak_RSS
         vs_peak_hwm = vs_data.Peak_HWM
+        vs_peak_pss = vs_data.Peak_PSS
 
         # Execute_Time_Mean_Diff_Vs_Tflite_Cpu
         exec_diff = self.Execute_Time_Mean - vs_exec_mean
@@ -183,6 +200,15 @@ class Data(object):
         except ZeroDivisionError:
             hwm_ratio = 0.0
 
+        # Peak_PSS_Diff_Vs_Tflite_Cpu
+        pss_diff = self.Peak_PSS - vs_peak_pss
+
+        # Peak_PSS_Mean_Ratio_Vs_Tflite_Cpu
+        try:
+            pss_ratio = float(self.Peak_PSS) / vs_peak_pss
+        except ZeroDivisionError:
+            pss_ratio = 0.0
+
         global g_new_header
         row[g_new_header.index('Execute_Time_Mean_Diff_Vs_Tflite_Cpu')] = exec_diff
         row[g_new_header.index('Execute_Time_Mean_Ratio_Vs_Tflite_Cpu')] = exec_ratio
@@ -190,6 +216,8 @@ class Data(object):
         row[g_new_header.index('Peak_RSS_Ratio_Vs_Tflite_Cpu')] = rss_ratio
         row[g_new_header.index('Peak_HWM_Diff_Vs_Tflite_Cpu')] = hwm_diff
         row[g_new_header.index('Peak_HWM_Ratio_Vs_Tflite_Cpu')] = hwm_ratio
+        row[g_new_header.index('Peak_PSS_Diff_Vs_Tflite_Cpu')] = pss_diff
+        row[g_new_header.index('Peak_PSS_Ratio_Vs_Tflite_Cpu')] = pss_ratio
         return row
 
 

@@ -52,6 +52,7 @@ public:
   bool end(Phase phase);
   const std::unordered_map<Phase, uint32_t> &getRssMap() const { return _rss_map; }
   const std::unordered_map<Phase, uint32_t> &getHwmMap() const { return _hwm_map; }
+  const std::unordered_map<Phase, uint32_t> &getPssMap() const { return _pss_map; }
 
 private:
   void process();
@@ -59,6 +60,7 @@ private:
   uint32_t getVmRSS();
   uint32_t getVmHWM();
   uint32_t getGpuMemory();
+  uint32_t getPssSum();
 
 private:
   std::chrono::milliseconds _duration;
@@ -66,6 +68,7 @@ private:
   std::list<Phase> _phases;
   std::unordered_map<Phase, uint32_t> _rss_map;
   std::unordered_map<Phase, uint32_t> _hwm_map;
+  std::unordered_map<Phase, uint32_t> _pss_map;
 
   std::mutex _mutex;
   std::mutex _mutex_started;

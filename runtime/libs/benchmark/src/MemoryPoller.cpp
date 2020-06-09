@@ -27,6 +27,7 @@ namespace
 
 const std::string proc_status_path("/proc/self/status");
 const std::string gpu_memory_path("/sys/kernel/debug/mali0/gpu_memory");
+const std::string proc_smaps_path("/proc/self/smaps");
 
 bool isStrNumber(const std::string &s)
 {
@@ -82,6 +83,35 @@ std::vector<std::string> getValueFromFileStatus(const std::string &file, const s
   return val;
 }
 
+// Because of smaps' structure, returns sum value as uint32_t
+uint32_t getSumValueFromFileSmaps(const std::string &file, const std::string &key)
+{
+  std::ifstream ifs(file);
+  assert(ifs.is_open());
+
+  std::string line;
+  uint32_t sum = 0;
+  while (std::getline(ifs, line))
+  {
+    if (line.find(key) != std::string::npos)
+    {
+      // an example by splitLine()
+      // `Pss:                   0 kB`
+      // val[0]: "Pss:", val[1]: "0" val[2]: "kB"
+      auto val = splitLine(line);
+      assert(val.size() != 0);
+      // SwapPss could show so that check where Pss is at the beginning
+      if (val[0].find("Pss") != 0)
+      {
+        continue;
+      }
+      sum += std::stoul(val[1]);
+    }
+  }
+
+  return sum;
+}
+
 } // namespace
 
 namespace benchmark
@@ -109,6 +139,7 @@ bool MemoryPoller::start(Phase phase)
     _phases.emplace_back(phase);
     _rss_map[phase] = 0;
     _hwm_map[phase] = 0;
+    _pss_map[phase] = 0;
   }
 
   _run = true;
@@ -152,6 +183,12 @@ bool MemoryPoller::end(Phase phase)
     _hwm_map[phase] = mem;
   }
 
+  if (_pss_map[phase] == 0)
+  {
+    uint32_t mem = getPssSum();
+    _pss_map[phase] = mem;
+  }
+
   if (stop)
   {
     _run = false;
@@ -180,6 +217,7 @@ void MemoryPoller::process()
       cur_rss += gpu_mem;
       cur_hwm += gpu_mem;
     }
+    uint32_t cur_pss = getPssSum();
 
     for (auto &phase : _phases)
     {
@@ -189,6 +227,9 @@ void MemoryPoller::process()
       // hwm is gradually increasing
       auto &hwm = _hwm_map.at(phase);
       hwm = cur_hwm;
+      auto &pss = _pss_map.at(phase);
+      if (pss < cur_pss)
+        pss = cur_pss;
     }
 
     lock.unlock();
@@ -227,6 +268,17 @@ bool MemoryPoller::prepareMemoryPolling()
     _process_name = val[1];
   }
 
+  // PSS
+  {
+    std::ifstream ifs(proc_smaps_path);
+    if (!ifs.is_open())
+    {
+      std::cerr << "failed to open " << proc_smaps_path << std::endl;
+      return false;
+    }
+    ifs.close();
+  }
+
   return true;
 }
 
@@ -259,5 +311,7 @@ uint32_t MemoryPoller::getGpuMemory()
   assert(isStrNumber(val[2]));
   return std::stoul(val[2]);
 }
+
+uint32_t MemoryPoller::getPssSum() { return getSumValueFromFileSmaps(proc_smaps_path, "Pss"); }
 
 } // namespace benchmark
