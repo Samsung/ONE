@@ -108,6 +108,7 @@ CIRCLE_NODE(TOPK_V2, luci::CircleTopKV2)
 CIRCLE_NODE(TRANSPOSE, luci::CircleTranspose)
 CIRCLE_NODE(TRANSPOSE_CONV, luci::CircleTransposeConv)
 CIRCLE_NODE(UNPACK, luci::CircleUnpack)
+CIRCLE_NODE(WHERE, luci::CircleWhere)
 CIRCLE_NODE(WHILE, luci::CircleWhile)
 CIRCLE_NODE(ZEROS_LIKE, luci::CircleZerosLike)
 // Circle Only
