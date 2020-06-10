@@ -312,6 +312,14 @@ void LoweredGraph::manipulateLowerInfo(
       // In other words, it is not unused input in Graph.
       lower_info->addDefPermuteFactor(*lower_info->use_factors().begin());
     }
+    else
+    {
+      // In case of that an operand is Graph's input and not input or output of any operation
+      lower_info->addDefPermuteFactor(operand::PermuteFactor{
+          controlflow_backend,
+          Layout::NHWC // TODO Get frontend layout of this node from IR
+      });
+    }
   }
   for (auto index : _graph.getOutputs())
   {
