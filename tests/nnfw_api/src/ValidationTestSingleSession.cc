@@ -91,3 +91,10 @@ TEST_F(ValidationTestSingleSession, neg_query_info_u32)
 {
   ASSERT_EQ(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, nullptr), NNFW_STATUS_ERROR);
 }
+
+TEST_F(ValidationTestSingleSession, neg_output_tensorinfo)
+{
+  nnfw_tensorinfo tensor_info;
+  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, &tensor_info), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, nullptr), NNFW_STATUS_ERROR);
+}

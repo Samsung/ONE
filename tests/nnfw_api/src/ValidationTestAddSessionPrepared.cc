@@ -63,6 +63,14 @@ TEST_F(ValidationTestAddSessionPrepared, get_output_size)
   ASSERT_EQ(size, 1);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, output_tensorinfo)
+{
+  nnfw_tensorinfo tensor_info;
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(tensor_info.rank, 1);
+  ASSERT_EQ(tensor_info.dims[0], 1);
+}
+
 TEST_F(ValidationTestAddSessionPrepared, neg_set_input_001)
 {
   ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 1), NNFW_STATUS_ERROR);
