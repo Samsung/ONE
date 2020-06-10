@@ -69,6 +69,7 @@
 #include "ops/SquaredDiffLayer.h"
 #include "ops/LogicalOrLayer.h"
 #include "ops/MatrixBandPartLayer.h"
+#include "ops/BatchMatMulLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1251,6 +1252,25 @@ void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
   auto fn = std::make_unique<ops::MatrixBandPartLayer>();
 
   fn->configure(input_alloc, num_lower_alloc, num_upper_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::BatchMatMul &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BatchMatMul::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BatchMatMul::RHS)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
+  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+
+  const auto adj_x = node.param().adj_x;
+  const auto adj_y = node.param().adj_y;
+
+  auto fn = std::make_unique<ops::BatchMatMulLayer>();
+
+  fn->configure(lhs_alloc, rhs_alloc, adj_x, adj_y, output_alloc);
   _return_fn = std::move(fn);
 }
 
