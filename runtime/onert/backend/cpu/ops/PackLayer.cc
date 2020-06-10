@@ -34,7 +34,7 @@ PackLayer::PackLayer() : _inputs(), _output(nullptr), _axis(0)
   // DO NOTHING
 }
 
-void PackLayer::packFloat32()
+template <typename T> void PackLayer::packImpl()
 {
   uint32_t num_inputs = _inputs.size();
   nnfw::cker::PackParams op_params;
@@ -52,21 +52,15 @@ void PackLayer::packFloat32()
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
-  std::vector<const float *> inputFloatPtrs;
+  std::vector<const T *> inputPtrs;
 
   for (const auto input : _inputs)
   {
-    inputFloatPtrs.emplace_back(reinterpret_cast<const float *>(input->buffer()));
+    inputPtrs.emplace_back(reinterpret_cast<const T *>(input->buffer()));
   }
 
-  nnfw::cker::Pack<float>(op_params, inputFloatPtrs.data(), getTensorShape(_output),
-                          reinterpret_cast<float *>(_output->buffer()));
-}
-
-void PackLayer::packQuant8()
-{
-  // cker quant8 pack is not implemented yet
-  throw std::runtime_error{"NYI"};
+  nnfw::cker::Pack<T>(op_params, inputPtrs.data(), getTensorShape(_output),
+                      reinterpret_cast<T *>(_output->buffer()));
 }
 
 void PackLayer::configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output)
@@ -83,11 +77,11 @@ void PackLayer::run()
 {
   if (_output->data_type() == OperandType::FLOAT32)
   {
-    packFloat32();
+    packImpl<float>();
   }
-  else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  else if (_output->data_type() == OperandType::INT32)
   {
-    packQuant8();
+    packImpl<int32_t>();
   }
 }
 
