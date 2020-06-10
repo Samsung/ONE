@@ -144,6 +144,9 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
 void CalculateActivationRangeFloat(ir::Activation activation, float *activation_min,
                                    float *activation_max);
 
+void CalculateActivationRangeInt32(ir::Activation activation, int32_t *activation_min,
+                                   int32_t *activation_max);
+
 void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
                                    int32_t *act_min, int32_t *act_max);
 
