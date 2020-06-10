@@ -625,6 +625,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
+  // There is no Option for CEIL
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[tflite::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();

@@ -24,6 +24,7 @@
 #include "Nodes/CircleBatchMatMul.h"
 #include "Nodes/CircleBatchToSpaceND.h"
 #include "Nodes/CircleCast.h"
+#include "Nodes/CircleCeil.h"
 #include "Nodes/CircleConcatenation.h"
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleConv2D.h"

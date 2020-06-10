@@ -446,6 +446,12 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleCeil *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
