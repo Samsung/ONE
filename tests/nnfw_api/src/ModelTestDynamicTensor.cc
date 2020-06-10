@@ -103,6 +103,13 @@ protected:
     {
       ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
+      // output shape check
+      nnfw_tensorinfo info;
+      ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &info), NNFW_STATUS_NO_ERROR);
+      ASSERT_EQ(info.rank, new_shape.size());
+      for (uint32_t d = 0; d < info.rank; ++d)
+        ASSERT_EQ(info.dims[d], new_shape[d]);
+
       // output value check
       for (int i = 0; i < expected_output.size(); ++i)
         ASSERT_EQ(expected_output[i], actual_output[i]);
