@@ -50,6 +50,7 @@ public:
   void visit(luci::CircleAbs *) final;
   void visit(luci::CircleAdd *) final;
   void visit(luci::CircleArgMax *) final;
+  void visit(luci::CircleArgMin *) final;
   void visit(luci::CircleAveragePool2D *) final;
   void visit(luci::CircleBatchMatMul *) final;
   void visit(luci::CircleBatchToSpaceND *) final;
@@ -230,6 +231,20 @@ void OperationExporter::visit(luci::CircleArgMax *node)
   auto options = CreateArgMaxOptions(builder, to_circle_tensortype(node->output_type()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ArgMaxOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleArgMin *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ARG_MAX);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->dimension())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateArgMinOptions(builder, to_circle_tensortype(node->output_type()));
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ArgMinOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
