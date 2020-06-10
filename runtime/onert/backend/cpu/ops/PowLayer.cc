@@ -65,7 +65,7 @@ void PowLayer::run()
   if (_output->data_type() == OperandType::FLOAT32)
     powFloat32();
   else
-    throw std::runtime_error{"Pow supports float32 only."};
+    throw std::runtime_error{"Pow: unsupportted data type"};
 }
 
 } // namespace ops

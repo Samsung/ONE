@@ -85,6 +85,10 @@ void MulLayer::run()
   {
     mulQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Mul: unsupported data type"};
+  }
 }
 
 } // namespace ops

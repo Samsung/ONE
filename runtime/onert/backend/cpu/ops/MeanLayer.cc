@@ -68,6 +68,10 @@ void MeanLayer::run()
   {
     MeanQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Mean: unsupported data type"};
+  }
 }
 
 } // namespace ops

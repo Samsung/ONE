@@ -54,7 +54,7 @@ void LogicalOrLayer::run()
   }
   else
   {
-    throw std::runtime_error{"LogicalOr: Unsupported input data type"};
+    throw std::runtime_error{"LogicalOr: Unsupported data type"};
   }
 }
 

@@ -85,6 +85,10 @@ void SubLayer::run()
   {
     subQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Sub: unsupported data type"};
+  }
 }
 
 } // namespace ops

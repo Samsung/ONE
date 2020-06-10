@@ -62,6 +62,10 @@ void TanhLayer::run()
   {
     tanhQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Tanh: unsupported data type"};
+  }
 }
 
 } // namespace ops

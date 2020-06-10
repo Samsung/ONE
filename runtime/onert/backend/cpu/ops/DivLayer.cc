@@ -85,6 +85,10 @@ void DivLayer::run()
   {
     divQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Div: unsupported data type"};
+  }
 }
 
 } // namespace ops

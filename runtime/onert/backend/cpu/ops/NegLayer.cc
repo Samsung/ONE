@@ -58,6 +58,10 @@ void NegLayer::run()
   {
     negQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Neg: unsupported data type"};
+  }
 }
 
 } // namespace ops

@@ -62,6 +62,10 @@ void ExpLayer::run()
   {
     expQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Exp: unsupported data type"};
+  }
 }
 
 } // namespace ops

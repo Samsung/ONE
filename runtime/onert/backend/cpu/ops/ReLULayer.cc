@@ -62,6 +62,10 @@ void ReLULayer::run()
   {
     reluQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"ReLU: unsupported data type"};
+  }
 }
 
 } // namespace ops

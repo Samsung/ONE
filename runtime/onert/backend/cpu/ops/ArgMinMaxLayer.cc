@@ -77,7 +77,7 @@ void ArgMinMaxLayer::run()
       TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int32_t);
       break;
     default:
-      throw std::runtime_error("ArgMinMax: Only float32, uint8 and int32 are currently supported.");
+      throw std::runtime_error("ArgMinMax: unsupported data type");
   }
 #undef TF_LITE_ARG_MIN_MAX
 }

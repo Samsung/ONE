@@ -53,15 +53,15 @@ void SelectLayer::run()
                  getTensorShape(_input_false), reinterpret_cast<type *>(_input_false->buffer()), \
                  getTensorShape(_output), reinterpret_cast<type *>(_output->buffer()));
 
-#define KERNEL_SWITCH(type, op)                                                   \
-  switch (type)                                                                   \
-  {                                                                               \
-    break;                                                                        \
-    case OperandType::FLOAT32:                                                    \
-      KERNEL_SELECT(float, op);                                                   \
-      break;                                                                      \
-    default:                                                                      \
-      throw std::runtime_error{"NYI : not supported input type for SelectLayer"}; \
+#define KERNEL_SWITCH(type, op)                                  \
+  switch (type)                                                  \
+  {                                                              \
+    break;                                                       \
+    case OperandType::FLOAT32:                                   \
+      KERNEL_SELECT(float, op);                                  \
+      break;                                                     \
+    default:                                                     \
+      throw std::runtime_error{"Select: unsupported data type"}; \
   }
 
   auto input_type = _input_true->data_type();

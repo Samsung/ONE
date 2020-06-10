@@ -95,7 +95,7 @@ void CastLayer::run()
       castPtr(in.b, out);
       return;
     default:
-      throw std::runtime_error("Not supported input type" +
+      throw std::runtime_error("Cast: unsupported data type" +
                                std::to_string((int)_input->data_type()));
   }
 }

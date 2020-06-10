@@ -64,7 +64,7 @@ void GatherLayer::run()
           getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     default:
-      throw std::runtime_error("Gather NYI for this operand type!");
+      throw std::runtime_error("Gather: unsupported data type");
   }
 }
 

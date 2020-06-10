@@ -112,7 +112,7 @@ void evalGeneric(const Tensor *input, Tensor *output, const std::vector<int> &ax
     case OperandType::BOOL8:
       return evalType<bool>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
     default:
-      throw std::runtime_error{"Reduce(generic): Unsupported input type"};
+      throw std::runtime_error{"Reduce(generic): unsupported data type"};
   }
 }
 } // namespace

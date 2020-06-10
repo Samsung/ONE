@@ -89,6 +89,10 @@ void PackLayer::run()
   {
     packQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Pack: unsupported data type"};
+  }
 }
 
 } // namespace ops

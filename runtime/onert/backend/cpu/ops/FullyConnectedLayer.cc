@@ -129,6 +129,10 @@ void FullyConnectedLayer::run()
   {
     fullyConnectedQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"FullyConnected: unsupported data type"};
+  }
 }
 
 } // namespace ops

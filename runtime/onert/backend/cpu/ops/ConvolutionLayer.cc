@@ -146,6 +146,10 @@ void ConvolutionLayer::run()
   {
     convQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Conv: unsupported data type"};
+  }
 }
 
 #undef ANDROID_NN_CONV_PARAMETERS

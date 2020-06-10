@@ -102,6 +102,10 @@ void SliceLayer::run()
   {
     sliceQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Slice: unsupported data type"};
+  }
 }
 
 } // namespace ops

@@ -58,6 +58,10 @@ void LogLayer::run()
   {
     logQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Log: unsupported data type"};
+  }
 }
 
 } // namespace ops

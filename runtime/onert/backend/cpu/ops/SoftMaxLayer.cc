@@ -163,6 +163,10 @@ void SoftMaxLayer::run()
   {
     softmaxQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"SoftMax: unsupported data type"};
+  }
 }
 
 } // namespace ops

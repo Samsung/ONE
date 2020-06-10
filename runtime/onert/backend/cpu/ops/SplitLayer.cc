@@ -88,7 +88,7 @@ void SplitLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Split: Unsupported input type"};
+    throw std::runtime_error{"Split: unsupported input type"};
   }
 }
 
