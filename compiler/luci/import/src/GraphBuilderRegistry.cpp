@@ -140,7 +140,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_SQUARE = 92,
