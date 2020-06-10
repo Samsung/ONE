@@ -7,6 +7,10 @@ operand {
   name: "seq_lengths"
   type: INT32
   shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "7" arg: "2" arg: "3" arg: "5" 
+  }
 }
 operand {
   name: "ofm"
