@@ -112,6 +112,7 @@ public:
   void visit(luci::CircleResizeBilinear *) final;
   void visit(luci::CircleResizeNearestNeighbor *) final;
   void visit(luci::CircleRsqrt *) final;
+  void visit(luci::CircleScatterNd *) final;
   void visit(luci::CircleSelect *) final;
   void visit(luci::CircleShape *) final;
   void visit(luci::CircleSin *) final;
@@ -1191,6 +1192,25 @@ void OperationExporter::visit(luci::CircleRsqrt *node)
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleScatterNd *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SCATTER_ND);
+
+  // Make input, output and options for operator
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->indices()),
+                                  get_tensor_index(node->updates()),
+                                  get_tensor_index(node->shape())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateScatterNdOptions(builder);
+
+  // Make SCATTER_ND operator
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ScatterNdOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
