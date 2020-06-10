@@ -47,6 +47,7 @@
 // L2Pool2D uses Pool2DOptions
 #include "BuildBuiltinOptions/LeakyReluOptions.h"
 #include "BuildBuiltinOptions/LessOptions.h"
+#include "BuildBuiltinOptions/LessEqualOptions.h"
 #include "BuildBuiltinOptions/LocalResponseNormalizationOptions.h"
 #include "BuildBuiltinOptions/LogicalAndOptions.h"
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
