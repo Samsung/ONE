@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleCast.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,48 @@ TEST(CircleCastTest, constructor)
   ASSERT_EQ(nullptr, cast_node.x());
   ASSERT_EQ(loco::DataType::FLOAT32, cast_node.in_data_type());
   ASSERT_EQ(loco::DataType::FLOAT32, cast_node.out_data_type());
+}
+
+TEST(CircleCastTest, input_NEG)
+{
+  luci::CircleCast cast_node;
+  luci::CircleCast node;
+
+  cast_node.x(&node);
+  ASSERT_NE(nullptr, cast_node.x());
+
+  cast_node.x(nullptr);
+  ASSERT_EQ(nullptr, cast_node.x());
+}
+
+TEST(CircleCastTest, arity_NEG)
+{
+  luci::CircleCast cast_node;
+
+  ASSERT_NO_THROW(cast_node.arg(0));
+  ASSERT_THROW(cast_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleCastTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleCast cast_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(cast_node.accept(&tv), std::exception);
+}
+
+TEST(CircleCastTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleCast cast_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(cast_node.accept(&tv), std::exception);
 }
