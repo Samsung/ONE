@@ -22,7 +22,7 @@ function preset_configure()
   REQUIRED_UNITS+=("luci")
   # Tools
   REQUIRED_UNITS+=("tflite2circle" "circle2circle" "tflchef" "circlechef")
-  REQUIRED_UNITS+=("tf2tfliteV2")
+  REQUIRED_UNITS+=("tf2tfliteV2" "luci-interpreter")
   REQUIRED_UNITS+=("record-minmax")
 
   # TODO Use "nncc configure" and "nncc build"
