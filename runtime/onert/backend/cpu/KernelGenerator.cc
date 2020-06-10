@@ -68,6 +68,7 @@
 #include "ops/ZerosLikeLayer.h"
 #include "ops/SquaredDiffLayer.h"
 #include "ops/LogicalOrLayer.h"
+#include "ops/MatrixBandPartLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1234,6 +1235,25 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   fn->configure(input_alloc, multiples_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
+
+void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::INPUT)};
+  const auto num_lower_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_LOWER_DIAG)};
+  const auto num_upper_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_UPPER_DIAG)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto num_lower_alloc = _tensor_builder->at(num_lower_index).get();
+  auto num_upper_alloc = _tensor_builder->at(num_upper_index).get();
+
+  auto fn = std::make_unique<ops::MatrixBandPartLayer>();
+
+  fn->configure(input_alloc, num_lower_alloc, num_upper_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
+
 } // namespace cpu
 } // namespace backend
 } // namespace onert

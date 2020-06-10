@@ -993,6 +993,15 @@ TfLiteStatus AddOpsAndParams(
               reinterpret_cast<uint32_t*>(node.outputs->data)));
           continue;
         }
+        else if (custom_name.compare("MatrixBandPart") == 0) {
+          CHECK_NN(ANeuralNetworksModel_addOperationEx(
+              nn_model, ANEURALNETWORKS_MATRIX_BAND_PART_EX,
+              static_cast<uint32_t>(augmented_inputs.size()),
+              augmented_inputs.data(),
+              static_cast<uint32_t>(node.outputs->size),
+              reinterpret_cast<uint32_t*>(node.outputs->data)));
+          continue;
+        }
         logError("Custom operations are not supported when using NNAPI.");
         return kTfLiteError;
         break;

@@ -221,6 +221,7 @@ GeneratedTests.max_pool_quant8_1
 GeneratedTests.max_pool_quant8_2
 GeneratedTests.max_pool_quant8_3
 GeneratedTests.max_pool_quant8_4
+GeneratedTests.matrix_band_part_ex_4D_float
 GeneratedTests.maximum_broadcast
 GeneratedTests.maximum_broadcast_quant8
 GeneratedTests.maximum_dynamic_nnfw

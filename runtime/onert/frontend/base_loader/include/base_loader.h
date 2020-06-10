@@ -157,6 +157,7 @@ protected:
   void loadRange(const Operator *op, ir::Graph &subg);
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
+  void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
 
 protected:
   // Buffer for loading (if needed)
@@ -1079,6 +1080,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBCQFullyConnected(const Opera
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator *op,
+                                                                  ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::MatrixBandPart(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1093,11 +1107,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   enum class BuiltinOP
   {
     ReduceAll,
+    MatrixBandPart
   };
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-      {"All", BuiltinOP::ReduceAll},
+      {"All", BuiltinOP::ReduceAll}, {"MatrixBandPart", BuiltinOP::MatrixBandPart},
   };
 
   try
@@ -1108,6 +1123,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     {
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
+        break;
+      case BuiltinOP::MatrixBandPart:
+        loadMatrixBandPart(op, subg);
         break;
       default:
         throw std::runtime_error{
