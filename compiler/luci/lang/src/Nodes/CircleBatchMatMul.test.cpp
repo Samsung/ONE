@@ -30,6 +30,6 @@ TEST(CircleBatchMatMulTest, constructor)
   ASSERT_EQ(nullptr, batchmatmul_node.x());
   ASSERT_EQ(nullptr, batchmatmul_node.y());
 
-  ASSERT_EQ(false, batchmatmul_node.adj_x());
-  ASSERT_EQ(false, batchmatmul_node.adj_y());
+  ASSERT_FALSE(batchmatmul_node.adj_x());
+  ASSERT_FALSE(batchmatmul_node.adj_y());
 }
