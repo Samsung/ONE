@@ -188,7 +188,6 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
                                  uint32_t rank)
 {
   ir::Shape out_shape;
-  int32_t shape_size = 0;
 
   for (uint32_t idx = 0; idx < rank; ++idx)
   {
@@ -210,7 +209,6 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
     dim_shape = dim_shape < 0 ? 0 : dim_shape;
     if (!shrink_axis)
     {
-      shape_size++;
       out_shape.append(dim_shape);
     }
   }
@@ -220,7 +218,6 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
 
 void StaticInferer::visit(const ir::operation::StridedSlice &op)
 {
-
   const auto input_index{op.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
   const auto &input = _operands.at(input_index);
   const auto starts_index{op.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
