@@ -46,7 +46,7 @@ float getMovingAverage(std::vector<float> &vector, float alpha = 0.9)
   assert(alpha >= 0.0 && alpha <= 1.0);
 
   float curr_avg = vector[0];
-  for (int i = 1; i < vector.size(); i++)
+  for (size_t i = 1; i < vector.size(); i++)
   {
     curr_avg = curr_avg * alpha + vector[i] * (1.0 - alpha);
   }
