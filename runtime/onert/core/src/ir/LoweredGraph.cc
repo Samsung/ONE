@@ -30,7 +30,6 @@
 #include "compiler/BackendResolver.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
-#include "util/ShapeInference.h"
 
 namespace onert
 {
@@ -118,14 +117,6 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     // pe_pass.run();
 
     _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
-  }
-
-  // Shape inference.
-  {
-    shape_inference::StaticInferer inferer(_graph);
-    iterateTopolOpSeqs(
-        [&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) { inferer.infer(op_seq); });
-    inferer.dump();
   }
 
   // Graph verifications
