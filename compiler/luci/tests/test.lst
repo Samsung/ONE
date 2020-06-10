@@ -160,6 +160,7 @@ addread(Net_ZeroDim_001)
 # from res/CircleRecipes
 addread(BatchMatMul_000)
 addread(InstanceNorm_000)
+addread(MatMul_000)
 
 addwrite(Abs_000)
 addwrite(Add_000)
@@ -323,3 +324,4 @@ addwrite(Net_ZeroDim_001)
 # from res/CircleRecipes
 addwrite(BatchMatMul_000)
 addwrite(InstanceNorm_000)
+addwrite(MatMul_000)

@@ -1,0 +1,9 @@
+# To check if MatMul was substituted for TRANSPOSE+FULLY_CONNECTED
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "FULLY_CONNECTED_EXIST"   $(op_count FULLY_CONNECTED) '=' 1
+
+RULE    "TRANSPOSE_EXIST"         $(op_count TRANSPOSE) '=' 2
+
+RULE    "NO_MATMUL"               $(op_count CUSTOM) '=' 0

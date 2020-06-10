@@ -325,6 +325,11 @@ message LocalResponseNormalizationOptions {
   optional float beta = 4 [default = 0.5];
 }
 
+message MatMulOptions {
+  optional bool transpose_a = 1 [default = false];
+  optional bool transpose_b = 2 [default = false];
+}
+
 message SqueezeOptions {
   repeated int32 squeeze_dim = 1;
 }
@@ -492,6 +497,7 @@ message Operation {
   optional Pool2DOptions l2pool2d_options = 203;
   optional ReducerOptions all_options = 204;
   optional ReducerOptions reduce_min_options = 205;
+  optional MatMulOptions matmul_options = 206;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

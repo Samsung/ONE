@@ -20,6 +20,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
+#include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 // TODO add more passes
@@ -111,6 +112,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ResolveCustomOpBatchMatMul))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
+  }
+  if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
   }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {

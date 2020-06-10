@@ -6,12 +6,14 @@
 #
 # fuse_instnorm
 # resolve_customop_batchmatmul
+# resolve_customop_matmul
 
 ## TFLITE RECIPE
 
 Add(Net_InstanceNorm_001 PASS fuse_instnorm)
 # Add(Net_InstanceNorm_002 PASS fuse_instnorm)
 Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
+Add(MatMul_000 PASS resolve_customop_matmul)
 
 ## CIRCLE RECIPE
 
