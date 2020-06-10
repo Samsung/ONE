@@ -188,6 +188,7 @@ GeneratedTests.svdf
 GeneratedTests.svdf2
 GeneratedTests.svdf_bias_present
 GeneratedTests.svdf_state
+GeneratedTests.squeeze_dynamic_float_nnfw
 GeneratedTests.tanh_v1_2
 GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
