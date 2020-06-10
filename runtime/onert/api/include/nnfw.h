@@ -363,11 +363,14 @@ NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
 /**
  * @brief     Get i-th output tensor info
  *
- * <p>Before {@link nnfw_prepare} is invoked, this function return tensor info in model,
- * so updated tensor info by {@link nnfw_apply_tensorinfo} is not returned.</p>
+ * <p>After {@link nnfw_load_model_from_file} and before {@link nnfw_prepare} is invoked, it returns
+ * tensor info in the model.</p>
  *
- * <p>After {@link nnfw_prepare} is invoked, this function return updated tensor info
- * if tensor info is updated by {@link nnfw_apply_tensorinfo}.</p>
+ * <p>After {@link nnfw_prepare} and before {@link nnfw_run} is invoked, this function returns
+ * updated tensor info if tensor info is updated by {@link nnfw_set_input_tensorinfo}.</p>
+ *
+ * <p>After {@link nnfw_run} is invoked(at least once), it returns the updated tensor info during
+ * the latest execution.</p>
  *
  * @param[in]   session     Session from output information is to be extracted
  * @param[in]   index       Index of output
