@@ -17,6 +17,8 @@
 #include "luci/IR/Nodes/CircleAveragePool2D.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
+
 #include <gtest/gtest.h>
 
 TEST(CircleAveragePool2DTest, constructor_P)
@@ -32,4 +34,48 @@ TEST(CircleAveragePool2DTest, constructor_P)
   ASSERT_EQ(1, average_pool_2d_node.filter()->w());
   ASSERT_EQ(1, average_pool_2d_node.stride()->h());
   ASSERT_EQ(1, average_pool_2d_node.stride()->w());
+}
+
+TEST(CircleAveragePool2DTest, input_NEG)
+{
+  luci::CircleAveragePool2D avgpool_node;
+  luci::CircleAveragePool2D node;
+
+  avgpool_node.value(&node);
+  ASSERT_NE(nullptr, avgpool_node.value());
+
+  avgpool_node.value(nullptr);
+  ASSERT_EQ(nullptr, avgpool_node.value());
+}
+
+TEST(CircleAveragePool2DTest, arity_NEG)
+{
+  luci::CircleAveragePool2D avgpool_node;
+
+  ASSERT_NO_THROW(avgpool_node.arg(0));
+  ASSERT_THROW(avgpool_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleAveragePool2DTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleAveragePool2D avgpool_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(avgpool_node.accept(&tv), std::exception);
+}
+
+TEST(CircleAveragePool2DTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleAveragePool2D avgpool_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(avgpool_node.accept(&tv), std::exception);
 }
