@@ -35,7 +35,7 @@ function install_model()
 
     # download api test model file for nnfw_api_gtest
     MODEL_CACHE_DIR=$(mktemp -d)
-    tests/scripts/oneapi_test/install_oneapi_test_nnpackages.sh --install-dir $MODEL_CACHE_DIR
+    tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh --install-dir $MODEL_CACHE_DIR
     tar -zcf $MODEL_CACHE_DIR/api_model_test.tar.gz -C $MODEL_CACHE_DIR .
     $SDB_CMD push $MODEL_CACHE_DIR/api_model_test.tar.gz $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/
     $SDB_CMD shell tar -zxf $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/api_model_test.tar.gz \

@@ -9,20 +9,20 @@ CheckTestPrepared
 TEST_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 TEST_OS="linux"
 
-# oneapi_test
+# nnfw_api_gtest
 # NOTE: This test is run here as it does not depend on BACKEND or EXECUTOR
 
 # This test requires test model installation
 pushd ${ROOT_PATH} > /dev/null
 echo
-echo "==== Run oneapi_test begin ===="
+echo "==== Run nnfw_api_gtest begin ===="
 echo
-ONEAPI_TEST_MODEL_INSTALLER=tests/scripts/oneapi_test/install_oneapi_test_nnpackages.sh
+NNFW_API_TEST_MODEL_INSTALLER=tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh
 TEST_BIN=Product/out/unittest_standalone/nnfw_api_gtest
-$ONEAPI_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
+$NNFW_API_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
 ${TEST_BIN}
 echo
-echo "==== Run oneapi_test end ===="
+echo "==== Run nnfw_api_gtest end ===="
 echo
 popd > /dev/null
 
