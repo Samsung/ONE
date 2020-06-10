@@ -20,6 +20,7 @@
 #include "Nodes/CircleAbs.h"
 #include "Nodes/CircleAdd.h"
 #include "Nodes/CircleArgMax.h"
+#include "Nodes/CircleArgMin.h"
 #include "Nodes/CircleAveragePool2D.h"
 #include "Nodes/CircleBatchMatMul.h"
 #include "Nodes/CircleBatchToSpaceND.h"

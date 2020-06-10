@@ -30,6 +30,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                                                 // 101
   CIRCLE_NODE(ADD, CircleAddGraphBuilder);                                                 // 0
   CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                                          // 56
+  CIRCLE_NODE(ARG_MIN, CircleArgMinGraphBuilder);                                          // 79
   CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);                           // 1
   CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulGraphBuilder);                                // 126
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);                        // 37
@@ -139,7 +140,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_LESS_EQUAL = 63,
   // BuiltinOperator_SPARSE_TO_DENSE = 68,
-  // BuiltinOperator_ARG_MIN = 79,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_SQUARE = 92,
