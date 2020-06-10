@@ -18,17 +18,18 @@ tflite2circle \
 luci \
 luci-interpreter \
 luci-value-test \
+record-minmax \
 circle2circle"
 
 function count_all()
 {
-  local result=`ctest --verbose | grep -c '\[ RUN      \]'`
+  local result=`(ctest --verbose | grep -c '\[ RUN      \]') 2>/dev/null`
   echo $result
 }
 
 function count_neg()
 {
-  local result=`ctest --verbose | grep '\[ RUN      \]' | grep -c '_NEG'`
+  local result=`(ctest --verbose | grep '\[ RUN      \]' | grep -c '_NEG') 2>/dev/null`
   echo $result
 }
 
