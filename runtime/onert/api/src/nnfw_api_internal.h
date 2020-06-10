@@ -57,6 +57,7 @@ private:
     INITIALIZED,  //< Session is initialized and nothing has done to it
     MODEL_LOADED, //< Model is loaded
     PREPARED,     //< Prepared(compiled) for execution
+    FINISHED_RUN  //< Executed at least once
   };
 
 public:
@@ -95,6 +96,8 @@ private:
   bool isStateInitialized();
   bool isStateModelLoaded();
   bool isStatePrepared();
+  bool isStateFinishedRun();
+  bool isStatePreparedOrFinishedRun();
 
 private:
   State _state{State::INITIALIZED};
