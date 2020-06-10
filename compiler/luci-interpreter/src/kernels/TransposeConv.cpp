@@ -57,8 +57,6 @@ void TransposeConv::configure()
     int exponent;
     quantizeMultiplier(real_multiplier, &_output_multiplier, &exponent);
     _output_shift = -exponent;
-    _output_activation_min = std::numeric_limits<uint8_t>::min();
-    _output_activation_max = std::numeric_limits<uint8_t>::max();
   }
 
   int dims = _output_shape->shape().dim(0);
@@ -145,8 +143,8 @@ void TransposeConv::evalQuantized() const
   op_params.weights_offset = filter_offset;
   op_params.output_multiplier = _output_multiplier;
   op_params.output_shift = -_output_shift;
-  op_params.quantized_activation_min = _output_activation_min;
-  op_params.quantized_activation_max = _output_activation_max;
+  op_params.quantized_activation_min = std::numeric_limits<uint8_t>::min();
+  op_params.quantized_activation_max = std::numeric_limits<uint8_t>::max();
 
   tflite::reference_ops::TransposeConv(
       op_params, getTensorShape(_input_data), getTensorData<uint8>(_input_data),

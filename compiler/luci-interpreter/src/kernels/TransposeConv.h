@@ -50,11 +50,6 @@ private:
   // be represented as a fixed point multiplier plus a left shift.
   int32_t _output_multiplier;
   int _output_shift;
-
-  // The range of the fused activation layer. For example for kNone and
-  // uint8_t these would be 0 and 255.
-  int32_t _output_activation_min;
-  int32_t _output_activation_max;
 };
 
 } // namespace kernels
