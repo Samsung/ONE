@@ -21,7 +21,7 @@ namespace onert
 namespace shape_inference
 {
 
-void StaticInferer::visit(const ir::operation::ReduceSum &op)
+void StaticInferer::visit(const ir::operation::ReduceProd &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
@@ -45,7 +45,7 @@ void StaticInferer::visit(const ir::operation::ReduceSum &op)
   output.info().shape(new_shape);
 }
 
-void DynamicInferer::visit(const ir::operation::ReduceSum &op)
+void DynamicInferer::visit(const ir::operation::ReduceProd &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _tensor_registry->getITensor(input_idx);

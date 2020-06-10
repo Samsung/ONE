@@ -72,7 +72,8 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
 
 // TODO write op starting from N
 // TODO write op starting from P
-// TODO write op starting from R
+ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int> &axes,
+                            bool keep_dims);
 // TODO write op starting from S
 ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
 // TODO write op starting from U
@@ -136,6 +137,7 @@ private:
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
@@ -217,6 +219,7 @@ public:
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
   void visit(const ir::operation::Round &op);
