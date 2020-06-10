@@ -66,6 +66,10 @@ void MatrixBandPartLayer::run()
   {
     matrixBandPartQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"MatrixBandpart: unsupported data type"};
+  }
 }
 
 } // namespace ops

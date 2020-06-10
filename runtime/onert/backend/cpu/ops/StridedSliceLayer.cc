@@ -89,6 +89,10 @@ void StridedSliceLayer::run()
   {
     stridedSliceQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"StridedSlice: unsupported data type"};
+  }
 }
 
 } // namespace ops

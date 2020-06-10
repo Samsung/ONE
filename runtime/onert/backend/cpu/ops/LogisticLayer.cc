@@ -62,6 +62,10 @@ void LogisticLayer::run()
   {
     logisticQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Logistic: unsupported data type"};
+  }
 }
 
 } // namespace ops

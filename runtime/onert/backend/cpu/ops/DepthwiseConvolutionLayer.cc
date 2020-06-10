@@ -125,6 +125,10 @@ void DepthwiseConvolutionLayer::run()
   {
     convQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"DepthwiseConv: unsupported data type"};
+  }
 }
 
 } // namespace ops

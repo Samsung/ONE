@@ -101,6 +101,10 @@ void MaxPoolLayer::run()
   {
     maxPoolQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"MaxPool: unsupported data type"};
+  }
 }
 
 #undef MAXPOOLING_PARAMETERS

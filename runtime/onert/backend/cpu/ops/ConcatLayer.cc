@@ -126,7 +126,7 @@ void ConcatLayer::run()
     concatenationQuant8();
   }
   else
-    throw std::runtime_error("ConcatLayer: Not supported datatype");
+    throw std::runtime_error("Concat: unsupported data type");
 }
 
 } // namespace ops

@@ -62,6 +62,10 @@ void OneHotLayer::run()
   {
     oneHotQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"OneHot: unsupported data type"};
+  }
 }
 
 } // namespace ops

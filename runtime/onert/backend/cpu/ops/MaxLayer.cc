@@ -68,6 +68,10 @@ void MaxLayer::run()
   {
     maxQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Max: unsupported data type"};
+  }
 }
 
 } // namespace ops

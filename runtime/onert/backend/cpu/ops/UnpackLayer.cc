@@ -94,7 +94,7 @@ void UnpackLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Unpack: Unsupported input type"};
+    throw std::runtime_error{"Unpack: Unsupported data type"};
   }
 }
 

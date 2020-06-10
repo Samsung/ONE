@@ -65,7 +65,6 @@ void FillLayer::run()
       break;
     default:
       throw std::runtime_error{"Fill: unsupported data type"};
-      break;
   }
 }
 

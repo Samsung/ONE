@@ -58,6 +58,10 @@ void AbsLayer::run()
   {
     absQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Abs: unsupported data type"};
+  }
 }
 
 } // namespace ops

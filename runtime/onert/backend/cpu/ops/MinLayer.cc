@@ -68,6 +68,10 @@ void MinLayer::run()
   {
     minQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Min: unsupported data type"};
+  }
 }
 
 } // namespace ops

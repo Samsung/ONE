@@ -54,7 +54,7 @@ void LogicalNotLayer::run()
   }
   else
   {
-    throw std::runtime_error{"LogicalNot: Unsupported input type"};
+    throw std::runtime_error{"LogicalNot: unsupported data type"};
   }
 }
 

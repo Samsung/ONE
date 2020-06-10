@@ -64,6 +64,10 @@ void TileLayer::run()
   {
     tileQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Tile: unsupported data type"};
+  }
 }
 
 } // namespace ops

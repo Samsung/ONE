@@ -61,6 +61,10 @@ void PadLayer::run()
   {
     padQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Pad: unsupported data type"};
+  }
 }
 
 } // namespace ops

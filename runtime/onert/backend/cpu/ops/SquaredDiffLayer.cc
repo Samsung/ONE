@@ -54,6 +54,10 @@ void SqDiffLayer::run()
   {
     SqDiffFloat32();
   }
+  else
+  {
+    throw std::runtime_error{"SquaredDiff: unsupported data type"};
+  }
 }
 } // namespace ops
 } // namespace cpu

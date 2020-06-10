@@ -71,7 +71,7 @@ void ShapeLayer::run()
   }
   else
   {
-    throw std::runtime_error{"NYI : not supported input type for ShapeLayer"};
+    throw std::runtime_error{"Shape : unsupported data type"};
   }
 }
 

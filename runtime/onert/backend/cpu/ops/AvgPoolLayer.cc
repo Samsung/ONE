@@ -104,6 +104,10 @@ void AvgPoolLayer::run()
   {
     averagePoolQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"AvgPool: unsupported data type"};
+  }
 }
 
 #undef AVGPOOLING_PARAMETERS

@@ -89,6 +89,10 @@ void AddLayer::run()
   {
     addQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Add: unsupported data type"};
+  }
 }
 
 } // namespace ops

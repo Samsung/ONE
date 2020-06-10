@@ -73,6 +73,10 @@ void TransposeLayer::run()
   {
     transposeQuant8();
   }
+  else
+  {
+    throw std::runtime_error{"Transpose: unsupported data type"};
+  }
 }
 
 } // namespace ops
