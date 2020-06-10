@@ -84,7 +84,8 @@ void DynamicMemoryManager::deallocate(const ir::OperandIndex &ind)
   if (find == _mem_alloc_map.end())
     throw std::runtime_error("Cannot find Allocator for the requested index");
 
-  auto alloc = find->second;
+  // alloc's count decreases
+  auto &alloc = find->second;
   alloc.reset();
 }
 
@@ -92,6 +93,7 @@ void DynamicMemoryManager::deallocate(void)
 {
   for (auto &mem_alloc : _mem_alloc_map)
   {
+    // Release memory buffer of mem_alloc
     mem_alloc.second->release();
   }
 }
