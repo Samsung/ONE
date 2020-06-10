@@ -22,11 +22,11 @@
 
 TEST(CircleArgMinTest, constructor_P)
 {
-  luci::CircleArgMin add_node;
+  luci::CircleArgMin argmin_node;
 
-  ASSERT_EQ(luci::CircleDialect::get(), add_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::ARG_MIN, add_node.opcode());
+  ASSERT_EQ(luci::CircleDialect::get(), argmin_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::ARG_MIN, argmin_node.opcode());
 
-  ASSERT_EQ(nullptr, add_node.input());
-  ASSERT_EQ(nullptr, add_node.dimension());
+  ASSERT_EQ(nullptr, argmin_node.input());
+  ASSERT_EQ(nullptr, argmin_node.dimension());
 }
