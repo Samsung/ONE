@@ -25,6 +25,8 @@ set(SOURCES
     DepthwiseConv2D.cpp
     FullyConnected.h
     FullyConnected.cpp
+    LeakyRelu.h
+    LeakyRelu.cpp
     Logistic.h
     Logistic.cpp
     MaxPool2D.h
@@ -68,6 +70,7 @@ set(TEST_SOURCES
     Conv2D.test.cpp
     DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
+    LeakyRelu.test.cpp
     Logistic.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
