@@ -40,7 +40,7 @@ namespace
  * @brief  getMovingAverage calculates the weighted moving average of input vector
  *         The initial value is the first element of the vector
  */
-float getMovingAverage(std::vector<float> &vector, float alpha = 0.9)
+float getMovingAverage(std::vector<float> &vector, float alpha)
 {
   assert(!vector.empty());
   assert(alpha >= 0.0 && alpha <= 1.0);
@@ -160,8 +160,8 @@ void RecordMinMax::profileData(const std::string &input_data_path)
     auto node = iter->first;
     auto minmax = iter->second;
 
-    float min = getMovingAverage(minmax.min_vector);
-    float max = getMovingAverage(minmax.max_vector);
+    float min = getMovingAverage(minmax.min_vector, 0.9);
+    float max = getMovingAverage(minmax.max_vector, 0.9);
 
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
     quantparam->min.push_back(min);
