@@ -30,6 +30,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(ABS, CircleAbsGraphBuilder);                                                 // 101
   CIRCLE_NODE(ADD, CircleAddGraphBuilder);                                                 // 0
   CIRCLE_NODE(ARG_MAX, CircleArgMaxGraphBuilder);                                          // 56
+  CIRCLE_NODE(ARG_MIN, CircleArgMinGraphBuilder);                                          // 79
   CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DGraphBuilder);                           // 1
   CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulGraphBuilder);                                // 126
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);                        // 37
