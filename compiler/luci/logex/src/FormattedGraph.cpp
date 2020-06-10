@@ -196,6 +196,7 @@ private:
   IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
   IMPLEMENT(luci::CircleArgMax)
+  IMPLEMENT(luci::CircleArgMin)
   IMPLEMENT(luci::CircleAveragePool2D)
   IMPLEMENT(luci::CircleBatchMatMul)
   IMPLEMENT(luci::CircleBatchToSpaceND)
@@ -331,6 +332,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleAdd *node, locop::NodeS
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleArgMax *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("dimension", tbl()->lookup(node->dimension()));
+  s.args().append("output_type", to_str(node->output_type()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleArgMin *node, locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("dimension", tbl()->lookup(node->dimension()));
