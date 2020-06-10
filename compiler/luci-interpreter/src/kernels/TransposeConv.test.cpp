@@ -27,20 +27,21 @@ namespace
 using namespace testing;
 
 template <typename T>
-void Check(std::initializer_list<int32_t> outputShape_shape,
+void Check(std::initializer_list<int32_t> output_shape_shape,
            std::initializer_list<int32_t> weight_shape,
-           std::initializer_list<int32_t> inputData_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<T> outputShape_data,
-           std::initializer_list<T> weight_data, std::initializer_list<T> inputData_data,
-           std::initializer_list<T> output_data, luci::Padding padding, int32_t stride_height,
-           int32_t stride_width, DataType element_type)
+           std::initializer_list<int32_t> input_data_shape,
+           std::initializer_list<int32_t> output_shape,
+           std::initializer_list<int32_t> output_shape_data, std::initializer_list<T> weight_data,
+           std::initializer_list<T> input_data_data, std::initializer_list<T> output_data,
+           luci::Padding padding, int32_t stride_height, int32_t stride_width,
+           DataType element_type)
 {
-  Tensor outputShape_tensor{element_type, outputShape_shape, {}, ""};
-  outputShape_tensor.writeData(outputShape_data.begin(), outputShape_data.size() * sizeof(T));
+  Tensor output_shape_tensor{element_type, output_shape_shape, {}, ""};
+  output_shape_tensor.writeData(output_shape_data.begin(), output_shape_data.size() * sizeof(T));
   Tensor weight_tensor{element_type, weight_shape, {}, ""};
   weight_tensor.writeData(weight_data.begin(), weight_data.size() * sizeof(T));
-  Tensor inputData_tensor{element_type, inputData_shape, {}, ""};
-  inputData_tensor.writeData(inputData_data.begin(), inputData_data.size() * sizeof(T));
+  Tensor input_data_tensor{element_type, input_data_shape, {}, ""};
+  input_data_tensor.writeData(input_data_data.begin(), input_data_data.size() * sizeof(T));
 
   Tensor output_tensor = makeOutputTensor(element_type);
 
@@ -49,7 +50,7 @@ void Check(std::initializer_list<int32_t> outputShape_shape,
   params.stride_height = stride_height;
   params.stride_width = stride_width;
 
-  TransposeConv kernel(&outputShape_tensor, &weight_tensor, &inputData_tensor, &output_tensor,
+  TransposeConv kernel(&output_shape_tensor, &weight_tensor, &input_data_tensor, &output_tensor,
                        params);
   kernel.configure();
   kernel.execute();

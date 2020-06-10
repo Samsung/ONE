@@ -29,11 +29,11 @@ namespace luci_interpreter
 namespace kernels
 {
 
-TransposeConv::TransposeConv(const Tensor *outputShape, const Tensor *weights,
-                             const Tensor *inputData, Tensor *output,
+TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *weights,
+                             const Tensor *input_data, Tensor *output,
                              const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>(params), _output_shape(outputShape), _weights(weights),
-      _input_data(inputData), _output(output)
+    : KernelWithParams<TransposeConvParams>(params), _output_shape(output_shape), _weights(weights),
+      _input_data(input_data), _output(output)
 {
 }
 
