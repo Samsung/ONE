@@ -40,12 +40,10 @@ public:
   void configure(const Tensor *input, const Tensor *begin, const Tensor *end, const Tensor *strides,
                  Tensor *output, const int32_t begin_mask, const int32_t end_mask,
                  const int32_t shrink_axis_mask, const int32_t rank);
-
   void run();
 
 private:
-  void stridedSliceFloat32();
-  void stridedSliceQuant8();
+  template <typename T> void stridedSliceImpl();
 
 private:
   const Tensor *_input;
