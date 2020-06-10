@@ -37,37 +37,20 @@ namespace
 {
 
 /**
- * @brief  clipAndAverage does the following things
- *         (1) Discard the top/bottom clip_ratio (%) values from vector
- *             Ex: top_clip_ratio = 5, bottom_clip_ratio = 3
- *                 discard top 5 % values and bottom 3 % values from vector
- *         (2) Calculate the average of remaining values
+ * @brief  getMovingAverage calculates the weighted moving average of input vector
+ *         The initial value is the first element of the vector
  */
-float clipAndAverage(std::vector<float> &vector, float top_clip_ratio, float bottom_clip_ratio)
+float getMovingAverage(std::vector<float> &vector, float alpha = 0.9)
 {
-  if (bottom_clip_ratio < 0 || bottom_clip_ratio >= 100)
-    throw std::runtime_error(
-        "Clip ratio (bottom) must be greater than or equal to 0 and less than 100");
+  assert(!vector.empty());
+  assert(alpha >= 0.0 && alpha <= 1.0);
 
-  if (top_clip_ratio < 0 || top_clip_ratio >= 100)
-    throw std::runtime_error(
-        "Clip ratio (top) must be greater than or equal to 0 and less than 100");
-
-  int clip_top = std::floor(vector.size() * top_clip_ratio / 100.0);
-  int clip_bottom = std::floor(vector.size() * bottom_clip_ratio / 100.0);
-  int clipped_items = clip_top + clip_bottom;
-
-  if (clipped_items >= vector.size())
-    throw std::runtime_error("The number of clipped items must be less than that of recorded data");
-
-  // Sort
-  std::sort(vector.begin(), vector.end());
-
-  // Clip and Average
-  double res = std::accumulate(vector.begin() + clip_bottom, vector.end() - clip_top, 0.0) /
-               (vector.size() - clipped_items);
-
-  return static_cast<float>(res);
+  float curr_avg = vector[0];
+  for (int i = 1; i < vector.size(); i++)
+  {
+    curr_avg = curr_avg * alpha + vector[i] * (1.0 - alpha);
+  }
+  return curr_avg;
 }
 
 /**
@@ -137,6 +120,9 @@ void RecordMinMax::profileData(const std::string &input_data_path)
   importer.importGroup();
 
   const auto num_records = importer.numRecords();
+  if (num_records == 0)
+    throw std::runtime_error("The input data file does not contain any record.");
+
   const auto input_nodes = loco::input_nodes(_module->graph());
   const auto num_inputs = input_nodes.size();
 
@@ -174,13 +160,8 @@ void RecordMinMax::profileData(const std::string &input_data_path)
     auto node = iter->first;
     auto minmax = iter->second;
 
-    // Default: Values are averaged without clipping (clip ratio = 0 %).
-    // TODO: Allow users to adjust clip ratios.
-    float min =
-        clipAndAverage(minmax.min_vector, /* top_clip_ratio */ 0.0, /* bottom_clip_ratio */ 0.0);
-    float max =
-        clipAndAverage(minmax.max_vector, /* top_clip_ratio */ 0.0, /* bottom_clip_ratio */ 0.0);
-    // Note: min_vector and max_vector are changed inside clipAndAverage
+    float min = getMovingAverage(minmax.min_vector);
+    float max = getMovingAverage(minmax.max_vector);
 
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
     quantparam->min.push_back(min);
