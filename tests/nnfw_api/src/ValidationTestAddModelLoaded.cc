@@ -43,6 +43,14 @@ TEST_F(ValidationTestAddModelLoaded, get_output_size)
   ASSERT_EQ(size, 1);
 }
 
+TEST_F(ValidationTestAddModelLoaded, output_tensorinfo)
+{
+  nnfw_tensorinfo tensor_info;
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(tensor_info.rank, 1);
+  ASSERT_EQ(tensor_info.dims[0], 1);
+}
+
 TEST_F(ValidationTestAddModelLoaded, neg_run_001)
 {
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
@@ -76,4 +84,10 @@ TEST_F(ValidationTestAddModelLoaded, neg_load_model)
   ASSERT_EQ(nnfw_load_model_from_file(
                 _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
             NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_output_tensorinfo)
+{
+  // tensor_info is null
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_ERROR);
 }

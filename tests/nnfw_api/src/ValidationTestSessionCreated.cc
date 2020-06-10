@@ -115,3 +115,12 @@ TEST_F(ValidationTestSessionCreated, neg_get_output_size)
   ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_ERROR);
   ASSERT_EQ(size, 10000);
 }
+
+TEST_F(ValidationTestSessionCreated, neg_output_tensorinfo)
+{
+  nnfw_tensorinfo tensor_info;
+  // model is not loaded
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_ERROR);
+  // model is not loaded and tensor_info is null
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_ERROR);
+}
