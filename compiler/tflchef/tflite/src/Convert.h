@@ -34,6 +34,7 @@ tflchef::MirrorPadMode as_tflchef_mirrorpadmode(const tflite::MirrorPadMode mode
  */
 template <typename DT> std::vector<DT> extract_buffer(const tflite::Buffer *buffer)
 {
+  assert(buffer->data() != nullptr);
   auto buffer_length = buffer->data()->size();
   auto num_elements = buffer_length / sizeof(DT);
   std::vector<DT> result(num_elements);
