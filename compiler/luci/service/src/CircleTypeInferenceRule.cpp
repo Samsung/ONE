@@ -35,6 +35,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleArgMax *node) final { return node->output_type(); }
 
+  loco::DataType visit(const luci::CircleArgMin *node) final { return node->output_type(); }
+
   loco::DataType visit(const luci::CircleAveragePool2D *node) final
   {
     return loco::dtype_get(node->value());
