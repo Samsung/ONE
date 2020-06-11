@@ -52,6 +52,7 @@
 #include "Nodes/CircleL2Pool2D.h"
 #include "Nodes/CircleLeakyRelu.h"
 #include "Nodes/CircleLess.h"
+#include "Nodes/CircleLessEqual.h"
 #include "Nodes/CircleLocalResponseNormalization.h"
 #include "Nodes/CircleLog.h"
 #include "Nodes/CircleLogicalAnd.h"
