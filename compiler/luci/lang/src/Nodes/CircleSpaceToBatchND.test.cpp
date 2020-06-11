@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSpaceToBatchND.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,56 @@ TEST(CircleSpaceToBatchNDTest, constructor)
   ASSERT_EQ(nullptr, stb_node.input());
   ASSERT_EQ(nullptr, stb_node.block_shape());
   ASSERT_EQ(nullptr, stb_node.paddings());
+}
+
+TEST(CircleSpaceToBatchNDTest, input_NEG)
+{
+  luci::CircleSpaceToBatchND stb_node;
+  luci::CircleSpaceToBatchND node;
+
+  stb_node.input(&node);
+  stb_node.block_shape(&node);
+  stb_node.paddings(&node);
+  ASSERT_NE(nullptr, stb_node.input());
+  ASSERT_NE(nullptr, stb_node.block_shape());
+  ASSERT_NE(nullptr, stb_node.paddings());
+
+  stb_node.input(nullptr);
+  stb_node.block_shape(nullptr);
+  stb_node.paddings(nullptr);
+  ASSERT_EQ(nullptr, stb_node.input());
+  ASSERT_EQ(nullptr, stb_node.block_shape());
+  ASSERT_EQ(nullptr, stb_node.paddings());
+}
+
+TEST(CircleSpaceToBatchNDTest, arity_NEG)
+{
+  luci::CircleSpaceToBatchND stb_node;
+
+  ASSERT_NO_THROW(stb_node.arg(2));
+  ASSERT_THROW(stb_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleSpaceToBatchNDTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSpaceToBatchND stb_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(stb_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSpaceToBatchNDTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSpaceToBatchND stb_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(stb_node.accept(&tv), std::exception);
 }
