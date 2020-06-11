@@ -22,6 +22,15 @@ session.prepare();
 
 Tensor[] inputs, outputs;
 
+// allocate inputs and outputs like below
+//    int size = session.getInputSize();
+//    inputs = new Tensor[size];
+//    for (int i = 0; i < size; ++i){
+//        TensorInfo ti = session.getInputTensorInfo(i);
+//        inputs[i] = new Tensor(ti);
+//    }
+//    session.setInputs(inputs);
+
 session.setInputs(inputs);
 session.setOutputs(outputs);
 
