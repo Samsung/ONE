@@ -1,6 +1,7 @@
 package com.samsung.onert;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,18 +20,14 @@ public final class Tensor implements AutoCloseable {
         return true;
     }
 
-    public Tensor(int index, @NonNull TensorInfo info) {
-        _index = index;
+    public Tensor(@NonNull TensorInfo info) {
         _info = info;
+        _buffer = ByteBuffer.allocateDirect(getByteSize())
+                  .order(ByteOrder.nativeOrder());
     }
 
-    public Tensor(int index, @NonNull int[] shape, @NonNull TensorInfo.Type type) {
-        _index = index;
-        _info = new TensorInfo(type, shape.length, shape);
-    }
-
-    public int index() {
-        return _index;
+    public Tensor(@NonNull int[] shape, @NonNull TensorInfo.Type type) {
+        this(new TensorInfo(type, shape.length, shape));
     }
 
     public int[] shape() {
@@ -71,7 +68,6 @@ public final class Tensor implements AutoCloseable {
         _buffer = null;
     }
 
-    private final int _index;
     private TensorInfo _info = null;
     private ByteBuffer _buffer = null;
 }

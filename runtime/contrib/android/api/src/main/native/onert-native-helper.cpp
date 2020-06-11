@@ -129,40 +129,6 @@ jboolean getTensorParams(JNIEnv *env, jint jindex, jint jtype, jobject jbuf, jin
   return JNI_TRUE;
 }
 
-jboolean getTensorParams(jint jindex, jint jtype, jlong handle, jni::TensorParams &params)
-{
-  if (jindex < 0)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] index(%d) is wrong", __PRETTY_FUNCTION__,
-                        jindex);
-    return JNI_FALSE;
-  }
-  auto index = static_cast<uint32_t>(jindex);
-
-  if (jtype < 0)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] type(%d) is wrong", __PRETTY_FUNCTION__,
-                        jtype);
-    return JNI_FALSE;
-  }
-  auto type = static_cast<NNFW_TYPE>(jtype);
-
-  const jni::TempOutput *to = jni::getTempOutputBuf(handle, index);
-  if (to == nullptr)
-  {
-    __android_log_print(ANDROID_LOG_ERROR, TAG, "%s] failed to get TempOutput",
-                        __PRETTY_FUNCTION__);
-    return JNI_FALSE;
-  }
-
-  params.index = index;
-  params.type = type;
-  params.buffer = to->buf;
-  params.buffer_size = to->bufsize;
-
-  return JNI_TRUE;
-}
-
 jboolean getLayoutParams(jint jindex, jint jlayout, jni::LayoutParams &params)
 {
   if (jindex < 0)
