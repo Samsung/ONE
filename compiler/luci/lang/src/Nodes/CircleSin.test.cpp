@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSin.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleSinTest, constructor)
   ASSERT_EQ(luci::CircleOpcode::SIN, sin_node.opcode());
 
   ASSERT_EQ(nullptr, sin_node.x());
+}
+
+TEST(CircleSinTest, input_NEG)
+{
+  luci::CircleSin sin_node;
+  luci::CircleSin node;
+
+  sin_node.x(&node);
+  ASSERT_NE(nullptr, sin_node.x());
+
+  sin_node.x(nullptr);
+  ASSERT_EQ(nullptr, sin_node.x());
+}
+
+TEST(CircleSinTest, arity_NEG)
+{
+  luci::CircleSin sin_node;
+
+  ASSERT_NO_THROW(sin_node.arg(0));
+  ASSERT_THROW(sin_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleSinTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSin sin_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sin_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSinTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSin sin_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sin_node.accept(&tv), std::exception);
 }
