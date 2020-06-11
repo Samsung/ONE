@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleMinimum.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleMinimumTest, constructor_P)
 
   ASSERT_EQ(nullptr, min_node.x());
   ASSERT_EQ(nullptr, min_node.y());
+}
+
+TEST(CircleMinimumTest, input_NEG)
+{
+  luci::CircleMinimum min_node;
+  luci::CircleMinimum node;
+
+  min_node.x(&node);
+  min_node.y(&node);
+  ASSERT_NE(nullptr, min_node.x());
+  ASSERT_NE(nullptr, min_node.y());
+
+  min_node.x(nullptr);
+  min_node.y(nullptr);
+  ASSERT_EQ(nullptr, min_node.x());
+  ASSERT_EQ(nullptr, min_node.y());
+}
+
+TEST(CircleMinimumTest, arity_NEG)
+{
+  luci::CircleMinimum min_node;
+
+  ASSERT_NO_THROW(min_node.arg(1));
+  ASSERT_THROW(min_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleMinimumTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleMinimum min_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(min_node.accept(&tv), std::exception);
+}
+
+TEST(CircleMinimumTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleMinimum min_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(min_node.accept(&tv), std::exception);
 }
