@@ -39,8 +39,8 @@ ConvolutionLayer::~ConvolutionLayer() = default;
 
 void ConvolutionLayer::convFloat32()
 {
-  float output_activation_min, output_activation_max;
-  CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
 
   nnfw::cker::ConvParams op_params;
   op_params.padding_type = getPaddingType(_paddingType);

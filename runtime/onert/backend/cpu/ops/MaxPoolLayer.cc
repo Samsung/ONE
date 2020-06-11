@@ -47,8 +47,8 @@ MaxPoolLayer::MaxPoolLayer()
 void MaxPoolLayer::maxPoolFloat32()
 {
   MAXPOOLING_PARAMETERS
-  float output_activation_min, output_activation_max;
-  CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 

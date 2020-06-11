@@ -29,8 +29,8 @@ namespace ops
 
 void MulLayer::mulFloat32()
 {
-  float output_activation_min, output_activation_max;
-  CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
   op_params.type = nnfw::cker::BinaryArithmeticOpType::MUL;
   op_params.float_activation_max = output_activation_max;
