@@ -36,7 +36,7 @@ StridedSliceLayer::StridedSliceLayer()
 {
 }
 
-void StridedSliceLayer::stridedSliceFloat32()
+template <typename T> void StridedSliceLayer::stridedSliceImpl()
 {
   auto op_params = nnfw::cker::buildStridedSliceParams(
       reinterpret_cast<uint32_t *>(_begin->buffer()), reinterpret_cast<uint32_t *>(_end->buffer()),
@@ -46,14 +46,8 @@ void StridedSliceLayer::stridedSliceFloat32()
   nnfw::cker::checkOutputSize(op_params, getTensorShape(_input), getTensorShape(_output), _rank);
 
   nnfw::cker::StridedSlice(op_params, getTensorShape(_input),
-                           reinterpret_cast<const float *>(_input->buffer()),
-                           getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
-}
-
-void StridedSliceLayer::stridedSliceQuant8()
-{
-  // cker quant8 stridedSlice is not implemented yet
-  throw std::runtime_error{"NYI"};
+                           reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
+                           reinterpret_cast<T *>(_output->buffer()));
 }
 
 void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, const Tensor *end,
@@ -83,11 +77,11 @@ void StridedSliceLayer::run()
   }
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    stridedSliceFloat32();
+    stridedSliceImpl<float>();
   }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  else if (_input->data_type() == OperandType::INT32)
   {
-    stridedSliceQuant8();
+    stridedSliceImpl<int32_t>();
   }
   else
   {
