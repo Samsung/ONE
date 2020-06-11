@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleWhile.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -59,4 +60,28 @@ TEST(CircleWhileTestDeath, invalid_input_set_index_NEG)
   luci::CircleWhile while_node(2, 2);
 
   EXPECT_ANY_THROW(while_node.input(100, nullptr));
+}
+
+TEST(CircleWhileTestDeath, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleWhile while_node(2, 2);
+
+  TestVisitor tv;
+  ASSERT_THROW(while_node.accept(&tv), std::exception);
+}
+
+TEST(CircleWhileTestDeath, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleWhile while_node(2, 2);
+
+  TestVisitor tv;
+  ASSERT_THROW(while_node.accept(&tv), std::exception);
 }

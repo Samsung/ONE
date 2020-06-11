@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleTransposeConv.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,68 @@ TEST(CircleTransposeConvTest, constructor_P)
   ASSERT_EQ(nullptr, trc_node.inputSizes());
   ASSERT_EQ(nullptr, trc_node.filter());
   ASSERT_EQ(nullptr, trc_node.outBackprop());
+
+  ASSERT_EQ(luci::Padding::UNDEFINED, trc_node.padding());
+  ASSERT_EQ(1, trc_node.stride()->h());
+  ASSERT_EQ(1, trc_node.stride()->w());
+}
+
+TEST(CircleTransposeConvTest, input_NEG)
+{
+  luci::CircleTransposeConv trc_node;
+  luci::CircleTransposeConv node;
+
+  trc_node.inputSizes(&node);
+  trc_node.filter(&node);
+  trc_node.outBackprop(&node);
+  ASSERT_NE(nullptr, trc_node.inputSizes());
+  ASSERT_NE(nullptr, trc_node.filter());
+  ASSERT_NE(nullptr, trc_node.outBackprop());
+
+  trc_node.inputSizes(nullptr);
+  trc_node.filter(nullptr);
+  trc_node.outBackprop(nullptr);
+  ASSERT_EQ(nullptr, trc_node.inputSizes());
+  ASSERT_EQ(nullptr, trc_node.filter());
+  ASSERT_EQ(nullptr, trc_node.outBackprop());
+
+  trc_node.padding(luci::Padding::SAME);
+  ASSERT_NE(luci::Padding::UNDEFINED, trc_node.padding());
+
+  trc_node.stride()->h(2);
+  trc_node.stride()->w(2);
+  ASSERT_EQ(2, trc_node.stride()->h());
+  ASSERT_EQ(2, trc_node.stride()->w());
+}
+
+TEST(CircleTransposeConvTest, arity_NEG)
+{
+  luci::CircleTransposeConv trc_node;
+
+  ASSERT_NO_THROW(trc_node.arg(2));
+  ASSERT_THROW(trc_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleTransposeConvTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleTransposeConv trc_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(trc_node.accept(&tv), std::exception);
+}
+
+TEST(CircleTransposeConvTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleTransposeConv trc_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(trc_node.accept(&tv), std::exception);
 }

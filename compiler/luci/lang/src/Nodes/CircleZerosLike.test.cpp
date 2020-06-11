@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleZerosLike.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleZerosLikeTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::ZEROS_LIKE, node.opcode());
 
   ASSERT_EQ(nullptr, node.input());
+}
+
+TEST(CircleZerosLikeTest, input_NEG)
+{
+  luci::CircleZerosLike zeros_node;
+  luci::CircleZerosLike node;
+
+  zeros_node.input(&node);
+  ASSERT_NE(nullptr, zeros_node.input());
+
+  zeros_node.input(nullptr);
+  ASSERT_EQ(nullptr, zeros_node.input());
+}
+
+TEST(CircleZerosLikeTest, arity_NEG)
+{
+  luci::CircleZerosLike zeros_node;
+
+  ASSERT_NO_THROW(zeros_node.arg(0));
+  ASSERT_THROW(zeros_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleZerosLikeTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleZerosLike zeros_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(zeros_node.accept(&tv), std::exception);
+}
+
+TEST(CircleZerosLikeTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleZerosLike zeros_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(zeros_node.accept(&tv), std::exception);
 }
