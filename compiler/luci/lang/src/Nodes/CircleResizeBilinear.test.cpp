@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleResizeBilinear.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,6 +30,59 @@ TEST(CircleResizeBilinearTest, constructor)
 
   ASSERT_EQ(nullptr, resize.input());
   ASSERT_EQ(nullptr, resize.size());
-  ASSERT_EQ(false, resize.align_corners());
-  ASSERT_EQ(false, resize.half_pixel_centers());
+  ASSERT_FALSE(resize.align_corners());
+  ASSERT_FALSE(resize.half_pixel_centers());
+}
+
+TEST(CircleResizeBilinearTest, input_NEG)
+{
+  luci::CircleResizeBilinear resize_node;
+  luci::CircleResizeBilinear node;
+
+  resize_node.input(&node);
+  resize_node.size(&node);
+  ASSERT_NE(nullptr, resize_node.input());
+  ASSERT_NE(nullptr, resize_node.size());
+
+  resize_node.input(nullptr);
+  resize_node.size(nullptr);
+  ASSERT_EQ(nullptr, resize_node.input());
+  ASSERT_EQ(nullptr, resize_node.size());
+
+  resize_node.align_corners(true);
+  ASSERT_TRUE(resize_node.align_corners());
+  resize_node.half_pixel_centers(true);
+  ASSERT_TRUE(resize_node.half_pixel_centers());
+}
+
+TEST(CircleResizeBilinearTest, arity_NEG)
+{
+  luci::CircleResizeBilinear resize_node;
+
+  ASSERT_NO_THROW(resize_node.arg(1));
+  ASSERT_THROW(resize_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleResizeBilinearTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleResizeBilinear resize_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(resize_node.accept(&tv), std::exception);
+}
+
+TEST(CircleResizeBilinearTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleResizeBilinear resize_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(resize_node.accept(&tv), std::exception);
 }

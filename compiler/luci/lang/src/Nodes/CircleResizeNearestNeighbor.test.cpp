@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleResizeNearestNeighbor.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,5 +30,56 @@ TEST(CircleResizeNearestNeightborTest, constructor)
 
   ASSERT_EQ(nullptr, resize.input());
   ASSERT_EQ(nullptr, resize.size());
-  ASSERT_EQ(false, resize.align_corners());
+  ASSERT_FALSE(resize.align_corners());
+}
+
+TEST(CircleResizeNearestNeightborTest, input_NEG)
+{
+  luci::CircleResizeNearestNeighbor resize_node;
+  luci::CircleResizeNearestNeighbor node;
+
+  resize_node.input(&node);
+  resize_node.size(&node);
+  ASSERT_NE(nullptr, resize_node.input());
+  ASSERT_NE(nullptr, resize_node.size());
+
+  resize_node.input(nullptr);
+  resize_node.size(nullptr);
+  ASSERT_EQ(nullptr, resize_node.input());
+  ASSERT_EQ(nullptr, resize_node.size());
+
+  resize_node.align_corners(true);
+  ASSERT_TRUE(resize_node.align_corners());
+}
+
+TEST(CircleResizeNearestNeightborTest, arity_NEG)
+{
+  luci::CircleResizeNearestNeighbor resize_node;
+
+  ASSERT_NO_THROW(resize_node.arg(1));
+  ASSERT_THROW(resize_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleResizeNearestNeightborTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleResizeNearestNeighbor resize_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(resize_node.accept(&tv), std::exception);
+}
+
+TEST(CircleResizeNearestNeightborTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleResizeNearestNeighbor resize_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(resize_node.accept(&tv), std::exception);
 }
