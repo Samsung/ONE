@@ -174,6 +174,9 @@ int entry(int argc, char **argv)
   {
     auto graph = module->graph(idx);
 
+    // quantize the graph
+    optimizer.quantize(graph);
+
     // call luci optimizations
     optimizer.optimize(graph);
 
