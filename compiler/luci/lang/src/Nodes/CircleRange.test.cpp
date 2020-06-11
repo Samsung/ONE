@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleRange.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,56 @@ TEST(CircleRangeTest, constructor)
   ASSERT_EQ(nullptr, range_node.start());
   ASSERT_EQ(nullptr, range_node.limit());
   ASSERT_EQ(nullptr, range_node.delta());
+}
+
+TEST(CircleRangeTest, input_NEG)
+{
+  luci::CircleRange range_node;
+  luci::CircleRange node;
+
+  range_node.start(&node);
+  range_node.limit(&node);
+  range_node.delta(&node);
+  ASSERT_NE(nullptr, range_node.start());
+  ASSERT_NE(nullptr, range_node.limit());
+  ASSERT_NE(nullptr, range_node.delta());
+
+  range_node.start(nullptr);
+  range_node.limit(nullptr);
+  range_node.delta(nullptr);
+  ASSERT_EQ(nullptr, range_node.start());
+  ASSERT_EQ(nullptr, range_node.limit());
+  ASSERT_EQ(nullptr, range_node.delta());
+}
+
+TEST(CircleRangeTest, arity_NEG)
+{
+  luci::CircleRange range_node;
+
+  ASSERT_NO_THROW(range_node.arg(2));
+  ASSERT_THROW(range_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleRangeTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleRange range_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(range_node.accept(&tv), std::exception);
+}
+
+TEST(CircleRangeTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleRange range_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(range_node.accept(&tv), std::exception);
 }

@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CirclePRelu.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CirclePReluTest, constructor_P)
 
   ASSERT_EQ(nullptr, prelu_node.input());
   ASSERT_EQ(nullptr, prelu_node.alpha());
+}
+
+TEST(CirclePReluTest, input_NEG)
+{
+  luci::CirclePRelu prelu_node;
+  luci::CirclePRelu node;
+
+  prelu_node.input(&node);
+  prelu_node.alpha(&node);
+  ASSERT_NE(nullptr, prelu_node.input());
+  ASSERT_NE(nullptr, prelu_node.alpha());
+
+  prelu_node.input(nullptr);
+  prelu_node.alpha(nullptr);
+  ASSERT_EQ(nullptr, prelu_node.input());
+  ASSERT_EQ(nullptr, prelu_node.alpha());
+}
+
+TEST(CirclePReluTest, arity_NEG)
+{
+  luci::CirclePRelu prelu_node;
+
+  ASSERT_NO_THROW(prelu_node.arg(1));
+  ASSERT_THROW(prelu_node.arg(2), std::out_of_range);
+}
+
+TEST(CirclePReluTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CirclePRelu prelu_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(prelu_node.accept(&tv), std::exception);
+}
+
+TEST(CirclePReluTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CirclePRelu prelu_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(prelu_node.accept(&tv), std::exception);
 }
