@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSquare.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleSquareTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::SQUARE, square_node.opcode());
 
   ASSERT_EQ(nullptr, square_node.x());
+}
+
+TEST(CircleSquareTest, input_NEG)
+{
+  luci::CircleSquare square_node;
+  luci::CircleSquare node;
+
+  square_node.x(&node);
+  ASSERT_NE(nullptr, square_node.x());
+
+  square_node.x(nullptr);
+  ASSERT_EQ(nullptr, square_node.x());
+}
+
+TEST(CircleSquareTest, arity_NEG)
+{
+  luci::CircleSquare square_node;
+
+  ASSERT_NO_THROW(square_node.arg(0));
+  ASSERT_THROW(square_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleSquareTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSquare square_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(square_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSquareTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSquare square_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(square_node.accept(&tv), std::exception);
 }
