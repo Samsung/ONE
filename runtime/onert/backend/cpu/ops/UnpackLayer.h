@@ -36,14 +36,12 @@ public:
   UnpackLayer();
 
 public:
-  void unpackFloat32();
-
-  void unpackQuant8();
-
   void configure(const Tensor *input, uint32_t axis, int32_t num_output,
                  std::vector<Tensor *> &output);
-
   void run();
+
+private:
+  template <typename T> void unpackImpl();
 
 private:
   const Tensor *_input;

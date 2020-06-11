@@ -34,7 +34,7 @@ UnpackLayer::UnpackLayer() : _input(nullptr), _outputs(), _axis(0), _num_output(
   // DO NOTHING
 }
 
-void UnpackLayer::unpackFloat32()
+template <typename T> void UnpackLayer::unpackImpl()
 {
   nnfw::cker::UnpackParams op_params;
   op_params.axis = _axis;
@@ -51,22 +51,15 @@ void UnpackLayer::unpackFloat32()
     outputDimsPtr.push_back(&outputDims[i]);
   }
 
-  std::vector<float *> outputFloatPtrs;
+  std::vector<T *> outputPtrs;
 
   for (const auto output : _outputs)
   {
-    outputFloatPtrs.emplace_back(reinterpret_cast<float *>(output->buffer()));
+    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
   }
 
-  nnfw::cker::Unpack<float>(op_params, getTensorShape(_input),
-                            reinterpret_cast<float *>(_input->buffer()),
-                            getTensorShape(_outputs[0]), outputFloatPtrs.data());
-}
-
-void UnpackLayer::unpackQuant8()
-{
-  // cker quant8 pack is not implemented yet
-  throw std::runtime_error{"Unpack: NYI quant8 type"};
+  nnfw::cker::Unpack<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
+                        getTensorShape(_outputs[0]), outputPtrs.data());
 }
 
 void UnpackLayer::configure(const Tensor *input, uint32_t axis, int32_t num,
@@ -85,17 +78,11 @@ void UnpackLayer::configure(const Tensor *input, uint32_t axis, int32_t num,
 void UnpackLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
-  {
-    unpackFloat32();
-  }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    unpackQuant8();
-  }
+    unpackImpl<float>();
+  else if (_input->data_type() == OperandType::INT32)
+    unpackImpl<int32_t>();
   else
-  {
     throw std::runtime_error{"Unpack: Unsupported data type"};
-  }
 }
 
 } // namespace ops
