@@ -1,8 +1,8 @@
 # model
 model = Model()
 input_ = Input("op1", "TENSOR_FLOAT32", "{1, 1, 3, 3}")
-param_ = Parameter("op2", "TENSOR_INT32", "{1}", [-1])
-output_ = Output("op3", "TENSOR_FLOAT32", "{9}")
+param_ = Parameter("op2", "TENSOR_INT32", "{2}", [1, -1])
+output_ = Output("op3", "TENSOR_FLOAT32", "{1, 9}")
 model = model.Operation("RESHAPE", input_, param_).To(output_)
 
 # Example 1. Input in operand 0,

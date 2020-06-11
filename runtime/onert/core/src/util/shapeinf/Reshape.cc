@@ -22,15 +22,33 @@ namespace
 
 using namespace onert;
 
-bool isReshapableShape(const backend::ITensor *input, ir::Shape &shape)
+ir::Shape convertShape(const int32_t *shape_buf, const int32_t rank,
+                       const size_t total_num_elements)
 {
-  size_t input_elem_conut = 1;
+  ir::Shape ret(rank);
+  int32_t flatten_dim = ir::Shape::UNSPECIFIED_DIM;
+  for (int32_t i = 0; i < rank; ++i)
   {
-    for (size_t axis = 0; axis < input->num_dimensions(); axis++)
-      input_elem_conut *= input->dimension(axis);
+    if (shape_buf[i] < 0)
+    {
+      if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
+        throw std::runtime_error("Reshape: 2nd param has special dim(for flatten) more than twice");
+      flatten_dim = i;
+      ret.dim(i) = 1;
+    }
+    else
+    {
+      ret.dim(i) = shape_buf[i];
+    }
   }
+  if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
+    ret.dim(flatten_dim) = total_num_elements / ret.num_elements();
 
-  return (input_elem_conut == shape.num_elements());
+  // Check reshapable
+  if (total_num_elements != static_cast<size_t>(ret.num_elements()))
+    throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
+
+  return ret;
 }
 
 } // namespace
@@ -67,15 +85,27 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   const auto shape_idx{op.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
   const auto &shape = _operands.at(shape_idx);
 
-  // if shape is from Const, TFLC put the shape of output into tensor
+  ir::Shape new_shape;
   if (shape.isConstant())
   {
-    // no change on output shape
-    return;
-  }
+    const auto *shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
+    assert(shape_buf);
 
-  // if shape is NOT Const, set output shape to be dynamic_
-  output.info().setDynamic();
+    assert(shape.shape().rank() == 1);
+    new_shape = convertShape(shape_buf, shape.shape().dim(0), input.shape().num_elements());
+
+    // if shape is from Const, TFLC put the shape of output into tensor
+    if (new_shape != output.shape())
+    {
+      // change on output shape
+      output.info().shape(new_shape);
+    }
+  }
+  else
+  {
+    // if shape is NOT Const, set output shape to be dynamic_
+    output.info().setDynamic();
+  }
 }
 
 // DynamicInferer at execution time
@@ -109,15 +139,6 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  // input total_size;
-  size_t input_total_size = 1;
-  size_t rank = input->num_dimensions();
-
-  for (size_t d = 0; d < rank; d++)
-  {
-    input_total_size *= input->dimension(d);
-  }
-
   // from op, access the buffer of second input to read new shape
   auto new_shape_ind = op.getInputs().at(ir::operation::Reshape::Input::SHAPE);
 
@@ -128,34 +149,17 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   int32_t *new_shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
   assert(new_shape_buf);
 
-  auto new_rank = new_shape->dimension(0);
+  assert(new_shape->num_dimensions() == 1);
+  const auto new_rank = new_shape->dimension(0);
 
-  ir::Shape output_shape(new_rank);
+  auto output_shape = convertShape(new_shape_buf, new_rank, getShape(input.get()).num_elements());
 
-  size_t output_total_size = 1;
-  for (size_t d = 0; d < new_rank; d++)
+  // if shape is changed, change output shape and reallocate output tensor memory
+  if (output_shape != getShape(output.get()) || output->buffer() == nullptr)
   {
-    if (new_shape_buf[d] != ir::Shape::UNSPECIFIED_DIM)
-    {
-      output_total_size *= new_shape_buf[d];
-    }
+    // change on output shape
+    _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   }
-  for (size_t d = 0; d < new_rank; d++)
-  {
-    if (new_shape_buf[d] != ir::Shape::UNSPECIFIED_DIM)
-    {
-      output_shape.dim(d) = new_shape_buf[d];
-    }
-    else
-    {
-      output_shape.dim(d) = input_total_size / output_total_size;
-    }
-  }
-  // sanity check
-  if (!isReshapableShape(input.get(), output_shape))
-    throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
-
-  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
 
