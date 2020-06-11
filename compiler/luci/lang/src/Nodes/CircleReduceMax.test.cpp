@@ -29,7 +29,7 @@ TEST(CircleReduceMaxTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::REDUCE_MAX, reduce_max_node.opcode());
 
   ASSERT_EQ(nullptr, reduce_max_node.input());
-  ASSERT_EQ(nullptr, reduce_max_node.axis());
+  ASSERT_EQ(nullptr, reduce_max_node.reduction_indices());
 
   ASSERT_FALSE(reduce_max_node.keep_dims());
 }
@@ -40,14 +40,14 @@ TEST(CircleReduceMaxTest, input_NEG)
   luci::CircleReduceMax node;
 
   reduce_max_node.input(&node);
-  reduce_max_node.axis(&node);
+  reduce_max_node.reduction_indices(&node);
   ASSERT_NE(nullptr, reduce_max_node.input());
-  ASSERT_NE(nullptr, reduce_max_node.axis());
+  ASSERT_NE(nullptr, reduce_max_node.reduction_indices());
 
   reduce_max_node.input(nullptr);
-  reduce_max_node.axis(nullptr);
+  reduce_max_node.reduction_indices(nullptr);
   ASSERT_EQ(nullptr, reduce_max_node.input());
-  ASSERT_EQ(nullptr, reduce_max_node.axis());
+  ASSERT_EQ(nullptr, reduce_max_node.reduction_indices());
 
   reduce_max_node.keep_dims(true);
   ASSERT_TRUE(reduce_max_node.keep_dims());

@@ -850,7 +850,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceMax *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
-  s.args().append("axis", tbl()->lookup(node->axis()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
   s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;
@@ -860,7 +860,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceMin *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
-  s.args().append("axis", tbl()->lookup(node->axis()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
   s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;

@@ -29,7 +29,7 @@ TEST(CircleReduceMinTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::REDUCE_MIN, reduce_min_node.opcode());
 
   ASSERT_EQ(nullptr, reduce_min_node.input());
-  ASSERT_EQ(nullptr, reduce_min_node.axis());
+  ASSERT_EQ(nullptr, reduce_min_node.reduction_indices());
 
   ASSERT_FALSE(reduce_min_node.keep_dims());
 }
@@ -40,14 +40,14 @@ TEST(CircleReduceMinTest, input_NEG)
   luci::CircleReduceMin node;
 
   reduce_min_node.input(&node);
-  reduce_min_node.axis(&node);
+  reduce_min_node.reduction_indices(&node);
   ASSERT_NE(nullptr, reduce_min_node.input());
-  ASSERT_NE(nullptr, reduce_min_node.axis());
+  ASSERT_NE(nullptr, reduce_min_node.reduction_indices());
 
   reduce_min_node.input(nullptr);
-  reduce_min_node.axis(nullptr);
+  reduce_min_node.reduction_indices(nullptr);
   ASSERT_EQ(nullptr, reduce_min_node.input());
-  ASSERT_EQ(nullptr, reduce_min_node.axis());
+  ASSERT_EQ(nullptr, reduce_min_node.reduction_indices());
 
   reduce_min_node.keep_dims(true);
   ASSERT_TRUE(reduce_min_node.keep_dims());
