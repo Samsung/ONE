@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSplitV.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -31,4 +32,59 @@ TEST(CircleSplitVTest, constructor)
   ASSERT_EQ(nullptr, splitv_node.size_splits());
   ASSERT_EQ(nullptr, splitv_node.split_dim());
   ASSERT_EQ(0, splitv_node.num_split());
+}
+
+TEST(CircleSplitVTest, input_NEG)
+{
+  luci::CircleSplitV splitv_node;
+  luci::CircleSplitV node;
+
+  splitv_node.input(&node);
+  splitv_node.size_splits(&node);
+  splitv_node.split_dim(&node);
+  ASSERT_NE(nullptr, splitv_node.input());
+  ASSERT_NE(nullptr, splitv_node.size_splits());
+  ASSERT_NE(nullptr, splitv_node.split_dim());
+
+  splitv_node.input(nullptr);
+  splitv_node.size_splits(nullptr);
+  splitv_node.split_dim(nullptr);
+  ASSERT_EQ(nullptr, splitv_node.input());
+  ASSERT_EQ(nullptr, splitv_node.size_splits());
+  ASSERT_EQ(nullptr, splitv_node.split_dim());
+
+  splitv_node.num_split(100);
+  ASSERT_NE(0, splitv_node.num_split());
+}
+
+TEST(CircleSplitVTest, arity_NEG)
+{
+  luci::CircleSplitV splitv_node;
+
+  ASSERT_NO_THROW(splitv_node.arg(2));
+  ASSERT_THROW(splitv_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleSplitVTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSplitV splitv_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(splitv_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSplitVTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSplitV splitv_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(splitv_node.accept(&tv), std::exception);
 }

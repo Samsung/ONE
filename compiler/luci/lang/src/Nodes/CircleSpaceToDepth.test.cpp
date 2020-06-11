@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSpaceToDepth.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleSpaceToDepthTest, constructor)
   ASSERT_EQ(luci::CircleOpcode::SPACE_TO_DEPTH, std_node.opcode());
 
   ASSERT_EQ(nullptr, std_node.input());
+}
+
+TEST(CircleSpaceToDepthTest, input_NEG)
+{
+  luci::CircleSpaceToDepth std_node;
+  luci::CircleSpaceToDepth node;
+
+  std_node.input(&node);
+  ASSERT_NE(nullptr, std_node.input());
+
+  std_node.input(nullptr);
+  ASSERT_EQ(nullptr, std_node.input());
+}
+
+TEST(CircleSpaceToDepthTest, arity_NEG)
+{
+  luci::CircleSpaceToDepth std_node;
+
+  ASSERT_NO_THROW(std_node.arg(0));
+  ASSERT_THROW(std_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleSpaceToDepthTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSpaceToDepth std_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(std_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSpaceToDepthTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSpaceToDepth std_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(std_node.accept(&tv), std::exception);
 }
