@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleMean.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -31,4 +32,55 @@ TEST(CircleMeanTest, constructor)
   ASSERT_EQ(nullptr, mean_node.reduction_indices());
 
   ASSERT_FALSE(mean_node.keep_dims());
+}
+
+TEST(CircleMeanTest, input_NEG)
+{
+  luci::CircleMean mean_node;
+  luci::CircleMean node;
+
+  mean_node.input(&node);
+  mean_node.reduction_indices(&node);
+  ASSERT_NE(nullptr, mean_node.input());
+  ASSERT_NE(nullptr, mean_node.reduction_indices());
+
+  mean_node.input(nullptr);
+  mean_node.reduction_indices(nullptr);
+  ASSERT_EQ(nullptr, mean_node.input());
+  ASSERT_EQ(nullptr, mean_node.reduction_indices());
+
+  mean_node.keep_dims(true);
+  ASSERT_TRUE(mean_node.keep_dims());
+}
+
+TEST(CircleMeanTest, arity_NEG)
+{
+  luci::CircleMean mean_node;
+
+  ASSERT_NO_THROW(mean_node.arg(1));
+  ASSERT_THROW(mean_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleMeanTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleMean mean_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(mean_node.accept(&tv), std::exception);
+}
+
+TEST(CircleMeanTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleMean mean_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(mean_node.accept(&tv), std::exception);
 }

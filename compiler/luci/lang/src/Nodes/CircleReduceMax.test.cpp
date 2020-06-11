@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleReduceMax.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -31,4 +32,55 @@ TEST(CircleReduceMaxTest, constructor_P)
   ASSERT_EQ(nullptr, reduce_max_node.axis());
 
   ASSERT_FALSE(reduce_max_node.keep_dims());
+}
+
+TEST(CircleReduceMaxTest, input_NEG)
+{
+  luci::CircleReduceMax reduce_max_node;
+  luci::CircleReduceMax node;
+
+  reduce_max_node.input(&node);
+  reduce_max_node.axis(&node);
+  ASSERT_NE(nullptr, reduce_max_node.input());
+  ASSERT_NE(nullptr, reduce_max_node.axis());
+
+  reduce_max_node.input(nullptr);
+  reduce_max_node.axis(nullptr);
+  ASSERT_EQ(nullptr, reduce_max_node.input());
+  ASSERT_EQ(nullptr, reduce_max_node.axis());
+
+  reduce_max_node.keep_dims(true);
+  ASSERT_TRUE(reduce_max_node.keep_dims());
+}
+
+TEST(CircleReduceMaxTest, arity_NEG)
+{
+  luci::CircleReduceMax reduce_max_node;
+
+  ASSERT_NO_THROW(reduce_max_node.arg(1));
+  ASSERT_THROW(reduce_max_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleReduceMaxTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleReduceMax reduce_max_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(reduce_max_node.accept(&tv), std::exception);
+}
+
+TEST(CircleReduceMaxTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleReduceMax reduce_max_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(reduce_max_node.accept(&tv), std::exception);
 }
