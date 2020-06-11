@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleRsqrt.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleRsqrtTest, constructor)
   ASSERT_EQ(luci::CircleOpcode::RSQRT, rsqrt_node.opcode());
 
   ASSERT_EQ(nullptr, rsqrt_node.x());
+}
+
+TEST(CircleRsqrtTest, input_NEG)
+{
+  luci::CircleRsqrt rsqrt_node;
+  luci::CircleRsqrt node;
+
+  rsqrt_node.x(&node);
+  ASSERT_NE(nullptr, rsqrt_node.x());
+
+  rsqrt_node.x(nullptr);
+  ASSERT_EQ(nullptr, rsqrt_node.x());
+}
+
+TEST(CircleRsqrtTest, arity_NEG)
+{
+  luci::CircleRsqrt rsqrt_node;
+
+  ASSERT_NO_THROW(rsqrt_node.arg(0));
+  ASSERT_THROW(rsqrt_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleRsqrtTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleRsqrt rsqrt_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(rsqrt_node.accept(&tv), std::exception);
+}
+
+TEST(CircleRsqrtTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleRsqrt rsqrt_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(rsqrt_node.accept(&tv), std::exception);
 }

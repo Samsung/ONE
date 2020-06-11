@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSelect.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,56 @@ TEST(CircleSelectTest, constructor)
   ASSERT_EQ(nullptr, select_node.condition());
   ASSERT_EQ(nullptr, select_node.t());
   ASSERT_EQ(nullptr, select_node.e());
+}
+
+TEST(CircleSelectTest, input_NEG)
+{
+  luci::CircleSelect select_node;
+  luci::CircleSelect node;
+
+  select_node.condition(&node);
+  select_node.t(&node);
+  select_node.e(&node);
+  ASSERT_NE(nullptr, select_node.condition());
+  ASSERT_NE(nullptr, select_node.t());
+  ASSERT_NE(nullptr, select_node.e());
+
+  select_node.condition(nullptr);
+  select_node.t(nullptr);
+  select_node.e(nullptr);
+  ASSERT_EQ(nullptr, select_node.condition());
+  ASSERT_EQ(nullptr, select_node.t());
+  ASSERT_EQ(nullptr, select_node.e());
+}
+
+TEST(CircleSelectTest, arity_NEG)
+{
+  luci::CircleSelect select_node;
+
+  ASSERT_NO_THROW(select_node.arg(2));
+  ASSERT_THROW(select_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleSelectTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSelect select_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(select_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSelectTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSelect select_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(select_node.accept(&tv), std::exception);
 }
