@@ -1250,7 +1250,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleReduceMax *node) final
   {
-    auto output_shape = infer_reducer(node->input(), node->axis(), node->keep_dims());
+    auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
     return loco::NodeShape{output_shape};
   }
 
