@@ -135,14 +135,14 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   size_t output_total_size = 1;
   for (size_t d = 0; d < new_rank; d++)
   {
-    if (new_shape_buf[d] != -1)
+    if (new_shape_buf[d] != ir::Shape::UNSPECIFIED_DIM)
     {
       output_total_size *= new_shape_buf[d];
     }
   }
   for (size_t d = 0; d < new_rank; d++)
   {
-    if (new_shape_buf[d] != -1)
+    if (new_shape_buf[d] != ir::Shape::UNSPECIFIED_DIM)
     {
       output_shape.dim(d) = new_shape_buf[d];
     }
