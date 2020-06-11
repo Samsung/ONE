@@ -36,12 +36,9 @@ public:
   PackLayer();
 
 public:
-  void packFloat32();
-
-  void packQuant8();
+  template <typename T> void packImpl();
 
   void configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output);
-
   void run();
 
 private:
