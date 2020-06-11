@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleInstanceNorm.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -32,4 +33,59 @@ TEST(CircleInstanceNormTest, constructor)
   ASSERT_EQ(nullptr, instance_norm.beta());
   ASSERT_FLOAT_EQ(instance_norm.epsilon(), 1e-05);
   ASSERT_EQ(luci::FusedActFunc::UNDEFINED, instance_norm.fusedActivationFunction());
+}
+
+TEST(CircleInstanceNormTest, input_NEG)
+{
+  luci::CircleInstanceNorm instance_norm;
+  luci::CircleInstanceNorm node;
+
+  instance_norm.input(&node);
+  instance_norm.gamma(&node);
+  instance_norm.beta(&node);
+  ASSERT_NE(nullptr, instance_norm.input());
+  ASSERT_NE(nullptr, instance_norm.gamma());
+  ASSERT_NE(nullptr, instance_norm.beta());
+
+  instance_norm.input(nullptr);
+  instance_norm.gamma(nullptr);
+  instance_norm.beta(nullptr);
+  ASSERT_EQ(nullptr, instance_norm.input());
+  ASSERT_EQ(nullptr, instance_norm.gamma());
+  ASSERT_EQ(nullptr, instance_norm.beta());
+
+  instance_norm.fusedActivationFunction(luci::FusedActFunc::RELU);
+  ASSERT_NE(luci::FusedActFunc::UNDEFINED, instance_norm.fusedActivationFunction());
+}
+
+TEST(CircleInstanceNormTest, arity_NEG)
+{
+  luci::CircleInstanceNorm instance_norm;
+
+  ASSERT_NO_THROW(instance_norm.arg(2));
+  ASSERT_THROW(instance_norm.arg(3), std::out_of_range);
+}
+
+TEST(CircleInstanceNormTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleInstanceNorm instance_norm;
+
+  TestVisitor tv;
+  ASSERT_THROW(instance_norm.accept(&tv), std::exception);
+}
+
+TEST(CircleInstanceNormTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleInstanceNorm instance_norm;
+
+  TestVisitor tv;
+  ASSERT_THROW(instance_norm.accept(&tv), std::exception);
 }

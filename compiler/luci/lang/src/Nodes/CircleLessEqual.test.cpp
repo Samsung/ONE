@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleLessEqual.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleLessEqualTest, constructor_P)
 
   ASSERT_EQ(nullptr, less_equal_node.x());
   ASSERT_EQ(nullptr, less_equal_node.y());
+}
+
+TEST(CircleLessEqualTest, input_NEG)
+{
+  luci::CircleLessEqual less_equal_node;
+  luci::CircleLessEqual node;
+
+  less_equal_node.x(&node);
+  less_equal_node.y(&node);
+  ASSERT_NE(nullptr, less_equal_node.x());
+  ASSERT_NE(nullptr, less_equal_node.y());
+
+  less_equal_node.x(nullptr);
+  less_equal_node.y(nullptr);
+  ASSERT_EQ(nullptr, less_equal_node.x());
+  ASSERT_EQ(nullptr, less_equal_node.y());
+}
+
+TEST(CircleLessEqualTest, arity_NEG)
+{
+  luci::CircleLessEqual less_equal_node;
+
+  ASSERT_NO_THROW(less_equal_node.arg(1));
+  ASSERT_THROW(less_equal_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleLessEqualTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleLessEqual less_equal_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(less_equal_node.accept(&tv), std::exception);
+}
+
+TEST(CircleLessEqualTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleLessEqual less_equal_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(less_equal_node.accept(&tv), std::exception);
 }
