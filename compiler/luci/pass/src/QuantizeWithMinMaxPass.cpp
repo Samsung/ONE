@@ -400,17 +400,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     circle_node->accept(&qb);
   }
 
-  // Change the output type
-  for (auto node : loco::output_nodes(g))
-  {
-    auto circle_node = loco::must_cast<luci::CircleOutput *>(node);
-    circle_node->dtype(loco::DataType::U8);
-
-    auto graph_outputs = g->outputs();
-    auto graph_output = graph_outputs->at(circle_node->index());
-    graph_output->dtype(loco::DataType::U8);
-  }
-
   INFO(l) << "QuantizeWithMinMaxPass End" << std::endl;
   return false; // one time run
 }
