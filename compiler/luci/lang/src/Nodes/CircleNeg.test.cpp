@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleNeg.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleNegTest, constructor)
   ASSERT_EQ(luci::CircleOpcode::NEG, neg_node.opcode());
 
   ASSERT_EQ(nullptr, neg_node.x());
+}
+
+TEST(CircleNegTest, input_NEG)
+{
+  luci::CircleNeg neg_node;
+  luci::CircleNeg node;
+
+  neg_node.x(&node);
+  ASSERT_NE(nullptr, neg_node.x());
+
+  neg_node.x(nullptr);
+  ASSERT_EQ(nullptr, neg_node.x());
+}
+
+TEST(CircleNegTest, arity_NEG)
+{
+  luci::CircleNeg neg_node;
+
+  ASSERT_NO_THROW(neg_node.arg(0));
+  ASSERT_THROW(neg_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleNegTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleNeg neg_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(neg_node.accept(&tv), std::exception);
+}
+
+TEST(CircleNegTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleNeg neg_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(neg_node.accept(&tv), std::exception);
 }
