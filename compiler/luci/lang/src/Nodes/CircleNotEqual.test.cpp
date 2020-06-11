@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleNotEqual.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleNotEqualTest, constructor_P)
 
   ASSERT_EQ(nullptr, not_equal_node.x());
   ASSERT_EQ(nullptr, not_equal_node.y());
+}
+
+TEST(CircleNotEqualTest, input_NEG)
+{
+  luci::CircleNotEqual not_equal_node;
+  luci::CircleNotEqual node;
+
+  not_equal_node.x(&node);
+  not_equal_node.y(&node);
+  ASSERT_NE(nullptr, not_equal_node.x());
+  ASSERT_NE(nullptr, not_equal_node.y());
+
+  not_equal_node.x(nullptr);
+  not_equal_node.y(nullptr);
+  ASSERT_EQ(nullptr, not_equal_node.x());
+  ASSERT_EQ(nullptr, not_equal_node.y());
+}
+
+TEST(CircleNotEqualTest, arity_NEG)
+{
+  luci::CircleNotEqual not_equal_node;
+
+  ASSERT_NO_THROW(not_equal_node.arg(1));
+  ASSERT_THROW(not_equal_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleNotEqualTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleNotEqual not_equal_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(not_equal_node.accept(&tv), std::exception);
+}
+
+TEST(CircleNotEqualTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleNotEqual not_equal_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(not_equal_node.accept(&tv), std::exception);
 }

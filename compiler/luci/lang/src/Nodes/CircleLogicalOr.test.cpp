@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleLogicalOr.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleLogicalOrTest, constructor_P)
 
   ASSERT_EQ(nullptr, or_node.x());
   ASSERT_EQ(nullptr, or_node.y());
+}
+
+TEST(CircleLogicalOrTest, input_NEG)
+{
+  luci::CircleLogicalOr or_node;
+  luci::CircleLogicalOr node;
+
+  or_node.x(&node);
+  or_node.y(&node);
+  ASSERT_NE(nullptr, or_node.x());
+  ASSERT_NE(nullptr, or_node.y());
+
+  or_node.x(nullptr);
+  or_node.y(nullptr);
+  ASSERT_EQ(nullptr, or_node.x());
+  ASSERT_EQ(nullptr, or_node.y());
+}
+
+TEST(CircleLogicalOrTest, arity_NEG)
+{
+  luci::CircleLogicalOr or_node;
+
+  ASSERT_NO_THROW(or_node.arg(1));
+  ASSERT_THROW(or_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleLogicalOrTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleLogicalOr or_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(or_node.accept(&tv), std::exception);
+}
+
+TEST(CircleLogicalOrTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleLogicalOr or_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(or_node.accept(&tv), std::exception);
 }
