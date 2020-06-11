@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleScatterNd.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,56 @@ TEST(CircleScatterNdTest, constructor_P)
   ASSERT_EQ(nullptr, scatter_nd_node.indices());
   ASSERT_EQ(nullptr, scatter_nd_node.updates());
   ASSERT_EQ(nullptr, scatter_nd_node.shape());
+}
+
+TEST(CircleScatterNdTest, input_NEG)
+{
+  luci::CircleScatterNd scatter_nd_node;
+  luci::CircleScatterNd node;
+
+  scatter_nd_node.indices(&node);
+  scatter_nd_node.updates(&node);
+  scatter_nd_node.shape(&node);
+  ASSERT_NE(nullptr, scatter_nd_node.indices());
+  ASSERT_NE(nullptr, scatter_nd_node.updates());
+  ASSERT_NE(nullptr, scatter_nd_node.shape());
+
+  scatter_nd_node.indices(nullptr);
+  scatter_nd_node.updates(nullptr);
+  scatter_nd_node.shape(nullptr);
+  ASSERT_EQ(nullptr, scatter_nd_node.indices());
+  ASSERT_EQ(nullptr, scatter_nd_node.updates());
+  ASSERT_EQ(nullptr, scatter_nd_node.shape());
+}
+
+TEST(CircleScatterNdTest, arity_NEG)
+{
+  luci::CircleScatterNd scatter_nd_node;
+
+  ASSERT_NO_THROW(scatter_nd_node.arg(2));
+  ASSERT_THROW(scatter_nd_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleScatterNdTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleScatterNd scatter_nd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(scatter_nd_node.accept(&tv), std::exception);
+}
+
+TEST(CircleScatterNdTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleScatterNd scatter_nd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(scatter_nd_node.accept(&tv), std::exception);
 }
