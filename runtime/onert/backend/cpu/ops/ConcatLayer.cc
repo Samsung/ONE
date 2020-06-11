@@ -34,7 +34,7 @@ ConcatLayer::ConcatLayer() : _inputs(), _output(nullptr), _axis(0)
   // DO NOTHING
 }
 
-void ConcatLayer::concatenationFloat32()
+template <typename T> void ConcatLayer::concatenationGeneral()
 {
   uint32_t num_inputs = _inputs.size();
 
@@ -53,16 +53,15 @@ void ConcatLayer::concatenationFloat32()
     inputDimsPtr.push_back(&inputDims[i]);
   }
 
-  std::vector<const float *> inputFloatPtrs;
+  std::vector<const T *> inputDataPtrs;
 
   for (const auto input : _inputs)
   {
-    inputFloatPtrs.emplace_back(reinterpret_cast<const float *>(input->buffer()));
+    inputDataPtrs.emplace_back(reinterpret_cast<const T *>(input->buffer()));
   }
 
-  nnfw::cker::Concatenation<float>(op_params, inputDimsPtr.data(), inputFloatPtrs.data(),
-                                   getTensorShape(_output),
-                                   reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Concatenation<T>(op_params, inputDimsPtr.data(), inputDataPtrs.data(),
+                               getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 }
 void ConcatLayer::concatenationQuant8()
 {
@@ -119,11 +118,15 @@ void ConcatLayer::run()
 {
   if (_output->data_type() == OperandType::FLOAT32)
   {
-    concatenationFloat32();
+    concatenationGeneral<float>();
   }
   else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     concatenationQuant8();
+  }
+  else if (_output->data_type() == OperandType::INT32)
+  {
+    concatenationGeneral<int32_t>();
   }
   else
     throw std::runtime_error("Concat: unsupported data type");
