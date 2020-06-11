@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleMul.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleMulTest, constructor_P)
 
   ASSERT_EQ(nullptr, mul_node.x());
   ASSERT_EQ(nullptr, mul_node.y());
+}
+
+TEST(CircleMulTest, input_NEG)
+{
+  luci::CircleMul mul_node;
+  luci::CircleMul node;
+
+  mul_node.x(&node);
+  mul_node.y(&node);
+  ASSERT_NE(nullptr, mul_node.x());
+  ASSERT_NE(nullptr, mul_node.y());
+
+  mul_node.x(nullptr);
+  mul_node.y(nullptr);
+  ASSERT_EQ(nullptr, mul_node.x());
+  ASSERT_EQ(nullptr, mul_node.y());
+}
+
+TEST(CircleMulTest, arity_NEG)
+{
+  luci::CircleMul mul_node;
+
+  ASSERT_NO_THROW(mul_node.arg(1));
+  ASSERT_THROW(mul_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleMulTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleMul mul_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(mul_node.accept(&tv), std::exception);
+}
+
+TEST(CircleMulTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleMul mul_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(mul_node.accept(&tv), std::exception);
 }
