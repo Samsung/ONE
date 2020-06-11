@@ -61,6 +61,8 @@ public:
 public:
   void optimize(loco::Graph *) const;
 
+  void quantize(loco::Graph *) const;
+
 private:
   std::unique_ptr<Options> _options;
 };

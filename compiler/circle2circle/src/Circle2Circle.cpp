@@ -182,6 +182,9 @@ int entry(int argc, char **argv)
       std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
       return 255;
     }
+
+    // quantize the graph
+    optimizer.quantize(graph);
   }
 
   // Export to output Circle file
