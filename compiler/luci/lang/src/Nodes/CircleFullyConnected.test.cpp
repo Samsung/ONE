@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleFullyConnected.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -31,4 +32,59 @@ TEST(CircleFullyConnectedTest, constructor)
   ASSERT_EQ(nullptr, fc_node.weights());
   ASSERT_EQ(nullptr, fc_node.bias());
   ASSERT_EQ(luci::FusedActFunc::UNDEFINED, fc_node.fusedActivationFunction());
+}
+
+TEST(CircleFullyConnectedTest, input_NEG)
+{
+  luci::CircleFullyConnected fc_node;
+  luci::CircleFullyConnected node;
+
+  fc_node.input(&node);
+  fc_node.weights(&node);
+  fc_node.bias(&node);
+  ASSERT_NE(nullptr, fc_node.input());
+  ASSERT_NE(nullptr, fc_node.weights());
+  ASSERT_NE(nullptr, fc_node.bias());
+
+  fc_node.input(nullptr);
+  fc_node.weights(nullptr);
+  fc_node.bias(nullptr);
+  ASSERT_EQ(nullptr, fc_node.input());
+  ASSERT_EQ(nullptr, fc_node.weights());
+  ASSERT_EQ(nullptr, fc_node.bias());
+
+  fc_node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  ASSERT_NE(luci::FusedActFunc::UNDEFINED, fc_node.fusedActivationFunction());
+}
+
+TEST(CircleFullyConnectedTest, arity_NEG)
+{
+  luci::CircleFullyConnected fc_node;
+
+  ASSERT_NO_THROW(fc_node.arg(2));
+  ASSERT_THROW(fc_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleFullyConnectedTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleFullyConnected fc_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(fc_node.accept(&tv), std::exception);
+}
+
+TEST(CircleFullyConnectedTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleFullyConnected fc_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(fc_node.accept(&tv), std::exception);
 }

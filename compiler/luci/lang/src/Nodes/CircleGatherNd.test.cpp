@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleGatherNd.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleGatherNdTest, constructor)
 
   ASSERT_EQ(nullptr, gather_nd_node.params());
   ASSERT_EQ(nullptr, gather_nd_node.indices());
+}
+
+TEST(CircleGatherNdTest, input_NEG)
+{
+  luci::CircleGatherNd gather_nd_node;
+  luci::CircleGatherNd node;
+
+  gather_nd_node.params(&node);
+  gather_nd_node.indices(&node);
+  ASSERT_NE(nullptr, gather_nd_node.params());
+  ASSERT_NE(nullptr, gather_nd_node.indices());
+
+  gather_nd_node.params(nullptr);
+  gather_nd_node.indices(nullptr);
+  ASSERT_EQ(nullptr, gather_nd_node.params());
+  ASSERT_EQ(nullptr, gather_nd_node.indices());
+}
+
+TEST(CircleGatherNdTest, arity_NEG)
+{
+  luci::CircleGatherNd gather_nd_node;
+
+  ASSERT_NO_THROW(gather_nd_node.arg(1));
+  ASSERT_THROW(gather_nd_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleGatherNdTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleGatherNd gather_nd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(gather_nd_node.accept(&tv), std::exception);
+}
+
+TEST(CircleGatherNdTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleGatherNd gather_nd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(gather_nd_node.accept(&tv), std::exception);
 }
