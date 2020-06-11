@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleFloorMod.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleFloorModTest, constructor)
 
   ASSERT_EQ(nullptr, floormod_node.x());
   ASSERT_EQ(nullptr, floormod_node.y());
+}
+
+TEST(CircleFloorModTest, input_NEG)
+{
+  luci::CircleFloorMod floormod_node;
+  luci::CircleFloorMod node;
+
+  floormod_node.x(&node);
+  floormod_node.y(&node);
+  ASSERT_NE(nullptr, floormod_node.x());
+  ASSERT_NE(nullptr, floormod_node.y());
+
+  floormod_node.x(nullptr);
+  floormod_node.y(nullptr);
+  ASSERT_EQ(nullptr, floormod_node.x());
+  ASSERT_EQ(nullptr, floormod_node.y());
+}
+
+TEST(CircleFloorModTest, arity_NEG)
+{
+  luci::CircleFloorMod floormod_node;
+
+  ASSERT_NO_THROW(floormod_node.arg(1));
+  ASSERT_THROW(floormod_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleFloorModTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleFloorMod floormod_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(floormod_node.accept(&tv), std::exception);
+}
+
+TEST(CircleFloorModTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleFloorMod floormod_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(floormod_node.accept(&tv), std::exception);
 }
