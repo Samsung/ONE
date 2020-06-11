@@ -46,6 +46,15 @@ TEST(CircleAveragePool2DTest, input_NEG)
 
   avgpool_node.value(nullptr);
   ASSERT_EQ(nullptr, avgpool_node.value());
+
+  avgpool_node.filter()->h(2);
+  avgpool_node.filter()->w(2);
+  avgpool_node.stride()->h(2);
+  avgpool_node.stride()->w(2);
+  ASSERT_NE(1, avgpool_node.filter()->h());
+  ASSERT_NE(1, avgpool_node.filter()->w());
+  ASSERT_NE(1, avgpool_node.stride()->h());
+  ASSERT_NE(1, avgpool_node.stride()->w());
 }
 
 TEST(CircleAveragePool2DTest, arity_NEG)
