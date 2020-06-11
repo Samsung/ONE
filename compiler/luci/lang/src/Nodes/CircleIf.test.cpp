@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleIf.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -59,4 +60,28 @@ TEST(CircleIfTestDeath, invalid_input_set_index_NEG)
   luci::CircleIf if_node(2, 2);
 
   EXPECT_ANY_THROW(if_node.input(100, nullptr));
+}
+
+TEST(CircleIfTestDeath, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleIf if_node(2, 2);
+
+  TestVisitor tv;
+  ASSERT_THROW(if_node.accept(&tv), std::exception);
+}
+
+TEST(CircleIfTestDeath, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleIf if_node(2, 2);
+
+  TestVisitor tv;
+  ASSERT_THROW(if_node.accept(&tv), std::exception);
 }
