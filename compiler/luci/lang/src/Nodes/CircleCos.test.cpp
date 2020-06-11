@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleCos.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleCosTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::COS, cos_node.opcode());
 
   ASSERT_EQ(nullptr, cos_node.x());
+}
+
+TEST(CircleCosTest, input_NEG)
+{
+  luci::CircleCos cos_node;
+  luci::CircleCos node;
+
+  cos_node.x(&node);
+  ASSERT_NE(nullptr, cos_node.x());
+
+  cos_node.x(nullptr);
+  ASSERT_EQ(nullptr, cos_node.x());
+}
+
+TEST(CircleCosTest, arity_NEG)
+{
+  luci::CircleCos cos_node;
+
+  ASSERT_NO_THROW(cos_node.arg(0));
+  ASSERT_THROW(cos_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleCosTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleCos cos_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(cos_node.accept(&tv), std::exception);
+}
+
+TEST(CircleCosTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleCos cos_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(cos_node.accept(&tv), std::exception);
 }
