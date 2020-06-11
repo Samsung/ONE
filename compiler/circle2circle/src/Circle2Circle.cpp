@@ -177,14 +177,14 @@ int entry(int argc, char **argv)
     // call luci optimizations
     optimizer.optimize(graph);
 
+    // quantize the graph
+    optimizer.quantize(graph);
+
     if (!luci::validate(graph))
     {
       std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
       return 255;
     }
-
-    // quantize the graph
-    optimizer.quantize(graph);
   }
 
   // Export to output Circle file
