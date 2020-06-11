@@ -109,16 +109,17 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
+  // input total_size;
+  size_t input_total_size = 1;
+  size_t rank = input->num_dimensions();
+
+  for (size_t d = 0; d < rank; d++)
+  {
+    input_total_size *= input->dimension(d);
+  }
+
   // from op, access the buffer of second input to read new shape
   auto new_shape_ind = op.getInputs().at(ir::operation::Reshape::Input::SHAPE);
-  auto &new_shape_op = _operands.at(new_shape_ind);
-
-  // if shape is from Const, TFLC put the shape of output into tensor
-  if (new_shape_op.isConstant())
-  {
-    // no change on output shape
-    return;
-  }
 
   // getting output shape by reading new_shape tensor buffer
   auto new_shape = _tensor_registry->getITensor(new_shape_ind);
@@ -130,9 +131,26 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   auto new_rank = new_shape->dimension(0);
 
   ir::Shape output_shape(new_rank);
-  for (size_t d = 0; d < new_rank; d++)
-    output_shape.dim(d) = new_shape_buf[d];
 
+  size_t output_total_size = 1;
+  for (size_t d = 0; d < new_rank; d++)
+  {
+    if (new_shape_buf[d] != -1)
+    {
+      output_total_size *= new_shape_buf[d];
+    }
+  }
+  for (size_t d = 0; d < new_rank; d++)
+  {
+    if (new_shape_buf[d] != -1)
+    {
+      output_shape.dim(d) = new_shape_buf[d];
+    }
+    else
+    {
+      output_shape.dim(d) = input_total_size / output_total_size;
+    }
+  }
   // sanity check
   if (!isReshapableShape(input.get(), output_shape))
     throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
