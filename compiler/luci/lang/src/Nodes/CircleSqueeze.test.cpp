@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSqueeze.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -39,4 +40,48 @@ TEST(CircleSqueezeTest, squeeze_dims)
 
   ASSERT_EQ(1, squeeze.squeeze_dims().at(0));
   ASSERT_EQ(2, squeeze.squeeze_dims().at(1));
+}
+
+TEST(CircleSqueezeTest, input_NEG)
+{
+  luci::CircleSqueeze squeeze_node;
+  luci::CircleSqueeze node;
+
+  squeeze_node.input(&node);
+  ASSERT_NE(nullptr, squeeze_node.input());
+
+  squeeze_node.input(nullptr);
+  ASSERT_EQ(nullptr, squeeze_node.input());
+}
+
+TEST(CircleSqueezeTest, arity_NEG)
+{
+  luci::CircleSqueeze squeeze_node;
+
+  ASSERT_NO_THROW(squeeze_node.arg(0));
+  ASSERT_THROW(squeeze_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleSqueezeTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSqueeze squeeze_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(squeeze_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSqueezeTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSqueeze squeeze_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(squeeze_node.accept(&tv), std::exception);
 }

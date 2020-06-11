@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSquaredDifference.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleSquaredDifferenceTest, constructor_P)
 
   ASSERT_EQ(nullptr, sd_node.x());
   ASSERT_EQ(nullptr, sd_node.y());
+}
+
+TEST(CircleSquaredDifferenceTest, input_NEG)
+{
+  luci::CircleSquaredDifference sd_node;
+  luci::CircleSquaredDifference node;
+
+  sd_node.x(&node);
+  sd_node.y(&node);
+  ASSERT_NE(nullptr, sd_node.x());
+  ASSERT_NE(nullptr, sd_node.y());
+
+  sd_node.x(nullptr);
+  sd_node.y(nullptr);
+  ASSERT_EQ(nullptr, sd_node.x());
+  ASSERT_EQ(nullptr, sd_node.y());
+}
+
+TEST(CircleSquaredDifferenceTest, arity_NEG)
+{
+  luci::CircleSquaredDifference sd_node;
+
+  ASSERT_NO_THROW(sd_node.arg(1));
+  ASSERT_THROW(sd_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleSquaredDifferenceTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSquaredDifference sd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sd_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSquaredDifferenceTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSquaredDifference sd_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sd_node.accept(&tv), std::exception);
 }
