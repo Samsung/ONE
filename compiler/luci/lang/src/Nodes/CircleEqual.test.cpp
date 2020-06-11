@@ -17,16 +17,65 @@
 #include "luci/IR/Nodes/CircleEqual.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
 TEST(CircleEqualTest, constructor_P)
 {
-  luci::CircleEqual or_node;
+  luci::CircleEqual equ_node;
 
-  ASSERT_EQ(luci::CircleDialect::get(), or_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::EQUAL, or_node.opcode());
+  ASSERT_EQ(luci::CircleDialect::get(), equ_node.dialect());
+  ASSERT_EQ(luci::CircleOpcode::EQUAL, equ_node.opcode());
 
-  ASSERT_EQ(nullptr, or_node.x());
-  ASSERT_EQ(nullptr, or_node.y());
+  ASSERT_EQ(nullptr, equ_node.x());
+  ASSERT_EQ(nullptr, equ_node.y());
+}
+
+TEST(CircleEqualTest, input_NEG)
+{
+  luci::CircleEqual equ_node;
+  luci::CircleEqual node;
+
+  equ_node.x(&node);
+  equ_node.y(&node);
+  ASSERT_NE(nullptr, equ_node.x());
+  ASSERT_NE(nullptr, equ_node.y());
+
+  equ_node.x(nullptr);
+  equ_node.y(nullptr);
+  ASSERT_EQ(nullptr, equ_node.x());
+  ASSERT_EQ(nullptr, equ_node.y());
+}
+
+TEST(CircleEqualTest, arity_NEG)
+{
+  luci::CircleEqual equ_node;
+
+  ASSERT_NO_THROW(equ_node.arg(1));
+  ASSERT_THROW(equ_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleEqualTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleEqual equ_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(equ_node.accept(&tv), std::exception);
+}
+
+TEST(CircleEqualTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleEqual equ_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(equ_node.accept(&tv), std::exception);
 }
