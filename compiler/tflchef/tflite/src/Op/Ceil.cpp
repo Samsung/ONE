@@ -27,7 +27,7 @@ void TFliteOpCeil::filler(const tflite::Operator *, TFliteImport *, tflchef::Mod
 }
 
 tflchef::Operation *TFliteOpCeil::build(const tflite::Operator *, TFliteImport *,
-                                         tflchef::ModelRecipe *model_recipe) const
+                                        tflchef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
 
