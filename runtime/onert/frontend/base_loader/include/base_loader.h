@@ -266,18 +266,14 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
       shape.append(dim);
     }
   }
-  // Shape signature
-  const auto *shape_signature = tensor->shape_signature();
-  if (shape_signature != nullptr)
-  {
-    int axis = 0;
-    for (const auto &shape_sig : *shape_signature)
-    {
-      if (shape_sig == -1)
-        shape.addChangeableDim(axis);
-      axis++;
-    }
-  }
+
+  // Note for tensor->shape_signature()
+  // We don't handle shape signature
+  //    How we handle:
+  //       If shape_signature[k] == -1, we will use tensor->shape()[k] == 1
+  //       If app wants to change the input shape, call nnfw_apply_input_tensorinfo() can
+  //       be used.
+
   // Type
   ir::DataType data_type = tensorTypeToDataType(tensor->type());
   // Quantization
