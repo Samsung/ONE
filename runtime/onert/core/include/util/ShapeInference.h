@@ -131,6 +131,7 @@ private:
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Max &op);
@@ -216,6 +217,7 @@ public:
   void visit(const ir::operation::FullyConnected &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
+  void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Mul &op);
