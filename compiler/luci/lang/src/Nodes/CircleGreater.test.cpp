@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleGreater.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleGreaterTest, constructor_P)
 
   ASSERT_EQ(nullptr, greater_node.x());
   ASSERT_EQ(nullptr, greater_node.y());
+}
+
+TEST(CircleGreaterTest, input_NEG)
+{
+  luci::CircleGreater greater_node;
+  luci::CircleGreater node;
+
+  greater_node.x(&node);
+  greater_node.y(&node);
+  ASSERT_NE(nullptr, greater_node.x());
+  ASSERT_NE(nullptr, greater_node.y());
+
+  greater_node.x(nullptr);
+  greater_node.y(nullptr);
+  ASSERT_EQ(nullptr, greater_node.x());
+  ASSERT_EQ(nullptr, greater_node.y());
+}
+
+TEST(CircleGreaterTest, arity_NEG)
+{
+  luci::CircleGreater greater_node;
+
+  ASSERT_NO_THROW(greater_node.arg(1));
+  ASSERT_THROW(greater_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleGreaterTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleGreater greater_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(greater_node.accept(&tv), std::exception);
+}
+
+TEST(CircleGreaterTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleGreater greater_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(greater_node.accept(&tv), std::exception);
 }
