@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleReduceAny.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -31,4 +32,55 @@ TEST(CircleReduceAnyTest, constructor)
   ASSERT_EQ(nullptr, reduce_any_node.reduction_indices());
 
   ASSERT_FALSE(reduce_any_node.keep_dims());
+}
+
+TEST(CircleReduceAnyTest, input_NEG)
+{
+  luci::CircleReduceAny reduce_any_node;
+  luci::CircleReduceAny node;
+
+  reduce_any_node.input(&node);
+  reduce_any_node.reduction_indices(&node);
+  ASSERT_NE(nullptr, reduce_any_node.input());
+  ASSERT_NE(nullptr, reduce_any_node.reduction_indices());
+
+  reduce_any_node.input(nullptr);
+  reduce_any_node.reduction_indices(nullptr);
+  ASSERT_EQ(nullptr, reduce_any_node.input());
+  ASSERT_EQ(nullptr, reduce_any_node.reduction_indices());
+
+  reduce_any_node.keep_dims(true);
+  ASSERT_TRUE(reduce_any_node.keep_dims());
+}
+
+TEST(CircleReduceAnyTest, arity_NEG)
+{
+  luci::CircleReduceAny reduce_any_node;
+
+  ASSERT_NO_THROW(reduce_any_node.arg(1));
+  ASSERT_THROW(reduce_any_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleReduceAnyTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleReduceAny reduce_any_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(reduce_any_node.accept(&tv), std::exception);
+}
+
+TEST(CircleReduceAnyTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleReduceAny reduce_any_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(reduce_any_node.accept(&tv), std::exception);
 }
