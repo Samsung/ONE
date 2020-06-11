@@ -40,11 +40,8 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  if (element_type == DataType::FLOAT32)
-    EXPECT_THAT(extractTensorData<T>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(output_data)));
-  else
-    EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorData<T>(output_tensor),
+              ::testing::ElementsAreArray(ArrayFloatNear(output_data)));
 }
 
 template <typename T> class EluTest : public ::testing::Test
