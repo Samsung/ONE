@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleTranspose.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleTransposeTest, constructor_P)
 
   ASSERT_EQ(nullptr, tr_node.a());
   ASSERT_EQ(nullptr, tr_node.perm());
+}
+
+TEST(CircleTransposeTest, input_NEG)
+{
+  luci::CircleTranspose tr_node;
+  luci::CircleTranspose node;
+
+  tr_node.a(&node);
+  tr_node.perm(&node);
+  ASSERT_NE(nullptr, tr_node.a());
+  ASSERT_NE(nullptr, tr_node.perm());
+
+  tr_node.a(nullptr);
+  tr_node.perm(nullptr);
+  ASSERT_EQ(nullptr, tr_node.a());
+  ASSERT_EQ(nullptr, tr_node.perm());
+}
+
+TEST(CircleTransposeTest, arity_NEG)
+{
+  luci::CircleTranspose tr_node;
+
+  ASSERT_NO_THROW(tr_node.arg(1));
+  ASSERT_THROW(tr_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleTransposeTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleTranspose tr_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(tr_node.accept(&tv), std::exception);
+}
+
+TEST(CircleTransposeTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleTranspose tr_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(tr_node.accept(&tv), std::exception);
 }

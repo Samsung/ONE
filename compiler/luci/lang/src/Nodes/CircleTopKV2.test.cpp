@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleTopKV2.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleTopKV2Test, constructor)
 
   ASSERT_EQ(nullptr, topkv2_node.input());
   ASSERT_EQ(nullptr, topkv2_node.k());
+}
+
+TEST(CircleTopKV2Test, input_NEG)
+{
+  luci::CircleTopKV2 topkv2_node;
+  luci::CircleTopKV2 node;
+
+  topkv2_node.input(&node);
+  topkv2_node.k(&node);
+  ASSERT_NE(nullptr, topkv2_node.input());
+  ASSERT_NE(nullptr, topkv2_node.k());
+
+  topkv2_node.input(nullptr);
+  topkv2_node.k(nullptr);
+  ASSERT_EQ(nullptr, topkv2_node.input());
+  ASSERT_EQ(nullptr, topkv2_node.k());
+}
+
+TEST(CircleTopKV2Test, arity_NEG)
+{
+  luci::CircleTopKV2 topkv2_node;
+
+  ASSERT_NO_THROW(topkv2_node.arg(1));
+  ASSERT_THROW(topkv2_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleTopKV2Test, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleTopKV2 topkv2_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(topkv2_node.accept(&tv), std::exception);
+}
+
+TEST(CircleTopKV2Test, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleTopKV2 topkv2_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(topkv2_node.accept(&tv), std::exception);
 }
