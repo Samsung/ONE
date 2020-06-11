@@ -44,6 +44,8 @@ public:
 
   void addQuant8();
 
+  void addInt32();
+
   void configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
                  Tensor *output);
 

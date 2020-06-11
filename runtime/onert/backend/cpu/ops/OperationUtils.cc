@@ -144,6 +144,41 @@ void CalculateActivationRangeFloat(ir::Activation activation, float *activation_
   }
 }
 
+// TODO Unify this with CalculateActivationRangeFloat
+void CalculateActivationRangeInt32(ir::Activation activation, int32_t *activation_min,
+                                   int32_t *activation_max)
+{
+  if (activation == ir::Activation::RELU)
+  {
+    *activation_min = 0;
+    *activation_max = std::numeric_limits<int32_t>::max();
+  }
+  else if (activation == ir::Activation::RELU6)
+  {
+    *activation_min = 0;
+    *activation_max = 6;
+  }
+  else if (activation == ir::Activation::RELU1)
+  {
+    *activation_min = -1;
+    *activation_max = 1;
+  }
+  else if (activation == ir::Activation::SIGMOID)
+  {
+    *activation_min = 0;
+    *activation_max = 1;
+  }
+  else if (activation == ir::Activation::NONE)
+  {
+    *activation_min = std::numeric_limits<int32_t>::lowest();
+    *activation_max = std::numeric_limits<int32_t>::max();
+  }
+  else
+  {
+    std::cout << "Unsupported fused activation function." << std::endl;
+  }
+}
+
 void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
                                    int32_t *act_min, int32_t *act_max)
 {
