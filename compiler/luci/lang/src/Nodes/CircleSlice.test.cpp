@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSlice.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,56 @@ TEST(CircleSliceTest, constructor)
   ASSERT_EQ(nullptr, s_node.input());
   ASSERT_EQ(nullptr, s_node.begin());
   ASSERT_EQ(nullptr, s_node.size());
+}
+
+TEST(CircleSliceTest, input_NEG)
+{
+  luci::CircleSlice s_node;
+  luci::CircleSlice node;
+
+  s_node.input(&node);
+  s_node.begin(&node);
+  s_node.size(&node);
+  ASSERT_NE(nullptr, s_node.input());
+  ASSERT_NE(nullptr, s_node.begin());
+  ASSERT_NE(nullptr, s_node.size());
+
+  s_node.input(nullptr);
+  s_node.begin(nullptr);
+  s_node.size(nullptr);
+  ASSERT_EQ(nullptr, s_node.input());
+  ASSERT_EQ(nullptr, s_node.begin());
+  ASSERT_EQ(nullptr, s_node.size());
+}
+
+TEST(CircleSliceTest, arity_NEG)
+{
+  luci::CircleSlice s_node;
+
+  ASSERT_NO_THROW(s_node.arg(2));
+  ASSERT_THROW(s_node.arg(3), std::out_of_range);
+}
+
+TEST(CircleSliceTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSlice s_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(s_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSliceTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSlice s_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(s_node.accept(&tv), std::exception);
 }

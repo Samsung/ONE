@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSoftmax.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -28,4 +29,48 @@ TEST(CircleSoftmaxTest, constructor_P)
   ASSERT_EQ(luci::CircleOpcode::SOFTMAX, softmax_node.opcode());
 
   ASSERT_EQ(nullptr, softmax_node.logits());
+}
+
+TEST(CircleSoftmaxTest, input_NEG)
+{
+  luci::CircleSoftmax softmax_node;
+  luci::CircleSoftmax node;
+
+  softmax_node.logits(&node);
+  ASSERT_NE(nullptr, softmax_node.logits());
+
+  softmax_node.logits(nullptr);
+  ASSERT_EQ(nullptr, softmax_node.logits());
+}
+
+TEST(CircleSoftmaxTest, arity_NEG)
+{
+  luci::CircleSoftmax softmax_node;
+
+  ASSERT_NO_THROW(softmax_node.arg(0));
+  ASSERT_THROW(softmax_node.arg(1), std::out_of_range);
+}
+
+TEST(CircleSoftmaxTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSoftmax softmax_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(softmax_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSoftmaxTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSoftmax softmax_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(softmax_node.accept(&tv), std::exception);
 }
