@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleOneHot.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -32,4 +33,63 @@ TEST(CircleOneHotTest, constructor)
   ASSERT_EQ(nullptr, one_hot_node.on_value());
   ASSERT_EQ(nullptr, one_hot_node.off_value());
   ASSERT_EQ(-1, one_hot_node.axis());
+}
+
+TEST(CircleOneHotTest, input_NEG)
+{
+  luci::CircleOneHot one_hot_node;
+  luci::CircleOneHot node;
+
+  one_hot_node.indices(&node);
+  one_hot_node.depth(&node);
+  one_hot_node.on_value(&node);
+  one_hot_node.off_value(&node);
+  ASSERT_NE(nullptr, one_hot_node.indices());
+  ASSERT_NE(nullptr, one_hot_node.depth());
+  ASSERT_NE(nullptr, one_hot_node.on_value());
+  ASSERT_NE(nullptr, one_hot_node.off_value());
+
+  one_hot_node.indices(nullptr);
+  one_hot_node.depth(nullptr);
+  one_hot_node.on_value(nullptr);
+  one_hot_node.off_value(nullptr);
+  ASSERT_EQ(nullptr, one_hot_node.indices());
+  ASSERT_EQ(nullptr, one_hot_node.depth());
+  ASSERT_EQ(nullptr, one_hot_node.on_value());
+  ASSERT_EQ(nullptr, one_hot_node.off_value());
+
+  one_hot_node.axis(1);
+  ASSERT_NE(-1, one_hot_node.axis());
+}
+
+TEST(CircleOneHotTest, arity_NEG)
+{
+  luci::CircleOneHot one_hot_node;
+
+  ASSERT_NO_THROW(one_hot_node.arg(3));
+  ASSERT_THROW(one_hot_node.arg(4), std::out_of_range);
+}
+
+TEST(CircleOneHotTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleOneHot one_hot_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(one_hot_node.accept(&tv), std::exception);
+}
+
+TEST(CircleOneHotTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleOneHot one_hot_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(one_hot_node.accept(&tv), std::exception);
 }

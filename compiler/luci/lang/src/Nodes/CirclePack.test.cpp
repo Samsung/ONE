@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CirclePack.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -32,4 +33,52 @@ TEST(CirclePackTest, constructor)
   ASSERT_EQ(nullptr, pack_node.values(0));
   ASSERT_EQ(nullptr, pack_node.values(1));
   ASSERT_EQ(nullptr, pack_node.values(2));
+}
+
+TEST(CirclePackTest, input_NEG)
+{
+  luci::CirclePack pack_node(2);
+  luci::CirclePack node(2);
+
+  pack_node.values(0, &node);
+  pack_node.values(1, &node);
+  ASSERT_NE(nullptr, pack_node.values(0));
+  ASSERT_NE(nullptr, pack_node.values(1));
+
+  pack_node.values(0, nullptr);
+  pack_node.values(1, nullptr);
+  ASSERT_EQ(nullptr, pack_node.values(0));
+  ASSERT_EQ(nullptr, pack_node.values(1));
+}
+
+TEST(CirclePackTest, arity_NEG)
+{
+  luci::CirclePack pack_node(5);
+
+  ASSERT_NO_THROW(pack_node.arg(4));
+  ASSERT_THROW(pack_node.arg(5), std::out_of_range);
+}
+
+TEST(CirclePackTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CirclePack pack_node(2);
+
+  TestVisitor tv;
+  ASSERT_THROW(pack_node.accept(&tv), std::exception);
+}
+
+TEST(CirclePackTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CirclePack pack_node(2);
+
+  TestVisitor tv;
+  ASSERT_THROW(pack_node.accept(&tv), std::exception);
 }

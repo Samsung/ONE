@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CirclePad.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CirclePadTest, constructor_P)
 
   ASSERT_EQ(nullptr, pad_node.input());
   ASSERT_EQ(nullptr, pad_node.paddings());
+}
+
+TEST(CirclePadTest, input_NEG)
+{
+  luci::CirclePad pad_node;
+  luci::CirclePad node;
+
+  pad_node.input(&node);
+  pad_node.paddings(&node);
+  ASSERT_NE(nullptr, pad_node.input());
+  ASSERT_NE(nullptr, pad_node.paddings());
+
+  pad_node.input(nullptr);
+  pad_node.paddings(nullptr);
+  ASSERT_EQ(nullptr, pad_node.input());
+  ASSERT_EQ(nullptr, pad_node.paddings());
+}
+
+TEST(CirclePadTest, arity_NEG)
+{
+  luci::CirclePad pad_node;
+
+  ASSERT_NO_THROW(pad_node.arg(1));
+  ASSERT_THROW(pad_node.arg(2), std::out_of_range);
+}
+
+TEST(CirclePadTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CirclePad pad_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(pad_node.accept(&tv), std::exception);
+}
+
+TEST(CirclePadTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CirclePad pad_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(pad_node.accept(&tv), std::exception);
 }
