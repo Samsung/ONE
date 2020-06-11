@@ -39,6 +39,16 @@ inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_
   return padding > 0 ? padding : 0;
 }
 
+inline int32_t computePaddingWithOffset(int32_t stride, int32_t dilation_rate, int32_t in_size,
+                                        int32_t filter_size, int32_t out_size, int32_t *offset)
+{
+  int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  int32_t total_padding = ((out_size - 1) * stride + effective_filter_size - in_size);
+  total_padding = total_padding > 0 ? total_padding : 0;
+  *offset = total_padding % 2;
+  return total_padding / 2;
+}
+
 inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t filter_size,
                                  int32_t stride, int32_t dilation_rate = 1)
 {

@@ -96,6 +96,13 @@ struct SoftmaxParams
   float beta;
 };
 
+struct TransposeConvParams
+{
+  Padding padding;
+  int32_t stride_height;
+  int32_t stride_width;
+};
+
 struct UnpackParams
 {
   int axis;
