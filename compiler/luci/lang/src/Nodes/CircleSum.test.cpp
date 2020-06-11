@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleSum.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -30,4 +31,55 @@ TEST(CircleSumTest, constructor_P)
   ASSERT_EQ(nullptr, sum_node.input());
   ASSERT_EQ(nullptr, sum_node.reduction_indices());
   ASSERT_EQ(false, sum_node.keep_dims());
+}
+
+TEST(CircleSumTest, input_NEG)
+{
+  luci::CircleSum sum_node;
+  luci::CircleSum node;
+
+  sum_node.input(&node);
+  sum_node.reduction_indices(&node);
+  ASSERT_NE(nullptr, sum_node.input());
+  ASSERT_NE(nullptr, sum_node.reduction_indices());
+
+  sum_node.input(nullptr);
+  sum_node.reduction_indices(nullptr);
+  ASSERT_EQ(nullptr, sum_node.input());
+  ASSERT_EQ(nullptr, sum_node.reduction_indices());
+
+  sum_node.keep_dims(true);
+  ASSERT_TRUE(sum_node.keep_dims());
+}
+
+TEST(CircleSumTest, arity_NEG)
+{
+  luci::CircleSum sum_node;
+
+  ASSERT_NO_THROW(sum_node.arg(1));
+  ASSERT_THROW(sum_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleSumTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleSum sum_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sum_node.accept(&tv), std::exception);
+}
+
+TEST(CircleSumTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleSum sum_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(sum_node.accept(&tv), std::exception);
 }
