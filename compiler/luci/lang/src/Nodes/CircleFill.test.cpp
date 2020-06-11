@@ -17,6 +17,7 @@
 #include "luci/IR/Nodes/CircleFill.h"
 
 #include "luci/IR/CircleDialect.h"
+#include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
@@ -29,4 +30,52 @@ TEST(CircleFillTest, constructor_P)
 
   ASSERT_EQ(nullptr, fill.dims());
   ASSERT_EQ(nullptr, fill.value());
+}
+
+TEST(CircleFillTest, input_NEG)
+{
+  luci::CircleFill fill_node;
+  luci::CircleFill node;
+
+  fill_node.dims(&node);
+  fill_node.value(&node);
+  ASSERT_NE(nullptr, fill_node.dims());
+  ASSERT_NE(nullptr, fill_node.value());
+
+  fill_node.dims(nullptr);
+  fill_node.value(nullptr);
+  ASSERT_EQ(nullptr, fill_node.dims());
+  ASSERT_EQ(nullptr, fill_node.value());
+}
+
+TEST(CircleFillTest, arity_NEG)
+{
+  luci::CircleFill fill_node;
+
+  ASSERT_NO_THROW(fill_node.arg(1));
+  ASSERT_THROW(fill_node.arg(2), std::out_of_range);
+}
+
+TEST(CircleFillTest, visit_mutable_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
+  {
+  };
+
+  luci::CircleFill fill_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(fill_node.accept(&tv), std::exception);
+}
+
+TEST(CircleFillTest, visit_NEG)
+{
+  struct TestVisitor final : public luci::CircleNodeVisitor<void>
+  {
+  };
+
+  luci::CircleFill fill_node;
+
+  TestVisitor tv;
+  ASSERT_THROW(fill_node.accept(&tv), std::exception);
 }
