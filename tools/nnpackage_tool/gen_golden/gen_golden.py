@@ -100,7 +100,7 @@ if __name__ == '__main__':
                     np.array(np.random.randint(2, size=this_shape), this_dtype))
             elif this_dtype == np.int32:
                 input_values.append(
-                    np.array(np.random.randint(-(2**15), 2**15, this_shape, "int32")))
+                    np.array(np.random.randint(0, 99, this_shape, "int32")))
 
         # get output values by running
         config = tf.compat.v1.ConfigProto()
@@ -142,7 +142,7 @@ if __name__ == '__main__':
                     np.array(np.random.randint(2, size=this_shape), this_dtype))
             elif this_dtype == np.int32:
                 input_values.append(
-                    np.array(np.random.randint(-(2**15), 2**15, this_shape, this_dtype)))
+                    np.array(np.random.randint(0, 99, this_shape, this_dtype)))
             interpreter.set_tensor(input_details[idx]['index'], input_values[idx])
 
         # get output values by running
