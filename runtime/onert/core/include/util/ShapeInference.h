@@ -62,6 +62,8 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
+ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buf);
+
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
 // TODO write op starting from G
@@ -127,6 +129,7 @@ private:
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
+  void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
@@ -214,6 +217,7 @@ public:
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
+  void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
