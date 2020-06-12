@@ -192,6 +192,7 @@ GeneratedTests.space_to_batch_quant8_2
 GeneratedTests.space_to_batch_quant8_2_nnfw
 GeneratedTests.space_to_batch_quant8_3
 GeneratedTests.sqrt_
+GeneratedTests.squared_difference_ex_dynamic_nnfw
 GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_zero_sized
