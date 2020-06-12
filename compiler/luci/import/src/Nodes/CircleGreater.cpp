@@ -18,6 +18,9 @@
 
 #include <luci/IR/Nodes/CircleGreater.h>
 
+#include <luci/UserSettings.h>
+#include <luci/Log.h>
+
 #include <loco.h>
 
 namespace luci
@@ -25,6 +28,10 @@ namespace luci
 
 bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
 {
+  LOGGER(l);
+
+  auto settings = luci::UserSettings::settings();
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
 
@@ -39,8 +46,18 @@ bool CircleGreaterGraphBuilder::validate(const ValidateArgs &args) const
   if (tensors[inputs[0]]->type != tensors[inputs[1]]->type)
     return false;
 
+  // NOTE: real models do have output dtype NOT BOOL
   if (tensors[outputs[0]]->type != circle::TensorType_BOOL)
-    return false;
+  {
+    if (settings->get(luci::UserSettings::Key::DisableValidation))
+    {
+      const circle::TensorT &output_tensor = *tensors[outputs[0]];
+      auto name = tensor_name(output_tensor);
+      WARN(l) << "Warning: import Greater(" << name << ") output dtype is not boolean";
+    }
+    else
+      return false;
+  }
 
   return true;
 }
