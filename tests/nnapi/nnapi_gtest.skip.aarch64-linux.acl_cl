@@ -97,6 +97,7 @@ GeneratedTests.pow_broadcast_float_nnfw_3
 GeneratedTests.pow_dynamic_nnfw
 GeneratedTests.range_ex_float_1
 GeneratedTests.range_ex_float_2
+GeneratedTests.range_ex_float_1_all_constant_inputs
 GeneratedTests.range_ex_float_1_dynamic_nnfw
 GeneratedTests.range_ex_float_2_dynamic_nnfw
 GeneratedTests.reduce_all
