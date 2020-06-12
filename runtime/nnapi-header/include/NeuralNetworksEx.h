@@ -520,6 +520,8 @@ typedef enum {
    */
   ANEURALNETWORKS_EINSUM_EX = 50037,
 
+  ANEURALNETWORKS_BROADCAST_TO_EX = 50038,
+
   /** Adds two tensors, element-wise.
    *
    * Takes two input tensors of identical type and compatible dimensions. The output

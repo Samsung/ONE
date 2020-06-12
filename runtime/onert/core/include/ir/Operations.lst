@@ -22,6 +22,7 @@
 OP(Add)
 OP(Sub)
 OP(BatchToSpaceND)
+OP(BroadcastTo)
 OP(Cast)
 OP(Conv2D)
 OP(DepthwiseConv2D)
