@@ -17,30 +17,10 @@
 #ifndef __NNFW_BENCHMARK_RESULT_H__
 #define __NNFW_BENCHMARK_RESULT_H__
 
-#include "Phase.h"
-#include "MemoryPoller.h"
+#include "Types.h"
+#include "Phases.h"
 
 #include <string>
-#include <vector>
-#include <numeric>
-#include <algorithm>
-#include <cassert>
-#include <memory>
-#include <cmath>
-
-namespace
-{
-
-uint32_t maxMemory(const std::unordered_map<benchmark::Phase, uint32_t> &map)
-{
-  auto answer = *std::max_element(
-      map.begin(), map.end(),
-      [](const std::pair<benchmark::Phase, uint32_t> &p1,
-         const std::pair<benchmark::Phase, uint32_t> &p2) { return p1.second < p2.second; });
-  return answer.second;
-}
-
-} // namespace
 
 namespace benchmark
 {
@@ -49,126 +29,19 @@ namespace benchmark
 class Result
 {
 public:
-  Result(double model_load_time, double prepare_time, const std::vector<double> &execute_times)
-      : _model_load_time(model_load_time), _prepare_time(prepare_time), _model_load_rss(0),
-        _prepare_rss(0), _execute_rss(0), _peak_rss(0), _model_load_hwm(0), _prepare_hwm(0),
-        _execute_hwm(0), _peak_hwm(0), _model_load_pss(0), _prepare_pss(0), _execute_pss(0),
-        _peak_pss(0)
-  {
-    // execute
-    double sum = 0.0;
-    double log_sum = 0.0;
-    double min = std::numeric_limits<double>::max();
-    double max = std::numeric_limits<double>::lowest();
-    for (auto t : execute_times)
-    {
-      sum += t;
-      log_sum += std::log(t);
-      min = std::min(min, t);
-      max = std::max(max, t);
-    }
-    _execute_time_mean = sum / static_cast<double>(execute_times.size());
-    _execute_time_min = min;
-    _execute_time_max = max;
+  Result(const Phases &phases);
 
-    // Calculating geometric mean with logs
-    //   "Geometric Mean of (V1, V2, ... Vn)"
-    // = (V1*V2*...*Vn)^(1/n)
-    // = exp(log((V1*V2*...*Vn)^(1/n)))
-    // = exp(log((V1*V2*...*Vn)/n)))
-    // = exp((log(V1) + log(V2) + ... + log(Vn))/n)
-    // = exp(_log_sum/num)
-    _execute_time_geomean = std::exp(log_sum / static_cast<double>(execute_times.size()));
-  }
-
-  Result(double model_load_time, double prepare_time, const std::vector<double> &execute_times,
-         const std::unique_ptr<MemoryPoller> &memory_poller)
-      : Result(model_load_time, prepare_time, execute_times)
-  {
-    if (!memory_poller)
-      return;
-
-    const auto &rss = memory_poller->getRssMap();
-    const auto &hwm = memory_poller->getHwmMap();
-    const auto &pss = memory_poller->getPssMap();
-
-    // rss
-    assert(rss.size() > 0);
-    assert(rss.find(Phase::MODEL_LOAD) != rss.end());
-    assert(rss.find(Phase::PREPARE) != rss.end());
-    assert(rss.find(Phase::EXECUTE) != rss.end());
-    _model_load_rss = rss.at(Phase::MODEL_LOAD);
-    _prepare_rss = rss.at(Phase::PREPARE);
-    _execute_rss = rss.at(Phase::EXECUTE);
-    _peak_rss = maxMemory(rss);
-
-    // hwm
-    assert(hwm.size() > 0);
-    assert(hwm.find(Phase::MODEL_LOAD) != hwm.end());
-    assert(hwm.find(Phase::PREPARE) != hwm.end());
-    assert(hwm.find(Phase::EXECUTE) != hwm.end());
-    _model_load_hwm = hwm.at(Phase::MODEL_LOAD);
-    _prepare_hwm = hwm.at(Phase::PREPARE);
-    _execute_hwm = hwm.at(Phase::EXECUTE);
-    _peak_hwm = maxMemory(hwm);
-
-    // pss
-    assert(pss.size() > 0);
-    assert(pss.find(Phase::MODEL_LOAD) != pss.end());
-    assert(pss.find(Phase::PREPARE) != pss.end());
-    assert(pss.find(Phase::EXECUTE) != pss.end());
-    _model_load_pss = pss.at(Phase::MODEL_LOAD);
-    _prepare_pss = pss.at(Phase::PREPARE);
-    _execute_pss = pss.at(Phase::EXECUTE);
-    _peak_pss = maxMemory(pss);
-  }
-
-public:
-  double getModelLoadTime() const { return _model_load_time; }
-  double getPrepareTime() const { return _prepare_time; }
-  double getExecuteTimeMean() const { return _execute_time_mean; }
-  double getExecuteTimeGeoMean() const { return _execute_time_geomean; }
-  double getExecuteTimeMin() const { return _execute_time_min; }
-  double getExecuteTimeMax() const { return _execute_time_max; }
-
-  uint32_t getModelLoadRss() const { return _model_load_rss; }
-  uint32_t getPrepareRss() const { return _prepare_rss; }
-  uint32_t getExecuteRss() const { return _execute_rss; }
-  uint32_t getPeakRss() const { return _peak_rss; }
-
-  uint32_t getModelLoadHwm() const { return _model_load_hwm; }
-  uint32_t getPrepareHwm() const { return _prepare_hwm; }
-  uint32_t getExecuteHwm() const { return _execute_hwm; }
-  uint32_t getPeakHwm() const { return _peak_hwm; }
-
-  uint32_t getModelLoadPss() const { return _model_load_pss; }
-  uint32_t getPreparePss() const { return _prepare_pss; }
-  uint32_t getExecutePss() const { return _execute_pss; }
-  uint32_t getPeakPss() const { return _peak_pss; }
-
-private:
-  double _model_load_time;
-  double _prepare_time;
-  double _execute_time_mean;
-  double _execute_time_geomean;
-  double _execute_time_min;
-  double _execute_time_max;
-
-  uint32_t _model_load_rss;
-  uint32_t _prepare_rss;
-  uint32_t _execute_rss;
-  uint32_t _peak_rss;
-
-  uint32_t _model_load_hwm;
-  uint32_t _prepare_hwm;
-  uint32_t _execute_hwm;
-  uint32_t _peak_hwm;
-
-  uint32_t _model_load_pss;
-  uint32_t _prepare_pss;
-  uint32_t _execute_pss;
-  uint32_t _peak_pss;
+  double time[PhaseEnum::END_OF_PHASE][FigureType::END_OF_FIG_TYPE];
+  uint32_t memory[PhaseEnum::END_OF_PHASE][MemoryType::END_OF_MEM_TYPE];
+  bool print_memory = false;
 };
+
+// TODO Support not only stdout but also ostream
+void printResult(const Result &result);
+
+// TODO Support not only csv but also other datafile format such as xml, json, ...
+void writeResult(const Result &result, const std::string &exec, const std::string &model,
+                 const std::string &backend);
 
 } // namespace benchmark
 

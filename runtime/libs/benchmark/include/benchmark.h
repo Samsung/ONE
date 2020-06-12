@@ -17,9 +17,7 @@
 #ifndef __NNFW_BENCHMARK_H__
 #define __NNFW_BENCHMARK_H__
 
+#include "benchmark/Phases.h"
 #include "benchmark/Result.h"
-#include "benchmark/MemoryPoller.h"
-#include "benchmark/CsvWriter.h"
-#include "benchmark/Util.h"
 
 #endif // __NNFW_BENCHMARK_H__

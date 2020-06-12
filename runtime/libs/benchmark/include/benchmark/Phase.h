@@ -17,45 +17,50 @@
 #ifndef __NNFW_BENCHMARK_PHASE_H__
 #define __NNFW_BENCHMARK_PHASE_H__
 
+#include "Types.h"
+
 #include <string>
-#include <cassert>
+#include <vector>
 
 namespace benchmark
 {
 
-enum class Phase
+struct Phase
 {
-  MODEL_LOAD,
-  PREPARE,
-  EXECUTE,
+  Phase(const std::string &t, uint32_t c) : tag(t), count(c)
+  {
+    // DO NOTHING
+  }
+
+  const std::string tag;
+  uint32_t count;
+  std::vector<uint64_t> time;                                // us
+  std::vector<uint32_t> memory[MemoryType::END_OF_MEM_TYPE]; // kB
 };
 
-inline std::string getPhaseString(Phase phase)
+struct PhaseOption
 {
-  switch (phase)
-  {
-    case Phase::MODEL_LOAD:
-      return "MODEL_LOAD";
-    case Phase::PREPARE:
-      return "PREPARE";
-    case Phase::EXECUTE:
-      return "EXECUTE";
-    default:
-      assert(false);
-      return "";
-  }
-}
+  PhaseOption() : memory(false), memory_gpu(false) {}
+  PhaseOption(bool m) : memory(m) {}
+  PhaseOption(bool m, int64_t ms) : memory(m), memory_gpu(false), memory_interval(ms) {}
+  PhaseOption(bool m, bool mg) : memory(m), memory_gpu(mg) {}
+  PhaseOption(bool m, bool mg, int64_t ms) : memory(m), memory_gpu(mg), memory_interval(ms) {}
+
+  bool memory = false;
+  bool memory_gpu = false;     // very specific...
+  int64_t memory_interval = 5; // ms
+};
 
 } // namespace benchmark
 
 namespace std
 {
 
-template <> struct hash<benchmark::Phase>
+template <> struct hash<benchmark::PhaseEnum>
 {
-  size_t operator()(benchmark::Phase value) const noexcept
+  size_t operator()(benchmark::PhaseEnum value) const noexcept
   {
-    using type = typename std::underlying_type<benchmark::Phase>::type;
+    using type = typename std::underlying_type<benchmark::PhaseEnum>::type;
     return hash<type>()(static_cast<type>(value));
   }
 };
