@@ -46,6 +46,12 @@ template <> struct DataTypeImpl<DataType::U8>
   using Type = uint8_t;
 };
 
+template <> struct DataTypeImpl<DataType::S16>
+{
+  // Use C++ int16_t type for 16bit integer
+  using Type = int16_t;
+};
+
 template <> struct DataTypeImpl<DataType::S32>
 {
   // Use C++ int32_t type for 32bit integer
@@ -89,6 +95,8 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::S8>::Type);
     case DataType::U8:
       return sizeof(DataTypeImpl<DataType::U8>::Type);
+    case DataType::S16:
+      return sizeof(DataTypeImpl<DataType::S16>::Type);
     case DataType::S32:
       return sizeof(DataTypeImpl<DataType::S32>::Type);
     case DataType::U32:
