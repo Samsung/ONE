@@ -9,5 +9,5 @@ foder::FileLoader fileloader{input_path};
 
 std::vector<char> data = fileloader.load();
 
-const circle::Model *circle_model = circle::GetModel(data.data());
+DO_SOMETHING_WITH(data);
 ```
