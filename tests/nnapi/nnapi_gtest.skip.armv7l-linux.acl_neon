@@ -123,6 +123,7 @@ GeneratedTests.reduce_all_2
 GeneratedTests.reduce_all_2D_nnfw
 GeneratedTests.reduce_all_3
 GeneratedTests.reduce_all_4D_nnfw
+GeneratedTests.reduce_all_dynamic_nnfw
 GeneratedTests.reduce_any
 GeneratedTests.reduce_any_2
 GeneratedTests.reduce_any_2D_nnfw
