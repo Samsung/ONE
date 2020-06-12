@@ -33,7 +33,7 @@ public:
   FileLoader(FileLoader &&) = delete;
 
 public:
-  const DataBuffer load(void)
+  DataBuffer load(void) const
   {
     std::ifstream file(_path, std::ios::binary | std::ios::in);
     if (!file.good())
@@ -56,11 +56,8 @@ public:
     return data;
   }
 
-  inline std::streampos size(void) { return _size; }
-
 private:
   const std::string _path;
-  std::streampos _size;
 };
 
 } // namespace foder
