@@ -62,7 +62,7 @@ void StaticInferer::visit(const ir::operation::ExpandDims &op)
   }
 
   // even when axis is constant, output shape should be recalculated since user might call
-  // nnfw_apply_tensorinfo(input, some_new_shape)
+  // nnfw_set_input_tensorinfo(input, some_new_shape)
   auto axis_buf = reinterpret_cast<const int32_t *>(axis.data()->base());
   assert(axis_buf);
 

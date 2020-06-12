@@ -56,7 +56,7 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
 
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
-  // note: input_shape_sig contains shape passed by nnfw_apply_tensorinfo()
+  // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
   {
     auto input_shape_sig = _io_desc.input_shape_signature.find(index);
     auto size_required = (input_shape_sig != _io_desc.input_shape_signature.end())

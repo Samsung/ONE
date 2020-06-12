@@ -45,7 +45,7 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 
   /*
   testing sequence and what's been done:
-    1. nnfw_apply_tensorinfo : set input shape to different shape (static inference)
+    1. nnfw_set_input_tensorinfo : set input shape to different shape (static inference)
     2. nnfw_prepare
     3. nnfw_set_input
     4. nnfw_run
@@ -59,7 +59,7 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
     ti.dims[0] = 4;
     ti.dims[1] = 2;
   }
-  res = nnfw_apply_tensorinfo(_session, 0, ti);
+  res = nnfw_set_input_tensorinfo(_session, 0, &ti);
 
   res = nnfw_prepare(_session);
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
