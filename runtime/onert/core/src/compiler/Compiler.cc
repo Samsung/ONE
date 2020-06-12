@@ -160,14 +160,6 @@ void Compiler::compile(void)
     cf_ops.insert(ops.cbegin(), ops.cend());
   });
 
-  // There are two cases to load controlflow backend
-  // 1. whether controlflow operation exist in subgraphs for controlflow kernel
-  // 2. whether to load 2 or more backends for Permute kernel between different backends
-  if (cf_ops.size() != 0 || _options.backend_list.size() > 1)
-  {
-    _options.backend_list.emplace_back(backend::controlflow::Config::ID);
-  }
-
   // Opcode to Backend
   for (auto cf_op : cf_ops)
   {
@@ -236,7 +228,9 @@ void Compiler::compile(void)
     auto &contexts = (*lowered_subgs[index]).backend_contexts();
     for (auto it = contexts.begin(); it != contexts.end(); it++)
     {
-      backends_support_fp16 &= it->first->config()->supportFP16();
+      // Controlflow backend is not for actual computaion of operations so it is an exception
+      if (it->first->config()->id() != backend::controlflow::Config::ID)
+        backends_support_fp16 &= it->first->config()->supportFP16();
     }
 
     if (_options.fp16_enable && backends_support_fp16)

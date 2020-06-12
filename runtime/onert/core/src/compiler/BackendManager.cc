@@ -38,6 +38,8 @@ BackendManager &BackendManager::get()
   return object;
 }
 
+BackendManager::BackendManager() { loadControlflowBackend(); }
+
 void BackendManager::loadControlflowBackend()
 {
   // Add controlflow Backend
@@ -66,11 +68,7 @@ void BackendManager::loadBackend(const std::string &backend)
     return;
   }
 
-  if (backend == backend::controlflow::Config::ID)
-  {
-    loadControlflowBackend();
-  }
-  else
+  // TODO Remove indentation
   {
     const std::string backend_so = "libbackend_" + backend + ".so";
     void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);

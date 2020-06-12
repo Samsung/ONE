@@ -41,6 +41,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 {
   // Build backend contexts
   auto &backend_manager = compiler::BackendManager::get();
+
+  // Always create Controlflow backend context
+  auto cf_backend = backend_manager.getControlflow();
+  _backend_contexts.emplace(cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(),
+                                                               options.executor == "Linear"));
+
+  // Create contexts for other backends
   for (auto backend_str : options.backend_list)
   {
     backend_manager.loadBackend(backend_str);
