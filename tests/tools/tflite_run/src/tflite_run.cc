@@ -37,6 +37,9 @@
 #include <algorithm>
 #include <vector>
 
+#ifdef __clang__
+#include <libgen.h>
+#endif
 using namespace tflite;
 using namespace nnfw::tflite;
 using namespace std::placeholders; // for _1, _2 ...
@@ -356,8 +359,8 @@ int main(const int argc, char **argv)
     std::string model_basename;
     std::string backend_name = default_backend_cand;
     {
-      model_basename = basename(args.getTFLiteFilename().c_str());
-      // should remove extension(such as .tflite)
+      std::vector<char> vpath(args.getTFLiteFilename().begin(), args.getTFLiteFilename().end() + 1);
+      model_basename = basename(vpath.data());
       size_t lastindex = model_basename.find_last_of(".");
       model_basename = model_basename.substr(0, lastindex);
       exec_basename = basename(argv[0]);
