@@ -21,15 +21,14 @@ namespace onert
 namespace shape_inference
 {
 // helper function
-template <float *> ir::Shape inferRangeShape(float *start_val, float *limit_val, float *delta_val);
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val)
 {
   ir::Shape out_shape(static_cast<int>(1));
 
   out_shape.dim(0) =
       (std::is_integral<T>::value
-           ? ((std::abs(*start_val - *limit_val) + std::abs(*delta_val) - 1) / std::abs(*delta_val))
-           : std::ceil(std::abs((*start_val - *limit_val) / *delta_val)));
+           ? ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val))
+           : std::ceil(std::abs((start_val - limit_val) / delta_val)));
   return out_shape;
 }
 
@@ -51,6 +50,24 @@ void StaticInferer::visit(const ir::operation::Range &op)
   {
     output.info().setDynamic();
     return;
+  }
+
+  ir::Shape new_shape;
+  if (start_op.isConstant() && limit_op.isConstant() && delta_op.isConstant())
+  {
+    assert(start_op.typeInfo().type() == limit_op.typeInfo().type() &&
+           start_op.typeInfo().type() == delta_op.typeInfo().type());
+    if (output.typeInfo().type() == ir::DataType::FLOAT32)
+    {
+      new_shape = inferRangeShape<float>(start_op.asScalar<float>(), limit_op.asScalar<float>(),
+                                         delta_op.asScalar<float>());
+    }
+    else if (output.typeInfo().type() == ir::DataType::INT32)
+    {
+      new_shape = inferRangeShape<int32_t>(
+          start_op.asScalar<int32_t>(), limit_op.asScalar<int32_t>(), delta_op.asScalar<int32_t>());
+    }
+    output.info().shape(new_shape);
   }
 }
 
@@ -77,15 +94,15 @@ void DynamicInferer::visit(const ir::operation::Range &op)
   ir::Shape new_shape;
   if (output->data_type() == ir::DataType::FLOAT32)
   {
-    new_shape = inferRangeShape<float *>( reinterpret_cast<float *>(start_tensor->buffer()),
-                                          reinterpret_cast<float *>(limit_tensor->buffer()),
-                                          reinterpret_cast<float *>(delta_tensor->buffer()));
+    new_shape = inferRangeShape<float>(*reinterpret_cast<float *>(start_tensor->buffer()),
+                                       *reinterpret_cast<float *>(limit_tensor->buffer()),
+                                       *reinterpret_cast<float *>(delta_tensor->buffer()));
   }
   else if (output->data_type() == ir::DataType::INT32)
   {
-    new_shape = inferRangeShape<int32_t *>( reinterpret_cast<int32_t *>(start_tensor->buffer()),
-                                            reinterpret_cast<int32_t *>(limit_tensor->buffer()),
-                                            reinterpret_cast<int32_t *>(delta_tensor->buffer()));
+    new_shape = inferRangeShape<int32_t>(*reinterpret_cast<int32_t *>(start_tensor->buffer()),
+                                         *reinterpret_cast<int32_t *>(limit_tensor->buffer()),
+                                         *reinterpret_cast<int32_t *>(delta_tensor->buffer()));
   }
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
