@@ -177,9 +177,10 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   }
 }
 
-void wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
-                        std::vector<float> &scaling_factor, std::vector<int64_t> &zp,
-                        std::vector<float> &nudged_min, std::vector<float> &nudged_max)
+void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
+                                   std::vector<float> &max, std::vector<float> &scaling_factor,
+                                   std::vector<int64_t> &zp, std::vector<float> &nudged_min,
+                                   std::vector<float> &nudged_max)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
 
@@ -232,8 +233,8 @@ void wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vector<
   }
 }
 
-void wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
-                          std::vector<float> &nudged_min)
+void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
+                                     std::vector<float> &nudged_min)
 {
   assert(node->dtype() == loco::DataType::U8);
   uint32_t size = node->size<loco::DataType::U8>();
@@ -274,8 +275,9 @@ void wdequant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
   }
 }
 
-void wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &scaling_factor,
-                                  int64_t &zp, float &nudged_min, float &nudged_max)
+void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
+                                             float &scaling_factor, int64_t &zp, float &nudged_min,
+                                             float &nudged_max)
 {
 
   const int32_t kMinScale = 0;
@@ -315,9 +317,9 @@ void wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float
   }
 }
 
-void wdequant_with_minmax_per_layer(CircleConst *node, float scaling_factor, float nudged_min)
+void asymmetric_wdequant_with_minmax_per_layer(CircleConst *node, float scaling_factor,
+                                               float nudged_min)
 {
-
   uint32_t size = node->size<loco::DataType::U8>();
   std::vector<float> dequantized_values(size);
   for (uint32_t i = 0; i < size; ++i)
@@ -420,8 +422,9 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
           std::vector<float> scaling_factor(min.size());
           std::vector<int64_t> zp(min.size());
 
-          wquant_per_channel(circle_const, min, max, scaling_factor, zp, nudged_min, nudged_max);
-          wdequant_per_channel(circle_const, scaling_factor, nudged_min);
+          asymmetric_wquant_per_channel(circle_const, min, max, scaling_factor, zp, nudged_min,
+                                        nudged_max);
+          asymmetric_wdequant_per_channel(circle_const, scaling_factor, nudged_min);
 
           auto quantparam = std::make_unique<CircleQuantParam>();
           quantparam->min = nudged_min;
@@ -446,9 +449,9 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
           float nudged_min{0};
           float nudged_max{0};
 
-          wquant_with_minmax_per_layer(circle_const, min, max, scaling_factor, zp, nudged_min,
-                                       nudged_max);
-          wdequant_with_minmax_per_layer(circle_const, scaling_factor, nudged_min);
+          asymmetric_wquant_with_minmax_per_layer(circle_const, min, max, scaling_factor, zp,
+                                                  nudged_min, nudged_max);
+          asymmetric_wdequant_with_minmax_per_layer(circle_const, scaling_factor, nudged_min);
           auto quantparam = std::make_unique<CircleQuantParam>();
           quantparam->min.push_back(nudged_min);
           quantparam->max.push_back(nudged_max);
