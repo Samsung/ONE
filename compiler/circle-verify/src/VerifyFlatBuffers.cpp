@@ -20,12 +20,14 @@
 
 #include <mio/circle/schema_generated.h>
 
+#include <foder/FileLoader.h>
+
 int VerifyFlatbuffers::run(const std::string &model_file)
 {
-  auto modeldata = load_modeldata(model_file);
-
-  const uint8_t *data = reinterpret_cast<const uint8_t *>(modeldata->data());
-  flatbuffers::Verifier verifier{data, modeldata->size()};
+  foder::FileLoader fileloader{model_file};
+  auto modeldata = fileloader.load_file();
+  const uint8_t *data = reinterpret_cast<const uint8_t *>(modeldata);
+  flatbuffers::Verifier verifier{data, static_cast<size_t>(fileloader.size())};
 
   if (!circle::VerifyModelBuffer(verifier))
   {
