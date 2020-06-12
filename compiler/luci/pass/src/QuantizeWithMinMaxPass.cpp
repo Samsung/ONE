@@ -217,13 +217,13 @@ bool is_weights(CircleNode *node)
  */
 struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeActivation(loco::DataType input, loco::DataType output)
-      : input_type(input), output_type(output)
+  QuantizeActivation(loco::DataType input, loco::DataType quantized)
+      : input_type(input), quantized_type(quantized)
   {
   }
 
   loco::DataType input_type;
-  loco::DataType output_type;
+  loco::DataType quantized_type;
 
   // Quantize input tensors of each node
   bool visit(luci::CircleNode *node)
@@ -270,12 +270,13 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 
 struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeBias(loco::DataType input, loco::DataType output) : input_type(input), output_type(output)
+  QuantizeBias(loco::DataType input, loco::DataType quantized)
+      : input_type(input), quantized_type(quantized)
   {
   }
 
   loco::DataType input_type;
-  loco::DataType output_type;
+  loco::DataType quantized_type;
 
   // Quantize bias node
   bool visit(luci::CircleNode *node)
@@ -318,13 +319,13 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
  */
 struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeWeights(loco::DataType input, loco::DataType output)
-      : input_type(input), output_type(output)
+  QuantizeWeights(loco::DataType input, loco::DataType quantized)
+      : input_type(input), quantized_type(quantized)
   {
   }
 
   loco::DataType input_type;
-  loco::DataType output_type;
+  loco::DataType quantized_type;
 
   // Quantize input tensors of each node
   bool visit(luci::CircleNode *node)
@@ -379,7 +380,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeActivation qa(_input_dtype, _output_dtype);
+    QuantizeActivation qa(_input_dtype, _quantized_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qa);
   }
@@ -387,7 +388,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_input_dtype, _output_dtype);
+    QuantizeWeights qw(_input_dtype, _quantized_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }
@@ -395,7 +396,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_input_dtype, _output_dtype);
+    QuantizeBias qb(_input_dtype, _quantized_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qb);
   }

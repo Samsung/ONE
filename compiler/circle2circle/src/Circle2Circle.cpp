@@ -44,14 +44,14 @@ void print_help(const char *progname)
             << std::endl;
   std::cerr << "   --quantize_with_minmax : Enable QuantizeWithMinMax Pass" << std::endl;
   std::cerr << "                            ";
-  std::cerr << "Require three following parameters (input_dtype, output_dtype, granularity)"
+  std::cerr << "Require three following parameters (input_dtype, quantized_dtype, granularity)"
             << std::endl;
   std::cerr << "                            ";
   std::cerr << "Ex: --quantize_with_minmax float32 uint8 layer" << std::endl;
   std::cerr << "   --quantize_dequantize_weights : Enable QuantizeDequantizeWeights Pass"
             << std::endl;
   std::cerr << "                            ";
-  std::cerr << "Require three following parameters (input_dtype, output_dtype, granularity)"
+  std::cerr << "Require three following parameters (input_dtype, quantized_dtype, granularity)"
             << std::endl;
   std::cerr << "                            ";
   std::cerr << "Ex: --quantize_dequantize_weights float32 uint8 channel" << std::endl;
@@ -97,16 +97,17 @@ int entry(int argc, char **argv)
           "--quantize_dequantize_weights must have three following parameters.");
 
     std::string input_dtype = argv[0];
-    std::string output_dtype = argv[1];
+    std::string quantized_dtype = argv[1];
     std::string granularity = argv[2];
 
-    if (input_dtype.empty() || output_dtype.empty() || granularity.empty() ||
+    if (input_dtype.empty() || quantized_dtype.empty() || granularity.empty() ||
         input_dtype.substr(0, 2).compare("--") == 0 ||
-        output_dtype.substr(0, 2).compare("--") == 0 || granularity.substr(0, 2).compare("--") == 0)
+        quantized_dtype.substr(0, 2).compare("--") == 0 ||
+        granularity.substr(0, 2).compare("--") == 0)
       throw std::runtime_error("Wrong algorithm parameters for --quantize_dequantize_weights.");
 
     options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
-    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
+    options->param(AlgorithmParameters::Quantize_quantized_dtype, quantized_dtype);
     options->param(AlgorithmParameters::Quantize_granularity, granularity);
     return 3;
   };
@@ -119,16 +120,17 @@ int entry(int argc, char **argv)
       throw std::runtime_error("--quantize_with_minmax must have three following parameters.");
 
     std::string input_dtype = argv[0];
-    std::string output_dtype = argv[1];
+    std::string quantized_dtype = argv[1];
     std::string granularity = argv[2];
 
-    if (input_dtype.empty() || output_dtype.empty() || granularity.empty() ||
+    if (input_dtype.empty() || quantized_dtype.empty() || granularity.empty() ||
         input_dtype.substr(0, 2).compare("--") == 0 ||
-        output_dtype.substr(0, 2).compare("--") == 0 || granularity.substr(0, 2).compare("--") == 0)
+        quantized_dtype.substr(0, 2).compare("--") == 0 ||
+        granularity.substr(0, 2).compare("--") == 0)
       throw std::runtime_error("Wrong algorithm parameters for --quantize_with_minmax.");
 
     options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
-    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
+    options->param(AlgorithmParameters::Quantize_quantized_dtype, quantized_dtype);
     options->param(AlgorithmParameters::Quantize_granularity, granularity);
     return 3;
   };

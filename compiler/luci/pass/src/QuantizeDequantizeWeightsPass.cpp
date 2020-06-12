@@ -378,14 +378,14 @@ bool is_weights(CircleNode *node)
  */
 struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeDequantizeWeights(loco::DataType input, loco::DataType output,
+  QuantizeDequantizeWeights(loco::DataType input, loco::DataType quantized,
                             QuantizationGranularity granularity)
-      : input_type(input), output_type(output), granularity(granularity)
+      : input_type(input), quantized_type(quantized), granularity(granularity)
   {
   }
 
   loco::DataType input_type;
-  loco::DataType output_type;
+  loco::DataType quantized_type;
   QuantizationGranularity granularity;
 
   // Quantize and dequantize input tensors of each node
@@ -472,7 +472,7 @@ bool QuantizeDequantizeWeightsPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeDequantizeWeights qw(_input_dtype, _output_dtype, _granularity);
+    QuantizeDequantizeWeights qw(_input_dtype, _quantized_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }

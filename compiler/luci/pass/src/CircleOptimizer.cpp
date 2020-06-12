@@ -134,11 +134,11 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto quantized_dtype = _options->param(Options::AlgorithmParameters::Quantize_quantized_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
     luci::QuantizeDequantizeWeightsPass fake_quantizer(
-        str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
+        str_to_dtype(input_dtype), str_to_dtype(quantized_dtype), str_to_granularity(granularity));
     fake_quantizer.run(g);
   }
 
@@ -146,10 +146,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto quantized_dtype = _options->param(Options::AlgorithmParameters::Quantize_quantized_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
-    luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
+    luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(quantized_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
   }
