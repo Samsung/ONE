@@ -25,7 +25,65 @@ namespace
 {
 
 using namespace testing;
+const float kQuantizedTolerance = 2 * (1. / 256);
 
+template <typename T>
+void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data,
+           float input_min, float input_max, float output_min, float output_max,
+           DataType element_type)
+{
+  std::pair<float, int32_t> input_quant_params = quantizationParams<T>(input_min, input_max);
+  std::pair<float, int32_t> output_quant_params = quantizationParams<T>(output_min, output_max);
+  std::vector<T> quantized_input_value =
+      quantize<T>(input_data, input_quant_params.first, input_quant_params.second);
+  Tensor input_tensor{
+      element_type, input_shape, {{input_quant_params.first}, {input_quant_params.second}}, ""};
+  input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
+  Tensor output_tensor =
+      makeOutputTensor(element_type, output_quant_params.first, output_quant_params.second);
+
+  Logistic kernel(&input_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(dequantize(extractTensorData<T>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+}
+
+template <typename T> class LogisticTest : public ::testing::Test
+{
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(LogisticTest, DataTypes);
+
+TYPED_TEST(LogisticTest, TotalTest)
+{
+  Check<TypeParam>(/*input_shape=*/{1, 6, 4, 1}, /*output_shape=*/{1, 6, 4, 1},
+                   /*input_data=*/
+                   {
+                       0, -6, 2,  4, //
+                       3, -2, 10, 1, //
+                       0, -6, 2,  4, //
+                       3, -2, 10, 1, //
+                       0, -6, 2,  4, //
+                       3, -2, 10, 1, //
+                   },
+                   /*output_data=*/
+                   {
+                       0.5,      0.002473, 0.880797, 0.982014, //
+                       0.952574, 0.119203, 0.999955, 0.731059, //
+                       0.5,      0.002473, 0.880797, 0.982014, //
+                       0.952574, 0.119203, 0.999955, 0.731059, //
+                       0.5,      0.002473, 0.880797, 0.982014, //
+                       0.952574, 0.119203, 0.999955, 0.731059, //
+                   },
+                   /*input_min=*/-10.0f, /*input_max=*/10.0f, /*output_min=*/0.0f,
+                   /*output_max=*/255.0f / 256.0f, getElementType<TypeParam>());
+}
+/*
 TEST(LogisticTest, Float)
 {
   Shape input_shape{1, 2, 4, 1};
@@ -51,9 +109,46 @@ TEST(LogisticTest, Float)
 
 TEST(LogisticTest, Uint8)
 {
-  // Need to Implement GetDequantizedOutput Function.
-}
+  std::pair<float, int32_t> quant_params = quantizationParams<uint8_t>(-10.0f, 10.0f);
+  std::vector<uint8_t> quantized_value = quantize<uint8_t>(
+      {
+          0, -6, 2,  4, //
+          3, -2, 10, 1, //
+          0, -6, 2,  4, //
+          3, -2, 10, 1, //
+          0, -6, 2,  4, //
+          3, -2, 10, 1, //
+      },
+      quant_params.first, quant_params.second);
+  Tensor input_tensor{
+      DataType::U8, {1, 6, 4, 1}, {{quant_params.first}, {quant_params.second}}, ""};
+  input_tensor.writeData(quantized_value.data(), quantized_value.size() * sizeof(uint8_t));
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 256., 0);
 
+  Logistic kernel(&input_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor), ::testing::ElementsAreArray({
+                                                             128, 1, 227, 251, 244, 32, 255, 188, //
+                                                             128, 1, 227, 251, 244, 32, 255, 188, //
+                                                             128, 1, 227, 251, 244, 32, 255, 188, //
+                                                         }));
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), 1. / 256., 0),
+              ElementsAreArray(ArrayFloatNear(
+                  {
+                      0.5,      0.002473, 0.880797, 0.982014, //
+                      0.952574, 0.119203, 0.999955, 0.731059, //
+                      0.5,      0.002473, 0.880797, 0.982014, //
+                      0.952574, 0.119203, 0.999955, 0.731059, //
+                      0.5,      0.002473, 0.880797, 0.982014, //
+                      0.952574, 0.119203, 0.999955, 0.731059, //
+                  },
+                  kQuantizedTolerance)));
+  // TODO make a Shape checking of output_tensor.
+
+}
+*/
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
