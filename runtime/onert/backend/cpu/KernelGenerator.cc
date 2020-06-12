@@ -138,20 +138,21 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
 
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ker_alloc = _tensor_builder->at(ker_index).get();
+  auto bias_alloc = _tensor_builder->at(bias_index).get();
+
   const auto stride = node.param().stride;
+  const auto activation = node.param().activation;
+  const auto param_padding = node.param().padding;
+  auto fn = std::make_unique<ops::ConvolutionLayer>();
+
   if (_ctx.at(ifm_index).info().isDynamic() || _ctx.at(ker_index).info().isDynamic())
   {
-    auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-    auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-    auto ker_alloc = _tensor_builder->at(ker_index).get();
-    auto bias_alloc = _tensor_builder->at(bias_index).get();
-
-    const auto parm_padding = node.param().padding;
-    const auto activation = node.param().activation;
-
-    auto fn = std::make_unique<ops::ConvolutionLayer>();
-    fn->configure(ifm_alloc, ker_alloc, bias_alloc, parm_padding, activation, stride.horizontal,
-                  stride.vertical, ofm_alloc);
+    fn->configure(ifm_alloc, ker_alloc, bias_alloc, param_padding.type, param_padding.param.left,
+                  param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
+                  stride.horizontal, stride.vertical, activation, ofm_alloc);
 
     _return_fn = std::move(fn);
     return;
@@ -162,19 +163,11 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
-  const auto parm_padding = node.param().padding;
-  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
-  const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto ker_alloc = _tensor_builder->at(ker_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  const auto padding =
+      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
 
-  auto fn = std::make_unique<ops::ConvolutionLayer>();
-
-  fn->configure(ifm_alloc, ker_alloc, bias_alloc, parm_padding, padding.left, padding.right,
+  fn->configure(ifm_alloc, ker_alloc, bias_alloc, param_padding.type, padding.left, padding.right,
                 padding.top, padding.bottom, stride.horizontal, stride.vertical, activation,
                 ofm_alloc);
 

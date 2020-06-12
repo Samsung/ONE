@@ -53,13 +53,11 @@ public:
   void convQuant8();
 
   void configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
-                 const ir::Padding padding, const uint32_t paddingLeft, const uint32_t paddingRight,
-                 const uint32_t paddingTop, const uint32_t paddingBottom,
-                 const uint32_t strideWidth, const uint32_t strideHeight,
-                 const ir::Activation activation, Tensor *output);
-  void configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
-                 const ir::Padding padding, const ir::Activation activation,
-                 const uint32_t strideWidth, const uint32_t strideHeight, Tensor *output);
+                 ir::PaddingType _paddingType, const uint32_t paddingLeft,
+                 const uint32_t paddingRight, const uint32_t paddingTop,
+                 const uint32_t paddingBottom, const uint32_t strideWidth,
+                 const uint32_t strideHeight, const ir::Activation activation, Tensor *output);
+
   void run();
 
 private:
@@ -68,8 +66,7 @@ private:
   const Tensor *_bias;
   Tensor *_output;
 
-  ir::Padding _padding;
-
+  ir::PaddingType _paddingType;
   uint32_t _paddingLeft;
   uint32_t _paddingTop;
   uint32_t _paddingRight;
