@@ -91,10 +91,10 @@ class StaticInferer : public ir::OperationVisitor
 {
 public:
   StaticInferer(
+      const ir::SubgraphIndex &subg_idx,
       const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
-      : _lowered_subgs(lowered_subgs),
-        _operands(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operands()),
-        _operations(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operations())
+      : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
+        _operations(lowered_subgs.at(subg_idx)->graph().operations())
   { /* empty */
   }
   virtual ~StaticInferer() = default;
