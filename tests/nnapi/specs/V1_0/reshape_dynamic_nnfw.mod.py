@@ -48,11 +48,11 @@ dynamic_layer = dynamic_tensor.DynamicInputGenerator(model, model_input_shape, "
 
 test_node_input = dynamic_layer.getTestNodeInput()
 
-param = Parameter("op2", "TENSOR_INT32", "{1}", [-1]) # another vector of 2 float32s
+param = Parameter("op2", "TENSOR_INT32", "{2}", [-1, 1]) # another vector of 2 float32s
 # write Reshape test. input is `test_input`
 
 # note output shape is used by expected output's shape
-model_output = Output("output", "TENSOR_FLOAT32", "{9}")
+model_output = Output("output", "TENSOR_FLOAT32", "{9, 1}")
 
 model.Operation("RESHAPE", test_node_input, param).To(model_output)
 
