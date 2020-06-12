@@ -111,6 +111,7 @@ GeneratedTests.reduce_any_4
 GeneratedTests.reduce_any_4D_nnfw
 GeneratedTests.reduce_mean_dynamic_1_nnfw
 GeneratedTests.reduce_mean_dynamic_2_nnfw
+GeneratedTests.reduce_min_dynamic_nnfw
 GeneratedTests.reduce_prod
 GeneratedTests.reduce_prod_2
 GeneratedTests.reduce_prod_2D_float_nnfw
