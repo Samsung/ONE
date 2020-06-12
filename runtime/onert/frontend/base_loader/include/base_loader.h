@@ -316,30 +316,32 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
 
   if (data != nullptr)
   {
-    auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
+    auto ptr = std::make_unique<ir::ExternalData>(data->data(), data->size());
 
-    // Calculate offset from base address of mapped region
-    int32_t unaligned_offset_start = const_cast<unsigned char *>(data->data()) - _base;
-    int32_t unaligned_offset_end = unaligned_offset_start + data->size();
+    /*
+        // Calculate offset from base address of mapped region
+        int32_t unaligned_offset_start = const_cast<unsigned char *>(data->data()) - _base;
+        int32_t unaligned_offset_end = unaligned_offset_start + data->size();
 
-    // Calculated aligned offset from base address of mapped region
-    // munmap accepts memory address which is a multiple of the pagesize
-    int32_t aligned_offset_start = unaligned_offset_start % _pagesize == 0
-                                       ? unaligned_offset_start
-                                       : ((unaligned_offset_start / _pagesize) + 1) * _pagesize;
-    int32_t aligned_offset_end = unaligned_offset_end % _pagesize == 0
-                                     ? unaligned_offset_end
-                                     : ((unaligned_offset_end / _pagesize) - 1) * _pagesize;
+        // Calculated aligned offset from base address of mapped region
+        // munmap accepts memory address which is a multiple of the pagesize
+        int32_t aligned_offset_start = unaligned_offset_start % _pagesize == 0
+                                           ? unaligned_offset_start
+                                           : ((unaligned_offset_start / _pagesize) + 1) * _pagesize;
+        int32_t aligned_offset_end = unaligned_offset_end % _pagesize == 0
+                                         ? unaligned_offset_end
+                                         : ((unaligned_offset_end / _pagesize) - 1) * _pagesize;
 
-    int32_t size = aligned_offset_end - aligned_offset_start;
-    if (size > 0)
-    {
-      // Unmap mapped region for CachedData
-      if (munmap(_base + aligned_offset_start, size) == -1)
-      {
-        VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
-      }
-    }
+        int32_t size = aligned_offset_end - aligned_offset_start;
+        if (size > 0)
+        {
+          // Unmap mapped region for CachedData
+          if (munmap(_base + aligned_offset_start, size) == -1)
+          {
+            VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
+          }
+        }
+        */
 
     subg.setOperandValue(operand_index, std::move(ptr));
   }
