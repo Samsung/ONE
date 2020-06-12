@@ -27,7 +27,7 @@ if (NOT HDF5_FOUND)
   # Give second chance for some systems where sytem find_package config mode fails
   unset(HDF5_FOUND)
 
-  find_path(HDF5_INCLUDE_DIRS NAMES hdf5.h PATH_SUFFIXES include/hdf5/serial)
+  find_path(HDF5_INCLUDE_DIRS NAMES hdf5.h ONLY_CMAKE_FIND_ROOT_PATH PATH_SUFFIXES include/hdf5/serial)
 
   if (NOT HDF5_INCLUDE_DIRS)
     set(HDF5_FOUND FALSE)
