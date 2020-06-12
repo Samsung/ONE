@@ -89,6 +89,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseInstanceNorm);
     return 0;
   };
+  argparse["--resolve_customop_add"] = [&options](const char **) {
+    options->enable(Algorithms::ResolveCustomOpAdd);
+    return 0;
+  };
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     return 0;
