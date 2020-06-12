@@ -54,7 +54,7 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
     return;
   }
 
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);

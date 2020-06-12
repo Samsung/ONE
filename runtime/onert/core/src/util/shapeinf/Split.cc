@@ -80,7 +80,7 @@ void DynamicInferer::visit(const ir::operation::Split &op)
     return;
   }
 
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   const auto axis = op.param().axis;
   const auto num_splits = op.param().num_splits;

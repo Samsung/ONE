@@ -98,8 +98,8 @@ void DynamicInferer::visit(const ir::operation::BatchMatMul &op)
   const auto output_index = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_index);
 
-  auto lhs_shape = getShape(lhs.get());
-  auto rhs_shape = getShape(rhs.get());
+  auto lhs_shape = lhs->getShape();
+  auto rhs_shape = rhs->getShape();
   // TODO
 
   auto new_shape = inferBatchMatMulShape(lhs_shape, rhs_shape, op.param());

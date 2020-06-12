@@ -325,10 +325,10 @@ void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                               const ir::OperandIndex rhs_idx)
 {
   auto lhs = _tensor_registry->getITensor(lhs_idx);
-  auto lhs_shape = getShape(lhs.get());
+  auto lhs_shape = lhs->getShape();
 
   auto rhs = _tensor_registry->getITensor(rhs_idx);
-  auto rhs_shape = getShape(rhs.get());
+  auto rhs_shape = rhs->getShape();
 
   /*
     Here, the state after compilation (satic shape inference) could be one of the following:
@@ -361,7 +361,7 @@ void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Oper
 {
   // check if input is not dynamic
   auto input = _tensor_registry->getITensor(input_ind);
-  auto output_shape = getShape(input.get());
+  auto output_shape = input->getShape();
 
   /*
     Here, the state after compilation (satic shape inference) could be one of the following:

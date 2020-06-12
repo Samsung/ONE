@@ -77,7 +77,7 @@ void DynamicInferer::visit(const ir::operation::OneHot &op)
 
   auto indices_ind = op.getInputs().at(ir::operation::OneHot::INDICES);
   const auto &indices = _tensor_registry->getITensor(indices_ind);
-  auto indices_shape = getShape(indices.get());
+  auto indices_shape = indices->getShape();
 
   if (!indices->is_dynamic())
   {

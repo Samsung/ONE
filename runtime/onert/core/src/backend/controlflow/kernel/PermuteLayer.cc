@@ -46,7 +46,7 @@ void PermuteLayer::run()
     if (src_tensor->is_dynamic() || dst_tensor->is_dynamic())
     {
       // getting output shape
-      auto src_shape = getShape(src_tensor.get());
+      auto src_shape = src_tensor->getShape();
 
       // set output shape and output buffer
       ir::Shape new_shape =
@@ -56,8 +56,8 @@ void PermuteLayer::run()
       _dst_dyn_alloc_info_map.at(dst_tensor).dyn_tensor_manager->applyShape(dst_index, new_shape);
       assert(dst_tensor->buffer() != nullptr);
     }
-    assert(exec::convertShape(getShape(src_tensor.get()), src_tensor->layout(),
-                              dst_tensor->layout()) == getShape(dst_tensor.get()));
+    assert(exec::convertShape(src_tensor->getShape(), src_tensor->layout(), dst_tensor->layout()) ==
+           dst_tensor->getShape());
   }
   IPermuteFunction::run();
 }

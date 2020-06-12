@@ -68,8 +68,8 @@ void DynamicInferer::visit(const ir::operation::Conv2D &op)
   if ((!input->is_dynamic()) && (!ker->is_dynamic()))
     return;
 
-  ir::Shape input_shape = getShape(input.get());
-  ir::Shape ker_shape = getShape(ker.get());
+  ir::Shape input_shape = input->getShape();
+  ir::Shape ker_shape = ker->getShape();
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);

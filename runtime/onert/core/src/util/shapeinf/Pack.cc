@@ -73,7 +73,7 @@ void DynamicInferer::visit(const ir::operation::Pack &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   if (!input->is_dynamic())
     return;

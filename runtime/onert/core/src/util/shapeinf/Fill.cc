@@ -70,7 +70,7 @@ void DynamicInferer::visit(const ir::operation::Fill &op)
   auto output = _tensor_registry->getITensor(output_ind);
   auto input_ind = op.getInputs().at(ir::operation::Fill::Input::INPUT);
   auto input = _tensor_registry->getITensor(input_ind);
-  ir::Shape input_shape = getShape(input.get());
+  ir::Shape input_shape = input->getShape();
 
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;

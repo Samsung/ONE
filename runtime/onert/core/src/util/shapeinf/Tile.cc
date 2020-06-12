@@ -79,7 +79,7 @@ void DynamicInferer::visit(const ir::operation::Tile &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
   auto multiplier_buffer = reinterpret_cast<const int32_t *>(multiplier->buffer());
   assert(multiplier_buffer);
 
