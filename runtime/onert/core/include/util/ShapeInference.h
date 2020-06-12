@@ -138,7 +138,7 @@ private:
   void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from O
+  void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
@@ -224,7 +224,7 @@ public:
   void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Max &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from O
+  void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
