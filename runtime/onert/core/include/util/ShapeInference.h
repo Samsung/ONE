@@ -155,6 +155,7 @@ private:
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Slice &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::Squeeze &op);
   void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::SquaredDifference &op);
@@ -243,6 +244,7 @@ public:
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Slice &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::Squeeze &op);
   void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
   void visit(const ir::operation::SquaredDifference &op);
