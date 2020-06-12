@@ -70,31 +70,11 @@ public:
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations);
-    context->shape_fixer = std::shared_ptr<IShapeFixer>(std::make_shared<EmptyShapeFixer>());
+    context->shape_fixer = nullptr;
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;
   }
-
-private:
-  class EmptyShapeFixer : public IShapeFixer
-  {
-  public:
-    EmptyShapeFixer() = default;
-
-    void visit(const ir::operation::If &) override
-    {
-      // DO NOTHING
-    }
-    void visit(const ir::operation::Permute &) override
-    {
-      // DO NOTHING
-    }
-    void visit(const ir::operation::While &) override
-    {
-      // DO NOTHING
-    }
-  };
 
 private:
   std::shared_ptr<IConfig> _config;
