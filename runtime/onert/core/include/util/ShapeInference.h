@@ -138,6 +138,7 @@ private:
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
   void visit(const ir::operation::Max &op);
+  void visit(const ir::operation::Mean &op);
   void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
@@ -226,9 +227,10 @@ public:
   void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
-  void visit(const ir::operation::Mul &op);
-  void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Max &op);
+  void visit(const ir::operation::Mean &op);
+  void visit(const ir::operation::Min &op);
+  void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
   void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);

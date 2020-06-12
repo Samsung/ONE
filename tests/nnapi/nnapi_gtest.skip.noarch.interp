@@ -331,6 +331,8 @@ GeneratedTests.reduce_max_quant8_2
 GeneratedTests.reduce_max_quant8_2_nnfw
 GeneratedTests.reduce_max_quant8_3
 GeneratedTests.reduce_max_quant8_4
+GeneratedTests.reduce_mean_dynamic_1_nnfw
+GeneratedTests.reduce_mean_dynamic_2_nnfw
 GeneratedTests.reduce_min
 GeneratedTests.reduce_min_2
 GeneratedTests.reduce_min_3
