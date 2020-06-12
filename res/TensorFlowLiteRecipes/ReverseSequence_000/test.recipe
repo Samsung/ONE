@@ -20,7 +20,7 @@ operand {
 operation {
   type: "ReverseSequence"
   reverse_sequence_options {
-    seq_dim: 0
+    seq_dim: 1
     batch_dim: 0
   }
   input: "ifm"
