@@ -1853,6 +1853,13 @@ public:
     auto num = node->num();
     auto rank = static_cast<int32_t>(value_shape.rank());
 
+    if (rank == 0)
+    {
+      // Unknown shape
+      loco::TensorShape shape = own_shape(node);
+      return loco::NodeShape{shape};
+    }
+
     LUCI_ASSERT(-rank <= axis && axis < rank, "Axis is out of range");
 
     if (axis < 0)
