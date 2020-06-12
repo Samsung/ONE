@@ -25,6 +25,8 @@ set(SOURCES
     DepthwiseConv2D.cpp
     FullyConnected.h
     FullyConnected.cpp
+    L2Normalize.h
+    L2Normalize.cpp
     Logistic.h
     Logistic.cpp
     MaxPool2D.h
@@ -70,6 +72,7 @@ set(TEST_SOURCES
     Conv2D.test.cpp
     DepthwiseConv2D.test.cpp
     FullyConnected.test.cpp
+    L2Normalize.test.cpp
     Logistic.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
