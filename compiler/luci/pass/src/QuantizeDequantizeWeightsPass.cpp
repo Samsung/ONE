@@ -143,8 +143,11 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   int channel_dim_index{0};
   int size{0};
 
-  bool ret = get_channel_dim_index(node, dimension, channel_dim_index);
-  assert(ret);
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
   size = dimension.dim(channel_dim_index).value();
 
   std::vector<bool> has_min_max_value(size, false);
@@ -202,8 +205,11 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   };
   int channel_dim_index{0};
 
-  bool ret = get_channel_dim_index(node, dimension, channel_dim_index);
-  assert(ret);
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
 
   for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
   {
@@ -247,8 +253,11 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
   };
   int channel_dim_index{0};
 
-  bool ret = get_channel_dim_index(node, dimension, channel_dim_index);
-  assert(ret);
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
 
   for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
   {
