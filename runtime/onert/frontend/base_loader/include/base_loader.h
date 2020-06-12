@@ -266,18 +266,14 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
       shape.append(dim);
     }
   }
-  // Shape Signature : when val is -1, that means that dim is unknown
-  const auto *tensor_shape_sig = tensor->shape_signature();
-  if (tensor_shape_sig != nullptr)
-  {
-    int i = 0;
-    for (const auto &sig_dim : *tensor_shape_sig)
-    {
-      if (sig_dim == -1)
-        shape.dim(i) = ir::Shape::UNSPECIFIED_DIM;
-      i++;
-    }
-  }
+
+  // Note for tensor->shape_signature()
+  // We don't handle shape signature
+  //    How we handle:
+  //       If shape_signature[k] == -1, we will use tensor->shape()[k] == 1
+  //       If app wants to change the input shape, call nnfw_apply_input_tensorinfo() can
+  //       be used.
+
   // Type
   ir::DataType data_type = tensorTypeToDataType(tensor->type());
   // Quantization

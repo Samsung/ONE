@@ -203,43 +203,24 @@ TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_multiple_executions)
   set_input_output_and_run(new_shape, expected);
 }
 
+//
 // Unknown Dimension Test
+//    Trying to set unknown dim to other value before calling nnfw_prepare()
 //
 
-class TestInputUnknownDimInputConcatModelLoaded
-    : public ValidationTestModelLoaded<NNPackages::UNKNOWN_DIM_INPUT_CONCAT>
-{
-protected:
-  void prepare_apply_set_input_output(const std::vector<float> &input0,
-                                      const std::vector<float> &input1,
-                                      std::vector<float> *actual_output, nnfw_tensorinfo input0_ti)
-  {
-    ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
-    ASSERT_EQ(nnfw_apply_tensorinfo(_session, 0, input0_ti), NNFW_STATUS_NO_ERROR);
-
-    ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
-                             sizeof(float) * input0.size()),
-              NNFW_STATUS_NO_ERROR);
-    ASSERT_EQ(nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                             sizeof(float) * input1.size()),
-              NNFW_STATUS_NO_ERROR);
-
-    ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
-                              sizeof(float) * actual_output->size()),
-              NNFW_STATUS_NO_ERROR);
-  }
-};
+using TestInputUnknownDimInputConcatModelLoaded =
+    ValidationTestModelLoaded<NNPackages::UNKNOWN_DIM_INPUT_CONCAT>;
 
 /**
  * @brief Testing the following model:
  *
- *        #0 = placeholder([None, None])
+ *        #0 = placeholder([None, None])   # initially, shape is [1, 1]
  *        #1 = placeholder([2, 3])
  *        #2 = concat (#0, #1, axis=0)
  *
  *        Calling sequence:
- *        - nnfw_prepare()
- *        - nnfw_apply_tensor_info(#0, [1, 3])
+ *        - nnfw_set_input_tensorinfo(#0, [1, 3])    # now, [1, 3]
+ *        - nnfw_prepare()                 # this should work
  *        - nnfw_set_input()
  *        - nnfw_run()
  *
@@ -264,7 +245,10 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
     ti.dims[1] = 3;
   }
 
-  prepare_apply_set_input_output(input0, input1, &actual_output, ti);
+  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+
+  set_input_output(_session, input0, input1, &actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
@@ -278,13 +262,13 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
 /**
  * @brief Negative Test: Testing the following model:
  *
- *        #0 = placeholder([None, None])
+ *        #0 = placeholder([None, None])         # initially, [1, 1]
  *        #1 = placeholder([2, 3])
  *        #2 = concat (#0, #1, axis=0)
  *
  *        Calling sequence:
- *        - nnfw_prepare()
- *        - nnfw_apply_tensor_info(#0, [3, 1]) ---> input shape is not matched for concat to work
+ *        - nnfw_set_input tensorinfo(#0, [3, 1]) # now [3, 1]
+ *        - nnfw_prepare()                        # should fail (shape mismatch)
  *        - nnfw_set_input()
  *        - nnfw_run()
  *
@@ -308,11 +292,9 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
     ti.dims[1] = 1;
   }
 
-  prepare_apply_set_input_output(input0, input1, &actual_output, ti);
+  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
 
-  // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
 }
 
 //
