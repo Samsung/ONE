@@ -118,7 +118,7 @@ void ConvolutionLayer::convQuant8()
 void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
                                  const ir::Padding padding, const ir::Activation activation,
                                  const uint32_t strideWidth, const uint32_t strideHeight,
-                                 const ir::Layout current_op_seq_layout, Tensor *output)
+                                 Tensor *output)
 {
   _input = input;
   _kernel = kernel;
@@ -127,7 +127,6 @@ void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, cons
   _activation = activation;
   _strideWidth = strideWidth;
   _strideHeight = strideHeight;
-  _current_op_seq_layout = current_op_seq_layout;
   _output = output;
 }
 
@@ -156,8 +155,8 @@ void ConvolutionLayer::run()
 {
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
-    const auto ifm_shape = getShape(_input).asFeature(_current_op_seq_layout);
-    const auto ofm_shape = getShape(_output).asFeature(_current_op_seq_layout);
+    const auto ifm_shape = getShape(_input).asFeature(_input->layout());
+    const auto ofm_shape = getShape(_output).asFeature(_input->layout());
     // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
     const auto ker_shape = getShape(_kernel);
     const auto ker_height = ker_shape.dim(1);

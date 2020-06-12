@@ -151,7 +151,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
     auto fn = std::make_unique<ops::ConvolutionLayer>();
     fn->configure(ifm_alloc, ker_alloc, bias_alloc, parm_padding, activation, stride.horizontal,
-                  stride.vertical, _current_op_seq_layout, ofm_alloc);
+                  stride.vertical, ofm_alloc);
 
     _return_fn = std::move(fn);
     return;

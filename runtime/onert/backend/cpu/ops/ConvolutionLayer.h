@@ -59,8 +59,7 @@ public:
                  const ir::Activation activation, Tensor *output);
   void configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
                  const ir::Padding padding, const ir::Activation activation,
-                 const uint32_t strideWidth, const uint32_t strideHeight,
-                 const ir::Layout current_op_seq_layout, Tensor *output);
+                 const uint32_t strideWidth, const uint32_t strideHeight, Tensor *output);
   void run();
 
 private:
@@ -69,7 +68,6 @@ private:
   const Tensor *_bias;
   Tensor *_output;
 
-  ir::Layout _current_op_seq_layout;
   ir::Padding _padding;
 
   uint32_t _paddingLeft;
