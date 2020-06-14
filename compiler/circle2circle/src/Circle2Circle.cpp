@@ -38,6 +38,7 @@ using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 void print_help(const char *progname)
 {
   std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
+  std::cerr << "Optimization options: " << std::endl;
   std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
