@@ -48,9 +48,6 @@ public:
   void bias(loco::Node *node) override { at(3)->node(node); }
 
 public:
-  int32_t axis(void) const { return _axis; }
-  void axis(int32_t axis) { _axis = axis; }
-
   int32_t weights_hidden_size(void) const { return _weights_hidden_size; }
   void weights_hidden_size(int32_t weights_hidden_size)
   {
@@ -58,7 +55,6 @@ public:
   }
 
 private:
-  int32_t _axis = 0;
   int32_t _weights_hidden_size = 0;
 };
 
