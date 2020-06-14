@@ -44,8 +44,12 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
   const auto &tensor = tensors.at(inputs[0]);
   const auto &shape = tensor->shape;
   auto shape_size = static_cast<int32_t>(shape.size());
-  if (options->axis < -shape_size || options->axis >= shape_size)
-    return false;
+  if (shape_size > 0)
+  {
+    // NOTE for unknown shape, shape_size is 0
+    if (options->axis < -shape_size || options->axis >= shape_size)
+      return false;
+  }
 
   return true;
 }
