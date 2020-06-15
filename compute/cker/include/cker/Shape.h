@@ -201,7 +201,7 @@ private:
   int32_t _size;
   union {
     int32_t _dims[kMaxSmallSize];
-    int32_t *_dims_pointer;
+    int32_t *_dims_pointer{nullptr};
   };
 };
 
