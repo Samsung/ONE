@@ -16,6 +16,7 @@
 
 #include "ConvolutionLayer.h"
 
+#include "ir/Padding.h"
 #include <cker/operation/Conv.h>
 
 namespace onert
@@ -138,6 +139,34 @@ void ConvolutionLayer::configure(const Tensor *input, const Tensor *kernel, cons
 
 void ConvolutionLayer::run()
 {
+  if (_input->is_dynamic() || _kernel->is_dynamic())
+  {
+    const auto ifm_shape = getShape(_input).asFeature(_input->layout());
+    const auto ofm_shape = getShape(_output).asFeature(_input->layout());
+    // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
+    const auto ker_shape = getShape(_kernel);
+    const auto ker_height = ker_shape.dim(1);
+    const auto ker_width = ker_shape.dim(2);
+
+    ir::Stride stride;
+    stride.vertical = _strideWidth;
+    stride.horizontal = _strideWidth;
+
+    ir::Padding param_padding;
+    param_padding.type = _paddingType;
+    param_padding.param.left = _paddingLeft;
+    param_padding.param.right = _paddingRight;
+    param_padding.param.top = _paddingTop;
+    param_padding.param.bottom = _paddingBottom;
+
+    const auto padding =
+        ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
+
+    _paddingLeft = padding.left;
+    _paddingRight = padding.right;
+    _paddingTop = padding.top;
+    _paddingBottom = padding.bottom;
+  }
   if (_input->data_type() == OperandType::FLOAT32)
   {
     convFloat32();
