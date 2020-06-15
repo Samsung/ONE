@@ -198,6 +198,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
 
   // Map model file into memory region
   _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
+  if (_base == MAP_FAILED)
+  {
+    close(fd);
+    throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
+  }
 
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
@@ -208,6 +213,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   {
     VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
   }
+  close(fd);
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
