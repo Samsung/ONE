@@ -36,6 +36,11 @@ int entry(int argc, char **argv)
   const foder::FileLoader fileLoader{argv[1]};
   std::vector<char> modelData = fileLoader.load();
   const tflite::Model *tflmodel = tflite::GetModel(modelData.data());
+  if (tflmodel == nullptr)
+  {
+    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
+    return 255;
+  }
 
   // Generate ModelRecipe recipe
   std::unique_ptr<tflchef::ModelRecipe> recipe = tflchef::generate_recipe(tflmodel);
