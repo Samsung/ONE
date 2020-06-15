@@ -101,8 +101,7 @@ using namespace circle;
 using namespace flatbuffers;
 
 Offset<Vector<Offset<OperatorCode>>>
-encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode, uint32_t> &opcodes,
-                    std::unordered_map<luci::OpCode, std::string> &custom_opcodes)
+encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode, uint32_t> &opcodes)
 {
   std::vector<Offset<OperatorCode>> operator_codes_vec(opcodes.size());
   for (auto it : opcodes)
@@ -112,17 +111,13 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
     {
       operator_codes_vec[idx] = CreateOperatorCode(builder, it.first.opcode);
     }
-    else // custom op
+    else
     {
-      auto opCode = it.first;
-      auto custom_code = custom_opcodes.find(opCode);
-      if (custom_code == custom_opcodes.end())
-        INTERNAL_EXN("Cannot find code for customop even though opcode is BuiltinOperator_CUSTOM");
-
       operator_codes_vec[idx] =
-          CreateOperatorCode(builder, it.first.opcode, builder.CreateString(custom_code->second));
+          CreateOperatorCode(builder, it.first.opcode, builder.CreateString(it.first.custom_code));
     }
   }
+
   return builder.CreateVector(operator_codes_vec);
 }
 
@@ -185,8 +180,7 @@ void CircleExporterImpl::exportGraph(loco::Graph *graph)
   exportNodes(graph, _builder, md, gd);
 
   // encode operator codes
-  auto operator_codes =
-      encodeOperatorCodes(_builder, md._operator_codes, md._custom_operator_codes);
+  auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
 
   // Subgraphs
   Offset<SubGraph> subgraph = exportSubgraph(gd);
@@ -257,8 +251,7 @@ void CircleExporterImpl::exportModule(Module *module)
   auto subgraphs = _builder.CreateVector(std::vector<Offset<SubGraph>>{subgraph_vec});
 
   // encode operator codes
-  auto operator_codes =
-      encodeOperatorCodes(_builder, md._operator_codes, md._custom_operator_codes);
+  auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
 
   // Description
   std::string description_str = "nnpackage";
