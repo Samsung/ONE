@@ -347,7 +347,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
                 .append(EnumNameBuiltinOperator(builtin_code)));
     };
     check_optional_input();
-    inputs.append(_tensor_to_operand[idx]);
+    inputs.append(tensorIdxToOperandIdx(idx));
   }
 
   for (const std::int32_t idx : *op->outputs())
