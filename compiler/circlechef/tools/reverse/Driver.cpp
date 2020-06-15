@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <circlechef/RawModel.h>
 #include <circlechef/RecipeChef.h>
 
 #include <foder/FileLoader.h>
