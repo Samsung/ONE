@@ -1615,7 +1615,7 @@ void OperationExporter::visit(luci::CircleUnpack *node)
 
   auto unpack_outs = loco::succs(node);
   // NOTE real models may not use all of the outputs
-  if (int32_t(unpack_outs.size()) != node->num())
+  if (static_cast<int32_t>(unpack_outs.size()) != node->num())
   {
     if (settings->get(luci::UserSettings::Key::DisableValidation))
     {

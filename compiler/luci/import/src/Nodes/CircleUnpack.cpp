@@ -42,16 +42,7 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   // NOTE real models may have mismatch
-  if (!settings->get(luci::UserSettings::Key::DisableValidation))
-  {
-    if (static_cast<int32_t>(outputs.size()) != options->num)
-      return false;
-  }
-
-  if (options->num < 0)
-    return false;
-
-  if (int32_t(outputs.size()) != options->num)
+  if (static_cast<int32_t>(outputs.size()) != options->num)
   {
     if (settings->get(luci::UserSettings::Key::DisableValidation))
     {
@@ -63,6 +54,9 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
     else
       return false;
   }
+
+  if (options->num < 0)
+    return false;
 
   const auto &tensors = args.reader.tensors();
   const auto &tensor = tensors.at(inputs[0]);
