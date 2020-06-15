@@ -34,6 +34,7 @@ public:
     {
       FuseBCQ,
       FuseInstanceNorm,
+      ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
