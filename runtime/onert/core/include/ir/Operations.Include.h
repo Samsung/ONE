@@ -88,6 +88,7 @@
 #include "ir/operation/Min.h"
 #include "ir/operation/Max.h"
 #include "ir/operation/Custom.h"
+#include "ir/operation/Einsum.h"
 #include "ir/operation/OneHot.h"
 #include "ir/operation/Cos.h"
 #include "ir/operation/Sin.h"
