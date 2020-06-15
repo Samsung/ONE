@@ -20,4 +20,5 @@ How To
   ./how-to-remote-debugging-with-visual-studio-code.md
   ./how-to-run-package.md
   ./how-to-use-api.md
+  ./how-to-use-nnfw-api.md
   ./how-to-use-nnapi-binding.md
