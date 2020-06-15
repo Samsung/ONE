@@ -35,11 +35,18 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 {
   std::pair<float, int32_t> input_quant_params = quantizationParams<T>(input_min, input_max);
   std::pair<float, int32_t> output_quant_params = quantizationParams<T>(output_min, output_max);
-  std::vector<T> quantized_input_value =
-      quantize<T>(input_data, input_quant_params.first, input_quant_params.second);
   Tensor input_tensor{
       element_type, input_shape, {{input_quant_params.first}, {input_quant_params.second}}, ""};
-  input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
+  if (element_type == DataType::FLOAT32)
+  {
+    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  }
+  else
+  {
+    std::vector<T> quantized_input_value =
+        quantize<T>(input_data, input_quant_params.first, input_quant_params.second);
+    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
+  }
   Tensor output_tensor =
       makeOutputTensor(element_type, output_quant_params.first, output_quant_params.second);
 
@@ -47,9 +54,17 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(dequantize(extractTensorData<T>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  if (element_type == DataType::FLOAT32)
+  {
+    EXPECT_THAT(extractTensorData<T>(output_tensor),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
+  else
+  {
+    EXPECT_THAT(dequantize(extractTensorData<T>(output_tensor), output_tensor.scale(),
+                           output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
 }
 
 template <typename T> class LogisticTest : public ::testing::Test

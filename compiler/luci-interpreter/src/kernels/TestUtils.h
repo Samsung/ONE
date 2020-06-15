@@ -63,15 +63,13 @@ std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &
 template <typename T>
 inline std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
+  assert(getElementType<T>() != DataType::FLOAT32);
   std::vector<T> q;
   for (const auto &f : data)
   {
-    if (getElementType<T>() == DataType::FLOAT32)
-      q.push_back(f);
-    else
-      q.push_back(static_cast<T>(std::max<float>(
-          std::numeric_limits<T>::min(),
-          std::min<float>(std::numeric_limits<T>::max(), std::round(zero_point + (f / scale))))));
+    q.push_back(static_cast<T>(std::max<float>(
+        std::numeric_limits<T>::min(),
+        std::min<float>(std::numeric_limits<T>::max(), std::round(zero_point + (f / scale))))));
   }
   return q;
 }
@@ -79,13 +77,11 @@ inline std::vector<T> quantize(const std::vector<float> &data, float scale, int3
 template <typename T>
 inline std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
 {
+  assert(getElementType<T>() != DataType::FLOAT32);
   std::vector<float> f;
   for (const T &q : data)
   {
-    if (getElementType<T>() == DataType::FLOAT32)
-      f.push_back(q);
-    else
-      f.push_back(scale * (q - zero_point));
+    f.push_back(scale * (q - zero_point));
   }
   return f;
 }
