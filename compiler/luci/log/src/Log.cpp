@@ -16,6 +16,8 @@
 
 #include "luci/Log.h"
 
+#include <luci/UserSettings.h>
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -57,8 +59,12 @@ namespace luci
 
 LoggerConfig::LoggerConfig()
 {
-  // Turn on logging if LUCI_LOG is set as non-zero value
-  _enabled = safecast<bool>(std::getenv("LUCI_LOG"), false);
+  auto settings = luci::UserSettings::settings();
+
+  _show_warn = !settings->get(luci::UserSettings::Key::MuteWarnings);
+
+  // Turn on info logging if LUCI_LOG is set as non-zero value
+  _show_info = safecast<bool>(std::getenv("LUCI_LOG"), false);
 }
 
 void LoggerConfig::configure(const hermes::Source *source, hermes::Source::Setting &setting) const
@@ -72,16 +78,22 @@ void LoggerConfig::configure(const hermes::Source *source, hermes::Source::Setti
 
 void LoggerConfig::configure(const Logger *, hermes::Source::Setting &setting) const
 {
-  if (_enabled)
+  setting.filter(hermes::SeverityCategory::FATAL).reject_all();
+  setting.filter(hermes::SeverityCategory::ERROR).reject_all();
+  setting.filter(hermes::SeverityCategory::WARN).reject_all();
+  setting.filter(hermes::SeverityCategory::INFO).reject_all();
+  setting.filter(hermes::SeverityCategory::VERBOSE).reject_all();
+
+  // TODO enable FATAL and ERROR
+  if (_show_warn)
   {
-    // Enable all catagories
-    setting.accept_all();
+    setting.filter(hermes::SeverityCategory::WARN).accept_all();
   }
-  else
+  if (_show_info)
   {
-    // Disable all catagories
-    setting.reject_all();
+    setting.filter(hermes::SeverityCategory::INFO).accept_all();
   }
+  // TODO enable VERBOSE
 }
 
 } // namespace luci
