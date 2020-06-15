@@ -21,6 +21,7 @@
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
+#include <luci/UserSettings.h>
 
 #include <stdex/Memory.h>
 #include <oops/InternalExn.h>
@@ -56,6 +57,9 @@ void print_help(const char *progname)
             << std::endl;
   std::cerr << "                            ";
   std::cerr << "Ex: --quantize_dequantize_weights float32 uint8 channel" << std::endl;
+  std::cerr << "Execution options:" << std::endl;
+  std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
+  std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -74,6 +78,7 @@ int entry(int argc, char **argv)
   luci::CircleOptimizer optimizer;
 
   auto options = optimizer.options();
+  auto settings = luci::UserSettings::settings();
 
   // TODO merge this with help message
   argparse["--fuse_bcq"] = [&options](const char **) {
@@ -132,6 +137,15 @@ int entry(int argc, char **argv)
     options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
     options->param(AlgorithmParameters::Quantize_granularity, granularity);
     return 3;
+  };
+
+  argparse["--mute_warnings"] = [&settings](const char **) {
+    settings->set(luci::UserSettings::Key::MuteWarnings, true);
+    return 0;
+  };
+  argparse["--disable_validation"] = [&settings](const char **) {
+    settings->set(luci::UserSettings::Key::DisableValidation, true);
+    return 0;
   };
 
   for (int n = 1; n < argc - 2; ++n)
