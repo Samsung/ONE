@@ -2,6 +2,7 @@ GeneratedTests.abs_
 GeneratedTests.abs_dynamic_nnfw
 GeneratedTests.add_dynamic_nnfw
 GeneratedTests.argmax_dynamic_nnfw
+GeneratedTests.batch_matmul_ex_dynamic_nnfw
 GeneratedTests.batch_matmul_ex_float_adj_x
 GeneratedTests.batch_matmul_ex_float_adj_y
 GeneratedTests.batch_matmul_ex_float_batch2

@@ -122,6 +122,7 @@ private:
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
+  void visit(const ir::operation::BatchMatMul &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
@@ -214,6 +215,7 @@ public:
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
+  void visit(const ir::operation::BatchMatMul &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);

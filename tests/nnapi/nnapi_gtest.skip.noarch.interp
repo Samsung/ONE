@@ -26,6 +26,7 @@ GeneratedTests.avg_pool_quant8_2
 GeneratedTests.avg_pool_quant8_3
 GeneratedTests.avg_pool_quant8_4
 GeneratedTests.avg_pool_quant8_5
+GeneratedTests.batch_matmul_ex_dynamic_nnfw
 GeneratedTests.batch_matmul_ex_float_adj_x
 GeneratedTests.batch_matmul_ex_float_adj_y
 GeneratedTests.batch_matmul_ex_float_batch2
