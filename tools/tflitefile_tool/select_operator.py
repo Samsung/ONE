@@ -862,13 +862,14 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic,
     # create input vector
     input_num = selected_operator.InputsLength()
     if input_num != 0:
-        new_input_list = []
         tflite.Operator.OperatorStartInputsVector(new_builder, input_num)
         for input_idx in reversed(range(input_num)):
             input_tensor_idx = selected_operator.Inputs(input_idx)
-            new_input_tensor_idx = used_tensors_dic[input_tensor_idx]
+            if input_tensor_idx == -1:
+                new_input_tensor_idx = -1
+            else:
+                new_input_tensor_idx = used_tensors_dic[input_tensor_idx]
             new_builder.PrependInt32(new_input_tensor_idx)
-            new_input_list.append(new_input_tensor_idx)
         new_input = new_builder.EndVector(input_num)
 
     # create output_vector
@@ -1127,7 +1128,7 @@ def main(args):
         opcode = sample_subgraph.Operators(opcode_idx)
         for input_idx in range(opcode.InputsLength()):
             input_tensor_idx = opcode.Inputs(input_idx)
-            if not input_tensor_idx in used_tensors:
+            if not input_tensor_idx == -1 and not input_tensor_idx in used_tensors:
                 # default: same as input sample
                 used_tensors.append(input_tensor_idx)
 
@@ -1183,6 +1184,8 @@ def main(args):
         opcode = sample_subgraph.Operators(opcode_idx)
         for input_idx in range(opcode.InputsLength()):
             input_tensor_idx = opcode.Inputs(input_idx)
+            if input_tensor_idx == -1:
+                continue
             if input_tensor_idx in new_output_tensors:
                 new_output_tensors.remove(input_tensor_idx)
             if input_tensor_idx in new_input_tensors:
