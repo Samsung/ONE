@@ -42,14 +42,14 @@ public:
     file.unsetf(std::ios::skipws);
 
     file.seekg(0, std::ios::end);
-    _size = file.tellg();
+    auto fileSize = file.tellg();
     file.seekg(0, std::ios::beg);
 
     // reserve capacity
-    DataBuffer data(_size);
+    DataBuffer data(fileSize);
 
     // read the data
-    file.read(data.data(), _size);
+    file.read(data.data(), fileSize);
     if (file.fail())
       throw std::runtime_error("Couldn't read file.");
 
