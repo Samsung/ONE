@@ -1762,7 +1762,8 @@ void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
   // Make input, output and options for operator
   std::vector<int32_t> inputs_vec{
       get_tensor_index(node->input()), get_tensor_index(node->weights_scales()),
-      get_tensor_index(node->weights_binary()), get_tensor_index(node->bias())};
+      get_tensor_index(node->weights_binary()), get_tensor_index(node->bias()),
+      get_tensor_index(node->weights_clusters())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
@@ -1782,7 +1783,8 @@ void OperationExporter::visit(luci::CircleBCQGather *node)
   // Make input, output and options for operator
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input_scales()),
                                   get_tensor_index(node->input_binary()),
-                                  get_tensor_index(node->indices())};
+                                  get_tensor_index(node->indices()),
+                                  get_tensor_index(node->input_clusters())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);

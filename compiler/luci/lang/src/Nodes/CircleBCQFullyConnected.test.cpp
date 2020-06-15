@@ -31,6 +31,7 @@ TEST(CircleBCQFullyConnectedTest, constructor)
   ASSERT_EQ(nullptr, bcq_FC_node.weights_scales());
   ASSERT_EQ(nullptr, bcq_FC_node.weights_binary());
   ASSERT_EQ(nullptr, bcq_FC_node.bias());
+  ASSERT_EQ(nullptr, bcq_FC_node.weights_clusters());
 
   ASSERT_EQ(luci::FusedActFunc::UNDEFINED, bcq_FC_node.fusedActivationFunction());
   ASSERT_EQ(0, bcq_FC_node.weights_hidden_size());

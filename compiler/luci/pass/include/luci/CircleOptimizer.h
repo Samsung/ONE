@@ -33,6 +33,7 @@ public:
     enum Algorithm
     {
       FuseBCQ,
+      FuseNewBCQ,
       FuseInstanceNorm,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,

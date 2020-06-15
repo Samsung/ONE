@@ -25,15 +25,17 @@ namespace luci
 
 bool CircleBCQFullyConnectedGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 4)
+  // It is for keeping old version and new version for temporary.
+  // This checking is subject to change in near future.
+  if (args.op.inputs.size() != 4 && args.op.inputs.size() != 5)
     return false;
 
   return true;
 }
 
 CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::OperatorT &op,
-                                                            const std::vector<CircleNode *> &inputs,
-                                                            loco::Graph *graph) const
+                                              const std::vector<CircleNode *> &inputs,
+                                              loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleBCQFullyConnected>();
 
@@ -41,6 +43,7 @@ CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::Operat
   node->weights_scales(inputs[1]);
   node->weights_binary(inputs[2]);
   node->bias(inputs[3]);
+  node->weights_clusters(inputs[4]);
 
   const auto *options = op.builtin_options.AsBCQFullyConnectedOptions();
   node->weights_hidden_size(options->weights_hidden_size);

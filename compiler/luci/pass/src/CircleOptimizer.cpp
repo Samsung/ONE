@@ -17,6 +17,7 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/FuseBCQPass.h"
+#include "luci/Pass/FuseNewBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"

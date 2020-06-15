@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-#include "luci/IR/Nodes/CircleBCQGather.h"
+#ifndef __LUCI_FUSE_NEWBCQ_PASS_H__
+#define __LUCI_FUSE_NEWBCQ_PASS_H__
 
-#include "luci/IR/CircleDialect.h"
+#include <logo/Pass.h>
 
-#include <gtest/gtest.h>
-
-TEST(CircleBCQGatherTest, constructor)
+namespace luci
 {
-  luci::CircleBCQGather bcq_gather_node;
 
-  ASSERT_EQ(luci::CircleDialect::get(), bcq_gather_node.dialect());
-  ASSERT_EQ(luci::CircleOpcode::BCQ_GATHER, bcq_gather_node.opcode());
+/**
+ * @brief  Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather
+ *
+ */
+struct FuseBCQPass final : public logo::Pass
+{
+  const char *name(void) const final { return "luci::FuseNewBCQPass"; }
 
-  ASSERT_EQ(nullptr, bcq_gather_node.input_scales());
-  ASSERT_EQ(nullptr, bcq_gather_node.input_binary());
-  ASSERT_EQ(nullptr, bcq_gather_node.indices());
-  ASSERT_EQ(nullptr, bcq_gather_node.input_clusters());
+  bool run(loco::Graph *g) final;
+};
 
-  ASSERT_EQ(0, bcq_gather_node.axis());
-  ASSERT_EQ(0, bcq_gather_node.input_hidden_size());
-}
+} // namespace luci
+
+#endif // __LUCI_FUSE_BCQ_PASS_H__

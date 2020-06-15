@@ -41,6 +41,7 @@ void print_help(const char *progname)
   std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
   std::cerr << "Optimization options: " << std::endl;
   std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
+  std::cerr << "   --fuse_new_bcq : Enable FuseNewBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
@@ -84,6 +85,10 @@ int entry(int argc, char **argv)
   // TODO merge this with help message
   argparse["--fuse_bcq"] = [&options](const char **) {
     options->enable(Algorithms::FuseBCQ);
+    return 0;
+  };
+  argparse["--fuse__new_bcq"] = [&options](const char **) {
+    options->enable(Algorithms::FuseNewBCQ);
     return 0;
   };
   argparse["--fuse_instnorm"] = [&options](const char **) {
