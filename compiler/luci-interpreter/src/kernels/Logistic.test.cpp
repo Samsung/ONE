@@ -31,11 +31,10 @@ const float kQuantizedTolerance = 2 * (1. / 256);
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data,
-           float input_min, float input_max, float output_min, float output_max,
            DataType element_type)
 {
-  std::pair<float, int32_t> input_quant_params = quantizationParams<T>(input_min, input_max);
-  std::pair<float, int32_t> output_quant_params = quantizationParams<T>(output_min, output_max);
+  std::pair<float, int32_t> input_quant_params =
+      quantizationParams<T>(std::min(input_data), std::max(input_data));
   Tensor input_tensor{
       element_type, input_shape, {{input_quant_params.first}, {input_quant_params.second}}, ""};
   if (element_type == DataType::FLOAT32)
@@ -48,8 +47,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
         quantize<T>(input_data, input_quant_params.first, input_quant_params.second);
     input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
   }
-  Tensor output_tensor =
-      makeOutputTensor(element_type, output_quant_params.first, output_quant_params.second);
+  Tensor output_tensor = makeOutputTensor(element_type, 1. / 256., 0);
 
   Logistic kernel(&input_tensor, &output_tensor);
   kernel.configure();
@@ -96,8 +94,7 @@ TYPED_TEST(LogisticTest, TotalTest)
                        0.5,      0.002473, 0.880797, 0.982014, //
                        0.952574, 0.119203, 0.999955, 0.731059, //
                    },
-                   /*input_min=*/-10.0f, /*input_max=*/10.0f, /*output_min=*/0.0f,
-                   /*output_max=*/255.0f / 256.0f, getElementType<TypeParam>());
+                   getElementType<TypeParam>());
 }
 
 } // namespace
