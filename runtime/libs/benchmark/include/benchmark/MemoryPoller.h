@@ -27,7 +27,7 @@
 #include <condition_variable>
 #include <list>
 
-#include "Phase.h"
+#include "Types.h"
 
 namespace benchmark
 {
@@ -48,11 +48,11 @@ public:
     _thread.join();
   }
 
-  bool start(Phase phase);
-  bool end(Phase phase);
-  const std::unordered_map<Phase, uint32_t> &getRssMap() const { return _rss_map; }
-  const std::unordered_map<Phase, uint32_t> &getHwmMap() const { return _hwm_map; }
-  const std::unordered_map<Phase, uint32_t> &getPssMap() const { return _pss_map; }
+  bool start(PhaseEnum phase);
+  bool end(PhaseEnum phase);
+  const std::unordered_map<PhaseEnum, uint32_t> &getRssMap() const { return _rss_map; }
+  const std::unordered_map<PhaseEnum, uint32_t> &getHwmMap() const { return _hwm_map; }
+  const std::unordered_map<PhaseEnum, uint32_t> &getPssMap() const { return _pss_map; }
 
 private:
   void process();
@@ -65,10 +65,10 @@ private:
 private:
   std::chrono::milliseconds _duration;
   std::thread _thread;
-  std::list<Phase> _phases;
-  std::unordered_map<Phase, uint32_t> _rss_map;
-  std::unordered_map<Phase, uint32_t> _hwm_map;
-  std::unordered_map<Phase, uint32_t> _pss_map;
+  std::list<PhaseEnum> _phases;
+  std::unordered_map<PhaseEnum, uint32_t> _rss_map;
+  std::unordered_map<PhaseEnum, uint32_t> _hwm_map;
+  std::unordered_map<PhaseEnum, uint32_t> _pss_map;
 
   std::mutex _mutex;
   std::mutex _mutex_started;

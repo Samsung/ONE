@@ -15,6 +15,8 @@
  */
 
 #include "benchmark/MemoryPoller.h"
+#include "benchmark/Types.h"
+
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -126,7 +128,7 @@ MemoryPoller::MemoryPoller(std::chrono::milliseconds duration, bool gpu_poll)
   _thread = std::thread{&MemoryPoller::process, this};
 }
 
-bool MemoryPoller::start(Phase phase)
+bool MemoryPoller::start(PhaseEnum phase)
 {
   if (std::find(_phases.begin(), _phases.end(), phase) != _phases.end())
   {
@@ -147,7 +149,7 @@ bool MemoryPoller::start(Phase phase)
   return true;
 }
 
-bool MemoryPoller::end(Phase phase)
+bool MemoryPoller::end(PhaseEnum phase)
 {
   if (std::find(_phases.begin(), _phases.end(), phase) == _phases.end())
   {
