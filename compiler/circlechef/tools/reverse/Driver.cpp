@@ -35,10 +35,15 @@ int entry(int argc, char **argv)
   // Load TF lite model from a circle file
   const foder::FileLoader fileLoader{argv[1]};
   std::vector<char> modelData = fileLoader.load();
-  const circle::Model *tflmodel = circle::GetModel(modelData.data());
+  const circle::Model *circlemodel = circle::GetModel(modelData.data());
+  if (circlemodel == nullptr)
+  {
+    std::cerr << "ERROR: Failed to load circle '" << argv[1] << "'" << std::endl;
+    return 255;
+  }
 
   // Generate ModelRecipe recipe
-  std::unique_ptr<circlechef::ModelRecipe> recipe = circlechef::generate_recipe(tflmodel);
+  std::unique_ptr<circlechef::ModelRecipe> recipe = circlechef::generate_recipe(circlemodel);
   if (recipe.get() == nullptr)
   {
     std::cerr << "ERROR: Failed to generate recipe" << std::endl;
