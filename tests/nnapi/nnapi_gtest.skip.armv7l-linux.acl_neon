@@ -107,6 +107,7 @@ GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_boolean
 GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.matrix_band_part_ex_4D_float
+GeneratedTests.matrix_band_part_ex_dynamic_nnfw
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
