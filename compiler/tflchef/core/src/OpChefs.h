@@ -109,6 +109,7 @@
 #include "Op/While.h"
 #include "Op/ZerosLike.h"
 
+#include "CustomOp/AddV2.h"
 #include "CustomOp/All.h"
 #include "CustomOp/BatchMatMulV2.h"
 #include "CustomOp/MatrixBandPart.h"
