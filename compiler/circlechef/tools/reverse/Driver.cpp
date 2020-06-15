@@ -17,6 +17,8 @@
 #include <circlechef/RawModel.h>
 #include <circlechef/RecipeChef.h>
 
+#include <foder/FileLoader.h>
+
 #include <memory>
 #include <iostream>
 
@@ -31,22 +33,17 @@ int entry(int argc, char **argv)
   }
 
   // Load TF lite model from a circle file
-  std::unique_ptr<circlechef::RawModel> rawmodel = circlechef::load_circle(argv[1]);
-  if (rawmodel == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << argv[1] << "'" << std::endl;
-    return 255;
-  }
-
-  const circle::Model *tflmodel = rawmodel->model();
-  if (tflmodel == nullptr)
+  const foder::FileLoader fileLoader{argv[1]};
+  std::vector<char> modelData = fileLoader.load();
+  const circle::Model *circlemodel = circle::GetModel(modelData.data());
+  if (circlemodel == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << argv[1] << "'" << std::endl;
     return 255;
   }
 
   // Generate ModelRecipe recipe
-  std::unique_ptr<circlechef::ModelRecipe> recipe = circlechef::generate_recipe(tflmodel);
+  std::unique_ptr<circlechef::ModelRecipe> recipe = circlechef::generate_recipe(circlemodel);
   if (recipe.get() == nullptr)
   {
     std::cerr << "ERROR: Failed to generate recipe" << std::endl;
