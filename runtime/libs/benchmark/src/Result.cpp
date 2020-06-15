@@ -82,8 +82,9 @@ uint32_t peakMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
                     int type)
 {
   using namespace benchmark;
+  // tricky. handle WARMUP as EXECUTE
   return std::max({memory[PhaseEnum::MODEL_LOAD][type], memory[PhaseEnum::PREPARE][type],
-                   memory[PhaseEnum::EXECUTE][type]});
+                   memory[PhaseEnum::WARMUP][type]});
 }
 
 void printResultTime(
