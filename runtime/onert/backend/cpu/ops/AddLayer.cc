@@ -29,8 +29,8 @@ namespace ops
 
 void AddLayer::addFloat32()
 {
-  float output_activation_min, output_activation_max;
-  CalculateActivationRangeFloat(_activation, &output_activation_min, &output_activation_max);
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
   op_params.type = nnfw::cker::BinaryArithmeticOpType::ADD;
   op_params.float_activation_max = output_activation_max;
@@ -55,8 +55,8 @@ void AddLayer::addFloat32()
 
 void AddLayer::addInt32()
 {
-  int32_t output_activation_min, output_activation_max;
-  CalculateActivationRangeInt32(_activation, &output_activation_min, &output_activation_max);
+  int32_t output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
   op_params.type = nnfw::cker::BinaryArithmeticOpType::ADD;
   op_params.quantized_activation_max = output_activation_max;
