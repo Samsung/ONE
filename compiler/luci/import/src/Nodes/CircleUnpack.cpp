@@ -19,6 +19,9 @@
 #include <luci/IR/Nodes/CircleUnpack.h>
 #include <luci/IR/Nodes/CircleUnpackOut.h>
 
+#include <luci/UserSettings.h>
+#include <luci/Log.h>
+
 #include <loco.h>
 #include <oops/UserExn.h>
 
@@ -27,6 +30,10 @@ namespace luci
 
 bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
 {
+  LOGGER(l);
+
+  auto settings = luci::UserSettings::settings();
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
   const auto *options = args.op.builtin_options.AsUnpackOptions();
@@ -34,8 +41,19 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
   if (inputs.size() != 1)
     return false;
 
+  // NOTE real models may have mismatch
   if (static_cast<int32_t>(outputs.size()) != options->num)
-    return false;
+  {
+    if (settings->get(luci::UserSettings::Key::DisableValidation))
+    {
+      const auto &tensors = args.reader.tensors();
+      const circle::TensorT &output_tensor = *tensors[outputs[0]];
+      auto name = tensor_name(output_tensor);
+      WARN(l) << "Warning: import Unpack(" << name << ") 'num' is not same as outputs used";
+    }
+    else
+      return false;
+  }
 
   if (options->num < 0)
     return false;
@@ -100,7 +118,6 @@ void CircleUnpackGraphBuilder::build(const circle::OperatorT &op,
   node->axis(options->axis);
 
   assert(outputs.size() > 0);
-  assert(int32_t(outputs.size()) == options->num);
   {
     // Let's use name of output 0 as Unpack name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];

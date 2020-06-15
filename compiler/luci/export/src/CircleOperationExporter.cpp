@@ -22,6 +22,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/CircleShapeInference.h>
+#include <luci/UserSettings.h>
+#include <luci/Log.h>
 
 #include <loco/IR/CanonicalNodeVisitor.h>
 #include <oops/InternalExn.h>
@@ -1608,8 +1610,20 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
 
 void OperationExporter::visit(luci::CircleUnpack *node)
 {
+  LOGGER(l);
+  auto settings = luci::UserSettings::settings();
+
   auto unpack_outs = loco::succs(node);
-  assert(int32_t(unpack_outs.size()) == node->num());
+  // NOTE real models may not use all of the outputs
+  if (static_cast<int32_t>(unpack_outs.size()) != node->num())
+  {
+    if (settings->get(luci::UserSettings::Key::DisableValidation))
+    {
+      WARN(l) << "Warning: export Unpack(" << node->name() << ") 'num' not same as outputs";
+    }
+    else
+      assert(false);
+  }
 
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNPACK);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
@@ -1629,9 +1643,15 @@ void OperationExporter::visit(luci::CircleUnpack *node)
         break;
       }
     }
+    // NOTE real models may not use all of the outputs
     if (!found)
     {
-      INTERNAL_EXN("Invalid Unpack output");
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+      {
+        WARN(l) << "Warning: export Unpack(" << node->name() << ") output " << index << " not used";
+      }
+      else
+        assert(false);
     }
   }
 
