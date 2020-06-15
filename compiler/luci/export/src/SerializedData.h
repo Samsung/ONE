@@ -29,7 +29,7 @@ namespace luci
 struct OpCode
 {
   circle::BuiltinOperator opcode;
-  std::string custom_code;
+  std::string custom_code{""};
 
   bool operator==(const OpCode &rhs) const
   {

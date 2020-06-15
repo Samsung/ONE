@@ -90,13 +90,13 @@ namespace luci
 
 uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator builtin_code)
 {
-  auto it = _operator_codes.find(OpCode{builtin_code, ""});
+  auto it = _operator_codes.find(OpCode{builtin_code});
   if (it != _operator_codes.end())
   {
     return it->second;
   }
   auto idx = static_cast<uint32_t>(_operator_codes.size());
-  _operator_codes.emplace(OpCode{builtin_code, ""}, idx);
+  _operator_codes.emplace(OpCode{builtin_code}, idx);
   return idx;
 }
 
