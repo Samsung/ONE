@@ -18,6 +18,9 @@
 
 #include <luci/IR/Nodes/CircleCast.h>
 
+#include <luci/UserSettings.h>
+#include <luci/Log.h>
+
 #include <loco.h>
 
 namespace luci
@@ -25,6 +28,10 @@ namespace luci
 
 bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
 {
+  LOGGER(l);
+
+  auto settings = luci::UserSettings::settings();
+
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
   if (inputs.size() != 1)
@@ -32,17 +39,34 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 1)
     return false;
 
+  // NOTE real models do have type mismatch
   const auto *options = args.op.builtin_options.AsCastOptions();
   if (options != nullptr)
   {
     const auto &tensors = args.reader.tensors();
+    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    auto name = tensor_name(output_tensor);
 
     const auto &tensor_in = tensors.at(inputs[0]);
     if (tensor_in->type != options->in_data_type)
-      return false;
+    {
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+      {
+        WARN(l) << "Warning: import Cast(" << name << ") dtype mismatch";
+      }
+      else
+        return false;
+    }
     const auto &tensor_out = tensors.at(outputs[0]);
     if (tensor_out->type != options->out_data_type)
-      return false;
+    {
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+      {
+        WARN(l) << "Warning: import Cast(" << name << ") dtype mismatch";
+      }
+      else
+        return false;
+    }
   }
 
   return true;
