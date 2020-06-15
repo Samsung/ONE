@@ -20,36 +20,70 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
-#include <iostream>
+
 namespace
 {
 
-bool resolve_custom_op(luci::CircleCustom *cop)
+/** BEFORE
+ *
+ *                                  [CircleConst]
+ *                                        |
+ *        [CircleNode]         [BroadcastTo(CircleCustom)]
+ *              \                         |
+ *               \                [CircleCustomOUt]
+ *                \                   /
+ *               [AddV2(CircleCustom)]
+ *  AFTER
+ *
+ *         [CircleConst]         [CircleNode]
+ *                   \           /
+ *                    \         /
+ *                    [CircleAdd]
+ */
+bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
 {
-  const std::string custom_code = cop->custom_code();
-  const std::vector<uint8_t> custom_options = cop->custom_options();
+  const luci::CircleCustomOut *input1 =
+      dynamic_cast<const luci::CircleCustomOut *>(addv2->inputs(1));
 
-  if (custom_code == "AddV2")
+  if (input1 != nullptr)
   {
-    const luci::CircleCustomOut *input1 =
-        dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(1));
-
-    if (input1 != nullptr)
+    const luci::CircleCustom *broadCastTo =
+        dynamic_cast<const luci::CircleCustom *>(input1->input());
+    if (broadCastTo->custom_code() == "BroadcastTo")
     {
-      const luci::CircleCustom *custom = dynamic_cast<const luci::CircleCustom *>(input1->input());
-      if (custom->custom_code() == "BroadcastTo")
-      {
-        std::cout << custom->name() << std::endl;
-        auto add = cop->graph()->nodes()->create<luci::CircleAdd>();
-        add->fusedActivationFunction(luci::FusedActFunc::NONE);
-        add->x(custom->inputs(0));
-        add->y(cop->inputs(1));
-        replace(cop).with(add);
-        return true;
-      }
+      auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
+      add->fusedActivationFunction(luci::FusedActFunc::NONE);
+      add->x(addv2->inputs(0));
+      add->y(broadCastTo->inputs(0));
+      auto customOut = loco::succs(addv2);
+      assert(customOut.size() == 1);
+      replace(*customOut.begin()).with(add);
+      return true;
     }
   }
   return false;
+}
+
+bool resolve_custom_op(luci::CircleCustom *addv2)
+{
+  const std::string custom_code = addv2->custom_code();
+  const std::vector<uint8_t> custom_options = addv2->custom_options();
+
+  if (custom_code != "AddV2")
+    return false;
+
+  if (resolve_with_BroadcastTo(addv2))
+    return true;
+
+  auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
+  add->fusedActivationFunction(luci::FusedActFunc::NONE);
+  add->x(addv2->inputs(0));
+  add->y(addv2->inputs(1));
+  auto customOut = loco::succs(addv2);
+  assert(customOut.size() == 1);
+  replace(*customOut.begin()).with(add);
+
+  return true;
 }
 
 } // namespace
@@ -67,8 +101,7 @@ bool ResolveCustomOpAddPass::run(loco::Graph *g)
     if (not cop)
       continue;
 
-    changed = resolve_custom_op(cop);
-    // changed = true;
+    changed |= resolve_custom_op(cop);
   }
 
   return changed;
