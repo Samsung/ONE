@@ -1234,6 +1234,7 @@ void OperationExporter::visit(luci::CircleScatterNd *node)
   // Make SCATTER_ND operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ScatterNdOptions, options.Union());
+  gd._operators.push_back(op_offset);
 }
 
 void OperationExporter::visit(luci::CircleSegmentSum *node)
