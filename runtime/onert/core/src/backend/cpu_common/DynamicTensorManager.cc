@@ -73,7 +73,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
 
       setShape(tensor.get(), new_shape);
       tensor->set_dynamic();
-      allocTensorMem();
+      allocTensorMem(true);
     }
     else
     { // when buffer with same size was already allocated, shape could differ
