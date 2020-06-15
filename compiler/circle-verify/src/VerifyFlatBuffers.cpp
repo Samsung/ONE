@@ -16,8 +16,6 @@
 
 #include "VerifyFlatBuffers.h"
 
-#include "Model.h"
-
 #include <foder/FileLoader.h>
 #include <mio/circle/schema_generated.h>
 
