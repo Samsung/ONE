@@ -24,6 +24,31 @@
 namespace
 {
 
+/// @brief Returns the index of BroadcastTo node among cop's inputs.
+// NOTE This function assumes there is only one BroadcastTo node among its inputs.
+int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
+{
+  auto input0 = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(0));
+  if (input0)
+  {
+    auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input0->input());
+    assert(broadcastTo);
+    if (broadcastTo->custom_code() == "BroadcastTo")
+      return 0;
+  }
+
+  auto input1 = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(1));
+  if (input1)
+  {
+    auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input1->input());
+    assert(broadcastTo);
+    if (broadcastTo->custom_code() == "BroadcastTo")
+      return 1;
+  }
+
+  return -1;
+}
+
 /** BEFORE
  *                                  [CircleConst]
  *                                        |
@@ -41,26 +66,23 @@ namespace
  */
 bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
 {
-  const luci::CircleCustomOut *input1 =
-      dynamic_cast<const luci::CircleCustomOut *>(addv2->inputs(1));
+  int32_t broadcastTo_idx = get_broadcastTo_index_among_inputs_of(addv2);
 
-  if (input1 != nullptr)
-  {
-    const luci::CircleCustom *broadcastTo =
-        dynamic_cast<const luci::CircleCustom *>(input1->input());
-    if (broadcastTo->custom_code() == "BroadcastTo")
-    {
-      auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
-      add->fusedActivationFunction(luci::FusedActFunc::NONE);
-      add->x(addv2->inputs(0));
-      add->y(broadcastTo->inputs(0));
-      auto customOut = loco::succs(addv2);
-      assert(customOut.size() == 1);
-      replace(*customOut.begin()).with(add);
-      return true;
-    }
-  }
-  return false;
+  if (broadcastTo_idx == -1)
+    return false;
+
+  auto input = dynamic_cast<const luci::CircleCustomOut *>(addv2->inputs(broadcastTo_idx));
+  auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input->input());
+
+  auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
+  add->fusedActivationFunction(luci::FusedActFunc::NONE);
+  add->x(addv2->inputs(1 - broadcastTo_idx));
+  add->y(broadcastTo->inputs(0));
+  auto customOut = loco::succs(addv2);
+  assert(customOut.size() == 1);
+  replace(*customOut.begin()).with(add);
+
+  return true;
 }
 
 bool resolve_custom_op(luci::CircleCustom *addv2)
