@@ -65,7 +65,7 @@ private:
  */
 #define LOGGER(name) ::luci::Logger name{::luci::LoggingContext::get()};
 
-// TODO Support FATAL, ERROR, WARN, and VERBOSE
+// TODO Support FATAL, ERROR and VERBOSE
 #define INFO(name) HERMES_INFO(name)
 #define WARN(name) HERMES_WARN(name)
 
