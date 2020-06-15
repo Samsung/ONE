@@ -28,22 +28,16 @@ namespace
 // NOTE This function assumes there is only one BroadcastTo node among its inputs.
 int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
 {
-  auto input0 = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(0));
-  if (input0)
+  for (uint32_t idx = 0; cop->numInputs(); idx++)
   {
-    auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input0->input());
-    assert(broadcastTo);
-    if (broadcastTo->custom_code() == "BroadcastTo")
-      return 0;
-  }
-
-  auto input1 = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(1));
-  if (input1)
-  {
-    auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input1->input());
-    assert(broadcastTo);
-    if (broadcastTo->custom_code() == "BroadcastTo")
-      return 1;
+    auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
+    if (input)
+    {
+      auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input->input());
+      assert(broadcastTo);
+      if (broadcastTo->custom_code() == "BroadcastTo")
+        return idx;
+    }
   }
 
   return -1;
