@@ -17,6 +17,8 @@
 #include <tflchef/RawModel.h>
 #include <tflchef/RecipeChef.h>
 
+#include <foder/FileLoader.h>
+
 #include <memory>
 #include <iostream>
 
@@ -31,19 +33,9 @@ int entry(int argc, char **argv)
   }
 
   // Load TF lite model from a tflite file
-  std::unique_ptr<tflchef::RawModel> rawmodel = tflchef::load_tflite(argv[1]);
-  if (rawmodel == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
-    return 255;
-  }
-
-  const tflite::Model *tflmodel = rawmodel->model();
-  if (tflmodel == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
-    return 255;
-  }
+  const foder::FileLoader fileLoader{argv[1]};
+  std::vector<char> modelData = fileLoader.load();
+  const tflite::Model *tflmodel = tflite::GetModel(modelData.data());
 
   // Generate ModelRecipe recipe
   std::unique_ptr<tflchef::ModelRecipe> recipe = tflchef::generate_recipe(tflmodel);
