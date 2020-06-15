@@ -24,7 +24,6 @@ namespace shape_inference
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
                            const ir::operation::Conv2D::Param &param, ir::Layout layout)
 {
-  assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
 
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
