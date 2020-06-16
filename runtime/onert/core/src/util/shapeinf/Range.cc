@@ -69,6 +69,10 @@ void StaticInferer::visit(const ir::operation::Range &op)
     }
     output.info().shape(new_shape);
   }
+  else
+  {
+    output.info().setDynamic();
+  }
 }
 
 // DynamicInferer at execution time
@@ -88,7 +92,8 @@ void DynamicInferer::visit(const ir::operation::Range &op)
   auto delta_idx = op.getInputs().at(ir::operation::Range::Input::DELTA);
   auto delta_tensor = _tensor_registry->getITensor(delta_idx);
 
-  if (!start_tensor->is_dynamic() && !limit_tensor->is_dynamic() && !delta_tensor->is_dynamic())
+  if (!start_tensor->is_dynamic() && !limit_tensor->is_dynamic() && !delta_tensor->is_dynamic() &&
+      !output->is_dynamic())
     return;
 
   ir::Shape new_shape;
