@@ -110,15 +110,7 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
     nodeout->input(node);
     nodeout->index(n);
 
-    nodeout->name(tensor_name(output_tensor));
-
-    auto quantization = tensor_quantization(output_tensor);
-    if (quantization)
-    {
-      auto quantparam = luci_quantparam(quantization);
-      if (quantparam)
-        node->quantparam(std::move(quantparam));
-    }
+    copy_tensor_attributes(output_tensor, nodeout);
 
     // Note: leave shape_status to UNKNOWN to run shape inference
 
