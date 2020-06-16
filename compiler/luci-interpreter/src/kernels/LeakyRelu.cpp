@@ -46,11 +46,7 @@ void LeakyRelu::configure()
     double real_multiplier = _input->scale() * _input->scale() / _output->scale();
     quantizeMultiplierSmallerThanOneExp(real_multiplier, &_output_multiplier, &_output_shift);
   }
-  int dims = _input->shape().num_dims();
-  Shape output_shape(dims);
-  for (int i = 0; i < dims; i++)
-    output_shape.dim(i) = _input->shape().dim(i);
-  _output->resize(output_shape);
+  _output->resize(_input->shape());
 }
 
 void LeakyRelu::execute() const
