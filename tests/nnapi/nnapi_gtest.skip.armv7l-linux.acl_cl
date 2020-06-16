@@ -138,6 +138,8 @@ GeneratedTests.reshape_quant8_weights_as_inputs
 GeneratedTests.reshape_weights_as_inputs
 GeneratedTests.reverse_ex_1d
 GeneratedTests.reverse_ex_3d
+GeneratedTests.reverse_ex_dynamic_1D
+GeneratedTests.reverse_ex_dynamic_3D
 GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.round_ex_1D_float
