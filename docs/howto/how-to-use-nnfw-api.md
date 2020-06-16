@@ -1,4 +1,4 @@
-# How to use NNFW API
+# How to Use NNFW API
 
 ## Prepare nnpackage
 
