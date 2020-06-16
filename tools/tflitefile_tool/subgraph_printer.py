@@ -48,11 +48,13 @@ class SubgraphPrinter(object):
 
         if self.print_all_tensor == False:
             print('')
-            self.PrintSpecificTensors()
+            self.PrintSpecificTensors(self.print_tensor_index_list)
+            print('')
 
         if self.print_all_operator == False:
             print('')
-            self.PrintSpecificOperators()
+            self.PrintSpecificOperators(self.print_operator_index_list)
+            print('')
 
     def PrintModelInfo(self):
         print("[" + self.model_name + "]\n")
@@ -60,7 +62,9 @@ class SubgraphPrinter(object):
             model_inputs = self.op_parser.tf_subgraph.InputsAsNumpy()
             model_outputs = self.op_parser.tf_subgraph.OutputsAsNumpy()
             print(self.model_name + " input tensors: " + str(model_inputs))
+            self.PrintSpecificTensors(model_inputs, "\t")
             print(self.model_name + " output tensors: " + str(model_outputs))
+            self.PrintSpecificTensors(model_outputs, "\t")
         print('')
 
     def PrintAllOperatorsInList(self):
@@ -74,19 +78,13 @@ class SubgraphPrinter(object):
 
         print('')
 
-    def PrintSpecificTensors(self):
-        for tensor in self.op_parser.GetAllTensors():
-            if tensor.tensor_idx in self.print_tensor_index_list:
-                printer = TensorPrinter(self.verbose, tensor)
-                printer.PrintInfo()
-                print('')
-        print('')
+    def PrintSpecificTensors(self, print_tensor_index_list, depth_str=""):
+        for tensor in self.op_parser.GetTensors(print_tensor_index_list):
+            printer = TensorPrinter(self.verbose, tensor)
+            printer.PrintInfo(depth_str)
 
-    def PrintSpecificOperators(self):
+    def PrintSpecificOperators(self, print_operator_index_list):
         for operator in self.op_parser.operators_in_list:
-            if operator.operator_idx in self.print_operator_index_list:
+            if operator.operator_idx in print_operator_index_list:
                 printer = OperatorPrinter(self.verbose, operator)
                 printer.PrintInfo()
-                print('')
-
-        print('')

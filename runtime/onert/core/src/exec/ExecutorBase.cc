@@ -116,6 +116,8 @@ std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir
       return source<uint8_t>(index, buffer, length, io_layout);
     case DataType::QUANT_INT8_SYMM:
       return source<int8_t>(index, buffer, length, io_layout);
+    case DataType::INT64:
+      return source<int64_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");
   }
@@ -139,6 +141,8 @@ std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::Ty
       return sink<uint8_t>(index, buffer, length, io_layout);
     case DataType::QUANT_INT8_SYMM:
       return sink<int8_t>(index, buffer, length, io_layout);
+    case DataType::INT64:
+      return sink<int64_t>(index, buffer, length, io_layout);
     default:
       throw std::runtime_error("Not supported yet");
   }
@@ -166,9 +170,9 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
     if (src_tensor != nullptr && input_tensor != nullptr)
     {
       auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
-      const auto orig_input_shape = getShape(input_tensor.get());
+      const auto orig_input_shape = input_tensor->getShape();
       const auto changed_input_shape =
-          convertShape(getShape(src_tensor.get()), src_tensor->layout(), input_tensor->layout());
+          convertShape(src_tensor->getShape(), src_tensor->layout(), input_tensor->layout());
       if (orig_input_shape != changed_input_shape)
       {
         if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
@@ -247,7 +251,7 @@ void ExecutorBase::execute(const IODescription &desc)
     auto &output = *desc.outputs.at(n);
 
     // set shape of outputDesc to tensor shape since tensor can be dynamic
-    const auto output_tensor_shape = getShape(_output_tensors[n].get());
+    const auto output_tensor_shape = _output_tensors[n]->getShape();
     output.info.shape(
         convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
 

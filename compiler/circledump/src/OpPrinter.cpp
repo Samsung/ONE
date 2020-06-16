@@ -117,7 +117,7 @@ public:
       os << "Stride.W(" << conv_params->stride_w() << ") ";
       os << "Stride.H(" << conv_params->stride_h() << ") ";
       os << "Dilation.W(" << conv_params->dilation_w_factor() << ") ";
-      os << "Dilation.H(" << conv_params->dilation_h_factor() << ")";
+      os << "Dilation.H(" << conv_params->dilation_h_factor() << ") ";
       os << "Activation("
          << EnumNameActivationFunctionType(conv_params->fused_activation_function()) << ")";
       os << std::endl;
@@ -673,6 +673,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_BATCH_MATMUL] = make_unique<BatchMatMulPrinter>();
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
+  // There is no Option for CEIL
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
   _op_map[circle::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();

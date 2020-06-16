@@ -117,21 +117,6 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   return options;
 }
 
-/**
- * @brief Set input tensors with unknown dim to dynamic tensor.
- *        This will make shape inference during compilation work correctly.
- */
-void setInputToDynamicTensor(ir::Graph &subgraph)
-{
-  const auto &input_inds = subgraph.getInputs();
-  for (auto input_ind : input_inds)
-  {
-    auto &input = subgraph.operands().at(input_ind);
-    if (input.info().shape().hasUnspecifiedDims())
-      input.info().setDynamic();
-  }
-}
-
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
     : _subgraphs{subgs}, _executors{nullptr}, _state{State::CREATED}
 {
@@ -225,9 +210,6 @@ void Compiler::compile(void)
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
-    // mark an input tensor "dynamic" when the tensor has unknown dim
-    setInputToDynamicTensor(subg);
-
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(subg, _options);
 
@@ -252,8 +234,9 @@ void Compiler::compile(void)
 
   // Shape inference.
   {
-    shape_inference::StaticInferer inferer(lowered_subgs);
-    lowered_subgs.at(ir::SubgraphIndex{0})
+    const auto primary_subg_idx = ir::SubgraphIndex{0};
+    shape_inference::StaticInferer inferer(primary_subg_idx, lowered_subgs);
+    lowered_subgs.at(primary_subg_idx)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
           inferer.infer(op_seq);
         });

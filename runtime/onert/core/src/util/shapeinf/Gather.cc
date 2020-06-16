@@ -77,11 +77,11 @@ void DynamicInferer::visit(const ir::operation::Gather &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
   const auto &indices = _tensor_registry->getITensor(indices_idx);
-  auto indices_shape = getShape(indices.get());
+  auto indices_shape = indices->getShape();
 
   if (!(input->is_dynamic()) && !(indices->is_dynamic()))
     return;

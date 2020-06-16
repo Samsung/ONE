@@ -53,7 +53,7 @@ CircleNode *CircleReduceMaxGraphBuilder::build_node(const circle::OperatorT &op,
 {
   auto *node = graph->nodes()->create<CircleReduceMax>();
   node->input(inputs[0]);
-  node->axis(inputs[1]);
+  node->reduction_indices(inputs[1]);
 
   const auto *options = op.builtin_options.AsReducerOptions();
   node->keep_dims(options->keep_dims);

@@ -1,3 +1,4 @@
+add_subdirectory(env)
 add_subdirectory(log)
 add_subdirectory(lang)
 add_subdirectory(service)

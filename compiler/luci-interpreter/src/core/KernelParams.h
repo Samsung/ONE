@@ -76,6 +76,11 @@ struct L2NormParams
   Activation activation;
 };
 
+struct LeakyReluParams
+{
+  float alpha;
+};
+
 struct MulParams
 {
   Activation activation;

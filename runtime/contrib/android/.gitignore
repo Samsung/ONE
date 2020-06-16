@@ -2,3 +2,5 @@
 /build/*
 /api/build/*
 /api/.cxx/*
+.project
+.settings

@@ -57,12 +57,12 @@ template <> bool RandomGenerator::generate<bool>(void)
 
 template <> int32_t RandomGenerator::generate<int32_t>(void)
 {
-  // Instead of INT_MAX, 4096 is chosen because int32_t input does not mean
+  // Instead of INT_MAX, 99 is chosen because int32_t input does not mean
   // that the model can have any value in int32_t can hold.
   // For example, one_hot operation gets indices as int32_t tensor.
   // However, we usually expect it would hold a value in [0..depth).
   // In our given model, depth was 10137.
-  const int int32_random_max = 4096;
+  const int int32_random_max = 99;
   std::uniform_int_distribution<> dist(0, int32_random_max);
   return dist(_rand);
 }

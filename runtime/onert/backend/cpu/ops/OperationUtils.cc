@@ -82,7 +82,7 @@ void GetQuantizedConvolutionMultiplier(const Tensor *input, const Tensor *filter
                                        const Tensor *bias, const Tensor *output, double *multiplier)
 {
   const double input_product_scale = input->data_scale() * filter->data_scale();
-  const double bias_scale = bias->data_scale();
+  const double bias_scale = (bias != nullptr) ? bias->data_scale() : input_product_scale;
   const double output_scale = output->data_scale();
   // The following conditions must be guaranteed by the training pipeline.
   UNUSED_RELEASE(bias_scale);
@@ -108,75 +108,6 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
   assert(*left_shift >= 0);
   assert(q_fixed <= std::numeric_limits<int32_t>::max());
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
-}
-
-void CalculateActivationRangeFloat(ir::Activation activation, float *activation_min,
-                                   float *activation_max)
-{
-  if (activation == ir::Activation::RELU)
-  {
-    *activation_min = 0.f;
-    *activation_max = std::numeric_limits<float>::max();
-  }
-  else if (activation == ir::Activation::RELU6)
-  {
-    *activation_min = 0.f;
-    *activation_max = 6.f;
-  }
-  else if (activation == ir::Activation::RELU1)
-  {
-    *activation_min = -1.f;
-    *activation_max = 1.f;
-  }
-  else if (activation == ir::Activation::SIGMOID)
-  {
-    *activation_min = 0.f;
-    *activation_max = 1.f;
-  }
-  else if (activation == ir::Activation::NONE)
-  {
-    *activation_min = std::numeric_limits<float>::lowest();
-    *activation_max = std::numeric_limits<float>::max();
-  }
-  else
-  {
-    std::cout << "Unsupported fused activation function." << std::endl;
-  }
-}
-
-// TODO Unify this with CalculateActivationRangeFloat
-void CalculateActivationRangeInt32(ir::Activation activation, int32_t *activation_min,
-                                   int32_t *activation_max)
-{
-  if (activation == ir::Activation::RELU)
-  {
-    *activation_min = 0;
-    *activation_max = std::numeric_limits<int32_t>::max();
-  }
-  else if (activation == ir::Activation::RELU6)
-  {
-    *activation_min = 0;
-    *activation_max = 6;
-  }
-  else if (activation == ir::Activation::RELU1)
-  {
-    *activation_min = -1;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::SIGMOID)
-  {
-    *activation_min = 0;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::NONE)
-  {
-    *activation_min = std::numeric_limits<int32_t>::lowest();
-    *activation_max = std::numeric_limits<int32_t>::max();
-  }
-  else
-  {
-    std::cout << "Unsupported fused activation function." << std::endl;
-  }
 }
 
 void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,

@@ -27,6 +27,7 @@
 #include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/DivLayer.h"
+#include "ops/EinsumLayer.h"
 #include "ops/ExpLayer.h"
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
@@ -139,26 +140,36 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
 
+  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
+  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ker_alloc = _tensor_builder->at(ker_index).get();
+  auto bias_alloc = _tensor_builder->at(bias_index).get();
+
   const auto stride = node.param().stride;
+  const auto activation = node.param().activation;
+  const auto param_padding = node.param().padding;
+  auto fn = std::make_unique<ops::ConvolutionLayer>();
+
+  if (_ctx.at(ifm_index).info().isDynamic() || _ctx.at(ker_index).info().isDynamic())
+  {
+    fn->configure(ifm_alloc, ker_alloc, bias_alloc, param_padding.type, param_padding.param.left,
+                  param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
+                  stride.horizontal, stride.vertical, activation, ofm_alloc);
+
+    _return_fn = std::move(fn);
+    return;
+  }
   const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
   const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
   const auto ker_width = ker_shape.dim(2);
-  const auto padding_type = node.param().padding.type;
-  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
-                                            ker_width, ker_height);
-  const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto ker_alloc = _tensor_builder->at(ker_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  const auto padding =
+      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
 
-  auto fn = std::make_unique<ops::ConvolutionLayer>();
-
-  fn->configure(ifm_alloc, ker_alloc, bias_alloc, padding_type, padding.left, padding.right,
+  fn->configure(ifm_alloc, ker_alloc, bias_alloc, param_padding.type, padding.left, padding.right,
                 padding.top, padding.bottom, stride.horizontal, stride.vertical, activation,
                 ofm_alloc);
 
@@ -520,6 +531,24 @@ void KernelGenerator::visit(const ir::operation::Div &node)
   auto fn = std::make_unique<ops::DivLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, activation, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Einsum &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+
+  auto output_alloc = _tensor_builder->at(ofm_index).get();
+  std::vector<const Tensor *> input_allocs;
+  for (auto &ifm_idx : node.getInputs())
+    input_allocs.emplace_back(_tensor_builder->at(ifm_idx).get());
+
+  const auto equation = node.param().equation;
+
+  auto fn = std::make_unique<ops::EinsumLayer>();
+
+  fn->configure(input_allocs, equation, output_alloc);
 
   _return_fn = std::move(fn);
 }
@@ -922,7 +951,6 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto rank = node.param().rank;
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
   auto axis_resolved = axis < 0 ? axis + rank : axis;
-  assert(0 <= axis_resolved && axis_resolved < rank);
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   auto in_tensor = _tensor_builder->at(input_idx).get();

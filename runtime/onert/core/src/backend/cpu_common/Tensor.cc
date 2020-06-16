@@ -38,6 +38,8 @@ size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 
 void Tensor::access(const std::function<void(ITensor &)> &fn) { fn(*this); }
 
+void Tensor::setShape(const ir::Shape &new_shape) { _info.shape(new_shape); }
+
 } // namespace cpu_common
 } // namespace backend
 } // namespace onert

@@ -82,8 +82,6 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
 
     context->nodefinder()->enroll(outputs[n], nodeout);
   }
-
-  context->nodefinder()->enroll(outputs[0], node);
 }
 
 } // namespace luci

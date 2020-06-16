@@ -34,6 +34,10 @@ void BackendContext::initialize(const std::vector<OperationInfo> &operation_list
 
 void BackendContext::fixShapes()
 {
+  // shape_fixer is an optional component so it could be nullptr
+  if (!shape_fixer)
+    return;
+
   for (auto &op : _operation_list)
   {
     _graph->operations().at(op.index).accept(*shape_fixer);

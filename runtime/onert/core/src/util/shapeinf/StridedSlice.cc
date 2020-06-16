@@ -263,7 +263,7 @@ void DynamicInferer::visit(const ir::operation::StridedSlice &op)
 
   const auto input_index{op.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
   auto input = _tensor_registry->getITensor(input_index);
-  ir::Shape input_shape = getShape(input.get());
+  ir::Shape input_shape = input->getShape();
 
   const auto starts_index{op.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
   auto starts = _tensor_registry->getITensor(starts_index);

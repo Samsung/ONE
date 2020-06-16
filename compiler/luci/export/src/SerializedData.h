@@ -29,8 +29,19 @@ namespace luci
 struct OpCode
 {
   circle::BuiltinOperator opcode;
+  std::string custom_code{""};
 
-  bool operator==(const OpCode &rhs) const { return opcode == rhs.opcode; }
+  bool operator==(const OpCode &rhs) const
+  {
+    if (opcode == circle::BuiltinOperator_CUSTOM)
+    {
+      return custom_code == rhs.custom_code;
+    }
+    else
+    {
+      return opcode == rhs.opcode;
+    }
+  }
 };
 
 } // namespace luci
@@ -70,7 +81,6 @@ struct SerializedModelData final
   SerializedModelData(const SerializedModelData &) = delete;
 
   std::unordered_map<OpCode, uint32_t> _operator_codes;
-  std::unordered_map<OpCode, std::string> _custom_operator_codes;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
 
   /**

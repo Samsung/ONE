@@ -79,7 +79,7 @@ void DynamicInferer::visit(const ir::operation::Unpack &op)
   if (!input->is_dynamic())
     return;
 
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   const auto rank = input_shape.rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);

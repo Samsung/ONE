@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "Model.h"
 #include "Dump.h"
 
+#include <foder/FileLoader.h>
 #include <stdex/Memory.h>
 
 #include <functional>
@@ -73,15 +73,10 @@ int entry(int argc, char **argv)
   std::string model_file = argv[argc - 1];
 
   // Load Circle model from a circle file
-  auto model = circleinspect::load_circle(model_file);
-  if (model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
-    return 255;
-  }
-
-  const circle::Model *circlemodel = model->model();
-  if (circlemodel == nullptr)
+  foder::FileLoader fileLoader{model_file};
+  std::vector<char> modelData = fileLoader.load();
+  const circle::Model *circleModel = circle::GetModel(modelData.data());
+  if (circleModel == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
     return 255;
@@ -89,7 +84,7 @@ int entry(int argc, char **argv)
 
   for (auto &dump : dumps)
   {
-    dump->run(std::cout, circlemodel);
+    dump->run(std::cout, circleModel);
   }
 
   return 0;

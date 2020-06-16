@@ -98,8 +98,8 @@ void IfLayer::run()
   for (size_t i = 0; i < _output_tensors.size(); ++i)
   {
     const auto output_tensor = _output_tensors.at(i);
-    const auto orig_output_shape = getShape(output_tensor.get());
-    const auto changed_output_shape = getShape(subg_output_tensors.at(i).get());
+    const auto orig_output_shape = output_tensor->getShape();
+    const auto changed_output_shape = subg_output_tensors.at(i)->getShape();
     if (orig_output_shape != changed_output_shape &&
         _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
     {

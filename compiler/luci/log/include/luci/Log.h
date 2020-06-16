@@ -47,7 +47,8 @@ public:
   void configure(const Logger *, hermes::Source::Setting &) const;
 
 private:
-  bool _enabled;
+  bool _show_warn = true;
+  bool _show_info = false;
 };
 
 } // namespace luci
@@ -64,8 +65,9 @@ private:
  */
 #define LOGGER(name) ::luci::Logger name{::luci::LoggingContext::get()};
 
-// TODO Support FATAL, ERROR, WARN, and VERBOSE
+// TODO Support FATAL, ERROR and VERBOSE
 #define INFO(name) HERMES_INFO(name)
+#define WARN(name) HERMES_WARN(name)
 
 // WARNING!
 //

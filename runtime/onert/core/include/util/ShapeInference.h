@@ -62,6 +62,8 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
+ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buf);
+
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
 // TODO write op starting from G
@@ -79,6 +81,10 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
 // TODO write op starting from U
 // TODO write op starting from Z
 
+std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
+                                               const int ker_w, const ir::Padding pad,
+                                               const ir::Stride stride);
+
 /**
  * @brief Class to infer shape before running kernels. It does the following:
  *        - re-calculate and set output shape at compile time (before running kernels)
@@ -89,10 +95,10 @@ class StaticInferer : public ir::OperationVisitor
 {
 public:
   StaticInferer(
+      const ir::SubgraphIndex &subg_idx,
       const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
-      : _lowered_subgs(lowered_subgs),
-        _operands(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operands()),
-        _operations(lowered_subgs.at(ir::SubgraphIndex{0})->graph().operations())
+      : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
+        _operations(lowered_subgs.at(subg_idx)->graph().operations())
   { /* empty */
   }
   virtual ~StaticInferer() = default;
@@ -120,13 +126,16 @@ private:
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
+  void visit(const ir::operation::BatchMatMul &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
+  void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
+  void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
@@ -134,15 +143,19 @@ private:
   void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
+  void visit(const ir::operation::MatrixBandPart &op);
   void visit(const ir::operation::Max &op);
+  void visit(const ir::operation::Mean &op);
   void visit(const ir::operation::Min &op);
   void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from O
+  void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceAll &op);
+  void visit(const ir::operation::ReduceMin &op);
   void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
@@ -152,8 +165,11 @@ private:
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Slice &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::Split &op);
+  void visit(const ir::operation::Squeeze &op);
   void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
+  void visit(const ir::operation::SquaredDifference &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Transpose &op);
@@ -207,28 +223,35 @@ public:
   void visit(const ir::operation::Abs &op);
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
+  void visit(const ir::operation::BatchMatMul &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
+  void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
+  void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
-  void visit(const ir::operation::Mul &op);
-  void visit(const ir::operation::Min &op);
+  void visit(const ir::operation::MatrixBandPart &op);
   void visit(const ir::operation::Max &op);
+  void visit(const ir::operation::Mean &op);
+  void visit(const ir::operation::Min &op);
+  void visit(const ir::operation::Mul &op);
   void visit(const ir::operation::Neg &op);
-  // TODO write op starting from O
+  void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
+  void visit(const ir::operation::ReduceAll &op);
+  void visit(const ir::operation::ReduceMin &op);
   void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
@@ -238,8 +261,11 @@ public:
   void visit(const ir::operation::Sin &op);
   void visit(const ir::operation::Slice &op);
   void visit(const ir::operation::Softmax &op);
+  void visit(const ir::operation::Split &op);
+  void visit(const ir::operation::Squeeze &op);
   void visit(const ir::operation::StridedSlice &op);
   void visit(const ir::operation::Sub &op);
+  void visit(const ir::operation::SquaredDifference &op);
   void visit(const ir::operation::Tanh &op);
   void visit(const ir::operation::Tile &op);
   void visit(const ir::operation::Transpose &op);

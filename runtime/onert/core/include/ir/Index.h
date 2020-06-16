@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERAND_INDEX_H__
-#define __ONERT_IR_OPERAND_INDEX_H__
+#ifndef __ONERT_IR_INDEX_H__
+#define __ONERT_IR_INDEX_H__
 
 #include "util/Index.h"
 
@@ -42,4 +42,4 @@ using SubgraphIndex = ::onert::util::Index<uint32_t, SubgraphIndexTag>;
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERAND_INDEX_H__
+#endif // __ONERT_IR_INDEX_H__

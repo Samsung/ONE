@@ -42,6 +42,10 @@ inline void Fill(const Shape &input_shape, int *input_data, const T value_data,
       output_data[i] = *value_data;
     }
   }
+  else
+  {
+    throw std::runtime_error("Cker Fill.h: output's size is not matched inferred size of output");
+  }
 }
 
 } // namespace cker

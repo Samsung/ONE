@@ -22,6 +22,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/CircleShapeInference.h>
+#include <luci/UserSettings.h>
+#include <luci/Log.h>
 
 #include <loco/IR/CanonicalNodeVisitor.h>
 #include <oops/InternalExn.h>
@@ -81,6 +83,7 @@ public:
   void visit(luci::CircleL2Pool2D *) final;
   void visit(luci::CircleLeakyRelu *) final;
   void visit(luci::CircleLess *) final;
+  void visit(luci::CircleLessEqual *) final;
   void visit(luci::CircleLocalResponseNormalization *) final;
   void visit(luci::CircleLog *) final;
   void visit(luci::CircleLogicalAnd *) final;
@@ -752,6 +755,23 @@ void OperationExporter::visit(luci::CircleLess *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleLessEqual *node)
+{
+  uint32_t opcode_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LESS_EQUAL);
+  std::vector<int32_t> inputs{get_tensor_index(node->x()), get_tensor_index(node->y())};
+  std::vector<int32_t> outputs{get_tensor_index(node)};
+
+  auto fb_inputs = builder.CreateVector(inputs);
+  auto fb_outputs = builder.CreateVector(outputs);
+
+  auto options = CreateLessEqualOptions(builder);
+
+  auto op_offset = CreateOperator(builder, opcode_idx, fb_inputs, fb_outputs,
+                                  circle::BuiltinOptions_LessEqualOptions, options.Union());
+
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION);
@@ -1050,7 +1070,8 @@ void OperationExporter::visit(luci::CircleReduceAny *node)
 void OperationExporter::visit(luci::CircleReduceMax *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_MAX);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->reduction_indices())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
@@ -1063,7 +1084,8 @@ void OperationExporter::visit(luci::CircleReduceMax *node)
 void OperationExporter::visit(luci::CircleReduceMin *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_MIN);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->axis())};
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->reduction_indices())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
@@ -1588,8 +1610,20 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
 
 void OperationExporter::visit(luci::CircleUnpack *node)
 {
+  LOGGER(l);
+  auto settings = luci::UserSettings::settings();
+
   auto unpack_outs = loco::succs(node);
-  assert(int32_t(unpack_outs.size()) == node->num());
+  // NOTE real models may not use all of the outputs
+  if (static_cast<int32_t>(unpack_outs.size()) != node->num())
+  {
+    if (settings->get(luci::UserSettings::Key::DisableValidation))
+    {
+      WARN(l) << "Warning: export Unpack(" << node->name() << ") 'num' not same as outputs";
+    }
+    else
+      assert(false);
+  }
 
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNPACK);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
@@ -1609,9 +1643,15 @@ void OperationExporter::visit(luci::CircleUnpack *node)
         break;
       }
     }
+    // NOTE real models may not use all of the outputs
     if (!found)
     {
-      INTERNAL_EXN("Invalid Unpack output");
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+      {
+        WARN(l) << "Warning: export Unpack(" << node->name() << ") output " << index << " not used";
+      }
+      else
+        assert(false);
     }
   }
 

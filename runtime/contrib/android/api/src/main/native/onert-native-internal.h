@@ -20,10 +20,6 @@
 // onert
 #include <nnfw.h> // TODO change nnfw.h to onert.h
 
-// stl
-#include <unordered_map>
-#include <cassert>
-
 // from jni_md.h
 #ifdef _LP64 /* 64-bit Solaris */
 typedef long Handle;
@@ -33,16 +29,6 @@ typedef long long Handle;
 
 namespace jni
 {
-
-// for output temp tensor
-struct TempOutput
-{
-  char *buf;
-  size_t bufsize;
-  NNFW_TYPE type;
-};
-using TempOutputMap = std::unordered_map<uint32_t, TempOutput>;
-using SessionMap = std::unordered_map<nnfw_session *, TempOutputMap>;
 
 struct TensorParams
 {
@@ -74,8 +60,5 @@ int getOutputSize(Handle handle);
 bool setAvailableBackends(Handle handle, const char *backends);
 bool getInputTensorInfo(Handle handle, uint32_t index, TensorInfo &info);
 bool getOutputTensorInfo(Handle handle, uint32_t index, TensorInfo &info);
-bool newTempOutputBuf(Handle handle, uint32_t index);
-bool deleteTempOutputBuf(Handle handle, uint32_t index);
-const TempOutput *getTempOutputBuf(Handle handle, uint32_t index);
 
 } // namespace jni

@@ -70,6 +70,12 @@ ir::Shape broadcastShapes(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape
   return out_shape;
 }
 
+} // namespace
+
+//
+// Shape inference
+//
+
 // Calculate output height and width of convolution-like operation
 std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
                                                const int ker_w, const ir::Padding pad,
@@ -97,12 +103,6 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
 
   return {out_h, out_w};
 }
-
-} // namespace
-
-//
-// Shape inference
-//
 
 ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 {
@@ -204,23 +204,6 @@ ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int>
     }
     return out_shape;
   }
-}
-
-// TODO move this when Conv2D.cc is created in util/shapeinf
-ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                           const ir::operation::Conv2D::Param &param, ir::Layout layout)
-{
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
-
-  // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
-  auto kf_shape = ker_shape.asFeature(layout);
-  assert(ifm_shape.C == kf_shape.C);
-
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride);
-
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N};
 }
 
 // TODO move this when DepthwiseConv2D.cc is created in util/shapeinf
@@ -342,10 +325,10 @@ void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                               const ir::OperandIndex rhs_idx)
 {
   auto lhs = _tensor_registry->getITensor(lhs_idx);
-  auto lhs_shape = getShape(lhs.get());
+  auto lhs_shape = lhs->getShape();
 
   auto rhs = _tensor_registry->getITensor(rhs_idx);
-  auto rhs_shape = getShape(rhs.get());
+  auto rhs_shape = rhs->getShape();
 
   /*
     Here, the state after compilation (satic shape inference) could be one of the following:
@@ -378,7 +361,7 @@ void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Oper
 {
   // check if input is not dynamic
   auto input = _tensor_registry->getITensor(input_ind);
-  auto output_shape = getShape(input.get());
+  auto output_shape = input->getShape();
 
   /*
     Here, the state after compilation (satic shape inference) could be one of the following:

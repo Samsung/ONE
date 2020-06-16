@@ -48,8 +48,6 @@ void OneHotLayer::configure(const Tensor *indices, Tensor *output, int32_t depth
   _on_value = on_value;
   _off_value = off_value;
   _axis = axis;
-  if (_axis == -1)
-    _axis = _indices->num_dimensions();
 }
 
 void OneHotLayer::run()

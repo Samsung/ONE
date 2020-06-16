@@ -34,8 +34,8 @@ public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 
-  loco::Node *axis(void) const { return at(1)->node(); }
-  void axis(loco::Node *node) { at(1)->node(node); }
+  loco::Node *reduction_indices(void) const { return at(1)->node(); }
+  void reduction_indices(loco::Node *node) { at(1)->node(node); }
 
 public:
   bool keep_dims(void) const { return _keep_dims; }

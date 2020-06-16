@@ -225,6 +225,7 @@ private:
   IMPLEMENT(luci::CircleL2Normalize)
   IMPLEMENT(luci::CircleLeakyRelu)
   IMPLEMENT(luci::CircleLess)
+  IMPLEMENT(luci::CircleLessEqual)
   IMPLEMENT(luci::CircleLocalResponseNormalization)
   IMPLEMENT(luci::CircleLog)
   IMPLEMENT(luci::CircleLogicalAnd)
@@ -640,6 +641,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLess *node, locop::Node
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLessEqual *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
+  s.args().append("y", tbl()->lookup(node->y()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleLeakyRelu *node,
                                        locop::NodeSummary &s) const
 {
@@ -850,7 +860,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceMax *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
-  s.args().append("axis", tbl()->lookup(node->axis()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
   s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;
@@ -860,7 +870,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceMin *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("input", tbl()->lookup(node->input()));
-  s.args().append("axis", tbl()->lookup(node->axis()));
+  s.args().append("reduction_indices", tbl()->lookup(node->reduction_indices()));
   s.args().append("keep_dims", node->keep_dims() ? "true" : "false");
   s.state(locop::NodeSummary::State::Complete);
   return true;

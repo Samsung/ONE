@@ -17,7 +17,9 @@
 #include "allocation.h"
 #include "args.h"
 #include "benchmark.h"
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 #include "h5formatter.h"
+#endif
 #include "tflite/Diff.h"
 #include "nnfw.h"
 #include "nnfw_util.h"
@@ -86,31 +88,15 @@ int main(const int argc, char **argv)
   ruy::profiler::ScopeProfile ruy_profile;
 #endif
 
-  std::unique_ptr<benchmark::MemoryPoller> mp{nullptr};
-  if (args.getMemoryPoll())
-  {
-    try
-    {
-      mp.reset(new benchmark::MemoryPoller(std::chrono::milliseconds(5), args.getGpuMemoryPoll()));
-    }
-    catch (const std::runtime_error &error)
-    {
-      std::cerr << error.what() << std::endl;
-      return 1;
-    }
-  }
+  benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
 
   nnfw_session *session = nullptr;
   NNPR_ENSURE_STATUS(nnfw_create_debug_session(&session));
 
   // ModelLoad
-  if (mp)
-    mp->start(benchmark::Phase::MODEL_LOAD);
-  uint64_t t_model_load = benchmark::nowMicros();
-  NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, nnpackage_path.c_str()));
-  t_model_load = benchmark::nowMicros() - t_model_load;
-  if (mp)
-    mp->end(benchmark::Phase::MODEL_LOAD);
+  phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
+    NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, nnpackage_path.c_str()));
+  });
 
   char *available_backends = std::getenv("BACKENDS");
   if (available_backends)
@@ -159,13 +145,9 @@ int main(const int argc, char **argv)
   // prepare execution
 
   // TODO When nnfw_{prepare|run} are failed, can't catch the time
-  if (mp)
-    mp->start(benchmark::Phase::PREPARE);
-  uint64_t t_prepare = benchmark::nowMicros();
-  NNPR_ENSURE_STATUS(nnfw_prepare(session));
-  t_prepare = benchmark::nowMicros() - t_prepare;
-  if (mp)
-    mp->end(benchmark::Phase::PREPARE);
+  phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
+    NNPR_ENSURE_STATUS(nnfw_prepare(session));
+  });
 
   // prepare input
   std::vector<Allocation> inputs(num_inputs);
@@ -206,10 +188,14 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   };
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   if (!args.getLoadFilename().empty())
     H5Formatter(session).loadInputs(args.getLoadFilename(), inputs);
   else
     generateInputs();
+#else
+  generateInputs();
+#endif
 
   // prepare output
 
@@ -228,48 +214,41 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
   }
 
-  // poll memories before warming up
-  if (mp)
-    mp->start(benchmark::Phase::EXECUTE);
-  uint64_t run_us = benchmark::nowMicros();
-  NNPR_ENSURE_STATUS(nnfw_run(session));
-  run_us = benchmark::nowMicros() - run_us;
-  if (mp)
-    mp->end(benchmark::Phase::EXECUTE);
-
+  // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
+  // only warmup.
   // warmup runs
-  for (uint32_t i = 1; i < args.getWarmupRuns(); i++)
-  {
-    uint64_t run_us = benchmark::nowMicros();
-    NNPR_ENSURE_STATUS(nnfw_run(session));
-    run_us = benchmark::nowMicros() - run_us;
-    std::cout << "... "
-              << "warmup " << i << " takes " << run_us / 1e3 << " ms" << std::endl;
-  }
+  phases.run("WARMUP",
+             [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+             [&](const benchmark::Phase &phase, uint32_t nth) {
+               std::cout << "... "
+                         << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                         << std::endl;
+             },
+             args.getWarmupRuns());
 
   // actual runs
-  std::vector<double> t_execute;
-  for (uint32_t i = 0; i < args.getNumRuns(); i++)
-  {
-    uint64_t run_us = benchmark::nowMicros();
-    NNPR_ENSURE_STATUS(nnfw_run(session));
-    run_us = benchmark::nowMicros() - run_us;
-    t_execute.emplace_back(run_us);
-    std::cout << "... "
-              << "run " << i << " takes " << run_us / 1e3 << " ms" << std::endl;
-  }
+  phases.run("EXECUTE",
+             [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+             [&](const benchmark::Phase &phase, uint32_t nth) {
+               std::cout << "... "
+                         << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                         << std::endl;
+             },
+             args.getNumRuns(), true);
 
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   // dump output tensors
   if (!args.getDumpFilename().empty())
     H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
+#endif
 
   NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
   // prepare result
-  benchmark::Result result(t_model_load, t_prepare, t_execute, mp);
+  benchmark::Result result(phases);
 
   // to stdout
-  benchmark::printResult(result, (mp != nullptr));
+  benchmark::printResult(result);
 
   // to csv
   if (args.getWriteReport() == false)

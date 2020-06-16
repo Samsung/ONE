@@ -24,6 +24,7 @@
 #include "Op/AveragePool2D.h"
 #include "Op/BatchToSpaceND.h"
 #include "Op/Cast.h"
+#include "Op/Ceil.h"
 #include "Op/Concatenation.h"
 #include "Op/Conv2D.h"
 #include "Op/Cos.h"
@@ -108,6 +109,7 @@
 #include "Op/While.h"
 #include "Op/ZerosLike.h"
 
+#include "CustomOp/AddV2.h"
 #include "CustomOp/All.h"
 #include "CustomOp/BatchMatMulV2.h"
 #include "CustomOp/MatrixBandPart.h"

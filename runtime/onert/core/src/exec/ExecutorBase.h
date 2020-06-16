@@ -127,7 +127,7 @@ private:
     const auto &operand = _graph.operands().at(operand_index);
     const auto tensor = _output_tensors[index.value()];
     const auto tensor_layout = tensor->layout();
-    const auto tensor_shape = convertShape(getShape(tensor.get()), tensor->layout(), io_layout);
+    const auto tensor_shape = convertShape(tensor->getShape(), tensor->layout(), io_layout);
 
     if (((tensor_layout == ir::Layout::NCHW) && (io_layout == ir::Layout::NHWC)) ||
         ((tensor_layout == ir::Layout::NHWC) && (io_layout == ir::Layout::NCHW)))

@@ -57,6 +57,9 @@ void IConstantInitializer::registerCopyInitializer(const ir::OperandIndex &index
     case DataType::FLOAT16:
       _init_map[index] = copyInit<float16>;
       break;
+    case DataType::INT64:
+      _init_map[index] = copyInit<int64_t>;
+      break;
     default:
       throw std::runtime_error("Not supported, yet");
       break;

@@ -21,6 +21,7 @@
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
+#include <luci/UserSettings.h>
 
 #include <stdex/Memory.h>
 #include <oops/InternalExn.h>
@@ -38,8 +39,10 @@ using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 void print_help(const char *progname)
 {
   std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
+  std::cerr << "Optimization options: " << std::endl;
   std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
+  std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
   std::cerr << "   --quantize_with_minmax : Enable QuantizeWithMinMax Pass" << std::endl;
@@ -55,6 +58,9 @@ void print_help(const char *progname)
             << std::endl;
   std::cerr << "                            ";
   std::cerr << "Ex: --quantize_dequantize_weights float32 uint8 channel" << std::endl;
+  std::cerr << "Execution options:" << std::endl;
+  std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
+  std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
   std::cerr << std::endl;
 }
 
@@ -73,6 +79,7 @@ int entry(int argc, char **argv)
   luci::CircleOptimizer optimizer;
 
   auto options = optimizer.options();
+  auto settings = luci::UserSettings::settings();
 
   // TODO merge this with help message
   argparse["--fuse_bcq"] = [&options](const char **) {
@@ -81,6 +88,10 @@ int entry(int argc, char **argv)
   };
   argparse["--fuse_instnorm"] = [&options](const char **) {
     options->enable(Algorithms::FuseInstanceNorm);
+    return 0;
+  };
+  argparse["--resolve_customop_add"] = [&options](const char **) {
+    options->enable(Algorithms::ResolveCustomOpAdd);
     return 0;
   };
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
@@ -131,6 +142,15 @@ int entry(int argc, char **argv)
     options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
     options->param(AlgorithmParameters::Quantize_granularity, granularity);
     return 3;
+  };
+
+  argparse["--mute_warnings"] = [&settings](const char **) {
+    settings->set(luci::UserSettings::Key::MuteWarnings, true);
+    return 0;
+  };
+  argparse["--disable_validation"] = [&settings](const char **) {
+    settings->set(luci::UserSettings::Key::DisableValidation, true);
+    return 0;
   };
 
   for (int n = 1; n < argc - 2; ++n)

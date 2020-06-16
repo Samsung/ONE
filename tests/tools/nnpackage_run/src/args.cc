@@ -37,10 +37,12 @@ void Args::Initialize(void)
     ("help,h", "Print available options")
     ("version", "Print version and exit immediately")
     ("nnpackage", po::value<std::string>()->required())
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     ("dump,d", po::value<std::string>()->default_value(""), "Output filename")
     ("load,l", po::value<std::string>()->default_value(""), "Input filename")
+#endif
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
-    ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
+    ("warmup_runs,w", po::value<int>()->default_value(1), "The number of warmup runs")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false),
@@ -88,7 +90,7 @@ void Args::Parse(const int argc, char **argv)
   }
 
   po::notify(vm);
-
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   if (vm.count("dump"))
   {
     _dump_filename = vm["dump"].as<std::string>();
@@ -98,6 +100,7 @@ void Args::Parse(const int argc, char **argv)
   {
     _load_filename = vm["load"].as<std::string>();
   }
+#endif
 
   if (vm.count("nnpackage"))
   {

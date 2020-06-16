@@ -100,11 +100,16 @@ uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator buil
   return idx;
 }
 
-uint32_t SerializedModelData::registerCustomOpcode(const std::string &custom_op)
+uint32_t SerializedModelData::registerCustomOpcode(const std::string &custom_code)
 {
-  circle::BuiltinOperator custom_code = circle::BuiltinOperator_CUSTOM;
-  auto idx = registerBuiltinOpcode(custom_code);
-  _custom_operator_codes.emplace(OpCode{custom_code}, custom_op);
+  const circle::BuiltinOperator builtin_code = circle::BuiltinOperator_CUSTOM;
+  auto it = _operator_codes.find(OpCode{builtin_code, custom_code});
+  if (it != _operator_codes.end())
+  {
+    return it->second;
+  }
+  auto idx = static_cast<uint32_t>(_operator_codes.size());
+  _operator_codes.emplace(OpCode{builtin_code, custom_code}, idx);
   return idx;
 }
 

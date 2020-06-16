@@ -81,30 +81,15 @@ int main(const int argc, char **argv)
 
   std::chrono::milliseconds t_model_load(0), t_prepare(0);
 
-  std::unique_ptr<benchmark::MemoryPoller> mp{nullptr};
-  if (args.getMemoryPoll())
-  {
-    try
-    {
-      mp.reset(new benchmark::MemoryPoller(std::chrono::milliseconds(5), args.getGpuMemoryPoll()));
-    }
-    catch (const std::runtime_error &error)
-    {
-      std::cerr << error.what() << std::endl;
-      return 1;
-    }
-  }
+  benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
 
   std::unique_ptr<FlatBufferModel> model;
   std::unique_ptr<Interpreter> interpreter;
   std::unique_ptr<tflite::TfLiteVerifier> verifier{new BMFlatBufferVerifier};
+
   try
   {
-    if (mp)
-      mp->start(benchmark::Phase::MODEL_LOAD);
-
-    nnfw::misc::benchmark::measure(t_model_load) << [&](void) {
-
+    phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
       if (args.getModelValidate())
       {
         model = FlatBufferModel::VerifyAndBuildFromFile(args.getTFLiteFilename().c_str(),
@@ -123,10 +108,7 @@ int main(const int argc, char **argv)
       InterpreterBuilder builder(*model, resolver);
       TFLITE_ENSURE(builder(&interpreter))
       interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(-1));
-    };
-
-    if (mp)
-      mp->end(benchmark::Phase::MODEL_LOAD);
+    });
   }
   catch (const std::exception &e)
   {
@@ -147,13 +129,7 @@ int main(const int argc, char **argv)
 
   try
   {
-    if (mp)
-      mp->start(benchmark::Phase::PREPARE);
-
-    nnfw::misc::benchmark::measure(t_prepare) << [&](void) { sess->prepare(); };
-
-    if (mp)
-      mp->end(benchmark::Phase::PREPARE);
+    phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) { sess->prepare(); });
   }
   catch (const std::exception &e)
   {
@@ -289,43 +265,25 @@ int main(const int argc, char **argv)
   }
   std::cout << "]" << std::endl;
 
-  // poll memories before warming up
-  if (mp)
-    mp->start(benchmark::Phase::EXECUTE);
-  if (!sess->run())
-  {
-    assert(0 && "run failed!");
-  }
-  if (mp)
-    mp->end(benchmark::Phase::EXECUTE);
-
+  // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
+  // only warmup.
   // warmup runs
-  for (uint32_t i = 1; i < args.getWarmupRuns(); i++)
-  {
-    uint64_t run_us = benchmark::nowMicros();
-    if (!sess->run())
-    {
-      assert(0 && "run failed!");
-    }
-    run_us = benchmark::nowMicros() - run_us;
-    std::cout << "... "
-              << "warmup " << i << " takes " << run_us / 1e3 << " ms" << std::endl;
-  }
+  phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { sess->run(); },
+             [&](const benchmark::Phase &phase, uint32_t nth) {
+               std::cout << "... "
+                         << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                         << std::endl;
+             },
+             args.getWarmupRuns());
 
   // actual runs
-  std::vector<double> t_execute;
-  for (uint32_t i = 0; i < args.getNumRuns(); i++)
-  {
-    uint64_t run_us = benchmark::nowMicros();
-    if (!sess->run())
-    {
-      assert(0 && "run failed!");
-    }
-    run_us = benchmark::nowMicros() - run_us;
-    t_execute.emplace_back(run_us);
-    std::cout << "... "
-              << "run " << i << " takes " << run_us / 1e3 << " ms" << std::endl;
-  }
+  phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { sess->run(); },
+             [&](const benchmark::Phase &phase, uint32_t nth) {
+               std::cout << "... "
+                         << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                         << std::endl;
+             },
+             args.getNumRuns(), true);
 
   sess->teardown();
 
@@ -344,10 +302,10 @@ int main(const int argc, char **argv)
   std::cout << "]" << std::endl;
 
   // prepare result
-  benchmark::Result result(t_model_load.count(), t_prepare.count(), t_execute, mp);
+  benchmark::Result result(phases);
 
   // to stdout
-  benchmark::printResult(result, (mp != nullptr));
+  benchmark::printResult(result);
 
   if (args.getWriteReport())
   {

@@ -27,6 +27,11 @@
 #include <memory>
 #include <fstream>
 #include <limits>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <util/logging.h>
 
 namespace onert
 {
@@ -56,7 +61,10 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs) : _subgraphs(subgs), _model{nullptr} {}
+  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
+      : _base{nullptr}, _subgraphs(subgs), _model{nullptr}
+  {
+  }
 
   /**
    * @brief Load a model from file
@@ -67,7 +75,6 @@ public:
 
 protected:
   ~BaseLoader() = default;
-
   void loadModel();
 
   // Helper functions
@@ -138,6 +145,7 @@ protected:
   void loadMaximum(const Operator *op, ir::Graph &subg);
   void loadCast(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
+  void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
   void loadAbs(const Operator *op, ir::Graph &subg);
   void loadCos(const Operator *op, ir::Graph &subg);
@@ -161,8 +169,8 @@ protected:
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
 
 protected:
-  // Buffer for loading (if needed)
-  std::vector<char> _buffer;
+  // Base address for mapped region for loading (if needed)
+  char *_base;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -175,30 +183,38 @@ protected:
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
 {
-  std::ifstream stream(file_path, std::fstream::in | std::fstream::binary);
-
-  if (!stream)
+  int fd = open(file_path, O_RDONLY);
+  if (fd < 0)
   {
-    std::string msg = "Failed to open file `";
-    msg += file_path;
-    msg += "`";
-    throw std::runtime_error{msg};
+    throw std::runtime_error("Failed to open file " + std::string(file_path));
   }
 
-  stream.seekg(0, stream.end);
-  auto size = stream.tellg();
-  stream.seekg(0, stream.beg);
+  struct stat file_stat;
+  if (fstat(fd, &file_stat) != 0)
+  {
+    throw std::runtime_error("Fstat failed or file " + std::string(file_path) +
+                             " is not a regular file");
+  }
+  int size = file_stat.st_size;
 
-  _buffer.resize(size);
-  stream.read(_buffer.data(), size);
+  // Map model file into memory region
+  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
+  if (_base == MAP_FAILED)
+  {
+    close(fd);
+    throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
+  }
 
-  stream.close();
-
-  // Prepare verifier
-  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_buffer.data()),
-                                         _buffer.size());
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
+
+  // Unmap mapped region for model file
+  if (munmap(_base, size) == -1)
+  {
+    VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
+  }
+  close(fd);
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -239,6 +255,8 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
       return ir::DataType::QUANT_UINT8_ASYMM;
     case TensorType::TensorType_INT8:
       return ir::DataType::QUANT_INT8_SYMM;
+    case TensorType::TensorType_INT64:
+      return ir::DataType::INT64;
     default:
       throw std::runtime_error(
           std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
@@ -249,7 +267,7 @@ template <typename LoaderDomain, typename SpecificLoader>
 ir::OperandIndex
 BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
-  return tensorIdx == -1 ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
+  return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -266,18 +284,14 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
       shape.append(dim);
     }
   }
-  // Shape Signature : when val is -1, that means that dim is unknown
-  const auto *tensor_shape_sig = tensor->shape_signature();
-  if (tensor_shape_sig != nullptr)
-  {
-    int i = 0;
-    for (const auto &sig_dim : *tensor_shape_sig)
-    {
-      if (sig_dim == -1)
-        shape.dim(i) = ir::Shape::UNSPECIFIED_DIM;
-      i++;
-    }
-  }
+
+  // Note for tensor->shape_signature()
+  // We don't handle shape signature
+  //    How we handle:
+  //       If shape_signature[k] == -1, we will use tensor->shape()[k] == 1
+  //       If app wants to change the input shape, call nnfw_apply_input_tensorinfo() can
+  //       be used.
+
   // Type
   ir::DataType data_type = tensorTypeToDataType(tensor->type());
   // Quantization
@@ -350,7 +364,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
                 .append(EnumNameBuiltinOperator(builtin_code)));
     };
     check_optional_input();
-    inputs.append(_tensor_to_operand[idx]);
+    inputs.append(tensorIdxToOperandIdx(idx));
   }
 
   for (const std::int32_t idx : *op->outputs())
@@ -1139,7 +1153,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   {
     ReduceAll,
     MatrixBandPart,
-    BatchMatMul
+    BatchMatMul,
+    Einsum
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1147,6 +1162,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"All", BuiltinOP::ReduceAll},
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
+      {"Einsum", BuiltinOP::Einsum},
   };
 
   try
@@ -1163,6 +1179,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::BatchMatMul:
         loadBatchMatMul(op, subg);
+        break;
+      case BuiltinOP::Einsum:
+        loadEinsum(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1393,6 +1412,37 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::Einsum::Param param;
+
+  if (inputs.size() != 2)
+  {
+    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
+  }
+
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"Einsum: empty equation"};
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.equation = attr_map["equation"].ToString();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir::Graph &subg)
 {
   if (op->inputs()->size() != 4 || op->outputs()->size() != 1)
@@ -1563,8 +1613,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
 
   if (!axisOperand.isConstant())
     throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
-  if (!(axisOperand.operandSize() == 4 && axisOperand.typeInfo().type() == ir::DataType::INT32))
-    throw std::runtime_error("ArgMax: `axis` with an int32 element is only supported.");
+  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
+                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
+    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
 
   ir::operation::ArgMax::Param param;
   param.axis = axisOperand.template asVector<int>()[0];
@@ -1881,6 +1932,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadLogicalNot(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
+      loadLogicalOr(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_FILL:
       loadFill(op, subg);
       return;
@@ -1903,7 +1957,7 @@ template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
-  _model = LoaderDomain::GetModel(_buffer.data());
+  _model = LoaderDomain::GetModel(_base);
   // Version unused
   // const auto version = _model->version();
   // Description unused

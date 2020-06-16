@@ -73,7 +73,7 @@ void DynamicInferer::visit(const ir::operation::Transpose &op)
   // from op, access the buffer of second input to read new shape
   auto input_ind = op.getInputs().at(ir::operation::Transpose::Input::INPUT);
   auto input_tensor = _tensor_registry->getITensor(input_ind);
-  auto input_shape = getShape(input_tensor.get());
+  auto input_shape = input_tensor->getShape();
 
   if (!input_tensor->is_dynamic())
     return;
@@ -81,7 +81,6 @@ void DynamicInferer::visit(const ir::operation::Transpose &op)
   const auto perm{op.param().perm};
   // set output shape, based on input and params
   ir::Shape new_shape = inferTransposeShape(input_shape, perm);
-  setShape(output.get(), new_shape);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);

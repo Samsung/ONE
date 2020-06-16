@@ -21,22 +21,11 @@ namespace onert
 namespace backend
 {
 
-void setShape(ITensor *tensor, const ir::Shape &new_shape)
+ir::Shape ITensor::getShape() const
 {
-  assert(tensor);
-
-  tensor->num_dimensions(new_shape.rank());
-  for (int i = 0; i < new_shape.rank(); i++)
-    tensor->dimension(i, new_shape.dim(i));
-}
-
-ir::Shape getShape(const ITensor *tensor)
-{
-  assert(tensor);
-
-  onert::ir::Shape shape(tensor->num_dimensions());
-  for (uint32_t d = 0; d < tensor->num_dimensions(); d++)
-    shape.dim(d) = tensor->dimension(d);
+  onert::ir::Shape shape(num_dimensions());
+  for (uint32_t d = 0; d < num_dimensions(); d++)
+    shape.dim(d) = dimension(d);
 
   return shape;
 }

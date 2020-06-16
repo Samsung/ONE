@@ -157,8 +157,7 @@ function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
                   WORKING_DIRECTORY ${ARMComputeSource_DIR}
                   RESULT_VARIABLE ARMCompute_BUILD)
 
-  # Install ARMCompute libraries
-  # Ps. CI server will copy below installed libraries to target device to test.
+  # Install ARMCompute libraries to overlay
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMCompute_INSTALL_PREFIX}"
                   WORKING_DIRECTORY ${ARMComputeSource_DIR}
                   RESULT_VARIABLE ARMCompute_BUILD)
@@ -169,19 +168,7 @@ function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
                   RESULT_VARIABLE ARMCompute_BUILD)
 endfunction(_ARMCompute_Build)
 
-
 set(ARMCompute_PREFIX ${EXT_OVERLAY_DIR}/lib)
-
-# This is a workaround for CI issues
-# Ps. CI server will copy below installed libraries to target device to test.
-# TODO Remove this workaround
-if(DEFINED ARMCompute_EXTDIR)
-  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMCompute_PREFIX}")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${ARMCompute_EXTDIR}/libarm_compute_core.so" "${ARMCompute_PREFIX}"
-                  COMMAND ${CMAKE_COMMAND} -E copy "${ARMCompute_EXTDIR}/libarm_compute.so" "${ARMCompute_PREFIX}"
-                  COMMAND ${CMAKE_COMMAND} -E copy "${ARMCompute_EXTDIR}/libarm_compute_graph.so" "${ARMCompute_PREFIX}")
-endif(DEFINED ARMCompute_EXTDIR)
-
 if(BUILD_ARMCOMPUTE)
   _ARMCompute_Build("${ARMCompute_PREFIX}")
 endif(BUILD_ARMCOMPUTE)

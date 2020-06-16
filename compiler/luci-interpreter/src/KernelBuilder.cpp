@@ -22,8 +22,10 @@
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
 #include "kernels/DepthwiseConv2D.h"
+#include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/L2Normalize.h"
+#include "kernels/LeakyRelu.h"
 #include "kernels/Logistic.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
@@ -166,6 +168,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *
   return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->features());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Elu>(input, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
 {
   assert(node->arity() == 3);
@@ -192,6 +204,18 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::L2Normalize>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
+{
+  assert(node->arity() == 1);
+  const Tensor *input = getInputTensor(node->features());
+  Tensor *output = getOutputTensor(node);
+
+  LeakyReluParams params{};
+  params.alpha = node->alpha();
+
+  return std::make_unique<kernels::LeakyRelu>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)

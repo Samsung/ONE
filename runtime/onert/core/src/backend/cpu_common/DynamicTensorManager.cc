@@ -52,13 +52,13 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
   {
     // TODO deallocate tensor->buffer()
     // issue is that staticTensorManager might have allocate this memory
-    setShape(tensor.get(), new_shape);
+    tensor->setShape(new_shape);
     tensor->set_dynamic();
     allocTensorMem(true);
   }
   else if (tensor->buffer() == nullptr)
   {
-    setShape(tensor.get(), new_shape);
+    tensor->setShape(new_shape);
     tensor->set_dynamic();
     allocTensorMem();
   }
@@ -71,13 +71,13 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     {
       _dynamic_mem_mgr->deallocate(ind);
 
-      setShape(tensor.get(), new_shape);
+      tensor->setShape(new_shape);
       tensor->set_dynamic();
-      allocTensorMem();
+      allocTensorMem(true);
     }
     else
     { // when buffer with same size was already allocated, shape could differ
-      setShape(tensor.get(), new_shape);
+      tensor->setShape(new_shape);
     }
   }
 }

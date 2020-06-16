@@ -2,6 +2,7 @@ GeneratedTests.abs_
 GeneratedTests.abs_dynamic_nnfw
 GeneratedTests.add_dynamic_nnfw
 GeneratedTests.argmax_dynamic_nnfw
+GeneratedTests.batch_matmul_ex_dynamic_nnfw
 GeneratedTests.batch_matmul_ex_float_adj_x
 GeneratedTests.batch_matmul_ex_float_adj_y
 GeneratedTests.batch_matmul_ex_float_batch2
@@ -28,6 +29,7 @@ GeneratedTests.conv_1_h3_w2_SAME_relaxed
 GeneratedTests.conv_1_h3_w2_VALID_relaxed
 GeneratedTests.conv_3_h3_w2_SAME_relaxed
 GeneratedTests.conv_3_h3_w2_VALID_relaxed
+GeneratedTests.conv_dynamic_nnfw
 GeneratedTests.conv_float_2_relaxed
 GeneratedTests.conv_float_channels_relaxed
 GeneratedTests.conv_float_channels_weights_as_inputs
@@ -51,6 +53,11 @@ GeneratedTests.depthwise_conv2d_float_large_relaxed
 GeneratedTests.depthwise_conv2d_float_relaxed
 GeneratedTests.depthwise_conv_relaxed
 GeneratedTests.div_dynamic_nnfw
+GeneratedTests.einsum_ex_float_matmul_2x2_2
+GeneratedTests.einsum_ex_float_matmul_3x2_3
+GeneratedTests.einsum_ex_float_matmul_3x3_4
+GeneratedTests.einsum_ex_float_matmul_4x4_4
+GeneratedTests.einsum_ex_float_matmul_4x4_4_2
 GeneratedTests.equal_boolean
 GeneratedTests.equal_dynamic_float_nnfw
 GeneratedTests.exp_
@@ -60,6 +67,7 @@ GeneratedTests.expand_dims_dynamic_nnfw_1
 GeneratedTests.expand_dims_dynamic_nnfw_2
 GeneratedTests.fill_ex_1D_float
 GeneratedTests.fill_ex_4D_float
+GeneratedTests.fill_ex_dynamic_nnfw
 GeneratedTests.fully_connected_dynamic_nnfw
 GeneratedTests.fully_connected_float_2_relaxed
 GeneratedTests.fully_connected_float_4d_simple_relaxed
@@ -107,9 +115,11 @@ GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_boolean
 GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.matrix_band_part_ex_4D_float
+GeneratedTests.matrix_band_part_ex_dynamic_nnfw
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
+GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
@@ -123,6 +133,7 @@ GeneratedTests.reduce_all_2
 GeneratedTests.reduce_all_2D_nnfw
 GeneratedTests.reduce_all_3
 GeneratedTests.reduce_all_4D_nnfw
+GeneratedTests.reduce_all_dynamic_nnfw
 GeneratedTests.reduce_any
 GeneratedTests.reduce_any_2
 GeneratedTests.reduce_any_2D_nnfw
@@ -131,6 +142,9 @@ GeneratedTests.reduce_any_4
 GeneratedTests.reduce_any_4D_nnfw
 GeneratedTests.reduce_max_2D_int32_nnfw
 GeneratedTests.reduce_max_quant8
+GeneratedTests.reduce_mean_dynamic_1_nnfw
+GeneratedTests.reduce_mean_dynamic_2_nnfw
+GeneratedTests.reduce_min_dynamic_nnfw
 GeneratedTests.reduce_prod
 GeneratedTests.reduce_prod_2
 GeneratedTests.reduce_prod_2D_float_nnfw
@@ -143,6 +157,8 @@ GeneratedTests.reduce_prod_dynamic_1_nnfw
 GeneratedTests.reduce_prod_dynamic_2_nnfw
 GeneratedTests.reduce_sum_dynamic_1_nnfw
 GeneratedTests.reduce_sum_dynamic_2_nnfw
+GeneratedTests.reshape_dynamic_nnfw
+GeneratedTests.reshape_float_nnfw
 GeneratedTests.reshape_quant8_weights_as_inputs
 GeneratedTests.reshape_weights_as_inputs
 GeneratedTests.reverse_ex_1d
@@ -162,6 +178,7 @@ GeneratedTests.select_v1_2_two_dim
 GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.select_v2_ex_broadcast_1d_single_value
 GeneratedTests.select_v2_ex_broadcast_2d_one
+GeneratedTests.select_v2_ex_broadcast_2d_two
 GeneratedTests.select_v2_ex_broadcast_less_4d
 GeneratedTests.select_v2_ex_float
 GeneratedTests.shape_ex_dynamic_nnfw
@@ -187,7 +204,9 @@ GeneratedTests.space_to_batch_quant8_1_nnfw
 GeneratedTests.space_to_batch_quant8_2
 GeneratedTests.space_to_batch_quant8_2_nnfw
 GeneratedTests.space_to_batch_quant8_3
+GeneratedTests.split_dynamic_float_nnfw
 GeneratedTests.sqrt_
+GeneratedTests.squared_difference_ex_dynamic_nnfw
 GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.sub_dynamic_nnfw
 GeneratedTests.sub_v1_2_zero_sized
@@ -196,6 +215,7 @@ GeneratedTests.svdf
 GeneratedTests.svdf2
 GeneratedTests.svdf_bias_present
 GeneratedTests.svdf_state
+GeneratedTests.squeeze_dynamic_float_nnfw
 GeneratedTests.tanh_v1_2
 GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8

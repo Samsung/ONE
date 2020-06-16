@@ -948,6 +948,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleLessEqual *node) final
+  {
+    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleLocalResponseNormalization *node) final
   {
     const auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
@@ -1250,13 +1258,13 @@ public:
 
   loco::NodeShape visit(const luci::CircleReduceMax *node) final
   {
-    auto output_shape = infer_reducer(node->input(), node->axis(), node->keep_dims());
+    auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
     return loco::NodeShape{output_shape};
   }
 
   loco::NodeShape visit(const luci::CircleReduceMin *node) final
   {
-    auto output_shape = infer_reducer(node->input(), node->axis(), node->keep_dims());
+    auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
     return loco::NodeShape{output_shape};
   }
 
@@ -1844,6 +1852,13 @@ public:
     auto axis = node->axis();
     auto num = node->num();
     auto rank = static_cast<int32_t>(value_shape.rank());
+
+    if (rank == 0)
+    {
+      // Unknown shape
+      loco::TensorShape shape = own_shape(node);
+      return loco::NodeShape{shape};
+    }
 
     LUCI_ASSERT(-rank <= axis && axis < rank, "Axis is out of range");
 
