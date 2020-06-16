@@ -1,14 +1,16 @@
-# Prepare nnpackage
+# How to Use NNFW API
 
-## Convert tensorflow pb file to nnpackage
+## Prepare nnpackage
+
+### Convert tensorflow pb file to nnpackage
 Follow the [compiler guide](https://github.com/Samsung/ONE/blob/master/docs/nncc/v1.0.0/tutorial.md) to generate nnpackge from tensorflow pb file
 
-## Convert tflite file to nnpackage
+### Convert tflite file to nnpackage
 Please see [model2nnpkg](https://github.com/Samsung/ONE/tree/master/tools/nnpackage_tool/model2nnpkg) for converting from tflite model file.
 
-# Build app with ONE API
+## Build app with NNFW API
 
-Here are basic steps to build app with [ONE C API](https://github.com/Samsung/ONE/blob/master/runtime/onert/api/include/nnfw.h)
+Here are basic steps to build app with [NNFW C API](https://github.com/Samsung/ONE/blob/master/runtime/onert/api/include/nnfw.h)
 
 1) Initialize nnfw_session
 ``` c
@@ -55,6 +57,7 @@ nnfw_load_model_from_file(session, nnpackage_path);
   // Do inference
   nnfw_run(session);
 ```
+
 ## Run Inference with app on the target devices
 reference app : [minimal app](https://github.com/Samsung/ONE/blob/master/runtime/onert/sample/minimal)
 
