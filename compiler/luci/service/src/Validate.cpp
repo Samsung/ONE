@@ -83,8 +83,9 @@ bool validate_shape_dtype(loco::Graph *g)
     assert(go_tensor_shape);
     if (!(co_tensor_shape == *go_tensor_shape))
     {
-      INFO(l) << "Shape for #" << out_index << " not same " << std::endl;
-      INFO(l) << co_tensor_shape << " vs " << *go_tensor_shape << std::endl;
+      INFO(l) << "[luci] Shape for output #" << out_index << " not same " << std::endl;
+      INFO(l) << "[luci]    " << circle_node->name() << " " << co_tensor_shape << " vs "
+              << *go_tensor_shape << std::endl;
       return false;
     }
 
@@ -92,7 +93,7 @@ bool validate_shape_dtype(loco::Graph *g)
     assert(loco::dtype_known(circle_node));
     if (graph_out->dtype() != loco::dtype_get(circle_node))
     {
-      INFO(l) << "Type for #" << out_index << " not same " << std::endl;
+      INFO(l) << "[luci] Type for output #" << out_index << " not same " << std::endl;
       return false;
     }
   }
