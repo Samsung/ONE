@@ -51,6 +51,20 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   auto tensors_ptr = reader.tensors_ptr();
   assert(tensors_ptr != nullptr);
 
+  // build a cache to identify if a tensor is output of an operator
+  // if this is set, we should not create a CircleConst for this tensor
+  for (uint32_t i = 0; i < operators.size(); ++i)
+  {
+    const circle::OperatorT &op = *operators[i];
+    const auto &outputs = op.outputs;
+
+    for (uint32_t j = 0; j < outputs.size(); ++j)
+    {
+      auto tidx = outputs[j];
+      tensoroutputs->enroll(tidx);
+    }
+  }
+
   // graph inputs; there are no input nodes in TFlite but just Tensors
   // creating virtual input nodes will make possible to connect nodes that uses them
   // all attributes of tensor should be copied to CircleInput node
@@ -68,6 +82,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
 
     INFO(l) << "[luci] NodeFinder INPUT(" << input << ") = " << input_node << std::endl;
     nodefinder->enroll(input, input_node);
+
+    // input_node is also an output to a tensor
+    tensoroutputs->enroll(input);
 
     // Name
     auto graph_input = graph->inputs()->create();
