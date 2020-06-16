@@ -28,8 +28,14 @@ namespace kernels
 class TransposeConv : public KernelWithParams<TransposeConvParams>
 {
 public:
-  TransposeConv(const Tensor *outputShape, const Tensor *weights, const Tensor *inputData,
+  TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                 Tensor *output, const TransposeConvParams &params);
+
+  std::vector<const Tensor *> getInputTensors() const override
+  {
+    return {_output_shape, _filter, _input};
+  }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
@@ -40,8 +46,8 @@ private:
 
 private:
   const Tensor *const _output_shape;
-  const Tensor *const _weights;
-  const Tensor *const _input_data;
+  const Tensor *const _filter;
+  const Tensor *const _input;
   Tensor *const _output;
 
   std::unique_ptr<Tensor> _scratch_tensor;

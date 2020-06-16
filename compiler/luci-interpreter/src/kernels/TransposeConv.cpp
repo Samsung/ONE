@@ -29,29 +29,27 @@ namespace luci_interpreter
 namespace kernels
 {
 
-TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *weights,
-                             const Tensor *input_data, Tensor *output,
-                             const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>(params), _output_shape(output_shape), _weights(weights),
-      _input_data(input_data), _output(output)
+TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
+                             Tensor *output, const TransposeConvParams &params)
+    : KernelWithParams<TransposeConvParams>(params), _output_shape(output_shape), _filter(filter),
+      _input(input), _output(output)
 {
 }
 
 void TransposeConv::configure()
 {
   assert(_output_shape->shape().num_dims() == 1);
-  assert(_input_data->shape().num_dims() == 4);
-  assert(_weights->shape().num_dims() == 4);
-  assert(_input_data->element_type() == DataType::FLOAT32 ||
-         _input_data->element_type() == DataType::U8);
-  assert(_input_data->element_type() == _output->element_type());
-  assert(_input_data->shape().dim(3) == _weights->shape().dim(3));
-  if (_input_data->element_type() == DataType::U8)
+  assert(_input->shape().num_dims() == 4);
+  assert(_filter->shape().num_dims() == 4);
+  assert(_input->element_type() == DataType::FLOAT32 || _input->element_type() == DataType::U8);
+  assert(_input->element_type() == _output->element_type());
+  assert(_input->shape().dim(3) == _filter->shape().dim(3));
+  if (_input->element_type() == DataType::U8)
   {
     _scratch_tensor =
         std::make_unique<Tensor>(DataType::S32, _output->shape(), AffineQuantization{}, "");
     double real_multiplier = 0.0;
-    const double input_product_scale = _input_data->scale() * _weights->scale();
+    const double input_product_scale = _input->scale() * _filter->scale();
     assert(input_product_scale >= 0);
     real_multiplier = input_product_scale / _output->scale();
     int exponent;
@@ -69,7 +67,7 @@ void TransposeConv::configure()
 
 void TransposeConv::execute() const
 {
-  switch (_input_data->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -87,8 +85,8 @@ void TransposeConv::evalFloat() const
   const int width = _output->shape().dim(2);
   const int height = _output->shape().dim(1);
 
-  const int filter_width = _weights->shape().dim(2);
-  const int filter_height = _weights->shape().dim(1);
+  const int filter_width = _filter->shape().dim(2);
+  const int filter_height = _filter->shape().dim(1);
 
   int unused_output_height, unused_output_width;
   unused_output_width =
@@ -108,21 +106,21 @@ void TransposeConv::evalFloat() const
   op_params.stride_width = params().stride_width;
   op_params.output_multiplier = _output_multiplier;
   tflite::reference_ops::TransposeConv(
-      op_params, getTensorShape(_input_data), getTensorData<float>(_input_data),
-      getTensorShape(_weights), getTensorData<float>(_weights), getTensorShape(_output),
-      getTensorData<float>(_output), tflite::RuntimeShape(), (float *)nullptr);
+      op_params, getTensorShape(_input), getTensorData<float>(_input), getTensorShape(_filter),
+      getTensorData<float>(_filter), getTensorShape(_output), getTensorData<float>(_output),
+      tflite::RuntimeShape(), (float *)nullptr);
 }
 
 void TransposeConv::evalQuantized() const
 {
-  int32_t input_offset = -_input_data->zero_point();
-  int32_t filter_offset = -_weights->zero_point();
-  int32_t output_offset = _weights->zero_point();
+  int32_t input_offset = -_input->zero_point();
+  int32_t filter_offset = -_filter->zero_point();
+  int32_t output_offset = _filter->zero_point();
   const int width = _output->shape().dim(2);
   const int height = _output->shape().dim(1);
 
-  const int filter_width = _weights->shape().dim(2);
-  const int filter_height = _weights->shape().dim(1);
+  const int filter_width = _filter->shape().dim(2);
+  const int filter_height = _filter->shape().dim(1);
 
   int unused_output_height, unused_output_width;
   unused_output_width =
@@ -147,10 +145,9 @@ void TransposeConv::evalQuantized() const
   op_params.quantized_activation_max = std::numeric_limits<uint8_t>::max();
 
   tflite::reference_ops::TransposeConv(
-      op_params, getTensorShape(_input_data), getTensorData<uint8>(_input_data),
-      getTensorShape(_weights), getTensorData<uint8>(_weights), getTensorShape(_output),
-      getTensorData<uint8>(_output), tflite::RuntimeShape(), (uint8 *)nullptr,
-      getTensorData<int32_t>(_scratch_tensor.get()));
+      op_params, getTensorShape(_input), getTensorData<uint8>(_input), getTensorShape(_filter),
+      getTensorData<uint8>(_filter), getTensorShape(_output), getTensorData<uint8>(_output),
+      tflite::RuntimeShape(), (uint8 *)nullptr, getTensorData<int32_t>(_scratch_tensor.get()));
 }
 
 } // namespace kernels

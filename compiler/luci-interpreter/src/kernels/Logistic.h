@@ -29,6 +29,9 @@ class Logistic : public Kernel
 public:
   Logistic(const Tensor *input, Tensor *output);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

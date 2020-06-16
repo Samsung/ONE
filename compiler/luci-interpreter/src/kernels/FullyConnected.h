@@ -31,6 +31,9 @@ public:
   FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias, Tensor *output,
                  const FullyConnectedParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _weights, _bias}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

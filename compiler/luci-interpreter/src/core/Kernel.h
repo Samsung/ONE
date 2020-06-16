@@ -19,6 +19,8 @@
 
 #include "luci_interpreter/core/Tensor.h"
 
+#include <vector>
+
 namespace luci_interpreter
 {
 
@@ -27,6 +29,9 @@ class Kernel
 {
 public:
   virtual ~Kernel() = default;
+
+  virtual std::vector<const Tensor *> getInputTensors() const = 0;
+  virtual std::vector<Tensor *> getOutputTensors() const = 0;
 
   // Configures the kernel.
   // This function is currently called once for each kernel during interpreter construction,
