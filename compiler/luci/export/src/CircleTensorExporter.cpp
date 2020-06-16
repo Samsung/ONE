@@ -132,6 +132,7 @@ private:
   {
     auto outs = loco::succs(node);
     assert(outs.size() == count);
+    (void)count; // for unused variable error in release build
     for (auto out : outs)
     {
       auto circle_out = loco::must_cast<luci::CircleNode *>(out);
