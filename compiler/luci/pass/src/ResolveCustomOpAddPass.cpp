@@ -28,7 +28,7 @@ namespace
 // NOTE This function assumes there is only one BroadcastTo node among its inputs.
 int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
 {
-  for (uint32_t idx = 0; cop->numInputs(); idx++)
+  for (uint32_t idx = 0; idx < cop->numInputs(); idx++)
   {
     auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
     if (input)
