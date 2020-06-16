@@ -82,7 +82,7 @@ void GetQuantizedConvolutionMultiplier(const Tensor *input, const Tensor *filter
                                        const Tensor *bias, const Tensor *output, double *multiplier)
 {
   const double input_product_scale = input->data_scale() * filter->data_scale();
-  const double bias_scale = bias->data_scale();
+  const double bias_scale = (bias != nullptr) ? bias->data_scale() : input_product_scale;
   const double output_scale = output->data_scale();
   // The following conditions must be guaranteed by the training pipeline.
   UNUSED_RELEASE(bias_scale);
