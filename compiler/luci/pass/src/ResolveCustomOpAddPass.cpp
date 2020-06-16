@@ -20,7 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
-#include <iostream>
+
 namespace
 {
 
