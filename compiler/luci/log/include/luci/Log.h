@@ -49,6 +49,7 @@ public:
 private:
   bool _show_warn = true;
   bool _show_info = false;
+  int _show_verbose = 0;
 };
 
 } // namespace luci
@@ -65,9 +66,10 @@ private:
  */
 #define LOGGER(name) ::luci::Logger name{::luci::LoggingContext::get()};
 
-// TODO Support FATAL, ERROR and VERBOSE
+// TODO Support FATAL, ERROR
 #define INFO(name) HERMES_INFO(name)
 #define WARN(name) HERMES_WARN(name)
+#define VERBOSE(name, lv) HERMES_VERBOSE(name, lv)
 
 // WARNING!
 //
