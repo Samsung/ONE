@@ -137,6 +137,7 @@ private:
       auto circle_out = loco::must_cast<luci::CircleNode *>(out);
       allocateCircleTensorInfo(circle_out, _ctx);
     }
+    set_tensor_index(node, -1);
   }
 
 public:
@@ -150,42 +151,36 @@ public:
   bool visit(luci::CircleIf *node) final
   {
     store_outputs(node, node->output_count());
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleSplit *node) final
   {
     store_outputs(node, uint32_t(node->num_split()));
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleSplitV *node) final
   {
     store_outputs(node, uint32_t(node->num_split()));
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleTopKV2 *node) final
   {
     store_outputs(node, 2);
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleUnpack *node) final
   {
     store_outputs(node, node->num());
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleWhile *node) final
   {
     store_outputs(node, node->output_count());
-    set_tensor_index(node, -1);
     return true;
   }
 
