@@ -24,6 +24,7 @@
 #include <loco.h>
 
 #include <map>
+#include <set>
 
 namespace luci
 {
@@ -48,13 +49,29 @@ private:
 };
 
 /**
+ * @brief  Set of Tensor Index of outputs of operators
+ *         including graph input nodes
+ */
+class IndexTensorOutputs
+{
+public:
+  void enroll(TensorIndex idx);
+
+  bool find(TensorIndex idx);
+
+private:
+  std::set<TensorIndex> _set;
+};
+
+/**
  * @brief Class to store context to build loco graph IR from TensorFlow
  */
 class GraphBuilderContext
 {
 public:
-  GraphBuilderContext(loco::Graph *g, CircleReader *reader, IndexNodeFinder *nodefinder)
-      : _g(g), _reader(reader), _indexnodefinder(nodefinder)
+  GraphBuilderContext(loco::Graph *g, CircleReader *reader, IndexNodeFinder *nodefinder,
+                      IndexTensorOutputs *tensoroutputs)
+      : _g(g), _reader(reader), _indexnodefinder(nodefinder), _indextensoroutputs(tensoroutputs)
   {
     // DO NOTHING
   }
@@ -67,11 +84,13 @@ public:
   CircleReader *reader() { return _reader; }
 
   IndexNodeFinder *nodefinder() { return _indexnodefinder; }
+  IndexTensorOutputs *tensoroutputs() { return _indextensoroutputs; }
 
 private:
   loco::Graph *_g;
   CircleReader *_reader;
   IndexNodeFinder *_indexnodefinder;
+  IndexTensorOutputs *_indextensoroutputs;
 };
 
 } // namespace luci

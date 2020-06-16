@@ -45,4 +45,18 @@ CircleNode *IndexNodeFinder::node(TensorIndex idx) const
   return (iter != _table.end()) ? iter->second : nullptr;
 }
 
+void IndexTensorOutputs::enroll(TensorIndex idx)
+{
+  auto iter = _set.find(idx);
+  if (iter != _set.end())
+  {
+    LOGGER(l);
+    INFO(l) << "[luci] TensorOutputs SKIP (" << idx << ") existing" << std::endl;
+    return;
+  }
+  _set.insert(idx);
+}
+
+bool IndexTensorOutputs::find(TensorIndex idx) { return (_set.find(idx) != _set.end()); }
+
 } // namespace luci
