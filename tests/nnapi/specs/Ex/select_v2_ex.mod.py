@@ -54,3 +54,15 @@ test(
     input2_data=[5, 6, 7, 8],
     output_data=[5, 6, 7, 8],
 )
+
+test(
+    name="broadcast_2d_two",
+    input0=Input("input0", "TENSOR_BOOL8", "{1, 2}"),
+    input1=Input("input1", "TENSOR_FLOAT32", "{1, 2, 2}"),
+    input2=Input("input2", "TENSOR_FLOAT32", "{1, 2, 1}"),
+    output0=Output("output0", "TENSOR_FLOAT32", "{1, 2, 2}"),
+    input0_data=[False, True],
+    input1_data=[1, 2, 3, 4],
+    input2_data=[5, 6], # 5 5 6 6
+    output_data=[5, 2, 6, 4],
+)
