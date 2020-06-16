@@ -16,7 +16,7 @@
 
 #include "SegmentSum.h"
 
-#include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -24,19 +24,10 @@ namespace tflchef
 void TFliteOpSegmentSum::filler(const tflite::Operator *op, TFliteImport *import,
                                 tflchef::ModelRecipe *model_recipe) const
 {
-  const auto &inputs = *op->inputs();
-
-  const tflite::Tensor *tensor = import->tensors()->Get(inputs[1]);
-  assert(tensor->type() == tflite::TensorType::TensorType_INT32);
-  const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
-
-  if (buffer && buffer->data())
-  {
-    auto vec = extract_buffer<int32_t>(buffer);
-    import->set_tensor_filler(inputs[1], vec);
-  }
-
+  // Filler for indices and shape
+  fill_tensor_to_import(1, import);
 }
+
 tflchef::Operation *TFliteOpSegmentSum::build(const tflite::Operator *op, TFliteImport *import,
                                               tflchef::ModelRecipe *model_recipe) const
 {
