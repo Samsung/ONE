@@ -42,8 +42,9 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
   LOGGER(l);
 
   auto nodefinder = std::make_unique<luci::IndexNodeFinder>();
+  auto tensoroutputs = std::make_unique<luci::IndexTensorOutputs>();
 
-  luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get());
+  luci::GraphBuilderContext gb_context(graph, &reader, nodefinder.get(), tensoroutputs.get());
 
   const auto &operators = reader.operators();
   const auto &tensors = reader.tensors();
