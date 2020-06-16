@@ -1,0 +1,51 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 5 dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm:1"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm:2"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm:3"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm:4"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operation {
+  type: "Unpack"
+  input: "ifm"
+  output: "ofm"
+  output: "ofm:1"
+  output: "ofm:2"
+  output: "ofm:3"
+  output: "ofm:4"
+  unpack_options {
+    num: 5
+    axis: 0
+  }
+}
+input: "ifm"
+output: "ofm"
+# output: "ofm:1" is intentionally removed
+# output: "ofm:2" is intentionally removed
+# output: "ofm:3" is intentionally removed
+# output: "ofm:4" is intentionally removed
+
+# This is a test for case of not all Unpack outputs are used
