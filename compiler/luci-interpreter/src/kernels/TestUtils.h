@@ -93,7 +93,7 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
     return {0.0, 0};
   }
   int32_t zero_point = 0;
-  float scale = 0;
+  double scale = 0;
   const T qmin = std::numeric_limits<T>::min();
   const T qmax = std::numeric_limits<T>::max();
   const double qmin_double = qmin;
