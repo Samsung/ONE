@@ -19,12 +19,15 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
 namespace nnpkg_run
 {
+
+using TensorShapeMap = std::unordered_map<int, std::vector<int>>;
 
 class Args
 {
@@ -44,6 +47,8 @@ public:
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
   const bool printVersion(void) const { return _print_version; }
+  const TensorShapeMap &getComillationShapeMap() { return _shape_compile; }
+  const TensorShapeMap &getExecShapeMap() { return _shape_exec; }
 
 private:
   void Initialize();
@@ -58,6 +63,8 @@ private:
   std::string _dump_filename;
   std::string _load_filename;
 #endif
+  TensorShapeMap _shape_compile;
+  TensorShapeMap _shape_exec;
   int _num_runs;
   int _warmup_runs;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

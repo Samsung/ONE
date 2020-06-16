@@ -139,8 +139,27 @@ int main(const int argc, char **argv)
     }
   };
 
+  auto setTensorInfo = [session](const TensorShapeMap &tensor_shape_map) {
+    for (auto tensor_shape : tensor_shape_map)
+    {
+      auto ind = tensor_shape.first;
+      auto &shape = tensor_shape.second;
+      nnfw_tensorinfo ti;
+      // to fill dtype
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, ind, &ti));
+
+      ti.rank = shape.size();
+      for (int i = 0; i < ti.rank; i++)
+        ti.dims[i] = shape.at(i);
+      NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, ind, &ti));
+    }
+  };
+
   verifyInputTypes();
   verifyOutputTypes();
+
+  // set input shape before compilation
+  setTensorInfo(args.getComillationShapeMap());
 
   // prepare execution
 
@@ -148,6 +167,9 @@ int main(const int argc, char **argv)
   phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
     NNPR_ENSURE_STATUS(nnfw_prepare(session));
   });
+
+  // set input shape after compilation and before execution
+  setTensorInfo(args.getExecShapeMap());
 
   // prepare input
   std::vector<Allocation> inputs(num_inputs);
