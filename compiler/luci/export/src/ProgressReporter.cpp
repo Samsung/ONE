@@ -49,36 +49,36 @@ namespace luci
 
 void ProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PhaseBegin> *)
 {
-  LOGGER(prime);
+  LOGGER(l);
 
-  INFO(prime) << "==============================================================";
-  INFO(prime) << "luci::PhaseRunner<" << to_str(strategy()) << ">";
-  INFO(prime) << "Initial graph";
-  INFO(prime) << fmt(graph());
+  VERBOSE(l, 4) << "==============================================================";
+  VERBOSE(l, 4) << "luci::PhaseRunner<" << to_str(strategy()) << ">";
+  VERBOSE(l, 4) << "Initial graph";
+  VERBOSE(l, 4) << fmt(graph());
 }
 
 void ProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PhaseEnd> *)
 {
-  LOGGER(prime);
+  LOGGER(l);
 
-  INFO(prime) << "luci::PhaseRunner<" << to_str(strategy()) << "> - done";
+  VERBOSE(l, 4) << "luci::PhaseRunner<" << to_str(strategy()) << "> - done";
 }
 
 void ProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PassBegin> *info)
 {
-  LOGGER(prime);
+  LOGGER(l);
 
-  INFO(prime) << "--------------------------------------------------------------";
-  INFO(prime) << "Before " << logo::pass_name(info->pass());
+  VERBOSE(l, 4) << "--------------------------------------------------------------";
+  VERBOSE(l, 4) << "Before " << logo::pass_name(info->pass());
 }
 
 void ProgressReporter::notify(const logo::PhaseEventInfo<logo::PhaseEvent::PassEnd> *info)
 {
-  LOGGER(prime);
+  LOGGER(l);
 
-  INFO(prime) << "After " << logo::pass_name(info->pass())
-              << " (changed: " << to_char(info->changed()) << ")";
-  INFO(prime) << fmt(graph());
+  VERBOSE(l, 4) << "After " << logo::pass_name(info->pass())
+                << " (changed: " << to_char(info->changed()) << ")";
+  VERBOSE(l, 4) << fmt(graph());
 }
 
 } // namespace luci
