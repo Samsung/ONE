@@ -8,7 +8,7 @@
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # set LOG enable to execute/test luci/logex codes
-export LUCI_LOG=1
+export LUCI_LOG=100
 
 WORKDIR="$1"; shift
 VERIFY_BINARY_PATH="$1"; shift
