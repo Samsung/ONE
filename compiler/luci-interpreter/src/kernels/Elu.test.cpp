@@ -26,34 +26,26 @@ namespace
 
 using namespace testing;
 
-template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<T> input_data, std::initializer_list<T> output_data,
-           DataType element_type)
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  Tensor input_tensor{DataType::FLOAT32, input_shape, {}, ""};
+  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(float));
 
-  Tensor output_tensor = makeOutputTensor(element_type);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Elu kernel(&input_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<T>(output_tensor),
+  (void)output_shape;
+  EXPECT_THAT(extractTensorData<float>(output_tensor),
               ::testing::ElementsAreArray(ArrayFloatNear(output_data)));
 }
 
-template <typename T> class EluTest : public ::testing::Test
+TEST(EluTest, SimpleElu)
 {
-};
-
-using DataTypes = ::testing::Types<float>;
-TYPED_TEST_CASE(EluTest, DataTypes);
-
-TYPED_TEST(EluTest, SimpleElu)
-{
-  Check<TypeParam>(
+  Check(
       /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
       /*input_data=*/
       {
@@ -64,8 +56,7 @@ TYPED_TEST(EluTest, SimpleElu)
       {
           0.0, -0.997521, 2.0, -0.981684,   //
           3.0, -0.864665, 10.0, -0.0951626, //
-      },
-      getElementType<TypeParam>());
+      });
 }
 
 } // namespace
