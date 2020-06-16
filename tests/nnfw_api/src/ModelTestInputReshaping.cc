@@ -19,6 +19,7 @@
 
 #include "fixtures.h"
 #include "NNPackages.h"
+#include "common.h"
 
 using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>;
 
@@ -44,7 +45,7 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 
   /*
   testing sequence and what's been done:
-    1. nnfw_apply_tensorinfo : set input shape to different shape
+    1. nnfw_apply_tensorinfo : set input shape to different shape (static inference)
     2. nnfw_prepare
     3. nnfw_set_input
     4. nnfw_run
@@ -63,6 +64,10 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
   res = nnfw_prepare(_session);
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
+  nnfw_tensorinfo ti_output; // Static inference result will be stored
+  nnfw_output_tensorinfo(_session, 0, &ti_output);
+  ASSERT_TRUE(tensorInfoEqual(ti, ti_output));
+
   res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
                        sizeof(float) * input1.size());
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
@@ -70,10 +75,11 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
                        sizeof(float) * input2.size());
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
-  // TODO fix output setting in dynamic way
-  std::vector<float> actual_output(expected.size());
+  uint64_t output_num_elements = tensorInfoNumElements(ti_output);
+  ASSERT_EQ(output_num_elements, expected.size());
+  std::vector<float> actual_output(output_num_elements);
   res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                        sizeof(float) * expected.size());
+                        sizeof(float) * actual_output.size());
   ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
 
   // Do inference
