@@ -255,6 +255,8 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
       return ir::DataType::QUANT_UINT8_ASYMM;
     case TensorType::TensorType_INT8:
       return ir::DataType::QUANT_INT8_SYMM;
+    case TensorType::TensorType_INT64:
+      return ir::DataType::INT64;
     default:
       throw std::runtime_error(
           std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
@@ -1611,8 +1613,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
 
   if (!axisOperand.isConstant())
     throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
-  if (!(axisOperand.operandSize() == 4 && axisOperand.typeInfo().type() == ir::DataType::INT32))
-    throw std::runtime_error("ArgMax: `axis` with an int32 element is only supported.");
+  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
+                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
+    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
 
   ir::operation::ArgMax::Param param;
   param.axis = axisOperand.template asVector<int>()[0];

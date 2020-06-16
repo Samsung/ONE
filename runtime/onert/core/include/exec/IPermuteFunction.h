@@ -82,6 +82,9 @@ public:
           case ir::DataType::QUANT_INT8_SYMM:
             permute<int8_t>(src_tensor, dst_tensor, rank);
             break;
+          case ir::DataType::INT64:
+            permute<int64_t>(src_tensor, dst_tensor, rank);
+            break;
           default:
             throw std::runtime_error("IPermuteFunction: Not supported data type");
             break;
