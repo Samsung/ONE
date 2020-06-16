@@ -27,7 +27,10 @@ namespace luci_interpreter
 namespace kernels
 {
 
-L2Normalize::L2Normalize(const Tensor *input, Tensor *output) : _input(input), _output(output) {}
+L2Normalize::L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params)
+    : KernelWithParams<L2NormParams>(params), _input(input), _output(output)
+{
+}
 
 void L2Normalize::configure()
 {
@@ -39,11 +42,8 @@ void L2Normalize::configure()
     assert(_output->scale() == (1. / 128.));
     assert(_output->zero_point() == 128);
   }
-  int dims = _input->shape().num_dims();
-  Shape output_shape(dims);
-  for (int i = 0; i < dims; i++)
-    output_shape.dim(i) = _input->shape().dim(i);
-  _output->resize(output_shape);
+  assert(params().activation == Activation::NONE);
+  _output->resize(_input->shape());
 }
 
 void L2Normalize::execute() const
