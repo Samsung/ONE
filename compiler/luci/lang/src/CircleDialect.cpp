@@ -18,6 +18,8 @@
 #include "luci/IR/Nodes/CircleInput.h"
 #include "luci/IR/Nodes/CircleOutput.h"
 
+#include "luci/IR/CircleNodeVisitor.h"
+
 #include <loco/IR/Graph.h>
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
@@ -68,6 +70,18 @@ struct GoiQueryServiceImpl final : public loco::GraphOutputIndexQueryService
   }
 };
 
+struct VirtualOutputDetector final : public luci::CircleNodeMutableVisitor<bool>
+{
+  bool visit(luci::CircleIfOut *) final { return true; }
+  bool visit(luci::CircleSplitOut *) final { return true; }
+  bool visit(luci::CircleSplitVOut *) final { return true; }
+  bool visit(luci::CircleTopKV2Out *) final { return true; }
+  bool visit(luci::CircleUnpackOut *) final { return true; }
+  bool visit(luci::CircleWhileOut *) final { return true; }
+
+  bool visit(luci::CircleNode *) final { return false; }
+};
+
 struct DeadNodeQueryServiceImpl final : public logo::DeadNodeQueryService
 {
   bool isDeadNode(loco::Node *node) final
@@ -87,6 +101,23 @@ struct DeadNodeQueryServiceImpl final : public logo::DeadNodeQueryService
       return false;
     if (output_nodes.find(node) != output_nodes.end())
       return false;
+
+    // if node is one of virtual mulitple outputs, we need to ask the real node
+    if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+    {
+      VirtualOutputDetector d;
+      if (circle_node->accept(&d))
+      {
+        assert(node->arity() == 1);
+        loco::Node *real_node = node->arg(0);
+        if (active_nodes.find(real_node) != active_nodes.end())
+          return false;
+        if (input_nodes.find(real_node) != input_nodes.end())
+          return false;
+        if (output_nodes.find(real_node) != output_nodes.end())
+          return false;
+      }
+    }
 
     return true;
   }
