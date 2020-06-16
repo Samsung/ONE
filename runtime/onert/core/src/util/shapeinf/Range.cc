@@ -67,7 +67,7 @@ void StaticInferer::visit(const ir::operation::Range &op)
       new_shape = inferRangeShape<int32_t>(
           start_op.asScalar<int32_t>(), limit_op.asScalar<int32_t>(), delta_op.asScalar<int32_t>());
     }
-    output.info().shape(new_shape);
+    assert(output.shape() == new_shape);
   }
   else
   {
