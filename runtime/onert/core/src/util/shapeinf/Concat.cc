@@ -142,7 +142,7 @@ void DynamicInferer::visit(const ir::operation::Concat &op)
   for (auto input_ind : op.getInputs())
   {
     auto input = _tensor_registry->getITensor(input_ind);
-    ir::Shape shape = getShape(input.get());
+    ir::Shape shape = input->getShape();
 
     in_shapes.emplace_back(shape);
   }

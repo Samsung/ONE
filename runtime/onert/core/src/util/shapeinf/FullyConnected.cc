@@ -70,8 +70,8 @@ void DynamicInferer::visit(const ir::operation::FullyConnected &op)
   if (!input->is_dynamic() && !ker->is_dynamic())
     return;
 
-  auto input_shape = getShape(input.get());
-  auto ker_shape = getShape(ker.get());
+  auto input_shape = input->getShape();
+  auto ker_shape = ker->getShape();
 
   ir::Shape new_shape = inferFullyConnectedShape(input_shape, ker_shape);
 

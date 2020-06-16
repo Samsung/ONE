@@ -102,7 +102,7 @@ void DynamicInferer::visit(const ir::operation::ExpandDims &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  ir::Shape input_shape = getShape(input.get());
+  ir::Shape input_shape = input->getShape();
 
   auto axis_ind = op.getInputs().at(ir::operation::ExpandDims::AXIS);
   auto axis = _tensor_registry->getITensor(axis_ind);

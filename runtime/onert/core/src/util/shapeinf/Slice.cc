@@ -116,7 +116,7 @@ void DynamicInferer::visit(const ir::operation::Slice &op)
     return;
   }
 
-  ir::Shape input_shape = getShape(input.get());
+  ir::Shape input_shape = input->getShape();
   auto begins_buf = reinterpret_cast<const int32_t *>(begins->buffer());
   auto sizes_buf = reinterpret_cast<const int32_t *>(sizes->buffer());
   const auto rank = input_shape.rank();

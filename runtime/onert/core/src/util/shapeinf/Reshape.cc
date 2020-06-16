@@ -152,10 +152,10 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   assert(new_shape->num_dimensions() == 1);
   const auto new_rank = new_shape->dimension(0);
 
-  auto output_shape = convertShape(new_shape_buf, new_rank, getShape(input.get()).num_elements());
+  auto output_shape = convertShape(new_shape_buf, new_rank, input->getShape().num_elements());
 
   // if shape is changed, change output shape and reallocate output tensor memory
-  if (output_shape != getShape(output.get()) || output->buffer() == nullptr)
+  if (output_shape != output->getShape() || output->buffer() == nullptr)
   {
     // change on output shape
     _dynamic_tensor_manager->applyShape(output_ind, output_shape);

@@ -105,7 +105,7 @@ void DynamicInferer::visit(const ir::operation::Squeeze &op)
     return;
   }
 
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   // Squeeze output shpae
   ir::Shape new_shape = inferSqueezeShape(input_shape, op.param());

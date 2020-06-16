@@ -47,7 +47,7 @@ void DynamicInferer::visit(const ir::operation::Permute &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   auto input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = getShape(input.get());
+  auto input_shape = input->getShape();
 
   // check if input is not dynamic
   if (!input->is_dynamic())

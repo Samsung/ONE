@@ -25,6 +25,7 @@
 #include "ir/Layout.h"
 #include "ir/Shape.h"
 #include "ir/Coordinates.h"
+#include "util/Utils.h"
 
 namespace onert
 {
@@ -62,30 +63,22 @@ public:
     throw std::runtime_error("This backend does not support dynamic tensor");
   }
 
-  // set dim when this tensor is dynamic
-  virtual void dimension(size_t /* index */, size_t /* dim */)
+  /**
+   * @brief Set the shape of tenser to new_shape
+   * @note  Higer dimension will be placed on front.
+   */
+  virtual void setShape(const ir::Shape &new_shape)
   {
-    throw std::runtime_error("This backend does not support dynamic tensor");
+    UNUSED_RELEASE(new_shape);
+    throw std::runtime_error("This backend does not support dynamic setShape");
   }
 
-  // set the rank when this tensor is dynamic.
-  virtual void num_dimensions(size_t /*rank*/)
-  {
-    throw std::runtime_error("This backend does not support dynamic tensor");
-  }
+  /**
+   * @brief Get ir::Shape of tensor
+   * @note  Higer dimension will be placed on front.
+   */
+  virtual ir::Shape getShape() const;
 };
-
-/**
- * @brief Set the shape of tenser to new_shape
- * @note  Higer dimension will be placed on front.
- */
-void setShape(ITensor *tensor, const ir::Shape &new_shape);
-
-/**
- * @brief Get ir::Shape of tensor
- * @note  Higer dimension will be placed on front.
- */
-ir::Shape getShape(const ITensor *tensor);
 
 } // namespace backend
 } // namespace onert
