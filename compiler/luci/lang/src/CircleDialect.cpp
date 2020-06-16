@@ -18,6 +18,8 @@
 #include "luci/IR/Nodes/CircleInput.h"
 #include "luci/IR/Nodes/CircleOutput.h"
 
+#include "luci/IR/CircleNodeVisitor.h"
+
 #include <loco/IR/Graph.h>
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
