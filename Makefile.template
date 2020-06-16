@@ -49,11 +49,6 @@ ifeq ($(BENCHMARK_ACL_BUILD),1)
 	OPTIONS+= -DBUILD_BENCHMARK_ACL=1
 endif
 
-ifneq ($(EXT_ACL_FOLDER),)
-	OPTIONS+= -DBUILD_ARMCOMPUTE=OFF
-	OPTIONS+= -DARMCompute_EXTDIR=$(EXT_ACL_FOLDER)
-endif
-
 ifneq ($(EXT_HDF5_DIR),)
   $(info Hello $(EXT_HDF5_DIR))
 	OPTIONS+= -DEXT_HDF5_DIR=$(EXT_HDF5_DIR)
@@ -130,6 +125,13 @@ distclean:
 ### Command (internal)
 ###
 configure_internal:
+# TODO Remove setting EXT_ACL_FOLDER
+#      Construct overlay folder directly outside (with headers?)
+ifneq ($(EXT_ACL_FOLDER),)
+	mkdir -p $(OVERLAY_FOLDER)/lib
+	cp $(EXT_ACL_FOLDER)/* $(OVERLAY_FOLDER)/lib
+endif
+
 	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
