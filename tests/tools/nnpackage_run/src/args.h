@@ -18,12 +18,16 @@
 #define __NNPACKAGE_RUN_ARGS_H__
 
 #include <string>
+#include <map>
+#include <vector>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
 namespace nnpkg_run
 {
+
+using TensorShapeMap = std::map<int, std::vector<int>>;
 
 class Args
 {
@@ -40,6 +44,8 @@ public:
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
   const bool printVersion(void) const { return _print_version; }
+  const TensorShapeMap &getComillationShapeMap() { return _shape_compile; }
+  const TensorShapeMap &getExecShapeMap() { return _shape_exec; }
 
 private:
   void Initialize();
@@ -52,6 +58,8 @@ private:
   std::string _package_filename;
   std::string _dump_filename;
   std::string _load_filename;
+  TensorShapeMap _shape_compile;
+  TensorShapeMap _shape_exec;
   int _num_runs;
   int _warmup_runs;
   bool _gpumem_poll;

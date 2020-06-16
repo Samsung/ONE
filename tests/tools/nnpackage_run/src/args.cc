@@ -16,10 +16,45 @@
 
 #include "args.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>
 #include <iostream>
 
 namespace nnpkg_run
 {
+
+// param shape_str is a form of, e.g., "[1, [2, 3], 3, []"
+void setShape(TensorShapeMap &shape_map, const std::string &shape_str)
+{
+  using boost::property_tree::ptree;
+  std::stringstream ss(shape_str);
+
+  ptree pt;
+  read_json(ss, pt);
+
+  int i = 0;
+  int tensor_ind = -1;
+  for (auto &item : pt.get_child(""))
+  {
+    if (i % 2 == 0)
+    {
+      tensor_ind = item.second.get_value<int>();
+    }
+    else
+    {
+      auto shape_pt = item.second;
+      std::vector<int> shape_v;
+
+      for (auto &dim : shape_pt.get_child(""))
+      {
+        shape_v.emplace_back(dim.second.get_value<int>());
+      }
+      shape_map[tensor_ind] = shape_v;
+    }
+    i++;
+  }
+}
 
 Args::Args(const int argc, char **argv) noexcept
 {
@@ -48,6 +83,13 @@ void Args::Initialize(void)
          "{exec}-{nnpkg}-{backend}.csv will be generated.\n"
          "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
          "{nnpkg} name may be changed to realpath if you use symbolic-link.")
+    ("shape_compile", po::value<std::string>()->default_value("[]"),
+         "set shape of specified tensor before compilation\n"
+         "e.g. '[0, [1, 2], 2, []]' to set 0th tensor to [1, 2] and 2nd tensor to [].\n")
+    ("shape_exec", po::value<std::string>()->default_value("[]"),
+         "set shape of specified tensor right before execution\n"
+         "e.g. '[1, [1, 2]]` to set 1st tensor to [1, 2].\n")
+
     ;
   // clang-format on
 
@@ -143,6 +185,34 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("write_report"))
   {
     _write_report = vm["write_report"].as<bool>();
+  }
+
+  if (vm.count("shape_compile"))
+  {
+    auto shape_str = vm["shape_compile"].as<std::string>();
+    try
+    {
+      setShape(_shape_compile, shape_str);
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "error with '--shape_compile' option: " << shape_str << std::endl;
+      exit(1);
+    }
+  }
+
+  if (vm.count("shape_exec"))
+  {
+    auto shape_str = vm["shape_exec"].as<std::string>();
+    try
+    {
+      setShape(_shape_exec, shape_str);
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "error with '--shape_exec' option: " << shape_str << std::endl;
+      exit(1);
+    }
   }
 }
 
