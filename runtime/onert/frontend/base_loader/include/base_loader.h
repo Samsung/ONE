@@ -1929,6 +1929,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadLogicalNot(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
+      loadLogicalOr(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_FILL:
       loadFill(op, subg);
       return;
