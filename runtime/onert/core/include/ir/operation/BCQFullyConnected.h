@@ -37,7 +37,8 @@ public:
     INPUT = 0,
     WEIGHTS_SCALES,
     WEIGHTS_BINARY,
-    BIAS
+    BIAS,
+    WEIGHTS_CLUSTERS,
   };
 
   struct Param
