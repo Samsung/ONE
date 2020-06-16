@@ -36,31 +36,21 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
     // begin is zero-based
     auto begin = begins[idx];
     if (begin < 0)
-    {
-      begin += rank;
-    }
-    if (begin >= input_dim)
-    {
-      begin = input_dim - 1;
-    }
+      throw std::runtime_error("shape inference Slice: Invalid begin.");
 
     // size is one-based
     auto size = sizes[idx];
-    assert(size >= -1);
+    if (size < -1)
+      throw std::runtime_error("shape inference Slice: Invalid size.");
+
     if (size == -1)
     {
       size = input_dim - begin;
     }
-    // We are not sure what shape's dimension value is 0
-    else if (size == 0)
+    else
     {
-      size = 1;
-    }
-
-    // Clamping
-    if (begin + size > input_dim)
-    {
-      size = input_dim - begin;
+      if (input_dim < begin + size)
+        throw std::runtime_error("shape inference Slice: Invalid begin and size.");
     }
     out_shape.dim(idx) = size;
   }
