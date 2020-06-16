@@ -255,8 +255,16 @@ void ExecutorBase::execute(const IODescription &desc)
     output.info.shape(
         convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
 
+    size_t sink_length =
+        output.info.shape().num_elements() * ir::sizeOfDataType(output.info.typeInfo().type());
+    assert(sink_length ==
+           _output_tensors[n]->getShape().num_elements() *
+               ir::sizeOfDataType(_output_tensors[n]->data_type()));
+    if (output.size < sink_length)
+      throw std::runtime_error("ExecutorBase: output buffer size is less than output tensor size");
+
     sinks.at(n) =
-        sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
+        sink(output_index, output.info.typeInfo(), output.buffer, sink_length, output.layout);
 
     auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
 
