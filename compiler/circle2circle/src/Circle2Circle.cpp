@@ -87,7 +87,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBCQ);
     return 0;
   };
-  argparse["--fuse__new_bcq"] = [&options](const char **) {
+  argparse["--fuse_new_bcq"] = [&options](const char **) {
     options->enable(Algorithms::FuseNewBCQ);
     return 0;
   };

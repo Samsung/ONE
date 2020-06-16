@@ -26,7 +26,7 @@ namespace luci
  * @brief  Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather
  *
  */
-struct FuseBCQPass final : public logo::Pass
+struct FuseNewBCQPass final : public logo::Pass
 {
   const char *name(void) const final { return "luci::FuseNewBCQPass"; }
 
@@ -35,4 +35,4 @@ struct FuseBCQPass final : public logo::Pass
 
 } // namespace luci
 
-#endif // __LUCI_FUSE_BCQ_PASS_H__
+#endif // __LUCI_FUSE_NEWBCQ_PASS_H__

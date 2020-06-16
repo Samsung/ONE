@@ -121,6 +121,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
+  if (_options->query(Options::Algorithm::FuseNewBCQ))
+  {
+    phase.emplace_back(std::make_unique<FuseNewBCQPass>());
+  }
 
   // Shape inference is needed for added nodes doing above transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());

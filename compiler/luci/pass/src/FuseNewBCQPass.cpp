@@ -129,6 +129,8 @@ public:
       _size_of_clusters[prefix] = node;
     else if (node_name.find("bcqinfo_qbits_of_clusters") != std::string::npos)
       _qbits_of_clusters[prefix] = node;
+    else if (node_name.find("bcqinfo_dequant_weight") != std::string::npos)
+      _dequant_weight[prefix] = node;
   }
 
   bool has_BCQ_info(luci::CircleConst *node)
@@ -164,15 +166,45 @@ public:
     return _packed_binary_code[prefix];
   }
 
-  luci::CircleConst *get_clusters(luci::CircleConst *node)
+  luci::CircleConst *get_number_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _number_of_clusters[prefix];
+  }
+
+  luci::CircleConst *get_size_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _size_of_clusters[prefix];
+  }
+
+  luci::CircleConst *get_qbits_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _qbits_of_clusters[prefix];
+  }
+
+  luci::CircleConst *packed_clusters(luci::CircleConst *node)
   {
     auto graph = node->graph();
-    auto clusters = graph->nodes()->create<luci::CircleConst>();
-    clusters->rank(2);
+    auto qbits_of_clusters = get_qbits_of_clusters(node);
+    auto size_of_clusters = get_size_of_clusters(node);
+    const auto number_of_clusters = get_number_of_clusters(node)->at<loco::DataType::S32>(0);
 
-    // SHOULD IMPLEMENT THIS!!!!!!!!
+    auto packed_clusters = graph->nodes()->create<luci::CircleConst>();
+    packed_clusters->dtype(loco::DataType::S32);
+    packed_clusters->size<loco::DataType::S32>(number_of_clusters * 2);
+    packed_clusters->rank(2);
+    packed_clusters->dim(0) = number_of_clusters;
+    packed_clusters->dim(1) = 2;
+
+    for(int i=0;i<number_of_clusters;++i)
+    {
+      packed_clusters->at<loco::DataType::S32>(i*2) = qbits_of_clusters->at<loco::DataType::S32>(i);
+      packed_clusters->at<loco::DataType::S32>(i*2+1) = size_of_clusters->at<loco::DataType::S32>(i);
+    }
     
-    return clusters;
+    return packed_clusters;
   }
 
   /**
@@ -242,10 +274,17 @@ public:
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
+
+    for (auto &n : _dequant_weight)
+    {
+      auto node = n.second;
+      loco::replace(node).with(createNoOp(node));
+    }
   }
 
   bool is_valid_BCQ(luci::CircleConst *)
   {
+    // IMPLEMENT THIS!!!!!!!!!!!!!!!
     return true;
   }
 
@@ -256,6 +295,7 @@ private:
   std::map<std::string, luci::CircleConst *> _number_of_clusters;
   std::map<std::string, luci::CircleConst *> _size_of_clusters;
   std::map<std::string, luci::CircleConst *> _qbits_of_clusters;
+  std::map<std::string, luci::CircleConst *> _dequant_weight;
 };
 
 } // namespace
@@ -263,7 +303,7 @@ private:
 namespace luci
 {
 
-bool FuseBCQPass::run(loco::Graph *g)
+bool FuseNewBCQPass::run(loco::Graph *g)
 {
   BCQConverter converter;
 
@@ -290,10 +330,10 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_gather->input_scales(converter.get_alpha(params));
         bcq_gather->input_binary(converter.get_packed_binary_code(params));
         bcq_gather->indices(gather->indices());
-        //bcq_gather->input_clusters
+        bcq_gather->input_clusters(converter.packed_clusters(params));
 
         const auto binary_hidden_size =
-            dynamic_cast<luci::CircleConst *>(bcq_gather->input_scales())->dim(1).value();
+            dynamic_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(0).value() * 32;
         bcq_gather->input_hidden_size(binary_hidden_size);
 
         if(converter.do_w_x(params))
@@ -323,10 +363,10 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_fc->weights_scales(converter.get_alpha(weights));
         bcq_fc->weights_binary(converter.get_packed_binary_code(weights));
         bcq_fc->bias(fully_connected->bias());
-        //bcq_fc->weights_clusters
+        bcq_fc->weights_clusters(converter.packed_clusters(weights));
 
         const auto binary_hidden_size =
-            dynamic_cast<luci::CircleConst *>(bcq_fc->weights_scales())->dim(1).value();
+            dynamic_cast<luci::CircleConst *>(bcq_fc->weights_binary())->dim(1).value() * 32;
         bcq_fc->weights_hidden_size(binary_hidden_size);
         bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
 
@@ -338,9 +378,12 @@ bool FuseBCQPass::run(loco::Graph *g)
         else
         {
           auto perm = g->nodes()->create<luci::CircleConst>();
-          perm->rank(2);
-          perm->dim(0)=1;
-          perm->dim(1)=0;
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
 
           auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
           input_transpose->a(fully_connected->input());
@@ -349,7 +392,7 @@ bool FuseBCQPass::run(loco::Graph *g)
           bcq_fc->input(input_transpose);
 
           auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
-          output_transpose->a(fully_connected->input());
+          output_transpose->a(bcq_fc);
           output_transpose->perm(perm);
 
           loco::replace(fully_connected).with(output_transpose);
