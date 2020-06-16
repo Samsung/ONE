@@ -32,8 +32,10 @@ public:
   void print(void);
 
   const std::string &getPackageFilename(void) const { return _package_filename; }
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
   const std::string &getLoadFilename(void) const { return _load_filename; }
+#endif
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
@@ -50,8 +52,10 @@ private:
   po::options_description _options;
 
   std::string _package_filename;
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;
   std::string _load_filename;
+#endif
   int _num_runs;
   int _warmup_runs;
   bool _gpumem_poll;

@@ -17,7 +17,9 @@
 #include "allocation.h"
 #include "args.h"
 #include "benchmark.h"
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 #include "h5formatter.h"
+#endif
 #include "tflite/Diff.h"
 #include "nnfw.h"
 #include "nnfw_util.h"
@@ -186,10 +188,14 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   };
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   if (!args.getLoadFilename().empty())
     H5Formatter(session).loadInputs(args.getLoadFilename(), inputs);
   else
     generateInputs();
+#else
+  generateInputs();
+#endif
 
   // prepare output
 
@@ -230,9 +236,11 @@ int main(const int argc, char **argv)
              },
              args.getNumRuns(), true);
 
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   // dump output tensors
   if (!args.getDumpFilename().empty())
     H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
+#endif
 
   NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
