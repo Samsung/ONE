@@ -200,7 +200,10 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node
   const Tensor *input = getInputTensor(node->x());
   Tensor *output = getOutputTensor(node);
 
-  return std::make_unique<kernels::L2Normalize>(input, output);
+  L2NormParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::L2Normalize>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
