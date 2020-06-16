@@ -2235,9 +2235,9 @@ bool CircleShapeInferenceRule::infer(const loco::Node *node, loco::NodeShape &sh
       shape = circle_node->accept(&alg);
   }
 
-  INFO(l) << ">> Node: " << circle_node->name();
-  INFO(l) << "        own_shape: " << own_shape(circle_node)
-          << "         -> infer: " << shape.as<loco::TensorShape>();
+  VERBOSE(l, 1) << "[luci] shape: " << circle_node->name();
+  VERBOSE(l, 1) << "              own_shape: " << own_shape(circle_node)
+                << " -> infer: " << shape.as<loco::TensorShape>();
 
   return true;
 }
