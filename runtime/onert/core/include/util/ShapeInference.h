@@ -155,6 +155,7 @@ private:
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::ReduceAll &op);
+  void visit(const ir::operation::ReduceMin &op);
   void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);
@@ -250,6 +251,7 @@ public:
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
   void visit(const ir::operation::ReduceAll &op);
+  void visit(const ir::operation::ReduceMin &op);
   void visit(const ir::operation::ReduceProd &op);
   void visit(const ir::operation::ReduceSum &op);
   void visit(const ir::operation::Reshape &op);

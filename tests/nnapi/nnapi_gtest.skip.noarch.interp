@@ -346,6 +346,7 @@ GeneratedTests.reduce_min
 GeneratedTests.reduce_min_2
 GeneratedTests.reduce_min_3
 GeneratedTests.reduce_min_4
+GeneratedTests.reduce_min_dynamic_nnfw
 GeneratedTests.reduce_min_float_1_nnfw
 GeneratedTests.reduce_min_float_2_nnfw
 GeneratedTests.reduce_min_float_nnfw
