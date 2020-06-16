@@ -267,7 +267,7 @@ template <typename LoaderDomain, typename SpecificLoader>
 ir::OperandIndex
 BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
-  return tensorIdx == -1 ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
+  return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
