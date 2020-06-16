@@ -74,16 +74,25 @@ void copy_shape_dtype(loco::Graph *graph)
     CopySelector cs;
     if (node->accept(&cs))
     {
-      assert(loco::shape_known(node));
-      assert(loco::dtype_known(node));
+      // NOTE not all nodes have infered shape/dtype: multiple outs may not be
+      //      visited when outputs are not used
+      // TODO fix shape inference traversal
+      // NOTE when loco supports multiple outputs in nature this issue should be
+      //      resolved also
 
-      node->dtype(loco::dtype_get(node));
-
-      auto shape = loco::shape_get(node).as<loco::TensorShape>();
-      node->rank(shape.rank());
-      for (uint32_t r = 0; r < shape.rank(); ++r)
+      if (loco::dtype_known(node))
       {
-        node->dim(r) = loco::Dimension(shape.dim(r).value());
+        node->dtype(loco::dtype_get(node));
+      }
+
+      if (loco::shape_known(node))
+      {
+        auto shape = loco::shape_get(node).as<loco::TensorShape>();
+        node->rank(shape.rank());
+        for (uint32_t r = 0; r < shape.rank(); ++r)
+        {
+          node->dim(r) = loco::Dimension(shape.dim(r).value());
+        }
       }
     }
   }
