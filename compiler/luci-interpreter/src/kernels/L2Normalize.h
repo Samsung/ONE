@@ -25,10 +25,10 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class L2Normalize : public Kernel
+class L2Normalize : public KernelWithParams<L2NormParams>
 {
 public:
-  L2Normalize(const Tensor *input, Tensor *output);
+  L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params);
 
   void configure() override;
   void execute() const override;

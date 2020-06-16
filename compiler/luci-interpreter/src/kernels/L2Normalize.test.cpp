@@ -33,7 +33,10 @@ TEST(L2NormalizeTest, Float)
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
-  L2Normalize kernel(&input_tensor, &output_tensor);
+  L2NormParams params{};
+  params.activation = Activation::NONE;
+
+  L2Normalize kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
