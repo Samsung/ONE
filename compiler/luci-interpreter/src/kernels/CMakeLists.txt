@@ -27,6 +27,8 @@ set(SOURCES
     Elu.cpp
     FullyConnected.h
     FullyConnected.cpp
+    If.h
+    If.cpp
     L2Normalize.h
     L2Normalize.cpp
     L2Pool2D.h
