@@ -1291,6 +1291,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQFullyConnected *node
   s.args().append("weights_scales", tbl()->lookup(node->weights_scales()));
   s.args().append("weights_binary", tbl()->lookup(node->weights_binary()));
   s.args().append("bias", tbl()->lookup(node->bias()));
+  s.args().append("weights_clusters", tbl()->lookup(node->weights_clusters()));
 
   s.args().append("fused", to_str(node->fusedActivationFunction()));
   s.args().append("weights_hidden_size", pepper::str(node->weights_hidden_size()));
@@ -1306,6 +1307,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQGather *node,
   s.args().append("input_scales", tbl()->lookup(node->input_scales()));
   s.args().append("input_binary", tbl()->lookup(node->input_binary()));
   s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("input_clusters", tbl()->lookup(node->input_clusters()));
 
   s.args().append("axis", pepper::str(node->axis()));
   s.args().append("input_hidden_size", pepper::str(node->input_hidden_size()));
