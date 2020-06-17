@@ -61,7 +61,7 @@ void L2Normalize::execute() const
   }
 }
 
-void L2Normalize::evalFloat() const
+inline void L2Normalize::evalFloat() const
 {
   tflite::L2NormalizationParams op_params{};
   op_params.input_zero_point = 0;
@@ -70,7 +70,7 @@ void L2Normalize::evalFloat() const
                                          getTensorData<float>(_output));
 }
 
-void L2Normalize::evalQuantized() const
+inline void L2Normalize::evalQuantized() const
 {
   tflite::L2NormalizationParams op_params{};
   op_params.input_zero_point = _input->zero_point();
