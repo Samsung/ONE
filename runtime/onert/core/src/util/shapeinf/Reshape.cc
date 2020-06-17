@@ -91,8 +91,7 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
     const auto *shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
     assert(shape_buf);
 
-    assert(shape.shape().rank() == 1);
-    new_shape = convertShape(shape_buf, shape.shape().dim(0), input.shape().num_elements());
+    new_shape = convertShape(shape_buf, shape.shape().num_elements(), input.shape().num_elements());
 
     // if shape is from Const, TFLC put the shape of output into tensor
     if (new_shape != output.shape())
@@ -149,10 +148,8 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   int32_t *new_shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
   assert(new_shape_buf);
 
-  assert(new_shape->num_dimensions() == 1);
-  const auto new_rank = new_shape->dimension(0);
-
-  auto output_shape = convertShape(new_shape_buf, new_rank, input->getShape().num_elements());
+  auto output_shape = convertShape(new_shape_buf, new_shape->getShape().num_elements(),
+                                   input->getShape().num_elements());
 
   // if shape is changed, change output shape and reallocate output tensor memory
   if (output_shape != output->getShape() || output->buffer() == nullptr)
