@@ -256,6 +256,7 @@ private:
   IMPLEMENT(luci::CircleReshape)
   IMPLEMENT(luci::CircleResizeBilinear)
   IMPLEMENT(luci::CircleResizeNearestNeighbor)
+  IMPLEMENT(luci::CircleRound)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleScatterNd)
   IMPLEMENT(luci::CircleSelect)
@@ -934,6 +935,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeNearestNeighbor *
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("size", tbl()->lookup(node->size()));
   s.args().append("align_corners", node->align_corners() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleRound *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
