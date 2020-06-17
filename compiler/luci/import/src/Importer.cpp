@@ -237,10 +237,10 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
   convert_graph(*source_ptr, reader, graph.get());
 
   LOGGER(l);
-  INFO(l) << "--- graph dump begin -------------------------------------------";
-  INFO(l) << "Name: " << graph->name();
-  INFO(l) << fmt(graph.get());
-  INFO(l) << "--- graph dump end ---------------------------------------------";
+  VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
+  VERBOSE(l, 3) << "Name: " << graph->name();
+  VERBOSE(l, 3) << fmt(graph.get());
+  VERBOSE(l, 3) << "--- graph dump end ---------------------------------------------";
 
   assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
@@ -276,10 +276,10 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     convert_graph(*source_ptr, reader, graph.get());
 
     LOGGER(l);
-    INFO(l) << "--- graph dump begin -------------------------------------------";
-    INFO(l) << "Name: " << graph->name();
-    INFO(l) << fmt(graph.get());
-    INFO(l) << "--- graph dump end ---------------------------------------------";
+    VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
+    VERBOSE(l, 3) << "Name: " << graph->name();
+    VERBOSE(l, 3) << fmt(graph.get());
+    VERBOSE(l, 3) << "--- graph dump end ---------------------------------------------";
 
     assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
