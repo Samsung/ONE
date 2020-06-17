@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include <nnfw_debug.h>
 
+#include "common.h"
 #include "fixtures.h"
 #include "NNPackages.h"
 
@@ -396,6 +397,14 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
 {
   ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
 
+  nnfw_tensorinfo input0_ti_original;
+  {
+    input0_ti_original.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+    input0_ti_original.rank = 2;
+    input0_ti_original.dims[0] = 4;
+    input0_ti_original.dims[1] = 4;
+  }
+
   // input reshaping to [20, 50]
   nnfw_tensorinfo input0_ti;
   {
@@ -417,7 +426,21 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 
+  // input shape check
+  {
+    nnfw_tensorinfo ti = {};
+    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    ASSERT_TRUE(tensorInfoEqual(input0_ti_original, ti));
+  }
+
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
+
+  // input shape check
+  {
+    nnfw_tensorinfo ti = {};
+    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
+  }
 
   set_input_output(_session, input0, &actual_output);
 

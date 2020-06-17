@@ -139,6 +139,7 @@ public:
    */
   bool isFinished(void) const;
 
+  ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 
 private:
