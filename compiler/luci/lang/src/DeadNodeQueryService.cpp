@@ -52,8 +52,6 @@ bool DeadNodeQueryServiceImpl::isDeadNode(loco::Node *node)
   // input and output nodes are not dead node even if it is not active.
   if (input_nodes.find(node) != input_nodes.end())
     return false;
-  if (output_nodes.find(node) != output_nodes.end())
-    return false;
 
   // if node is one of virtual mulitple outputs, we need to ask the real node
   if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
@@ -66,8 +64,6 @@ bool DeadNodeQueryServiceImpl::isDeadNode(loco::Node *node)
       if (active_nodes.find(real_node) != active_nodes.end())
         return false;
       if (input_nodes.find(real_node) != input_nodes.end())
-        return false;
-      if (output_nodes.find(real_node) != output_nodes.end())
         return false;
     }
   }
