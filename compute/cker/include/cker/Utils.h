@@ -83,7 +83,6 @@ inline void QuantizeMultiplierSmallerThanOneExp(double double_multiplier,
   *left_shift = shift;
 }
 
-
 inline int32_t MultiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)
 {
   int left_shift = shift > 0 ? shift : 0;
@@ -103,10 +102,9 @@ inline int32_t MultiplyByQuantizedMultiplierSmallerThanOneExp(int32_t x,
                                                               int32_t quantized_multiplier,
                                                               int left_shift)
 {
-  return gemmlowp::RoundingDivideByPOT(gemmlowp::SaturatingRoundingDoublingHighMul(x, quantized_multiplier),
-                             -left_shift);
+  return gemmlowp::RoundingDivideByPOT(
+      gemmlowp::SaturatingRoundingDoublingHighMul(x, quantized_multiplier), -left_shift);
 }
-
 
 inline int NodeOffset(int b, int h, int w, int height, int width)
 {

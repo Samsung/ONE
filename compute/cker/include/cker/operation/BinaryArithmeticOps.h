@@ -206,9 +206,8 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   switch (params.type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::Add<uint8_t *>(params, input1_shape, const_cast<uint8_t *>(input1_data), 
-                                input2_shape, const_cast<uint8_t *>(input2_data), 
-                                output_shape, output_data);
+      optimized::AddQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
+                           const_cast<uint8_t *>(input2_data), output_shape, output_data);
       break;
 
     case nnfw::cker::BinaryArithmeticOpType::MUL:
@@ -232,9 +231,8 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   switch (params.type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::Add<float *>(params, input1_shape, const_cast<float *>(input1_data), 
-                              input2_shape, const_cast<float *>(input2_data), 
-                              output_shape, output_data);
+      optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                     output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
       optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
@@ -245,9 +243,9 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                      output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
-      reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape, input2_data,
-                                    output_shape, output_data,
-                                    GetBinaryArtithmeticFn<float>(params.type));
+      reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
+                                           input2_data, output_shape, output_data,
+                                           GetBinaryArtithmeticFn<float>(params.type));
       break;
     default:
       assert(false);
@@ -261,23 +259,28 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                         const T *input2_data, const Shape &output_shape,
                                         T *output_data)
 {
-  // Supported type is only float now
+  reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
+                                             input2_data, output_shape, output_data,
+                                             GetBinaryArtithmeticFn<T>(params.type));
+}
+
+template <>
+inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                        const uint8_t *input1_data, const Shape &input2_shape,
+                                        const uint8_t *input2_data, const Shape &output_shape,
+                                        uint8_t *output_data)
+{
   switch (params.type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::BroadcastAddDispatch<T>(params, input1_shape, input1_data, input2_shape, input2_data,
-                                      output_shape, output_data);
+      optimized::BroadcastAddDispatchQuant8(params, input1_shape, input1_data, input2_shape,
+                                            input2_data, output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
     case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
-      if ((params.quantized_activation_min == 0) && 
-          (params.quantized_activation_max == 255))
-      {
-        throw std::runtime_error{"Quant8 Asymm NYI"};
-      }
-      break;
+      throw std::runtime_error{"Quant8 Asymm NYI"};
     default:
       assert(false);
       break;
@@ -294,21 +297,20 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
   switch (params.type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::BroadcastAddDispatch<float>(params, input1_shape, input1_data, input2_shape, input2_data,
+      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::MUL:
-        optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
                                       output_shape, output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
-        reference::BroadcastBinaryArithmeticOpSlow<float>(params, 
-                                                      input1_shape, const_cast<float *>(input1_data), 
-                                                      input2_shape, const_cast<float *>(input2_data),
-                                                      output_shape, output_data,
-                                                      GetBinaryArtithmeticFn<float>(params.type));
+      reference::BroadcastBinaryArithmeticOpSlow<float>(
+          params, input1_shape, const_cast<float *>(input1_data), input2_shape,
+          const_cast<float *>(input2_data), output_shape, output_data,
+          GetBinaryArtithmeticFn<float>(params.type));
       break;
     default:
       assert(false);

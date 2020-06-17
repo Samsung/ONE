@@ -47,7 +47,7 @@ void AddLayer::addFloat32()
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp(
+  nnfw::cker::BinaryArithmeticOp<float>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
@@ -66,14 +66,14 @@ void AddLayer::addInt32()
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp(
+    nnfw::cker::BroadcastBinaryArithmeticOp<int32_t>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp(
+  nnfw::cker::BinaryArithmeticOp<int32_t>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
@@ -91,20 +91,21 @@ void AddLayer::addQuant8()
   // Parameters for scaled quantized computation
   op_params.left_shift = 20;
   // Zero-points of input and output tensors
-  op_params.input1_offset = _lhs->data_offset();
-  op_params.input2_offset = _rhs->data_offset();
-  op_params.output_offset = _rhs->data_offset();
-  assert((op_params.input1_offset >= 0)  && (op_params.input1_offset <= 255));
-  assert((op_params.input2_offset >= 0)  && (op_params.input2_offset <= 255));
-  assert((op_params.output_offset >= 0)  && (op_params.output_offset <= 255));
+  op_params.input1_offset = -_lhs->data_offset();
+  op_params.input2_offset = -_rhs->data_offset();
+  op_params.output_offset = _output->data_offset();
+  assert((op_params.input1_offset >= 0) && (op_params.input1_offset <= 255));
+  assert((op_params.input2_offset >= 0) && (op_params.input2_offset <= 255));
+  assert((op_params.output_offset >= 0) && (op_params.output_offset <= 255));
 
   // Compute normalized scale for _lhs and _rhs values,
   // and represent in 32-bit fixed point
-  const double norm_max_scale = 2*std::max(_lhs->data_scale(), _rhs->data_scale());
+  const double norm_max_scale = 2 * std::max(_lhs->data_scale(), _rhs->data_scale());
   const double real_lhs_scale = _lhs->data_scale() / norm_max_scale;
   const double real_rhs_scale = _rhs->data_scale() / norm_max_scale;
   // output scale is used to normalize final result, so we invert the scale here
-  const double real_output_scale = norm_max_scale / (_output->data_scale() * (1 << op_params.left_shift));
+  const double real_output_scale =
+      norm_max_scale / (_output->data_scale() * (1 << op_params.left_shift));
 
   // Represent the scales as fixed int32_t multipliers, and int32_t shifts
   QuantizeMultiplier(real_lhs_scale, &op_params.input1_multiplier, &op_params.input1_shift);
@@ -112,7 +113,6 @@ void AddLayer::addQuant8()
   QuantizeMultiplier(real_output_scale, &op_params.output_multiplier, &op_params.output_shift);
 
   // cker quant8 add is not implemented yet
-  // throw std::runtime_error{"NYI"};
   const bool need_broadcast =
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
@@ -124,7 +124,7 @@ void AddLayer::addQuant8()
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp(
+  nnfw::cker::BinaryArithmeticOp<uint8_t>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
