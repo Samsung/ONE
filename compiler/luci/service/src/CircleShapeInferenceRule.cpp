@@ -2198,7 +2198,17 @@ public:
     auto cond_graph_inputs = cond_graph->inputs();
     auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
 
-    return loco::NodeShape{*cond_graph_input->shape()};
+    auto cond_graph_input_shape = *cond_graph_input->shape();
+    auto this_shape = own_shape(node);
+
+    if (!(this_shape == cond_graph_input_shape))
+    {
+      LOGGER(l);
+      WARN(l) << "[luci] CircleWhileOut " << node->name() << " shape mispatch " << this_shape
+              << " vs " << cond_graph_input_shape;
+    }
+
+    return loco::NodeShape{this_shape};
   }
 };
 
