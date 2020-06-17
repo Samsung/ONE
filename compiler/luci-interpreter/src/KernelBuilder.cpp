@@ -25,7 +25,7 @@
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/LeakyRelu.h"
-#include "kernels/LocalResponseNormalize.h"
+#include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
@@ -217,7 +217,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNorm
   params.alpha = node->alpha();
   params.beta = node->beta();
 
-  return std::make_unique<kernels::LocalResponseNormalize>(input, output, params);
+  return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)

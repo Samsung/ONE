@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZE_H
-#define LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZE_H
+#ifndef LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZATION_H
+#define LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZATION_H
 
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
@@ -25,11 +25,11 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class LocalResponseNormalize : public KernelWithParams<LocalResponseNormalizationParams>
+class LocalResponseNormalization : public KernelWithParams<LocalResponseNormalizationParams>
 {
 public:
-  LocalResponseNormalize(const Tensor *input, Tensor *output,
-                         const LocalResponseNormalizationParams &params);
+  LocalResponseNormalization(const Tensor *input, Tensor *output,
+                             const LocalResponseNormalizationParams &params);
 
   void configure() override;
   void execute() const override;
@@ -42,4 +42,4 @@ private:
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZE_H
+#endif // LUCI_INTERPRETER_KERNELS_LOCALRESPONSENORMALIZATION_H

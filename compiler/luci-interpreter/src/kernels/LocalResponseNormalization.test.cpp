@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "kernels/LocalResponseNormalize.h"
+#include "kernels/LocalResponseNormalization.h"
 #include "kernels/TestUtils.h"
 
 namespace luci_interpreter
@@ -27,7 +27,7 @@ namespace
 
 using namespace testing;
 
-TEST(LocalResponseNormalizeTest, SameAsL2Norm)
+TEST(LocalResponseNormalizationTest, SameAsL2Norm)
 {
   Tensor input_tensor =
       makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
@@ -39,7 +39,7 @@ TEST(LocalResponseNormalizeTest, SameAsL2Norm)
   params.alpha = 1.0;
   params.beta = 0.5;
 
-  LocalResponseNormalize kernel(&input_tensor, &output_tensor, params);
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
@@ -47,7 +47,7 @@ TEST(LocalResponseNormalizeTest, SameAsL2Norm)
               ElementsAreArray(ArrayFloatNear({-0.55, 0.3, 0.35, 0.6, -0.35, 0.05})));
 }
 
-TEST(LocalResponseNormalizeTest, WithAlpha)
+TEST(LocalResponseNormalizationTest, WithAlpha)
 {
   Tensor input_tensor =
       makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
@@ -59,7 +59,7 @@ TEST(LocalResponseNormalizeTest, WithAlpha)
   params.alpha = 4.0;
   params.beta = 0.5;
 
-  LocalResponseNormalize kernel(&input_tensor, &output_tensor, params);
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
@@ -67,7 +67,7 @@ TEST(LocalResponseNormalizeTest, WithAlpha)
               ElementsAreArray(ArrayFloatNear({-0.275, 0.15, 0.175, 0.3, -0.175, 0.025})));
 }
 
-TEST(LocalResponseNormalizeTest, WithBias)
+TEST(LocalResponseNormalizationTest, WithBias)
 {
   Tensor input_tensor =
       makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
@@ -79,7 +79,7 @@ TEST(LocalResponseNormalizeTest, WithBias)
   params.alpha = 4.0;
   params.beta = 0.5;
 
-  LocalResponseNormalize kernel(&input_tensor, &output_tensor, params);
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
@@ -87,7 +87,7 @@ TEST(LocalResponseNormalizeTest, WithBias)
               ElementsAreArray(ArrayFloatNear({-0.22, 0.12, 0.14, 0.24, -0.14, 0.02})));
 }
 
-TEST(LocalResponseNormalizeTest, SmallRadius)
+TEST(LocalResponseNormalizationTest, SmallRadius)
 {
   Tensor input_tensor =
       makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
@@ -99,7 +99,7 @@ TEST(LocalResponseNormalizeTest, SmallRadius)
   params.alpha = 4.0;
   params.beta = 0.5;
 
-  LocalResponseNormalize kernel(&input_tensor, &output_tensor, params);
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 

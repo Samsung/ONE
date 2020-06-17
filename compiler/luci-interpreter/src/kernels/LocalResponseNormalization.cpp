@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#include "kernels/LocalResponseNormalize.h"
+#include "kernels/LocalResponseNormalization.h"
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 #include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
 
 #include <stdexcept>
@@ -29,13 +28,13 @@ namespace luci_interpreter
 namespace kernels
 {
 
-LocalResponseNormalize::LocalResponseNormalize(const Tensor *input, Tensor *output,
-                                               const LocalResponseNormalizationParams &params)
+LocalResponseNormalization::LocalResponseNormalization(
+    const Tensor *input, Tensor *output, const LocalResponseNormalizationParams &params)
     : KernelWithParams<LocalResponseNormalizationParams>(params), _input(input), _output(output)
 {
 }
 
-void LocalResponseNormalize::configure()
+void LocalResponseNormalization::configure()
 {
   assert(_input->shape().num_dims() == 4);
   assert(_output->element_type() == DataType::FLOAT32);
@@ -43,7 +42,7 @@ void LocalResponseNormalize::configure()
   _output->resize(_input->shape());
 }
 
-void LocalResponseNormalize::execute() const
+void LocalResponseNormalization::execute() const
 {
   switch (_output->element_type())
   {
