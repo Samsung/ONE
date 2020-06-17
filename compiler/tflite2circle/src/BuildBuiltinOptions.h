@@ -64,6 +64,7 @@
 #include "BuildBuiltinOptions/RangeOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
 #include "BuildBuiltinOptions/PowOptions.h"
+#include "BuildBuiltinOptions/RankOptions.h"
 // There is no PReluOptions
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
