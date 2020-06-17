@@ -39,10 +39,10 @@ private:
   const Tensor *const _input;
   Tensor *const _output;
 
-  int _height;
-  int _width;
-  int _height_offset;
-  int _width_offset;
+  int _padding_height;
+  int _padding_width;
+  int _padding_height_offset;
+  int _padding_width_offset;
 };
 
 } // namespace kernels
