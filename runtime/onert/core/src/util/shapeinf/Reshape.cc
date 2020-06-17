@@ -22,12 +22,12 @@ namespace
 
 using namespace onert;
 
-ir::Shape convertShape(const int32_t *shape_buf, const int32_t rank,
+ir::Shape convertShape(const int32_t *shape_buf, const int32_t shape_num_elements,
                        const size_t total_num_elements)
 {
-  ir::Shape ret(rank);
+  ir::Shape ret(shape_num_elements);
   int32_t flatten_dim = ir::Shape::UNSPECIFIED_DIM;
-  for (int32_t i = 0; i < rank; ++i)
+  for (int32_t i = 0; i < shape_num_elements; ++i)
   {
     if (shape_buf[i] < 0)
     {
