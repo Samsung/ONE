@@ -65,6 +65,10 @@ void TransposeLayer::configure(const Tensor *input, Tensor *output, const std::v
 
 void TransposeLayer::run()
 {
+  if (_input->is_dynamic())
+  {
+    _rank = _input->num_dimensions();
+  }
   if (_input->data_type() == OperandType::FLOAT32)
   {
     transposeFloat32();
