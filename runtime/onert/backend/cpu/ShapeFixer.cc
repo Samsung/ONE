@@ -50,16 +50,7 @@ namespace cpu
 
 ShapeFixer::ShapeFixer(const ir::Operands &operand_ctx) : _ctx(operand_ctx) {}
 
-void ShapeFixer::visit(const ir::operation::Add &node)
-{
-  const auto lhs_index{node.getInputs().at(ir::operation::Add::Input::LHS)};
-
-  // Quantization : not supported
-  if (_ctx.at(lhs_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-  {
-    throw std::runtime_error{"ShapeFixer: NYI for quantized Add"};
-  }
-}
+void ShapeFixer::visit(const ir::operation::Add &) { /* DO NOTHING */}
 
 void ShapeFixer::visit(const ir::operation::Sub &node)
 {

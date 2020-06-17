@@ -24,6 +24,7 @@
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
+#include "fixedpoint/fixedpoint.h"
 
 namespace nnfw
 {
@@ -32,73 +33,114 @@ namespace cker
 namespace optimized
 {
 
+inline int32_t quant8_sum(const BinaryArithmeticOpParam &params, const uint8_t input1_data,
+                          const uint8_t input2_data)
+{
+  const int32_t input1_val = params.input1_offset + input1_data;
+  const int32_t input2_val = params.input2_offset + input2_data;
+  const int32_t shifted_input1_val = input1_val * (1 << params.left_shift);
+  const int32_t shifted_input2_val = input2_val * (1 << params.left_shift);
+  const int32_t scaled_input1_val =
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(
+          shifted_input1_val, params.input1_multiplier, params.input1_shift);
+  const int32_t scaled_input2_val =
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(
+          shifted_input2_val, params.input2_multiplier, params.input2_shift);
+  const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
+  const int32_t raw_output =
+      MultiplyByQuantizedMultiplierSmallerThanOneExp(
+          raw_sum, params.output_multiplier, params.output_shift) +
+      params.output_offset;
+  const int32_t clamped_output =
+      std::min(params.quantized_activation_max,
+              std::max(params.quantized_activation_min, raw_output));
+  return clamped_output;
+}
+
+template <typename T>
 inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
-                           const float *input1_data, const float *input2_data, float *output_data)
+                           const T input1_data, const T input2_data, T output_data)
 {
   int i = 0;
 
+  if ((params.quantized_activation_min == 0) &&
+      (params.quantized_activation_max == 255))
+  {
+    // Add quantization code here
+    for (; i < size; ++i) 
+    {
+      int32_t clamped_output = quant8_sum(params, input1_data[i], input2_data[i]);
+      output_data[i] = static_cast<uint8_t>(clamped_output);
+    }
+  }
+  else
+  {
 #ifdef USE_NEON
-  const auto activation_min = vdupq_n_f32(params.float_activation_min);
-  const auto activation_max = vdupq_n_f32(params.float_activation_max);
-  for (; i <= size - 16; i += 16)
-  {
-    auto a10 = vld1q_f32(input1_data + i);
-    auto a11 = vld1q_f32(input1_data + i + 4);
-    auto a12 = vld1q_f32(input1_data + i + 8);
-    auto a13 = vld1q_f32(input1_data + i + 12);
-    auto a20 = vld1q_f32(input2_data + i);
-    auto a21 = vld1q_f32(input2_data + i + 4);
-    auto a22 = vld1q_f32(input2_data + i + 8);
-    auto a23 = vld1q_f32(input2_data + i + 12);
-    auto x0 = vaddq_f32(a10, a20);
-    auto x1 = vaddq_f32(a11, a21);
-    auto x2 = vaddq_f32(a12, a22);
-    auto x3 = vaddq_f32(a13, a23);
-    x0 = vmaxq_f32(activation_min, x0);
-    x1 = vmaxq_f32(activation_min, x1);
-    x2 = vmaxq_f32(activation_min, x2);
-    x3 = vmaxq_f32(activation_min, x3);
-    x0 = vminq_f32(activation_max, x0);
-    x1 = vminq_f32(activation_max, x1);
-    x2 = vminq_f32(activation_max, x2);
-    x3 = vminq_f32(activation_max, x3);
-    vst1q_f32(output_data + i, x0);
-    vst1q_f32(output_data + i + 4, x1);
-    vst1q_f32(output_data + i + 8, x2);
-    vst1q_f32(output_data + i + 12, x3);
-  }
-  for (; i <= size - 4; i += 4)
-  {
-    auto a1 = vld1q_f32(input1_data + i);
-    auto a2 = vld1q_f32(input2_data + i);
-    auto x = vaddq_f32(a1, a2);
-    x = vmaxq_f32(activation_min, x);
-    x = vminq_f32(activation_max, x);
-    vst1q_f32(output_data + i, x);
-  }
+    const auto activation_min = vdupq_n_f32(params.float_activation_min);
+    const auto activation_max = vdupq_n_f32(params.float_activation_max);
+    for (; i <= size - 16; i += 16)
+    {
+      auto a10 = vld1q_f32(input1_data + i);
+      auto a11 = vld1q_f32(input1_data + i + 4);
+      auto a12 = vld1q_f32(input1_data + i + 8);
+      auto a13 = vld1q_f32(input1_data + i + 12);
+      auto a20 = vld1q_f32(input2_data + i);
+      auto a21 = vld1q_f32(input2_data + i + 4);
+      auto a22 = vld1q_f32(input2_data + i + 8);
+      auto a23 = vld1q_f32(input2_data + i + 12);
+      auto x0 = vaddq_f32(a10, a20);
+      auto x1 = vaddq_f32(a11, a21);
+      auto x2 = vaddq_f32(a12, a22);
+      auto x3 = vaddq_f32(a13, a23);
+      x0 = vmaxq_f32(activation_min, x0);
+      x1 = vmaxq_f32(activation_min, x1);
+      x2 = vmaxq_f32(activation_min, x2);
+      x3 = vmaxq_f32(activation_min, x3);
+      x0 = vminq_f32(activation_max, x0);
+      x1 = vminq_f32(activation_max, x1);
+      x2 = vminq_f32(activation_max, x2);
+      x3 = vminq_f32(activation_max, x3);
+      vst1q_f32(output_data + i, x0);
+      vst1q_f32(output_data + i + 4, x1);
+      vst1q_f32(output_data + i + 8, x2);
+      vst1q_f32(output_data + i + 12, x3);
+    }
+    for (; i <= size - 4; i += 4)
+    {
+      auto a1 = vld1q_f32(input1_data + i);
+      auto a2 = vld1q_f32(input2_data + i);
+      auto x = vaddq_f32(a1, a2);
+      x = vmaxq_f32(activation_min, x);
+      x = vminq_f32(activation_max, x);
+      vst1q_f32(output_data + i, x);
+    }
 #endif // NEON
-
-  for (; i < size; i++)
-  {
-    auto x = input1_data[i] + input2_data[i];
-    output_data[i] =
-        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
+    for (; i < size; i++)
+    {
+      auto x = input1_data[i] + input2_data[i];
+      output_data[i] =
+          ActivationFunctionWithMinMax<float>(x, params.float_activation_min, params.float_activation_max);
+    }  
   }
+  
+  
 }
 
+template <typename T>
 inline void Add(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                const float *input1_data, const Shape &input2_shape, const float *input2_data,
-                const Shape &output_shape, float *output_data)
+                const T input1_data, const Shape &input2_shape, const T input2_data,
+                const Shape &output_shape, T output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  AddElementwise(flat_size, params, input1_data, input2_data, output_data);
+  AddElementwise<T>(flat_size, params, input1_data, input2_data, output_data);
 }
 
 // Scalar-broadcast add that can be used for inner loop of more general
 // broadcast add, so that, for example, scalar-broadcast with batch will still
 // be fast.
+template <typename T>
 inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
-                               float broadcast_value, const float *input2_data, float *output_data)
+                               T broadcast_value, const T *input2_data, T *output_data)
 {
   int i = 0;
 #ifdef USE_NEON
@@ -116,35 +158,44 @@ inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
     vst1q_f32(output_data + i, clamped);
   }
 #endif // NEON
-
-  for (; i < size; ++i)
+  if ((params.quantized_activation_min == 0) &&
+      (params.quantized_activation_max == 255))
   {
-    auto x = broadcast_value + input2_data[i];
-    output_data[i] =
-        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
+    int32_t clamped_output = quant8_sum(params, broadcast_value, input2_data[i]);
+    output_data[i] = static_cast<uint8_t>(clamped_output);
+  }
+  else
+  {
+    for (; i < size; ++i)
+    {
+      auto x = broadcast_value + input2_data[i];
+      output_data[i] =
+          ActivationFunctionWithMinMax<float>(x, params.float_activation_min, params.float_activation_max);
+    }
   }
 }
 
+template <typename T>
 inline void BroadcastAddFivefold(const BinaryArithmeticOpParam &params,
                                  const Shape & /* unswitched_input1_shape */,
-                                 const float *unswitched_input1_data,
+                                 const T *unswitched_input1_data,
                                  const Shape & /* unswitched_input2_shape */,
-                                 const float *unswitched_input2_data,
-                                 const Shape & /* output_shape */, float *output_data)
+                                 const T *unswitched_input2_data,
+                                 const Shape & /* output_shape */, T *output_data)
 {
   const bool use_unswitched =
       params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast;
 
-  const float *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
-  const float *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
+  const T *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
+  const T *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
 
   // Fivefold nested loops. The second input resets its position for each
   // iteration of the second loop. The first input resets its position at the
   // beginning of the fourth loop. The innermost loop is an elementwise add of
   // sections of the arrays.
-  float *output_data_ptr = output_data;
-  const float *input1_data_ptr = input1_data;
-  const float *input2_data_reset = input2_data;
+  T *output_data_ptr = output_data;
+  const T *input1_data_ptr = input1_data;
+  const T *input2_data_reset = input2_data;
   // In the fivefold pattern, y0, y2 and y4 are not broadcast, and so shared
   // between input shapes. y3 for input 1 is always broadcast, and so the
   // dimension there is 1, whereas optionally y1 might be broadcast for input 2.
@@ -162,7 +213,7 @@ inline void BroadcastAddFivefold(const BinaryArithmeticOpParam &params,
     // dimension.
     for (int i0 = 0; i0 < y0; ++i0)
     {
-      const float *input2_data_ptr = nullptr;
+      const T *input2_data_ptr = nullptr;
       for (int i1 = 0; i1 < y1; ++i1)
       {
         input2_data_ptr = input2_data_reset;
@@ -170,7 +221,8 @@ inline void BroadcastAddFivefold(const BinaryArithmeticOpParam &params,
         {
           for (int i3 = 0; i3 < y3; ++i3)
           {
-            AddElementwise(y4, params, input1_data_ptr, input2_data_ptr, output_data_ptr);
+            AddElementwise<T *>(y4, params, const_cast<T *>(input1_data_ptr), 
+                                    const_cast<T *>(input2_data_ptr), output_data_ptr);
             input2_data_ptr += y4;
             output_data_ptr += y4;
           }
@@ -196,13 +248,13 @@ inline void BroadcastAddFivefold(const BinaryArithmeticOpParam &params,
     // AddScalarBroadcast function.
     for (int i0 = 0; i0 < y0; ++i0)
     {
-      const float *input2_data_ptr = nullptr;
+      const T *input2_data_ptr = nullptr;
       for (int i1 = 0; i1 < y1; ++i1)
       {
         input2_data_ptr = input2_data_reset;
         for (int i2 = 0; i2 < y2; ++i2)
         {
-          AddScalarBroadcast(y3, params, *input1_data_ptr, input2_data_ptr, output_data_ptr);
+          AddScalarBroadcast<T>(y3, params, *input1_data_ptr, const_cast<T *>(input2_data_ptr), output_data_ptr);
           input2_data_ptr += y3;
           output_data_ptr += y3;
           input1_data_ptr += 1;
@@ -213,22 +265,40 @@ inline void BroadcastAddFivefold(const BinaryArithmeticOpParam &params,
   }
 }
 
+template <typename T>
 inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                                 const float *input1_data, const Shape &input2_shape,
-                                 const float *input2_data, const Shape &output_shape,
-                                 float *output_data)
+                                 const T *input1_data, const Shape &input2_shape,
+                                 const T *input2_data, const Shape &output_shape,
+                                 T *output_data)
 {
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     // TODO: Use GetBinaryArithmeticFn
-    const std::function<float(const float &, const float &)> fn =
+    if ((params.quantized_activation_min == 0) && 
+          (params.quantized_activation_max == 255))
+    {
+      // TODO: Insert code for slow broadcast, quant8
+      const std::function<uint8_t(const BinaryArithmeticOpParam &, const uint8_t &, const uint8_t &)> fn =
+        [](const BinaryArithmeticOpParam &params, const uint8_t &a, const uint8_t &b) -> float { return static_cast<uint8_t>(quant8_sum(params, a , b)); };
+      reference::BroadcastBinaryArithmeticOpSlowQuant8<T>(params, input1_shape, const_cast<T *>(input1_data), 
+                                                    input2_shape, const_cast<T *>(input2_data), 
+                                                    output_shape, output_data, fn);
+    }
+    else
+    {
+      const std::function<float(const float &, const float &)> fn =
         [](const float &a, const float &b) -> float { return a + b; };
-    reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
-                                               input2_data, output_shape, output_data, fn);
-    return;
+      reference::BroadcastBinaryArithmeticOpSlow<T>(params, input1_shape, const_cast<T *>(input1_data), 
+                                                    input2_shape, const_cast<T *>(input2_data), 
+                                                    output_shape, output_data, fn);
+    }
   }
-  BroadcastAddFivefold(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                       output_data);
+  else
+  {
+    BroadcastAddFivefold<T>(params, input1_shape, const_cast<T *>(input1_data), 
+                            input2_shape, const_cast<T *>(input2_data), 
+                            output_shape, output_data);
+  }
 }
 
 inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
