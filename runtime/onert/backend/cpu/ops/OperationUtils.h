@@ -48,6 +48,7 @@ union DataPtr {
   int32_t *i32;
   bool *b;
   float *f;
+  int64_t *i64;
   void *v;
 };
 
