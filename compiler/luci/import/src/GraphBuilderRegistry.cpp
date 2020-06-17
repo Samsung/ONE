@@ -152,8 +152,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_ADD_N = 106,
   // BuiltinOperator_WHERE = 109,
-  // BuiltinOperator_RANK = 110,
-  // BuiltinOperator_REVERSE_SEQUENCE = 112,
   // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_MATRIX_SET_DIAG = 115,

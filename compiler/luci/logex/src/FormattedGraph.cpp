@@ -851,7 +851,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleRange *node, locop::Nod
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleRank *node, locop::NodeSummary &s) const
 {
-  s.args().append("features", tbl()->lookup(node->input()));
+  s.args().append("input", tbl()->lookup(node->input()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
