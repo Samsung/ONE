@@ -42,7 +42,7 @@ void Args::Initialize(void)
     ("load,l", po::value<std::string>()->default_value(""), "Input filename")
 #endif
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
-    ("warmup_runs,w", po::value<int>()->default_value(1), "The number of warmup runs")
+    ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false),
