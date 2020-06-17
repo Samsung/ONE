@@ -1434,6 +1434,13 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleReverseSequence *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleRound *node) final
   {
     auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
