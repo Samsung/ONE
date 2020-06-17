@@ -382,7 +382,8 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     if (isStateInitialized())
     {
-      std::cerr << "Error during apply_tensorinfo : should be run after load_model" << std::endl;
+      std::cerr << "Error during set_input_tensorinfo : should be run after load_model"
+                << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
