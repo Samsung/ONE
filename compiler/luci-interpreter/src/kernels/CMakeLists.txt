@@ -29,6 +29,8 @@ set(SOURCES
     FullyConnected.cpp
     LeakyRelu.h
     LeakyRelu.cpp
+    LocalResponseNormalize.h
+    LocalResponseNormalize.cpp
     Logistic.h
     Logistic.cpp
     MaxPool2D.h
@@ -76,6 +78,7 @@ set(TEST_SOURCES
     Elu.test.cpp
     FullyConnected.test.cpp
     LeakyRelu.test.cpp
+    LocalResponseNormalize.test.cpp
     Logistic.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
