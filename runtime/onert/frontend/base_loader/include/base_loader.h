@@ -169,6 +169,7 @@ protected:
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
+  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1192,7 +1193,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     MatrixBandPart,
     BatchMatMul,
     Einsum,
-    BroadcastTo
+    BroadcastTo,
+    FusedBatchNorm
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1203,6 +1205,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
       {"BroadCastTo", BuiltinOP::BroadcastTo},
+      {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
   };
 
   try
@@ -1228,6 +1231,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::BroadcastTo:
         loadBroadcastTo(op, subg);
+      case BuiltinOP::FusedBatchNorm:
+        loadFusedBatchNorm(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1479,6 +1484,39 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir
   }
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op,
+                                                                  ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::FusedBatchNorm::Param param;
+
+  if (inputs.size() != 5)
+  {
+    throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+  }
+
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"FusedBatchNorm: empty option"};
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.is_training = attr_map["is_training"].AsBool();
+    param.epsilon = attr_map["epsilon"].AsFloat();
+    param.data_format = attr_map["data_format"].ToString();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::FusedBatchNorm{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 

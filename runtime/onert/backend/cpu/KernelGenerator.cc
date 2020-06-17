@@ -72,6 +72,7 @@
 #include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
 #include "ops/BroadcastToLayer.h"
+#include "ops/FusedBatchNormLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1312,6 +1313,27 @@ void KernelGenerator::visit(const ir::operation::BroadcastTo &node)
   auto fn = std::make_unique<ops::BroadcastToLayer>();
 
   fn->configure(input_alloc, shape_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+
+  auto output_alloc = _tensor_builder->at(ofm_index).get();
+  std::vector<const Tensor *> input_allocs;
+  for (auto &ifm_idx : node.getInputs())
+    input_allocs.emplace_back(_tensor_builder->at(ifm_idx).get());
+
+  const auto epsilon = node.param().epsilon;
+  const auto is_training = node.param().is_training;
+  const auto data_format = node.param().data_format;
+
+  auto fn = std::make_unique<ops::FusedBatchNormLayer>();
+
+  fn->configure(input_allocs, epsilon, is_training, data_format, output_alloc);
+
   _return_fn = std::move(fn);
 }
 

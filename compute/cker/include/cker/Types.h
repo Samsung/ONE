@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <limits>
+#include <string>
 
 namespace nnfw
 {
@@ -314,6 +315,13 @@ struct SplitParams
 {
   uint16_t num_split;
   int16_t axis;
+};
+
+struct FusedBatchNormParams
+{
+  bool is_training;
+  std::string data_format; // UNKNOWN(0), NHWC(1), NCHW(2)
+  float epsilon;
 };
 
 enum class Order
