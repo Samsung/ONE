@@ -50,13 +50,10 @@ void L2Pool2D::configure()
   out_width = computeOutputSize(padding, width, params().filter_width, params().stride_width, 1);
   out_height =
       computeOutputSize(padding, height, params().filter_height, params().stride_height, 1);
-  int offset = 0;
-  _padding_width = computePaddingWithOffset(params().stride_width, 1, width, params().filter_width,
-                                            out_width, &offset);
-  _padding_width_offset = offset;
-  _padding_height = computePaddingWithOffset(params().stride_height, 1, height,
-                                             params().filter_height, out_height, &offset);
-  _padding_height_offset = offset;
+  _padding_width =
+      computePadding(params().stride_width, 1, width, params().filter_width, out_width);
+  _padding_height =
+      computePadding(params().stride_height, 1, height, params().filter_height, out_height);
 
   assert(_input->element_type() == DataType::FLOAT32);
   _output->resize({batches, out_height, out_width, channels_out});

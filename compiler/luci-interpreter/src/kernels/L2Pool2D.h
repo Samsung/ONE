@@ -41,8 +41,6 @@ private:
 
   int _padding_height;
   int _padding_width;
-  int _padding_height_offset;
-  int _padding_width_offset;
 };
 
 } // namespace kernels
