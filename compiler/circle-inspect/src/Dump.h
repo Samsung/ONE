@@ -51,6 +51,15 @@ public:
   void run(std::ostream &os, const circle::Model *model);
 };
 
+class DumpTensors final : public DumpInterface
+{
+public:
+  DumpTensors() = default;
+
+public:
+  void run(std::ostream &os, const circle::Model *model);
+};
+
 } // namespace circleinspect
 
 #endif // __DUMP_H__
