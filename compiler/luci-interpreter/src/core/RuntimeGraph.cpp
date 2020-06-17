@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-#include "RuntimeGraph.h"
+#include "core/RuntimeGraph.h"
 
-#include "RuntimeModule.h"
+#include "core/RuntimeModule.h"
 
 #include <algorithm>
 
 namespace luci_interpreter
 {
 
-void RuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
+Tensor *RuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
 {
   assert(tensor != nullptr);
   _tensors.push_back(std::move(tensor));
+  return _tensors.back().get();
 }
 
 void RuntimeGraph::setInputTensors(const std::vector<Tensor *> &input_tensors)
@@ -68,9 +69,12 @@ void RuntimeGraph::execute() const
   EventNotifier *event_notifier = _owning_module->getEventNotifier();
 
   // Notify the observers that the input tensors have changed.
-  for (Tensor *input_tensor : getInputTensors())
+  if (event_notifier != nullptr)
   {
-    event_notifier->postTensorWrite(input_tensor);
+    for (Tensor *input_tensor : getInputTensors())
+    {
+      event_notifier->postTensorWrite(input_tensor);
+    }
   }
 
   for (const auto &kernel : _kernels)
@@ -78,7 +82,10 @@ void RuntimeGraph::execute() const
     kernel->execute();
     for (Tensor *tensor : kernel->getOutputTensors())
     {
-      event_notifier->postTensorWrite(tensor);
+      if (event_notifier != nullptr)
+      {
+        event_notifier->postTensorWrite(tensor);
+      }
     }
   }
 }

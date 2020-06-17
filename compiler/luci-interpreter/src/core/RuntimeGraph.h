@@ -33,7 +33,7 @@ class RuntimeGraph
 public:
   explicit RuntimeGraph(RuntimeModule *owning_module) : _owning_module(owning_module) {}
 
-  void addTensor(std::unique_ptr<Tensor> &&tensor);
+  Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
 
   void setInputTensors(const std::vector<Tensor *> &input_tensors);
   void setOutputTensors(const std::vector<Tensor *> &output_tensors);
