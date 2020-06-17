@@ -1301,7 +1301,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridedSlice(const Operator *
   param.begin_mask = options->begin_mask();
   param.end_mask = options->end_mask();
   param.shrink_axis_mask = options->shrink_axis_mask();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::StridedSlice{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));

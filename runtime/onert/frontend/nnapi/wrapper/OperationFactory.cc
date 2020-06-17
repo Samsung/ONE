@@ -630,7 +630,6 @@ OperationFactory::OperationFactory()
     param.end_mask = operands.at(OperandIndex{init_param.inputs[5]}).asScalar<std::int32_t>();
     param.shrink_axis_mask =
         operands.at(OperandIndex{init_param.inputs[6]}).asScalar<std::int32_t>();
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::StridedSlice{inputs, outputs, param};
   };

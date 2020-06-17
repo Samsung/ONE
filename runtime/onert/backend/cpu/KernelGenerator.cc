@@ -933,12 +933,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   auto begin_mask = node.param().begin_mask;
   auto end_mask = node.param().end_mask;
   auto shrink_axis_mask = node.param().shrink_axis_mask;
-  auto rank = node.param().rank;
 
   auto fn = std::make_unique<ops::StridedSliceLayer>();
 
   fn->configure(input_alloc, starts_alloc, ends_alloc, strides_alloc, output_alloc, begin_mask,
-                end_mask, shrink_axis_mask, rank);
+                end_mask, shrink_axis_mask);
 
   _return_fn = std::move(fn);
 }

@@ -31,8 +31,7 @@ namespace ops
 
 StridedSliceLayer::StridedSliceLayer()
     : _input(nullptr), _begin(nullptr), _end(nullptr), _strides(nullptr), _output(nullptr),
-      _begin_mask(0), _ellipsis_mask(0), _end_mask(0), _new_axis_mask(0), _shrink_axis_mask(0),
-      _rank(0)
+      _begin_mask(0), _ellipsis_mask(0), _end_mask(0), _new_axis_mask(0), _shrink_axis_mask(0)
 {
 }
 
@@ -41,9 +40,10 @@ template <typename T> void StridedSliceLayer::stridedSliceImpl()
   auto op_params = nnfw::cker::buildStridedSliceParams(
       reinterpret_cast<uint32_t *>(_begin->buffer()), reinterpret_cast<uint32_t *>(_end->buffer()),
       reinterpret_cast<uint32_t *>(_strides->buffer()), _begin_mask, _end_mask, _shrink_axis_mask,
-      _rank);
+      getTensorShape(_input).DimensionsCount());
 
-  nnfw::cker::checkOutputSize(op_params, getTensorShape(_input), getTensorShape(_output), _rank);
+  nnfw::cker::checkOutputSize(op_params, getTensorShape(_input), getTensorShape(_output),
+                              getTensorShape(_input).DimensionsCount());
 
   nnfw::cker::StridedSlice(op_params, getTensorShape(_input),
                            reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
@@ -52,8 +52,7 @@ template <typename T> void StridedSliceLayer::stridedSliceImpl()
 
 void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, const Tensor *end,
                                   const Tensor *strides, Tensor *output, const int32_t begin_mask,
-                                  const int32_t end_mask, const int32_t shrink_axis_mask,
-                                  const int32_t rank)
+                                  const int32_t end_mask, const int32_t shrink_axis_mask)
 {
   _input = input;
   _begin = begin;
@@ -61,7 +60,6 @@ void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, cons
   _strides = strides;
   _output = output;
 
-  _rank = rank;
   _begin_mask = begin_mask;
   _ellipsis_mask = 0;
   _end_mask = end_mask;
@@ -71,10 +69,6 @@ void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, cons
 
 void StridedSliceLayer::run()
 {
-  if (_input->is_dynamic())
-  {
-    _rank = _input->num_dimensions();
-  }
   if (_input->data_type() == OperandType::FLOAT32)
   {
     stridedSliceImpl<float>();
