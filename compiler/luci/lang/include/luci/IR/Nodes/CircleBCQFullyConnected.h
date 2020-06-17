@@ -30,7 +30,7 @@ namespace luci
  * @brief BCQ_FULLY_CONNECTED in Circle
  */
 class CircleBCQFullyConnected final
-    : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::BCQ_FULLY_CONNECTED>>,
+    : public FixedArityNode<5, CircleNodeImpl<CircleOpcode::BCQ_FULLY_CONNECTED>>,
       public LuciNodeMixin<LuciNodeTrait::FusedActFunc>,
       public LuciNodeMixin<LuciNodeTrait::Bias>
 {
@@ -46,6 +46,9 @@ public:
 
   loco::Node *bias(void) const override { return at(3)->node(); }
   void bias(loco::Node *node) override { at(3)->node(node); }
+
+  loco::Node *weights_clusters(void) const { return at(4)->node(); }
+  void weights_clusters(loco::Node *node) { at(4)->node(node); }
 
 public:
   int32_t weights_hidden_size(void) const { return _weights_hidden_size; }
