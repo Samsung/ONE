@@ -27,9 +27,9 @@ namespace cker
 {
 
 template <typename T>
-inline void LogicalOrBroadcast4D(const Shape &unextended_input1_shape, const T *input1_data,
-                                 const Shape &unextended_input2_shape, const T *input2_data,
-                                 const Shape &unextended_output_shape, T *output_data)
+inline void LogicalOrBroadcast(const Shape &unextended_input1_shape, const T *input1_data,
+                               const Shape &unextended_input2_shape, const T *input2_data,
+                               const Shape &unextended_output_shape, T *output_data)
 {
   assert(unextended_input1_shape.DimensionsCount() <= 4);
   assert(unextended_input2_shape.DimensionsCount() <= 4);
@@ -62,15 +62,19 @@ inline void LogicalOrBroadcast4D(const Shape &unextended_input1_shape, const T *
 }
 
 template <typename T>
-inline void LogicalOr(const Shape &unextended_input1_shape, const T *input1_data,
-                      const Shape &unextended_input2_shape, const T *input2_data,
-                      const Shape &unextended_output_shape, T *output_data)
+inline void LogicalOrElementwise(const Shape &shape, const T *input1_data, const T *input2_data,
+                                 T *output_data)
 {
-  LogicalOrBroadcast4D<T>(unextended_input1_shape, input1_data, unextended_input2_shape,
-                          input2_data, unextended_output_shape, output_data);
+
+  int num_elements = shape.FlatSize();
+
+  for (int t = 0; t < num_elements; t++)
+  {
+    output_data[t] = input1_data[t] || input2_data[t];
+  }
 }
 
 } // namespace cker
 } // namespace nnfw
 
-#endif // __NNFW_CKER_MAXMIN_H__
+#endif // __NNFW_CKER_LOGICAL_OR_H___
