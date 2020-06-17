@@ -203,11 +203,25 @@ int main(const int argc, char **argv)
   NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
   std::vector<Allocation> outputs(num_outputs);
 
+  auto output_sizes = args.getOutputSizes();
   for (uint32_t i = 0; i < num_outputs; i++)
   {
     nnfw_tensorinfo ti;
-    NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-    auto output_size_in_bytes = bufsize_for(&ti);
+
+    uint64_t output_size_in_bytes = 0;
+    {
+      auto found = output_sizes.find(i);
+      if (found == output_sizes.end())
+      {
+        NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+        output_size_in_bytes = bufsize_for(&ti);
+      }
+      else
+      {
+        output_size_in_bytes = found->second;
+      }
+    }
+
     outputs[i].alloc(output_size_in_bytes);
     NNPR_ENSURE_STATUS(
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));

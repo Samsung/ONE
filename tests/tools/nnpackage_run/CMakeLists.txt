@@ -32,7 +32,7 @@ target_include_directories(nnpackage_run PRIVATE src)
 target_include_directories(nnpackage_run PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(nnpackage_run onert_core onert tflite_loader)
-target_link_libraries(nnpackage_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite)
+target_link_libraries(nnpackage_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite jsoncpp)
 target_link_libraries(nnpackage_run nnfw-dev)
 if(BUILD_BOOST)
   # We have to use Boost::program_options, instead of boost_program_optinos
