@@ -51,7 +51,7 @@ void StaticInferer::visit(const ir::operation::Transpose &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
   const auto perm{op.param().perm};
-  // const auto rank{op.param().rank};
+
   // if input is dynamic, output also becomes dynamic
   if (input.info().isDynamic())
   {
