@@ -62,23 +62,47 @@ void ArgMinMaxLayer::run()
   ArgMinMax(getTensorShape(_input), reinterpret_cast<const input_type *>(_input->buffer()),     \
             getTensorShape(_output), reinterpret_cast<output_type *>(_output->buffer()), _axis, \
             GetComparefunction<input_type>(_is_arg_max));
-
-  assert(_output->data_type() == ir::DataType::INT32);
-  switch (_input->data_type())
+  if (_output->data_type() == ir::DataType::INT32)
   {
-    case ir::DataType::FLOAT32:
-      TF_LITE_ARG_MIN_MAX(float, int32_t, int32_t);
-      break;
-    case ir::DataType::QUANT_UINT8_ASYMM:
-    case ir::DataType::UINT8:
-      TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int32_t);
-      break;
-    case ir::DataType::INT32:
-      TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int32_t);
-      break;
-    default:
-      throw std::runtime_error("ArgMinMax: unsupported data type");
+    switch (_input->data_type())
+    {
+      case ir::DataType::FLOAT32:
+        TF_LITE_ARG_MIN_MAX(float, int32_t, int32_t);
+        break;
+      case ir::DataType::QUANT_UINT8_ASYMM:
+      case ir::DataType::UINT8:
+        TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int32_t);
+        break;
+      case ir::DataType::INT32:
+        TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int32_t);
+        break;
+      default:
+        throw std::runtime_error("ArgMinMax: unsupported data type");
+    }
   }
+  else if (_output->data_type() == ir::DataType::INT64)
+  {
+    switch (_input->data_type())
+    {
+      case ir::DataType::FLOAT32:
+        TF_LITE_ARG_MIN_MAX(float, int32_t, int64_t);
+        break;
+      case ir::DataType::QUANT_UINT8_ASYMM:
+      case ir::DataType::UINT8:
+        TF_LITE_ARG_MIN_MAX(uint8_t, int32_t, int64_t);
+        break;
+      case ir::DataType::INT32:
+        TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int64_t);
+        break;
+      default:
+        throw std::runtime_error("ArgMinMax: unsupported data type");
+    }
+  }
+  else
+  {
+    throw std::runtime_error("ArgMinMax: unsupported data type");
+  }
+
 #undef TF_LITE_ARG_MIN_MAX
 }
 
