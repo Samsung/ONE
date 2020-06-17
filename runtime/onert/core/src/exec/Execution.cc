@@ -38,11 +38,7 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   if (_io_desc.inputs.at(index.value()) != 0)
     throw std::runtime_error("Error in calling order");
 
-  auto shape_sig = _io_desc.input_shape_signature.find(index);
-  if (shape_sig != _io_desc.input_shape_signature.end())
-    shape_sig->second = new_shape; // update with new_shape
-  else
-    _io_desc.input_shape_signature.emplace(std::make_pair(index, new_shape));
+  _io_desc.input_shape_signature[index] = new_shape;
 }
 
 // TODO Remove default parameter
