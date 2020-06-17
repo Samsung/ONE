@@ -32,11 +32,7 @@ Elu::Elu(const Tensor *input, Tensor *output) : _input(input), _output(output) {
 void Elu::configure()
 {
   assert(_input->element_type() == _output->element_type());
-  int dims = _input->shape().num_dims();
-  Shape output_shape(dims);
-  for (int i = 0; i < dims; i++)
-    output_shape.dim(i) = _input->shape().dim(i);
-  _output->resize(output_shape);
+  _output->resize(_input->shape());
 }
 
 void Elu::execute() const

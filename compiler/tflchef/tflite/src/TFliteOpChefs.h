@@ -70,6 +70,7 @@
 #include "Op/Pow.h"
 #include "Op/PRelu.h"
 #include "Op/Range.h"
+#include "Op/Rank.h"
 #include "Op/ReduceAny.h"
 #include "Op/ReduceMax.h"
 #include "Op/ReduceMin.h"

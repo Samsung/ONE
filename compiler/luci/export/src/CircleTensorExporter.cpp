@@ -82,13 +82,6 @@ struct NoOpDetector final : public luci::CircleNodeMutableVisitor<bool>
   // Output is Virtual that does not produce any Tensor
   bool visit(luci::CircleOutput *) final { return true; }
   bool visit(luci::CircleOutputExclude *) final { return true; }
-  // Ignore Node of multiple outputs
-  bool visit(luci::CircleIf *) final { return true; }
-  bool visit(luci::CircleSplit *) final { return true; }
-  bool visit(luci::CircleSplitV *) final { return true; }
-  bool visit(luci::CircleTopKV2 *) final { return true; }
-  bool visit(luci::CircleUnpack *) final { return true; }
-  bool visit(luci::CircleWhile *) final { return true; }
 
   // Return false by default
   bool visit(luci::CircleNode *) final { return false; }
@@ -132,11 +125,13 @@ private:
   {
     auto outs = loco::succs(node);
     assert(outs.size() == count);
+    (void)count; // for unused variable error in release build
     for (auto out : outs)
     {
       auto circle_out = loco::must_cast<luci::CircleNode *>(out);
       allocateCircleTensorInfo(circle_out, _ctx);
     }
+    set_tensor_index(node, -1);
   }
 
 public:
@@ -150,42 +145,36 @@ public:
   bool visit(luci::CircleIf *node) final
   {
     store_outputs(node, node->output_count());
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleSplit *node) final
   {
     store_outputs(node, uint32_t(node->num_split()));
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleSplitV *node) final
   {
     store_outputs(node, uint32_t(node->num_split()));
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleTopKV2 *node) final
   {
     store_outputs(node, 2);
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleUnpack *node) final
   {
     store_outputs(node, node->num());
-    set_tensor_index(node, -1);
     return true;
   }
 
   bool visit(luci::CircleWhile *node) final
   {
     store_outputs(node, node->output_count());
-    set_tensor_index(node, -1);
     return true;
   }
 
@@ -198,8 +187,6 @@ private:
 
 void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 {
-  LOGGER(l);
-
   auto isNoOp = [](loco::Node *node) {
     if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
     {
@@ -215,28 +202,16 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
     return;
   }
 
-  auto tensor_index = static_cast<CircleTensorIndex>(ctx.size());
-  // TODO Use Graph-level metadata for Input & Output
-  // auto tensor_name = "t_" + std::to_string(tensor_index);
-  std::string tensor_name = node->name();
-  if (tensor_name.empty())
-    tensor_name = "t_" + std::to_string(tensor_index);
-  INFO(l) << "[luci] Tensor for " << tensor_name << ": " << tensor_index << std::endl;
+  // TODO revise this when loco supports multiple outputs
+  // NOTE this will store all virtual output tensors and skip for the real node
+  if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+  {
+    MultiOutputDetector d(ctx);
+    if (circle_node->accept(&d))
+      return;
+  }
 
-  CircleTensoInfo tensor_info;
-
-  tensor_info.name(tensor_name);
-  tensor_info.dtype(to_circle_tensortype(luci::node_dtype(node)));
-  if (node->shape_status() == ShapeStatus::VALID)
-    tensor_info.shape(to_shape_description(luci::node_shape(node)));
-  tensor_info.shape_status(node->shape_status());
-
-  tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
-  tensor_info.quantparam(node->quantparam());
-
-  set_tensor_index(node, tensor_index);
-
-  ctx.emplace_back(tensor_info);
+  allocateCircleTensorInfo(node, ctx);
 }
 
 } // namespace

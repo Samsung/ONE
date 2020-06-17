@@ -246,6 +246,7 @@ private:
   IMPLEMENT(luci::CirclePow)
   IMPLEMENT(luci::CirclePRelu)
   IMPLEMENT(luci::CircleRange)
+  IMPLEMENT(luci::CircleRank)
   IMPLEMENT(luci::CircleReduceAny)
   IMPLEMENT(luci::CircleReduceMax)
   IMPLEMENT(luci::CircleReduceMin)
@@ -256,6 +257,8 @@ private:
   IMPLEMENT(luci::CircleReshape)
   IMPLEMENT(luci::CircleResizeBilinear)
   IMPLEMENT(luci::CircleResizeNearestNeighbor)
+  IMPLEMENT(luci::CircleReverseSequence)
+  IMPLEMENT(luci::CircleRound)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleScatterNd)
   IMPLEMENT(luci::CircleSelect)
@@ -846,6 +849,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleRange *node, locop::Nod
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleRank *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleReduceAny *node,
                                        locop::NodeSummary &s) const
 {
@@ -934,6 +944,24 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleResizeNearestNeighbor *
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("size", tbl()->lookup(node->size()));
   s.args().append("align_corners", node->align_corners() ? "true" : "false");
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleReverseSequence *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("seq_lengths", tbl()->lookup(node->seq_lengths()));
+  s.args().append("seq_axis", std::to_string(node->seq_axis()));
+  s.args().append("batch_axis", std::to_string(node->batch_axis()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleRound *node, locop::NodeSummary &s) const
+{
+  s.args().append("x", tbl()->lookup(node->x()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -1291,6 +1319,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQFullyConnected *node
   s.args().append("weights_scales", tbl()->lookup(node->weights_scales()));
   s.args().append("weights_binary", tbl()->lookup(node->weights_binary()));
   s.args().append("bias", tbl()->lookup(node->bias()));
+  s.args().append("weights_clusters", tbl()->lookup(node->weights_clusters()));
 
   s.args().append("fused", to_str(node->fusedActivationFunction()));
   s.args().append("weights_hidden_size", pepper::str(node->weights_hidden_size()));
@@ -1306,6 +1335,7 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleBCQGather *node,
   s.args().append("input_scales", tbl()->lookup(node->input_scales()));
   s.args().append("input_binary", tbl()->lookup(node->input_binary()));
   s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("input_clusters", tbl()->lookup(node->input_clusters()));
 
   s.args().append("axis", pepper::str(node->axis()));
   s.args().append("input_hidden_size", pepper::str(node->input_hidden_size()));

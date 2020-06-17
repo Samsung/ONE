@@ -99,6 +99,9 @@ void IConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &in
     case DataType::FLOAT16:
       _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_op_seq_layout);
       break;
+    case DataType::INT64:
+      _init_map[index] = std::bind(permuteInit<int64_t>, _1, _2, _current_op_seq_layout);
+      break;
     default:
       throw std::runtime_error("Not supported, yet");
       break;

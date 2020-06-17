@@ -111,8 +111,8 @@ std::pair<loco::Node *, loco::Node *> get_input_weight_of_bias(CircleNode *node)
   return std::make_pair(nullptr, nullptr);
 }
 
-void quant_bias(CircleConst *node, float input_scale, float weight_scale, float *scaling_factor,
-                int64_t *zp)
+void asym_quant_bias(CircleConst *node, float input_scale, float weight_scale,
+                     float *scaling_factor, int64_t *zp)
 {
   float scale = input_scale * weight_scale;
   const float scaling_factor_inv = (scale == 0) ? 0 : 1.0 / scale;
@@ -127,10 +127,12 @@ void quant_bias(CircleConst *node, float input_scale, float weight_scale, float 
 
   node->dtype(loco::DataType::S32);      // change the type of tensor
   node->size<loco::DataType::S32>(size); // resize tensor
-  const int32_t kScale = std::numeric_limits<int32_t>::max();
+  const int32_t kMinScale = std::numeric_limits<int32_t>::lowest();
+  const int32_t kMaxScale = std::numeric_limits<int32_t>::max();
   for (int i = 0; i < static_cast<int32_t>(size); ++i)
   {
-    node->at<loco::DataType::S32>(i) = std::min(kScale, std::max(-kScale, quantized_values[i]));
+    node->at<loco::DataType::S32>(i) =
+        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
   *scaling_factor = scale;
   *zp = 0;
@@ -147,32 +149,19 @@ bool is_quantized(const CircleNode *node)
          node->dtype() == loco::DataType::S32;  // bias
 }
 
-void asym_wquant_with_minmax(CircleConst *node, float min, float max, float *scaling_factor,
-                             int64_t *zp)
+void asym_wquant(CircleConst *node, float min, float scaling_factor)
 {
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = 255;
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
-  if (min == max)
-  {
-    node->dtype(loco::DataType::U8);      // change the type of tensor
-    node->size<loco::DataType::U8>(size); // resize tensor
-    for (int i = 0; i < static_cast<int32_t>(size); ++i)
-      node->at<loco::DataType::U8>(i) = 0;
 
-    *scaling_factor = 1;
-    *zp = 0;
-    return;
-  }
-
-  compute_asym_scale_zp(min, max, scaling_factor, zp);
-  const float scaling_factor_inv = 1.0 / *scaling_factor;
+  const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
   for (int i = 0; i < static_cast<int32_t>(size); ++i)
   {
-    quantized_values[i] = static_cast<int32_t>(
-        std::round(*zp + node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    quantized_values[i] = static_cast<int32_t>(std::round((data - min) * scaling_factor_inv));
   }
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
@@ -270,12 +259,14 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 
 struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeBias(loco::DataType input, loco::DataType output) : input_type(input), output_type(output)
+  QuantizeBias(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
+      : input_type(input), output_type(output), granularity(gr)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
+  QuantizationGranularity granularity;
 
   // Quantize bias node
   bool visit(luci::CircleNode *node)
@@ -292,22 +283,28 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
     auto input = loco::must_cast<luci::CircleNode *>(iw.first);
     auto weight = loco::must_cast<luci::CircleNode *>(iw.second);
 
-    assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
-    auto input_scale = input->quantparam()->scale[0];
+    if (granularity == QuantizationGranularity::ChannelWise)
+    {
+      // will be implemented.
+    }
+    else
+    {
+      assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
+      auto input_scale = input->quantparam()->scale[0];
 
-    assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
-    auto weight_scale = weight->quantparam()->scale[0];
+      assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
+      auto weight_scale = weight->quantparam()->scale[0];
 
-    auto circle_const = loco::must_cast<luci::CircleConst *>(node);
-    float scaling_factor;
-    int64_t zp;
-    quant_bias(circle_const, input_scale, weight_scale, &scaling_factor, &zp);
-    auto quantparam = std::make_unique<CircleQuantParam>();
-    quantparam->scale.push_back(scaling_factor);
-    quantparam->zerop.push_back(zp);
-    assert(circle_const->quantparam() == nullptr); // bias should not be quantized before
-    circle_const->quantparam(std::move(quantparam));
-
+      auto circle_const = loco::must_cast<luci::CircleConst *>(node);
+      float scaling_factor{0};
+      int64_t zp{0};
+      asym_quant_bias(circle_const, input_scale, weight_scale, &scaling_factor, &zp);
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale.push_back(scaling_factor);
+      quantparam->zerop.push_back(zp);
+      assert(circle_const->quantparam() == nullptr); // bias should not be quantized before
+      circle_const->quantparam(std::move(quantparam));
+    }
     return false;
   }
 };
@@ -318,13 +315,14 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
  */
 struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
 {
-  QuantizeWeights(loco::DataType input, loco::DataType output)
-      : input_type(input), output_type(output)
+  QuantizeWeights(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
+      : input_type(input), output_type(output), granularity(gr)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
+  QuantizationGranularity granularity;
 
   // Quantize input tensors of each node
   bool visit(luci::CircleNode *node)
@@ -345,24 +343,23 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
       {
         auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
 
-        // Find min/max on the fly
-        float min = std::numeric_limits<float>::max();
-        float max = std::numeric_limits<float>::min();
-        for (uint32_t i = 0; i < circle_const->size<loco::DataType::FLOAT32>(); i++)
+        // Find min/max per channel-wise
+        if (granularity == QuantizationGranularity::ChannelWise)
         {
-          auto data = circle_const->at<loco::DataType::FLOAT32>(i);
-          min = data < min ? data : min;
-          max = data > max ? data : max;
+          // will be implemented.
         }
-        float scaling_factor;
-        int64_t zp;
-        asym_wquant_with_minmax(circle_const, min, max, &scaling_factor, &zp);
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->min.push_back(min);
-        quantparam->max.push_back(max);
-        quantparam->scale.push_back(scaling_factor);
-        quantparam->zerop.push_back(zp);
-        circle_node->quantparam(std::move(quantparam));
+        // Find min/max per layer-wise
+        else
+        {
+          // Quantize using recorded quantparam
+          auto quantparam = circle_node->quantparam();
+          assert(quantparam != nullptr);
+          assert(quantparam->min.size() == 1);   // only support layer-wise quant
+          assert(quantparam->scale.size() == 1); // only support layer-wise quant
+          auto min = quantparam->min[0];
+          auto scaling_factor = quantparam->scale[0];
+          asym_wquant(circle_const, min, scaling_factor);
+        }
       }
     }
     return false;
@@ -387,7 +384,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_input_dtype, _output_dtype);
+    QuantizeWeights qw(_input_dtype, _output_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }
@@ -395,7 +392,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_input_dtype, _output_dtype);
+    QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qb);
   }

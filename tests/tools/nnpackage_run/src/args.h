@@ -18,6 +18,7 @@
 #define __NNPACKAGE_RUN_ARGS_H__
 
 #include <string>
+#include <unordered_map>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
@@ -38,6 +39,7 @@ public:
 #endif
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
+  std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
@@ -58,6 +60,7 @@ private:
 #endif
   int _num_runs;
   int _warmup_runs;
+  std::unordered_map<uint32_t, uint32_t> _output_sizes;
   bool _gpumem_poll;
   bool _mem_poll;
   bool _write_report;

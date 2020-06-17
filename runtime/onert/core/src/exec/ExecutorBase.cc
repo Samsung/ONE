@@ -225,7 +225,7 @@ void ExecutorBase::execute(const IODescription &desc)
       continue;
     }
 
-    // If nnfw_apply_tensorinfo() was called for an input, set change and prepare memory
+    // If nnfw_set_input_tensorinfo() was called for an input, set change and prepare memory
     handleDynamicInputTensor(input_index, desc);
 
     const auto &input = *desc.inputs.at(n);
@@ -255,8 +255,16 @@ void ExecutorBase::execute(const IODescription &desc)
     output.info.shape(
         convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
 
+    size_t sink_length =
+        output.info.shape().num_elements() * ir::sizeOfDataType(output.info.typeInfo().type());
+    assert(sink_length ==
+           _output_tensors[n]->getShape().num_elements() *
+               ir::sizeOfDataType(_output_tensors[n]->data_type()));
+    if (output.size < sink_length)
+      throw std::runtime_error("ExecutorBase: output buffer size is less than output tensor size");
+
     sinks.at(n) =
-        sink(output_index, output.info.typeInfo(), output.buffer, output.size, output.layout);
+        sink(output_index, output.info.typeInfo(), output.buffer, sink_length, output.layout);
 
     auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
 
@@ -279,17 +287,17 @@ void ExecutorBase::execute(const IODescription &desc)
 
 /**
  * @brief Changes tensor shape and allocate memory
- *        if input shape was changed by nnfw_apply_tensorinfo()
+ *        if input shape was changed by nnfw_set_input_tensorinfo()
  *
  * @note  Cases are:
- *        1) static operand -> nnfw_apply_tensorinfo() -> execute() -> execute()
+ *        1) static operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
  *                                                        (a)          (b)
  *
  *           at (a), operand is static, tensor is static - memory dealloc is not needed
  *                   (DynamicTensorManager cannot dealloc memory allocated by StaticTensorManager)
  *           at (b), operand is static, tensor is dynamic - memory dealloc is needed
  *
- *        2) dynamic operand -> nnfw_apply_tensorinfo() -> execute() -> execute()
+ *        2) dynamic operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
  *                                                         (a)          (b)
  *
  *           at (a), operand is dynamic, tensor is dynamic - memory dealloc is not needed
