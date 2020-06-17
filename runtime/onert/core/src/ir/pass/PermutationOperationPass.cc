@@ -49,12 +49,8 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     return;
   }
 
-  // CPU supports only NHWC now
-  if (_lowered_graph.getLowerInfo(op_seq_index)->backend()->config()->id() != "cpu")
-  {
-    // TODO Change backend of this node
-    assert(frontend_layout == Layout::NHWC || backend_layout == Layout::UNKNOWN);
-  }
+  // Permutation changing layout beyond 4-D is not supported yet
+  assert(output_obj.shape().rank() == 4);
 
   // Divide op_seq based on target operation
   {
@@ -192,7 +188,7 @@ void PermutationOperationPass::visit(const operation::FullyConnected &node)
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
-  if (input_shape.rank() == 4)
+  if (input_shape.rank() >= 4)
   {
     changeToKeepLayout(node);
   }

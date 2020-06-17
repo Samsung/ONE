@@ -379,11 +379,12 @@ void LoweredGraph::dumpLowerInfo()
       std::string def_layouts = factors_to_string(lower_info->def_factors());
       std::string use_layouts = factors_to_string(lower_info->use_factors());
       sstream << "Operand #" << index.value() << " LowerInfo" << std::endl;
-      sstream << "  - Shape           : { " << (shape.rank() > 0 ? shape.dim(0) : 0) << " "
-              << (shape.rank() > 1 ? shape.dim(1) : 0) << " "
-              << (shape.rank() > 2 ? shape.dim(2) : 0) << " "
-              << (shape.rank() > 3 ? shape.dim(3) : 0) << " "
-              << "}" << std::endl;
+      sstream << "  - Shape           : { ";
+      for (auto i = 0; i < shape.rank(); ++i)
+      {
+        sstream << (shape.dim(i)) << " ";
+      }
+      sstream << "}" << std::endl;
       sstream << "  - Def Operations  : " << def_ops << std::endl;
       sstream << "  - Use Operations  : " << use_ops << std::endl;
       sstream << "  - Lower Info" << std::endl;
