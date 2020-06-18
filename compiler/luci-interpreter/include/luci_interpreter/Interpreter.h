@@ -66,7 +66,7 @@ private:
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;
-  std::unique_ptr<class Hook> _hook;
+  std::unique_ptr<class EventNotifier> _event_notifier;
   std::vector<ExecutionObserver *> _observers;
 };
 

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_CORE_HOOK_H
-#define LUCI_INTERPRETER_CORE_HOOK_H
+#ifndef LUCI_INTERPRETER_CORE_EVENTNOTIFIER_H
+#define LUCI_INTERPRETER_CORE_EVENTNOTIFIER_H
 
 namespace luci_interpreter
 {
 
 // Used at execution stage to tell the interpreter that the runtime state has changed in some way.
-class Hook
+class EventNotifier
 {
 public:
-  virtual ~Hook() = default;
+  virtual ~EventNotifier() = default;
 
   virtual void postTensorWrite(Tensor *tensor) const = 0;
 };
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_CORE_HOOK_H
+#endif // LUCI_INTERPRETER_CORE_EVENTNOTIFIER_H

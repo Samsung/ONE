@@ -16,7 +16,7 @@
 
 #include "luci_interpreter/Interpreter.h"
 
-#include "core/Hook.h"
+#include "core/EventNotifier.h"
 #include "KernelBuilder.h"
 #include "KernelMap.h"
 #include "TensorMap.h"
@@ -158,7 +158,7 @@ void Interpreter::createKernels(const loco::Graph *graph)
   }
 }
 
-class HookImpl final : public Hook
+class HookImpl final : public EventNotifier
 {
 public:
   HookImpl(RuntimeToIR &loader_map, const std::vector<ExecutionObserver *> &observers)
@@ -183,7 +183,7 @@ private:
 Interpreter::Interpreter(const luci::Module *module)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
-  _hook = std::make_unique<HookImpl>(*_runtime_to_ir, _observers);
+  _event_notifier = std::make_unique<HookImpl>(*_runtime_to_ir, _observers);
 
   if (module->size() > 1)
   {
@@ -241,7 +241,7 @@ void Interpreter::interpret()
   for (const loco::Node *node : loco::input_nodes(_main_graph))
   {
     Tensor *input_tensor = _node_to_tensor->getTensor(node);
-    _hook->postTensorWrite(input_tensor);
+    _event_notifier->postTensorWrite(input_tensor);
   }
   // Execute each kernel (they are stored in execution order) and notify the observers that kernel
   // output tensors have changed.
@@ -250,7 +250,7 @@ void Interpreter::interpret()
     kernel->execute();
     for (Tensor *tensor : kernel->getOutputTensors())
     {
-      _hook->postTensorWrite(tensor);
+      _event_notifier->postTensorWrite(tensor);
     }
   }
 }
