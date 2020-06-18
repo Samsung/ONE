@@ -22,7 +22,6 @@ num_data = args.num_data
 
 # Build TFLite interpreter. (to get the information of model input)
 interpreter = tf.lite.Interpreter(model)
-interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 
 # Create h5 file

@@ -485,6 +485,12 @@ public:
     return loco::NodeShape{x_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleCeil *node) final
+  {
+    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    return loco::NodeShape{x_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
@@ -1250,6 +1256,14 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleRank *) final
+  {
+    loco::TensorShape shape_output;
+    shape_output.rank(0);
+
+    return loco::NodeShape{shape_output};
+  }
+
   loco::NodeShape visit(const luci::CircleReduceAny *node) final
   {
     auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
@@ -1432,6 +1446,20 @@ public:
     output_shape.dim(3) = input_shape.dim(3);
 
     return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleReverseSequence *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleRound *node) final
+  {
+    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
   }
 
   loco::NodeShape visit(const luci::CircleRsqrt *node) final
@@ -2198,7 +2226,17 @@ public:
     auto cond_graph_inputs = cond_graph->inputs();
     auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
 
-    return loco::NodeShape{*cond_graph_input->shape()};
+    auto cond_graph_input_shape = *cond_graph_input->shape();
+    auto this_shape = own_shape(node);
+
+    if (!(this_shape == cond_graph_input_shape))
+    {
+      LOGGER(l);
+      WARN(l) << "Warning: CircleWhileOut '" << node->name() << "' shape mispatch " << this_shape
+              << " vs " << cond_graph_input_shape;
+    }
+
+    return loco::NodeShape{this_shape};
   }
 };
 

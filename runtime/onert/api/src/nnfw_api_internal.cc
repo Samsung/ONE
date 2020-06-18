@@ -22,6 +22,7 @@
 #include "circle_loader.h"
 #include "tflite_loader.h"
 #include "json/json.h"
+#include "ir/OpCode.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -382,7 +383,8 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     if (isStateInitialized())
     {
-      std::cerr << "Error during apply_tensorinfo : should be run after load_model" << std::endl;
+      std::cerr << "Error during set_input_tensorinfo : should be run after load_model"
+                << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -452,6 +454,8 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     }
     auto opidx = primary_subgraph()->getInputs().at(index);
     auto shape = primary_subgraph()->operands().at(opidx).shape();
+    if (isStatePreparedOrFinishedRun())
+      shape = _execution->getInputShape(onert::ir::IOIndex{index});
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {
@@ -566,6 +570,9 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 
 NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
 {
+  if (!isStateModelLoaded())
+    return NNFW_STATUS_ERROR;
+
   try
   {
     if (!op || !null_terminating(op, MAX_OP_NAME_LENGTH) || !backend ||
@@ -581,7 +588,8 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
       return NNFW_STATUS_ERROR;
     }
 
-    _source->set(key, backend);
+    auto &opcode_to_backend = _compiler->options().manual_scheduler_options.opcode_to_backend;
+    opcode_to_backend.emplace(onert::ir::toOpCode(op), backend);
   }
   catch (const std::exception &e)
   {

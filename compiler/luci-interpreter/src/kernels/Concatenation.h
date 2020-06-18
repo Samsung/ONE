@@ -31,6 +31,9 @@ public:
   Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
                 const ConcatenationParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return _inputs; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

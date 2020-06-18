@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief BCQ_GATHER in Circle
  */
-class CircleBCQGather final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::BCQ_GATHER>>
+class CircleBCQGather final : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::BCQ_GATHER>>
 {
 public:
   loco::Node *input_scales(void) const { return at(0)->node(); }
@@ -39,6 +39,9 @@ public:
 
   loco::Node *indices(void) const { return at(2)->node(); }
   void indices(loco::Node *node) { at(2)->node(node); }
+
+  loco::Node *input_clusters(void) const { return at(3)->node(); }
+  void input_clusters(loco::Node *node) { at(3)->node(node); }
 
 public:
   int32_t axis(void) const { return _axis; }

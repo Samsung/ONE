@@ -38,11 +38,7 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   if (_io_desc.inputs.at(index.value()) != 0)
     throw std::runtime_error("Error in calling order");
 
-  auto shape_sig = _io_desc.input_shape_signature.find(index);
-  if (shape_sig != _io_desc.input_shape_signature.end())
-    shape_sig->second = new_shape; // update with new_shape
-  else
-    _io_desc.input_shape_signature.emplace(std::make_pair(index, new_shape));
+  _io_desc.input_shape_signature[index] = new_shape;
 }
 
 // TODO Remove default parameter
@@ -56,7 +52,7 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
 
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
-  // note: input_shape_sig contains shape passed by nnfw_apply_tensorinfo()
+  // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
   {
     auto input_shape_sig = _io_desc.input_shape_signature.find(index);
     auto size_required = (input_shape_sig != _io_desc.input_shape_signature.end())
@@ -155,6 +151,20 @@ void Execution::waitFinish()
 }
 
 bool Execution::isFinished(void) const { return finished; }
+
+ir::Shape Execution::getInputShape(ir::IOIndex ind) const
+{
+  auto itr = _io_desc.input_shape_signature.find(ind);
+  if (itr == _io_desc.input_shape_signature.end())
+  {
+    auto operand_idx = primary_subgraph().getInputs().at(ind.value());
+    return primary_subgraph().operands().at(operand_idx).shape();
+  }
+  else
+  {
+    return itr->second;
+  }
+}
 
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {

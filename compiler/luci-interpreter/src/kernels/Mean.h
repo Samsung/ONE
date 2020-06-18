@@ -32,6 +32,9 @@ class Mean : public KernelWithParams<ReducerParams>
 public:
   Mean(const Tensor *input, const Tensor *axes, Tensor *output, const ReducerParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _axes}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

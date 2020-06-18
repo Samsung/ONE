@@ -54,6 +54,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleCast *node) final { return node->dtype(); }
 
+  loco::DataType visit(const luci::CircleCeil *node) final { return loco::dtype_get(node->x()); }
+
   loco::DataType visit(const luci::CircleConcatenation *node) final
   {
     // TODO Support when CircleConcatenation has 0 input
@@ -263,6 +265,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->start());
   }
 
+  loco::DataType visit(const luci::CircleRank *) final { return loco::DataType::S32; }
+
   loco::DataType visit(const luci::CircleMul *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleOneHot *node) final
@@ -316,6 +320,13 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   {
     return loco::dtype_get(node->input());
   }
+
+  loco::DataType visit(const luci::CircleReverseSequence *node) final
+  {
+    return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleRound *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleRsqrt *node) final { return loco::dtype_get(node->x()); }
 

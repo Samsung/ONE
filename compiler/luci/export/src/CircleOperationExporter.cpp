@@ -104,6 +104,7 @@ public:
   void visit(luci::CirclePow *) final;
   void visit(luci::CirclePRelu *) final;
   void visit(luci::CircleRange *) final;
+  void visit(luci::CircleRank *) final;
   void visit(luci::CircleReduceAny *) final;
   void visit(luci::CircleReduceMax *) final;
   void visit(luci::CircleReduceMin *) final;
@@ -114,6 +115,8 @@ public:
   void visit(luci::CircleReshape *) final;
   void visit(luci::CircleResizeBilinear *) final;
   void visit(luci::CircleResizeNearestNeighbor *) final;
+  void visit(luci::CircleReverseSequence *) final;
+  void visit(luci::CircleRound *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleScatterNd *) final;
   void visit(luci::CircleSelect *) final;
@@ -1053,6 +1056,19 @@ void OperationExporter::visit(luci::CircleRange *node)
   gd._operators.push_back(op_offset);
 }
 
+void OperationExporter::visit(luci::CircleRank *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_RANK);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateRankOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_RankOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
 void OperationExporter::visit(luci::CircleReduceAny *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REDUCE_ANY);
@@ -1203,6 +1219,31 @@ void OperationExporter::visit(luci::CircleResizeNearestNeighbor *node)
   auto op_offset =
       CreateOperator(builder, op_idx, inputs, outputs,
                      circle::BuiltinOptions_ResizeNearestNeighborOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleReverseSequence *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_SEQUENCE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->seq_lengths())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateReverseSequenceOptions(builder, node->seq_axis(), node->batch_axis());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReverseSequenceOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleRound *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ROUND);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 

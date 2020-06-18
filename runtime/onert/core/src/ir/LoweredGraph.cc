@@ -41,6 +41,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 {
   // Build backend contexts
   auto &backend_manager = compiler::BackendManager::get();
+
+  // Always create Controlflow backend context
+  auto cf_backend = backend_manager.getControlflow();
+  _backend_contexts.emplace(cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(),
+                                                               options.executor == "Linear"));
+
+  // Create contexts for other backends
   for (auto backend_str : options.backend_list)
   {
     backend_manager.loadBackend(backend_str);
@@ -379,11 +386,12 @@ void LoweredGraph::dumpLowerInfo()
       std::string def_layouts = factors_to_string(lower_info->def_factors());
       std::string use_layouts = factors_to_string(lower_info->use_factors());
       sstream << "Operand #" << index.value() << " LowerInfo" << std::endl;
-      sstream << "  - Shape           : { " << (shape.rank() > 0 ? shape.dim(0) : 0) << " "
-              << (shape.rank() > 1 ? shape.dim(1) : 0) << " "
-              << (shape.rank() > 2 ? shape.dim(2) : 0) << " "
-              << (shape.rank() > 3 ? shape.dim(3) : 0) << " "
-              << "}" << std::endl;
+      sstream << "  - Shape           : { ";
+      for (auto i = 0; i < shape.rank(); ++i)
+      {
+        sstream << (shape.dim(i)) << " ";
+      }
+      sstream << "}" << std::endl;
       sstream << "  - Def Operations  : " << def_ops << std::endl;
       sstream << "  - Use Operations  : " << use_ops << std::endl;
       sstream << "  - Lower Info" << std::endl;

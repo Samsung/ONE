@@ -18,13 +18,11 @@
 #include "luci/IR/Nodes/CircleInput.h"
 #include "luci/IR/Nodes/CircleOutput.h"
 
-#include "luci/IR/CircleNodeVisitor.h"
-
 #include <loco/IR/Graph.h>
 #include <loco/IR/GraphInputIndex.h>
 #include <loco/IR/GraphOutputIndex.h>
 
-#include <logo/DeadNodeQueryService.h>
+#include "DeadNodeQueryService.h"
 
 #include <cassert>
 #include <memory>
@@ -67,59 +65,6 @@ struct GoiQueryServiceImpl final : public loco::GraphOutputIndexQueryService
     assert(associated(node));
     auto circleoutput = loco::must_cast<const luci::CircleOutput *>(node);
     return circleoutput->index();
-  }
-};
-
-struct VirtualOutputDetector final : public luci::CircleNodeMutableVisitor<bool>
-{
-  bool visit(luci::CircleIfOut *) final { return true; }
-  bool visit(luci::CircleSplitOut *) final { return true; }
-  bool visit(luci::CircleSplitVOut *) final { return true; }
-  bool visit(luci::CircleTopKV2Out *) final { return true; }
-  bool visit(luci::CircleUnpackOut *) final { return true; }
-  bool visit(luci::CircleWhileOut *) final { return true; }
-
-  bool visit(luci::CircleNode *) final { return false; }
-};
-
-struct DeadNodeQueryServiceImpl final : public logo::DeadNodeQueryService
-{
-  bool isDeadNode(loco::Node *node) final
-  {
-    auto g = node->graph();
-    auto input_nodes_vec = loco::input_nodes(g);
-    auto output_nodes_vec = loco::output_nodes(g);
-
-    auto input_nodes = std::set<loco::Node *>(input_nodes_vec.begin(), input_nodes_vec.end());
-    auto output_nodes = std::set<loco::Node *>(output_nodes_vec.begin(), output_nodes_vec.end());
-    auto active_nodes = loco::active_nodes(output_nodes_vec);
-
-    if (active_nodes.find(node) != active_nodes.end())
-      return false;
-    // input and output nodes are not dead node even if it is not active.
-    if (input_nodes.find(node) != input_nodes.end())
-      return false;
-    if (output_nodes.find(node) != output_nodes.end())
-      return false;
-
-    // if node is one of virtual mulitple outputs, we need to ask the real node
-    if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
-    {
-      VirtualOutputDetector d;
-      if (circle_node->accept(&d))
-      {
-        assert(node->arity() == 1);
-        loco::Node *real_node = node->arg(0);
-        if (active_nodes.find(real_node) != active_nodes.end())
-          return false;
-        if (input_nodes.find(real_node) != input_nodes.end())
-          return false;
-        if (output_nodes.find(real_node) != output_nodes.end())
-          return false;
-      }
-    }
-
-    return true;
   }
 };
 

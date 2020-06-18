@@ -37,12 +37,22 @@ MatrixBandPartLayer::MatrixBandPartLayer()
 
 void MatrixBandPartLayer::matrixBandPartFloat32()
 {
-  auto num_lower_diag = *reinterpret_cast<const int *>(_num_lower_diag->buffer());
-  auto num_upper_diag = *reinterpret_cast<const int *>(_num_upper_diag->buffer());
-
-  nnfw::cker::MatrixBandPart(num_lower_diag, num_upper_diag, getTensorShape(_input),
-                             reinterpret_cast<const float *>(_input->buffer()),
-                             getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  if (_num_lower_diag->data_type() == OperandType::INT64)
+  {
+    nnfw::cker::MatrixBandPart<int64_t>(
+        *reinterpret_cast<const int64_t *>(_num_lower_diag->buffer()),
+        *reinterpret_cast<const int64_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
+        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+        reinterpret_cast<float *>(_output->buffer()));
+  }
+  else
+  {
+    nnfw::cker::MatrixBandPart<int32_t>(
+        *reinterpret_cast<const int32_t *>(_num_lower_diag->buffer()),
+        *reinterpret_cast<const int32_t *>(_num_upper_diag->buffer()), getTensorShape(_input),
+        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
+        reinterpret_cast<float *>(_output->buffer()));
+  }
 }
 
 void MatrixBandPartLayer::matrixBandPartQuant8() { throw std::runtime_error{"NYI"}; }
@@ -58,6 +68,11 @@ void MatrixBandPartLayer::configure(const Tensor *input, const Tensor *num_lower
 
 void MatrixBandPartLayer::run()
 {
+  if (_num_lower_diag->data_type() != _num_upper_diag->data_type())
+  {
+    throw std::runtime_error{"MatrixBandpart: num_lower and num_upper must have the same type"};
+  }
+
   if (_input->data_type() == OperandType::FLOAT32)
   {
     matrixBandPartFloat32();

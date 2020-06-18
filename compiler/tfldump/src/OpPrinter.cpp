@@ -662,6 +662,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =
       make_unique<ResizeNearestNeighborPrinter>();
   _op_map[tflite::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
+  // There is no Option for ROUND
   // There is no Option for SELECT
   _op_map[tflite::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN

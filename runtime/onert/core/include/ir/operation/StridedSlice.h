@@ -44,7 +44,6 @@ public:
     int32_t begin_mask;
     int32_t end_mask;
     int32_t shrink_axis_mask;
-    int32_t rank;
   };
 
 public:

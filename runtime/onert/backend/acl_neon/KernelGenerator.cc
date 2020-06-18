@@ -1705,7 +1705,7 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   const auto backend_layout = inputData_alloc->layout();
 
   // Set initializers for indices data such as order of inputData
-  int input_rank = node.param().rank;
+  int input_rank = _ctx.at(input_index).shape().rank();
   std::vector<int32_t> starts;
   std::vector<int32_t> ends;
   std::vector<int32_t> strides;

@@ -64,14 +64,17 @@
 #include "BuildBuiltinOptions/RangeOptions.h"
 #include "BuildBuiltinOptions/Pool2DOptions.h"
 #include "BuildBuiltinOptions/PowOptions.h"
+#include "BuildBuiltinOptions/RankOptions.h"
 // There is no PReluOptions
 #include "BuildBuiltinOptions/ReducerOptions.h"
 #include "BuildBuiltinOptions/ReshapeOptions.h"
 #include "BuildBuiltinOptions/ResizeBilinearOptions.h"
 #include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
 #include "BuildBuiltinOptions/ReverseSequenceOptions.h"
+// There is no RoundOptions
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/ScatterNdOptions.h"
+#include "BuildBuiltinOptions/SegmentSumOptions.h"
 #include "BuildBuiltinOptions/SelectOptions.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions

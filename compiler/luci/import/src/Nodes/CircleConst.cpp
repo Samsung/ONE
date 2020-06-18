@@ -81,6 +81,14 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
     return nullptr;
   }
 
+  // if tensor_index is used as output to some other operator, this is not a constant
+  auto tensoroutputs = context->tensoroutputs();
+  if (tensoroutputs->find(tensor_index))
+  {
+    // other operator output tensor
+    return nullptr;
+  }
+
   uint32_t num_elements = 1;
   for (uint32_t r = 0; r < const_dims.size(); ++r)
   {

@@ -56,16 +56,21 @@ void DynamicInferer::visit(const ir::operation::Permute &op)
   // getting output shapes
   auto new_shape = input_shape;
   // Permute is a special operation that layouts of input/output may be different
+  assert(new_shape.rank() <= ir::Shape::MAX_RANK);
   if (new_shape.rank() >= 4)
   {
     if (op.getPermuteType() == ir::operation::Permute::Type::NHWC_TO_NCHW)
     {
+      // Permutation changing layout beyond 4-D is not supported yet
+      assert(new_shape.rank() == 4);
       new_shape.dim(1) = input_shape.dim(3);
       new_shape.dim(2) = input_shape.dim(1);
       new_shape.dim(3) = input_shape.dim(2);
     }
     else if (op.getPermuteType() == ir::operation::Permute::Type::NCHW_TO_NHWC)
     {
+      // Permutation changing layout beyond 4-D is not supported yet
+      assert(new_shape.rank() == 4);
       new_shape.dim(1) = input_shape.dim(2);
       new_shape.dim(2) = input_shape.dim(3);
       new_shape.dim(3) = input_shape.dim(1);
