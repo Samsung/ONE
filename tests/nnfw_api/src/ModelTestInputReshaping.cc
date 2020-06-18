@@ -52,13 +52,7 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
   */
 
   // input reshaping from [2, 2] to [4, 2]
-  nnfw_tensorinfo ti;
-  {
-    ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-    ti.rank = 2;
-    ti.dims[0] = 4;
-    ti.dims[1] = 2;
-  }
+  nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {4, 2}};
   res = nnfw_set_input_tensorinfo(_session, 0, &ti);
 
   res = nnfw_prepare(_session);
