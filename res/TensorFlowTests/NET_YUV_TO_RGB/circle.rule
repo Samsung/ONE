@@ -1,0 +1,5 @@
+# tf2circle-dredd-pbtxt-test for YUV to RGB conversion
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1  # 1 means verification is OK
+
+RULE    "ALL_OP_COUNT"            $(all_op_count) '=' 3
