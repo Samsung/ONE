@@ -34,7 +34,6 @@ public:
   struct Param
   {
     int32_t axis;
-    int32_t rank;
   };
 
 public:

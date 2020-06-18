@@ -37,23 +37,11 @@ public:
   };
 
 public:
-  struct Param
-  {
-    int32_t rank;
-  };
-
-public:
-  Pad(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param);
+  Pad(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Pad; }
-
-public:
-  const Param &param() const { return _param; }
-
-private:
-  Param _param;
 };
 
 } // namespace operation
