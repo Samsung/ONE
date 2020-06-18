@@ -25,9 +25,7 @@ namespace luci
 
 bool CircleBCQGatherGraphBuilder::validate(const ValidateArgs &args) const
 {
-  // It is for keeping old version and new version for temporary.
-  // This checking is subject to change in near future.
-  if (args.op.inputs.size() != 3 && args.op.inputs.size() != 4)
+  if (args.op.inputs.size() != 4)
     return false;
 
   return true;

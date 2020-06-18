@@ -22,14 +22,6 @@
 #include <string>
 #include <set>
 
-/**
- * NOTE Current FuseBCQPass is implemented only for special cases.
- *      And schema of BCQ operations is subject to be changed in near future.
- *      Accordingly, most of implementations for FuseBCQPass will be changed.
- *
- * TODO Revise current implementation to support updated BCQ operations.
- */
-
 namespace
 {
 
@@ -70,26 +62,36 @@ const std::string node_name_prefix(luci::NodeName node_name)
     const auto index = prefix.find("Tensordot/MatMul");
     prefix = prefix.substr(0, index - 1);
   }
-  else if (prefix.find("GatherV2") != std::string::npos)
+  else if (prefix.find("MatMul") != std::string::npos)
   {
-    const auto index = prefix.find("GatherV2");
+    const auto index = prefix.find("MatMul");
     prefix = prefix.substr(0, index - 1);
   }
-  else if (prefix.find("weights/read") != std::string::npos)
+  else if (prefix.find("kernel/") != std::string::npos)
   {
-    const auto index = prefix.find("weights/read");
+    const auto index = prefix.find("kernel/");
     prefix = prefix.substr(0, index - 1);
   }
-  else if (prefix.find("kernel_") != std::string::npos)
-  {
-    const auto index = prefix.find("kernel_");
-    prefix = prefix.substr(0, index - 1);
-  }
-  else if (prefix.find("weights_") != std::string::npos)
-  {
-    const auto index = prefix.find("weights_");
-    prefix = prefix.substr(0, index - 1);
-  }
+  // else if (prefix.find("GatherV2") != std::string::npos)
+  // {
+  //   const auto index = prefix.find("GatherV2");
+  //   prefix = prefix.substr(0, index - 1);
+  // }
+  // else if (prefix.find("weights/read") != std::string::npos)
+  // {
+  //   const auto index = prefix.find("weights/read");
+  //   prefix = prefix.substr(0, index - 1);
+  // }
+  // else if (prefix.find("kernel_") != std::string::npos)
+  // {
+  //   const auto index = prefix.find("kernel_");
+  //   prefix = prefix.substr(0, index - 1);
+  // }
+  // else if (prefix.find("weights_") != std::string::npos)
+  // {
+  //   const auto index = prefix.find("weights_");
+  //   prefix = prefix.substr(0, index - 1);
+  // }
 
   return prefix;
 }
@@ -107,15 +109,20 @@ public:
     const auto node_name = node->name();
     const auto prefix = node_name_prefix(node_name);
 
-    // Be careful for order, '_alphas_const' and '_bits_const' appear twice.
-    if (node_name.find("_num_quantized_bits_const") != std::string::npos)
-      _const_nodes_num_quantized_bits_const[prefix] = node;
-    else if (node_name.find("_per_col_alphas_const") != std::string::npos)
-      _const_nodes_per_col_alphas_const[prefix] = node;
-    else if (node_name.find("_alphas_const") != std::string::npos)
-      _const_nodes_alphas_const[prefix] = node;
-    else if (node_name.find("_bits_const") != std::string::npos)
-      _const_nodes_bits_const[prefix] = node;
+    if (node_name.find("bcqinfo_do_w_x") != std::string::npos)
+      _do_w_x[prefix] = node;
+    else if (node_name.find("bcqinfo_alpha") != std::string::npos)
+      _alpha[prefix] = node;
+    else if (node_name.find("bcqinfo_packed_binary_code") != std::string::npos)
+      _packed_binary_code[prefix] = node;
+    else if (node_name.find("bcqinfo_number_of_clusters") != std::string::npos)
+      _number_of_clusters[prefix] = node;
+    else if (node_name.find("bcqinfo_size_of_clusters") != std::string::npos)
+      _size_of_clusters[prefix] = node;
+    else if (node_name.find("bcqinfo_qbits_of_clusters") != std::string::npos)
+      _qbits_of_clusters[prefix] = node;
+    else if (node_name.find("bcqinfo_dequant_weight") != std::string::npos)
+      _dequant_weight[prefix] = node;
   }
 
   bool has_BCQ_info(luci::CircleConst *node)
@@ -123,71 +130,73 @@ public:
     const auto prefix = node_name_prefix(node->name());
     bool has_info = true;
 
-    has_info &= (_const_nodes_alphas_const.find(prefix) != _const_nodes_alphas_const.end());
-    has_info &= (_const_nodes_bits_const.find(prefix) != _const_nodes_bits_const.end());
-    has_info &= (_const_nodes_num_quantized_bits_const.find(prefix) !=
-                 _const_nodes_num_quantized_bits_const.end());
-    has_info &=
-        (_const_nodes_per_col_alphas_const.find(prefix) != _const_nodes_per_col_alphas_const.end());
+    has_info &= (_do_w_x.find(prefix) != _do_w_x.end());
+    has_info &= (_alpha.find(prefix) != _alpha.end());
+    has_info &= (_packed_binary_code.find(prefix) != _packed_binary_code.end());
+    has_info &= (_number_of_clusters.find(prefix) != _number_of_clusters.end());
+    has_info &= (_size_of_clusters.find(prefix) != _size_of_clusters.end());
+    has_info &= (_qbits_of_clusters.find(prefix) != _qbits_of_clusters.end());
 
     return has_info;
   }
 
-  luci::CircleConst *get_alphas(luci::CircleConst *node)
+  bool do_w_x(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return _const_nodes_alphas_const[prefix];
+    return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
   }
 
-  luci::CircleConst *get_binary(luci::CircleConst *node)
+  luci::CircleConst *get_alpha(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return _const_nodes_bits_const[prefix];
+    return _alpha[prefix];
   }
 
-  luci::CircleConst *get_packed_binary(luci::CircleConst *node)
+  luci::CircleConst *get_packed_binary_code(luci::CircleConst *node)
   {
-    auto bits_const = get_binary(node);
+    const auto prefix = node_name_prefix(node->name());
+    return _packed_binary_code[prefix];
+  }
 
-    const auto graph = node->graph();
-    auto packed_binary = graph->nodes()->create<luci::CircleConst>();
+  luci::CircleConst *get_number_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _number_of_clusters[prefix];
+  }
 
-    auto dim_bits = bits_const->dim(0).value();
-    auto dim_out = bits_const->dim(1).value();
-    auto dim_hidden = bits_const->dim(2).value();
+  luci::CircleConst *get_size_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _size_of_clusters[prefix];
+  }
 
-    if (dim_hidden % 32 != 0)
-      throw std::runtime_error("hidden size must be multiplier of 32");
+  luci::CircleConst *get_qbits_of_clusters(luci::CircleConst *node)
+  {
+    const auto prefix = node_name_prefix(node->name());
+    return _qbits_of_clusters[prefix];
+  }
 
-    // TODO Support when hidden size cannot be divided by 32
-    packed_binary->dtype(loco::DataType::S32);
-    packed_binary->rank(3);
-    packed_binary->dim(0) = dim_out;
-    packed_binary->dim(1) = dim_bits;
-    packed_binary->dim(2) = dim_hidden / 32;
+  luci::CircleConst *packed_clusters(luci::CircleConst *node)
+  {
+    auto graph = node->graph();
+    auto qbits_of_clusters = get_qbits_of_clusters(node);
+    auto size_of_clusters = get_size_of_clusters(node);
+    const auto number_of_clusters = get_number_of_clusters(node)->at<loco::DataType::S32>(0);
 
-    packed_binary->size<loco::DataType::S32>(dim_out * dim_bits * (dim_hidden / 32));
+    auto packed_clusters = graph->nodes()->create<luci::CircleConst>();
+    packed_clusters->dtype(loco::DataType::S32);
+    packed_clusters->size<loco::DataType::S32>(number_of_clusters * 2);
+    packed_clusters->rank(2);
+    packed_clusters->dim(0) = number_of_clusters;
+    packed_clusters->dim(1) = 2;
 
-    for (uint32_t o = 0; o < dim_out; ++o)
+    for(int i=0;i<number_of_clusters;++i)
     {
-      for (uint32_t b = 0; b < dim_bits; ++b)
-      {
-        for (uint32_t h = 0; h < dim_hidden / 32; ++h)
-        {
-          int32_t bits = 0;
-          for (int32_t i = 31; i >= 0; --i)
-          {
-            bits = ((bits << 1) | (bits_const->at<loco::DataType::BOOL>(
-                                       b * dim_out * dim_hidden + o * dim_hidden + (h * 32 + i)) &
-                                   0x1));
-          }
-          packed_binary->at<loco::DataType::S32>(o * dim_bits * (dim_hidden / 32) +
-                                                 b * (dim_hidden / 32) + h) = bits;
-        }
-      }
+      packed_clusters->at<loco::DataType::S32>(i*2) = qbits_of_clusters->at<loco::DataType::S32>(i);
+      packed_clusters->at<loco::DataType::S32>(i*2+1) = size_of_clusters->at<loco::DataType::S32>(i);
     }
-
-    return packed_binary;
+    
+    return packed_clusters;
   }
 
   /**
@@ -208,7 +217,7 @@ public:
       return noOp;
     };
 
-    for (auto &n : _const_nodes_alphas_const)
+    for (auto &n : _alpha)
     {
       auto node = n.second;
 
@@ -221,73 +230,64 @@ public:
       }
     }
 
-    for (auto &n : _const_nodes_num_quantized_bits_const)
+    for (auto &n : _packed_binary_code)
+    {
+      auto node = n.second;
+
+      for (auto s : loco::succs(node))
+      {
+        if (auto outnode = dynamic_cast<luci::CircleOutput *>(s))
+        {
+          outnode->from(createNoOp(node));
+        }
+      }
+    }
+
+    for (auto &n : _do_w_x)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
 
-    for (auto &n : _const_nodes_bits_const)
+    for (auto &n : _number_of_clusters)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
 
-    for (auto &n : _const_nodes_per_col_alphas_const)
+    for (auto &n : _size_of_clusters)
+    {
+      auto node = n.second;
+      loco::replace(node).with(createNoOp(node));
+    }
+
+    for (auto &n : _qbits_of_clusters)
+    {
+      auto node = n.second;
+      loco::replace(node).with(createNoOp(node));
+    }
+
+    for (auto &n : _dequant_weight)
     {
       auto node = n.second;
       loco::replace(node).with(createNoOp(node));
     }
   }
 
-  bool is_valid_BCQ(luci::CircleConst *node)
+  bool is_valid_BCQ(luci::CircleConst *)
   {
-    auto alphas = get_alphas(node);
-    auto binary = get_binary(node);
-
-    if (alphas->dim(0).value() != binary->dim(1).value())
-      return false;
-
-    if (alphas->dim(1).value() != binary->dim(0).value())
-      return false;
-
-    // TODO Support when hidden size cannot be divided by 32
-    if (binary->dim(2).value() % 32 != 0)
-      return false;
-
-    int bits_size = alphas->dim(1).value();
-    int out_size = alphas->dim(0).value();
-    int hidden_size = binary->dim(2).value();
-
-    // Quantized value validation
-    for (int o = 0; o < out_size; ++o)
-    {
-      for (int h = 0; h < hidden_size; ++h)
-      {
-        float res = 0.0;
-        for (int b = 0; b < bits_size; ++b)
-        {
-          if (binary->at<loco::DataType::BOOL>(b * out_size * hidden_size + o * hidden_size + h) ==
-              1)
-            res += alphas->at<loco::DataType::FLOAT32>(o * bits_size + b);
-          else
-            res -= alphas->at<loco::DataType::FLOAT32>(o * bits_size + b);
-        }
-
-        auto diff = res - node->at<loco::DataType::FLOAT32>(o * hidden_size + h);
-        if (diff < -0.0001 || 0.0001 < diff)
-          return false;
-      }
-    }
-
+    // IMPLEMENT THIS!!!!!!!!!!!!!!!
     return true;
   }
 
 private:
-  std::map<std::string, luci::CircleConst *> _const_nodes_alphas_const;
-  std::map<std::string, luci::CircleConst *> _const_nodes_bits_const;
-  std::map<std::string, luci::CircleConst *> _const_nodes_num_quantized_bits_const;
-  std::map<std::string, luci::CircleConst *> _const_nodes_per_col_alphas_const;
+  std::map<std::string, luci::CircleConst *> _do_w_x;
+  std::map<std::string, luci::CircleConst *> _alpha;
+  std::map<std::string, luci::CircleConst *> _packed_binary_code;
+  std::map<std::string, luci::CircleConst *> _number_of_clusters;
+  std::map<std::string, luci::CircleConst *> _size_of_clusters;
+  std::map<std::string, luci::CircleConst *> _qbits_of_clusters;
+  std::map<std::string, luci::CircleConst *> _dequant_weight;
 };
 
 } // namespace
@@ -319,15 +319,25 @@ bool FuseBCQPass::run(loco::Graph *g)
         assert(converter.is_valid_BCQ(params));
         auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
-        bcq_gather->input_scales(converter.get_alphas(params));
-        bcq_gather->input_binary(converter.get_packed_binary(params));
+        bcq_gather->input_scales(converter.get_alpha(params));
+        bcq_gather->input_binary(converter.get_packed_binary_code(params));
         bcq_gather->indices(gather->indices());
+        bcq_gather->input_clusters(converter.packed_clusters(params));
 
         const auto binary_hidden_size =
-            dynamic_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(2).value();
-        bcq_gather->input_hidden_size(binary_hidden_size * 32);
-        bcq_gather->axis(gather->axis());
+            dynamic_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(0).value() * 32;
+        bcq_gather->input_hidden_size(binary_hidden_size);
 
+        if(converter.do_w_x(params))
+        {
+          bcq_gather->axis(gather->axis());
+        }
+        else
+        {
+          const auto axis_transpose = (gather->axis() == 0) ? 1 : 0;
+          bcq_gather->axis(axis_transpose);
+        }
+        
         loco::replace(gather).with(bcq_gather);
 
         changed = true;
@@ -342,17 +352,43 @@ bool FuseBCQPass::run(loco::Graph *g)
 
         auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
-        bcq_fc->input(fully_connected->input());
-        bcq_fc->weights_scales(converter.get_alphas(weights));
-        bcq_fc->weights_binary(converter.get_packed_binary(weights));
+        bcq_fc->weights_scales(converter.get_alpha(weights));
+        bcq_fc->weights_binary(converter.get_packed_binary_code(weights));
         bcq_fc->bias(fully_connected->bias());
+        bcq_fc->weights_clusters(converter.packed_clusters(weights));
 
         const auto binary_hidden_size =
-            dynamic_cast<luci::CircleConst *>(bcq_fc->weights_binary())->dim(2).value();
-        bcq_fc->weights_hidden_size(binary_hidden_size * 32);
+            dynamic_cast<luci::CircleConst *>(bcq_fc->weights_binary())->dim(1).value() * 32;
+        bcq_fc->weights_hidden_size(binary_hidden_size);
         bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
 
-        loco::replace(fully_connected).with(bcq_fc);
+        if(converter.do_w_x(weights))
+        {
+          bcq_fc->input(fully_connected->input());
+          loco::replace(fully_connected).with(bcq_fc);
+        }
+        else
+        {
+          auto perm = g->nodes()->create<luci::CircleConst>();
+          perm->dtype(loco::DataType::S32);
+          perm->size<loco::DataType::S32>(2);
+          perm->rank(1);
+          perm->dim(0) = 2;
+          perm->at<loco::DataType::S32>(0) = 1;
+          perm->at<loco::DataType::S32>(1) = 0;
+
+          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+          input_transpose->a(fully_connected->input());
+          input_transpose->perm(perm);
+
+          bcq_fc->input(input_transpose);
+
+          auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+          output_transpose->a(bcq_fc);
+          output_transpose->perm(perm);
+
+          loco::replace(fully_connected).with(output_transpose);
+        }
 
         changed = true;
       }

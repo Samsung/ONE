@@ -17,7 +17,6 @@
 #include "luci/CircleOptimizer.h"
 
 #include "luci/Pass/FuseBCQPass.h"
-#include "luci/Pass/FuseNewBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
@@ -120,10 +119,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseBCQ))
   {
     phase.emplace_back(std::make_unique<FuseBCQPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseNewBCQ))
-  {
-    phase.emplace_back(std::make_unique<FuseNewBCQPass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations
