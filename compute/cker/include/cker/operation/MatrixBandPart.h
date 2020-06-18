@@ -26,37 +26,37 @@ namespace nnfw
 {
 namespace cker
 {
-
-void MatrixBandPart(int num_lower_diags, int num_upper_diags, const Shape &input_shape,
+template <typename T>
+void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shape &input_shape,
                     const float *input_data, const Shape &output_shape, float *output_data)
 {
   auto last_dim = input_shape.DimensionsCount() - 1;
 
-  int batch_num = 0;
+  T batch_num = 0;
   for (int dim = 0; dim < last_dim - 2; dim++)
   {
     batch_num += input_shape.Dims(dim);
   }
 
-  const int row_num = input_shape.Dims(last_dim - 1);
-  const int col_num = input_shape.Dims(last_dim);
+  const T row_num = input_shape.Dims(last_dim - 1);
+  const T col_num = input_shape.Dims(last_dim);
 
   std::fill(output_data, output_data + output_shape.FlatSize(), 0); // output matrix init
 
   // reference code, without multithreading
-  for (int batch = 0; batch < batch_num; ++batch)
+  for (T batch = 0; batch < batch_num; ++batch)
   {
-    for (int row = 0; row < row_num; ++row)
+    for (T row = 0; row < row_num; ++row)
     {
       auto output = output_data + (batch * row_num * col_num + row * col_num);
       auto input = input_data + (batch * row_num * col_num + row * col_num);
 
-      const int band_start =
-          num_lower_diags < 0 ? 0 : std::min(col_num, std::max(int{0}, row - num_lower_diags));
-      const int band_end = num_upper_diags < 0 ? col_num : std::min(static_cast<int>(col_num),
-                                                                    row + num_upper_diags + 1);
+      const T band_start =
+          num_lower_diags < 0 ? 0 : std::min(col_num, std::max(T{0}, row - num_lower_diags));
+      const T band_end = num_upper_diags < 0 ? col_num : std::min(static_cast<T>(col_num),
+                                                                  row + num_upper_diags + 1);
 
-      for (int band_idx = band_start; band_idx < band_end; band_idx++)
+      for (T band_idx = band_start; band_idx < band_end; band_idx++)
       {
         output[band_idx] = input[band_idx];
       }
