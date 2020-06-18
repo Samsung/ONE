@@ -19,6 +19,7 @@
 
 #include <functional>
 #include <stdint.h>
+#include <string>
 
 namespace onert
 {
