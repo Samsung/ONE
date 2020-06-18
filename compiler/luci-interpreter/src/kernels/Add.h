@@ -30,6 +30,9 @@ class Add : public KernelWithParams<AddParams>
 public:
   Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input1, _input2}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

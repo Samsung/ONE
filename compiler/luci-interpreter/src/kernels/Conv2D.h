@@ -33,6 +33,9 @@ public:
   Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
          const Conv2DParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _filter, _bias}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+
   void configure() override;
   void execute() const override;
 

@@ -30,6 +30,9 @@ class Unpack : public KernelWithParams<UnpackParams>
 public:
   Unpack(const Tensor *input, std::vector<Tensor *> outputs, const UnpackParams &params);
 
+  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_outputs}; }
+
   void configure() override;
   void execute() const override;
 
