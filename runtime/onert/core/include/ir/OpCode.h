@@ -35,6 +35,7 @@ enum class OpCode
 };
 
 const char *toString(OpCode opcode);
+OpCode toOpCode(const std::string str);
 
 } // namespace ir
 } // namespace onert
