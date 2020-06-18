@@ -210,6 +210,11 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("mem_poll"))
   {
     _mem_poll = vm["mem_poll"].as<bool>();
+    // Instead of EXECUTE to avoid overhead, memory polling runs on WARMUP
+    if (_mem_poll && _warmup_runs == 0)
+    {
+      _warmup_runs = 1;
+    }
   }
 
   if (vm.count("write_report"))
