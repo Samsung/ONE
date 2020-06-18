@@ -57,12 +57,32 @@ void MulLayer::mulQuant8()
   int32_t output_activation_min, output_activation_max;
   CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
                                 &output_activation_max);
-  // nnfw::cker::BinaryArithmeticOpParam op_params;
-  // op_params.quantized_activation_max = output_activation_max;
-  // op_params.quantized_activation_min = output_activation_min;
+  nnfw::cker::BinaryArithmeticOpParam op_params;
 
-  // cker quant8 mul is not implemented yet
-  throw std::runtime_error{"Mull NYI for quantized"};
+  op_params.quantized_activation_max = output_activation_max;
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.input1_offset = -_lhs->data_offset();
+  op_params.input2_offset = -_rhs->data_offset();
+  op_params.output_offset = _output->data_offset();
+
+  double real_multiplier = _lhs->data_scale() * _rhs->data_scale() / _output->data_scale();
+  QuantizeMultiplier(real_multiplier, &op_params.output_multiplier, &op_params.output_shift);
+
+  const bool need_broadcast =
+      nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
+  if (need_broadcast)
+  {
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+        op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+    return;
+  }
+
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
+      getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
+      getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void MulLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,

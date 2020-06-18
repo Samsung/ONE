@@ -95,8 +95,6 @@ GeneratedTests.maximum_simple_quant8
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant8
-GeneratedTests.mul_broadcast_quant8
-GeneratedTests.mul_quant8
 GeneratedTests.neg
 GeneratedTests.neg_3D_int_nnfw
 GeneratedTests.neg_4D_int_nnfw
