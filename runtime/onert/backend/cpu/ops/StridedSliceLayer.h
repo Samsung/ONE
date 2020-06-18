@@ -39,7 +39,7 @@ public:
 public:
   void configure(const Tensor *input, const Tensor *begin, const Tensor *end, const Tensor *strides,
                  Tensor *output, const int32_t begin_mask, const int32_t end_mask,
-                 const int32_t shrink_axis_mask, const int32_t rank);
+                 const int32_t shrink_axis_mask);
   void run();
 
 private:
@@ -57,8 +57,6 @@ private:
   int32_t _end_mask;
   int32_t _new_axis_mask;
   int32_t _shrink_axis_mask;
-
-  int32_t _rank;
 };
 
 } // namespace ops

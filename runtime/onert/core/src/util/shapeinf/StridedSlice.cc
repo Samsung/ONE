@@ -245,7 +245,7 @@ void StaticInferer::visit(const ir::operation::StridedSlice &op)
   const auto begin_mask = op.param().begin_mask;
   const auto end_mask = op.param().end_mask;
   const auto shrink_axis_mask = op.param().shrink_axis_mask;
-  const auto rank = op.param().rank;
+  const auto rank = input.info().shape().rank();
 
   auto starts_buf = reinterpret_cast<const uint32_t *>(starts.data()->base());
   auto ends_buf = reinterpret_cast<const uint32_t *>(ends.data()->base());
