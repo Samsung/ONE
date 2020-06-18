@@ -26,6 +26,7 @@
 #include "kernels/FullyConnected.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
+#include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
@@ -251,6 +252,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
   params.alpha = node->alpha();
 
   return std::make_unique<kernels::LeakyRelu>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNormalization *node)
+{
+  assert(node->arity() == 1);
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  LocalResponseNormalizationParams params{};
+  params.radius = node->radius();
+  params.bias = node->bias();
+  params.alpha = node->alpha();
+  params.beta = node->beta();
+
+  return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
