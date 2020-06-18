@@ -35,6 +35,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulGraphBuilder);                                // 126
   CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDGraphBuilder);                        // 37
   CIRCLE_NODE(CAST, CircleCastGraphBuilder);                                               // 53
+  CIRCLE_NODE(CEIL, CircleCeilGraphBuilder);                                               // 104
   CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                                           // 32
   CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);                             // 2
   CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                                          // 3
@@ -148,7 +149,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_UNIQUE = 103,
-  // BuiltinOperator_CEIL = 104,
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_ADD_N = 106,
   // BuiltinOperator_WHERE = 109,
