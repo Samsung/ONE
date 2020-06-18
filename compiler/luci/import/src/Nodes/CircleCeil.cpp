@@ -38,8 +38,8 @@ bool CircleCeilGraphBuilder::validate(const ValidateArgs &args) const
 }
 
 CircleNode *CircleCeilGraphBuilder::build_node(const circle::OperatorT &,
-                                                const std::vector<CircleNode *> &inputs,
-                                                loco::Graph *graph) const
+                                               const std::vector<CircleNode *> &inputs,
+                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleCeil>();
   node->x(inputs[0]);
