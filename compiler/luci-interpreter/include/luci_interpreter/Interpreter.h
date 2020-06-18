@@ -59,8 +59,14 @@ private:
   void createKernels(const loco::Graph *graph);
 
   const loco::Graph *_main_graph = nullptr;
-  std::unique_ptr<class TensorMap> _tensor_map;
-  std::unique_ptr<class KernelMap> _kernel_map;
+  std::unique_ptr<class TensorMap> _node_to_tensor;
+
+  // Kernels, in execution order.
+  std::vector<std::unique_ptr<class Kernel>> _kernels;
+
+  // Observer functionality support.
+  std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;
+  std::unique_ptr<class Hook> _hook;
   std::vector<ExecutionObserver *> _observers;
 };
 

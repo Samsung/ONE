@@ -16,9 +16,11 @@
 
 #include "luci_interpreter/Interpreter.h"
 
+#include "core/Hook.h"
 #include "KernelBuilder.h"
 #include "KernelMap.h"
 #include "TensorMap.h"
+#include "RuntimeToIR.h"
 
 #include <loco/IR/Algorithm.h>
 
@@ -135,25 +137,54 @@ void Interpreter::createTensors(const loco::Graph *graph)
       tensor->writeData(const_data, data_size);
     }
 
-    _tensor_map->setTensor(node, std::move(tensor));
+    _runtime_to_ir->tensor_to_node.emplace(tensor.get(), node);
+    _node_to_tensor->setTensor(node, std::move(tensor));
   }
 }
 
 void Interpreter::createKernels(const loco::Graph *graph)
 {
-  KernelBuilder kernel_builder(*_tensor_map);
+  KernelBuilder kernel_builder(*_node_to_tensor);
 
-  for (uint32_t i = 0; i < graph->nodes()->size(); ++i)
+  // Create kernels for executable nodes (in execution order).
+  for (const loco::Node *loco_node :
+       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(graph))))
   {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(graph->nodes()->at(i));
-
+    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
     if (isExecutableNode(node))
-      _kernel_map->setKernel(node, node->accept(&kernel_builder));
+    {
+      _kernels.push_back(node->accept(&kernel_builder));
+    }
   }
 }
 
+class HookImpl final : public Hook
+{
+public:
+  HookImpl(RuntimeToIR &loader_map, const std::vector<ExecutionObserver *> &observers)
+      : _loader_map(loader_map), _observers(observers)
+  {
+  }
+
+  void postTensorWrite(Tensor *tensor) const override
+  {
+    assert(tensor != nullptr);
+    for (const auto &observer : _observers)
+    {
+      observer->postTensorWrite(_loader_map.tensor_to_node.at(tensor), tensor);
+    }
+  }
+
+private:
+  RuntimeToIR &_loader_map;
+  const std::vector<ExecutionObserver *> &_observers;
+};
+
 Interpreter::Interpreter(const luci::Module *module)
 {
+  _runtime_to_ir = std::make_unique<RuntimeToIR>();
+  _hook = std::make_unique<HookImpl>(*_runtime_to_ir, _observers);
+
   if (module->size() > 1)
   {
     throw std::runtime_error("Models with multiple subgraphs are not yet supported.");
@@ -161,8 +192,7 @@ Interpreter::Interpreter(const luci::Module *module)
 
   _main_graph = module->graph();
 
-  _tensor_map = std::make_unique<TensorMap>();
-  _kernel_map = std::make_unique<KernelMap>();
+  _node_to_tensor = std::make_unique<TensorMap>();
 
   createTensors(_main_graph);
   createKernels(_main_graph);
@@ -173,16 +203,9 @@ Interpreter::Interpreter(const luci::Module *module)
   // TODO Some kernels (ex. Reshape, Pad) need some of their input tensors (ex 'shape', 'paddings')
   //  to be known in order to configure properly. This means that 'configure' and 'execute' steps
   //  should be interleaved. For now such 'dynamic' tensors are not supported.
-  for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_main_graph))))
+  for (const auto &kernel : _kernels)
   {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-
-    if (isExecutableNode(node))
-    {
-      Kernel *kernel = _kernel_map->getKernel(node);
-      kernel->configure();
-    }
+    kernel->configure();
   }
 }
 
@@ -191,7 +214,7 @@ Interpreter::~Interpreter() = default;
 void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const void *data,
                                    size_t data_size)
 {
-  Tensor *tensor = _tensor_map->getTensor(input_node);
+  Tensor *tensor = _node_to_tensor->getTensor(input_node);
   if (tensor == nullptr)
   {
     const std::string &name = input_node->name();
@@ -203,7 +226,7 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
 void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *data,
                                    size_t data_size)
 {
-  Tensor *tensor = _tensor_map->getTensor(output_node->from());
+  Tensor *tensor = _node_to_tensor->getTensor(output_node->from());
   if (tensor == nullptr)
   {
     const std::string &name = output_node->name();
@@ -214,24 +237,20 @@ void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *
 
 void Interpreter::interpret()
 {
-  for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_main_graph))))
+  // Notify the observers that the input tensors have changed.
+  for (const loco::Node *node : loco::input_nodes(_main_graph))
   {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-
-    if (isExecutableNode(node))
+    Tensor *input_tensor = _node_to_tensor->getTensor(node);
+    _hook->postTensorWrite(input_tensor);
+  }
+  // Execute each kernel (they are stored in execution order) and notify the observers that kernel
+  // output tensors have changed.
+  for (const auto &kernel : _kernels)
+  {
+    kernel->execute();
+    for (Tensor *tensor : kernel->getOutputTensors())
     {
-      Kernel *kernel = _kernel_map->getKernel(node);
-      kernel->execute();
-    }
-
-    // Notify the observers that the node's output tensor has changed.
-    if (isTensorProducingNode(node))
-    {
-      for (ExecutionObserver *observer : _observers)
-      {
-        observer->postTensorWrite(node, _tensor_map->getTensor(node));
-      }
+      _hook->postTensorWrite(tensor);
     }
   }
 }
