@@ -60,20 +60,20 @@ public:
 
 private:
   void makeOpSequences(OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info,
-                       const compiler::CompilerOptions &options);
+                       const compiler::CompilerOptions &options,
+                       const compiler::BackendResolver &backend_resolver);
 
   void
   manipulateLowerInfo(OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info);
   void dumpLowerInfo();
   bool mergeable(const OpSequenceIndex &op_seq_index, const OperationIndex &node_index,
-                 Layout layout);
+                 Layout layout, const compiler::BackendResolver &backend_resolver);
   OpSequenceIndex appendFreshSingleOpSequence(const OperationIndex &node_index,
                                               const Operation &node);
 
 private:
   Graph _graph;
   backend::BackendContexts _backend_contexts;
-  std::unique_ptr<compiler::BackendResolver> _backend_resolver; // TODO Remove this
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   LowerInfoMap _lower_info_map;
   // Pass(for Perm) can accept only graph so that Graph has OpSequences as a member
