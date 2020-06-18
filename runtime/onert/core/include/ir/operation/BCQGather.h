@@ -36,7 +36,8 @@ public:
   {
     INPUT_SCALES = 0,
     INPUT_BINARY,
-    INDICES
+    INDICES,
+    INPUT_CLUSTERS,
   };
 
   struct Param
