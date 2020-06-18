@@ -93,6 +93,10 @@ void copy_shape_dtype(loco::Graph *graph)
         {
           node->dim(r) = loco::Dimension(shape.dim(r).value());
         }
+
+        // ShapeStatus should be update only when the status was UNDEFINED
+        if (node->shape_status() == ShapeStatus::UNDEFINED)
+          node->shape_status(ShapeStatus::VALID);
       }
     }
   }
