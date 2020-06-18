@@ -159,7 +159,7 @@ int main(const int argc, char **argv)
   verifyOutputTypes();
 
   // set input shape before compilation
-  setTensorInfo(args.getComillationShapeMap());
+  setTensorInfo(args.getShapeMapForPrepare());
 
   // prepare execution
 
@@ -169,7 +169,7 @@ int main(const int argc, char **argv)
   });
 
   // set input shape after compilation and before execution
-  setTensorInfo(args.getExecShapeMap());
+  setTensorInfo(args.getShapeMapForRun());
 
   // prepare input
   std::vector<Allocation> inputs(num_inputs);

@@ -130,11 +130,11 @@ void Args::Initialize(void)
          "{exec}-{nnpkg}-{backend}.csv will be generated.\n"
          "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
          "{nnpkg} name may be changed to realpath if you use symbolic-link.")
-    ("shape_compile", po::value<std::string>()->default_value("[]"),
+    ("shape_prepare", po::value<std::string>()->default_value("[]"),
          "set shape of specified tensor before compilation\n"
          "e.g. '[0, [1, 2], 2, []]' to set 0th tensor to [1, 2] and 2nd tensor to [].\n")
-    ("shape_exec", po::value<std::string>()->default_value("[]"),
-         "set shape of specified tensor right before execution\n"
+    ("shape_run", po::value<std::string>()->default_value("[]"),
+         "set shape of specified tensor right before running\n"
          "e.g. '[1, [1, 2]]` to set 1st tensor to [1, 2].\n")
 
     ;
@@ -262,30 +262,30 @@ void Args::Parse(const int argc, char **argv)
     _write_report = vm["write_report"].as<bool>();
   }
 
-  if (vm.count("shape_compile"))
+  if (vm.count("shape_prepare"))
   {
-    auto shape_str = vm["shape_compile"].as<std::string>();
+    auto shape_str = vm["shape_prepare"].as<std::string>();
     try
     {
-      handleShapeParam(_shape_compile, shape_str);
+      handleShapeParam(_shape_prepare, shape_str);
     }
     catch (const std::exception &e)
     {
-      std::cerr << "error with '--shape_compile' option: " << shape_str << std::endl;
+      std::cerr << "error with '--shape_prepare' option: " << shape_str << std::endl;
       exit(1);
     }
   }
 
-  if (vm.count("shape_exec"))
+  if (vm.count("shape_run"))
   {
-    auto shape_str = vm["shape_exec"].as<std::string>();
+    auto shape_str = vm["shape_run"].as<std::string>();
     try
     {
-      handleShapeParam(_shape_exec, shape_str);
+      handleShapeParam(_shape_run, shape_str);
     }
     catch (const std::exception &e)
     {
-      std::cerr << "error with '--shape_exec' option: " << shape_str << std::endl;
+      std::cerr << "error with '--shape_run' option: " << shape_str << std::endl;
       exit(1);
     }
   }
