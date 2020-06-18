@@ -74,7 +74,7 @@ struct FullyConnectedParams
 struct L2NormParams
 {
   Activation activation;
-}
+};
 
 struct LeakyReluParams
 {
