@@ -47,6 +47,6 @@ function preset_install()
 
   # Install tensorflow
   source "${NNAS_INSTALL_PREFIX}/bin/venv/bin/activate"
-  python -m pip install -U pip setuptools
-  python -m pip install tensorflow==2.2.0
+  python -m pip --trusted-host pypi.org --trusted-host files.pythonhost.org install -U pip setuptools
+  python -m pip --trusted-host pypi.org --trusted-host files.pythonhost.org install tensorflow==2.2.0
 }
