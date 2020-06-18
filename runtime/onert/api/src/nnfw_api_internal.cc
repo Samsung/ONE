@@ -453,6 +453,8 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     }
     auto opidx = primary_subgraph()->getInputs().at(index);
     auto shape = primary_subgraph()->operands().at(opidx).shape();
+    if (isStatePreparedOrFinishedRun())
+      shape = _execution->getInputShape(onert::ir::IOIndex{index});
     ti->rank = shape.rank();
     for (int j = 0; j < ti->rank; ++j)
     {

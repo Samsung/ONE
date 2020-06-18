@@ -152,6 +152,20 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
+ir::Shape Execution::getInputShape(ir::IOIndex ind) const
+{
+  auto itr = _io_desc.input_shape_signature.find(ind);
+  if (itr == _io_desc.input_shape_signature.end())
+  {
+    auto operand_idx = primary_subgraph().getInputs().at(ind.value());
+    return primary_subgraph().operands().at(operand_idx).shape();
+  }
+  else
+  {
+    return itr->second;
+  }
+}
+
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
   if (!isFinished())
