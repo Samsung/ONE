@@ -39,7 +39,6 @@ public:
   struct Param
   {
     std::vector<int> perm;
-    int32_t rank;
   };
 
 public:

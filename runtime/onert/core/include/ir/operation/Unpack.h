@@ -36,7 +36,6 @@ public:
   {
     int32_t num;
     int32_t axis;
-    int32_t rank;
   };
 
 public:

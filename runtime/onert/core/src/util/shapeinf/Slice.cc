@@ -24,9 +24,9 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, const int32_t *sizes,
-                          uint32_t rank)
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, const int32_t *sizes)
 {
+  const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
 
   for (uint32_t idx = 0; idx < rank; ++idx)
@@ -84,9 +84,8 @@ void StaticInferer::visit(const ir::operation::Slice &op)
 
   auto begins_buf = reinterpret_cast<const int32_t *>(begins.data()->base());
   auto sizes_buf = reinterpret_cast<const int32_t *>(sizes.data()->base());
-  const auto rank = op.param().rank;
 
-  ir::Shape new_shape = inferSliceShape(input.info().shape(), begins_buf, sizes_buf, rank);
+  ir::Shape new_shape = inferSliceShape(input.info().shape(), begins_buf, sizes_buf);
   output.info().shape(new_shape);
 }
 
@@ -109,10 +108,8 @@ void DynamicInferer::visit(const ir::operation::Slice &op)
   ir::Shape input_shape = input->getShape();
   auto begins_buf = reinterpret_cast<const int32_t *>(begins->buffer());
   auto sizes_buf = reinterpret_cast<const int32_t *>(sizes->buffer());
-  const auto rank = input_shape.rank();
 
-  ir::Shape new_shape =
-      onert::shape_inference::inferSliceShape(input_shape, begins_buf, sizes_buf, rank);
+  ir::Shape new_shape = onert::shape_inference::inferSliceShape(input_shape, begins_buf, sizes_buf);
 
   _dynamic_tensor_manager->applyShape(output_index, new_shape);
   assert(output->buffer() != nullptr);

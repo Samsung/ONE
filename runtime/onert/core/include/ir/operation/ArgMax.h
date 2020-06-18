@@ -37,7 +37,6 @@ public:
   struct Param
   {
     int axis;
-    int rank;
     DataType output_type;
   };
 

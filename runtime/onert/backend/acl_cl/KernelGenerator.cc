@@ -309,7 +309,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   else
   {
     auto l = std::make_unique<::arm_compute::CLConcatenateLayer>();
-    const auto rank = node.param().rank;
+    const auto rank = _ctx.at(ofm_index).shape().rank();
     const auto frontend_layout = _current_op_seq_layout;
     const auto backend_layout = output_alloc->layout();
     const auto fixed_axis =
@@ -431,7 +431,7 @@ void KernelGenerator::visit(const ir::operation::ReduceSum &node)
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   std::set<std::uint32_t> acl_axes;
-  const int input_rank = node.param().rank;
+  const int input_rank = _ctx.at(input_index).shape().rank();
   for (int axis : axes)
   {
     if (axis < 0)
@@ -551,7 +551,7 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   const auto backend_layout = inputData_alloc->layout();
 
   // Set initializers for indices data such as order of inputData
-  int input_rank = node.param().rank;
+  int input_rank = _ctx.at(input_index).shape().rank();
   std::vector<int32_t> starts;
   std::vector<int32_t> ends;
   starts.resize(input_rank, 0);
@@ -705,7 +705,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &perm{node.param().perm};
 
-  const auto rank = node.param().rank;
+  const auto rank = _ctx.at(ifm_idx).shape().rank();
 
   auto ofm_alloc = _tensor_builder->at(ofm_idx).get();
   auto ifm_alloc = _tensor_builder->at(ifm_idx).get();
@@ -1056,7 +1056,7 @@ void KernelGenerator::visit(const ir::operation::ReduceMax &node)
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   std::set<std::uint32_t> acl_axes;
-  const int ifm_rank = node.param().rank;
+  const int ifm_rank = _ctx.at(input_index).shape().rank();
   for (int axis : axes)
   {
     if (axis < 0)
@@ -1103,7 +1103,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   const auto output_index{node.getOutputs().at(0)};
   auto axis{node.param().axis};
 
-  const auto output_rank = node.param().rank;
+  const auto output_rank = _ctx.at(output_index).shape().rank();
 
   std::vector<ir::OperandIndex> input_indexes;
   for (const auto &input_index : node.getInputs())
@@ -1444,7 +1444,7 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
 
   const auto &ifm_shape = _ctx.at(ifm_index).shape();
   // TODO Support optional constant dimension that normalization would be performed on
-  const auto normalization_axis = node.param().rank - 1;
+  const auto normalization_axis = _ctx.at(ifm_index).shape().rank() - 1;
   int32_t radius =
       2 * ifm_shape.dim(normalization_axis) + 1; // normSize = depth(last dimension) * 2 + 1
   float alpha = 1.0f;                            // In the implementation to make alpha_ become 1
@@ -1665,7 +1665,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
 
   const auto ifm_shape = _ctx.at(ifm_index).shape();
 
-  const auto ifm_rank = node.param().rank;
+  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (ifm_rank + axis_raw) : axis_raw);
   const int axis = ::onert::backend::acl_common::ToARMComputeAxis(ifm_rank, axis_value).value();
@@ -1746,7 +1746,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  const auto ifm_rank = node.param().rank;
+  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   auto frontend_layout = _current_op_seq_layout;
   auto backend_layout = ifm_alloc->layout();
 
@@ -1800,7 +1800,7 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   std::set<std::uint32_t> acl_axes;
-  const int ifm_rank = node.param().rank;
+  const int ifm_rank = _ctx.at(ifm_index).shape().rank();
   for (int axis : axes)
   {
     if (axis < 0)
@@ -1884,7 +1884,7 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   std::set<std::uint32_t> acl_axes;
-  const int ifm_rank = node.param().rank;
+  const int ifm_rank = _ctx.at(ifm_index).shape().rank();
   for (int axis : axes)
   {
     if (axis < 0)
@@ -1910,7 +1910,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
 
-  const auto ifm_rank = node.param().rank;
+  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   std::vector<ir::OperandIndex> output_indexes;
   for (const auto &output : node.getOutputs())
     output_indexes.emplace_back(output);
@@ -1939,7 +1939,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
   auto axis{node.param().axis};
 
-  const auto input_rank = node.param().rank;
+  const auto input_rank = _ctx.at(input_index).shape().rank();
 
   std::vector<ir::OperandIndex> output_indexes;
   for (const auto &output_index : node.getOutputs())
@@ -1970,7 +1970,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   const auto output_index{node.getOutputs().at(0)};
   assert(_ctx.at(pad_index).data());
 
-  auto rank = node.param().rank;
+  auto rank = _ctx.at(input_index).shape().rank();
   auto pad_base = _ctx.at(pad_index).data()->base();
 
   auto input_type = _ctx.at(input_index).typeInfo();

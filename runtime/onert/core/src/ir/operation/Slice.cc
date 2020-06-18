@@ -26,9 +26,8 @@ namespace operation
 
 void Slice::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Slice::Slice(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-             const Param &param)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
+Slice::Slice(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
+    : Operation{OperandConstraint::createExact(3u), inputs, outputs}
 {
 }
 

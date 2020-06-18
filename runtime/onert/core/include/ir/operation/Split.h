@@ -36,7 +36,6 @@ public:
   {
     int axis;
     int num_splits;
-    int rank;
   };
 
 public:

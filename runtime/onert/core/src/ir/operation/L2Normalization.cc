@@ -30,8 +30,8 @@ namespace operation
 void L2Normalization::accept(OperationVisitor &v) const { v.visit(*this); }
 
 L2Normalization::L2Normalization(const OperandIndexSequence &inputs,
-                                 const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+                                 const OperandIndexSequence &outputs)
+    : Operation{OperandConstraint::createExact(1u), inputs, outputs}
 {
 }
 

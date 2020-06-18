@@ -40,7 +40,6 @@ public:
   {
     std::vector<int> axes;
     bool keep_dims;
-    int32_t rank;
   };
 
 public:
