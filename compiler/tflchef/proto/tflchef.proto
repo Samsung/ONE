@@ -385,6 +385,10 @@ message RankOptions {
   // NONE
 }
 
+message SegmentSumOptions {
+  // NONE
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -496,6 +500,7 @@ message Operation {
   optional Pool2DOptions l2pool2d_options = 203;
   optional ReducerOptions all_options = 204;
   optional ReducerOptions reduce_min_options = 205;
+  optional SegmentSumOptions segment_sum_options = 206;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

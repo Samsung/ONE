@@ -122,6 +122,7 @@ private:
     REG_TFL_OP(ROUND, TFliteOpRound);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
     REG_TFL_OP(SCATTER_ND, TFliteOpScatterNd);
+    REG_TFL_OP(SEGMENT_SUM, TFliteOpSegmentSum);
     REG_TFL_OP(SELECT, TFliteOpSelect);
     REG_TFL_OP(SHAPE, TFliteOpShape);
     REG_TFL_OP(SIN, TFliteOpSin);
