@@ -94,6 +94,7 @@
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/TransposeConvOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
+#include "BuildBuiltinOptions/WhereOptions.h"
 #include "BuildBuiltinOptions/WhileOptions.h"
 #include "BuildBuiltinOptions/ZerosLikeOptions.h"
 
