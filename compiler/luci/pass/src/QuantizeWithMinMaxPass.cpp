@@ -118,7 +118,7 @@ void asym_quant_bias(CircleConst *node, float input_scale, float weight_scale,
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     quantized_values[i] =
         static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
@@ -128,7 +128,7 @@ void asym_quant_bias(CircleConst *node, float input_scale, float weight_scale,
   node->size<loco::DataType::S32>(size); // resize tensor
   const int32_t kMinScale = std::numeric_limits<int32_t>::lowest();
   const int32_t kMaxScale = std::numeric_limits<int32_t>::max();
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S32>(i) =
         std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
@@ -157,7 +157,7 @@ void asym_wquant(CircleConst *node, float min, float scaling_factor)
 
   const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     auto data = node->at<loco::DataType::FLOAT32>(i);
     quantized_values[i] = static_cast<int32_t>(std::round((data - min) * scaling_factor_inv));
@@ -165,7 +165,7 @@ void asym_wquant(CircleConst *node, float min, float scaling_factor)
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
   node->size<loco::DataType::U8>(size); // resize tensor
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
