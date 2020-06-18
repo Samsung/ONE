@@ -27,7 +27,6 @@
 #include "compiler/Linear.h"
 #include "backend/IConstantInitializer.h"
 #include "backend/IKernelGenerator.h"
-#include "backend/IShapeFixer.h"
 #include "backend/IOptimizer.h"
 #include "backend/ITensorRegister.h"
 #include "backend/controlflow/Config.h"
@@ -191,11 +190,6 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   // linearize
   assert(!lowered_graph->graph().isBuildingPhase());
 
-  for (auto &pair : backend_contexts)
-  {
-    pair.second->fixShapes();
-  }
-
   /*************************************************
    * Backend dependent analysis & optimization phase
    *************************************************/
@@ -301,11 +295,6 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   const auto &backend_contexts = lowered_graph->backend_contexts();
 
   initializeBackendContext(lowered_graph.get());
-
-  for (auto &pair : backend_contexts)
-  {
-    pair.second->fixShapes();
-  }
 
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
