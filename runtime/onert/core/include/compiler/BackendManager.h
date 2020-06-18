@@ -52,7 +52,7 @@ public:
   void loadBackend(const std::string &backend);
 
 private:
-  BackendManager() = default;
+  BackendManager();
 
 private:
   std::vector<const backend::Backend *> _available_backends;
