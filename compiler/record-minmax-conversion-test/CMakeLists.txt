@@ -29,8 +29,8 @@ set(REQUIREMENTS_BIN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${REQUIREMENTS_FILE}")
 add_custom_command(
   OUTPUT ${REQUIREMENTS_BIN_PATH}
   COMMAND ${CMAKE_COMMAND} -E copy ${REQUIREMENTS_SRC_PATH} ${REQUIREMENTS_BIN_PATH}
-  COMMAND ${VIRTUALENV}/bin/python -m pip install --upgrade pip setuptools --timeout 100
-  COMMAND ${VIRTUALENV}/bin/python -m pip install -r requirements.txt --upgrade --timeout 100
+  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install -r requirements.txt --upgrade
   DEPENDS ${VIRTUALENV} ${REQUIREMENTS_SRC_PATH}
 )
 
