@@ -9,7 +9,7 @@
 # work_dir : build directory of record-minmax-conversion-test (ex: build/compiler/record-minmax-conversion-test)
 
 GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_inputs.py"
+GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs.py"
 CONFIG_PATH="$1"; shift
 WORKDIR="$1"; shift
 VIRTUALENV="${WORKDIR}/venv"
