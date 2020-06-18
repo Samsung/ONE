@@ -28,7 +28,6 @@ namespace backend
 class Backend;
 class IConstantInitializer;
 class IKernelGenerator;
-class IShapeFixer;
 class ITensorRegister;
 struct ITensorBuilder;
 struct IOptimizer;
@@ -49,18 +48,16 @@ public:
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
-                 std::shared_ptr<IShapeFixer> shape_fixer = nullptr,
                  std::shared_ptr<ITensorRegister> tensor_register = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
       : _backend{backend}, _graph{graph}, tensor_builder{tensor_builder},
         constant_initializer{constant_initializer}, kernel_gen{kernel_gen},
-        shape_fixer{shape_fixer}, tensor_register{tensor_register}, optimizer{optimizer}
+        tensor_register{tensor_register}, optimizer{optimizer}
   {
   }
 
   void initialize(const std::vector<OperationInfo> &operation_list,
                   const std::vector<ir::OperandIndex> &operand_list);
-  void fixShapes();
   void initConsts();
 
   const Backend *backend() const { return _backend; }
@@ -78,7 +75,6 @@ public:
   std::shared_ptr<ITensorBuilder> tensor_builder;
   std::shared_ptr<IConstantInitializer> constant_initializer;
   std::shared_ptr<IKernelGenerator> kernel_gen;
-  std::shared_ptr<IShapeFixer> shape_fixer;
   std::shared_ptr<ITensorRegister> tensor_register;
   std::shared_ptr<IOptimizer> optimizer;
 };

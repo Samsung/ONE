@@ -16,7 +16,6 @@
 
 #include <compiler/HEScheduler.h>
 #include <exec/ExecTime.h>
-#include <backend/IShapeFixer.h>
 
 #include <ir/Shape.h>
 #include <ir/InternalType.h>
@@ -42,16 +41,6 @@ using namespace exec;
 // Mock backends classes
 //
 
-// Backend could be created without ShapeFixer.
-// But it is used by scheduler to detect which operations are supported by backend.
-struct MockShapeFixer : IShapeFixer
-{
-  void visit(const Add &) override {}
-  void visit(const Sub &) override {}
-  void visit(const Mul &) override {}
-  void visit(const FullyConnected &) override {}
-};
-
 struct MockConfigCPU : public IConfig
 {
   std::string id() override { return "cpu"; }
@@ -68,8 +57,8 @@ struct MockBackendCPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+    return std::unique_ptr<BackendContext>(
+        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 
@@ -92,8 +81,8 @@ struct MockBackendGPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+    return std::unique_ptr<BackendContext>(
+        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 
@@ -116,8 +105,8 @@ struct MockBackendNPU : public Backend
   std::unique_ptr<BackendContext>
   newContext(const Graph &, const std::shared_ptr<custom::IKernelBuilder> &, bool) const override
   {
-    return std::unique_ptr<BackendContext>(new BackendContext{
-        this, nullptr, nullptr, nullptr, nullptr, std::make_shared<MockShapeFixer>()});
+    return std::unique_ptr<BackendContext>(
+        new BackendContext{this, nullptr, nullptr, nullptr, nullptr});
   }
 };
 

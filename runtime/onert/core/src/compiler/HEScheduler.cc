@@ -19,7 +19,6 @@
 #include "ir/Graph.h"
 #include "util/ConfigSource.h"
 #include "compiler/BackendResolver.h"
-#include "backend/IShapeFixer.h"
 #include "util/logging.h"
 #include "util/Utils.h"
 #include "exec/FunctionSequence.h"
@@ -308,7 +307,7 @@ int64_t HEScheduler::tryBackend(const ir::Operation &node, const backend::Backen
   }
   try
   {
-    node.accept(*_backend_contexts.at(backend)->shape_fixer);
+    // DO NOTHING
 
     _is_supported[backend][node.name()] = true;
   }
