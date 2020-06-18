@@ -57,6 +57,36 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
   return {output_nodes.cbegin(), output_nodes.cend()};
 }
 
+const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
+{
+  const Tensor *tensor = _tensor_map.getTensor(node);
+  assert(tensor != nullptr);
+  return tensor;
+}
+
+const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) const
+{
+  // TODO Revise this when optional inputs are implemented in the IR.
+  return getInputTensor(node);
+}
+
+Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
+{
+  Tensor *tensor = _tensor_map.getTensor(node);
+  assert(tensor != nullptr);
+  return tensor;
+}
+
+std::vector<Tensor *>
+KernelBuilder::getOutputTensors(const std::vector<const loco::Node *> &nodes) const
+{
+  std::vector<Tensor *> tensors;
+  tensors.reserve(nodes.size());
+  for (const loco::Node *node : nodes)
+    tensors.push_back(getOutputTensor(node));
+  return tensors;
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 {
   assert(node->arity() == 2);

@@ -58,34 +58,13 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleUnpack *node) override;
 
 private:
-  const Tensor *getInputTensor(const loco::Node *node) const
-  {
-    const Tensor *tensor = _tensor_map.getTensor(node);
-    assert(tensor != nullptr);
-    return tensor;
-  }
+  const Tensor *getInputTensor(const loco::Node *node) const;
 
-  const Tensor *getOptionalInputTensor(const loco::Node *node) const
-  {
-    // TODO Revise this when optional inputs are implemented in the IR.
-    return getInputTensor(node);
-  }
+  const Tensor *getOptionalInputTensor(const loco::Node *node) const;
 
-  Tensor *getOutputTensor(const loco::Node *node) const
-  {
-    Tensor *tensor = _tensor_map.getTensor(node);
-    assert(tensor != nullptr);
-    return tensor;
-  }
+  Tensor *getOutputTensor(const loco::Node *node) const;
 
-  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const
-  {
-    std::vector<Tensor *> tensors;
-    tensors.reserve(nodes.size());
-    for (const loco::Node *node : nodes)
-      tensors.push_back(getOutputTensor(node));
-    return tensors;
-  }
+  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const;
 
 private:
   TensorMap &_tensor_map;
