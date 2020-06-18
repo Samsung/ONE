@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 
-TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm(), _rank(0)
+TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm()
 {
   // DO NOTHING
 }
@@ -37,8 +37,8 @@ TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm(), _
 void TransposeLayer::transposeFloat32()
 {
   nnfw::cker::TransposeParams param;
-  param.perm_count = _rank;
-  for (int32_t i = 0; i < _rank; i++)
+  param.perm_count = _perm.size();
+  for (size_t i = 0; i < _perm.size(); i++)
   {
     param.perm[i] = _perm[i];
   }
@@ -54,11 +54,9 @@ void TransposeLayer::transposeQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TransposeLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &perm,
-                               int32_t rank)
+void TransposeLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &perm)
 {
   _input = input;
-  _rank = rank;
   _perm = perm;
   _output = output;
 }

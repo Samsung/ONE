@@ -348,7 +348,6 @@ OperationFactory::OperationFactory()
     operation::Concat::Param param;
     const OperandIndex axis_index{init_param.inputs[init_param.input_count - 1]};
     param.axis = operands.at(axis_index).asScalar<int32_t>();
-    param.rank = operands.at(outputs.at(0)).shape().rank();
 
     return new operation::Concat{inputs, outputs, param};
   };
@@ -546,7 +545,6 @@ OperationFactory::OperationFactory()
     operation::ReduceSum::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceSum{inputs, outputs, param};
   };
@@ -576,7 +574,7 @@ OperationFactory::OperationFactory()
     return new operation::Sub{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_SLICE] = [](const OperationFactory::Param &init_param, Operands &operands) {
+  _map[ANEURALNETWORKS_SLICE] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
 
     OperandIndexSequence outputs{init_param.outputs[0]};
@@ -588,10 +586,7 @@ OperationFactory::OperationFactory()
     //  2 -> Sizes Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
 
-    operation::Slice::Param param;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
-
-    return new operation::Slice{inputs, outputs, param};
+    return new operation::Slice{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_STRIDED_SLICE] = [](const OperationFactory::Param &init_param,
@@ -656,7 +651,6 @@ OperationFactory::OperationFactory()
 
     operation::Transpose::Param param;
     param.perm.assign(perm.cbegin(), perm.cend());
-    param.rank = perm.size();
 
     return new operation::Transpose{inputs, outputs, param};
   };
@@ -945,7 +939,6 @@ OperationFactory::OperationFactory()
     operation::ReduceAll::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceAll{inputs, outputs, param};
   };
@@ -968,7 +961,6 @@ OperationFactory::OperationFactory()
     operation::ReduceAny::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceAny{inputs, outputs, param};
   };
@@ -991,7 +983,6 @@ OperationFactory::OperationFactory()
     operation::ReduceMax::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceMax{inputs, outputs, param};
   };
@@ -1364,7 +1355,7 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_L2_NORMALIZATION] = [](const OperationFactory::Param &init_param,
-                                              Operands &operands) {
+                                              Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
 
     OperandIndexSequence outputs{init_param.outputs[0]};
@@ -1373,10 +1364,7 @@ OperationFactory::OperationFactory()
     //  0 -> input Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0]};
 
-    operation::L2Normalization::Param param;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
-
-    return new operation::L2Normalization{inputs, outputs, param};
+    return new operation::L2Normalization{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_HASHTABLE_LOOKUP] = [](const OperationFactory::Param &init_param,
@@ -1702,7 +1690,6 @@ OperationFactory::OperationFactory()
 
     operation::Gather::Param param;
     param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::Gather{inputs, outputs, param};
   };
@@ -1758,7 +1745,6 @@ OperationFactory::OperationFactory()
 
     operation::ArgMax::Param param;
     param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ArgMax{inputs, outputs, param};
   };
@@ -1797,7 +1783,6 @@ OperationFactory::OperationFactory()
     operation::Mean::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::Mean{inputs, outputs, param};
   };
@@ -1853,7 +1838,6 @@ OperationFactory::OperationFactory()
     const auto axis_index = OperandIndex{init_param.inputs[init_param.input_count - 1]};
     param.num = operands.at(num_index).asScalar<int32_t>();
     param.axis = operands.at(axis_index).asScalar<int32_t>();
-    param.rank = operands.at(outputs.at(0)).shape().rank();
 
     return new operation::Pack{inputs, outputs, param};
   };
@@ -1876,7 +1860,6 @@ OperationFactory::OperationFactory()
     operation::ReduceMin::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceMin{inputs, outputs, param};
   };
@@ -1899,7 +1882,6 @@ OperationFactory::OperationFactory()
     operation::Split::Param param;
     param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
     param.num_splits = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<std::int32_t>();
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::Split{inputs, outputs, param};
   };
@@ -1924,21 +1906,17 @@ OperationFactory::OperationFactory()
     const auto axis_index = OperandIndex{init_param.inputs[2]};
     param.num = operands.at(num_index).asScalar<int32_t>();
     param.axis = operands.at(axis_index).asScalar<int32_t>();
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::Unpack{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_PAD] = [](const OperationFactory::Param &init_param, Operands &operands) {
+  _map[ANEURALNETWORKS_PAD] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count >= 1);
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
-    operation::Pad::Param param;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
-
-    return new operation::Pad{inputs, outputs, param};
+    return new operation::Pad{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_MINIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
@@ -2027,7 +2005,6 @@ OperationFactory::OperationFactory()
     operation::ReduceProd::Param param;
     param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-    param.rank = operands.at(inputs.at(0)).shape().rank();
 
     return new operation::ReduceProd{inputs, outputs, param};
   };

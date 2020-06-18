@@ -657,7 +657,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
 
-  const auto rank = node.param().rank;
+  const auto rank = _ctx.at(ofm_index).shape().rank();
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
   assert(-rank <= axis && axis < rank);
@@ -679,7 +679,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
 {
   const auto input_index{node.getInputs().at(0)};
 
-  const auto rank = node.param().rank;
+  const auto rank = _ctx.at(input_index).shape().rank();
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
   assert(rank == 0 || (-rank <= axis && axis < rank));
@@ -774,11 +774,10 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
-  auto rank = node.param().rank;
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
-  fn->configure(input_alloc, output_alloc, node.param().perm, rank);
+  fn->configure(input_alloc, output_alloc, node.param().perm);
 
   _return_fn = std::move(fn);
 }
@@ -947,11 +946,11 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto num_splits = node.param().num_splits;
   assert(num_splits == static_cast<int>(node.getOutputs().size()));
 
-  const auto rank = node.param().rank;
+  const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto rank = _ctx.at(input_idx).shape().rank();
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
   auto axis_resolved = axis < 0 ? axis + rank : axis;
 
-  const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   auto in_tensor = _tensor_builder->at(input_idx).get();
 
   std::vector<Tensor *> out_tensors;

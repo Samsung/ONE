@@ -35,24 +35,11 @@ public:
   };
 
 public:
-  struct Param
-  {
-    int32_t rank;
-  };
-
-public:
-  L2Normalization(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-                  const Param &param);
+  L2Normalization(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::L2Normalization; }
-
-public:
-  const Param &param() const { return _param; }
-
-private:
-  Param _param;
 };
 
 } // namespace operation
