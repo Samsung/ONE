@@ -37,8 +37,7 @@ public:
   void execute() const override;
 
 private:
-  inline void evalFloat() const;
-  inline void evalQuantized() const;
+  template <typename T> void eval(int32_t zero_point) const;
 
 private:
   const Tensor *const _input;

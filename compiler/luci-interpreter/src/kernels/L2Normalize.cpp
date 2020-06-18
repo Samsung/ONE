@@ -51,32 +51,23 @@ void L2Normalize::execute() const
   switch (_output->element_type())
   {
     case DataType::FLOAT32:
-      evalFloat();
+      eval<float>(0);
       break;
     case DataType::U8:
-      evalQuantized();
+      eval<uint8_t>(_input->zero_point());
       break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
 }
 
-inline void L2Normalize::evalFloat() const
+template <typename T> void L2Normalize::eval(int32_t zero_point) const
 {
   tflite::L2NormalizationParams op_params{};
-  op_params.input_zero_point = 0;
+  op_params.input_zero_point = zero_point;
   tflite::optimized_ops::L2Normalization(op_params, getTensorShape(_input),
-                                         getTensorData<float>(_input), getTensorShape(_output),
-                                         getTensorData<float>(_output));
-}
-
-inline void L2Normalize::evalQuantized() const
-{
-  tflite::L2NormalizationParams op_params{};
-  op_params.input_zero_point = _input->zero_point();
-  tflite::optimized_ops::L2Normalization(op_params, getTensorShape(_input),
-                                         getTensorData<uint8_t>(_input), getTensorShape(_output),
-                                         getTensorData<uint8_t>(_output));
+                                         getTensorData<T>(_input), getTensorShape(_output),
+                                         getTensorData<T>(_output));
 }
 
 } // namespace kernels
