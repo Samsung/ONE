@@ -54,7 +54,7 @@ std::unordered_map<uint32_t, Json::Value> argArrayToMap(const Json::Value &jsonv
   return ret;
 }
 
-// param shape_str is a form of, e.g., "[1, [2, 3], 3, []"
+// param shape_str is a form of, e.g., "[1, [2, 3], 3, []]"
 void handleShapeParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &shape_str)
 {
   Json::Value root;
