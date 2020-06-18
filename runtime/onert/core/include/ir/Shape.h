@@ -37,6 +37,7 @@ struct Shape
 {
 public:
   static int32_t const UNSPECIFIED_DIM;
+  static int32_t const MAX_RANK;
 
   Shape() = default;
 

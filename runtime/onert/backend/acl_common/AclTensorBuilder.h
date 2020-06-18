@@ -182,18 +182,24 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
     auto &offset = parent_info.coordinates;
     auto frontend_layout = parent_info.frontend_layout;
 
-    assert(obj.shape().rank() <= 4);
+    assert(obj.shape().rank() <= ir::Shape::MAX_RANK);
     auto shape = obj.shape();
-    if (_operands.at(parent_index).shape().rank() == 4 && frontend_layout == ir::Layout::NHWC &&
+    if (_operands.at(parent_index).shape().rank() >= 4 && frontend_layout == ir::Layout::NHWC &&
         backend_layout == ir::Layout::NCHW)
     {
-      shape.extendRank(4);
+      // Permutation changing layout beyond 4-D is not supported yet
+      const auto parent_rank = _operands.at(parent_index).shape().rank();
+      assert(parent_rank == 4);
+      shape.extendRank(parent_rank);
       offset = {offset[0], offset[3], offset[1], offset[2]};
     }
-    else if (_operands.at(parent_index).shape().rank() == 4 &&
+    else if (_operands.at(parent_index).shape().rank() >= 4 &&
              frontend_layout == ir::Layout::NHWC && backend_layout == ir::Layout::NCHW)
     {
-      shape.extendRank(4);
+      // Permutation changing layout beyond 4-D is not supported yet
+      const auto parent_rank = _operands.at(parent_index).shape().rank();
+      assert(parent_rank == 4);
+      shape.extendRank(parent_rank);
       offset = {offset[0], offset[2], offset[3], offset[1]};
     }
     auto new_shape = permuteShape(shape, frontend_layout, backend_layout);
