@@ -65,9 +65,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
   for (auto &pair : manual_options.opcode_to_backend)
   {
-    op_type_map.emplace(
-        pair.first, BackendManager::get().get(
-                        pair.second)); // TODO Ensure this backend is available in backend contexts
+    op_type_map.emplace(pair.first, BackendManager::get().get(pair.second));
   }
   // By default, Custom uses cpu backend
   op_type_map[ir::OpCode::Custom] = BackendManager::get().get("cpu");
