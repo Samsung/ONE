@@ -453,6 +453,19 @@ public:
     }
     return ret;
   }
+
+  static Shape ToShape(const BCastList::Vec &vec)
+  {
+    const int N = vec.size();
+    Shape shape(N);
+
+    for (int i = 0; i < N; ++i)
+    {
+      shape.SetDim(i, vec[i]);
+    }
+    return shape;
+  }
+
 }; // BCast
 } // namespace helper
 } // namespace cker

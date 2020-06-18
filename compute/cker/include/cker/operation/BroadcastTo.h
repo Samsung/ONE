@@ -141,7 +141,11 @@ inline void BroadcastTo(const Shape &input_shape, T *input_data, const Shape &ou
     return;
   }
 
-  assert(input_shape.FlatSize() <= output_shape.FlatSize());
+  // Input shape's rank must be no greater than rank of output shape.
+  assert(input_shape.DimensionsCount() <= output_shape.DimensionsCount());
+
+  // It shouldn't be 0.
+  assert(output_shape.DimensionsCount());
 
   Tensor output_tensor;
   Tensor input_tensor;
@@ -163,6 +167,11 @@ inline void BroadcastTo(const Shape &input_shape, T *input_data, const Shape &ou
 
   helper::BCast bcast(helper::BCast::FromShape(input_shape), helper::BCast::FromShape(output_shape),
                       /*fewer_dims_optimization=*/true);
+
+  // Predict TRUE.
+  assert(bcast.IsValid());
+  // should be same.
+  assert(helper::BCast::ToShape(bcast.output_shape()) == output_shape);
 
   functor::BroadcastTo<Eigen::ThreadPoolDevice, T>()(device, output_tensor, output_shape,
                                                      input_tensor, input_shape, bcast);

@@ -436,7 +436,6 @@ OperationFactory::OperationFactory()
   // ANEURALNETWORKS_CAST_EX is deprecated
   // TODO Remove ANEURALNETWORKS_CAST_EX
   _map[ANEURALNETWORKS_CAST_EX] = _map[ANEURALNETWORKS_CAST];
-  _map[ANEURALNETWORKS_CAST_EX] = _map[ANEURALNETWORKS_CAST];
 
   _map[ANEURALNETWORKS_CONV_2D] = [](const OperationFactory::Param &init_param,
                                      Operands &operands) {

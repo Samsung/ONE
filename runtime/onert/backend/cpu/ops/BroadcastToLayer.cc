@@ -18,8 +18,6 @@
 
 #include <cker/operation/BroadcastTo.h>
 
-static const int32_t int32max = (int32_t)0x7FFFFFFF;
-
 namespace onert
 {
 namespace backend
