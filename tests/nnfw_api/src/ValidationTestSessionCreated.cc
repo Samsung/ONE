@@ -31,27 +31,19 @@ TEST_F(ValidationTestSessionCreated, close_and_create_again)
   ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
 }
 
-TEST_F(ValidationTestSessionCreated, neg_load_session_001)
+TEST_F(ValidationTestSessionCreated, neg_load_session_1)
 {
   ASSERT_EQ(nnfw_load_model_from_file(
                 _session, NNPackages::get().getModelAbsolutePath("nonexisting_directory").c_str()),
             NNFW_STATUS_ERROR);
 }
 
-TEST_F(ValidationTestSessionCreated, neg_load_session_002)
-{
-  ASSERT_EQ(
-      nnfw_load_model_from_file(nullptr, // session is null
-                                NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
-      NNFW_STATUS_ERROR);
-}
-
-TEST_F(ValidationTestSessionCreated, neg_load_session_003)
+TEST_F(ValidationTestSessionCreated, neg_load_session_2)
 {
   ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_ERROR);
 }
 
-TEST_F(ValidationTestSessionCreated, neg_load_session_004)
+TEST_F(ValidationTestSessionCreated, neg_load_session_3)
 {
   // Too long path
   const std::string long_path(1024, 'x');

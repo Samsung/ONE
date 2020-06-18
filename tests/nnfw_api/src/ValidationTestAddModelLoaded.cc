@@ -56,8 +56,6 @@ TEST_F(ValidationTestAddModelLoaded, neg_run_001)
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
 
-TEST_F(ValidationTest, neg_prepare_001) { ASSERT_EQ(nnfw_prepare(nullptr), NNFW_STATUS_ERROR); }
-
 TEST_F(ValidationTestAddModelLoaded, neg_set_input_001)
 {
   ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);

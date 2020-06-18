@@ -31,51 +31,53 @@ TEST_F(ValidationTestSingleSession, query_info_u32)
 
 TEST_F(ValidationTestSingleSession, neg_create_001)
 {
-  ASSERT_EQ(nnfw_create_session(nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_create_session(nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_run_001)
 {
-  ASSERT_EQ(nnfw_run(nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_run(nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_set_input_001)
 {
   // Invalid session
-  ASSERT_EQ(nnfw_set_input(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_set_input(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_set_input_002)
 {
   char input[32];
   ASSERT_EQ(nnfw_set_input(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
-            NNFW_STATUS_ERROR);
+            NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_set_output_001)
 {
   // Invalid session
-  ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_set_output_002)
 {
   char buffer[32];
   ASSERT_EQ(nnfw_set_output(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
-            NNFW_STATUS_ERROR);
+            NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_get_input_size)
 {
   uint32_t size = 10000;
-  ASSERT_EQ(nnfw_input_size(nullptr, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_input_size(nullptr, &size), NNFW_STATUS_UNEXPECTED_NULL);
   ASSERT_EQ(size, 10000);
 }
 
 TEST_F(ValidationTestSingleSession, neg_get_output_size)
 {
   uint32_t size = 10000;
-  ASSERT_EQ(nnfw_output_size(nullptr, &size), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_size(nullptr, &size), NNFW_STATUS_UNEXPECTED_NULL);
   ASSERT_EQ(size, 10000);
 }
 
@@ -84,7 +86,12 @@ TEST_F(ValidationTestSingleSession, neg_load_model)
   // Invalid state
   ASSERT_EQ(nnfw_load_model_from_file(
                 nullptr, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
-            NNFW_STATUS_ERROR);
+            NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestSingleSession, neg_prepare_001)
+{
+  ASSERT_EQ(nnfw_prepare(nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSingleSession, neg_query_info_u32)
@@ -95,6 +102,6 @@ TEST_F(ValidationTestSingleSession, neg_query_info_u32)
 TEST_F(ValidationTestSingleSession, neg_output_tensorinfo)
 {
   nnfw_tensorinfo tensor_info;
-  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, &tensor_info), NNFW_STATUS_ERROR);
-  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, &tensor_info), NNFW_STATUS_UNEXPECTED_NULL);
+  ASSERT_EQ(nnfw_output_tensorinfo(nullptr, 0, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }

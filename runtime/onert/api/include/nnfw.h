@@ -87,13 +87,18 @@ typedef enum {
 } NNFW_TYPE;
 
 /**
- * @brief Result Values
+ * @brief Result values returned from a call to an API function
  */
 typedef enum {
   /** Successful */
   NNFW_STATUS_NO_ERROR = 0,
-  /** Failed */
+  /**
+   * An error code for general use.
+   * Mostly used when there is no specific value for that certain situation.
+   */
   NNFW_STATUS_ERROR = 1,
+  /** Unexpected null argument is given. */
+  NNFW_STATUS_UNEXPECTED_NULL = 2,
 } NNFW_STATUS;
 
 /**
