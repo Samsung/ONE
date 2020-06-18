@@ -2226,7 +2226,7 @@ public:
     if (!(this_shape == cond_graph_input_shape))
     {
       LOGGER(l);
-      WARN(l) << "[luci] CircleWhileOut " << node->name() << " shape mispatch " << this_shape
+      WARN(l) << "Warning: CircleWhileOut '" << node->name() << "' shape mispatch " << this_shape
               << " vs " << cond_graph_input_shape;
     }
 
