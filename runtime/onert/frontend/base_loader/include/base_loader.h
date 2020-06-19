@@ -62,7 +62,7 @@ public:
    * @param graph reference on subgraphs
    */
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-      : _base{nullptr}, _subgraphs(subgs), _model{nullptr}
+      : _base{nullptr}, _pagesize(getpagesize()), _subgraphs(subgs), _model{nullptr}
   {
   }
 
@@ -81,6 +81,7 @@ protected:
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
+  void deallocateMmappedArea(uint8_t *ptr, size_t size);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -170,7 +171,9 @@ protected:
 
 protected:
   // Base address for mapped region for loading (if needed)
-  char *_base;
+  uint8_t *_base;
+  // Memory page size
+  int32_t _pagesize;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -198,7 +201,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   int size = file_stat.st_size;
 
   // Map model file into memory region
-  _base = static_cast<char *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
+  _base = static_cast<uint8_t *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
   if (_base == MAP_FAILED)
   {
     close(fd);
@@ -209,11 +212,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
 
   loadModel();
 
-  // Unmap mapped region for model file
-  if (munmap(_base, size) == -1)
-  {
-    VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
-  }
   close(fd);
 }
 
@@ -268,6 +266,31 @@ ir::OperandIndex
 BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::deallocateMmappedArea(uint8_t *ptr,
+                                                                                 size_t size)
+{
+  // Calculate offset from base address of mapped region
+  ptrdiff_t unaligned_offset_start = ptr - _base;
+  ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
+
+  // Calculated aligned offset from base address of mapped region
+  // munmap accepts memory address which is a multiple of the pagesize
+  ptrdiff_t aligned_offset_start =
+      ((unaligned_offset_start + (_pagesize - 1)) / _pagesize) * _pagesize;
+  ptrdiff_t aligned_offset_end = (unaligned_offset_end / _pagesize) * _pagesize;
+
+  ptrdiff_t area_size = aligned_offset_end - aligned_offset_start;
+  if (area_size > 0)
+  {
+    // Unmap mapped region for CachedData
+    if (munmap(_base + aligned_offset_start, area_size) == -1)
+    {
+      VERBOSE(BASE_LOADER) << "munmap failed" << std::endl;
+    }
+  }
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -334,6 +357,7 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   if (data != nullptr)
   {
     auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
+    deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
@@ -536,7 +560,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConcatenation(const Operator 
   const auto *options = op->builtin_options_as_ConcatenationOptions();
   // Axis
   param.axis = options->axis();
-  param.rank = subg.operands().at(outputs.at(0)).shape().rank();
   // activation unused
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Concat(inputs, outputs, param));
@@ -681,7 +704,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPack(const Operator *op, ir::
   const auto *options = op->builtin_options_as_PackOptions();
   param.num = options->values_count();
   param.axis = options->axis();
-  param.rank = subg.operands().at(outputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Pack(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -812,7 +834,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
 
   ir::operation::Transpose::Param param;
   param.perm = subg.operands().at(perm).template asVector<int>();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -834,7 +855,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::
   ir::operation::Mean::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -856,7 +876,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
 
   ir::operation::ReduceAll::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   if (op->custom_options() == nullptr)
   {
@@ -892,7 +911,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op,
   ir::operation::ReduceAny::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -915,7 +933,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
   ir::operation::ReduceMax::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -941,10 +958,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::G
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Pad::Param param;
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pad(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pad(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -993,7 +1007,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadGather(const Operator *op, ir
   loadOperationIO(op, inputs, outputs);
   ir::operation::Gather::Param param;
   param.axis = op->builtin_options_as_GatherOptions()->axis();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Gather(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -1082,7 +1095,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceSum(const Operator *op,
   ir::operation::ReduceSum::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{{input}, outputs, param}};
   subg.addOperation(std::move(new_op));
@@ -1266,7 +1278,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
   param.axis = subg.operands().at(axis).template asScalar<int>();
   const auto *options = op->builtin_options_as_SplitOptions();
   param.num_splits = options->num_splits();
-  param.rank = subg.operands().at(input).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Split({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -1280,10 +1291,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSlice(const Operator *op, ir:
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Slice::Param param;
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
-
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::Slice{inputs, outputs, param}};
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::Slice{inputs, outputs}};
   subg.addOperation(std::move(new_op));
 }
 
@@ -1301,7 +1309,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridedSlice(const Operator *
   param.begin_mask = options->begin_mask();
   param.end_mask = options->end_mask();
   param.shrink_axis_mask = options->shrink_axis_mask();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::StridedSlice{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
@@ -1319,7 +1326,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir
   const auto *options = op->builtin_options_as_UnpackOptions();
   param.num = options->num();
   param.axis = options->axis();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Unpack(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -1544,7 +1550,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op
   ir::operation::ReduceProd::Param param;
   param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-  param.rank = subg.operands().at(inputs.at(0)).shape().rank();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -1619,7 +1624,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
 
   ir::operation::ArgMax::Param param;
   param.axis = axisOperand.template asVector<int>()[0];
-  param.rank = inputOperand.shape().rank();
   const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
   switch (output_type)
   {

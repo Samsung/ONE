@@ -28,6 +28,9 @@ namespace ir
 
 int32_t const Shape::UNSPECIFIED_DIM = -1;
 
+// NNFW_MAX_RANK is 6
+int32_t const Shape::MAX_RANK = 6;
+
 FeatureShape Shape::asFeature(Layout layout) const
 {
   assert(rank() == 4);
@@ -86,16 +89,20 @@ uint64_t Shape::num_elements() const
 
 Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout)
 {
-  assert(shape.rank() <= 4);
+  assert(shape.rank() <= Shape::MAX_RANK);
   Shape backend_shape{shape};
-  if (shape.rank() == 4 && frontend_layout == Layout::NHWC && backend_layout == Layout::NCHW)
+  if (shape.rank() >= 4 && frontend_layout == Layout::NHWC && backend_layout == Layout::NCHW)
   {
+    // Permutation changing layout beyond 4-D is not supported yet
+    assert(shape.rank() <= 4);
     backend_shape.dim(1) = shape.dim(3);
     backend_shape.dim(2) = shape.dim(1);
     backend_shape.dim(3) = shape.dim(2);
   }
-  else if (shape.rank() == 4 && frontend_layout == Layout::NCHW && backend_layout == Layout::NHWC)
+  else if (shape.rank() >= 4 && frontend_layout == Layout::NCHW && backend_layout == Layout::NHWC)
   {
+    // Permutation changing layout beyond 4-D is not supported yet
+    assert(shape.rank() <= 4);
     backend_shape.dim(1) = shape.dim(2);
     backend_shape.dim(2) = shape.dim(3);
     backend_shape.dim(3) = shape.dim(1);

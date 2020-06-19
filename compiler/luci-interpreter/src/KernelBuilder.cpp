@@ -25,7 +25,9 @@
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/L2Normalize.h"
+#include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
+#include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
@@ -56,6 +58,36 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
               return node1->index() < node2->index();
             });
   return {output_nodes.cbegin(), output_nodes.cend()};
+}
+
+const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
+{
+  const Tensor *tensor = _tensor_map.getTensor(node);
+  assert(tensor != nullptr);
+  return tensor;
+}
+
+const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) const
+{
+  // TODO Revise this when optional inputs are implemented in the IR.
+  return getInputTensor(node);
+}
+
+Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
+{
+  Tensor *tensor = _tensor_map.getTensor(node);
+  assert(tensor != nullptr);
+  return tensor;
+}
+
+std::vector<Tensor *>
+KernelBuilder::getOutputTensors(const std::vector<const loco::Node *> &nodes) const
+{
+  std::vector<Tensor *> tensors;
+  tensors.reserve(nodes.size());
+  for (const loco::Node *node : nodes)
+    tensors.push_back(getOutputTensor(node));
+  return tensors;
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
@@ -205,6 +237,24 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node
 
   return std::make_unique<kernels::L2Normalize>(input, output, params);
 }
+  
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Pool2D *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->value());
+  Tensor *output = getOutputTensor(node);
+
+  Pool2DParams params{};
+  params.padding = node->padding();
+  params.filter_height = node->filter()->h();
+  params.filter_width = node->filter()->w();
+  params.stride_height = node->stride()->h();
+  params.stride_width = node->stride()->w();
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::L2Pool2D>(input, output, params);
+}
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
 {
@@ -216,6 +266,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
   params.alpha = node->alpha();
 
   return std::make_unique<kernels::LeakyRelu>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNormalization *node)
+{
+  assert(node->arity() == 1);
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  LocalResponseNormalizationParams params{};
+  params.radius = node->radius();
+  params.bias = node->bias();
+  params.alpha = node->alpha();
+  params.beta = node->beta();
+
+  return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)

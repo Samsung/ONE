@@ -43,7 +43,9 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleElu *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleFullyConnected *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleL2Normalize *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleL2Pool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLeakyRelu *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleLocalResponseNormalization *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleInput *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleMaxPool2D *node) override;
@@ -59,34 +61,13 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleUnpack *node) override;
 
 private:
-  const Tensor *getInputTensor(const loco::Node *node) const
-  {
-    const Tensor *tensor = _tensor_map.getTensor(node);
-    assert(tensor != nullptr);
-    return tensor;
-  }
+  const Tensor *getInputTensor(const loco::Node *node) const;
 
-  const Tensor *getOptionalInputTensor(const loco::Node *node) const
-  {
-    // TODO Revise this when optional inputs are implemented in the IR.
-    return getInputTensor(node);
-  }
+  const Tensor *getOptionalInputTensor(const loco::Node *node) const;
 
-  Tensor *getOutputTensor(const loco::Node *node) const
-  {
-    Tensor *tensor = _tensor_map.getTensor(node);
-    assert(tensor != nullptr);
-    return tensor;
-  }
+  Tensor *getOutputTensor(const loco::Node *node) const;
 
-  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const
-  {
-    std::vector<Tensor *> tensors;
-    tensors.reserve(nodes.size());
-    for (const loco::Node *node : nodes)
-      tensors.push_back(getOutputTensor(node));
-    return tensors;
-  }
+  std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const;
 
 private:
   TensorMap &_tensor_map;

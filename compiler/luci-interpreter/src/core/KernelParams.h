@@ -81,6 +81,14 @@ struct LeakyReluParams
   float alpha;
 };
 
+struct LocalResponseNormalizationParams
+{
+  int32_t radius;
+  float bias;
+  float alpha;
+  float beta;
+};
+
 struct MulParams
 {
   Activation activation;

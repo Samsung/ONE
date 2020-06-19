@@ -31,14 +31,11 @@ namespace luci
 namespace
 {
 
-void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t *zp)
+void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
+                           float &nudged_min, float &nudged_max)
 {
   assert(min != max);
-  if (min == max)
-  {
-    *scaling_factor = 1;
-    *zp = 0;
-  }
+
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = 255;
   const double qmin_double = kMinScale;
@@ -54,7 +51,7 @@ void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t 
   const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
                                        ? zero_point_from_min
                                        : zero_point_from_max;
-  int8_t nudged_zero_point = 0;
+  uint8_t nudged_zero_point = 0;
   if (zero_point_double <= qmin_double)
   {
     nudged_zero_point = kMinScale;
@@ -65,10 +62,12 @@ void compute_asym_scale_zp(float min, float max, float *scaling_factor, int64_t 
   }
   else
   {
-    nudged_zero_point = static_cast<int8_t>(std::round(zero_point_double));
+    nudged_zero_point = static_cast<uint8_t>(std::round(zero_point_double));
   }
-  *scaling_factor = scale;
-  *zp = nudged_zero_point;
+  nudged_min = static_cast<float>((qmin_double - nudged_zero_point) * scale);
+  nudged_max = static_cast<float>((qmax_double - nudged_zero_point) * scale);
+  scaling_factor = scale;
+  zp = nudged_zero_point;
 }
 
 // Check if the node is the bias of Conv2D, DepthwiseConv2D, or FullyConnected layer
@@ -119,7 +118,7 @@ void asym_quant_bias(CircleConst *node, float input_scale, float weight_scale,
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     quantized_values[i] =
         static_cast<int32_t>(std::round(node->at<loco::DataType::FLOAT32>(i) * scaling_factor_inv));
@@ -129,7 +128,7 @@ void asym_quant_bias(CircleConst *node, float input_scale, float weight_scale,
   node->size<loco::DataType::S32>(size); // resize tensor
   const int32_t kMinScale = std::numeric_limits<int32_t>::lowest();
   const int32_t kMaxScale = std::numeric_limits<int32_t>::max();
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::S32>(i) =
         std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
@@ -158,7 +157,7 @@ void asym_wquant(CircleConst *node, float min, float scaling_factor)
 
   const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     auto data = node->at<loco::DataType::FLOAT32>(i);
     quantized_values[i] = static_cast<int32_t>(std::round((data - min) * scaling_factor_inv));
@@ -166,7 +165,7 @@ void asym_wquant(CircleConst *node, float min, float scaling_factor)
 
   node->dtype(loco::DataType::U8);      // change the type of tensor
   node->size<loco::DataType::U8>(size); // resize tensor
-  for (int i = 0; i < static_cast<int32_t>(size); ++i)
+  for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
   }
@@ -236,7 +235,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
 
       // Check if this is activation
       // We assume min/max are recorded only for activations
-      if (has_min_max(circle_node))
+      if (has_min_max(circle_node) && !is_weights(circle_node))
       {
         // Quantize using recorded min/max
         auto quantparam = circle_node->quantparam();
@@ -245,9 +244,15 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         auto min = quantparam->min[0];
         auto max = quantparam->max[0];
 
-        float scaling_factor;
-        int64_t zp;
-        compute_asym_scale_zp(min, max, &scaling_factor, &zp);
+        float scaling_factor{0};
+        int64_t zp{0};
+        float nudged_min{0};
+        float nudged_max{0};
+
+        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+
+        circle_node->quantparam()->max[0] = nudged_max;
+        circle_node->quantparam()->min[0] = nudged_min;
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
         circle_node->dtype(loco::DataType::U8);

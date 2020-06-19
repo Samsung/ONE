@@ -47,16 +47,16 @@ void RangeLayer::run()
   switch (_output->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Range<float *>(reinterpret_cast<float *>(_start->buffer()),
-                                 reinterpret_cast<float *>(_limit->buffer()),
-                                 reinterpret_cast<float *>(_delta->buffer()),
-                                 reinterpret_cast<float *>(_output->buffer()));
+      nnfw::cker::Range<float>(reinterpret_cast<float *>(_start->buffer()),
+                               reinterpret_cast<float *>(_limit->buffer()),
+                               reinterpret_cast<float *>(_delta->buffer()),
+                               reinterpret_cast<float *>(_output->buffer()));
       break;
     case OperandType::INT32:
-      nnfw::cker::Range<int32_t *>(reinterpret_cast<int32_t *>(_start->buffer()),
-                                   reinterpret_cast<int32_t *>(_limit->buffer()),
-                                   reinterpret_cast<int32_t *>(_delta->buffer()),
-                                   reinterpret_cast<int32_t *>(_output->buffer()));
+      nnfw::cker::Range<int32_t>(reinterpret_cast<int32_t *>(_start->buffer()),
+                                 reinterpret_cast<int32_t *>(_limit->buffer()),
+                                 reinterpret_cast<int32_t *>(_delta->buffer()),
+                                 reinterpret_cast<int32_t *>(_output->buffer()));
       break;
     default:
       throw std::runtime_error{"Range: unsupported data type"};

@@ -33,5 +33,15 @@ const char *toString(OpCode opcode)
   return map.at(opcode);
 }
 
+OpCode toOpCode(const std::string str)
+{
+  static const std::unordered_map<std::string, OpCode> map{
+#define OP(Name) {#Name, OpCode::Name},
+#include "ir/Operations.lst"
+#undef OP
+  };
+  return map.at(str);
+}
+
 } // namespace ir
 } // namespace onert

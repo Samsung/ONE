@@ -44,6 +44,18 @@ ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num)
 
 void StaticInferer::visit(const ir::operation::Pack &op)
 {
+  bool is_any_of_inputs_dynamic = [&]() -> bool {
+    for (uint32_t i = 0; i < op.getInputs().size(); ++i)
+    {
+      const auto &input = _operands.at(op.getInputs().at(i));
+      if (input.info().isDynamic())
+      {
+        return true;
+      }
+    }
+    return false;
+  }();
+
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
 
@@ -52,13 +64,13 @@ void StaticInferer::visit(const ir::operation::Pack &op)
   ir::Operand &output = _operands.at(output_idx);
 
   // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
+  if (is_any_of_inputs_dynamic)
   {
     output.info().setDynamic();
     return;
   }
 
-  const auto rank = op.param().rank;
+  const auto rank = input.shape().rank() + 1;
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
   const auto num = op.param().num;
 
@@ -71,21 +83,33 @@ void StaticInferer::visit(const ir::operation::Pack &op)
 
 void DynamicInferer::visit(const ir::operation::Pack &op)
 {
+  bool is_any_of_inputs_dynamic = [&]() -> bool {
+    for (uint32_t i = 0; i < op.getInputs().size(); ++i)
+    {
+      const auto &input = _tensor_registry->getITensor(op.getInputs().at(i));
+      if (input->is_dynamic())
+      {
+        return true;
+      }
+    }
+    return false;
+  }();
+
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = input->getShape();
 
-  if (!input->is_dynamic())
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  if (!is_any_of_inputs_dynamic && !output->is_dynamic())
     return;
 
-  const auto rank = op.param().rank;
+  const auto rank = input_shape.rank() + 1;
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
   const auto num = op.param().num;
 
   assert(0 <= axis && axis < rank);
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
 
   ir::Shape new_shape = packShapes(input_shape, axis, rank, num);
 

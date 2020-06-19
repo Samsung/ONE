@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include <nnfw_debug.h>
 
+#include "common.h"
 #include "fixtures.h"
 #include "NNPackages.h"
 
@@ -258,14 +259,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
   std::vector<float> actual_output(expected.size());
 
   // input reshaping to [1, 3]
-  nnfw_tensorinfo ti;
-  {
-    ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-    ti.rank = 2;
-    ti.dims[0] = 1;
-    ti.dims[1] = 3;
-  }
-
+  nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 3}};
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 
@@ -305,14 +299,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
   std::vector<float> actual_output(100); // whatever size
 
   // input reshaping to [3, 1]
-  nnfw_tensorinfo ti;
-  {
-    ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-    ti.rank = 2;
-    ti.dims[0] = 3;
-    ti.dims[1] = 1;
-  }
-
+  nnfw_tensorinfo ti = {ti.dtype = NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
@@ -346,14 +333,7 @@ TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_comp
   ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
 
   // input reshaping to [2, 2, 3]
-  nnfw_tensorinfo input0_ti;
-  {
-    input0_ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-    input0_ti.rank = 3;
-    input0_ti.dims[0] = 2;
-    input0_ti.dims[1] = 2;
-    input0_ti.dims[2] = 3;
-  }
+  nnfw_tensorinfo input0_ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {2, 2, 3}};
 
   std::vector<float> input0 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
   std::vector<float> input1 = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
@@ -396,6 +376,8 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
 {
   ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
 
+  nnfw_tensorinfo input0_ti_original = {NNFW_TYPE_TENSOR_FLOAT32, 2, {4, 4}};
+
   // input reshaping to [20, 50]
   nnfw_tensorinfo input0_ti;
   {
@@ -417,7 +399,21 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 
+  // input shape check
+  {
+    nnfw_tensorinfo ti = {};
+    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    ASSERT_TRUE(tensorInfoEqual(input0_ti_original, ti));
+  }
+
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
+
+  // input shape check
+  {
+    nnfw_tensorinfo ti = {};
+    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
+  }
 
   set_input_output(_session, input0, &actual_output);
 

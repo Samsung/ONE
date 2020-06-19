@@ -55,10 +55,22 @@ void StaticInferer::visit(const ir::operation::Unpack &op)
     return;
   }
 
-  const auto rank = op.param().rank;
+  const auto rank = input.shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
-  assert(0 <= axis && axis < rank);
+  assert(axis < rank);
+  if (axis < 0)
+  {
+    for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
+    {
+      const auto output_idx = op.getOutputs().at(out_tensor_idx);
+      ir::Operand &output = _operands.at(output_idx);
+      output.info().setDynamic();
+    }
+
+    return;
+  }
+
   ir::Shape new_shape = unpackShapes(input.info().shape(), axis, rank);
 
   // re-sizing output shape

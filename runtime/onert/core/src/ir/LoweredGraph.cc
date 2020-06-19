@@ -41,6 +41,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 {
   // Build backend contexts
   auto &backend_manager = compiler::BackendManager::get();
+
+  // Always create Controlflow backend context
+  auto cf_backend = backend_manager.getControlflow();
+  _backend_contexts.emplace(cf_backend, cf_backend->newContext(_graph, _graph.getKernelBuilder(),
+                                                               options.executor == "Linear"));
+
+  // Create contexts for other backends
   for (auto backend_str : options.backend_list)
   {
     backend_manager.loadBackend(backend_str);
@@ -63,16 +70,17 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
   // TODO Move "schedule" phase out of here
   // Schedule
+  std::unique_ptr<compiler::BackendResolver> backend_resolver;
   if (options.he_scheduler)
   {
     auto scheduler = compiler::HEScheduler(_backend_contexts, options);
-    _backend_resolver = scheduler.schedule(_graph);
+    backend_resolver = scheduler.schedule(_graph);
     _indexed_ranks = scheduler.getIndexedRanks();
   }
   else
   {
     auto scheduler = compiler::ManualScheduler(_backend_contexts, options);
-    _backend_resolver = scheduler.schedule(_graph);
+    backend_resolver = scheduler.schedule(_graph);
   }
 
   {
@@ -84,7 +92,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     });
 
     // Make op_seqs while checking whether a node can be merged into a op_seq.
-    makeOpSequences(operands_lower_info, options);
+    makeOpSequences(operands_lower_info, options, *backend_resolver);
 
     _op_seqs.iterate([&](const OpSequenceIndex &, OpSequence &op_seq) {
       assert(op_seq.operations().size() > 0);
@@ -231,7 +239,7 @@ OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &
 
 void LoweredGraph::makeOpSequences(
     OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info,
-    const compiler::CompilerOptions &options)
+    const compiler::CompilerOptions &options, const compiler::BackendResolver &backend_resolver)
 {
   // if SUBG_MAX_NODE == 0, no limit on nodes of a op_seq
   const int op_seq_max_node = options.op_seq_max_node;
@@ -246,7 +254,7 @@ void LoweredGraph::makeOpSequences(
   PostDfsConstIterator{}.iterate(
       _graph, [&](const OperationIndex &node_index, const Operation &node) {
         // LowerInfo for in/output operands
-        auto backend = _backend_resolver->getBackend(node_index);
+        auto backend = backend_resolver.getBackend(node_index);
 
         // Get frontend's layout
         auto frontend_layout = _graph.layout();
@@ -272,7 +280,8 @@ void LoweredGraph::makeOpSequences(
 
         // for profiling each op_seq must contain just one node,
         // so that we can measure a node separately
-        if (new_op_seq || is_profiling || !mergeable(op_seq_index, node_index, backend_layout))
+        if (new_op_seq || is_profiling ||
+            !mergeable(op_seq_index, node_index, backend_layout, backend_resolver))
         {
           auto new_op_seq_index = appendFreshSingleOpSequence(node_index, node);
 
@@ -379,11 +388,12 @@ void LoweredGraph::dumpLowerInfo()
       std::string def_layouts = factors_to_string(lower_info->def_factors());
       std::string use_layouts = factors_to_string(lower_info->use_factors());
       sstream << "Operand #" << index.value() << " LowerInfo" << std::endl;
-      sstream << "  - Shape           : { " << (shape.rank() > 0 ? shape.dim(0) : 0) << " "
-              << (shape.rank() > 1 ? shape.dim(1) : 0) << " "
-              << (shape.rank() > 2 ? shape.dim(2) : 0) << " "
-              << (shape.rank() > 3 ? shape.dim(3) : 0) << " "
-              << "}" << std::endl;
+      sstream << "  - Shape           : { ";
+      for (auto i = 0; i < shape.rank(); ++i)
+      {
+        sstream << (shape.dim(i)) << " ";
+      }
+      sstream << "}" << std::endl;
       sstream << "  - Def Operations  : " << def_ops << std::endl;
       sstream << "  - Use Operations  : " << use_ops << std::endl;
       sstream << "  - Lower Info" << std::endl;
@@ -403,7 +413,7 @@ void LoweredGraph::dumpLowerInfo()
 }
 
 bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const OperationIndex &node_index,
-                             Layout layout)
+                             Layout layout, const compiler::BackendResolver &backend_resolver)
 {
   // Are they mergeable?
   // 1. the same backend id and layout?
@@ -416,7 +426,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
   {
     const auto op_seq_backend_layout = getLowerInfo(op_seq_index)->layout();
     const auto &op_seq_backend_id = getLowerInfo(op_seq_index)->backend()->config()->id();
-    const auto &node_backend_id = _backend_resolver->getBackend(node_index)->config()->id();
+    const auto &node_backend_id = backend_resolver.getBackend(node_index)->config()->id();
     VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " { " << op_seq_backend_id << "("
                    << to_string(op_seq_backend_layout) << ") } "
                    << " NODE#" << node_index.value() << " (" << node.name() << ") { "
