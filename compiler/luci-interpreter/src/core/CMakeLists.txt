@@ -1,6 +1,7 @@
 set(SOURCES
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/core/DataType.h"
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/core/Tensor.h"
+    EventNotifier.h
     Kernel.h
     KernelParams.h
     Tensor.cpp)
