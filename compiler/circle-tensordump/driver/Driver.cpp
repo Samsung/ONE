@@ -27,15 +27,20 @@
 
 using OptionHook = std::function<std::unique_ptr<circletensordump::DumpInterface>(void)>;
 
+void print_help(const char *progname)
+{
+  std::cerr << "USAGE: " << progname << " options circle [hdf5]" << std::endl;
+  std::cerr << "   --tensors : dump tensors in circle file" << std::endl;
+  std::cerr << "   --tensors_to_hdf5 : dump tensors in circle file to hdf5 file" << std::endl;
+}
+
 int entry(int argc, char **argv)
 {
   if (argc < 3)
   {
     std::cerr << "ERROR: Failed to parse arguments" << std::endl;
     std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " options circle [hdf5]" << std::endl;
-    std::cerr << "   --tensors : dump tensors in circle file" << std::endl;
-    std::cerr << "   --tensors_to_hdf5 : dump tensors in circle file to hdf5 file" << std::endl;
+    print_help(argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -69,10 +74,8 @@ int entry(int argc, char **argv)
   {
     if (argc != 4)
     {
-      std::cerr << "Option '" << tag << "' needs output path" << std::endl;
-      std::cerr << "USEAGE: ./circle-tensordump --tensors_to_hdf5 </path/to/input/circle> "
-                   "</path/to/output/h5>"
-                << std::endl;
+      std::cerr << "Option '" << tag << "' needs hdf5 output path" << std::endl;
+      print_help(argv[0]);
       return EXIT_FAILURE;
     }
     output_path = argv[3];
@@ -80,6 +83,7 @@ int entry(int argc, char **argv)
   else
   {
     std::cerr << "Option '" << tag << "' is not supported" << std::endl;
+    print_help(argv[0]);
     return EXIT_FAILURE;
   }
 
