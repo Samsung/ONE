@@ -1,3 +1,6 @@
+# TODO We need to check if toco generates models like described in this recipe.
+# Toco from TF 2.2.0 was not able to convert SegmentSum operator.
+
 operand {
   name: "ifm"
   type: FLOAT32
