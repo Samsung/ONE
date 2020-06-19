@@ -49,6 +49,7 @@ public:
     ADD_UNSPECIFIED_RANK_INPUTS,
     NEG,
     WHILE_DYNAMIC,
+    IF_DYNAMIC,
 
     COUNT
   };
