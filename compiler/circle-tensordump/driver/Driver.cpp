@@ -36,7 +36,7 @@ int entry(int argc, char **argv)
     std::cerr << "USAGE: " << argv[0] << " options circle [hdf5]" << std::endl;
     std::cerr << "   --tensors : dump tensors in circle file" << std::endl;
     std::cerr << "   --tensors_to_hdf5 : dump tensors in circle file to hdf5 file" << std::endl;
-    return 255;
+    return EXIT_FAILURE;
   }
 
   // Simple argument parser (based on map)
@@ -67,12 +67,20 @@ int entry(int argc, char **argv)
   }
   else if (tag == "--tensors_to_hdf5")
   {
+    if (argc != 4)
+    {
+      std::cerr << "Option '" << tag << "' needs output path" << std::endl;
+      std::cerr << "USEAGE: ./circle-tensordump --tensors_to_hdf5 </path/to/input/circle> "
+                   "</path/to/output/h5>"
+                << std::endl;
+      return EXIT_FAILURE;
+    }
     output_path = argv[3];
   }
   else
   {
     std::cerr << "Option '" << tag << "' is not supported" << std::endl;
-    return 255;
+    return EXIT_FAILURE;
   }
 
   // Load Circle model from a circle file
@@ -82,10 +90,10 @@ int entry(int argc, char **argv)
   if (circleModel == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
-    return 255;
+    return EXIT_FAILURE;
   }
 
   dump->run(std::cout, circleModel, output_path);
 
-  return 0;
+  return EXIT_SUCCESS;
 }
