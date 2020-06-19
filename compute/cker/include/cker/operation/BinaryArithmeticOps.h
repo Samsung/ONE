@@ -32,16 +32,6 @@ namespace cker
 
 namespace
 {
-template <typename T> T divide(const T &a, const T &b)
-{
-  if (b == 0)
-    throw std::runtime_error("Divide by zero");
-
-  return a / b;
-}
-
-template <> float divide<float>(const float &a, const float &b) { return a / b; }
-
 template <typename T>
 const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn(BinaryArithmeticOpType type)
 {
@@ -61,7 +51,14 @@ const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn(BinaryArithm
     }
     case BinaryArithmeticOpType::DIV:
     {
-      return divide<T>;
+      if (std::is_floating_point<T>::value)
+        return [](const T &a, const T &b) -> T { return a / b; };
+      else
+        return [](const T &a, const T &b) -> T {
+          if (b == 0)
+            throw std::runtime_error("Divide by zero");
+          return a / b;
+        };
     }
     case BinaryArithmeticOpType::POW:
     {
