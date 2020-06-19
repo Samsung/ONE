@@ -53,8 +53,6 @@ inline void Range(const T *start_data, const T *limit_data, const T *delta_data,
   {
     output_data[i] = value;
     value += delta_value;
-
-    assert(value < limit_value);
   }
 }
 
