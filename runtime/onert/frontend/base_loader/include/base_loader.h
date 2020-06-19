@@ -1151,6 +1151,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
 
   enum class BuiltinOP
   {
+    AddV2,
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
@@ -1159,6 +1160,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
+      {"AddV2", BuiltinOP::AddV2},
       {"All", BuiltinOP::ReduceAll},
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
@@ -1171,6 +1173,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     auto custom_op_id = builtin_map.at(custom_op_name);
     switch (custom_op_id)
     {
+      case BuiltinOP::AddV2:
+        loadAdd(op, subg);
+        break;
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
         break;

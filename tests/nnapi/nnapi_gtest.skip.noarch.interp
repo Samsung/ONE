@@ -7,6 +7,7 @@ GeneratedTests.abs_dynamic_nnfw
 GeneratedTests.add_broadcast_quant8
 GeneratedTests.add_dynamic_nnfw
 GeneratedTests.add_quant8
+GeneratedTests.addv2_ex
 GeneratedTests.argmax_1
 GeneratedTests.argmax_1_quant8
 GeneratedTests.argmax_2

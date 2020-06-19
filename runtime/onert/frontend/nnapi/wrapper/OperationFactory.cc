@@ -527,6 +527,8 @@ OperationFactory::OperationFactory()
     return new operation::Add{inputs, outputs, param};
   };
 
+  _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
+
   _map[ANEURALNETWORKS_REDUCE_SUM] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {
     assert(init_param.input_count == 3);
