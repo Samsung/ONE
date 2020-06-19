@@ -455,3 +455,20 @@ TEST_F(TestWhileDynamicModelLoaded, run_verify)
   for (int i = 0; i < actual_output0.size(); ++i)
     ASSERT_FLOAT_EQ(while_dynamic_output0[i], actual_output0[i]);
 }
+
+TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
+{
+  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+
+  nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
+  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+
+  // Insufficient size of output (10 or more is sufficient)
+  std::vector<float> actual_output0(9);
+
+  set_input_output(_session, while_dynamic_input0, &actual_output0);
+
+  // TODO Change error code NNFW_STATUS_ERROR -> NNFW_INSUFFICIENT_OUTPUT_SIZE
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+}
