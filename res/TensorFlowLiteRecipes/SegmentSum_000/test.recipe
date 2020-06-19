@@ -1,0 +1,30 @@
+# TODO We need to check if toco generates models like described in this recipe.
+# Toco from TF 2.2.0 was not able to convert SegmentSum operator.
+
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 }
+}
+operand {
+name: "segment_ids"
+  type: INT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0" arg: "1" 
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 }
+}
+operation {
+  type: "SegmentSum"
+  input: "ifm"
+  input: "segment_ids"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
