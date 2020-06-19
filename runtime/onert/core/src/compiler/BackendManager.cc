@@ -70,8 +70,13 @@ void BackendManager::loadBackend(const std::string &backend)
 
   // TODO Remove indentation
   {
+#if defined(__APPLE__) && defined(__MACH__)
+    const std::string backend_so = "libbackend_" + backend + ".dylib";
+#else
     const std::string backend_so = "libbackend_" + backend + ".so";
+#endif
     void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
+
     if (handle == nullptr)
     {
       VERBOSE_F() << "Failed to load backend '" << backend << "' - " << dlerror() << std::endl;
