@@ -105,9 +105,6 @@ private:
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
-
-protected:
-  std::unique_ptr<onert::util::GeneralConfigSource> _source;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
