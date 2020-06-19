@@ -237,7 +237,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node
 
   return std::make_unique<kernels::L2Normalize>(input, output, params);
 }
-  
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Pool2D *node)
 {
   assert(node->arity() == 1);

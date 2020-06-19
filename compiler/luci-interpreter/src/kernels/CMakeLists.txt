@@ -81,9 +81,9 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     FullyConnected.test.cpp
+    L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
-    L2Normalize.test.cpp
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
     MaxPool2D.test.cpp
