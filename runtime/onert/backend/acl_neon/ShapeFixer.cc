@@ -52,58 +52,6 @@ ShapeFixer::ShapeFixer(const ir::Operands &ctx,
   assert(tensor_builder);
 }
 
-void ShapeFixer::visit(const ir::operation::BatchToSpaceND &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
-  _tensor_builder->dimCorrection(ofm_index, false);
-  _tensor_builder->dimCorrection(ifm_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::Concat &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  _tensor_builder->dimCorrection(ofm_index, false);
-  for (const auto &inputs : node.getInputs())
-    _tensor_builder->dimCorrection(inputs, false);
-}
-
-void ShapeFixer::visit(const ir::operation::EmbeddingLookup &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto values_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::VALUES)};
-  _tensor_builder->dimCorrection(values_index, false);
-  _tensor_builder->dimCorrection(output_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::FullyConnected &node)
-{
-  using ir::operation::FullyConnected;
-  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
-  const auto input_rank = _ctx.at(input_index).shape().rank();
-  // Check for reshaping input's shape into rank-2
-  if (input_rank == 3 || input_rank == 4)
-    _tensor_builder->dimCorrection(input_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::HashtableLookup &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto values_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::VALUES)};
-  _tensor_builder->dimCorrection(values_index, false);
-  _tensor_builder->dimCorrection(output_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::Gather &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
-  const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
-  _tensor_builder->dimCorrection(ofm_index, false);
-  _tensor_builder->dimCorrection(ifm_index, false);
-  _tensor_builder->dimCorrection(indices_index, false);
-}
-
 void ShapeFixer::visit(const ir::operation::LogicalAnd &node)
 {
   const auto input0_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT0)};
@@ -141,24 +89,14 @@ void ShapeFixer::visit(const ir::operation::LogicalOr &node)
 void ShapeFixer::visit(const ir::operation::Pack &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  _tensor_builder->dimCorrection(ofm_index, false);
   for (const auto &inputs : node.getInputs())
   {
-    _tensor_builder->dimCorrection(inputs, false);
     const auto ofm_rank = _ctx.at(ofm_index).shape().rank();
 
     // TODO remove const_cast later. For example, _ctx may need to be a non const variable or
     //      a node to extend shape may be inserted in front of this operation
     const_cast<ir::Shape &>(_ctx.at(inputs).shape()).extendRank(ofm_rank);
   }
-}
-
-void ShapeFixer::visit(const ir::operation::Pad &node)
-{
-  const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
-  const auto output_index{node.getOutputs().at(0)};
-  _tensor_builder->dimCorrection(input_index, false);
-  _tensor_builder->dimCorrection(output_index, false);
 }
 
 void ShapeFixer::visit(const ir::operation::Mul &node)
@@ -192,15 +130,6 @@ void ShapeFixer::visit(const ir::operation::PReLU &node)
   }
 }
 
-void ShapeFixer::visit(const ir::operation::Reshape &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
-
-  _tensor_builder->dimCorrection(input_index, false);
-  _tensor_builder->dimCorrection(output_index, false);
-}
-
 void ShapeFixer::visit(const ir::operation::Comparison &node)
 {
   const auto input0_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
@@ -216,38 +145,6 @@ void ShapeFixer::visit(const ir::operation::Comparison &node)
     const_cast<ir::Shape &>(_ctx.at(input0_index).shape()).extendRank(broadcast_rank);
     const_cast<ir::Shape &>(_ctx.at(input1_index).shape()).extendRank(broadcast_rank);
   }
-}
-
-void ShapeFixer::visit(const ir::operation::Squeeze &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
-  _tensor_builder->dimCorrection(input_index, false);
-  _tensor_builder->dimCorrection(output_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::StridedSlice &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
-  _tensor_builder->dimCorrection(ofm_index, false);
-  _tensor_builder->dimCorrection(ifm_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::SpaceToBatchND &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
-  _tensor_builder->dimCorrection(ofm_index, false);
-  _tensor_builder->dimCorrection(ifm_index, false);
-}
-
-void ShapeFixer::visit(const ir::operation::Split &node)
-{
-  const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
-  _tensor_builder->dimCorrection(input_index, false);
-  for (const auto &output : node.getOutputs())
-    _tensor_builder->dimCorrection(output, false);
 }
 
 void ShapeFixer::visit(const ir::operation::SquaredDifference &node)
@@ -281,14 +178,6 @@ void ShapeFixer::visit(const ir::operation::Sub &node)
     const_cast<ir::Shape &>(_ctx.at(lhs_index).shape()).extendRank(broadcast_rank);
     const_cast<ir::Shape &>(_ctx.at(rhs_index).shape()).extendRank(broadcast_rank);
   }
-}
-
-void ShapeFixer::visit(const ir::operation::Unpack &node)
-{
-  const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
-  _tensor_builder->dimCorrection(input_index, false);
-  for (const auto &output_index : node.getOutputs())
-    _tensor_builder->dimCorrection(output_index, false);
 }
 
 void ShapeFixer::visit(const ir::operation::Add &node)
