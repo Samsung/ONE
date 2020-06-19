@@ -32,8 +32,8 @@ bool CircleBCQFullyConnectedGraphBuilder::validate(const ValidateArgs &args) con
 }
 
 CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::OperatorT &op,
-                                              const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+                                                            const std::vector<CircleNode *> &inputs,
+                                                            loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleBCQFullyConnected>();
 
@@ -42,6 +42,15 @@ CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::Operat
   node->weights_binary(inputs[2]);
   node->bias(inputs[3]);
   node->weights_clusters(inputs[4]);
+
+  // TODO Find and move to appropriate place for setting optional input
+  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
+  {
+    // bias is not used for type inference, but node itself should have a type
+    bias->dtype(loco::DataType::FLOAT32);
+
+    // bias is not used for shape inference
+  }
 
   const auto *options = op.builtin_options.AsBCQFullyConnectedOptions();
   node->weights_hidden_size(options->weights_hidden_size);

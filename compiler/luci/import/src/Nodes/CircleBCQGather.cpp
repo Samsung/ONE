@@ -32,8 +32,8 @@ bool CircleBCQGatherGraphBuilder::validate(const ValidateArgs &args) const
 }
 
 CircleNode *CircleBCQGatherGraphBuilder::build_node(const circle::OperatorT &op,
-                                              const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+                                                    const std::vector<CircleNode *> &inputs,
+                                                    loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleBCQGather>();
 

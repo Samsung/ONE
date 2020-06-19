@@ -1781,10 +1781,9 @@ void OperationExporter::visit(luci::CircleBCQGather *node)
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BCQ_GATHER);
 
   // Make input, output and options for operator
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input_scales()),
-                                  get_tensor_index(node->input_binary()),
-                                  get_tensor_index(node->indices()),
-                                  get_tensor_index(node->input_clusters())};
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->input_scales()), get_tensor_index(node->input_binary()),
+      get_tensor_index(node->indices()), get_tensor_index(node->input_clusters())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);

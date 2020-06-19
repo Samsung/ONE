@@ -1931,42 +1931,18 @@ public:
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
     auto weights_binary_shape = loco::shape_get(node->weights_binary()).as<loco::TensorShape>();
+    auto weights_clusters = loco::must_cast<luci::CircleConst *>(node->weights_clusters());
 
-    if(dynamic_cast<luci::CircleOutputExclude *>(node->weights_clusters()) != nullptr)
+    int32_t qsum = 0;
+
+    for (uint32_t i = 0; i < weights_clusters->dim(0).value(); ++i)
     {
-      // This case will be deprecated
-      weights_shape.rank(2);
-      weights_shape.dim(0) = weights_binary_shape.dim(0);
-      weights_shape.dim(1) = weights_binary_shape.dim(2).value() * 32;
-
-      LUCI_ASSERT(input_shape.rank() >= 2, "Input rank should be at least 2");
-      LUCI_ASSERT(weights_shape.rank() == 2, "Incompatible weights rank for BCQ fully connected");
-
-      uint32_t input_size = 1;
-      for (uint32_t i = 0; i < input_shape.rank(); i++)
-      {
-        input_size = input_size * input_shape.dim(i).value();
-      }
-      const uint32_t batch_size = input_size / weights_shape.dim(1).value();
-      
-      out_shape.rank(2);
-      out_shape.dim(0) = batch_size;
-      out_shape.dim(1) = weights_shape.dim(0);
+      qsum += weights_clusters->at<loco::DataType::S32>(i * 2 + 1);
     }
-    else
-    {
-      auto weights_clusters = loco::must_cast<luci::CircleConst *>(node->weights_clusters());
-      auto qsum = 0;
 
-      for(uint32_t i=0;i<weights_clusters->dim(0).value();++i)
-      {
-        qsum += weights_clusters->at<loco::DataType::S32>(i*2 + 1);
-      }
-
-      out_shape.rank(2);
-      out_shape.dim(0) = qsum;
-      out_shape.dim(1) = input_shape.dim(1);
-    }
+    out_shape.rank(2);
+    out_shape.dim(0) = qsum;
+    out_shape.dim(1) = input_shape.dim(1);
 
     return loco::NodeShape{out_shape};
   }
@@ -1980,27 +1956,18 @@ public:
     const auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
     auto axis = node->axis();
 
-    if(dynamic_cast<luci::CircleOutputExclude *>(node->input_clusters()) != nullptr)
+    auto input_clusters = loco::must_cast<luci::CircleConst *>(node->input_clusters());
+    auto qsum = 0;
+    for (uint32_t i = 0; i < input_clusters->dim(0).value(); ++i)
     {
-      input_shape.rank(2);
-      input_shape.dim(0) = input_binary_shape.dim(0);
-      input_shape.dim(1) = input_binary_shape.dim(2).value() * 32;
+      const auto qbit = input_clusters->at<loco::DataType::S32>(i * 2);
+      const auto size_of_qbit = input_clusters->at<loco::DataType::S32>(i * 2 + 1);
+      qsum += size_of_qbit / qbit;
     }
-    else
-    {
-      auto input_clusters = loco::must_cast<luci::CircleConst *>(node->input_clusters());
-      auto qsum = 0;
-      for(uint32_t i=0;i<input_clusters->dim(0).value();++i)
-      {
-        const auto qbit = input_clusters->at<loco::DataType::S32>(i*2);
-        const auto size_of_qbit = input_clusters->at<loco::DataType::S32>(i*2 + 1);
-        qsum += size_of_qbit / qbit;
-      }
 
-      input_shape.rank(2);
-      input_shape.dim(0) = input_binary_shape.dim(0).value() / qsum;
-      input_shape.dim(1) = input_binary_shape.dim(1).value() * 32;
-    }
+    input_shape.rank(2);
+    input_shape.dim(0) = input_binary_shape.dim(0).value() / qsum;
+    input_shape.dim(1) = input_binary_shape.dim(1).value() * 32;
 
     output_shape.rank(input_shape.rank() - 1 + indices_shape.rank());
     int32_t outdim_index = 0;
