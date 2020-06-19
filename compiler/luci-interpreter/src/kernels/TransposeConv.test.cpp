@@ -56,6 +56,7 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
 TEST(TransposeConvTest, FloatSimple)

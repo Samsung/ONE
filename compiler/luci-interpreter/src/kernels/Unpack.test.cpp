@@ -60,6 +60,8 @@ void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
   {
     EXPECT_THAT(extractTensorData<T>(output_tensors[i]),
                 ::testing::ElementsAreArray(exp_output_data[i]));
+    EXPECT_THAT(extractTensorShape(output_tensors[i]),
+                ::testing::ElementsAreArray(exp_output_shape[i]));
   }
 }
 
