@@ -61,7 +61,7 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
 
 const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
 {
-  const Tensor *tensor = _tensor_map.getTensor(node);
+  const Tensor *tensor = _node_to_tensor.at(node);
   assert(tensor != nullptr);
   return tensor;
 }
@@ -74,7 +74,7 @@ const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) cons
 
 Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
 {
-  Tensor *tensor = _tensor_map.getTensor(node);
+  Tensor *tensor = _node_to_tensor.at(node);
   assert(tensor != nullptr);
   return tensor;
 }

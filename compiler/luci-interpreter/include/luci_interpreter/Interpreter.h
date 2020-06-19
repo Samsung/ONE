@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 namespace luci_interpreter
 {
@@ -58,8 +59,9 @@ private:
   void createTensors(const loco::Graph *graph);
   void createKernels(const loco::Graph *graph);
 
-  const loco::Graph *_main_graph = nullptr;
-  std::unique_ptr<class TensorMap> _node_to_tensor;
+  std::unique_ptr<class RuntimeModule> _runtime_module;
+  class RuntimeGraph *_main_runtime_graph;
+  std::unordered_map<const loco::Node *, Tensor *> _node_to_tensor;
 
   // Kernels, in execution order.
   std::vector<std::unique_ptr<class Kernel>> _kernels;

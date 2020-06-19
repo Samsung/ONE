@@ -17,12 +17,12 @@
 #ifndef LUCI_INTERPRETER_KERNELBUILDER_H
 #define LUCI_INTERPRETER_KERNELBUILDER_H
 
-#include "TensorMap.h"
 #include "core/Kernel.h"
 
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace luci_interpreter
@@ -31,7 +31,10 @@ namespace luci_interpreter
 class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
 {
 public:
-  explicit KernelBuilder(TensorMap &tensor_map) : _tensor_map(tensor_map) {}
+  explicit KernelBuilder(std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+      : _node_to_tensor(node_to_tensor)
+  {
+  }
 
   std::unique_ptr<Kernel> visit(const luci::CircleAdd *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleArgMax *node) override;
@@ -69,7 +72,7 @@ private:
   std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const;
 
 private:
-  TensorMap &_tensor_map;
+  std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
 } // namespace luci_interpreter
