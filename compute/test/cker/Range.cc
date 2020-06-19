@@ -55,7 +55,7 @@ TEST(CKer_Operation, Range)
     nnfw::cker::Range<float>(&start, &limit, &delta, actual.data());
 
     for (int i = 0; i < actual.size(); i++)
-      ASSERT_EQ(actual[i], expected[i]);
+      ASSERT_FLOAT_EQ(actual[i], expected[i]);
   }
 }
 
