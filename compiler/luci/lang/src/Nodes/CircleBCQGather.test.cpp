@@ -30,6 +30,7 @@ TEST(CircleBCQGatherTest, constructor)
   ASSERT_EQ(nullptr, bcq_gather_node.input_scales());
   ASSERT_EQ(nullptr, bcq_gather_node.input_binary());
   ASSERT_EQ(nullptr, bcq_gather_node.indices());
+  ASSERT_EQ(nullptr, bcq_gather_node.input_clusters());
 
   ASSERT_EQ(0, bcq_gather_node.axis());
   ASSERT_EQ(0, bcq_gather_node.input_hidden_size());
