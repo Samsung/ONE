@@ -57,6 +57,7 @@ public:
   void visit(luci::CircleBatchMatMul *) final;
   void visit(luci::CircleBatchToSpaceND *) final;
   void visit(luci::CircleCast *) final;
+  void visit(luci::CircleCeil *) final;
   void visit(luci::CircleConcatenation *) final;
   void visit(luci::CircleConst *) final{/* skip, everything is done in exportOpDefinedTensors */};
   void visit(luci::CircleConv2D *) final;
@@ -293,6 +294,17 @@ void OperationExporter::visit(luci::CircleCast *node)
   {
     op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   }
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleCeil *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CEIL);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
