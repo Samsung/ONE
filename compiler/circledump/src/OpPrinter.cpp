@@ -668,6 +668,7 @@ public:
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
+  // There is no Option for ADD_N
   _op_map[circle::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[circle::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[circle::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
