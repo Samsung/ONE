@@ -365,6 +365,8 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
       return NNFW_TYPE_TENSOR_BOOL;
     case DataType::UINT8:
       return NNFW_TYPE_TENSOR_UINT8;
+    case DataType::INT64:
+      return NNFW_TYPE_TENSOR_INT64;
     case DataType::UINT32:
     case DataType::QUANT_INT8_SYMM:
     default:

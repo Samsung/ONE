@@ -199,6 +199,9 @@ uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
     case OperandType::QUANT_INT8_SYMM:
       size = 1;
       break;
+    case OperandType::INT64:
+      size = 8;
+      break;
     default:
       throw std::runtime_error("Not supported operand type.");
       break;
