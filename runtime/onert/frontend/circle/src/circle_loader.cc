@@ -72,6 +72,12 @@ class CircleLoader final : public base_loader::BaseLoader<LoaderDomain, CircleLo
 public:
   using BaseLoader::BaseLoader;
 
+  std::vector<circle::BuiltinOperator> getOptionalInputOplist()
+  {
+    return {circle::BuiltinOperator::BuiltinOperator_FULLY_CONNECTED,
+            circle::BuiltinOperator::BuiltinOperator_BCQ_FULLY_CONNECTED};
+  }
+
   std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg)
   {
     auto subg = std::make_unique<ir::Graph>();

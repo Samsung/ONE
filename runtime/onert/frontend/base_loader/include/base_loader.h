@@ -53,7 +53,12 @@ template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
   using Tensor = typename LoaderDomain::Tensor;
   using TensorType = typename LoaderDomain::TensorType;
 
+protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
+  std::vector<BuiltinOperator> getOptionalInputOplist()
+  {
+    return {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
+  }
 
 public:
   /**
@@ -377,10 +382,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
 {
   for (const std::int32_t idx : *op->inputs())
   {
-    // Optional tensors are not supported yet except for FULLY_CONNECTED.
+    // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-      std::vector<BuiltinOperator> allowed = {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
+      auto allowed = static_cast<SpecificLoader *>(this)->getOptionalInputOplist();
       if (isOptionalInputTensor(idx) &&
           std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
         throw std::runtime_error(
