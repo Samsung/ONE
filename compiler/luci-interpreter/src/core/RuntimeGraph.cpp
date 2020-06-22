@@ -65,12 +65,20 @@ void RuntimeGraph::configure()
 
 void RuntimeGraph::execute() const
 {
+  EventNotifier *event_notifier = _owning_module->getEventNotifier();
+
+  // Notify the observers that the input tensors have changed.
+  for (Tensor *input_tensor : getInputTensors())
+  {
+    event_notifier->postTensorWrite(input_tensor);
+  }
+
   for (const auto &kernel : _kernels)
   {
     kernel->execute();
     for (Tensor *tensor : kernel->getOutputTensors())
     {
-      _owning_module->getEventNotifier()->postTensorWrite(tensor);
+      event_notifier->postTensorWrite(tensor);
     }
   }
 }
