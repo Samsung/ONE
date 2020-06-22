@@ -68,7 +68,7 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
  * @brief  verifyTypeShape checks the type and the shape of CircleInput
  *         This throws an exception if type or shape does not match
  */
-bool verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
+void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
 {
   // Type check
   if (dtype != input_node->dtype())
