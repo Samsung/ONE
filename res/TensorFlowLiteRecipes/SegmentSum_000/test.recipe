@@ -4,21 +4,21 @@
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 3 dim: 4 }
+  shape { dim: 4 dim: 2 dim: 2 dim: 2 }
 }
 operand {
 name: "segment_ids"
   type: INT32
-  shape { dim: 3 }
+  shape { dim: 4 }
   filler {
     tag: "explicit"
-    arg: "0" arg: "0" arg: "1" 
+    arg: "0" arg: "1" arg: "1" arg: "2" 
   }
 }
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 3 dim: 4 }
+  shape { dim: 3 dim: 2 dim: 2 dim: 2 }
 }
 operation {
   type: "SegmentSum"
