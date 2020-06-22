@@ -19,7 +19,6 @@
 #include "core/EventNotifier.h"
 #include "core/RuntimeModule.h"
 #include "KernelBuilder.h"
-#include "KernelMap.h"
 #include "RuntimeToIR.h"
 
 #include <loco/IR/Algorithm.h>
