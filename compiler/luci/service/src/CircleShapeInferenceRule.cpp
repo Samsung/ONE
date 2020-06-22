@@ -339,6 +339,22 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleAddN *node) final
+  {
+    auto shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
+
+    for (uint32_t idx = 1; idx < node->arity(); ++idx)
+    {
+      auto shape_idx = loco::shape_get(node->inputs(idx)).as<loco::TensorShape>();
+      if (!(shape == shape_idx))
+      {
+        INTERNAL_EXN_V("ADD_N shape not same as the first input: ", idx);
+      }
+    }
+
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleArgMax *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();

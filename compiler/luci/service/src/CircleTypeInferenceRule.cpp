@@ -33,6 +33,22 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleAdd *node) final { return loco::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleAddN *node) final
+  {
+    auto dtype = loco::dtype_get(node->inputs(0));
+
+    for (uint32_t idx = 1; idx < node->arity(); ++idx)
+    {
+      auto dtype_idx = loco::dtype_get(node->inputs(idx));
+      if (dtype != dtype_idx)
+      {
+        INTERNAL_EXN_V("ADD_N dtype not same as the first input: ", idx);
+      }
+    }
+
+    return loco::dtype_get(node->inputs(0));
+  }
+
   loco::DataType visit(const luci::CircleArgMax *node) final { return node->output_type(); }
 
   loco::DataType visit(const luci::CircleArgMin *node) final { return node->output_type(); }
