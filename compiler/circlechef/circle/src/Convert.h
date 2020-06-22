@@ -42,6 +42,9 @@ template <typename DT> std::vector<DT> extract_buffer(const circle::Buffer *buff
 
 template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
 {
+  if (flat_array == nullptr)
+    throw std::runtime_error("flat_array is nullptr");
+
   std::vector<T> ret(flat_array->Length());
   for (uint32_t i = 0; i < flat_array->Length(); i++)
   {
