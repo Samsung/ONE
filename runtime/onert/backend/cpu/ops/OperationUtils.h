@@ -60,11 +60,10 @@ uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx);
 inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
 {
   assert(tensor);
-  std::vector<int32_t> raw_shape;
-  raw_shape.resize(4);
-
-  uint32_t src = 4 - tensor->num_dimensions();
-  for (uint32_t i = 0; i < 4; ++i)
+  const int32_t extended_rank = 4;
+  int32_t raw_shape[extended_rank];
+  uint32_t src = extended_rank - tensor->num_dimensions();
+  for (uint32_t i = 0; i < extended_rank; ++i)
   {
     if (i < src)
     {
@@ -76,7 +75,7 @@ inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
     }
   }
 
-  return nnfw::cker::GetShape(raw_shape);
+  return nnfw::cker::Shape(extended_rank, raw_shape);
 }
 
 inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
@@ -85,14 +84,26 @@ inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
     return nnfw::cker::Shape();
 
   assert(tensor->layout() == ir::Layout::NHWC);
-  std::vector<int32_t> raw_shape;
-  raw_shape.resize(tensor->num_dimensions());
-  for (uint32_t i = 0; i < tensor->num_dimensions(); ++i)
+  const int maxSmallSize = 8;
+  int32_t raw_shape_small[maxSmallSize];
+  std::vector<int32_t> raw_shape_vec;
+  auto rank = tensor->num_dimensions();
+  int32_t *data = nullptr;
+  if (rank > maxSmallSize)
   {
-    raw_shape[i] = tensor->dimension(i);
+    raw_shape_vec.resize(rank);
+    data = raw_shape_vec.data();
+  }
+  else
+  {
+    data = raw_shape_small;
   }
 
-  return nnfw::cker::GetShape(raw_shape);
+  for (uint32_t i = 0; i < rank; ++i)
+  {
+    data[i] = tensor->dimension(i);
+  }
+  return nnfw::cker::Shape(rank, data);
 }
 
 inline nnfw::cker::FusedActivationFunctionType

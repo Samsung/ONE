@@ -48,11 +48,11 @@ inline nnfw::cker::Shape convertExtendShape(const ir::Shape &shape)
 {
   auto dimensions = std::vector<uint32_t>(shape.dims().begin(), shape.dims().end());
 
-  std::vector<int32_t> raw_shape;
-  raw_shape.resize(4);
-  uint32_t start = 4 - dimensions.size();
+  const int32_t extended_rank = 4;
+  int32_t raw_shape[extended_rank];
+  uint32_t start = extended_rank - dimensions.size();
 
-  for (uint32_t i = 0; i < 4; ++i)
+  for (uint32_t i = 0; i < extended_rank; ++i)
   {
     if (i < start)
     {
@@ -64,7 +64,7 @@ inline nnfw::cker::Shape convertExtendShape(const ir::Shape &shape)
     }
   }
 
-  return nnfw::cker::GetShape(raw_shape);
+  return nnfw::cker::Shape(extended_rank, raw_shape);
 }
 
 inline nnfw::cker::FusedActivationFunctionType
