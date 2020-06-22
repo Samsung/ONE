@@ -19,8 +19,6 @@
 
 #include "nnfw.h"
 
-NNFW_STATUS nnfw_create_debug_session(nnfw_session **session);
-
 NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value);
 
 NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size);
