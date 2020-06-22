@@ -33,8 +33,7 @@ int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
     auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
     if (input)
     {
-      auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input->input());
-      assert(broadcastTo);
+      auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
       if (broadcastTo->custom_code() == "BroadcastTo")
         return idx;
     }
@@ -65,8 +64,8 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
   if (broadcastTo_idx == -1)
     return false;
 
-  auto input = dynamic_cast<const luci::CircleCustomOut *>(addv2->inputs(broadcastTo_idx));
-  auto broadcastTo = dynamic_cast<luci::CircleCustom *>(input->input());
+  auto input = loco::must_cast<const luci::CircleCustomOut *>(addv2->inputs(broadcastTo_idx));
+  auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
 
   auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
   add->fusedActivationFunction(luci::FusedActFunc::NONE);
