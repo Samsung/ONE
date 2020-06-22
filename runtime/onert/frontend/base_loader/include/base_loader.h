@@ -506,10 +506,21 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, i
 
   loadOperationIO(op, inputs, outputs);
 
-  // const auto *options = op->builtin_options_as_ReshapeOptions();
-  // No params
+  ir::operation::Reshape::Param param{};
+  const auto *options = op->builtin_options_as_ReshapeOptions();
+  if (options != nullptr)
+  {
+    const auto *new_shape = options->new_shape();
+    if (new_shape)
+    {
+      for (uint i = 0; i < new_shape->Length(); ++i)
+      {
+        param.new_shape.push_back(new_shape->Get(i));
+      }
+    }
+  }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reshape(inputs, outputs));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reshape(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

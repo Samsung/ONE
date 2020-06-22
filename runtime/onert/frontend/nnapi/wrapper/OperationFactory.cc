@@ -364,7 +364,9 @@ OperationFactory::OperationFactory()
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
-    return new operation::Reshape{inputs, outputs};
+    operation::Reshape::Param param{};
+
+    return new operation::Reshape{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_FULLY_CONNECTED] = [](const OperationFactory::Param &init_param,
