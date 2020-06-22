@@ -13,6 +13,7 @@
 
 CIRCLE_NODE(ABS, luci::CircleAbs)
 CIRCLE_NODE(ADD, luci::CircleAdd)
+CIRCLE_NODE(ADD_N, luci::CircleAddN)
 CIRCLE_NODE(ARG_MAX, luci::CircleArgMax)
 CIRCLE_NODE(ARG_MIN, luci::CircleArgMin)
 CIRCLE_NODE(AVERAGE_POOL_2D, luci::CircleAveragePool2D)
