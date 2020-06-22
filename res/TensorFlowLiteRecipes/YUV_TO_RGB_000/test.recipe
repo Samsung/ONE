@@ -1,0 +1,58 @@
+operand {
+  name: "input"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "weight"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: ["1", "0", "1.139883041381836", "1", "-0.39464232325553894", "-0.5806218385696411", "1", "2.032061815261841", "0"]
+  }
+}
+operand {
+  name: "outf"
+  type: FLOAT32
+  shape { dim: 16 dim: 3 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: ["0", "0", "0"]
+  }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "input"
+  input: "weight"
+  input: "bias"
+  output: "outf"
+}
+
+operation {
+  type: "Reshape"
+  input: "outf"
+  output: "out"
+  reshape_options {
+    new_shape: 1
+    new_shape: 4
+    new_shape: 4
+    new_shape: 3
+  }
+}
+
+input: "input"
+output: "out"

@@ -1,0 +1,62 @@
+operand {
+  name: "input"
+  type: UINT8
+  quant { min: -0.5 max: 1.0 scale: 0.005882 zero_point: 85 }
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "weight"
+  type: UINT8
+  shape { dim: 3 dim: 3 }
+  quant { min: -128 max: 127 scale: 0.016 zero_point: 128 }
+  filler {
+    tag: "explicit"
+    arg: ["190", "128", "199", "190", "103", "92", "190", "255", "128"]
+  }
+}
+operand {
+  name: "outf"
+  type: UINT8
+  shape { dim: 16 dim: 3 }
+  quant { min: -1.016031 max: 2.016031 scale: 0.01189 zero_point: 85 }
+}
+operand {
+  name: "out"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: -1.016031 max: 2.016031 scale: 0.01189 zero_point: 85 }
+}
+operand {
+  name: "bias"
+  type: INT32
+  shape { dim: 3 }
+  quant { min: 0 max: 0 scale: 0.000094112 zero_point: 0 }
+  filler {
+    tag: "explicit"
+    arg: ["0", "0", "0"]
+  }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "input"
+  input: "weight"
+  input: "bias"
+  output: "outf"
+}
+operation {
+  type: "Reshape"
+  input: "outf"
+  output: "out"
+  reshape_options {
+    new_shape: 1
+    new_shape: 4
+    new_shape: 4
+    new_shape: 3
+  }
+}
+
+input: "input"
+output: "out"
