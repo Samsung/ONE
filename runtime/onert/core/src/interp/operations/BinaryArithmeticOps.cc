@@ -23,6 +23,7 @@
 #include "ir/operation/Sub.h"
 #include "ir/operation/Mul.h"
 #include "misc/polymorphic_downcast.h"
+#include "cker/Types.h"
 
 namespace onert
 {
@@ -118,10 +119,11 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
   const raw_type *rhs_ptr = reinterpret_cast<const raw_type *>(rhs_buffer);
   raw_type *out_ptr = reinterpret_cast<raw_type *>(out_buffer);
 
-  cker_param.type = (op_type == OpType::ADD)
-                        ? nnfw::cker::BinaryArithmeticOpType::ADD
-                        : ((op_type == OpType::SUB) ? nnfw::cker::BinaryArithmeticOpType::SUB
-                                                    : nnfw::cker::BinaryArithmeticOpType::MUL);
+  const auto cker_op_type =
+      (op_type == OpType::ADD)
+          ? nnfw::cker::BinaryArithmeticOpType::ADD
+          : ((op_type == OpType::SUB) ? nnfw::cker::BinaryArithmeticOpType::SUB
+                                      : nnfw::cker::BinaryArithmeticOpType::MUL);
 
   const bool need_broadcast = nnfw::cker::ProcessBroadcastShapes(
       convertShape(lhs_tensor->tensorInfo().shape()),
@@ -132,16 +134,16 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
     const auto lhs_shape = convertShape(lhs_tensor->tensorInfo().shape());
     const auto rhs_shape = convertShape(rhs_tensor->tensorInfo().shape());
     const auto out_shape = convertShape(out_tensor->tensorInfo().shape());
-    nnfw::cker::BroadcastBinaryArithmeticOp(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr,
-                                            out_shape, out_ptr);
+    nnfw::cker::BroadcastBinaryArithmeticOp<cker_op_type>(cker_param, lhs_shape, lhs_ptr, rhs_shape,
+                                                          rhs_ptr, out_shape, out_ptr);
     return;
   }
 
   const auto lhs_shape = convertShape(lhs_tensor->tensorInfo().shape());
   const auto rhs_shape = convertShape(rhs_tensor->tensorInfo().shape());
   const auto out_shape = convertShape(out_tensor->tensorInfo().shape());
-  nnfw::cker::BinaryArithmeticOp(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr, out_shape,
-                                 out_ptr);
+  nnfw::cker::BinaryArithmeticOp<cker_op_type>(cker_param, lhs_shape, lhs_ptr, rhs_shape, rhs_ptr,
+                                               out_shape, out_ptr);
 }
 
 template <typename node_type, typename param_type, OpType op_type>

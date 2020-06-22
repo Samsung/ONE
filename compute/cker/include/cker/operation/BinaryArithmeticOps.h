@@ -32,10 +32,10 @@ namespace cker
 
 namespace
 {
-template <typename T>
-const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn(BinaryArithmeticOpType type)
+template <BinaryArithmeticOpType op_type, typename T>
+const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
 {
-  switch (type)
+  switch (op_type)
   {
     case BinaryArithmeticOpType::ADD:
     {
@@ -189,22 +189,22 @@ inline bool ProcessBroadcastShapes(const Shape &shape0, const Shape &shape1,
   return true;
 }
 
-template <typename T>
+template <BinaryArithmeticOpType op_type, typename T>
 inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                const T *input1_data, const Shape &input2_shape,
                                const T *input2_data, const Shape &output_shape, T *output_data)
 {
   reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
-                                output_shape, output_data, GetBinaryArtithmeticFn<T>(params.type));
+                                output_shape, output_data, GetBinaryArtithmeticFn<op_type, T>());
 }
 
-template <>
+template <BinaryArithmeticOpType op_type>
 inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                const uint8_t *input1_data, const Shape &input2_shape,
                                const uint8_t *input2_data, const Shape &output_shape,
                                uint8_t *output_data)
 {
-  switch (params.type)
+  switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
       optimized::AddQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
@@ -222,14 +222,14 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   }
 }
 
-template <>
+template <BinaryArithmeticOpType op_type>
 inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                const float *input1_data, const Shape &input2_shape,
                                const float *input2_data, const Shape &output_shape,
                                float *output_data)
 {
   // Supported type is only float now
-  switch (params.type)
+  switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
       optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
@@ -246,7 +246,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
     case nnfw::cker::BinaryArithmeticOpType::DIV:
       reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
                                            input2_data, output_shape, output_data,
-                                           GetBinaryArtithmeticFn<float>(params.type));
+                                           GetBinaryArtithmeticFn<op_type, float>());
       break;
     default:
       assert(false);
@@ -254,7 +254,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   }
 }
 
-template <typename T>
+template <BinaryArithmeticOpType op_type, typename T>
 inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                         const T *input1_data, const Shape &input2_shape,
                                         const T *input2_data, const Shape &output_shape,
@@ -262,16 +262,16 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
 {
   reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                              input2_data, output_shape, output_data,
-                                             GetBinaryArtithmeticFn<T>(params.type));
+                                             GetBinaryArtithmeticFn<op_type, T>());
 }
 
-template <>
+template <BinaryArithmeticOpType op_type>
 inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                         const uint8_t *input1_data, const Shape &input2_shape,
                                         const uint8_t *input2_data, const Shape &output_shape,
                                         uint8_t *output_data)
 {
-  switch (params.type)
+  switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
       optimized::BroadcastAddDispatchQuant8(params, input1_shape, input1_data, input2_shape,
@@ -288,14 +288,14 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
   }
 }
 
-template <>
+template <BinaryArithmeticOpType op_type>
 inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                         const float *input1_data, const Shape &input2_shape,
                                         const float *input2_data, const Shape &output_shape,
                                         float *output_data)
 {
   // Supported type is only float now
-  switch (params.type)
+  switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
       optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
@@ -311,7 +311,7 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
       reference::BroadcastBinaryArithmeticOpSlow<float>(
           params, input1_shape, const_cast<float *>(input1_data), input2_shape,
           const_cast<float *>(input2_data), output_shape, output_data,
-          GetBinaryArtithmeticFn<float>(params.type));
+          GetBinaryArtithmeticFn<op_type, float>());
       break;
     default:
       assert(false);
