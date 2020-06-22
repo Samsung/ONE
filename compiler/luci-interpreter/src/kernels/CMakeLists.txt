@@ -27,6 +27,8 @@ set(SOURCES
     Elu.cpp
     FullyConnected.h
     FullyConnected.cpp
+    L2Normalize.h
+    L2Normalize.cpp
     L2Pool2D.h
     L2Pool2D.cpp
     LeakyRelu.h
@@ -79,6 +81,7 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     FullyConnected.test.cpp
+    L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
     LocalResponseNormalization.test.cpp

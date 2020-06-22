@@ -24,6 +24,7 @@
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
+#include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
 #include "kernels/LocalResponseNormalization.h"
@@ -222,6 +223,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  L2NormParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::L2Normalize>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Pool2D *node)
