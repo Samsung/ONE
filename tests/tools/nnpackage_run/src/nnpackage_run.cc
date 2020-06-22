@@ -98,7 +98,7 @@ int main(const int argc, char **argv)
     benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
 
     nnfw_session *session = nullptr;
-    NNPR_ENSURE_STATUS(nnfw_create_debug_session(&session));
+    NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {

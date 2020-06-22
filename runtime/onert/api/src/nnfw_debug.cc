@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-#include "nnfw_debug_internal.h"
+#include "nnfw_api_internal.h"
 
 #include <util/ConfigSource.h>
-
-NNFW_STATUS nnfw_create_debug_session(nnfw_session **session)
-{
-  *session = new nnfw_debug_session();
-
-  return NNFW_STATUS_NO_ERROR;
-}
 
 NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *value)
 {
