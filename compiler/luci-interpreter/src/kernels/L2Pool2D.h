@@ -42,8 +42,8 @@ private:
   const Tensor *const _input;
   Tensor *const _output;
 
-  int _padding_height;
-  int _padding_width;
+  int _padding_height = 0;
+  int _padding_width = 0;
 };
 
 } // namespace kernels
