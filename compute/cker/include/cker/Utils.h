@@ -35,6 +35,54 @@ inline T ActivationFunctionWithMinMax(T x, T output_activation_min, T output_act
   return std::min<T>(std::max<T>(x, output_activation_min), output_activation_max);
 }
 
+inline void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift)
+{
+  if (double_multiplier == 0.)
+  {
+    *quantized_multiplier = 0;
+    *shift = 0;
+    return;
+  }
+
+  const double q = std::frexp(double_multiplier, shift);
+  auto q_fixed = static_cast<int64_t>(round(q * (1ll << 31)));
+
+  assert(q_fixed <= (1ll << 31));
+  if (q_fixed == (1ll << 31))
+  {
+    q_fixed /= 2;
+    ++*shift;
+  }
+  assert(q_fixed <= std::numeric_limits<int32_t>::max());
+  // A shift amount smaller than -31 would cause all bits to be shifted out
+  // and thus all results would be zero. We implement that instead with
+  // q_fixed==0, so as to avoid hitting issues with right-shift
+  // operations with shift amounts greater than 31. Note that this happens
+  // roughly when abs(double_multiplier) < 2^-31 and the present handling means
+  // that we're effectively flushing tiny double_multiplier's to zero.
+  // We could conceivably handle values in the range (roughly) [32, 63]
+  // as 'denormals' i.e. (shift==0, q_fixed < 2^30). In that point of view
+  // the present handling is just doing 'flush denormals to zero'. We could
+  // reconsider and actually generate nonzero denormals if a need arises.
+  if (*shift < -31)
+  {
+    *shift = 0;
+    q_fixed = 0;
+  }
+  *quantized_multiplier = static_cast<int32_t>(q_fixed);
+}
+
+inline void QuantizeMultiplierSmallerThanOneExp(double double_multiplier,
+                                                int32_t *quantized_multiplier, int *left_shift)
+{
+  assert(double_multiplier < 1.0);
+  assert(double_multiplier > 0.0);
+  int shift;
+  QuantizeMultiplier(double_multiplier, quantized_multiplier, &shift);
+  assert(shift <= 0);
+  *left_shift = shift;
+}
+
 inline int32_t MultiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)
 {
   int left_shift = shift > 0 ? shift : 0;
@@ -48,6 +96,14 @@ inline int32_t MultiplyByQuantizedMultiplierGreaterThanOne(int32_t x, int32_t qu
                                                            int left_shift)
 {
   return gemmlowp::SaturatingRoundingDoublingHighMul(x * (1 << left_shift), quantized_multiplier);
+}
+
+inline int32_t MultiplyByQuantizedMultiplierSmallerThanOneExp(int32_t x,
+                                                              int32_t quantized_multiplier,
+                                                              int left_shift)
+{
+  return gemmlowp::RoundingDivideByPOT(
+      gemmlowp::SaturatingRoundingDoublingHighMul(x, quantized_multiplier), -left_shift);
 }
 
 inline int NodeOffset(int b, int h, int w, int height, int width)

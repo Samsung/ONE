@@ -200,6 +200,30 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
 
 template <>
 inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                               const uint8_t *input1_data, const Shape &input2_shape,
+                               const uint8_t *input2_data, const Shape &output_shape,
+                               uint8_t *output_data)
+{
+  switch (params.type)
+  {
+    case nnfw::cker::BinaryArithmeticOpType::ADD:
+      optimized::AddQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
+                           const_cast<uint8_t *>(input2_data), output_shape, output_data);
+      break;
+
+    case nnfw::cker::BinaryArithmeticOpType::MUL:
+    case nnfw::cker::BinaryArithmeticOpType::SUB:
+    case nnfw::cker::BinaryArithmeticOpType::DIV:
+      throw std::runtime_error{"Quant8 Asymm NYI"};
+
+    default:
+      assert(false);
+      break;
+  }
+}
+
+template <>
+inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                const float *input1_data, const Shape &input2_shape,
                                const float *input2_data, const Shape &output_shape,
                                float *output_data)
@@ -220,9 +244,9 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                      output_data);
       break;
     case nnfw::cker::BinaryArithmeticOpType::DIV:
-      reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
-                                    output_shape, output_data,
-                                    GetBinaryArtithmeticFn<float>(params.type));
+      reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
+                                           input2_data, output_shape, output_data,
+                                           GetBinaryArtithmeticFn<float>(params.type));
       break;
     default:
       assert(false);
@@ -239,6 +263,29 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
   reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                              input2_data, output_shape, output_data,
                                              GetBinaryArtithmeticFn<T>(params.type));
+}
+
+template <>
+inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                        const uint8_t *input1_data, const Shape &input2_shape,
+                                        const uint8_t *input2_data, const Shape &output_shape,
+                                        uint8_t *output_data)
+{
+  switch (params.type)
+  {
+    case nnfw::cker::BinaryArithmeticOpType::ADD:
+      optimized::BroadcastAddDispatchQuant8(params, input1_shape, input1_data, input2_shape,
+                                            input2_data, output_shape, output_data);
+      break;
+    case nnfw::cker::BinaryArithmeticOpType::MUL:
+    case nnfw::cker::BinaryArithmeticOpType::SUB:
+    case nnfw::cker::BinaryArithmeticOpType::DIV:
+    case nnfw::cker::BinaryArithmeticOpType::POW:
+      throw std::runtime_error{"Quant8 Asymm NYI"};
+    default:
+      assert(false);
+      break;
+  }
 }
 
 template <>
@@ -261,9 +308,10 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
     case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
-      reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
-                                                 input2_data, output_shape, output_data,
-                                                 GetBinaryArtithmeticFn<float>(params.type));
+      reference::BroadcastBinaryArithmeticOpSlow<float>(
+          params, input1_shape, const_cast<float *>(input1_data), input2_shape,
+          const_cast<float *>(input2_data), output_shape, output_data,
+          GetBinaryArtithmeticFn<float>(params.type));
       break;
     default:
       assert(false);

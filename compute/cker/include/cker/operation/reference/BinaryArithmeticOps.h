@@ -63,6 +63,53 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
 }
 
 template <typename T>
+inline void BroadcastBinaryArithmeticOpSlowQuant8(
+    const BinaryArithmeticOpParam &params, const Shape &input1_shape, const T *input1_data,
+    const Shape &input2_shape, const T *input2_data, const Shape &output_shape, T *output_data,
+    const std::function<T(const BinaryArithmeticOpParam &params, const T &, const T &)> &fn)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+
+  if ((params.quantized_activation_min < 0) && (params.quantized_activation_max > 255))
+  {
+    throw std::runtime_error{"Support only for Quant8."};
+  }
+
+  // Comment from tensorflow lite:
+  //
+  // In Tensorflow, the dimensions are canonically named (batch_number, row,
+  // col, channel), with extents (batches, height, width, depth), with the
+  // trailing dimension changing most rapidly (channels has the smallest stride,
+  // typically 1 element).
+  //
+  // In generated C code, we store arrays with the dimensions reversed. The
+  // first dimension has smallest stride.
+  //
+  // We name our variables by their Tensorflow convention, but generate C code
+  // nesting loops such that the innermost loop has the smallest stride for the
+  // best cache behavior.
+  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        {
+          output_data[Offset(extended_output_shape, b, y, x, c)] =
+              ActivationFunctionWithMinMax<uint8_t>(
+                  fn(params, input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+                     input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
+                  params.quantized_activation_min, params.quantized_activation_max);
+        }
+      }
+    }
+  }
+}
+template <typename T>
 inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &params,
                                             const Shape &input1_shape, const T *input1_data,
                                             const Shape &input2_shape, const T *input2_data,
@@ -95,7 +142,7 @@ inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &param
       {
         for (int c = 0; c < extended_output_shape.Dims(3); ++c)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax(
+          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax<T>(
               fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
                  input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
               params.quantized_activation_min, params.quantized_activation_max);
