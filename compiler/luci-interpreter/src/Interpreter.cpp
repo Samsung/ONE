@@ -17,9 +17,9 @@
 #include "luci_interpreter/Interpreter.h"
 
 #include "core/EventNotifier.h"
+#include "core/RuntimeModule.h"
 #include "KernelBuilder.h"
 #include "KernelMap.h"
-#include "TensorMap.h"
 #include "RuntimeToIR.h"
 
 #include <loco/IR/Algorithm.h>
@@ -99,7 +99,7 @@ static bool isTensorProducingNode(const luci::CircleNode *node)
   }
 }
 
-void Interpreter::createTensors(const loco::Graph *graph)
+void Interpreter::loadTensors(const loco::Graph *graph)
 {
   for (uint32_t i = 0; i < graph->nodes()->size(); ++i)
   {
@@ -137,14 +137,36 @@ void Interpreter::createTensors(const loco::Graph *graph)
       tensor->writeData(const_data, data_size);
     }
 
+    _node_to_tensor.emplace(node, tensor.get());
     _runtime_to_ir->tensor_to_node.emplace(tensor.get(), node);
-    _node_to_tensor->setTensor(node, std::move(tensor));
+
+    _main_runtime_graph->addTensor(std::move(tensor));
   }
 }
 
-void Interpreter::createKernels(const loco::Graph *graph)
+void Interpreter::initInputOutputTensors(const loco::Graph *graph)
 {
-  KernelBuilder kernel_builder(*_node_to_tensor);
+  auto input_nodes = loco::input_nodes(graph);
+  std::vector<Tensor *> input_tensors(input_nodes.size());
+  for (size_t i = 0; i < input_nodes.size(); ++i)
+  {
+    input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
+  }
+  _main_runtime_graph->setInputTensors(input_tensors);
+
+  auto output_nodes = loco::output_nodes(const_cast<loco::Graph *>(graph));
+  std::vector<Tensor *> output_tensors(output_nodes.size());
+  for (size_t i = 0; i < output_nodes.size(); ++i)
+  {
+    const auto *node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
+    output_tensors[i] = _node_to_tensor.at(node->from());
+  }
+  _main_runtime_graph->setOutputTensors(output_tensors);
+}
+
+void Interpreter::loadKernels(const loco::Graph *graph)
+{
+  KernelBuilder kernel_builder(_node_to_tensor);
 
   // Create kernels for executable nodes (in execution order).
   for (const loco::Node *loco_node :
@@ -153,16 +175,16 @@ void Interpreter::createKernels(const loco::Graph *graph)
     const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
     if (isExecutableNode(node))
     {
-      _kernels.push_back(node->accept(&kernel_builder));
+      _main_runtime_graph->addKernel(node->accept(&kernel_builder));
     }
   }
 }
 
-class HookImpl final : public EventNotifier
+class EventNotifierImpl final : public EventNotifier
 {
 public:
-  HookImpl(RuntimeToIR &loader_map, const std::vector<ExecutionObserver *> &observers)
-      : _loader_map(loader_map), _observers(observers)
+  EventNotifierImpl(RuntimeToIR &runtime_to_ir, const std::vector<ExecutionObserver *> &observers)
+      : _runtime_to_ir(runtime_to_ir), _observers(observers)
   {
   }
 
@@ -171,42 +193,33 @@ public:
     assert(tensor != nullptr);
     for (const auto &observer : _observers)
     {
-      observer->postTensorWrite(_loader_map.tensor_to_node.at(tensor), tensor);
+      observer->postTensorWrite(_runtime_to_ir.tensor_to_node.at(tensor), tensor);
     }
   }
 
 private:
-  RuntimeToIR &_loader_map;
+  RuntimeToIR &_runtime_to_ir;
   const std::vector<ExecutionObserver *> &_observers;
 };
 
 Interpreter::Interpreter(const luci::Module *module)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
-  _event_notifier = std::make_unique<HookImpl>(*_runtime_to_ir, _observers);
+  _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
+  _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
 
   if (module->size() > 1)
   {
     throw std::runtime_error("Models with multiple subgraphs are not yet supported.");
   }
 
-  _main_graph = module->graph();
+  _main_runtime_graph = _runtime_module->addGraph();
 
-  _node_to_tensor = std::make_unique<TensorMap>();
+  loadTensors(module->graph());
+  initInputOutputTensors(module->graph());
+  loadKernels(module->graph());
 
-  createTensors(_main_graph);
-  createKernels(_main_graph);
-
-  // Configure the kernels, e.g. resize the tensors that they produce and do other kernel dependent
-  // initialization. This has to be done in execution order, because configuration of a kernel may
-  // (and in most cases does) depend on configurations of its predecessors.
-  // TODO Some kernels (ex. Reshape, Pad) need some of their input tensors (ex 'shape', 'paddings')
-  //  to be known in order to configure properly. This means that 'configure' and 'execute' steps
-  //  should be interleaved. For now such 'dynamic' tensors are not supported.
-  for (const auto &kernel : _kernels)
-  {
-    kernel->configure();
-  }
+  _runtime_module->configure();
 }
 
 Interpreter::~Interpreter() = default;
@@ -214,7 +227,7 @@ Interpreter::~Interpreter() = default;
 void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const void *data,
                                    size_t data_size)
 {
-  Tensor *tensor = _node_to_tensor->getTensor(input_node);
+  Tensor *tensor = _runtime_module->getInputTensors()[input_node->index()];
   if (tensor == nullptr)
   {
     const std::string &name = input_node->name();
@@ -226,7 +239,7 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
 void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *data,
                                    size_t data_size)
 {
-  Tensor *tensor = _node_to_tensor->getTensor(output_node->from());
+  Tensor *tensor = _runtime_module->getOutputTensors()[output_node->index()];
   if (tensor == nullptr)
   {
     const std::string &name = output_node->name();
@@ -235,25 +248,7 @@ void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *
   tensor->readData(data, data_size);
 }
 
-void Interpreter::interpret()
-{
-  // Notify the observers that the input tensors have changed.
-  for (const loco::Node *node : loco::input_nodes(_main_graph))
-  {
-    Tensor *input_tensor = _node_to_tensor->getTensor(node);
-    _event_notifier->postTensorWrite(input_tensor);
-  }
-  // Execute each kernel (they are stored in execution order) and notify the observers that kernel
-  // output tensors have changed.
-  for (const auto &kernel : _kernels)
-  {
-    kernel->execute();
-    for (Tensor *tensor : kernel->getOutputTensors())
-    {
-      _event_notifier->postTensorWrite(tensor);
-    }
-  }
-}
+void Interpreter::interpret() { _runtime_module->execute(); }
 
 void Interpreter::attachObserver(ExecutionObserver *observer)
 {
