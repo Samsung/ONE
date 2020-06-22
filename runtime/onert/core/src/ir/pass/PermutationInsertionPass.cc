@@ -138,8 +138,8 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   }
 
   // Find Permute information
-  auto input_backend =
-      _lowered_graph.getLowerInfo(operand_index)->def_factors().getOnlyElement().backend();
+  auto input_factor = _lowered_graph.getLowerInfo(operand_index)->def_factors().getOnlyElement();
+  auto input_backend = input_factor.backend();
   auto output_backend = factor.backend();
   // NOTE Permute may not have specific layout because the layout of input and output may be
   // different.
@@ -168,8 +168,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   _lowered_graph.setLowerInfo(out_operand_index, std::move(out_operand_li));
 
   // Insert permute operation to the graph
-  const auto input_layout =
-      _lowered_graph.getLowerInfo(operand_index)->def_factors().getOnlyElement().layout();
+  const auto input_layout = input_factor.layout();
   const auto output_layout = factor.layout();
   using Permute = operation::Permute;
   const auto permute_type = [&]() {
