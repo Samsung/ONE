@@ -51,6 +51,7 @@ public:
 public:
   void visit(luci::CircleAbs *) final;
   void visit(luci::CircleAdd *) final;
+  void visit(luci::CircleAddN *) final;
   void visit(luci::CircleArgMax *) final;
   void visit(luci::CircleArgMin *) final;
   void visit(luci::CircleAveragePool2D *) final;
@@ -225,6 +226,23 @@ void OperationExporter::visit(luci::CircleAdd *node)
   auto options = CreateAddOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_AddOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleAddN *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ADD_N);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->inputs(i)));
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateAddNOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_AddNOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 
