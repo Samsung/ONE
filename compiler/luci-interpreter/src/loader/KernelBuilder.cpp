@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "KernelBuilder.h"
+#include "loader/KernelBuilder.h"
 
 #include "kernels/Add.h"
 #include "kernels/ArgMax.h"
@@ -39,6 +39,8 @@
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
+#include "loader/GraphLoader.h"
+#include "loader/ModuleLoader.h"
 
 #include <stdexcept>
 
@@ -62,7 +64,7 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
 
 const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
 {
-  const Tensor *tensor = _node_to_tensor.at(node);
+  const Tensor *tensor = _graph_loader.getTensorForNode(node);
   assert(tensor != nullptr);
   return tensor;
 }
@@ -75,7 +77,7 @@ const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) cons
 
 Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
 {
-  Tensor *tensor = _node_to_tensor.at(node);
+  Tensor *tensor = _graph_loader.getTensorForNode(node);
   assert(tensor != nullptr);
   return tensor;
 }
@@ -88,6 +90,13 @@ KernelBuilder::getOutputTensors(const std::vector<const loco::Node *> &nodes) co
   for (const loco::Node *node : nodes)
     tensors.push_back(getOutputTensor(node));
   return tensors;
+}
+
+RuntimeGraph *KernelBuilder::getRuntimeGraph(const loco::Graph *graph) const
+{
+  RuntimeGraph *runtime_graph = _module_loader.getRuntimeGraph(graph);
+  assert(runtime_graph != nullptr);
+  return runtime_graph;
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
