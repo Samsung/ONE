@@ -30,9 +30,20 @@ namespace ops
 {
 void LogicalOrLayer::lorBool8()
 {
-  nnfw::cker::LogicalOr<bool>(getTensorShape(_lhs), reinterpret_cast<const bool *>(_lhs->buffer()),
-                              getTensorShape(_rhs), reinterpret_cast<const bool *>(_rhs->buffer()),
-                              getTensorShape(_output), reinterpret_cast<bool *>(_output->buffer()));
+  if (!HaveSameShapes(_lhs, _rhs))
+  {
+    nnfw::cker::LogicalOrBroadcast<bool>(
+        getTensorShape(_lhs), reinterpret_cast<const bool *>(_lhs->buffer()), getTensorShape(_rhs),
+        reinterpret_cast<const bool *>(_rhs->buffer()), getTensorShape(_output),
+        reinterpret_cast<bool *>(_output->buffer()));
+  }
+  else
+  {
+    nnfw::cker::LogicalOrElementwise<bool>(getTensorShape(_lhs),
+                                           reinterpret_cast<const bool *>(_lhs->buffer()),
+                                           reinterpret_cast<const bool *>(_rhs->buffer()),
+                                           reinterpret_cast<bool *>(_output->buffer()));
+  }
 }
 
 void LogicalOrLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)
