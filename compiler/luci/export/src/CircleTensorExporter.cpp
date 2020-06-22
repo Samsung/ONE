@@ -187,6 +187,9 @@ private:
 
 void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
 {
+  if (node == nullptr)
+    throw std::runtime_error("allocateCIrcleTensor Failed : node is nullptr");
+
   auto isNoOp = [](loco::Node *node) {
     if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
     {
