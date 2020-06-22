@@ -65,6 +65,11 @@ class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain, TFLiteLo
 public:
   using BaseLoader::BaseLoader;
 
+  std::vector<BuiltinOperator> getOptionalInputOplist() override
+  {
+    return {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
+  }
+
   std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg)
   {
     auto subg = std::make_unique<ir::Graph>();
