@@ -163,12 +163,8 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
   // BuiltinOperator_SELECT_V2 = 123,
   // BuiltinOperator_DENSIFY = 124,
-<<<<<<< HEAD
-  // BuiltinOperator_SEGMENT_SUM = 125,
-=======
   // BuiltinOperator_BATCH_MATMUL = 126,
   // BuiltinOperator_INSTANCE_NORM = 254,
->>>>>>> [luci] Support SegmentSum operator
 }
 
 } // namespace luci
