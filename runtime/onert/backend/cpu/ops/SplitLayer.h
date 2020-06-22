@@ -36,9 +36,10 @@ public:
   SplitLayer();
 
 public:
-  void splitFloat32();
+  // void splitFloat32();
 
-  void splitQuant8();
+  // void splitQuant8();
+  template <typename T> void splitGeneric(void);
 
   void configure(const Tensor *input, uint16_t num_splits, int16_t axis,
                  std::vector<Tensor *> &outputs);

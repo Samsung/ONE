@@ -34,36 +34,22 @@ SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
   // DO NOTHING
 }
 
-void SplitLayer::splitFloat32()
+template <typename T> void SplitLayer::splitGeneric(void)
 {
   nnfw::cker::SplitParams op_params;
   op_params.axis = _axis;
   op_params.num_split = _num_splits;
 
-  std::vector<nnfw::cker::Shape *> outputDimsPtr;
-  std::vector<nnfw::cker::Shape> outputDims;
-  outputDimsPtr.reserve(_num_splits);
-  outputDims.reserve(_num_splits);
-
-  for (uint32_t i = 0; i < _num_splits; i++)
-  {
-    outputDims.push_back(getTensorShape(_outputs[i]));
-    outputDimsPtr.push_back(&outputDims[i]);
-  }
-
-  std::vector<float *> outputFloatPtrs;
+  std::vector<T *> outputPtrs;
 
   for (const auto output : _outputs)
   {
-    outputFloatPtrs.emplace_back(reinterpret_cast<float *>(output->buffer()));
+    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
   }
 
-  nnfw::cker::Split<float>(op_params, getTensorShape(_input),
-                           reinterpret_cast<float *>(_input->buffer()), getTensorShape(_outputs[0]),
-                           outputFloatPtrs.data());
+  nnfw::cker::Split<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
+                       getTensorShape(_outputs[0]), outputPtrs.data());
 }
-
-void SplitLayer::splitQuant8() { throw std::runtime_error{"Split: NYI quant8 type"}; }
 
 void SplitLayer::configure(const Tensor *input, uint16_t num_splits, int16_t axis,
                            std::vector<Tensor *> &outputs)
@@ -80,11 +66,11 @@ void SplitLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    splitFloat32();
+    splitGeneric<float>();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    splitQuant8();
+    splitGeneric<uint8_t>();
   }
   else
   {

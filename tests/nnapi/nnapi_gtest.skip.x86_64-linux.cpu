@@ -178,7 +178,6 @@ GeneratedTests.split_4D_int32_2_nnfw
 GeneratedTests.split_4D_int32_3_nnfw
 GeneratedTests.split_4D_int32_4_nnfw
 GeneratedTests.split_4D_int32_5_nnfw
-GeneratedTests.split_4D_quant8_nnfw
 GeneratedTests.split_int32_1
 GeneratedTests.split_int32_1_relaxed
 GeneratedTests.split_int32_2
@@ -187,12 +186,8 @@ GeneratedTests.split_int32_3
 GeneratedTests.split_int32_3_relaxed
 GeneratedTests.split_int32_4
 GeneratedTests.split_int32_4_relaxed
-GeneratedTests.split_quant8_1
 GeneratedTests.split_quant8_1_relaxed
-GeneratedTests.split_quant8_2
 GeneratedTests.split_quant8_2_relaxed
-GeneratedTests.split_quant8_3
-GeneratedTests.split_quant8_4
 GeneratedTests.sqrt_
 GeneratedTests.sqrt_1D_float_nnfw
 GeneratedTests.sqrt_2D_float_nnfw
