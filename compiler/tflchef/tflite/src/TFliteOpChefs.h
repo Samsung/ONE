@@ -20,6 +20,7 @@
 // In alphabet order
 #include "Op/Abs.h"
 #include "Op/Add.h"
+#include "Op/AddN.h"
 #include "Op/ArgMax.h"
 #include "Op/ArgMin.h"
 #include "Op/AveragePool2D.h"

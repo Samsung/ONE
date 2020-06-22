@@ -6,6 +6,7 @@
 // OP_CHEF(NAME, FACTORY_CLASS)
 OP_CHEF(Abs, AbsChefFactory)
 OP_CHEF(Add, AddChefFactory)
+OP_CHEF(AddN, AddNChefFactory)
 OP_CHEF(ArgMax, ArgMaxChefFactory)
 OP_CHEF(ArgMin, ArgMinChefFactory)
 OP_CHEF(AveragePool2D, AveragePool2DChefFactory)
