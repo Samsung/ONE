@@ -195,6 +195,7 @@ private:
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
+  IMPLEMENT(luci::CircleAddN)
   IMPLEMENT(luci::CircleArgMax)
   IMPLEMENT(luci::CircleArgMin)
   IMPLEMENT(luci::CircleAveragePool2D)
@@ -333,6 +334,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleAdd *node, locop::NodeS
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleAddN *node, locop::NodeSummary &s) const
+{
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    s.args().append("inputs", tbl()->lookup(node->inputs(i)));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
