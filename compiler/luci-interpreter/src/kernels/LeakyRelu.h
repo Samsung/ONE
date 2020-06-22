@@ -45,7 +45,7 @@ private:
   Tensor *const _output;
 
 private:
-  uint8_t _q_alpha;
+  uint8_t _q_alpha = 0;
   int32_t _output_multiplier = 0;
   int _output_shift = 0;
 };
