@@ -57,6 +57,7 @@ private:
 
     REG_TFL_OP(ABS, TFliteOpAbs);
     REG_TFL_OP(ADD, TFliteOpAdd);
+    REG_TFL_OP(ADD_N, TFliteOpAddN);
     REG_TFL_OP(ARG_MAX, TFliteOpArgMax);
     REG_TFL_OP(ARG_MIN, TFliteOpArgMin);
     REG_TFL_OP(AVERAGE_POOL_2D, TFliteOpAveragePool2D);
