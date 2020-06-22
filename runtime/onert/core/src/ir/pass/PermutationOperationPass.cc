@@ -50,7 +50,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   }
 
   // Permutation changing layout beyond 4-D is not supported yet
-  assert(output_obj.shape().rank() == 4);
+  assert(output_obj.shape().rank() <= 4);
 
   // Divide op_seq based on target operation
   {
