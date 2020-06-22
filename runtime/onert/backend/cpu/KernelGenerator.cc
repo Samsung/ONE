@@ -107,11 +107,9 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
       _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
-  _return_fn_seq =
-      _tensor_builder->supportDynamicTensor()
-          ? std::make_unique<exec::FunctionSequenceForDynamicBackend>(
-                op_seq, _operations_ctx, std::move(dyn_shape_inferer), dyn_tensor_manager)
-          : std::make_unique<exec::FunctionSequence>();
+  // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
+  _return_fn_seq = std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+      op_seq, _operations_ctx, std::move(dyn_shape_inferer), dyn_tensor_manager);
 
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
