@@ -19,7 +19,4 @@
 
 #include <memory>
 
-nnfw_debug_session::nnfw_debug_session() : nnfw_session()
-{
-  _source = std::make_unique<onert::util::EnvConfigSource>();
-}
+nnfw_debug_session::nnfw_debug_session() : nnfw_session() {}

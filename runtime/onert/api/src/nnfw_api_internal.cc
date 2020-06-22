@@ -66,8 +66,7 @@ static onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
 
 nnfw_session::nnfw_session()
     : _subgraphs{nullptr}, _execution{nullptr},
-      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()},
-      _source{std::make_unique<onert::util::GeneralConfigSource>()}
+      _kernel_registry{std::make_shared<onert::frontend::custom::KernelRegistry>()}
 {
   // DO NOTHING
 }
@@ -169,10 +168,6 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    // config_source setting
-    using onert::util::config_source;
-    config_source(std::move(_source));
-
     _subgraphs.reset();
     _compiler->compile();
     std::shared_ptr<onert::exec::ExecutorMap> executors;
