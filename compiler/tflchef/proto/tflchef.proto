@@ -132,6 +132,10 @@ message AddOptions {
   optional Activation activation = 1 [default = NONE];
 }
 
+message AddNOptions {
+  // None
+}
+
 message ArgMaxOptions {
   optional TensorType output_type = 1 [default = INT64];
 }
@@ -505,6 +509,7 @@ message Operation {
   optional ReducerOptions all_options = 204;
   optional ReducerOptions reduce_min_options = 205;
   optional SegmentSumOptions segment_sum_options = 206;
+  optional AddNOptions add_n_options = 207;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

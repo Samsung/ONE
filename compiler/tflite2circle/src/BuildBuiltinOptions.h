@@ -21,6 +21,7 @@
 
 #include "BuildBuiltinOptions/AbsOptions.h"
 #include "BuildBuiltinOptions/AddOptions.h"
+#include "BuildBuiltinOptions/AddNOptions.h"
 #include "BuildBuiltinOptions/ArgMaxOptions.h"
 #include "BuildBuiltinOptions/ArgMinOptions.h"
 #include "BuildBuiltinOptions/BatchToSpaceNDOptions.h"
