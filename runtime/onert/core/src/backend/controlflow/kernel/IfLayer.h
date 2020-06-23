@@ -41,8 +41,6 @@ public:
           const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
 public:
-  void configure();
-
   void run() override;
 
 private:
