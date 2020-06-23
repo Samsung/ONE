@@ -20,8 +20,7 @@
 #include <backend/IKernelGenerator.h>
 #include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
-#include <ir/Operands.h>
-#include <ir/Operations.h>
+#include <ir/Graph.h>
 
 namespace onert
 {
@@ -33,7 +32,7 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Operands &operand_ctx, const ir::Operations &operations_ctx);
+  KernelGenerator(const ir::Graph &graph);
 
   void setTensorBuilderSet(const TensorBuilderSet &tensor_builder_set)
   {
@@ -57,8 +56,7 @@ private:
   std::shared_ptr<backend::ITensorBuilder> getTensorBuilder(const ir::OperandIndex &index);
 
 private:
-  const ir::Operands &_operand_ctx;
-  const ir::Operations &_operations_ctx;
+  const ir::Graph &_graph;
   TensorBuilderSet _tensor_builder_set;
   exec::ExecutorMap *_executor_map;
 };
