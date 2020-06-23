@@ -32,7 +32,6 @@ void SubLayer::subFloat32()
   float output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::SUB;
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
@@ -40,14 +39,14 @@ void SubLayer::subFloat32()
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp(
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
