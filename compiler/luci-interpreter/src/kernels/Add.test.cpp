@@ -40,7 +40,7 @@ TEST(AddTest, Float)
        1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
        0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f},
       {0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f}};
-  std::vector<std::vector<int>> test_shape_outputs = {
+  std::vector<std::vector<int>> ref_shape_outputs = {
       {2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
   std::vector<float> input1_data{-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
                                  1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
@@ -62,7 +62,7 @@ TEST(AddTest, Float)
                 ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
         << "With shape number " << i;
     EXPECT_THAT(extractTensorShape(output_tensor),
-                ::testing::ElementsAreArray(test_shape_outputs[i]));
+                ::testing::ElementsAreArray(ref_shape_outputs[i]));
   }
   // Re-run with exchanged inputs.
   for (size_t i = 0; i < test_shapes.size(); ++i)
@@ -82,7 +82,7 @@ TEST(AddTest, Float)
                 ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
         << "With shape number " << i;
     EXPECT_THAT(extractTensorShape(output_tensor),
-                ::testing::ElementsAreArray(test_shape_outputs[i]));
+                ::testing::ElementsAreArray(ref_shape_outputs[i]));
   }
 }
 
