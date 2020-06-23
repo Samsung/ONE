@@ -1202,7 +1202,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
-      {"BroadCastTo", BuiltinOP::BroadcastTo},
+      {"BroadcastTo", BuiltinOP::BroadcastTo},
   };
 
   try
