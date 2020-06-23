@@ -46,23 +46,21 @@ std::vector<std::string> strSplit(const std::string &text, const std::string del
   return result;
 }
 
-
 void parseEinsumEquation(const std::string &equation, std::vector<std::string> &input_subscripts,
                          std::string &output_subscript)
 {
   std::vector<std::string> inputs_and_output_subscripts = strSplit(equation, "->");
   if (inputs_and_output_subscripts.size() != 2)
   {
-    throw std::runtime_error{"Einsum: Expecting exactly one '->' in einsum equation: " +
-      equation};
+    throw std::runtime_error{"Einsum: Expecting exactly one '->' in einsum equation: " + equation};
   }
 
   output_subscript = inputs_and_output_subscripts[1];
   input_subscripts = strSplit(inputs_and_output_subscripts[0], ",");
   if (input_subscripts.size() != 1 && input_subscripts.size() != 2)
   {
-    throw std::runtime_error{"Einsum: Expecting 1 or 2 input subscripts in equation '" +
-      equation + "' but got: " + std::to_string(input_subscripts.size())};
+    throw std::runtime_error{"Einsum: Expecting 1 or 2 input subscripts in equation '" + equation +
+                             "' but got: " + std::to_string(input_subscripts.size())};
   }
 }
 
@@ -78,16 +76,19 @@ inline ir::Shape inferEinsumShape(const ir::Shape &lhs_shape, const ir::Shape &r
   parseEinsumEquation(param.equation, input_str, output_str);
 
   // For input_str[0] and input_str[1], construct a map (char to dim value)
-  std::map<char,int> char_map;
-  for(size_t i=0;i<input_str[0].size();++i){
-    char_map.insert({input_str[0].at(i), lhs_shape.dim(i) });
+  std::map<char, int> char_map;
+  for (size_t i = 0; i < input_str[0].size(); ++i)
+  {
+    char_map.insert({input_str[0].at(i), lhs_shape.dim(i)});
   }
-  for(size_t i=0;i<input_str[1].size();++i){
-    char_map.insert({input_str[1].at(i), rhs_shape.dim(i) });
+  for (size_t i = 0; i < input_str[1].size(); ++i)
+  {
+    char_map.insert({input_str[1].at(i), rhs_shape.dim(i)});
   }
 
   ir::Shape output_shape;
-  for(size_t i=0;i<output_str.size();++i){
+  for (size_t i = 0; i < output_str.size(); ++i)
+  {
     auto dim = char_map.find(output_str.at(i));
     output_shape.append(dim->second);
   }
