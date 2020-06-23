@@ -397,6 +397,10 @@ message WhereOptions {
  // None
 }
 
+message SparseToDenseOptions {
+  optional bool validate_indices = 1 [default = true];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -477,7 +481,7 @@ message Operation {
   optional LessEqualOptions lessequal_options = 172;
   optional SliceOptions slice_options = 173;
   optional TransposeConvOptions transpose_conv_options = 174;
-  // SparseToDenseOptions 175
+  optional SparseToDenseOptions sparse_to_dense_options = 175;
   optional PowOptions pow_options = 176;
   optional ArgMinOptions argmin_options = 177;
   // FakeQuantOptions 178
