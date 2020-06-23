@@ -36,6 +36,14 @@ void MinLayer::minFloat32()
                          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
+void MinLayer::minInt32()
+{
+  nnfw::cker::Min<int32_t>(getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
+                           getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
+                           getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+
+}
+
 void MinLayer::minQuant8()
 {
   // TODO Check whether cker for quant8 min produces correct results
@@ -67,6 +75,10 @@ void MinLayer::run()
   else if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     minQuant8();
+  }
+  else if (_lhs->data_type() == OperandType::INT32)
+  {
+    minInt32();
   }
   else
   {
