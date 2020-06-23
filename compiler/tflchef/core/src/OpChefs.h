@@ -85,6 +85,7 @@
 #include "Op/ResizeBilinear.h"
 #include "Op/ResizeNearestNeighbor.h"
 #include "Op/ReverseSequence.h"
+#include "Op/ReverseV2.h"
 #include "Op/Round.h"
 #include "Op/Rsqrt.h"
 #include "Op/ScatterNd.h"
