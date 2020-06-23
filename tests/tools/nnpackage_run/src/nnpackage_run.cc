@@ -36,9 +36,7 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef __clang__
 #include <libgen.h>
-#endif
 
 namespace nnpkg_run
 {

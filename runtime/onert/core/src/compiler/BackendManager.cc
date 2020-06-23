@@ -27,6 +27,13 @@
 #include "util/ConfigSource.h"
 #include "misc/string_helpers.h"
 
+static const char *SHARED_LIB_EXT =
+#if defined(__APPLE__) && defined(__MACH__)
+    ".dylib";
+#else
+    ".so";
+#endif
+
 namespace onert
 {
 namespace compiler
@@ -70,11 +77,7 @@ void BackendManager::loadBackend(const std::string &backend)
 
   // TODO Remove indentation
   {
-#if defined(__APPLE__) && defined(__MACH__)
-    const std::string backend_so = "libbackend_" + backend + ".dylib";
-#else
-    const std::string backend_so = "libbackend_" + backend + ".so";
-#endif
+    const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
     void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
 
     if (handle == nullptr)
