@@ -410,6 +410,10 @@ message SparseToDenseOptions {
   optional bool validate_indices = 1 [default = true];
 }
 
+message ReverseV2Options {
+  // None
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -502,7 +506,7 @@ message Operation {
   optional LeakyReluOptions leaky_relu_options = 184;
   optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
-  // ReverseV2Options 187
+  optional ReverseV2Options reversev2_options = 187;
   // AddNOptions 188
   optional GatherNdOptions gather_nd_options = 189;
   optional WhereOptions where_options = 190;
