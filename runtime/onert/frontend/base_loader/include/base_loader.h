@@ -56,7 +56,7 @@ protected:
 
 protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
-  virtual std::vector<BuiltinOperator> getOptionalInputOplist() = 0;
+  virtual bool allowOptionalInputTensor(BuiltinOperator) = 0;
 
 public:
   /**
@@ -383,9 +383,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
     // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-      auto allowed = static_cast<SpecificLoader *>(this)->getOptionalInputOplist();
-      if (isOptionalInputTensor(idx) &&
-          std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
+      if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
             std::string("loader doesn't support optional input tensor yet for ")
                 .append(EnumNameBuiltinOperator(builtin_code)));
