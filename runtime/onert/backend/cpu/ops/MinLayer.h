@@ -39,11 +39,6 @@ public:
   }
 
 public:
-  void minFloat32();
-
-  void minQuant8();
-
-  void minInt32();
 
   void configure(const Tensor *lhs, const Tensor *rhs, Tensor *output);
 
