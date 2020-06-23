@@ -692,6 +692,7 @@ OpPrinterRegistry::OpPrinterRegistry()
       make_unique<LocalResponseNormalizationPrinter>();
   // There is no Option for LOG
   // There is no Option for LOGISTIC
+  // There is no Option for LOG_SOFTMAX
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
