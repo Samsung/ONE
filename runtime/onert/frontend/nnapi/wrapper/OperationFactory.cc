@@ -2155,6 +2155,22 @@ OperationFactory::OperationFactory()
 
     return new operation::Einsum{inputs, outputs, param};
   };
+
+  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = [](const OperationFactory::Param &init_param,
+                                             Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> int32, int64, An 1-D int tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    return new operation::BroadcastTo{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

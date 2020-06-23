@@ -71,6 +71,7 @@
 #include "ops/LogicalOrLayer.h"
 #include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
+#include "ops/BroadcastToLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1295,6 +1296,22 @@ void KernelGenerator::visit(const ir::operation::BatchMatMul &node)
   auto fn = std::make_unique<ops::BatchMatMulLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, adj_x, adj_y, output_alloc);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::BroadcastTo &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::INPUT)};
+  const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::SHAPE)};
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto shape_alloc = _tensor_builder->at(shape_index).get();
+
+  auto fn = std::make_unique<ops::BroadcastToLayer>();
+
+  fn->configure(input_alloc, shape_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
 

@@ -168,6 +168,7 @@ protected:
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
+  void loadBroadcastTo(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1161,6 +1162,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1178,7 +1191,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
-    Einsum
+    Einsum,
+    BroadcastTo
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1188,6 +1202,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
+      {"BroadCastTo", BuiltinOP::BroadcastTo},
   };
 
   try
@@ -1210,6 +1225,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::Einsum:
         loadEinsum(op, subg);
+        break;
+      case BuiltinOP::BroadcastTo:
+        loadBroadcastTo(op, subg);
         break;
       default:
         throw std::runtime_error{

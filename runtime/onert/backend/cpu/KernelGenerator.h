@@ -103,6 +103,7 @@ public:
   void visit(const ir::operation::Range &) override;
   void visit(const ir::operation::MatrixBandPart &) override;
   void visit(const ir::operation::BatchMatMul &) override;
+  void visit(const ir::operation::BroadcastTo &) override;
 
 private:
   const ir::Operands &_ctx;
