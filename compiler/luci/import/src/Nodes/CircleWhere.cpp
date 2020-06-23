@@ -43,6 +43,24 @@ bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
   if (tensor_0->type != circle::TensorType_BOOL)
     return false;
 
+  if (in_size == 1)
+  {
+    if (tensor_out->type != circle::TensorType_INT64)
+      return false;
+  }
+
+  if (in_size == 3)
+  {
+    const auto &tensor_x = tensors.at(inputs[1]);
+    const auto &tensor_y = tensors.at(inputs[2]);
+
+    if (tensor_x->type != tensor_y->type)
+      return false;
+
+    if (tensor_out->type != tensor_x->type)
+      return false;
+  }
+
   return true;
 }
 
