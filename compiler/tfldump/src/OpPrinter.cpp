@@ -250,6 +250,20 @@ public:
   }
 };
 
+class SparseToDensePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_SparseToDenseOptions())
+    {
+      os << "    ";
+      os << "ValidateIndices(" << std_params->validate_indices() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthwiseConv2DPrinter : public OpPrinter
 {
 public:
@@ -671,6 +685,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   _op_map[tflite::BuiltinOperator_SPACE_TO_DEPTH] = make_unique<SpaceToDepthPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[tflite::BuiltinOperator_SPARSE_TO_DENSE] = make_unique<SparseToDensePrinter>();
   _op_map[tflite::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
   _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
   _op_map[tflite::BuiltinOperator_SQUEEZE] = make_unique<SqueezePrinter>();
