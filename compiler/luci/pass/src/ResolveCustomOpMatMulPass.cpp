@@ -87,12 +87,16 @@ bool resolve_matmul(luci::CircleCustom *cop)
   loco::Node *lhs = cop->inputs(0);
   loco::Node *rhs = cop->inputs(1);
 
+  // Check that the type of the first input is known
+  CHECK_OR_FALSE(loco::dtype_known(lhs));
   auto lhs_dtype = loco::dtype_get(cop->inputs(0));
 
   // If transpose of first input is requested, its shape must be known
   CHECK_OR_FALSE(!transpose_a || loco::shape_known(lhs));
   // and its rank should be at least 2
   CHECK_OR_FALSE(!transpose_a || loco::shape_get(lhs).as<loco::TensorShape>().rank() >= 2);
+  // Check that the shape of the 2nd input is known
+  CHECK_OR_FALSE(loco::shape_known(rhs));
   // TODO as of 06/23/20 TFLite only supports rank 2 for 2nd input. Fix this once that changes!
   CHECK_OR_FALSE(loco::shape_get(rhs).as<loco::TensorShape>().rank() == 2);
   // Check that input data type is supported
@@ -132,10 +136,12 @@ bool resolve_matmul(luci::CircleCustom *cop)
   }
 
   // Make a constant zero-filled bias node
-  auto b_shape = loco::shape_get(rhs).as<loco::TensorShape>();
+  auto b_shape = loco::shape_get(cop->inputs(1)).as<loco::TensorShape>();
   uint32_t bias_size = b_shape.dim(transpose_b ? 1 : 0).value();
   const std::vector<float> val(bias_size, .0f);
   auto bias_node = create_const_node(graph, lhs_dtype, {bias_size}, val);
+  // We have already checked that lhs_dtype is supported, so bias_node shouldn't be null
+  assert(bias_node);
 
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->input(lhs);
