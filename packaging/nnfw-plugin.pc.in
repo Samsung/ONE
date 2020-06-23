@@ -1,0 +1,5 @@
+Name: nnfw-plugin
+Description: NNFW API for tizen
+Version: @version@
+Libs: -L@libdir@ -lonert_core
+Cflags: -I@includedir@/nnfw -I@includedir@/onert
