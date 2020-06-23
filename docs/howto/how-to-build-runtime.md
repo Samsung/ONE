@@ -222,5 +222,5 @@ If your development system is not a linux environment like Ubuntu, but you can u
 Please refer to the following document for the build method for architecture other than x86_64, which is the basic development environment.
 
 - [Cross building for ARM](how-to-cross-build-runtime-for-arm.md)
-- [Cross building for Aarch64](how-to-cross-build-runtime-for-aarch64.md)
+- [Cross building for AARCH64](how-to-cross-build-runtime-for-aarch64.md)
 - [Cross building for Android](how-to-cross-build-runtime-for-android.md)
