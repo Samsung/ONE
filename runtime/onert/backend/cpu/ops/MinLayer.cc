@@ -60,9 +60,10 @@ void MinLayer::run()
   }
   else if (_lhs->data_type() == OperandType::INT32)
   {
-    nnfw::cker::Min<int32_t>(getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
-                             getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
-                             getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+    nnfw::cker::Min<int32_t>(
+        getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
   }
   else
   {
