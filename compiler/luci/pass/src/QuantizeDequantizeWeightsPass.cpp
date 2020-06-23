@@ -112,6 +112,7 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
     auto tw_conv = dynamic_cast<CircleTransposeConv *>(out);
     auto fc = dynamic_cast<CircleFullyConnected *>(out);
 
+    // Refer to https://github.com/Samsung/ONE/pull/2448.
     if ((conv != nullptr && conv->filter() == node) ||
         (tw_conv != nullptr && tw_conv->filter() == node)) // OHWI
     {
@@ -120,27 +121,27 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
       dimension.dim(1).set(node->dim(1).value());
       dimension.dim(2).set(node->dim(2).value());
       dimension.dim(3).set(node->dim(3).value());
-      channel_dim_index = 0; // I set channel_dim_index based on "O"
+      channel_dim_index = 0; // Set channel_dim_index based on "O"
       return true;
     }
-    else if (dw_conv != nullptr && dw_conv->filter() == node) // IHWO
+    else if (dw_conv != nullptr && dw_conv->filter() == node) // IHWC
     {
       assert(node->rank() == 4);
       dimension.dim(0).set(node->dim(0).value());
       dimension.dim(1).set(node->dim(1).value());
       dimension.dim(2).set(node->dim(2).value());
       dimension.dim(3).set(node->dim(3).value());
-      channel_dim_index = 3; // I set channel_dim_index based on "O"
+      channel_dim_index = 3; // Set channel_dim_index based on "C"
       return true;
     }
     else if (fc != nullptr && fc->weights() == node) // OI
     {
       assert(node->rank() == 2);
       dimension.dim(0).set(node->dim(0).value());
-      dimension.dim(1).set(1); // I set FC layer like CONV
+      dimension.dim(1).set(1); // Set FC layer like CONV
       dimension.dim(2).set(1);
       dimension.dim(3).set(node->dim(1).value());
-      channel_dim_index = 0; // I set channel_dim_index based on "O"
+      channel_dim_index = 0; // Set channel_dim_index based on "O"
       return true;
     }
     else
