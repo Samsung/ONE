@@ -37,8 +37,8 @@ luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
   auto node = g->nodes()->create<luci::CircleConst>();
   node->dtype(dtype);
   node->rank(shape.size());
-  uint32_t size = (shape.size() == 0) ? 0 : 1;
-
+ 
+  uint32_t size = 1;
   for (uint32_t i = 0; i < shape.size(); ++i)
   {
     node->dim(i) = shape.at(i);
@@ -63,7 +63,7 @@ luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
         node->at<loco::DataType::FLOAT32>(i) = values[i];
       break;
     default:
-      break;
+      return nullptr;
   }
   return node;
 }
@@ -81,6 +81,11 @@ bool resolve_matmul(luci::CircleCustom *cop)
   loco::Node *lhs = cop->inputs(0);
   loco::Node *rhs = cop->inputs(1);
 
+  auto b_shape = loco::shape_get(rhs).as<loco::TensorShape>();
+  // TODO as of 06/23/20 TFLite only supports rank 2 for 2nd input. Fix this once that changes!
+  if (b_shape.rank() != 2)
+    return false;
+
   if (transpose_a)
   {
     if (!loco::shape_known(lhs))
@@ -97,6 +102,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
       perm.push_back(i);
     std::swap(perm[a_shape.rank() - 1], perm[a_shape.rank() - 2]);
     auto perm_node = create_const_node(graph, S32, {a_shape.rank()}, perm);
+    if (perm_node == nullptr)
+      return false;
 
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
@@ -105,10 +112,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
     lhs = transpose_node;
   }
 
-  auto b_shape = loco::shape_get(rhs).as<loco::TensorShape>();
-  if (b_shape.rank() != 2)
-    return false;
-
   // Transpose the second input if needed. TFLite FullyConnected operator
   // assumes the second input is in column-major order, but the input is
   // in row-major order, thus we need to convert between them.
@@ -116,6 +119,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
   {
     const std::vector<uint32_t> perm{1, 0};
     auto perm_node = create_const_node(graph, S32, {2}, perm);
+    if (perm_node == nullptr)
+      return false;
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
@@ -123,9 +128,11 @@ bool resolve_matmul(luci::CircleCustom *cop)
   }
 
   // Make a constant zero-filled bias node
-  const std::vector<float> val{};
-  auto bias_node = create_const_node(graph, loco::dtype_get(cop->inputs(0)),
-                                     {b_shape.dim(transpose_b ? 1 : 0).value()}, val);
+  uint32_t bias_size = b_shape.dim(transpose_b ? 1 : 0).value();
+  const std::vector<float> val(bias_size, .0f);
+  auto bias_node = create_const_node(graph, loco::dtype_get(cop->inputs(0)), {bias_size}, val);
+  if (bias_node == nullptr)
+    return false;
 
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->input(lhs);
