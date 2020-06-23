@@ -217,7 +217,7 @@ If your development system is not a linux environment like Ubuntu, but you can u
 
 - [Build using prebuilt docker image](how-to-build-runtime-using-prebuilt-docker-image.md)
 
-## How to cross-build runtime for different architevture
+## How to cross-build runtime for different architecture
 
 Please refer to the following document for the build method for architecture other than x86_64, which is the basic development environment.
 
