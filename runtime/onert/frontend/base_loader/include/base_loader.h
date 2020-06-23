@@ -1231,6 +1231,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::BroadcastTo:
         loadBroadcastTo(op, subg);
+        break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
         break;
