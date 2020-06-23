@@ -34,7 +34,7 @@ IfLayer::IfLayer(const std::shared_ptr<backend::ITensor> &cond_tensor,
                  std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
                  const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
-                 const std::shared_ptr<exec::ExecutorMap> &executor_map)
+                 exec::ExecutorMap *executor_map)
     : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
       _outputs_dyn_alloc_info{outputs_dyn_alloc_info}, _then_subg_index{then_subg_index},
       _else_subg_index{else_subg_index}, _executor_map{executor_map}

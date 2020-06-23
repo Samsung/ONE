@@ -41,7 +41,8 @@ public:
   }
   void setExecutorMap(const std::shared_ptr<exec::ExecutorMap> &executor_map)
   {
-    _executor_map = executor_map;
+    // FIXME Using shared_ptr's raw pointer!
+    _executor_map = executor_map.get();
   }
 
   using IKernelGenerator::visit;
@@ -59,7 +60,7 @@ private:
   const ir::Operands &_operand_ctx;
   const ir::Operations &_operations_ctx;
   TensorBuilderSet _tensor_builder_set;
-  std::shared_ptr<exec::ExecutorMap> _executor_map;
+  exec::ExecutorMap *_executor_map;
 };
 
 } // namespace controlflow

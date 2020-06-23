@@ -37,7 +37,7 @@ public:
              std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
              const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
-             const std::shared_ptr<exec::ExecutorMap> &executor_map);
+             exec::ExecutorMap *executor_map);
 
 public:
   void configure();
@@ -50,7 +50,7 @@ private:
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
-  const std::shared_ptr<exec::ExecutorMap> &_executor_map;
+  exec::ExecutorMap *_executor_map;
 };
 
 } // namespace kernel

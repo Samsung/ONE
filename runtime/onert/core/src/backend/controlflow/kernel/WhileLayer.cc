@@ -33,8 +33,7 @@ WhileLayer::WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tens
                        std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
                        const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                        const ir::SubgraphIndex &cond_subg_index,
-                       const ir::SubgraphIndex &body_subg_index,
-                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
+                       const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
       _input_tensors{input_tensors}, _output_tensors{output_tensors},
       _outputs_dyn_alloc_info{outputs_dyn_alloc_info}, _executor_map{executor_map}
