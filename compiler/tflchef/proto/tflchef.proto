@@ -341,6 +341,10 @@ message TopKV2Options {
   // None
 }
 
+message LogSoftmaxOptions {
+  // None
+}
+
 message ZerosLikeOptions {
   // None
 }
@@ -470,7 +474,7 @@ message Operation {
   // EmbeddingLookupSparseOptions 165
   // SequenceRNNOptions 166
   optional TopKV2Options topk_v2_options = 167;
-  // LogSoftmaxOptions 168
+  optional LogSoftmaxOptions log_softmax_options = 168;
   // DequantizeOptions 169
   optional NegOptions neg_options = 170;
   // PadV2Options 171
