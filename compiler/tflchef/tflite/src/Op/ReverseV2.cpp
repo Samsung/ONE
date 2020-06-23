@@ -22,7 +22,8 @@
 namespace tflchef
 {
 
-void TFliteOpReverseV2::filler(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *) const
+void TFliteOpReverseV2::filler(const tflite::Operator *op, TFliteImport *import,
+                               tflchef::ModelRecipe *) const
 {
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
   assert(inputs.size() == 2);

@@ -30,7 +30,10 @@ public:
 public:
   tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_REVERSE_V2; }
 
-  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_ReverseV2Options; }
+  tflite::BuiltinOptions type(void) const override
+  {
+    return tflite::BuiltinOptions_ReverseV2Options;
+  }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 

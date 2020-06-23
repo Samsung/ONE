@@ -1287,8 +1287,7 @@ void OperationExporter::visit(luci::CircleReverseSequence *node)
 void OperationExporter::visit(luci::CircleReverseV2 *node)
 {
   uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()),
-                                  get_tensor_index(node->axis())};
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()), get_tensor_index(node->axis())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
   auto outputs = builder.CreateVector(outputs_vec);
