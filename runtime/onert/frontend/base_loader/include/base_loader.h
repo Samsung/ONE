@@ -55,10 +55,7 @@ template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
 
 protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
-  std::vector<BuiltinOperator> getOptionalInputOplist()
-  {
-    return {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
-  }
+  virtual std::vector<BuiltinOperator> getOptionalInputOplist();
 
 public:
   /**
