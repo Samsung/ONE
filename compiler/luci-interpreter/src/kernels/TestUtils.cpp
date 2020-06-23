@@ -45,6 +45,17 @@ std::vector<Matcher<float>> ArrayFloatNear(const std::vector<float> &values, flo
   return matchers;
 }
 
+std::vector<int32_t> extractTensorShape(const Tensor &tensor)
+{
+  std::vector<int32_t> result;
+  int dims = tensor.shape().num_dims();
+  for (int i = 0; i < dims; i++)
+  {
+    result.push_back(tensor.shape().dim(i));
+  }
+  return result;
+}
+
 } // namespace testing
 } // namespace kernels
 } // namespace luci_interpreter
