@@ -261,6 +261,7 @@ private:
   IMPLEMENT(luci::CircleResizeBilinear)
   IMPLEMENT(luci::CircleResizeNearestNeighbor)
   IMPLEMENT(luci::CircleReverseSequence)
+  IMPLEMENT(luci::CircleReverseV2)
   IMPLEMENT(luci::CircleRound)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleScatterNd)
@@ -985,6 +986,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleReverseSequence *node,
   s.args().append("seq_lengths", tbl()->lookup(node->seq_lengths()));
   s.args().append("seq_axis", std::to_string(node->seq_axis()));
   s.args().append("batch_axis", std::to_string(node->batch_axis()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleReverseV2 *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("tensor", tbl()->lookup(node->tensor()));
+  s.args().append("axis", tbl()->lookup(node->axis()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

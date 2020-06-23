@@ -87,6 +87,7 @@
 #include "Nodes/CircleResizeBilinear.h"
 #include "Nodes/CircleResizeNearestNeighbor.h"
 #include "Nodes/CircleReverseSequence.h"
+#include "Nodes/CircleReverseV2.h"
 #include "Nodes/CircleRound.h"
 #include "Nodes/CircleRsqrt.h"
 #include "Nodes/CircleScatterNd.h"
