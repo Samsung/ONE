@@ -92,3 +92,9 @@ $ export ROOTFS_DIR=xxx
 $ make all install                        # do normal build
 $ TARGET_ARCH=aarch64 make all install    # do cross build
 ```
+
+### Run test
+
+To run and test the cross-compiled runtime, you need to copy the compiled output to the target device of the architecture in which it is executable. Please refer to the following document for details on the test procedure. In the guide, `armv7l-linux.debug` in path should be replaced by referring to your build result.
+
+- [Testing neural network model inference with a cross-build runtime](./how-to-cross-build-runtime-for-arm.md#run-test)
