@@ -17,11 +17,8 @@
 #ifndef __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
 #define __ONERT_BACKEND_CPU_COMMON_TENSOR_REGISTRY__
 
-#include "ir/OperandIndexMap.h"
 #include "backend/ITensorRegistry.h"
 #include "Tensor.h"
-
-#include <memory>
 
 namespace onert
 {
@@ -30,6 +27,7 @@ namespace backend
 namespace cpu_common
 {
 
+#if 0
 class TensorRegistry : public ITensorRegistry, public ir::OperandIndexMap<std::shared_ptr<Tensor>>
 {
 public:
@@ -39,6 +37,9 @@ public:
    */
   std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override { return at(ind); }
 };
+#endif
+
+using TensorRegistry = PortableTensorRegistryTemplate<cpu_common::Tensor>;
 
 } // namespace cpu_common
 } // namespace backend
