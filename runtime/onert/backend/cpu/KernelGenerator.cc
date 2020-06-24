@@ -122,6 +122,12 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
 
     for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
     {
+      auto portable_tensor = _tensor_builder->portableAt(ind);
+      if (portable_tensor)
+      {
+        assert(portable_tensor->layout() == ir::Layout::NHWC);
+      }
+
       auto tensor = _tensor_builder->at(ind);
       if (tensor)
       {
