@@ -8,7 +8,7 @@ Install required packages
 $ sudo apt-get install qemu qemu-user-static binfmt-support debootstrap
 ```
 
-Use `build_rootfs.sh` script to prepare Root File System. You should have `sudo`
+Use `install_rootfs.sh` script to prepare Root File System. You should have `sudo`
 
 ```
 $ sudo ./tools/cross/build_rootfs.sh arm
@@ -162,4 +162,3 @@ lrwxrwxrwx  1 sjlee sjlee   51 Jun  4 20:55 out -> /home/sjlee/one/Product/armv7
 Now you can test the compilation result in the same way as the native build. Please refer to the following document for details on the test procedure.
 
 - [Testing neural network model inference using the runtime](./how-to-build-runtime.md#run-test)
-
