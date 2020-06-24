@@ -144,7 +144,7 @@ void EventRecorder::writeToFile(std::ostream &os)
 
 void EventRecorder::writeSNPEBenchmark(std::ostream &os)
 {
-  Json::Value root;
+  Json::Value root = Json::Value{Json::objectValue};
   auto &exec_data = root["Execution_Data"] = Json::Value{Json::objectValue};
 
   struct Stat
