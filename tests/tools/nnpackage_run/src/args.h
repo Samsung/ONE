@@ -32,7 +32,7 @@ using TensorShapeMap = std::unordered_map<uint32_t, std::vector<int>>;
 class Args
 {
 public:
-  Args(const int argc, char **argv) noexcept;
+  Args(const int argc, char **argv);
   void print(void);
 
   const std::string &getPackageFilename(void) const { return _package_filename; }
