@@ -97,7 +97,7 @@ void handleShapeParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &s
 namespace nnpkg_run
 {
 
-Args::Args(const int argc, char **argv) noexcept
+Args::Args(const int argc, char **argv)
 {
   Initialize();
   Parse(argc, argv);
