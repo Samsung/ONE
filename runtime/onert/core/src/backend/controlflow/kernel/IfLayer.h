@@ -41,8 +41,6 @@ public:
           exec::ExecutorMap *executor_map);
 
 public:
-  void configure();
-
   void run() override;
 
 private:
