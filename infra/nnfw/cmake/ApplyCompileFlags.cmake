@@ -2,14 +2,8 @@
 # Platform independent compile flag setting
 #
 # flags for build type: debug, release
-if(${ENABLE_COVERAGE})
-  # test-coverage build flag for tizen
-  set(CMAKE_C_FLAGS_DEBUG     "-O -g -DDEBUG")
-  set(CMAKE_CXX_FLAGS_DEBUG   "-O -g -DDEBUG")
-else(${ENABLE_COVERAGE})
-  set(CMAKE_C_FLAGS_DEBUG     "-O0 -g -DDEBUG")
-  set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g -DDEBUG")
-endif(${ENABLE_COVERAGE})
+set(CMAKE_C_FLAGS_DEBUG     "-O0 -g -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE   "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 
