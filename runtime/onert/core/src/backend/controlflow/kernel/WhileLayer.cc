@@ -74,7 +74,8 @@ void WhileLayer::run()
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
 
   // Add only used tensors in cond subgraph
-  assert(_input_tensors.size() == cond_exec->getInputTensors().size());
+  assert(cond_graph.getInputs().size() == _input_tensors.size());
+  assert(cond_graph.getInputs().size() == cond_exec->getInputTensors().size());
   for (uint32_t i = 0; i < cond_graph.getInputs().size(); ++i)
   {
     const auto &cond_input = cond_graph.operands().at(cond_graph.getInputs().at(i));
@@ -88,11 +89,11 @@ void WhileLayer::run()
       std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
 
   // Add only used tensors among outputs of while operation
-  assert(_input_tensors.size() == _output_tensors.size());
+  assert(_output_indices.size() == _input_tensors.size());
   assert(_output_indices.size() == _output_tensors.size());
   input_tensors.clear();
   output_tensors.clear();
-  for (size_t i = 0; i < _output_tensors.size(); ++i)
+  for (size_t i = 0; i < _output_indices.size(); ++i)
   {
     const auto &output_index = _output_indices.at(i);
     const auto &output = _graph.operands().at(output_index);
@@ -114,7 +115,8 @@ void WhileLayer::run()
       std::make_shared<PermuteLayer>(input_tensors, body_input_tensors, body_inputs_dyn_alloc);
 
   // Add only used tensors in cond subgraph
-  assert(body_exec->getOutputTensors().size() == cond_exec->getInputTensors().size());
+  assert(cond_graph.getInputs().size() == body_exec->getOutputTensors().size());
+  assert(cond_graph.getInputs().size() == cond_exec->getInputTensors().size());
   body_output_tensors.clear();
   cond_input_tensors.clear();
   for (uint32_t i = 0; i < cond_graph.getInputs().size(); ++i)
@@ -130,7 +132,8 @@ void WhileLayer::run()
       body_output_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
 
   // Add only used tensors in body subgraph
-  assert(body_exec->getOutputTensors().size() == body_exec->getInputTensors().size());
+  assert(body_graph.getInputs().size() == body_exec->getOutputTensors().size());
+  assert(body_graph.getInputs().size() == body_exec->getInputTensors().size());
   body_output_tensors.clear();
   body_input_tensors.clear();
   for (uint32_t i = 0; i < body_graph.getInputs().size(); ++i)
@@ -148,11 +151,11 @@ void WhileLayer::run()
       body_output_tensors, body_input_tensors, body_inputs_dyn_alloc);
 
   // Add only used tensors among outputs of while operation
-  assert(body_exec->getOutputTensors().size() == _output_tensors.size());
+  assert(_output_indices.size() == body_exec->getOutputTensors().size());
   assert(_output_indices.size() == _output_tensors.size());
   body_output_tensors.clear();
   output_tensors.clear();
-  for (size_t i = 0; i < _output_tensors.size(); ++i)
+  for (size_t i = 0; i < _output_indices.size(); ++i)
   {
     const auto &output_index = _output_indices.at(i);
     const auto &output = _graph.operands().at(output_index);
