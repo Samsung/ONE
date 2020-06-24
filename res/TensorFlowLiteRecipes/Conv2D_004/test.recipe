@@ -1,0 +1,49 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 3 dim: 2 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "2" arg: "-3" arg: "-4"
+    arg: "-5" arg: "6" arg: "-7" arg: "8"
+    arg: "4" arg: "-2" arg: "3" arg: "-1"
+    arg: "-8" arg: "-6" arg: "7" arg: "5"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 2 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 2
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+    activation: RELU
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
