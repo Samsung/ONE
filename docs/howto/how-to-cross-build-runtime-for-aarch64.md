@@ -10,17 +10,17 @@ Install required packages
 $ sudo apt-get install qemu qemu-user-static binfmt-support debootstrap
 ```
 
-Use `build_rootfs.sh` script to prepare Root File System. You should have `sudo`
+Use `install_rootfs.sh` script to prepare Root File System. You should have `sudo`
 
 ```
-$ sudo ./tools/cross/build_rootfs.sh aarch64
+$ sudo ./tools/cross/install_rootfs.sh aarch64
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
 - supports `xenial`(default), `trusty` and `bionic` release
 
 To see the options,
 ```
-$ ./tools/cross/build_rootfs.sh -h
+$ ./tools/cross/install_rootfs.sh -h
 ```
 
 RootFS will be prepared at `tools/cross/rootfs/aarch64` folder.
@@ -44,7 +44,7 @@ If a build error occurs because the version of the development system and the ta
 Use `ROOTFS_DIR` to a full path to prepare at alternative path.
 
 ```
-$ ROOTFS_DIR=/home/user/rootfs/aarch64-xenial sudo -E ./tools/cross/build_rootfs.sh aarch64
+$ ROOTFS_DIR=/home/user/rootfs/aarch64-xenial sudo -E ./tools/cross/install_rootfs.sh aarch64
 ```
 
 ### Using proxy
@@ -53,9 +53,9 @@ If you need to use proxy server while building the rootfs, use `--setproxy` opti
 
 ```
 # for example,
-$ sudo ./tools/cross/build_rootfs.sh aarch64 --setproxy="1.2.3.4:8080"
+$ sudo ./tools/cross/install_rootfs.sh aarch64 --setproxy="1.2.3.4:8080"
 # or
-$ sudo ./tools/cross/build_rootfs.sh aarch64 --setproxy="proxy.server.com:8888"
+$ sudo ./tools/cross/install_rootfs.sh aarch64 --setproxy="proxy.server.com:8888"
 ```
 
 This will put `apt` proxy settings in `rootfs/etc/apt/apt.conf.d/90proxy` file
