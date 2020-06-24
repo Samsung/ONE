@@ -98,6 +98,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_TENSORDUMP_PATH=\"$<TARGET_FILE:circle-tensordump>\"' >> ${TEST_CONFIG}
   DEPENDS record-minmax
   DEPENDS circle2circle
+  DEPENDS circle-tensordump
   COMMENT "Generate test configuration"
 )
 
