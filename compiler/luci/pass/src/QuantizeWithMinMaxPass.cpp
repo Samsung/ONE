@@ -31,6 +31,34 @@ namespace luci
 namespace
 {
 
+void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
+                          float &nudged_min, float &nudged_max)
+{
+  assert(min != max);
+
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+  const double qmin_double = kMinScale;
+  const double qmax_double = kMaxScale;
+  const double rmin = std::fmin(0, min);
+  const double rmax = std::fmax(0, max);
+  double scale_factor_from_min_side{0};
+  double scale_factor_from_max_side{0};
+
+  if ((qmin_double * rmin) > 0)
+    scale_factor_from_min_side = rmin / qmin_double;
+
+  if ((qmax_double * rmax) > 0)
+    scale_factor_from_max_side = rmax / qmax_double;
+
+  scaling_factor = scale_factor_from_min_side > scale_factor_from_max_side
+                       ? scale_factor_from_min_side
+                       : scale_factor_from_max_side;
+  zp = 0;
+  nudged_min = static_cast<float>(qmin_double * scaling_factor);
+  nudged_max = static_cast<float>(qmax_double * scaling_factor);
+}
+
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max)
 {
@@ -440,13 +468,21 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         float nudged_min{0};
         float nudged_max{0};
 
-        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+        if (output_type == loco::DataType::U8)
+        {
+          compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+          circle_node->dtype(loco::DataType::U8);
+        }
+        else
+        {
+          compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+          circle_node->dtype(loco::DataType::S16);
+        }
 
         circle_node->quantparam()->max[0] = nudged_max;
         circle_node->quantparam()->min[0] = nudged_min;
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
-        circle_node->dtype(loco::DataType::U8);
       }
     }
     return false;
