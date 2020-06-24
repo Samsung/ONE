@@ -74,7 +74,17 @@ ChromeTracingObserver::ChromeTracingObserver(const std::string &filepath, const 
 {
 }
 
-ChromeTracingObserver::~ChromeTracingObserver() { _recorder.writeToFile(_ofs); }
+ChromeTracingObserver::~ChromeTracingObserver()
+{
+  try
+  {
+    _recorder.writeToFile(_ofs);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "E: Fail to record event in ChromeTracingObserver: " << e.what() << std::endl;
+  }
+}
 
 void ChromeTracingObserver::handleBegin(IExecutor *)
 {
