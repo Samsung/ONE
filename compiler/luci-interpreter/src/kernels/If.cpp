@@ -56,6 +56,7 @@ void If::configure()
   {
     Tensor *then_output = _then_graph->getOutputTensors()[i];
     Tensor *else_output = _else_graph->getOutputTensors()[i];
+    assert(else_output->element_type() == then_output->element_type());
     if (else_output->shape() != then_output->shape())
       throw std::runtime_error("Dynamic shapes are not supported yet.");
   }
