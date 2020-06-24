@@ -77,8 +77,13 @@ typedef enum {
   NNFW_TYPE_TENSOR_QUANT8_ASYMM = 2,
   /** A tensor of boolean */
   NNFW_TYPE_TENSOR_BOOL = 3,
+
   /** A tensor of 8 bit unsigned integer */
   NNFW_TYPE_TENSOR_UINT8 = 4,
+
+  /** A tensor of 64 bit signed integer */
+  NNFW_TYPE_TENSOR_INT64 = 5,
+
 } NNFW_TYPE;
 
 /**

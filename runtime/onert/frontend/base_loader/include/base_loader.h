@@ -40,6 +40,7 @@ namespace base_loader
 
 template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
 {
+protected:
   using Verifier = typename LoaderDomain::Verifier;
   using ActivationFunctionType = typename LoaderDomain::ActivationFunctionType;
   using Buffer = typename LoaderDomain::Buffer;
@@ -53,7 +54,9 @@ template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
   using Tensor = typename LoaderDomain::Tensor;
   using TensorType = typename LoaderDomain::TensorType;
 
+protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
+  virtual bool allowOptionalInputTensor(BuiltinOperator) = 0;
 
 public:
   /**
@@ -379,12 +382,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
 {
   for (const std::int32_t idx : *op->inputs())
   {
-    // Optional tensors are not supported yet except for FULLY_CONNECTED.
+    // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-      std::vector<BuiltinOperator> allowed = {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
-      if (isOptionalInputTensor(idx) &&
-          std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
+      if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
             std::string("loader doesn't support optional input tensor yet for ")
                 .append(EnumNameBuiltinOperator(builtin_code)));
@@ -1204,8 +1205,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
-      {"BroadCastTo", BuiltinOP::BroadcastTo},
       {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
+      {"BroadcastTo", BuiltinOP::BroadcastTo},
   };
 
   try

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_RUNTIMETOIR_H
-#define LUCI_INTERPRETER_RUNTIMETOIR_H
+#ifndef LUCI_INTERPRETER_LOADER_RUNTIMETOIR_H
+#define LUCI_INTERPRETER_LOADER_RUNTIMETOIR_H
 
 #include "luci_interpreter/core/Tensor.h"
 
@@ -34,4 +34,4 @@ struct RuntimeToIR
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_RUNTIMETOIR_H
+#endif // LUCI_INTERPRETER_LOADER_RUNTIMETOIR_H

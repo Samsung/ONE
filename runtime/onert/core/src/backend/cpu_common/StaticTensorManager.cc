@@ -33,7 +33,7 @@ StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &
 
 void StaticTensorManager::allocateConsts(void)
 {
-  for (auto &pair : (*_tensors))
+  for (auto &pair : _tensors->managed_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -53,7 +53,7 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : (*_tensors))
+  for (auto &pair : _tensors->managed_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -76,18 +76,18 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, ir::Layout backend_layout,
                                       bool as_const)
 {
-  assert(_tensors->find(ind) == _tensors->end());
+  assert(!_tensors->getManagedTensor(ind));
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-  (*_tensors)[ind] = tensor;
+  _tensors->setManagedTensor(ind, tensor);
   _as_constants[ind] = as_const;
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
-  assert(_tensors->find(ind) != _tensors->end());
+  assert(_tensors->getManagedTensor(ind));
 
   // This method is called only when a tensor has proper shape
-  assert(!(*_tensors)[ind]->is_dynamic());
+  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
@@ -95,10 +95,10 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
-  assert(_tensors->find(ind) != _tensors->end());
+  assert(_tensors->getManagedTensor(ind));
 
-  // This method is called only when a tensor is not dynamic
-  assert(!(*_tensors)[ind]->is_dynamic());
+  // This method is called only when a tensor has proper shape
+  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
@@ -106,7 +106,7 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (const auto &it : (*_tensors))
+  for (const auto &it : _tensors->managed_tensors())
     fn(it.first);
 }
 

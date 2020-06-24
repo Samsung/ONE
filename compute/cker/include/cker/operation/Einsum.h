@@ -386,8 +386,6 @@ private:
     _label_types.resize(num_labels);
     for (int label = 0; label < num_labels; ++label)
     {
-      if (label == kEllipsisLabel)
-        continue;
       bool removed = (_output_label_counts[label] == 0);
       bool unique = num_inputs == 1 || _input_label_counts[0][label] == 0 ||
                     _input_label_counts[1][label] == 0;

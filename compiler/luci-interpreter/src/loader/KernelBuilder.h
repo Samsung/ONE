@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELBUILDER_H
-#define LUCI_INTERPRETER_KERNELBUILDER_H
+#ifndef LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
+#define LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
 
 #include "core/Kernel.h"
+#include "core/RuntimeGraph.h"
 
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 namespace luci_interpreter
 {
 
+class GraphLoader;
+class ModuleLoader;
+
 class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
 {
 public:
-  explicit KernelBuilder(std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-      : _node_to_tensor(node_to_tensor)
+  KernelBuilder(const ModuleLoader &module_loader, const GraphLoader &graph_loader)
+      : _module_loader(module_loader), _graph_loader(graph_loader)
   {
   }
 
@@ -72,10 +75,13 @@ private:
 
   std::vector<Tensor *> getOutputTensors(const std::vector<const loco::Node *> &nodes) const;
 
+  RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const;
+
 private:
-  std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
+  const ModuleLoader &_module_loader;
+  const GraphLoader &_graph_loader;
 };
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELBUILDER_H
+#endif // LUCI_INTERPRETER_LOADER_KERNELBUILDER_H

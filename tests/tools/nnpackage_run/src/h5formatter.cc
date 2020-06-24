@@ -63,6 +63,12 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
           else
             throw std::runtime_error("model input type is i32. But h5 data type is different.");
           break;
+        case NNFW_TYPE_TENSOR_INT64:
+          if (type == H5::PredType::STD_I64BE || type == H5::PredType::STD_I64LE)
+            data_set.read(inputs[i].data(), H5::PredType::NATIVE_INT64);
+          else
+            throw std::runtime_error("model input type is i64. But h5 data type is different.");
+          break;
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
         case NNFW_TYPE_TENSOR_BOOL:
         case NNFW_TYPE_TENSOR_UINT8:
@@ -132,6 +138,13 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
           H5::DataSet data_set =
               value_group.createDataSet(std::to_string(i), H5::PredType::STD_I32LE, data_space);
           data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT32);
+          break;
+        }
+        case NNFW_TYPE_TENSOR_INT64:
+        {
+          H5::DataSet data_set =
+              value_group.createDataSet(std::to_string(i), H5::PredType::STD_I64LE, data_space);
+          data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT64);
           break;
         }
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
