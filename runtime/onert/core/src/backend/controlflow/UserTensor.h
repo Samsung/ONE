@@ -66,7 +66,7 @@ public:
   int32_t data_offset() const override { return _info.typeInfo().offset(); }
   bool is_dynamic() const override { return false; }
   ir::Shape getShape() const override { return _info.shape(); }
-  void setShape(const ir::Shape &new_shape) { _info.shape(new_shape); }
+  void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
 
 private:
   ir::OperandInfo _info;
