@@ -16,7 +16,7 @@ Use `build_rootfs.sh` script to prepare Root File System. You should have `sudo`
 $ sudo ./tools/cross/build_rootfs.sh aarch64
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `xenial`(default) and `trusty` release
+- supports `xenial`(default), `trusty` and `bionic` release
 
 To see the options,
 ```
@@ -67,14 +67,6 @@ Install cross compilers
 ```
 $ sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 ```
-
-Build and install ARM Compute Library
-```
-$ CROSS_BUILD=1 TARGET_ARCH=aarch64 make acl
-```
-Mostly you only need once of ACL build. This will build and install to
-`Product/(target_arch-os)/out/bin` folder.
-- this is required for `AARCH64` on Ubuntu
 
 Give `TARGET_ARCH` variable to set the target architecture
 ```
