@@ -53,7 +53,7 @@ If you need to use proxy server while building the rootfs, use `--setproxy` opti
 # for example,
 $ sudo ./tools/cross/install_rootfs.sh arm --setproxy="1.2.3.4:8080"
 # or
-$ sudo ./tools/cross/build_rootfs.sh arm --setproxy="proxy.server.com:8888"
+$ sudo ./tools/cross/install_rootfs.sh arm --setproxy="proxy.server.com:8888"
 ```
 
 This will put `apt` proxy settings in `rootfs/etc/apt/apt.conf.d/90proxy` file
