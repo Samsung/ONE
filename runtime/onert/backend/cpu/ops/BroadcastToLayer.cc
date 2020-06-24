@@ -27,7 +27,7 @@ namespace cpu
 namespace ops
 {
 
-BroadcastToLayer::BroadcastToLayer() : _input(nullptr), _output(nullptr)
+BroadcastToLayer::BroadcastToLayer() : _input(nullptr), _shape(nullptr), _output(nullptr)
 {
   // DO NOTHING
 }
