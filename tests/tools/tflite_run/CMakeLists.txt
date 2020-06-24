@@ -14,17 +14,7 @@ target_include_directories(tflite_run PRIVATE src)
 target_include_directories(tflite_run PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(tflite_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite)
-if(BUILD_BOOST)
-  # We have to use Boost::program_options, instead of boost_program_optinos
-  # Boost::program_options provides the full path for our own built boost.
-  target_link_libraries(tflite_run Boost::program_options)
-else()
-  # We cannot use `Boost::program_options` on aarch64
-  # because it uses boost 1.65.1, which requires cmake >= 3.9.3
-  # to identify Boost::program_options imported target correctly,
-  # However, it uses cmake 3.5. (old version).
-  target_link_libraries(tflite_run boost_program_options)
-endif()
+target_link_libraries(tflite_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 target_link_libraries(tflite_run nnfw_lib_benchmark)
 
