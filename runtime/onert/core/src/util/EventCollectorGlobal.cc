@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <fstream>
+#include <iostream>
 
 #include "util/ConfigSource.h"
 
@@ -35,9 +36,16 @@ EventCollectorGlobal::~EventCollectorGlobal()
 {
   if (!_recorder.empty())
   {
-    // TODO Need better way for saved file path than the hardcoded path
-    std::ofstream ofs{"trace.global.json"};
-    _recorder.writeToFile(ofs);
+    try
+    {
+      // TODO Need better way for saved file path than the hardcoded path
+      std::ofstream ofs{"trace.global.json"};
+      _recorder.writeToFile(ofs);
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "E: Fail to record event in EventCollectorGlobal: " << e.what() << std::endl;
+    }
   }
 }
 
