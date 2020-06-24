@@ -124,11 +124,42 @@ $ make all install    # do normal build
 $ TARGET_ARCH=armv7l make all install    # do cross build
 ```
 
-## Run test
+### Run test
+
+To run and test the cross-compiled runtime, you need to copy the compiled output to the target device of the architecture in which it is executable.
+
+1. Copy all artifacts under the `./Product` folder to the target device, Odroid-XU4 for example, as a whole.
 
 ```
-$ MODELFILE_SERVER={MODELFILE_SERVER_LINK} ./tests/scripts/test-driver.sh --artifactpath=. \
- --frameworktest_list_file=tests/scripts/list/onert_frameworktest_list.armv7l.acl_cl.txt
+$ ssh odroid mkdir -p one/Product
+sjlee@odroid's password:
+$ scp -rp ./Product/armv7l-linux.debug odroid:one/Product
+sjlee@odroid's password:
+FillFrom_runner                                                                                 100%  224KB 223.6KB/s   00:00
+benchmark_nnapi.sh                                                                              100% 7464     7.3KB/s   00:00
+common.sh                                                                                       100% 2084     2.0KB/s   00:00
+test_framework.sh                                                                               100% 3154     3.1KB/s   00:00
+test-driver.sh
+...
 ```
 
-For `{MODELFILE_SERVER_LINK}`, put appropriate server link.
+2. Log in to the target device, go to the copied path, and reestore the symbolic link settings of the `Product` directory.
+
+```
+$ ssh odroid
+sjlee@odroid's password:
+...
+$ cd ~/one/Product
+$ ln ${PWD}/armv7l-linux.debug/obj obj
+$ ln ${PWD}/armv7l-linux.debug/out out
+$ cd ..
+$ ls -la Product
+drwxrwxr-x  5 sjlee sjlee 4096 Jun  4 20:55 armv7l-linux.debug
+lrwxrwxrwx  1 sjlee sjlee   51 Jun  4 20:54 obj -> /home/sjlee/one/Product/armv7l-linux.debug/obj
+lrwxrwxrwx  1 sjlee sjlee   51 Jun  4 20:55 out -> /home/sjlee/one/Product/armv7l-linux.debug/out
+```
+
+Now you can test the compilation result in the same way as the native build. Please refer to the following document for details on the test procedure.
+
+- [Testing neural network model inference using the runtime](./how-to-build-runtime.md#run-test)
+
