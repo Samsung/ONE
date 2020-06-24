@@ -61,31 +61,38 @@ void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max)
 {
-  assert(min != max);
 
+  LOGGER(l);
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = 255;
   const double qmin_double = kMinScale;
   const double qmax_double = kMaxScale;
   const double rmin = std::fmin(0, min);
   const double rmax = std::fmax(0, max);
-
   double scale = (rmax - rmin) / (qmax_double - qmin_double);
-  const double zero_point_from_min = qmin_double - rmin / scale;
-  const double zero_point_from_max = qmax_double - rmax / scale;
-  const double zero_point_from_min_error = std::abs(qmin_double) + std::abs(rmin / scale);
-  const double zero_point_from_max_error = std::abs(qmax_double) + std::abs(rmax / scale);
-  const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
-                                       ? zero_point_from_min
-                                       : zero_point_from_max;
-  uint8_t nudged_zero_point = 0;
+  double zero_point_double{0};
+  if (scale == 0)
+  {
+    WARN(l) << "The minimum and maximum values are the same." << std::endl;
+    if (min >= 0 && max >= 0)
+      zero_point_double = kMinScale;
+    else
+      zero_point_double = kMaxScale;
+  }
+  else
+    zero_point_double = qmin_double - rmin / scale;
+  uint8_t nudged_zero_point{0};
   if (zero_point_double <= qmin_double)
   {
     nudged_zero_point = kMinScale;
+    scale = max / (qmax_double - qmin_double);
+    WARN(l) << "The minimum and maximum values are all positive." << std::endl;
   }
   else if (zero_point_double >= qmax_double)
   {
     nudged_zero_point = kMaxScale;
+    scale = -min / (qmax_double - qmin_double);
+    WARN(l) << "The minimum and maximum values are all negative." << std::endl;
   }
   else
   {
@@ -424,18 +431,6 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
   const int32_t kMaxScale = 255;
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
-  if (min == max)
-  {
-    node->dtype(loco::DataType::U8);      // change the type of tensor
-    node->size<loco::DataType::U8>(size); // resize tensor
-    for (int i = 0; i < static_cast<int32_t>(size); ++i)
-      node->at<loco::DataType::U8>(i) = 0;
-
-    scaling_factor = 1;
-    zp = 0;
-    return;
-  }
-
   compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
   const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
