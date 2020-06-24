@@ -94,11 +94,11 @@ Then, copy `libstdc++.so.6.0.24` into `/usr/lib/arm-linux-gnueabihf`, and update
 
 Mostly you only need once of ACL build.
 
-ACL will be automatically installed in `externals/acl` when you build nnfw without any changes.
+ACL will be automatically installed in `externals/acl` when you build runtime without any changes.
 
 You can check ACL source information in `cmake/packages/ARMComputeSourceConfig.cmake`
 
-## Build nnfw
+## Cross build for ARM
 
 Give `TARGET_ARCH` variable to set the target architecture.
 
