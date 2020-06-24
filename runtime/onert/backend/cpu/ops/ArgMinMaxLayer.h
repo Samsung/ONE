@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,13 +36,14 @@ public:
   ArgMinMaxLayer() : _input(nullptr), _output(nullptr), _axis(-1), _is_arg_max(true) {}
 
 public:
-  void configure(const Tensor *indices, Tensor *output, int32_t axis, bool is_arg_max);
+  void configure(const IPortableTensor *indices, IPortableTensor *output, int32_t axis,
+                 bool is_arg_max);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
   int32_t _axis;
   bool _is_arg_max;
 };

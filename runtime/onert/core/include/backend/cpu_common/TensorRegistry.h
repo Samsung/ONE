@@ -27,18 +27,6 @@ namespace backend
 namespace cpu_common
 {
 
-#if 0
-class TensorRegistry : public ITensorRegistry, public ir::OperandIndexMap<std::shared_ptr<Tensor>>
-{
-public:
-  /**
-   * @brief Returns pointer of ITensor
-   * @note  Returned tensor cannot be used longer than dynamic tensor manager
-   */
-  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override { return at(ind); }
-};
-#endif
-
 using TensorRegistry = PortableTensorRegistryTemplate<cpu_common::Tensor>;
 
 } // namespace cpu_common

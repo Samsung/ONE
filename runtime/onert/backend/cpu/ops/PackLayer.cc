@@ -63,7 +63,8 @@ template <typename T> void PackLayer::packImpl()
                       reinterpret_cast<T *>(_output->buffer()));
 }
 
-void PackLayer::configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output)
+void PackLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,
+                          IPortableTensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

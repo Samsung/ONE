@@ -127,8 +127,8 @@ void AddLayer::addQuant8()
       getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void AddLayer::configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                         Tensor *output)
+void AddLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         const ir::Activation activation, IPortableTensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

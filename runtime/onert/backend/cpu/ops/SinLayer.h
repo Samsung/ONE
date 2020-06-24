@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_SINLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_SINLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -34,7 +34,7 @@ class SinLayer : public ::onert::exec::IFunction
 public:
   SinLayer();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run();
 
@@ -42,8 +42,8 @@ private:
   void sinFloat32();
   void sinQuant8();
 
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

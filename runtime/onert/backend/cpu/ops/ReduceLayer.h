@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 #include <memory>
@@ -56,14 +56,14 @@ public:
   ~ReduceLayer();
 
 public:
-  void configure(const Tensor *input, Tensor *output, ReduceType reduceType,
+  void configure(const IPortableTensor *input, IPortableTensor *output, ReduceType reduceType,
                  const std::vector<int> &axes, bool keep_dims);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
   ReduceType _reduceType;
   std::vector<int> _axes;
   bool _keep_dims;

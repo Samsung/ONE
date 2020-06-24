@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_MATRIXBANDPARTLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_MATRIXBANDPARTLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -40,8 +40,8 @@ public:
 
   void matrixBandPartQuant8();
 
-  void configure(const Tensor *input, const Tensor *num_lower_diag, const Tensor *num_upper_diag,
-                 Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *num_lower_diag,
+                 const IPortableTensor *num_upper_diag, IPortableTensor *output);
 
   void run();
   void runSync()
@@ -52,10 +52,10 @@ public:
   }
 
 private:
-  const Tensor *_input;
-  const Tensor *_num_lower_diag;
-  const Tensor *_num_upper_diag;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_num_lower_diag;
+  const IPortableTensor *_num_upper_diag;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

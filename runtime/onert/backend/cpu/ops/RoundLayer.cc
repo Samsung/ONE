@@ -39,7 +39,7 @@ void RoundLayer::roundFloat32()
                     getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void RoundLayer::configure(const Tensor *input, Tensor *output)
+void RoundLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

@@ -65,8 +65,8 @@ void SubLayer::subQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void SubLayer::configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                         Tensor *output)
+void SubLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         const ir::Activation activation, IPortableTensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

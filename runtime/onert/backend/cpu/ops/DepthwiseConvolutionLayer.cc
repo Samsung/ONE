@@ -94,12 +94,13 @@ void DepthwiseConvolutionLayer::convQuant8()
       getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void DepthwiseConvolutionLayer::configure(const Tensor *input, const Tensor *kernel,
-                                          const Tensor *bias, const uint32_t paddingLeft,
+void DepthwiseConvolutionLayer::configure(const IPortableTensor *input,
+                                          const IPortableTensor *kernel,
+                                          const IPortableTensor *bias, const uint32_t paddingLeft,
                                           const uint32_t paddingRight, const uint32_t paddingTop,
                                           const uint32_t paddingBottom, const uint32_t strideWidth,
                                           const uint32_t strideHeight, const uint32_t multiplier,
-                                          const ir::Activation activation, Tensor *output)
+                                          const ir::Activation activation, IPortableTensor *output)
 {
   _input = input;
   _kernel = kernel;

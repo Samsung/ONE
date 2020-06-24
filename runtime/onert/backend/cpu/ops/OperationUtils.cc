@@ -29,13 +29,13 @@ namespace cpu
 namespace ops
 {
 
-uint32_t getNumberOfDimensions(const Tensor *tensor)
+uint32_t getNumberOfDimensions(const IPortableTensor *tensor)
 {
   assert(tensor);
   return tensor->num_dimensions();
 }
 
-uint32_t getNumberOfElements(const Tensor *tensor)
+uint32_t getNumberOfElements(const IPortableTensor *tensor)
 {
   assert(tensor);
   uint32_t count = 1;
@@ -46,7 +46,7 @@ uint32_t getNumberOfElements(const Tensor *tensor)
   return count;
 }
 
-uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx)
+uint32_t getSizeOfDimension(const IPortableTensor *tensor, uint32_t dimensionIdx)
 {
   assert(tensor);
   if (dimensionIdx >= tensor->num_dimensions())
@@ -78,8 +78,9 @@ void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void GetQuantizedConvolutionMultiplier(const Tensor *input, const Tensor *filter,
-                                       const Tensor *bias, const Tensor *output, double *multiplier)
+void GetQuantizedConvolutionMultiplier(const IPortableTensor *input, const IPortableTensor *filter,
+                                       const IPortableTensor *bias, const IPortableTensor *output,
+                                       double *multiplier)
 {
   const double input_product_scale = input->data_scale() * filter->data_scale();
   const double bias_scale = (bias != nullptr) ? bias->data_scale() : input_product_scale;
@@ -110,7 +111,7 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
                                    int32_t *act_min, int32_t *act_max)
 {
   const int32_t qmin = std::numeric_limits<uint8_t>::min();
@@ -151,7 +152,7 @@ void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *outp
   }
 }
 
-bool HaveSameShapes(const Tensor *input1, const Tensor *input2)
+bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2)
 {
   if (input1 == input2)
     return true;

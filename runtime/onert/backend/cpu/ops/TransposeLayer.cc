@@ -54,7 +54,8 @@ void TransposeLayer::transposeQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TransposeLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &perm)
+void TransposeLayer::configure(const IPortableTensor *input, IPortableTensor *output,
+                               const std::vector<int> &perm)
 {
   _input = input;
   _perm = perm;

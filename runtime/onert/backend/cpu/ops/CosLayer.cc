@@ -40,7 +40,7 @@ void CosLayer::cosFloat32()
 
 void CosLayer::cosQuant8() { throw std::runtime_error{"NYI"}; }
 
-void CosLayer::configure(const Tensor *input, Tensor *output)
+void CosLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

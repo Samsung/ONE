@@ -51,8 +51,8 @@ void BatchMatMulLayer::batchMatMulFloat32()
                      reinterpret_cast<float *>(_output->buffer()));
 }
 
-void BatchMatMulLayer::configure(const Tensor *lhs, const Tensor *rhs, bool adj_x, bool adj_y,
-                                 Tensor *output)
+void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x,
+                                 bool adj_y, IPortableTensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

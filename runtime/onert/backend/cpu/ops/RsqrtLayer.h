@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_RSQRTLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_RSQRTLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -34,15 +34,15 @@ class RsqrtLayer : public ::onert::exec::IFunction
 public:
   RsqrtLayer();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run();
 
 private:
   void rsqrtFloat32();
   void rsqrtQuant8();
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

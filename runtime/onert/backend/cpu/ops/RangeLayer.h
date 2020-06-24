@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_RANGELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_RANGELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -34,15 +34,16 @@ class RangeLayer : public ::onert::exec::IFunction
 public:
   RangeLayer();
 
-  void configure(const Tensor *start, const Tensor *limit, const Tensor *delta, Tensor *output);
+  void configure(const IPortableTensor *start, const IPortableTensor *limit,
+                 const IPortableTensor *delta, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_start;
-  const Tensor *_limit;
-  const Tensor *_delta;
-  Tensor *_output;
+  const IPortableTensor *_start;
+  const IPortableTensor *_limit;
+  const IPortableTensor *_delta;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

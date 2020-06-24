@@ -29,7 +29,26 @@ namespace cpu
 namespace ops
 {
 
-void MinLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)
+void MinLayer::minFloat32()
+{
+  nnfw::cker::Min<float>(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
+                         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
+                         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+}
+
+void MinLayer::minQuant8()
+{
+  // TODO Check whether cker for quant8 min produces correct results
+  // nnfw::cker::Min<uint8_t>(
+  //     getTensorShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
+  //     getTensorShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
+  //     getTensorShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
+
+  throw std::runtime_error("Min NYI for quantized");
+}
+
+void MinLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         IPortableTensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

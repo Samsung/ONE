@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_BATCH_MATMUL_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_BATCH_MATMUL_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -48,14 +48,15 @@ public:
 public:
   void batchMatMulFloat32();
 
-  void configure(const Tensor *lhs, const Tensor *rhs, bool adj_x, bool adj_y, Tensor *output);
+  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x, bool adj_y,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const IPortableTensor *_lhs;
+  const IPortableTensor *_rhs;
+  IPortableTensor *_output;
 
   bool _adj_x;
   bool _adj_y;
