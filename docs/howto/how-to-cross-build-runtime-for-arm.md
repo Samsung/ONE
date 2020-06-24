@@ -42,7 +42,7 @@ If a build error occurs because the version of the development system and the ta
 Use `ROOTFS_DIR` to a full path to prepare at alternative path.
 
 ```
-$ ROOTFS_DIR=/home/user/rootfs/arm-xenial sudo -E ./tools/cross/build_rootfs.sh arm
+$ ROOTFS_DIR=/home/user/rootfs/arm-xenial sudo -E ./tools/cross/install_rootfs.sh arm
 ```
 
 ### Using proxy
