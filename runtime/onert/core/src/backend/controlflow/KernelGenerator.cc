@@ -83,8 +83,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, outputs_dyn_alloc_info, then_subg_index,
-      else_subg_index, _executor_map);
+      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
+      then_subg_index, else_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
