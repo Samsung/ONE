@@ -18,7 +18,7 @@ $ sudo ./tools/cross/install_rootfs.sh arm
 
 To see the options,
 ```
-$ ./tools/cross/build_rootfs.sh -h
+$ ./tools/cross/install_rootfs.sh -h
 ```
 
 RootFS will be prepared at `tools/cross/rootfs/arm` folder.
