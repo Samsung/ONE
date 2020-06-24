@@ -143,6 +143,7 @@ private:
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
+  void visit(const ir::operation::FusedBatchNorm &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
@@ -244,6 +245,7 @@ public:
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
+  void visit(const ir::operation::FusedBatchNorm &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::LogicalNot &op);

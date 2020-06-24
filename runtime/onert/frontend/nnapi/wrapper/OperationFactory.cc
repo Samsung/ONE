@@ -2171,6 +2171,37 @@ OperationFactory::OperationFactory()
 
     return new operation::BroadcastTo{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX] = [](const OperationFactory::Param &init_param,
+                                                    Operands &operands) {
+    // Each input should be interpreted as follows:
+    //
+    //  0....4  -> 5 Input Tensors Index
+    //  n-2     -> is_training
+    //  n-1     -> data_format
+    //  n       -> epsilon
+
+    assert(init_param.input_count == 8 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs;
+    for (uint32_t n = 0; n < init_param.input_count - 3; ++n)
+    {
+      inputs.append(OperandIndex{init_param.inputs[n]});
+    }
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::FusedBatchNorm::Param param;
+    const OperandIndex is_training_index{init_param.inputs[init_param.input_count - 3]};
+    param.is_training = operands.at(is_training_index).asScalar<bool>();
+
+    const OperandIndex data_format_index{init_param.inputs[init_param.input_count - 2]};
+    std::vector<char> data_format_vector = operands.at(data_format_index).asVector<char>();
+    param.data_format = std::string(data_format_vector.begin(), data_format_vector.end());
+
+    const OperandIndex epsilon_index{init_param.inputs[init_param.input_count - 1]};
+    param.epsilon = operands.at(epsilon_index).asScalar<float>();
+    return new operation::FusedBatchNorm{inputs, outputs, param};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
