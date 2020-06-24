@@ -11,7 +11,7 @@ $ sudo apt-get install qemu qemu-user-static binfmt-support debootstrap
 Use `install_rootfs.sh` script to prepare Root File System. You should have `sudo`
 
 ```
-$ sudo ./tools/cross/build_rootfs.sh arm
+$ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch` architecutre for now
 - supports `xenial`(default) `trusty`, and `bionic` release
