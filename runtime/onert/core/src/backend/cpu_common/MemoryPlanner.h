@@ -143,6 +143,7 @@ public:
 private:
   void buildMemoryPlans();
 
+  int32_t _claim_time;
   bool _initialized;
   uint32_t _capacity;
   MemoryPlans _mem_plans;
