@@ -70,6 +70,23 @@ uint8_t *MemoryManager::getBuffer(const ir::OperandIndex &ind) const
   return _mem_alloc->base() + mem_blk.offset;
 }
 
+std::shared_ptr<cpu_common::Allocator> ConstMemoryManager::allocate(const ir::OperandIndex &ind,
+                                                                    uint32_t capacity)
+{
+  auto mem_alloc = std::make_shared<cpu_common::Allocator>(capacity);
+  _mem_alloc_map[ind] = mem_alloc;
+  return mem_alloc;
+}
+
+void ConstMemoryManager::deallocate(void)
+{
+  for (auto &mem_alloc : _mem_alloc_map)
+  {
+    // Release memory buffer of mem_alloc
+    mem_alloc.second->release();
+  }
+}
+
 std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ir::OperandIndex &ind,
                                                                       uint32_t capacity)
 {

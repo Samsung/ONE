@@ -29,6 +29,9 @@ namespace backend
 namespace cpu_common
 {
 
+/**
+ * @brief MemoryManager for static tensors whose memory is allocated at compilation phase
+ */
 class MemoryManager : public backend::IMemoryManager
 {
 public:
@@ -53,6 +56,25 @@ private:
   std::shared_ptr<Allocator> _mem_alloc;
 };
 
+/**
+ * @brief MemoryManager for constant tensors
+ */
+class ConstMemoryManager
+{
+public:
+  ConstMemoryManager() = default;
+  virtual ~ConstMemoryManager() = default;
+
+  std::shared_ptr<Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
+  void deallocate(void);
+
+private:
+  ir::OperandIndexMap<std::shared_ptr<Allocator>> _mem_alloc_map;
+};
+
+/**
+ * @brief MemoryManager for dynamic tensors whose memory is allocated at execution phase
+ */
 class DynamicMemoryManager
 {
 public:

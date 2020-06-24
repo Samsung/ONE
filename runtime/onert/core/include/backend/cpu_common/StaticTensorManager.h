@@ -51,7 +51,7 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
-  std::unique_ptr<DynamicMemoryManager> _const_mgr;
+  std::unique_ptr<ConstMemoryManager> _const_mgr;
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
