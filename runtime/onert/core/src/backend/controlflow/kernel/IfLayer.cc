@@ -30,12 +30,14 @@ namespace kernel
 {
 
 IfLayer::IfLayer(const std::shared_ptr<backend::ITensor> &cond_tensor,
-                 std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
-                 std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+                 const std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
+                 const std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+                 const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                  const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
                  exec::ExecutorMap *executor_map)
     : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
+      _output_indices{output_indices}, _graph{graph},
       _outputs_dyn_alloc_info{outputs_dyn_alloc_info}, _then_subg_index{then_subg_index},
       _else_subg_index{else_subg_index}, _executor_map{executor_map}
 {
@@ -46,13 +48,13 @@ void IfLayer::run()
 {
   // Check condition
   // // If true
-  // // // Copy _src_tensors -> then subg's inputs
+  // // // Copy _input_tensors -> then subg's inputs
   // // // Run then subg
-  // // // Copy outputs of then subg -> _dst_tensors
+  // // // Copy outputs of then subg -> _output_tensors
   // // Else
-  // // // Copy _src_tensors -> else subg's inputs if false
+  // // // Copy _input_tensors -> else subg's inputs if false
   // // // Run else subg
-  // // // Copy outputs of else subg -> _dst_tensors
+  // // // Copy outputs of else subg -> _output_tensors
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
     bool ret = false;
     tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
@@ -77,31 +79,61 @@ void IfLayer::run()
     }
   }
 
-  const auto &subg_input_tensors = subg_exec->getInputTensors();
+  const auto &subg_graph = subg_exec->graph();
+
+  std::vector<std::shared_ptr<backend::ITensor>> src_tensors;
+  std::vector<std::shared_ptr<backend::ITensor>> dst_tensors;
+  // Add tensors used in subgraph or contained in outputs of subgraph
+  assert(subg_graph.getInputs().size() == _input_tensors.size());
+  assert(subg_graph.getInputs().size() == subg_exec->getInputTensors().size());
+  for (uint32_t i = 0; i < subg_graph.getInputs().size(); ++i)
+  {
+    const auto &subg_input_index = subg_graph.getInputs().at(i);
+    const auto &subg_input = subg_graph.operands().at(subg_input_index);
+    if (subg_input.getUses().size() > 0 || subg_graph.getOutputs().contains(subg_input_index))
+    {
+      src_tensors.emplace_back(_input_tensors.at(i));
+      dst_tensors.emplace_back(subg_exec->getInputTensors().at(i));
+    }
+  }
   const auto &subg_inputs_dyn_alloc_info = subg_exec->getInputsDynamicAllocInfo();
+  const auto permute_op_input_to_subg_input =
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, subg_inputs_dyn_alloc_info);
 
-  const auto permute_op_input_to_subg_input = std::make_shared<PermuteLayer>(
-      _input_tensors, subg_input_tensors, subg_inputs_dyn_alloc_info);
-
-  const auto &subg_output_tensors = subg_exec->getOutputTensors();
+  // Add tensors used as output of operation or contained in outputs of operation
+  src_tensors.clear();
+  dst_tensors.clear();
+  assert(_output_indices.size() == subg_exec->getOutputTensors().size());
+  assert(_output_indices.size() == _output_tensors.size());
+  for (uint32_t i = 0; i < _output_indices.size(); ++i)
+  {
+    const auto &output_index = _output_indices.at(i);
+    const auto &output = _graph.operands().at(output_index);
+    if (output.getUses().size() > 0 || _graph.getOutputs().contains(output_index))
+    {
+      src_tensors.emplace_back(subg_exec->getOutputTensors().at(i));
+      dst_tensors.emplace_back(_output_tensors.at(i));
+    }
+  }
   const auto permute_subg_output_to_op_output =
-      std::make_shared<PermuteLayer>(subg_output_tensors, _output_tensors, _outputs_dyn_alloc_info);
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, _outputs_dyn_alloc_info);
 
   // Remove copying of unused tensor
   permute_op_input_to_subg_input->prepare();
   permute_subg_output_to_op_output->prepare();
 
   // Copy & run
-  assert(_input_tensors.size() == subg_input_tensors.size());
   subg_exec->execute(_input_tensors, permute_op_input_to_subg_input);
-  assert(_output_tensors.size() == subg_output_tensors.size());
   for (size_t i = 0; i < _output_tensors.size(); ++i)
   {
     const auto output_tensor = _output_tensors.at(i);
     const auto orig_output_shape = output_tensor->getShape();
-    const auto changed_output_shape = subg_output_tensors.at(i)->getShape();
+    const auto changed_output_shape = subg_exec->getOutputTensors().at(i)->getShape();
+    const auto &output_dyn_alloc_info = _outputs_dyn_alloc_info.find(output_tensor);
     if (orig_output_shape != changed_output_shape &&
-        _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end())
+        _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end() &&
+        (_graph.operands().at(output_dyn_alloc_info->second.ind).getUses().size() > 0 ||
+         _graph.getOutputs().contains(output_dyn_alloc_info->second.ind)))
     {
       output_tensor->set_dynamic();
     }

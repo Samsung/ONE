@@ -34,8 +34,9 @@ class IfLayer : public ::onert::exec::IFunction
 {
 public:
   IfLayer(const std::shared_ptr<backend::ITensor> &cond_tensor,
-          std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
-          std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+          const std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
+          const std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+          const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
           const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
           const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
           exec::ExecutorMap *executor_map);
@@ -47,6 +48,8 @@ private:
   const std::shared_ptr<backend::ITensor> _cond_tensor;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
+  const ir::OperandIndexSequence &_output_indices;
+  const ir::Graph &_graph;
   const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
   const ir::SubgraphIndex _then_subg_index;
   const ir::SubgraphIndex _else_subg_index;
