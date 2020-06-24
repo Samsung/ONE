@@ -59,7 +59,7 @@ Summary: NNFW Devel Package
 Requires: %{name}-devel = %{version}-%{release}
 
 %description plugin-devel
-NNFW development package for runtime plugin developer
+NNFW development package for backend plugin developer
 
 %if %{test_build} == 1
 %package test
