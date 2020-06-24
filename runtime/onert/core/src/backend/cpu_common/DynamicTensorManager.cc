@@ -86,7 +86,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  assert(_tensors->getManagedTensor(ind));
+  assert(_tensors->getManagedTensor(ind) == nullptr);
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
   _tensors->setManagedTensor(ind, tensor);
 }
