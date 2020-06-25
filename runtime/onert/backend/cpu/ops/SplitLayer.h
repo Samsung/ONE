@@ -36,7 +36,7 @@ public:
   SplitLayer();
 
 public:
-  void splitFloat32();
+  template <typename T> void split();
 
   void splitQuant8();
 
