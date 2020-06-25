@@ -743,7 +743,8 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLogSoftmax *node,
   return true;
 }
 
-bool CircleNodeSummaryBuilder::summary(const luci::CircleMatrixDiag *node, locop::NodeSummary &s) const
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMatrixDiag *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("diagonal", tbl()->lookup(node->diagonal()));
   s.state(locop::NodeSummary::State::Complete);

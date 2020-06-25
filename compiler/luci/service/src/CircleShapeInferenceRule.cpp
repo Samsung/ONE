@@ -1030,13 +1030,13 @@ public:
     auto diagonal_shape = loco::shape_get(node->diagonal()).as<loco::TensorShape>();
     auto rank = diagonal_shape.rank();
 
-    output_shape.rank(rank+1);
+    output_shape.rank(rank + 1);
 
     for (uint32_t i = 0; i < rank; i++)
     {
       output_shape.dim(i) = diagonal_shape.dim(i);
     }
-    output_shape.dim(rank) = diagonal_shape.dim(rank-1);
+    output_shape.dim(rank) = diagonal_shape.dim(rank - 1);
 
     return loco::NodeShape{output_shape};
   }
