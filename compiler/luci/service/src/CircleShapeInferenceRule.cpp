@@ -1736,6 +1736,39 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSparseToDense *node) final
+  {
+    loco::TensorShape shape;
+    {
+      LUCI_ASSERT(node->output_shape(), "dims input should not be nullptr");
+
+      auto output_shape_node = dynamic_cast<luci::CircleConst *>(node->output_shape());
+      if (output_shape_node != nullptr)
+      {
+        // Only support node with S32
+        LUCI_ASSERT(output_shape_node->dtype() == loco::DataType::S32,
+                    "Only support int32 CircleConst");
+
+        if (output_shape_node->rank() != 1)
+          INTERNAL_EXN_V("Only support rank 1 CircleConst",
+                         oops::to_uint32(output_shape_node->rank()));
+
+        shape.rank(output_shape_node->dim(0).value());
+
+        for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+        {
+          shape.dim(axis) = output_shape_node->at<loco::DataType::S32>(axis);
+        }
+      }
+      else
+      {
+        shape = own_shape(node);
+      }
+    }
+
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSplit *node) final
   {
     // We'll set Split output as same as input so that SplitOut can handle it's own shape
