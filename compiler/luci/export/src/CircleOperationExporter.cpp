@@ -122,6 +122,7 @@ public:
   void visit(luci::CircleRound *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleScatterNd *) final;
+  void visit(luci::CircleSegmentSum *) final;
   void visit(luci::CircleSelect *) final;
   void visit(luci::CircleShape *) final;
   void visit(luci::CircleSin *) final;
@@ -1318,6 +1319,20 @@ void OperationExporter::visit(luci::CircleScatterNd *node)
   // Make SCATTER_ND operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_ScatterNdOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSegmentSum *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SEGMENT_SUM);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
+                                  get_tensor_index(node->segment_ids())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSegmentSumOptions(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SegmentSumOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

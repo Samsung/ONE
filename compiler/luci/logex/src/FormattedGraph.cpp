@@ -264,6 +264,7 @@ private:
   IMPLEMENT(luci::CircleRound)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleScatterNd)
+  IMPLEMENT(luci::CircleSegmentSum)
   IMPLEMENT(luci::CircleSelect)
   IMPLEMENT(luci::CircleShape)
   IMPLEMENT(luci::CircleSin)
@@ -1006,6 +1007,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleScatterNd *node,
   s.args().append("indices", tbl()->lookup(node->indices()));
   s.args().append("updates", tbl()->lookup(node->updates()));
   s.args().append("shape", tbl()->lookup(node->shape()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSegmentSum *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("segment_ids", tbl()->lookup(node->segment_ids()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

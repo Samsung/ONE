@@ -1523,6 +1523,37 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSegmentSum *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto segment_shape = loco::shape_get(node->segment_ids()).as<loco::TensorShape>();
+
+    LUCI_ASSERT(segment_shape.rank() == 1, "segment_ids must be 1-D tensor");
+    LUCI_ASSERT(segment_shape.dim(0).value() == input_shape.dim(0).value(),
+                "segment_ids size must be equal to the size of data's first dimension");
+
+    auto ids_shape_value = loco::must_cast<luci::CircleConst *>(node->segment_ids());
+
+    std::vector<int64_t> vect_ids;
+
+    if (ids_shape_value->dtype() == loco::DataType::S32)
+      vect_ids = vector_from_constant<loco::DataType::S32>(ids_shape_value);
+
+    LUCI_ASSERT(std::is_sorted(vect_ids.begin(), vect_ids.end()),
+                "segment_ids values should be sorted")
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(input_shape.rank());
+
+    for (uint32_t i = 1; i < input_shape.rank(); ++i)
+      output_shape.dim(i) = input_shape.dim(i);
+
+    output_shape.dim(0) = vect_ids.back() + 1;
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleSelect *node) final
   {
     auto t_shape = loco::shape_get(node->t()).as<loco::TensorShape>();
