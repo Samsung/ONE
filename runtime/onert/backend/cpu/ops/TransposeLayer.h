@@ -36,7 +36,7 @@ public:
   TransposeLayer();
 
 public:
-  void transposeFloat32();
+  template <typename T> void transpose();
 
   void transposeQuant8();
 
