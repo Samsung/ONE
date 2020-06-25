@@ -7,8 +7,8 @@ Runtime Core is a compilation/execution engine for NN models.
 Runtime Core has four modules. These are namespaces as well as directory names.
 
 - `ir`  stands for Intermediate Representation which contains Neural Network Graph data structures
-- `compiler` converts IR to execution, backends can be used for compilation
-- `exec` is execution module which is the result of compilation.
+- `compiler` converts IR to executable format
+- `exec` is execution module which is the result of compilation
 - `backend` is backend interface
 
 ### Module `ir`
@@ -22,12 +22,13 @@ This module contains data structures of pure Neural Network models. The models f
 
 `Operand` and `Operation` are graph nodes. References to operations and operands are graph edges.
 
-![Core](core-figure-ir.png)
-
 `Subgraphs` represents the whole model. It could have more than one `Subgraph` to support control flow operations. Those operations can make calls to another subgraph and when the execution on another subgraph is done it gets back to previous subgraph execution with returned operands.
 
 All `Graph`s are a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) so once model inputs are given we can run it in topological order.
 
+Here's a figure of how those data structures are oraganized.
+
+![Core](core-figure-ir.png)
 ### Module `compiler`
 
 `Compiler` is the main class of this module. Everything starts from it.
@@ -36,7 +37,7 @@ What it does is making models executable. It schedules run order and assigns a b
 
 #### 1. Lowering
 
-In Lowering, the compiler assigns a [backend](#) for each operation. A backend is assigned to an operation means that that operation will be run with the assigned backend's kernel.
+In Lowering, the compiler assigns a [backend](#) for each operation. A backend is assigned to an operation means that the operation will be run with the assigned backend's kernel.
 
 There is a scheduler that allows the user manually specify backends via compiler options. There is another scheduler that automatically assigns backends based on profiling info.
 
@@ -68,6 +69,6 @@ As a result of compilation, `Execution` is created. Users can set input and outp
 
 ### Module `backend`
 
-Backends are plugins and they are loaded dynamically(via `dlopen`). So this module is is a set of interface classes for backend implementation. `compiler` can compile with variety of backends without knowing specific backend implementation.
+Backends are plugins and they are loaded dynamically(via `dlopen`). So this module is a set of interface classes for backend implementation. `compiler` can compile with variety of backends without knowing specific backend implementation.
 
 For more, please refer to [Backend API](#) document.
