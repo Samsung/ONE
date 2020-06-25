@@ -158,6 +158,17 @@ void CircleOptimizer::quantize(loco::Graph *g) const
                                            str_to_granularity(granularity));
     quantizer.run(g);
   }
+
+  logo::Phase phase;
+
+  // Do Shape/Type inference (for validation)
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+
+  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
 }
 
 } // namespace luci
