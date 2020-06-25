@@ -12,7 +12,7 @@ list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
-nnfw_find_package(HDF5 COMPONENTS CXX QUIET)
+nnfw_find_package(HDF5 QUIET)
 
 if (HDF5_FOUND)
   list(APPEND NNPACKAGE_RUN_SRCS "src/h5formatter.cc")
