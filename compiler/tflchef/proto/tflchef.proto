@@ -414,6 +414,10 @@ message ReverseV2Options {
   // None
 }
 
+message MatrixDiagOptions {
+  // NONE
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -512,7 +516,7 @@ message Operation {
   optional WhereOptions where_options = 190;
   optional RankOptions rank_options = 191;
   optional ReverseSequenceOptions reverse_sequence_options = 192;
-  // MatrixDiagOptions 193
+  optional MatrixDiagOptions matrix_diag_options = 193;
   // QuantizeOptions 194
   // MatrixSetDiagOptions 195
   // HardSwishOptions 196
