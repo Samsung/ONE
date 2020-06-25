@@ -1780,12 +1780,9 @@ OperationFactory::OperationFactory()
     //  0 -> ifm Tensor Index
     //  1 -> axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::Mean::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>() != 0;
 
     return new operation::Mean{inputs, outputs, param};

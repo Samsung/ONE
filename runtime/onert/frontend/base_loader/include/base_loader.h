@@ -860,17 +860,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("Mean: non-constant 'axes' is not supported.");
 
   ir::operation::Mean::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

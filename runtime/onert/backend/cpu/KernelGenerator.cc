@@ -82,6 +82,38 @@
 
 #include <stdexcept>
 
+namespace
+{
+
+using namespace onert;
+
+std::vector<int32_t> getReducerAxes(const ir::Operand &axes)
+{
+  std::vector<int32_t> ret;
+
+  assert(axes.isConstant());
+  switch (axes.typeInfo().type())
+  {
+    case ir::DataType::INT32:
+    {
+      const auto tmp = axes.asVector<int32_t>();
+      ret.insert(ret.begin(), tmp.begin(), tmp.end());
+      break;
+    }
+    case ir::DataType::INT64:
+    {
+      const auto tmp = axes.asVector<int64_t>();
+      ret.insert(ret.begin(), tmp.begin(), tmp.end());
+      break;
+    }
+    default:
+      throw std::runtime_error("asCoordinates: Not supported data type");
+      break;
+  }
+  return ret;
+}
+}
+
 namespace onert
 {
 namespace backend
@@ -1188,15 +1220,17 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Mean::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::Mean::AXES)};
 
-  const auto axes = node.param().axes;
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
   const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::MeanLayer>();
 
-  fn->configure(input_alloc, output_alloc, axes, keep_dims);
+  fn->configure(input_alloc, output_alloc, axes_vec, keep_dims);
   _return_fn = std::move(fn);
 }
 
