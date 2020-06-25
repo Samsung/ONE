@@ -15,7 +15,7 @@ Runtime Core has four modules. These are namespaces as well as directory names i
 
 This module contains data structures of pure Neural Network models. The models from NN Packages or NN API are converted to these structures.
 
-- `Subgraphs` is the entire neural network model which is a group of subgraphs
+- `Subgraphs` is the entire neural network model which is a set of subgraphs
 - `Subgraph` consists of operands and operations
 - `Operand` (a.k.a. Tensor) has shape, data type, data and references to operations
 - `Operation` (a.k.a. Operator) has operation type, params and references to operands
@@ -29,6 +29,7 @@ All graphs are a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) so 
 Here's a figure of how those data structures are oraganized.
 
 ![Core](core-figure-ir.png)
+
 ### Module `compiler`
 
 `Compiler` is the main class of this module. Everything starts from it.
@@ -51,11 +52,17 @@ In **ONE** runtime, 'operand' refers to an operand in a neural network model. Wh
 
 #### 3. Linearization (Linear Executor Only)
 
-Linearization means sorting operations in a topological order. It saves execution time since it is not needed to resolve next available operations after every operation at execution time. Also it makes plans for tensor memory. It can save some memory space by reusing other operands' space that does not overlap lifetime. Also all allocations are done at compile time (after [4. Kernel Generation](#4.-kernel-generation)) which saves execution time.
+Linearization means sorting operations in a topological order. It saves execution time since it is not needed to resolve next available operations after every operation at execution time.
+
+It also makes plans for tensor memory. It can save some memory space by reusing other operands' space that does not overlap lifetime. All allocations are done at compile time (after [4. Kernel Generation](#4.-kernel-generation)) which saves execution time too.
 
 #### 4. Kernel Generation
 
-A backend is assigned for each operation. In this phase kernels for each operation are generated.
+'kernel' here means an implementation of actual calculation of an operation.
+
+A backend is assigned for each operation. In this phase, a kernel for each operation is generated.
+
+Let's say we have some functions written in a certain programming language. Then its compiler compiles each function into a chunk of assembly. Here 'function' is like 'operation' and 'assembly' is like 'kernel'.
 
 #### 5. Create Executor
 
@@ -65,10 +72,15 @@ For more about executors, please refer to [Executors](#) document.
 
 ### Module `exec`
 
-As a result of compilation, `Execution` is created. Users can set input and output buffers then finally run it!
+`exec` stands for 'execution'. As a result of compilation, `Execution` class is created. This class manages the actual execution of the model inference. Here is a typical usage of using this class.
+
+1. Resize input size if needed
+2. Provide input and output buffers
+3. Run the inference in either synchronous/asynchronous mode
+4. Check out the results which are stored in output buffers provided earlier
 
 ### Module `backend`
 
 Backends are plugins and they are loaded dynamically(via `dlopen`). So this module is a set of interface classes for backend implementation. `compiler` can compile with variety of backends without knowing specific backend implementation.
 
-For more, please refer to [Backend API](#) document.
+Backend interfaces classes are mostly about memory management and kernel generation. For more, please refer to [Backend API](#) document.
