@@ -21,9 +21,9 @@
 #include <cstddef>
 
 #include "backend/ITensor.h"
-#include "misc/feature/Reader.h"
 #include "misc/feature/Shape.h"
 #include "util/Utils.h"
+#include "util/feature/Reader.h"
 
 namespace onert
 {
@@ -34,7 +34,7 @@ namespace feature
 namespace nhwc
 {
 
-template <typename T> class View final : public nnfw::misc::feature::Reader<T>
+template <typename T> class View final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs

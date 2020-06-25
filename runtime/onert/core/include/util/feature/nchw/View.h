@@ -17,11 +17,11 @@
 #ifndef __ONERT_UTIL_FEATURE_NCHW_VIEW_H__
 #define __ONERT_UTIL_FEATURE_NCHW_VIEW_H__
 
-#include "misc/feature/Reader.h"
 #include "misc/feature/Shape.h"
 
 #include "backend/ITensor.h"
 #include "util/logging.h"
+#include "util/feature/Reader.h"
 
 #include <cassert>
 
@@ -34,7 +34,7 @@ namespace feature
 namespace nchw
 {
 
-template <typename T> class View final : public nnfw::misc::feature::Reader<T>
+template <typename T> class View final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
