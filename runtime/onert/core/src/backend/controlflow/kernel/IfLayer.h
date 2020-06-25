@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_IF_LAYER_H__
 
 #include <backend/ITensor.h>
-#include <exec/IPermuteFunction.h>
 #include <exec/IExecutor.h>
 
 namespace onert

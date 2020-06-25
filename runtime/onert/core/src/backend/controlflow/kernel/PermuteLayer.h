@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_KERNEL_PERMUTELAYER_H__
 
-#include <exec/IPermuteFunction.h>
-#include <backend/ITensorBuilder.h>
-#include <exec/IExecutor.h>
+#include "backend/ITensorBuilder.h"
+#include "exec/IPermuteFunction.h"
+#include "exec/IExecutor.h"
 
 namespace onert
 {
