@@ -20,7 +20,7 @@ if(JPEG_FOUND)
   list(APPEND STYLE_TRANSFER_APP_SRCS "src/jpeg_helper.cc")
 endif(JPEG_FOUND)
 
-nnfw_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED program_options system filesystem)
 
 add_executable(style_transfer_app ${STYLE_TRANSFER_APP_SRCS})
 target_include_directories(style_transfer_app PRIVATE src)

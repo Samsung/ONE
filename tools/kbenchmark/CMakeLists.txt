@@ -8,7 +8,7 @@ if(NOT Nonius_FOUND)
   return()
 endif(NOT Nonius_FOUND)
 
-nnfw_find_package(Boost QUIET)
+nnfw_find_package(Boost REQUIRED program_options system filesystem)
 
 if(NOT Boost_FOUND)
   return()
