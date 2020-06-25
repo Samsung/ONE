@@ -1,6 +1,6 @@
 # Core
 
-Runtime Core is a compilation/execution engine for NN models.
+Runtime Core is a compilation/execution engine for neural network models.
 
 ## Modules
 
