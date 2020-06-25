@@ -26,7 +26,7 @@ namespace onert
 namespace exec
 {
 
-ParallelScheduler::ParallelScheduler(const ir::BackendSet &backends)
+ParallelScheduler::ParallelScheduler(const BackendSet &backends)
 {
   assert(!backends.empty());
 

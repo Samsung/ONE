@@ -21,7 +21,7 @@
 #include <memory>
 
 #include "exec/IFunction.h"
-#include "ir/BackendSet.h"
+#include "BackendSet.h"
 #include "ThreadPool.h"
 
 namespace onert
@@ -37,7 +37,7 @@ public:
    *
    * @param backends Backend set
    */
-  ParallelScheduler(const ir::BackendSet &backends);
+  ParallelScheduler(const BackendSet &backends);
   /**
    * @brief Assign a task to the given backend
    *

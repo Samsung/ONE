@@ -71,7 +71,7 @@ void ParallelExecutor::executeImpl()
 {
   // Init scheduler
   // TODO Consider to have distinct backend set in LowerInfoMap
-  ir::BackendSet backends;
+  BackendSet backends;
   for (auto &itr : _lowered_graph->getLowerInfo()->op_seq)
   {
     backends.add(itr.second->backend());
