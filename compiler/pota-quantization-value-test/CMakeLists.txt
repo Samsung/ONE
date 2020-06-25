@@ -2,16 +2,16 @@ find_package(PythonInterp 3 QUIET)
 find_package(PythonLibs 3 QUIET)
 
 if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build quantization-value-test: FALSE (Python3 is missing)")
+  message(STATUS "Build pota-quantization-value-test: FALSE (Python3 is missing)")
   return()
 endif()
 
 if(${PYTHON_VERSION_MINOR} LESS 3)
-  message(STATUS "Build quantization-value-test: FALSE (You need to install Python version higher than 3.3)")
+  message(STATUS "Build pota-quantization-value-test: FALSE (You need to install Python version higher than 3.3)")
   return()
 endif()
 
-message(STATUS "quantization-value-test: run tests")
+message(STATUS "pota-quantization-value-test: run tests")
 
 # Create python virtual environment
 set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv")
@@ -34,7 +34,7 @@ add_custom_command(
   DEPENDS ${VIRTUALENV} ${REQUIREMENTS_SRC_PATH}
 )
 
-add_custom_target(quantization-value-test_python_deps ALL
+add_custom_target(pota-quantization-value-test_python_deps ALL
   DEPENDS ${VIRTUALENV} ${REQUIREMENTS_BIN_PATH}
 )
 
@@ -105,11 +105,11 @@ add_custom_command(
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
 # This enforces CMake to generate all the dependencies during "build" phase
-add_custom_target(quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} quantization-value-test_python_deps)
+add_custom_target(quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} pota-quantization-value-test_python_deps)
 
 # Run tests
 add_test(
-  NAME pa_fake_wquant_test
+  NAME pota_fake_wquant_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
@@ -117,7 +117,7 @@ add_test(
 )
 
 add_test(
-  NAME pa_record_minmax_test
+  NAME pota_record_minmax_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
@@ -125,12 +125,12 @@ add_test(
 )
 
 add_test(
-  NAME pa_quantization_test
+  NAME pota_quantization_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
           ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
 )
 
-set_tests_properties(pa_record_minmax_test PROPERTIES DEPENDS pa_fake_wquant_test)
-set_tests_properties(pa_quantization_test PROPERTIES DEPENDS pa_record_minmax_test)
+set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
+set_tests_properties(pota_quantization_test PROPERTIES DEPENDS pota_record_minmax_test)

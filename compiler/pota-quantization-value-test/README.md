@@ -1,6 +1,6 @@
-# pa-quantization-value-test
+# pota-quantization-value-test
 
-`pa-quantization-value-test` checks whether a Circle model listed in `test.lst` is correctly quantized (`pa` denotes post-training affine). The circle models are generated from the recipes saved in `res/TensorFlowLiteRecipes`.
+`pota-quantization-value-test` checks whether a Circle model listed in `test.lst` is correctly quantized (`pota` denotes post-training affine). The circle models are generated from the recipes saved in `res/TensorFlowLiteRecipes`.
 
 Write `test.local.lst` for local test.
 
