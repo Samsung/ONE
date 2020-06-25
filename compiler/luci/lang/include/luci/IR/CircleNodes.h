@@ -97,6 +97,7 @@
 #include "Nodes/CircleSoftmax.h"
 #include "Nodes/CircleSpaceToBatchND.h"
 #include "Nodes/CircleSpaceToDepth.h"
+#include "Nodes/CircleSparseToDense.h"
 #include "Nodes/CircleSplit.h"
 #include "Nodes/CircleSplitV.h"
 #include "Nodes/CircleSqrt.h"
