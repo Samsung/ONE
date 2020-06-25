@@ -19,6 +19,7 @@
 
 #include <mutex>
 
+#include "IPermuteFunction.h"
 #include "Source.h"
 #include "exec/ExecutionObservers.h"
 #include "Sink.h"
@@ -31,7 +32,6 @@
 #include "compiler/OperandContext.h"
 #include "exec/ExecTime.h"
 #include "exec/IFunction.h"
-#include <exec/IPermuteFunction.h>
 #include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"

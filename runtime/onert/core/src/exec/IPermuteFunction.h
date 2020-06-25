@@ -18,7 +18,7 @@
 #define __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 
 #include "backend/ITensor.h"
-#include "IFunction.h"
+#include "exec/IFunction.h"
 #include "ir/Index.h"
 #include "ir/Shape.h"
 #include <memory>
