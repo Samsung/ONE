@@ -158,6 +158,10 @@ void CompareLayer::run()
   {
     compareScalar<int32_t>(_lhs, _rhs, _output, _op_type);
   }
+  else if (_lhs->data_type() == OperandType::INT64)
+  {
+    compareScalar<int64_t>(_lhs, _rhs, _output, _op_type);
+  }
   else if (_lhs->data_type() == OperandType::BOOL8)
   {
     compareScalar<uint8_t>(_lhs, _rhs, _output, _op_type);
