@@ -20,8 +20,8 @@
 #include <cassert>
 
 #include "backend/ITensor.h"
-#include "misc/feature/Reader.h"
 #include "misc/feature/Shape.h"
+#include "util/feature/Reader.h"
 
 namespace onert
 {
@@ -32,7 +32,7 @@ namespace feature
 namespace nchw
 {
 
-template <typename T> class Reader final : public nnfw::misc::feature::Reader<T>
+template <typename T> class Reader final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
