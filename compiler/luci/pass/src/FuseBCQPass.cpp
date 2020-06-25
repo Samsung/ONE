@@ -297,13 +297,10 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_fc->weights_binary(converter.get_packed_binary_code(weights));
         bcq_fc->bias(fully_connected->bias());
         bcq_fc->weights_clusters(converter.packed_clusters(weights));
-
-        const auto binary_hidden_size =
-            loco::must_cast<luci::CircleConst *>(bcq_fc->weights_binary())->dim(1).value() * 32;
-        bcq_fc->weights_hidden_size(binary_hidden_size);
         bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
 
         loco::Node *bcq_input = fully_connected->input();
+        int32_t batch_rank = 0;
 
         // If input of BCQFullyConnected has more than rank 2, we should reshape it as rank 2
         const auto original_input = loco::must_cast<luci::CircleNode *>(fully_connected->input());
@@ -329,16 +326,28 @@ bool FuseBCQPass::run(loco::Graph *g)
           reshape->shape(new_shape);
 
           bcq_input = reshape;
+          batch_rank = original_input->rank() - 2;
         }
 
         // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
         if (converter.do_w_x(weights))
         {
+          const auto binary_hidden_size =
+              loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                  ->dim(batch_rank)
+                  .value();
+          bcq_fc->weights_hidden_size(binary_hidden_size);
           bcq_fc->input(bcq_input);
           loco::replace(fully_connected).with(bcq_fc);
         }
         else
         {
+          const auto binary_hidden_size =
+              loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                  ->dim(1 + batch_rank)
+                  .value();
+          bcq_fc->weights_hidden_size(binary_hidden_size);
+
           auto perm = g->nodes()->create<luci::CircleConst>();
           perm->dtype(loco::DataType::S32);
           perm->size<loco::DataType::S32>(2);
