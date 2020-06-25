@@ -78,6 +78,10 @@ void StridedSliceLayer::run()
   {
     stridedSliceImpl<int32_t>();
   }
+  else if (_input->data_type() == OperandType::INT64)
+  {
+    stridedSliceImpl<int64_t>();
+  }
   else
   {
     throw std::runtime_error{"StridedSlice: unsupported data type"};
