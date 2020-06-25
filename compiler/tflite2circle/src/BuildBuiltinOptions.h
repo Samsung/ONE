@@ -55,6 +55,7 @@
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
 // There is no LogisticOptions
 #include "BuildBuiltinOptions/LogSoftmaxOptions.h"
+#include "BuildBuiltinOptions/MatrixDiagOptions.h"
 #include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MirrorPadOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
