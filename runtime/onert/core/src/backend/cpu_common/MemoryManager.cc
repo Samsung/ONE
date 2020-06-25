@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "MemoryManager.h"
+#include <backend/cpu_common/MemoryManager.h>
 
 #include <cassert>
 

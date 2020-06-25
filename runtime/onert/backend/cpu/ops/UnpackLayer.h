@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_UNPACKLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_UNPACKLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,16 +36,16 @@ public:
   UnpackLayer();
 
 public:
-  void configure(const Tensor *input, uint32_t axis, int32_t num_output,
-                 std::vector<Tensor *> &output);
+  void configure(const IPortableTensor *input, uint32_t axis, int32_t num_output,
+                 std::vector<IPortableTensor *> &output);
   void run();
 
 private:
   template <typename T> void unpackImpl();
 
 private:
-  const Tensor *_input;
-  std::vector<Tensor *> _outputs;
+  const IPortableTensor *_input;
+  std::vector<IPortableTensor *> _outputs;
   uint32_t _axis;
   int32_t _num_output;
 };

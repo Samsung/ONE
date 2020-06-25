@@ -14,10 +14,11 @@ Source1004: eigen.tar.gz
 Source1005: gemmlowp.tar.gz
 Source1006: ruy.tar.gz
 Source2001: nnfw.pc.in
+Source2002: nnfw-plugin.pc.in
 
 %{!?build_type:     %define build_type      Release}
 %{!?coverage_build: %define coverage_build  0}
-%{!?test_build:     %define test_build      1}
+%{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 %if %{coverage_build} == 1
 %define test_build 1
@@ -51,7 +52,14 @@ Summary: NNFW Devel Package
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-NNFW devel package.
+NNFW development package for application developer using runtime
+
+%package plugin-devel
+Summary: NNFW Devel Package
+Requires: %{name}-devel = %{version}-%{release}
+
+%description plugin-devel
+NNFW development package for backend plugin developer
 
 %if %{test_build} == 1
 %package test
@@ -126,16 +134,22 @@ tar -zcf test-suite.tar.gz infra/scripts tests/scripts
 %ifarch arm armv7l aarch64
 
 mkdir -p %{buildroot}%{_libdir}
-mkdir -p %{buildroot}%{_includedir}/nnfw
+mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
-cp -r build/out/include/nnfw/* %{buildroot}%{_includedir}/nnfw/
+cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
 cp %{SOURCE2001} .
+cp %{SOURCE2002} .
 sed -i 's:@libdir@:%{_libdir}:g
-        s:@includedir@:%{_includedir}:g' ./nnfw.pc.in
+        s:@includedir@:%{_includedir}:g
+        s:@version@:%{version}:g' ./nnfw.pc.in
+sed -i 's:@libdir@:%{_libdir}:g
+        s:@includedir@:%{_includedir}:g
+        s:@version@:%{version}:g' ./nnfw-plugin.pc.in
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
+install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin.pc
 
 %if %{test_build} == 1
 %{test_build_env} ./nnfw install
@@ -171,6 +185,15 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %{_libdir}/pkgconfig/nnfw.pc
 %endif
 
+%files plugin-devel
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l aarch64
+%dir %{_includedir}/nnfw
+%{_includedir}/onert/*
+%{_libdir}/pkgconfig/nnfw-plugin.pc
+%endif
+
 %if %{test_build} == 1
 %files test
 %manifest %{name}.manifest
@@ -178,7 +201,6 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %ifarch arm armv7l aarch64
 %dir %{test_install_home}
 %{test_install_home}/*
-%exclude %{_libdir}/debug
 %endif # arm armv7l aarch64
 %endif # test_build
 

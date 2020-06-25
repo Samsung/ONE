@@ -107,3 +107,4 @@
 #include "ir/operation/BCQGather.h"
 #include "ir/operation/MatrixBandPart.h"
 #include "ir/operation/BatchMatMul.h"
+#include "ir/operation/FusedBatchNorm.h"

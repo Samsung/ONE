@@ -57,8 +57,9 @@ void MatrixBandPartLayer::matrixBandPartFloat32()
 
 void MatrixBandPartLayer::matrixBandPartQuant8() { throw std::runtime_error{"NYI"}; }
 
-void MatrixBandPartLayer::configure(const Tensor *input, const Tensor *num_lower_diag,
-                                    const Tensor *num_upper_diag, Tensor *output)
+void MatrixBandPartLayer::configure(const IPortableTensor *input,
+                                    const IPortableTensor *num_lower_diag,
+                                    const IPortableTensor *num_upper_diag, IPortableTensor *output)
 {
   _input = input;
   _num_lower_diag = num_lower_diag;

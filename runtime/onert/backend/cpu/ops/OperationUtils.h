@@ -17,7 +17,7 @@
 #ifndef __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
 #define __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <cker/Shape.h>
 #include <cker/Types.h>
@@ -52,13 +52,13 @@ union DataPtr {
   void *v;
 };
 
-uint32_t getNumberOfDimensions(const Tensor *tensor);
+uint32_t getNumberOfDimensions(const IPortableTensor *tensor);
 
-uint32_t getNumberOfElements(const Tensor *tensor);
+uint32_t getNumberOfElements(const IPortableTensor *tensor);
 
-uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx);
+uint32_t getSizeOfDimension(const IPortableTensor *tensor, uint32_t dimensionIdx);
 
-inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
+inline nnfw::cker::Shape getExtendedTensorShape(const IPortableTensor *tensor)
 {
   assert(tensor);
   const int32_t extended_rank = 4;
@@ -79,7 +79,7 @@ inline nnfw::cker::Shape getExtendedTensorShape(const Tensor *tensor)
   return nnfw::cker::Shape(extended_rank, raw_shape);
 }
 
-inline nnfw::cker::Shape getTensorShape(const Tensor *tensor)
+inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
 {
   if (tensor == nullptr)
     return nnfw::cker::Shape();
@@ -146,9 +146,10 @@ inline int32_t getAxis(uint32_t rank, int32_t axis, ir::Layout frontend_layout)
 
 void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
 
-void GetQuantizedConvolutionMultiplier(const Tensor *inputDescr, const Tensor *filterDescr,
-                                       const Tensor *biasDescr, const Tensor *outputDescr,
-                                       double *multiplier);
+void GetQuantizedConvolutionMultiplier(const IPortableTensor *inputDescr,
+                                       const IPortableTensor *filterDescr,
+                                       const IPortableTensor *biasDescr,
+                                       const IPortableTensor *outputDescr, double *multiplier);
 
 void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantized_multiplier,
                                       int *left_shift);
@@ -187,10 +188,10 @@ void CalculateActivationRange(ir::Activation activation, T *activation_min, T *a
   }
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
                                    int32_t *act_min, int32_t *act_max);
 
-bool HaveSameShapes(const Tensor *input1, const Tensor *input2);
+bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2);
 
 int32_t CalculateInputRadius(int input_integer_bits, int input_left_shift);
 

@@ -37,16 +37,16 @@ Environment variables:
 ## example
 ```
 # @ host
-$ tools/nnpackage_tool/sth2nnpkgtc/pb2nnpkgtc.sh 03_2k.pb img_placeholder conv2d_transpose
+$ tools/nnpackage_tool/sth2nnpkgtc/pb2nnpkgtc.sh test_model.pb img_placeholder conv2d_transpose
 
 # then, nnpkg is generated in {basename}.{outputname}
 # it contains all of pb, tflite, circle, and golden data.
 
-$ tree 03_2k.conv2d_transpose
-03_2k.conv2d_transpose
-├── 03_2k.conv2d_transpose.circle
-├── 03_2k.conv2d_transpose.pb
-├── 03_2k.conv2d_transpose.tflite
+$ tree test_model.conv2d_transpose
+test_model.conv2d_transpose
+├── test_model.conv2d_transpose.circle
+├── test_model.conv2d_transpose.pb
+├── test_model.conv2d_transpose.tflite
 └── metadata
     ├── MANIFEST
         └── tc
@@ -54,8 +54,8 @@ $ tree 03_2k.conv2d_transpose
                         └── input.h5
 
 # @ target
-$ OP_BACKEND_ALLOPS=srcn \
-tools/nnpackage_tool/nnpkg_test/nnpkg_test.sh 03_2k.conv2d_transpose
-[  Run  ] ./03_2k.out   Pass
-[Compare] ./03_2k.out   Pass
+$ OP_BACKEND_ALLOPS=cpu \
+tests/scripts/nnpkg_test.sh test_model.conv2d_transpose
+[  Run  ] ./test_model.out   Pass
+[Compare] ./test_model.out   Pass
 ```

@@ -65,8 +65,8 @@ void SplitLayer::splitFloat32()
 
 void SplitLayer::splitQuant8() { throw std::runtime_error{"Split: NYI quant8 type"}; }
 
-void SplitLayer::configure(const Tensor *input, uint16_t num_splits, int16_t axis,
-                           std::vector<Tensor *> &outputs)
+void SplitLayer::configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
+                           std::vector<IPortableTensor *> &outputs)
 {
   assert(input != nullptr);
 

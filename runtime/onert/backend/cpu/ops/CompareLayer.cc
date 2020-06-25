@@ -35,7 +35,8 @@ using OpType = onert::ir::operation::Comparison::ComparisonType;
 using namespace onert::backend::cpu;
 
 template <typename T>
-void compareQuant8(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType op_type)
+void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                   OpType op_type)
 {
   nnfw::cker::ComparisonParams params;
   params.left_shift = 8;
@@ -45,16 +46,10 @@ void compareQuant8(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType 
       2 * std::max(std::abs(lhs->data_scale()), std::abs(rhs->data_scale()));
   const double adjusted_lhs_scale = lhs->data_scale() / norm_max_scale;
   const double adjusted_rhs_scale = rhs->data_scale() / norm_max_scale;
-  // We have to normalize final result, so we invert the scale here
-  // const double adjusted_norm_scale =
-  //     norm_max_scale / (1 << op_params.left_shift);
-
   QuantizeMultiplierSmallerThanOneExp(adjusted_lhs_scale, &params.input1_multiplier,
                                       &params.input1_shift);
   QuantizeMultiplierSmallerThanOneExp(adjusted_rhs_scale, &params.input2_multiplier,
                                       &params.input2_shift);
-  // QuantizeMultiplierSmallerThanOneExp(adjusted_norm_scale, &params.norm_multiplier,
-  // &params.norm_shift);
   params.is_broadcast = !HaveSameShapes(lhs, rhs);
 
   if (params.is_broadcast)
@@ -149,7 +144,8 @@ void compareQuant8(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType 
 }
 
 template <typename T>
-void compareScalar(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType op_type)
+void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                   OpType op_type)
 {
   bool requires_broadcast = !HaveSameShapes(lhs, rhs);
 
@@ -250,8 +246,8 @@ CompareLayer::CompareLayer()
   // DO NOTHING
 }
 
-void CompareLayer::configure(const Tensor *lhs, const Tensor *rhs, const OpType op_type,
-                             Tensor *output)
+void CompareLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                             const OpType op_type, IPortableTensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

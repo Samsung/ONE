@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_CASTLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_CASTLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -40,13 +40,13 @@ public:
   template <typename FromT, typename ToT> void castTensor(const FromT *in, ToT *out);
   template <typename FromT> void castPtr(const FromT *in, DataPtr out);
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

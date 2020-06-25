@@ -102,8 +102,9 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
 }
 
-void FullyConnectedLayer::configure(const Tensor *input, const Tensor *weights, const Tensor *bias,
-                                    ir::Activation activation, Tensor *output)
+void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
+                                    const IPortableTensor *bias, ir::Activation activation,
+                                    IPortableTensor *output)
 {
   _input = input;
   _weights = weights;

@@ -104,7 +104,8 @@ void ConcatLayer::concatenationQuant8()
                                        reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConcatLayer::configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output)
+void ConcatLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,
+                            IPortableTensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

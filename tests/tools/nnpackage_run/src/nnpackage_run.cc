@@ -75,19 +75,19 @@ NNFW_STATUS resolve_op_backend(nnfw_session *session)
 int main(const int argc, char **argv)
 {
   using namespace nnpkg_run;
-  Args args(argc, argv);
-  auto nnpackage_path = args.getPackageFilename();
-  if (args.printVersion())
-  {
-    uint32_t version;
-    NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
-    std::cout << "nnpkg_run (nnfw runtime: v" << (version >> 24) << "."
-              << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
-    exit(0);
-  }
 
   try
   {
+    Args args(argc, argv);
+    auto nnpackage_path = args.getPackageFilename();
+    if (args.printVersion())
+    {
+      uint32_t version;
+      NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
+      std::cout << "nnpkg_run (nnfw runtime: v" << (version >> 24) << "."
+                << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
+      exit(0);
+    }
 
 #ifdef RUY_PROFILER
     ruy::profiler::ScopeProfile ruy_profile;

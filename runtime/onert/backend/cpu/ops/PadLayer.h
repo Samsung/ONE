@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_PADLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_PADLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -43,14 +43,14 @@ public:
 
   void padQuant8();
 
-  void configure(const Tensor *input, Tensor *output, const int32_t *padData, int32_t padRank,
-                 uint8_t *constantValueData = nullptr);
+  void configure(const IPortableTensor *input, IPortableTensor *output, const int32_t *padData,
+                 int32_t padRank, uint8_t *constantValueData = nullptr);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 
   int32_t _padData[8];
   int32_t _padRank;

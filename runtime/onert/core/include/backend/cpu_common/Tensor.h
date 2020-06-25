@@ -19,7 +19,7 @@
 
 #include "Allocator.h"
 
-#include <backend/ITensor.h>
+#include <backend/IPortableTensor.h>
 #include <ir/OperandInfo.h>
 
 namespace onert
@@ -29,7 +29,7 @@ namespace backend
 namespace cpu_common
 {
 
-class Tensor : public ITensor
+class Tensor : public IPortableTensor
 {
 public:
   Tensor() = delete;
@@ -83,8 +83,6 @@ public:
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_offset() const override { return _info.typeInfo().offset(); }
-  bool has_padding() const override { return false; }
-  void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
 

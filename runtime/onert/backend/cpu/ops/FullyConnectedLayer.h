@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_FULLYCONNECTEDLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_FULLYCONNECTEDLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -52,16 +52,16 @@ public:
 
   void fullyConnectedHybrid();
 
-  void configure(const Tensor *input, const Tensor *weights, const Tensor *bias,
-                 ir::Activation activation, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *weights,
+                 const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_weights;
-  const Tensor *_bias;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_weights;
+  const IPortableTensor *_bias;
+  IPortableTensor *_output;
 
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;

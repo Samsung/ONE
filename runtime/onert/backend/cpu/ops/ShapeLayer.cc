@@ -32,7 +32,7 @@ ShapeLayer::ShapeLayer() : _input(nullptr), _output(nullptr)
   // DO NOTHING
 }
 
-template <typename T> void GetRawShape(const Tensor *input, T *output_data)
+template <typename T> void GetRawShape(const IPortableTensor *input, T *output_data)
 {
   for (uint32_t i = 0; i < input->num_dimensions(); ++i)
   {
@@ -56,7 +56,7 @@ void ShapeLayer::shape()
   }
 }
 
-void ShapeLayer::configure(const Tensor *input, Tensor *output)
+void ShapeLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

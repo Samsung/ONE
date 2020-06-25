@@ -40,6 +40,7 @@ namespace base_loader
 
 template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
 {
+protected:
   using Verifier = typename LoaderDomain::Verifier;
   using ActivationFunctionType = typename LoaderDomain::ActivationFunctionType;
   using Buffer = typename LoaderDomain::Buffer;
@@ -53,7 +54,9 @@ template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
   using Tensor = typename LoaderDomain::Tensor;
   using TensorType = typename LoaderDomain::TensorType;
 
+protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
+  virtual bool allowOptionalInputTensor(BuiltinOperator) = 0;
 
 public:
   /**
@@ -169,6 +172,7 @@ protected:
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
+  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -378,12 +382,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
 {
   for (const std::int32_t idx : *op->inputs())
   {
-    // Optional tensors are not supported yet except for FULLY_CONNECTED.
+    // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-      std::vector<BuiltinOperator> allowed = {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
-      if (isOptionalInputTensor(idx) &&
-          std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
+      if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
             std::string("loader doesn't support optional input tensor yet for ")
                 .append(EnumNameBuiltinOperator(builtin_code)));
@@ -1046,19 +1048,34 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *o
   loadOperationIO(op, inputs, outputs);
   ir::operation::BatchMatMul::Param param;
 
-  if (op->custom_options() == nullptr)
+  const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+
+  switch (builtin_op)
   {
-    param.adj_x = false;
-    param.adj_y = false;
-  }
-  else
-  {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
-    param.adj_x = attr_map["adj_x"].AsBool();
-    param.adj_y = attr_map["adj_y"].AsBool();
+    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+      param.adj_x = op->builtin_options_as_BatchMatMulOptions()->adjoint_lhs();
+      param.adj_y = op->builtin_options_as_BatchMatMulOptions()->adjoint_rhs();
+      break;
+    case BuiltinOperator::BuiltinOperator_CUSTOM:
+      if (op->custom_options() == nullptr)
+      {
+        param.adj_x = false;
+        param.adj_y = false;
+      }
+      else
+      {
+        size_t custom_op_data_size = op->custom_options()->size();
+        auto custom_op_data = op->custom_options()->Data();
+        auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+        auto attr_map = data_root.AsMap();
+        param.adj_x = attr_map["adj_x"].AsBool();
+        param.adj_y = attr_map["adj_y"].AsBool();
+      }
+      break;
+    default:
+      throw std::runtime_error(
+          std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
+          " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
   }
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchMatMul{inputs, outputs, param}};
@@ -1192,7 +1209,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     MatrixBandPart,
     BatchMatMul,
     Einsum,
-    BroadcastTo
+    BroadcastTo,
+    FusedBatchNorm
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1202,7 +1220,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
-      {"BroadCastTo", BuiltinOP::BroadcastTo},
+      {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
+      {"BroadcastTo", BuiltinOP::BroadcastTo},
   };
 
   try
@@ -1228,6 +1247,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::BroadcastTo:
         loadBroadcastTo(op, subg);
+        break;
+      case BuiltinOP::FusedBatchNorm:
+        loadFusedBatchNorm(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1479,6 +1501,39 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir
   }
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op,
+                                                                  ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::FusedBatchNorm::Param param;
+
+  if (inputs.size() != 5)
+  {
+    throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+  }
+
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"FusedBatchNorm: empty option"};
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.is_training = attr_map["is_training"].AsBool();
+    param.epsilon = attr_map["epsilon"].AsFloat();
+    param.data_format = attr_map["data_format"].ToString();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::FusedBatchNorm{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 
@@ -1984,6 +2039,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadRange(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+      loadBatchMatMul(op, subg);
       return;
     default:
       throw std::runtime_error(

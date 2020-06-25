@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_FILLLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_FILLLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -35,14 +35,15 @@ class FillLayer : public ::onert::exec::IFunction
 public:
   FillLayer();
 
-  void configure(const Tensor *input, const Tensor *value, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *value,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_value;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_value;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

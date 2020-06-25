@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_EINSUM_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_EINSUM_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -50,13 +50,14 @@ public:
 public:
   void einsumFloat32();
 
-  void configure(const std::vector<const Tensor *> &inputs, std::string equation, Tensor *output);
+  void configure(const std::vector<const IPortableTensor *> &inputs, std::string equation,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  std::vector<const Tensor *> _inputs;
-  Tensor *_output;
+  std::vector<const IPortableTensor *> _inputs;
+  IPortableTensor *_output;
 
   std::string _equation;
 

@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -52,19 +52,20 @@ public:
 
   void convQuant8();
 
-  void configure(const Tensor *input, const Tensor *kernel, const Tensor *bias,
-                 ir::PaddingType _paddingType, const uint32_t paddingLeft,
-                 const uint32_t paddingRight, const uint32_t paddingTop,
+  void configure(const IPortableTensor *input, const IPortableTensor *kernel,
+                 const IPortableTensor *bias, ir::PaddingType _paddingType,
+                 const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideWidth,
-                 const uint32_t strideHeight, const ir::Activation activation, Tensor *output);
+                 const uint32_t strideHeight, const ir::Activation activation,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_kernel;
-  const Tensor *_bias;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_kernel;
+  const IPortableTensor *_bias;
+  IPortableTensor *_output;
 
   ir::PaddingType _paddingType;
   uint32_t _paddingLeft;

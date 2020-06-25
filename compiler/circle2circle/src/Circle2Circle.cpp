@@ -40,6 +40,7 @@ void print_help(const char *progname)
 {
   std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
   std::cerr << "Optimization options: " << std::endl;
+  std::cerr << "   --all : Enable all optimize options" << std::endl;
   std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
@@ -82,6 +83,13 @@ int entry(int argc, char **argv)
   auto settings = luci::UserSettings::settings();
 
   // TODO merge this with help message
+  argparse["--all"] = [&options](const char **) {
+    options->enable(Algorithms::FuseBCQ);
+    options->enable(Algorithms::FuseInstanceNorm);
+    options->enable(Algorithms::ResolveCustomOpAdd);
+    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+    return 0;
+  };
   argparse["--fuse_bcq"] = [&options](const char **) {
     options->enable(Algorithms::FuseBCQ);
     return 0;

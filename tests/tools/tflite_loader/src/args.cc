@@ -69,14 +69,23 @@ void Args::Parse(const int argc, char **argv)
     exit(0);
   }
 
-  if (vm.count("tflite"))
+  try
   {
-    _tflite_filename = vm["tflite"].as<std::string>();
-  }
+    if (vm.count("tflite"))
+    {
+      _tflite_filename = vm["tflite"].as<std::string>();
+    }
 
-  if (vm.count("data"))
+    if (vm.count("data"))
+    {
+      _data_filenames = vm["data"].as<std::vector<std::string>>();
+    }
+  }
+  catch (const std::bad_cast &e)
   {
-    _data_filenames = vm["data"].as<std::vector<std::string>>();
+    std::cerr << e.what() << '\n';
+    print(argv);
+    exit(1);
   }
 }
 

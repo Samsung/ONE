@@ -31,7 +31,7 @@ ZerosLikeLayer::ZerosLikeLayer() : _input(nullptr), _output(nullptr)
   // DO NOTHING
 }
 
-void ZerosLikeLayer::configure(const Tensor *input, Tensor *output)
+void ZerosLikeLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

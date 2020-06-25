@@ -42,7 +42,7 @@ void AbsLayer::absFloat32()
 
 void AbsLayer::absQuant8() { throw std::runtime_error{"NYI"}; }
 
-void AbsLayer::configure(const Tensor *input, Tensor *output)
+void AbsLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

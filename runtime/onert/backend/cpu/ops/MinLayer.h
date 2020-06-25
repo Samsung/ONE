@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_MINLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_MINLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -43,14 +43,14 @@ public:
 
   void minQuant8();
 
-  void configure(const Tensor *lhs, const Tensor *rhs, Tensor *output);
+  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const IPortableTensor *_lhs;
+  const IPortableTensor *_rhs;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

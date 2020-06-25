@@ -159,6 +159,8 @@ $ tree -L 3 ./Product/out
 
 Here, let's recall that the main target of our project is the arm architecture. If you have a development environment running Linux for arm on a device made of an arm CPU, such as Odroid-XU4, you will get a runtime binary that can be run on the arm architecture with the same command above. This is the simplest way to get a binary for an arm device. However, in most cases, native builds on arm devices are too impractical as they require too long. Therefore, we will create an executable binary of an architecture other than x86_64 through a `cross build`. For cross-build method for each architecture, please refer to the corresponding document in the following section, [How to cross-build runtime for different architecture](#how-to-cross-build-runtime-for-different-architecture).
 
+### Run test
+
 The simple way to check whether the build was successful is to perform inference of the NN model using the runtime. The model to be used for the test can be obtained as follows.
 
 ```
@@ -222,5 +224,5 @@ If your development system is not a linux environment like Ubuntu, but you can u
 Please refer to the following document for the build method for architecture other than x86_64, which is the basic development environment.
 
 - [Cross building for ARM](how-to-cross-build-runtime-for-arm.md)
-- [Cross building for Aarch64](how-to-cross-build-runtime-for-aarch64.md)
+- [Cross building for AARCH64](how-to-cross-build-runtime-for-aarch64.md)
 - [Cross building for Android](how-to-cross-build-runtime-for-android.md)

@@ -58,6 +58,8 @@ GeneratedTests.fill_ex_4D_float
 GeneratedTests.fill_ex_dynamic_nnfw
 GeneratedTests.fully_connected_dynamic_nnfw
 GeneratedTests.fully_connected_float_2_weights_as_inputs
+GeneratedTests.fusedbatchnorm_ex_float_fusedbatchnorm_1141
+GeneratedTests.fusedbatchnorm_ex_dynamic_nnfw
 GeneratedTests.gather_dynamic_nnfw
 GeneratedTests.gather_float16
 GeneratedTests.gather_float16_2
@@ -103,6 +105,7 @@ GeneratedTests.neg_dynamic_nnfw
 GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
+GeneratedTests.pad_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2

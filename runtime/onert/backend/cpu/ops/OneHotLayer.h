@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_ONEHOTLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_ONEHOTLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -44,14 +44,14 @@ public:
 
   void oneHotQuant8();
 
-  void configure(const Tensor *indices, Tensor *output, int32_t depth, float on_value,
-                 float off_value, int32_t axis);
+  void configure(const IPortableTensor *indices, IPortableTensor *output, int32_t depth,
+                 float on_value, float off_value, int32_t axis);
 
   void run();
 
 private:
-  const Tensor *_indices;
-  Tensor *_output;
+  const IPortableTensor *_indices;
+  IPortableTensor *_output;
 
   int32_t _depth;
   float _on_value;

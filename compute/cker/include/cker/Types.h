@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <limits>
+#include <string>
 
 namespace nnfw
 {
@@ -155,12 +156,10 @@ struct ComparisonParams
   int left_shift;
   int input1_shift;
   int input2_shift;
-  // int norm_shift;
   int32_t input1_offset;
   int32_t input1_multiplier;
   int32_t input2_offset;
   int32_t input2_multiplier;
-  // int32_t norm_multiplier;
   bool is_broadcast;
 };
 
@@ -323,6 +322,13 @@ struct SplitParams
 {
   uint16_t num_split;
   int16_t axis;
+};
+
+struct FusedBatchNormParams
+{
+  bool is_training;
+  std::string data_format; // UNKNOWN(0), NHWC(1), NCHW(2)
+  float epsilon;
 };
 
 enum class Order

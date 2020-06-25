@@ -260,6 +260,8 @@ private:
         return typeid(int32_t);
       case ir::DataType::UINT32:
         return typeid(uint32_t);
+      case ir::DataType::INT64:
+        return typeid(int64_t);
       case ir::DataType::BOOL8:
       case ir::DataType::QUANT_UINT8_ASYMM:
       case ir::DataType::UINT8:

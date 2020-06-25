@@ -651,7 +651,7 @@ private:
   internal::TensorIntDivisor<Index> m_fastInputRowStride;
   internal::TensorIntDivisor<Index> m_fastInputColStride;
 
-  Index m_otherStride;
+  // Index m_otherStride; // Unused this field
   Index m_colStride;
   internal::TensorIntDivisor<Index> m_fastNumPatches;
   internal::TensorIntDivisor<Index> m_fastColStride;

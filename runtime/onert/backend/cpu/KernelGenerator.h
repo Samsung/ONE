@@ -104,6 +104,7 @@ public:
   void visit(const ir::operation::MatrixBandPart &) override;
   void visit(const ir::operation::BatchMatMul &) override;
   void visit(const ir::operation::BroadcastTo &) override;
+  void visit(const ir::operation::FusedBatchNorm &) override;
 
 private:
   const ir::Operands &_ctx;

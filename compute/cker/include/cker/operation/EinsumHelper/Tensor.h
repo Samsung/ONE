@@ -117,6 +117,17 @@ public:
     }
     return typename TTypes<float, NDIMS>::Tensor(buffer, dims);
   }
+
+  // Create Eigen Tensor with current shape
+  template <size_t NDIMS> typename TTypes<float, NDIMS>::Tensor shaped() const
+  {
+    Eigen::array<Eigen::DenseIndex, NDIMS> dims;
+    for (size_t d = 0; d < NDIMS; d++)
+    {
+      dims[d] = shape.Dims(d);
+    }
+    return typename TTypes<float, NDIMS>::Tensor(buffer, dims);
+  }
 };
 
 } // namespace cker

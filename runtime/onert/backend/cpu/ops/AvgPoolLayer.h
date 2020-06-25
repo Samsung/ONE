@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_AVGPOOLLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_AVGPOOLLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -41,17 +41,18 @@ public:
 
   void averagePoolQuant8();
 
-  void configure(const Tensor *input, const uint32_t paddingLeft, const uint32_t paddingRight,
-                 const uint32_t paddingTop, const uint32_t paddingBottom,
-                 const uint32_t strideWidth, const uint32_t strideHeight,
-                 const uint32_t kernelWidth, const uint32_t kernelHeight,
-                 const ir::Activation activation, Tensor *output);
+  void configure(const IPortableTensor *input, const uint32_t paddingLeft,
+                 const uint32_t paddingRight, const uint32_t paddingTop,
+                 const uint32_t paddingBottom, const uint32_t strideWidth,
+                 const uint32_t strideHeight, const uint32_t kernelWidth,
+                 const uint32_t kernelHeight, const ir::Activation activation,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 
   uint32_t _paddingLeft;
   uint32_t _paddingTop;
