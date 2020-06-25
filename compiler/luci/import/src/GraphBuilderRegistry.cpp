@@ -73,6 +73,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);                                    // 84
   CIRCLE_NODE(LOGISTIC, CircleLogisticGraphBuilder);                                       // 14
   CIRCLE_NODE(LOG_SOFTMAX, CircleLogSoftmaxGraphBuilder);                                  // 50
+  CIRCLE_NODE(MATRIX_DIAG, CircleMatrixDiagGraphBuilder);                                  // 113
   CIRCLE_NODE(MAXIMUM, CircleMaximumGraphBuilder);                                         // 55
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                                   // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                                               // 40
@@ -154,7 +155,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_WHERE = 109,
-  // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_MATRIX_SET_DIAG = 115,
   // BuiltinOperator_HARD_SWISH = 117,

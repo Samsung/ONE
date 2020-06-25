@@ -1023,6 +1023,19 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleMatrixDiag *node) final
+  {
+    loco::TensorShape output_shape;
+
+    auto diagonal_shape = loco::shape_get(node->diagonal()).as<loco::TensorShape>();
+    auto rank = diagonal_shape.rank();
+
+    output_shape.rank(rank+1);
+    output_shape.dim(rank) = diagonal_shape.dim(rank-1);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleMaximum *node) final
   {
     auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();

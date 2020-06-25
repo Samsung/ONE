@@ -235,6 +235,7 @@ private:
   IMPLEMENT(luci::CircleLogicalOr)
   IMPLEMENT(luci::CircleLogistic)
   IMPLEMENT(luci::CircleLogSoftmax)
+  IMPLEMENT(luci::CircleMatrixDiag)
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
@@ -738,6 +739,13 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLogSoftmax *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("logits", tbl()->lookup(node->logits()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleMatrixDiag *node, locop::NodeSummary &s) const
+{
+  s.args().append("diagonal", tbl()->lookup(node->diagonal()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
