@@ -128,6 +128,7 @@ GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.mul_dynamic_nnfw
 GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
+GeneratedTests.pad_dynamic_nnfw
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2

@@ -158,6 +158,7 @@ private:
   void visit(const ir::operation::Neg &op);
   void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
+  void visit(const ir::operation::Pad &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
@@ -259,6 +260,7 @@ public:
   void visit(const ir::operation::Neg &op);
   void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
+  void visit(const ir::operation::Pad &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
