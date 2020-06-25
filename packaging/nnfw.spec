@@ -17,7 +17,7 @@ Source2001: nnfw.pc.in
 
 %{!?build_type:     %define build_type      Release}
 %{!?coverage_build: %define coverage_build  0}
-%{!?test_build:     %define test_build      1}
+%{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 %if %{coverage_build} == 1
 %define test_build 1
