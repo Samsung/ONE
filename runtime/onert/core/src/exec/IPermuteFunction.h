@@ -129,7 +129,7 @@ private:
           assert(src_tensor.layout() == dst_tensor.layout());
           if (!src_tensor.has_padding() && !dst_tensor.has_padding())
           {
-            assert(src_size == dst_tensor.total_size());
+            assert(src_size <= dst_tensor.total_size());
             memcpy(dst_buffer, src_buffer, src_size);
             return;
           }

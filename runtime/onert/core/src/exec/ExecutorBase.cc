@@ -17,6 +17,8 @@
 #include "ExecutorBase.h"
 
 #include "backend/ITensor.h"
+#include "backend/controlflow/UserTensor.h"
+#include "backend/cpu_common/Tensor.h"
 #include "util/logging.h"
 
 namespace onert
@@ -25,61 +27,88 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
+                           const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
+                           const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                            const compiler::TensorBuilders &tensor_builders)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
+    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()},
+      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
 {
-  auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-    std::vector<std::shared_ptr<backend::ITensor>> list;
-    for (auto ind : ind_seq)
-    {
-      std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
+  // TODO Fix the way of knowing whether it is primary or not
+  bool primary_executor = !(_input_tensors.empty() && _output_tensors.empty());
+  if (!primary_executor)
+  {
+    auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
+      std::vector<std::shared_ptr<backend::ITensor>> list;
+      for (auto ind : ind_seq)
       {
-        tensor = tensor_builder->tensorAt(ind);
-        if (tensor != nullptr)
+        std::shared_ptr<backend::ITensor> tensor;
+        for (auto &tensor_builder : tensor_builders)
         {
-          if (tensor_builder->supportDynamicTensor())
+          tensor = tensor_builder->tensorRegistry()->getManagedITensor(ind);
+          if (tensor != nullptr)
           {
-            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
-            _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+            if (tensor_builder->supportDynamicTensor())
+            {
+              DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+              _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+            }
+            break;
           }
-          break;
         }
+        assert(tensor != nullptr);
+        list.push_back(tensor);
       }
-
-      // Controlflow opeartion can make subgraph has unused input.
-      assert(tensor != nullptr || _lowered_graph->graph().getInputs().contains(ind));
-      list.push_back(tensor);
-    }
-    return list;
-  };
-
-  auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-    std::vector<std::shared_ptr<backend::ITensor>> list;
-    for (auto ind : ind_seq)
-    {
-      std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
+      return list;
+    };
+    auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
+      std::vector<std::shared_ptr<backend::ITensor>> list;
+      for (auto ind : ind_seq)
       {
-        tensor = tensor_builder->tensorAt(ind);
-        if (tensor != nullptr)
+        std::shared_ptr<backend::ITensor> tensor;
+        for (auto &tensor_builder : tensor_builders)
         {
-          if (tensor_builder->supportDynamicTensor())
+          tensor = tensor_builder->tensorRegistry()->getManagedITensor(ind);
+          if (tensor != nullptr)
           {
-            DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
-            _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+            if (tensor_builder->supportDynamicTensor())
+            {
+              DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+              _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+            }
+            break;
           }
-          break;
         }
+        assert(tensor != nullptr);
+        list.push_back(tensor);
       }
-      assert(tensor != nullptr);
-      list.push_back(tensor);
-    }
-    return list;
-  };
+      return list;
+    };
+    _input_tensors = build_input_tensor_list(_graph.getInputs());
+    _output_tensors = build_output_tensor_list(_graph.getOutputs());
+  }
+  else
+  {
+    // If primary graph, all the inputs and outputs belong to controlflow backend
+    auto cf_dyn_tensor_builder = tensor_builders.getControlflowTensorBuilder();
+    assert(cf_dyn_tensor_builder);
 
-  _input_tensors = build_input_tensor_list(_graph.getInputs());
-  _output_tensors = build_output_tensor_list(_graph.getOutputs());
+    assert(input_tensors.size() == _graph.getInputs().size());
+    assert(output_tensors.size() == _graph.getOutputs().size());
+    for (uint32_t i = 0; i < input_tensors.size(); i++)
+    {
+      auto tensor = input_tensors[i];
+      auto ind = _graph.getInputs().at(i);
+      DynAllocInfo dyn_alloc_info{ind, cf_dyn_tensor_builder->dynamicTensorManager()};
+      _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+    }
+    for (uint32_t i = 0; i < output_tensors.size(); i++)
+    {
+      auto tensor = output_tensors[i];
+      auto ind = _graph.getOutputs().at(i);
+      DynAllocInfo dyn_alloc_info{ind, cf_dyn_tensor_builder->dynamicTensorManager()};
+      _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
+    }
+  }
 
   // Prepare each TensorManager on each backend
   for (auto &tensor_builder : tensor_builders)
@@ -94,57 +123,6 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
       if (d_tensor_manager != nullptr)
         _tensor_mgrs.insert(std::move(d_tensor_manager));
     }
-  }
-}
-
-std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir::TypeInfo &type,
-                                              const void *buffer, size_t length,
-                                              ir::Layout io_layout)
-{
-  using ir::DataType;
-  switch (type.type())
-  {
-    case DataType::FLOAT32:
-      return source<float>(index, buffer, length, io_layout);
-    case DataType::INT32:
-      return source<int32_t>(index, buffer, length, io_layout);
-    case DataType::UINT32:
-      return source<uint32_t>(index, buffer, length, io_layout);
-    case DataType::BOOL8:
-    case DataType::QUANT_UINT8_ASYMM:
-    case DataType::UINT8:
-      return source<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT_INT8_SYMM:
-      return source<int8_t>(index, buffer, length, io_layout);
-    case DataType::INT64:
-      return source<int64_t>(index, buffer, length, io_layout);
-    default:
-      throw std::runtime_error("Not supported yet");
-  }
-}
-
-std::unique_ptr<ISink> ExecutorBase::sink(const ir::IOIndex &index, const ir::TypeInfo &type,
-                                          void *buffer, size_t length, ir::Layout io_layout)
-{
-  using ir::DataType;
-  switch (type.type())
-  {
-    case DataType::FLOAT32:
-      return sink<float>(index, buffer, length, io_layout);
-    case DataType::INT32:
-      return sink<int32_t>(index, buffer, length, io_layout);
-    case DataType::UINT32:
-      return sink<uint32_t>(index, buffer, length, io_layout);
-    case DataType::BOOL8:
-    case DataType::QUANT_UINT8_ASYMM:
-    case DataType::UINT8:
-      return sink<uint8_t>(index, buffer, length, io_layout);
-    case DataType::QUANT_INT8_SYMM:
-      return sink<int8_t>(index, buffer, length, io_layout);
-    case DataType::INT64:
-      return sink<int64_t>(index, buffer, length, io_layout);
-    default:
-      throw std::runtime_error("Not supported yet");
   }
 }
 
@@ -207,39 +185,40 @@ void ExecutorBase::execute(const IODescription &desc)
   std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};
 
   // Set input(s)
-  for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
+  assert(_input_tensors.size() == desc.inputs.size());
+  for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
-    ir::IOIndex input_index{n};
-    ir::OperandIndex index{_graph.getInputs().at(input_index)};
-
-    if (desc.inputs.at(n) == nullptr)
+    // TODO Remove dynamic_cast
+    auto tensor = std::dynamic_pointer_cast<backend::controlflow::UserTensor>(_input_tensors[i]);
+    assert(tensor);
+    auto input_shape = desc.input_shape_signature.find(ir::IOIndex{i});
+    if (input_shape != desc.input_shape_signature.end())
     {
-      // Optional input
-      continue;
+      tensor->set_dynamic();
+      tensor->setShape(input_shape->second);
     }
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    tensor->setBuffer(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
+                      desc.inputs[i]->size);
 
-    const auto operand_li = _lowered_graph->getLowerInfo()->operand.at(index).get();
-    if (operand_li->def_factors().empty())
-    {
-      // This input is not used (i.e. constant, EX. reshape's axis)
-      continue;
-    }
+    handleDynamicInputTensor(ir::IOIndex{i}, desc);
+  }
 
-    // If nnfw_set_input_tensorinfo() was called for an input, set change and prepare memory
-    handleDynamicInputTensor(input_index, desc);
-
-    const auto &input = *desc.inputs.at(n);
-    sources.at(n) =
-        source(input_index, input.info.typeInfo(), input.buffer, input.size, input.layout);
-
-    auto setter = [&](::onert::backend::ITensor &tensor) { sources.at(n)->push(tensor); };
-
-    _input_tensors[n]->access(setter);
+  assert(_output_tensors.size() == desc.outputs.size());
+  for (uint32_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    // TODO Remove dynamic_cast
+    auto tensor = std::dynamic_pointer_cast<backend::controlflow::UserTensor>(_output_tensors[i]);
+    assert(tensor);
+    tensor->set_dynamic(); // It can't be resized but shape could change
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    tensor->setBuffer(static_cast<uint8_t *>(const_cast<void *>(desc.outputs[i]->buffer)),
+                      desc.outputs[i]->size);
   }
 
   executeImpl();
 
-  // Get output(s)
+  // Update output(s) desc
   for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)
   {
     ir::IOIndex output_index{n};
@@ -254,34 +233,6 @@ void ExecutorBase::execute(const IODescription &desc)
     const auto output_tensor_shape = _output_tensors[n]->getShape();
     output.info.shape(
         convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
-
-    size_t sink_length =
-        output.info.shape().num_elements() * ir::sizeOfDataType(output.info.typeInfo().type());
-    assert(sink_length ==
-           _output_tensors[n]->getShape().num_elements() *
-               ir::sizeOfDataType(_output_tensors[n]->data_type()));
-    if (output.size < sink_length)
-      throw std::runtime_error("ExecutorBase: output buffer size is less than output tensor size");
-
-    sinks.at(n) =
-        sink(output_index, output.info.typeInfo(), output.buffer, sink_length, output.layout);
-
-    auto getter = [&](::onert::backend::ITensor &tensor) { sinks.at(n)->pull(tensor); };
-
-    _output_tensors[n]->access(getter);
-
-    // deallocate output tensors if it is dynamic
-    {
-      auto find = _output_to_dyn_alloc_info.find(_output_tensors[n]);
-      if (find != _output_to_dyn_alloc_info.end())
-      {
-        auto &dyn_alloc_info = find->second;
-        auto *dyn_tensor_mgr = dyn_alloc_info.dyn_tensor_manager;
-        auto outut_ind = dyn_alloc_info.ind;
-
-        dyn_tensor_mgr->deallocSubgraphOutput(outut_ind);
-      }
-    }
   }
 }
 

@@ -33,6 +33,8 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
 
 void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
+  VERBOSE_F() << ind << std::endl;
+
   auto tensor = _tensors->getManagedTensor(ind);
   assert(tensor);
 
