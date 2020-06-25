@@ -4,7 +4,7 @@ Runtime Core is a compilation/execution engine for neural network models.
 
 ## Modules
 
-Runtime Core has four modules. These are namespaces as well as directory names.
+Runtime Core has four modules. These are namespaces as well as directory names in `/runtime/onert/core/src/`.
 
 - `ir`  stands for Intermediate Representation which contains Neural Network Graph data structures
 - `compiler` converts IR to executable format
