@@ -108,6 +108,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                                         // 25
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);                        // 38
   CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);                             // 26
+  CIRCLE_NODE(SPARSE_TO_DENSE, CircleSparseToDenseGraphBuilder);                           // 68
   CIRCLE_NODE(SPLIT, CircleSplitGraphBuilder);                                             // 49
   CIRCLE_NODE(SPLIT_V, CircleSplitVGraphBuilder);                                          // 102
   CIRCLE_NODE(SQRT, CircleSqrtGraphBuilder);                                               // 75
@@ -147,7 +148,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
-  // BuiltinOperator_SPARSE_TO_DENSE = 68,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_ONE_HOT = 85,
   // BuiltinOperator_SQUARE = 92,
