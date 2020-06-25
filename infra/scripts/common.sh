@@ -19,7 +19,7 @@
 #   Run ./tests/scripts/test-driver.sh script unittest
 #
 # NNPackageTest $1 $2
-#   Run ./tools/nnpackage_tool/nnpkg_test/nnpkg_test.sh script nnpackage test
+#   Run ./tests/scripts/nnpkg_test.sh script nnpackage test
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
@@ -115,7 +115,7 @@ function NNPackageTest()
   do
     for entry in "nnpkg-tcs"/$f; do
       if [ -e $entry ]; then
-        BACKENDS="$1" tools/nnpackage_tool/nnpkg_test/nnpkg_test.sh -d -i nnpkg-tcs $(basename "$entry")
+        BACKENDS="$1" tests/scripts/nnpkg_test.sh -d -i nnpkg-tcs $(basename "$entry")
       fi
     done
     EXITCODE_F=$?
