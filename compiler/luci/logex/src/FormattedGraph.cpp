@@ -271,6 +271,7 @@ private:
   IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSpaceToBatchND)
   IMPLEMENT(luci::CircleSpaceToDepth)
+  IMPLEMENT(luci::CircleSparseToDense)
   IMPLEMENT(luci::CircleSplit)
   IMPLEMENT(luci::CircleSplitV)
   IMPLEMENT(luci::CircleSqrt)
@@ -1068,6 +1069,21 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSpaceToDepth *node,
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("block_size", pepper::str(node->block_size()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSparseToDense *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("output_shape", pepper::str(node->output_shape()));
+  s.args().append("values", pepper::str(node->values()));
+  s.args().append("default_value", pepper::str(node->default_value()));
+
+  s.args().append("Validate_indices", pepper::str(node->validate_indices()));
 
   s.state(locop::NodeSummary::State::Complete);
 
