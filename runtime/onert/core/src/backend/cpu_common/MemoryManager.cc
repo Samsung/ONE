@@ -73,9 +73,12 @@ uint8_t *MemoryManager::getBuffer(const ir::OperandIndex &ind) const
 std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ir::OperandIndex &ind,
                                                                       uint32_t capacity)
 {
-  auto mem_alloc = std::make_shared<cpu_common::Allocator>(capacity);
-  _mem_alloc_map[ind] = mem_alloc;
-  return mem_alloc;
+  auto find = _mem_alloc_map.find(ind);
+  if (find != _mem_alloc_map.end())
+    throw std::runtime_error("Cannot allocate memory for a tensor. It was already allocated.");
+
+  _mem_alloc_map[ind] = std::make_shared<cpu_common::Allocator>(capacity);
+  return _mem_alloc_map[ind];
 }
 
 void DynamicMemoryManager::deallocate(const ir::OperandIndex &ind)
@@ -84,9 +87,8 @@ void DynamicMemoryManager::deallocate(const ir::OperandIndex &ind)
   if (find == _mem_alloc_map.end())
     throw std::runtime_error("Cannot find Allocator for the requested index");
 
-  // alloc's count decreases
-  auto &alloc = find->second;
-  alloc.reset();
+  find->second->release();    // explicitly erase memory
+  _mem_alloc_map.erase(find); // remove tensor and alloc
 }
 
 void DynamicMemoryManager::deallocate(void)
@@ -96,6 +98,8 @@ void DynamicMemoryManager::deallocate(void)
     // Release memory buffer of mem_alloc
     mem_alloc.second->release();
   }
+
+  _mem_alloc_map.clear();
 }
 
 } // namespace cpu_common

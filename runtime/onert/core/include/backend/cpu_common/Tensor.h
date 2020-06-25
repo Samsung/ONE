@@ -57,6 +57,16 @@ public:
   // This works just as setBuffer but it simply overwrite existing Allocator without nullptr check
   void overwriteBuffer(const std::shared_ptr<Allocator> &alloc) { _allocator = alloc; }
 
+  /**
+   * @brief Mark this tensor does not have memory.
+   *        Real memory deallocation should be done by caller.
+   */
+  void resetBuffer()
+  {
+    _allocator.reset();
+    _buffer = nullptr;
+  }
+
 public:
   uint8_t *buffer() const override
   {
