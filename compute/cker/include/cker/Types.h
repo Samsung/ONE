@@ -152,6 +152,15 @@ struct ConvParams
 struct ComparisonParams
 {
   ComparisonOpType type;
+  int left_shift;
+  int input1_shift;
+  int input2_shift;
+  // int norm_shift;
+  int32_t input1_offset;
+  int32_t input1_multiplier;
+  int32_t input2_offset;
+  int32_t input2_multiplier;
+  // int32_t norm_multiplier;
   bool is_broadcast;
 };
 

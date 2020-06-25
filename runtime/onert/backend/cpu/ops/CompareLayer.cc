@@ -18,7 +18,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Comparison.h>
-
+using namespace nnfw::cker;
 namespace onert
 {
 namespace backend
@@ -33,6 +33,120 @@ namespace
 
 using OpType = onert::ir::operation::Comparison::ComparisonType;
 using namespace onert::backend::cpu;
+
+template <typename T>
+void compareQuant8(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType op_type)
+{
+  nnfw::cker::ComparisonParams params;
+  params.left_shift = 8;
+  params.input1_offset = -lhs->data_offset();
+  params.input2_offset = -rhs->data_offset();
+  const double norm_max_scale =
+      2 * std::max(std::abs(lhs->data_scale()), std::abs(rhs->data_scale()));
+  const double adjusted_lhs_scale = lhs->data_scale() / norm_max_scale;
+  const double adjusted_rhs_scale = rhs->data_scale() / norm_max_scale;
+  // We have to normalize final result, so we invert the scale here
+  // const double adjusted_norm_scale =
+  //     norm_max_scale / (1 << op_params.left_shift);
+
+  QuantizeMultiplierSmallerThanOneExp(adjusted_lhs_scale, &params.input1_multiplier,
+                                      &params.input1_shift);
+  QuantizeMultiplierSmallerThanOneExp(adjusted_rhs_scale, &params.input2_multiplier,
+                                      &params.input2_shift);
+  // QuantizeMultiplierSmallerThanOneExp(adjusted_norm_scale, &params.norm_multiplier,
+  // &params.norm_shift);
+  params.is_broadcast = !HaveSameShapes(lhs, rhs);
+
+  if (params.is_broadcast)
+  {
+    switch (op_type)
+    {
+      case OpType::Equal:
+        Broadcast4DSlowEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::NotEqual:
+        Broadcast4DSlowNotEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::Greater:
+        Broadcast4DSlowGreaterWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::GreaterEqual:
+        Broadcast4DSlowGreaterEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::Less:
+        Broadcast4DSlowLessWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::LessEqual:
+        Broadcast4DSlowLessEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      default:
+        throw std::runtime_error{"Invalid OpType for CompareLayer"};
+    }
+  }
+  else // if (requires_broadcast == false)
+  {
+    switch (op_type)
+    {
+      case OpType::Equal:
+        EqualWithScaling(params, getExtendedTensorShape(lhs),
+                         reinterpret_cast<const T *>(lhs->buffer()), getExtendedTensorShape(rhs),
+                         reinterpret_cast<const T *>(rhs->buffer()), getExtendedTensorShape(output),
+                         reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::NotEqual:
+        NotEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::Greater:
+        GreaterWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::GreaterEqual:
+        GreaterEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::Less:
+        LessWithScaling(params, getExtendedTensorShape(lhs),
+                        reinterpret_cast<const T *>(lhs->buffer()), getExtendedTensorShape(rhs),
+                        reinterpret_cast<const T *>(rhs->buffer()), getExtendedTensorShape(output),
+                        reinterpret_cast<bool *>(output->buffer()));
+        break;
+      case OpType::LessEqual:
+        LessEqualWithScaling(
+            params, getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
+        break;
+      default:
+        throw std::runtime_error{"Invalid OpType for CompareLayer"};
+    }
+  }
+  return;
+}
 
 template <typename T>
 void compareScalar(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType op_type)
@@ -136,8 +250,6 @@ CompareLayer::CompareLayer()
   // DO NOTHING
 }
 
-void CompareLayer::compareQuant8() { throw std::runtime_error{"Compare NYI for quantized"}; }
-
 void CompareLayer::configure(const Tensor *lhs, const Tensor *rhs, const OpType op_type,
                              Tensor *output)
 {
@@ -163,7 +275,7 @@ void CompareLayer::run()
   }
   else if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    compareQuant8();
+    compareQuant8<uint8_t>(_lhs, _rhs, _output, _op_type);
   }
   else
   {

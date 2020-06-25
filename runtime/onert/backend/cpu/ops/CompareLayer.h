@@ -37,8 +37,6 @@ public:
   CompareLayer();
 
 public:
-  void compareQuant8();
-
   void configure(const Tensor *lhs, const Tensor *rhs,
                  const ir::operation::Comparison::ComparisonType op_type, Tensor *output);
 
