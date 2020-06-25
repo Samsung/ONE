@@ -743,8 +743,8 @@ public:
       INTERNAL_EXN_V("Non-scalar axis in OP", node->opnum());
     }
     int32_t axis = const_axis->at<S32>(0);
-    LUCI_ASSERT((axis < static_cast<int32_t>(x_shape.rank())) &&
-                    (axis > -1 - static_cast<int32_t>(x_shape.rank())),
+    LUCI_ASSERT((axis <= static_cast<int32_t>(x_shape.rank())) &&
+                    (axis >= -1 - static_cast<int32_t>(x_shape.rank())),
                 "Axis has to be between [-(D+1), D], where D is rank of input.");
     size_t positive_axis = axis < 0 ? x_shape.rank() + axis + 1 : axis;
     loco::TensorShape output_shape;
@@ -1246,9 +1246,15 @@ public:
     loco::TensorShape output_shape;
     output_shape.rank(1);
 
-    auto start_node = loco::must_cast<luci::CircleConst *>(node->start());
-    auto limit_node = loco::must_cast<luci::CircleConst *>(node->limit());
-    auto delta_node = loco::must_cast<luci::CircleConst *>(node->delta());
+    auto start_node = dynamic_cast<luci::CircleConst *>(node->start());
+    auto limit_node = dynamic_cast<luci::CircleConst *>(node->limit());
+    auto delta_node = dynamic_cast<luci::CircleConst *>(node->delta());
+
+    if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
+    {
+      loco::TensorShape shape = own_shape(node);
+      return loco::NodeShape{shape};
+    }
 
     double start = 0, limit = 0, delta = 0;
 
@@ -1739,6 +1745,16 @@ public:
 
   loco::NodeShape visit(const luci::CircleStridedSlice *node) final
   {
+    auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
+    auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
+    auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
+
+    if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
+    {
+      loco::TensorShape shape = own_shape(node);
+      return loco::NodeShape{shape};
+    }
+
     loco::TensorShape shape = infer_output_shape(node);
     return loco::NodeShape{shape};
   }
