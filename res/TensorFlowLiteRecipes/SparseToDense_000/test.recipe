@@ -1,0 +1,44 @@
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 3 dim: 2 }
+}
+operand {
+  name: "shape"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+      tag: "explicit"
+      arg: "3" arg: "5"
+  }
+}
+operand {
+  name: "values"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+operand {
+  name: "defalut_value"
+  type: FLOAT32
+  shape {  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 5 }
+}
+operation {
+  type: "SparseToDense"
+  sparse_to_dense_options {
+    validate_indices: true
+  }
+  input: "indices"
+  input: "shape"
+  input: "values"
+  input: "defalut_value"
+  output: "ofm"
+}
+input: "indices"
+input: "values"
+input: "defalut_value"
+output: "ofm"
