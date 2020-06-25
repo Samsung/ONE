@@ -1,12 +1,12 @@
-# quantization-value-test
+# pa-quantization-value-test
 
-This test checks whether a Circle model (listed in `test.lst`) is correctly quantized. The circle models are generated from recipes saved in `res/TensorFlowLiteRecipes`.
+`pa-quantization-value-test` checks whether a Circle model listed in `test.lst` is correctly quantized (`pa` denotes post-training affine). The circle models are generated from the recipes saved in `res/TensorFlowLiteRecipes`.
 
 Write `test.local.lst` for local test.
 
-Test process
+### Test process
 
-Step 1. Fake quantization
+#### Step 1. Fake quantization
 
 Run `circle2circle` with `--quantize_dequantize_weights` option.
 
@@ -17,7 +17,7 @@ Compare the dumped model with the expected output in "expected_outputs/<model_na
 The expected output should include
  (1) values of weights (only for conv, transposed_conv, depthwise_conv, and fc layers)
 
-Step 2. Record moving avg of min and moving avg of max for activations
+#### Step 2. Record moving avg of min and moving avg of max for activations
 
 Run `record-minmax` with the fake-quantized model (input data is saved in "test_inputs/<model_name>/<granularity>/<quantized_type>/<record_number>.txt")
 
@@ -27,7 +27,7 @@ Compare the dumped model with the expected output in "expected_outputs/<model_na
 The expected output should include
  (1) min/max of activations
 
-Step 3. Quantization
+#### Step 3. Quantization
 
 Run `circle2circle` with `--quantize_with_minmax` option.
 

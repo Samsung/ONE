@@ -109,7 +109,7 @@ add_custom_target(quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} quantiza
 
 # Run tests
 add_test(
-  NAME fake_wquant_value_test
+  NAME pa_fake_wquant_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
@@ -117,7 +117,7 @@ add_test(
 )
 
 add_test(
-  NAME record_minmax_value_test
+  NAME pa_record_minmax_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
@@ -125,12 +125,12 @@ add_test(
 )
 
 add_test(
-  NAME quantization_value_test
+  NAME pa_quantization_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh"
           "${TEST_CONFIG}"
           "${CMAKE_CURRENT_BINARY_DIR}"
           ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
 )
 
-set_tests_properties(record_minmax_value_test PROPERTIES DEPENDS fake_quantization_value_test)
-set_tests_properties(quantization_value_test PROPERTIES DEPENDS record_minmax_value_test)
+set_tests_properties(pa_record_minmax_test PROPERTIES DEPENDS pa_fake_wquant_test)
+set_tests_properties(pa_quantization_test PROPERTIES DEPENDS pa_record_minmax_test)
