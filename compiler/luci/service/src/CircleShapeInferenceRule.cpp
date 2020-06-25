@@ -1533,7 +1533,7 @@ public:
 
     output_shape.rank(input_shape.rank());
 
-    for (uint32_t i = 0; i < input_shape.rank(); ++i)
+    for (uint32_t i = 1; i < input_shape.rank(); ++i)
       output_shape.dim(i) = input_shape.dim(i);
 
     output_shape.dim(0) = vect_ids.back() + 1;
