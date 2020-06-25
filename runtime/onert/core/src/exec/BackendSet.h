@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_BACKEND_SET_H__
-#define __ONERT_IR_BACKEND_SET_H__
+#ifndef __ONERT_EXEC_BACKEND_SET_H__
+#define __ONERT_EXEC_BACKEND_SET_H__
 
 #include "util/Set.h"
 
@@ -29,12 +29,12 @@ class Backend;
 
 namespace onert
 {
-namespace ir
+namespace exec
 {
 
 using BackendSet = util::Set<const backend::Backend *>;
 
-} // namespace ir
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_IR_BACKEND_SET_H__
+#endif // __ONERT_EXEC_BACKEND_SET_H__
