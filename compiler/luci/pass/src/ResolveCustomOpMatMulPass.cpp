@@ -45,25 +45,30 @@ luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
     size *= shape.at(i);
   }
 
+#define INIT_VALUES(DT)                          \
+  {                                              \
+    node->size<DT>(size);                        \
+    for (uint32_t i = 0; i < values.size(); ++i) \
+      node->at<DT>(i) = values[i];               \
+  }
+
   switch (dtype)
   {
-    case loco::DataType::S32:
-      node->size<loco::DataType::S32>(size);
-      for (uint32_t i = 0; i < values.size(); ++i)
-        node->at<loco::DataType::S32>(i) = values[i];
+    case loco::DataType::U8:
+      INIT_VALUES(loco::DataType::U8);
       break;
-    case loco::DataType::S64:
-      node->size<loco::DataType::S64>(size);
-      for (uint32_t i = 0; i < values.size(); ++i)
-        node->at<loco::DataType::S64>(i) = values[i];
+    case loco::DataType::S16:
+      INIT_VALUES(loco::DataType::S16);
+      break;
+    case loco::DataType::S32:
+      INIT_VALUES(loco::DataType::S32);
       break;
     case loco::DataType::FLOAT32:
-      node->size<loco::DataType::FLOAT32>(size);
-      for (uint32_t i = 0; i < values.size(); ++i)
-        node->at<loco::DataType::FLOAT32>(i) = values[i];
+      INIT_VALUES(loco::DataType::FLOAT32)
       break;
     default:
-      return nullptr;
+      INTERNAL_EXN("create_const_node called with unsupported type");
+      break;
   }
   return node;
 }
@@ -73,12 +78,16 @@ bool resolve_matmul(luci::CircleCustom *cop)
 #define CHECK_OR_FALSE(condition) \
   if (not(condition))             \
     return false;
+#define CHECK_OR_THROW(condition, message) \
+  if (not(condition))                      \
+    INTERNAL_EXN(message);
 
   auto graph = cop->graph();
   const std::vector<uint8_t> custom_options = cop->custom_options();
   auto map = flexbuffers::GetRoot(custom_options).AsMap();
+  const auto U8 = loco::DataType::U8;
+  const auto S16 = loco::DataType::S16;
   const auto S32 = loco::DataType::S32;
-  const auto S64 = loco::DataType::S64;
   const auto FLOAT32 = loco::DataType::FLOAT32;
 
   bool transpose_a = map["transpose_a"].AsBool();
@@ -100,7 +109,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
   // TODO as of 06/23/20 TFLite only supports rank 2 for 2nd input. Fix this once that changes!
   CHECK_OR_FALSE(loco::shape_get(rhs).as<loco::TensorShape>().rank() == 2);
   // Check that input data type is supported
-  CHECK_OR_FALSE(lhs_dtype == S32 || lhs_dtype == S64 || lhs_dtype == FLOAT32);
+  CHECK_OR_THROW(lhs_dtype == U8 || lhs_dtype == S16 || lhs_dtype == FLOAT32,
+                 "Only UInt8, Int16 and Float32 data types are supported by MatMul");
 
   if (transpose_a)
   {
@@ -111,8 +121,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
       perm.push_back(i);
     std::swap(perm[a_shape.rank() - 1], perm[a_shape.rank() - 2]);
     auto perm_node = create_const_node(graph, S32, {a_shape.rank()}, perm);
-    // Since S32 dtype is supported, perm_node should not be null here
-    assert(perm_node);
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(lhs);
@@ -127,8 +135,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
   {
     const std::vector<uint32_t> perm{1, 0};
     auto perm_node = create_const_node(graph, S32, {2}, perm);
-    // Since S32 dtype is supported, perm_node should not be null here
-    assert(perm_node);
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
@@ -140,9 +146,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
   uint32_t bias_size = b_shape.dim(transpose_b ? 1 : 0).value();
   const std::vector<float> val(bias_size, .0f);
   auto bias_node = create_const_node(graph, lhs_dtype, {bias_size}, val);
-  // We have already checked that lhs_dtype is supported, so bias_node shouldn't be null
-  assert(bias_node);
-
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->input(lhs);
   fc_node->weights(rhs);
