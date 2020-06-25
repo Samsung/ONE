@@ -4,15 +4,20 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 2.2.0 QUIET)
-
-if(NOT TensorFlowSource_FOUND)
-  return()
-endif(NOT TensorFlowSource_FOUND)
+# TODO recover official release version
+# nnas_find_package(TensorFlowSource EXACT 2.2.0 QUIET)
+#
+# if(NOT TensorFlowSource_FOUND)
+#   return()
+# endif(NOT TensorFlowSource_FOUND)
 
 message(STATUS "Build mio-tflite: TRUE")
 
-set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+# TODO recover official release verison
+# set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+set(TFL_SCHEMA_PATH "${NNAS_PROJECT_SOURCE_DIR}/res/TensorFlowLiteSchema")
+set(TFL_SPECIFIC_HASH "e5023a1738cce7efcdf9d87863b85c80ab2f8c9e")
+set(SCHEMA_FILE "${TFL_SCHEMA_PATH}/${TFL_SPECIFIC_HASH}/schema.fbs")
 
 # NOTE Use copy of schema.fbs as to provide unified way for circle also
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
