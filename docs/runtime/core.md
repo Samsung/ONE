@@ -20,11 +20,11 @@ This module contains data structures of pure Neural Network models. The models f
 - `Operand` (a.k.a. Tensor) has shape, data type, data and references to operations
 - `Operation` (a.k.a. Operator) has operation type, params and references to operands
 
-`Operand` and `Operation` are graph nodes. References to operations and operands are graph edges.
+`Operand` and `Operation` are nodes of the graph, and the reference relationship between them is the edges of the graph.
 
 `Subgraphs` represents the whole model. It could have more than one `Subgraph` to support control flow operations. Those operations can make calls to another subgraph and when the execution on another subgraph is done it gets back to previous subgraph execution with returned operands.
 
-All `Graph`s are a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) so once model inputs are given we can run it in topological order.
+All graphs are a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) so once model inputs are given we can run it in topological order.
 
 Here's a figure of how those data structures are oraganized.
 
@@ -39,19 +39,19 @@ What it does is making models executable. It schedules run order and assigns a b
 
 In Lowering, the compiler assigns a [backend](#) for each operation. A backend is assigned to an operation means that the operation will be run with the assigned backend's kernel.
 
-There is a scheduler that allows the user manually specify backends via compiler options. There is another scheduler that automatically assigns backends based on profiling info.
+There is a scheduler that allows the user manually specify backends via compiler options. There is another scheduler that automatically assigns backends based on profile information measured in advance and saved.
 
 #### 2. Tensor Registration
 
 Each backend manages its tensors. In this phase operand informations get registered to the corresponding backend. This will be used generating tensor objects.
 
-##### Q. What are differences between "operand" and "tensor"?
+##### Q. What are differences between 'operand' and 'tensor'?
 
-In ONE Runtime, "operand" refers to an operand in a NN model. While "tensor" includes all "operand" info plus actual execution info like actual buffer pointer. In short, "operand" is for `ir`, "tensor" is for `backend`.
+In **ONE** runtime, 'operand' refers to an operand in a neural network model. While 'tensor' includes all 'operand' info plus actual execution info like actual buffer pointer. In short, 'operand' is for `ir`, 'tensor' is for `backend`.
 
 #### 3. Linearization (Linear Executor Only)
 
-For Linear Executor, it needs to be linearized before execution. Linearizaton means sorting operations in a topological order. It saves execution time since resolving next available operations after every operation is not needed at execution time. Also it makes plans for tensor memory. It can save some memory space by reusing other operands' space that does not overlap lifetime. Also all allocations are done at compile time (after [4. Kernel Generation](#4.-kernel-generation)) which saves execution time.
+Linearization means sorting operations in a topological order. It saves execution time since it is not needed to resolve next available operations after every operation at execution time. Also it makes plans for tensor memory. It can save some memory space by reusing other operands' space that does not overlap lifetime. Also all allocations are done at compile time (after [4. Kernel Generation](#4.-kernel-generation)) which saves execution time.
 
 #### 4. Kernel Generation
 
