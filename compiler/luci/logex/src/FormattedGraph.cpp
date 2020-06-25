@@ -1079,9 +1079,9 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSparseToDense *node,
                                        locop::NodeSummary &s) const
 {
   s.args().append("indices", tbl()->lookup(node->indices()));
-  s.args().append("output_shape", pepper::str(node->output_shape()));
-  s.args().append("values", pepper::str(node->values()));
-  s.args().append("default_value", pepper::str(node->default_value()));
+  s.args().append("output_shape", tbl()->lookup(node->output_shape()));
+  s.args().append("values", tbl()->lookup(node->values()));
+  s.args().append("default_value", tbl()->lookup(node->default_value()));
 
   s.args().append("Validate_indices", pepper::str(node->validate_indices()));
 
