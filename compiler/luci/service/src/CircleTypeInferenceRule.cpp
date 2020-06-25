@@ -458,14 +458,12 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleWhere *node) final
   {
-    assert(node->numValues() > 0);
-
-    if (node->numValues() == 1)
+    if (node->arity() == 1)
       return loco::DataType::S64;
 
-    assert(node->numValues() == 3);
+    assert(node->arity() == 3);
 
-    return loco::dtype_get(node->values(1));
+    return loco::dtype_get(node->x());
   }
 
   loco::DataType visit(const luci::CircleWhile *node) final

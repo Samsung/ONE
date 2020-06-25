@@ -33,25 +33,31 @@ namespace luci
 class CircleWhere final : public VariadicArityNode<CircleNodeImpl<CircleOpcode::WHERE>>
 {
 public:
-  CircleWhere(uint32_t arity) : VariadicArityNode<CircleNodeImpl<CircleOpcode::WHERE>>(arity)
+  CircleWhere(bool provide_xy)
+      : VariadicArityNode<CircleNodeImpl<CircleOpcode::WHERE>>(provide_xy ? 3 : 1)
   {
-    assert(arity >= 1);
+    // NOTHING TO DO
   }
 
 public:
-  uint32_t numValues(void) const { return arity(); }
+  loco::Node *cond() const { return at(0)->node(); }
+  void cond(loco::Node *node) { at(0)->node(node); }
 
-  Node *values(uint32_t index) const
+  loco::Node *x() const
   {
-    assert(index < numValues());
-    return at(index)->node();
+    if (arity() == 3)
+      return at(1)->node();
+    return nullptr;
   }
+  void x(Node *node) { at(1)->node(node); }
 
-  void values(uint32_t index, Node *node)
+  loco::Node *y() const
   {
-    assert(index < numValues());
-    at(index)->node(node);
+    if (arity() == 3)
+      return at(2)->node();
+    return nullptr;
   }
+  void y(Node *node) { at(2)->node(node); }
 };
 
 } // namespace luci

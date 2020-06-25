@@ -68,10 +68,13 @@ CircleNode *CircleWhereGraphBuilder::build_node(const circle::OperatorT &,
                                                 const std::vector<CircleNode *> &inputs,
                                                 loco::Graph *graph) const
 {
-  auto *node = graph->nodes()->create<CircleWhere>(inputs.size());
-  for (uint32_t i = 0; i < inputs.size(); ++i)
+  bool has_xy_inputs = (inputs.size() == 3);
+  auto *node = graph->nodes()->create<CircleWhere>(has_xy_inputs);
+  node->cond(inputs[0]);
+  if (has_xy_inputs)
   {
-    node->values(i, inputs[i]);
+    node->x(inputs[1]);
+    node->y(inputs[2]);
   }
 
   return node;
