@@ -31,7 +31,10 @@ struct MockConfig : public IConfig
   std::string id() override { return "b1"; }
   bool initialize() override { return true; };
   bool supportPermutation() override { return false; }
-  ir::Layout supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::UNKNOWN; }
+  ir::Layout supportLayout(const ir::Operation &, ir::Layout) override
+  {
+    return ir::Layout::UNKNOWN;
+  }
   bool supportDynamicTensor() override { return false; }
   bool supportFP16() override { return false; }
 };
