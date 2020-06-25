@@ -46,19 +46,6 @@ void print_help(const char *progname)
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
-  std::cerr << "   --quantize_with_minmax : Enable QuantizeWithMinMax Pass" << std::endl;
-  std::cerr << "                            ";
-  std::cerr << "Require three following parameters (input_dtype, output_dtype, granularity)"
-            << std::endl;
-  std::cerr << "                            ";
-  std::cerr << "Ex: --quantize_with_minmax float32 uint8 layer" << std::endl;
-  std::cerr << "   --quantize_dequantize_weights : Enable QuantizeDequantizeWeights Pass"
-            << std::endl;
-  std::cerr << "                            ";
-  std::cerr << "Require three following parameters (input_dtype, output_dtype, granularity)"
-            << std::endl;
-  std::cerr << "                            ";
-  std::cerr << "Ex: --quantize_dequantize_weights float32 uint8 channel" << std::endl;
   std::cerr << "Execution options:" << std::endl;
   std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
   std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
@@ -105,51 +92,6 @@ int entry(int argc, char **argv)
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     return 0;
-  };
-
-  // TODO use better parsing library (ex: boost.program_options)
-  argparse["--quantize_dequantize_weights"] = [&options](const char **argv) {
-    options->enable(Algorithms::QuantizeDequantizeWeights);
-
-    if (argv[0] == nullptr || argv[1] == nullptr || argv[2] == nullptr)
-      throw std::runtime_error(
-          "--quantize_dequantize_weights must have three following parameters.");
-
-    std::string input_dtype = argv[0];
-    std::string output_dtype = argv[1];
-    std::string granularity = argv[2];
-
-    if (input_dtype.empty() || output_dtype.empty() || granularity.empty() ||
-        input_dtype.substr(0, 2).compare("--") == 0 ||
-        output_dtype.substr(0, 2).compare("--") == 0 || granularity.substr(0, 2).compare("--") == 0)
-      throw std::runtime_error("Wrong algorithm parameters for --quantize_dequantize_weights.");
-
-    options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
-    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
-    options->param(AlgorithmParameters::Quantize_granularity, granularity);
-    return 3;
-  };
-
-  // TODO use better parsing library (ex: boost.program_options)
-  argparse["--quantize_with_minmax"] = [&options](const char **argv) {
-    options->enable(Algorithms::QuantizeWithMinMax);
-
-    if (argv[0] == nullptr || argv[1] == nullptr || argv[2] == nullptr)
-      throw std::runtime_error("--quantize_with_minmax must have three following parameters.");
-
-    std::string input_dtype = argv[0];
-    std::string output_dtype = argv[1];
-    std::string granularity = argv[2];
-
-    if (input_dtype.empty() || output_dtype.empty() || granularity.empty() ||
-        input_dtype.substr(0, 2).compare("--") == 0 ||
-        output_dtype.substr(0, 2).compare("--") == 0 || granularity.substr(0, 2).compare("--") == 0)
-      throw std::runtime_error("Wrong algorithm parameters for --quantize_with_minmax.");
-
-    options->param(AlgorithmParameters::Quantize_input_dtype, input_dtype);
-    options->param(AlgorithmParameters::Quantize_output_dtype, output_dtype);
-    options->param(AlgorithmParameters::Quantize_granularity, granularity);
-    return 3;
   };
 
   argparse["--mute_warnings"] = [&settings](const char **) {
@@ -201,9 +143,6 @@ int entry(int argc, char **argv)
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
     auto graph = module->graph(idx);
-
-    // quantize the graph
-    optimizer.quantize(graph);
 
     // call luci optimizations
     optimizer.optimize(graph);
