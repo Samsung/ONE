@@ -161,7 +161,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
   logo::Phase phase;
 
-  // Do Shape/Type inference (this must be done before luci::validate is called)
+  // Do Shape/Type inference
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
 
