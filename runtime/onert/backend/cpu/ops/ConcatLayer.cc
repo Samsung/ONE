@@ -129,6 +129,10 @@ void ConcatLayer::run()
   {
     concatenationGeneral<int32_t>();
   }
+  else if (_output->data_type() == OperandType::INT64)
+  {
+    concatenationGeneral<int64_t>();
+  }
   else
     throw std::runtime_error("Concat: unsupported data type");
 }
