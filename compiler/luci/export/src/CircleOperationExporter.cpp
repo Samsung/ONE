@@ -130,6 +130,7 @@ public:
   void visit(luci::CircleSoftmax *) final;
   void visit(luci::CircleSpaceToBatchND *) final;
   void visit(luci::CircleSpaceToDepth *) final;
+  void visit(luci::CircleSparseToDense *) final;
   void visit(luci::CircleSplit *) final;
   void visit(luci::CircleSplitV *) final;
   void visit(luci::CircleSqrt *) final;
@@ -1429,6 +1430,23 @@ void OperationExporter::visit(luci::CircleSpaceToDepth *node)
   auto options = CreateSpaceToDepthOptions(builder);
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_SpaceToDepthOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleSparseToDense *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPARSE_TO_DENSE);
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->indices()), get_tensor_index(node->output_shape()),
+      get_tensor_index(node->values()), get_tensor_index(node->default_value())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSparseToDenseOptions(builder, node->validate_indices());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SparseToDenseOptions, options.Union());
+
   gd._operators.push_back(op_offset);
 }
 
