@@ -7,7 +7,7 @@ list(APPEND TFLITE_RUN_SRCS "src/args.cc")
 list(APPEND TFLITE_RUN_SRCS "src/tensor_dumper.cc")
 list(APPEND TFLITE_RUN_SRCS "src/tensor_loader.cc")
 
-nnfw_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED program_options)
 
 add_executable(tflite_run ${TFLITE_RUN_SRCS})
 target_include_directories(tflite_run PRIVATE src)

@@ -10,7 +10,7 @@ list(APPEND NNPACKAGE_RUN_SRCS "src/nnpackage_run.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
 
-nnfw_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
 nnfw_find_package(HDF5 COMPONENTS CXX QUIET)
 
