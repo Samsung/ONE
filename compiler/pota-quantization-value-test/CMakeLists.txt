@@ -105,7 +105,7 @@ add_custom_command(
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
 # This enforces CMake to generate all the dependencies during "build" phase
-add_custom_target(quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} pota-quantization-value-test_python_deps)
+add_custom_target(pota_quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} pota-quantization-value-test_python_deps)
 
 # Run tests
 add_test(
