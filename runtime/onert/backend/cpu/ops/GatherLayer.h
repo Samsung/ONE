@@ -45,6 +45,9 @@ public:
   void run();
 
 private:
+  template <typename OpType> void runByInputType();
+
+private:
   const IPortableTensor *_input;
   const IPortableTensor *_indices;
   IPortableTensor *_output;
