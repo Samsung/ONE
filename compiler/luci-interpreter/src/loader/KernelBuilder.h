@@ -48,6 +48,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleDepthwiseConv2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleElu *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleFullyConnected *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleIf *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleL2Normalize *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleL2Pool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLeakyRelu *node) override;

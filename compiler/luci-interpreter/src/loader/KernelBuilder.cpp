@@ -24,6 +24,7 @@
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
+#include "kernels/If.h"
 #include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
@@ -232,6 +233,27 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
+{
+  auto output_nodes = collectOutputNodes<luci::CircleIfOut>(node);
+  assert(node->arity() == 1 + node->input_count());
+  assert(output_nodes.size() == static_cast<size_t>(node->output_count()));
+
+  const Tensor *cond = getInputTensor(node->cond());
+  std::vector<const Tensor *> inputs(node->input_count());
+  for (uint32_t i = 0; i < node->input_count(); ++i)
+  {
+    inputs[i] = getInputTensor(node->input(i));
+  }
+  std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
+
+  RuntimeGraph *then_graph = getRuntimeGraph(node->then_graph());
+  RuntimeGraph *else_graph = getRuntimeGraph(node->else_graph());
+
+  return std::make_unique<kernels::If>(cond, std::move(inputs), std::move(outputs), then_graph,
+                                       else_graph);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node)
