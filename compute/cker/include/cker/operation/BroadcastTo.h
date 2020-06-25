@@ -75,7 +75,7 @@ template <typename Device, typename T> struct BroadcastTo
 
   template <int NDIMS>
   void ReshapeAndBCast(const Device &device, Tensor &output_tensor, const Tensor &input_tensor,
-                       const helper::BCast &bcast) const
+                       const BCast &bcast) const
   {
     const bool can_use_32bit = std::is_same<Eigen::GpuDevice, Device>::value &&
                                output_tensor.shape.FlatSize() < kint32max &&
@@ -84,13 +84,13 @@ template <typename Device, typename T> struct BroadcastTo
     {
       DoBCast32Bit<NDIMS>(device, output_tensor.template shaped<T, NDIMS>(bcast.result_shape()),
                           input_tensor.template shaped<T, NDIMS>(bcast.x_reshape()),
-                          helper::BCast::ToIndexArrayType<int, NDIMS>(bcast.x_bcast()));
+                          BCast::ToIndexArrayType<int, NDIMS>(bcast.x_bcast()));
     }
     else
     {
       DoBCast<NDIMS>(device, output_tensor.template shaped<T, NDIMS>(bcast.result_shape()),
                      input_tensor.template shaped<T, NDIMS>(bcast.x_reshape()),
-                     helper::BCast::ToIndexArrayType<Eigen::DenseIndex, NDIMS>(bcast.x_bcast()));
+                     BCast::ToIndexArrayType<Eigen::DenseIndex, NDIMS>(bcast.x_bcast()));
     }
   }
 
@@ -98,8 +98,7 @@ template <typename Device, typename T> struct BroadcastTo
   //               rank(input_shape) <= rank(output_shape)  &&
   //               output_shape.num_elements() > 0.
   void operator()(const Device &device, Tensor &output_tensor, const Shape &output_shape,
-                  const Tensor &input_tensor, const Shape &input_shape,
-                  const helper::BCast &bcast) const
+                  const Tensor &input_tensor, const Shape &input_shape, const BCast &bcast) const
   {
     const int ndims = bcast.y_reshape().size();
     switch (ndims)
@@ -165,13 +164,13 @@ inline void BroadcastTo(const Shape &input_shape, T *input_data, const Shape &ou
                                                        input_tensor.scalar<T>());
   }
 
-  helper::BCast bcast(helper::BCast::FromShape(input_shape), helper::BCast::FromShape(output_shape),
-                      /*fewer_dims_optimization=*/true);
+  BCast bcast(BCast::FromShape(input_shape), BCast::FromShape(output_shape),
+              /*fewer_dims_optimization=*/true);
 
   // Predict TRUE.
   assert(bcast.IsValid());
   // should be same.
-  assert(helper::BCast::ToShape(bcast.output_shape()) == output_shape);
+  assert(BCast::ToShape(bcast.output_shape()) == output_shape);
 
   functor::BroadcastTo<Eigen::ThreadPoolDevice, T>()(device, output_tensor, output_shape,
                                                      input_tensor, input_shape, bcast);

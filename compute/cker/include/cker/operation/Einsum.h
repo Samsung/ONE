@@ -22,8 +22,8 @@
 #include "cker/Shape.h"
 #include "cker/Utils.h"
 
-#include "cker/operation/EinsumHelper/Tensor.h"
-#include "cker/operation/EinsumHelper/MatmulBCast.h"
+#include "cker/operation/Helper/Tensor.h"
+#include "cker/operation/Helper/MatmulBCast.h"
 
 #include "Transpose.h"
 #include "BatchMatMul.h"
@@ -44,7 +44,7 @@ namespace functor
 
 template <typename Device, typename T, int N> struct StrideFunctor
 {
-  void operator()(const Device &d, typename TTypes<T, N>::Tensor input,
+  void operator()(const Device &d, typename TTypes<T, N>::ConstTensor input,
                   const std::vector<int32_t> &strides, typename TTypes<T, N>::Tensor output)
   {
 
@@ -64,7 +64,7 @@ template <typename Device, typename T, int N> struct StrideFunctor
 
 template <typename Device, typename T, int N> struct InflateFunctor
 {
-  void operator()(const Device &d, typename TTypes<T, N>::Tensor input,
+  void operator()(const Device &d, typename TTypes<T, N>::ConstTensor input,
                   const std::vector<int32_t> &strides, typename TTypes<T, N>::Tensor output)
   {
 
@@ -209,7 +209,7 @@ public:
     }
 
     const int num_inputs = input_shapes.size();
-    std::vector<InputTensor> inputs(num_inputs);
+    std::vector<InputTensor<float>> inputs(num_inputs);
     for (int i = 0; i < num_inputs; i++)
     {
       inputs[i].shape.ReplaceWith(input_shapes[i].DimensionsCount(), input_shapes[i].DimsData());
@@ -238,8 +238,8 @@ public:
     for (int i = 0; i < num_inputs; ++i)
     {
       bool temp_swap_free_and_contract = false;
-      reduceOperand(inputs[i], label_types, input_label_counts[i], &input_labels[i],
-                    &free_labels[i], &temp_swap_free_and_contract, &inputs_reduced[i]);
+      reduceOperand<float>(inputs[i], label_types, input_label_counts[i], &input_labels[i],
+                           &free_labels[i], &temp_swap_free_and_contract, &inputs_reduced[i]);
       swap_free_and_contract[i] = temp_swap_free_and_contract;
     }
 
@@ -293,8 +293,8 @@ public:
     // TODO(anudhyan): It's possible that Eigen's contract and inflate can be
     // chained here to avoid materializing an intermediate.
     Tensor output_inflated;
-    strideOrInflate(contraction_output, result_labels, output_label_counts,
-                    true /* should_inflate */, &output_inflated);
+    strideOrInflate<float>(contraction_output, result_labels, output_label_counts,
+                           true /* should_inflate */, &output_inflated);
 
     if (output_inflated.shape.DimensionsCount() > contraction_output.shape.DimensionsCount())
     {
@@ -329,8 +329,15 @@ public:
       // We have found the leftmost occurrence. The next one would be adjacent.
       label_to_position[output_labels[i]] += 1;
     }
+
+    InputTensor<float> temp_inflated;
+    temp_inflated.shape.ReplaceWith(output_inflated.shape.DimensionsCount(),
+                                    output_inflated.shape.DimsData());
+    temp_inflated.buffer = (reinterpret_cast<const float *>(output_inflated.buffer));
+    ;
+
     Tensor output;
-    transposeOperand(output_inflated, output_permutation, &output);
+    transposeOperand<float>(temp_inflated, output_permutation, &output);
 
     memcpy(output_data, output.buffer, output_shape.FlatSize() * sizeof(float));
 
@@ -434,7 +441,8 @@ private:
     }
   }
 
-  void processDimensions(const std::vector<InputTensor> &inputs, OperandLabels *input_labels,
+  template <typename T>
+  void processDimensions(const std::vector<InputTensor<T>> &inputs, OperandLabels *input_labels,
                          Labels *output_labels, std::vector<DimensionType> *label_types,
                          OperandLabelCounts *input_label_counts, LabelCounts *output_label_counts,
                          LabelToDimSizes *label_to_dim_sizes)
@@ -552,7 +560,8 @@ private:
     label_counts->resize(num_named_labels + num_bcast_dims, 1);
   }
 
-  void reduceOperand(const InputTensor &input, const std::vector<DimensionType> &label_types,
+  template <typename T>
+  void reduceOperand(const InputTensor<T> &input, const std::vector<DimensionType> &label_types,
                      const LabelCounts &label_counts, Labels *labels, Labels *free_labels,
                      bool *swap_free_and_contract, Tensor *output)
   {
@@ -579,15 +588,15 @@ private:
       });
     }
     // Transpose the input so that DimensionTypes are in order.
-    transposeOperand(input, permutation, &input_transposed);
+    transposeOperand<T>(input, permutation, &input_transposed);
 
     permuteLabels(permutation, labels);
 
     // Take the generalized diagonal for dimensions with repeated axis labels.
     Tensor input_deduped;
     labels->erase(std::unique(labels->begin(), labels->end()), labels->end());
-    strideOrInflate(input_transposed, *labels, label_counts, false /* should_inflate */,
-                    &input_deduped);
+    strideOrInflate<T>(input_transposed, *labels, label_counts, false /* should_inflate */,
+                       &input_deduped);
 
     // Reshape denotes the rank-5 shape [broadcast, batch, free, contract,
     // reduce] where we've compacted the dimensions of each DimensionType.
@@ -629,8 +638,8 @@ private:
 
     allocateTemp(output_shape, output);
 
-    using Reducer = Eigen::internal::SumReducer<float>;
-    using Index = typename TTypes<float>::Tensor::Index;
+    using Reducer = Eigen::internal::SumReducer<T>;
+    using Index = typename TTypes<T>::Tensor::Index;
 
     const Eigen::ThreadPoolDevice &device = *eigen_support::GetThreadPoolDevice();
 
@@ -638,8 +647,8 @@ private:
     const int32_t output_size =
         reshape[kBroadcasting] * reshape[kBatch] * reshape[kFree] * reshape[kContract];
     functor::ReduceFunctor<Eigen::ThreadPoolDevice, Reducer>::Reduce(
-        device, output->shaped<1>({output_size}),
-        input_deduped.shaped<2>({output_size, reshape[kReduce]}), Eigen::array<Index, 1>({1}),
+        device, output->shaped<T, 1>({output_size}),
+        input_deduped.shaped<T, 2>({output_size, reshape[kReduce]}), Eigen::array<Index, 1>({1}),
         Reducer());
   }
 
@@ -662,7 +671,8 @@ private:
   }
 
   template <typename T>
-  void transposeOperand(const T &input, const std::vector<int32_t> &permutation, Tensor *output)
+  void transposeOperand(const InputTensor<T> &input, const std::vector<int32_t> &permutation,
+                        Tensor *output)
   {
     if (!shouldTranspose(input.shape, permutation))
     {
@@ -682,8 +692,8 @@ private:
       return;
     }
 
-    temp_operand.emplace_back(std::make_unique<float[]>(transposed_shape.FlatSize()));
-    float *new_buffer = temp_operand.back().get();
+    temp_operand.emplace_back(std::make_unique<T[]>(transposed_shape.FlatSize()));
+    T *new_buffer = temp_operand.back().get();
 
     TransposeParams transpose_params;
     transpose_params.perm_count = permutation.size();
@@ -692,7 +702,7 @@ private:
       transpose_params.perm[i] = permutation[i];
     }
 
-    Transpose(transpose_params, input.shape, input.buffer, transposed_shape, new_buffer);
+    Transpose<T>(transpose_params, input.shape, input.buffer, transposed_shape, new_buffer);
 
     output->shape.ReplaceWith(transposed_shape.DimensionsCount(), transposed_shape.DimsData());
     output->buffer = new_buffer;
@@ -710,7 +720,8 @@ private:
     return false;
   }
 
-  void copyFrom(const InputTensor &input, const Shape &shape, Tensor *output)
+  template <typename T>
+  void copyFrom(const InputTensor<T> &input, const Shape &shape, Tensor *output)
   {
     Tensor temp_tensor;
     temp_tensor.shape.ReplaceWith(input.shape.DimensionsCount(), input.shape.DimsData());
@@ -742,6 +753,7 @@ private:
 
   // If there are repeated labels in either the input or output, then this
   // strides the input (e.g. iii->i) or inflates it (e.g. i->iii), respectively.
+  template <typename T>
   void strideOrInflate(const Tensor &input, const Labels &labels, const LabelCounts &label_counts,
                        const bool should_inflate, Tensor *output)
   {
@@ -793,24 +805,24 @@ private:
 
     switch (reshape.size())
     {
-#define NDIMS_CASE(N)                                                                          \
-  case N:                                                                                      \
-  {                                                                                            \
-    if (should_inflate)                                                                        \
-    {                                                                                          \
-      auto output_map = output->shaped<N>(reshape);                                            \
-      auto input_map = input.shaped<N>(strided_shape_dims);                                    \
-      functor::InflateFunctor<Eigen::ThreadPoolDevice, float, N>()(device, input_map, strides, \
-                                                                   output_map);                \
-    }                                                                                          \
-    else                                                                                       \
-    {                                                                                          \
-      auto input_map = input.shaped<N>(reshape);                                               \
-      auto output_map = output->shaped<N>(strided_shape_dims);                                 \
-      functor::StrideFunctor<Eigen::ThreadPoolDevice, float, N>()(device, input_map, strides,  \
-                                                                  output_map);                 \
-    }                                                                                          \
-  }                                                                                            \
+#define NDIMS_CASE(N)                                                                      \
+  case N:                                                                                  \
+  {                                                                                        \
+    if (should_inflate)                                                                    \
+    {                                                                                      \
+      auto output_map = output->shaped<T, N>(reshape);                                     \
+      auto input_map = input.shaped<T, N>(strided_shape_dims);                             \
+      functor::InflateFunctor<Eigen::ThreadPoolDevice, T, N>()(device, input_map, strides, \
+                                                               output_map);                \
+    }                                                                                      \
+    else                                                                                   \
+    {                                                                                      \
+      auto input_map = input.shaped<T, N>(reshape);                                        \
+      auto output_map = output->shaped<T, N>(strided_shape_dims);                          \
+      functor::StrideFunctor<Eigen::ThreadPoolDevice, T, N>()(device, input_map, strides,  \
+                                                              output_map);                 \
+    }                                                                                      \
+  }                                                                                        \
   break;
       NDIMS_CASE(1);
       NDIMS_CASE(2);
@@ -880,7 +892,8 @@ private:
     if (lhs.shape.FlatSize() == 0 || rhs.shape.FlatSize() == 0)
     {
       functor::SetZeroFunctor<Eigen::ThreadPoolDevice, float> set_zero;
-      set_zero(device, typename TTypes<float, 1>::Tensor(output->buffer, output->shape.FlatSize()));
+      set_zero(device,
+               typename TTypes<float, 1>::Tensor(output->base<float>(), output->shape.FlatSize()));
       return;
     }
 
@@ -890,8 +903,8 @@ private:
     // LaunchBatchMatMul::Launch(lhs, rhs, adj_x, adj_y, bcast, &output_reshaped);
     BatchMatMul batchMatMul;
     batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y);
-    batchMatMul(lhs.shape, lhs.buffer, rhs.shape, rhs.buffer, adj_x, adj_y, output_reshaped.shape,
-                output_reshaped.buffer);
+    batchMatMul(lhs.shape, lhs.base<float>(), rhs.shape, rhs.base<float>(), adj_x, adj_y,
+                output_reshaped.shape, output_reshaped.base<float>());
   }
 
   void reshapeToRank3(const Tensor &input, int batch_size, Tensor *output)
