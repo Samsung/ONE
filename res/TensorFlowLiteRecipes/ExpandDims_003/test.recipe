@@ -1,0 +1,30 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 }
+}
+
+operand {
+  name: "ifm2"
+  type: INT32
+  shape { }
+  filler {
+    tag: "constant"
+    arg: "2"
+  }
+}
+
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 dim: 1 }
+}
+
+operation {
+  type: "ExpandDims"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+output: "ofm"
