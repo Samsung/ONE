@@ -33,7 +33,7 @@ Here's a figure of how those data structures are oraganized.
 
 `Compiler` is the main class of this module. Everything starts from it.
 
-What it does is making models executable. It schedules run order and assigns a backend for each operation. Here are major tasks of compilation.
+What it does is making models executable. It schedules run order and assigns a backend for each operation. Here are major phases of compilation.
 
 #### 1. Lowering
 
