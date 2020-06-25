@@ -33,8 +33,8 @@ namespace
 {
 
 template <typename T>
-void evalLogic(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-               T init_value, nnfw::cker::Reduce &reduce_kernel,
+void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std::vector<int> &axes,
+               bool keep_dims, T init_value, nnfw::cker::Reduce &reduce_kernel,
                T reducer(const T current, const T in))
 {
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
@@ -49,8 +49,8 @@ void evalLogic(const Tensor *input, Tensor *output, const std::vector<int> &axes
 }
 
 template <typename T>
-void evalType(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-              nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+void evalType(const IPortableTensor *input, IPortableTensor *output, const std::vector<int> &axes,
+              bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -79,8 +79,9 @@ void evalType(const Tensor *input, Tensor *output, const std::vector<int> &axes,
 
 // Template specialization for bool type
 template <>
-void evalType<bool>(const Tensor *input, Tensor *output, const std::vector<int> &axes,
-                    bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+void evalType<bool>(const IPortableTensor *input, IPortableTensor *output,
+                    const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
+                    ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -100,8 +101,8 @@ void evalType<bool>(const Tensor *input, Tensor *output, const std::vector<int> 
 }
 
 template <ReduceType reduce_type>
-void evalGeneric(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-                 nnfw::cker::Reduce &reduce_kernel)
+void evalGeneric(const IPortableTensor *input, IPortableTensor *output,
+                 const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
 {
   switch (input->data_type())
   {
@@ -126,8 +127,8 @@ ReduceLayer::ReduceLayer()
 
 ReduceLayer::~ReduceLayer() = default;
 
-void ReduceLayer::configure(const Tensor *input, Tensor *output, ReduceType reduceType,
-                            const std::vector<int> &axes, bool keep_dims)
+void ReduceLayer::configure(const IPortableTensor *input, IPortableTensor *output,
+                            ReduceType reduceType, const std::vector<int> &axes, bool keep_dims)
 {
   _input = input;
   _output = output;

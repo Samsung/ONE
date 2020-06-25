@@ -62,8 +62,8 @@ template <typename T> void UnpackLayer::unpackImpl()
                         getTensorShape(_outputs[0]), outputPtrs.data());
 }
 
-void UnpackLayer::configure(const Tensor *input, uint32_t axis, int32_t num,
-                            std::vector<Tensor *> &outputs)
+void UnpackLayer::configure(const IPortableTensor *input, uint32_t axis, int32_t num,
+                            std::vector<IPortableTensor *> &outputs)
 {
   assert(input != nullptr);
   assert(outputs.size() > 0);

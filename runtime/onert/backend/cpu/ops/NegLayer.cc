@@ -42,7 +42,7 @@ void NegLayer::negFloat32()
 
 void NegLayer::negQuant8() { throw std::runtime_error{"NYI"}; }
 
-void NegLayer::configure(const Tensor *input, Tensor *output)
+void NegLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

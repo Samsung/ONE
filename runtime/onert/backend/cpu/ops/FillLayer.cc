@@ -34,7 +34,8 @@ FillLayer::FillLayer() : _input(nullptr), _value(nullptr), _output(nullptr)
   // DO NOTHING
 }
 
-void FillLayer::configure(const Tensor *input, const Tensor *value, Tensor *output)
+void FillLayer::configure(const IPortableTensor *input, const IPortableTensor *value,
+                          IPortableTensor *output)
 {
   _input = input;
   _value = value;

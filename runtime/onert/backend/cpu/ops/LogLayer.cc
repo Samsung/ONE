@@ -42,7 +42,7 @@ void LogLayer::logFloat32()
 
 void LogLayer::logQuant8() { throw std::runtime_error{"NYI"}; }
 
-void LogLayer::configure(const Tensor *input, Tensor *output)
+void LogLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_STRIDEDSLICELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_STRIDEDSLICELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -37,8 +37,9 @@ public:
   StridedSliceLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *begin, const Tensor *end, const Tensor *strides,
-                 Tensor *output, const int32_t begin_mask, const int32_t end_mask,
+  void configure(const IPortableTensor *input, const IPortableTensor *begin,
+                 const IPortableTensor *end, const IPortableTensor *strides,
+                 IPortableTensor *output, const int32_t begin_mask, const int32_t end_mask,
                  const int32_t shrink_axis_mask);
   void run();
 
@@ -46,11 +47,11 @@ private:
   template <typename T> void stridedSliceImpl();
 
 private:
-  const Tensor *_input;
-  const Tensor *_begin;
-  const Tensor *_end;
-  const Tensor *_strides;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_begin;
+  const IPortableTensor *_end;
+  const IPortableTensor *_strides;
+  IPortableTensor *_output;
 
   int32_t _begin_mask;
   int32_t _ellipsis_mask;

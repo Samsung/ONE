@@ -35,7 +35,8 @@ using OpType = onert::ir::operation::Comparison::ComparisonType;
 using namespace onert::backend::cpu;
 
 template <typename T>
-void compareScalar(const Tensor *lhs, const Tensor *rhs, Tensor *output, OpType op_type)
+void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                   OpType op_type)
 {
   bool requires_broadcast = !HaveSameShapes(lhs, rhs);
 
@@ -138,8 +139,8 @@ CompareLayer::CompareLayer()
 
 void CompareLayer::compareQuant8() { throw std::runtime_error{"Compare NYI for quantized"}; }
 
-void CompareLayer::configure(const Tensor *lhs, const Tensor *rhs, const OpType op_type,
-                             Tensor *output)
+void CompareLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                             const OpType op_type, IPortableTensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_EXPLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_EXPLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -40,13 +40,13 @@ public:
 
   void expQuant8();
 
-  void configure(const Tensor *input, Tensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

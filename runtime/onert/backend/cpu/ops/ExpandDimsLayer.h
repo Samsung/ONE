@@ -17,7 +17,7 @@
 #ifndef ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
 #define ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,14 +36,15 @@ public:
   ExpandDimsLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *axis, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *axis,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_axis;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_axis;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

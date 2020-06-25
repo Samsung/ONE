@@ -50,8 +50,9 @@ template <typename T> void StridedSliceLayer::stridedSliceImpl()
                            reinterpret_cast<T *>(_output->buffer()));
 }
 
-void StridedSliceLayer::configure(const Tensor *input, const Tensor *begin, const Tensor *end,
-                                  const Tensor *strides, Tensor *output, const int32_t begin_mask,
+void StridedSliceLayer::configure(const IPortableTensor *input, const IPortableTensor *begin,
+                                  const IPortableTensor *end, const IPortableTensor *strides,
+                                  IPortableTensor *output, const int32_t begin_mask,
                                   const int32_t end_mask, const int32_t shrink_axis_mask)
 {
   _input = input;

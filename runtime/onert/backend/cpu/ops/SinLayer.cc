@@ -40,7 +40,7 @@ void SinLayer::sinFloat32()
 
 void SinLayer::sinQuant8() { throw std::runtime_error{"NYI"}; }
 
-void SinLayer::configure(const Tensor *input, Tensor *output)
+void SinLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

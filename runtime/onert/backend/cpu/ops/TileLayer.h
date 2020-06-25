@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_TILELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_TILELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -40,14 +40,15 @@ public:
 
   void tileQuant8();
 
-  void configure(const Tensor *input, const Tensor *_multipliers, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *_multipliers,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_multipliers;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_multipliers;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

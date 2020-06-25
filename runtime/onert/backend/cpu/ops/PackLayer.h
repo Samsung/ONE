@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_PACKLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_PACKLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -38,12 +38,13 @@ public:
 public:
   template <typename T> void packImpl();
 
-  void configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output);
+  void configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,
+                 IPortableTensor *output);
   void run();
 
 private:
-  std::vector<const Tensor *> _inputs;
-  Tensor *_output;
+  std::vector<const IPortableTensor *> _inputs;
+  IPortableTensor *_output;
   int32_t _axis;
 };
 

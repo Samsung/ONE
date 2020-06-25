@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -39,14 +39,15 @@ public:
   }
 
 public:
-  void configure(const Tensor *input, const Tensor *indices, Tensor *output, int32_t axis);
+  void configure(const IPortableTensor *input, const IPortableTensor *indices,
+                 IPortableTensor *output, int32_t axis);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_indices;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_indices;
+  IPortableTensor *_output;
 
   int32_t _axis;
 };

@@ -46,7 +46,8 @@ void LogicalOrLayer::lorBool8()
   }
 }
 
-void LogicalOrLayer::configure(const Tensor *lhs, const Tensor *rhs, Tensor *output)
+void LogicalOrLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                               IPortableTensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);
