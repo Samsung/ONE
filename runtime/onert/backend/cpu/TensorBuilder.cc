@@ -99,6 +99,12 @@ std::shared_ptr<IPortableTensor> TensorBuilder::portableAt(const ir::OperandInde
   return _tensor_reg->getPortableTensor(ind);
 }
 
+bool TensorBuilder::setExternalTensor(const ir::OperandIndex &ind,
+                                      const std::shared_ptr<IPortableTensor> &tensor)
+{
+  return _tensor_reg->setExternalTensor(ind, tensor);
+}
+
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)

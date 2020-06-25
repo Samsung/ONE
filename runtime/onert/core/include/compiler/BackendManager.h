@@ -22,6 +22,7 @@
 
 #include "ir/Operands.h"
 #include "backend/Backend.h"
+#include "backend/controlflow/Backend.h"
 
 namespace onert
 {
@@ -40,7 +41,7 @@ public:
 public:
   backend::Backend *get(const std::string &key);
   const backend::Backend *get(const std::string &key) const;
-  const backend::Backend *getControlflow() const;
+  const backend::controlflow::Backend *getControlflow() const;
   const std::vector<const backend::Backend *> getAll() const
   {
     std::vector<const backend::Backend *> v;
@@ -64,6 +65,8 @@ private:
 private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
+  backend::controlflow::Backend *_controlflow;
+
   /**
    * @brief load controlflow backend
    *

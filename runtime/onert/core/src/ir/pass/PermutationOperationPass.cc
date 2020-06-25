@@ -19,6 +19,7 @@
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 #include "ir/Graph.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -199,7 +200,9 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       lower_info->addUsePermuteFactor(new_factor);
 
       // Whether if node's input is an input of model or a constant
-      if (_graph.operands().at(input).getDef().size() == 0)
+      if (_graph.operands().at(input).getDef().size() == 0 &&
+          (lower_info->def_factors().size() == 1 &&
+           lower_info->def_factors().getOnlyElement() == removed_factor))
       {
         assert(_graph.getInputs().contains(input) || _graph.operands().at(input).isConstant());
         lower_info->removeDefPermuteFactor(removed_factor);

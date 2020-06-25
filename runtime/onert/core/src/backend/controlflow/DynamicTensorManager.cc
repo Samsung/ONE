@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "backend/cpu_common/DynamicTensorManager.h"
+#include "DynamicTensorManager.h"
 
 #include "util/logging.h"
 
@@ -22,19 +22,34 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu_common
+namespace controlflow
 {
 
-DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _dynamic_mem_mgr{new DynamicMemoryManager()}, _tensors{reg}
+DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
+                                           const std::shared_ptr<UserTensorRegistry> &user_reg)
+    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{reg},
+      _user_tensors{user_reg}
 {
   // DO NOTHING
 }
 
 void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
-  VERBOSE_F() << ind << std::endl;
+  VERBOSE_F() << "CF " << ind << std::endl;
 
+  // NOTE Handle user tensors first
+  auto user_tensor = _user_tensors->getManagedTensor(ind);
+  if (user_tensor)
+  {
+    // User tensors cannot be reallocated.
+    auto buffer_size = user_tensor->total_size();
+    auto new_size = new_shape.num_elements() * sizeOfDataType(user_tensor->data_type());
+    if (buffer_size < new_size)
+      throw std::runtime_error{"ExecutorBase: output buffer size is less than output tensor size"};
+    user_tensor->setShape(new_shape);
+  }
+
+  // NOTE Then handle managed tensors
   auto tensor = _tensors->getManagedTensor(ind);
   assert(tensor);
 
@@ -89,7 +104,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        ir::Layout backend_layout)
 {
   assert(_tensors->getManagedTensor(ind) == nullptr);
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
+  auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout);
   _tensors->setManagedTensor(ind, tensor);
 }
 
@@ -117,13 +132,10 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   auto &input_set = find->second;
   for (auto input_ind : input_set)
   {
-    auto *tensor = _tensors->getManagedTensor(input_ind).get();
-    if (!tensor->is_dynamic())
+    if (!_tensors->getManagedTensor(input_ind)->is_dynamic())
       continue;
 
     _dynamic_mem_mgr->deallocate(input_ind);
-    tensor->resetBuffer();
-
     VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
                                   << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
   }
@@ -131,17 +143,14 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  auto *tensor = _tensors->getManagedTensor(output_ind).get();
-  if (!tensor->is_dynamic())
+  if (!_tensors->getManagedTensor(output_ind)->is_dynamic())
     return;
 
   _dynamic_mem_mgr->deallocate(output_ind);
-  tensor->resetBuffer();
-
   VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
                                 << " (output of a subgraph)" << std::endl;
 }
 
-} // namespace cpu_common
+} // namespace controlflow
 } // namespace backend
 } // namespace onert

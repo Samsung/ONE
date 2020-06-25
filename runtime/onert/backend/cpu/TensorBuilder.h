@@ -82,6 +82,8 @@ public:
    */
   std::shared_ptr<cpu_common::Tensor> at(const ir::OperandIndex &ind);
   std::shared_ptr<IPortableTensor> portableAt(const ir::OperandIndex &ind);
+  bool setExternalTensor(const ir::OperandIndex &ind,
+                         const std::shared_ptr<IPortableTensor> &tensor) override;
 
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 

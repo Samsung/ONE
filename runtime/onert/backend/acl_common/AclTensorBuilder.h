@@ -63,6 +63,7 @@ public:
   void notifyLastUse(const ir::OperandIndex &) override;
 
   bool isRegistered(const ir::OperandIndex &) const override;
+  std::shared_ptr<backend::ITensorRegistry> tensorRegistry() override { return nullptr; }
 
   void prepare(void) override;
   void allocate() override;

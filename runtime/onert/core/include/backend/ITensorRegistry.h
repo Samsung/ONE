@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_ITENSOR_REGISTRY__
 #define __ONERT_BACKEND_ITENSOR_REGISTRY__
 
+#include <memory>
+
 #include "ir/Index.h"
 #include "backend/ITensor.h"
 
@@ -37,6 +39,7 @@ struct ITensorRegistry
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
   virtual std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &) = 0;
+  virtual std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &) = 0;
 };
 
 } // namespace backend
@@ -70,6 +73,11 @@ public:
     return getManagedTensor(ind);
   }
 
+  std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &ind) override
+  {
+    return getManagedTensor(ind);
+  }
+
   std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
   {
     auto external_tensor = _external.find(ind);
@@ -89,14 +97,17 @@ public:
     return nullptr;
   }
 
-  void setExternalTensor(const ir::OperandIndex &ind,
+  bool setExternalTensor(const ir::OperandIndex &ind,
                          const std::shared_ptr<IPortableTensor> &tensor)
   {
-    auto itr = _managed.find(ind);
-    if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
-      throw std::runtime_error{
-          "Tried to set an external tensor but an managed tensor already exists."};
+    // TODO Uncomment this as two tensors for an index is not allowed.
+    //      But now it is temporarily allowed as a workaround. External one hides Managed one.
+    // auto itr = _managed.find(ind);
+    // if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
+    //  throw std::runtime_error{
+    //      "Tried to set an external tensor but an managed tensor already exists."};
     _external[ind] = tensor;
+    return true;
   }
 
   void setManagedTensor(const ir::OperandIndex &ind, const std::shared_ptr<T_Tensor> &tensor)

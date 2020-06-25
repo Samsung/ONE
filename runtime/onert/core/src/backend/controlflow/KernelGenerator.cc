@@ -22,6 +22,7 @@
 #include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
 #include "exec/ExecutorBase.h"
+#include "exec/FunctionSequence.h"
 
 namespace onert
 {
@@ -30,8 +31,9 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph)
-    : _graph{graph}, _tensor_builder_set{}, _executor_map{nullptr}
+KernelGenerator::KernelGenerator(const ir::Graph &graph,
+                                 const std::shared_ptr<TensorBuilder> &tensor_builder)
+    : _graph{graph}, _tensor_builder{tensor_builder}, _tensor_builder_set{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_builder_set);
@@ -41,7 +43,17 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph)
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  assert(_tensor_builder->dynamicTensorManager());
+  assert(_tensor_builder->tensorRegistry());
+
+  auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
+  auto dyn_shape_inferer = std::make_unique<exec::DynamicInferer>(
+      _graph.operands(), dyn_tensor_manager, _tensor_builder->tensorRegistry());
+
+  // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
+  _return_fn_seq = std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+      op_seq, _graph.operations(), std::move(dyn_shape_inferer), dyn_tensor_manager);
+
   for (const auto &op_idx : op_seq.operations())
   {
     const auto &node = _graph.operations().at(op_idx);
@@ -99,6 +111,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
   std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
   const auto output_tensor_builder = getTensorBuilder(output_index);
+  VERBOSE(PERMUTE_FIND_TB) << output_index << " -> " << output_tensor_builder.get() << std::endl;
   assert(output_tensor_builder != nullptr);
   if (output_tensor_builder->supportDynamicTensor())
   {
@@ -174,7 +187,8 @@ KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
   std::shared_ptr<backend::ITensorBuilder> ret;
   for (auto tensor_builder : _tensor_builder_set)
   {
-    auto tensor = tensor_builder->tensorAt(index);
+    auto reg = tensor_builder->tensorRegistry();
+    auto tensor = reg ? reg->getManagedITensor(index) : tensor_builder->tensorAt(index);
     if (tensor)
     {
       ret = tensor_builder;
