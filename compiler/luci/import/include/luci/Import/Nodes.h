@@ -66,6 +66,7 @@
 #include "Nodes/CircleLogSoftmax.h"
 #include "Nodes/CircleMaximum.h"
 #include "Nodes/CircleMaxPool2D.h"
+#include "Nodes/CircleMatrixDiag.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMinimum.h"
 #include "Nodes/CircleMirrorPad.h"

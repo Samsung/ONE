@@ -912,10 +912,23 @@ public:
   loco::NodeShape visit(const luci::CircleLogicalNot *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleLogicalOr *node) final { return use_x(node); }
-
+  
   loco::NodeShape visit(const luci::CircleLogistic *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleLogSoftmax *node) final { return use_logits(node); }
+
+  loco::NodeShape visit(const luci::CircleMatrixDiag *node) final
+  {
+    loco::TensorShape output_shape;
+
+    auto diagonal_shape = loco::shape_get(node->diagonal()).as<loco::TensorShape>();
+    auto rank = diagonal_shape.rank();
+
+    output_shape.rank(rank+1);
+    output_shape.dim(rank) = diagonal_shape.dim(rank-1);
+
+    return loco::NodeShape{output_shape};
+  }
 
   loco::NodeShape visit(const luci::CircleMaximum *node) final { return broadcast_xy(node); }
 
