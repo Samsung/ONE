@@ -27,57 +27,106 @@ namespace
 
 using namespace testing;
 
-TEST(AddTest, Float)
+// for quantized Add, the error shouldn't exceed step
+float GetTolerance(float min, float max)
 {
-  Shape base_shape = {2, 3, 1, 2};
-  std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
-  std::vector<std::vector<float>> test_outputs = {
-      {0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
-       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
-       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f},
-      {0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f},
-      {0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
-       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
-       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f},
-      {0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f}};
-  std::vector<float> input1_data{-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
-                                 1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
-  std::vector<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
-  for (size_t i = 0; i < test_shapes.size(); ++i)
+  float kQuantizedStep = (max - min) / 255.0;
+  return kQuantizedStep;
+}
+
+template <typename T>
+void Check(std::initializer_list<int32_t> input1_shape, std::initializer_list<int32_t> input2_shape,
+           std::initializer_list<int32_t> output_shape, std::initializer_list<float> input1_data,
+           std::initializer_list<float> input2_data, std::initializer_list<float> output_data)
+{
+  float min, max;
+  min =
+      std::min(input1_data) > std::min(input2_data) ? std::min(input2_data) : std::min(input1_data);
+  max =
+      std::max(input1_data) > std::max(input2_data) ? std::max(input1_data) : std::max(input2_data);
+  float kQuantizedTolerance = GetTolerance(min, max);
+  std::pair<float, int32_t> input_quant_param = quantizationParams<T>(min, max);
+  Tensor input1_tensor{getElementType<T>(),
+                       input1_shape,
+                       {{input_quant_param.first}, {input_quant_param.second}},
+                       ""};
+  Tensor input2_tensor{getElementType<T>(),
+                       input2_shape,
+                       {{input_quant_param.first}, {input_quant_param.second}},
+                       ""};
+  if (std::is_floating_point<T>::value)
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
-    Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-    AddParams params{};
-    params.activation = Activation::RELU;
-
-    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
-    kernel.configure();
-    kernel.execute();
-
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
-        << "With shape number " << i;
+    input1_tensor.writeData(input1_data.begin(), input1_data.size() * sizeof(T));
+    input2_tensor.writeData(input2_data.begin(), input2_data.size() * sizeof(T));
   }
-  // Re-run with exchanged inputs.
-  for (size_t i = 0; i < test_shapes.size(); ++i)
+  else
   {
-    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
-    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
-    Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-    AddParams params{};
-    params.activation = Activation::RELU;
-
-    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
-    kernel.configure();
-    kernel.execute();
-
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
-        << "With shape number " << i;
+    std::vector<T> quantized_input1_value =
+        quantize<T>(input1_data, input_quant_param.first, input_quant_param.second);
+    std::vector<T> quantized_input2_value =
+        quantize<T>(input2_data, input_quant_param.first, input_quant_param.second);
+    input1_tensor.writeData(quantized_input1_value.data(),
+                            quantized_input1_value.size() * sizeof(T));
+    input2_tensor.writeData(quantized_input2_value.data(),
+                            quantized_input2_value.size() * sizeof(T));
   }
+  std::pair<float, int32_t> output_quant_param = quantizationParams<T>(0, max * 2);
+  Tensor output_tensor =
+      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
+
+  AddParams params{};
+  params.activation = Activation::RELU;
+
+  Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  if (std::is_floating_point<T>::value)
+  {
+    EXPECT_THAT(extractTensorData<T>(output_tensor),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
+  else
+  {
+    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
+                              output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
+}
+
+template <typename T> class AddTest : public ::testing::Test
+{
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(AddTest, DataTypes);
+
+TYPED_TEST(AddTest, TotalTest)
+{
+  Check<TypeParam>(
+      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{1, 1, 3, 2}, /*output_shape=*/{2, 3, 3, 2},
+      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
+      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
+      /*output_data=*/{0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
+                       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
+                       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f});
+  Check<TypeParam>(
+      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{1, 3, 1, 2}, /*output_shape=*/{2, 3, 1, 2},
+      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
+      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
+      /*output_data=*/{0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f});
+  Check<TypeParam>(
+      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{2, 1, 3, 1}, /*output_shape=*/{2, 3, 3, 2},
+      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
+      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
+      /*output_data=*/{0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
+                       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
+                       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f});
+  Check<TypeParam>(
+      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{2, 3, 1, 1}, /*output_shape=*/{2, 3, 1, 2},
+      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
+      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
+      /*output_data=*/{0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f});
 }
 
 } // namespace

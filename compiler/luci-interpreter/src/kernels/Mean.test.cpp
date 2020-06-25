@@ -27,73 +27,92 @@ namespace
 
 using namespace testing;
 
-TEST(MeanTest, FloatKeepDims)
+// for quantized Add, the error shouldn't exceed step
+float GetTolerance(float min, float max)
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
-
-  std::vector<int32_t> axis_data{0, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({4, 3, 2}, input_data);
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({2}, axis_data);
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ReducerParams params{};
-  params.keep_dims = true;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-
-  std::vector<float> ref_output_data{10.5, 12.5, 14.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  float kQuantizedStep = (max - min) / 255.0;
+  return kQuantizedStep;
 }
 
-TEST(MeanTest, FloatKeepDims4DMean)
+template <typename T>
+void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> axis_shape,
+           std::initializer_list<int32_t> output_shape, std::initializer_list<float> input_data,
+           std::initializer_list<int32_t> axis_data, std::initializer_list<float> output_data,
+           bool keep_dims)
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
+  float kQuantizedTolerance = GetTolerance(0.0f, std::max<float>(input_data));
+  std::pair<float, int32_t> input_quant_param =
+      quantizationParams<T>(0.0f, std::max<float>(input_data));
 
-  std::vector<int32_t> axis_data{1, 2};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 3, 2}, input_data);
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({2}, axis_data);
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor input_tensor{getElementType<T>(),
+                      input_shape,
+                      {{input_quant_param.first}, {input_quant_param.second}},
+                      ""};
+  if (std::is_floating_point<T>::value)
+  {
+    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  }
+  else
+  {
+    std::vector<T> quantized_input_value =
+        quantize<T>(input_data, input_quant_param.first, input_quant_param.second);
+    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
+  }
+  Tensor axis_tensor{DataType::S32, axis_shape, {}, ""};
+  axis_tensor.writeData(axis_data.begin(), axis_data.size() * sizeof(int32_t));
+  Tensor output_tensor =
+      makeOutputTensor(getElementType<T>(), input_quant_param.first, input_quant_param.second);
 
   ReducerParams params{};
-  params.keep_dims = true;
+  params.keep_dims = keep_dims;
 
   Mean kernel(&input_tensor, &axis_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
-  std::vector<float> ref_output_data{6, 7, 18, 19};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  if (std::is_floating_point<T>::value)
+  {
+    EXPECT_THAT(extractTensorData<T>(output_tensor),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
+  else
+  {
+    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
+                              output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
 }
 
-TEST(MeanTest, FloatNotKeepDims)
+template <typename T> class MeanTest : public ::testing::Test
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
+};
 
-  std::vector<int32_t> axis_data{1, 0, -3, -3};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({4, 3, 2}, input_data);
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({4}, axis_data);
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(MeanTest, DataTypes);
 
-  ReducerParams params{};
-  params.keep_dims = false;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-
-  std::vector<float> ref_output_data{12, 13};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+TYPED_TEST(MeanTest, TotalTest)
+{
+  Check<TypeParam>(/*input_shape=*/{4, 3, 2}, /*axis_shape=*/{2}, /*output_shape=*/{1, 3, 1},
+                   /*input_data=*/{1.0,  2.0,  3.0,  4.0,  5.0,  6.0,   //
+                                   7.0,  8.0,  9.0,  10.0, 11.0, 12.0,  //
+                                   13.0, 14.0, 15.0, 16.0, 17.0, 18.0,  //
+                                   19.0, 20.0, 21.0, 22.0, 23.0, 24.0}, //
+                   /*axis_data=*/{0, 2},
+                   /*output_data=*/{10.5, 12.5, 14.5}, /*keep_dims=*/true);
+  Check<TypeParam>(/*input_shape=*/{2, 2, 3, 2}, /*axis_shape=*/{2}, /*output_shape=*/{2, 1, 1, 2},
+                   /*input_data=*/{1.0,  2.0,  3.0,  4.0,  5.0,  6.0,   //
+                                   7.0,  8.0,  9.0,  10.0, 11.0, 12.0,  //
+                                   13.0, 14.0, 15.0, 16.0, 17.0, 18.0,  //
+                                   19.0, 20.0, 21.0, 22.0, 23.0, 24.0}, //
+                   /*axis_data=*/{1, 2},
+                   /*output_data=*/{6, 7, 18, 19}, /*keep_dims=*/true);
+  Check<TypeParam>(/*input_shape=*/{4, 3, 2}, /*axis_shape=*/{4}, /*output_shape=*/{2},
+                   /*input_data=*/{1.0,  2.0,  3.0,  4.0,  5.0,  6.0,   //
+                                   7.0,  8.0,  9.0,  10.0, 11.0, 12.0,  //
+                                   13.0, 14.0, 15.0, 16.0, 17.0, 18.0,  //
+                                   19.0, 20.0, 21.0, 22.0, 23.0, 24.0}, //
+                   /*axis_data=*/{1, 0, -3, -3},
+                   /*output_data=*/{12, 13}, /*keep_dims=*/false);
 }
 
 } // namespace
