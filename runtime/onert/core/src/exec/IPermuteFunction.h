@@ -17,6 +17,11 @@
 #ifndef __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 #define __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 
+#include "feature/nchw/Reader.h"
+#include "feature/nchw/View.h"
+#include "feature/nhwc/Reader.h"
+#include "feature/nhwc/View.h"
+
 #include "backend/ITensor.h"
 #include "exec/IFunction.h"
 #include "ir/Index.h"
@@ -24,10 +29,6 @@
 #include <memory>
 #include <misc/feature/IndexIterator.h>
 #include <typeinfo>
-#include "util/feature/nchw/Reader.h"
-#include "util/feature/nchw/View.h"
-#include "util/feature/nhwc/Reader.h"
-#include "util/feature/nhwc/View.h"
 #include "util/Utils.h"
 #include <vector>
 
@@ -184,8 +185,8 @@ private:
                 shape.C = dst_tensor.dimension(1);
                 shape.H = dst_tensor.dimension(2);
                 shape.W = dst_tensor.dimension(3);
-                const util::feature::nhwc::Reader<T> from(&src_tensor);
-                util::feature::nchw::View<T> into(&dst_tensor);
+                const feature::nhwc::Reader<T> from(&src_tensor);
+                feature::nchw::View<T> into(&dst_tensor);
                 ::nnfw::misc::feature::iterate(shape)
                     << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                          const auto value = from.at(batch, row, col, ch);
@@ -200,8 +201,8 @@ private:
                 shape.C = src_tensor.dimension(1);
                 shape.H = src_tensor.dimension(2);
                 shape.W = src_tensor.dimension(3);
-                const util::feature::nchw::Reader<T> from(&src_tensor);
-                util::feature::nhwc::View<T> into(&dst_tensor);
+                const feature::nchw::Reader<T> from(&src_tensor);
+                feature::nhwc::View<T> into(&dst_tensor);
                 ::nnfw::misc::feature::iterate(shape)
                     << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                          const auto value = from.at(batch, ch, row, col);
