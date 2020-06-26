@@ -118,6 +118,7 @@
 #include "CustomOp/AddV2.h"
 #include "CustomOp/All.h"
 #include "CustomOp/BatchMatMulV2.h"
+#include "CustomOp/MatMul.h"
 #include "CustomOp/MatrixBandPart.h"
 
 #endif // __OP_CHEFS_H__
