@@ -96,6 +96,7 @@ public:
   void visit(const ir::operation::Tile &node) override;
   void visit(const ir::operation::LogicalOr &node) override;
   void visit(const ir::operation::Range &node) override;
+  void visit(const ir::operation::MatrixBandPart &node) override;
 
 private:
   // TODO Remove _ctx field
