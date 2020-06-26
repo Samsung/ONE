@@ -150,8 +150,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_FAKE_QUANT = 80,
-  // BuiltinOperator_ONE_HOT = 85,
-  // BuiltinOperator_SQUARE = 92,
   // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_WHERE = 109,
