@@ -66,15 +66,14 @@ public:
 public:
   void remove(const OperationIndex &index);
 
+  bool exist(const OperationIndex &index) const;
+
 public:
   Layout getLayout() const { return _layout; }
 
 public:
   std::vector<OperationIndex>::const_iterator begin() const { return _operations.begin(); }
   std::vector<OperationIndex>::const_iterator end() const { return _operations.end(); }
-
-private:
-  bool exist(const OperationIndex &index) const;
 
 private:
   OperandIndexSequence _inputs;
