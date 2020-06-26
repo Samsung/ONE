@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_UTIL_FEATURE_NHWC_VIEW_H__
-#define __ONERT_UTIL_FEATURE_NHWC_VIEW_H__
+#ifndef __ONERT_EXEC_FEATURE_NHWC_READER_H__
+#define __ONERT_EXEC_FEATURE_NHWC_READER_H__
+
+#include "../Reader.h"
 
 #include <cassert>
-#include <cstddef>
 
 #include "backend/ITensor.h"
 #include "misc/feature/Shape.h"
 #include "util/Utils.h"
-#include "util/feature/Reader.h"
 
 namespace onert
 {
-namespace util
+namespace exec
 {
 namespace feature
 {
 namespace nhwc
 {
 
-template <typename T> class View final : public feature::Reader<T>
+template <typename T> class Reader final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
-  View(const ::nnfw::misc::feature::Shape &shape, T *ptr, size_t len)
-      : _shape{shape}, _ptr{reinterpret_cast<uint8_t *>(ptr)}, _len{len}
+  Reader(const ::nnfw::misc::feature::Shape &shape, const T *ptr, size_t len)
+      : _shape{shape}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
     UNUSED_RELEASE(len); // Workaround for unused variable in release mode
-    assert(shape.N * shape.H * shape.W * shape.C * sizeof(T) == len);
+    assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
 
     // No padding
     _strides.C = sizeof(T);
@@ -52,7 +52,7 @@ public:
   }
 
   // Construct for backend tensor
-  View(backend::ITensor *tensor)
+  Reader(const backend::ITensor *tensor)
       : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
   {
     assert(tensor->layout() == ir::Layout::NHWC);
@@ -87,24 +87,6 @@ public:
     return *ptr;
   }
 
-  T &at(uint32_t row, uint32_t col, uint32_t ch)
-  {
-    const auto offset = feature_index_to_byte_offset(0, row, col, ch);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-
-  T &at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch)
-  {
-    const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-
 private:
   size_t feature_index_to_byte_offset(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
   {
@@ -127,13 +109,13 @@ private:
   nnfw::misc::feature::Shape _shape;
   using Strides = nnfw::misc::feature::Shape;
   Strides _strides;
-  uint8_t *_ptr;
+  const uint8_t *_ptr;
   size_t _len;
 };
 
 } // namespace nhwc
 } // namespace feature
-} // namespace util
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_UTIL_FEATURE_NHWC_VIEW_H__
+#endif // __ONERT_EXEC_FEATURE_NHWC_READER_H__

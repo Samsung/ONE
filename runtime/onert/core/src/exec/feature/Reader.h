@@ -19,14 +19,14 @@
  * @brief    This file contains Reader class
  */
 
-#ifndef __ONERT_UTIL_FEATURE_READER_H__
-#define __ONERT_UTIL_FEATURE_READER_H__
+#ifndef __ONERT_EXEC_FEATURE_READER_H__
+#define __ONERT_EXEC_FEATURE_READER_H__
 
 #include <cstdint>
 
 namespace onert
 {
-namespace util
+namespace exec
 {
 namespace feature
 {
@@ -62,7 +62,7 @@ template <typename T> struct Reader
 };
 
 } // namespace feature
-} // namespace util
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_UTIL_FEATURE_READER_H__
+#endif // __ONERT_EXEC_FEATURE_READER_H__

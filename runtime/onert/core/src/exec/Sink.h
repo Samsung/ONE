@@ -17,13 +17,13 @@
 #ifndef __ONERT_EXEC_SINK_H__
 #define __ONERT_EXEC_SINK_H__
 
-#include <cassert>
+#include "feature/nchw/Reader.h"
+#include "feature/nchw/View.h"
+#include "feature/nhwc/Reader.h"
+#include "feature/nhwc/View.h"
 
+#include <cassert>
 #include <memory>
-#include "util/feature/nchw/Reader.h"
-#include "util/feature/nchw/View.h"
-#include "util/feature/nhwc/Reader.h"
-#include "util/feature/nhwc/View.h"
 #include "util/Utils.h"
 #include <misc/feature/IndexIterator.h>
 
@@ -127,8 +127,8 @@ protected:
 
           if (_io_layout == ir::Layout::NHWC)
           {
-            const util::feature::nchw::Reader<T> from(&tensor);
-            util::feature::nhwc::View<T> into(shape, _output_buffer, _output_size);
+            const exec::feature::nchw::Reader<T> from(&tensor);
+            exec::feature::nhwc::View<T> into(shape, _output_buffer, _output_size);
             ::nnfw::misc::feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, ch, row, col);
@@ -137,8 +137,8 @@ protected:
           }
           else if (_io_layout == ir::Layout::NCHW)
           {
-            const util::feature::nhwc::Reader<T> from(&tensor);
-            util::feature::nchw::View<T> into(shape, _output_buffer, _output_size);
+            const exec::feature::nhwc::Reader<T> from(&tensor);
+            exec::feature::nchw::View<T> into(shape, _output_buffer, _output_size);
             ::nnfw::misc::feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, row, col, ch);

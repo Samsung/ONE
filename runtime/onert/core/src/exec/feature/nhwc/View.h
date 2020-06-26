@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_UTIL_FEATURE_NCHW_VIEW_H__
-#define __ONERT_UTIL_FEATURE_NCHW_VIEW_H__
+#ifndef __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
+#define __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
 
-#include "misc/feature/Shape.h"
-
-#include "backend/ITensor.h"
-#include "util/logging.h"
-#include "util/feature/Reader.h"
+#include "../Reader.h"
 
 #include <cassert>
+#include <cstddef>
+
+#include "backend/ITensor.h"
+#include "misc/feature/Shape.h"
+#include "util/Utils.h"
 
 namespace onert
 {
-namespace util
+namespace exec
 {
 namespace feature
 {
-namespace nchw
+namespace nhwc
 {
 
 template <typename T> class View final : public feature::Reader<T>
@@ -41,62 +42,64 @@ public:
   View(const ::nnfw::misc::feature::Shape &shape, T *ptr, size_t len)
       : _shape{shape}, _ptr{reinterpret_cast<uint8_t *>(ptr)}, _len{len}
   {
-    assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
+    UNUSED_RELEASE(len); // Workaround for unused variable in release mode
+    assert(shape.N * shape.H * shape.W * shape.C * sizeof(T) == len);
 
-    _strides.W = sizeof(T);
-    _strides.H = shape.W * sizeof(T);
-    _strides.C = shape.W * shape.H * sizeof(T);
-    _strides.N = shape.W * shape.H * shape.C * sizeof(T);
+    // No padding
+    _strides.C = sizeof(T);
+    _strides.W = shape.C * sizeof(T);
+    _strides.H = shape.C * shape.W * sizeof(T);
+    _strides.N = shape.C * shape.W * shape.H * sizeof(T);
   }
 
   // Construct for backend tensor
-  View(::onert::backend::ITensor *tensor)
+  View(backend::ITensor *tensor)
       : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
   {
-    assert(tensor->layout() == ir::Layout::NCHW);
+    assert(tensor->layout() == ir::Layout::NHWC);
 
     const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
-    _strides.W = tensor->dimension(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
-    _strides.H = tensor->dimension(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
-    _strides.C = tensor->dimension(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
+    _strides.C = tensor->dimension(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
+    _strides.W = tensor->dimension(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
+    _strides.H = tensor->dimension(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
     _strides.N = tensor->dimension(0) == 1 ? 0 : tensor->calcOffset({1, 0, 0, 0}) - start_offset;
 
-    _shape.W = tensor->dimension(3);
-    _shape.H = tensor->dimension(2);
-    _shape.C = tensor->dimension(1);
+    _shape.C = tensor->dimension(3);
+    _shape.W = tensor->dimension(2);
+    _shape.H = tensor->dimension(1);
     _shape.N = tensor->dimension(0);
   }
 
 public:
-  T at(uint32_t ch, uint32_t row, uint32_t col) const override
+  T at(uint32_t row, uint32_t col, uint32_t ch) const override
   {
-    const auto offset = feature_index_to_byte_offset(0, ch, row, col);
+    const auto offset = feature_index_to_byte_offset(0, row, col, ch);
+
+    const T *ptr = reinterpret_cast<const T *>(_ptr + offset);
+
+    return *ptr;
+  }
+  T at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const override
+  {
+    const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
+
+    const T *ptr = reinterpret_cast<const T *>(_ptr + offset);
+
+    return *ptr;
+  }
+
+  T &at(uint32_t row, uint32_t col, uint32_t ch)
+  {
+    const auto offset = feature_index_to_byte_offset(0, row, col, ch);
 
     T *ptr = reinterpret_cast<T *>(_ptr + offset);
 
     return *ptr;
   }
-  T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const override
+
+  T &at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch)
   {
-    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-
-public:
-  T &at(uint32_t ch, uint32_t row, uint32_t col)
-  {
-    const auto offset = feature_index_to_byte_offset(0, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-  T &at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col)
-  {
-    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
+    const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
 
     T *ptr = reinterpret_cast<T *>(_ptr + offset);
 
@@ -104,18 +107,18 @@ public:
   }
 
 private:
-  size_t feature_index_to_byte_offset(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
+  size_t feature_index_to_byte_offset(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
   {
     assert(1u * _shape.N > batch); // shape.N > batch
-    assert(1u * _shape.C > ch);    // shape.C > ch
     assert(1u * _shape.H > row);   // shape.H > row
     assert(1u * _shape.W > col);   // shape.W > col
+    assert(1u * _shape.C > ch);    // shape.C > ch
 
     uint32_t res = 0;
     res += batch * _strides.N;
-    res += ch * _strides.C;
     res += row * _strides.H;
     res += col * _strides.W;
+    res += ch * _strides.C;
 
     return res;
   }
@@ -129,9 +132,9 @@ private:
   size_t _len;
 };
 
-} // namespace nchw
+} // namespace nhwc
 } // namespace feature
-} // namespace util
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_UTIL_FEATURE_NCHW_VIEW_H__
+#endif // __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
