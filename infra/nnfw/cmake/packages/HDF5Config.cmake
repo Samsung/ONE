@@ -21,12 +21,10 @@ if(DEFINED EXT_HDF5_DIR)
   endif()
 endif()
 
-# Case 2. search default locations (e.g. system root, ...) for hdf5
-find_package(HDF5 COMPONENTS CXX QUIET)
-if (NOT HDF5_FOUND)
-  # Give second chance for some systems where sytem find_package config mode fails
-  unset(HDF5_FOUND)
-
+# Case 2. search pre-installed locations (by apt, brew, ...)
+if(NOT CMAKE_CROSSCOMPILING)
+  find_package(HDF5 COMPONENTS CXX QUIET)
+else()
   find_path(HDF5_INCLUDE_DIRS NAMES hdf5.h ONLY_CMAKE_FIND_ROOT_PATH PATH_SUFFIXES include/hdf5/serial)
 
   if (NOT HDF5_INCLUDE_DIRS)
@@ -34,20 +32,24 @@ if (NOT HDF5_FOUND)
     return()
   endif()
 
-  if (HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_LIBRARIES libhdf5.a)
-  else (HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_LIBRARIES libhdf5.so)
+  if(HDF5_USE_STATIC_LIBRARIES)
+    find_library(HDF5_CXX_LIBRARY_hdf5 libhdf5.a)
+    find_library(HDF5_CXX_LIBRARY_hdf5_cpp libhdf5_cpp.a)
+  else(HDF5_USE_STATIC_LIBRARIES)
+    find_library(HDF5_CXX_LIBRARY_hdf5 libhdf5.so)
+    find_library(HDF5_CXX_LIBRARY_hdf5_cpp libhdf5_cpp.so)
   endif(HDF5_USE_STATIC_LIBRARIES)
 
-  if (NOT HDF5_LIBRARIES)
+  if (NOT (HDF5_CXX_LIBRARY_hdf5 AND HDF5_CXX_LIBRARY_hdf5_cpp))
     set(HDF5_FOUND FALSE)
     return()
   endif()
-  list(APPEND HDF5_LIBRARIES "sz" "z" "dl" "m")
+
+  # We can use "hdf5" and "hdf5_cpp" to use the same file founded with above.
+  list(APPEND HDF5_CXX_LIBRARIES "hdf5" "hdf5_cpp" "sz" "z" "dl" "m")
+
+  # Append missing libaec which is required by libsz, which is required by libhdf5
+  list(APPEND HDF5_CXX_LIBRARIES "aec")
 
   set(HDF5_FOUND TRUE)
 endif()
-
-# Append missing libaec which is required by libsz, which is required by libhdf5
-list(APPEND HDF5_CXX_LIBRARIES "aec")
