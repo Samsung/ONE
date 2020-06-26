@@ -184,7 +184,7 @@ int32_t CalculateInputRadius(int input_integer_bits, int input_left_shift)
   return static_cast<int32_t>(std::floor(max_input_rescaled));
 }
 
-uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
+uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions)
 {
   uint32_t size = 4;
 
@@ -210,7 +210,8 @@ uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
 
   for (auto d : dimensions)
   {
-    size *= d;
+    assert(d >= 0);
+    size *= static_cast<uint32_t>(d);
   }
 
   return size;
