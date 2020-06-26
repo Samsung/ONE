@@ -33,12 +33,12 @@ class ReduceAll : public Operation
 public:
   enum Input
   {
-    INPUT = 0
+    INPUT = 0,
+    AXES = 1
   };
 
   struct Param
   {
-    std::vector<int> axes;
     bool keep_dims;
   };
 
@@ -48,7 +48,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::ReduceAny; }
+  OpCode opcode() const final { return OpCode::ReduceAll; }
 
 public:
   const Param &param() const { return _param; }

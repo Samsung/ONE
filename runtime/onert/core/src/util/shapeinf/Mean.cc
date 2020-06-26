@@ -46,19 +46,19 @@ void StaticInferer::visit(const ir::operation::Mean &op)
     return;
   }
 
-  std::vector<int32_t> axis;
+  std::vector<int32_t> axes_vec;
   for (size_t i = 0; i < axes.shape().num_elements(); ++i)
   {
     switch (axes.typeInfo().type())
     {
       case ir::DataType::INT32:
       {
-        axis.emplace_back(reinterpret_cast<const int32_t *>(axes.data()->base())[i]);
+        axes_vec.emplace_back(reinterpret_cast<const int32_t *>(axes.data()->base())[i]);
         break;
       }
       case ir::DataType::INT64:
       {
-        axis.emplace_back(reinterpret_cast<const int64_t *>(axes.data()->base())[i]);
+        axes_vec.emplace_back(reinterpret_cast<const int64_t *>(axes.data()->base())[i]);
         break;
       }
       default:
@@ -68,7 +68,7 @@ void StaticInferer::visit(const ir::operation::Mean &op)
   }
   const auto keep_dims = op.param().keep_dims;
 
-  ir::Shape output_shape = inferReduceShapes(input.info().shape(), axis, keep_dims);
+  ir::Shape output_shape = inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
 
   output.info().shape(output_shape);
 }
@@ -90,19 +90,20 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  std::vector<int32_t> axis;
-  for (size_t i = 0; i < axes->getShape().num_elements(); ++i)
+  std::vector<int32_t> axes_vec;
+  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
   {
+    const auto buffer = axes->buffer() + axes->calcOffset({i});
     switch (axes->data_type())
     {
       case ir::DataType::INT32:
       {
-        axis.emplace_back(reinterpret_cast<int32_t *>(axes->buffer())[i]);
+        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
         break;
       }
       case ir::DataType::INT64:
       {
-        axis.emplace_back(reinterpret_cast<int64_t *>(axes->buffer())[i]);
+        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
         break;
       }
       default:
@@ -112,7 +113,7 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
   }
   const auto keep_dims = op.param().keep_dims;
 
-  ir::Shape output_shape = inferReduceShapes(input_shape, axis, keep_dims);
+  ir::Shape output_shape = inferReduceShapes(input_shape, axes_vec, keep_dims);
   _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }

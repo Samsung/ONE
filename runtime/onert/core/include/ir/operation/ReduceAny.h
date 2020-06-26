@@ -33,12 +33,12 @@ class ReduceAny : public Operation
 public:
   enum Input
   {
-    INPUT = 0
+    INPUT = 0,
+    AXES = 1
   };
 
   struct Param
   {
-    std::vector<int> axes;
     bool keep_dims;
   };
 
