@@ -13,3 +13,5 @@ Runtime
   ./api.md
   ./core.md
   ./compute.md
+  ./executors.md
+  ./backend-api.md
