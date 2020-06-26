@@ -2,6 +2,8 @@
 
 import "build.configuration"
 
+set -x
+
 if [[ ! -d "${BUILD_PATH}" ]]; then
   echo "[ERROR] '${BUILD_PATH}' does not exist. Please run 'configure' first"
   exit 255
