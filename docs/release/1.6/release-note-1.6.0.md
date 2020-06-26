@@ -14,7 +14,8 @@
 ## ONE Compiler
 
 ### Compiler supports more operations
- - AddN, ArgMin, Custom(BatchMatmul), Ceil, DepthToSpace, Floor, InstanceNormalize,
+
+- AddN, ArgMin, Custom(BatchMatmul), Ceil, DepthToSpace, Floor, InstanceNormalize,
 L2Normalization, L2Pool, LessEqual, Log, LogSoftmax, PReLU, Rank, ReduceMin(Min),
 ResizeBilinear, Round, ScatterND, Sqrt, TransposeConv, BCQGather,
 BCQFullyConnected
@@ -29,6 +30,7 @@ BCQFullyConnected
 
 - Support static shape inference (input resizing)
 - Support dynamic shape inference (general resizing)
+
 ### Support Control Flow operations
 
 - IF and WHILE
