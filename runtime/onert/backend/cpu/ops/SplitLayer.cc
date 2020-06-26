@@ -91,6 +91,10 @@ void SplitLayer::run()
   {
     split<int32_t>();
   }
+  else if (_input->data_type() == OperandType::INT64)
+  {
+    split<int64_t>();
+  }
   else
   {
     throw std::runtime_error{"Split: unsupported input type"};
