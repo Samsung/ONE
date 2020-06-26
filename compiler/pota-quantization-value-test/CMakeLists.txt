@@ -94,10 +94,10 @@ add_custom_command(
   OUTPUT ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax>\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE2CIRCLE_PATH=\"$<TARGET_FILE:circle2circle>\"' >> ${TEST_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_QUANTIZER_PATH=\"$<TARGET_FILE:circle-quantizer>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_TENSORDUMP_PATH=\"$<TARGET_FILE:circle-tensordump>\"' >> ${TEST_CONFIG}
   DEPENDS record-minmax
-  DEPENDS circle2circle
+  DEPENDS circle-quantizer
   DEPENDS circle-tensordump
   COMMENT "Generate test configuration"
 )

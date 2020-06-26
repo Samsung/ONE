@@ -5,7 +5,7 @@
 # HOW TO USE
 #
 # ./test_fake_quantization.sh <path/to/test.config> <path/to/work_dir> <TEST 1> <TEST 2> ...
-# test.config : set ${RECORD_MINMAX_PATH} and ${CIRCLE2CIRCLE_PATH}
+# test.config : set ${RECORD_MINMAX_PATH} and ${CIRCLE_QUANTIZER_PATH}
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,7 +17,7 @@ VIRTUALENV="${WORKDIR}/venv"
 
 source "${CONFIG_PATH}"
 
-echo "-- Found CIRCLE2CIRCLE: ${CIRCLE2CIRCLE_PATH}"
+echo "-- Found CIRCLE_QUANTIZER: ${CIRCLE_QUANTIZER_PATH}"
 echo "-- Found CIRCLE_TENSORDUMP: ${CIRCLE_TENSORDUMP_PATH}"
 echo "-- Found workdir: ${WORKDIR}"
 
@@ -43,8 +43,8 @@ while [ "$1" != "" ]; do
     exec 2>&1
     set -ex
 
-    # Run circle2circle with --quantize_dequantize_weights
-    "${CIRCLE2CIRCLE_PATH}" \
+    # Run circle-quantizer with --quantize_dequantize_weights
+    "${CIRCLE_QUANTIZER_PATH}" \
       --quantize_dequantize_weights float "${DTYPE}" "${GRANULARITY}" \
       "${WORKDIR}/${MODELNAME}.circle" \
       "${TESTCASE_FILE}.fake_quantized.circle" 

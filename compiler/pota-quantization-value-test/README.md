@@ -8,7 +8,7 @@ Write `test.local.lst` for local test.
 
 #### Step 1. Fake quantization
 
-Run `circle2circle` with `--quantize_dequantize_weights` option.
+Run `circle-quantizer` with `--quantize_dequantize_weights` option.
 
 Dump the fake-quantized model with `circle-tensordump`.
 
@@ -29,7 +29,7 @@ The expected output should include
 
 #### Step 3. Quantization
 
-Run `circle2circle` with `--quantize_with_minmax` option.
+Run `circle-quantizer` with `--quantize_with_minmax` option.
 
 Dump the quantized model with `circle-tensordump`.
 
