@@ -138,7 +138,7 @@ if __name__ == '__main__':
                     np.array(np.random.randint(0, 255, this_shape, this_dtype)))
             elif this_dtype == np.float32:
                 input_values.append(
-                    np.array(np.random.random_sample(this_shape), this_dtype))
+                    np.array(np.random.random_sample(this_shape)))
             elif this_dtype == np.bool_:
                 # generate random integer from [0, 2)
                 input_values.append(
