@@ -111,13 +111,26 @@ expected="$nnpkg/metadata/tc/expected.h5"
 
 echo -n "[Compare] $nnpkg "
 
-if $difftool -d 0.001 -v "$dumped" "$expected" /value >& "$dumped.log"; then
-  echo -e "\tPass"
-  rm "$dumped" "$dumped.log"
-else
+test_fail()
+{
   echo -e "\tFail"
   [ $delete_dumped_on_failure ] && rm "$dumped"
   cat "$dumped.log"
   rm "$dumped.log"
   exit 3
+}
+
+test_pass()
+{
+  echo -e "\tPass"
+  cat "$dumped.log"
+  rm "$dumped" "$dumped.log"
+}
+
+if ! $difftool -d 0.001 -v "$dumped" "$expected" /value >& "$dumped.log"; then
+  test_fail
+elif grep "not comparable" "$dumped.log" > /dev/null; then
+  test_fail
+else
+  test_pass
 fi
