@@ -75,7 +75,8 @@ You can use range such as `107-120` in `opcodelist.txt` instead of using each op
 
 ### Subgraph
 
-You can select subgraph to select operation. Default subgraph index is 0
+You can select subgraph to select operator. Default subgraph index is 0.
+If selected operators contain controlflow operator, the model to be generated will contain subgraphs of the selected controlflow operator.
 
 ```
 $ cat /home/nnfw/opcodelist.txt
@@ -85,7 +86,7 @@ $ ./tools/tflitefile_tool/select_operator.py multi_subgraph.tflite
 opcodelist.txt test.tflite -g 1
 ```
 
-Above selects operation index 11, 12, 13 in subgraph 1
+Above selects operator index 11, 12, 13 in subgraph 1
 
 ## Colaboration model parser and model generator
 
