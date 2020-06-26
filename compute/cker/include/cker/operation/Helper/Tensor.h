@@ -137,6 +137,17 @@ public:
     return typename TTypes<T, NDIMS>::ConstTensor(base<T>(), dims);
   }
 
+  // Create Eigen Tensor with current shape
+  template <typename T, size_t NDIMS> typename TTypes<T, NDIMS>::Tensor shaped() const
+  {
+    Eigen::array<Eigen::DenseIndex, NDIMS> dims;
+    for (size_t d = 0; d < NDIMS; d++)
+    {
+      dims[d] = shape.Dims(d);
+    }
+    return typename TTypes<T, NDIMS>::Tensor(base<T>(), dims);
+  }
+
   template <typename T> typename TTypes<T>::ConstFlat flat() const
   {
     return shaped<T, 1>({shape.FlatSize()});

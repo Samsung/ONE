@@ -31,8 +31,6 @@ namespace nnfw
 {
 namespace cker
 {
-namespace helper
-{
 // Returns the mapping from the output batch indices to the corresponding
 // input's batch indices, given the input's "reshape" and "bcast" shapes as
 // returned by the BCastList helper class. The i'th element denotes the
@@ -467,7 +465,6 @@ public:
   }
 
 }; // BCast
-} // namespace helper
 } // namespace cker
 } // namespace nnfw
 

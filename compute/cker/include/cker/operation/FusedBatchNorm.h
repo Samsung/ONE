@@ -22,8 +22,8 @@
 #include "cker/Shape.h"
 #include "cker/Utils.h"
 
-#include "cker/operation/EinsumHelper/Tensor.h"
-#include "cker/operation/EinsumHelper/MatmulBCast.h"
+#include "cker/operation/Helper/Tensor.h"
+#include "cker/operation/Helper/MatmulBCast.h"
 
 #include "Transpose.h"
 #include "BatchMatMul.h"
@@ -70,26 +70,26 @@ public:
     Tensor transformed_output;
 
     const int num_inputs = input_shapes.size();
-    std::vector<InputTensor> inputs(num_inputs);
+    std::vector<InputTensor<float>> inputs(num_inputs);
     for (int i = 0; i < num_inputs; i++)
     {
       inputs[i].shape.ReplaceWith(input_shapes[i].DimensionsCount(), input_shapes[i].DimsData());
       inputs[i].buffer = input_data[i];
-      copyFrom(inputs[i], inputs[i].shape, &transformed_input[i]);
+      copyFrom<float>(inputs[i], inputs[i].shape, &transformed_input[i]);
     }
 
-    InputTensor output;
+    InputTensor<float> output;
     output.shape.ReplaceWith(output_shape.DimensionsCount(), output_shape.DimsData());
     output.buffer = output_data;
-    copyFrom(output, output.shape, &transformed_output);
+    copyFrom<float>(output, output.shape, &transformed_output);
 
     // TODO: support transpose if data_format is NCHW
     // Here, Eigen use RowMajor kernel(NHWC)
 
-    typename TTypes<float, 4>::Tensor x(transformed_input[0].shaped<4>());
-    typename TTypes<float, 4>::Tensor y(transformed_output.shaped<4>());
-    typename TTypes<float, 1>::Tensor scale(transformed_input[1].shaped<1>());
-    typename TTypes<float, 1>::Tensor offset(transformed_input[2].shaped<1>());
+    typename TTypes<float, 4>::Tensor x(transformed_input[0].shaped<float, 4>());
+    typename TTypes<float, 4>::Tensor y(transformed_output.shaped<float, 4>());
+    typename TTypes<float, 1>::Tensor scale(transformed_input[1].shaped<float, 1>());
+    typename TTypes<float, 1>::Tensor offset(transformed_input[2].shaped<float, 1>());
 
     const int depth = x.dimension(3);
     const int size = x.size();
@@ -131,7 +131,8 @@ public:
     memcpy(output_data, y.data(), output_shape.FlatSize() * sizeof(float));
   }
 
-  void copyFrom(const InputTensor &input, const Shape &shape, Tensor *output)
+  template <typename T>
+  void copyFrom(const InputTensor<T> &input, const Shape &shape, Tensor *output)
   {
     Tensor temp_tensor;
     temp_tensor.shape.ReplaceWith(input.shape.DimensionsCount(), input.shape.DimsData());
