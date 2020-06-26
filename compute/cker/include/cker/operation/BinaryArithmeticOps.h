@@ -207,8 +207,8 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::AddQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
-                           const_cast<uint8_t *>(input2_data), output_shape, output_data);
+      optimized::AddQuant8(params, input1_shape, input1_data, input2_shape, input2_data,
+                           output_shape, output_data);
       break;
 
     case nnfw::cker::BinaryArithmeticOpType::MUL:
@@ -309,8 +309,7 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
       reference::BroadcastBinaryArithmeticOpSlow<float>(
-          params, input1_shape, const_cast<float *>(input1_data), input2_shape,
-          const_cast<float *>(input2_data), output_shape, output_data,
+          params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
           GetBinaryArtithmeticFn<op_type, float>());
       break;
     default:
