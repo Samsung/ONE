@@ -11,6 +11,8 @@
     - Support Control Flow operations
     - API updates
 
+- Add **ONE** Runtime package for `x86_64` linux (Experimental)
+
 ## ONE Compiler
 
 ### Compiler supports more operations
