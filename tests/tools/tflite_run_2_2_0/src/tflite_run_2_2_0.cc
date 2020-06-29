@@ -95,11 +95,12 @@ int main(const int argc, char **argv)
       if (args.getModelValidate())
       {
         model = tflite::FlatBufferModel::VerifyAndBuildFromFile(args.getTFLiteFilename().c_str(),
-                                                        verifier.get(), &error_reporter);
+                                                                verifier.get(), &error_reporter);
       }
       else
       {
-        model = tflite::FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(), &error_reporter);
+        model = tflite::FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(),
+                                                       &error_reporter);
       }
       if (model == nullptr)
       {
