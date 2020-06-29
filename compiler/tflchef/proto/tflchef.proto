@@ -255,8 +255,8 @@ message TileOptions {
 }
 
 message BatchMatMulOptions {
-  optional bool adjoint_lhs = 1 [default = false];
-  optional bool adjoint_rhs = 2 [default = false];
+  optional bool adj_x = 1 [default = false];
+  optional bool adj_y = 2 [default = false];
 }
 
 message IfOptions {

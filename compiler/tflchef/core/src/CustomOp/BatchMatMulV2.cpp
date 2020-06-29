@@ -47,8 +47,8 @@ BatchMatMulV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
   auto flex_buffers = std::make_unique<flexbuffers::Builder>();
   size_t map_start = flex_buffers->StartMap();
 
-  flex_buffers->Bool("adj_x", operation.batch_matmul_options().adjoint_lhs());
-  flex_buffers->Bool("adj_y", operation.batch_matmul_options().adjoint_rhs());
+  flex_buffers->Bool("adj_x", operation.batch_matmul_options().adj_x());
+  flex_buffers->Bool("adj_y", operation.batch_matmul_options().adj_y());
   // TODO Support more data types
   flex_buffers->Int("T", tflite::TensorType_FLOAT32);
 

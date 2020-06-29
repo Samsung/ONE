@@ -23,6 +23,7 @@
 #include "Op/ArgMax.h"
 #include "Op/ArgMin.h"
 #include "Op/AveragePool2D.h"
+#include "Op/BatchMatMul.h"
 #include "Op/BatchToSpaceND.h"
 #include "Op/Cast.h"
 #include "Op/Ceil.h"
