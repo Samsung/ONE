@@ -2,6 +2,7 @@
 
 As of 2020-06-26
 - TensorFlow commit e5023a1738cce7efcdf9d87863b85c80ab2f8c9e
+- This commit is Tensorflow nightly build after v2.2.0 release
 
 TensorFlow lite operators | circle IR | Compiler | Runtime
 -- | -- | -- | --
@@ -132,6 +133,7 @@ UNPACK | O | O |  
 WHERE | O |   |  
 WHILE | O | O |  
 ZEROS_LIKE | O | O |  
+Count | 127 | 97 |  
 
 
 ### circle additional operators
