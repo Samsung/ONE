@@ -17,6 +17,7 @@
 #ifndef __ONERT_EXEC_SOURCE_H__
 #define __ONERT_EXEC_SOURCE_H__
 
+#include "feature/IndexIterator.h"
 #include "feature/nchw/Reader.h"
 #include "feature/nchw/View.h"
 #include "feature/nhwc/Reader.h"
@@ -25,7 +26,6 @@
 #include <cassert>
 #include <memory>
 #include "util/Utils.h"
-#include <misc/feature/IndexIterator.h>
 #include <ir/Layout.h>
 #include "ir/Shape.h"
 
@@ -134,7 +134,7 @@ protected:
           {
             const exec::feature::nchw::Reader<T> from(shape, _input_buffer, _input_size);
             exec::feature::nhwc::View<T> into(&tensor);
-            ::nnfw::misc::feature::iterate(shape)
+            feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, ch, row, col);
                      into.at(batch, row, col, ch) = value;
@@ -144,7 +144,7 @@ protected:
           {
             const exec::feature::nhwc::Reader<T> from(shape, _input_buffer, _input_size);
             exec::feature::nchw::View<T> into(&tensor);
-            ::nnfw::misc::feature::iterate(shape)
+            feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, row, col, ch);
                      into.at(batch, ch, row, col) = value;

@@ -22,7 +22,7 @@
 #include <cassert>
 
 #include "backend/ITensor.h"
-#include "misc/feature/Shape.h"
+#include "ir/Shape.h"
 
 namespace onert
 {
@@ -37,7 +37,7 @@ template <typename T> class Reader final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
-  Reader(const ::nnfw::misc::feature::Shape &shape, const T *ptr, size_t len)
+  Reader(const ir::FeatureShape &shape, const T *ptr, size_t len)
       : _shape{shape}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
     assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
@@ -104,8 +104,8 @@ private:
 
 private:
   // TODO Remove _shape
-  nnfw::misc::feature::Shape _shape;
-  using Strides = nnfw::misc::feature::Shape;
+  ir::FeatureShape _shape;
+  using Strides = ir::FeatureShape;
   Strides _strides;
   const uint8_t *_ptr;
   size_t _len;

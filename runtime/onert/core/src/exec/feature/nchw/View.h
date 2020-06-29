@@ -19,8 +19,8 @@
 
 #include "../Reader.h"
 
-#include "misc/feature/Shape.h"
 #include "backend/ITensor.h"
+#include "ir/Shape.h"
 #include "util/logging.h"
 
 #include <cassert>
@@ -38,7 +38,7 @@ template <typename T> class View final : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
-  View(const ::nnfw::misc::feature::Shape &shape, T *ptr, size_t len)
+  View(const ir::FeatureShape &shape, T *ptr, size_t len)
       : _shape{shape}, _ptr{reinterpret_cast<uint8_t *>(ptr)}, _len{len}
   {
     assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
@@ -122,8 +122,8 @@ private:
 
 private:
   // TODO Remove _shape
-  nnfw::misc::feature::Shape _shape;
-  using Strides = nnfw::misc::feature::Shape;
+  ir::FeatureShape _shape;
+  using Strides = ir::FeatureShape;
   Strides _strides;
   uint8_t *_ptr;
   size_t _len;
