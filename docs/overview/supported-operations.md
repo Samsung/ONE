@@ -140,6 +140,6 @@ Count | 127 | 97 | 81
 
 Operator | compiler | runtime
 -- | -- | --
-BCQ_FULLY_CONNECTED | O | O
-BCQ_GATHER | O | O
-INSTANCE_NORM | O | O
+BCQ_FULLY_CONNECTED |   |
+BCQ_GATHER |   |
+INSTANCE_NORM |   |
