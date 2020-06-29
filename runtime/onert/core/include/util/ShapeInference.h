@@ -139,6 +139,7 @@ private:
   void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
+  void visit(const ir::operation::Einsum &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
@@ -242,6 +243,7 @@ public:
   void visit(const ir::operation::Conv2D &op);
   void visit(const ir::operation::Cos &op);
   void visit(const ir::operation::Div &op);
+  void visit(const ir::operation::Einsum &op);
   void visit(const ir::operation::Exp &op);
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
