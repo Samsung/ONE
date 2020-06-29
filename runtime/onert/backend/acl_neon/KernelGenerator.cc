@@ -322,30 +322,19 @@ void KernelGenerator::visit(const ir::operation::Mean &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
-  const auto &axes{node.param().axes};
+  const auto axes_index{node.getInputs().at(ir::operation::Mean::Input::AXES)};
   const auto keep_dims{node.param().keep_dims};
 
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
-  std::set<std::uint32_t> acl_axes;
+  const auto &axes = _ctx.at(axes_index);
   const int ifm_rank = _ctx.at(ifm_index).shape().rank();
-  for (int axis : axes)
-  {
-    if (axis < 0)
-      axis += ifm_rank;
-    acl_axes.insert(
-        acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value());
-  }
-
-  arm_compute::Coordinates fixed_axis;
-  for (const auto axis : acl_axes)
-  {
-    fixed_axis.set(fixed_axis.num_dimensions(), axis);
-  }
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = ifm_alloc->layout();
+  const auto fixed_axis =
+      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
 
   // NOTE NEReduceMean has a bug that does not support NHWC layout
   //      NEReduceMean intermediate tensors are always NCHW layout

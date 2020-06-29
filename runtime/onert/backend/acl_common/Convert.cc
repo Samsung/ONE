@@ -177,6 +177,46 @@ namespace acl_common
   }
 }
 
+arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int rank,
+                                       ir::Layout frontend_layout, ir::Layout backend_layout)
+{
+  std::vector<int32_t> axes;
+  switch (operand.typeInfo().type())
+  {
+    case ir::DataType::INT32:
+    {
+      const auto tmp = operand.asVector<int32_t>();
+      axes.insert(axes.begin(), tmp.begin(), tmp.end());
+      break;
+    }
+    case ir::DataType::INT64:
+    {
+      const auto tmp = operand.asVector<int64_t>();
+      axes.insert(axes.begin(), tmp.begin(), tmp.end());
+      break;
+    }
+    default:
+      throw std::runtime_error("asCoordinates: Not supported data type");
+      break;
+  }
+
+  std::unordered_set<int32_t> acl_axes;
+  for (auto axis : axes)
+  {
+    if (axis < 0)
+      axis += rank;
+    acl_axes.insert(ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value());
+  }
+
+  arm_compute::Coordinates reduce_axes;
+  for (const auto axis : acl_axes)
+  {
+    reduce_axes.set(reduce_axes.num_dimensions(), axis);
+  }
+
+  return reduce_axes;
+}
+
 std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunction> &&layer)
 {
   return std::make_unique<AclFunction>(std::move(layer));
