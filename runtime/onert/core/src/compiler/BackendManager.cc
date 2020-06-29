@@ -58,14 +58,12 @@ void BackendManager::loadControlflowBackend()
 
   auto backend_object =
       std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
-  auto backend_object_raw = backend_object.get();
   bool initialized = backend_object->config()->initialize(); // Call initialize here?
   if (!initialized)
   {
     throw std::runtime_error(backend::controlflow::Config::ID + " backend initialization failed");
   }
   _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
-  _available_backends.push_back(backend_object_raw);
 }
 
 void BackendManager::loadBackend(const std::string &backend)
@@ -109,7 +107,6 @@ void BackendManager::loadBackend(const std::string &backend)
 
       auto backend_object =
           std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
-      auto backend_object_raw = backend_object.get();
       bool initialized = backend_object->config()->initialize(); // Call initialize here?
       if (!initialized)
       {
@@ -119,7 +116,6 @@ void BackendManager::loadBackend(const std::string &backend)
         return;
       }
       _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
-      _available_backends.push_back(backend_object_raw);
     }
 
     // Save backend handle (avoid warning by handle lost without dlclose())
