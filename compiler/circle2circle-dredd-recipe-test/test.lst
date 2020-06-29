@@ -15,4 +15,4 @@ Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
 
 ## CIRCLE RECIPE
 
-Add(BatchMatMul_000)
+Add(CircleBatchMatMul_000)
