@@ -43,7 +43,6 @@ void print_help(const char *progname)
   std::cerr << "   --all : Enable all optimize options" << std::endl;
   std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
   std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
-  std::cerr << "   --fuse_instnorm_v2 : Enable FuseInstanceNormalizationV2 Pass" << std::endl;
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
@@ -84,11 +83,6 @@ int entry(int argc, char **argv)
   };
   argparse["--fuse_instnorm"] = [&options](const char **) {
     options->enable(Algorithms::FuseInstanceNorm);
-    return 0;
-  };
-
-  argparse["--fuse_instnorm_v2"] = [&options](const char **) {
-    options->enable(Algorithms::FuseInstanceNormV2);
     return 0;
   };
 

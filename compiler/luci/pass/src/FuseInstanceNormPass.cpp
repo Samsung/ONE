@@ -130,7 +130,20 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
   return node->dim(axis).value() == depth;
 }
 
-bool is_instance_mean(luci::CircleMean *mean)
+/// @return true  When node has shape of '1 x .. x depth x 1'
+bool is_quasi_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
+{
+  auto rank = node->rank();
+  uint32_t axis;
+  for (axis = 0; (axis < rank - 1) && (axis != rank - 2); ++axis)
+  {
+    if (node->dim(axis).value() != 1)
+      return false;
+  }
+  return node->dim(axis).value() == depth;
+}
+
+bool is_instance_mean_v0(luci::CircleMean *mean)
 {
   //
   // CHECK 1) input is rank 4
@@ -165,6 +178,53 @@ bool is_instance_mean(luci::CircleMean *mean)
   if (red_indices_set.find(1) == red_indices_set.end())
     return false;
   if (red_indices_set.find(2) == red_indices_set.end())
+    return false;
+
+  //
+  // CHECK 3) keep_dims == true (?)
+  //
+  // We only have case of 'keep_dims == true' so far, but it might be okay with 'keep_dims == false'
+  // TODO Check this fact, and if true, return true regardless of keep_dims
+  return mean->keep_dims();
+}
+
+bool is_instance_mean_v1(luci::CircleMean *mean)
+{
+  //
+  // CHECK 1) input is rank 5
+  //
+  auto input = mean->input();
+  if (not loco::shape_known(input))
+    return false;
+  auto input_shape = loco::shape_get(input).as<loco::TensorShape>();
+  if (input_shape.rank() != 5)
+    return false;
+
+  //
+  // CHECK 2) 'reduction indices' is CircleConst of value [1,2,4], that is HW of NHWC
+  //
+  // TODO Support equivalent case, like [-3,-2]
+  // TODO Support non-Const case?
+  // TODO What if input is NCHW format in Circle?
+  auto red_indices = dynamic_cast<luci::CircleConst *>(mean->reduction_indices());
+  if (not red_indices)
+    return false;
+  if (red_indices->rank() != 1)
+    return false;
+  std::set<int32_t> red_indices_set;
+  {
+    // TODO Currently only support S32, support other types
+    assert(red_indices->dtype() == loco::DataType::S32);
+    for (uint32_t i = 0; i < red_indices->dim(0).value(); ++i)
+      red_indices_set.insert(red_indices->at<loco::DataType::S32>(i));
+  }
+  if (red_indices_set.size() != 3)
+    return false;
+  if (red_indices_set.find(1) == red_indices_set.end())
+    return false;
+  if (red_indices_set.find(2) == red_indices_set.end())
+    return false;
+  if (red_indices_set.find(4) == red_indices_set.end())
     return false;
 
   //
@@ -227,14 +287,64 @@ namespace
  *         |
  *         V
  *       [Out]
+ *
+ * ---------------------------------------------------------------- 
+ *                 [In]
+ *                   |
+ *                   V
+ *                  ifm
+ *                   |
+ *                   V
+ *     +---------reshape_of_ifm ----+   (reduction indicies)
+ *     |             |              |    |
+ *     |             |              V    V
+ *     |             |       mean_of_reshape -------------+
+ *     |             V       |                            |
+ *     |           sqdiff <--+   (reduction indicies)     |
+ *     |             |             |                      |
+ *     |             V             |                      |
+ *     |      mean_as_variance <---+  const_as_epsilon    |
+ *     |             |                 |                  |
+ *     |             V                 |                  |
+ *     |      add_as_variance <--------+                  |
+ *     |             |                                    |
+ *     |             V                                    |
+ *     |           rsqrt     const_as_gamma               |
+ *     |             |          |                         |
+ *     |             V          |                         |
+ *     |           mul_gamma <--+                         |
+ *     |            |      |                              |
+ *     V            V      V                              |
+ * mul_as_scaled_reshape   mul_as_scaled_mean <-----------+
+ *         |                   |
+ *         |   const_as_beta   |
+ *         |         |         V
+ *         |         +------> sub
+ *         V                   |
+ *  add_as_terminal <----------+
+ *         |
+ *         V
+ *  reshape_as_terminal
+ *         |
+ *         V
+ *       [Out]
  */
 class InstanceNormPattern final
 {
 public:
-  InstanceNormPattern(luci::CircleAdd *candidate)
+
+enum PatternVersion
+{
+  Version_0,
+  Version_1
+};
+
+public:
+  InstanceNormPattern(luci::CircleAdd *candidate, PatternVersion pv)
   {
     assert(candidate);
     add_as_terminal = candidate;
+    _pv = pv;
   }
 
 public:
@@ -244,7 +354,9 @@ public:
 public:
   // Context
   loco::Node *ifm = nullptr;
+  luci::CircleReshape *reshape_of_ifm = nullptr;
   luci::CircleMean *mean_of_ifm = nullptr;
+  luci::CircleMean *mean_of_reshape = nullptr;
   luci::CircleSquaredDifference *sqdiff = nullptr;
   luci::CircleMean *mean_as_variance = nullptr;
   luci::CircleConst *const_as_epsilon = nullptr;
@@ -253,6 +365,7 @@ public:
   luci::CircleConst *const_as_gamma = nullptr;
   luci::CircleMul *mul_gamma = nullptr;
   luci::CircleMul *mul_as_scaled_ifm = nullptr;
+  luci::CircleMul *mul_as_scaled_reshape = nullptr;
   luci::CircleMul *mul_as_scaled_mean = nullptr;
   luci::CircleConst *const_as_beta = nullptr;
   luci::CircleSub *sub = nullptr;
@@ -260,6 +373,7 @@ public:
 
 private:
   bool _matched = false;
+  PatternVersion _pv;
 };
 
 bool InstanceNormPattern::matched()
@@ -273,8 +387,17 @@ bool InstanceNormPattern::matched()
 
   // Check order is DFS
 
-  CHECK_OR_FALSE(fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
-  CHECK_OR_FALSE(fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
+  if (_pv == PatternVersion::Version_0)
+  {
+    CHECK_OR_FALSE(fill(&mul_as_scaled_ifm, &sub).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(fill(&ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_ifm));
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+    CHECK_OR_FALSE(fill(&mul_as_scaled_reshape, &sub).with_commutative_args_of(add_as_terminal));
+    CHECK_OR_FALSE(fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
+    ifm = reshape_of_ifm->tensor();
+  }
 
   CHECK_OR_FALSE(loco::shape_known(ifm));
   auto ifm_shape = loco::shape_get(ifm);
@@ -284,8 +407,15 @@ bool InstanceNormPattern::matched()
   uint32_t ifm_channel_depth = ifm_tensor_shape.dim(3).value();
 
   CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
-  CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
-
+  
+  if (_pv == PatternVersion::Version_0)
+  {
+    CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+    CHECK_OR_FALSE(is_quasi_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
+  }
   add_as_variance = dynamic_cast<luci::CircleAdd *>(rsqrt->x());
   CHECK_OR_FALSE(add_as_variance);
 
@@ -295,31 +425,68 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
   // TODO Support regarding broadcast
   CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
-
-  CHECK_OR_FALSE(is_instance_mean(mean_as_variance));
+  if (_pv == PatternVersion::Version_0)
+  {
+    CHECK_OR_FALSE(is_instance_mean_v0(mean_as_variance));
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+    CHECK_OR_FALSE(is_instance_mean_v1(mean_as_variance));
+  }
   sqdiff = dynamic_cast<luci::CircleSquaredDifference *>(mean_as_variance->input());
   CHECK_OR_FALSE(sqdiff);
-
+  if (_pv == PatternVersion::Version_0)
+  {
   loco::Node *ifm_should_be = nullptr;
   CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
   CHECK_OR_FALSE(ifm == ifm_should_be);
-  CHECK_OR_FALSE(is_instance_mean(mean_of_ifm));
+  CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
   CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+  loco::Node *reshape_should_be = nullptr;
+  CHECK_OR_FALSE(fill(&reshape_should_be, &mean_of_reshape).with_commutative_args_of(sqdiff));
+  CHECK_OR_FALSE(reshape_of_ifm == reshape_should_be);
+  CHECK_OR_FALSE(is_instance_mean_v1(mean_of_reshape));
+  CHECK_OR_FALSE(reshape_of_ifm == mean_of_reshape->input());  
+  }
 
   const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
   CHECK_OR_FALSE(const_as_beta);
-  CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
 
+  if (_pv == PatternVersion::Version_0)
+  {
+    CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+    CHECK_OR_FALSE(is_quasi_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
+  }
+  
   mul_as_scaled_mean = dynamic_cast<luci::CircleMul *>(sub->y());
   CHECK_OR_FALSE(mul_as_scaled_mean);
 
   luci::CircleMul *mul_gamma_should_be = nullptr;
   luci::CircleMean *mean_of_ifm_should_be = nullptr;
-  CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
-                     .with_commutative_args_of(mul_as_scaled_mean));
-  CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
-  CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
-#undef CHECK_OR_FALSE
+  luci::CircleMean *mean_of_reshape_should_be = nullptr;
+
+  if (_pv == PatternVersion::Version_0)
+  {
+    CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_ifm_should_be)
+                       .with_commutative_args_of(mul_as_scaled_mean));
+    CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
+    CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
+  }
+  if (_pv == PatternVersion::Version_1)
+  {
+    CHECK_OR_FALSE(fill(&mul_gamma_should_be, &mean_of_reshape_should_be)
+                       .with_commutative_args_of(mul_as_scaled_mean));
+    CHECK_OR_FALSE(mul_gamma == mul_gamma_should_be);
+    CHECK_OR_FALSE(mean_of_reshape == mean_of_reshape_should_be);
+  }
+
+  #undef CHECK_OR_FALSE
   _matched = true;
   return true;
 }
@@ -381,13 +548,28 @@ namespace luci
 bool FuseInstanceNormPass::run(loco::Graph *g)
 {
   bool changed = false;
+  luci::CircleAdd *add;
+  InstanceNormPattern::PatternVersion pv;
+
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto add = dynamic_cast<luci::CircleAdd *>(node);
-    if (not add)
-      continue;
+    auto reshape = dynamic_cast<luci::CircleReshape *>(node);
+    if (not reshape)
+    {
+      add = dynamic_cast<luci::CircleAdd *>(node);
+      if (not add)
+        continue;
+      pv = InstanceNormPattern::PatternVersion::Version_0;
+    }
+    else 
+    {
+      add = dynamic_cast<luci::CircleAdd *>(reshape->tensor());
+      if (not add)
+        continue;
+      pv = InstanceNormPattern::PatternVersion::Version_1;
+    }
 
-    InstanceNormPattern pattern(add);
+    InstanceNormPattern pattern(add,pv);
     if (not pattern.matched())
       continue;
 

@@ -10,10 +10,26 @@ operand {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
   }
 }
 operand {
   name: "sequential/instance_normalization/stack"
+  type: INT32
+  shape {
+    dim: 5
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "32"
+    arg: "32"
+    arg: "8"
+    arg: "1"
+  }
+}
+operand {
+  name: "sequential/instance_normalization/Shape"
   type: INT32
   shape {
     dim: 4
@@ -23,20 +39,51 @@ operand {
     arg: "1"
     arg: "32"
     arg: "32"
-    arg: "1"
+    arg: "8"
   }
 }
 operand {
-  name: "sequential/instance_normalization/Shape"
-  type: INT32
+  name: "sequential/instance_normalization/Reshape_1"
+  type: FLOAT32
   shape {
-    dim: 3
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 8
+    dim: 1
   }
   filler {
     tag: "explicit"
-    arg: "1"
-    arg: "32"
-    arg: "32"
+    arg: "0.0279993"
+    arg: "0.0496207"
+    arg: "-0.00456733"
+    arg: "0.0144199"
+    arg: "0.0331552"
+    arg: "0.0423247"
+    arg: "-0.00624703"
+    arg: "-0.00727953"
+  }
+}
+operand {
+  name: "sequential/instance_normalization/Reshape_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 8
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.00417534"
+    arg: "-0.0214481"
+    arg: "-0.0176298"
+    arg: "-0.0352226"
+    arg: "0.0204345"
+    arg: "0.0374578"
+    arg: "0.0356524"
+    arg: "-0.0321159"
   }
 }
 operand {
@@ -53,12 +100,13 @@ operand {
   name: "sequential/instance_normalization/moments/variance/reduction_indices"
   type: INT32
   shape {
-    dim: 2
+    dim: 3
   }
   filler {
     tag: "explicit"
     arg: "1"
-    arg: "3"
+    arg: "2"
+    arg: "4"
   }
 }
 operand {
@@ -68,6 +116,7 @@ operand {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
     dim: 1
   }
 }
@@ -77,7 +126,8 @@ operand {
   shape {
     dim: 1
     dim: 1
-    dim: 32
+    dim: 1
+    dim: 8
     dim: 1
   }
 }
@@ -88,6 +138,7 @@ operand {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
     dim: 1
   }
 }
@@ -97,7 +148,8 @@ operand {
   shape {
     dim: 1
     dim: 1
-    dim: 32
+    dim: 1
+    dim: 8
     dim: 1
   }
 }
@@ -107,7 +159,8 @@ operand {
   shape {
     dim: 1
     dim: 1
-    dim: 32
+    dim: 1
+    dim: 8
     dim: 1
   }
 }
@@ -117,7 +170,19 @@ operand {
   shape {
     dim: 1
     dim: 1
-    dim: 32
+    dim: 1
+    dim: 8
+    dim: 1
+  }
+}
+operand {
+  name: "sequential/instance_normalization/batchnorm/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 8
     dim: 1
   }
 }
@@ -128,6 +193,7 @@ operand {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
     dim: 1
   }
 }
@@ -137,17 +203,30 @@ operand {
   shape {
     dim: 1
     dim: 1
-    dim: 32
+    dim: 1
+    dim: 8
     dim: 1
   }
 }
 operand {
-  name: "sequential/instance_normalization/batchnorm/add_1;sequential/instance_normalization/batchnorm/sub"
+  name: "sequential/instance_normalization/batchnorm/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 8
+    dim: 1
+  }
+}
+operand {
+  name: "sequential/instance_normalization/batchnorm/add_1"
   type: FLOAT32
   shape {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
     dim: 1
   }
 }
@@ -158,6 +237,7 @@ operand {
     dim: 1
     dim: 32
     dim: 32
+    dim: 8
   }
 }
 operation {
@@ -206,8 +286,17 @@ operation {
 }
 operation {
   type: "Mul"
-  input: "sequential/instance_normalization/Reshape"
   input: "sequential/instance_normalization/batchnorm/Rsqrt"
+  input: "sequential/instance_normalization/Reshape_1"
+  output: "sequential/instance_normalization/batchnorm/mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "sequential/instance_normalization/Reshape"
+  input: "sequential/instance_normalization/batchnorm/mul"
   output: "sequential/instance_normalization/batchnorm/mul_1"
   mul_options {
     activation: NONE
@@ -216,7 +305,7 @@ operation {
 operation {
   type: "Mul"
   input: "sequential/instance_normalization/moments/mean"
-  input: "sequential/instance_normalization/batchnorm/Rsqrt"
+  input: "sequential/instance_normalization/batchnorm/mul"
   output: "sequential/instance_normalization/batchnorm/mul_2"
   mul_options {
     activation: NONE
@@ -224,16 +313,25 @@ operation {
 }
 operation {
   type: "Sub"
-  input: "sequential/instance_normalization/batchnorm/mul_1"
+  input: "sequential/instance_normalization/Reshape_2"
   input: "sequential/instance_normalization/batchnorm/mul_2"
-  output: "sequential/instance_normalization/batchnorm/add_1;sequential/instance_normalization/batchnorm/sub"
+  output: "sequential/instance_normalization/batchnorm/sub"
   sub_options {
     activation: NONE
   }
 }
 operation {
+  type: "Add"
+  input: "sequential/instance_normalization/batchnorm/mul_1"
+  input: "sequential/instance_normalization/batchnorm/sub"
+  output: "sequential/instance_normalization/batchnorm/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
   type: "Reshape"
-  input: "sequential/instance_normalization/batchnorm/add_1;sequential/instance_normalization/batchnorm/sub"
+  input: "sequential/instance_normalization/batchnorm/add_1"
   input: "sequential/instance_normalization/Shape"
   output: "Identity"
 }
