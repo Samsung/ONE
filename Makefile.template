@@ -1,5 +1,5 @@
-HOST_ARCH?=$(shell uname -p)
-TARGET_ARCH?=$(shell uname -p)
+HOST_ARCH?=$(shell uname -m)
+TARGET_ARCH?=$(shell uname -m)
 BUILD_TYPE?=Debug
 CROSS_BUILD?=0
 HOST_OS?=linux
