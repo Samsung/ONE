@@ -43,23 +43,6 @@ namespace onert
 namespace compiler
 {
 
-std::set<ir::OpCode> getControlFlowOp(const ir::Graph &graph)
-{
-  std::set<ir::OpCode> cf_op_codes;
-  graph.operations().iterate(
-      [&](const onert::ir::OperationIndex &, const onert::ir::Operation &node) {
-        if (node.opcode() == ir::OpCode::While)
-        {
-          cf_op_codes.insert(ir::OpCode::While);
-        }
-        else if (node.opcode() == ir::OpCode::If)
-        {
-          cf_op_codes.insert(ir::OpCode::If);
-        }
-      });
-  return cf_op_codes;
-}
-
 CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
   CompilerOptions options;
@@ -139,16 +122,12 @@ void Compiler::checkProfilerConditions()
 
 void Compiler::compile(void)
 {
-  std::set<ir::OpCode> cf_ops;
-  _subgraphs->iterate([&](const ir::SubgraphIndex &, const ir::Graph &graph) {
-    const auto ops = getControlFlowOp(graph);
-    cf_ops.insert(ops.cbegin(), ops.cend());
-  });
-
-  // Opcode to Backend
-  for (auto cf_op : cf_ops)
+  // Set control flow backend for control flow operators
   {
-    _options.manual_scheduler_options.opcode_to_backend[cf_op] = backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] =
+        backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] =
+        backend::controlflow::Config::ID;
   }
 
   {
