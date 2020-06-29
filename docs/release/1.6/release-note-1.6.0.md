@@ -3,10 +3,10 @@
 ## Feature Highlights
 
 - **ONE** Compiler
-    - Compiler supports more operations
+    - Compiler supports 22 more operations including 1 custom operation.
 
 - **ONE** Runtime
-    - CPU backend supports more operations
+    - CPU backend supports 8 more operations
     - Support dynamically shaped tensors
     - Support Control Flow operations
     - API updates
