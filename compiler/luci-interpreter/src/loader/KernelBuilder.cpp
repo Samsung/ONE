@@ -180,9 +180,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConv2D *node)
   params.padding = node->padding();
   params.stride_height = node->stride()->h();
   params.stride_width = node->stride()->w();
-  // TODO Set dilations from the IR when it provides them.
-  params.dilation_height_factor = 1;
-  params.dilation_width_factor = 1;
+  params.dilation_height_factor = node->dilation()->h();
+  params.dilation_width_factor = node->dilation()->w();
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
