@@ -39,4 +39,4 @@ BCQFullyConnected
 ### API updates
 
 - Introduce `nnfw_set_input_tensorinfo` for input resizing
-- `nnfw_input_tensorinfo` and `nnfw_output_tensorinfo` behavior have changed to return updated tensorinfo
+- `nnfw_input_tensorinfo` and `nnfw_output_tensorinfo` behavior have changed to return tensorinfo according to the session state
