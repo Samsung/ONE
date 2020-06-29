@@ -265,7 +265,7 @@ void OperationExporter::visit(luci::CircleArgMax *node)
 
 void OperationExporter::visit(luci::CircleArgMin *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ARG_MAX);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ARG_MIN);
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
                                   get_tensor_index(node->dimension())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
