@@ -207,6 +207,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
+    case nnfw::cker::BinaryArithmeticOpType::SUB:
       optimized::AddQuant8(params, input1_shape, input1_data, input2_shape, input2_data,
                            output_shape, output_data);
       break;
@@ -214,7 +215,6 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
       optimized::MulQuant8(params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
                            const_cast<uint8_t *>(input2_data), output_shape, output_data);
       break;
-    case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
       throw std::runtime_error{"Quant8 Asymm NYI"};
 
@@ -276,6 +276,7 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
   switch (op_type)
   {
     case nnfw::cker::BinaryArithmeticOpType::ADD:
+    case nnfw::cker::BinaryArithmeticOpType::SUB:
       optimized::BroadcastAddDispatchQuant8(params, input1_shape, input1_data, input2_shape,
                                             input2_data, output_shape, output_data);
       break;
@@ -284,7 +285,6 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
           params, input1_shape, const_cast<uint8_t *>(input1_data), input2_shape,
           const_cast<uint8_t *>(input2_data), output_shape, output_data);
       break;
-    case nnfw::cker::BinaryArithmeticOpType::SUB:
     case nnfw::cker::BinaryArithmeticOpType::DIV:
     case nnfw::cker::BinaryArithmeticOpType::POW:
       throw std::runtime_error{"Quant8 Asymm NYI"};
