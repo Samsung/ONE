@@ -288,7 +288,7 @@ namespace
  *         V
  *       [Out]
  *
- * ---------------------------------------------------------------- 
+ * ----------------------------------------------------------------
  *                 [In]
  *                   |
  *                   V
@@ -332,12 +332,11 @@ namespace
 class InstanceNormPattern final
 {
 public:
-
-enum PatternVersion
-{
-  Version_0,
-  Version_1
-};
+  enum PatternVersion
+  {
+    Version_0,
+    Version_1
+  };
 
 public:
   InstanceNormPattern(luci::CircleAdd *candidate, PatternVersion pv)
@@ -395,7 +394,8 @@ bool InstanceNormPattern::matched()
   if (_pv == PatternVersion::Version_1)
   {
     CHECK_OR_FALSE(fill(&mul_as_scaled_reshape, &sub).with_commutative_args_of(add_as_terminal));
-    CHECK_OR_FALSE(fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
+    CHECK_OR_FALSE(
+        fill(&reshape_of_ifm, &mul_gamma).with_commutative_args_of(mul_as_scaled_reshape));
     ifm = reshape_of_ifm->tensor();
   }
 
@@ -407,7 +407,7 @@ bool InstanceNormPattern::matched()
   uint32_t ifm_channel_depth = ifm_tensor_shape.dim(3).value();
 
   CHECK_OR_FALSE(fill(&rsqrt, &const_as_gamma).with_commutative_args_of(mul_gamma));
-  
+
   if (_pv == PatternVersion::Version_0)
   {
     CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_gamma, ifm_channel_depth));
@@ -437,19 +437,19 @@ bool InstanceNormPattern::matched()
   CHECK_OR_FALSE(sqdiff);
   if (_pv == PatternVersion::Version_0)
   {
-  loco::Node *ifm_should_be = nullptr;
-  CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
-  CHECK_OR_FALSE(ifm == ifm_should_be);
-  CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
-  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+    loco::Node *ifm_should_be = nullptr;
+    CHECK_OR_FALSE(fill(&ifm_should_be, &mean_of_ifm).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(ifm == ifm_should_be);
+    CHECK_OR_FALSE(is_instance_mean_v0(mean_of_ifm));
+    CHECK_OR_FALSE(ifm == mean_of_ifm->input());
   }
   if (_pv == PatternVersion::Version_1)
   {
-  loco::Node *reshape_should_be = nullptr;
-  CHECK_OR_FALSE(fill(&reshape_should_be, &mean_of_reshape).with_commutative_args_of(sqdiff));
-  CHECK_OR_FALSE(reshape_of_ifm == reshape_should_be);
-  CHECK_OR_FALSE(is_instance_mean_v1(mean_of_reshape));
-  CHECK_OR_FALSE(reshape_of_ifm == mean_of_reshape->input());  
+    loco::Node *reshape_should_be = nullptr;
+    CHECK_OR_FALSE(fill(&reshape_should_be, &mean_of_reshape).with_commutative_args_of(sqdiff));
+    CHECK_OR_FALSE(reshape_of_ifm == reshape_should_be);
+    CHECK_OR_FALSE(is_instance_mean_v1(mean_of_reshape));
+    CHECK_OR_FALSE(reshape_of_ifm == mean_of_reshape->input());
   }
 
   const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
@@ -463,7 +463,7 @@ bool InstanceNormPattern::matched()
   {
     CHECK_OR_FALSE(is_quasi_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
   }
-  
+
   mul_as_scaled_mean = dynamic_cast<luci::CircleMul *>(sub->y());
   CHECK_OR_FALSE(mul_as_scaled_mean);
 
@@ -486,7 +486,7 @@ bool InstanceNormPattern::matched()
     CHECK_OR_FALSE(mean_of_reshape == mean_of_reshape_should_be);
   }
 
-  #undef CHECK_OR_FALSE
+#undef CHECK_OR_FALSE
   _matched = true;
   return true;
 }
@@ -495,10 +495,10 @@ bool InstanceNormPattern::matched()
  * Instance norm pattern would be fused like following diagram:
  *
  *    [In] --------------------------- CircleInstanceNorm --- [Out]
- *                                     / /
- *    const_as_gamma --- TFLReshape --- /
- *                                     /
- *    const_as_beta ---- TFLReshape ---
+ *                                        /  /
+ *    const_as_gamma --- CircleReshape ---  /
+ *                                         /
+ *    const_as_beta ---- CircleReshape ---
  *
  * Note
  *  - 'const_as_gamma' and 'const_as_beta' are from original graph
@@ -561,7 +561,7 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
         continue;
       pv = InstanceNormPattern::PatternVersion::Version_0;
     }
-    else 
+    else
     {
       add = dynamic_cast<luci::CircleAdd *>(reshape->tensor());
       if (not add)
@@ -569,7 +569,7 @@ bool FuseInstanceNormPass::run(loco::Graph *g)
       pv = InstanceNormPattern::PatternVersion::Version_1;
     }
 
-    InstanceNormPattern pattern(add,pv);
+    InstanceNormPattern pattern(add, pv);
     if (not pattern.matched())
       continue;
 
