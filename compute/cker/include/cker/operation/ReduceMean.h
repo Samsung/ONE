@@ -209,7 +209,7 @@ private:
 
 template <typename In, typename Out>
 void Mean(const Shape &input_shape, const In *input_data, const Shape &output_shape,
-          Out *output_data, std::vector<int> &axes)
+          Out *output_data, const std::vector<int> &axes)
 {
   UNUSED_RELEASE(output_shape);
   assert(input_shape.DimensionsCount() > 0);
@@ -221,7 +221,7 @@ void Mean(const Shape &input_shape, const In *input_data, const Shape &output_sh
 template <typename In, typename Out>
 void MeanQ8Asymm(const Shape &input_shape, const In *input_data, float input_scale,
                  int32_t input_offset, const Shape &output_shape, Out *output_data,
-                 float output_scale, int32_t output_offset, std::vector<int> &axes)
+                 float output_scale, int32_t output_offset, const std::vector<int> &axes)
 {
   UNUSED_RELEASE(output_shape);
   assert(input_shape.DimensionsCount() > 0);

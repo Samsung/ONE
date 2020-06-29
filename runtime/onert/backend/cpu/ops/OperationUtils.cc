@@ -233,6 +233,33 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
   }
 }
 
+std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
+{
+  std::vector<int32_t> ret;
+
+  assert(axes->layout() == ir::Layout::NHWC);
+  assert(axes->dimension(0) == axes->getShape().num_elements());
+  switch (axes->data_type())
+  {
+    case ir::DataType::INT32:
+    {
+      for (size_t i = 0; i < axes->dimension(0); ++i)
+        ret.emplace_back(*reinterpret_cast<const int32_t *>(axes->buffer()) + i);
+      break;
+    }
+    case ir::DataType::INT64:
+    {
+      for (size_t i = 0; i < axes->dimension(0); ++i)
+        ret.emplace_back(*reinterpret_cast<const int64_t *>(axes->buffer()) + i);
+      break;
+    }
+    default:
+      throw std::runtime_error("getReducerAxes: Not supported data type");
+      break;
+  }
+  return ret;
+}
+
 } // namespace ops
 } // namespace cpu
 } // namespace backend

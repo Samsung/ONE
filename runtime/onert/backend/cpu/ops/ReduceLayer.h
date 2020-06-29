@@ -56,16 +56,16 @@ public:
   ~ReduceLayer();
 
 public:
-  void configure(const IPortableTensor *input, IPortableTensor *output, ReduceType reduceType,
-                 const std::vector<int> &axes, bool keep_dims);
+  void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
+                 ReduceType reduceType, bool keep_dims);
 
   void run();
 
 private:
   const IPortableTensor *_input;
+  const IPortableTensor *_axes;
   IPortableTensor *_output;
   ReduceType _reduceType;
-  std::vector<int> _axes;
   bool _keep_dims;
 
   std::unique_ptr<nnfw::cker::Reduce> _reduce_kernel;

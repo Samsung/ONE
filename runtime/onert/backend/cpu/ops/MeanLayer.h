@@ -40,15 +40,15 @@ public:
 
   void MeanQuant8();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output,
-                 const std::vector<int> &axes, bool keep_dims);
+  void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
+                 bool keep_dims);
 
   void run();
 
 private:
   const IPortableTensor *_input;
+  const IPortableTensor *_axes;
   IPortableTensor *_output;
-  std::vector<int> _axes;
   bool _keep_dims;
 };
 
