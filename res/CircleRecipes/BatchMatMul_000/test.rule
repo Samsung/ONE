@@ -1,5 +1,0 @@
-# To check if BatchMatMul exists
-
-RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
-
-RULE    "BATCH_MATMUL_EXIST"      $(op_count BATCH_MATMUL) '=' 1
