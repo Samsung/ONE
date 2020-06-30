@@ -1,0 +1,26 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operation {
+  type: "MatrixSetDiag"
+  matrix_set_diag_options {
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
