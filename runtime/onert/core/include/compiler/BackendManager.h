@@ -41,7 +41,14 @@ public:
   backend::Backend *get(const std::string &key);
   const backend::Backend *get(const std::string &key) const;
   const backend::Backend *getControlflow() const;
-  const std::vector<const backend::Backend *> &getAll() const { return _available_backends; };
+  const std::vector<const backend::Backend *> getAll() const
+  {
+    std::vector<const backend::Backend *> v;
+    for (const auto &p : _gen_map)
+      v.emplace_back(p.second.get());
+    return v;
+  }
+  size_t num_backends() const { return _gen_map.size(); }
   /**
    * @brief load backend plugin
    *
@@ -55,7 +62,6 @@ private:
   BackendManager();
 
 private:
-  std::vector<const backend::Backend *> _available_backends;
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
   /**
