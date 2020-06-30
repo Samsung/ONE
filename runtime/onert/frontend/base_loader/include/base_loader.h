@@ -406,8 +406,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
                                                                       const OptionsType *options)
 {
   // Strides
-  param.stride.vertical = options->stride_w();
-  param.stride.horizontal = options->stride_h();
+  param.stride.vertical = options->stride_h();
+  param.stride.horizontal = options->stride_w();
   // Paddings
   if (options->padding() == Padding::Padding_SAME)
     param.padding.type = ir::PaddingType::SAME;
