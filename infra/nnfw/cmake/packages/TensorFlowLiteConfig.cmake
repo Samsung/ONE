@@ -13,8 +13,8 @@ if(BUILD_TENSORFLOW_LITE)
   endmacro(return_unless)
 
   # Required packages
-  nnfw_find_package(AbslSource QUIET)
-  return_unless(AbslSource_FOUND)
+  nnas_find_package(AbseilSource QUIET)
+  return_unless(AbseilSource_FOUND)
   nnfw_find_package(Eigen QUIET)
   return_unless(Eigen_FOUND)
   nnfw_find_package(FarmhashSource QUIET)
