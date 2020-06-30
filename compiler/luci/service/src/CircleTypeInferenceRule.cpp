@@ -221,6 +221,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->logits());
   }
 
+  loco::DataType visit(const luci::CircleMatrixSetDiag *node) final { return loco::dtype_get(node->input()); }
+
   loco::DataType visit(const luci::CircleMaximum *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleMaxPool2D *node) final
