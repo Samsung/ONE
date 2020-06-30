@@ -4,3 +4,4 @@ VERSION,URL
 1.15.2,https://raw.githubusercontent.com/tensorflow/tensorflow/v1.15.2/tensorflow/lite/schema/schema.fbs
 2.1.0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.1.0/tensorflow/lite/schema/schema.fbs
 2.2.0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.2.0/tensorflow/lite/schema/schema.fbs
+2.3.0-rc0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.3.0-rc0/tensorflow/lite/schema/schema.fbs
