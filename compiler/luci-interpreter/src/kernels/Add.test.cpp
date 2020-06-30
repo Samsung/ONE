@@ -102,6 +102,7 @@ void Check(std::initializer_list<int32_t> input1_shape, std::initializer_list<in
                               output_tensor.zero_point()),
                 ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
   }
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
 template <typename T> class AddTest : public ::testing::Test
@@ -113,6 +114,24 @@ TYPED_TEST_CASE(AddTest, DataTypes);
 
 TYPED_TEST(AddTest, TotalTest)
 {
+  std::initializer_list<int32_t> input1_shape{2,3,1,2};
+  std::vector<std::initializer_list<int32_t>> input2_shapes{{1, 1, 3, 2},{1, 3, 1, 2},{2, 1, 3, 1},{2, 3, 1, 1}};
+  std::vector<std::initializer_list<int32_t>> output_shapes{{2, 3, 3, 2},{2, 3, 1, 2},{2, 3, 3, 2},{2, 3, 1, 2}};
+  std::initializer_list<float> input1_data{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
+  std::initializer_list<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
+  std::vector<std::initializer_list<float>> output_datas{{0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
+                       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
+                       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f},{0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f},{0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
+                       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
+                       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f},{0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f}};
+  for (int i = 0; i < output_datas.size(); i++)
+  {
+    Check<TypeParam>(input1_shape, input2_shapes[i], output_shapes[i], input1_data, input2_data, output_datas[i]);
+    Check<TypeParam>(input2_shapes[i], input1_shape, output_shapes[i], input2_data, input1_data, output_datas[i]);
+  }
+  
+
+
   Check<TypeParam>(
       /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{1, 1, 3, 2}, /*output_shape=*/{2, 3, 3, 2},
       /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
