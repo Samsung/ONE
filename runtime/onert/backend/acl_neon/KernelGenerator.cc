@@ -1147,29 +1147,18 @@ void KernelGenerator::visit(const ir::operation::ReduceMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  const auto &axes{node.param().axes};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceMax::Input::AXES)};
 
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
-  std::set<std::uint32_t> acl_axes;
-  const int ifm_rank = _ctx.at(ifm_index).shape().rank();
-  for (int axis : axes)
-  {
-    if (axis < 0)
-      axis += ifm_rank;
-    acl_axes.insert(
-        acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value());
-  }
-
-  arm_compute::Coordinates reduce_axes;
-  for (const auto axis : acl_axes)
-  {
-    reduce_axes.set(reduce_axes.num_dimensions(), axis);
-  }
+  const auto &axes = _ctx.at(axes_index);
+  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = ifm_alloc->layout();
+  const auto reduce_axes =
+      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
 
   auto fn = std::make_unique<::arm_compute::NEReduceOperation>();
 
@@ -1185,29 +1174,18 @@ void KernelGenerator::visit(const ir::operation::ReduceMin &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto &axes{node.param().axes};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
 
   auto ofm_alloc = _tensor_builder->at(ofm_index).get();
   auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
-  std::set<std::uint32_t> acl_axes;
-  const int ifm_rank = _ctx.at(ifm_index).shape().rank();
-  for (int axis : axes)
-  {
-    if (axis < 0)
-      axis += ifm_rank;
-    acl_axes.insert(
-        acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value());
-  }
-
-  arm_compute::Coordinates reduce_axes;
-  for (const auto axis : acl_axes)
-  {
-    reduce_axes.set(reduce_axes.num_dimensions(), axis);
-  }
+  const auto &axes = _ctx.at(axes_index);
+  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = ifm_alloc->layout();
+  const auto reduce_axes =
+      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
 
   auto fn = std::make_unique<::arm_compute::NEReduceOperation>();
 
@@ -1223,33 +1201,22 @@ void KernelGenerator::visit(const ir::operation::ReduceSum &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto &axes{node.param().axes};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = input_alloc->layout();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
-  std::set<std::uint32_t> acl_axes;
-  const int input_rank = _ctx.at(input_index).shape().rank();
-  for (int axis : axes)
-  {
-    if (axis < 0)
-      axis += input_rank;
-    acl_axes.insert(
-        acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value());
-  }
-
-  arm_compute::Coordinates fixed_axes;
-  for (const auto axis : acl_axes)
-  {
-    fixed_axes.set(fixed_axes.num_dimensions(), axis);
-  }
+  const auto &axes = _ctx.at(axes_index);
+  const auto ifm_rank = _ctx.at(input_index).shape().rank();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = input_alloc->layout();
+  const auto reduce_axes =
+      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
 
   auto fn = std::make_unique<::arm_compute::NEReduceSum>();
 
-  fn->configure(input_alloc->handle(), fixed_axes, false, output_alloc->handle());
+  fn->configure(input_alloc->handle(), reduce_axes, false, output_alloc->handle());
 
   auto acl_fn = asAclFunction(std::move(fn));
 

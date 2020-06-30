@@ -541,13 +541,10 @@ OperationFactory::OperationFactory()
     //  1 -> Reduced Axes Tensor Index
     //  2 -> keep_dims Index
 
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceSum::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceSum{inputs, outputs, param};
@@ -936,12 +933,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceAll::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceAll{inputs, outputs, param};
@@ -958,12 +952,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceAny::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceAny{inputs, outputs, param};
@@ -980,12 +971,11 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     std::vector<std::int32_t> axes =
         operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceMax::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceMax{inputs, outputs, param};
@@ -1854,12 +1844,11 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     std::vector<std::int32_t> axes =
         operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceMin::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceMin{inputs, outputs, param};
@@ -1999,12 +1988,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceProd::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceProd{inputs, outputs, param};

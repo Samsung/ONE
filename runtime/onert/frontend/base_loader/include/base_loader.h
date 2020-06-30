@@ -875,15 +875,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceAll: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceAll::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
 
   if (op->custom_options() == nullptr)
   {
@@ -898,7 +891,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
     param.keep_dims = attr_map["keep_dims"].AsBool();
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -909,18 +902,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceAny: non-constant 'axes' is not supported.");
-
   ir::operation::ReduceAny::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -931,18 +916,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceMax: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceMax::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1108,18 +1086,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceSum(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceSum: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceSum::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{{input}, outputs, param}};
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 
@@ -1623,18 +1594,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceProd: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceProd::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

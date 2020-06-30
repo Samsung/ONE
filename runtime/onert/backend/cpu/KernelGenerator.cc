@@ -824,15 +824,17 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 void KernelGenerator::visit(const ir::operation::ReduceSum &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
-
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kSum, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kSum, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
@@ -841,14 +843,17 @@ void KernelGenerator::visit(const ir::operation::ReduceAll &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceAll::Input::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAll, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAll, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
@@ -857,14 +862,17 @@ void KernelGenerator::visit(const ir::operation::ReduceAny &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ReduceAny::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceAny::Input::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAny, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kAny, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
@@ -872,15 +880,18 @@ void KernelGenerator::visit(const ir::operation::ReduceAny &node)
 void KernelGenerator::visit(const ir::operation::ReduceMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceMax::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceMax::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMax, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMax, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
@@ -888,15 +899,18 @@ void KernelGenerator::visit(const ir::operation::ReduceMax &node)
 void KernelGenerator::visit(const ir::operation::ReduceMin &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMin, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kMin, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
@@ -1081,15 +1095,18 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
 void KernelGenerator::visit(const ir::operation::ReduceProd &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::ReduceProd::Input::AXES)};
 
+  const auto &axes = _ctx.at(axes_index);
+  const auto axes_vec = getReducerAxes(axes);
+  const auto keep_dims = node.param().keep_dims;
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReduceLayer>();
 
-  fn->configure(input_alloc, output_alloc, ops::ReduceType::kProd, node.param().axes,
-                node.param().keep_dims);
+  fn->configure(input_alloc, output_alloc, ops::ReduceType::kProd, axes_vec, keep_dims);
 
   _return_fn = std::move(fn);
 }
