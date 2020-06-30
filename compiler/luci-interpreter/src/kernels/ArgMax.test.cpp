@@ -47,6 +47,7 @@ void Check(std::initializer_list<int32_t> input_shape,
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
 }
 
 template <typename T> class ArgMaxTest : public ::testing::Test
