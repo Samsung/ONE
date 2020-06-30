@@ -34,28 +34,28 @@ class OneHotLayer : public ::onert::exec::IFunction
 {
 public:
   OneHotLayer()
-      : _indices(nullptr), _output(nullptr), _depth(0), _on_value(1), _off_value(0), _axis(-1)
+      : _indices(nullptr), _depth(nullptr), _on_value(nullptr), _off_value(nullptr),
+        _output(nullptr), _axis(-1)
   {
     // DO NOTHING
   }
 
 public:
-  void oneHotFloat32();
+  template <typename T> void oneHotImpl();
 
-  void oneHotQuant8();
-
-  void configure(const IPortableTensor *indices, IPortableTensor *output, int32_t depth,
-                 float on_value, float off_value, int32_t axis);
+  void configure(const IPortableTensor *indices, const IPortableTensor *depth,
+                 const IPortableTensor *on_value, const IPortableTensor *off_value,
+                 IPortableTensor *output, int32_t axis);
 
   void run();
 
 private:
   const IPortableTensor *_indices;
+  const IPortableTensor *_depth;
+  const IPortableTensor *_on_value;
+  const IPortableTensor *_off_value;
   IPortableTensor *_output;
 
-  int32_t _depth;
-  float _on_value;
-  float _off_value;
   int32_t _axis;
 };
 

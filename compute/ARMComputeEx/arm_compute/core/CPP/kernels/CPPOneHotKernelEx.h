@@ -68,28 +68,28 @@ public:
   /** Set the input and output of the kernel.
    *
    * @param[in]  indices     A tensor for indices. Data types supported: S32
+   * @param[in]  depth       A tensor for depth. Data types supported: S32
+   * @param[in]  on_value    A tensor for on_value. Data types supported: F32
+   * @param[in]  off_value   A tensor for off_value. Data types supported: F32*
    * @param[out] output      A tensor for computed value of one hot operator
-   * @param[in]  depth       An int value for depth
-   * @param[in]  on_value    A float value for on_value
-   * @param[in]  off_value   A float value for off_value
    * @param[in]  axis        An int value for axis
    */
-  void configure(const ITensor *indices, ITensor *output, const int depth, const float on_value,
-                 const float off_value, const int axis);
+  void configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
+                 const ITensor *off_value, ITensor *output, const int axis);
 
   /** Static function to check if given info will lead to a valid configuration of @ref
    * CPPOneHotKernelEx
    *
    * @param[in]  indices     A tensor for indices. Data types supported: S32
-   * @param[in]  depth       An int value for depth
-   * @param[in]  on_value    A float value for on_value
-   * @param[in]  off_value   A float value for off_value
+   * @param[in]  depth       A tensor for depth. Data types supported: S32
+   * @param[in]  on_value    A tensor for on_value. Data types supported: F32
+   * @param[in]  off_value   A tensor for off_value. Data types supported: F32*
    * @param[in]  axis        An int value for axis
    *
    * @return a status
    */
-  static Status validate(const ITensor *indices, const int depth, const float on_value,
-                         const float off_value, const int axis);
+  static Status validate(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
+                         const ITensor *off_value, const int axis);
 
   // Inherited methods overridden:
   void run(const Window &window, const ThreadInfo &info) override;
@@ -100,10 +100,10 @@ private:
   template <typename T> void run_one_hot();
 
   const ITensor *_indices;
+  const ITensor *_depth;
+  const ITensor *_on_value;
+  const ITensor *_off_value;
   ITensor *_output;
-  int _depth;
-  float _on_value;
-  float _off_value;
   int _axis;
 };
 } // namespace arm_compute

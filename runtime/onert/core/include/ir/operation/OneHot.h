@@ -39,9 +39,6 @@ public:
 
   struct Param
   {
-    int depth;       // comes from input tensor, not from OneHotOptions
-    float on_value;  // comes from input tensor, not from OneHotOptions
-    float off_value; // comes from input tensor, not from OneHotOptions
     int axis;
   };
 

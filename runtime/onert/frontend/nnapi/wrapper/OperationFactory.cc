@@ -1945,17 +1945,18 @@ OperationFactory::OperationFactory()
     // Each input should be interpreted as follows:
     //
     // 0 -> indices tensor
-    // 1 -> depth scalar
-    // 2 -> on_value scalar
-    // 3 -> off_value scalar
+    // 1 -> depth tensor
+    // 2 -> on_value tensor
+    // 3 -> off_value tensor
     // 4 -> axis scalar
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs;
+    for (uint32_t n = 0; n < init_param.input_count - 1; ++n)
+    {
+      inputs.append(OperandIndex{init_param.inputs[n]});
+    }
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     operation::OneHot::Param param;
-    param.depth = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
-    param.on_value = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<float>();
-    param.off_value = operands.at(OperandIndex{init_param.inputs[3]}).asScalar<float>();
     param.axis = operands.at(OperandIndex{init_param.inputs[4]}).asScalar<std::int32_t>();
 
     return new operation::OneHot{inputs, outputs, param};

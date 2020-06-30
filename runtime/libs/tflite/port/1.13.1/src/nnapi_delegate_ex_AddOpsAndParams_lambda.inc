@@ -147,23 +147,6 @@
       }
     };
 
-    auto add_one_hot_tensor_inputs_as_scalar = [subgraph, &node, &augmented_inputs,
-                                                &add_scalar_float32]() {
-      assert(augmented_inputs.size() == 4);
-      const auto on_value_idx = node.inputs->data[2];
-      const auto off_value_idx = node.inputs->data[3];
-      const auto on_value_tensor = subgraph->tensor(on_value_idx);
-      const auto off_value_tensor = subgraph->tensor(off_value_idx);
-      assert(on_value_tensor->type == kTfLiteFloat32);
-      assert(off_value_tensor->type == kTfLiteFloat32);
-      const auto on_value = *on_value_tensor->data.f;
-      const auto off_value = *off_value_tensor->data.f;
-      augmented_inputs.pop_back();
-      augmented_inputs.pop_back();
-      add_scalar_float32(on_value);
-      add_scalar_float32(off_value);
-    };
-
     auto add_one_hot_params = [&add_scalar_int32](void* data) {
       const auto* builtin = reinterpret_cast<TfLiteOneHotParams*>(data);
       add_scalar_int32(builtin->axis);

@@ -2016,17 +2016,20 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
 {
   const auto out_idx{node.getOutputs().at(0)};
   const auto indices_idx{node.getInputs().at(ir::operation::OneHot::Input::INDICES)};
-  const auto depth = node.param().depth;
-  const auto on_value = node.param().on_value;
-  const auto off_value = node.param().off_value;
+  const auto depth_idx{node.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
+  const auto onvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::ON_VALUE)};
+  const auto offvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
   const auto axis = node.param().axis;
 
   auto output_tensor = _tensor_builder->at(out_idx).get();
   auto indices_tensor = _tensor_builder->at(indices_idx).get();
+  auto depth_tensor = _tensor_builder->at(depth_idx).get();
+  auto onvalue_tensor = _tensor_builder->at(onvalue_idx).get();
+  auto offvalue_tensor = _tensor_builder->at(offvalue_idx).get();
 
   auto fn = std::make_unique<::arm_compute::CPPOneHotEx>();
-  fn->configure(indices_tensor->handle(), output_tensor->handle(), depth, on_value, off_value,
-                axis);
+  fn->configure(indices_tensor->handle(), depth_tensor->handle(), onvalue_tensor->handle(),
+                offvalue_tensor->handle(), output_tensor->handle(), axis);
   auto acl_fn = asAclFunction(std::move(fn));
   _return_fn = std::move(acl_fn);
 }

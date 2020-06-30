@@ -27,9 +27,10 @@ model = Model()
 indice_shape = [2, 2]
 indice_input = [1, 2, 0, 2]
 
-depth = Int32Scalar("depth", 3)
-onvalue = Float32Scalar("on", 1.) # default value is 1.
-offvalue = Float32Scalar("off", 0.) # default value is 0.
+depth = Input("depth", "TENSOR_INT32", "{1}")
+onvalue = Input("onvalue", "TENSOR_FLOAT32", "{1}")
+offvalue = Input("offvalue", "TENSOR_FLOAT32", "{1}")
+
 axis0 = Int32Scalar("axis", -1) # default value is -1.
 model_output0 = Output("output", "TENSOR_FLOAT32", "{2, 2, 3}")
 
@@ -43,10 +44,17 @@ model_output_data = ([0., 1., 0.,
                       1., 0., 0.,
                       0., 0., 1.,])
 
+depth_data = [3]
+onvalue_data = [1.]
+offvalue_data = [0.]
+
 Example(
   {
     dynamic_layer.getModelInput() : indice_input,
     dynamic_layer.getShapeInput() : indice_shape,
+    depth : depth_data,
+    onvalue : onvalue_data,
+    offvalue : offvalue_data,
 
     model_output0 : model_output_data,
   })
