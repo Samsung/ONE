@@ -71,6 +71,7 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   const double qmax_double = kMaxScale;
   const double rmin = std::fmin(0, min);
   const double rmax = std::fmax(0, max);
+
   double scale = (rmax - rmin) / (qmax_double - qmin_double);
   double zero_point_double = 0;
   uint8_t nudged_zero_point = 0;
