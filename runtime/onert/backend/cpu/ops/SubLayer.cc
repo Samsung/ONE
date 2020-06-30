@@ -52,6 +52,31 @@ void SubLayer::subFloat32()
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
+void SubLayer::subInt32()
+{
+  int32_t output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+  nnfw::cker::BinaryArithmeticOpParam op_params;
+  op_params.quantized_activation_max = output_activation_max;
+  op_params.quantized_activation_min = output_activation_min;
+
+  const bool need_broadcast =
+      nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
+  if (need_broadcast)
+  {
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
+        op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+    return;
+  }
+
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
+      op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
+      getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
+      getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+}
+
 void SubLayer::subQuant8()
 {
   int32_t output_activation_min, output_activation_max;
@@ -83,6 +108,10 @@ void SubLayer::run()
   else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     subQuant8();
+  }
+  else if (_output->data_type() == OperandType::INT32)
+  {
+    subInt32();
   }
   else
   {

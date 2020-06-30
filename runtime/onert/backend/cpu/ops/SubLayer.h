@@ -44,6 +44,8 @@ public:
 
   void subQuant8();
 
+  void subInt32();
+
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
                  const ir::Activation activation, IPortableTensor *output);
 
