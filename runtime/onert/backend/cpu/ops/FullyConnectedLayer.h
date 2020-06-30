@@ -65,6 +65,10 @@ private:
 
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;
+
+#ifdef USE_RUY_GEMV
+  bool _freed_weights = false;
+#endif
 };
 
 } // namespace ops
