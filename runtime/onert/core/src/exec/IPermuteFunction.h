@@ -17,6 +17,7 @@
 #ifndef __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 #define __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 
+#include "feature/IndexIterator.h"
 #include "feature/nchw/Reader.h"
 #include "feature/nchw/View.h"
 #include "feature/nhwc/Reader.h"
@@ -27,7 +28,6 @@
 #include "ir/Index.h"
 #include "ir/Shape.h"
 #include <memory>
-#include <misc/feature/IndexIterator.h>
 #include <typeinfo>
 #include "util/Utils.h"
 #include <vector>
@@ -187,7 +187,7 @@ private:
                 shape.W = dst_tensor.dimension(3);
                 const feature::nhwc::Reader<T> from(&src_tensor);
                 feature::nchw::View<T> into(&dst_tensor);
-                ::nnfw::misc::feature::iterate(shape)
+                feature::iterate(shape)
                     << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                          const auto value = from.at(batch, row, col, ch);
                          into.at(batch, ch, row, col) = value;
@@ -203,7 +203,7 @@ private:
                 shape.W = src_tensor.dimension(3);
                 const feature::nchw::Reader<T> from(&src_tensor);
                 feature::nhwc::View<T> into(&dst_tensor);
-                ::nnfw::misc::feature::iterate(shape)
+                feature::iterate(shape)
                     << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                          const auto value = from.at(batch, ch, row, col);
                          into.at(batch, row, col, ch) = value;

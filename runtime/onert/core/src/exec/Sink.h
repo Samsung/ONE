@@ -129,7 +129,7 @@ protected:
           {
             const exec::feature::nchw::Reader<T> from(&tensor);
             exec::feature::nhwc::View<T> into(shape, _output_buffer, _output_size);
-            ::nnfw::misc::feature::iterate(shape)
+            feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, ch, row, col);
                      into.at(batch, row, col, ch) = value;
@@ -139,7 +139,7 @@ protected:
           {
             const exec::feature::nhwc::Reader<T> from(&tensor);
             exec::feature::nchw::View<T> into(shape, _output_buffer, _output_size);
-            ::nnfw::misc::feature::iterate(shape)
+            feature::iterate(shape)
                 << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
                      const auto value = from.at(batch, row, col, ch);
                      into.at(batch, ch, row, col) = value;
