@@ -28,7 +28,10 @@ public:
   }
 
 public:
-  tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_MATRIX_SET_DIAG; }
+  tflite::BuiltinOperator code(void) const override
+  {
+    return tflite::BuiltinOperator_MATRIX_SET_DIAG;
+  }
 
   tflite::BuiltinOptions type(void) const override
   {
