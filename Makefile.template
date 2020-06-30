@@ -4,7 +4,7 @@ BUILD_TYPE?=Debug
 CROSS_BUILD?=0
 HOST_OS?=linux
 TARGET_OS?=linux
-PARALLEL_BUILD?=1
+ALL_PROC_BUILD?=1
 COVERAGE_BUILD?=0
 BENCHMARK_ACL_BUILD?=0
 OPTIONS?=
@@ -78,7 +78,7 @@ ifneq ($(ANDROID_BOOST_ROOT),)
   OPTIONS+= -DANDROID_BOOST_ROOT=$(ANDROID_BOOST_ROOT)
 endif
 
-ifeq ($(PARALLEL_BUILD),1)
+ifeq ($(ALL_PROC_BUILD),1)
 	# Get number of processors (linux only for now)
 	ifeq ($(HOST_OS),linux)
 		NPROCS?=$(shell grep -c ^processor /proc/cpuinfo)
@@ -140,7 +140,7 @@ endif
 	touch $(TIMESTAMP_CONFIGURE)
 
 build_internal: $(BUILD_FOLDER)
-	NNFW_WORKSPACE="$(WORKSPACE)" NPROCS="$(NPROCS)" PARALLEL_BUILD="$(PARALLEL_BUILD)" ./nnfw build
+	NNFW_WORKSPACE="$(WORKSPACE)" NPROCS="$(NPROCS)" ALL_PROC_BUILD="$(ALL_PROC_BUILD)" ./nnfw build
 	rm -rf $(BUILD_ALIAS)
 	ln -s $(BUILD_FOLDER) $(BUILD_ALIAS)
 	touch $(TIMESTAMP_BUILD)
