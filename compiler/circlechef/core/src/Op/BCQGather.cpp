@@ -16,6 +16,8 @@
 
 #include "BCQGather.h"
 
+#include "Convert.h"
+
 flatbuffers::Offset<void> BCQGatherChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);

@@ -14,13 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CHEFS_H__
-#define __CIRCLE_OP_CHEFS_H__
+#ifndef __CIRCLE_OP_BCQGATHER_H__
+#define __CIRCLE_OP_BCQGATHER_H__
 
-// In alphabet order
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/InstanceNorm.h"
+#include "CircleOpChef.h"
 
-#endif // __CIRCLE_OP_CHEFS_H__
+namespace circlechef
+{
+
+/**
+ * @brief circlechef operator builder for BCQGather
+ */
+class CircleOpBCQGather : public CircleOpChef
+{
+public:
+  void filler(const circle::Operator *op, CircleImport *import,
+              circlechef::ModelRecipe *model_recipe) const override;
+  circlechef::Operation *build(const circle::Operator *op, CircleImport *import,
+                               circlechef::ModelRecipe *model_recipe) const override;
+};
+
+} // namespace circlechef
+
+#endif // __CIRCLE_OP_BCQGATHER_H__

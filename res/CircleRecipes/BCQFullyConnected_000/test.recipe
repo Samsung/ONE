@@ -1,0 +1,65 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 32 dim: 1 }
+}
+operand {
+  name: "w_a"
+  type: FLOAT32
+  shape { dim: 32 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "w_b"
+  type: INT32
+  shape { dim: 32 dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "128.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 32 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "w_c"
+  type: INT32
+  shape { dim: 1 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "32"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 32 dim: 1 }
+}
+operation {
+  type: "BCQFullyConnected"
+  input: "ifm"
+  input: "w_a"
+  input: "w_b"
+  input: "bias"
+  input: "w_c"
+  output: "ofm"
+  bcq_fully_connected_options {
+    weights_hidden_size: 32
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
