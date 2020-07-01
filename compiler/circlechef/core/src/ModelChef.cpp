@@ -352,7 +352,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
       if (symbol_table.find(name) != symbol_table.end())
         return symbol_table.at(name);
       else if (name == "")
-        return -1;
+        return -1; // -1 in Circle means that optional input tensor is empty.
       else
         throw std::runtime_error("circlechef : input not found in main graph");
     };
@@ -600,7 +600,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
       if (symbol_table.find(name) != symbol_table.end())
         return symbol_table.at(name);
       else if (name == "")
-        return -1;
+        return -1; // -1 in Circle means that optional input tensor is empty.
       else
         throw std::runtime_error("circlechef : input not found in subgraph");
     };
