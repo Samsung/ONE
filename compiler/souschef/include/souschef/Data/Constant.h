@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef __EXPLICIT_FILLER_H__
-#define __EXPLICIT_FILLER_H__
+#ifndef __SOURCHEF_CONSTANT_FILLER_H__
+#define __SOURCHEF_CONSTANT_FILLER_H__
 
-#include "DataChef.h"
-#include "LexicalCast.h"
+#include "souschef/DataChef.h"
+#include "souschef/LexicalCast.h"
 
-#include <vector>
+namespace souschef
+{
 
-template <typename T> class ExplicitDataChef final : public DataChef
+template <typename T> class ConstantDataChef final : public DataChef
 {
 public:
-  ExplicitDataChef()
+  ConstantDataChef(const T &value) : _value{value}
   {
     // DO NOTHING
   }
@@ -37,8 +38,7 @@ public:
 
     for (uint32_t n = 0; n < count; ++n)
     {
-      T const value = (n < _values.size()) ? _values.at(n) : T{};
-      const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+      const uint8_t *arr = reinterpret_cast<const uint8_t *>(&_value);
 
       for (uint32_t b = 0; b < sizeof(T); ++b)
       {
@@ -49,27 +49,19 @@ public:
     return res;
   }
 
-public:
-  void insert(const T &value) { _values.emplace_back(value); }
-
 private:
-  std::vector<T> _values;
+  T _value;
 };
 
-template <typename T> struct ExplicitDataChefFactory : public DataChefFactory
+template <typename T> struct ConstantDataChefFactory : public DataChefFactory
 {
   std::unique_ptr<DataChef> create(const Arguments &args) const
   {
-    std::unique_ptr<ExplicitDataChef<T>> res{new ExplicitDataChef<T>};
-
-    for (uint32_t n = 0; n < args.count(); ++n)
-    {
-      auto const value = to_number<T>(args.value(n));
-      res->insert(value);
-    }
-
-    return std::move(res);
+    auto const value = to_number<T>(args.value(0));
+    return std::unique_ptr<DataChef>{new ConstantDataChef<T>{value}};
   }
 };
 
-#endif // __EXPLICIT_FILLER_H__
+} // namespace souschef
+
+#endif // __SOURCHEF_CONSTANT_FILLER_H__

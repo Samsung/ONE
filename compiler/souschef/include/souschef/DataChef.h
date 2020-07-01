@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef __DATA_CHEF_H__
-#define __DATA_CHEF_H__
+#ifndef __SOUSCHEF_DATA_CHEF_H__
+#define __SOUSCHEF_DATA_CHEF_H__
 
 #include "Arguments.h"
 
 #include <cstdint>
 #include <memory>
 #include <vector>
+
+namespace souschef
+{
 
 using Data = std::vector<uint8_t>;
 
@@ -53,4 +56,6 @@ struct DataChefFactory
   virtual std::unique_ptr<DataChef> create(const Arguments &args) const = 0;
 };
 
-#endif // __DATA_CHEF_H__
+} // namespace souschef
+
+#endif // __SOUSCHEF_DATA_CHEF_H__

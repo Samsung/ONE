@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __EXPLICIT_FILLER_H__
-#define __EXPLICIT_FILLER_H__
+#ifndef __SOUSCHEF_EXPLICIT_FILLER_H__
+#define __SOUSCHEF_EXPLICIT_FILLER_H__
 
-#include "DataChef.h"
-#include "LexicalCast.h"
+#include "souschef/DataChef.h"
+#include "souschef/LexicalCast.h"
 
 #include <vector>
+
+namespace souschef
+{
 
 template <typename T> class ExplicitDataChef final : public DataChef
 {
@@ -72,4 +75,6 @@ template <typename T> struct ExplicitDataChefFactory : public DataChefFactory
   }
 };
 
-#endif // __EXPLICIT_FILLER_H__
+} // namespace souschef
+
+#endif // __SOUSCHEF_EXPLICIT_FILLER_H__

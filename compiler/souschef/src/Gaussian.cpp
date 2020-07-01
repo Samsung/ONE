@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-#include "Gaussian.h"
-#include "LexicalCast.h"
+#include "souschef/Data/Gaussian.h"
+#include "souschef/LexicalCast.h"
 
 #include <random>
 #include <chrono>
 
 #include <cassert>
 #include <stdexcept>
+
+namespace souschef
+{
 
 std::vector<uint8_t> GaussianFloat32DataChef::generate(int32_t count) const
 {
@@ -133,3 +136,5 @@ std::unique_ptr<DataChef> GaussianUint8DataChefFactory::create(const Arguments &
 
   return std::unique_ptr<DataChef>{new GaussianUint8DataChef{mean, stddev}};
 }
+
+} // namespace souschef

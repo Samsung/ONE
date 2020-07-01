@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#include "LexicalCast.h"
+#include "souschef/LexicalCast.h"
 
 #include <cassert>
 #include <limits>
+
+namespace souschef
+{
 
 template <> float to_number(const std::string &s) { return std::stof(s); }
 template <> int to_number(const std::string &s) { return std::stoi(s); }
@@ -35,3 +38,5 @@ template <> bool to_number(const std::string &s)
     return true;
   return false;
 }
+
+} // namespace souschef

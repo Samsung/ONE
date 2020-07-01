@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ARGUMENTS_H__
-#define __ARGUMENTS_H__
+#ifndef __SOUSCHEF_DATA_CHEFS_H__
+#define __SOUSCHEF_DATA_CHEFS_H__
 
-#include <cstdint>
-#include <string>
+#include "Data/Constant.h"
+#include "Data/Explicit.h"
+#include "Data/Gaussian.h"
 
-/**
- * @brief Read-only string sequence view
- */
-struct Arguments
-{
-  virtual ~Arguments() = default;
-
-  virtual uint32_t count(void) const = 0;
-  virtual const std::string &value(uint32_t n) const = 0;
-};
-
-#endif // __ARGUMENTS_H__
+#endif // __SOUSCHEF_DATA_CHEFS_H__

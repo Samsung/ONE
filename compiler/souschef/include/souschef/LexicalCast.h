@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,12 @@
 /**
  * @brief This file provides string <-> number cast helpers
  */
-#ifndef __LEXICAL_CAST_H__
-#define __LEXICAL_CAST_H__
+#ifndef __SOUSCHEF_EXICAL_CAST_H__
 
 #include <string>
+
+namespace souschef
+{
 
 /**
  * @brief Return a numeric value that corresponds to a given string
@@ -29,4 +31,6 @@
  */
 template <typename Number> Number to_number(const std::string &s);
 
-#endif // __LEXICAL_CAST_H__
+} // namespace souschef
+
+#endif // __SOUSCHEF_EXICAL_CAST_H__

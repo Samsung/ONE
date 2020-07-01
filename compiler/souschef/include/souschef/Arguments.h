@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __DATA_CHEFS_H__
-#define __DATA_CHEFS_H__
+#ifndef __SOUSCHEF_ARGUMENTS_H__
+#define __SOUSCHEF_ARGUMENTS_H__
 
-#include "Data/Constant.h"
-#include "Data/Explicit.h"
-#include "Data/Gaussian.h"
+#include <cstdint>
+#include <string>
 
-#endif // __DATA_CHEFS_H__
+namespace souschef
+{
+
+/**
+ * @brief Read-only string sequence view
+ */
+struct Arguments
+{
+  virtual ~Arguments() = default;
+
+  virtual uint32_t count(void) const = 0;
+  virtual const std::string &value(uint32_t n) const = 0;
+};
+
+} // namespace souschef
+
+#endif // __SOUSCHEF_ARGUMENTS_H__

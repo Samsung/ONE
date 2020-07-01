@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __DATASET_H__
-#define __DATASET_H__
+#ifndef __SOUSCHEF_DATASET_H__
+#define __SOUSCHEF_DATASET_H__
 
 #include <vector>
+
+namespace souschef
+{
 
 template <typename T> class Dataset
 {
@@ -54,4 +57,6 @@ private:
   std::vector<T> _vec;
 };
 
-#endif // __DATASET_H__
+} // namespace souschef
+
+#endif // __SOUSCHEF_DATASET_H__

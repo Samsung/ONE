@@ -15,17 +15,17 @@
  */
 
 #include "tflchef/ModelChef.h"
-#include "Arguments.h"
+#include <souschef/Arguments.h>
 
 #include "Convert.h"
 
-#include "DataChef.h"
-#include "DataChefs.h"
+#include <souschef/DataChef.h>
+#include <souschef/DataChefs.h>
 
 #include "OpChef.h"
 #include "OpChefs.h"
 
-#include "Dataset.h"
+#include <souschef/Dataset.h>
 
 #include "Log.h"
 
@@ -43,6 +43,8 @@
 
 namespace
 {
+
+using namespace souschef;
 
 template <typename InputIt> class RangedArguments : public Arguments
 {
@@ -280,7 +282,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 #define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \
   data_chef_registry(::tflchef::TYPE)        \
       .add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
-#include "DataChef.def"
+#include <souschef/DataChef.def>
 #undef DATA_CHEF
 
   //

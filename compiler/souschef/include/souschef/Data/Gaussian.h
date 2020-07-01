@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __GAUSSIAN_FILLER_H__
-#define __GAUSSIAN_FILLER_H__
+#ifndef __SOUSCHEF_GAUSSIAN_FILLER_H__
+#define __SOUSCHEF_GAUSSIAN_FILLER_H__
 
-#include "DataChef.h"
+#include "souschef/DataChef.h"
+
+namespace souschef
+{
 
 /**
  * @brief Generate a sequence of random values according to the gaussian(=normal) distribution
@@ -85,4 +88,6 @@ struct GaussianUint8DataChefFactory : public DataChefFactory
   std::unique_ptr<DataChef> create(const Arguments &args) const;
 };
 
-#endif // __GAUSSIAN_FILLER_H__
+} // namespace souschef
+
+#endif // __SOUSCHEF_GAUSSIAN_FILLER_H__
