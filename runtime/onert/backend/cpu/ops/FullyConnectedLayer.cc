@@ -101,36 +101,43 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       getTensorShape(_weights), reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
-
 #ifdef USE_RUY_GEMV
   // very dependent on ruy
   if (_freed_weights)
     return;
 
   const int rows = getTensorShape(_weights).Dims(0);
-  if (rows % 4 == 0)
+  if (rows % 4 != 0)
   {
-    const int total_input_size = getTensorShape(_input).FlatSize();
-    const int input_size = getTensorShape(_weights).Dims(1);
-    const int batch_size = total_input_size / input_size;
-    if (batch_size <= 4)
-    {
-      // TODO Remove const_cast
-      auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
-      if (weight_tensor)
-      {
-        // TODO Remove this workaround
-        // buffer will have deallocated memory address because ruy kernel uses
-        // it as cache key
-        auto tensor = const_cast<Tensor *>(weight_tensor);
-        auto buffer = tensor->buffer();
-        tensor->decrease_ref();
-        tensor->setBuffer(buffer);
-      }
-    }
+    _freed_weights = true;
+    return;
   }
 
-  _freed_weights = true;
+  const int total_input_size = getTensorShape(_input).FlatSize();
+  const int input_size = getTensorShape(_weights).Dims(1);
+  const int batch_size = total_input_size / input_size;
+  if (batch_size > 4)
+  {
+    _freed_weights = true;
+    return;
+  }
+
+  // TODO Remove const_cast
+  auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
+  if (weight_tensor)
+  {
+    // TODO Remove this workaround
+    // buffer will have deallocated memory address because ruy kernel uses
+    // it as cache key
+    auto tensor = const_cast<Tensor *>(weight_tensor);
+    auto buffer = tensor->buffer();
+    tensor->decrease_ref();
+    if (tensor->buffer() == nullptr) // ref == 0?
+    {
+      tensor->setBuffer(buffer);
+      _freed_weights = true;
+    }
+  }
 #endif
 }
 
