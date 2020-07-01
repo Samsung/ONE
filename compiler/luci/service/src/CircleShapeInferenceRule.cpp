@@ -2013,9 +2013,8 @@ public:
 
   loco::NodeShape visit(const luci::CircleWhere *node) final
   {
-    // return empty shape, because it is known only on runtime
-
-    return loco::TensorShape();
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
   }
 
   loco::NodeShape visit(const luci::CircleWhile *node) final
