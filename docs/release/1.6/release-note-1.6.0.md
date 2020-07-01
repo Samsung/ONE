@@ -12,6 +12,7 @@
     - API updates
 
 - Add **ONE** Runtime package for `x86_64` linux (Experimental)
+- Compiler and Runtime partially support models and tools from tensorflow v2.3.0-rc0 (Experimental). Note that tensorflow v1.13.1 is still **ONE**'s official version.
 
 ## ONE Compiler
 
