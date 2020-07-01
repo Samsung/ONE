@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __SOURCHEF_DATA_CONSTANT_H__
-#define __SOURCHEF_DATA_CONSTANT_H__
+#ifndef __SOUSCHEF_DATA_CONSTANT_H__
+#define __SOUSCHEF_DATA_CONSTANT_H__
 
 #include "souschef/DataChef.h"
 #include "souschef/LexicalCast.h"
@@ -64,4 +64,4 @@ template <typename T> struct ConstantDataChefFactory : public DataChefFactory
 
 } // namespace souschef
 
-#endif // __SOURCHEF_DATA_CONSTANT_H__
+#endif // __SOUSCHEF_DATA_CONSTANT_H__
