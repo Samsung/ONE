@@ -26,6 +26,9 @@ namespace
 
 using namespace testing;
 
+// for quantized Add, the error shouldn't exceed step
+float GetTolerance(int min, int max) { return (max - min) / 255.0; }
+
 TEST(MaxPool2DTest, Float)
 {
   Shape input_shape{1, 3, 5, 1};
@@ -53,8 +56,44 @@ TEST(MaxPool2DTest, Float)
       1, 2, //
       5, 6, //
   };
+  std::initializer_list<int32_t> ref_output_shape{1,2,2,1};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor),::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST(MaxPool2DTest, Uint8)
+{
+  float kQuantizedTolerance = GetTolerance(-15.9375, 15.9375);
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375, 15.9375);
+  std::vector<float> input_data{
+      0,  -6, 12, 4, //
+      -3, -2, 10, 7, //
+  };
+  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  std::vector<uint8_t> quantize_input =
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  MaxPool2D kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0.0, 6.0};
+  std::initializer_list<int32_t> ref_output_shape{1,1,2,1};
+  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                                  output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor),::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace
