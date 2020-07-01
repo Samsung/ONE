@@ -347,7 +347,14 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     // Tensor Name -> Tensor ID mapping (per Graph)
     std::map<std::string, int32_t> symbol_table;
 
-    auto lookup = [&symbol_table](const std::string &name) { return symbol_table.at(name); };
+    auto lookup = [&symbol_table](const std::string &name) {
+      if (symbol_table.find(name) != symbol_table.end())
+        return symbol_table.at(name);
+      else if (name == "")
+        return -1;
+      else
+        throw std::runtime_error("tflchef : input not found in main graph");
+    };
 
     int32_t buffer_start = buffer_vec.size();
     int32_t buffer_index = 0;
@@ -593,7 +600,14 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
     // Tensor Name -> Tensor ID mapping (per Graph)
     std::map<std::string, int32_t> symbol_table;
 
-    auto lookup = [&symbol_table](const std::string &name) { return symbol_table.at(name); };
+    auto lookup = [&symbol_table](const std::string &name) {
+      if (symbol_table.find(name) != symbol_table.end())
+        return symbol_table.at(name);
+      else if (name == "")
+        return -1;
+      else
+        throw std::runtime_error("tflchef : input not found in subgraph");
+    };
 
     const auto &graph = model_recipe.graph(g);
 
