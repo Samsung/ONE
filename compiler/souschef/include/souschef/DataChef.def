@@ -1,0 +1,19 @@
+#ifndef DATA_CHEF
+#error "Define DATA_CHEF first"
+#endif // DATA_CHEF
+
+// DATA_CHEF(TYPE, NAME, FACTORY_CLASS)
+//  "TYPE" SHOULD BE an enum tag of tflchef::TensorType
+DATA_CHEF(FLOAT32, constant, ConstantDataChefFactory<float>)
+DATA_CHEF(BOOL, constant, ConstantDataChefFactory<bool>)
+DATA_CHEF(UINT8, constant, ConstantDataChefFactory<uint8_t>)
+DATA_CHEF(INT32, constant, ConstantDataChefFactory<int32_t>)
+DATA_CHEF(INT64, constant, ConstantDataChefFactory<int64_t>)
+DATA_CHEF(INT64, explicit, ExplicitDataChefFactory<int64_t>)
+DATA_CHEF(INT32, explicit, ExplicitDataChefFactory<int>)
+DATA_CHEF(UINT8, explicit, ExplicitDataChefFactory<uint8_t>)
+DATA_CHEF(BOOL, explicit, ExplicitDataChefFactory<bool>)
+DATA_CHEF(FLOAT32, explicit, ExplicitDataChefFactory<float>)
+DATA_CHEF(FLOAT32, gaussian, GaussianFloat32DataChefFactory)
+DATA_CHEF(INT32, gaussian, GaussianInt32DataChefFactory)
+DATA_CHEF(UINT8, gaussian, GaussianUint8DataChefFactory)
