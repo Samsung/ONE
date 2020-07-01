@@ -11,6 +11,7 @@ function preset_configure()
   # Common Libraries
   REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp" "stdex")
   REQUIRED_UNITS+=("oops" "pepper-assert" "foder")
+  REQUIRED_UNITS+=("souschef")
   REQUIRED_UNITS+=("safemain")
   # Hermes Logging Framework
   REQUIRED_UNITS+=("hermes" "hermes-std")
