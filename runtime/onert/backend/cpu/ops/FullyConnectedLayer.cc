@@ -111,7 +111,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
 
-  if (_cached_weights == nullptr || _freed_weights)
+  if (_cached_weights == nullptr || _is_weights_freed)
     return;
 
   auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
@@ -121,7 +121,7 @@ void FullyConnectedLayer::fullyConnectedHybrid()
     tensor->decrease_ref();
     if (tensor->buffer() == nullptr) // ref == 0?
     {
-      _freed_weights = true;
+      _is_weights_freed = true;
     }
   }
 #endif
