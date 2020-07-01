@@ -26,6 +26,34 @@ namespace
 
 using namespace testing;
 
+// for quantized Add, the error shouldn't exceed step
+float GetTolerance(int min, int max) { return (max - min) / 255.0; }
+
+TEST(Pad, Uint8)
+{
+  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
+  std::vector<float> input_data{-0.8, 0.2, 0.9, 0.7, 0.1, -0.3};
+  std::vector<int32_t> paddings_data{0, 0, 0, 2, 1, 3, 0, 0};
+  Tensor input_tensor{DataType::U8, {1, 2, 3, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor paddings_tensor = makeInputTensor<DataType::S32>({4, 2}, paddings_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  std::vector<uint8_t> quantize_input =
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  Pad kernel(&input_tensor, &paddings_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0, -0.8, 0.2, 0.9, 0, 0, 0, 0, 0.7, 0.1, -0.3, 0, 0, 0,
+                                     0, 0,    0,   0,   0, 0, 0, 0, 0,   0,   0,    0, 0, 0};
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 7, 1}));
+}
+
 TEST(Pad, Float)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6};
@@ -41,8 +69,10 @@ TEST(Pad, Float)
   std::vector<float> ref_output_data{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                      0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0, 0, 4, 5,
                                      6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  std::initializer_list<int32_t> ref_output_shape{2, 4, 6, 1};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace
