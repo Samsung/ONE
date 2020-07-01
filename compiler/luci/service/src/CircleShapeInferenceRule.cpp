@@ -2011,6 +2011,12 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleWhere *node) final
+  {
+    loco::TensorShape shape = own_shape(node);
+    return loco::NodeShape{shape};
+  }
+
   loco::NodeShape visit(const luci::CircleWhile *node) final
   {
     // Shape of CircleWhile is not used. Just use input 0

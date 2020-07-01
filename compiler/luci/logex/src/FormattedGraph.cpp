@@ -288,6 +288,7 @@ private:
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
+  IMPLEMENT(luci::CircleWhere)
   IMPLEMENT(luci::CircleWhile)
   IMPLEMENT(luci::CircleZerosLike)
   // Circle Only
@@ -1257,6 +1258,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::No
   s.args().append("num", pepper::str(node->num()));
   s.args().append("axis", pepper::str(node->axis()));
 
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleWhere *node, locop::NodeSummary &s) const
+{
+  s.args().append("condition", tbl()->lookup(node->condition()));
   s.state(locop::NodeSummary::State::Complete);
 
   return true;
