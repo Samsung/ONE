@@ -18,6 +18,7 @@
 #define __ONERT_IR_DATA_H__
 
 #include <algorithm>
+#include <sys/mman.h>
 
 namespace onert
 {
@@ -52,7 +53,7 @@ private:
   size_t _size;
 };
 
-class ExternalData final : public Data
+class ExternalData : public Data
 {
 public:
   ExternalData(const uint8_t *base, size_t size) : _base{base}, _size{size}
@@ -67,6 +68,41 @@ public:
 private:
   const uint8_t *_base;
   const size_t _size;
+};
+
+class MMapedData final : public ExternalData
+{
+public:
+  MMapedData(uint8_t *mmap_base, int32_t page_size, const uint8_t *base, size_t size)
+      : ExternalData(base, size), _mmap_base{mmap_base}, _page_size{page_size}
+  {
+    using std::ptrdiff_t;
+    // Calculate offset from base address of mapped region
+    ptrdiff_t unaligned_offset_start = base - _mmap_base;
+    ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
+
+    // Calculated aligned offset from base address of mapped region
+    // munmap accepts memory address which is a multiple of the pagesize
+    _offset_start = ((unaligned_offset_start + (_page_size - 1)) / _page_size) * _page_size;
+    ptrdiff_t aligned_offset_end = (unaligned_offset_end / _page_size) * _page_size;
+
+    _area_size = aligned_offset_end - _offset_start;
+  }
+
+public:
+  ~MMapedData()
+  {
+    if (_area_size > 0)
+    {
+      munmap(const_cast<uint8_t *>(_mmap_base) + _offset_start, _area_size);
+    }
+  }
+
+private:
+  const uint8_t *_mmap_base;
+  const int32_t _page_size;
+  std::ptrdiff_t _offset_start;
+  size_t _area_size;
 };
 
 } // namespace ir
