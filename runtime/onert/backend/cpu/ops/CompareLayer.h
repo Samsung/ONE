@@ -37,8 +37,6 @@ public:
   CompareLayer();
 
 public:
-  void compareQuant8();
-
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
                  const ir::operation::Comparison::ComparisonType op_type, IPortableTensor *output);
 
