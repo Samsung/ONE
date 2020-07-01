@@ -6,7 +6,10 @@ operand {
 operand {
   name: "ofm"
   type: INT64
-  shape { } # output shape is 2d, but partially unknown, because first dimension depends on number of "true" values in input so in our case it is (?, 3)
+  # Output shape is 2d, but partially unknown,
+  # because first dimension depends on number of "true" values in input.
+  # In this case it is (?, 3)
+  shape { }
 }
 operation {
   type: "Where"

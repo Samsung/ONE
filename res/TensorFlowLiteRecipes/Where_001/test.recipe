@@ -6,7 +6,7 @@ operand {
 operand {
   name: "ofm"
   type: INT64
-  # no output shape in this recipe
+  # shape is intentionally omitted
 }
 operation {
   type: "Where"
