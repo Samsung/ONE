@@ -11,6 +11,7 @@ function(_import)
   nnas_include(ExternalSourceTools)
   nnas_include(ThirdPartyTools)
 
+  # NOTE TensorFlow 1.12 downloads farmhash from the following URL
   ThirdParty_URL(EIGEN_URL PACKAGE Eigen VERSION fd6845384b86)
 
   ExternalSource_Download(EIGEN
