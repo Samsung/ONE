@@ -2,8 +2,8 @@
 model = Model()
 
 i1 = Input("op1", "TENSOR_FLOAT32", "{1, 1, 4, 4}")
-i2 = Input("op2", "TENSOR_INT32", "{1}")
-i3 = Input("op3", "TENSOR_INT32", "{1}")
+i2 = Input("op2", "TENSOR_INT32", "{}")
+i3 = Input("op3", "TENSOR_INT32", "{}")
 i4 = Output("op4", "TENSOR_FLOAT32", "{1, 1, 4, 4}")
 model = model.Operation("MATRIX_BAND_PART_EX", i1, i2, i3).To(i4)
 

@@ -41,6 +41,14 @@ void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shap
   const T row_num = input_shape.Dims(last_dim - 1);
   const T col_num = input_shape.Dims(last_dim);
 
+  if (!(num_lower_diags <= row_num))
+    throw std::runtime_error(
+        "MatrixBandPart : num_lower must be negative or less or equal to number of rows");
+
+  if (!(num_upper_diags <= col_num))
+    throw std::runtime_error(
+        "MatrixBandPart : num_upper must be negative or less or equal to number of columns");
+
   std::fill(output_data, output_data + output_shape.FlatSize(), 0); // output matrix init
 
   // reference code, without multithreading
