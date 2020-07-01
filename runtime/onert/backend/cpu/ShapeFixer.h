@@ -36,7 +36,6 @@ public:
   ShapeFixer(const ir::Operands &ctx);
 
   void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Pad &) override;
 

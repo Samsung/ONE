@@ -190,8 +190,6 @@ GeneratedTests.strided_slice_quant8_6
 GeneratedTests.strided_slice_quant8_7
 GeneratedTests.strided_slice_quant8_8
 GeneratedTests.strided_slice_quant8_9
-GeneratedTests.sub_v1_2_broadcast_quant8
-GeneratedTests.sub_v1_2_quant8
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8
 GeneratedTests.svdf

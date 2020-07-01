@@ -82,12 +82,49 @@ void SubLayer::subQuant8()
   int32_t output_activation_min, output_activation_max;
   CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
                                 &output_activation_max);
-  // nnfw::cker::SubParam op_params;
-  // op_params.quantized_activation_max = output_activation_max;
-  // op_params.quantized_activation_min = output_activation_min;
+  nnfw::cker::BinaryArithmeticOpParam op_params;
+  op_params.quantized_activation_max = output_activation_max;
+  op_params.quantized_activation_min = output_activation_min;
+  // Parameters for scaled quantized computation
+  op_params.left_shift = 20;
+  // Zero-points of input and output tensors
+  op_params.input1_offset = -_lhs->data_offset();
+  op_params.input2_offset = -_rhs->data_offset();
+  op_params.output_offset = _output->data_offset();
+  assert((op_params.input1_offset >= 0) && (op_params.input1_offset <= 255));
+  assert((op_params.input2_offset >= 0) && (op_params.input2_offset <= 255));
+  assert((op_params.output_offset >= 0) && (op_params.output_offset <= 255));
 
-  // cker quant8 sub is not implemented yet
-  throw std::runtime_error{"NYI"};
+  // Compute normalized scale for _lhs and _rhs values,
+  // and represent in 32-bit fixed point
+  const double norm_max_scale = 2 * std::max(_lhs->data_scale(), _rhs->data_scale());
+  const double real_lhs_scale = _lhs->data_scale() / norm_max_scale;
+  const double real_rhs_scale = _rhs->data_scale() / norm_max_scale;
+  // output scale is used to normalize final result, so we invert the scale here
+  const double real_output_scale =
+      norm_max_scale / (_output->data_scale() * (1 << op_params.left_shift));
+
+  // Represent the scales as fixed int32_t multipliers, and int32_t shifts
+  QuantizeMultiplier(real_lhs_scale, &op_params.input1_multiplier, &op_params.input1_shift);
+  QuantizeMultiplier(real_rhs_scale, &op_params.input2_multiplier, &op_params.input2_shift);
+  op_params.input2_multiplier *= -1;
+  QuantizeMultiplier(real_output_scale, &op_params.output_multiplier, &op_params.output_shift);
+
+  const bool need_broadcast =
+      nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
+  if (need_broadcast)
+  {
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
+        op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
+        getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
+        getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+    return;
+  }
+
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::SUB>(
+      op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
+      getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
+      getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void SubLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
