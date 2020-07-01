@@ -34,128 +34,138 @@ float GetTolerance(float min, float max)
   return kQuantizedStep;
 }
 
-float getMinValue(std::initializer_list<float> data)
+TEST(AddTest, Uint8)
 {
-  return 0 > std::min<float>(data) ? std::min<float>(data) : 0;
-}
-
-float getMaxValue(std::initializer_list<float> data)
-{
-  return 0 < std::max<float>(data) ? std::max<float>(data) : 0;
-}
-
-template <typename T>
-void Check(std::initializer_list<int32_t> input1_shape, std::initializer_list<int32_t> input2_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<float> input1_data,
-           std::initializer_list<float> input2_data, std::initializer_list<float> output_data)
-{
-  float kQuantizedTolerance = GetTolerance(getMinValue(input1_data) + getMinValue(input2_data),
-                                           getMaxValue(input1_data) + getMaxValue(input2_data));
-  std::pair<float, int32_t> input1_quant_param =
-      quantizationParams<T>(getMinValue(input1_data), getMaxValue(input1_data));
-  std::pair<float, int32_t> input2_quant_param =
-      quantizationParams<T>(getMinValue(input2_data), getMaxValue(input2_data));
-  Tensor input1_tensor{getElementType<T>(),
-                       input1_shape,
-                       {{input1_quant_param.first}, {input1_quant_param.second}},
-                       ""};
-  Tensor input2_tensor{getElementType<T>(),
-                       input2_shape,
-                       {{input2_quant_param.first}, {input2_quant_param.second}},
-                       ""};
-  if (std::is_floating_point<T>::value)
-  {
-    input1_tensor.writeData(input1_data.begin(), input1_data.size() * sizeof(T));
-    input2_tensor.writeData(input2_data.begin(), input2_data.size() * sizeof(T));
-  }
-  else
-  {
-    std::vector<T> quantized_input1_value =
-        quantize<T>(input1_data, input1_quant_param.first, input1_quant_param.second);
-    std::vector<T> quantized_input2_value =
-        quantize<T>(input2_data, input2_quant_param.first, input2_quant_param.second);
-    input1_tensor.writeData(quantized_input1_value.data(),
-                            quantized_input1_value.size() * sizeof(T));
-    input2_tensor.writeData(quantized_input2_value.data(),
-                            quantized_input2_value.size() * sizeof(T));
-  }
-  std::pair<float, int32_t> output_quant_param =
-      quantizationParams<T>(getMinValue(input1_data) + getMinValue(input2_data),
-                            getMaxValue(input1_data) + getMaxValue(input2_data));
-  Tensor output_tensor =
-      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
-
-  AddParams params{};
-  params.activation = Activation::RELU;
-
-  Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-
-  if (std::is_floating_point<T>::value)
-  {
-    EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
-  }
-  else
-  {
-    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
-                              output_tensor.zero_point()),
-                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
-  }
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-}
-
-template <typename T> class AddTest : public ::testing::Test
-{
-};
-
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(AddTest, DataTypes);
-
-TYPED_TEST(AddTest, TotalTest)
-{
-  std::initializer_list<int32_t> input1_shape{2,3,1,2};
-  std::vector<std::initializer_list<int32_t>> input2_shapes{{1, 1, 3, 2},{1, 3, 1, 2},{2, 1, 3, 1},{2, 3, 1, 1}};
-  std::vector<std::initializer_list<int32_t>> output_shapes{{2, 3, 3, 2},{2, 3, 1, 2},{2, 3, 3, 2},{2, 3, 1, 2}};
-  std::initializer_list<float> input1_data{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
-  std::initializer_list<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
-  std::vector<std::initializer_list<float>> output_datas{{0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
-                       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
-                       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f},{0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f},{0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
-                       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
-                       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f},{0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f}};
+  std::initializer_list<int32_t> base_shape = {2, 3, 1, 2};
+  std::initializer_list<float> base_data = {-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
+                                            1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
+  std::initializer_list<int32_t> test_shapes[] = {
+      {1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+  std::initializer_list<float> test_data = {0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
+  std::initializer_list<int32_t> output_shapes[] = {
+      {2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
+  std::vector<std::vector<float>> output_datas = {
+      {-0.1f, 2.6f,  -0.7f, 2.8f,  0.7f,  3.0f,  1.1f, 0.8f,  0.5f, 1.0f,  1.9f, 1.4f,
+       1.0f,  -0.8f, 0.4f,  -0.6f, 1.8f,  -0.2f, 1.4f, 3.0f,  0.8f, 3.0f,  2.2f, 3.0f,
+       -1.4f, 0.3f,  -2.0f, 0.5f,  -0.6f, 0.9f,  0.9f, -1.9f, 0.3f, -1.7f, 1.7f, -1.3f},
+      {-0.1f, 2.6f, 0.5f, 1.0f, 1.8f, -0.2f, 1.4f, 3.0f, -2.0f, 0.5f, 1.7f, -1.3f},
+      {-0.1f, 2.5f,  0.0f,  2.6f,  -0.7f, 1.9f,  1.1f, 0.7f,  1.2f, 0.8f,  0.5f, 0.1f,
+       1.0f,  -0.9f, 1.1f,  -0.8f, 0.4f,  -1.5f, 1.7f, 3.0f,  2.2f, 3.0f,  2.1f, 3.0f,
+       -1.1f, 0.5f,  -0.6f, 1.0f,  -0.7f, 0.9f,  1.2f, -1.7f, 1.7f, -1.2f, 1.6f, -1.3f},
+      {-0.1f, 2.5f, 1.2f, 0.8f, 0.4f, -1.5f, 1.7f, 3.0f, -0.6f, 1.0f, 1.6f, -1.3f}};
+  float kQuantizedTolerance = GetTolerance(-3.f, 3.f);
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-3.f, 3.f);
   for (int i = 0; i < output_datas.size(); i++)
   {
-    Check<TypeParam>(input1_shape, input2_shapes[i], output_shapes[i], input1_data, input2_data, output_datas[i]);
-    Check<TypeParam>(input2_shapes[i], input1_shape, output_shapes[i], input2_data, input1_data, output_datas[i]);
+    Tensor input1_tensor{
+        getElementType<uint8_t>(), base_shape, {{quant_param.first}, {quant_param.second}}, ""};
+    Tensor input2_tensor{
+        getElementType<uint8_t>(), test_shapes[i], {{quant_param.first}, {quant_param.second}}, ""};
+    std::vector<uint8_t> quantized_input1_value =
+        quantize<uint8_t>(base_data, quant_param.first, quant_param.second);
+    std::vector<uint8_t> quantized_input2_value =
+        quantize<uint8_t>(test_data, quant_param.first, quant_param.second);
+    input1_tensor.writeData(quantized_input1_value.data(),
+                            quantized_input1_value.size() * sizeof(uint8_t));
+    input2_tensor.writeData(quantized_input2_value.data(),
+                            quantized_input2_value.size() * sizeof(uint8_t));
+    Tensor output_tensor =
+        makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
+
+    AddParams params{};
+    params.activation = Activation::NONE;
+
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor),
+                                    output_tensor.scale(), output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_datas[i], kQuantizedTolerance)));
+    EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
   }
-  
+  for (int i = 0; i < 4; i++)
+  {
+    Tensor input1_tensor{
+        getElementType<uint8_t>(), test_shapes[i], {{quant_param.first}, {quant_param.second}}, ""};
+    Tensor input2_tensor{
+        getElementType<uint8_t>(), base_shape, {{quant_param.first}, {quant_param.second}}, ""};
+    std::vector<uint8_t> quantized_input1_value =
+        quantize<uint8_t>(test_data, quant_param.first, quant_param.second);
+    std::vector<uint8_t> quantized_input2_value =
+        quantize<uint8_t>(base_data, quant_param.first, quant_param.second);
+    input1_tensor.writeData(quantized_input1_value.data(),
+                            quantized_input1_value.size() * sizeof(uint8_t));
+    input2_tensor.writeData(quantized_input2_value.data(),
+                            quantized_input2_value.size() * sizeof(uint8_t));
+    Tensor output_tensor =
+        makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
+    AddParams params{};
+    params.activation = Activation::NONE;
 
-  Check<TypeParam>(
-      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{1, 1, 3, 2}, /*output_shape=*/{2, 3, 3, 2},
-      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
-      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
-      /*output_data=*/{0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
-                       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
-                       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f});
-  Check<TypeParam>(
-      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{1, 3, 1, 2}, /*output_shape=*/{2, 3, 1, 2},
-      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
-      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
-      /*output_data=*/{0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f});
-  Check<TypeParam>(
-      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{2, 1, 3, 1}, /*output_shape=*/{2, 3, 3, 2},
-      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
-      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
-      /*output_data=*/{0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
-                       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
-                       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f});
-  Check<TypeParam>(
-      /*input1_shape=*/{2, 3, 1, 2}, /*input2_shape=*/{2, 3, 1, 1}, /*output_shape=*/{2, 3, 1, 2},
-      /*input1_data=*/{-0.3f, 2.3f, 0.9f, 0.5f, 0.8f, -1.1f, 1.2f, 2.8f, -1.6f, 0.0f, 0.7f, -2.2f},
-      /*input2_data=*/{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f},
-      /*output_data=*/{0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f});
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor),
+                                    output_tensor.scale(), output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_datas[i], kQuantizedTolerance)));
+    EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
+  }
+}
+
+TEST(AddTest, Float)
+{
+  Shape base_shape = {2, 3, 1, 2};
+  std::vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+  std::vector<std::vector<float>> test_outputs = {
+      {0.0f, 2.6f, 0.0f, 2.8f, 0.7f, 3.2f, 1.1f, 0.8f, 0.5f, 1.0f, 1.9f, 1.4f,
+       1.0f, 0.0f, 0.4f, 0.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.8f, 3.3f, 2.2f, 3.7f,
+       0.0f, 0.3f, 0.0f, 0.5f, 0.0f, 0.9f, 0.9f, 0.0f, 0.3f, 0.0f, 1.7f, 0.0f},
+      {0.0f, 2.6f, 0.5f, 1.0f, 1.8f, 0.0f, 1.4f, 3.1f, 0.0f, 0.5f, 1.7f, 0.0f},
+      {0.0f, 2.5f, 0.0f, 2.6f, 0.0f, 1.9f, 1.1f, 0.7f, 1.2f, 0.8f, 0.5f, 0.1f,
+       1.0f, 0.0f, 1.1f, 0.0f, 0.4f, 0.0f, 1.7f, 3.3f, 2.2f, 3.8f, 2.1f, 3.7f,
+       0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.9f, 1.2f, 0.0f, 1.7f, 0.0f, 1.6f, 0.0f},
+      {0.0f, 2.5f, 1.2f, 0.8f, 0.4f, 0.0f, 1.7f, 3.3f, 0.0f, 1.0f, 1.6f, 0.0f}};
+  std::vector<float> input1_data{-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
+                                 1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
+  std::vector<float> input2_data{0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
+    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
+    Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+    AddParams params{};
+    params.activation = Activation::RELU;
+
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<float>(output_tensor),
+                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+        << "With shape number " << i;
+  }
+  // Re-run with exchanged inputs.
+  for (size_t i = 0; i < test_shapes.size(); ++i)
+  {
+    Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(test_shapes[i], input2_data);
+    Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(base_shape, input1_data);
+    Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+    AddParams params{};
+    params.activation = Activation::RELU;
+
+    Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+    kernel.configure();
+    kernel.execute();
+
+    EXPECT_THAT(extractTensorData<float>(output_tensor),
+                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+        << "With shape number " << i;
+  }
 }
 
 } // namespace
