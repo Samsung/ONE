@@ -17,13 +17,15 @@ function(_Abseil_import)
     add_library(abseil INTERFACE)
     target_link_libraries(abseil INTERFACE
       # From "Available Abseil CMake Public Targets" in CMake/README.md
-      absl::base
       absl::algorithm
-      absl::container
+      absl::base
       absl::debugging
+      absl::flat_hash_map
+      absl::flags
       absl::memory
       absl::meta
       absl::numeric
+      absl::random_random
       absl::strings
       absl::synchronization
       absl::time

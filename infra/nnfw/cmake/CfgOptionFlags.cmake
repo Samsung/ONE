@@ -57,7 +57,7 @@ option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
 # Default external libraries source download and build configuration
 #
 option(DOWNLOAD_TENSORFLOW "Download Tensorflow source" ON)
-option(DOWNLOAD_ABSL "Download Absl source" ON)
+option(DOWNLOAD_ABSEIL "Download Abseil source" ON)
 option(DOWNLOAD_EIGEN "Download Eigen source" ON)
 option(DOWNLOAD_FARMHASH "Download farmhash source" ON)
 option(DOWNLOAD_GEMMLOWP "Download GEMM low precesion library source" ON)
