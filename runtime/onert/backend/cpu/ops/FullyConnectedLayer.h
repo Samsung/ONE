@@ -57,6 +57,8 @@ public:
 
   void run();
 
+  void prepare() override;
+
 private:
   const IPortableTensor *_input;
   const IPortableTensor *_weights;
@@ -67,7 +69,8 @@ private:
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;
 
 #ifdef USE_RUY_GEMV
-  bool _freed_weights = false;
+  bool _freed_weights = false;        // weights is already freed?
+  uint8_t *_cached_weights = nullptr; // weights to be cached and a key
 #endif
 };
 

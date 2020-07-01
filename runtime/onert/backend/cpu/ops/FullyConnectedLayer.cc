@@ -96,45 +96,31 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   op_params.activation = convertActivationType(_activation);
   op_params.weights_scale = _weights->data_scale();
 
+#ifndef USE_RUY_GEMV
   nnfw::cker::FullyConnectedHybrid(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
       getTensorShape(_weights), reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
-#ifdef USE_RUY_GEMV
-  // very dependent on ruy
-  if (_freed_weights)
+#else
+  nnfw::cker::FullyConnectedHybrid(
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_weights),
+      (_cached_weights) ? reinterpret_cast<const int8_t *>(_cached_weights)
+                        : reinterpret_cast<const int8_t *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+
+  if (_cached_weights == nullptr || _freed_weights)
     return;
 
-  const int rows = getTensorShape(_weights).Dims(0);
-  if (rows % 4 != 0)
-  {
-    _freed_weights = true;
-    return;
-  }
-
-  const int total_input_size = getTensorShape(_input).FlatSize();
-  const int input_size = getTensorShape(_weights).Dims(1);
-  const int batch_size = total_input_size / input_size;
-  if (batch_size > 4)
-  {
-    _freed_weights = true;
-    return;
-  }
-
-  // TODO Remove const_cast
   auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
   if (weight_tensor)
   {
-    // TODO Remove this workaround
-    // buffer will have deallocated memory address because ruy kernel uses
-    // it as cache key
     auto tensor = const_cast<Tensor *>(weight_tensor);
-    auto buffer = tensor->buffer();
     tensor->decrease_ref();
     if (tensor->buffer() == nullptr) // ref == 0?
     {
-      tensor->setBuffer(buffer);
       _freed_weights = true;
     }
   }
@@ -173,6 +159,28 @@ void FullyConnectedLayer::run()
   {
     throw std::runtime_error{"FullyConnected: unsupported data type"};
   }
+}
+
+void FullyConnectedLayer::prepare()
+{
+#ifdef USE_RUY_GEMV
+  // NOTE. The condition to enable caching on ruy kernel can be changed according to ruy's version
+  const int rows = getTensorShape(_weights).Dims(0);
+  if (rows % 4 == 0)
+  {
+    const int total_input_size = getTensorShape(_input).FlatSize();
+    const int input_size = getTensorShape(_weights).Dims(1);
+    const int batch_size = total_input_size / input_size;
+    if (batch_size <= 4)
+    {
+      // TODO If it's possible to extract precaching from ruy kernel,
+      // place this instead of below code
+      assert(_weights->buffer() != nullptr);
+      // buffer will be used by ruy kernel as a cache key
+      _cached_weights = _weights->buffer();
+    }
+  }
+#endif
 }
 
 } // namespace ops
