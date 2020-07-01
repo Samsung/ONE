@@ -73,8 +73,6 @@ GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_broadcast_4D_2D_nnfw
 GeneratedTests.logical_or_broadcast_nnfw
 GeneratedTests.logical_or_simple
-GeneratedTests.logistic_quant8_1
-GeneratedTests.logistic_quant8_2
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
 GeneratedTests.lsh_projection_weights_as_inputs
