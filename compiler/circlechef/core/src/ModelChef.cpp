@@ -19,7 +19,6 @@
 
 #include "Convert.h"
 
-#include <souschef/DataChef.h>
 #include <souschef/DataChefs.h>
 
 #include "OpChef.h"

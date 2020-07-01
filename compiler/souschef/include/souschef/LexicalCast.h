@@ -17,7 +17,8 @@
 /**
  * @brief This file provides string <-> number cast helpers
  */
-#ifndef __SOUSCHEF_EXICAL_CAST_H__
+#ifndef __SOUSCHEF_LEXICAL_CAST_H__
+#define __SOUSCHEF_LEXICAL_CAST_H__
 
 #include <string>
 
@@ -33,4 +34,4 @@ template <typename Number> Number to_number(const std::string &s);
 
 } // namespace souschef
 
-#endif // __SOUSCHEF_EXICAL_CAST_H__
+#endif // __SOUSCHEF_LEXICAL_CAST_H__

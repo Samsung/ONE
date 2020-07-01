@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __SOUSCHEF_GAUSSIAN_FILLER_H__
-#define __SOUSCHEF_GAUSSIAN_FILLER_H__
+#ifndef __SOUSCHEF_DATA_GAUSSIAN_H__
+#define __SOUSCHEF_DATA_GAUSSIAN_H__
 
 #include "souschef/DataChef.h"
 
@@ -90,4 +90,4 @@ struct GaussianUint8DataChefFactory : public DataChefFactory
 
 } // namespace souschef
 
-#endif // __SOUSCHEF_GAUSSIAN_FILLER_H__
+#endif // __SOUSCHEF_DATA_GAUSSIAN_H__
