@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_FUSEDBATCHNORM_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_FUSEDBATCHNORM_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -50,14 +50,14 @@ public:
 public:
   void fusedbatchnormFloat32();
 
-  void configure(const std::vector<const Tensor *> &inputs, float epsilon, bool is_training,
-                 std::string data_format, Tensor *output);
+  void configure(const std::vector<const IPortableTensor *> &inputs, float epsilon,
+                 bool is_training, std::string data_format, IPortableTensor *output);
 
   void run();
 
 private:
-  std::vector<const Tensor *> _inputs;
-  Tensor *_output;
+  std::vector<const IPortableTensor *> _inputs;
+  IPortableTensor *_output;
   float _epsilon;
   bool _is_training;
   std::string _data_format;
