@@ -26,9 +26,6 @@ namespace
 
 using namespace testing;
 
-// for quantized Add, the error shouldn't exceed step
-float GetTolerance(int min, int max) { return (max - min) / 255.0; }
-
 TEST(MaxPool2DTest, Float)
 {
   Shape input_shape{1, 3, 5, 1};
@@ -64,7 +61,6 @@ TEST(MaxPool2DTest, Float)
 
 TEST(MaxPool2DTest, Uint8)
 {
-  float kQuantizedTolerance = GetTolerance(-15.9375, 15.9375);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375, 15.9375);
   std::vector<float> input_data{
       0,  -6, 12, 4, //
@@ -92,7 +88,7 @@ TEST(MaxPool2DTest, Uint8)
   std::initializer_list<int32_t> ref_output_shape{1, 1, 2, 1};
   EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
                                   output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+              ElementsAreArray(ArrayFloatNear(ref_output_data)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
