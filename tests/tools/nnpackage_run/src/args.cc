@@ -123,6 +123,7 @@ void Args::Initialize(void)
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
     ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
+    ("run_delay,t", po::value<int>()->default_value(-1), "Delay time(ms) between runs (as default no delay")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false),
@@ -247,6 +248,11 @@ void Args::Parse(const int argc, char **argv)
     if (vm.count("warmup_runs"))
     {
       _warmup_runs = vm["warmup_runs"].as<int>();
+    }
+
+    if (vm.count("run_delay"))
+    {
+      _run_delay = vm["run_delay"].as<int>();
     }
 
     if (vm.count("gpumem_poll"))

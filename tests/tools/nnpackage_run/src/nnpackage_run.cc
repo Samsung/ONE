@@ -93,7 +93,8 @@ int main(const int argc, char **argv)
     ruy::profiler::ScopeProfile ruy_profile;
 #endif
 
-    benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
+    benchmark::Phases phases(
+        benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
     nnfw_session *session = nullptr;
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));

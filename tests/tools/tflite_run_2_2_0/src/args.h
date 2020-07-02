@@ -38,6 +38,7 @@ public:
   const std::vector<int> &getInputShapes(void) const { return _input_shapes; }
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
+  const int getRunDelay(void) const { return _run_delay; }
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
@@ -58,6 +59,7 @@ private:
   std::vector<int> _input_shapes;
   int _num_runs;
   int _warmup_runs;
+  int _run_delay;
   bool _gpumem_poll;
   bool _mem_poll;
   bool _write_report;

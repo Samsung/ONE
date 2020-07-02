@@ -15,7 +15,8 @@
  */
 
 #include "tflchef/ModelChef.h"
-#include <souschef/Arguments.h>
+#include <souschef/RangedArguments.h>
+#include <souschef/Registry.h>
 
 #include "Convert.h"
 
@@ -44,35 +45,6 @@ namespace
 {
 
 using namespace souschef;
-
-template <typename InputIt> class RangedArguments : public Arguments
-{
-public:
-  RangedArguments(InputIt beg, InputIt end) : _beg{beg}, _end{end}
-  {
-    // DO NOTHING
-  }
-
-public:
-  uint32_t count(void) const override { return _end - _beg; }
-
-public:
-  const std::string &value(uint32_t n) const override { return *(_beg + n); }
-
-private:
-  InputIt _beg;
-  InputIt _end;
-};
-
-template <typename InputIt> RangedArguments<InputIt> ranged_arguments(InputIt beg, InputIt end)
-{
-  return RangedArguments<InputIt>{beg, end};
-}
-
-} // namespace
-
-namespace
-{
 
 template <typename T> std::vector<T> as_vector(const ::google::protobuf::RepeatedPtrField<T> &field)
 {
@@ -149,20 +121,6 @@ private:
 
 namespace
 {
-
-template <typename T> class Registry
-{
-public:
-  void add(const std::string &name, std::unique_ptr<T> &&entry)
-  {
-    _content[name] = std::move(entry);
-  }
-
-  const T &lookup(const std::string &name) const { return *(_content.at(name)); }
-
-private:
-  std::map<std::string, std::unique_ptr<T>> _content;
-};
 
 struct DataChefRegistry final : public Registry<DataChefFactory>
 {
