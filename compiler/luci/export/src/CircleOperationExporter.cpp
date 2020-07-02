@@ -142,6 +142,7 @@ public:
   void visit(luci::CircleTopKV2 *) final;
   void visit(luci::CircleTranspose *) final;
   void visit(luci::CircleTransposeConv *) final;
+  void visit(luci::CircleUnique *) final;
   void visit(luci::CircleUnpack *) final;
   void visit(luci::CircleWhile *) final;
   void visit(luci::CircleZerosLike *) final;
@@ -160,6 +161,7 @@ public:
   void visit(luci::CircleSplitOut *) final {}
   void visit(luci::CircleSplitVOut *) final {}
   void visit(luci::CircleTopKV2Out *) final {}
+  void visit(luci::CircleUniqueOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
   void visit(luci::CircleWhileOut *) final {}
 
@@ -1676,6 +1678,53 @@ void OperationExporter::visit(luci::CircleTransposeConv *node)
   // Make TRANSPOSE_CONV operator
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_TransposeConvOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::visit(luci::CircleUnique *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNIQUE);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateUniqueOptions(builder, to_circle_tensortype(node->idx_out_type()));
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_UniqueOptions, options.Union());
+  gd._operators.push_back(op_offset);
+
+  auto unique_outs = loco::succs(node);
+  assert(int32_t(unique_outs.size()) == 2);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNIQUE);
+  // NOTE BuiltinOperator_SPLIT input is placed at second position
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
+  std::vector<int32_t> outputs_vec;
+
+  for (int32_t index = 0; index < 2; index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : unique_outs)
+    {
+      auto unique_out = loco::must_cast<luci::CircleUniqueOut *>(out);
+      if (unique_out->index() == index)
+      {
+        outputs_vec.push_back(get_tensor_index(unique_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Unique output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateSplitOptions(builder, node->idx_out_type());
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_SplitOptions, options.Union());
   gd._operators.push_back(op_offset);
 }
 

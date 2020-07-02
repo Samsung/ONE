@@ -110,6 +110,7 @@
 #include "Nodes/CircleTopKV2.h"
 #include "Nodes/CircleTranspose.h"
 #include "Nodes/CircleTransposeConv.h"
+#include "Nodes/CircleUnique.h"
 #include "Nodes/CircleUnpack.h"
 #include "Nodes/CircleWhile.h"
 #include "Nodes/CircleZerosLike.h"

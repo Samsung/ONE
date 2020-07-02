@@ -579,6 +579,20 @@ public:
   }
 };
 
+class UniquePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_UniqueOptions())
+    {
+      os << "    ";
+      os << "idx_out_type(" << EnumNameTensorType(params->idx_out_type()) << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 class WhilePrinter : public OpPrinter
 {
 public:
@@ -727,6 +741,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_SUM] = make_unique<ReducerPrinter>();
   _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique<TransposeConvPrinter>();
   // There is no Option for TOPK_V2
+  _op_map[circle::BuiltinOperator_UNIQUE] = make_unique<UniquePrinter>();
   _op_map[circle::BuiltinOperator_WHILE] = make_unique<WhilePrinter>();
   _op_map[circle::BuiltinOperator_CUSTOM] = make_unique<CustomOpPrinter>();
 

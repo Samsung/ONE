@@ -108,6 +108,7 @@
 #include "Op/TopKV2.h"
 #include "Op/Transpose.h"
 #include "Op/TransposeConv.h"
+#include "Op/Unique.h"
 #include "Op/Unpack.h"
 #include "Op/Where.h"
 #include "Op/ZerosLike.h"

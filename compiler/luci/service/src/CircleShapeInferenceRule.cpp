@@ -1886,6 +1886,19 @@ public:
     return loco::NodeShape{shape};
   }
 
+  loco::NodeShape visit(const luci::CircleUnique *node) final
+  {
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+      
+    assert(input_shape.rank() == 1);
+
+    loco::TensorShape shape_output;
+    shape_output.rank(1);
+    shape_output.dim(0) = input_shape.dim(0);
+    return loco::NodeShape{shape_output};
+  }
+
+
   loco::NodeShape visit(const luci::CircleUnpack *node) final
   {
     // CircleUnpack provides list(array) of Tensors which has one less dimension of the input
@@ -2204,6 +2217,19 @@ public:
     output_shape.dim(input_shape.rank() - 1) = node_k->at<S32>(0);
 
     return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleUniqueOut *node) final
+  {
+    auto unique = dynamic_cast<const luci::CircleUnique *>(node->input());
+    if (unique == nullptr)
+    {
+      INTERNAL_EXN("CircleUnique IR is not configured correctly");
+    }
+
+    auto unique_shape = loco::shape_get(unique).as<loco::TensorShape>();
+
+    return loco::NodeShape{unique_shape};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final

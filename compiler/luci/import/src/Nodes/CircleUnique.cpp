@@ -1,0 +1,90 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "luci/Import/Nodes/CircleUnique.h"
+
+#include <luci/IR/Nodes/CircleUnique.h>
+#include <luci/IR/Nodes/CircleUniqueOut.h>
+
+#include <loco.h>
+
+namespace luci
+{
+
+bool CircleUniqueGraphBuilder::validate(const ValidateArgs &args) const
+{
+  if (args.op.inputs.size() != 1)
+    return false;
+
+  return true;
+}
+
+void CircleUniqueGraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *context) const
+{
+  assert(context != nullptr);
+
+  auto graph = context->graph();
+
+  const std::vector<int32_t> &inputs = op.inputs;
+  const std::vector<int32_t> &outputs = op.outputs;
+  const auto &tensors = context->reader()->tensors();
+  auto tensors_ptr = context->reader()->tensors_ptr();
+  assert(tensors_ptr != nullptr);
+
+  std::vector<CircleNode *> input_nodes;
+  for (const int32_t input_tensor_index : inputs)
+  {
+    input_nodes.push_back(context->nodefinder()->node(input_tensor_index));
+  }
+
+  // Create CircleUnique
+  auto node = graph->nodes()->create<CircleUnique>();
+  node->input(input_nodes[0]);
+
+  const auto *options = op.builtin_options.AsUniqueOptions();
+  node->output_type(luci_datatype(options->idx_out_type));
+
+  assert(outputs.size() > 0);
+  assert(int32_t(outputs.size()) == 2);
+  {
+    // Let's use name of output 0 as Unique name
+    const circle::TensorT &output_tensor = *tensors[outputs[0]];
+    node->name(tensor_name(output_tensor));
+
+    // NOTE We don't set quantization for Unique itself but to virtual outputs
+  }
+
+  // Create virtual outputs of Unique
+  for (int32_t n = 0; n < 2; ++n)
+  {
+    const circle::TensorT &output_tensor = *tensors[outputs[n]];
+
+    auto *nodeout = graph->nodes()->create<CircleUniqueOut>();
+    copy_tensor_attributes(output_tensor, nodeout);
+    // mark shape_status
+    if (tensors_ptr->Get(outputs[n])->shape() == nullptr)
+      nodeout->shape_status(ShapeStatus::NOSHAPE);
+    else
+      nodeout->shape_status(ShapeStatus::VALID);
+
+    nodeout->input(node);
+    nodeout->index(n);
+
+    context->nodefinder()->enroll(outputs[n], nodeout);
+  }
+}
+
+} // namespace luci
