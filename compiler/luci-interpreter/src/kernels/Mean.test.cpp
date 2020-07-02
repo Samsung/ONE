@@ -104,7 +104,7 @@ TEST(MeanTest, FloatNotKeepDims)
 
 TEST(MeanTest, Uint8KeepDims)
 {
-  float kQuantizedTolerance = GetTolerance<uint8_t>(-1.0, 1.0);
+  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
   std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
@@ -133,7 +133,7 @@ TEST(MeanTest, Uint8KeepDims)
 
 TEST(MeanTest, Uint8NotKeepDims)
 {
-  float kQuantizedTolerance = GetTolerance<uint8_t>(-1.0, 1.0);
+  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
   std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
