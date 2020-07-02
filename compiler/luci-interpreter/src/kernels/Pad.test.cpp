@@ -26,8 +26,7 @@ namespace
 
 using namespace testing;
 
-// for quantized Add, the error shouldn't exceed step
-float GetTolerance(int min, int max) { return (max - min) / 255.0; }
+float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(Pad, Uint8)
 {
