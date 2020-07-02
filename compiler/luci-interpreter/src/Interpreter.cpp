@@ -29,12 +29,13 @@ namespace
 class EventNotifierImpl final : public EventNotifier
 {
 public:
-  EventNotifierImpl(RuntimeToIR &runtime_to_ir, const std::vector<ExecutionObserver *> &observers)
+  EventNotifierImpl(const RuntimeToIR &runtime_to_ir,
+                    const std::vector<ExecutionObserver *> &observers)
       : _runtime_to_ir(runtime_to_ir), _observers(observers)
   {
   }
 
-  void postTensorWrite(Tensor *tensor) const override
+  void postTensorWrite(const Tensor *tensor) override
   {
     assert(tensor != nullptr);
     for (const auto &observer : _observers)
@@ -43,8 +44,26 @@ public:
     }
   }
 
+  void preOperatorExecute(const Kernel *kernel) override
+  {
+    assert(kernel != nullptr);
+    for (const auto &observer : _observers)
+    {
+      observer->preOperatorExecute(_runtime_to_ir.kernel_to_node.at(kernel));
+    }
+  }
+
+  void postOperatorExecute(const Kernel *kernel) override
+  {
+    assert(kernel != nullptr);
+    for (const auto &observer : _observers)
+    {
+      observer->postOperatorExecute(_runtime_to_ir.kernel_to_node.at(kernel));
+    }
+  }
+
 private:
-  RuntimeToIR &_runtime_to_ir;
+  const RuntimeToIR &_runtime_to_ir;
   const std::vector<ExecutionObserver *> &_observers;
 };
 
@@ -99,5 +118,9 @@ void Interpreter::attachObserver(ExecutionObserver *observer)
 ExecutionObserver::~ExecutionObserver() = default;
 
 void ExecutionObserver::postTensorWrite(const luci::CircleNode *, const Tensor *) {}
+
+void ExecutionObserver::preOperatorExecute(const luci::CircleNode *) {}
+
+void ExecutionObserver::postOperatorExecute(const luci::CircleNode *) {}
 
 } // namespace luci_interpreter

@@ -182,7 +182,9 @@ void GraphLoader::loadOperators()
 
     if (isExecutableNode(node))
     {
-      _runtime_graph->addKernel(node->accept(&kernel_builder));
+      std::unique_ptr<Kernel> kernel = node->accept(&kernel_builder);
+      _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+      _runtime_graph->addKernel(std::move(kernel));
     }
   }
 }
