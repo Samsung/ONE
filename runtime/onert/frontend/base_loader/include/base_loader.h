@@ -361,8 +361,7 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   const auto *data = _model->buffers()->Get(tensor->buffer())->data();
   if (data != nullptr)
   {
-    auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
-    deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
+    auto ptr = std::make_unique<ir::MMapedData>(_base, _pagesize, data->data(), data->size());
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
