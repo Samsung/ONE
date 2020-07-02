@@ -94,20 +94,14 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  auto found = _tensor_reg->find(ind);
-  if (found == _tensor_reg->end())
-    return nullptr;
-
-  return found->second;
+  return _tensor_reg->getITensor(ind);
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  auto found = _tensor_reg->find(ind);
-  assert(found != _tensor_reg->end());
-  return found->second;
+  return _tensor_reg->getManagedTensor(ind);
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)

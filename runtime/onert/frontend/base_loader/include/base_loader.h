@@ -40,6 +40,7 @@ namespace base_loader
 
 template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
 {
+protected:
   using Verifier = typename LoaderDomain::Verifier;
   using ActivationFunctionType = typename LoaderDomain::ActivationFunctionType;
   using Buffer = typename LoaderDomain::Buffer;
@@ -53,7 +54,9 @@ template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
   using Tensor = typename LoaderDomain::Tensor;
   using TensorType = typename LoaderDomain::TensorType;
 
+protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
+  virtual bool allowOptionalInputTensor(BuiltinOperator) = 0;
 
 public:
   /**
@@ -168,6 +171,8 @@ protected:
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
+  void loadBroadcastTo(const Operator *op, ir::Graph &subg);
+  void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -356,8 +361,7 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   const auto *data = _model->buffers()->Get(tensor->buffer())->data();
   if (data != nullptr)
   {
-    auto ptr = std::make_unique<ir::CachedData>(data->data(), data->size());
-    deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
+    auto ptr = std::make_unique<ir::MMapedData>(_base, _pagesize, data->data(), data->size());
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
@@ -377,12 +381,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
 {
   for (const std::int32_t idx : *op->inputs())
   {
-    // Optional tensors are not supported yet except for FULLY_CONNECTED.
+    // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
       auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
-      std::vector<BuiltinOperator> allowed = {BuiltinOperator::BuiltinOperator_FULLY_CONNECTED};
-      if (isOptionalInputTensor(idx) &&
-          std::find(allowed.begin(), allowed.end(), builtin_code) == allowed.end())
+      if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
             std::string("loader doesn't support optional input tensor yet for ")
                 .append(EnumNameBuiltinOperator(builtin_code)));
@@ -403,8 +405,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
                                                                       const OptionsType *options)
 {
   // Strides
-  param.stride.vertical = options->stride_w();
-  param.stride.horizontal = options->stride_h();
+  param.stride.vertical = options->stride_h();
+  param.stride.horizontal = options->stride_w();
   // Paddings
   if (options->padding() == Padding::Padding_SAME)
     param.padding.type = ir::PaddingType::SAME;
@@ -857,17 +859,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("Mean: non-constant 'axes' is not supported.");
 
   ir::operation::Mean::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -878,15 +874,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceAll: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceAll::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
 
   if (op->custom_options() == nullptr)
   {
@@ -901,7 +890,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
     param.keep_dims = attr_map["keep_dims"].AsBool();
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -912,18 +901,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceAny: non-constant 'axes' is not supported.");
-
   ir::operation::ReduceAny::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -934,18 +915,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceMax: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceMax::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1045,19 +1019,34 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *o
   loadOperationIO(op, inputs, outputs);
   ir::operation::BatchMatMul::Param param;
 
-  if (op->custom_options() == nullptr)
+  const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+
+  switch (builtin_op)
   {
-    param.adj_x = false;
-    param.adj_y = false;
-  }
-  else
-  {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
-    param.adj_x = attr_map["adj_x"].AsBool();
-    param.adj_y = attr_map["adj_y"].AsBool();
+    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+      param.adj_x = op->builtin_options_as_BatchMatMulOptions()->adjoint_lhs();
+      param.adj_y = op->builtin_options_as_BatchMatMulOptions()->adjoint_rhs();
+      break;
+    case BuiltinOperator::BuiltinOperator_CUSTOM:
+      if (op->custom_options() == nullptr)
+      {
+        param.adj_x = false;
+        param.adj_y = false;
+      }
+      else
+      {
+        size_t custom_op_data_size = op->custom_options()->size();
+        auto custom_op_data = op->custom_options()->Data();
+        auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+        auto attr_map = data_root.AsMap();
+        param.adj_x = attr_map["adj_x"].AsBool();
+        param.adj_y = attr_map["adj_y"].AsBool();
+      }
+      break;
+    default:
+      throw std::runtime_error(
+          std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
+          " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
   }
 
   std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchMatMul{inputs, outputs, param}};
@@ -1096,18 +1085,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceSum(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceSum: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceSum::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{{input}, outputs, param}};
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 
@@ -1161,6 +1143,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1178,7 +1172,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
-    Einsum
+    Einsum,
+    BroadcastTo,
+    FusedBatchNorm
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1188,6 +1184,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"MatrixBandPart", BuiltinOP::MatrixBandPart},
       {"BatchMatMulV2", BuiltinOP::BatchMatMul},
       {"Einsum", BuiltinOP::Einsum},
+      {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
+      {"BroadcastTo", BuiltinOP::BroadcastTo},
   };
 
   try
@@ -1210,6 +1208,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::Einsum:
         loadEinsum(op, subg);
+        break;
+      case BuiltinOP::BroadcastTo:
+        loadBroadcastTo(op, subg);
+        break;
+      case BuiltinOP::FusedBatchNorm:
+        loadFusedBatchNorm(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1463,6 +1467,39 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir
   std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op,
+                                                                  ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  ir::operation::FusedBatchNorm::Param param;
+
+  if (inputs.size() != 5)
+  {
+    throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+  }
+
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"FusedBatchNorm: empty option"};
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    param.is_training = attr_map["is_training"].AsBool();
+    param.epsilon = attr_map["epsilon"].AsFloat();
+    param.data_format = attr_map["data_format"].ToString();
+  }
+
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::FusedBatchNorm{inputs, outputs, param}};
+  subg.addOperation(std::move(new_op));
+}
 
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir::Graph &subg)
@@ -1470,30 +1507,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
   if (op->inputs()->size() != 4 || op->outputs()->size() != 1)
     throw std::runtime_error("OneHot Op has wrong number of input or output tensors.");
 
-  enum
-  {
-    INDICES = 0,
-    DEPTH = 1,
-    ON_VALUE = 2,
-    OFF_VALUE = 3,
-  };
-
   // Set input and output tensors
   ir::OperandIndexSequence inputs, outputs;
-  inputs.append(tensorIdxToOperandIdx(op->inputs()->Get(INDICES)));
-  outputs.append(tensorIdxToOperandIdx(op->outputs()->Get(0)));
+  loadOperationIO(op, inputs, outputs);
 
-  // Set parameters
-  // depth, on_value and off_value are scalar though it is passed as inputs
-  auto depth_opidx = tensorIdxToOperandIdx(op->inputs()->Get(DEPTH));
-  auto on_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(ON_VALUE));
-  auto off_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(OFF_VALUE));
-  const auto depth = subg.operands().at(depth_opidx).template asScalar<int>();
-  const auto on_value = subg.operands().at(on_value_opidx).template asScalar<float>();
-  const auto off_value = subg.operands().at(off_value_opidx).template asScalar<float>();
+  // Set parameter
   const auto axis = op->builtin_options_as_OneHotOptions()->axis();
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::OneHot(inputs, outputs, {depth, on_value, off_value, axis}));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::OneHot(inputs, outputs, {axis}));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1556,18 +1576,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto axes = inputs.at(1);
-
-  // FIXME Handle ReducerOptions.
-  if (!subg.operands().at(axes).isConstant())
-    throw std::runtime_error("ReduceProd: non-constant 'axes' is not supported.");
 
   ir::operation::ReduceProd::Param param;
-  param.axes = subg.operands().at(axes).template asVector<int>();
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1966,6 +1979,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadRange(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+      loadBatchMatMul(op, subg);
       return;
     default:
       throw std::runtime_error(

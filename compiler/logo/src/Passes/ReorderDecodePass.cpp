@@ -37,39 +37,32 @@ bool isReLU(const loco::Node *node)
   return node->opnum() == static_cast<uint32_t>(loco::CanonicalOpcode::ReLU);
 }
 
-} // namespace
-
-namespace logo
+// Update queue
+class Collector final : public loco::CanonicalNodeMutableVisitor<void>
 {
-
-bool ReorderDecodePass<loco::TensorBiasAdd>::run(loco::Graph *g)
-{
-  std::queue<loco::FeatureDecode *> q;
-
-  // Update queue
-  class Collector final : public loco::CanonicalNodeMutableVisitor<void>
+public:
+  Collector(std::queue<loco::FeatureDecode *> *out) : _out{out}
   {
-  public:
-    Collector(std::queue<loco::FeatureDecode *> *out) : _out{out}
+    // DO NOTHING
+  }
+
+  void visit(loco::FeatureDecode *node) final
+  {
+    if (node->input() != nullptr)
     {
-      // DO NOTHING
+      _out->push(node);
     }
+  }
 
-    void visit(loco::FeatureDecode *node) final
-    {
-      if (node->input() != nullptr)
-      {
-        _out->push(node);
-      }
-    }
+  void visit(loco::Node *) final { return; }
 
-    void visit(loco::Node *) final { return; }
+private:
+  // TODO This definition should be revised to support other decode operations
+  std::queue<loco::FeatureDecode *> *_out;
+};
 
-  private:
-    // TODO This definition should be revised to support other decode operations
-    std::queue<loco::FeatureDecode *> *_out;
-  };
-
+void gather_candidates(loco::Graph *g, std::queue<loco::FeatureDecode *> &q)
+{
   Collector collector{&q};
 
   for (auto node : loco::all_nodes(g))
@@ -80,6 +73,18 @@ bool ReorderDecodePass<loco::TensorBiasAdd>::run(loco::Graph *g)
       canonical_node->accept(&collector);
     }
   }
+}
+
+} // namespace
+
+namespace logo
+{
+
+bool ReorderDecodePass<loco::TensorBiasAdd>::run(loco::Graph *g)
+{
+  std::queue<loco::FeatureDecode *> q;
+
+  gather_candidates(g, q);
 
   bool changed = false;
 
@@ -180,40 +185,7 @@ bool ReorderDecodePass<loco::ReLU>::run(loco::Graph *g)
 {
   std::queue<loco::FeatureDecode *> q;
 
-  // Update queue
-  class Collector final : public loco::CanonicalNodeMutableVisitor<void>
-  {
-  public:
-    Collector(std::queue<loco::FeatureDecode *> *out) : _out{out}
-    {
-      // DO NOTHING
-    }
-
-    void visit(loco::FeatureDecode *node) final
-    {
-      if (node->input() != nullptr)
-      {
-        _out->push(node);
-      }
-    }
-
-    void visit(loco::Node *) final { return; }
-
-  private:
-    // TODO This definition should be revised to support other decode operations
-    std::queue<loco::FeatureDecode *> *_out;
-  };
-
-  Collector collector{&q};
-
-  for (auto node : loco::all_nodes(g))
-  {
-    if (node->dialect() == loco::CanonicalDialect::get())
-    {
-      auto canonical_node = loco::must_cast<loco::CanonicalNode *>(node);
-      canonical_node->accept(&collector);
-    }
-  }
+  gather_candidates(g, q);
 
   bool changed = false;
 

@@ -34,7 +34,7 @@ TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm()
   // DO NOTHING
 }
 
-void TransposeLayer::transposeFloat32()
+template <typename T> void TransposeLayer::transpose()
 {
   nnfw::cker::TransposeParams param;
   param.perm_count = _perm.size();
@@ -44,8 +44,8 @@ void TransposeLayer::transposeFloat32()
   }
 
   nnfw::cker::Transpose(param, getTensorShape(_input),
-                        reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
-                        reinterpret_cast<float *>(_output->buffer()));
+                        reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
+                        reinterpret_cast<T *>(_output->buffer()));
 }
 
 void TransposeLayer::transposeQuant8()
@@ -54,7 +54,8 @@ void TransposeLayer::transposeQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void TransposeLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &perm)
+void TransposeLayer::configure(const IPortableTensor *input, IPortableTensor *output,
+                               const std::vector<int> &perm)
 {
   _input = input;
   _perm = perm;
@@ -65,7 +66,11 @@ void TransposeLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    transposeFloat32();
+    transpose<float>();
+  }
+  else if (_input->data_type() == OperandType::INT32)
+  {
+    transpose<int32_t>();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {

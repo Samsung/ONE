@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_SLICELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_SLICELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,7 +36,8 @@ public:
   SliceLayer();
 
 public:
-  void configure(const Tensor *input, const Tensor *begin, const Tensor *size, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *begin,
+                 const IPortableTensor *size, IPortableTensor *output);
 
   void run();
 
@@ -45,14 +46,15 @@ private:
   void sliceQuant8();
 
   template <typename T>
-  void GetBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
-                              std::vector<int> *begins, std::vector<int> *sizes);
+  void GetBeginAndSizeVectors(int dimensions, const IPortableTensor *begin,
+                              const IPortableTensor *size, std::vector<int> *begins,
+                              std::vector<int> *sizes);
 
 private:
-  const Tensor *_input;
-  const Tensor *_begin;
-  const Tensor *_size;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_begin;
+  const IPortableTensor *_size;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

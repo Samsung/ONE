@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -40,14 +40,15 @@ public:
 
   void MeanQuant8();
 
-  void configure(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims);
+  void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
+                 bool keep_dims);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
-  std::vector<int> _axes;
+  const IPortableTensor *_input;
+  const IPortableTensor *_axes;
+  IPortableTensor *_output;
   bool _keep_dims;
 };
 

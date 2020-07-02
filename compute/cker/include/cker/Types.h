@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <limits>
+#include <string>
 
 namespace nnfw
 {
@@ -152,12 +153,18 @@ struct ConvParams
 struct ComparisonParams
 {
   ComparisonOpType type;
+  int left_shift;
+  int input1_shift;
+  int input2_shift;
+  int32_t input1_offset;
+  int32_t input1_multiplier;
+  int32_t input2_offset;
+  int32_t input2_multiplier;
   bool is_broadcast;
 };
 
 struct BinaryArithmeticOpParam
 {
-  BinaryArithmeticOpType type;
   // Shape dependent / common to data / op types.
   BroadcastableOpCategory broadcast_category;
   // uint8 inference params.
@@ -315,6 +322,13 @@ struct SplitParams
 {
   uint16_t num_split;
   int16_t axis;
+};
+
+struct FusedBatchNormParams
+{
+  bool is_training;
+  std::string data_format; // UNKNOWN(0), NHWC(1), NCHW(2)
+  float epsilon;
 };
 
 enum class Order

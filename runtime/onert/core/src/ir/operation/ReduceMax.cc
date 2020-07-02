@@ -31,7 +31,7 @@ void ReduceMax::accept(OperationVisitor &v) const { v.visit(*this); }
 
 ReduceMax::ReduceMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                      const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+    : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
 

@@ -29,8 +29,8 @@ namespace cpu
 namespace ops
 {
 
-void GatherLayer::configure(const Tensor *input, const Tensor *indices, Tensor *output,
-                            int32_t axis)
+void GatherLayer::configure(const IPortableTensor *input, const IPortableTensor *indices,
+                            IPortableTensor *output, int32_t axis)
 {
   _input = input;
   _indices = indices;
@@ -38,33 +38,54 @@ void GatherLayer::configure(const Tensor *input, const Tensor *indices, Tensor *
   _output = output;
 }
 
-void GatherLayer::run()
+template <typename InputType> void GatherLayer::runByInputType()
 {
+  using OutputType = InputType;
   nnfw::cker::GatherParams op_params;
   op_params.axis = _axis;
 
+  switch (_indices->data_type())
+  {
+    case OperandType::INT32:
+    {
+      using IndicesType = int32_t;
+
+      nnfw::cker::Gather<InputType, IndicesType>(
+          op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
+          getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
+          getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
+      break;
+    }
+    case OperandType::INT64:
+    {
+      using IndicesType = int64_t;
+
+      nnfw::cker::Gather<InputType, IndicesType>(
+          op_params, getTensorShape(_input), reinterpret_cast<const InputType *>(_input->buffer()),
+          getTensorShape(_indices), reinterpret_cast<const IndicesType *>(_indices->buffer()),
+          getTensorShape(_output), reinterpret_cast<OutputType *>(_output->buffer()));
+      break;
+    }
+    default:
+      throw std::runtime_error("Gather: unsupported indices data type");
+  }
+}
+
+void GatherLayer::run()
+{
   switch (_input->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::Gather<float>(
-          op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
-          getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+      runByInputType<float>();
       break;
     case OperandType::QUANT_UINT8_ASYMM:
-      nnfw::cker::Gather<uint8_t>(
-          op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
-          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
-          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+      runByInputType<uint8_t>();
       break;
     case OperandType::INT32:
-      nnfw::cker::Gather<int32_t>(
-          op_params, getTensorShape(_input), reinterpret_cast<const int32_t *>(_input->buffer()),
-          getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
-          getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+      runByInputType<int32_t>();
       break;
     default:
-      throw std::runtime_error("Gather: unsupported data type");
+      throw std::runtime_error("Gather: unsupported input data type");
   }
 }
 

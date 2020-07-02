@@ -7,7 +7,7 @@ set_target_properties(nnfw_lib_misc PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(nnfw_lib_misc PRIVATE nnfw_common)
 target_link_libraries(nnfw_lib_misc PRIVATE nnfw_coverage)
 
-install(TARGETS nnfw_lib_misc ARCHIVE DESTINATION lib)
+# TODO Remove header dependency
 install(DIRECTORY "include/misc"
         DESTINATION "include/onert" # FIXME This is only for onert developers
         FILES_MATCHING PATTERN "*.h"

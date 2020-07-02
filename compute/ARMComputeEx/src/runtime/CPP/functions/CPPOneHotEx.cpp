@@ -45,10 +45,10 @@
 
 using namespace arm_compute;
 
-void CPPOneHotEx::configure(const ITensor *indices, ITensor *output, const int depth,
-                            const float on_value, const float off_value, const int axis)
+void CPPOneHotEx::configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
+                            const ITensor *off_value, ITensor *output, const int axis)
 {
   auto k = arm_compute::support::cpp14::make_unique<CPPOneHotKernelEx>();
-  k->configure(indices, output, depth, on_value, off_value, axis);
+  k->configure(indices, depth, on_value, off_value, output, axis);
   _kernel = std::move(k);
 }

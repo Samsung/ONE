@@ -23,8 +23,11 @@ namespace shape_inference
 
 void StaticInferer::visit(const ir::operation::ReduceAll &op)
 {
-  const auto input_idx{op.getInputs().at(0)};
+  const auto input_idx{op.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
+
+  const auto axes_idx{op.getInputs().at(ir::operation::ReduceAll::Input::AXES)};
+  const auto &axes = _operands.at(axes_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
@@ -37,30 +40,72 @@ void StaticInferer::visit(const ir::operation::ReduceAll &op)
     return;
   }
 
-  const auto axes = op.param().axes;
+  std::vector<int32_t> axes_vec;
+  for (size_t i = 0; i < axes.shape().num_elements(); ++i)
+  {
+    switch (axes.typeInfo().type())
+    {
+      case ir::DataType::INT32:
+      {
+        axes_vec.emplace_back(reinterpret_cast<const int32_t *>(axes.data()->base())[i]);
+        break;
+      }
+      case ir::DataType::INT64:
+      {
+        axes_vec.emplace_back(reinterpret_cast<const int64_t *>(axes.data()->base())[i]);
+        break;
+      }
+      default:
+        throw std::runtime_error("StaticInferer ReduceAll: Not supported data type");
+        break;
+    }
+  }
   const auto keep_dims = op.param().keep_dims;
 
   // re-sizing output shape
-  ir::Shape new_shape = inferReduceShapes(input.info().shape(), axes, keep_dims);
+  ir::Shape new_shape = inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
 void DynamicInferer::visit(const ir::operation::ReduceAll &op)
 {
-  const auto input_idx{op.getInputs().at(0)};
+  const auto input_idx{op.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = input->getShape();
+
+  const auto axes_idx{op.getInputs().at(ir::operation::ReduceAll::Input::AXES)};
+  const auto &axes = _tensor_registry->getITensor(axes_idx);
 
   if (!input->is_dynamic())
     return;
 
-  const auto axes = op.param().axes;
+  std::vector<int32_t> axes_vec;
+  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
+  {
+    const auto buffer = axes->buffer() + axes->calcOffset({i});
+    switch (axes->data_type())
+    {
+      case ir::DataType::INT32:
+      {
+        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
+        break;
+      }
+      case ir::DataType::INT64:
+      {
+        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
+        break;
+      }
+      default:
+        throw std::runtime_error("DynamicInferer ReduceAll: Not supported data type");
+        break;
+    }
+  }
   const auto keep_dims = op.param().keep_dims;
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = inferReduceShapes(input_shape, axes, keep_dims);
+  ir::Shape new_shape = inferReduceShapes(input_shape, axes_vec, keep_dims);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);

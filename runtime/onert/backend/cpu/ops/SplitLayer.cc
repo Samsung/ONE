@@ -34,7 +34,7 @@ SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
   // DO NOTHING
 }
 
-void SplitLayer::splitFloat32()
+template <typename T> void SplitLayer::split()
 {
   nnfw::cker::SplitParams op_params;
   op_params.axis = _axis;
@@ -51,22 +51,23 @@ void SplitLayer::splitFloat32()
     outputDimsPtr.push_back(&outputDims[i]);
   }
 
-  std::vector<float *> outputFloatPtrs;
+  std::vector<T *> outputPtrs;
 
   for (const auto output : _outputs)
   {
-    outputFloatPtrs.emplace_back(reinterpret_cast<float *>(output->buffer()));
+    assert(output->total_size() == sizeOfData(output->data_type(), output->getShape().dims()));
+    outputPtrs.emplace_back(reinterpret_cast<T *>(output->buffer()));
   }
 
-  nnfw::cker::Split<float>(op_params, getTensorShape(_input),
-                           reinterpret_cast<float *>(_input->buffer()), getTensorShape(_outputs[0]),
-                           outputFloatPtrs.data());
+  assert(_input->total_size() == sizeOfData(_input->data_type(), _input->getShape().dims()));
+  nnfw::cker::Split<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
+                       getTensorShape(_outputs[0]), outputPtrs.data());
 }
 
 void SplitLayer::splitQuant8() { throw std::runtime_error{"Split: NYI quant8 type"}; }
 
-void SplitLayer::configure(const Tensor *input, uint16_t num_splits, int16_t axis,
-                           std::vector<Tensor *> &outputs)
+void SplitLayer::configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
+                           std::vector<IPortableTensor *> &outputs)
 {
   assert(input != nullptr);
 
@@ -80,11 +81,19 @@ void SplitLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    splitFloat32();
+    split<float>();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
     splitQuant8();
+  }
+  else if (_input->data_type() == OperandType::INT32)
+  {
+    split<int32_t>();
+  }
+  else if (_input->data_type() == OperandType::INT64)
+  {
+    split<int64_t>();
   }
   else
   {

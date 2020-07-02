@@ -67,8 +67,8 @@ void EinsumLayer::run()
   }
 }
 
-void EinsumLayer::configure(const std::vector<const Tensor *> &inputs, std::string equation,
-                            Tensor *output)
+void EinsumLayer::configure(const std::vector<const IPortableTensor *> &inputs,
+                            std::string equation, IPortableTensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

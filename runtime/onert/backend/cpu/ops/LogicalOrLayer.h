@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_LOGICAL_OR_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_LOGICAL_OR_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -38,7 +38,7 @@ public:
   }
 
 public:
-  void configure(const Tensor *_lhs, const Tensor *_rhs, Tensor *output);
+  void configure(const IPortableTensor *_lhs, const IPortableTensor *_rhs, IPortableTensor *output);
 
   void run();
 
@@ -46,9 +46,9 @@ private:
   void lorBool8();
 
 private:
-  const Tensor *_lhs;
-  const Tensor *_rhs;
-  Tensor *_output;
+  const IPortableTensor *_lhs;
+  const IPortableTensor *_rhs;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

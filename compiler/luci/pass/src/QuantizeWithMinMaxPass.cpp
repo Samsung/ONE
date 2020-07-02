@@ -31,6 +31,34 @@ namespace luci
 namespace
 {
 
+void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
+                          float &nudged_min, float &nudged_max)
+{
+  assert(min != max);
+
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+  const double qmin_double = kMinScale;
+  const double qmax_double = kMaxScale;
+  const double rmin = std::fmin(0, min);
+  const double rmax = std::fmax(0, max);
+  double scale_factor_from_min_side{0};
+  double scale_factor_from_max_side{0};
+
+  if ((qmin_double * rmin) > 0)
+    scale_factor_from_min_side = rmin / qmin_double;
+
+  if ((qmax_double * rmax) > 0)
+    scale_factor_from_max_side = rmax / qmax_double;
+
+  scaling_factor = scale_factor_from_min_side > scale_factor_from_max_side
+                       ? scale_factor_from_min_side
+                       : scale_factor_from_max_side;
+  zp = 0;
+  nudged_min = static_cast<float>(qmin_double * scaling_factor);
+  nudged_max = static_cast<float>(qmax_double * scaling_factor);
+}
+
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max)
 {
@@ -150,35 +178,36 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
     auto tw_conv = dynamic_cast<CircleTransposeConv *>(out);
     auto fc = dynamic_cast<CircleFullyConnected *>(out);
 
-    if (conv != nullptr && conv->filter() == node)
+    // Refer to https://github.com/Samsung/ONE/pull/2448.
+    if ((conv != nullptr && conv->filter() == node) ||
+        (tw_conv != nullptr && tw_conv->filter() == node)) // OHWI
     {
       assert(node->rank() == 4);
       dimension.dim(0).set(node->dim(0).value());
       dimension.dim(1).set(node->dim(1).value());
       dimension.dim(2).set(node->dim(2).value());
       dimension.dim(3).set(node->dim(3).value());
-      channel_dim_index = 3;
+      channel_dim_index = 0; // Set channel_dim_index based on "O"
       return true;
     }
-    else if ((tw_conv != nullptr && tw_conv->filter() == node) ||
-             (dw_conv != nullptr && dw_conv->filter() == node))
+    else if (dw_conv != nullptr && dw_conv->filter() == node) // IHWC
     {
       assert(node->rank() == 4);
       dimension.dim(0).set(node->dim(0).value());
       dimension.dim(1).set(node->dim(1).value());
       dimension.dim(2).set(node->dim(2).value());
       dimension.dim(3).set(node->dim(3).value());
-      channel_dim_index = 2;
+      channel_dim_index = 3; // Set channel_dim_index based on "C"
       return true;
     }
-    else if (fc != nullptr && fc->weights() == node)
+    else if (fc != nullptr && fc->weights() == node) // OI
     {
       assert(node->rank() == 2);
-      dimension.dim(0).set(1);
-      dimension.dim(1).set(1);
-      dimension.dim(2).set(node->dim(0).value());
+      dimension.dim(0).set(node->dim(0).value());
+      dimension.dim(1).set(1); // Set FC layer like CONV
+      dimension.dim(2).set(1);
       dimension.dim(3).set(node->dim(1).value());
-      channel_dim_index = 3;
+      channel_dim_index = 0; // Set channel_dim_index based on "O"
       return true;
     }
     else
@@ -199,9 +228,8 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
-void asym_quant_bias_per_channel(CircleConst *node, float input_scale,
-                                 std::vector<float> &weight_scale,
-                                 std::vector<float> &scaling_factor, std::vector<int64_t> &zp)
+void quant_bias_per_channel(CircleConst *node, float input_scale, std::vector<float> &weight_scale,
+                            std::vector<float> &scaling_factor, std::vector<int64_t> &zp)
 {
   float scaling_factor_inv{0};
 
@@ -237,6 +265,56 @@ bool is_quantized(const CircleNode *node)
 {
   return node->dtype() == loco::DataType::U8 || // activation, weight
          node->dtype() == loco::DataType::S32;  // bias
+}
+
+void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_factor)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  std::vector<int32_t> quantized_values(size);
+
+  loco::TensorShape dimension;
+  dimension.rank(4);
+  uint32_t indices[4] = {
+      0,
+  };
+  int channel_dim_index{0};
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
+
+  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
+  {
+    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+    {
+      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
+      {
+        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
+        {
+          int channel_idx = indices[channel_dim_index];
+          const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+          auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+          quantized_values[cal_offset(dimension, indices)] =
+              static_cast<int32_t>(std::round(data * scaling_factor_inv));
+        }
+      }
+    }
+  }
+
+  node->dtype(loco::DataType::S16);      // change the type of tensor
+  node->size<loco::DataType::S16>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S16>(i) =
+        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
 }
 
 void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
@@ -390,13 +468,21 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         float nudged_min{0};
         float nudged_max{0};
 
-        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+        if (output_type == loco::DataType::U8)
+        {
+          compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+          circle_node->dtype(loco::DataType::U8);
+        }
+        else
+        {
+          compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+          circle_node->dtype(loco::DataType::S16);
+        }
 
         circle_node->quantparam()->max[0] = nudged_max;
         circle_node->quantparam()->min[0] = nudged_min;
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
-        circle_node->dtype(loco::DataType::U8);
       }
     }
     return false;
@@ -444,14 +530,7 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       std::vector<float> scaling_factor(size);
       std::vector<int64_t> zp(size);
 
-      if (output_type == loco::DataType::U8)
-      {
-        asym_quant_bias_per_channel(circle_const, input_scale, weight_scale, scaling_factor, zp);
-      }
-      else
-      {
-        // will be implemented
-      }
+      quant_bias_per_channel(circle_const, input_scale, weight_scale, scaling_factor, zp);
 
       auto quantparam = std::make_unique<CircleQuantParam>();
       quantparam->scale = scaling_factor;
@@ -529,7 +608,7 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
           }
           else
           {
-            // will be implemented
+            sym_wquant_per_channel(circle_const, scaling_factor);
           }
         }
         // Find min/max per layer-wise

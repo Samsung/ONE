@@ -33,8 +33,8 @@ namespace
 {
 
 template <typename T>
-void evalLogic(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-               T init_value, nnfw::cker::Reduce &reduce_kernel,
+void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std::vector<int> &axes,
+               bool keep_dims, T init_value, nnfw::cker::Reduce &reduce_kernel,
                T reducer(const T current, const T in))
 {
   reduce_kernel.prepare(input->num_dimensions(), axes.size());
@@ -49,8 +49,8 @@ void evalLogic(const Tensor *input, Tensor *output, const std::vector<int> &axes
 }
 
 template <typename T>
-void evalType(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-              nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+void evalType(const IPortableTensor *input, IPortableTensor *output, const std::vector<int> &axes,
+              bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -79,8 +79,9 @@ void evalType(const Tensor *input, Tensor *output, const std::vector<int> &axes,
 
 // Template specialization for bool type
 template <>
-void evalType<bool>(const Tensor *input, Tensor *output, const std::vector<int> &axes,
-                    bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+void evalType<bool>(const IPortableTensor *input, IPortableTensor *output,
+                    const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
+                    ReduceType reduce_type)
 {
   switch (reduce_type)
   {
@@ -100,8 +101,8 @@ void evalType<bool>(const Tensor *input, Tensor *output, const std::vector<int> 
 }
 
 template <ReduceType reduce_type>
-void evalGeneric(const Tensor *input, Tensor *output, const std::vector<int> &axes, bool keep_dims,
-                 nnfw::cker::Reduce &reduce_kernel)
+void evalGeneric(const IPortableTensor *input, IPortableTensor *output,
+                 const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
 {
   switch (input->data_type())
   {
@@ -118,45 +119,46 @@ void evalGeneric(const Tensor *input, Tensor *output, const std::vector<int> &ax
 } // namespace
 
 ReduceLayer::ReduceLayer()
-    : _input(nullptr), _output(nullptr), _reduceType(ReduceType::kAny), _axes(), _keep_dims(false),
-      _reduce_kernel(new nnfw::cker::Reduce())
+    : _input(nullptr), _axes(nullptr), _output(nullptr), _reduceType(ReduceType::kAny),
+      _keep_dims(false), _reduce_kernel(new nnfw::cker::Reduce())
 {
   // DO NOTHING
 }
 
 ReduceLayer::~ReduceLayer() = default;
 
-void ReduceLayer::configure(const Tensor *input, Tensor *output, ReduceType reduceType,
-                            const std::vector<int> &axes, bool keep_dims)
+void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,
+                            IPortableTensor *output, ReduceType reduceType, bool keep_dims)
 {
   _input = input;
+  _axes = axes;
   _output = output;
   _reduceType = reduceType;
-  _axes = axes;
   _keep_dims = keep_dims;
 }
 
 void ReduceLayer::run()
 {
+  const auto axes = getReducerAxes(_axes);
   switch (_reduceType)
   {
     case ReduceType::kSum:
-      evalGeneric<ReduceType::kSum>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kSum>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     case ReduceType::kProd:
-      evalGeneric<ReduceType::kProd>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kProd>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     case ReduceType::kMax:
-      evalGeneric<ReduceType::kMax>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kMax>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     case ReduceType::kMin:
-      evalGeneric<ReduceType::kMin>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kMin>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     case ReduceType::kAny:
-      evalGeneric<ReduceType::kAny>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kAny>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     case ReduceType::kAll:
-      evalGeneric<ReduceType::kAll>(_input, _output, _axes, _keep_dims, *_reduce_kernel);
+      evalGeneric<ReduceType::kAll>(_input, _output, axes, _keep_dims, *_reduce_kernel);
       break;
     default:
       throw std::runtime_error{"ReduceSum: Unsupported reduce type"};

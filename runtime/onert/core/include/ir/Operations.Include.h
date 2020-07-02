@@ -17,6 +17,7 @@
 // This file has no ifdef guard intentionally
 
 #include "ir/operation/BatchToSpaceND.h"
+#include "ir/operation/BroadcastTo.h"
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/MaxPool2D.h"
 #include "ir/operation/AvgPool2D.h"
@@ -106,3 +107,4 @@
 #include "ir/operation/BCQGather.h"
 #include "ir/operation/MatrixBandPart.h"
 #include "ir/operation/BatchMatMul.h"
+#include "ir/operation/FusedBatchNorm.h"

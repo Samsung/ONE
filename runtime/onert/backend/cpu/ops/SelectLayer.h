@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_SELECT_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_SELECT_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,16 +36,16 @@ public:
   SelectLayer();
 
 public:
-  void configure(const Tensor *cond, const Tensor *input_true, const Tensor *input_false,
-                 Tensor *output);
+  void configure(const IPortableTensor *cond, const IPortableTensor *input_true,
+                 const IPortableTensor *input_false, IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_cond;
-  const Tensor *_input_true;
-  const Tensor *_input_false;
-  Tensor *_output;
+  const IPortableTensor *_cond;
+  const IPortableTensor *_input_true;
+  const IPortableTensor *_input_false;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

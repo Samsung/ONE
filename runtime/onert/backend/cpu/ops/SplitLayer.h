@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_SPLITLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_SPLITLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,20 +36,20 @@ public:
   SplitLayer();
 
 public:
-  void splitFloat32();
+  template <typename T> void split();
 
   void splitQuant8();
 
-  void configure(const Tensor *input, uint16_t num_splits, int16_t axis,
-                 std::vector<Tensor *> &outputs);
+  void configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
+                 std::vector<IPortableTensor *> &outputs);
 
   void run();
 
 private:
-  const Tensor *_input;
+  const IPortableTensor *_input;
   uint16_t _num_splits;
   int16_t _axis;
-  std::vector<Tensor *> _outputs;
+  std::vector<IPortableTensor *> _outputs;
 };
 
 } // namespace ops

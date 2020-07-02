@@ -12,10 +12,14 @@ function(_AbseilSource_import)
   #
   # The last change of "48cd2c3f351" was commited on 2018.09.27
   #
-  # Let's use the latest released version (2018-12 release)
-  envoption(ABSEIL_URL https://github.com/abseil/abseil-cpp/archive/20181200.tar.gz)
+  # Let's use the latest released version (2020-02 release patch 2)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/20200225.2.tar.gz)
 
-  ExternalSource_Download(ABSEIL ${ABSEIL_URL})
+  ExternalSource_Download(ABSEIL
+    DIRNAME ABSEIL
+    URL ${ABSEIL_URL}
+    CHECKSUM MD5=73f2b6e72f1599a9139170c29482ddc4)
 
   set(AbseilSource_DIR ${ABSEIL_SOURCE_DIR} PARENT_SCOPE)
   set(AbseilSource_FOUND TRUE PARENT_SCOPE)

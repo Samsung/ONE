@@ -30,7 +30,7 @@ CastLayer::CastLayer() : _input(nullptr), _output(nullptr)
   // DO NOTHING
 }
 
-void CastLayer::configure(const Tensor *input, Tensor *output)
+void CastLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

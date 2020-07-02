@@ -43,6 +43,8 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
 Tensor makeOutputTensor(DataType element_type);
 Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point);
 
+std::vector<int32_t> extractTensorShape(const Tensor &tensor);
+
 // Returns the corresponding DataType given the type T.
 template <typename T> constexpr DataType getElementType()
 {

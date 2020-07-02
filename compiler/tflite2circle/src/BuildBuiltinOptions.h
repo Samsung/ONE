@@ -24,6 +24,7 @@
 #include "BuildBuiltinOptions/AddNOptions.h"
 #include "BuildBuiltinOptions/ArgMaxOptions.h"
 #include "BuildBuiltinOptions/ArgMinOptions.h"
+#include "BuildBuiltinOptions/BatchMatMulOptions.h"
 #include "BuildBuiltinOptions/BatchToSpaceNDOptions.h"
 #include "BuildBuiltinOptions/CastOptions.h"
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
@@ -54,6 +55,7 @@
 #include "BuildBuiltinOptions/LogicalNotOptions.h"
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
 // There is no LogisticOptions
+#include "BuildBuiltinOptions/LogSoftmaxOptions.h"
 #include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MirrorPadOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
@@ -83,6 +85,7 @@
 #include "BuildBuiltinOptions/SoftmaxOptions.h"
 #include "BuildBuiltinOptions/SpaceToBatchNDOptions.h"
 #include "BuildBuiltinOptions/SpaceToDepthOptions.h"
+#include "BuildBuiltinOptions/SparseToDenseOptions.h"
 #include "BuildBuiltinOptions/SplitOptions.h"
 #include "BuildBuiltinOptions/SplitVOptions.h"
 #include "BuildBuiltinOptions/SquaredDifferenceOptions.h"

@@ -37,9 +37,8 @@
 #include <algorithm>
 #include <vector>
 
-#ifdef __clang__
 #include <libgen.h>
-#endif
+
 using namespace tflite;
 using namespace nnfw::tflite;
 using namespace std::placeholders; // for _1, _2 ...

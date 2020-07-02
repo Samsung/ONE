@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_REVERSE_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_REVERSE_LAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -39,14 +39,15 @@ public:
   }
 
 public:
-  void configure(const Tensor *input, const Tensor *axis, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *axis,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_axis;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_axis;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

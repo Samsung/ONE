@@ -481,6 +481,20 @@ public:
   }
 };
 
+class SparseToDensePrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_SparseToDenseOptions())
+    {
+      os << "    ";
+      os << "ValidateIndices(" << std_params->validate_indices() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class SplitPrinter : public OpPrinter
 {
 public:
@@ -706,6 +720,7 @@ OpPrinterRegistry::OpPrinterRegistry()
       make_unique<LocalResponseNormalizationPrinter>();
   // There is no Option for LOG
   // There is no Option for LOGISTIC
+  // There is no Option for LOG_SOFTMAX
   _op_map[circle::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
@@ -733,6 +748,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   _op_map[circle::BuiltinOperator_SPACE_TO_DEPTH] = make_unique<SpaceToDepthPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[circle::BuiltinOperator_SPARSE_TO_DENSE] = make_unique<SparseToDensePrinter>();
   _op_map[circle::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
   _op_map[circle::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
   _op_map[circle::BuiltinOperator_SQUEEZE] = make_unique<SqueezePrinter>();

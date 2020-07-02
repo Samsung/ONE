@@ -36,6 +36,7 @@ public:
   void visit(const operation::ArgMax &) override;
   void visit(const operation::AvgPool2D &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
+  void visit(const operation::BroadcastTo &) override;
   void visit(const operation::Cast &) override;
   void visit(const operation::Comparison &) override;
   void visit(const operation::Concat &node) override;

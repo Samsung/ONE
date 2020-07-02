@@ -12,12 +12,12 @@ operand {
 operand {
   name: "ofm_idx"
   type: INT64
-  shape { dim: 4 }
+  shape { dim: 5 }
 }
 operation {
   type: "Unique"
   unique_options {
-    idx_out_type: INT32
+    idx_out_type: INT64
   }
   input: "ifm"
   output: "ofm"

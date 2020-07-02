@@ -31,7 +31,8 @@ int main(const int argc, char **argv)
   if (argc < 2)
   {
     std::cerr << "nnapi_test\n\n";
-    std::cerr << "Usage: " << argv[0] << " <.tflite>\n\n";
+    std::cerr << "Usage: " << argv[0] << " <.tflite>\nOR\n";
+    std::cerr << "Usage: " << argv[0] << " <.tflite> <seed>\n\n";
     return 1;
   }
 
@@ -51,7 +52,12 @@ int main(const int argc, char **argv)
 
   try
   {
-    return nnfw::tflite::RandomTestRunner::make(0).run(builder);
+    int32_t seed = 0;
+    if (argc == 3)
+    {
+      seed = std::atoi(argv[2]);
+    }
+    return nnfw::tflite::RandomTestRunner::make(seed).run(builder);
   }
   catch (const std::exception &e)
   {

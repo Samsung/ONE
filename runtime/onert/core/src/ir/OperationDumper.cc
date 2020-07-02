@@ -73,6 +73,14 @@ void OperationDumper::visit(const BatchToSpaceND &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const operation::BroadcastTo &node)
+{
+  VERBOSE(LIR) << "* BroadcastTo" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(BroadcastTo::Input::INPUT) << ", "
+               << node.getInputs().at(BroadcastTo::Input::SHAPE) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Cast &node)
 {
   VERBOSE(LIR) << "* Cast" << std::endl;

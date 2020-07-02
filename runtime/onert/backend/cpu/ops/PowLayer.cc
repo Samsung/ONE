@@ -33,13 +33,12 @@ void PowLayer::powFloat32()
   float output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::POW;
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
   if (!HaveSameShapes(_lhs, _rhs))
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::POW>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
@@ -51,8 +50,8 @@ void PowLayer::powFloat32()
                       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
-void PowLayer::configure(const Tensor *lhs, const Tensor *rhs, ir::Activation activation,
-                         Tensor *output)
+void PowLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         ir::Activation activation, IPortableTensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

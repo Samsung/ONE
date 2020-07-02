@@ -299,7 +299,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
   std::vector<float> actual_output(100); // whatever size
 
   // input reshaping to [3, 1]
-  nnfw_tensorinfo ti = {ti.dtype = NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
+  nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);

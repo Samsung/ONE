@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_TRANSPOSELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_TRANSPOSELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -36,17 +36,18 @@ public:
   TransposeLayer();
 
 public:
-  void transposeFloat32();
+  template <typename T> void transpose();
 
   void transposeQuant8();
 
-  void configure(const Tensor *input, Tensor *output, const std::vector<int> &perm);
+  void configure(const IPortableTensor *input, IPortableTensor *output,
+                 const std::vector<int> &perm);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
   std::vector<int> _perm;
 };
 

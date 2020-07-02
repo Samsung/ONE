@@ -72,6 +72,18 @@ class CircleLoader final : public base_loader::BaseLoader<LoaderDomain, CircleLo
 public:
   using BaseLoader::BaseLoader;
 
+  bool allowOptionalInputTensor(BuiltinOperator op) override
+  {
+    switch (op)
+    {
+      case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
+      case BuiltinOperator::BuiltinOperator_BCQ_FULLY_CONNECTED:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg)
   {
     auto subg = std::make_unique<ir::Graph>();

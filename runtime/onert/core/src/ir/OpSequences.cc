@@ -72,15 +72,16 @@ void OpSequences::removeFromOpSequence(const OperationIndex &operation_index)
 
 OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index) const
 {
-  OpSequenceIndex ret;
-  iterate([&](const OpSequenceIndex &index, const OpSequence &object) {
-    for (const auto &op_idx : object.operations())
+  for (auto &e : _objects)
+  {
+    OpSequence &object = *e.second;
+    auto it = find(object.operations().begin(), object.operations().end(), operation_index);
+    if (it != object.operations().end())
     {
-      if (op_idx == operation_index)
-        ret = index;
+      return e.first;
     }
-  });
-  return ret;
+  }
+  throw std::runtime_error("Operation not found");
 }
 
 } // namespace ir

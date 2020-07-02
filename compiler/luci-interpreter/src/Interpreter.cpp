@@ -16,168 +16,15 @@
 
 #include "luci_interpreter/Interpreter.h"
 
-#include "core/EventNotifier.h"
-#include "core/RuntimeModule.h"
-#include "KernelBuilder.h"
-#include "RuntimeToIR.h"
+#include "loader/ModuleLoader.h"
 
-#include <loco/IR/Algorithm.h>
-
-#include <algorithm>
 #include <stdexcept>
 
 namespace luci_interpreter
 {
 
-template <typename NodeT> static Shape getNodeShape(const NodeT *node)
+namespace
 {
-  Shape shape(node->rank());
-  for (uint32_t i = 0; i < node->rank(); ++i)
-  {
-    shape.dim(i) = node->dim(i).value();
-  }
-  return shape;
-}
-
-template <DataType DT>
-static const void *getNodeDataImpl(const luci::CircleConst *node, size_t *data_size)
-{
-  const size_t element_size = getDataTypeSize(DT);
-  const int32_t num_elements = node->size<DT>();
-
-  *data_size = num_elements * element_size;
-  // FIXME There is no good way to get the pointer to the data currently.
-  return &node->at<DT>(0);
-}
-
-static const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
-{
-  switch (node->dtype())
-  {
-    case DataType::U8:
-      return getNodeDataImpl<DataType::U8>(node, data_size);
-    case DataType::FLOAT32:
-      return getNodeDataImpl<DataType::FLOAT32>(node, data_size);
-    case DataType::S32:
-      return getNodeDataImpl<DataType::S32>(node, data_size);
-    default:
-      throw std::runtime_error("Unsupported type.");
-  }
-}
-
-static bool isExecutableNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // These nodes denote inputs / outputs of a graph.
-    case luci::CircleOpcode::CONST:
-    case luci::CircleOpcode::CIRCLEINPUT:
-    case luci::CircleOpcode::CIRCLEOUTPUT:
-    // The following nodes denote outputs of multiple-output nodes.
-    case luci::CircleOpcode::CIRCLESPLITOUT:
-    case luci::CircleOpcode::CIRCLEUNPACKOUT:
-      return false;
-    default:
-      return true;
-  }
-}
-
-static bool isTensorProducingNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // Output nodes do not produce tensors.
-    case luci::CircleOpcode::CIRCLEOUTPUT:
-    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
-    // are produced by the corresponding *Out nodes instead.
-    case luci::CircleOpcode::SPLIT:
-    case luci::CircleOpcode::UNPACK:
-      return false;
-    default:
-      return true;
-  }
-}
-
-void Interpreter::loadTensors(const loco::Graph *graph)
-{
-  for (uint32_t i = 0; i < graph->nodes()->size(); ++i)
-  {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(graph->nodes()->at(i));
-
-    if (!isTensorProducingNode(node))
-      continue;
-
-    // Only Input and Const nodes have shapes. Shapes of intermediate tensors will be inferred.
-    Shape shape{};
-    if (const auto *input_node = dynamic_cast<const luci::CircleInput *>(node))
-    {
-      shape = getNodeShape(input_node);
-    }
-    else if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
-    {
-      shape = getNodeShape(const_node);
-    }
-
-    AffineQuantization quantization;
-    if (node->quantparam() != nullptr)
-    {
-      const luci::CircleQuantParam *params = node->quantparam();
-      quantization.scale.assign(params->scale.cbegin(), params->scale.cend());
-      quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
-    }
-
-    auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
-                                           node->name());
-
-    if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
-    {
-      size_t data_size{};
-      const void *const_data = getNodeData(const_node, &data_size);
-      tensor->writeData(const_data, data_size);
-    }
-
-    _node_to_tensor.emplace(node, tensor.get());
-    _runtime_to_ir->tensor_to_node.emplace(tensor.get(), node);
-
-    _main_runtime_graph->addTensor(std::move(tensor));
-  }
-}
-
-void Interpreter::initInputOutputTensors(const loco::Graph *graph)
-{
-  auto input_nodes = loco::input_nodes(graph);
-  std::vector<Tensor *> input_tensors(input_nodes.size());
-  for (size_t i = 0; i < input_nodes.size(); ++i)
-  {
-    input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
-  }
-  _main_runtime_graph->setInputTensors(input_tensors);
-
-  auto output_nodes = loco::output_nodes(const_cast<loco::Graph *>(graph));
-  std::vector<Tensor *> output_tensors(output_nodes.size());
-  for (size_t i = 0; i < output_nodes.size(); ++i)
-  {
-    const auto *node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
-    output_tensors[i] = _node_to_tensor.at(node->from());
-  }
-  _main_runtime_graph->setOutputTensors(output_tensors);
-}
-
-void Interpreter::loadKernels(const loco::Graph *graph)
-{
-  KernelBuilder kernel_builder(_node_to_tensor);
-
-  // Create kernels for executable nodes (in execution order).
-  for (const loco::Node *loco_node :
-       loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(graph))))
-  {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-    if (isExecutableNode(node))
-    {
-      _main_runtime_graph->addKernel(node->accept(&kernel_builder));
-    }
-  }
-}
 
 class EventNotifierImpl final : public EventNotifier
 {
@@ -201,22 +48,15 @@ private:
   const std::vector<ExecutionObserver *> &_observers;
 };
 
+} // namespace
+
 Interpreter::Interpreter(const luci::Module *module)
 {
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
-
-  if (module->size() > 1)
-  {
-    throw std::runtime_error("Models with multiple subgraphs are not yet supported.");
-  }
-
-  _main_runtime_graph = _runtime_module->addGraph();
-
-  loadTensors(module->graph());
-  initInputOutputTensors(module->graph());
-  loadKernels(module->graph());
+  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir);
+  loader.load();
 
   _runtime_module->configure();
 }

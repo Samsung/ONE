@@ -450,6 +450,34 @@ inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape
   }
 }
 
+inline int32_t quant8_mul(const BinaryArithmeticOpParam &params, const uint8_t input1_data,
+                          const uint8_t input2_data)
+{
+  const int32_t input1_val = params.input1_offset + input1_data;
+  const int32_t input2_val = params.input2_offset + input2_data;
+  const int32_t unclamped_result =
+      params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                           params.output_multiplier,
+                                                           params.output_shift);
+  const int32_t clamped_output = std::min(
+      params.quantized_activation_max, std::max(params.quantized_activation_min, unclamped_result));
+
+  return clamped_output;
+}
+
+inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params,
+                                 const uint8_t *input1_data, const uint8_t *input2_data,
+                                 uint8_t *output_data)
+{
+  int i = 0;
+  int32_t clamped_output;
+  for (; i < size; i++)
+  {
+    clamped_output = quant8_mul(params, input1_data[i], input2_data[i]);
+    output_data[i] = static_cast<uint8_t>(clamped_output);
+  }
+}
+
 inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
                            const float *input1_data, const float *input2_data, float *output_data)
 {
@@ -504,12 +532,33 @@ inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
   }
 }
 
+inline void MulQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                      const uint8_t *input1_data, const Shape &input2_shape,
+                      const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
+{
+  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  MulElementwiseQuant8(flat_size, params, input1_data, input2_data, output_data);
+}
+
 inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                 const float *input1_data, const Shape &input2_shape, const float *input2_data,
                 const Shape &output_shape, float *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
   MulElementwise(flat_size, params, input1_data, input2_data, output_data);
+}
+
+inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &params,
+                                     const uint8_t broadcast_value, const uint8_t *input2_data,
+                                     uint8_t *output_data)
+{
+  int i = 0;
+  int32_t clamped_output;
+  for (; i < size; ++i)
+  {
+    clamped_output = quant8_mul(params, broadcast_value, input2_data[i]);
+    output_data[i] = static_cast<uint8_t>(clamped_output);
+  }
 }
 
 // Broadcast mul that can often be used for inner loop of broadcast Mul.
@@ -541,6 +590,76 @@ inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
     float x = broadcast_value * input2_data[i];
     output_data[i] =
         ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
+  }
+}
+
+inline void BroadcastMulFivefoldQuant8(const BinaryArithmeticOpParam &params,
+                                       const Shape & /* unswitched_input1_shape */,
+                                       const uint8_t *unswitched_input1_data,
+                                       const Shape & /* unswitched_input2_shape */,
+                                       const uint8_t *unswitched_input2_data,
+                                       const Shape & /* output_shape */, uint8_t *output_data)
+{
+  const bool use_unswitched =
+      params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast;
+
+  const uint8_t *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
+  const uint8_t *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
+
+  // Fivefold nested loops. The second input resets its position for each
+  // iteration of the second loop. The first input resets its position at the
+  // beginning of the fourth loop. The innermost loop is an elementwise Mul of
+  // sections of the arrays.
+  uint8_t *output_data_ptr = output_data;
+  const uint8_t *input1_data_ptr = input1_data;
+  const uint8_t *input2_data_reset = input2_data;
+  int y0 = params.broadcast_shape[0];
+  int y1 = params.broadcast_shape[1];
+  int y2 = params.broadcast_shape[2];
+  int y3 = params.broadcast_shape[3];
+  int y4 = params.broadcast_shape[4];
+  if (y4 > 1)
+  {
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const uint8_t *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          for (int i3 = 0; i3 < y3; ++i3)
+          {
+            MulElementwiseQuant8(y4, params, input1_data_ptr, input2_data_ptr, output_data_ptr);
+            input2_data_ptr += y4;
+            output_data_ptr += y4;
+          }
+          input1_data_ptr += y4;
+        }
+      }
+      input2_data_reset = input2_data_ptr;
+    }
+  }
+  else
+  {
+    for (int i0 = 0; i0 < y0; ++i0)
+    {
+      const uint8_t *input2_data_ptr = nullptr;
+      for (int i1 = 0; i1 < y1; ++i1)
+      {
+        input2_data_ptr = input2_data_reset;
+        for (int i2 = 0; i2 < y2; ++i2)
+        {
+          // The input may be switched here, but the common parameters here
+          // do not matter as they will not influence the int math execution.
+          MulSimpleBroadcastQuant8(y3, params, *input1_data_ptr, input2_data_ptr, output_data_ptr);
+          input2_data_ptr += y3;
+          output_data_ptr += y3;
+          ++input1_data_ptr;
+        }
+      }
+      input2_data_reset = input2_data_ptr;
+    }
   }
 }
 
@@ -612,6 +731,27 @@ inline void BroadcastMulFivefold(const BinaryArithmeticOpParam &params,
       input2_data_reset = input2_data_ptr;
     }
   }
+}
+
+inline void BroadcastMulDispatchQuant8(const BinaryArithmeticOpParam &params,
+                                       const Shape &input1_shape, const uint8_t *input1_data,
+                                       const Shape &input2_shape, const uint8_t *input2_data,
+                                       const Shape &output_shape, uint8_t *output_data)
+{
+  if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
+  {
+    const std::function<uint8_t(const BinaryArithmeticOpParam &, const uint8_t &, const uint8_t &)>
+        fn = [](const BinaryArithmeticOpParam &params, const uint8_t &a,
+                const uint8_t &b) -> uint8_t {
+      return static_cast<uint8_t>(quant8_mul(params, a, b));
+    };
+    reference::BroadcastBinaryArithmeticOpSlowQuant8(params, input1_shape, input1_data,
+                                                     input2_shape, input2_data, output_shape,
+                                                     output_data, fn);
+    return;
+  }
+  BroadcastMulFivefoldQuant8(params, input1_shape, input1_data, input2_shape, input2_data,
+                             output_shape, output_data);
 }
 
 inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,

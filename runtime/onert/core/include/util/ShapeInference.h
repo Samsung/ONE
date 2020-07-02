@@ -132,6 +132,7 @@ private:
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::BatchMatMul &op);
+  void visit(const ir::operation::BroadcastTo &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
@@ -142,6 +143,7 @@ private:
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
+  void visit(const ir::operation::FusedBatchNorm &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::If &op);
   void visit(const ir::operation::Log &op);
@@ -156,6 +158,7 @@ private:
   void visit(const ir::operation::Neg &op);
   void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
+  void visit(const ir::operation::Pad &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q
@@ -232,6 +235,7 @@ public:
   void visit(const ir::operation::Add &op);
   void visit(const ir::operation::ArgMax &op);
   void visit(const ir::operation::BatchMatMul &op);
+  void visit(const ir::operation::BroadcastTo &op);
   void visit(const ir::operation::Cast &op);
   void visit(const ir::operation::Comparison &op);
   void visit(const ir::operation::Concat &op);
@@ -242,6 +246,7 @@ public:
   void visit(const ir::operation::ExpandDims &op);
   void visit(const ir::operation::Fill &op);
   void visit(const ir::operation::FullyConnected &op);
+  void visit(const ir::operation::FusedBatchNorm &op);
   void visit(const ir::operation::Gather &op);
   void visit(const ir::operation::Log &op);
   void visit(const ir::operation::LogicalNot &op);
@@ -255,6 +260,7 @@ public:
   void visit(const ir::operation::Neg &op);
   void visit(const ir::operation::OneHot &op);
   void visit(const ir::operation::Pack &op);
+  void visit(const ir::operation::Pad &op);
   void visit(const ir::operation::Permute &op);
   void visit(const ir::operation::Pow &op);
   // TODO write op starting from Q

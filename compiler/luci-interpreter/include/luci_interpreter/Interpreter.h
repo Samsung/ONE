@@ -26,7 +26,6 @@
 
 #include <memory>
 #include <vector>
-#include <unordered_map>
 
 namespace luci_interpreter
 {
@@ -56,18 +55,7 @@ public:
   void attachObserver(ExecutionObserver *observer);
 
 private:
-  // TODO Extract into GraphLoader.
-  void loadTensors(const loco::Graph *graph);
-  void initInputOutputTensors(const loco::Graph *graph);
-  void loadKernels(const loco::Graph *graph);
-
   std::unique_ptr<class RuntimeModule> _runtime_module;
-
-  // TODO Extract into ModuleLoader.
-  class RuntimeGraph *_main_runtime_graph;
-
-  // TODO Extract into GraphLoader.
-  std::unordered_map<const loco::Node *, Tensor *> _node_to_tensor;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;

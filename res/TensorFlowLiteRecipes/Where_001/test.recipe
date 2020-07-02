@@ -1,0 +1,19 @@
+operand {
+  name: "ifm"
+  type: BOOL
+  shape { dim: 4 dim: 2 dim: 3}
+}
+operand {
+  name: "ofm"
+  type: INT64
+  # shape is intentionally omitted
+}
+operation {
+  type: "Where"
+  where_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -18,7 +18,6 @@
 #define __ONERT_IR_SHAPE_H__
 
 #include "ir/Layout.h"
-#include "misc/feature/Shape.h"
 
 #include <cassert>
 #include <cstdint>
@@ -30,8 +29,43 @@ namespace onert
 namespace ir
 {
 
-// TODO Remove this dependency.
-using FeatureShape = nnfw::misc::feature::Shape;
+/**
+ * @brief  Structure to have values of dimensions for feature
+ */
+struct FeatureShape
+{
+  int32_t N; /**< The batch value  */
+  int32_t C; /**< The depth value  */
+  int32_t H; /**< The height value */
+  int32_t W; /**< The width value  */
+
+  /**
+   * @brief  Construct FeatureShape object using default constrcutor
+   */
+  FeatureShape() = default;
+  /**
+   * @brief  Construct FeatureShape object with three values of dimensions
+   * @param[in]  depth  The depth value
+   * @param[in]  height The height value
+   * @param[in]  width  The width value
+   */
+  FeatureShape(int32_t depth, int32_t height, int32_t width) : N{1}, C{depth}, H{height}, W{width}
+  {
+    // DO NOTHING
+  }
+  /**
+   * @brief  Construct FeatureShape object with four values of dimensions
+   * @param[in]  batch  The batch value
+   * @param[in]  depth  The depth value
+   * @param[in]  height The height value
+   * @param[in]  width  The width value
+   */
+  FeatureShape(int32_t batch, int32_t depth, int32_t height, int32_t width)
+      : N{batch}, C{depth}, H{height}, W{width}
+  {
+    // DO NOTHING
+  }
+};
 
 struct Shape
 {

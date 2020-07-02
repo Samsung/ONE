@@ -1,0 +1,5 @@
+require("record-minmax")
+require("circle-quantizer")
+require("circle-tensordump")
+require("tflite2circle")
+require("tflchef")

@@ -23,12 +23,12 @@ function(_TensorFlowLite_import)
     return()
   endif(NOT Farmhash_FOUND)
 
-  nnas_find_package(Eigen QUIET)
+  nnas_find_package(Eigen-fd6845384b86 QUIET)
 
-  if(NOT Eigen_FOUND)
+  if(NOT Eigen-fd6845384b86_FOUND)
     set(TensorFlowLite_FOUND FALSE PARENT_SCOPE)
     return()
-  endif(NOT Eigen_FOUND)
+  endif(NOT Eigen-fd6845384b86_FOUND)
 
   nnas_find_package(GEMMLowp QUIET)
 

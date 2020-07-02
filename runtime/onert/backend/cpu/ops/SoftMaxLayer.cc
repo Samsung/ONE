@@ -146,7 +146,8 @@ void SoftMaxLayer::softmaxQuant8()
                       descrIn4D, reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void SoftMaxLayer::configure(const Tensor *input, const float beta, Tensor *output)
+void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
+                             IPortableTensor *output)
 {
   _input = input;
   _output = output;

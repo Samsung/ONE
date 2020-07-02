@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_SQDIFFLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_SQDIFFLAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -38,14 +38,15 @@ public:
 public:
   void SqDiffFloat32();
 
-  void configure(const Tensor *input1, const Tensor *input2, Tensor *output);
+  void configure(const IPortableTensor *input1, const IPortableTensor *input2,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input1;
-  const Tensor *_input2;
-  Tensor *_output;
+  const IPortableTensor *_input1;
+  const IPortableTensor *_input2;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

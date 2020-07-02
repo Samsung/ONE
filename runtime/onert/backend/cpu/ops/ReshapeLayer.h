@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_RESHAPELAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_RESHAPELAYER_H__
 
-#include "../Tensor.h"
+#include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
 
@@ -38,14 +38,15 @@ public:
 public:
   void reshapeGeneric();
 
-  void configure(const Tensor *input, const Tensor *shape, Tensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *shape,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  const Tensor *_shape;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  const IPortableTensor *_shape;
+  IPortableTensor *_output;
 };
 
 } // namespace ops

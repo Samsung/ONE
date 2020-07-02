@@ -35,9 +35,16 @@ void set_inputs(TFliteImport *import, tflchef::Operation *operation, const tflit
 
   for (auto input : inputs)
   {
-    auto tensor = tensors->Get(input);
-    std::string name = tensor_name(tensor);
-    operation->add_input(name);
+    if (input == -1)
+    {
+      operation->add_input("");
+    }
+    else
+    {
+      auto tensor = tensors->Get(input);
+      std::string name = tensor_name(tensor);
+      operation->add_input(name);
+    }
   }
 }
 
