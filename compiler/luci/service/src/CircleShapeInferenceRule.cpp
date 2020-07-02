@@ -1487,9 +1487,9 @@ public:
   loco::NodeShape visit(const luci::CircleReverseV2 *node) final
   {
     auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
-    auto axis_shape = loco::shape_get(node->axis()).as<loco::TensorShape>();
 
-    LUCI_ASSERT(axis_shape.rank() == 1, "Tensor must be 1-D");
+    LUCI_ASSERT(loco::shape_get(node->axis()).as<loco::TensorShape>().rank() == 1,
+                "Tensor must be 1-D");
 
     return loco::NodeShape{input_shape};
   }

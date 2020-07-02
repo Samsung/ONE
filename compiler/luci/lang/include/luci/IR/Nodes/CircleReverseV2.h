@@ -31,9 +31,6 @@ namespace luci
 class CircleReverseV2 final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::REVERSE_V2>>
 {
 public:
-  CircleReverseV2() = default;
-
-public:
   loco::Node *tensor(void) const { return at(0)->node(); }
   void tensor(loco::Node *node) { at(0)->node(node); }
 
