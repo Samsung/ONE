@@ -75,12 +75,10 @@ public:
     auto external_tensor = _external.find(ind);
     if (external_tensor != _external.end())
     {
-      auto external_portable_tensor =
-          std::dynamic_pointer_cast<IPortableTensor>(external_tensor->second);
-      if (external_portable_tensor)
+      if (external_tensor->second)
         return external_tensor->second;
     }
-    return std::dynamic_pointer_cast<IPortableTensor>(getManagedTensor(ind));
+    return getManagedTensor(ind);
   }
 
   std::shared_ptr<T_Tensor> getManagedTensor(const ir::OperandIndex &ind)
