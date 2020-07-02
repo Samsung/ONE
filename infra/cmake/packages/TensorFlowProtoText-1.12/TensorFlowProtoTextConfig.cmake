@@ -10,7 +10,7 @@ function(_TensorFlowProtoText_import)
 
   require_package(TensorFlowSource EXACT 1.12)
   require_package(Abseil)
-  require_package(Eigen)
+  require_package(Eigen-fd6845384b86)
   require_package(Protobuf)
   require_package(GoogleDoubleConversion)
   require_package(GoogleNSync)

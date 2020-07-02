@@ -8,7 +8,8 @@ function(_EigenSource_import)
   nnas_include(OptionTools)
 
   # NOTE TensorFlow 1.13.1 uses https://bitbucket.org/eigen/eigen/get/9f48e814419e.tar.gz
-  #      The following URL fix bug above URL
+  #      but it has a issue https://eigen.tuxfamily.org/bz/show_bug.cgi?id=1643
+  #      The following URL resolves above issue
   envoption(EIGEN_1_13_1_URL https://bitbucket.org/eigen/eigen/get/88fc23324517.tar.gz)
 
   ExternalSource_Download(EIGEN ${EIGEN_1_13_1_URL})
