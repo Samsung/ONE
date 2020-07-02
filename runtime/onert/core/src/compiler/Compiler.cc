@@ -55,6 +55,9 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
+#ifdef RUY_PROFILER
+  options.op_seq_max_node = 1;
+#endif
 
   {
     // Backend for all
