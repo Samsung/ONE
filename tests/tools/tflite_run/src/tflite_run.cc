@@ -83,7 +83,8 @@ int main(const int argc, char **argv)
 
   std::chrono::milliseconds t_model_load(0), t_prepare(0);
 
-  benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
+  benchmark::Phases phases(
+      benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
   std::unique_ptr<FlatBufferModel> model;
   std::unique_ptr<Interpreter> interpreter;
