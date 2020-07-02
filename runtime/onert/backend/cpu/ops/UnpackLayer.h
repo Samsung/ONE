@@ -38,7 +38,7 @@ public:
 public:
   void configure(const IPortableTensor *input, uint32_t axis, int32_t num_output,
                  std::vector<IPortableTensor *> &output);
-  void run();
+  void run() override;
 
 private:
   template <typename T> void unpackImpl();

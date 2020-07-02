@@ -40,7 +40,7 @@ public:
 public:
   void configure(const IPortableTensor *_lhs, const IPortableTensor *_rhs, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   void lorBool8();

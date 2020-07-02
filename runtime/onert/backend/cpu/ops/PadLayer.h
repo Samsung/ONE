@@ -46,7 +46,7 @@ public:
   void configure(const IPortableTensor *input, IPortableTensor *output, const int32_t *padData,
                  int32_t padRank, uint8_t *constantValueData = nullptr);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

@@ -42,7 +42,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *indices,
                  IPortableTensor *output, int32_t axis);
 
-  void run();
+  void run() override;
 
 private:
   template <typename OpType> void runByInputType();

@@ -39,7 +39,7 @@ public:
 public:
   void configure(const Tensor *input, const Tensor *shape, Tensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const Tensor *_input;

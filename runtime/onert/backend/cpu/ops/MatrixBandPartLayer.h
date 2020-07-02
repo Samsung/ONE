@@ -43,13 +43,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *num_lower_diag,
                  const IPortableTensor *num_upper_diag, IPortableTensor *output);
 
-  void run();
-  void runSync()
-  {
-    // this abstract method is used just for profiling and called for
-    // backend::acl_common::AclFunction
-    run();
-  }
+  void run() override;
 
 private:
   const IPortableTensor *_input;

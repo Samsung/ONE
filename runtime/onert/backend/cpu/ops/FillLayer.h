@@ -38,7 +38,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *value,
                  IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

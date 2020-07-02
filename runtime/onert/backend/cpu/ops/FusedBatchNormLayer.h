@@ -53,7 +53,7 @@ public:
   void configure(const std::vector<const Tensor *> &inputs, float epsilon, bool is_training,
                  std::string data_format, Tensor *output);
 
-  void run();
+  void run() override;
 
 private:
   std::vector<const Tensor *> _inputs;
