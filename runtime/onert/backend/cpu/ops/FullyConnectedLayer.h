@@ -55,7 +55,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
                  const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
   void prepare() override;
 
