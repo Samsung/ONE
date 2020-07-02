@@ -71,7 +71,7 @@ target_include_directories(tensorflow-prototext-1.12 PRIVATE ${TensorFlowSource_
 target_include_directories(tensorflow-prototext-1.12 PRIVATE ${PROTO_TEXT_PROTO_INCLUDE_DIRS})
 
 target_link_libraries(tensorflow-prototext-1.12 PRIVATE abseil)
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE eigen)
+target_link_libraries(tensorflow-prototext-1.12 PRIVATE eigen-fd6845384b86)
 target_link_libraries(tensorflow-prototext-1.12 PRIVATE ${PROTO_TEXT_PROTO_LIBRARIES})
 target_link_libraries(tensorflow-prototext-1.12 PRIVATE Google::DoubleConversion)
 target_link_libraries(tensorflow-prototext-1.12 PRIVATE Google::NSync)

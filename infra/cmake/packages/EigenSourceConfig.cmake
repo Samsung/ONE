@@ -7,10 +7,12 @@ function(_EigenSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE The following URL comes from TensorFlow 1.7
-  envoption(EIGEN_URL https://bitbucket.org/eigen/eigen/get/2355b229ea4c.tar.gz)
+  # NOTE TensorFlow 1.13.1 uses https://bitbucket.org/eigen/eigen/get/9f48e814419e.tar.gz
+  #      but it has a issue https://eigen.tuxfamily.org/bz/show_bug.cgi?id=1643
+  #      The following URL resolves above issue
+  envoption(EIGEN_1_13_1_URL https://bitbucket.org/eigen/eigen/get/88fc23324517.tar.gz)
 
-  ExternalSource_Download(EIGEN ${EIGEN_URL})
+  ExternalSource_Download(EIGEN ${EIGEN_1_13_1_URL})
 
   set(EigenSource_DIR ${EIGEN_SOURCE_DIR} PARENT_SCOPE)
   set(EigenSource_FOUND TRUE PARENT_SCOPE)
