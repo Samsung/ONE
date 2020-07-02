@@ -1508,30 +1508,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
   if (op->inputs()->size() != 4 || op->outputs()->size() != 1)
     throw std::runtime_error("OneHot Op has wrong number of input or output tensors.");
 
-  enum
-  {
-    INDICES = 0,
-    DEPTH = 1,
-    ON_VALUE = 2,
-    OFF_VALUE = 3,
-  };
-
   // Set input and output tensors
   ir::OperandIndexSequence inputs, outputs;
-  inputs.append(tensorIdxToOperandIdx(op->inputs()->Get(INDICES)));
-  outputs.append(tensorIdxToOperandIdx(op->outputs()->Get(0)));
+  loadOperationIO(op, inputs, outputs);
 
-  // Set parameters
-  // depth, on_value and off_value are scalar though it is passed as inputs
-  auto depth_opidx = tensorIdxToOperandIdx(op->inputs()->Get(DEPTH));
-  auto on_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(ON_VALUE));
-  auto off_value_opidx = tensorIdxToOperandIdx(op->inputs()->Get(OFF_VALUE));
-  const auto depth = subg.operands().at(depth_opidx).template asScalar<int>();
-  const auto on_value = subg.operands().at(on_value_opidx).template asScalar<float>();
-  const auto off_value = subg.operands().at(off_value_opidx).template asScalar<float>();
+  // Set parameter
   const auto axis = op->builtin_options_as_OneHotOptions()->axis();
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::OneHot(inputs, outputs, {depth, on_value, off_value, axis}));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::OneHot(inputs, outputs, {axis}));
   subg.addOperation(std::move(new_op));
 }
 

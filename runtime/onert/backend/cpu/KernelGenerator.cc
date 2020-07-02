@@ -535,21 +535,24 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto indices_index{node.getInputs().at(ir::operation::OneHot::INDICES)};
+  const auto depth_index{node.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
+  const auto onvalue_index{node.getInputs().at(ir::operation::OneHot::Input::ON_VALUE)};
+  const auto offvalue_index{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
 
-  const auto depth = node.param().depth;
-  const auto on_value = node.param().on_value;
-  const auto off_value = node.param().off_value;
   const auto axis = node.param().axis;
 
   auto output_alloc = _tensor_builder->portableAt(output_index).get();
   auto indices_alloc = _tensor_builder->portableAt(indices_index).get();
+  auto depth_alloc = _tensor_builder->portableAt(depth_index).get();
+  auto onvalue_alloc = _tensor_builder->portableAt(onvalue_index).get();
+  auto offvalue_alloc = _tensor_builder->portableAt(offvalue_index).get();
 
   assert(indices_alloc->data_type() == OperandType::INT32);
   assert(axis <= static_cast<int>(indices_alloc->num_dimensions()));
 
   auto fn = std::make_unique<ops::OneHotLayer>();
 
-  fn->configure(indices_alloc, output_alloc, depth, on_value, off_value, axis);
+  fn->configure(indices_alloc, depth_alloc, onvalue_alloc, offvalue_alloc, output_alloc, axis);
 
   _return_fn = std::move(fn);
 }

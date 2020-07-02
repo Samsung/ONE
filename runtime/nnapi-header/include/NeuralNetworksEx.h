@@ -334,11 +334,14 @@ typedef enum {
    *
    * Supported tensor rank: up to 4
    *
+   * Supported tensor type {@link OperandCode} for on_value and off_value:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   *
    * Inputs:
    * * 0: An {@link ANEURALNETWORKS_INT32} tensor, specifying the indices.
    * * 1: An {@link ANEURALNETWORKS_INT32} scalar, specifying the depth.
-   * * 2: A scalar, specifying the on_value.
-   * * 3: A scalar, specifying the off_value.
+   * * 2: A tensor, specifying the on_value.
+   * * 3: A tensor, specifying the off_value.
    * * 4: An {@link ANEURALNETWORKS_INT32} scalar, specifying the axis to fill. Optional.
    *      (default: -1, a new inner-most axis).
    *

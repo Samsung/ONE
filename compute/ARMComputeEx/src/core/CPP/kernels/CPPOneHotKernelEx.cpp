@@ -52,34 +52,37 @@
 namespace arm_compute
 {
 CPPOneHotKernelEx::CPPOneHotKernelEx()
-    : _indices(nullptr), _output(nullptr), _depth(0), _on_value(0), _off_value(0), _axis(-1)
+    : _indices(nullptr), _depth(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr),
+      _axis(-1)
 {
 }
 
-void CPPOneHotKernelEx::configure(const ITensor *indices, ITensor *output, const int depth,
-                                  const float on_value, const float off_value, const int axis)
+void CPPOneHotKernelEx::configure(const ITensor *indices, const ITensor *depth,
+                                  const ITensor *on_value, const ITensor *off_value,
+                                  ITensor *output, const int axis)
 {
   ARM_COMPUTE_ERROR_ON_NULLPTR(indices, output);
   ARM_COMPUTE_ERROR_THROW_ON(validate(indices, depth, on_value, off_value, axis));
 
   _indices = indices;
-  _output = output;
   _depth = depth;
   _on_value = on_value;
   _off_value = off_value;
+  _output = output;
   _axis = axis;
 
   ICPPKernel::configure(Window()); // Default 1 iteration window
 }
 
-Status CPPOneHotKernelEx::validate(const ITensor *indices, const int depth, const float on_value,
-                                   const float off_value, const int axis)
+Status CPPOneHotKernelEx::validate(const ITensor *indices, const ITensor *depth,
+                                   const ITensor *on_value, const ITensor *off_value,
+                                   const int axis)
 {
   ARM_COMPUTE_UNUSED(on_value, off_value);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_NOT_IN(indices, DataType::S32);
+  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_NOT_IN(depth, DataType::S32);
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(indices->info()->num_dimensions() != 1,
                                   "Only 1D indices are supported.");
-  ARM_COMPUTE_RETURN_ERROR_ON(depth <= 0);
   ARM_COMPUTE_RETURN_ERROR_ON_MSG(axis != -1, "Only axis = -1 is supported.");
   return Status{};
 }
@@ -92,12 +95,25 @@ void CPPOneHotKernelEx::run(const Window &window, const ThreadInfo &info)
   ARM_COMPUTE_ERROR_ON_MISMATCHING_WINDOWS(IKernel::window(), window);
 
   const auto num_indices = _indices->info()->dimension(0);
-  for (size_t i = 0; i < num_indices; ++i)
+  const auto depth = *reinterpret_cast<int32_t *>(_depth->ptr_to_element(Coordinates{0}));
+  const auto dtype = _output->info()->data_type();
+  switch (dtype)
   {
-    const auto index = *reinterpret_cast<int32_t *>(_indices->ptr_to_element(Coordinates{i}));
-    for (int d = 0; d < _depth; ++d)
-      *reinterpret_cast<float *>(_output->ptr_to_element(Coordinates(d, i))) =
-          (d == index) ? _on_value : _off_value;
+    case DataType::F32:
+    {
+      const auto on_value = *reinterpret_cast<float *>(_on_value->ptr_to_element(Coordinates{0}));
+      const auto off_value = *reinterpret_cast<float *>(_off_value->ptr_to_element(Coordinates{0}));
+      for (size_t i = 0; i < num_indices; ++i)
+      {
+        const auto index = *reinterpret_cast<int32_t *>(_indices->ptr_to_element(Coordinates{i}));
+        for (int d = 0; d < depth; ++d)
+          *reinterpret_cast<float *>(_output->ptr_to_element(Coordinates(d, i))) =
+              (d == index) ? on_value : off_value;
+      }
+      break;
+    }
+    default:
+      ARM_COMPUTE_ERROR("Unsupported data type.");
   }
 }
 } // namespace arm_compute

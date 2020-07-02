@@ -856,7 +856,6 @@ TfLiteStatus AddOpsAndParams(
         nn_op_type = ANEURALNETWORKS_ABS;
         break;
       case tflite::BuiltinOperator_ONE_HOT:
-        add_one_hot_tensor_inputs_as_scalar();
         add_one_hot_params(node.builtin_data);
         CHECK_NN(ANeuralNetworksModel_addOperationEx(
             nn_model, ANEURALNETWORKS_ONE_HOT_EX,
