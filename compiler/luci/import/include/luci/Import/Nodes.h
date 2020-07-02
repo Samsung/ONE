@@ -84,6 +84,7 @@
 #include "Nodes/CircleReduceMin.h"
 #include "Nodes/CircleReduceProd.h"
 #include "Nodes/CircleRelu.h"
+#include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleReluN1To1.h"
 #include "Nodes/CircleReshape.h"
 #include "Nodes/CircleResizeBilinear.h"
