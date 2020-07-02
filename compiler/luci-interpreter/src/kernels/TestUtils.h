@@ -167,6 +167,16 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   return {static_cast<float>(scale), zero_point};
 }
 
+template <typename T> float GetTolerance(float min, float max)
+{
+  int quantize_steps = 1;
+  assert(sizeof(T) != 0);
+  for (int i = 0; i < sizeof(T); i++)
+    quantize_steps = quantize_steps * 2;
+  quantize_steps = quantize_steps - 1;
+  return ((max - min) / quantize_steps);
+}
+
 } // namespace testing
 } // namespace kernels
 } // namespace luci_interpreter

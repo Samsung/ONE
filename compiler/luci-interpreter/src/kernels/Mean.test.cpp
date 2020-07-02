@@ -27,9 +27,6 @@ namespace
 
 using namespace testing;
 
-// for quantized Add, the error shouldn't exceed step
-float GetTolerance(int min, int max) { return (max - min) / 255.0; }
-
 TEST(MeanTest, FloatKeepDims)
 {
   std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
@@ -107,7 +104,7 @@ TEST(MeanTest, FloatNotKeepDims)
 
 TEST(MeanTest, Uint8KeepDims)
 {
-  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
+  float kQuantizedTolerance = GetTolerance<uint8_t>(-1.0, 1.0);
   std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
@@ -136,7 +133,7 @@ TEST(MeanTest, Uint8KeepDims)
 
 TEST(MeanTest, Uint8NotKeepDims)
 {
-  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
+  float kQuantizedTolerance = GetTolerance<uint8_t>(-1.0, 1.0);
   std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
