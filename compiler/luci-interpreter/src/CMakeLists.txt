@@ -1,3 +1,22 @@
+nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.1.0 QUIET)
+nnas_find_package(TensorFlowEigenSource EXACT 2.1.0 QUIET)
+
+if (NOT TensorFlowSource_FOUND)
+  message(STATUS "Skipping luci-interpreter: TensorFlow not found")
+  return()
+endif ()
+
+if (NOT TensorFlowGEMMLowpSource_FOUND)
+  message(STATUS "Skipping luci-interpreter: gemmlowp not found")
+  return()
+endif ()
+
+if (NOT TensorFlowEigenSource_FOUND)
+  message(STATUS "Skipping luci-interpreter: Eigen not found")
+  return()
+endif ()
+
 add_subdirectory(core)
 add_subdirectory(kernels)
 add_subdirectory(loader)
