@@ -32,6 +32,48 @@ void PermutationOperationPass::callback(const OperationIndex &, Operation &node)
   node.accept(*this);
 };
 
+// TODO Remove this. Expanding ranks of Operand is dangerous
+void PermutationOperationPass::applyExpandRanks(const Operation &node)
+{
+  const auto &output_ind = node.getOutputs().at(0);
+  const auto &output = _graph.operands().at(output_ind);
+
+  assert(output.getDef().size() == 1);
+  const auto &node_index = *output.getDef().begin();
+  const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
+  const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
+  const auto backend_layout = _lowered_graph.getLowerInfo(op_seq_index)->layout();
+
+  if (frontend_layout == backend_layout)
+  {
+    return;
+  }
+
+  int32_t expanded_rank = 0;
+  for (const auto &index :
+       (node.getInputs() + node.getOutputs()) | Remove::DUPLICATED | Remove::UNDEFINED)
+  {
+    expanded_rank = std::max(expanded_rank, _graph.operands().at(index).shape().rank());
+  }
+  if (expanded_rank < 4)
+    return;
+
+  for (const auto &index :
+       (node.getInputs() + node.getOutputs()) | Remove::DUPLICATED | Remove::UNDEFINED)
+  {
+    const auto &operand = _graph.operands().at(index);
+    if (operand.shape().rank() < expanded_rank)
+    {
+      if (operand.getUses().size() > 1)
+        throw std::runtime_error("PermutationOperationPass: not supported expanding rank of "
+                                 "operand used in more than one node");
+      // TODO remove const_cast later. For example, _ctx may need to be a non const variable or
+      //      a node to extend shape may be inserted in front of this operation
+      const_cast<ir::Shape &>(operand.shape()).extendRank(expanded_rank);
+    }
+  }
+}
+
 void PermutationOperationPass::changeToKeepLayout(const Operation &node)
 {
   const auto &output_ind = node.getOutputs().at(0);
@@ -182,6 +224,14 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   }
 }
 
+void PermutationOperationPass::visit(const operation::Add &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Concat &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Comparison &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Div &node) { applyExpandRanks(node); }
+
 void PermutationOperationPass::visit(const operation::FullyConnected &node)
 {
   const auto &input_ind = node.getInputs().at(operation::FullyConnected::Input::INPUT);
@@ -210,6 +260,36 @@ void PermutationOperationPass::visit(const operation::Gather &node)
   }
 }
 
+void PermutationOperationPass::visit(const operation::LogicalAnd &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::LogicalNot &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::LogicalOr &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Max &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Min &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Mul &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Pack &node)
+{
+  const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
+  const auto &input_obj = _graph.operands().at(input_ind);
+  const auto &input_shape = input_obj.shape();
+
+  const auto &output_ind = node.getOutputs().at(0);
+  const auto &output_obj = _graph.operands().at(output_ind);
+  const auto &output_shape = output_obj.shape();
+
+  if (input_shape.rank() < 4 || output_shape.rank() >= 4)
+  {
+    changeToKeepLayout(node);
+  }
+}
+
+void PermutationOperationPass::visit(const operation::PReLU &node) { applyExpandRanks(node); }
+
 void PermutationOperationPass::visit(const operation::Reshape &node)
 {
   const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
@@ -221,6 +301,29 @@ void PermutationOperationPass::visit(const operation::Reshape &node)
   const auto &output_shape = output_obj.shape();
 
   if (input_shape.rank() >= 4 || output_shape.rank() >= 4)
+  {
+    changeToKeepLayout(node);
+  }
+}
+
+void PermutationOperationPass::visit(const operation::SquaredDifference &node)
+{
+  applyExpandRanks(node);
+}
+
+void PermutationOperationPass::visit(const operation::Sub &node) { applyExpandRanks(node); }
+
+void PermutationOperationPass::visit(const operation::Unpack &node)
+{
+  const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
+  const auto &input_obj = _graph.operands().at(input_ind);
+  const auto &input_shape = input_obj.shape();
+
+  const auto &output_ind = node.getOutputs().at(0);
+  const auto &output_obj = _graph.operands().at(output_ind);
+  const auto &output_shape = output_obj.shape();
+
+  if (input_shape.rank() < 4 || output_shape.rank() >= 4)
   {
     changeToKeepLayout(node);
   }
