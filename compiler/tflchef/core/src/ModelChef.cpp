@@ -261,6 +261,281 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
 
 } // namespace
 
+namespace
+{
+
+struct CookParams
+{
+  std::vector<flatbuffers::Offset<::tflite::Buffer>> &buffer_vec;
+  std::vector<flatbuffers::Offset<::tflite::OperatorCode>> &code_vec;
+  std::vector<flatbuffers::Offset<::tflite::SubGraph>> &subgraph_vec;
+  std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder;
+  std::set<tflite::BuiltinOperator> &builtin_code_set;
+  std::string noname;
+};
+
+template <typename T> void cook_graph(const T &graph, CookParams &cp)
+{
+  LOGGER(l);
+
+  std::vector<flatbuffers::Offset<::tflite::Buffer>> &buffer_vec = cp.buffer_vec;
+  std::vector<flatbuffers::Offset<::tflite::OperatorCode>> &code_vec = cp.code_vec;
+  std::vector<flatbuffers::Offset<::tflite::SubGraph>> &subgraph_vec = cp.subgraph_vec;
+  std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder = cp.flatbuffer_builder;
+  std::set<tflite::BuiltinOperator> &builtin_code_set = cp.builtin_code_set;
+
+  // Operand-related
+  std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
+
+  // Operation-related
+  std::vector<flatbuffers::Offset<::tflite::Operator>> operator_vec;
+
+  // default name for graph
+  std::string graph_name = cp.noname;
+  if (graph.has_name())
+    graph_name = graph.name();
+
+  // Tensor Name -> Tensor ID mapping (per Graph)
+  std::map<std::string, int32_t> symbol_table;
+
+  auto lookup = [&symbol_table, &graph_name](const std::string &name) {
+    if (symbol_table.find(name) != symbol_table.end())
+      return symbol_table.at(name);
+    else if (name == "")
+      return -1; // -1 in TFLite means that optional input tensor is empty.
+    else
+    {
+      std::string msg = "tflchef : input not found in " + graph_name + " graph";
+      throw std::runtime_error(msg.c_str());
+    }
+  };
+
+  int32_t buffer_start = buffer_vec.size();
+  int32_t buffer_index = 0;
+
+  // Create buffer(s) 1~n(I) for input(s)
+  const auto size_input = graph.input_size();
+  for (int ci = 0; ci < size_input; ++ci)
+  {
+    tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+    buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+  // Create buffer(s) n(I)+1~n(I)+n(O) for output(s)
+  const auto size_output = graph.output_size();
+  for (int co = 0; co < size_output; ++co)
+  {
+    tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+    buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+
+  auto input_names = as_dataset(graph.input()).vectorize();
+  auto output_names = as_dataset(graph.output()).vectorize();
+
+  for (const auto &operand : graph.operand())
+  {
+    assert(operand.has_name());
+
+    assert(operand.has_type());
+
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
+    std::vector<int32_t> dims;
+    if (operand.has_shape())
+    {
+      dims = as_dims(operand.shape());
+      shape = flatbuffer_builder->CreateVector(dims);
+    }
+
+    auto name = flatbuffer_builder->CreateString(operand.name());
+
+    buffer_index = 0;
+
+    // Create Buffer if filler is specified
+    if (operand.has_filler())
+    {
+      const auto &filler = operand.filler();
+
+      assert(filler.has_tag());
+
+      auto args = ranged_arguments(filler.arg().begin(), filler.arg().end());
+      auto chef = data_chef_registry(operand.type()).lookup(filler.tag()).create(args);
+
+      assert(chef != nullptr);
+
+      // Create Data
+      int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
+      auto data_vec = chef->generate(count);
+      auto data = flatbuffer_builder->CreateVector(data_vec);
+
+      // Create Buffer
+      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+      buffer_builder.add_data(data);
+      auto buffer = buffer_builder.Finish();
+
+      // Update Buffer Index & Vector
+      buffer_index = buffer_vec.size();
+      buffer_vec.emplace_back(buffer);
+    }
+    else
+    {
+      // if this is input or output, assign to that buffer_index
+      int idx = 0;
+      for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
+      {
+        if (*it == operand.name())
+        {
+          buffer_index = buffer_start + idx;
+          break;
+        }
+      }
+      if (buffer_index == 0)
+      {
+        idx = 0;
+        for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
+        {
+          if (*it == operand.name())
+          {
+            buffer_index = buffer_start + size_input + idx;
+            break;
+          }
+        }
+      }
+      if (buffer_index == 0)
+      {
+        // we couldn't find the buffer; create an empty buffer for this tensor
+        buffer_index = buffer_vec.size();
+
+        tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+        buffer_vec.emplace_back(buffer_builder.Finish());
+      }
+    }
+    assert(buffer_index != 0);
+
+    flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
+
+    // Create QuantizationParameters if quant is specified
+    if (operand.has_quant())
+    {
+      const auto &quant = operand.quant();
+
+      // Create each parameters
+      // NOTE if some parameters are not given, those will be set to default value
+      std::vector<float> quant_max_vec(quant.max_size());
+      std::vector<float> quant_min_vec(quant.min_size());
+      std::vector<float> quant_scale_vec(quant.scale_size());
+      std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
+
+      for (uint32_t i = 0; i < quant.max_size(); ++i)
+        quant_max_vec.at(i) = quant.max(i);
+      for (uint32_t i = 0; i < quant.min_size(); ++i)
+        quant_min_vec.at(i) = quant.min(i);
+      for (uint32_t i = 0; i < quant.scale_size(); ++i)
+        quant_scale_vec.at(i) = quant.scale(i);
+      for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
+        quant_zero_point_vec.at(i) = quant.zero_point(i);
+
+      auto quant_max = flatbuffer_builder->CreateVector(quant_max_vec);
+      auto quant_min = flatbuffer_builder->CreateVector(quant_min_vec);
+      auto quant_scale = flatbuffer_builder->CreateVector(quant_scale_vec);
+      auto quant_zero_point = flatbuffer_builder->CreateVector(quant_zero_point_vec);
+
+      // Create QuantizationParameters
+      tflite::QuantizationParametersBuilder quant_builder{*flatbuffer_builder};
+      quant_builder.add_max(quant_max);
+      quant_builder.add_min(quant_min);
+      quant_builder.add_scale(quant_scale);
+      quant_builder.add_zero_point(quant_zero_point);
+
+      // Update QuantizationParameters Index
+      quant_index = quant_builder.Finish();
+    }
+
+    // Create Tensor
+    tflite::TensorBuilder tensor_builder{*flatbuffer_builder};
+
+    tensor_builder.add_shape(shape);
+    tensor_builder.add_type(as_tflite_tensortype(operand.type()));
+    tensor_builder.add_buffer(buffer_index);
+    tensor_builder.add_name(name);
+    if (operand.has_quant())
+      tensor_builder.add_quantization(quant_index);
+
+    // Append!
+    tensor_vec.emplace_back(tensor_builder.Finish());
+
+    // Update Tensor Name -> Tensor Index Map
+    int32_t tensor_index = symbol_table.size();
+    const auto &tensor_name = operand.name();
+
+    INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
+
+    symbol_table[tensor_name] = tensor_index;
+  }
+
+  // Create Operator
+  for (const auto &operation : graph.operation())
+  {
+    assert(operation.has_type());
+
+    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+
+    // Create 'inputs'
+    std::vector<int32_t> input_vec = as_dataset(operation.input()).map(lookup).vectorize();
+    auto inputs = flatbuffer_builder->CreateVector(input_vec);
+
+    // Create 'outputs'
+    std::vector<int32_t> output_vec = as_dataset(operation.output()).map(lookup).vectorize();
+    auto outputs = flatbuffer_builder->CreateVector(output_vec);
+
+    // Create Option
+    auto options = op_chef->value(*flatbuffer_builder);
+
+    // Create Custom option
+    auto circle_custom_options = op_chef->custom_value(*flatbuffer_builder);
+
+    // Create Operator
+    tflite::OperatorBuilder op_builder{*flatbuffer_builder};
+
+    // Get operator code index from builtin_code_set with assumption, order of
+    // builtin_code_set is same as that of code_vec
+    auto op_it = builtin_code_set.find(op_chef->code());
+    assert(op_it != builtin_code_set.end());
+    uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
+
+    op_builder.add_opcode_index(opcode_index);
+    op_builder.add_inputs(inputs);
+    op_builder.add_outputs(outputs);
+    op_builder.add_builtin_options_type(op_chef->type());
+    op_builder.add_builtin_options(options);
+    op_builder.add_custom_options(circle_custom_options);
+    op_builder.add_custom_options_format(tflite::CustomOptionsFormat_FLEXBUFFERS);
+    // Append Operator
+    operator_vec.emplace_back(op_builder.Finish());
+  }
+
+  // Create network input/output vector
+  std::vector<int32_t> input_vec = as_dataset(graph.input()).map(lookup).vectorize();
+  std::vector<int32_t> output_vec = as_dataset(graph.output()).map(lookup).vectorize();
+
+  // Create "SubGraph" arguments
+  auto tensors = flatbuffer_builder->CreateVector(tensor_vec);
+  auto inputs = flatbuffer_builder->CreateVector(input_vec);
+  auto outputs = flatbuffer_builder->CreateVector(output_vec);
+  auto operators = flatbuffer_builder->CreateVector(operator_vec);
+  auto name = flatbuffer_builder->CreateString(graph_name);
+
+  tflite::SubGraphBuilder subgraph_builder{*flatbuffer_builder};
+
+  subgraph_builder.add_tensors(tensors);
+  subgraph_builder.add_inputs(inputs);
+  subgraph_builder.add_outputs(outputs);
+  subgraph_builder.add_operators(operators);
+  subgraph_builder.add_name(name);
+
+  subgraph_vec.emplace_back(subgraph_builder.Finish());
+}
+
+} // namespace
+
 namespace tflchef
 {
 
@@ -269,8 +544,6 @@ namespace tflchef
  */
 GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 {
-  LOGGER(l);
-
 // Initialize Op Chef Registry
 #define OP_CHEF(NAME, FACTORY_CLASS) \
   op_chef_registry().add(#NAME, std::unique_ptr<FACTORY_CLASS>(new FACTORY_CLASS()));
@@ -338,509 +611,24 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   //
   // Create Main graph
   //
-  {
-    // Operand-related
-    std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
+  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_set, "main"};
 
-    // Operation-related
-    std::vector<flatbuffers::Offset<::tflite::Operator>> operator_vec;
-
-    // Tensor Name -> Tensor ID mapping (per Graph)
-    std::map<std::string, int32_t> symbol_table;
-
-    auto lookup = [&symbol_table](const std::string &name) {
-      if (symbol_table.find(name) != symbol_table.end())
-        return symbol_table.at(name);
-      else if (name == "")
-        return -1; // -1 in TFLite means that optional input tensor is empty.
-      else
-        throw std::runtime_error("tflchef : input not found in main graph");
-    };
-
-    int32_t buffer_start = buffer_vec.size();
-    int32_t buffer_index = 0;
-
-    // Create buffer(s) 1~n(I) for input(s)
-    const auto size_input = model_recipe.input_size();
-    for (int ci = 0; ci < size_input; ++ci)
-    {
-      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-      buffer_vec.emplace_back(buffer_builder.Finish());
-    }
-    // Create buffer(s) n(I)+1~n(I)+n(O) for output(s)
-    const auto size_output = model_recipe.output_size();
-    for (int co = 0; co < size_output; ++co)
-    {
-      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-      buffer_vec.emplace_back(buffer_builder.Finish());
-    }
-
-    // default name for main graph
-    std::string graph_name = "main";
-    if (model_recipe.has_name())
-      graph_name = model_recipe.name();
-
-    auto input_names = as_dataset(model_recipe.input()).vectorize();
-    auto output_names = as_dataset(model_recipe.output()).vectorize();
-
-    for (const auto &operand : model_recipe.operand())
-    {
-      assert(operand.has_name());
-
-      assert(operand.has_type());
-
-      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
-      std::vector<int32_t> dims;
-      if (operand.has_shape())
-      {
-        dims = as_dims(operand.shape());
-        shape = flatbuffer_builder->CreateVector(dims);
-      }
-
-      auto name = flatbuffer_builder->CreateString(operand.name());
-
-      buffer_index = 0;
-
-      // Create Buffer if filler is specified
-      if (operand.has_filler())
-      {
-        const auto &filler = operand.filler();
-
-        assert(filler.has_tag());
-
-        auto args = ranged_arguments(filler.arg().begin(), filler.arg().end());
-        auto chef = data_chef_registry(operand.type()).lookup(filler.tag()).create(args);
-
-        assert(chef != nullptr);
-
-        // Create Data
-        int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
-        auto data_vec = chef->generate(count);
-        auto data = flatbuffer_builder->CreateVector(data_vec);
-
-        // Create Buffer
-        tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-        buffer_builder.add_data(data);
-        auto buffer = buffer_builder.Finish();
-
-        // Update Buffer Index & Vector
-        buffer_index = buffer_vec.size();
-        buffer_vec.emplace_back(buffer);
-      }
-      else
-      {
-        // if this is input or output, assign to that buffer_index
-        int idx = 0;
-        for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
-        {
-          if (*it == operand.name())
-          {
-            buffer_index = buffer_start + idx;
-            break;
-          }
-        }
-        if (buffer_index == 0)
-        {
-          idx = 0;
-          for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
-          {
-            if (*it == operand.name())
-            {
-              buffer_index = buffer_start + size_input + idx;
-              break;
-            }
-          }
-        }
-        if (buffer_index == 0)
-        {
-          // we couldn't find the buffer; create an empty buffer for this tensor
-          buffer_index = buffer_vec.size();
-
-          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-          buffer_vec.emplace_back(buffer_builder.Finish());
-        }
-      }
-      assert(buffer_index != 0);
-
-      flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
-
-      // Create QuantizationParameters if quant is specified
-      if (operand.has_quant())
-      {
-        const auto &quant = operand.quant();
-
-        // Create each parameters
-        // NOTE if some parameters are not given, those will be set to default value
-        std::vector<float> quant_max_vec(quant.max_size());
-        std::vector<float> quant_min_vec(quant.min_size());
-        std::vector<float> quant_scale_vec(quant.scale_size());
-        std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
-
-        for (uint32_t i = 0; i < quant.max_size(); ++i)
-          quant_max_vec.at(i) = quant.max(i);
-        for (uint32_t i = 0; i < quant.min_size(); ++i)
-          quant_min_vec.at(i) = quant.min(i);
-        for (uint32_t i = 0; i < quant.scale_size(); ++i)
-          quant_scale_vec.at(i) = quant.scale(i);
-        for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
-          quant_zero_point_vec.at(i) = quant.zero_point(i);
-
-        auto quant_max = flatbuffer_builder->CreateVector(quant_max_vec);
-        auto quant_min = flatbuffer_builder->CreateVector(quant_min_vec);
-        auto quant_scale = flatbuffer_builder->CreateVector(quant_scale_vec);
-        auto quant_zero_point = flatbuffer_builder->CreateVector(quant_zero_point_vec);
-
-        // Create QuantizationParameters
-        tflite::QuantizationParametersBuilder quant_builder{*flatbuffer_builder};
-        quant_builder.add_max(quant_max);
-        quant_builder.add_min(quant_min);
-        quant_builder.add_scale(quant_scale);
-        quant_builder.add_zero_point(quant_zero_point);
-
-        // Update QuantizationParameters Index
-        quant_index = quant_builder.Finish();
-      }
-
-      // Create Tensor
-      tflite::TensorBuilder tensor_builder{*flatbuffer_builder};
-
-      tensor_builder.add_shape(shape);
-      tensor_builder.add_type(as_tflite_tensortype(operand.type()));
-      tensor_builder.add_buffer(buffer_index);
-      tensor_builder.add_name(name);
-      if (operand.has_quant())
-        tensor_builder.add_quantization(quant_index);
-
-      // Append!
-      tensor_vec.emplace_back(tensor_builder.Finish());
-
-      // Update Tensor Name -> Tensor Index Map
-      int32_t tensor_index = symbol_table.size();
-      const auto &tensor_name = operand.name();
-
-      INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
-
-      symbol_table[tensor_name] = tensor_index;
-    }
-
-    // Create Operator
-    for (const auto &operation : model_recipe.operation())
-    {
-      assert(operation.has_type());
-
-      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-
-      // Create 'inputs'
-      std::vector<int32_t> input_vec = as_dataset(operation.input()).map(lookup).vectorize();
-      auto inputs = flatbuffer_builder->CreateVector(input_vec);
-
-      // Create 'outputs'
-      std::vector<int32_t> output_vec = as_dataset(operation.output()).map(lookup).vectorize();
-      auto outputs = flatbuffer_builder->CreateVector(output_vec);
-
-      // Create Option
-      auto options = op_chef->value(*flatbuffer_builder);
-
-      // Create Custom option
-      auto circle_custom_options = op_chef->custom_value(*flatbuffer_builder);
-
-      // Create Operator
-      tflite::OperatorBuilder op_builder{*flatbuffer_builder};
-
-      // Get operator code index from builtin_code_set with assumption, order of
-      // builtin_code_set is same as that of code_vec
-      auto op_it = builtin_code_set.find(op_chef->code());
-      assert(op_it != builtin_code_set.end());
-      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
-
-      op_builder.add_opcode_index(opcode_index);
-      op_builder.add_inputs(inputs);
-      op_builder.add_outputs(outputs);
-      op_builder.add_builtin_options_type(op_chef->type());
-      op_builder.add_builtin_options(options);
-      op_builder.add_custom_options(circle_custom_options);
-      op_builder.add_custom_options_format(tflite::CustomOptionsFormat_FLEXBUFFERS);
-      // Append Operator
-      operator_vec.emplace_back(op_builder.Finish());
-    }
-
-    // Create network input/output vector
-    std::vector<int32_t> input_vec = as_dataset(model_recipe.input()).map(lookup).vectorize();
-    std::vector<int32_t> output_vec = as_dataset(model_recipe.output()).map(lookup).vectorize();
-
-    // Create "SubGraph" arguments
-    auto tensors = flatbuffer_builder->CreateVector(tensor_vec);
-    auto inputs = flatbuffer_builder->CreateVector(input_vec);
-    auto outputs = flatbuffer_builder->CreateVector(output_vec);
-    auto operators = flatbuffer_builder->CreateVector(operator_vec);
-    auto name = flatbuffer_builder->CreateString(graph_name);
-
-    tflite::SubGraphBuilder subgraph_builder{*flatbuffer_builder};
-
-    subgraph_builder.add_tensors(tensors);
-    subgraph_builder.add_inputs(inputs);
-    subgraph_builder.add_outputs(outputs);
-    subgraph_builder.add_operators(operators);
-    subgraph_builder.add_name(name);
-
-    subgraph_vec.emplace_back(subgraph_builder.Finish());
-  }
+  cook_graph<::tflchef::ModelRecipe>(model_recipe, cp);
 
   //
   // Create subgraphs if exist
-  // TODO refactor main graph and subgraphs generation to reduce duplicate codes
   //
   for (int g = 0; g < model_recipe.graph_size(); ++g)
   {
-    // Operand-related
-    std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
-
-    // Operation-related
-    std::vector<flatbuffers::Offset<::tflite::Operator>> operator_vec;
-
-    // Tensor Name -> Tensor ID mapping (per Graph)
-    std::map<std::string, int32_t> symbol_table;
-
-    auto lookup = [&symbol_table](const std::string &name) {
-      if (symbol_table.find(name) != symbol_table.end())
-        return symbol_table.at(name);
-      else if (name == "")
-        return -1; // -1 in TFLite means that optional input tensor is empty.
-      else
-        throw std::runtime_error("tflchef : input not found in subgraph");
-    };
-
     const auto &graph = model_recipe.graph(g);
 
-    int32_t buffer_start = buffer_vec.size();
-    int32_t buffer_index = 0;
-
-    // Create buffer(s) for input(s)
-    const auto size_input = graph.input_size();
-    for (int ci = 0; ci < size_input; ++ci)
-    {
-      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-      buffer_vec.emplace_back(buffer_builder.Finish());
-    }
-    // Create buffer(s) for output(s)
-    const auto size_output = graph.output_size();
-    for (int co = 0; co < size_output; ++co)
-    {
-      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-      buffer_vec.emplace_back(buffer_builder.Finish());
-    }
-
-    // default name for sub graph
-    // TODO naming rule here may have conflit if recipe file provides it.
-    //      fix this when this happens.
     std::ostringstream stringStream;
     stringStream << "sub_" << (g + 1);
-    std::string graph_name = stringStream.str();
-    if (graph.has_name())
-      graph_name = graph.name();
 
-    auto input_names = as_dataset(graph.input()).vectorize();
-    auto output_names = as_dataset(graph.output()).vectorize();
+    CookParams cp{buffer_vec,         code_vec,         subgraph_vec,
+                  flatbuffer_builder, builtin_code_set, stringStream.str()};
 
-    for (const auto &operand : graph.operand())
-    {
-      assert(operand.has_name());
-
-      assert(operand.has_type());
-
-      std::vector<int32_t> dims;
-      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
-      if (operand.has_shape())
-      {
-        dims = as_dims(operand.shape());
-        shape = flatbuffer_builder->CreateVector(dims);
-      }
-
-      auto name = flatbuffer_builder->CreateString(operand.name());
-
-      // Create Buffer if filler is specified
-      if (operand.has_filler())
-      {
-        const auto &filler = operand.filler();
-
-        assert(filler.has_tag());
-
-        auto args = ranged_arguments(filler.arg().begin(), filler.arg().end());
-        auto chef = data_chef_registry(operand.type()).lookup(filler.tag()).create(args);
-
-        assert(chef != nullptr);
-
-        // Create Data
-        int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
-        auto data_vec = chef->generate(count);
-        auto data = flatbuffer_builder->CreateVector(data_vec);
-
-        // Create Buffer
-        tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-        buffer_builder.add_data(data);
-        auto buffer = buffer_builder.Finish();
-
-        // Update Buffer Index & Vector
-        buffer_index = buffer_vec.size();
-        buffer_vec.emplace_back(buffer);
-      }
-      else
-      {
-        // if this is input or output, assign to that buffer_index
-        int idx = 0;
-        buffer_index = 0;
-        for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
-        {
-          if (*it == operand.name())
-          {
-            buffer_index = buffer_start + idx;
-            break;
-          }
-        }
-        if (buffer_index == 0)
-        {
-          idx = 0;
-          for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
-          {
-            if (*it == operand.name())
-            {
-              buffer_index = buffer_start + size_input + idx;
-              break;
-            }
-          }
-        }
-        if (buffer_index == 0)
-        {
-          // we couldn't find the buffer; create an empty buffer for this tensor
-          buffer_index = buffer_vec.size();
-
-          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-          buffer_vec.emplace_back(buffer_builder.Finish());
-        }
-      }
-      assert(buffer_index != 0);
-
-      flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
-
-      // Create QuantizationParameters if quant is specified
-      if (operand.has_quant())
-      {
-        const auto &quant = operand.quant();
-
-        // Create each parameters
-        // NOTE if some parameters are not given, those will be set to default value
-        std::vector<float> quant_max_vec(quant.max_size());
-        std::vector<float> quant_min_vec(quant.min_size());
-        std::vector<float> quant_scale_vec(quant.scale_size());
-        std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
-
-        for (uint32_t i = 0; i < quant.max_size(); ++i)
-          quant_max_vec.at(i) = quant.max(i);
-        for (uint32_t i = 0; i < quant.min_size(); ++i)
-          quant_min_vec.at(i) = quant.min(i);
-        for (uint32_t i = 0; i < quant.scale_size(); ++i)
-          quant_scale_vec.at(i) = quant.scale(i);
-        for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
-          quant_zero_point_vec.at(i) = quant.zero_point(i);
-
-        auto quant_max = flatbuffer_builder->CreateVector(quant_max_vec);
-        auto quant_min = flatbuffer_builder->CreateVector(quant_min_vec);
-        auto quant_scale = flatbuffer_builder->CreateVector(quant_scale_vec);
-        auto quant_zero_point = flatbuffer_builder->CreateVector(quant_zero_point_vec);
-
-        // Create QuantizationParameters
-        tflite::QuantizationParametersBuilder quant_builder{*flatbuffer_builder};
-        quant_builder.add_max(quant_max);
-        quant_builder.add_min(quant_min);
-        quant_builder.add_scale(quant_scale);
-        quant_builder.add_zero_point(quant_zero_point);
-
-        // Update QuantizationParameters Index
-        quant_index = quant_builder.Finish();
-      }
-
-      // Create Tensor
-      tflite::TensorBuilder tensor_builder{*flatbuffer_builder};
-
-      tensor_builder.add_shape(shape);
-      tensor_builder.add_type(as_tflite_tensortype(operand.type()));
-      tensor_builder.add_buffer(buffer_index);
-      tensor_builder.add_name(name);
-      if (operand.has_quant())
-        tensor_builder.add_quantization(quant_index);
-
-      // Append!
-      tensor_vec.emplace_back(tensor_builder.Finish());
-
-      // Update Tensor Name -> Tensor Index Map
-      int32_t tensor_index = symbol_table.size();
-      const auto &tensor_name = operand.name();
-
-      symbol_table[tensor_name] = tensor_index;
-    }
-
-    // Create Operator
-    for (const auto &operation : graph.operation())
-    {
-      assert(operation.has_type());
-
-      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-
-      // Create 'inputs'
-      std::vector<int32_t> input_vec = as_dataset(operation.input()).map(lookup).vectorize();
-      auto inputs = flatbuffer_builder->CreateVector(input_vec);
-
-      // Create 'outputs'
-      std::vector<int32_t> output_vec = as_dataset(operation.output()).map(lookup).vectorize();
-      auto outputs = flatbuffer_builder->CreateVector(output_vec);
-
-      // Create Option
-      auto options = op_chef->value(*flatbuffer_builder);
-
-      // Create Custom option
-      auto circle_custom_options = op_chef->custom_value(*flatbuffer_builder);
-
-      // Create Operator
-      tflite::OperatorBuilder op_builder{*flatbuffer_builder};
-
-      // Get operator code index from builtin_code_set with assumption, order of
-      // builtin_code_set is same as that of code_vec
-      auto op_it = builtin_code_set.find(op_chef->code());
-      assert(op_it != builtin_code_set.end());
-      uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
-
-      op_builder.add_opcode_index(opcode_index);
-      op_builder.add_inputs(inputs);
-      op_builder.add_outputs(outputs);
-      op_builder.add_builtin_options_type(op_chef->type());
-      op_builder.add_builtin_options(options);
-      op_builder.add_custom_options(circle_custom_options);
-      op_builder.add_custom_options_format(tflite::CustomOptionsFormat_FLEXBUFFERS);
-
-      // Append Operator
-      operator_vec.emplace_back(op_builder.Finish());
-    }
-
-    // Create network input/output vector
-    std::vector<int32_t> input_vec = as_dataset(graph.input()).map(lookup).vectorize();
-    std::vector<int32_t> output_vec = as_dataset(graph.output()).map(lookup).vectorize();
-
-    // Create "SubGraph" arguments
-    auto tensors = flatbuffer_builder->CreateVector(tensor_vec);
-    auto inputs = flatbuffer_builder->CreateVector(input_vec);
-    auto outputs = flatbuffer_builder->CreateVector(output_vec);
-    auto operators = flatbuffer_builder->CreateVector(operator_vec);
-    auto name = flatbuffer_builder->CreateString(graph_name);
-
-    tflite::SubGraphBuilder subgraph_builder{*flatbuffer_builder};
-
-    subgraph_builder.add_tensors(tensors);
-    subgraph_builder.add_inputs(inputs);
-    subgraph_builder.add_outputs(outputs);
-    subgraph_builder.add_operators(operators);
-    subgraph_builder.add_name(name);
-
-    subgraph_vec.emplace_back(subgraph_builder.Finish());
+    cook_graph<::tflchef::Graph>(graph, cp);
   }
 
   // Create "Model" arguments
