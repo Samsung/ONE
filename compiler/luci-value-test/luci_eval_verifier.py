@@ -28,8 +28,16 @@ interpreter.allocate_tensors()
 num_inputs = len(interpreter.get_input_details())
 for i in range(num_inputs):
     input_details = interpreter.get_input_details()[i]
-    input_data = np.array(
-        np.random.random_sample(input_details["shape"]), input_details["dtype"])
+    if input_details["dtype"] == np.float32:
+        input_data = np.array(
+            np.random.random_sample(input_details["shape"]), input_details["dtype"])
+    elif input_details["dtype"] == np.uint8:
+        input_data = np.array(
+            np.random.randint(0, 256, size=input_details["shape"]),
+            input_details["dtype"])
+    else:
+        raise SystemExit("Unsupported input dtype")
+
     interpreter.set_tensor(input_details["index"], input_data)
     input_data.tofile(circle_model + ".input" + str(i))
 
