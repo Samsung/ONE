@@ -29,13 +29,13 @@ namespace cpu
 namespace ops
 {
 
-uint32_t getNumberOfDimensions(const Tensor *tensor)
+uint32_t getNumberOfDimensions(const IPortableTensor *tensor)
 {
   assert(tensor);
   return tensor->num_dimensions();
 }
 
-uint32_t getNumberOfElements(const Tensor *tensor)
+uint32_t getNumberOfElements(const IPortableTensor *tensor)
 {
   assert(tensor);
   uint32_t count = 1;
@@ -46,7 +46,7 @@ uint32_t getNumberOfElements(const Tensor *tensor)
   return count;
 }
 
-uint32_t getSizeOfDimension(const Tensor *tensor, uint32_t dimensionIdx)
+uint32_t getSizeOfDimension(const IPortableTensor *tensor, uint32_t dimensionIdx)
 {
   assert(tensor);
   if (dimensionIdx >= tensor->num_dimensions())
@@ -78,8 +78,9 @@ void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void GetQuantizedConvolutionMultiplier(const Tensor *input, const Tensor *filter,
-                                       const Tensor *bias, const Tensor *output, double *multiplier)
+void GetQuantizedConvolutionMultiplier(const IPortableTensor *input, const IPortableTensor *filter,
+                                       const IPortableTensor *bias, const IPortableTensor *output,
+                                       double *multiplier)
 {
   const double input_product_scale = input->data_scale() * filter->data_scale();
   const double bias_scale = (bias != nullptr) ? bias->data_scale() : input_product_scale;
@@ -110,7 +111,7 @@ void QuantizeMultiplierGreaterThanOne(double double_multiplier, int32_t *quantiz
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
-void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *output,
+void CalculateActivationRangeUint8(ir::Activation activation, const IPortableTensor *output,
                                    int32_t *act_min, int32_t *act_max)
 {
   const int32_t qmin = std::numeric_limits<uint8_t>::min();
@@ -151,7 +152,7 @@ void CalculateActivationRangeUint8(ir::Activation activation, const Tensor *outp
   }
 }
 
-bool HaveSameShapes(const Tensor *input1, const Tensor *input2)
+bool HaveSameShapes(const IPortableTensor *input1, const IPortableTensor *input2)
 {
   if (input1 == input2)
     return true;
@@ -183,7 +184,7 @@ int32_t CalculateInputRadius(int input_integer_bits, int input_left_shift)
   return static_cast<int32_t>(std::floor(max_input_rescaled));
 }
 
-uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
+uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions)
 {
   uint32_t size = 4;
 
@@ -199,6 +200,9 @@ uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
     case OperandType::QUANT_INT8_SYMM:
       size = 1;
       break;
+    case OperandType::INT64:
+      size = 8;
+      break;
     default:
       throw std::runtime_error("Not supported operand type.");
       break;
@@ -206,7 +210,8 @@ uint32_t sizeOfData(OperandType type, const std::vector<uint32_t> &dimensions)
 
   for (auto d : dimensions)
   {
-    size *= d;
+    assert(d >= 0);
+    size *= static_cast<uint32_t>(d);
   }
 
   return size;
@@ -226,6 +231,33 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
       throw std::runtime_error("Wrong padding type.");
       break;
   }
+}
+
+std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
+{
+  std::vector<int32_t> ret;
+
+  assert(axes->layout() == ir::Layout::NHWC);
+  assert(axes->dimension(0) == axes->getShape().num_elements());
+  switch (axes->data_type())
+  {
+    case ir::DataType::INT32:
+    {
+      for (size_t i = 0; i < axes->dimension(0); ++i)
+        ret.emplace_back(*(reinterpret_cast<const int32_t *>(axes->buffer()) + i));
+      break;
+    }
+    case ir::DataType::INT64:
+    {
+      for (size_t i = 0; i < axes->dimension(0); ++i)
+        ret.emplace_back(*(reinterpret_cast<const int64_t *>(axes->buffer()) + i));
+      break;
+    }
+    default:
+      throw std::runtime_error("getReducerAxes: Not supported data type");
+      break;
+  }
+  return ret;
 }
 
 } // namespace ops

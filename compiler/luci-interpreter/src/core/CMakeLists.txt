@@ -4,6 +4,9 @@ set(SOURCES
     EventNotifier.h
     Kernel.h
     KernelParams.h
+    RuntimeGraph.h
+    RuntimeGraph.cpp
+    RuntimeModule.h
     Tensor.cpp)
 
 add_library(luci_interpreter_core STATIC ${SOURCES})

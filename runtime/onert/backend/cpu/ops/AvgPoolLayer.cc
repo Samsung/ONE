@@ -71,12 +71,12 @@ void AvgPoolLayer::averagePoolQuant8()
                           getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void AvgPoolLayer::configure(const Tensor *input, const uint32_t paddingLeft,
+void AvgPoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLeft,
                              const uint32_t paddingRight, const uint32_t paddingTop,
                              const uint32_t paddingBottom, const uint32_t strideWidth,
                              const uint32_t strideHeight, const uint32_t kernelWidth,
                              const uint32_t kernelHeight, const ir::Activation activation,
-                             Tensor *output)
+                             IPortableTensor *output)
 {
   assert(input != nullptr);
   assert(output != nullptr);

@@ -250,6 +250,20 @@ public:
   }
 };
 
+class SparseToDensePrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *std_params = op->builtin_options_as_SparseToDenseOptions())
+    {
+      os << "    ";
+      os << "ValidateIndices(" << std_params->validate_indices() << ")";
+      os << std::endl;
+    }
+  }
+};
+
 class DepthwiseConv2DPrinter : public OpPrinter
 {
 public:
@@ -621,6 +635,7 @@ public:
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[tflite::BuiltinOperator_ADD] = make_unique<AddPrinter>();
+  // There is no Option for ADD_N
   _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique<ArgMaxPrinter>();
   _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique<ArgMinPrinter>();
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
@@ -643,6 +658,7 @@ OpPrinterRegistry::OpPrinterRegistry()
       make_unique<LocalResponseNormalizationPrinter>();
   // There is no Option for LOG
   // There is no Option for LOGISTIC
+  // There is no Option for LOG_SOFTMAX
   _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
@@ -670,6 +686,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique<SoftmaxPrinter>();
   _op_map[tflite::BuiltinOperator_SPACE_TO_DEPTH] = make_unique<SpaceToDepthPrinter>();
   // There is no Option for SPACE_TO_BATCH_ND
+  _op_map[tflite::BuiltinOperator_SPARSE_TO_DENSE] = make_unique<SparseToDensePrinter>();
   _op_map[tflite::BuiltinOperator_SPLIT] = make_unique<SplitPrinter>();
   _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique<SplitVPrinter>();
   _op_map[tflite::BuiltinOperator_SQUEEZE] = make_unique<SqueezePrinter>();

@@ -52,30 +52,6 @@ ShapeFixer::ShapeFixer(const ir::Operands &operand_ctx) : _ctx(operand_ctx) {}
 
 void ShapeFixer::visit(const ir::operation::Add &) { /* DO NOTHING */}
 
-void ShapeFixer::visit(const ir::operation::Sub &node)
-{
-  // The same as Add
-  const auto lhs_index{node.getInputs().at(ir::operation::Sub::Input::LHS)};
-
-  // Quantization : not supported
-  if (_ctx.at(lhs_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-  {
-    throw std::runtime_error{"ShapeFixer: NYI for quantized Sub"};
-  }
-}
-
-void ShapeFixer::visit(const ir::operation::Mul &node)
-{
-  // The same as Add
-  const auto lhs_index{node.getInputs().at(ir::operation::Mul::Input::LHS)};
-
-  // Quantization : not supported
-  if (_ctx.at(lhs_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-  {
-    throw std::runtime_error{"ShapeFixer: NYI for quantized Mul"};
-  }
-}
-
 void ShapeFixer::visit(const ir::operation::Div &node)
 {
   // The same as Add

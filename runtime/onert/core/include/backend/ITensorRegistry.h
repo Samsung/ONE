@@ -43,6 +43,7 @@ struct ITensorRegistry
 } // namespace onert
 
 #include "ir/OperandIndexMap.h"
+#include "backend/IPortableTensor.h"
 
 namespace onert
 {
@@ -52,12 +53,12 @@ namespace backend
 /**
  * @brief  TensorRegistry template class for the convenience of backend implementations
  *
- * Unless there is a special reason to implement @c ITensorRegistry on your own, you may just use
- * this default implementation.
+ * If a backend uses @c IPortableTensor , and there is no special reason to implement @c
+ * ITensorRegistry on your own, you may just use this default implementation.
  *
- * @tparam T_Tensor Tensor type. Must be a subclass of @c onert::backend::ITensor .
+ * @tparam T_Tensor Tensor type. Must be a subclass of @c onert::backend::IPortableTensor .
  */
-template <typename T_Tensor> class TensorRegistryTemplate : public ITensorRegistry
+template <typename T_Tensor> class PortableTensorRegistryTemplate : public ITensorRegistry
 {
 public:
   std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
@@ -69,6 +70,17 @@ public:
     return getManagedTensor(ind);
   }
 
+  std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
+  {
+    auto external_tensor = _external.find(ind);
+    if (external_tensor != _external.end())
+    {
+      if (external_tensor->second)
+        return external_tensor->second;
+    }
+    return getManagedTensor(ind);
+  }
+
   std::shared_ptr<T_Tensor> getManagedTensor(const ir::OperandIndex &ind)
   {
     auto tensor = _managed.find(ind);
@@ -77,7 +89,8 @@ public:
     return nullptr;
   }
 
-  void setExternalTensor(const ir::OperandIndex &ind, const std::shared_ptr<ITensor> &tensor)
+  void setExternalTensor(const ir::OperandIndex &ind,
+                         const std::shared_ptr<IPortableTensor> &tensor)
   {
     auto itr = _managed.find(ind);
     if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
@@ -98,7 +111,7 @@ public:
   const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &managed_tensors() { return _managed; }
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<ITensor>> _external;
+  ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _external;
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _managed;
 };
 

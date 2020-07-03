@@ -30,7 +30,7 @@ CastLayer::CastLayer() : _input(nullptr), _output(nullptr)
   // DO NOTHING
 }
 
-void CastLayer::configure(const Tensor *input, Tensor *output)
+void CastLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;
@@ -64,6 +64,9 @@ template <typename FromT> void CastLayer::castPtr(const FromT *in, DataPtr out)
     case ir::DataType::BOOL8:
       castTensor(in, out.b);
       return;
+    case ir::DataType::INT64:
+      castTensor(in, out.i64);
+      return;
     default:
       throw std::runtime_error("Not supported output type" +
                                std::to_string((int)_output->data_type()));
@@ -93,6 +96,9 @@ void CastLayer::run()
       return;
     case ir::DataType::BOOL8:
       castPtr(in.b, out);
+      return;
+    case ir::DataType::INT64:
+      castPtr(in.i64, out);
       return;
     default:
       throw std::runtime_error("Cast: unsupported data type" +

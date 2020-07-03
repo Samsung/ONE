@@ -43,6 +43,8 @@ Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeIm
 Tensor makeOutputTensor(DataType element_type);
 Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point);
 
+std::vector<int32_t> extractTensorShape(const Tensor &tensor);
+
 // Returns the corresponding DataType given the type T.
 template <typename T> constexpr DataType getElementType()
 {
@@ -163,6 +165,11 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   zero_point = nudged_zero_point;
   // finally, return the values
   return {static_cast<float>(scale), zero_point};
+}
+
+inline float getTolerance(float min, float max, int quantize_steps)
+{
+  return ((max - min) / quantize_steps);
 }
 
 } // namespace testing

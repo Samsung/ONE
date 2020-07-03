@@ -53,6 +53,15 @@ public:
   {
     assert(init.size() <= num_max_dimensions);
   }
+  /**
+   * @brief     Construct a new Coordinates object
+   * @param[in] init The initialzer_list with coordinates
+   * @return
+   */
+  Coordinates(std::initializer_list<uint32_t> init) : _coordinates{init.begin(), init.end()}
+  {
+    assert(init.size() <= num_max_dimensions);
+  }
 
 public:
   /**

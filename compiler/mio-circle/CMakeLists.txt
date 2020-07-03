@@ -13,7 +13,7 @@ set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/nnpackage/schema/circle_schema.fbs")
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-  DEPENDS "${NNAS_PROJECT_SOURCE_DIR}/nnpackage/schema/circle_schema.fbs"
+  DEPENDS "${SCHEMA_FILE}"
 )
 
 FlatBuffers_Target(mio_circle

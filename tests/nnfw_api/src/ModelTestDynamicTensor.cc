@@ -22,19 +22,19 @@
 #include "NNPackages.h"
 
 void set_input_output(nnfw_session *session, const std::vector<float> &input,
-                      std::vector<float> *actual_output)
+                      std::vector<float> &actual_output)
 {
   ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input.data(),
                            sizeof(float) * input.size()),
             NNFW_STATUS_NO_ERROR);
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
-                            sizeof(float) * actual_output->size()),
+  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
+                            sizeof(float) * actual_output.size()),
             NNFW_STATUS_NO_ERROR);
 }
 
 void set_input_output(nnfw_session *session, const std::vector<float> &input0,
-                      const std::vector<float> &input1, std::vector<float> *actual_output)
+                      const std::vector<float> &input1, std::vector<float> &actual_output)
 {
   ASSERT_EQ(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
                            sizeof(float) * input0.size()),
@@ -43,8 +43,8 @@ void set_input_output(nnfw_session *session, const std::vector<float> &input0,
                            sizeof(float) * input1.size()),
             NNFW_STATUS_NO_ERROR);
 
-  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
-                            sizeof(float) * actual_output->size()),
+  ASSERT_EQ(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
+                            sizeof(float) * actual_output.size()),
             NNFW_STATUS_NO_ERROR);
 }
 
@@ -263,7 +263,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
 
-  set_input_output(_session, input0, input1, &actual_output);
+  set_input_output(_session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
@@ -299,7 +299,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
   std::vector<float> actual_output(100); // whatever size
 
   // input reshaping to [3, 1]
-  nnfw_tensorinfo ti = {ti.dtype = NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
+  nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
@@ -345,7 +345,7 @@ TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_comp
 
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
 
-  set_input_output(_session, input0, input1, &actual_output);
+  set_input_output(_session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
@@ -415,7 +415,7 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
     ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
   }
 
-  set_input_output(_session, input0, &actual_output);
+  set_input_output(_session, input0, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
@@ -443,7 +443,7 @@ TEST_F(TestWhileDynamicModelLoaded, run_verify)
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
   ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
 
-  set_input_output(_session, while_dynamic_input0, &actual_output0);
+  set_input_output(_session, while_dynamic_input0, actual_output0);
 
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
 
@@ -467,7 +467,7 @@ TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
   // Insufficient size of output (10 or more is sufficient)
   std::vector<float> actual_output0(9);
 
-  set_input_output(_session, while_dynamic_input0, &actual_output0);
+  set_input_output(_session, while_dynamic_input0, actual_output0);
 
   // TODO Change error code NNFW_STATUS_ERROR -> NNFW_INSUFFICIENT_OUTPUT_SIZE
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
@@ -495,7 +495,7 @@ TEST_F(TestIfDynamicModelLoaded, run_verify)
   }
 
   std::vector<float> actual_output0(10);
-  set_input_output(_session, if_dynamic_input0, &actual_output0);
+  set_input_output(_session, if_dynamic_input0, actual_output0);
 
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
 

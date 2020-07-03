@@ -31,12 +31,12 @@ class Mean : public Operation
 public:
   enum Input
   {
-    INPUT
+    INPUT,
+    AXES
   };
 
   struct Param
   {
-    std::vector<int> axes;
     bool keep_dims;
   };
 

@@ -1,3 +1,26 @@
+## How to setup env
+
+Install android studio
+- android studio: https://developer.android.com/studio
+
+Install `ndk 20.0.5594570`
+```
+dragon@loki:~/Android/Sdk$ ./tools/bin/sdkmanager --install "ndk;20.0.5594570"
+```
+
+```
+dragon@loki:~/Android/Sdk/ndk$ ls
+20.0.5594570
+```
+
+Set `ANDROID_SDK_ROOT` or `ANDROID_HOME` for SDK
+```
+$ cat ~/.bashrc
+...
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export ANDROID_HOME=$HOME/Android/Sdk
+```
+
 ## How to build
 
 after building `onert`

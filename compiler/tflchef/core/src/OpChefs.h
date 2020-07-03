@@ -19,9 +19,11 @@
 
 #include "Op/Abs.h"
 #include "Op/Add.h"
+#include "Op/AddN.h"
 #include "Op/ArgMax.h"
 #include "Op/ArgMin.h"
 #include "Op/AveragePool2D.h"
+#include "Op/BatchMatMul.h"
 #include "Op/BatchToSpaceND.h"
 #include "Op/Cast.h"
 #include "Op/Ceil.h"
@@ -56,6 +58,7 @@
 #include "Op/LogicalNot.h"
 #include "Op/LogicalOr.h"
 #include "Op/Logistic.h"
+#include "Op/LogSoftmax.h"
 #include "Op/Maximum.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"
@@ -93,6 +96,7 @@
 #include "Op/Softmax.h"
 #include "Op/SpaceToBatchND.h"
 #include "Op/SpaceToDepth.h"
+#include "Op/SparseToDense.h"
 #include "Op/Split.h"
 #include "Op/SplitV.h"
 #include "Op/Sqrt.h"
@@ -115,6 +119,7 @@
 #include "CustomOp/AddV2.h"
 #include "CustomOp/All.h"
 #include "CustomOp/BatchMatMulV2.h"
+#include "CustomOp/MatMul.h"
 #include "CustomOp/MatrixBandPart.h"
 
 #endif // __OP_CHEFS_H__

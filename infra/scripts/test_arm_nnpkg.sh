@@ -7,10 +7,10 @@ BACKENDS=("acl_cl" "acl_neon" "cpu")
 
 for BACKEND in "${BACKENDS[@]}";
 do
-  NNPackageTest ${BACKEND} "tools/nnpackage_tool/nnpkg_test/list.armv7l-linux.${BACKEND}"
+  NNPackageTest ${BACKEND} "tests/scripts/list/nnpkg_test_list.armv7l-linux.${BACKEND}"
 done
 
 # Interpreter test
 export DISABLE_COMPILE=1
-NNPackageTest "interp" "tools/nnpackage_tool/nnpkg_test/list.noarch.interp"
+NNPackageTest "interp" "tests/scripts/list/nnpkg_test_list.noarch.interp"
 unset DISABLE_COMPILE

@@ -32,7 +32,6 @@ void AddLayer::addFloat32()
   float output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::ADD;
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
@@ -40,14 +39,14 @@ void AddLayer::addFloat32()
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp<float>(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp<float>(
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
@@ -58,7 +57,6 @@ void AddLayer::addInt32()
   int32_t output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::ADD;
   op_params.quantized_activation_max = output_activation_max;
   op_params.quantized_activation_min = output_activation_min;
 
@@ -66,14 +64,14 @@ void AddLayer::addInt32()
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp<int32_t>(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp<int32_t>(
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
@@ -85,7 +83,6 @@ void AddLayer::addQuant8()
   CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
                                 &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::ADD;
   op_params.quantized_activation_max = output_activation_max;
   op_params.quantized_activation_min = output_activation_min;
   // Parameters for scaled quantized computation
@@ -117,21 +114,21 @@ void AddLayer::addQuant8()
       nnfw::cker::ProcessBroadcastShapes(getTensorShape(_lhs), getTensorShape(_rhs), &op_params);
   if (need_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp<uint8_t>(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
     return;
   }
 
-  nnfw::cker::BinaryArithmeticOp<uint8_t>(
+  nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::ADD>(
       op_params, getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
       getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
       getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void AddLayer::configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                         Tensor *output)
+void AddLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         const ir::Activation activation, IPortableTensor *output)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);

@@ -46,8 +46,10 @@ TEST(MeanTest, FloatKeepDims)
   kernel.execute();
 
   std::vector<float> ref_output_data{10.5, 12.5, 14.5};
+  std::initializer_list<int32_t> ref_output_shape{1, 3, 1};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 TEST(MeanTest, FloatKeepDims4DMean)
@@ -69,8 +71,10 @@ TEST(MeanTest, FloatKeepDims4DMean)
   kernel.execute();
 
   std::vector<float> ref_output_data{6, 7, 18, 19};
+  std::initializer_list<int32_t> ref_output_shape{2, 1, 1, 2};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 TEST(MeanTest, FloatNotKeepDims)
@@ -92,8 +96,68 @@ TEST(MeanTest, FloatNotKeepDims)
   kernel.execute();
 
   std::vector<float> ref_output_data{12, 13};
+  std::initializer_list<int32_t> ref_output_shape{2};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST(MeanTest, Uint8KeepDims)
+{
+  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
+  std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
+
+  std::vector<int32_t> axis_data{1};
+  Tensor input_tensor{DataType::U8, {3, 2}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  std::vector<uint8_t> quantize_input =
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  ReducerParams params{};
+  params.keep_dims = true;
+
+  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0.3, 0.35, 0.55};
+  std::initializer_list<int32_t> ref_output_shape{3, 1};
+  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                                  output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST(MeanTest, Uint8NotKeepDims)
+{
+  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
+  std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
+
+  std::vector<int32_t> axis_data{1};
+  Tensor input_tensor{DataType::U8, {1, 3, 2}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  std::vector<uint8_t> quantize_input =
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  ReducerParams params{};
+  params.keep_dims = false;
+
+  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{0.4, 0.4};
+  std::initializer_list<int32_t> ref_output_shape{1, 2};
+  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                                  output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace

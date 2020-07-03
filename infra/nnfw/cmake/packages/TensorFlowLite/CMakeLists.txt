@@ -36,7 +36,7 @@ list(APPEND TFLITE_SRCS ${TFLITE_PROFILING_SRCS})
 list(APPEND TFLITE_SRCS "${FarmhashSource_DIR}/src/farmhash.cc")
 
 list(APPEND TFLITE_INCLUDES "${TensorFlowSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${AbslSource_DIR}")
+list(APPEND TFLITE_INCLUDES "${AbseilSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${GEMMLowpSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${FarmhashSource_DIR}/src")
 list(APPEND TFLITE_INCLUDES "${FlatBuffersSource_DIR}/include")

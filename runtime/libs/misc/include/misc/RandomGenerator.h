@@ -79,6 +79,7 @@ private:
 template <> uint8_t RandomGenerator::generate<uint8_t>(void);
 template <> bool RandomGenerator::generate<bool>(void);
 template <> int32_t RandomGenerator::generate<int32_t>(void);
+template <> int64_t RandomGenerator::generate<int64_t>(void);
 
 } // namespace misc
 } // namespace nnfw

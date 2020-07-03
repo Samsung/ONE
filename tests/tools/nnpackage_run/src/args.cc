@@ -97,7 +97,7 @@ void handleShapeParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &s
 namespace nnpkg_run
 {
 
-Args::Args(const int argc, char **argv) noexcept
+Args::Args(const int argc, char **argv)
 {
   Initialize();
   Parse(argc, argv);
@@ -123,6 +123,7 @@ void Args::Initialize(void)
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
     ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
+    ("run_delay,t", po::value<int>()->default_value(-1), "Delay time(ms) between runs (as default no delay")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false),
@@ -177,94 +178,121 @@ void Args::Parse(const int argc, char **argv)
   }
 
   po::notify(vm);
+  try
+  {
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
-  if (vm.count("dump"))
-  {
-    _dump_filename = vm["dump"].as<std::string>();
-  }
+    if (vm.count("dump"))
+    {
+      _dump_filename = vm["dump"].as<std::string>();
+    }
 
-  if (vm.count("load"))
-  {
-    _load_filename = vm["load"].as<std::string>();
-  }
+    if (vm.count("load"))
+    {
+      _load_filename = vm["load"].as<std::string>();
+    }
 #endif
 
-  if (vm.count("nnpackage"))
-  {
-    _package_filename = vm["nnpackage"].as<std::string>();
-
-    if (_package_filename.empty())
+    if (vm.count("nnpackage"))
     {
-      // TODO Print usage instead of the below message
-      std::cerr << "Please specify nnpackage file. Run with `--help` for usage."
-                << "\n";
+      _package_filename = vm["nnpackage"].as<std::string>();
 
-      exit(1);
-    }
-    else
-    {
-      if (access(_package_filename.c_str(), F_OK) == -1)
+      if (_package_filename.empty())
       {
-        std::cerr << "nnpackage not found: " << _package_filename << "\n";
-      }
-    }
-  }
+        // TODO Print usage instead of the below message
+        std::cerr << "Please specify nnpackage file. Run with `--help` for usage."
+                  << "\n";
 
-  if (vm.count("output_sizes"))
-  {
-    auto output_sizes_json_str = vm["output_sizes"].as<std::string>();
-
-    Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(output_sizes_json_str, root, false))
-    {
-      std::cerr << "Invalid JSON format for output_sizes \"" << output_sizes_json_str << "\"\n";
-      exit(1);
-    }
-
-    auto arg_map = argArrayToMap(root);
-    for (auto &pair : arg_map)
-    {
-      uint32_t key = pair.first;
-      Json::Value &val_json = pair.second;
-      if (!val_json.isUInt())
-      {
-        std::cerr << "All the values in `output_sizes` must be unsigned integers\n";
         exit(1);
       }
-      uint32_t val = val_json.asUInt();
-      _output_sizes[key] = val;
+      else
+      {
+        if (access(_package_filename.c_str(), F_OK) == -1)
+        {
+          std::cerr << "nnpackage not found: " << _package_filename << "\n";
+        }
+      }
+    }
+
+    if (vm.count("output_sizes"))
+    {
+      auto output_sizes_json_str = vm["output_sizes"].as<std::string>();
+
+      Json::Value root;
+      Json::Reader reader;
+      if (!reader.parse(output_sizes_json_str, root, false))
+      {
+        std::cerr << "Invalid JSON format for output_sizes \"" << output_sizes_json_str << "\"\n";
+        exit(1);
+      }
+
+      auto arg_map = argArrayToMap(root);
+      for (auto &pair : arg_map)
+      {
+        uint32_t key = pair.first;
+        Json::Value &val_json = pair.second;
+        if (!val_json.isUInt())
+        {
+          std::cerr << "All the values in `output_sizes` must be unsigned integers\n";
+          exit(1);
+        }
+        uint32_t val = val_json.asUInt();
+        _output_sizes[key] = val;
+      }
+    }
+
+    if (vm.count("num_runs"))
+    {
+      _num_runs = vm["num_runs"].as<int>();
+    }
+
+    if (vm.count("warmup_runs"))
+    {
+      _warmup_runs = vm["warmup_runs"].as<int>();
+    }
+
+    if (vm.count("run_delay"))
+    {
+      _run_delay = vm["run_delay"].as<int>();
+    }
+
+    if (vm.count("gpumem_poll"))
+    {
+      _gpumem_poll = vm["gpumem_poll"].as<bool>();
+    }
+
+    if (vm.count("mem_poll"))
+    {
+      _mem_poll = vm["mem_poll"].as<bool>();
+      // Instead of EXECUTE to avoid overhead, memory polling runs on WARMUP
+      if (_mem_poll && _warmup_runs == 0)
+      {
+        _warmup_runs = 1;
+      }
+    }
+
+    if (vm.count("write_report"))
+    {
+      _write_report = vm["write_report"].as<bool>();
     }
   }
-
-  if (vm.count("num_runs"))
+  catch (const std::bad_cast &e)
   {
-    _num_runs = vm["num_runs"].as<int>();
-  }
-
-  if (vm.count("warmup_runs"))
-  {
-    _warmup_runs = vm["warmup_runs"].as<int>();
-  }
-
-  if (vm.count("gpumem_poll"))
-  {
-    _gpumem_poll = vm["gpumem_poll"].as<bool>();
-  }
-
-  if (vm.count("mem_poll"))
-  {
-    _mem_poll = vm["mem_poll"].as<bool>();
-  }
-
-  if (vm.count("write_report"))
-  {
-    _write_report = vm["write_report"].as<bool>();
+    std::cerr << "error by bad cast" << e.what() << '\n';
+    exit(1);
   }
 
   if (vm.count("shape_prepare"))
   {
-    auto shape_str = vm["shape_prepare"].as<std::string>();
+    std::string shape_str;
+    try
+    {
+      shape_str = vm["shape_prepare"].as<std::string>();
+    }
+    catch (const std::bad_cast &e)
+    {
+      std::cerr << "error by bad cast with '--shape_prepare' option" << e.what() << '\n';
+      exit(1);
+    }
     try
     {
       handleShapeParam(_shape_prepare, shape_str);
@@ -278,7 +306,16 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("shape_run"))
   {
-    auto shape_str = vm["shape_run"].as<std::string>();
+    std::string shape_str;
+    try
+    {
+      shape_str = vm["shape_run"].as<std::string>();
+    }
+    catch (const std::bad_cast &e)
+    {
+      std::cerr << "error by bad cast with '--shape_run' option" << e.what() << '\n';
+      exit(1);
+    }
     try
     {
       handleShapeParam(_shape_run, shape_str);

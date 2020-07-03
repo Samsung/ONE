@@ -40,15 +40,10 @@ struct Phase
 
 struct PhaseOption
 {
-  PhaseOption() : memory(false), memory_gpu(false) {}
-  PhaseOption(bool m) : memory(m) {}
-  PhaseOption(bool m, int64_t ms) : memory(m), memory_gpu(false), memory_interval(ms) {}
-  PhaseOption(bool m, bool mg) : memory(m), memory_gpu(mg) {}
-  PhaseOption(bool m, bool mg, int64_t ms) : memory(m), memory_gpu(mg), memory_interval(ms) {}
-
   bool memory = false;
-  bool memory_gpu = false;     // very specific...
-  int64_t memory_interval = 5; // ms
+  bool memory_gpu = false; // very specific...
+  int run_delay = -1;      // ms
+  int memory_interval = 5; // ms
 };
 
 } // namespace benchmark

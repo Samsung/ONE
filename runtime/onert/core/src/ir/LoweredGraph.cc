@@ -65,7 +65,7 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     _backend_contexts.emplace(backend, backend->newContext(_graph, _graph.getKernelBuilder(),
                                                            options.executor == "Linear"));
   }
-  if (backend_manager.getAll().size() == 0)
+  if (backend_manager.num_backends() == 0)
     throw std::runtime_error{"No available backends loaded."};
 
   // TODO Move "schedule" phase out of here

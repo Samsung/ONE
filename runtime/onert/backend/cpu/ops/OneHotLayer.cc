@@ -29,18 +29,19 @@ namespace cpu
 namespace ops
 {
 
-void OneHotLayer::oneHotFloat32()
+template <typename T> void OneHotLayer::oneHotImpl()
 {
-  nnfw::cker::OneHot<float, int32_t>(_depth, _on_value, _off_value, _axis, getTensorShape(_indices),
-                                     reinterpret_cast<const int32_t *>(_indices->buffer()),
-                                     getTensorShape(_output),
-                                     reinterpret_cast<float *>(_output->buffer()));
+  // It assumes index is int32_t type.
+  nnfw::cker::OneHot<T, int32_t>(
+      *reinterpret_cast<const int32_t *>(_depth->buffer()),
+      *reinterpret_cast<T *>(_on_value->buffer()), *reinterpret_cast<T *>(_off_value->buffer()),
+      _axis, getTensorShape(_indices), reinterpret_cast<const int32_t *>(_indices->buffer()),
+      getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 }
 
-void OneHotLayer::oneHotQuant8() { throw std::runtime_error{"OneHot NYI for quantized"}; }
-
-void OneHotLayer::configure(const Tensor *indices, Tensor *output, int32_t depth, float on_value,
-                            float off_value, int32_t axis)
+void OneHotLayer::configure(const IPortableTensor *indices, const IPortableTensor *depth,
+                            const IPortableTensor *on_value, const IPortableTensor *off_value,
+                            IPortableTensor *output, const int32_t axis)
 {
   _indices = indices;
   _output = output;
@@ -54,11 +55,7 @@ void OneHotLayer::run()
 {
   if (_output->data_type() == OperandType::FLOAT32)
   {
-    oneHotFloat32();
-  }
-  else if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
-  {
-    oneHotQuant8();
+    oneHotImpl<float>();
   }
   else
   {

@@ -13,8 +13,8 @@ if(BUILD_TENSORFLOW_LITE)
   endmacro(return_unless)
 
   # Required packages
-  nnfw_find_package(AbslSource QUIET)
-  return_unless(AbslSource_FOUND)
+  nnas_find_package(AbseilSource QUIET)
+  return_unless(AbseilSource_FOUND)
   nnfw_find_package(Eigen QUIET)
   return_unless(Eigen_FOUND)
   nnfw_find_package(FarmhashSource QUIET)
@@ -56,6 +56,10 @@ message(STATUS "Found TensorFlow Lite: TRUE (include: ${TFLITE_INCLUDE_DIR}, lib
 add_library(tensorflow-lite INTERFACE)
 target_include_directories(tensorflow-lite SYSTEM INTERFACE ${TFLITE_INCLUDE_DIR})
 target_link_libraries(tensorflow-lite INTERFACE ${TFLITE_LIB})
+find_library(FLATBUFFERS_LIB NAMES flatbuffers)
+if(FLATBUFFERS_LIB)
+  target_link_libraries(tensorflow-lite INTERFACE ${FLATBUFFERS_LIB})
+endif(FLATBUFFERS_LIB)
 
 # Prefer -pthread to -lpthread
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)

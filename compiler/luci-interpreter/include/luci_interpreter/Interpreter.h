@@ -55,14 +55,7 @@ public:
   void attachObserver(ExecutionObserver *observer);
 
 private:
-  void createTensors(const loco::Graph *graph);
-  void createKernels(const loco::Graph *graph);
-
-  const loco::Graph *_main_graph = nullptr;
-  std::unique_ptr<class TensorMap> _node_to_tensor;
-
-  // Kernels, in execution order.
-  std::vector<std::unique_ptr<class Kernel>> _kernels;
+  std::unique_ptr<class RuntimeModule> _runtime_module;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;

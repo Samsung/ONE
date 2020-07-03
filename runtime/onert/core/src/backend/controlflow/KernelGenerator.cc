@@ -30,13 +30,10 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Operands &operand_ctx,
-                                 const ir::Operations &operations_ctx)
-    : _operand_ctx{operand_ctx}, _operations_ctx{operations_ctx}, _tensor_builder_set{nullptr},
-      _executor_map{nullptr}
+KernelGenerator::KernelGenerator(const ir::Graph &graph)
+    : _graph{graph}, _tensor_builder_set{nullptr}, _executor_map{nullptr}
 {
-  UNUSED_RELEASE(_operand_ctx);
-  UNUSED_RELEASE(_operations_ctx);
+  UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_builder_set);
   UNUSED_RELEASE(_executor_map);
 }
@@ -47,7 +44,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
   for (const auto &op_idx : op_seq.operations())
   {
-    const auto &node = _operations_ctx.at(op_idx);
+    const auto &node = _graph.operations().at(op_idx);
     node.accept(*this);
     _return_fn_seq->append(releaseFunction());
   }
@@ -86,8 +83,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, outputs_dyn_alloc_info, then_subg_index,
-      else_subg_index, _executor_map);
+      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
+      then_subg_index, else_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
@@ -149,8 +146,8 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, outputs_dyn_alloc_info, cond_subg_index, body_subg_index,
-      _executor_map);
+      input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
+      cond_subg_index, body_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }

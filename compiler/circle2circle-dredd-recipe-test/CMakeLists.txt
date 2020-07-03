@@ -84,14 +84,14 @@ macro(Add RECIPE)
     # Generate .tflite
     add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-      DEPENDS ${RECIPE_BINARY_PATH}
+      DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
       COMMENT "Generate ${TFLITE_FILE}"
     )
 
     # Generate .circle
     add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
-      DEPENDS ${TFLITE_OUTPUT_PATH}
+      DEPENDS $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH}
       COMMENT "Generate ${CIRCLE_FILE}"
     )
 
@@ -100,7 +100,7 @@ macro(Add RECIPE)
    # Generate .circle
     add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
-      DEPENDS ${RECIPE_BINARY_PATH}
+      DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
       COMMENT "Generate ${CIRCLE_FILE}"
     )
   endif()
@@ -108,7 +108,7 @@ macro(Add RECIPE)
   # Generate optimized .circle
   add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
     COMMAND $<TARGET_FILE:circle2circle> ${OPT_OPTIONS} ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
-    DEPENDS ${CIRCLE_OUTPUT_PATH}
+    DEPENDS $<TARGET_FILE:circle2circle> ${CIRCLE_OUTPUT_PATH}
     COMMENT "Generate ${OPT_CIRCLE_FILE}"
   )
 

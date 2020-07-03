@@ -1,10 +1,9 @@
-HOST_ARCH?=$(shell uname -p)
-TARGET_ARCH?=$(shell uname -p)
+HOST_ARCH?=$(shell uname -m)
+TARGET_ARCH?=$(shell uname -m)
 BUILD_TYPE?=Debug
 CROSS_BUILD?=0
 HOST_OS?=linux
 TARGET_OS?=linux
-PARALLEL_BUILD?=1
 COVERAGE_BUILD?=0
 BENCHMARK_ACL_BUILD?=0
 OPTIONS?=
@@ -78,13 +77,6 @@ ifneq ($(ANDROID_BOOST_ROOT),)
   OPTIONS+= -DANDROID_BOOST_ROOT=$(ANDROID_BOOST_ROOT)
 endif
 
-ifeq ($(PARALLEL_BUILD),1)
-	# Get number of processors (linux only for now)
-	ifeq ($(HOST_OS),linux)
-		NPROCS?=$(shell grep -c ^processor /proc/cpuinfo)
-	endif
-endif
-
 NPROCS?=1
 WORKHOME=$(CURDIR)/Product
 WORKFOLDER=$(TARGET_ARCH_LC)-$(TARGET_OS).$(BUILD_TYPE_LC)
@@ -135,11 +127,12 @@ endif
 	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
+		-DACL_BUILD_THREADS=$(NPROCS) \
 		$(OPTIONS)
 	touch $(TIMESTAMP_CONFIGURE)
 
 build_internal: $(BUILD_FOLDER)
-	NNFW_WORKSPACE="$(WORKSPACE)" NPROCS="$(NPROCS)" PARALLEL_BUILD="1" ./nnfw build
+	NNFW_WORKSPACE="$(WORKSPACE)" NPROCS="$(NPROCS)" ./nnfw build
 	rm -rf $(BUILD_ALIAS)
 	ln -s $(BUILD_FOLDER) $(BUILD_ALIAS)
 	touch $(TIMESTAMP_BUILD)

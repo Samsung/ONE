@@ -36,9 +36,7 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef __clang__
 #include <libgen.h>
-#endif
 
 namespace nnpkg_run
 {
@@ -77,28 +75,29 @@ NNFW_STATUS resolve_op_backend(nnfw_session *session)
 int main(const int argc, char **argv)
 {
   using namespace nnpkg_run;
-  Args args(argc, argv);
-  auto nnpackage_path = args.getPackageFilename();
-  if (args.printVersion())
-  {
-    uint32_t version;
-    NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
-    std::cout << "nnpkg_run (nnfw runtime: v" << (version >> 24) << "."
-              << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
-    exit(0);
-  }
 
   try
   {
+    Args args(argc, argv);
+    auto nnpackage_path = args.getPackageFilename();
+    if (args.printVersion())
+    {
+      uint32_t version;
+      NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
+      std::cout << "nnpkg_run (nnfw runtime: v" << (version >> 24) << "."
+                << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
+      exit(0);
+    }
 
 #ifdef RUY_PROFILER
     ruy::profiler::ScopeProfile ruy_profile;
 #endif
 
-    benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
+    benchmark::Phases phases(
+        benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
     nnfw_session *session = nullptr;
-    NNPR_ENSURE_STATUS(nnfw_create_debug_session(&session));
+    NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
@@ -122,7 +121,8 @@ int main(const int argc, char **argv)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
-        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_UINT8)
+
+        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_INT64)
         {
           std::cerr << "E: not supported input type" << std::endl;
           exit(-1);
@@ -138,7 +138,8 @@ int main(const int argc, char **argv)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_UINT8)
+
+        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_INT64)
         {
           std::cerr << "E: not supported output type" << std::endl;
           exit(-1);
@@ -207,6 +208,9 @@ int main(const int argc, char **argv)
             break;
           case NNFW_TYPE_TENSOR_INT32:
             randomData<int32_t>(randgen, inputs[i].data(), num_elems(&ti));
+            break;
+          case NNFW_TYPE_TENSOR_INT64:
+            randomData<int64_t>(randgen, inputs[i].data(), num_elems(&ti));
             break;
           default:
             std::cerr << "Not supported input type" << std::endl;

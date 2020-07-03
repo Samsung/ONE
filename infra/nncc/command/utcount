@@ -13,14 +13,14 @@ BUILD_ITEMS="angkor cwrap pepper-str pepper-strcast pp stdex \
 oops pepper-assert \
 hermes hermes-std \
 loco locop locomotiv logo-core logo \
-foder \
+foder souschef\
 safemain mio-circle mio-tflite \
 tflite2circle \
 luci \
 luci-interpreter \
 luci-value-test \
 record-minmax \
-circle2circle"
+circle2circle circle-quantizer"
 
 function count_all()
 {

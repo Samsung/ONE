@@ -35,8 +35,8 @@ SelectLayer::SelectLayer()
   // DO NOTHING
 }
 
-void SelectLayer::configure(const Tensor *cond, const Tensor *input_true, const Tensor *input_false,
-                            Tensor *output)
+void SelectLayer::configure(const IPortableTensor *cond, const IPortableTensor *input_true,
+                            const IPortableTensor *input_false, IPortableTensor *output)
 {
   _cond = cond;
   _input_true = input_true;

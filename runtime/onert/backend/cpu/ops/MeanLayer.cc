@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 
-MeanLayer::MeanLayer() : _input(nullptr), _output(nullptr), _axes(), _keep_dims(false)
+MeanLayer::MeanLayer() : _input(nullptr), _axes(nullptr), _output(nullptr), _keep_dims(false)
 {
   // DO NOTHING
 }
@@ -37,7 +37,8 @@ MeanLayer::MeanLayer() : _input(nullptr), _output(nullptr), _axes(), _keep_dims(
 void MeanLayer::MeanFloat32()
 {
   nnfw::cker::Mean(getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-                   getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), _axes);
+                   getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()),
+                   getReducerAxes(_axes));
 }
 
 void MeanLayer::MeanQuant8()
@@ -46,15 +47,15 @@ void MeanLayer::MeanQuant8()
                           reinterpret_cast<const uint8_t *>(_input->buffer()), _input->data_scale(),
                           _input->data_offset(), getTensorShape(_output),
                           reinterpret_cast<uint8_t *>(_output->buffer()), _output->data_scale(),
-                          _output->data_offset(), _axes);
+                          _output->data_offset(), getReducerAxes(_axes));
 }
 
-void MeanLayer::configure(const Tensor *input, Tensor *output, const std::vector<int> &axes,
-                          bool keep_dims)
+void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,
+                          IPortableTensor *output, bool keep_dims)
 {
   _input = input;
-  _output = output;
   _axes = axes;
+  _output = output;
   _keep_dims = keep_dims;
 }
 

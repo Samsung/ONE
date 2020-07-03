@@ -38,7 +38,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   # Generate .tflite
   add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
     COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-    DEPENDS ${RECIPE_BINARY_PATH}
+    DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
     COMMENT "Generate ${TFLITE_FILE}"
   )
 

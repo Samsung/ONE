@@ -25,7 +25,6 @@ GeneratedTests.embedding_lookup
 GeneratedTests.embedding_lookup_2d_nnfw
 GeneratedTests.embedding_lookup_4d_nnfw
 GeneratedTests.equal_broadcast_float_nnfw
-GeneratedTests.equal_quant8_nnfw
 GeneratedTests.equal_quantized_different_scale
 GeneratedTests.equal_quantized_different_zero_point
 GeneratedTests.equal_quantized_overflow_first_input_if_requantized
@@ -74,8 +73,6 @@ GeneratedTests.logical_or_broadcast
 GeneratedTests.logical_or_broadcast_4D_2D_nnfw
 GeneratedTests.logical_or_broadcast_nnfw
 GeneratedTests.logical_or_simple
-GeneratedTests.logistic_quant8_1
-GeneratedTests.logistic_quant8_2
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
 GeneratedTests.lsh_projection_weights_as_inputs
@@ -95,8 +92,6 @@ GeneratedTests.maximum_simple_quant8
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant8
-GeneratedTests.mul_broadcast_quant8
-GeneratedTests.mul_quant8
 GeneratedTests.neg
 GeneratedTests.neg_3D_int_nnfw
 GeneratedTests.neg_4D_int_nnfw
@@ -172,20 +167,6 @@ GeneratedTests.space_to_depth_float_2
 GeneratedTests.space_to_depth_float_3
 GeneratedTests.space_to_depth_quant8_1
 GeneratedTests.space_to_depth_quant8_2
-GeneratedTests.split_1D_int32_nnfw
-GeneratedTests.split_4D_int32_1_nnfw
-GeneratedTests.split_4D_int32_2_nnfw
-GeneratedTests.split_4D_int32_3_nnfw
-GeneratedTests.split_4D_int32_4_nnfw
-GeneratedTests.split_4D_int32_5_nnfw
-GeneratedTests.split_int32_1
-GeneratedTests.split_int32_1_relaxed
-GeneratedTests.split_int32_2
-GeneratedTests.split_int32_2_relaxed
-GeneratedTests.split_int32_3
-GeneratedTests.split_int32_3_relaxed
-GeneratedTests.split_int32_4
-GeneratedTests.split_int32_4_relaxed
 GeneratedTests.split_quant8_1_relaxed
 GeneratedTests.split_quant8_2_relaxed
 GeneratedTests.sqrt_
@@ -204,8 +185,6 @@ GeneratedTests.strided_slice_quant8_6
 GeneratedTests.strided_slice_quant8_7
 GeneratedTests.strided_slice_quant8_8
 GeneratedTests.strided_slice_quant8_9
-GeneratedTests.sub_v1_2_broadcast_quant8
-GeneratedTests.sub_v1_2_quant8
 GeneratedTests.sub_v1_2_zero_sized
 GeneratedTests.sub_v1_2_zero_sized_quant8
 GeneratedTests.svdf

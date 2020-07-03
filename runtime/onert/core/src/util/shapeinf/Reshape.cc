@@ -75,25 +75,41 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
     return;
   }
 
-  if (op.getInputs().size() == 1)
+  // New shape is given by second input tensor
+  if (op.getInputs().size() == 2)
   {
-    // no change on output shape
-    return;
+    // Let's check the second input
+    const auto shape_idx{op.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
+    const auto &shape = _operands.at(shape_idx);
+
+    if (shape.isConstant())
+    {
+      const auto *shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
+      assert(shape_buf);
+
+      ir::Shape new_shape =
+          convertShape(shape_buf, shape.shape().num_elements(), input.shape().num_elements());
+
+      // if shape is from Const, TFLC put the shape of output into tensor
+      if (new_shape != output.shape())
+      {
+        // change on output shape
+        output.info().shape(new_shape);
+      }
+    }
+    else
+    {
+      // if shape is NOT Const, set output shape to be dynamic_
+      output.info().setDynamic();
+    }
   }
-
-  // Let's check the second input
-  const auto shape_idx{op.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
-  const auto &shape = _operands.at(shape_idx);
-
-  ir::Shape new_shape;
-  if (shape.isConstant())
+  // New shape is given by option
+  else if (op.param().new_shape.size() != 0)
   {
-    const auto *shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
-    assert(shape_buf);
+    // Let's check the new_shape option
+    auto shape = op.param().new_shape;
+    ir::Shape new_shape = convertShape(shape.data(), shape.size(), input.shape().num_elements());
 
-    new_shape = convertShape(shape_buf, shape.shape().num_elements(), input.shape().num_elements());
-
-    // if shape is from Const, TFLC put the shape of output into tensor
     if (new_shape != output.shape())
     {
       // change on output shape
@@ -102,8 +118,8 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   }
   else
   {
-    // if shape is NOT Const, set output shape to be dynamic_
-    output.info().setDynamic();
+    throw std::runtime_error("Reshape: new shape is missing");
+    return;
   }
 }
 
@@ -120,12 +136,12 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   /*
     Here, the state after compilation (satic shape inference) could be one of the following:
 
-              input1     input2      output     execution-time shape inf required
-              -----------------------------     --------------------------------
-      case 1) static     const       static       X
-      case 2) static    placeholder  dynamic      O
-      case 3) dynamic    const       dynamic      O
-      case 4) dynamic   placeholder  dynamic      O
+              input1   input2 (or option)   output     execution-time shape inf required
+              ------------------------------------     --------------------------------
+      case 1) static         const          static       X
+      case 2) static      placeholder       dynamic      O
+      case 3) dynamic        const          dynamic      O
+      case 4) dynamic     placeholder       dynamic      O
 
     Then nnfw_apply_tensorinf() could change input dynamic.
     So, in this method, we could have one more state and we have to re-calculate shape
@@ -138,26 +154,50 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  // from op, access the buffer of second input to read new shape
-  auto new_shape_ind = op.getInputs().at(ir::operation::Reshape::Input::SHAPE);
-
-  // getting output shape by reading new_shape tensor buffer
-  auto new_shape = _tensor_registry->getITensor(new_shape_ind);
-  assert(new_shape);
-
-  int32_t *new_shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
-  assert(new_shape_buf);
-
-  auto output_shape = convertShape(new_shape_buf, new_shape->getShape().num_elements(),
-                                   input->getShape().num_elements());
-
-  // if shape is changed, change output shape and reallocate output tensor memory
-  if (output_shape != output->getShape() || output->buffer() == nullptr)
+  // New shape is given by second input tensor
+  if (op.getInputs().size() == 2)
   {
-    // change on output shape
-    _dynamic_tensor_manager->applyShape(output_ind, output_shape);
+    // from op, access the buffer of second input to read new shape
+    auto new_shape_ind = op.getInputs().at(ir::operation::Reshape::Input::SHAPE);
+
+    // getting output shape by reading new_shape tensor buffer
+    auto new_shape = _tensor_registry->getITensor(new_shape_ind);
+    assert(new_shape);
+
+    int32_t *new_shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
+    assert(new_shape_buf);
+
+    auto output_shape = convertShape(new_shape_buf, new_shape->getShape().num_elements(),
+                                     input->getShape().num_elements());
+
+    // if shape is changed, change output shape and reallocate output tensor memory
+    if (output_shape != output->getShape() || output->buffer() == nullptr)
+    {
+      // change on output shape
+      _dynamic_tensor_manager->applyShape(output_ind, output_shape);
+    }
+    assert(output->buffer() != nullptr);
   }
-  assert(output->buffer() != nullptr);
+  // New shape is given by option
+  else if (op.param().new_shape.size() != 0)
+  {
+    // Let's check the new_shape option
+    auto shape = op.param().new_shape;
+    auto output_shape = convertShape(shape.data(), shape.size(), input->getShape().num_elements());
+
+    // if shape is changed, change output shape and reallocate output tensor memory
+    if (output_shape != output->getShape() || output->buffer() == nullptr)
+    {
+      // change on output shape
+      _dynamic_tensor_manager->applyShape(output_ind, output_shape);
+    }
+    assert(output->buffer() != nullptr);
+  }
+  else
+  {
+    throw std::runtime_error("Reshape: new shape is missing");
+    return;
+  }
 }
 
 } // namespace shape_inference

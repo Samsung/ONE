@@ -33,7 +33,7 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
 
 void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
-  auto tensor = (*_tensors)[ind];
+  auto tensor = _tensors->getManagedTensor(ind);
   assert(tensor);
 
   bool previously_dynamic = tensor->is_dynamic();
@@ -86,9 +86,9 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  assert(_tensors->find(ind) == _tensors->end());
+  assert(_tensors->getManagedTensor(ind) == nullptr);
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-  (*_tensors)[ind] = tensor;
+  _tensors->setManagedTensor(ind, tensor);
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
@@ -115,10 +115,13 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   auto &input_set = find->second;
   for (auto input_ind : input_set)
   {
-    if (!_tensors->at(input_ind)->is_dynamic())
+    auto *tensor = _tensors->getManagedTensor(input_ind).get();
+    if (!tensor->is_dynamic())
       continue;
 
     _dynamic_mem_mgr->deallocate(input_ind);
+    tensor->resetBuffer();
+
     VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
                                   << " (input of op_ind: " << op_ind.value() << ")" << std::endl;
   }
@@ -126,10 +129,13 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  if (!_tensors->at(output_ind)->is_dynamic())
+  auto *tensor = _tensors->getManagedTensor(output_ind).get();
+  if (!tensor->is_dynamic())
     return;
 
   _dynamic_mem_mgr->deallocate(output_ind);
+  tensor->resetBuffer();
+
   VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
                                 << " (output of a subgraph)" << std::endl;
 }

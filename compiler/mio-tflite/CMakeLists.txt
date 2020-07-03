@@ -4,7 +4,11 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 2.2.0 QUIET)
+# TODO recover official release version
+# NOTE we cannot use version number like "2.3.0-rc0" for find_package()
+#      use TensorFlowSource-2.3.0-rc0 as config itself
+# nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowSource-2.3.0-rc0 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   return()

@@ -54,8 +54,8 @@ private:
 
   // The scaling factor from input to output (aka the 'real multiplier') can
   // be represented as a fixed point multiplier plus a left shift.
-  int32_t _output_multiplier;
-  int _output_shift;
+  int32_t _output_multiplier = 0;
+  int _output_shift = 0;
 };
 
 } // namespace kernels

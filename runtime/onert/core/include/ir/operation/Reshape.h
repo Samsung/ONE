@@ -37,12 +37,22 @@ public:
     SHAPE = 1
   };
 
+  struct Param
+  {
+    std::vector<int32_t> new_shape;
+  };
+
 public:
-  Reshape(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
+  Reshape(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+          const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Reshape; }
+  const Param &param() const { return _param; }
+
+private:
+  Param _param;
 };
 
 } // namespace operation

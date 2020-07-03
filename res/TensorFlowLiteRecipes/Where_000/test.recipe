@@ -1,0 +1,22 @@
+operand {
+  name: "ifm"
+  type: BOOL
+  shape { dim: 4 dim: 2 dim: 3}
+}
+operand {
+  name: "ofm"
+  type: INT64
+  # Output shape is 2d, but partially unknown,
+  # because first dimension depends on number of "true" values in input.
+  # In this case it is (?, 3)
+  shape { }
+}
+operation {
+  type: "Where"
+  where_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

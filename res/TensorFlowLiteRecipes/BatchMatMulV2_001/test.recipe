@@ -16,7 +16,7 @@ operand {
 operation {
   type: "BatchMatMulV2"
   batch_matmul_options {
-      adjoint_lhs : true
+      adj_x : true
   }
   input: "ifm1"
   input: "ifm2"

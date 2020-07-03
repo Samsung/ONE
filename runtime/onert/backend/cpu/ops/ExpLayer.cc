@@ -46,7 +46,7 @@ void ExpLayer::expQuant8()
   throw std::runtime_error{"NYI"};
 }
 
-void ExpLayer::configure(const Tensor *input, Tensor *output)
+void ExpLayer::configure(const IPortableTensor *input, IPortableTensor *output)
 {
   _input = input;
   _output = output;

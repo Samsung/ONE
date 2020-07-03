@@ -32,21 +32,20 @@ void DivLayer::divFloat32()
   float output_activation_min = 0, output_activation_max = 0;
   CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
   nnfw::cker::BinaryArithmeticOpParam op_params;
-  op_params.type = nnfw::cker::BinaryArithmeticOpType::DIV;
   op_params.float_activation_max = output_activation_max;
   op_params.float_activation_min = output_activation_min;
 
   const bool requires_broadcast = !HaveSameShapes(_lhs, _rhs);
   if (requires_broadcast)
   {
-    nnfw::cker::BroadcastBinaryArithmeticOp(
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::DIV>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
   }
   else
   {
-    nnfw::cker::BinaryArithmeticOp(
+    nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::DIV>(
         op_params, getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
@@ -58,7 +57,6 @@ void DivLayer::divQuant8()
   int32_t output_activation_min, output_activation_max;
   CalculateActivationRangeUint8(_activation, _output, &output_activation_min,
                                 &output_activation_max);
-  // nnfw::cker::BinaryArithmeticOpParam op_params;
   // op_params.quantized_activation_max = output_activation_max;
   // op_params.quantized_activation_min = output_activation_min;
 
@@ -66,8 +64,8 @@ void DivLayer::divQuant8()
   throw std::runtime_error{"Div NYI for quantized"};
 }
 
-void DivLayer::configure(const Tensor *lhs, const Tensor *rhs, const ir::Activation activation,
-                         Tensor *output)
+void DivLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                         const ir::Activation activation, IPortableTensor *output)
 {
   _lhs = lhs;
   _rhs = rhs;

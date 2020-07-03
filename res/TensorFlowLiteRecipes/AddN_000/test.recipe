@@ -1,0 +1,33 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ifm3"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "AddN"
+  input: "ifm1"
+  input: "ifm2"
+  input: "ifm3"
+  output: "ofm"
+  add_n_options {
+  }
+}
+input: "ifm1"
+input: "ifm2"
+input: "ifm3"
+output: "ofm"

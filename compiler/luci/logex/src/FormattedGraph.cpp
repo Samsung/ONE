@@ -195,6 +195,7 @@ private:
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
   IMPLEMENT(luci::CircleAbs)
   IMPLEMENT(luci::CircleAdd)
+  IMPLEMENT(luci::CircleAddN)
   IMPLEMENT(luci::CircleArgMax)
   IMPLEMENT(luci::CircleArgMin)
   IMPLEMENT(luci::CircleAveragePool2D)
@@ -233,6 +234,7 @@ private:
   IMPLEMENT(luci::CircleLogicalNot)
   IMPLEMENT(luci::CircleLogicalOr)
   IMPLEMENT(luci::CircleLogistic)
+  IMPLEMENT(luci::CircleLogSoftmax)
   IMPLEMENT(luci::CircleMaximum)
   IMPLEMENT(luci::CircleMaxPool2D)
   IMPLEMENT(luci::CircleMean)
@@ -262,6 +264,7 @@ private:
   IMPLEMENT(luci::CircleRound)
   IMPLEMENT(luci::CircleRsqrt)
   IMPLEMENT(luci::CircleScatterNd)
+  IMPLEMENT(luci::CircleSegmentSum)
   IMPLEMENT(luci::CircleSelect)
   IMPLEMENT(luci::CircleShape)
   IMPLEMENT(luci::CircleSin)
@@ -269,6 +272,7 @@ private:
   IMPLEMENT(luci::CircleSoftmax)
   IMPLEMENT(luci::CircleSpaceToBatchND)
   IMPLEMENT(luci::CircleSpaceToDepth)
+  IMPLEMENT(luci::CircleSparseToDense)
   IMPLEMENT(luci::CircleSplit)
   IMPLEMENT(luci::CircleSplitV)
   IMPLEMENT(luci::CircleSqrt)
@@ -284,6 +288,7 @@ private:
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
   IMPLEMENT(luci::CircleUnpack)
+  IMPLEMENT(luci::CircleWhere)
   IMPLEMENT(luci::CircleWhile)
   IMPLEMENT(luci::CircleZerosLike)
   // Circle Only
@@ -333,6 +338,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleAdd *node, locop::NodeS
   s.args().append("x", tbl()->lookup(node->x()));
   s.args().append("y", tbl()->lookup(node->y()));
   s.args().append("fused_activation_function", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleAddN *node, locop::NodeSummary &s) const
+{
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    s.args().append("inputs", tbl()->lookup(node->inputs(i)));
+
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }
@@ -723,6 +737,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleLogistic *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleLogSoftmax *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("logits", tbl()->lookup(node->logits()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleMaximum *node, locop::NodeSummary &s) const
 {
   s.args().append("x", tbl()->lookup(node->x()));
@@ -991,6 +1013,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleScatterNd *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSegmentSum *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("segment_ids", tbl()->lookup(node->segment_ids()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSelect *node, locop::NodeSummary &s) const
 {
   s.args().append("condition", tbl()->lookup(node->condition()));
@@ -1049,6 +1080,21 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSpaceToDepth *node,
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("block_size", pepper::str(node->block_size()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSparseToDense *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("indices", tbl()->lookup(node->indices()));
+  s.args().append("output_shape", tbl()->lookup(node->output_shape()));
+  s.args().append("values", tbl()->lookup(node->values()));
+  s.args().append("default_value", tbl()->lookup(node->default_value()));
+
+  s.args().append("Validate_indices", pepper::str(node->validate_indices()));
 
   s.state(locop::NodeSummary::State::Complete);
 
@@ -1212,6 +1258,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::No
   s.args().append("num", pepper::str(node->num()));
   s.args().append("axis", pepper::str(node->axis()));
 
+  s.state(locop::NodeSummary::State::Complete);
+
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleWhere *node, locop::NodeSummary &s) const
+{
+  s.args().append("condition", tbl()->lookup(node->condition()));
   s.state(locop::NodeSummary::State::Complete);
 
   return true;

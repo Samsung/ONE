@@ -14,8 +14,11 @@ How To
   ./how-to-build-compiler.md
   ./how-to-build-package.md
   ./how-to-build-runtime.md
+  ./how-to-build-runtime-using-prebuilt-docker-image.md
+  ./how-to-cross-build-runtime-for-arm.md
+  ./how-to-cross-build-runtime-for-aarch64.md
+  ./how-to-cross-build-runtime-for-android.md
   ./how-to-contribute.md
-  ./how-to-create-a-pull-request.md
   ./how-to-make-an-application-with-runtime.md
   ./how-to-remote-debugging-with-visual-studio-code.md
   ./how-to-run-package.md

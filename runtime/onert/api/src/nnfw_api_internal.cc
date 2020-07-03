@@ -109,8 +109,8 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
     // e.g. In MANIFEST file, { "models" : [ "firstmodel.tflite", "2nd.tflite" ] }
     Json::Value root;
     mfs >> root;
-    Json::Value models = root["models"];
-    Json::Value model_types = root["model-types"];
+    const Json::Value &models = root["models"];
+    const Json::Value &model_types = root["model-types"];
 
     auto model_file_path = package_dir + std::string("/") + models[0].asString(); // first model
     auto model_type = model_types[0].asString(); // first model's type
@@ -365,6 +365,8 @@ static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
       return NNFW_TYPE_TENSOR_BOOL;
     case DataType::UINT8:
       return NNFW_TYPE_TENSOR_UINT8;
+    case DataType::INT64:
+      return NNFW_TYPE_TENSOR_INT64;
     case DataType::UINT32:
     case DataType::QUANT_INT8_SYMM:
     default:

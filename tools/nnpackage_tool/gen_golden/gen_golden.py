@@ -92,8 +92,7 @@ if __name__ == '__main__':
                 input_values.append(
                     np.array(np.random.randint(0, 255, this_shape, this_dtype)))
             elif this_dtype == np.float32:
-                input_values.append(
-                    np.array(np.random.random_sample(this_shape), this_dtype))
+                input_values.append(np.array(np.random.random_sample(this_shape)))
             elif this_dtype == np.bool_:
                 # generate random integer from [0, 2)
                 input_values.append(
@@ -101,6 +100,9 @@ if __name__ == '__main__':
             elif this_dtype == np.int32:
                 input_values.append(
                     np.array(np.random.randint(0, 99, this_shape, "int32")))
+            elif this_dtype == np.int64:
+                input_values.append(
+                    np.array(np.random.randint(0, 99, this_shape, "int64")))
 
         # get output values by running
         config = tf.compat.v1.ConfigProto()
@@ -134,13 +136,15 @@ if __name__ == '__main__':
                 input_values.append(
                     np.array(np.random.randint(0, 255, this_shape, this_dtype)))
             elif this_dtype == np.float32:
-                input_values.append(
-                    np.array(np.random.random_sample(this_shape), this_dtype))
+                input_values.append(np.array(np.random.random_sample(this_shape)))
             elif this_dtype == np.bool_:
                 # generate random integer from [0, 2)
                 input_values.append(
                     np.array(np.random.randint(2, size=this_shape), this_dtype))
             elif this_dtype == np.int32:
+                input_values.append(
+                    np.array(np.random.randint(0, 99, this_shape, this_dtype)))
+            elif this_dtype == np.int64:
                 input_values.append(
                     np.array(np.random.randint(0, 99, this_shape, this_dtype)))
             interpreter.set_tensor(input_details[idx]['index'], input_values[idx])
@@ -156,8 +160,14 @@ if __name__ == '__main__':
 
     # dump input and output in h5
     import h5py
-    supported_dtypes = ("float32", "uint8", "bool", "int32")
-    h5dtypes = {"float32": ">f4", "uint8": "u1", "bool": "u1", "int32": "int32"}
+    supported_dtypes = ("float32", "uint8", "bool", "int32", "int64")
+    h5dtypes = {
+        "float32": ">f4",
+        "uint8": "u1",
+        "bool": "u1",
+        "int32": "int32",
+        "int64": "int64"
+    }
     with h5py.File(out_dir + "input.h5", 'w') as hf:
         name_grp = hf.create_group("name")
         val_grp = hf.create_group("value")

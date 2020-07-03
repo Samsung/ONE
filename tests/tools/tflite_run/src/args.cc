@@ -23,17 +23,26 @@ namespace TFLiteRun
 
 Args::Args(const int argc, char **argv) noexcept
 {
-  Initialize();
-  Parse(argc, argv);
+  try
+  {
+    Initialize();
+    Parse(argc, argv);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "error during paring args" << e.what() << '\n';
+    exit(1);
+  }
 }
 
 void Args::Initialize(void)
 {
+  try
+  {
+    // General options
+    po::options_description general("General options");
 
-  // General options
-  po::options_description general("General options");
-
-  // clang-format off
+    // clang-format off
   general.add_options()
     ("help,h", "Display available options")
     ("input,i", po::value<std::string>()->default_value(""), "Input filename")
@@ -43,15 +52,23 @@ void Args::Initialize(void)
     ("tflite", po::value<std::string>()->required())
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
     ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
+    ("run_delay,t", po::value<int>()->default_value(-1), "Delay time(ms) between runs (as default no delay")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false), "Write report")
     ("validate", po::value<bool>()->default_value(true), "Validate tflite model")
     ;
-  // clang-format on
+    // clang-format on
 
-  _options.add(general);
-  _positional.add("tflite", 1);
+    _options.add(general);
+    _positional.add("tflite", 1);
+  }
+  catch (const std::bad_cast &e)
+  {
+    std::cerr << "error by bad cast during initialization of boost::program_options" << e.what()
+              << '\n';
+    exit(1);
+  }
 }
 
 void Args::Parse(const int argc, char **argv)
@@ -148,6 +165,11 @@ void Args::Parse(const int argc, char **argv)
     _warmup_runs = vm["warmup_runs"].as<int>();
   }
 
+  if (vm.count("run_delay"))
+  {
+    _run_delay = vm["run_delay"].as<int>();
+  }
+
   if (vm.count("gpumem_poll"))
   {
     _gpumem_poll = vm["gpumem_poll"].as<bool>();
@@ -156,6 +178,11 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("mem_poll"))
   {
     _mem_poll = vm["mem_poll"].as<bool>();
+    // Instead of EXECUTE to avoid overhead, memory polling runs on WARMUP
+    if (_mem_poll && _warmup_runs == 0)
+    {
+      _warmup_runs = 1;
+    }
   }
 
   if (vm.count("write_report"))

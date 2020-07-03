@@ -1,14 +1,5 @@
-nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowEigenSource EXACT 2.1.0 QUIET)
 find_package(Threads REQUIRED)
 nnas_find_package(GTest REQUIRED)
-
-if (NOT TensorFlowSource_FOUND OR
-    NOT TensorFlowGEMMLowpSource_FOUND OR
-    NOT TensorFlowEigenSource_FOUND)
-  return()
-endif ()
 
 set(SOURCES
     Add.h
@@ -27,6 +18,10 @@ set(SOURCES
     Elu.cpp
     FullyConnected.h
     FullyConnected.cpp
+    If.h
+    If.cpp
+    L2Normalize.h
+    L2Normalize.cpp
     L2Pool2D.h
     L2Pool2D.cpp
     LeakyRelu.h
@@ -79,6 +74,8 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     FullyConnected.test.cpp
+    If.test.cpp
+    L2Normalize.test.cpp
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
     LocalResponseNormalization.test.cpp

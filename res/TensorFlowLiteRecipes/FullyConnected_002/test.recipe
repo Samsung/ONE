@@ -1,0 +1,28 @@
+operand {
+  name: "in"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 4 }
+}
+operand {
+  name: "weight"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "in"
+  input: "weight"
+  input: ""
+  output: "out"
+}
+input: "in"
+input: "weight"
+output: "out"

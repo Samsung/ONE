@@ -10,9 +10,9 @@ list(APPEND NNPACKAGE_RUN_SRCS "src/nnpackage_run.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
 
-nnfw_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
-nnfw_find_package(HDF5 COMPONENTS CXX QUIET)
+nnfw_find_package(HDF5 QUIET)
 
 if (HDF5_FOUND)
   list(APPEND NNPACKAGE_RUN_SRCS "src/h5formatter.cc")
@@ -31,23 +31,10 @@ endif(HDF5_FOUND)
 target_include_directories(nnpackage_run PRIVATE src)
 target_include_directories(nnpackage_run PRIVATE ${Boost_INCLUDE_DIRS})
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_directories(nnpackage_run PRIVATE /usr/local/lib)
-endif()
 target_link_libraries(nnpackage_run onert_core onert tflite_loader)
 target_link_libraries(nnpackage_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite jsoncpp)
 target_link_libraries(nnpackage_run nnfw-dev)
-if(BUILD_BOOST)
-  # We have to use Boost::program_options, instead of boost_program_optinos
-  # Boost::program_options provides the full path for our own built boost.
-  target_link_libraries(nnpackage_run Boost::program_options)
-else()
-  # We cannot use `Boost::program_options` on aarch64
-  # because it uses boost 1.65.1, which requires cmake >= 3.9.3
-  # to identify Boost::program_options imported target correctly,
-  # However, it uses cmake 3.5. (old version).
-  target_link_libraries(nnpackage_run boost_program_options)
-endif()
+target_link_libraries(nnpackage_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
 target_link_libraries(nnpackage_run nnfw_lib_benchmark)
 if(Ruy_FOUND AND PROFILE_RUY)
   target_link_libraries(nnpackage_run ruy_instrumentation)

@@ -99,6 +99,9 @@ public:
     const float *new_rhs_data = adj_y ? rhs_data : _temp_rhs.data();
 
     // Note we pass RHS args first, LHS args second
+    // Check accumulative dimensions of lhs and rhs of are equal
+    assert(Shape::ExtendedShape(5, new_rhs_shape).Dims(4) ==
+           Shape::ExtendedShape(5, new_lhs_shape).Dims(3));
     reference::BatchMatMul(new_rhs_shape, new_rhs_data, new_lhs_shape, new_lhs_data, output_shape,
                            output_data);
   }

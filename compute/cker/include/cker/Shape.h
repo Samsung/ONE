@@ -260,15 +260,20 @@ template <typename... Ts> inline bool checkMatching(const Shape &shape, Ts... ch
   const Shape check_shapes_array[sizeof...(Ts)] = {std::forward<Ts>(check_shapes)...};
   for (const auto &check_shape : check_shapes_array)
   {
-    if (shape.DimensionsCount() != check_shape.DimensionsCount())
+    // Check matching of shapes except the case of that two shapes can be scalar
+    if (shape.DimensionsCount() > 1 || check_shape.DimensionsCount() > 1 || shape.FlatSize() != 1 ||
+        check_shape.FlatSize() != 1)
     {
-      return false;
-    }
-    for (int i = 0; i < shape.DimensionsCount(); ++i)
-    {
-      if (shape.Dims(i) != check_shape.Dims(i))
+      if (shape.DimensionsCount() != check_shape.DimensionsCount())
       {
         return false;
+      }
+      for (int i = 0; i < shape.DimensionsCount(); ++i)
+      {
+        if (shape.Dims(i) != check_shape.Dims(i))
+        {
+          return false;
+        }
       }
     }
   }

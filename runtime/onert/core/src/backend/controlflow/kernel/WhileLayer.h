@@ -20,6 +20,8 @@
 #include <backend/ITensor.h>
 #include <exec/IExecutor.h>
 #include <exec/IFunction.h>
+#include <ir/OperandIndexSequence.h>
+#include <ir/Graph.h>
 
 namespace onert
 {
@@ -33,24 +35,25 @@ namespace kernel
 class WhileLayer : public ::onert::exec::IFunction
 {
 public:
-  WhileLayer(std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
-             std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+  WhileLayer(const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
+             const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+             const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
              const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
-             const std::shared_ptr<exec::ExecutorMap> &executor_map);
+             exec::ExecutorMap *executor_map);
 
 public:
-  void configure();
-
   void run() override;
 
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;
+  const ir::OperandIndexSequence &_output_indices;
+  const ir::Graph &_graph;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
-  const std::shared_ptr<exec::ExecutorMap> &_executor_map;
+  exec::ExecutorMap *_executor_map;
 };
 
 } // namespace kernel

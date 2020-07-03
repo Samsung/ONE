@@ -1,12 +1,12 @@
 #
-# x86_64 linux compile options
+# x86_64 darwin(macOS) compile options
 #
 message(STATUS "Building for x86-64 Darwin")
-
-# include linux common
-include("cmake/buildtool/config/config_linux.cmake")
 
 # SIMD for x86
 set(FLAGS_COMMON ${FLAGS_COMMON}
     "-msse4"
     )
+
+# lib pthread as a variable (pthread must be disabled on android)
+set(LIB_PTHREAD pthread)

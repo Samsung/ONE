@@ -132,6 +132,10 @@ message AddOptions {
   optional Activation activation = 1 [default = NONE];
 }
 
+message AddNOptions {
+  // None
+}
+
 message ArgMaxOptions {
   optional TensorType output_type = 1 [default = INT64];
 }
@@ -251,8 +255,8 @@ message TileOptions {
 }
 
 message BatchMatMulOptions {
-  optional bool adjoint_lhs = 1 [default = false];
-  optional bool adjoint_rhs = 2 [default = false];
+  optional bool adj_x = 1 [default = false];
+  optional bool adj_y = 2 [default = false];
 }
 
 message IfOptions {
@@ -325,6 +329,11 @@ message LocalResponseNormalizationOptions {
   optional float beta = 4 [default = 0.5];
 }
 
+message MatMulOptions {
+  optional bool transpose_a = 1 [default = false];
+  optional bool transpose_b = 2 [default = false];
+}
+
 message SqueezeOptions {
   repeated int32 squeeze_dim = 1;
 }
@@ -334,6 +343,10 @@ message OneHotOptions {
 }
 
 message TopKV2Options {
+  // None
+}
+
+message LogSoftmaxOptions {
   // None
 }
 
@@ -391,6 +404,10 @@ message SegmentSumOptions {
 
 message WhereOptions {
  // None
+}
+
+message SparseToDenseOptions {
+  optional bool validate_indices = 1 [default = true];
 }
 
 message Operation {
@@ -466,14 +483,14 @@ message Operation {
   // EmbeddingLookupSparseOptions 165
   // SequenceRNNOptions 166
   optional TopKV2Options topk_v2_options = 167;
-  // LogSoftmaxOptions 168
+  optional LogSoftmaxOptions log_softmax_options = 168;
   // DequantizeOptions 169
   optional NegOptions neg_options = 170;
   // PadV2Options 171
   optional LessEqualOptions lessequal_options = 172;
   optional SliceOptions slice_options = 173;
   optional TransposeConvOptions transpose_conv_options = 174;
-  // SparseToDenseOptions 175
+  optional SparseToDenseOptions sparse_to_dense_options = 175;
   optional PowOptions pow_options = 176;
   optional ArgMinOptions argmin_options = 177;
   // FakeQuantOptions 178
@@ -505,6 +522,8 @@ message Operation {
   optional ReducerOptions all_options = 204;
   optional ReducerOptions reduce_min_options = 205;
   optional SegmentSumOptions segment_sum_options = 206;
+  optional AddNOptions add_n_options = 207;
+  optional MatMulOptions matmul_options = 208;
 
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list

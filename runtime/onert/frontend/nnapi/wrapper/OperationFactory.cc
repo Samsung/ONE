@@ -364,7 +364,9 @@ OperationFactory::OperationFactory()
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
-    return new operation::Reshape{inputs, outputs};
+    operation::Reshape::Param param{};
+
+    return new operation::Reshape{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_FULLY_CONNECTED] = [](const OperationFactory::Param &init_param,
@@ -539,13 +541,10 @@ OperationFactory::OperationFactory()
     //  1 -> Reduced Axes Tensor Index
     //  2 -> keep_dims Index
 
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs{init_param.outputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceSum::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceSum{inputs, outputs, param};
@@ -934,12 +933,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceAll::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceAll{inputs, outputs, param};
@@ -956,12 +952,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceAny::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceAny{inputs, outputs, param};
@@ -978,12 +971,11 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     std::vector<std::int32_t> axes =
         operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceMax::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceMax{inputs, outputs, param};
@@ -1778,12 +1770,9 @@ OperationFactory::OperationFactory()
     //  0 -> ifm Tensor Index
     //  1 -> axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::Mean::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>() != 0;
 
     return new operation::Mean{inputs, outputs, param};
@@ -1855,12 +1844,11 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     std::vector<std::int32_t> axes =
         operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
 
     operation::ReduceMin::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceMin{inputs, outputs, param};
@@ -1946,17 +1934,18 @@ OperationFactory::OperationFactory()
     // Each input should be interpreted as follows:
     //
     // 0 -> indices tensor
-    // 1 -> depth scalar
-    // 2 -> on_value scalar
-    // 3 -> off_value scalar
+    // 1 -> depth tensor
+    // 2 -> on_value tensor
+    // 3 -> off_value tensor
     // 4 -> axis scalar
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs;
+    for (uint32_t n = 0; n < init_param.input_count - 1; ++n)
+    {
+      inputs.append(OperandIndex{init_param.inputs[n]});
+    }
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     operation::OneHot::Param param;
-    param.depth = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
-    param.on_value = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<float>();
-    param.off_value = operands.at(OperandIndex{init_param.inputs[3]}).asScalar<float>();
     param.axis = operands.at(OperandIndex{init_param.inputs[4]}).asScalar<std::int32_t>();
 
     return new operation::OneHot{inputs, outputs, param};
@@ -2000,12 +1989,9 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
     //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ReduceProd::Param param;
-    param.axes.assign(axes.cbegin(), axes.cend());
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
 
     return new operation::ReduceProd{inputs, outputs, param};
@@ -2152,6 +2138,53 @@ OperationFactory::OperationFactory()
     param.equation = std::string(equation_vector.begin(), equation_vector.end());
 
     return new operation::Einsum{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = [](const OperationFactory::Param &init_param,
+                                             Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> int32, int64, An 1-D int tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    return new operation::BroadcastTo{inputs, outputs};
+  };
+
+  _map[ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX] = [](const OperationFactory::Param &init_param,
+                                                    Operands &operands) {
+    // Each input should be interpreted as follows:
+    //
+    //  0....4  -> 5 Input Tensors Index
+    //  n-2     -> is_training
+    //  n-1     -> data_format
+    //  n       -> epsilon
+
+    assert(init_param.input_count == 8 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs;
+    for (uint32_t n = 0; n < init_param.input_count - 3; ++n)
+    {
+      inputs.append(OperandIndex{init_param.inputs[n]});
+    }
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::FusedBatchNorm::Param param;
+    const OperandIndex is_training_index{init_param.inputs[init_param.input_count - 3]};
+    param.is_training = operands.at(is_training_index).asScalar<bool>();
+
+    const OperandIndex data_format_index{init_param.inputs[init_param.input_count - 2]};
+    std::vector<char> data_format_vector = operands.at(data_format_index).asVector<char>();
+    param.data_format = std::string(data_format_vector.begin(), data_format_vector.end());
+
+    const OperandIndex epsilon_index{init_param.inputs[init_param.input_count - 1]};
+    param.epsilon = operands.at(epsilon_index).asScalar<float>();
+    return new operation::FusedBatchNorm{inputs, outputs, param};
   };
 }
 

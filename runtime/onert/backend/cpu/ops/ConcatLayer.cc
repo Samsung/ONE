@@ -104,7 +104,8 @@ void ConcatLayer::concatenationQuant8()
                                        reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
-void ConcatLayer::configure(const std::vector<const Tensor *> &inputs, int32_t axis, Tensor *output)
+void ConcatLayer::configure(const std::vector<const IPortableTensor *> &inputs, int32_t axis,
+                            IPortableTensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);
@@ -127,6 +128,10 @@ void ConcatLayer::run()
   else if (_output->data_type() == OperandType::INT32)
   {
     concatenationGeneral<int32_t>();
+  }
+  else if (_output->data_type() == OperandType::INT64)
+  {
+    concatenationGeneral<int64_t>();
   }
   else
     throw std::runtime_error("Concat: unsupported data type");

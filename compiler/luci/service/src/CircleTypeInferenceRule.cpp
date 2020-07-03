@@ -33,6 +33,22 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleAdd *node) final { return loco::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleAddN *node) final
+  {
+    auto dtype = loco::dtype_get(node->inputs(0));
+
+    for (uint32_t idx = 1; idx < node->arity(); ++idx)
+    {
+      auto dtype_idx = loco::dtype_get(node->inputs(idx));
+      if (dtype != dtype_idx)
+      {
+        INTERNAL_EXN_V("ADD_N dtype not same as the first input: ", idx);
+      }
+    }
+
+    return loco::dtype_get(node->inputs(0));
+  }
+
   loco::DataType visit(const luci::CircleArgMax *node) final { return node->output_type(); }
 
   loco::DataType visit(const luci::CircleArgMin *node) final { return node->output_type(); }
@@ -200,6 +216,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->x());
   }
 
+  loco::DataType visit(const luci::CircleLogSoftmax *node) final
+  {
+    return loco::dtype_get(node->logits());
+  }
+
   loco::DataType visit(const luci::CircleMaximum *node) final { return loco::dtype_get(node->x()); }
 
   loco::DataType visit(const luci::CircleMaxPool2D *node) final
@@ -335,6 +356,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->updates());
   }
 
+  loco::DataType visit(const luci::CircleSegmentSum *node) final
+  {
+    return loco::dtype_get(node->input());
+  }
+
   loco::DataType visit(const luci::CircleSelect *node) final
   {
     assert(loco::dtype_get(node->t()) == loco::dtype_get(node->e()));
@@ -363,6 +389,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleSpaceToDepth *node) final
   {
     return loco::dtype_get(node->input());
+  }
+
+  loco::DataType visit(const luci::CircleSparseToDense *node) final
+  {
+    return loco::dtype_get(node->values());
   }
 
   loco::DataType visit(const luci::CircleSplit *node) final
@@ -424,6 +455,8 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   {
     return loco::dtype_get(node->value());
   }
+
+  loco::DataType visit(const luci::CircleWhere *) final { return loco::DataType::S64; }
 
   loco::DataType visit(const luci::CircleWhile *node) final
   {
