@@ -88,22 +88,20 @@ if __name__ == '__main__':
         for idx in range(len(input_names)):
             this_shape = graph.get_tensor_by_name(input_names[idx]).shape
             this_dtype = input_dtypes[idx]
-            if this_dtype == np.uint8:
+            if this_dtype == tf.uint8:
                 input_values.append(
-                    np.array(np.random.randint(0, 255, this_shape, this_dtype)))
-            elif this_dtype == np.float32:
+                    np.random.randint(0, 255, this_shape).astype(np.uint8))
+            elif this_dtype == tf.float32:
                 input_values.append(
                     np.random.random_sample(this_shape).astype(np.float32))
-            elif this_dtype == np.bool_:
+            elif this_dtype == tf.bool:
                 # generate random integer from [0, 2)
                 input_values.append(
-                    np.array(np.random.randint(2, size=this_shape), this_dtype))
-            elif this_dtype == np.int32:
-                input_values.append(
-                    np.array(np.random.randint(0, 99, this_shape, "int32")))
-            elif this_dtype == np.int64:
-                input_values.append(
-                    np.array(np.random.randint(0, 99, this_shape, "int64")))
+                    np.random.randint(2, size=this_shape).astype(np.bool_))
+            elif this_dtype == tf.int32:
+                input_values.append(np.random.randint(0, 99, this_shape).astype(np.int32))
+            elif this_dtype == tf.int64:
+                input_values.append(np.random.randint(0, 99, this_shape).astype(np.int64))
 
         # get output values by running
         config = tf.compat.v1.ConfigProto()
@@ -135,20 +133,18 @@ if __name__ == '__main__':
             this_dtype = input_details[idx]['dtype']
             if this_dtype == np.uint8:
                 input_values.append(
-                    np.array(np.random.randint(0, 255, this_shape, this_dtype)))
+                    np.random.randint(0, 255, this_shape).astype(np.uint8))
             elif this_dtype == np.float32:
                 input_values.append(
                     np.random.random_sample(this_shape).astype(np.float32))
             elif this_dtype == np.bool_:
                 # generate random integer from [0, 2)
                 input_values.append(
-                    np.array(np.random.randint(2, size=this_shape), this_dtype))
+                    np.random.randint(2, size=this_shape).astype(np.bool_))
             elif this_dtype == np.int32:
-                input_values.append(
-                    np.array(np.random.randint(0, 99, this_shape, this_dtype)))
+                input_values.append(np.random.randint(0, 99, this_shape).astype(np.int32))
             elif this_dtype == np.int64:
-                input_values.append(
-                    np.array(np.random.randint(0, 99, this_shape, this_dtype)))
+                input_values.append(np.random.randint(0, 99, this_shape).astype(np.int64))
             interpreter.set_tensor(input_details[idx]['index'], input_values[idx])
 
         # get output values by running
