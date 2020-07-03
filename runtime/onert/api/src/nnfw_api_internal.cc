@@ -518,7 +518,7 @@ NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
 
 static std::string get_op_backend_string(std::string op)
 {
-#define MAP_MACRO(CircleName, OneRTName) {#CircleName, "OP_BACKEND_" #OneRTName},
+#define MAP_MACRO(CircleName, OneRTName) {#CircleName, #OneRTName},
 
   static std::unordered_map<std::string, std::string> operation_map = {
 #include "OpMap.lst"
@@ -586,7 +586,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
     }
 
     auto &opcode_to_backend = _compiler->options().manual_scheduler_options.opcode_to_backend;
-    opcode_to_backend.emplace(onert::ir::toOpCode(op), backend);
+    opcode_to_backend.emplace(onert::ir::toOpCode(key), backend);
   }
   catch (const std::exception &e)
   {
