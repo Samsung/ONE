@@ -1,3 +1,15 @@
+# Read "test.lst" if exists
+include("test.lst" OPTIONAL)
+
+# Do not make test if there are no remote machine information
+if(NOT REMOTE_IP)
+  return()
+endif(NOT REMOTE_IP)
+
+if(NOT REMOTE_USER)
+  return()
+endif(NOT REMOTE_USER)
+
 nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
@@ -60,8 +72,6 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
 # This "tf2nnpackage_value_remote_test_deps" target enforces CMake to generate all the dependencies during "build" phase
 add_custom_target(tf2nnpackage_value_remote_test_deps ALL DEPENDS ${TEST_DEPS})
-
-include("test.lst")
 
 # Run tests
 add_test(
