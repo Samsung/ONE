@@ -280,7 +280,7 @@ void Args::Parse(const int argc, char **argv)
 
     if (vm.count("verbose_level"))
     {
-      _verbsoe_level = vm["verbose_level"].as<int>();
+      _verbose_level = vm["verbose_level"].as<int>();
     }
   }
   catch (const std::bad_cast &e)

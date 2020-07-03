@@ -43,7 +43,7 @@ public:
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
   const bool getModelValidate(void) const { return _tflite_validate; }
-  const int getVerboseLevel(void) const { return _verbsoe_level; }
+  const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
   void Initialize();
@@ -65,7 +65,7 @@ private:
   bool _mem_poll;
   bool _write_report;
   bool _tflite_validate;
-  int _verbsoe_level;
+  int _verbose_level;
 };
 
 } // end of namespace TFLiteRun
