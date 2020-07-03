@@ -21,51 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-inline ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
-                                       const ir::operation::BatchMatMul::Param &param)
-{
-  bool adj_x = param.adj_x;
-  bool adj_y = param.adj_y;
-  ir::Shape output_shape;
-
-  int output_rank = std::max(lhs_shape.rank(), rhs_shape.rank());
-
-  // Extend lhs and rhs shape
-  ir::Shape extended_lhs_shape(lhs_shape);
-  ir::Shape extended_rhs_shape(rhs_shape);
-  extended_lhs_shape.extendRank(output_rank);
-  extended_rhs_shape.extendRank(output_rank);
-
-  for (int i = 0; i < output_rank - 2; i++)
-  {
-    const int lhs_dim = extended_lhs_shape.dim(i);
-    const int rhs_dim = extended_rhs_shape.dim(i);
-    int broadcast_dim = lhs_dim;
-    if (lhs_dim != rhs_dim)
-    {
-      if (lhs_dim == 1)
-      {
-        broadcast_dim = rhs_dim;
-      }
-      else if (rhs_dim != 1)
-      {
-        throw std::runtime_error{"BatchMatMul shape inference: invalid brodcasting input shape"};
-      }
-    }
-
-    output_shape.append(broadcast_dim);
-  }
-
-  // Fill in the matmul dimensions.
-  int lhs_rows_index = adj_x ? output_rank - 1 : output_rank - 2;
-  int rhs_cols_index = adj_y ? output_rank - 2 : output_rank - 1;
-
-  output_shape.append(extended_lhs_shape.dim(lhs_rows_index));
-  output_shape.append(extended_rhs_shape.dim(rhs_cols_index));
-
-  return output_shape;
-}
-
 void StaticInferer::visit(const ir::operation::BatchMatMul &op)
 {
   const auto lhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::LHS);

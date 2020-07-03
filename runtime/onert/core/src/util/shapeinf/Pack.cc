@@ -22,26 +22,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num)
-{
-  ir::Shape out_shape;
-  int in_idx = 0;
-
-  for (int out_idx = 0; out_idx < rank; ++out_idx)
-  {
-    if (out_idx == axis)
-    {
-      out_shape.append(num);
-    }
-    else
-    {
-      out_shape.append(input_shape.dim(in_idx++));
-    }
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Pack &op)
 {
   bool is_any_of_inputs_dynamic = [&]() -> bool {

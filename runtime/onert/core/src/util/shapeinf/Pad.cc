@@ -16,31 +16,6 @@
 
 #include "util/ShapeInference.h"
 
-// helper function
-namespace
-{
-
-using namespace onert;
-
-ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const size_t num_pads)
-{
-  assert(num_pads % 2 == 0);
-  const int32_t rank = num_pads / 2;
-
-  ir::Shape ret(rank);
-  for (int32_t i = 0; i < rank; ++i)
-  {
-    const auto before_padding = pad_buf[i * 2];
-    const auto after_padding = pad_buf[i * 2 + 1];
-
-    ret.dim(i) = in_shape.dim(i) + before_padding + after_padding;
-  }
-
-  return ret;
-}
-
-} // namespace
-
 namespace onert
 {
 namespace shape_inference

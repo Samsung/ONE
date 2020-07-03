@@ -21,21 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                           const ir::operation::Conv2D::Param &param, ir::Layout layout)
-{
-  auto ifm_shape = in_shape.asFeature(layout);
-
-  // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
-  auto kf_shape = ker_shape.asFeature(layout);
-  assert(ifm_shape.C == kf_shape.C);
-
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride);
-
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N};
-}
-
 void StaticInferer::visit(const ir::operation::Conv2D &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Conv2D::Input::INPUT)};

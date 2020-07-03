@@ -21,24 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer)
-{
-  const int num_elements = wshape.num_elements();
-
-  assert(num_elements != 0);
-  assert(shape_buffer);
-
-  ir::Shape new_shape(num_elements);
-
-  for (int i = 0; i < num_elements; ++i)
-  {
-    assert(shape_buffer[i] != 0); // It shouldn't be 0.
-    new_shape.dim(i) = shape_buffer[i];
-  }
-
-  return new_shape;
-}
-
 void StaticInferer::visit(const ir::operation::BroadcastTo &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};

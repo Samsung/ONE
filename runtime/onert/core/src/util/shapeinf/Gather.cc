@@ -21,29 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                       int rank)
-{
-  ir::Shape out_shape;
-  const int indices_rank = indices_shape.rank();
-  for (int idx = 0; idx < rank; ++idx)
-  {
-    if (idx == axis)
-    {
-      for (int indices_idx = 0; indices_idx < indices_rank; indices_idx++)
-      {
-        out_shape.append(indices_shape.dim(indices_idx));
-      }
-    }
-    else
-    {
-      out_shape.append(input_shape.dim(idx));
-    }
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Gather &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Gather::Input::INPUT)};

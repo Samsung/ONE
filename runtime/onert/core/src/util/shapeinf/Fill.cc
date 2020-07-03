@@ -22,18 +22,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buffer)
-{
-  ir::Shape out_shape(in_shape.dim(0));
-
-  for (int out_x = 0; out_x < out_shape.rank(); ++out_x)
-  {
-    out_shape.dim(out_x) = buffer[out_x];
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Fill &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Fill::Input::INPUT)};

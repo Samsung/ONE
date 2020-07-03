@@ -21,22 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferOutputTensors(const ir::Shape input_shape, int axis_value, int num_splits)
-{
-  ir::Shape newShape(input_shape);
-
-  assert(axis_value >= 0);
-  assert(axis_value < input_shape.rank());
-
-  const int input_size = input_shape.dim(axis_value);
-  assert(input_size % num_splits == 0);
-  const int slice_size = input_size / num_splits;
-
-  newShape.dim(axis_value) = slice_size;
-
-  return newShape;
-}
-
 void StaticInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(0)};
@@ -61,7 +45,7 @@ void StaticInferer::visit(const ir::operation::Split &op)
 
   assert(0 <= axis_resolved && axis_resolved < rank);
 
-  ir::Shape new_shape = inferOutputTensors(input.info().shape(), axis_resolved, num_splits);
+  ir::Shape new_shape = inferSplitShape(input.info().shape(), axis_resolved, num_splits);
   auto output_teonsors = op.getOutputs();
   for (auto output_idx : output_teonsors)
   {
@@ -89,7 +73,7 @@ void DynamicInferer::visit(const ir::operation::Split &op)
 
   assert(0 <= axis_resolved && axis_resolved < rank);
 
-  ir::Shape new_shape = inferOutputTensors(input_shape, axis_resolved, num_splits);
+  ir::Shape new_shape = inferSplitShape(input_shape, axis_resolved, num_splits);
   for (int out_tensor_idx = 0; out_tensor_idx < num_splits; out_tensor_idx++)
   {
     auto output_ind = op.getOutputs().at(out_tensor_idx);

@@ -21,33 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis)
-{
-  assert(depth >= 0);
-  const auto rank = input_shape.rank() + 1;
-  ir::Shape newShape(rank);
-
-  axis = (axis == -1) ? (rank - 1) : axis;
-
-  for (int i = 0; i < rank; ++i)
-  {
-    if (i < axis)
-    {
-      newShape.dim(i) = input_shape.dim(i);
-    }
-    else if (i == axis)
-    {
-      newShape.dim(i) = depth;
-    }
-    else
-    {
-      newShape.dim(i) = input_shape.dim(i - 1);
-    }
-  }
-
-  return newShape;
-}
-
 void StaticInferer::visit(const ir::operation::OneHot &op)
 {
   const auto indice_idx{op.getInputs().at(ir::operation::OneHot::Input::INDICES)};

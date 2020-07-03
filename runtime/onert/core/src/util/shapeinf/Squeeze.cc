@@ -21,61 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Squeeze::Param &param)
-{
-  const int ndims = param.ndim;
-  const int *squeeze_dims = param.dims;
-  bool should_squeeze[8] = {false};
-  int num_squeezed_dims = 0;
-  int shape_rank = in_shape.rank();
-  if (ndims == 0)
-  {
-    for (int idx = 0; idx < shape_rank; ++idx)
-    {
-      if (in_shape.dim(idx) == 1)
-      {
-        should_squeeze[idx] = true;
-        ++num_squeezed_dims;
-      }
-    }
-  }
-  else
-  {
-    for (int idx = 0; idx < ndims; ++idx)
-    {
-      int current = squeeze_dims[idx];
-      if (current < 0)
-      {
-        current += shape_rank;
-      }
-
-      if (!(current >= 0 && current < shape_rank && in_shape.dim(current) == 1))
-      {
-        throw std::runtime_error(
-            "The following conditions must be met: 0 <= dim < Shape rank, dim == 1");
-      }
-
-      if (!should_squeeze[current])
-      {
-        ++num_squeezed_dims;
-      }
-      should_squeeze[current] = true;
-    }
-  }
-
-  // Set output shape.
-  ir::Shape out_shape(shape_rank - num_squeezed_dims);
-  for (int in_idx = 0, out_idx = 0; in_idx < shape_rank; ++in_idx)
-  {
-    if (!should_squeeze[in_idx])
-    {
-      out_shape.dim(out_idx++) = in_shape.dim(in_idx);
-    }
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Squeeze &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Squeeze::Input::INPUT)};

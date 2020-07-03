@@ -21,21 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape argMaxShapes(const ir::Shape &input_shape, int axis, int rank)
-{
-  ir::Shape out_shape;
-  for (int idx = 0; idx < rank; ++idx)
-  {
-    if (idx != axis)
-    {
-      int32_t input_dim = input_shape.dim(idx);
-      out_shape.append(input_dim);
-    }
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};

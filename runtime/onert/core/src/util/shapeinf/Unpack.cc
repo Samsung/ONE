@@ -21,21 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank)
-{
-  ir::Shape out_shape;
-
-  for (int out_idx = 0; out_idx < rank; out_idx++)
-  {
-    if (out_idx != axis)
-    {
-      out_shape.append(input_shape.dim(out_idx));
-    }
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Unpack &op)
 {
   const auto input_idx{op.getInputs().at(0)};

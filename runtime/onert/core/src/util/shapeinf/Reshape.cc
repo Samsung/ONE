@@ -16,43 +16,6 @@
 
 #include "util/ShapeInference.h"
 
-// helper function
-namespace
-{
-
-using namespace onert;
-
-ir::Shape convertShape(const int32_t *shape_buf, const int32_t shape_num_elements,
-                       const size_t total_num_elements)
-{
-  ir::Shape ret(shape_num_elements);
-  int32_t flatten_dim = ir::Shape::UNSPECIFIED_DIM;
-  for (int32_t i = 0; i < shape_num_elements; ++i)
-  {
-    if (shape_buf[i] < 0)
-    {
-      if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
-        throw std::runtime_error("Reshape: 2nd param has special dim(for flatten) more than twice");
-      flatten_dim = i;
-      ret.dim(i) = 1;
-    }
-    else
-    {
-      ret.dim(i) = shape_buf[i];
-    }
-  }
-  if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
-    ret.dim(flatten_dim) = total_num_elements / ret.num_elements();
-
-  // Check reshapable
-  if (total_num_elements != static_cast<size_t>(ret.num_elements()))
-    throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
-
-  return ret;
-}
-
-} // namespace
-
 namespace onert
 {
 namespace shape_inference
@@ -88,7 +51,7 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
       assert(shape_buf);
 
       ir::Shape new_shape =
-          convertShape(shape_buf, shape.shape().num_elements(), input.shape().num_elements());
+          inferReshapeShape(shape_buf, shape.shape().num_elements(), input.shape().num_elements());
 
       // if shape is from Const, TFLC put the shape of output into tensor
       if (new_shape != output.shape())
@@ -108,7 +71,8 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   {
     // Let's check the new_shape option
     auto shape = op.param().new_shape;
-    ir::Shape new_shape = convertShape(shape.data(), shape.size(), input.shape().num_elements());
+    ir::Shape new_shape =
+        inferReshapeShape(shape.data(), shape.size(), input.shape().num_elements());
 
     if (new_shape != output.shape())
     {
@@ -167,8 +131,8 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
     int32_t *new_shape_buf = reinterpret_cast<int32_t *>(new_shape->buffer());
     assert(new_shape_buf);
 
-    auto output_shape = convertShape(new_shape_buf, new_shape->getShape().num_elements(),
-                                     input->getShape().num_elements());
+    auto output_shape = inferReshapeShape(new_shape_buf, new_shape->getShape().num_elements(),
+                                          input->getShape().num_elements());
 
     // if shape is changed, change output shape and reallocate output tensor memory
     if (output_shape != output->getShape() || output->buffer() == nullptr)
@@ -183,7 +147,8 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   {
     // Let's check the new_shape option
     auto shape = op.param().new_shape;
-    auto output_shape = convertShape(shape.data(), shape.size(), input->getShape().num_elements());
+    auto output_shape =
+        inferReshapeShape(shape.data(), shape.size(), input->getShape().num_elements());
 
     // if shape is changed, change output shape and reallocate output tensor memory
     if (output_shape != output->getShape() || output->buffer() == nullptr)
