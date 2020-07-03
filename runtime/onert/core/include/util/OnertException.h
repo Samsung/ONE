@@ -23,8 +23,6 @@ namespace onert
 {
 namespace util
 {
-namespace exception
-{
 
 class OnertException : public std::exception
 {
@@ -66,7 +64,6 @@ public:
   NotImplementedException(std::string _m) : OnertException("NotImplementedException : " + _m) {}
 };
 
-} // namespace exception
 } // namespace util
 } // namespace onert
 
