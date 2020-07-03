@@ -21,25 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
-{
-  ir::Shape out_shape(in_shape.rank() + 1);
-
-  axis = ((axis >= 0) ? axis : /* when axis < 0 */ (out_shape.rank() + axis));
-  if (!(0 <= axis && axis <= in_shape.rank()))
-    throw std::runtime_error("axis of dim is out of range");
-
-  for (int x = 0, out_x = 0; out_x < out_shape.rank(); ++out_x)
-  {
-    if (out_x == axis)
-      out_shape.dim(out_x) = 1;
-    else
-      out_shape.dim(out_x) = in_shape.dim(x++);
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::ExpandDims &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};

@@ -15,22 +15,11 @@
  */
 
 #include "util/ShapeInference.h"
-#include <cmath>
+
 namespace onert
 {
 namespace shape_inference
 {
-// helper function
-template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val)
-{
-  ir::Shape out_shape(static_cast<int>(1));
-
-  out_shape.dim(0) =
-      (std::is_integral<T>::value
-           ? ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val))
-           : std::ceil(std::abs((start_val - limit_val) / delta_val)));
-  return out_shape;
-}
 
 // StaticInferer at compilation time
 void StaticInferer::visit(const ir::operation::Range &op)

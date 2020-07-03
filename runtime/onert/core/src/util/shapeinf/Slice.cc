@@ -24,40 +24,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, const int32_t *sizes)
-{
-  const uint32_t rank = input_shape.rank();
-  ir::Shape out_shape(rank);
-
-  for (uint32_t idx = 0; idx < rank; ++idx)
-  {
-    const auto input_dim = input_shape.dim(idx);
-
-    // begin is zero-based
-    auto begin = begins[idx];
-    if (begin < 0)
-      throw std::runtime_error("shape inference Slice: Invalid begin.");
-
-    // size is one-based
-    auto size = sizes[idx];
-    if (size < -1)
-      throw std::runtime_error("shape inference Slice: Invalid size.");
-
-    if (size == -1)
-    {
-      size = input_dim - begin;
-    }
-    else
-    {
-      if (input_dim < begin + size)
-        throw std::runtime_error("shape inference Slice: Invalid begin and size.");
-    }
-    out_shape.dim(idx) = size;
-  }
-
-  return out_shape;
-}
-
 void StaticInferer::visit(const ir::operation::Slice &op)
 {
   const auto input_index{op.getInputs().at(ir::operation::Slice::Input::INPUT)};

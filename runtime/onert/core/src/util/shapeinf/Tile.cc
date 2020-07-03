@@ -21,19 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier)
-{
-  // assert(in_shape.rank() == multiplier.rank());
-  ir::Shape new_Shape(in_shape.rank());
-
-  for (int i = 0; i < in_shape.rank(); ++i)
-  {
-    assert(multiplier[i]); // multiplier[i] shuld not be 0.
-    new_Shape.dim(i) = in_shape.dim(i) * multiplier[i];
-  }
-  return new_Shape;
-}
-
 void StaticInferer::visit(const ir::operation::Tile &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Tile::Input::INPUT)};

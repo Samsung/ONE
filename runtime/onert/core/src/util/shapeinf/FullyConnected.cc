@@ -21,20 +21,6 @@ namespace onert
 namespace shape_inference
 {
 
-ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
-{
-  assert(in_shape.rank() >= 2);
-  assert(ker_shape.rank() == 2);
-
-  const auto input_size_with_batch = in_shape.num_elements();
-  const auto num_units = ker_shape.dim(0);
-  const auto input_size = ker_shape.dim(1);
-  const auto batch_size = input_size_with_batch / input_size;
-  assert(input_size_with_batch % input_size == 0);
-
-  return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
-}
-
 void StaticInferer::visit(const ir::operation::FullyConnected &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};

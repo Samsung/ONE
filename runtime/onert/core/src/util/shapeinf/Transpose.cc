@@ -20,26 +20,6 @@ namespace onert
 {
 namespace shape_inference
 {
-// helper function
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm)
-{
-  if (static_cast<int>(perm.size()) > in_shape.rank())
-  {
-    throw std::runtime_error("inferTransposeShape failed, bad rank size: " +
-                             std::to_string(static_cast<int>(perm.size())));
-  }
-  ir::Shape out_shape(static_cast<int>(perm.size()));
-  for (int idx = 0; idx < static_cast<int>(perm.size()); idx++)
-  {
-    if (perm[idx] < 0 || perm[idx] >= static_cast<int>(perm.size()))
-    {
-      throw std::runtime_error("inferTransposeShape failed, bad perm value: " +
-                               std::to_string(perm[idx]));
-    }
-    out_shape.dim(idx) = in_shape.dim(perm[idx]);
-  }
-  return out_shape;
-}
 
 // StaticInferer at compilation time
 void StaticInferer::visit(const ir::operation::Transpose &op)
