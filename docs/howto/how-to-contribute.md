@@ -17,7 +17,7 @@ This section explains the steps to create a pull request (PR).
 1. Create an issue
 
    Maintainers will accept your contribution only when it is well aligned with the 
-   [roadmap](https://github.com/Samsung/ONE/blob/master/docs/overview/roadmap.md) and design
+   [roadmap](../overview/roadmap.md) and design
    principles of **ONE**. So, it is optional, but recommended for contributors to create an issue
    and have a discussion with maintainers before writing code.
 
