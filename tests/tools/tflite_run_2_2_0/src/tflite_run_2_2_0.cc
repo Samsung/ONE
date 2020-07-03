@@ -83,6 +83,8 @@ int main(const int argc, char **argv)
 
   std::chrono::milliseconds t_model_load(0), t_prepare(0);
 
+  // TODO Apply verbose level to phases
+  const int verbose = args.getVerboseLevel();
   benchmark::Phases phases(
       benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
@@ -210,24 +212,30 @@ int main(const int argc, char **argv)
 
   // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
   // only warmup.
-
-  // warmup runs
-  phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-             [&](const benchmark::Phase &phase, uint32_t nth) {
-               std::cout << "... "
-                         << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                         << std::endl;
-             },
-             args.getWarmupRuns());
-
-  // actual runs
-  phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-             [&](const benchmark::Phase &phase, uint32_t nth) {
-               std::cout << "... "
-                         << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                         << std::endl;
-             },
-             args.getNumRuns(), true);
+  if (verbose == 0)
+  {
+    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+               args.getWarmupRuns());
+    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+               args.getNumRuns(), true);
+  }
+  else
+  {
+    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+               [&](const benchmark::Phase &phase, uint32_t nth) {
+                 std::cout << "... "
+                           << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                           << std::endl;
+               },
+               args.getWarmupRuns());
+    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+               [&](const benchmark::Phase &phase, uint32_t nth) {
+                 std::cout << "... "
+                           << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                           << std::endl;
+               },
+               args.getNumRuns(), true);
+  }
 
   std::cout << "output tensor indices = [";
   for (const auto &o : interpreter->outputs())
@@ -239,6 +247,8 @@ int main(const int argc, char **argv)
     std::cout << "),";
   }
   std::cout << "]" << std::endl;
+
+  // TODO Apply verbose level to result
 
   // prepare result
   benchmark::Result result(phases);
