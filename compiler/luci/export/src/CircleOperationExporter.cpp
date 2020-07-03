@@ -176,6 +176,17 @@ private:
   template <class CirclePool2D>
   void export_pool_2d(CirclePool2D *node, circle::BuiltinOperator builtin_op);
 
+  /**
+   * @brief export simple nodes
+   */
+  void export_simple(loco::Node *node, circle::BuiltinOperator bop, circle::BuiltinOptions bot,
+                     flatbuffers::Offset<void> options_offset);
+
+  /**
+   * @brief export simple nodes having void options
+   */
+  void export_simple(loco::Node *node, circle::BuiltinOperator bop);
+
 private:
   FlatBufferBuilder &builder;
   SerializedModelData &md;
@@ -204,6 +215,34 @@ void OperationExporter::export_pool_2d(CirclePool2D *node, circle::BuiltinOperat
                                      to_circle_actfunc(node->fusedActivationFunction()));
   auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
                                   circle::BuiltinOptions_Pool2DOptions, options.Union());
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop,
+                                      circle::BuiltinOptions bot,
+                                      flatbuffers::Offset<void> options_offset)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(bop);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->arg(i)));
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, bot, options_offset);
+  gd._operators.push_back(op_offset);
+}
+
+void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(bop);
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->arg(i)));
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
   gd._operators.push_back(op_offset);
 }
 
@@ -321,13 +360,7 @@ void OperationExporter::visit(luci::CircleCast *node)
 
 void OperationExporter::visit(luci::CircleCeil *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CEIL);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_CEIL);
 }
 
 void OperationExporter::visit(luci::CircleConcatenation *node)
@@ -387,19 +420,8 @@ void OperationExporter::visit(luci::CircleConv2D *node)
 
 void OperationExporter::visit(luci::CircleCos *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_COS);
-
-  // Make input, output and options for operator
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateCosOptions(builder);
-
-  // Make COS operator
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_CosOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_COS, circle::BuiltinOptions_CosOptions,
+                CreateCosOptions(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleCustom *node)
