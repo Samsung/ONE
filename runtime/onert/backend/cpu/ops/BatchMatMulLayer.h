@@ -51,7 +51,7 @@ public:
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x, bool adj_y,
                  IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_lhs;

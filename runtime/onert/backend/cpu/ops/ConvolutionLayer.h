@@ -59,7 +59,7 @@ public:
                  const uint32_t strideHeight, const ir::Activation activation,
                  IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

@@ -53,7 +53,7 @@ public:
   void configure(const std::vector<const IPortableTensor *> &inputs, float epsilon,
                  bool is_training, std::string data_format, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   std::vector<const IPortableTensor *> _inputs;
