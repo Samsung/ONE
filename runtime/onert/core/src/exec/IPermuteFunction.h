@@ -141,7 +141,7 @@ private:
           {
             const int32_t copy_len = dst_tensor.dimension(0);
 
-            memcpy(dst_buffer, src_buffer, copy_len);
+            memcpy(dst_buffer, src_buffer, copy_len * sizeof(T));
             break;
           }
           case 2:
