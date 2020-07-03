@@ -175,9 +175,14 @@ void FullyConnectedLayer::prepare()
     {
       // TODO If it's possible to extract precaching from ruy kernel,
       // place this instead of below code
-      assert(_weights->buffer() != nullptr);
-      // buffer will be used by ruy kernel as a cache key
-      _cached_weights = _weights->buffer();
+
+      // Buffer could be nullptr if it is Model Input. which means that this is not constant,
+      // so it can't be cached
+      if (_weights->buffer() != nullptr)
+      {
+        // buffer will be used by ruy kernel as a cache key
+        _cached_weights = _weights->buffer();
+      }
     }
   }
 #endif
