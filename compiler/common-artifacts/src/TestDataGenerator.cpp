@@ -40,24 +40,23 @@ H5::PredType hdf5_dtype_cast(const loco::DataType loco_dtype)
 {
   switch (loco_dtype)
   {
-  case loco::DataType::U8:
-    return H5::PredType::NATIVE_UINT8; 
-  case loco::DataType::S32:
-    return H5::PredType::NATIVE_INT32;
-  case loco::DataType::S64:
-    return H5::PredType::NATIVE_INT64;
-  case loco::DataType::FLOAT32:
-    return H5::PredType::NATIVE_FLOAT;  
-  default:
-    throw std::runtime_error("NYI data type.");
+    case loco::DataType::U8:
+      return H5::PredType::NATIVE_UINT8;
+    case loco::DataType::S32:
+      return H5::PredType::NATIVE_INT32;
+    case loco::DataType::S64:
+      return H5::PredType::NATIVE_INT64;
+    case loco::DataType::FLOAT32:
+      return H5::PredType::NATIVE_FLOAT;
+    default:
+      throw std::runtime_error("NYI data type.");
   }
 }
 
-template <typename T>
-void geneate_random_data(std::mt19937 &gen, void *data, uint32_t size)
+template <typename T> void geneate_random_data(std::mt19937 &gen, void *data, uint32_t size)
 {
   std::normal_distribution<float> distrib(0, 2); // mean(0), stddev(2)
-  for(uint32_t i = 0; i < size; i++)
+  for (uint32_t i = 0; i < size; i++)
   {
     static_cast<T *>(data)[i] = static_cast<T>(distrib(gen));
   }
@@ -70,20 +69,20 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype)
 
   switch (dtype)
   {
-  case loco::DataType::U8:
-    geneate_random_data<uint8_t>(gen, data, size);
-    break;
-  case loco::DataType::S32:
-    geneate_random_data<int32_t>(gen, data, size);
-    break;
-  case loco::DataType::S64:
-    geneate_random_data<int64_t>(gen, data, size);
-    break;
-  case loco::DataType::FLOAT32:
-    geneate_random_data<float>(gen, data, size);
-    break;
-  default:
-    break;
+    case loco::DataType::U8:
+      geneate_random_data<uint8_t>(gen, data, size);
+      break;
+    case loco::DataType::S32:
+      geneate_random_data<int32_t>(gen, data, size);
+      break;
+    case loco::DataType::S64:
+      geneate_random_data<int64_t>(gen, data, size);
+      break;
+    case loco::DataType::FLOAT32:
+      geneate_random_data<float>(gen, data, size);
+      break;
+    default:
+      break;
   }
 }
 
@@ -166,8 +165,8 @@ int entry(int argc, char **argv)
       }
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
       auto dtype = hdf5_dtype_cast(input_node->dtype());
-      auto dataset = std::make_unique<H5::DataSet>(input_file.createDataSet(
-          "value/" + std::to_string(input_index), dtype, *dataspace));
+      auto dataset = std::make_unique<H5::DataSet>(
+          input_file.createDataSet("value/" + std::to_string(input_index), dtype, *dataspace));
 
       auto data_size = ::element_num(dims);
       auto dtype_size = loco::size(input_node->dtype());
@@ -178,7 +177,7 @@ int entry(int argc, char **argv)
       fill_random_data(data.data(), data_size, input_node->dtype());
 
       dataset->write(data.data(), dtype);
-      
+
       interpreter.writeInputTensor(input_node, data.data(), byte_size);
 
       input_index++;
@@ -217,8 +216,8 @@ int entry(int argc, char **argv)
       }
       auto dataspace = std::make_unique<H5::DataSpace>(dims.size(), dims.data());
       auto dtype = hdf5_dtype_cast(output_node->dtype());
-      auto dataset = std::make_unique<H5::DataSet>(output_file.createDataSet(
-          "value/" + std::to_string(output_index), dtype, *dataspace));
+      auto dataset = std::make_unique<H5::DataSet>(
+          output_file.createDataSet("value/" + std::to_string(output_index), dtype, *dataspace));
 
       uint32_t tensor_bytesize = loco::size(output_node->dtype());
       tensor_bytesize *= ::element_num(dims);
