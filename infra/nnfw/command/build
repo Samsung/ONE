@@ -7,10 +7,5 @@ if [[ ! -d "${BUILD_PATH}" ]]; then
   exit 255
 fi
 
-# Set parallel build
-# TODO Use argument instead of environment variable
-HOST_OS=${HOST_OS:-linux}
-NPROCS=${NPROCS:-1}
-
 cd ${BUILD_PATH}
-make -j ${NPROCS} "$@"
+make "$@"
