@@ -34,10 +34,10 @@ public:
   virtual const char *what() const throw() { return message.c_str(); }
 };
 
-class ExecutionFailedException : public OnertException
+class OutOfRangeException : public OnertException
 {
 public:
-  ExecutionFailedException(std::string _m) : OnertException("ExecutionFailedException : " + _m) {}
+  OutOfRangeException(std::string _m) : OnertException("OutOfRangeException : " + _m) {}
 };
 
 class FileNotFoundException : public OnertException
@@ -46,22 +46,57 @@ public:
   FileNotFoundException(std::string _m) : OnertException("FileNotFoundException : " + _m) {}
 };
 
-class NotSupportedTypeException : public OnertException
-{
-public:
-  NotSupportedTypeException(std::string _m) : OnertException("NotSupportedTypeException : " + _m) {}
-};
-
 class InvalidValueException : public OnertException
 {
 public:
   InvalidValueException(std::string _m) : OnertException("InvalidValueException : " + _m) {}
 };
 
+class NotSupportedTypeException : public OnertException
+{
+public:
+  NotSupportedTypeException(std::string _m) : OnertException("NotSupportedTypeException : " + _m) {}
+};
+
+class NotYetSupportedTypeException : public OnertException
+{
+public:
+  NotYetSupportedTypeException(std::string _m)
+      : OnertException("NotYetSupportedTypeException : " + _m)
+  {
+  }
+};
+
+class NotSupportedOperationException : public OnertException
+{
+public:
+  NotSupportedOperationException(std::string _m)
+      : OnertException("NotSupportedOperationException : " + _m)
+  {
+  }
+};
+
+class NotYetSupportedOperationException : public OnertException
+{
+public:
+  NotYetSupportedOperationException(std::string _m)
+      : OnertException("NotYetSupportedOperationException : " + _m)
+  {
+  }
+};
+
 class NotImplementedException : public OnertException
 {
 public:
   NotImplementedException(std::string _m) : OnertException("NotImplementedException : " + _m) {}
+};
+
+class NotYetImplementedException : public OnertException
+{
+public:
+  NotYetImplementedException(std::string _m) : OnertException("NotYetImplementedException : " + _m)
+  {
+  }
 };
 
 } // namespace util
