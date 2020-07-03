@@ -1,0 +1,29 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 8 dim: 8 dim: 4 }
+  quant { min: -128 max: 127 scale: 1 zero_point: 128 }
+}
+operand {
+  name: "reduction_indices"
+  type: INT32
+  shape { dim: 2 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 1 dim: 1 dim: 4 }
+  quant { min: -256 max: 254 scale: 2 zero_point: 128 }
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "ifm"
+  input: "reduction_indices"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
