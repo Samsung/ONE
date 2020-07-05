@@ -248,28 +248,15 @@ void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator 
 
 void OperationExporter::visit(luci::CircleAbs *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ABS);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateAbsOptions(builder);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_AbsOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_ABS, circle::BuiltinOptions_AbsOptions,
+                CreateAbsOptions(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleAdd *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ADD);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateAddOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_AddOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(
+      node, circle::BuiltinOperator_ADD, circle::BuiltinOptions_AddOptions,
+      CreateAddOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
 void OperationExporter::visit(luci::CircleAddN *node)
@@ -291,30 +278,14 @@ void OperationExporter::visit(luci::CircleAddN *node)
 
 void OperationExporter::visit(luci::CircleArgMax *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ARG_MAX);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
-                                  get_tensor_index(node->dimension())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateArgMaxOptions(builder, to_circle_tensortype(node->output_type()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ArgMaxOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_ARG_MAX, circle::BuiltinOptions_ArgMaxOptions,
+                CreateArgMaxOptions(builder, to_circle_tensortype(node->output_type())).Union());
 }
 
 void OperationExporter::visit(luci::CircleArgMin *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ARG_MIN);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
-                                  get_tensor_index(node->dimension())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateArgMinOptions(builder, to_circle_tensortype(node->output_type()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ArgMinOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_ARG_MIN, circle::BuiltinOptions_ArgMinOptions,
+                CreateArgMinOptions(builder, to_circle_tensortype(node->output_type())).Union());
 }
 
 void OperationExporter::visit(luci::CircleAveragePool2D *node)
@@ -324,15 +295,9 @@ void OperationExporter::visit(luci::CircleAveragePool2D *node)
 
 void OperationExporter::visit(luci::CircleBatchMatMul *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BATCH_MATMUL);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateBatchMatMulOptions(builder, node->adj_x(), node->adj_y());
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_BatchMatMulOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_BATCH_MATMUL,
+                circle::BuiltinOptions_BatchMatMulOptions,
+                CreateBatchMatMulOptions(builder, node->adj_x(), node->adj_y()).Union());
 }
 
 void OperationExporter::visit(luci::CircleCast *node)
@@ -383,39 +348,19 @@ void OperationExporter::visit(luci::CircleConcatenation *node)
 
 void OperationExporter::visit(luci::CircleBatchToSpaceND *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_BATCH_TO_SPACE_ND);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
-                                  get_tensor_index(node->block_shape()),
-                                  get_tensor_index(node->crops())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateBatchToSpaceNDOptions(builder);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_BatchToSpaceNDOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_BATCH_TO_SPACE_ND,
+                circle::BuiltinOptions_BatchToSpaceNDOptions,
+                CreateBatchToSpaceNDOptions(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleConv2D *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CONV_2D);
-
-  // Make input, output and options for operator
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->filter()),
-                                  get_tensor_index(node->bias())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  circle::Padding padding = getOpPadding(node->padding());
-  auto options = CreateConv2DOptions(builder, padding, node->stride()->w(), node->stride()->h(),
-                                     to_circle_actfunc(node->fusedActivationFunction()),
-                                     node->dilation()->w(), node->dilation()->h());
-
-  // Make CONV_2D operator
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_Conv2DOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_CONV_2D, circle::BuiltinOptions_Conv2DOptions,
+                CreateConv2DOptions(builder, getOpPadding(node->padding()), node->stride()->w(),
+                                    node->stride()->h(),
+                                    to_circle_actfunc(node->fusedActivationFunction()),
+                                    node->dilation()->w(), node->dilation()->h())
+                    .Union());
 }
 
 void OperationExporter::visit(luci::CircleCos *node)
@@ -469,51 +414,28 @@ void OperationExporter::visit(luci::CircleCustom *node)
 
 void OperationExporter::visit(luci::CircleDepthToSpace *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_DEPTH_TO_SPACE);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateDepthToSpaceOptions(builder, node->block_size());
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_DepthToSpaceOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_DEPTH_TO_SPACE,
+                circle::BuiltinOptions_DepthToSpaceOptions,
+                CreateDepthToSpaceOptions(builder, node->block_size()).Union());
 }
 
 void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_DEPTHWISE_CONV_2D);
-
-  // Make input, output and options for operator
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->filter()),
-                                  get_tensor_index(node->bias())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  circle::Padding padding = getOpPadding(node->padding());
-  auto options = CreateDepthwiseConv2DOptions(builder, padding, node->stride()->w(),
-                                              node->stride()->h(), node->depthMultiplier(),
-                                              to_circle_actfunc(node->fusedActivationFunction()),
-                                              node->dilation()->w(), node->dilation()->h());
-
-  // Make DEPTHWISE_CONV_2D operator
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_DepthwiseConv2DOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
+                circle::BuiltinOptions_DepthwiseConv2DOptions,
+                CreateDepthwiseConv2DOptions(builder, getOpPadding(node->padding()),
+                                             node->stride()->w(), node->stride()->h(),
+                                             node->depthMultiplier(),
+                                             to_circle_actfunc(node->fusedActivationFunction()),
+                                             node->dilation()->w(), node->dilation()->h())
+                    .Union());
 }
 
 void OperationExporter::visit(luci::CircleDiv *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_DIV);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x()), get_tensor_index(node->y())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateDivOptions(builder, to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_DivOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(
+      node, circle::BuiltinOperator_DIV, circle::BuiltinOptions_DivOptions,
+      CreateDivOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
 void OperationExporter::visit(luci::CircleElu *node)
