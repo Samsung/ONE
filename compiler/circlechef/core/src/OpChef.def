@@ -5,4 +5,6 @@
 // Please keep the list in alphabetical order
 // OP_CHEF(NAME, FACTORY_CLASS)
 OP_CHEF(BatchMatMul, BatchMatMulChefFactory)
+OP_CHEF(BCQFullyConnected, BCQFullyConnectedChefFactory)
+OP_CHEF(BCQGather, BCQGatherChefFactory)
 OP_CHEF(InstanceNorm, InstanceNormChefFactory)
