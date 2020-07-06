@@ -35,6 +35,7 @@ tcgenerate(Conv2D_U8_000)
 tcgenerate(Conv2D_U8_001)
 tcgenerate(Cos_000)
 tcgenerate(DepthToSpace_000)
+tcgenerate(DepthwiseConv2D_001) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_U8_000)
 tcgenerate(Div_000)
 tcgenerate(ELU_000)
