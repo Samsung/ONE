@@ -61,6 +61,8 @@ public:
 
   void run() override;
 
+  void prepare() override;
+
 private:
   const IPortableTensor *_input;
   const IPortableTensor *_kernel;

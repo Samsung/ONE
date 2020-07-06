@@ -36,7 +36,7 @@ class Operand
 {
 public:
   explicit Operand(const Shape &shape, const TypeInfo &type)
-      : _info{shape, type, MemAllocType::STATIC}, _const{false}
+      : _info{shape, type, MemAllocType::STATIC}
   {
     // DO NOTHING
   }
@@ -62,7 +62,7 @@ public:
   void data(std::shared_ptr<Data> &&data)
   {
     _data = std::move(data);
-    _const = true;
+    _info.setAsConstant();
   }
   const Data *data(void) const { return _data.get(); }
 
@@ -72,7 +72,7 @@ public:
    * @brief Get true if Operand is const, otherwise @c false
    a @return @c true if Operand is const, otherwise @c false
    */
-  bool isConstant(void) const { return _const; }
+  bool isConstant(void) const { return _info.isConstant(); }
 
 public:
   template <typename T, typename... Args> void data(Args &&... args)
@@ -103,7 +103,6 @@ public:
 private:
   OperandInfo _info;
   std::shared_ptr<Data> _data;
-  bool _const;
 
   OperationIndexSet _uses;
   OperationIndexSet _def; // size is 0 (constant) or 1 (from def operation)

@@ -63,19 +63,11 @@ public:
   void prepare(const Shape &filter_shape, const float *filter_data, PaddingType padding_type,
                bool &is_replaced_weights)
   {
-    (void)filter_shape;
-    (void)filter_data;
-    (void)padding_type;
-    (void)is_replaced_weights;
     if (!_prepared)
     {
-      if (padding_type != PaddingType::kNone && std::thread::hardware_concurrency() > 1)
+      if (usableMultiThreaded(padding_type))
       {
-        const auto output_depth = filter_shape.Dims(0);
-        const Shape hwcn_filter_shape{filter_shape.FlatSize() / output_depth, output_depth};
-        _modified_filter_data.resize(hwcn_filter_shape.FlatSize());
-        TransposeFloatTensor(filter_data, hwcn_filter_shape, &_modified_filter_data[0]);
-        is_replaced_weights = true;
+        transposeFilter(filter_shape, filter_data, is_replaced_weights);
       }
       _prepared = true;
     }
@@ -84,30 +76,26 @@ public:
   void prepareQuant(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
                     uint32_t stride_width, uint32_t stride_height)
   {
-    _need_im2col = stride_width != 1 || stride_height != 1 || kernel_shape.Dims(1) != 1 ||
-                   kernel_shape.Dims(2) != 1;
-    if (!_prepared && _need_im2col)
+    if (!_prepared)
     {
-      _im2col_shape.SetDim(0, output_shape.Dims(0));
-      _im2col_shape.SetDim(1, output_shape.Dims(1));
-      _im2col_shape.SetDim(2, output_shape.Dims(2));
-      _im2col_shape.SetDim(3, input_shape.Dims(3) * kernel_shape.Dims(1) * kernel_shape.Dims(2));
-      _im2col_data.resize(_im2col_shape.FlatSize());
+      IsRequiredIm2col(input_shape, kernel_shape, output_shape, stride_width, stride_height);
+      _prepared = true;
     }
-    _prepared = true;
   }
 
   void operator()(const ConvParams &params, const Shape &input_shape, const float *input_data,
                   const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
                   const float *bias_data, const Shape &output_shape, float *output_data)
   {
-    if (params.padding_type != PaddingType::kNone && std::thread::hardware_concurrency() > 1)
+    if (usableMultiThreaded(params.padding_type))
     {
+      bool transposed_in_execution = false;
       if (!_prepared)
       {
-        bool not_used_condition = false;
-        prepare(filter_shape, filter_data, params.padding_type, not_used_condition);
-        _prepared = true;
+        // This means that filter is not constant
+        // TODO Apply optimized kernel if multithreaded kernel is slower than optimized kernel by
+        // transposing filter data
+        transposeFilter(filter_shape, filter_data, transposed_in_execution);
       }
       multithreaded::Conv(params, input_shape, input_data, filter_shape, &_modified_filter_data[0],
                           bias_shape, bias_data, output_shape, output_data);
@@ -124,16 +112,56 @@ public:
                   const Shape &filter_shape, const uint8_t *filter_data, const Shape &bias_shape,
                   const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)
   {
-    if (_prepared)
+    if (!_prepared)
+    {
+      // This means that input or output are dynamic or filter is not constant
+      IsRequiredIm2col(input_shape, filter_shape, output_shape, params.stride_width,
+                       params.stride_height);
+    }
+
+    if (_need_im2col)
     {
       uint8_t *im2col_raw_data = _im2col_data.data();
       optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
                       bias_data, output_shape, output_data, _im2col_shape, im2col_raw_data);
     }
+    // TODO Apply optimized kernel if the optimized kernel is faster without im2col than the
+    // reference kernel
     else
     {
       reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
                       bias_data, output_shape, output_data);
+    }
+  }
+
+private:
+  bool usableMultiThreaded(PaddingType padding_type)
+  {
+    return padding_type != PaddingType::kNone && std::thread::hardware_concurrency() > 1;
+  }
+
+  void transposeFilter(const Shape &filter_shape, const float *filter_data,
+                       bool &is_replaced_weights)
+  {
+    const auto output_depth = filter_shape.Dims(0);
+    const Shape hwcn_filter_shape{filter_shape.FlatSize() / output_depth, output_depth};
+    _modified_filter_data.resize(hwcn_filter_shape.FlatSize());
+    TransposeFloatTensor(filter_data, hwcn_filter_shape, &_modified_filter_data[0]);
+    is_replaced_weights = true;
+  }
+
+  void IsRequiredIm2col(const Shape &input_shape, const Shape &kernel_shape,
+                        const Shape &output_shape, uint32_t stride_width, uint32_t stride_height)
+  {
+    _need_im2col = stride_width != 1 || stride_height != 1 || kernel_shape.Dims(1) != 1 ||
+                   kernel_shape.Dims(2) != 1;
+    if (_need_im2col)
+    {
+      _im2col_shape.SetDim(0, output_shape.Dims(0));
+      _im2col_shape.SetDim(1, output_shape.Dims(1));
+      _im2col_shape.SetDim(2, output_shape.Dims(2));
+      _im2col_shape.SetDim(3, input_shape.Dims(3) * kernel_shape.Dims(1) * kernel_shape.Dims(2));
+      _im2col_data.resize(_im2col_shape.FlatSize());
     }
   }
 
