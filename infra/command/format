@@ -74,9 +74,21 @@ function exclude_symbolic_links() {
 }
 
 function check_newline() {
+  FILES_TO_CHECK_CR=()
+  for f in ${FILES_TO_CHECK[@]}; do
+    # Manually ignore style checking
+    if [[ ${f} == !(*.svg|*.pdf|*.png) ]]; then
+      FILES_TO_CHECK_CR+=("${f}")
+    fi
+  done
+
+  echo "File to check newline: ${FILES_TO_CHECK_CR[@]}"
+
   # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
-  if [[ ${#FILES_TO_CHECK} -ne 0 ]]; then
-    CRCHECK=$(file ${FILES_TO_CHECK} | grep 'with CR')
+  if [[ ${#FILES_TO_CHECK_CR} -ne 0 ]]; then
+    CRCHECK=$(file ${FILES_TO_CHECK_CR} | grep 'with CR')
+  else
+    return
   fi
   FILES_TO_FIX=($(echo "$CRCHECK" | grep "with CRLF line" | cut -d':' -f1))
   for f in ${FILES_TO_FIX[@]}; do
@@ -87,7 +99,7 @@ function check_newline() {
     tr '\r' '\n' < $f > $f.fixed && cat $f.fixed > $f && rm $f.fixed
   done
   # Check no new line at end of file
-  for f in ${FILES_TO_CHECK[@]}; do
+  for f in ${FILES_TO_CHECK_CR[@]}; do
     if diff /dev/null "$f" | tail -1 | grep '^\\ No newline' > /dev/null; then
       echo >> "$f"
     fi
