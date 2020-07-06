@@ -26,73 +26,71 @@ namespace
 
 using namespace testing;
 
-TEST(ArgMaxTest, Float)
+template <typename T1, typename T2>
+void Check(std::initializer_list<int32_t> input_shape,
+           std::initializer_list<int32_t> dimension_shape,
+           std::initializer_list<int32_t> output_shape, std::initializer_list<T1> input_data,
+           std::initializer_list<int32_t> dimension_data, std::initializer_list<T2> output_data)
 {
-  Shape input_shape{1, 1, 1, 4};
-  std::vector<float> input_data{
-      0.1, 0.9, 0.7, 0.3,
-  };
-  Shape dimension_shape{};
-  std::vector<int32_t> dimension_data{
-      3,
-  };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>(dimension_shape, dimension_data);
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  Tensor input_tensor{getElementType<T1>(), input_shape, {}, ""};
+  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T1));
+  Tensor dimension_tensor{DataType::S32, dimension_shape, {}, ""};
+  dimension_tensor.writeData(dimension_data.begin(), dimension_data.size() * sizeof(int32_t));
+
+  Tensor output_tensor = makeOutputTensor(getElementType<T2>());
 
   ArgMaxParams params{};
-  params.output_type = DataType::S64;
+  params.output_type = getElementType<T2>();
   ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
-  EXPECT_THAT(extractTensorData<int64_t>(output_tensor), ::testing::ElementsAreArray({1}));
-  // TODO make a Shape checking of output_tensor.
+
+  EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
 }
 
-TEST(ArgMaxTest, Uint8)
+template <typename T> class ArgMaxTest : public ::testing::Test
 {
-  Shape input_shape{1, 1, 1, 4};
-  std::vector<uint8_t> input_data{
-      1, 9, 7, 3,
-  };
-  Shape dimension_shape{};
-  std::vector<int32_t> dimension_data{
-      3,
-  };
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_data);
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>(dimension_shape, dimension_data);
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
+};
 
-  ArgMaxParams params{};
-  params.output_type = DataType::S64;
-  ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-  EXPECT_THAT(extractTensorData<int64_t>(output_tensor), ::testing::ElementsAreArray({1}));
-  // TODO make a Shape checking of output_tensor.
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(ArgMaxTest, DataTypes);
+
+TYPED_TEST(ArgMaxTest, Simple)
+{
+  Check<TypeParam, int32_t>(/*input_shape=*/{1, 1, 1, 4}, /*dimension_shape=*/{},
+                            /*output_shape=*/{1, 1, 1},
+                            /*input_data=*/
+                            {
+                                1, 9, 7, 3,
+                            },
+                            /*dimension_data=*/{3}, /*output_data=*/{1});
+  Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 1, 4}, /*dimension_shape=*/{},
+                            /*output_shape=*/{1, 1, 1},
+                            /*input_data=*/
+                            {
+                                1, 9, 7, 3,
+                            },
+                            /*dimension_data=*/{3}, /*output_data=*/{1});
 }
 
-TEST(ArgMaxTest, MultiDimensions)
+TYPED_TEST(ArgMaxTest, MultiDimensions)
 {
-  Shape input_shape{1, 1, 2, 4};
-  std::vector<float> input_data{
-      1, 2, 7, 8, 1, 9, 7, 3,
-  };
-  Shape dimension_shape{};
-  std::vector<int32_t> dimension_data{
-      3,
-  };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>(dimension_shape, dimension_data);
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
-
-  ArgMaxParams params{};
-  params.output_type = DataType::S64;
-  ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-  EXPECT_THAT(extractTensorData<int64_t>(output_tensor), ::testing::ElementsAreArray({3, 1}));
-  // TODO make a Shape checking of output_tensor.
+  Check<TypeParam, int32_t>(/*input_shape=*/{1, 1, 2, 4}, /*dimension_shape=*/{},
+                            /*output_shape=*/{1, 1, 2},
+                            /*input_data=*/
+                            {
+                                1, 2, 7, 8, 1, 9, 7, 3,
+                            },
+                            /*dimension_data=*/{3}, /*output_data=*/{3, 1});
+  Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 2, 4}, /*dimension_shape=*/{},
+                            /*output_shape=*/{1, 1, 2},
+                            /*input_data=*/
+                            {
+                                1, 2, 7, 8, 1, 9, 7, 3,
+                            },
+                            /*dimension_data=*/{3}, /*output_data=*/{3, 1});
 }
 
 } // namespace
