@@ -144,8 +144,8 @@ int entry(int argc, char **argv)
     {
       const auto *input_node = dynamic_cast<const luci::CircleInput *>(node);
       std::string name = input_node->name();
-      if (name.find(":0") == std::string::npos)
-        name += ":0";
+      if (name.find(":") == std::string::npos)
+        name += ":";
 
       // create attribute
       H5::DataSpace name_dataspace(H5S_SCALAR);
@@ -195,8 +195,8 @@ int entry(int argc, char **argv)
     {
       const auto *output_node = dynamic_cast<const luci::CircleOutput *>(node);
       std::string name = output_node->name();
-      if (name.find(":0") == std::string::npos)
-        name += ":0";
+      if (name.find(":") == std::string::npos)
+        name += ":";
 
       // create attribute
       H5::DataSpace name_dataspace(H5S_SCALAR);

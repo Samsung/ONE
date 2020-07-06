@@ -35,12 +35,10 @@ foreach(DIR IN ITEMS ${SUBDIR})
   endif()
 endforeach()
 
-set(CIRCLIZES ${RECIPES})
-set(OPTS ${RECIPES})
-set(TC_GENS ${RECIPES})
-
 macro(circlize NAME)
   set(NO_CIRCLIZE_${NAME} TRUE)
+  set(NO_OPTIMIZE_${NAME} TRUE)
+  set(NO_TCGEN_${NAME} TRUE)
 endmacro()
 macro(optimize NAME)
   set(NO_OPTIMIZE_${NAME} TRUE)
@@ -156,7 +154,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     )
     list(APPEND TEST_DEPS ${TC_DIRECTORY} ${INPUT_BIN_PATH} ${EXPECTED_BIN_PATH}
                           ${INPUT_NNPKG_PATH} ${EXPECTED_NNPKG_PATH})
-    endif()
+  endif()
 endforeach()
 
 add_custom_target(common_artifacts_deps ALL DEPENDS ${TEST_DEPS})
