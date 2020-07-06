@@ -82,8 +82,6 @@ function check_newline() {
     fi
   done
 
-  echo "File to check newline: ${FILES_TO_CHECK_CR[@]}"
-
   # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
   if [[ ${#FILES_TO_CHECK_CR} -ne 0 ]]; then
     CRCHECK=$(file ${FILES_TO_CHECK_CR} | grep 'with CR')
