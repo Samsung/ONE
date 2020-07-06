@@ -36,6 +36,7 @@ public:
       FuseInstanceNorm,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
+      ResolveCustomOpMatMul,
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
     };
