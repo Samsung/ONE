@@ -84,6 +84,6 @@ python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
 "${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.circle"
 
 # optimize
-"${ROOT}/bin/circle2circle" "${TMPDIR}/${MODEL_NAME}.circle" "${TMPDIR}/${MODEL_NAME}.circle"
+"${ROOT}/bin/circle2circle" --all "${TMPDIR}/${MODEL_NAME}.circle" "${TMPDIR}/${MODEL_NAME}.circle"
 
 "${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
