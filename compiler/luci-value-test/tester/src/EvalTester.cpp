@@ -84,13 +84,13 @@ int entry(int argc, char **argv)
   {
     std::cerr
         << "Usage: " << argv[0]
-        << " <path/to/circle/model> <num_inputs> <path/to/input/file> <path/to/output/file>\n";
+        << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
     return EXIT_FAILURE;
   }
 
   const char *filename = argv[1];
   const int32_t num_inputs = atoi(argv[2]);
-  const char *input_file = argv[3];
+  const char *input_prefix = argv[3];
   const char *output_file = argv[4];
   const std::string intermediate_filename = std::string(filename) + ".inter.circle";
 
@@ -123,7 +123,7 @@ int entry(int argc, char **argv)
   luci_interpreter::Interpreter interpreter(module.get());
 
   // Set input.
-  // Data for n'th input is read from ${input_file}n
+  // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
   const auto input_nodes = loco::input_nodes(module->graph());
   assert(num_inputs == input_nodes.size());
@@ -131,7 +131,7 @@ int entry(int argc, char **argv)
   {
     const auto *input_node = dynamic_cast<const luci::CircleInput *>(input_nodes[i]);
     std::vector<char> input_data(getTensorSize(input_node));
-    readDataFromFile(std::string(input_file) + std::to_string(i), input_data.data(),
+    readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data.data(),
                      input_data.size());
     interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
   }
