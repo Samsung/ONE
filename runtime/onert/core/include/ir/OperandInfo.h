@@ -118,7 +118,8 @@ public:
   void setAsConstant() { _const = true; }
   bool isConstant() const
   {
-    assert(!isDynamic());
+    // Impossible case: constant and dynamic operand
+    assert(!(isDynamic() && _const));
     return _const;
   }
   bool isDynamic() const { return _alloc_type == MemAllocType::DYNAMIC; }
