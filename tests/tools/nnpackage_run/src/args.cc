@@ -137,7 +137,10 @@ void Args::Initialize(void)
     ("shape_run", po::value<std::string>()->default_value("[]"),
          "set shape of specified tensor right before running\n"
          "e.g. '[1, [1, 2]]` to set 1st tensor to [1, 2].\n")
-
+    ("verbose_level,v", po::value<int>()->default_value(0), "Verbose level\n"
+         "0: prints the only result. Messages btw run don't print\n"
+         "1: prints result and message btw run\n"
+         "2: prints all of messages to print\n")
     ;
   // clang-format on
 
@@ -273,6 +276,11 @@ void Args::Parse(const int argc, char **argv)
     if (vm.count("write_report"))
     {
       _write_report = vm["write_report"].as<bool>();
+    }
+
+    if (vm.count("verbose_level"))
+    {
+      _verbose_level = vm["verbose_level"].as<int>();
     }
   }
   catch (const std::bad_cast &e)

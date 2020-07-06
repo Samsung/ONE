@@ -50,6 +50,7 @@ public:
   const bool printVersion(void) const { return _print_version; }
   const TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
   const TensorShapeMap &getShapeMapForRun() { return _shape_run; }
+  const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
   void Initialize();
@@ -74,6 +75,7 @@ private:
   bool _mem_poll;
   bool _write_report;
   bool _print_version = false;
+  int _verbose_level;
 };
 
 } // end of namespace nnpkg_run

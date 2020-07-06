@@ -57,6 +57,10 @@ void Args::Initialize(void)
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false), "Write report")
     ("validate", po::value<bool>()->default_value(true), "Validate tflite model")
+    ("verbose_level,v", po::value<int>()->default_value(0), "Verbose level\n"
+         "0: prints the only result. Messages btw run don't print\n"
+         "1: prints result and message btw run\n"
+         "2: prints all of messages to print\n")
     ;
     // clang-format on
 
@@ -193,6 +197,11 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("validate"))
   {
     _tflite_validate = vm["validate"].as<bool>();
+  }
+
+  if (vm.count("verbose_level"))
+  {
+    _verbose_level = vm["verbose_level"].as<int>();
   }
 }
 
