@@ -93,6 +93,7 @@ public:
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_offset() const override { return _info.typeInfo().offset(); }
+  bool is_constant() const override { return _info.isConstant(); }
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
 
