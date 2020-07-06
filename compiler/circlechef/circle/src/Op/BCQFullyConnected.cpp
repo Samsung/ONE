@@ -24,7 +24,22 @@ namespace circlechef
 void CircleOpBCQFullyConnected::filler(const circle::Operator *op, CircleImport *import,
                                        circlechef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
+  import->set_tensor_filler(inputs[1]);
+  import->set_tensor_filler(inputs[3]);
+
+  const circle::Tensor *tensor2 = import->tensors()->Get(inputs[2]);
+  assert(tensor2->type() == circle::TensorType::TensorType_INT32);
+  const circle::Buffer *buffer2 = import->buffers()->Get(tensor2->buffer());
+  auto vec2 = extract_buffer<int32_t>(buffer2);
+  import->set_tensor_filler(inputs[2], vec2);
+
+  const circle::Tensor *tensor4 = import->tensors()->Get(inputs[4]);
+  assert(tensor4->type() == circle::TensorType::TensorType_INT32);
+  const circle::Buffer *buffer4 = import->buffers()->Get(tensor4->buffer());
+  auto vec4 = extract_buffer<int32_t>(buffer4);
+  import->set_tensor_filler(inputs[4], vec4);
 }
 
 circlechef::Operation *CircleOpBCQFullyConnected::build(const circle::Operator *op,

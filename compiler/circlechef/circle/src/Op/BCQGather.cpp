@@ -24,7 +24,27 @@ namespace circlechef
 void CircleOpBCQGather::filler(const circle::Operator *op, CircleImport *import,
                                circlechef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
+  import->set_tensor_filler(inputs[0]);
+
+  const circle::Tensor *tensor1 = import->tensors()->Get(inputs[1]);
+  assert(tensor1->type() == circle::TensorType::TensorType_INT32);
+  const circle::Buffer *buffer1 = import->buffers()->Get(tensor1->buffer());
+  auto vec1 = extract_buffer<int32_t>(buffer1);
+  import->set_tensor_filler(inputs[1], vec1);
+
+  const circle::Tensor *tensor2 = import->tensors()->Get(inputs[2]);
+  assert(tensor2->type() == circle::TensorType::TensorType_INT32);
+  const circle::Buffer *buffer2 = import->buffers()->Get(tensor2->buffer());
+  auto vec2 = extract_buffer<int32_t>(buffer2);
+  import->set_tensor_filler(inputs[2], vec2);
+
+  const circle::Tensor *tensor3 = import->tensors()->Get(inputs[3]);
+  assert(tensor3->type() == circle::TensorType::TensorType_INT32);
+  const circle::Buffer *buffer3 = import->buffers()->Get(tensor3->buffer());
+  auto vec3 = extract_buffer<int32_t>(buffer3);
+  import->set_tensor_filler(inputs[3], vec3);
 }
 
 circlechef::Operation *CircleOpBCQGather::build(const circle::Operator *op, CircleImport *import,
