@@ -15,8 +15,6 @@ usage()
 {
   echo "Convert TensorFlow model to nnpackage."
   echo "Usage: tf2nnpkg --info <path/to/info> --graphdef <path/to/pb> [OPTION] -o <path/to/nnpkg/directory>"
-  echo "option:"
-  echo "    --customop <path/to/customop.conf>"
   exit 0
 }
 
@@ -35,10 +33,6 @@ while [ "$#" -ne 0 ]; do
       ;;
     '--graphdef')
       export GRAPHDEF_FILE="$2"
-      shift 2
-      ;;
-    '--customop')
-      export CUSTOMOP_CONF_FILE="$2"
       shift 2
       ;;
     '-o')
@@ -62,26 +56,20 @@ if [ -z ${INFO_FILE} ] || [ ! -e ${INFO_FILE} ]; then
   exit 2
 fi
 
-# optional param
-if [ ${CUSTOMOP_CONF_FILE} ]; then
-  if [ ! -e ${CUSTOMOP_CONF_FILE} ]; then
-    echo "customop.conf is not found. Please check --customop is correct."
-    exit 2
-  fi
-fi
-
 FILE_BASE=$(basename ${GRAPHDEF_FILE})
 MODEL_NAME="${FILE_BASE%.*}"
 TMPDIR=$(mktemp -d)
 trap "{ rm -rf $TMPDIR; }" EXIT
 
-if [ ${CUSTOMOP_CONF_FILE} ]; then
-  echo "This option is supported by previous version."
-  exit 2
-fi
-
 # activate python virtual environment
-source "${ROOT}/bin/venv/bin/activate"
+VIRTUALENV_LINUX="${ROOT}/bin/venv/bin/activate"
+VIRTUALENV_WINDOWS="${ROOT}/bin/venv/Scripts/activate"
+
+if [ -e ${VIRTUALENV_LINUX} ]; then
+  source ${VIRTUALENV_LINUX}
+elif [ -e ${VIRTUALENV_WINDOWS} ]; then
+  source ${VIRTUALENV_WINDOWS}
+fi
 
 # parse inputs, outputs from info file
 INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
@@ -92,6 +80,10 @@ python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --input_arrays ${INPUT} --output_arrays ${OUTPUT}
 
+# convert .tflite to .circle
 "${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.circle"
+
+# optimize
+"${ROOT}/bin/circle2circle" "${TMPDIR}/${MODEL_NAME}.circle" "${TMPDIR}/${MODEL_NAME}.circle"
 
 "${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
