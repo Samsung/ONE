@@ -1,0 +1,28 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 3 }
+}
+operation {
+  type: "MatMul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  matmul_options {
+    transpose_a: true
+    transpose_b: false
+  }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
