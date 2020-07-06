@@ -47,6 +47,7 @@ void print_help(const char *progname)
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
+  std::cerr << "   --resolve_customop_matmul : Enable ResolveCustomOpMatMulPass Pass" << std::endl;
   std::cerr << "Execution options:" << std::endl;
   std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
   std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
@@ -92,6 +93,10 @@ int entry(int argc, char **argv)
   };
   argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+    return 0;
+  };
+  argparse["--resolve_customop_matmul"] = [&options](const char **) {
+    options->enable(Algorithms::ResolveCustomOpMatMul);
     return 0;
   };
 
