@@ -74,6 +74,7 @@
 #include "BuildBuiltinOptions/ResizeBilinearOptions.h"
 #include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
 #include "BuildBuiltinOptions/ReverseSequenceOptions.h"
+#include "BuildBuiltinOptions/ReverseV2Options.h"
 // There is no RoundOptions
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/ScatterNdOptions.h"
