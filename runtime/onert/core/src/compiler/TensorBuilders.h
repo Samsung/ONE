@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_TENSOR_BUILDER_H__
-#define __ONERT_COMPILER_TENSOR_BUILDER_H__
+#ifndef __ONERT_COMPILER_TENSOR_BUILDERS_H__
+#define __ONERT_COMPILER_TENSOR_BUILDERS_H__
 
 #include <unordered_set>
 #include <memory>
@@ -74,4 +74,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_TENSOR_BUILDER_H__
+#endif // __ONERT_COMPILER_TENSOR_BUILDERS_H__
