@@ -23,7 +23,7 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(FlatBuffersSource_FOUND)
   nnfw_find_package(GEMMLowpSource QUIET)
   return_unless(GEMMLowpSource_FOUND)
-  nnfw_find_package(TensorFlowSource QUIET)
+  nnas_find_package(TensorFlowSource EXACT 1.13.1 QUIET)
   return_unless(TensorFlowSource_FOUND)
 
   # Optional packages
