@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -e
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+command_exists() {
+  if [ "$#" -le 0 ]; then
+    return 1
+  fi
+  command -v "$@" > /dev/null 2>&1
+}
+
+usage()
+{
+  echo "Convert TensorFlow model to nnpackage."
+  echo "Usage: tf2nnpkg --info <path/to/info> --graphdef <path/to/pb> [OPTION] -o <path/to/nnpkg/directory>"
+  exit 0
+}
+
+# Parse command-line arguments
+#
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--help')
+      usage
+      ;;
+    '--info')
+      export INFO_FILE="$2"
+      shift 2
+      ;;
+    '--graphdef')
+      export GRAPHDEF_FILE="$2"
+      shift 2
+      ;;
+    '-o')
+      export OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    *)
+      echo "${CUR}"
+      shift
+      ;;
+  esac
+done
+
+if [ -z ${GRAPHDEF_FILE} ] || [ ! -e ${GRAPHDEF_FILE} ]; then
+  echo "pb is not found. Please check --graphdef is correct."
+  exit 2
+fi
+
+if [ -z ${INFO_FILE} ] || [ ! -e ${INFO_FILE} ]; then
+  echo "info is not found. Please check --info is correct."
+  exit 2
+fi
+
+if [ -z ${OUTPUT_DIR} ]; then
+  echo "output directory is not specifed. Please check -o is correct.."
+  exit 2
+fi
+
+FILE_BASE=$(basename ${GRAPHDEF_FILE})
+MODEL_NAME="${FILE_BASE%.*}"
+TMPDIR=$(mktemp -d)
+trap "{ rm -rf $TMPDIR; }" EXIT
+
+# activate python virtual environment
+VIRTUALENV_LINUX="${ROOT}/bin/venv/bin/activate"
+VIRTUALENV_WINDOWS="${ROOT}/bin/venv/Scripts/activate"
+
+if [ -e ${VIRTUALENV_LINUX} ]; then
+  source ${VIRTUALENV_LINUX}
+elif [ -e ${VIRTUALENV_WINDOWS} ]; then
+  source ${VIRTUALENV_WINDOWS}
+fi
+
+# parse inputs, outputs from info file
+INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
+OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
+
+# generate tflite file
+python "${ROOT}/bin/tf2tfliteV2.py" --v2 --input_path ${GRAPHDEF_FILE} \
+--output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
+--input_arrays ${INPUT} --output_arrays ${OUTPUT}
+
+# convert .tflite to .circle
+"${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.tmp.circle"
+
+# optimize
+"${ROOT}/bin/circle2circle" --all "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
+
+"${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
