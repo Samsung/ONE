@@ -119,6 +119,7 @@ public:
   void visit(luci::CircleResizeBilinear *) final;
   void visit(luci::CircleResizeNearestNeighbor *) final;
   void visit(luci::CircleReverseSequence *) final;
+  void visit(luci::CircleReverseV2 *) final;
   void visit(luci::CircleRound *) final;
   void visit(luci::CircleRsqrt *) final;
   void visit(luci::CircleScatterNd *) final;
@@ -786,6 +787,19 @@ void OperationExporter::visit(luci::CircleReverseSequence *node)
   export_simple(
       node, circle::BuiltinOperator_REVERSE_SEQUENCE, circle::BuiltinOptions_ReverseSequenceOptions,
       CreateReverseSequenceOptions(builder, node->seq_axis(), node->batch_axis()).Union());
+}
+
+void OperationExporter::visit(luci::CircleReverseV2 *node)
+{
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2);
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()), get_tensor_index(node->axis())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateReverseV2Options(builder);
+  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReverseSequenceOptions, options.Union());
+  gd._operators.push_back(op_offset);
 }
 
 void OperationExporter::visit(luci::CircleRound *node)
