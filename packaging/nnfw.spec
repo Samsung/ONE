@@ -113,7 +113,7 @@ tar -xf %{SOURCE1006} -C ./externals
 %ifarch arm armv7l aarch64
 # runtime build
 %{build_env} ./nnfw configure %{build_options} %{extra_option}
-%{build_env} ./nnfw build
+%{build_env} ./nnfw build -j4
 # install in workspace
 # TODO Set install path
 %{build_env} ./nnfw install
@@ -122,7 +122,7 @@ tar -xf %{SOURCE1006} -C ./externals
 # test runtime
 # TODO remove duplicated build process
 %{test_build_env} ./nnfw configure %{test_build_options} %{extra_option}
-%{test_build_env} ./nnfw build
+%{test_build_env} ./nnfw build -j4
 %if %{coverage_build} == 1
 pwd > tests/scripts/build_path.txt
 %endif # coverage_build
