@@ -56,6 +56,11 @@ if [ -z ${INFO_FILE} ] || [ ! -e ${INFO_FILE} ]; then
   exit 2
 fi
 
+if [ -z ${OUTPUT_DIR} ]; then
+  echo "output directory is not specifed. Please check -o is correct.."
+  exit 2
+fi
+
 FILE_BASE=$(basename ${GRAPHDEF_FILE})
 MODEL_NAME="${FILE_BASE%.*}"
 TMPDIR=$(mktemp -d)
@@ -76,14 +81,14 @@ INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' |
 OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 
 # generate tflite file
-python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
+python "${ROOT}/bin/tf2tfliteV2.py" --v2 --input_path ${GRAPHDEF_FILE} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --input_arrays ${INPUT} --output_arrays ${OUTPUT}
 
 # convert .tflite to .circle
-"${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.circle"
+"${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.tmp.circle"
 
 # optimize
-"${ROOT}/bin/circle2circle" --all "${TMPDIR}/${MODEL_NAME}.circle" "${TMPDIR}/${MODEL_NAME}.circle"
+"${ROOT}/bin/circle2circle" --all "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
 
 "${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
