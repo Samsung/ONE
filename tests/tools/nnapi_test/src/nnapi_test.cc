@@ -57,7 +57,9 @@ int main(const int argc, char **argv)
     {
       seed = std::atoi(argv[2]);
     }
-    return nnfw::tflite::RandomTestRunner::make(seed).run(builder);
+    auto runner = nnfw::tflite::RandomTestRunner::make(seed);
+    runner.compile(builder);
+    return runner.run(2);
   }
   catch (const std::exception &e)
   {
