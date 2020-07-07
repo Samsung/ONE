@@ -1,14 +1,13 @@
-# Read "test.lst" if exists
-include("test.lst" OPTIONAL)
+include("test.lst")
 
 # Do not make test if there are no remote machine information
 if(NOT REMOTE_IP)
-  message("tf2nnpackage-value-remote-test: need to set REMOTE IP")
+  message(STATUS "tf2nnpackage-value-remote-test: need to set REMOTE IP")
   return()
 endif(NOT REMOTE_IP)
 
 if(NOT REMOTE_USER)
-  message("tf2nnpackage-value-remote-test: need to set REMOTE_USER")
+  message(STATUS "tf2nnpackage-value-remote-test: need to set REMOTE_USER")
   return()
 endif(NOT REMOTE_USER)
 
@@ -34,10 +33,18 @@ endforeach()
 
 get_target_property(ARTIFACTS_SRC_PATH testDataGenerator SOURCE_DIR)
 
+# In this test, only the runtime test is performed because the test from tf to 
+# nnpackage is done in common-artifacts, and for this runtime test, generation of 
+# test data is required. And, tcgenerate in ${ARTIFACTS_SRC_PATH}/exclude.lst
+# means it won't generate test data, which is why below "tcgenerate" macro excludes
+# specific opearators from runtime test. 
+# Also, since circlize and optimize macro included in `exclude.lst` file is only 
+# needed in common-artifacts, it has no function here.
 macro(circlize)
 endmacro()
 macro(optimize)
 endmacro()
+
 macro(tcgenerate NAME)
   list(REMOVE_ITEM TEST_NAMES ${NAME})
 endmacro()

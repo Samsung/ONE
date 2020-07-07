@@ -4,42 +4,16 @@
 
 ### Prerequisites
 
-1. Tensorflow library
-    - Make sure that Tensorflow library could be found at `nncc configure` step. If there is no Tensorflow library, this test will not be created.
-    - If CMake reports TensorFlow library is not found in configure step, even when the library exists, set [`TENSORFLOW_PREFIX`](../../infra/cmake/packages/TensorFlowConfig.cmake#1) to include Tensorflow library like below.
-        ```sh
-        $ ./nncc configure -DTENSORFLOW_PREFIX=/path/to/Tensorflow/library
-        ```
-    - `TENSORFLOW_PREFIX` should contain Tensorflow library as shown below.
-        ```
-        TENSORFLOW_PREFIX
-            ├ include
-            |  ├ tensorflow
-            |  |     └ c
-            |  |       ├ c_api.h
-            |  ├ ...
-            |
-            ├ lib
-            |  ├ libtensorflow.so
-            |  ├ ...
-            ├ ...
-        ```
 1. Runtime Library and Binary files
     - Detailed information is located in [here](../../docs/howto/how-to-cross-build-runtime-for-arm.md)
     - If you build runtime, related files will be produced in `Product/out`. Do not rename or move it.
 1. Remote machine information and test list
     - You should create `test.lst` file first as shown below.
         - Set IP address and username of remote machine using `set` command.
-        - Add recipes which you want to verify. They are in `ONE/res/TensorFlowLiteRecipes/`
         ```cmake
         #--------------- Remote Machine Setting ---------------#
         set(REMOTE_IP "xxx.xxx.xxx.xxx")
         set(REMOTE_USER "remote_username")
-        
-        #--------------------- Tests list ---------------------#
-        add(Abs_000)
-        add(ArgMax_000)
-        ...
         ```
     - If any recipe is added, or if `REMOTE_IP` and `REMOTE_USER` is not given, `tf2nnpackage-value-remote-test` will not be created. 
 1. (Optional) ssh authentication
