@@ -32,7 +32,6 @@
 #include <arm_compute/runtime/CL/functions/CLPReLU.h>
 #include <arm_compute/runtime/CL/functions/CLReduceOperation.h>
 #include <arm_compute/runtime/CL/functions/CLRNNLayerEx.h>
-#include <arm_compute/runtime/CL/functions/CLSpaceToBatchND.h>
 #include <arm_compute/runtime/CL/functions/CLSpaceToDepth.h>
 #include <arm_compute/runtime/CL/functions/CLSplit.h>
 #include <arm_compute/runtime/CL/functions/CLStridedSliceEx.h>
