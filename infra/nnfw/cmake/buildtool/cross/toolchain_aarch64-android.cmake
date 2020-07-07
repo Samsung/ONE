@@ -13,6 +13,8 @@ endif(NOT DEFINED NDK_DIR)
 set(ANDROID_ABI arm64-v8a)
 set(ANDROID_API_LEVEL 29)
 set(ANDROID_PLATFORM android-${ANDROID_API_LEVEL})
+set(ANDROID_STL c++_shared)
+set(ANDROID_STL_LIB "${NDK_DIR}/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++_shared.so")
 
 # Find package in the host. `nnfw_find_package` won't work without this
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE NEVER)
@@ -21,6 +23,9 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
 
 # Use the toolchain file that NDK provides
 include(${NDK_DIR}/build/cmake/android.toolchain.cmake)
+
+# Install libc++_shared.so to lib folder
+install(FILES ${ANDROID_STL_LIB} DESTINATION lib)
 
 # ndk always enable debug flag -g, but we don't want debug info in release build
 # https://github.com/android/ndk/issues/243
