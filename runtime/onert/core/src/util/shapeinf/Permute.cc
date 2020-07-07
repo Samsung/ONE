@@ -43,45 +43,11 @@ void StaticInferer::visit(const ir::operation::Permute &op)
   output.info().shape(new_shape);
 }
 
-void DynamicInferer::visit(const ir::operation::Permute &op)
+void DynamicInferer::visit(const ir::operation::Permute & /* op */)
 {
-  const auto input_idx{op.getInputs().at(0)};
-  auto input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = input->getShape();
-
-  // check if input is not dynamic
-  if (!input->is_dynamic())
-    return;
-
-  // getting output shapes
-  auto new_shape = input_shape;
-  // Permute is a special operation that layouts of input/output may be different
-  assert(new_shape.rank() <= ir::Shape::MAX_RANK);
-  if (new_shape.rank() >= 4)
-  {
-    if (op.getPermuteType() == ir::operation::Permute::Type::NHWC_TO_NCHW)
-    {
-      // Permutation changing layout beyond 4-D is not supported yet
-      assert(new_shape.rank() == 4);
-      new_shape.dim(1) = input_shape.dim(3);
-      new_shape.dim(2) = input_shape.dim(1);
-      new_shape.dim(3) = input_shape.dim(2);
-    }
-    else if (op.getPermuteType() == ir::operation::Permute::Type::NCHW_TO_NHWC)
-    {
-      // Permutation changing layout beyond 4-D is not supported yet
-      assert(new_shape.rank() == 4);
-      new_shape.dim(1) = input_shape.dim(2);
-      new_shape.dim(2) = input_shape.dim(3);
-      new_shape.dim(3) = input_shape.dim(1);
-    }
-  }
-
-  // Apply output shape for output tensor
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
-  assert(output->buffer() != nullptr);
+  // NOTE Permute is a special operation which does not do shape inference before the actual
+  // function(kernel) execution. Shape inference and output allocation will be done in the kernel
+  // on-the-fly, as it must support inter-backend inference/allocation.
 }
 
 } // namespace shape_inference
