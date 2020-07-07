@@ -36,18 +36,18 @@ namespace tflite
 
 using namespace std::placeholders;
 
-int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
+void RandomTestRunner::compile(const nnfw::tflite::Builder &builder)
 {
-  auto tfl_interp = builder.build();
-  auto nnapi = builder.build();
+  _tfl_interp = builder.build();
+  _nnapi = builder.build();
 
-  tfl_interp->UseNNAPI(false);
+  _tfl_interp->UseNNAPI(false);
 
   // Allocate Tensors
-  tfl_interp->AllocateTensors();
-  nnapi->AllocateTensors();
+  _tfl_interp->AllocateTensors();
+  _nnapi->AllocateTensors();
 
-  assert(tfl_interp->inputs() == nnapi->inputs());
+  assert(_tfl_interp->inputs() == _nnapi->inputs());
 
   using ::tflite::Interpreter;
   using Initializer = std::function<void(int id, Interpreter *, Interpreter *)>;
@@ -57,8 +57,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
   // Generate singed 32-bit integer (s32) input
   initializers[kTfLiteInt32] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteInt32);
-    assert(nnapi->tensor(id)->type == kTfLiteInt32);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteInt32);
+    assert(_nnapi->tensor(id)->type == kTfLiteInt32);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<int32_t>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<int32_t>::make(*nnapi, id);
@@ -78,8 +78,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
 
   // Generate singed 32-bit integer (s32) input
   reseters[kTfLiteInt32] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteInt32);
-    assert(nnapi->tensor(id)->type == kTfLiteInt32);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteInt32);
+    assert(_nnapi->tensor(id)->type == kTfLiteInt32);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<int32_t>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<int32_t>::make(*nnapi, id);
@@ -97,8 +97,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   initializers[kTfLiteUInt8] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteUInt8);
-    assert(nnapi->tensor(id)->type == kTfLiteUInt8);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteUInt8);
+    assert(_nnapi->tensor(id)->type == kTfLiteUInt8);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<uint8_t>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<uint8_t>::make(*nnapi, id);
@@ -122,8 +122,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   reseters[kTfLiteUInt8] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteUInt8);
-    assert(nnapi->tensor(id)->type == kTfLiteUInt8);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteUInt8);
+    assert(_nnapi->tensor(id)->type == kTfLiteUInt8);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<uint8_t>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<uint8_t>::make(*nnapi, id);
@@ -147,8 +147,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   initializers[kTfLiteFloat32] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteFloat32);
-    assert(nnapi->tensor(id)->type == kTfLiteFloat32);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteFloat32);
+    assert(_nnapi->tensor(id)->type == kTfLiteFloat32);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<float>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<float>::make(*nnapi, id);
@@ -173,8 +173,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   reseters[kTfLiteFloat32] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteFloat32);
-    assert(nnapi->tensor(id)->type == kTfLiteFloat32);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteFloat32);
+    assert(_nnapi->tensor(id)->type == kTfLiteFloat32);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<float>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<float>::make(*nnapi, id);
@@ -199,8 +199,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   initializers[kTfLiteBool] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteBool);
-    assert(nnapi->tensor(id)->type == kTfLiteBool);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteBool);
+    assert(_nnapi->tensor(id)->type == kTfLiteBool);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<bool>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<bool>::make(*nnapi, id);
@@ -225,8 +225,8 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   reseters[kTfLiteBool] = [&](int id, Interpreter *tfl_interp, Interpreter *nnapi) {
-    assert(tfl_interp->tensor(id)->type == kTfLiteBool);
-    assert(nnapi->tensor(id)->type == kTfLiteBool);
+    assert(_tfl_interp->tensor(id)->type == kTfLiteBool);
+    assert(_nnapi->tensor(id)->type == kTfLiteBool);
 
     auto tfl_interp_view = nnfw::tflite::TensorView<bool>::make(*tfl_interp, id);
     auto nnapi_view = nnfw::tflite::TensorView<bool>::make(*nnapi, id);
@@ -251,96 +251,98 @@ int RandomTestRunner::run(const nnfw::tflite::Builder &builder)
   };
 
   // Fill IFM with random numbers
-  for (const auto id : tfl_interp->inputs())
+  for (const auto id : _tfl_interp->inputs())
   {
-    assert(tfl_interp->tensor(id)->type == nnapi->tensor(id)->type);
+    assert(_tfl_interp->tensor(id)->type == _nnapi->tensor(id)->type);
 
-    auto it = initializers.find(tfl_interp->tensor(id)->type);
+    auto it = initializers.find(_tfl_interp->tensor(id)->type);
 
     if (it == initializers.end())
     {
       throw std::runtime_error{"Not supported input type"};
     }
 
-    it->second(id, tfl_interp.get(), nnapi.get());
+    it->second(id, _tfl_interp.get(), _nnapi.get());
   }
 
   // Fill OFM with 0
-  for (const auto id : tfl_interp->outputs())
+  for (const auto id : _tfl_interp->outputs())
   {
-    assert(tfl_interp->tensor(id)->type == nnapi->tensor(id)->type);
+    assert(_tfl_interp->tensor(id)->type == _nnapi->tensor(id)->type);
 
-    auto it = reseters.find(tfl_interp->tensor(id)->type);
+    auto it = reseters.find(_tfl_interp->tensor(id)->type);
 
     if (it == reseters.end())
     {
       throw std::runtime_error{"Not supported input type"};
     }
 
-    it->second(id, tfl_interp.get(), nnapi.get());
+    it->second(id, _tfl_interp.get(), _nnapi.get());
   }
+}
 
+int RandomTestRunner::run(size_t running_count)
+{
   std::cout << "[NNAPI TEST] Run T/F Lite Interpreter without NNAPI" << std::endl;
-  tfl_interp->Invoke();
+  _tfl_interp->Invoke();
 
-  std::cout << "[NNAPI TEST] Run T/F Lite Interpreter with NNAPI" << std::endl;
+  nnfw::tflite::NNAPIDelegate d;
 
-  char *env = getenv("UPSTREAM_DELEGATE");
-
-  if (env && !std::string(env).compare("1"))
+  for (size_t i = 1; i <= running_count; ++i)
   {
-    nnapi->UseNNAPI(true);
-    nnapi->Invoke();
-  }
-  else
-  {
-    nnfw::tflite::NNAPIDelegate d;
+    std::cout << "[NNAPI TEST #" << i << "] Run T/F Lite Interpreter with NNAPI" << std::endl;
 
-    // WARNING
-    // primary_subgraph: Experimental interface. Return 1st sugbraph
-    if (d.BuildGraph(&nnapi.get()->primary_subgraph()))
+    char *env = getenv("UPSTREAM_DELEGATE");
+
+    if (env && !std::string(env).compare("1"))
     {
-      throw std::runtime_error{"Failed to BuildGraph"};
+      _nnapi->UseNNAPI(true);
+      _nnapi->Invoke();
+    }
+    else
+    {
+      // WARNING
+      // primary_subgraph: Experimental interface. Return 1st sugbraph
+      // Invoke() will call BuildGraph() internally
+      if (d.Invoke(&_nnapi.get()->primary_subgraph()))
+      {
+        throw std::runtime_error{"Failed to BuildGraph"};
+      }
     }
 
-    if (d.Invoke(&nnapi.get()->primary_subgraph()))
+    // Compare OFM
+    std::cout << "[NNAPI TEST #" << i << "] Compare the result" << std::endl;
+
+    const auto tolerance = _param.tolerance;
+
+    auto equals = [tolerance](float lhs, float rhs) {
+      // NOTE Hybrid approach
+      // TODO Allow users to set tolerance for absolute_epsilon_equal
+      if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
+      {
+        return true;
+      }
+
+      return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
+    };
+
+    nnfw::misc::tensor::Comparator comparator(equals);
+    TfLiteInterpMatchApp app(comparator);
+
+    app.verbose() = _param.verbose;
+
+    bool res = app.run(*_tfl_interp, *_nnapi);
+
+    if (!res)
     {
-      throw std::runtime_error{"Failed to BuildGraph"};
-    }
-  }
-
-  // Compare OFM
-  std::cout << "[NNAPI TEST] Compare the result" << std::endl;
-
-  const auto tolerance = _param.tolerance;
-
-  auto equals = [tolerance](float lhs, float rhs) {
-    // NOTE Hybrid approach
-    // TODO Allow users to set tolerance for absolute_epsilon_equal
-    if (nnfw::misc::fp32::absolute_epsilon_equal(lhs, rhs))
-    {
-      return true;
+      return 255;
     }
 
-    return nnfw::misc::fp32::epsilon_equal(lhs, rhs, tolerance);
-  };
+    std::cout << "[NNAPI TEST #" << i << "] PASSED" << std::endl << std::endl;
 
-  nnfw::misc::tensor::Comparator comparator(equals);
-  TfLiteInterpMatchApp app(comparator);
-
-  app.verbose() = _param.verbose;
-
-  bool res = app.run(*tfl_interp, *nnapi);
-
-  if (!res)
-  {
-    return 255;
+    if (_param.tensor_logging)
+      nnfw::tflite::TensorLogger::get().save(_param.log_path, *_tfl_interp);
   }
-
-  std::cout << "[NNAPI TEST] PASSED" << std::endl;
-
-  if (_param.tensor_logging)
-    nnfw::tflite::TensorLogger::get().save(_param.log_path, *tfl_interp);
 
   return 0;
 }
