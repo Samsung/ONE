@@ -2024,7 +2024,6 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   // Disable applied dim_correction
   size_t input_rank = _ctx.at(input_index).shape().rank();
   const auto &input_alloc = _tensor_builder->at(input_index);
-  const auto orig_input_acl_tensor_shape = input_alloc->info()->tensor_shape();
   assert(input_rank == input_alloc->num_dimensions());
   if (input_rank != input_alloc->info()->num_dimensions())
   {
