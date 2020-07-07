@@ -919,19 +919,19 @@ public:
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
     auto diagonal_shape = loco::shape_get(node->diagonal()).as<loco::TensorShape>();
-  
+
     auto rank = diagonal_shape.rank();
 
-    LUCI_ASSERT(rank == input_shape.rank()-1, "diagonal rank = input rank - 1"); 
+    LUCI_ASSERT(rank == input_shape.rank() - 1, "diagonal rank = input rank - 1");
 
-    for (uint32_t i = 0; i < rank-1; i++)
+    for (uint32_t i = 0; i < rank - 1; i++)
     {
-     LUCI_ASSERT(diagonal_shape.dim(i) == input_shape.dim(i), "diagonal dims = input dims"); 
+      LUCI_ASSERT(diagonal_shape.dim(i) == input_shape.dim(i), "diagonal dims = input dims");
     }
 
-    auto dim = std::min(input_shape.dim(rank-1).value(),input_shape.dim(rank).value());
+    auto dim = std::min(input_shape.dim(rank - 1).value(), input_shape.dim(rank).value());
 
-    LUCI_ASSERT(dim == diagonal_shape.dim(rank-1), "Max diag len error"); 
+    LUCI_ASSERT(dim == diagonal_shape.dim(rank - 1), "Max diag len error");
 
     return loco::NodeShape{input_shape};
   }

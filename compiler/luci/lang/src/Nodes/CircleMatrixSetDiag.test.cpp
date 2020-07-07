@@ -37,6 +37,7 @@ TEST(CircleMatrixSetDiagTest, input_NEG)
   luci::CircleMatrixSetDiag matrix_set_diag_node;
   luci::CircleMatrixSetDiag node;
 
+  matrix_set_diag_node.input(&node);
   matrix_set_diag_node.diagonal(&node);
 
   ASSERT_NE(nullptr, matrix_set_diag_node.input());
