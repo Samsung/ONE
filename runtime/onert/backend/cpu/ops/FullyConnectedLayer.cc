@@ -172,6 +172,7 @@ void FullyConnectedLayer::prepare()
     return;
   }
 
+  // TODO Support dynamic input tnesor
   // For now, dynamic input cannot support
   assert(_input->is_dynamic() == false);
 
