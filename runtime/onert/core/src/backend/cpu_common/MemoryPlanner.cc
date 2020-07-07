@@ -166,10 +166,13 @@ void WICPlanner::buildMemoryPlans()
     if (_interference_graph.find(ind) != _interference_graph.end())
     {
       std::unordered_set<ir::OperandIndex> &interferences = _interference_graph.find(ind)->second;
-      for (const auto &mem_claim : _claim_table)
+      auto it = _claim_table.begin();
+      auto end = _claim_table.end();
+      while (it != end)
       {
-        if (interferences.find(mem_claim.second) != interferences.end())
+        if (interferences.find(it->second) != interferences.end())
         {
+          auto &mem_claim = *it;
           auto claimed_base_offset = mem_claim.first;
           auto claimed_size = _mem_plans[mem_claim.second].size;
           VERBOSE(WIC_PLANNER) << "interfere (#" << mem_claim.second.value() << "): [+"
@@ -182,6 +185,11 @@ void WICPlanner::buildMemoryPlans()
           {
             next_offset = claimed_base_offset + claimed_size;
           }
+          it = _claim_table.upper_bound(it->first);
+        }
+        else
+        {
+          it++;
         }
       }
     }
