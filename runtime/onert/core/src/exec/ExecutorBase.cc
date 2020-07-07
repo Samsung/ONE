@@ -25,7 +25,7 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-                           const backend::TensorBuilderSet &tensor_builders)
+                           const compiler::TensorBuilders &tensor_builders)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
   auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
