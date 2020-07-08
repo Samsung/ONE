@@ -166,30 +166,27 @@ void WICPlanner::buildMemoryPlans()
     if (_interference_graph.find(ind) != _interference_graph.end())
     {
       std::unordered_set<ir::OperandIndex> &interferences = _interference_graph.find(ind)->second;
-      auto it = _claim_table.begin();
-      auto end = _claim_table.end();
-      while (it != end)
+
+      std::multimap<uint32_t, uint32_t> live_plans;
+      for (auto &interference : interferences)
       {
-        if (interferences.find(it->second) != interferences.end())
+        if (_mem_plans.count(interference))
+          live_plans.emplace(_mem_plans[interference].offset, _mem_plans[interference].size);
+      }
+
+      for (auto &live_plan : live_plans)
+      {
+        auto claimed_base_offset = live_plan.first;
+        auto claimed_size = live_plan.second;
+        VERBOSE(WIC_PLANNER) << "interfere : [+" << claimed_base_offset << ", " << claimed_size
+                             << "sz]" << std::endl;
+        if (next_offset + size <= claimed_base_offset)
         {
-          auto &mem_claim = *it;
-          auto claimed_base_offset = mem_claim.first;
-          auto claimed_size = _mem_plans[mem_claim.second].size;
-          VERBOSE(WIC_PLANNER) << "interfere (#" << mem_claim.second.value() << "): [+"
-                               << claimed_base_offset << ", " << claimed_size << "sz]" << std::endl;
-          if (next_offset + size <= claimed_base_offset)
-          {
-            break;
-          }
-          else if (next_offset < claimed_base_offset + claimed_size)
-          {
-            next_offset = claimed_base_offset + claimed_size;
-          }
-          it = _claim_table.upper_bound(it->first);
+          break;
         }
-        else
+        else if (next_offset < claimed_base_offset + claimed_size)
         {
-          it++;
+          next_offset = claimed_base_offset + claimed_size;
         }
       }
     }
@@ -198,7 +195,6 @@ void WICPlanner::buildMemoryPlans()
       VERBOSE(WIC_PLANNER) << "No interference" << std::endl;
     }
 
-    _claim_table.insert({next_offset, ind});
     _mem_plans[ind] = {next_offset, size};
     VERBOSE(WIC_PLANNER) << "alloc(#" << ind.value() << "): [+" << next_offset << ", " << size
                          << "sz]" << std::endl;
@@ -211,7 +207,6 @@ void WICPlanner::buildMemoryPlans()
   _initialized = true;
   _interference_graph.clear();
   _map_size_to_operands.clear();
-  _claim_table.clear();
 
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
