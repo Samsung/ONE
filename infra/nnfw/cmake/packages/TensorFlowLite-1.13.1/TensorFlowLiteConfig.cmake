@@ -56,10 +56,10 @@ message(STATUS "Found TensorFlow Lite: TRUE (include: ${TFLITE_INCLUDE_DIR}, lib
 add_library(tensorflow-lite INTERFACE)
 target_include_directories(tensorflow-lite SYSTEM INTERFACE ${TFLITE_INCLUDE_DIR})
 target_link_libraries(tensorflow-lite INTERFACE ${TFLITE_LIB})
-find_library(FLATBUFFERS_LIB NAMES flatbuffers)
-if(FLATBUFFERS_LIB)
-  target_link_libraries(tensorflow-lite INTERFACE ${FLATBUFFERS_LIB})
-endif(FLATBUFFERS_LIB)
+find_package(Flatbuffers)
+if(Flatbuffers_FOUND)
+  target_link_libraries(tensorflow-lite INTERFACE flatbuffers::flatbuffers)
+endif(Flatbuffers_FOUND)
 
 # Prefer -pthread to -lpthread
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
