@@ -74,8 +74,9 @@ void FusedBatchNormLayer::run()
   }
 }
 
-void FusedBatchNormLayer::configure(const std::vector<const Tensor *> &inputs, float epsilon,
-                                    bool is_training, std::string data_format, Tensor *output)
+void FusedBatchNormLayer::configure(const std::vector<const IPortableTensor *> &inputs,
+                                    float epsilon, bool is_training, std::string data_format,
+                                    IPortableTensor *output)
 {
   assert(inputs.size() > 0);
   assert(output != nullptr);

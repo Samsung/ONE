@@ -315,6 +315,34 @@ template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::Circ
   return result;
 }
 
+template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
+{
+  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
+  auto y_shape = loco::shape_get(node->y()).template as<loco::TensorShape>();
+
+  auto output_shape = broadcast_shape(x_shape, y_shape);
+
+  return loco::NodeShape{output_shape};
+}
+
+template <class CIRCLENODE> loco::NodeShape use_x(const CIRCLENODE *node)
+{
+  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
+  return loco::NodeShape{x_shape};
+}
+
+template <class CIRCLENODE> loco::NodeShape use_logits(const CIRCLENODE *node)
+{
+  auto shape = loco::shape_get(node->logits()).template as<loco::TensorShape>();
+  return loco::NodeShape{shape};
+}
+
+loco::NodeShape use_own(const luci::CircleNode *node)
+{
+  loco::TensorShape shape = own_shape(node);
+  return loco::NodeShape{shape};
+}
+
 /**
  * @brief Class to infer the shape of CircleNode
  *
@@ -323,21 +351,9 @@ template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::Circ
 class ShapeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::NodeShape>
 {
 public:
-  loco::NodeShape visit(const luci::CircleAbs *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleAbs *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleAdd *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleAdd *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleAddN *node) final
   {
@@ -494,18 +510,9 @@ public:
     return loco::NodeShape{shape_output};
   }
 
-  loco::NodeShape visit(const luci::CircleCast *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleCast *node) final { return use_x(node); }
 
-    return loco::NodeShape{x_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleCeil *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleCeil *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
@@ -542,16 +549,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleConst *node) final
-  {
-    loco::TensorShape shape;
-
-    shape.rank(node->rank());
-    for (uint32_t axis = 0; axis < node->rank(); axis++)
-      shape.dim(axis) = node->dim(axis);
-
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleConst *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleConv2D *node) final
   {
@@ -604,18 +602,9 @@ public:
     return loco::NodeShape{ofm_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleCos *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
-    return loco::NodeShape{x_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleCustom *node) final
-  {
-    loco::TensorShape shape = own_shape(node);
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleCustom *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
   {
@@ -695,15 +684,7 @@ public:
     return loco::NodeShape{ofm_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleDiv *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleDiv *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleElu *node) final
   {
@@ -712,19 +693,9 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleEqual *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleEqual *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleExp *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleExp *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleExpandDims *node) final
   {
@@ -733,8 +704,7 @@ public:
     if (x_shape.rank() == 0)
     {
       // This maybe for unknown shape. We use shape from the node itself.
-      auto shape = own_shape(node);
-      return loco::NodeShape{shape};
+      return use_own(node);
     }
     auto const_axis = loco::must_cast<luci::CircleConst *>(node->axis());
     LUCI_ASSERT(const_axis->dtype() == S32, "Only support int32 CircleConst for axis");
@@ -789,31 +759,11 @@ public:
     return loco::NodeShape{shape};
   }
 
-  loco::NodeShape visit(const luci::CircleFloor *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleFloor *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleFloorDiv *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleFloorDiv *node) final { return broadcast_xy(node); }
 
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return output_shape;
-  }
-
-  loco::NodeShape visit(const luci::CircleFloorMod *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return output_shape;
-  }
+  loco::NodeShape visit(const luci::CircleFloorMod *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleFullyConnected *node) final
   {
@@ -827,8 +777,7 @@ public:
     if (input_shape.rank() < 2 || weights_shape.rank() != 2)
     {
       // Return node own shape if shape inference is not possible
-      auto out_shape = own_shape(node);
-      return loco::NodeShape{out_shape};
+      return use_own(node);
     }
 
     uint32_t input_size = 1;
@@ -856,7 +805,7 @@ public:
     // If CircleGather input has a dynamic shape, it can't inference this shape. So, it returns the
     // shape that node already has.
     if (input_shape.rank() == 0 || positions_shape.rank() == 0)
-      return own_shape(node);
+      return use_own(node);
 
     if (axis < 0)
       axis += input_shape.rank();
@@ -921,21 +870,9 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleGreater *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleGreater *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleGreaterEqual *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleGreaterEqual *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleIf *node) final
   {
@@ -945,11 +882,7 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleL2Normalize *node) final
-  {
-    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleL2Normalize *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleL2Pool2D *node) final
   {
@@ -962,21 +895,9 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleLess *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLess *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleLessEqual *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLessEqual *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleLocalResponseNormalization *node) final
   {
@@ -984,54 +905,19 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleLog *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleLog *node) final { return use_x(node); }
 
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLogicalAnd *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleLogicalAnd *node) final
-  {
-    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLogicalNot *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleLogicalNot *node) final
-  {
-    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLogicalOr *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleLogicalOr *node) final
-  {
-    const auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleLogistic *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleLogistic *node) final
-  {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleLogSoftmax *node) final { return use_logits(node); }
 
-    return loco::NodeShape{input_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleLogSoftmax *node) final
-  {
-    auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();
-
-    return loco::NodeShape{input_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleMaximum *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleMaximum *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleMaxPool2D *node) final
   {
@@ -1044,15 +930,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleMinimum *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleMinimum *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleMirrorPad *node) final
   {
@@ -1088,29 +966,11 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleMul *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleMul *node) final { return broadcast_xy(node); }
 
-    auto output_shape = broadcast_shape(x_shape, y_shape);
+  loco::NodeShape visit(const luci::CircleNeg *node) final { return use_x(node); }
 
-    return loco::NodeShape{output_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleNeg *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    return loco::NodeShape{x_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleNotEqual *node) final
-  {
-    const auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    const auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-    loco::TensorShape output_shape = broadcast_shape(x_shape, y_shape);
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleNotEqual *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleOneHot *node) final
   {
@@ -1221,15 +1081,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CirclePow *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CirclePow *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CirclePRelu *node) final
   {
@@ -1252,8 +1104,7 @@ public:
 
     if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
     {
-      loco::TensorShape shape = own_shape(node);
-      return loco::NodeShape{shape};
+      return use_own(node);
     }
 
     double start = 0, limit = 0, delta = 0;
@@ -1484,19 +1335,19 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleRound *node) final
+  loco::NodeShape visit(const luci::CircleRound *node) final { return use_x(node); }
+
+  loco::NodeShape visit(const luci::CircleReverseV2 *node) final
   {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+    auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
+
+    LUCI_ASSERT(loco::shape_get(node->axis()).as<loco::TensorShape>().rank() == 1,
+                "Tensor must be 1-D");
 
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleRsqrt *node) final
-  {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleRsqrt *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleScatterNd *node) final
   {
@@ -1588,12 +1439,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleSin *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-
-    return loco::NodeShape{x_shape};
-  }
+  loco::NodeShape visit(const luci::CircleSin *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleSlice *node) final
   {
@@ -1640,12 +1486,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleSoftmax *node) final
-  {
-    auto input_shape = loco::shape_get(node->logits()).as<loco::TensorShape>();
-
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleSoftmax *node) final { return use_logits(node); }
 
   loco::NodeShape visit(const luci::CircleSpaceToBatchND *node) final
   {
@@ -1783,28 +1624,13 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleSqrt *node) final
-  {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleSqrt *node) final { return use_x(node); }
 
-    return loco::NodeShape{input_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleSquare *node) final
-  {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleSquare *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleSquaredDifference *node) final
   {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
+    return broadcast_xy(node);
   }
 
   loco::NodeShape visit(const luci::CircleStridedSlice *node) final
@@ -1815,8 +1641,7 @@ public:
 
     if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
     {
-      loco::TensorShape shape = own_shape(node);
-      return loco::NodeShape{shape};
+      return use_own(node);
     }
 
     loco::TensorShape shape = infer_output_shape(node);
@@ -1876,15 +1701,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleSub *node) final
-  {
-    auto x_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = loco::shape_get(node->y()).as<loco::TensorShape>();
-
-    auto output_shape = broadcast_shape(x_shape, y_shape);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleSub *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleSum *node) final
   {
@@ -1892,12 +1709,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleTanh *node) final
-  {
-    auto input_shape = loco::shape_get(node->x()).as<loco::TensorShape>();
-
-    return loco::NodeShape{input_shape};
-  }
+  loco::NodeShape visit(const luci::CircleTanh *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleTile *node) final
   {
@@ -1987,8 +1799,7 @@ public:
     if (rank == 0)
     {
       // Unknown shape
-      loco::TensorShape shape = own_shape(node);
-      return loco::NodeShape{shape};
+      return use_own(node);
     }
 
     LUCI_ASSERT(-rank <= axis && axis < rank, "Axis is out of range");
@@ -2011,11 +1822,7 @@ public:
     return loco::NodeShape{output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleWhere *node) final
-  {
-    loco::TensorShape shape = own_shape(node);
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleWhere *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleWhile *node) final
   {
@@ -2118,23 +1925,11 @@ public:
     return loco::NodeShape{*output_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleOutputDummy *node) final
-  {
-    loco::TensorShape shape = own_shape(node);
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleOutputDummy *node) final { return use_own(node); }
 
-  loco::NodeShape visit(const luci::CircleOutputExclude *node) final
-  {
-    loco::TensorShape shape = own_shape(node);
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleOutputExclude *node) final { return use_own(node); }
 
-  loco::NodeShape visit(const luci::CircleCustomOut *node) final
-  {
-    loco::TensorShape shape = own_shape(node);
-    return loco::NodeShape{shape};
-  }
+  loco::NodeShape visit(const luci::CircleCustomOut *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleIfOut *node) final
   {

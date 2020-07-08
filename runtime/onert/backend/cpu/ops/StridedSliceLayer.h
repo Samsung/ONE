@@ -41,7 +41,7 @@ public:
                  const IPortableTensor *end, const IPortableTensor *strides,
                  IPortableTensor *output, const int32_t begin_mask, const int32_t end_mask,
                  const int32_t shrink_axis_mask);
-  void run();
+  void run() override;
 
 private:
   template <typename T> void stridedSliceImpl();

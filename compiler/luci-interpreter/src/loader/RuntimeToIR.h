@@ -29,7 +29,8 @@ namespace luci_interpreter
 // Maps runtime entities back to IR entities. It is used to implement observing functionality.
 struct RuntimeToIR
 {
-  std::unordered_map<Tensor *, const luci::CircleNode *> tensor_to_node;
+  std::unordered_map<const Tensor *, const luci::CircleNode *> tensor_to_node;
+  std::unordered_map<const Kernel *, const luci::CircleNode *> kernel_to_node;
 };
 
 } // namespace luci_interpreter

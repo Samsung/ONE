@@ -18,72 +18,135 @@
 #error  Define MAP_MACRO before including this file
 #endif
 
-//        circle operation  | onert internal operation
-MAP_MACRO(ADD               , Add)
-MAP_MACRO(SUB               , Sub)
-MAP_MACRO(BATCH_TO_SPACE_ND , BatchToSpaceND)
-MAP_MACRO(CAST              , Cast)
-MAP_MACRO(CONV_2D           , Conv2D)
-MAP_MACRO(DEPTHWISE_CONV_2D , DepthwiseConv2D)
-MAP_MACRO(AVERAGE_POOL_2D   , AvgPool2D)
-MAP_MACRO(MAX_POOL_2D       , MaxPool2D)
-MAP_MACRO(CONCATENATION     , Concat)
-MAP_MACRO(FULLY_CONNECTED   , FullyConnected)
-MAP_MACRO(SUM               , ReduceSum)
-MAP_MACRO(RESHAPE           , Reshape)
-MAP_MACRO(MUL               , Mul)
-MAP_MACRO(SOFTMAX           , Softmax)
-MAP_MACRO(SQUEEZE           , Squeeze)
-MAP_MACRO(SLICE             , Slice)
-MAP_MACRO(STRIDED_SLICE     , StridedSlice)
-MAP_MACRO(TANH              , Tanh)
-MAP_MACRO(LOGISTIC          , Logistic)
-MAP_MACRO(DIV               , Div)
-MAP_MACRO(TRANSPOSE         , Transpose)
-MAP_MACRO(EXP               , Exp)
-MAP_MACRO(REDUCE_MAX        , ReduceMax)
-// UNMATCHED
-//MAP_MACRO(Comparison)
-MAP_MACRO(LOGICAL_AND       , LogicalAnd)
-MAP_MACRO(LOGICAL_OR        , LogicalOr)
-MAP_MACRO(LOGICAL_NOT       , LogicalNot)
-MAP_MACRO(LSTM              , LSTM)
-MAP_MACRO(RSQRT             , RSQRT)
-MAP_MACRO(RELU              , ReLU)
-MAP_MACRO(RESIZE_BILINEAR   , ResizeBilinear)
-MAP_MACRO(RELU_N1_TO_1      , ReLU1)
-MAP_MACRO(RELU6             , ReLU6)
-MAP_MACRO(RNN , RNN)
-MAP_MACRO(FLOOR , Floor)
-MAP_MACRO(SPACE_TO_BATCH_ND , SpaceToBatchND)
-MAP_MACRO(SPACE_TO_DEPTH  , SpaceToDepth)
-MAP_MACRO(L2_POOL_2D  , L2Pool2D)
-MAP_MACRO(EMBEDDING_LOOKUP  , EmbeddingLookup)
-MAP_MACRO(L2_NORMALIZATION  , L2Normalization)
-MAP_MACRO(HASHTABLE_LOOKUP  , HashtableLookup)
-MAP_MACRO(INSTANCE_NORM , InstanceNorm)
-MAP_MACRO(PRELU , PReLU)
-MAP_MACRO(TRANSPOSE_CONV  , TransposeConv)
-MAP_MACRO(SQRT  , SQRT)
-MAP_MACRO(SQUARED_DIFFERENCE  , SquaredDifference)
-MAP_MACRO(TOPK_V2 , TopKV2)
-MAP_MACRO(GATHER  , Gather)
-MAP_MACRO(NEG , Neg)
-MAP_MACRO(ABS , Abs)
-MAP_MACRO(ARG_MAX , ArgMax)
-MAP_MACRO(DEQUANTIZE  , Dequantize)
-MAP_MACRO(MEAN  , Mean)
+// Table: circle operation ID order
+//        circle operation              | onert internal operation
+MAP_MACRO(ADD                           , Add)
+MAP_MACRO(AVERAGE_POOL_2D               , AvgPool2D)
+MAP_MACRO(CONCATENATION                 , Concat)
+MAP_MACRO(CONV_2D                       , Conv2D)
+MAP_MACRO(DEPTHWISE_CONV_2D             , DepthwiseConv2D)
+// DEPTH_TO_SPACE
+MAP_MACRO(DEQUANTIZE                    , Dequantize)
+MAP_MACRO(EMBEDDING_LOOKUP              , EmbeddingLookup)
+MAP_MACRO(FLOOR                         , Floor)
+MAP_MACRO(FULLY_CONNECTED               , FullyConnected)
+MAP_MACRO(HASHTABLE_LOOKUP              , HashtableLookup)
+MAP_MACRO(L2_NORMALIZATION              , L2Normalization)
+MAP_MACRO(L2_POOL_2D                    , L2Pool2D)
 MAP_MACRO(LOCAL_RESPONSE_NORMALIZATION  , LocalResponseNormalization)
-// UNDEFINED IN CIRCLE
-//MAP_MACRO(DepthToSpace)
-MAP_MACRO(PACK  , Pack)
-MAP_MACRO(REDUCE_MIN  , ReduceMin)
-MAP_MACRO(SPLIT , Split)
-MAP_MACRO(UNPACK  , Unpack)
-MAP_MACRO(PAD , Pad)
-MAP_MACRO(CUSTOM  , Custom)
-// UNDEFINED IN CIRCLE
-//MAP_MACRO(Permute)
-MAP_MACRO(MINIMUM , Min)
-MAP_MACRO(MAXIMUM , Max)
-MAP_MACRO(ONE_HOT , OneHot)
+MAP_MACRO(LOGISTIC                      , Logistic)
+// LSH_PROJECTION
+MAP_MACRO(LSTM                          , LSTM)
+MAP_MACRO(MAX_POOL_2D                   , MaxPool2D)
+MAP_MACRO(MUL                           , Mul)
+MAP_MACRO(RELU                          , ReLU)
+MAP_MACRO(RELU_N1_TO_1                  , ReLU1)
+MAP_MACRO(RELU6                         , ReLU6)
+MAP_MACRO(RESHAPE                       , Reshape)
+MAP_MACRO(RESIZE_BILINEAR               , ResizeBilinear)
+MAP_MACRO(RNN                           , RNN)
+MAP_MACRO(SOFTMAX                       , Softmax)
+MAP_MACRO(SPACE_TO_DEPTH                , SpaceToDepth)
+// SVDF
+MAP_MACRO(TANH                          , Tanh)
+// CONCAT_EMBEDDINGS
+// SKIP_GRAM
+// CALL
+MAP_MACRO(CUSTOM                        , Custom)
+// EMBEDDING_LOOKUP_SPARSE
+MAP_MACRO(PAD                           , Pad)
+// UNIDIRECTIONAL_SEQUENCE_RNN
+MAP_MACRO(GATHER                        , Gather)
+MAP_MACRO(BATCH_TO_SPACE_ND             , BatchToSpaceND)
+MAP_MACRO(SPACE_TO_BATCH_ND             , SpaceToBatchND)
+MAP_MACRO(TRANSPOSE                     , Transpose)
+MAP_MACRO(MEAN                          , Mean)
+MAP_MACRO(SUB                           , Sub)
+MAP_MACRO(DIV                           , Div)
+MAP_MACRO(SQUEEZE                       , Squeeze)
+// UNIDIRECTIONAL_SEQUENCE_LSTM
+MAP_MACRO(STRIDED_SLICE                 , StridedSlice)
+// BIDIRECTIONAL_SEQUENCE_RNN
+MAP_MACRO(EXP                           , Exp)
+MAP_MACRO(TOPK_V2                       , TopKV2)
+MAP_MACRO(SPLIT                         , Split)
+// LOG_SOFTMAX
+// DELEGATE
+// BIDIRECTIONAL_SEQUENCE_LSTM
+MAP_MACRO(CAST                          , Cast)
+MAP_MACRO(PRELU                         , PReLU)
+MAP_MACRO(MAXIMUM                       , Max)
+MAP_MACRO(ARG_MAX                       , ArgMax)
+MAP_MACRO(MINIMUM                       , Min)
+// LESS (Comparison) ?
+MAP_MACRO(NEG                           , Neg)
+// PADV2
+// GREATER (Comparison) ?
+// GREATER_EQUAL (Comparison) ?
+// LESS_EQUAL (Comparison) ?
+MAP_MACRO(SELECT                        , Select)
+MAP_MACRO(SLICE                         , Slice)
+MAP_MACRO(SIN                           , Sin)
+MAP_MACRO(TRANSPOSE_CONV                , TransposeConv)
+// SPARSE_TO_DENSE
+MAP_MACRO(TILE                          , Tile)
+MAP_MACRO(EXPAND_DIMS                   , ExpandDims)
+// EQUAL (Comparison) ?
+// NOT_EQUAL (Comparison) ?
+MAP_MACRO(LOG                           , Log)
+MAP_MACRO(SUM                           , ReduceSum)
+MAP_MACRO(SQRT                          , SQRT)
+MAP_MACRO(RSQRT                         , RSQRT)
+MAP_MACRO(SHAPE                         , Shape)
+MAP_MACRO(POW                           , Pow)
+// ARG_MIN
+// FAKE_QUANT
+MAP_MACRO(REDUCE_PROD                   , ReduceProd)
+MAP_MACRO(REDUCE_MAX                    , ReduceMax)
+MAP_MACRO(PACK                          , Pack)
+MAP_MACRO(LOGICAL_OR                    , LogicalOr)
+MAP_MACRO(ONE_HOT                       , OneHot)
+MAP_MACRO(LOGICAL_AND                   , LogicalAnd)
+MAP_MACRO(LOGICAL_NOT                   , LogicalNot)
+MAP_MACRO(UNPACK                        , Unpack)
+MAP_MACRO(REDUCE_MIN                    , ReduceMin)
+// FLOOR_DIV
+MAP_MACRO(REDUCE_ANY                    , ReduceAny)
+// SQUARE
+MAP_MACRO(ZEROS_LIKE                    , ZerosLike)
+MAP_MACRO(FILL                          , Fill)
+// FLOOR_MOD
+MAP_MACRO(RANGE                         , Range)
+// RESIZE_NEAREST_NEIGHBOR
+// LEAKY_RELU
+MAP_MACRO(SQUARED_DIFFERENCE            , SquaredDifference)
+// MIRROR_PAD
+MAP_MACRO(ABS                           , Abs)
+// SPLIT_V
+// UNIQUE
+// CEIL
+MAP_MACRO(REVERSE_V2                    , Reverse)
+// ADD_N
+// GATHER_ND
+MAP_MACRO(COS                           , Cos)
+// WHERE
+// RANK
+// ELU
+// REVERSE_SEQUENCE
+// MATRIX_DIAG
+// QUANTIZE
+// MATRIX_SET_DIAG
+MAP_MACRO(ROUND                         , Round)
+// HARD_SWISH
+MAP_MACRO(IF                            , If)
+MAP_MACRO(WHILE                         , While)
+// NON_MAX_SUPPRESSION_V4
+// NON_MAX_SUPPRESSION_V5
+// SCATTER_ND
+// SELECT_V2 (Select) ?
+// DENSIFY
+// SEGMENT_SUM
+MAP_MACRO(BATCH_MATMUL                  , BatchMatMul)
+MAP_MACRO(BCQ_GATHER                    , BCQGather)
+MAP_MACRO(BCQ_FULLY_CONNECTED           , BCQFullyConnected)
+MAP_MACRO(INSTANCE_NORM                 , InstanceNorm)

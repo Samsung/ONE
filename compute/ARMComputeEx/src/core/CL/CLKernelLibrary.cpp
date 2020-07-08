@@ -91,8 +91,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"radixsort_reorder", "topkv2_radixsort.cl"},
     {"topkv2_quicksort", "topkv2_quicksort.cl"},
     {"scale_factor_symm8", "scale_factor.cl"},
-    {"space_to_batch_4d_nchw", "space_to_batch.cl"},
-    {"space_to_batch_4d_nhwc", "space_to_batch.cl"},
     {"space_to_depth_nchw", "space_to_depth.cl"},
     {"space_to_depth_nhwc", "space_to_depth.cl"},
 };
@@ -170,10 +168,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
     {
         "scale_factor.cl",
 #include "./cl_kernels/scale_factor.clembed"
-    },
-    {
-        "space_to_batch.cl",
-#include "./cl_kernels/space_to_batch.clembed"
     },
     {
         "space_to_depth.cl",

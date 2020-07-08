@@ -186,24 +186,6 @@ void WhileLayer::run()
     return ret;
   };
 
-  auto setOpOutputDynamic = [&](const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors) {
-    assert(_output_tensors.size() == src_tensors.size());
-    for (size_t i = 0; i < _output_tensors.size(); ++i)
-    {
-      const auto output_tensor = _output_tensors.at(i);
-      const auto orig_output_shape = output_tensor->getShape();
-      const auto changed_output_shape = src_tensors.at(i)->getShape();
-      const auto &output_dyn_alloc_info = _outputs_dyn_alloc_info.find(output_tensor);
-      if (orig_output_shape != changed_output_shape &&
-          output_dyn_alloc_info != _outputs_dyn_alloc_info.end() &&
-          (_graph.operands().at(output_dyn_alloc_info->second.ind).getUses().size() > 0 ||
-           _graph.getOutputs().contains(output_dyn_alloc_info->second.ind)))
-      {
-        output_tensor->set_dynamic();
-      }
-    }
-  };
-
   const auto body_execute_with_op_inputs = [&]() {
     body_exec->execute(_input_tensors, permute_op_input_to_body_input);
   };
@@ -226,7 +208,6 @@ void WhileLayer::run()
     body_execute = body_execute_with_body_outputs;
     permute_to_outputs_fn = permute_body_output_to_op_output;
   }
-  setOpOutputDynamic(body_exec->getOutputTensors());
   permute_to_outputs_fn->run();
 }
 

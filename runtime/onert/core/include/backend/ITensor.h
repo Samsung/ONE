@@ -51,6 +51,14 @@ public:
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
   /**
+   * @brief Return true if the tensor is constant
+   */
+  virtual bool is_constant() const
+  {
+    throw std::runtime_error("This backend does not support checking constant");
+  }
+
+  /**
    * @brief Return true if the tensor needs dynamic allocation, meaning that during compile-time
    *        the outpus shape cannot be known and the output shape is calculated during
    *        kernel execution-time.

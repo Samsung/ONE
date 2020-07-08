@@ -52,6 +52,10 @@ template <typename T> constexpr DataType getElementType()
     return DataType::FLOAT32;
   if (std::is_same<T, uint8_t>::value)
     return DataType::U8;
+  if (std::is_same<T, int32_t>::value)
+    return DataType::S32;
+  if (std::is_same<T, int64_t>::value)
+    return DataType::S64;
   return DataType::Unknown;
 }
 
@@ -165,6 +169,11 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   zero_point = nudged_zero_point;
   // finally, return the values
   return {static_cast<float>(scale), zero_point};
+}
+
+inline float getTolerance(float min, float max, int quantize_steps)
+{
+  return ((max - min) / quantize_steps);
 }
 
 } // namespace testing

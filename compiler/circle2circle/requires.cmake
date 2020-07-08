@@ -1,3 +1,4 @@
+require("foder")
 require("loco")
 require("locop")
 require("logo-core")

@@ -36,6 +36,7 @@
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"
 #include "exec/ExecutionObservee.h"
+#include "compiler/TensorBuilders.h"
 #include <list>
 
 namespace onert
@@ -52,7 +53,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-               const backend::TensorBuilderSet &tensor_builders);
+               const compiler::TensorBuilders &tensor_builders);
 
   virtual ~ExecutorBase() = default;
 

@@ -410,6 +410,14 @@ message SparseToDenseOptions {
   optional bool validate_indices = 1 [default = true];
 }
 
+message ReverseV2Options {
+  // None
+}
+
+message MatrixDiagOptions {
+  // NONE
+}
+
 message MatrixSetDiagOptions {
   // NONE
 }
@@ -506,13 +514,13 @@ message Operation {
   optional LeakyReluOptions leaky_relu_options = 184;
   optional MirrorPadOptions mirrorpad_options = 185;
   // UniqueOptions 186
-  // ReverseV2Options 187
+  optional ReverseV2Options reversev2_options = 187;
   // AddNOptions 188
   optional GatherNdOptions gather_nd_options = 189;
   optional WhereOptions where_options = 190;
   optional RankOptions rank_options = 191;
   optional ReverseSequenceOptions reverse_sequence_options = 192;
-  // MatrixDiagOptions 193
+  optional MatrixDiagOptions matrix_diag_options = 193;
   // QuantizeOptions 194
   optional MatrixSetDiagOptions matrix_set_diag_options = 195;
   // HardSwishOptions 196

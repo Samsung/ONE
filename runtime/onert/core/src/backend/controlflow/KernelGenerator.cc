@@ -31,7 +31,7 @@ namespace controlflow
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph)
-    : _graph{graph}, _tensor_builder_set{nullptr}, _executor_map{nullptr}
+    : _graph{graph}, _tensor_builder_set{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_builder_set);

@@ -34,27 +34,14 @@ class ShapeFixer : public IShapeFixer
 public:
   ShapeFixer(const ir::Operands &ctx, const std::shared_ptr<TensorBuilder> &tensor_builder);
 
-  void visit(const ir::operation::BatchToSpaceND &) override;
-  void visit(const ir::operation::Concat &) override;
-  void visit(const ir::operation::EmbeddingLookup &) override;
-  void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::HashtableLookup &) override;
-  void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::LogicalAnd &) override;
   void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::Pack &) override;
-  void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::PReLU &) override;
-  void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Squeeze &) override;
-  void visit(const ir::operation::StridedSlice &) override;
-  void visit(const ir::operation::SpaceToBatchND &) override;
-  void visit(const ir::operation::Split &) override;
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Sub &) override;
-  void visit(const ir::operation::Unpack &) override;
   void visit(const ir::operation::Add &) override;
   void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Min &) override;

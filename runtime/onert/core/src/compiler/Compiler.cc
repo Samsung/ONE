@@ -26,6 +26,7 @@
 #include "compiler/IScheduler.h"
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
+#include "compiler/StaticShapeInference.h"
 #include "exec/ExecTime.h"
 #include "ir/operation/LowerInfo.h"
 #include "dumper/dot/DotDumper.h"
@@ -33,7 +34,6 @@
 #include "interp/InterpExecutor.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
-#include "util/ShapeInference.h"
 #include "ir/OperationDumper.h"
 #include "misc/string_helpers.h"
 
@@ -55,6 +55,9 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
   options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
+#ifdef RUY_PROFILER
+  options.op_seq_max_node = 1;
+#endif
 
   {
     // Backend for all
@@ -208,7 +211,7 @@ void Compiler::compile(void)
   // Shape inference.
   {
     const auto primary_subg_idx = ir::SubgraphIndex{0};
-    shape_inference::StaticInferer inferer(primary_subg_idx, lowered_subgs);
+    StaticInferer inferer(primary_subg_idx, lowered_subgs);
     lowered_subgs.at(primary_subg_idx)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
           inferer.infer(op_seq);

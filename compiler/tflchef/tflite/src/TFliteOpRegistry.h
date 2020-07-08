@@ -96,6 +96,7 @@ private:
     REG_TFL_OP(LOGICAL_OR, TFliteOpLogicalOr);
     REG_TFL_OP(LOGISTIC, TFliteOpLogistic);
     REG_TFL_OP(LOG_SOFTMAX, TFliteOpLogSoftmax);
+    REG_TFL_OP(MATRIX_DIAG, TFliteOpMatrixDiag);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
     REG_TFL_OP(MATRIX_SET_DIAG, TFliteOpMatrixSetDiag);
     REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
@@ -123,6 +124,7 @@ private:
     REG_TFL_OP(RESIZE_BILINEAR, TFliteOpResizeBilinear);
     REG_TFL_OP(RESIZE_NEAREST_NEIGHBOR, TFliteOpResizeNearestNeighbor);
     REG_TFL_OP(REVERSE_SEQUENCE, TFliteOpReverseSequence);
+    REG_TFL_OP(REVERSE_V2, TFliteOpReverseV2);
     REG_TFL_OP(ROUND, TFliteOpRound);
     REG_TFL_OP(RSQRT, TFliteOpRsqrt);
     REG_TFL_OP(SCATTER_ND, TFliteOpScatterNd);

@@ -99,6 +99,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESIZE_BILINEAR, CircleResizeBilinearGraphBuilder);                          // 23
   CIRCLE_NODE(RESIZE_NEAREST_NEIGHBOR, CircleResizeNearestNeighborGraphBuilder);           // 97
   CIRCLE_NODE(REVERSE_SEQUENCE, CircleReverseSequenceGraphBuilder);                        // 112
+  CIRCLE_NODE(REVERSE_V2, CircleReverseV2GraphBuilder);                                    // 105
   CIRCLE_NODE(ROUND, CircleRoundGraphBuilder);                                             // 116
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76
   CIRCLE_NODE(SCATTER_ND, CircleScatterNdGraphBuilder);                                    // 122
@@ -152,7 +153,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_UNIQUE = 103,
-  // BuiltinOperator_REVERSE_V2 = 105,
   // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_MATRIX_SET_DIAG = 115,

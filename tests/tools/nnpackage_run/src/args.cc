@@ -123,6 +123,7 @@ void Args::Initialize(void)
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
     ("num_runs,r", po::value<int>()->default_value(1), "The number of runs")
     ("warmup_runs,w", po::value<int>()->default_value(0), "The number of warmup runs")
+    ("run_delay,t", po::value<int>()->default_value(-1), "Delay time(ms) between runs (as default no delay")
     ("gpumem_poll,g", po::value<bool>()->default_value(false), "Check gpu memory polling separately")
     ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false),
@@ -136,7 +137,10 @@ void Args::Initialize(void)
     ("shape_run", po::value<std::string>()->default_value("[]"),
          "set shape of specified tensor right before running\n"
          "e.g. '[1, [1, 2]]` to set 1st tensor to [1, 2].\n")
-
+    ("verbose_level,v", po::value<int>()->default_value(0), "Verbose level\n"
+         "0: prints the only result. Messages btw run don't print\n"
+         "1: prints result and message btw run\n"
+         "2: prints all of messages to print\n")
     ;
   // clang-format on
 
@@ -249,6 +253,11 @@ void Args::Parse(const int argc, char **argv)
       _warmup_runs = vm["warmup_runs"].as<int>();
     }
 
+    if (vm.count("run_delay"))
+    {
+      _run_delay = vm["run_delay"].as<int>();
+    }
+
     if (vm.count("gpumem_poll"))
     {
       _gpumem_poll = vm["gpumem_poll"].as<bool>();
@@ -267,6 +276,11 @@ void Args::Parse(const int argc, char **argv)
     if (vm.count("write_report"))
     {
       _write_report = vm["write_report"].as<bool>();
+    }
+
+    if (vm.count("verbose_level"))
+    {
+      _verbose_level = vm["verbose_level"].as<int>();
     }
   }
   catch (const std::bad_cast &e)

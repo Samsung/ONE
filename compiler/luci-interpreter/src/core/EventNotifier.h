@@ -26,7 +26,9 @@ class EventNotifier
 public:
   virtual ~EventNotifier() = default;
 
-  virtual void postTensorWrite(Tensor *tensor) const = 0;
+  virtual void postTensorWrite(const Tensor *tensor) = 0;
+  virtual void preOperatorExecute(const Kernel *kernel) = 0;
+  virtual void postOperatorExecute(const Kernel *kernel) = 0;
 };
 
 } // namespace luci_interpreter

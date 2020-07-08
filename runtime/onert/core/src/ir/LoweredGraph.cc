@@ -298,7 +298,15 @@ void LoweredGraph::makeOpSequences(
         else
         {
           op_seq->appendOperation(node_index);
-          op_seq->setInputs(node.getInputs());
+          // Set inputs
+          auto new_inputs = node.getInputs();
+          // Add inputs except outputs of the previous node
+          for (auto ind : op_seq->getInputs())
+          {
+            if (!node.getOutputs().contains(ind))
+              new_inputs.append(ind);
+          }
+          op_seq->setInputs(new_inputs);
 
           VERBOSE(Lower) << "OpSequence#" << op_seq_index.value() << " merges "
                          << "NODE#" << node_index.value() << "(" << node.name() << ")" << std::endl;

@@ -63,10 +63,10 @@ public:
 public:
   /**
    * @brief     Run the random test runner
-   * @param[in] builder  Interpreter Builder used to run
+   * @param[in] running_count  Count to run tflite interpreter with NNAPI
    * @return    0 if test succeeds, otherwise failure
    */
-  int run(const nnfw::tflite::Builder &builder);
+  int run(size_t running_count);
 
 public:
   /**
@@ -75,9 +75,18 @@ public:
    */
   nnfw::misc::RandomGenerator &generator() { return _randgen; };
 
+public:
+  /**
+   * @brief     Compile the random test runner
+   * @param[in] builder  Interpreter Builder used to run
+   */
+  void compile(const nnfw::tflite::Builder &builder);
+
 private:
   nnfw::misc::RandomGenerator _randgen;
   const RandomTestParam _param;
+  std::unique_ptr<::tflite::Interpreter> _tfl_interp;
+  std::unique_ptr<::tflite::Interpreter> _nnapi;
 
 public:
   /**

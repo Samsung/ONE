@@ -27,7 +27,8 @@ function Usage()
 
 get_gtest_option()
 {
-    local output_option="--gtest_output=xml:$UNITTEST_REPORT_DIR/$TEST_BIN.xml"
+    local UNITTEST_REPORT_FILE=$(basename $TEST_BIN)
+    local output_option="--gtest_output=xml:$UNITTEST_REPORT_DIR/$UNITTEST_REPORT_FILE.xml"
     local filter_option
     if [ -r "$TEST_BIN.skip" ]; then
       filter_option="--gtest_filter=-$(grep -v '#' "$TEST_BIN.skip" | tr '\n' ':')"

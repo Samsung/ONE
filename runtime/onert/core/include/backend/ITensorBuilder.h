@@ -158,17 +158,4 @@ public: // methods for dynamic tensor allocation
 } // namespace backend
 } // namespace onert
 
-#include <unordered_set>
-#include <memory>
-
-namespace onert
-{
-namespace backend
-{
-
-using TensorBuilderSet = std::unordered_set<std::shared_ptr<backend::ITensorBuilder>>;
-
-} // namespace backend
-} // namespace onert
-
 #endif // __ONERT_BACKEND_ITENSOR_BUILDER_H__

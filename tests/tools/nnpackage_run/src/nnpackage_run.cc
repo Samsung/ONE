@@ -93,7 +93,10 @@ int main(const int argc, char **argv)
     ruy::profiler::ScopeProfile ruy_profile;
 #endif
 
-    benchmark::Phases phases(benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll()});
+    // TODO Apply verbose level to phases
+    const int verbose = args.getVerboseLevel();
+    benchmark::Phases phases(
+        benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
     nnfw_session *session = nullptr;
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
@@ -262,25 +265,34 @@ int main(const int argc, char **argv)
 
     // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
     // only warmup.
-    // warmup runs
-    phases.run("WARMUP",
-               [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getWarmupRuns());
-
-    // actual runs
-    phases.run("EXECUTE",
-               [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getNumRuns(), true);
+    if (verbose == 0)
+    {
+      phases.run("WARMUP",
+                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+                 args.getWarmupRuns());
+      phases.run("EXECUTE",
+                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+                 args.getNumRuns(), true);
+    }
+    else
+    {
+      phases.run("WARMUP",
+                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+                 [&](const benchmark::Phase &phase, uint32_t nth) {
+                   std::cout << "... "
+                             << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                             << std::endl;
+                 },
+                 args.getWarmupRuns());
+      phases.run("EXECUTE",
+                 [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+                 [&](const benchmark::Phase &phase, uint32_t nth) {
+                   std::cout << "... "
+                             << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                             << std::endl;
+                 },
+                 args.getNumRuns(), true);
+    }
 
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     // dump output tensors
@@ -289,6 +301,8 @@ int main(const int argc, char **argv)
 #endif
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
+
+    // TODO Apply verbose level to result
 
     // prepare result
     benchmark::Result result(phases);
