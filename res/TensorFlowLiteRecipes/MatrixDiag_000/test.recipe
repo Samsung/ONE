@@ -1,0 +1,19 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 dim: 4 dim: 3 dim: 3 }
+}
+operation {
+  type: "MatrixDiag"
+  matrix_diag_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
