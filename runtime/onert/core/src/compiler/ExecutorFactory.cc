@@ -220,11 +220,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
 
-  backend::TensorBuilderSet tensor_builders;
-  for (const auto &e : lowered_graph->backend_contexts())
-  {
-    tensor_builders.insert(e.second->tensor_builder);
-  }
+  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -310,11 +306,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  backend::TensorBuilderSet tensor_builders;
-  for (const auto &e : lowered_graph->backend_contexts())
-  {
-    tensor_builders.insert(e.second->tensor_builder);
-  }
+  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
 
   // To make tensors never be deallocated, this is a workaround to use static memory planner
   for (auto &tensor_builder : tensor_builders)

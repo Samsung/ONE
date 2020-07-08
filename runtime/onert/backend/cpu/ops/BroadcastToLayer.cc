@@ -32,7 +32,8 @@ BroadcastToLayer::BroadcastToLayer() : _input(nullptr), _shape(nullptr), _output
   // DO NOTHING
 }
 
-void BroadcastToLayer::configure(const Tensor *input, const Tensor *shape, Tensor *output)
+void BroadcastToLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
+                                 IPortableTensor *output)
 {
   _input = input;
   _shape = shape;

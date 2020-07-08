@@ -79,6 +79,7 @@
 #include <memory>
 #include <util/Utils.h>
 #include <util/logging.h>
+#include <exec/DynamicShapeInference.h>
 
 #include <stdexcept>
 
@@ -106,7 +107,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->tensorRegistry());
 
   auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
-  auto dyn_shape_inferer = std::make_unique<shape_inference::DynamicInferer>(
+  auto dyn_shape_inferer = std::make_unique<exec::DynamicInferer>(
       _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
   // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
@@ -1329,9 +1330,9 @@ void KernelGenerator::visit(const ir::operation::BroadcastTo &node)
   const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::INPUT)};
   const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::SHAPE)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
-  auto shape_alloc = _tensor_builder->at(shape_index).get();
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto input_alloc = _tensor_builder->portableAt(input_index).get();
+  auto shape_alloc = _tensor_builder->portableAt(shape_index).get();
 
   auto fn = std::make_unique<ops::BroadcastToLayer>();
 
@@ -1344,10 +1345,10 @@ void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
 
-  auto output_alloc = _tensor_builder->at(ofm_index).get();
-  std::vector<const Tensor *> input_allocs;
+  auto output_alloc = _tensor_builder->portableAt(ofm_index).get();
+  std::vector<const IPortableTensor *> input_allocs;
   for (auto &ifm_idx : node.getInputs())
-    input_allocs.emplace_back(_tensor_builder->at(ifm_idx).get());
+    input_allocs.emplace_back(_tensor_builder->portableAt(ifm_idx).get());
 
   const auto epsilon = node.param().epsilon;
   const auto is_training = node.param().is_training;

@@ -42,6 +42,7 @@ public:
 #endif
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
+  const int getRunDelay(void) const { return _run_delay; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
@@ -49,6 +50,7 @@ public:
   const bool printVersion(void) const { return _print_version; }
   const TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
   const TensorShapeMap &getShapeMapForRun() { return _shape_run; }
+  const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
   void Initialize();
@@ -67,11 +69,13 @@ private:
   TensorShapeMap _shape_run;
   int _num_runs;
   int _warmup_runs;
+  int _run_delay;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
   bool _gpumem_poll;
   bool _mem_poll;
   bool _write_report;
   bool _print_version = false;
+  int _verbose_level;
 };
 
 } // end of namespace nnpkg_run

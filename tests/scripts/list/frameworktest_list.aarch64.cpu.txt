@@ -9,8 +9,7 @@ depthwise_conv_2d
 div
 equal
 exp
-fullyconnected/fc1
-fullyconnected/weights_as_input
+fullyconnected
 greater
 greater_equal
 less

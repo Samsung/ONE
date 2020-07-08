@@ -39,7 +39,7 @@ public:
   void configure(const IPortableTensor *indices, IPortableTensor *output, int32_t axis,
                  bool is_arg_max);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

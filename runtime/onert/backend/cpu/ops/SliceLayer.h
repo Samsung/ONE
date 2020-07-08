@@ -39,7 +39,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *begin,
                  const IPortableTensor *size, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   void sliceFloat32();

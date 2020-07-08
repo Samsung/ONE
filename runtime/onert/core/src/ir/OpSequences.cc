@@ -30,12 +30,45 @@ OpSequenceIndex OpSequences::emplace(const OperationIndex &index, Layout layout)
 {
   std::unique_ptr<OpSequence> op_seq = std::make_unique<OpSequence>(layout);
   op_seq->appendOperation(index);
-  return push(std::move(op_seq));
+  const OpSequenceIndex &seq_index = push(std::move(op_seq));
+  cacheSequenceIndex(seq_index, index);
+  return seq_index;
 }
 
 OpSequenceIndex OpSequences::emplace(std::unique_ptr<OpSequence> &&op_seq)
 {
-  return push(std::move(op_seq));
+  auto &operations = op_seq->operations();
+  const OpSequenceIndex &seq_index = push(std::move(op_seq));
+  for (const auto &op_idx : operations)
+  {
+    cacheSequenceIndex(seq_index, op_idx);
+  }
+  return seq_index;
+}
+
+void OpSequences::cacheSequenceIndex(const OpSequenceIndex &seq_index,
+                                     const OperationIndex &op_index) const
+{
+  _seq_indexes.emplace(op_index, seq_index);
+}
+
+OpSequenceIndex *OpSequences::findSequenceIndex(const OperationIndex &operation_index) const
+{
+  // If opration_index is cached, return sequence_index from cache
+  if (_seq_indexes.count(operation_index))
+  {
+    auto &op_seq_index = _seq_indexes.at(operation_index);
+    if (_objects.count(op_seq_index) && _objects.at(op_seq_index)->exist(operation_index))
+    {
+      return &op_seq_index;
+    }
+    else
+    {
+      _seq_indexes.erase(operation_index);
+      return nullptr;
+    }
+  }
+  return nullptr;
 }
 
 bool OpSequences::containsOperation(const OperationIndex &operation_index) const
@@ -63,6 +96,7 @@ void OpSequences::removeFromOpSequence(const OperationIndex &operation_index)
 {
   const auto op_seq_index = findOperation(operation_index);
   auto &op_seq = at(op_seq_index);
+  _seq_indexes.erase(operation_index);
   op_seq.remove(operation_index);
   if (op_seq.size() == 0)
   {
@@ -72,12 +106,16 @@ void OpSequences::removeFromOpSequence(const OperationIndex &operation_index)
 
 OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index) const
 {
+  if (OpSequenceIndex *op_seq_index = findSequenceIndex(operation_index))
+    return *op_seq_index;
+
   for (auto &e : _objects)
   {
     OpSequence &object = *e.second;
     auto it = find(object.operations().begin(), object.operations().end(), operation_index);
     if (it != object.operations().end())
     {
+      cacheSequenceIndex(e.first, operation_index);
       return e.first;
     }
   }

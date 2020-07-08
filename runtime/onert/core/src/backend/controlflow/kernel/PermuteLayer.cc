@@ -52,9 +52,19 @@ void PermuteLayer::run()
       ir::Shape new_shape =
           exec::convertShape(src_shape, src_tensor->layout(), dst_tensor->layout());
 
-      const auto dst_index = _dst_dyn_alloc_info_map.at(dst_tensor).ind;
-      _dst_dyn_alloc_info_map.at(dst_tensor).dyn_tensor_manager->applyShape(dst_index, new_shape);
-      assert(dst_tensor->buffer() != nullptr);
+      try
+      {
+        const auto dst_index = _dst_dyn_alloc_info_map.at(dst_tensor).ind;
+        _dst_dyn_alloc_info_map.at(dst_tensor).dyn_tensor_manager->applyShape(dst_index, new_shape);
+        assert(dst_tensor->buffer() != nullptr);
+      }
+      catch (const std::out_of_range &e)
+      {
+        std::cerr << "Error: out_of_range in PermuteLayer: output's TensorManager does not support "
+                     "dynamic tensor"
+                  << '\n';
+        throw;
+      }
     }
     assert(exec::convertShape(src_tensor->getShape(), src_tensor->layout(), dst_tensor->layout()) ==
            dst_tensor->getShape());

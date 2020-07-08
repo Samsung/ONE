@@ -2,7 +2,7 @@ if (NOT BUILD_TFLITE_BENCHMARK_MODEL)
   return()
 endif(NOT BUILD_TFLITE_BENCHMARK_MODEL)
 
-nnfw_find_package(TensorFlowLite REQUIRED)
+nnfw_find_package(TensorFlowLite EXACT 1.13.1 REQUIRED)
 
 # TODO Remove this target_compile_definitions command, and just check its presence.
 #      This change is prerequisites on pre-built tensorflow-lite package support
@@ -10,7 +10,7 @@ target_compile_definitions(tensorflow-lite PUBLIC "TFLITE_PROFILING_ENABLED")
 
 file(GLOB_RECURSE SOURCES "*.cc")
 
-nnfw_find_package(TensorFlowSource REQUIRED)
+nnas_find_package(TensorFlowSource EXACT 1.13.1 REQUIRED)
 set(TENSORFLOW_LITE_BASE "${TensorFlowSource_DIR}/tensorflow/lite")
 list(APPEND SOURCES "${TENSORFLOW_LITE_BASE}/tools/benchmark/benchmark_main.cc"
                     "${TENSORFLOW_LITE_BASE}/tools/benchmark/benchmark_model.cc"

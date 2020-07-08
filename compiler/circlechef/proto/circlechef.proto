@@ -68,6 +68,16 @@ message InstanceNormOptions {
   optional Activation activation = 2 [default = NONE];
 }
 
+message BCQFullyConnectedOptions {
+  optional int32 weights_hidden_size = 1 [default = 0];
+  optional Activation activation = 2 [default = NONE];
+}
+
+message BCQGatherOptions {
+  optional int32 input_hidden_size = 1 [default = 0];
+  optional int32 axis = 2 [default = 0];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -75,6 +85,8 @@ message Operation {
 
   optional BatchMatMulOptions batch_matmul_options = 100;
   optional InstanceNormOptions instance_norm_options = 101;
+  optional BCQFullyConnectedOptions bcq_fully_connected_options = 102;
+  optional BCQGatherOptions bcq_gather_options = 103;
 }
 
 // For additional subgraphs

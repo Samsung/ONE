@@ -37,6 +37,7 @@ void set_new_shape(CircleReshape *node, int32_t *base, uint32_t size)
   const_shape_node->dim(0) = size;
   const_shape_node->dtype(S32);
   const_shape_node->size<S32>(size);
+  const_shape_node->shape_status(luci::ShapeStatus::VALID);
   for (uint32_t axis = 0; axis < size; ++axis)
     const_shape_node->at<S32>(axis) = base[axis];
   node->shape(const_shape_node);

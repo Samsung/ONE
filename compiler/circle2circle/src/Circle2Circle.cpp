@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include "Model.h"
 #include "CircleExpContract.h"
+
+#include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
 #include <luci/CircleOptimizer.h>
@@ -46,6 +47,7 @@ void print_help(const char *progname)
   std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
   std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
             << std::endl;
+  std::cerr << "   --resolve_customop_matmul : Enable ResolveCustomOpMatMulPass Pass" << std::endl;
   std::cerr << "Execution options:" << std::endl;
   std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
   std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
@@ -93,6 +95,10 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     return 0;
   };
+  argparse["--resolve_customop_matmul"] = [&options](const char **) {
+    options->enable(Algorithms::ResolveCustomOpMatMul);
+    return 0;
+  };
 
   argparse["--mute_warnings"] = [&settings](const char **) {
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
@@ -122,23 +128,18 @@ int entry(int argc, char **argv)
   std::string output_path = argv[argc - 1];
 
   // Load model from the file
-  std::unique_ptr<luci::Model> model = luci::load_model(input_path);
-  if (model == nullptr)
+  foder::FileLoader file_loader{input_path};
+  std::vector<char> model_data = file_loader.load();
+  const circle::Model *circle_model = circle::GetModel(model_data.data());
+  if (circle_model == nullptr)
   {
-    std::cerr << "ERROR: Failed to load '" << input_path << "'" << std::endl;
-    return 255;
-  }
-
-  const circle::Model *input_model = model->model();
-  if (input_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to read '" << input_path << "'" << std::endl;
-    return 255;
+    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
+    return EXIT_FAILURE;
   }
 
   // Import from input Circle file
   luci::Importer importer;
-  auto module = importer.importModule(input_model);
+  auto module = importer.importModule(circle_model);
 
   for (size_t idx = 0; idx < module->size(); ++idx)
   {

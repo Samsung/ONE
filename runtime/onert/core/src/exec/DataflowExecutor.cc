@@ -78,7 +78,7 @@ bool DataflowExecutor::noWaitingJobs()
 }
 
 DataflowExecutor::DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                   const backend::TensorBuilderSet &tensor_builders,
+                                   const compiler::TensorBuilders &tensor_builders,
                                    compiler::CodeMap &&code_map)
     : ExecutorBase{std::move(lowered_graph), tensor_builders}, _code_map{std::move(code_map)}
 {

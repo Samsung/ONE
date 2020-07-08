@@ -128,8 +128,10 @@ public:
       return;
 
     // prepare space for temp_index and resolved_axis
-    _temp_index.resize(temp_index_size);
-    _resolved_axis.resize(resolved_axis_size);
+    if (temp_index_size > kMaxSmallSize)
+      _temp_index.resize(temp_index_size);
+    if (resolved_axis_size > kMaxSmallSize)
+      _resolved_axis.resize(resolved_axis_size);
     _prepared = true;
   }
 
@@ -148,23 +150,31 @@ public:
 
     // Resolve axis.
     int num_resolved_axis = 0;
-    if (!ResolveAxis(input_shape.DimensionsCount(), axes, _resolved_axis.data(),
-                     &num_resolved_axis))
+    if (!ResolveAxis(input_shape.DimensionsCount(), axes, resolved_axis_data(), &num_resolved_axis))
     {
       return false;
     }
 
-    return ReduceImpl<T, T>(input_data, input_shape, output_shape, _resolved_axis.data(),
-                            num_resolved_axis, _temp_index.data(), reducer, output_data);
+    return ReduceImpl<T, T>(input_data, input_shape, output_shape, resolved_axis_data(),
+                            num_resolved_axis, temp_index_data(), reducer, output_data);
   }
 
-  inline int32_t *resolved_axis_data(void) { return _resolved_axis.data(); }
-  inline int32_t *temp_index_data(void) { return _temp_index.data(); }
+  inline int32_t *resolved_axis_data(void)
+  {
+    return _resolved_axis.size() ? _resolved_axis.data() : _resolved_axis_small;
+  }
+  inline int32_t *temp_index_data(void)
+  {
+    return _temp_index.size() ? _temp_index.data() : _temp_index_small;
+  }
 
 private:
   std::vector<int> _temp_index;
   std::vector<int> _resolved_axis;
   bool _prepared;
+  static constexpr int kMaxSmallSize = 4;
+  int _temp_index_small[kMaxSmallSize];
+  int _resolved_axis_small[kMaxSmallSize];
 };
 
 } // namespace cker

@@ -43,7 +43,7 @@ public:
   void configure(const IPortableTensor *input, IPortableTensor *output,
                  const std::vector<int> &perm);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

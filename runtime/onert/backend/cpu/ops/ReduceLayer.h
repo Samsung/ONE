@@ -59,7 +59,7 @@ public:
   void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
                  ReduceType reduceType, bool keep_dims);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_input;

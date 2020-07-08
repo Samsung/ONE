@@ -29,11 +29,11 @@ git \
 graphviz \
 hdf5-tools \
 lcov \
-libatlas-base-dev\
+libatlas-base-dev \
 libboost-all-dev \
 libgflags-dev \
 libgoogle-glog-dev \
-libgtest-dev\
+libgtest-dev \
 libhdf5-dev \
 libprotobuf-dev \
 protobuf-compiler \

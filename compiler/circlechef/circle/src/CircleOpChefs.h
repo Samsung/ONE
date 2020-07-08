@@ -19,6 +19,8 @@
 
 // In alphabet order
 #include "Op/BatchMatMul.h"
+#include "Op/BCQFullyConnected.h"
+#include "Op/BCQGather.h"
 #include "Op/InstanceNorm.h"
 
 #endif // __CIRCLE_OP_CHEFS_H__

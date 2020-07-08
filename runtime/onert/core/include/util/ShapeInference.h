@@ -43,10 +43,15 @@ namespace shape_inference
 using Shapes = std::vector<ir::Shape>;
 
 // Define shape calculation for operations. List them in alphabetic order.
-// Remove TODO when the function name matching the alphabet is added
+
+ir::Shape argMaxShapes(const ir::Shape &input_shape, int axis, int rank);
 
 ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
                             ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
+                                const ir::operation::BatchMatMul::Param &param);
+
+ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
 
@@ -66,14 +71,23 @@ ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
-// TODO write op starting from G
-// TODO write op starting from L
+ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
+                       int rank);
 
 ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
                             ir::Layout layout = ir::Layout::NHWC);
 
-// TODO write op starting from N
-// TODO write op starting from P
+ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis);
+
+ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num);
+
+ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const size_t num_pads);
+
+template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
+
+ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_elements,
+                            const size_t total_num_elements);
+
 ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int> &axes,
                             bool keep_dims);
 
@@ -81,14 +95,45 @@ template <float *> ir::Shape inferRangeShape(float *start_val, float *limit_val,
 
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
 
-// TODO write op starting from S
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
-// TODO write op starting from U
-// TODO write op starting from Z
+ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
+                           const ir::Shape &input_false_shape);
 
-std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
-                                               const int ker_w, const ir::Padding pad,
-                                               const ir::Stride stride);
+ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins,
+                          const int32_t *sizes);
+
+ir::Shape inferSplitShape(const ir::Shape input_shape, int axis_value, int num_splits);
+
+ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Squeeze::Param &param);
+
+struct StridedSliceParams
+{
+  int8_t start_indices_count;
+  int16_t start_indices[4];
+  int8_t stop_indices_count;
+  int16_t stop_indices[4];
+  int8_t strides_count;
+  int16_t strides[4];
+
+  int16_t begin_mask;
+  int16_t ellipsis_mask;
+  int16_t end_mask;
+  int16_t new_axis_mask;
+  int16_t shrink_axis_mask;
+};
+
+template <typename T>
+StridedSliceParams buildStridedSliceParams(const T *begin, const T *end, const T *strides,
+                                           const uint32_t begin_mask, const uint32_t end_mask,
+                                           const uint32_t shrink_axis_mask, const uint8_t rank);
+
+ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSliceParams &op_params,
+                                 uint32_t rank);
+
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier);
+
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
+
+ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank);
 
 /**
  * @brief Class to infer shape before running kernels. It does the following:

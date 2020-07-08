@@ -56,6 +56,7 @@
 #include "BuildBuiltinOptions/LogicalOrOptions.h"
 // There is no LogisticOptions
 #include "BuildBuiltinOptions/LogSoftmaxOptions.h"
+#include "BuildBuiltinOptions/MatrixDiagOptions.h"
 #include "BuildBuiltinOptions/MatrixSetDiagOptions.h"
 #include "BuildBuiltinOptions/MaximumMinimumOptions.h"
 #include "BuildBuiltinOptions/MirrorPadOptions.h"
@@ -75,6 +76,7 @@
 #include "BuildBuiltinOptions/ResizeBilinearOptions.h"
 #include "BuildBuiltinOptions/ResizeNearestNeighborOptions.h"
 #include "BuildBuiltinOptions/ReverseSequenceOptions.h"
+#include "BuildBuiltinOptions/ReverseV2Options.h"
 // There is no RoundOptions
 // There is no RsqrtOptions
 #include "BuildBuiltinOptions/ScatterNdOptions.h"

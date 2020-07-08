@@ -75,8 +75,6 @@ public:
 
   std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
 
-  void dimCorrection(const ir::OperandIndex &index, bool apply_dim_correction);
-
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 
   void setUsesCount(const ir::OperandIndex &index, size_t num_uses)
@@ -110,7 +108,6 @@ private:
 private:
   const ir::Operands &_operands;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
-  ir::OperandIndexMap<bool> _apply_dim_correction_map;
   ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
   ir::OperandIndexMap<size_t> _uses_count_map;
 
@@ -164,7 +161,6 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
   {
     // Normal Tensors
     _tensor_info_map.emplace(ind, info);
-    _apply_dim_correction_map.emplace(ind, true);
     _tensor_layout_map.insert({ind, backend_layout});
     if (as_const)
       _constants.append(ind);
@@ -205,8 +201,6 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
     auto new_shape = permuteShape(shape, frontend_layout, backend_layout);
     auto oi = ir::OperandInfo::createStaticInfo(new_shape, obj.typeInfo());
     _tensor_info_map.emplace(ind, oi);
-
-    _apply_dim_correction_map.emplace(ind, true);
   }
 }
 
@@ -341,13 +335,6 @@ AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::at(const ir::OperandIndex &i
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::dimCorrection(
-    const ir::OperandIndex &index, bool apply_dim_correction)
-{
-  _apply_dim_correction_map[index] = apply_dim_correction;
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 std::unique_ptr<ITensorManager>
 AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseStaticTensorManager(void)
 {
@@ -369,8 +356,8 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
 
     const auto &info = entry.second;
     const auto &backend_layout = _tensor_layout_map[ind];
-    auto tensor_info = asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN,
-                                    backend_layout, _apply_dim_correction_map[ind]);
+    auto tensor_info =
+        asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN, backend_layout, true);
     _tensor_mgr->buildTensor(ind, tensor_info, info.shape().rank(), _constants.contains(ind),
                              _uses_count_map[ind]);
   }
@@ -435,8 +422,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
       const auto &root_parent = findRootParent(parent);
       const auto &backend_layout = _tensor_layout_map[root_parent];
 
-      auto shape = asTensorShape(tensor_info.shape(), ir::Layout::UNKNOWN, backend_layout,
-                                 _apply_dim_correction_map[current]);
+      auto shape = asTensorShape(tensor_info.shape(), ir::Layout::UNKNOWN, backend_layout, true);
       ::arm_compute::Coordinates coordinates =
           asTensorCoordinate(parent_info.coordinates, ir::Layout::UNKNOWN, backend_layout);
       _tensor_mgr->buildSubtensor(parent, current, shape, coordinates, tensor_info.shape().rank(),

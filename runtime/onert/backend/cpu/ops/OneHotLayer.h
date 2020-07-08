@@ -47,7 +47,7 @@ public:
                  const IPortableTensor *on_value, const IPortableTensor *off_value,
                  IPortableTensor *output, int32_t axis);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_indices;

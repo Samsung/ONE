@@ -36,7 +36,7 @@ public:
 
   void configure(const IPortableTensor *input, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   void rsqrtFloat32();

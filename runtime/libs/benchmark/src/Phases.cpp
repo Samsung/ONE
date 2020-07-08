@@ -17,8 +17,10 @@
 #include "benchmark/Phases.h"
 #include "benchmark/Types.h"
 
+#include <thread>
 #include <chrono>
 #include <cassert>
+#include <iostream>
 
 namespace
 {
@@ -36,7 +38,8 @@ namespace benchmark
 {
 
 Phases::Phases(const PhaseOption &option)
-    : _option(option), _mem_poll(std::chrono::milliseconds(5), option.memory_gpu)
+    : _option(option),
+      _mem_poll(std::chrono::milliseconds(option.memory_interval), option.memory_gpu)
 {
   // DO NOTHING
 }
@@ -72,6 +75,11 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
 
     if (post)
       (*post)(phase, i);
+
+    if (_option.run_delay > 0 && p == PhaseEnum::EXECUTE && i != loop_num - 1)
+    {
+      std::this_thread::sleep_for(std::chrono::milliseconds(_option.run_delay));
+    }
   }
 
   if (p == PhaseEnum::END_OF_PHASE)

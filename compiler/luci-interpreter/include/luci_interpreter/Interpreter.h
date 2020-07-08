@@ -37,6 +37,12 @@ public:
 
   // Called when the value of a tensor has been updated during execution.
   virtual void postTensorWrite(const luci::CircleNode *node, const Tensor *tensor);
+
+  // Called before / after executing an operator.
+  // Note that these methods are not called for auxiliary operators (CircleInput, CircleOutput,
+  // CircleConst and Circle*Out).
+  virtual void preOperatorExecute(const luci::CircleNode *node);
+  virtual void postOperatorExecute(const luci::CircleNode *node);
 };
 
 class Interpreter

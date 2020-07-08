@@ -1286,6 +1286,7 @@ void OperationValidator::visit(const ir::operation::Tile &node)
   const auto multiple_index{node.getInputs().at(1)};
 
   OP_REQUIRES(_ctx.at(multiple_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(multiple_index).shape().dim(0) == _ctx.at(input_index).shape().rank());
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 

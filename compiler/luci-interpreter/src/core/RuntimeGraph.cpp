@@ -71,7 +71,7 @@ void RuntimeGraph::execute() const
   // Notify the observers that the input tensors have changed.
   if (event_notifier != nullptr)
   {
-    for (Tensor *input_tensor : getInputTensors())
+    for (const Tensor *input_tensor : getInputTensors())
     {
       event_notifier->postTensorWrite(input_tensor);
     }
@@ -79,8 +79,19 @@ void RuntimeGraph::execute() const
 
   for (const auto &kernel : _kernels)
   {
+    if (event_notifier != nullptr)
+    {
+      event_notifier->preOperatorExecute(kernel.get());
+    }
+
     kernel->execute();
-    for (Tensor *tensor : kernel->getOutputTensors())
+
+    if (event_notifier != nullptr)
+    {
+      event_notifier->postOperatorExecute(kernel.get());
+    }
+
+    for (const Tensor *tensor : kernel->getOutputTensors())
     {
       if (event_notifier != nullptr)
       {
