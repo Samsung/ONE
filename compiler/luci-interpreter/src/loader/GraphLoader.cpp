@@ -42,8 +42,12 @@ template <DataType DT> const void *getNodeDataImpl(const luci::CircleConst *node
   const int32_t num_elements = node->size<DT>();
 
   *data_size = num_elements * element_size;
-  // FIXME There is no good way to get the pointer to the data currently.
-  return &node->at<DT>(0);
+  if (*data_size > 0)
+  {
+    // FIXME There is no good way to get the pointer to the data currently.
+    return &node->at<DT>(0);
+  }
+  return nullptr;
 }
 
 const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
@@ -140,7 +144,8 @@ void GraphLoader::loadTensors()
     {
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
-      tensor->writeData(const_data, data_size);
+      if (const_data != nullptr)
+        tensor->writeData(const_data, data_size);
     }
 
     _node_to_tensor.emplace(node, tensor.get());
