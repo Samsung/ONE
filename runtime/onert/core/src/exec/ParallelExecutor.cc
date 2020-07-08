@@ -69,6 +69,8 @@ ParallelExecutor::ParallelExecutor(std::unique_ptr<ir::LoweredGraph> lowered_gra
 
 void ParallelExecutor::executeImpl()
 {
+  bool dynamic_input_exists = hasDynamicInput();
+
   // Init scheduler
   // TODO Consider to have distinct backend set in LowerInfoMap
   BackendSet backends;
@@ -126,6 +128,10 @@ void ParallelExecutor::executeImpl()
       _subject.notifyJobEnd(this, op_seq, backend);
       notify(job_index);
     };
+
+    // dynamic tensor setting
+    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
+    job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
 
     _scheduler->assign(std::make_unique<HookFunction>(job->fn_seq(), setup, teardown), backend);
     _finished_jobs[job_index] = std::move(job);

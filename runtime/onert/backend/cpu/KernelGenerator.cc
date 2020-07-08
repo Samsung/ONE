@@ -132,12 +132,23 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->tensorRegistry());
 
   auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
-  auto dyn_shape_inferer = std::make_unique<exec::DynamicShapeInferer>(
+  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(
       _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
-  // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
-  _return_fn_seq = std::make_unique<exec::FunctionSequenceForDynamicBackend>(
-      op_seq, _operations_ctx, std::move(dyn_shape_inferer), dyn_tensor_manager);
+  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+
+  // Prepare to handle dynamic tensors later
+  auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
+  {
+    dyn_ctx->op_seq = &op_seq;
+    dyn_ctx->operations = &_operations_ctx;
+    dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
+    dyn_ctx->tensor_registry = _tensor_builder->tensorRegistry();
+    dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
+
+    _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
+  }
+  _return_fn_seq->enableDynamicShapeInferer(true);
 
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
