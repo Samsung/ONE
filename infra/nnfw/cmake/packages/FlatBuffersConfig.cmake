@@ -1,5 +1,14 @@
 function(_FlatBuffers_import)
-  nnfw_find_package(FlatBuffersSource QUIET)
+
+  find_package(Flatbuffers QUIET)
+
+  if(Flatbuffers_FOUND)
+    set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+    return()
+  endif(Flatbuffers_FOUND)
+
+  # NOTE Tizen uses 1.11
+  nnas_find_package(FlatBuffersSource EXACT 1.11 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
     set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
@@ -16,16 +25,17 @@ function(_FlatBuffers_import)
   # From FlatBuffers's CMakeLists.txt
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_cpp.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_dart.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_fbs.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_general.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_go.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_grpc.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_js.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_json_schema.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_lobster.cpp")
-  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_lua.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_js_ts.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_php.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_python.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_lobster.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_lua.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_rust.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_fbs.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_grpc.cpp")
+  list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_json_schema.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/flatc.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/src/flatc_main.cpp")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/grpc/src/compiler/cpp_generator.cc")
@@ -35,13 +45,18 @@ function(_FlatBuffers_import)
   if(NOT TARGET flatbuffers)
     add_library(flatbuffers ${FlatBuffers_Library_SRCS})
     target_include_directories(flatbuffers PUBLIC "${FlatBuffersSource_DIR}/include")
+    set_property(TARGET flatbuffers PROPERTY POSITION_INDEPENDENT_CODE ON)
   endif(NOT TARGET flatbuffers)
+
+  add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
 
   if(NOT TARGET flatc)
     add_executable(flatc ${FlatBuffers_Compiler_SRCS})
     target_include_directories(flatc PRIVATE "${FlatBuffersSource_DIR}/grpc")
-    target_link_libraries(flatc flatbuffers)
+    target_link_libraries(flatc flatbuffers::flatbuffers)
   endif(NOT TARGET flatc)
+
+  add_executable(flatbuffers::flatc ALIAS flatc)
 
   set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
@@ -69,7 +84,7 @@ if(FlatBuffers_FOUND)
                        --no-union-value-namespacing
                        --gen-object-api -o "${abs_output_dir}"
                        ${SCHEMA_FILES}
-                       DEPENDS flatc)
+                       DEPENDS flatbuffers::flatc)
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)
     set(${PREFIX}_INCLUDE_DIRS ${abs_output_dir} PARENT_SCOPE)

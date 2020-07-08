@@ -7,7 +7,6 @@ License: Apache-2.0 and MIT and BSD-2-Clause
 
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
-Source1001: flatbuffers.tar.gz
 Source1002: nnapi_test_generated.tar.gz
 Source1003: gtest.tar.gz
 Source1004: eigen.tar.gz
@@ -25,6 +24,8 @@ Source2002: nnfw-plugin.pc.in
 %endif
 
 BuildRequires:  cmake
+# Require for frontend (model loader)
+BuildRequires:  flatbuffers-devel
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
@@ -102,7 +103,6 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %setup -q
 cp %{SOURCE1} .
 mkdir ./externals
-tar -xf %{SOURCE1001} -C ./externals
 tar -xf %{SOURCE1002} -C ./tests/nnapi/src/
 tar -xf %{SOURCE1003} -C ./externals
 tar -xf %{SOURCE1004} -C ./externals
