@@ -7,7 +7,8 @@ function(_TensorFlowSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(TENSORFLOW_1_13_1_URL https://github.com/tensorflow/tensorflow/archive/v1.13.1.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(TENSORFLOW_1_13_1_URL ${EXTERNAL_DOWNLOAD_SERVER}/tensorflow/tensorflow/archive/v1.13.1.tar.gz)
 
   ExternalSource_Download(TENSORFLOW DIRNAME TENSORFLOW-1.13.1 ${TENSORFLOW_1_13_1_URL})
 
