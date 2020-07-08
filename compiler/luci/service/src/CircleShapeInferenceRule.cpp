@@ -917,6 +917,25 @@ public:
 
   loco::NodeShape visit(const luci::CircleLogSoftmax *node) final { return use_logits(node); }
 
+  loco::NodeShape visit(const luci::CircleMatrixDiag *node) final
+  {
+    loco::TensorShape output_shape;
+
+    auto diagonal_shape = loco::shape_get(node->diagonal()).as<loco::TensorShape>();
+    auto rank = diagonal_shape.rank();
+
+    output_shape.rank(rank + 1);
+
+    for (uint32_t i = 0; i < rank; i++)
+    {
+      output_shape.dim(i) = diagonal_shape.dim(i);
+    }
+
+    output_shape.dim(rank) = diagonal_shape.dim(rank - 1);
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleMaximum *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleMaxPool2D *node) final
