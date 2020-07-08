@@ -38,6 +38,16 @@ const std::string node_name_prefix(luci::NodeName node_name)
 {
   std::string prefix = node_name;
 
+  if (prefix.find("ReadVariableOp/resource/") != std::string::npos)
+  {
+    const auto start_index = prefix.find("ReadVariableOp/resource/");
+
+    const auto left_prefix = prefix.substr(0, start_index);
+    const auto right_prefix = prefix.substr(start_index + 24);
+
+    prefix = left_prefix + right_prefix;
+  }
+
   if (prefix.find("Tensordot/") != std::string::npos)
   {
     const auto index = prefix.find("Tensordot/");
@@ -47,6 +57,11 @@ const std::string node_name_prefix(luci::NodeName node_name)
   {
     const auto index = prefix.find("kernel/");
     prefix = prefix.substr(0, index - 1);
+  }
+  else if (prefix.find("/bcqinfo_") != std::string::npos)
+  {
+    const auto index = prefix.find("/bcqinfo_");
+    prefix = prefix.substr(0, index);
   }
 
   return prefix;
@@ -107,7 +122,11 @@ public:
   bool do_w_x(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
+
+    if (_do_w_x[prefix]->dtype() == loco::DataType::S32)
+      return _do_w_x[prefix]->at<loco::DataType::S32>(0) == 1;
+    else
+      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
   }
 
   luci::CircleConst *get_alpha(luci::CircleConst *node)
