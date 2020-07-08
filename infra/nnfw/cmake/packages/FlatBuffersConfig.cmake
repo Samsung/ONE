@@ -1,4 +1,11 @@
 function(_FlatBuffers_import)
+
+  find_package(Flatbuffers QUIET)
+  if(Flatbuffers_FOUND)
+    set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+    return()
+  endif(Flatbuffers_FOUND)
+
   nnfw_find_package(FlatBuffersSource QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
@@ -32,16 +39,21 @@ function(_FlatBuffers_import)
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/grpc/src/compiler/go_generator.cc")
   list(APPEND FlatBuffers_Compiler_SRCS "${FlatBuffersSource_DIR}/grpc/src/compiler/java_generator.cc")
 
-  if(NOT TARGET flatbuffers)
+  if(NOT TARGET flatbuffers::flatbuffers)
     add_library(flatbuffers ${FlatBuffers_Library_SRCS})
     target_include_directories(flatbuffers PUBLIC "${FlatBuffersSource_DIR}/include")
-  endif(NOT TARGET flatbuffers)
 
-  if(NOT TARGET flatc)
+    add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
+  endif(NOT TARGET flatbuffers::flatbuffers)
+
+
+  if(NOT TARGET flatbuffers::flatc)
     add_executable(flatc ${FlatBuffers_Compiler_SRCS})
     target_include_directories(flatc PRIVATE "${FlatBuffersSource_DIR}/grpc")
     target_link_libraries(flatc flatbuffers)
-  endif(NOT TARGET flatc)
+
+    add_executable(flatbuffers::flatc ALIAS flatc)
+  endif(NOT TARGET flatbuffers::flatc)
 
   set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
@@ -69,7 +81,7 @@ if(FlatBuffers_FOUND)
                        --no-union-value-namespacing
                        --gen-object-api -o "${abs_output_dir}"
                        ${SCHEMA_FILES}
-                       DEPENDS flatc)
+                       DEPENDS flatbuffers::flatc)
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)
     set(${PREFIX}_INCLUDE_DIRS ${abs_output_dir} PARENT_SCOPE)
