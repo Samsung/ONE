@@ -640,16 +640,9 @@ void OperationExporter::visit(luci::CircleMatrixDiag *node)
 
 void OperationExporter::visit(luci::CircleMatrixSetDiag *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_MATRIX_SET_DIAG);
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
-                                  get_tensor_index(node->diagonal())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateMatrixSetDiagOptions(builder);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_MatrixSetDiagOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  export_simple(node, circle::BuiltinOperator_MATRIX_SET_DIAG,
+                circle::BuiltinOptions_MatrixSetDiagOptions,
+                CreateMatrixSetDiagOptions(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMaximum *node)
