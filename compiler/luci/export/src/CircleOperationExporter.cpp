@@ -94,6 +94,7 @@ public:
   void visit(luci::CircleLogistic *) final;
   void visit(luci::CircleLogSoftmax *) final;
   void visit(luci::CircleMatrixDiag *) final;
+  void visit(luci::CircleMatrixSetDiag *) final;
   void visit(luci::CircleMaximum *) final;
   void visit(luci::CircleMaxPool2D *) final;
   void visit(luci::CircleMean *) final;
@@ -635,6 +636,13 @@ void OperationExporter::visit(luci::CircleMatrixDiag *node)
 {
   export_simple(node, circle::BuiltinOperator_MATRIX_DIAG, circle::BuiltinOptions_MatrixDiagOptions,
                 CreateMatrixDiagOptions(builder).Union());
+}
+
+void OperationExporter::visit(luci::CircleMatrixSetDiag *node)
+{
+  export_simple(node, circle::BuiltinOperator_MATRIX_SET_DIAG,
+                circle::BuiltinOptions_MatrixSetDiagOptions,
+                CreateMatrixSetDiagOptions(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMaximum *node)
