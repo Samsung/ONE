@@ -60,6 +60,7 @@
 #include "Op/Logistic.h"
 #include "Op/LogSoftmax.h"
 #include "Op/MatrixDiag.h"
+#include "Op/MatrixSetDiag.h"
 #include "Op/Maximum.h"
 #include "Op/MaxPool2D.h"
 #include "Op/Mean.h"

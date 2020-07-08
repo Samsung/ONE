@@ -418,6 +418,10 @@ message MatrixDiagOptions {
   // NONE
 }
 
+message MatrixSetDiagOptions {
+  // NONE
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -518,7 +522,7 @@ message Operation {
   optional ReverseSequenceOptions reverse_sequence_options = 192;
   optional MatrixDiagOptions matrix_diag_options = 193;
   // QuantizeOptions 194
-  // MatrixSetDiagOptions 195
+  optional MatrixSetDiagOptions matrix_set_diag_options = 195;
   // HardSwishOptions 196
   optional DepthToSpaceOptions depth_to_space_options = 197;
   // NonMaxSuppressionV4Options 198

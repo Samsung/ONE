@@ -98,6 +98,7 @@ private:
     REG_TFL_OP(LOG_SOFTMAX, TFliteOpLogSoftmax);
     REG_TFL_OP(MATRIX_DIAG, TFliteOpMatrixDiag);
     REG_TFL_OP(MAX_POOL_2D, TFliteOpMaxPool2D);
+    REG_TFL_OP(MATRIX_SET_DIAG, TFliteOpMatrixSetDiag);
     REG_TFL_OP(MAXIMUM, TFliteOpMaximum);
     REG_TFL_OP(MEAN, TFliteOpMean);
     REG_TFL_OP(MINIMUM, TFliteOpMinimum);
