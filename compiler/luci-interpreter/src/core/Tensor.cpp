@@ -36,12 +36,11 @@ void Tensor::readData(void *data_ptr, size_t data_size) const
 {
   const size_t element_size = getDataTypeSize(element_type());
   const int32_t num_elements = shape().num_elements();
-  if (num_elements <= 0)
-    return;
   if (data_size != num_elements * element_size)
   {
     throw std::invalid_argument("Invalid data size.");
   }
+  assert(data_ptr != nullptr);
   std::memcpy(data_ptr, data<void>(), data_size);
 }
 
@@ -49,12 +48,11 @@ void Tensor::writeData(const void *data_ptr, size_t data_size)
 {
   const size_t element_size = getDataTypeSize(element_type());
   const int32_t num_elements = shape().num_elements();
-  if (num_elements <= 0)
-    return;
   if (data_size != num_elements * element_size)
   {
     throw std::invalid_argument("Invalid data size.");
   }
+  assert(data_ptr != nullptr);
   std::memcpy(data<void>(), data_ptr, data_size);
 }
 
@@ -63,8 +61,7 @@ void Tensor::resize(const Shape &new_shape)
   _shape = new_shape;
   const size_t element_size = getDataTypeSize(_element_type);
   const int32_t num_elements = _shape.num_elements();
-  if (num_elements <= 0)
-    return;
+  // NOTE: _data can be nullptr for empty tensors
   _data = std::make_unique<uint8_t[]>(num_elements * element_size);
 }
 
