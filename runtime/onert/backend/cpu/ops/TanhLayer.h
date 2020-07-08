@@ -44,9 +44,12 @@ public:
 
   void run() override;
 
+  void PopulateLookupTable();
+
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
+  uint8_t _table[256];
 };
 
 } // namespace ops

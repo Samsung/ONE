@@ -197,7 +197,6 @@ GeneratedTests.svdf2
 GeneratedTests.svdf_bias_present
 GeneratedTests.svdf_state
 GeneratedTests.tanh_v1_2
-GeneratedTests.tanh_v1_2_2
 GeneratedTests.tanh_v1_2_zero_sized
 GeneratedTests.tanh_v1_2_zero_sized_quant8
 GeneratedTests.tile_1_float16
