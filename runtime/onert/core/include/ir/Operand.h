@@ -66,6 +66,8 @@ public:
   }
   const Data *data(void) const { return _data.get(); }
 
+  std::shared_ptr<Data> shareData(void) const { return _data; }
+
   void releaseData(void) { _data.reset(); }
 
   /**

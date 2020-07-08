@@ -97,7 +97,7 @@ public:
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
 
-  void increase_ref()
+  virtual void increase_ref()
   {
     assert(is_dynamic() ||
            // when not dynamic
@@ -105,7 +105,7 @@ public:
 
     ++_num_references;
   }
-  void decrease_ref()
+  virtual void decrease_ref()
   {
     assert(_buffer != nullptr || _allocator != nullptr);
     assert(_num_references > 0);
@@ -125,11 +125,13 @@ public:
 
   void setShape(const ir::Shape &new_shape) override;
 
-private:
+protected:
   ir::OperandInfo _info;
   ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
+
+private:
   std::shared_ptr<Allocator> _allocator;
 };
 

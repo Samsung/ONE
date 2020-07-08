@@ -47,6 +47,8 @@ public:
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::TransposeConv &) override;
 
+  void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &) override {}
+
 private:
   std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
   void copyInputInitialize(const ir::Operation &node, uint32_t index);

@@ -28,9 +28,8 @@ namespace cpu
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
+    : _tensor_reg{new TensorRegistry()}, _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
 {
   /* empty */
 }
@@ -57,7 +56,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
 
-  if (!at(ind)->is_dynamic())
+  if (!portableAt(ind)->is_dynamic())
   {
     const auto size = tensor_info.total_size();
     _static_tensor_mgr->claimPlan(ind, size);
@@ -66,7 +65,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  if (!at(ind)->is_dynamic())
+  if (!portableAt(ind)->is_dynamic())
   {
     _static_tensor_mgr->releasePlan(ind);
   }
@@ -77,11 +76,7 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare(void)
-{
-  _static_tensor_mgr->allocateConsts();
-  _static_tensor_mgr->allocateNonconsts();
-}
+void TensorBuilder::prepare(void) { _static_tensor_mgr->allocateNonconsts(); }
 
 void TensorBuilder::allocate()
 {
@@ -101,7 +96,7 @@ std::shared_ptr<IPortableTensor> TensorBuilder::portableAt(const ir::OperandInde
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getManagedTensor(ind);
 }

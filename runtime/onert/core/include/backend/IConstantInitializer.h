@@ -212,6 +212,11 @@ public:
     _init_map[index] = std::bind(customInit, _1, _2);
   }
 
+  // TODO: For now the only cpu backend supports constant tensor to use data from external
+  // If the other backend supports (to do this, ExternalTensor should be such as IExternal),
+  // this can be not virtual function
+  virtual void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &) = 0;
+
 public:
   bool exist(const ir::OperandIndex &ind) { return _init_map.find(ind) != _init_map.end(); }
 

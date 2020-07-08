@@ -40,6 +40,8 @@ public:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;
 
+  void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &) override;
+
 private:
   std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
 

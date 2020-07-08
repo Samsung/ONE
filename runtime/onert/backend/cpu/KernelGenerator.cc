@@ -129,10 +129,18 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
         assert(portable_tensor->layout() == ir::Layout::NHWC);
       }
 
-      auto tensor = _tensor_builder->at(ind);
+      auto tensor = _tensor_builder->at(ind); // from managed
       if (tensor)
       {
         tensor->increase_ref();
+      }
+      else
+      {
+        auto pt = _tensor_builder->portableAt(ind); // from external
+        assert(pt != nullptr);
+        auto et = dynamic_cast<const ExternalTensor *>(pt.get());
+        assert(et);
+        const_cast<ExternalTensor *>(et)->increase_ref();
       }
     }
   }

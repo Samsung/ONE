@@ -17,13 +17,11 @@
 #ifndef __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__
 
-#include <backend/cpu_common/DynamicTensorManager.h>
-#include <backend/cpu_common/StaticTensorManager.h>
-#include <backend/cpu_common/TensorRegistry.h>
-#include <backend/cpu_common/Tensor.h>
-
 #include <backend/ITensorBuilder.h>
 #include <ir/OperandIndexMap.h>
+#include "StaticTensorManager.h"
+#include "DynamicTensorManager.h"
+#include "Tensor.h"
 
 #include <unordered_map>
 
@@ -76,19 +74,21 @@ public:
 
   /**
    * @brief Get tensor with a specific OperandIndex.
+
    * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
    *        If not, program will crash with assert or exception.
    * @return shared_ptr<Tensor>
    */
-  std::shared_ptr<cpu_common::Tensor> at(const ir::OperandIndex &ind);
+  std::shared_ptr<Tensor> at(const ir::OperandIndex &ind);
+
   std::shared_ptr<IPortableTensor> portableAt(const ir::OperandIndex &ind);
 
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:
-  const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
-  std::unique_ptr<cpu_common::StaticTensorManager> _static_tensor_mgr;
-  std::unique_ptr<cpu_common::DynamicTensorManager> _dynamic_tensor_mgr;
+  const std::shared_ptr<TensorRegistry> _tensor_reg;
+  std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
+  std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
 };
 

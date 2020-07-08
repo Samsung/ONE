@@ -19,6 +19,7 @@
 #include "ir/Operation.h"
 #include "backend/IShapeFixer.h"
 #include "backend/IConstantInitializer.h"
+#include "backend/Backend.h"
 
 namespace onert
 {
@@ -57,7 +58,10 @@ void BackendContext::initConsts()
     const auto &obj = _graph->operands().at(ind);
     if (obj.isConstant() && !constant_initializer->exist(ind))
     {
-      constant_initializer->registerPermuteInitializer(ind, obj);
+      if (_backend->config()->id() == "cpu")
+        constant_initializer->registerExternalInitializer(ind, obj);
+      else
+        constant_initializer->registerPermuteInitializer(ind, obj);
     }
   }
 
