@@ -58,6 +58,8 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   //      (all derivatives have the same implementation for this)
   assert(!_return_fn_seq);
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  _return_fn_seq->enableDynamicShapeInferer(false);
+
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {

@@ -18,6 +18,7 @@
 #define __ONERT_EXEC_FUNCTION_SEQUENCE_H__
 
 #include <memory>
+#include <cassert>
 #include <vector>
 #include <functional>
 
@@ -92,47 +93,27 @@ public: // methods related to dynamic tensor
     _dynamic_tensor_ctx = dynamic_tensor_ctx;
   }
 
+  std::shared_ptr<DynamicTensorCtx> &dynamic_tensor_ctx() { return _dynamic_tensor_ctx; }
+
   /**
-   * @brief Call this function if this FunctionSequence handles dynamic tensors.
-   * @note When dynamic tensors are handled, enableDynamicShapeInferer(true) must be called before
-   *       run(). If not called, run() assumes that all tensors are static.
+   * @brief Call this function by passing @c true if this FunctionSequence handles dynamic tensors
+   *        and should run DynamicShapeInferer. This function can be called multiple times and
+   *        if @c false is passed to any call, DynamicShapeInfere will not be run.
+   * @note This must be called before run(). If not called, run() assumes that all tensors are
+   *       dynamic and DynamicShapeInferer will be run.
    */
-  void enableDynamicShapeInferer(bool enable) { _enable_dynamic_shape_inferer = enable; }
+  void enableDynamicShapeInferer(bool enable)
+  {
+    _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer && enable;
+  }
 
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
 
-protected: // context to run this sequence when this sequence may handle dynamic tensors
-  bool _enable_dynamic_shape_inferer = false;
+protected:
+  bool _enable_dynamic_shape_inferer = true;
+
   std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
-};
-
-//
-// TODO Deprecate this
-//
-/**
- * @brief Function sequence used for backend that supports dynamic tensor
- *        Such backend cannot use class FunctionSequence but use this class
- */
-class FunctionSequenceForDynamicBackend : public FunctionSequence
-{
-public:
-  FunctionSequenceForDynamicBackend(const ir::OpSequence &op_seq, const ir::Operations &operations,
-                                    std::unique_ptr<DynamicShapeInferer> dyn_shape_inferer,
-                                    backend::IDynamicTensorManager *dyn_tensor_manager)
-      : _op_seq(op_seq), _operations_ctx(operations),
-        _dyn_shape_inferer(std::move(dyn_shape_inferer)), _dyn_tensor_manager(dyn_tensor_manager)
-  { /* empty */
-  }
-
-  void run() override;
-
-private:
-  const ir::OpSequence &_op_seq;
-  const ir::Operations &_operations_ctx;
-  /// @brief shape inferer at execution time
-  std::unique_ptr<DynamicShapeInferer> _dyn_shape_inferer;
-  backend::IDynamicTensorManager *_dyn_tensor_manager;
 };
 
 } // namespace exec
