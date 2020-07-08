@@ -113,7 +113,7 @@ void FirstFitPlanner::release(const ir::OperandIndex &ind)
 
 WICPlanner::WICPlanner()
     : _claim_time(0), _initialized(false), _capacity(0), _mem_plans(), _live_operands(),
-      _interference_graph(), _map_size_to_operands(), _claim_table()
+      _interference_graph(), _operands()
 {
   // DO NOTHING
 }
@@ -123,13 +123,14 @@ void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
   auto start = std::chrono::high_resolution_clock::now();
   assert(size != 0);
 
-  _map_size_to_operands.insert({size, ind});
-  _interference_graph[ind].insert(_live_operands.cbegin(), _live_operands.cend());
+  _operands.emplace(size, ind);
+  _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),
+                                  _live_operands.cend());
   for (auto &live_operand : _live_operands)
   {
-    _interference_graph[live_operand].insert(ind);
+    _interference_graph[live_operand].emplace_back(ind);
   }
-  _live_operands.insert(ind);
+  _live_operands.emplace(ind);
 
   VERBOSE(WIC_PLANNER) << "claim(#" << ind.value() << "): [" << size << "sz]" << std::endl;
   auto end = std::chrono::high_resolution_clock::now();
@@ -155,26 +156,24 @@ void WICPlanner::release(const ir::OperandIndex &ind)
 void WICPlanner::buildMemoryPlans()
 {
   auto start = std::chrono::high_resolution_clock::now();
-  for (const auto &size_to_operand : _map_size_to_operands)
+  for (const auto &operand : _operands)
   {
-    uint32_t size = size_to_operand.first;
-    const ir::OperandIndex &ind = size_to_operand.second;
+    uint32_t size = operand.first;
+    const ir::OperandIndex &ind = operand.second;
     VERBOSE(WIC_PLANNER) << "build_plan(#" << ind.value() << "): [" << size << "sz]" << std::endl;
 
     // Find firstfit which does not interfere with live operands
     uint32_t next_offset = 0;
-    if (_interference_graph.find(ind) != _interference_graph.end())
+    if (_interference_graph.count(ind))
     {
-      std::unordered_set<ir::OperandIndex> &interferences = _interference_graph.find(ind)->second;
-
       std::multimap<uint32_t, uint32_t> live_plans;
-      for (auto &interference : interferences)
+      for (const auto &interference : _interference_graph[ind])
       {
         if (_mem_plans.count(interference))
           live_plans.emplace(_mem_plans[interference].offset, _mem_plans[interference].size);
       }
 
-      for (auto &live_plan : live_plans)
+      for (const auto &live_plan : live_plans)
       {
         auto claimed_base_offset = live_plan.first;
         auto claimed_size = live_plan.second;
@@ -206,12 +205,13 @@ void WICPlanner::buildMemoryPlans()
   }
   _initialized = true;
   _interference_graph.clear();
-  _map_size_to_operands.clear();
+  _operands.clear();
 
   auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-  std::cout << "[WICPlanner] claim takes " << _claim_time / 1000 << " ms" << std::endl;
-  std::cout << "[WICPlanner] buildMemoryPlan takes " << duration.count() << " ms" << std::endl;
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  std::cout << "[WICPlanner] claim takes " << (double)_claim_time / 1000 << " ms" << std::endl;
+  std::cout << "[WICPlanner] buildMemoryPlan takes " << (double)duration.count() / 1000 << " ms"
+            << std::endl;
 }
 
 WICPlanner::MemoryPlans &WICPlanner::memory_plans()
