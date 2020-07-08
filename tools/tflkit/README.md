@@ -1,4 +1,4 @@
-# tflkit
+﻿# tflkit
 
 ## Purpose
 
@@ -118,7 +118,7 @@ TensorFlow provides some kinds of converting guideline. In Python, the [TFLiteCo
 
 ### with tflkit
 
-The tflkit uses the [tflite_convert](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/python/tflite_convert.py) python command line interface to convert a TensorFlow model into TfLite model. It only supports to convert a TensorFlow GraphDef file into `TFLITE` format file. This tool supports the creation of individual `TFLITE` files for different input shapes. When converting to multiple `TFLITE` files, it needs to put a string called `NAME` in `TFLITE_PATH`. The string `NAME` will be replaced by what is listed in teh `NAME` environment. This tool requires an information file as a parameter. There is an [example file](info/convert.template) for a convert information. The `--tensorflow_path` and `--tensorflow_version` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
+The tflkit uses the [tflite_convert](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/python/tflite_convert.py) python command line interface to convert a TensorFlow model into TfLite model. It only supports to convert a TensorFlow GraphDef file into `TFLITE` format file. This tool supports the creation of individual `TFLITE` files for different input shapes. When converting to multiple `TFLITE` files, it needs to put a string called `NAME` in `TFLITE_PATH`. The string `NAME` will be replaced by what is listed in teh `NAME` environment. This tool requires an information file as a parameter. There is an [example file](convert.template) for a convert information. The `--tensorflow_path` and `--tensorflow_version` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
 
 Convert information:
   * GRAPHDEF_PATH : Full filepath of file containing frozen TensorFlow GraphDef.
@@ -176,7 +176,7 @@ The input and output file of this tool is a TensorFlow GraphDef file.
 
 ### with tflkit
 
-The [optimize_for_inference.sh](optimize_for_inference.sh) file invokes the TensorFlow [optimize tool](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/optimize_for_inference.py). This tool requires a optimize information file as a parameter. Here is an [example file](info/optimize.template) for this tool. The information file needs `INPUT` and `OUTPUT` array names. The [summarize_pb.sh](summarize_pb.sh) file will help you to define the `INPUT` and `OUTPUT` array names. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
+The [optimize_for_inference.sh](optimize_for_inference.sh) file invokes the TensorFlow [optimize tool](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/optimize_for_inference.py). This tool requires a optimize information file as a parameter. Here is an [example file](optimize.template) for this tool. The information file needs `INPUT` and `OUTPUT` array names. The [summarize_pb.sh](summarize_pb.sh) file will help you to define the `INPUT` and `OUTPUT` array names. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
 
 Optimize information:
   * GRAPHDEF_PATH : Full filepath of file containing frozen TensorFlow GraphDef.
@@ -207,7 +207,7 @@ The trained TensorFlow model can be trasformed by some variants to deploy it in 
 
 ### with tflkit
 
-The [transform_graph.sh](transform_graph.sh) file supports to transform a TensorFlow GraphDef using various transform options. This tool requires a transform information file as a parameter and the transform options are described in the information file. There is an [example file](info/transform.template) for this tool. The information file needs `INPUT` and `OUTPUT` array names. The [summarize_pb.sh](summarize_pb.sh) file will help you to define the `INPUT` and `OUTPUT` array names. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
+The [transform_graph.sh](transform_graph.sh) file supports to transform a TensorFlow GraphDef using various transform options. This tool requires a transform information file as a parameter and the transform options are described in the information file. There is an [example file](transform.template) for this tool. The information file needs `INPUT` and `OUTPUT` array names. The [summarize_pb.sh](summarize_pb.sh) file will help you to define the `INPUT` and `OUTPUT` array names. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
 
 Transform information:
   * GRAPHDEF_PATH : Full filepath of file containing frozen TensorFlow GraphDef.
@@ -270,7 +270,7 @@ The [freeze_graph](https://github.com/tensorflow/tensorflow/blob/master/tensorfl
 
 ### with tflkit
 
-The tflkit provides the simple way to create a frozen graph using [freeze_graph](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) tool. This tool requires an information file as a parameter. There is an [example file](info/freeze.info) for a freeze tool. Either `SAVED_MODEL` or `META_GRAPH` must be declared. And `META_GRAPH` is always used with `CKPT_PATH`. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
+The tflkit provides the simple way to create a frozen graph using [freeze_graph](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) tool. This tool requires an information file as a parameter. There is an [example file](freeze.template) for a freeze tool. Either `SAVED_MODEL` or `META_GRAPH` must be declared. And `META_GRAPH` is always used with `CKPT_PATH`. The `--tensorflow_path` can change the TensorFlow location. By default, it uses `externals/tensorflow` directory.
 
 Freeze information:
   * SAVED_MODEL : Full directory path with TensorFlow `SavedModel` file and variables.
