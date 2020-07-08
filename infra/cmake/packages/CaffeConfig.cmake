@@ -19,7 +19,9 @@ function(_Caffe_import)
     set(Caffe_FOUND FALSE PARENT_SCOPE)
     return()
   endif()
-
+  set(HDF5_USE_STATIC_LIBRARIES OFF)
+  unset(HDF5_CXX_LIBRARY_hdf5 CACHE)
+  unset(HDF5_CXX_LIBRARY_hdf5_cpp CACHE)
   find_package(HDF5 COMPONENTS HL QUIET)
 
   if(NOT HDF5_FOUND)

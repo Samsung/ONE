@@ -21,6 +21,9 @@ set(NNC_INSTALL_LIB_PATH ${NNC_INSTALL_PATH}/lib) # directory that contains othe
 #
 # find necessary packages
 #
+set(HDF5_USE_STATIC_LIBRARIES OFF)
+unset(HDF5_CXX_LIBRARY_hdf5 CACHE)
+unset(HDF5_CXX_LIBRARY_hdf5_cpp CACHE)
 find_package(HDF5 COMPONENTS CXX QUIET)
 # defines if hdf5 package was found
 if(HDF5_FOUND)
