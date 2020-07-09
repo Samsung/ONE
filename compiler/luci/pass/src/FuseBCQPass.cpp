@@ -289,7 +289,7 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_gather->input_clusters(converter.packed_clusters(params));
 
         const auto binary_hidden_size =
-            loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(0).value() * 32;
+            loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
         bcq_gather->input_hidden_size(binary_hidden_size);
 
         if (converter.do_w_x(params))
