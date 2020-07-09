@@ -101,6 +101,8 @@ option(DOWNLOAD_ABSEIL "Download Abseil-cpp source" ON)
 
 option(DOWNLOAD_GTEST "Download Google Test source" ON)
 option(BUILD_GTEST "Build Google Test from the downloaded source" ON)
+option(DOWNLOAD_HDF5 "Download HDF5 source" ON)
+option(BUILD_HDF5 "Build HDF5 from the downloaded source" ON)
 
 nnas_find_package(GTest QUIET)
 
