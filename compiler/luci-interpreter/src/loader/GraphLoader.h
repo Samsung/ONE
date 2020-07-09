@@ -33,7 +33,8 @@ class GraphLoader
 {
 public:
   GraphLoader(const ModuleLoader &module_loader, const loco::Graph *graph,
-              RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir);
+              RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+              std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
 
   void load();
 
@@ -49,7 +50,7 @@ private:
   RuntimeGraph *_runtime_graph;
   RuntimeToIR &_runtime_to_ir;
 
-  std::unordered_map<const loco::Node *, Tensor *> _node_to_tensor;
+  std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
 } // namespace luci_interpreter

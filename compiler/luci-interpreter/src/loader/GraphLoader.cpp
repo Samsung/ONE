@@ -99,9 +99,10 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 } // namespace
 
 GraphLoader::GraphLoader(const ModuleLoader &module_loader, const loco::Graph *graph,
-                         RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir)
+                         RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+                         std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
     : _module_loader(module_loader), _graph(graph), _runtime_graph(runtime_graph),
-      _runtime_to_ir(runtime_to_ir)
+      _runtime_to_ir(runtime_to_ir), _node_to_tensor(node_to_tensor)
 {
 }
 
