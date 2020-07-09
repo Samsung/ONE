@@ -65,8 +65,119 @@ TEST(Conv2DTest, Float)
       11, 16, 7, 20, // row = 0
       0,  40, 0, 44, // row = 1
   };
+  std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST(Conv2DTest, FloatCheck)
+{
+  Shape input_shape{2, 2, 4, 1};
+  Shape filter_shape{3, 2, 2, 1};
+  Shape bias_shape{3};
+  std::vector<float> input_data{
+      // First batch
+      1, 1, 1, 1, // row = 1
+      2, 2, 2, 2, // row = 2
+      // Second batch
+      1, 2, 3, 4, // row = 1
+      1, 2, 3, 4, // row = 2
+  };
+  std::vector<float> filter_data{
+      1,  2,  3,  4, // first 2x2 filter
+      -1, 1,  -1, 1, // second 2x2 filter
+      -1, -1, 1,  1, // third 2x2 filter
+  };
+  std::vector<float> bias_data{1, 2, 3};
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor filter_tensor = makeInputTensor<DataType::FLOAT32>(filter_shape, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Conv2DParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::NONE;
+
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{
+      18, 2, 5, // first batch, left
+      18, 2, 5, // first batch, right
+      17, 4, 3, // second batch, left
+      37, 4, 3, // second batch, right
+  };
+  std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
+  EXPECT_THAT(extractTensorData<float>(output_tensor),
+              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST(Conv2DTest, Uint8)
+{
+  std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
+  Shape bias_shape = {3};
+  Tensor input_tensor{
+      DataType::U8, {2, 2, 4, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
+  Tensor filter_tensor{
+      DataType::U8, {3, 2, 2, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
+  Tensor bias_tensor{
+      DataType::S32, bias_shape, {{input_quant_param.first * input_quant_param.first}, {0}}, ""};
+  Tensor output_tensor =
+      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+  std::vector<uint8_t> quantized_input = quantize<uint8_t>(
+      {
+          // First batch
+          1, 1, 1, 1, // row = 1
+          2, 2, 2, 2, // row = 2
+          // Second batch
+          1, 2, 3, 4, // row = 1
+          1, 2, 3, 4, // row = 2
+      },
+      input_quant_param.first, input_quant_param.second);
+  std::vector<uint8_t> quantized_filter = quantize<uint8_t>(
+      {
+          1, 2, 3, 4,   // first 2x2 filter
+          -1, 1, -1, 1, // second 2x2 filter
+          -1, -1, 1, 1, // third 2x2 filter
+      },
+      input_quant_param.first, input_quant_param.second);
+  std::vector<int32_t> bias_data =
+      quantize<int32_t>({1, 2, 3}, input_quant_param.first * input_quant_param.first, 0);
+  input_tensor.writeData(quantized_input.data(), quantized_input.size() * sizeof(uint8_t));
+  filter_tensor.writeData(quantized_filter.data(), quantized_filter.size() * sizeof(uint8_t));
+  bias_tensor.writeData(bias_data.data(), bias_data.size() * sizeof(int32_t));
+
+  Conv2DParams params{};
+  params.padding = Padding::VALID;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.dilation_height_factor = 1;
+  params.dilation_width_factor = 1;
+  params.activation = Activation::NONE;
+
+  Conv2D kernel(&input_tensor, &filter_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  std::vector<float> ref_output_data{
+      18, 2, 5, // first batch, left
+      18, 2, 5, // first batch, right
+      17, 4, 3, // second batch, left
+      37, 4, 3, // second batch, right
+  };
+  std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
+  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor),
+                                  output_quant_param.first, output_quant_param.second),
+              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace
