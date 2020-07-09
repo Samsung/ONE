@@ -8,17 +8,17 @@ function(_TensorFlowProtoText_import)
     endif(NOT ${PKGNAME}_FOUND)
   endmacro(require_package)
 
-  require_package(TensorFlowSource EXACT 1.12)
+  require_package(TensorFlowSource EXACT 1.13.1)
   require_package(Abseil)
-  require_package(Eigen-fd6845384b86)
+  require_package(Eigen)
   require_package(Protobuf)
   require_package(GoogleDoubleConversion)
   require_package(GoogleNSync)
 
-  if(NOT TARGET tensorflow-prototext-1.12)
+  if(NOT TARGET tensorflow-prototext-1.13.1)
     nnas_include(ExternalProjectTools)
-    add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/build" TensorFlowProtoText-1.12)
-  endif(NOT TARGET tensorflow-prototext-1.12)
+    add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/build" TensorFlowProtoText-1.13.1)
+  endif(NOT TARGET tensorflow-prototext-1.13.1)
 
   set(TensorFlowProtoText_FOUND TRUE PARENT_SCOPE)
 endfunction(_TensorFlowProtoText_import)
@@ -33,7 +33,7 @@ if(TensorFlowProtoText_FOUND)
   # not the directory of the file containing the macro or function definition.
   #
   # Reference: https://cmake.org/cmake/help/v3.1/variable/CMAKE_CURRENT_LIST_DIR.html
-  set(TENSORLFLOW_PROTO_TEXT_1_12_CMAKE_DIR
+  set(TENSORLFLOW_PROTO_TEXT_1_13_1_CMAKE_DIR
     "${CMAKE_CURRENT_LIST_DIR}" CACHE INTERNAL
     "Where to find make_directories"
   )
@@ -55,7 +55,7 @@ if(TensorFlowProtoText_FOUND)
   # >
   function(ProtoText_Generate PREFIX OUTPUT_DIR)
     # THIS SHOULD SUCCEED!
-    nnas_find_package(TensorFlowSource EXACT 1.12 REQUIRED)
+    nnas_find_package(TensorFlowSource EXACT 1.13.1 REQUIRED)
 
     set(OUTPUT_REL "tensorflow")
     set(PROTO_DIR "${TensorFlowSource_DIR}")
@@ -94,8 +94,8 @@ if(TensorFlowProtoText_FOUND)
     add_custom_command(OUTPUT ${OUTPUT_FILES}
       # "make_directory" in CMake 3.1 cannot create multiple directories at once.
       # COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIRS}
-      COMMAND "${TENSORLFLOW_PROTO_TEXT_1_12_CMAKE_DIR}/make_directories.sh" ${OUTPUT_DIRS}
-      COMMAND "$<TARGET_FILE:tensorflow-prototext-1.12>" "${abs_output_dir}/${OUTPUT_REL}" "${OUTPUT_REL}" ${PROTO_FILES}
+      COMMAND "${TENSORLFLOW_PROTO_TEXT_1_13_1_CMAKE_DIR}/make_directories.sh" ${OUTPUT_DIRS}
+      COMMAND "$<TARGET_FILE:tensorflow-prototext-1.13.1>" "${abs_output_dir}/${OUTPUT_REL}" "${OUTPUT_REL}" ${PROTO_FILES}
       DEPENDS ${PROTO_FILES})
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)

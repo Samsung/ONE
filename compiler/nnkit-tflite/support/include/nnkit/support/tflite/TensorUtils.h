@@ -17,7 +17,7 @@
 #ifndef __NNKIT_SUPPORT_TENSOR_UTILS_H__
 #define __NNKIT_SUPPORT_TENSOR_UTILS_H__
 
-#include <tensorflow/contrib/lite/context.h>
+#include <tensorflow/lite/context.h>
 #include <nncc/core/ADT/tensor/Shape.h>
 
 namespace nnkit

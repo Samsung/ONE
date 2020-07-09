@@ -8,11 +8,11 @@ endmacro(require_package)
 
 require_package(Abseil)
 require_package(Protobuf)
-require_package(EigenSource-fd6845384b86)
+require_package(EigenSource)
 require_package(GoogleDoubleConversion)
 require_package(GoogleNSync)
-require_package(TensorFlowSource EXACT 1.12)
-require_package(TensorFlowProtoText EXACT 1.12)
+require_package(TensorFlowSource EXACT 1.13.1)
+require_package(TensorFlowProtoText EXACT 1.13.1)
 
 message(STATUS "Build tfgraph-xform: TRUE")
 

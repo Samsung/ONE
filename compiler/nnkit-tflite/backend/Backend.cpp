@@ -16,8 +16,8 @@
 
 #include "nnkit/support/tflite/AbstractBackend.h"
 
-#include <tensorflow/contrib/lite/kernels/register.h>
-#include <tensorflow/contrib/lite/model.h>
+#include <tensorflow/lite/kernels/register.h>
+#include <tensorflow/lite/model.h>
 
 #include <stdexcept>
 

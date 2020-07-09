@@ -7,7 +7,7 @@ tfldump is a tool that dumps binary tflite file into human readable text to cons
 tfldump is implemented with C++ not python. We can do the same thing much easier
 with python but this tool doesn't need to install TensorFlow python package.
 
-Schema for FlatBuffer used is from TensorFlow v1.12.0 release.
+Schema for FlatBuffer used is from TensorFlow v1.13.1 release.
 
 ### Design philosophy
 

@@ -5,7 +5,7 @@
 Do you need a tensorflow lite model for testing? Ask it to _tflchef_.
 Given a recipe, _tflchef_ will cook a tensorflow lite model for you.
 
-**NOTE** A model that _tflchef_ generates is compatible with TensorFlow Lite in TensorFlow v1.12.0 release
+**NOTE** A model that _tflchef_ generates is compatible with TensorFlow Lite in TensorFlow v1.13.1 release
 
 ## Tutorial: How to use?
 

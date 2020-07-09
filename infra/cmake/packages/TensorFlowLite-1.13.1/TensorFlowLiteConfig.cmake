@@ -1,14 +1,11 @@
 function(_TensorFlowLite_import)
-  nnas_find_package(TensorFlowSource EXACT 1.12 QUIET)
+  nnas_find_package(TensorFlowSource EXACT 1.13.1 QUIET)
 
   if(NOT TensorFlowSource_FOUND)
     set(TensorFlowLite_FOUND FALSE PARENT_SCOPE)
     return()
   endif(NOT TensorFlowSource_FOUND)
 
-  # TensorFlow 1.12 downloads FlatBuffers from https://github.com/google/flatbuffers/archive/1f5eae5d6a1.tar.gz
-  #
-  # Let's use 1.10 released in 2018.10 (compatible with 1f5eae5d6a1).
   nnas_find_package(FlatBuffersSource EXACT 1.10 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
@@ -23,12 +20,12 @@ function(_TensorFlowLite_import)
     return()
   endif(NOT Farmhash_FOUND)
 
-  nnas_find_package(Eigen-fd6845384b86 QUIET)
+  nnas_find_package(Eigen QUIET)
 
-  if(NOT Eigen-fd6845384b86_FOUND)
+  if(NOT Eigen_FOUND)
     set(TensorFlowLite_FOUND FALSE PARENT_SCOPE)
     return()
-  endif(NOT Eigen-fd6845384b86_FOUND)
+  endif(NOT Eigen_FOUND)
 
   nnas_find_package(GEMMLowp QUIET)
 
@@ -51,10 +48,10 @@ function(_TensorFlowLite_import)
     return()
   endif(NOT Abseil_FOUND)
 
-  if(NOT TARGET tensorflowlite-1.12)
+  if(NOT TARGET tensorflowlite-1.13.1)
     nnas_include(ExternalProjectTools)
-    add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Lite" tflite-1.12)
-  endif(NOT TARGET tensorflowlite-1.12)
+    add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Lite" tflite-1.13.1)
+  endif(NOT TARGET tensorflowlite-1.13.1)
 
   set(TensorFlowLite_FOUND TRUE PARENT_SCOPE)
 endfunction(_TensorFlowLite_import)

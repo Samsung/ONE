@@ -66,13 +66,13 @@ Protobuf_Generate(PROTO_TEXT_PROTO
   ${PROTO_FILES}
 )
 
-add_executable(tensorflow-prototext-1.12 ${SOURCE_FILES} ${PROTO_TEXT_PROTO_SOURCES})
-target_include_directories(tensorflow-prototext-1.12 PRIVATE ${TensorFlowSource_DIR})
-target_include_directories(tensorflow-prototext-1.12 PRIVATE ${PROTO_TEXT_PROTO_INCLUDE_DIRS})
+add_executable(tensorflow-prototext-1.13.1 ${SOURCE_FILES} ${PROTO_TEXT_PROTO_SOURCES})
+target_include_directories(tensorflow-prototext-1.13.1 PRIVATE ${TensorFlowSource_DIR})
+target_include_directories(tensorflow-prototext-1.13.1 PRIVATE ${PROTO_TEXT_PROTO_INCLUDE_DIRS})
 
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE abseil)
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE eigen-fd6845384b86)
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE ${PROTO_TEXT_PROTO_LIBRARIES})
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE Google::DoubleConversion)
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE Google::NSync)
-target_link_libraries(tensorflow-prototext-1.12 PRIVATE dl)
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE abseil)
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE eigen)
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE ${PROTO_TEXT_PROTO_LIBRARIES})
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE Google::DoubleConversion)
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE Google::NSync)
+target_link_libraries(tensorflow-prototext-1.13.1 PRIVATE dl)
