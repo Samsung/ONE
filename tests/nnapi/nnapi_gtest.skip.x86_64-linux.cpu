@@ -166,13 +166,8 @@ GeneratedTests.space_to_depth_float_2
 GeneratedTests.space_to_depth_float_3
 GeneratedTests.space_to_depth_quant8_1
 GeneratedTests.space_to_depth_quant8_2
-GeneratedTests.split_4D_quant8_nnfw
-GeneratedTests.split_quant8_1
 GeneratedTests.split_quant8_1_relaxed
-GeneratedTests.split_quant8_2
 GeneratedTests.split_quant8_2_relaxed
-GeneratedTests.split_quant8_3
-GeneratedTests.split_quant8_4
 GeneratedTests.sqrt_
 GeneratedTests.sqrt_1D_float_nnfw
 GeneratedTests.sqrt_2D_float_nnfw

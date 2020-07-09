@@ -34,22 +34,11 @@ SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
   // DO NOTHING
 }
 
-template <typename T> void SplitLayer::split()
+template <typename T> void SplitLayer::split(void)
 {
   nnfw::cker::SplitParams op_params;
   op_params.axis = _axis;
   op_params.num_split = _num_splits;
-
-  std::vector<nnfw::cker::Shape *> outputDimsPtr;
-  std::vector<nnfw::cker::Shape> outputDims;
-  outputDimsPtr.reserve(_num_splits);
-  outputDims.reserve(_num_splits);
-
-  for (uint32_t i = 0; i < _num_splits; i++)
-  {
-    outputDims.push_back(getTensorShape(_outputs[i]));
-    outputDimsPtr.push_back(&outputDims[i]);
-  }
 
   std::vector<T *> outputPtrs;
 
@@ -63,8 +52,6 @@ template <typename T> void SplitLayer::split()
   nnfw::cker::Split<T>(op_params, getTensorShape(_input), reinterpret_cast<T *>(_input->buffer()),
                        getTensorShape(_outputs[0]), outputPtrs.data());
 }
-
-void SplitLayer::splitQuant8() { throw std::runtime_error{"Split: NYI quant8 type"}; }
 
 void SplitLayer::configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
                            std::vector<IPortableTensor *> &outputs)
@@ -85,7 +72,7 @@ void SplitLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    splitQuant8();
+    split<uint8_t>();
   }
   else if (_input->data_type() == OperandType::INT32)
   {
