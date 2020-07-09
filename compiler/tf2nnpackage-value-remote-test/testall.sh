@@ -20,9 +20,10 @@ WORKDIR="$1"; shift
 REMOTE_IP="$1"; shift
 REMOTE_USER="$1"; shift
 
+BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CURRENT_DATETIME=$(date +'%Y%m%d_%H%M%S')
 REMOTE_WORKDIR=${REMOTE_WORKDIR:-"CVT_${CURRENT_DATETIME}"}
-RESULT_CSV="${WORKDIR}/Result_${CURRENT_DATETIME}.csv"
+RESULT_CSV="${BINDIR}/Result_${CURRENT_DATETIME}.csv"
 
 source "${CONFIG_PATH}"
 
@@ -65,12 +66,12 @@ while [[ $# -ne 0 ]]; do
 
   PASSED_TAG="${PREFIX}.passed"
 
-  rm -f "${PASSED_TAG}"
+  rm -f "${BINDIR}/${PASSED_TAG}"
 
   # Information to be recorded
   CIRCLE_VALUE_PASSED=FALSE
 
-  cat > "${PREFIX}.log" <(
+  cat > "${BINDIR}/${PREFIX}.log" <(
     exec 2>&1
 
     # Exit immediately if any command fails
@@ -79,18 +80,18 @@ while [[ $# -ne 0 ]]; do
     set -x
 
     # Run nnpkg_test in remote machine
-    if [ ! -d "${WORKDIR}/${PREFIX}" ] ; then
+    if [ ! -d "${PREFIX}" ] ; then
     PREFIX=${PREFIX}.opt ;
     fi
-    scp -r "${WORKDIR}/${PREFIX}/" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/${PREFIX}/"
+    scp -r "${PREFIX}/" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/${PREFIX}/"
     ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./nnpkg_test.sh ${PREFIX}"
     
     if [[ $? -eq 0 ]]; then
-      touch "${PASSED_TAG}"
+      touch "${BINDIR}/${PASSED_TAG}"
     fi
   )
 
-  if [[ -f "${PASSED_TAG}" ]]; then
+  if [[ -f "${BINDIR}/${PASSED_TAG}" ]]; then
     PASSED+=("$PREFIX")
     CIRCLE_VALUE_PASSED=TRUE
   else
