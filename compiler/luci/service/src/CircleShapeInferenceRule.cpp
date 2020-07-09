@@ -1918,11 +1918,8 @@ public:
       qbits_sum += input_clusters->at<loco::DataType::S32>(i * 2 + 1);
     }
 
-    if (qbits_sum == 0)
-      throw std::runtime_error("Shape inference for CircleBCQGather Fail : sum of qbits is 0");
-
     input_shape.rank(2);
-    input_shape.dim(0) = input_binary_shape.dim(0).value() / qbits_sum;
+    input_shape.dim(0) = qbits_sum;
     input_shape.dim(1) = input_binary_shape.dim(1).value() * 32;
 
     output_shape.rank(input_shape.rank() - 1 + indices_shape.rank());
