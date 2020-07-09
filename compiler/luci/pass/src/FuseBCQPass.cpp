@@ -125,7 +125,7 @@ public:
 
     if (_do_w_x[prefix]->dtype() == loco::DataType::S32)
       return _do_w_x[prefix]->at<loco::DataType::S32>(0) == 1;
-    else if(_do_w_x[prefix]->dtype() == loco::DataType::BOOL)
+    else if (_do_w_x[prefix]->dtype() == loco::DataType::BOOL)
       return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
     else
       throw std::runtime_error("do_w_x should be int or bool");
