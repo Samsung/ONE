@@ -20,7 +20,6 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
-#include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/LuciNodeMixins.h"
 
 #include <loco/IR/DataTypeTraits.h>

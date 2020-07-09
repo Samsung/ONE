@@ -22,7 +22,6 @@
 
 #include "luci/IR/AttrPadding.h"
 #include "luci/IR/AttrStride.h"
-#include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/LuciNodeMixins.h"
 
 namespace luci
