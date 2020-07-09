@@ -49,9 +49,9 @@ for TESTCASE in "$@"; do
 
     # Run record-minmax
     "${RECORD_MINMAX_PATH}" \
-      "${TESTCASE_FILE}.circle" \
-      "${TESTCASE_FILE}.tflite.input.h5" \
-      "${TESTCASE_FILE}.out.circle" 
+      --input_model "${TESTCASE_FILE}.circle" \
+      --input_data "${TESTCASE_FILE}.tflite.input.h5" \
+      --output_model "${TESTCASE_FILE}.out.circle" 
 
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"
