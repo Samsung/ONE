@@ -8,6 +8,7 @@ optimize(Where_001)
 # tcgenerate : Exclude from test data generation(TestDataGenerator)
 tcgenerate(Abs_000)
 tcgenerate(AddN_000)
+tcgenerate(Add_001) # runtime doesn't support
 tcgenerate(Add_U8_000)
 tcgenerate(All_000)
 tcgenerate(ArgMax_U8_000) 
