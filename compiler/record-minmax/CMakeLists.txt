@@ -1,4 +1,4 @@
-find_package(HDF5 COMPONENTS CXX QUIET)
+nnas_find_package(HDF5 COMPONENTS STATIC QUIET)
 
 if(NOT HDF5_FOUND)
   message(STATUS "Build record-minmax: FAILED (missing HDF5)")
