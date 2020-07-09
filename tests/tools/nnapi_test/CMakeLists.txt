@@ -1,3 +1,7 @@
+if(NOT BUILD_NNAPI_TEST)
+  return()
+endif(NOT BUILD_NNAPI_TEST)
+
 list(APPEND SOURCES "src/nnapi_test.cc")
 list(APPEND SOURCES "src/args.cc")
 
