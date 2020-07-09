@@ -50,8 +50,17 @@ template <typename T> void TransposeLayer::transpose()
 
 void TransposeLayer::transposeQuant8()
 {
-  // cker quant8 tanh is not implemented yet
-  throw std::runtime_error{"NYI"};
+  if (_input->data_offset() != _output->data_offset())
+  {
+    throw std::runtime_error("TransposeLayer : qassym8 input and output offsets unmatched");
+  }
+
+  if (_input->data_scale() != _output->data_scale())
+  {
+    throw std::runtime_error("TransposeLayer : qassym8 input and output scales unmatched");
+  }
+
+  transpose<uint8_t>();
 }
 
 void TransposeLayer::configure(const IPortableTensor *input, IPortableTensor *output,
