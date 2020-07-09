@@ -15,8 +15,11 @@ function(_FlatBuffersSource_import)
   #
   # TODO Manage multiple versions
   envoption(FLATBUFFERS_URL https://github.com/google/flatbuffers/archive/v1.10.0.tar.gz)
-
-  ExternalSource_Download(FLATBUFFERS ${FLATBUFFERS_URL})
+  ExternalSource_Download(FLATBUFFERS
+    DIRNAME FLATBUFFERS
+    CHECKSUM MD5=f7d19a3f021d93422b0bc287d7148cd2
+    URL ${FLATBUFFERS_URL}
+  )
 
   set(FlatBuffersSource_DIR ${FLATBUFFERS_SOURCE_DIR} PARENT_SCOPE)
   set(FlatBuffersSource_FOUND TRUE PARENT_SCOPE)
