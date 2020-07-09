@@ -102,10 +102,10 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 add_custom_target(record_minmax_conversion_test_deps ALL DEPENDS ${TEST_DEPS} record-minmax-conversion-test_python_deps)
 
 # Run tests
-add_test(
-  NAME record_minmax_conversion_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
-          "${TEST_CONFIG}"
-          "${CMAKE_CURRENT_BINARY_DIR}"
-          ${RECORD_MINMAX_CONVERSION_TEST}
-)
+#add_test(
+#  NAME record_minmax_conversion_test
+#  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
+#          "${TEST_CONFIG}"
+#          "${CMAKE_CURRENT_BINARY_DIR}"
+#          ${RECORD_MINMAX_CONVERSION_TEST}
+#)
