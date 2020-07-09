@@ -7,7 +7,7 @@ operand {
 operand {
   name: "ifm2"
   type: FLOAT32
-  shape { dim: 1 dim: 0 dim: 1}
+  shape { dim: 1 dim: 0 dim: 1 }
   filler {
     tag: "explicit"
   }
