@@ -7,7 +7,7 @@ function(_HDF5Source_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.16/src/hdf5-1.8.16.tar.gz)
+  envoption(HDF5_URL https://github.com/HDFGroup/hdf5/archive/hdf5-1_8_16.tar.gz)
 
   ExternalSource_Download(HDF5 ${HDF5_URL})
 
