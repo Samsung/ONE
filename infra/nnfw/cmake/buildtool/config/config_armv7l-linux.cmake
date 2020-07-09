@@ -12,7 +12,6 @@ set(FLAGS_COMMON ${FLAGS_COMMON}
     "-mcpu=cortex-a7"
     "-mfloat-abi=hard"
     "-mfpu=neon-vfpv4"
-    "-funsafe-math-optimizations"
     "-ftree-vectorize"
     "-mfp16-format=ieee"
     )
