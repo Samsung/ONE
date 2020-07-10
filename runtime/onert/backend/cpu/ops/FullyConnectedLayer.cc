@@ -168,6 +168,18 @@ void FullyConnectedLayer::run()
 void FullyConnectedLayer::prepare()
 {
 #ifdef USE_RUY_GEMV
+  // TODO This is workaround
+  // The only fc hybrid will use ruy kernel
+  if (_input->data_type() != OperandType::FLOAT32 ||
+      _weights->data_type() != OperandType::QUANT_INT8_SYMM)
+  {
+    return;
+  }
+
+  // TODO Support dynamic input tnesor
+  // For now, dynamic input cannot support
+  assert(_input->is_dynamic() == false);
+
   // NOTE. The condition to enable caching on ruy kernel can be changed according to ruy's version
   const int rows = getTensorShape(_weights).Dims(0);
   if (rows % 4 == 0)
