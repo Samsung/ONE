@@ -54,7 +54,7 @@ add_library(tensorflow-lite STATIC ${TFLITE_SRCS})
 target_include_directories(tensorflow-lite SYSTEM PUBLIC ${TFLITE_INCLUDES})
 target_compile_definitions(tensorflow-lite PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK")
 set_property(TARGET tensorflow-lite PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite eigen flatbuffers::flatbuffers ${LIB_PTHREAD} dl)
+target_link_libraries(tensorflow-lite eigen-tf-1.13.1 flatbuffers::flatbuffers ${LIB_PTHREAD} dl)
 
 if(ANDROID)
   target_link_libraries(tensorflow-lite log)

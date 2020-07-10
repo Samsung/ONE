@@ -13,3 +13,7 @@ if(PROFILE_RUY)
 endif(PROFILE_RUY)
 
 target_include_directories(nnfw_lib_cker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Workaround to avoid warning
+# TODO Resolve warning
+target_compile_options(nnfw_lib_cker INTERFACE -Wno-attributes)
