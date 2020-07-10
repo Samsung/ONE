@@ -57,7 +57,7 @@ public:
    * @param[in] layout Tensor data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout, bool as_const) override;
+                          ir::Layout backend_layout) override;
 
   void notifyFirstUse(const ir::OperandIndex &) override;
   void notifyLastUse(const ir::OperandIndex &) override;
@@ -112,7 +112,6 @@ private:
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<T_AclTensorManager> _tensor_mgr;
-  ir::OperandIndexSequence _constants;
 
   // for linear executor
   std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
@@ -149,8 +148,7 @@ AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::O
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
-    const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout,
-    bool as_const)
+    const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -162,14 +160,12 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
     // Normal Tensors
     _tensor_info_map.emplace(ind, info);
     _tensor_layout_map.insert({ind, backend_layout});
-    if (as_const)
-      _constants.append(ind);
   }
   else
   {
     // SubTensors
 
-    assert(!as_const && "Subtensors of constants are not supported yet.");
+    assert(!info.isConstant() && "Subtensors of constants are not supported yet.");
 
     // Update offset info and emplace
     auto &parent_info = _parent_map[ind];
@@ -294,13 +290,13 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
       _tensor_mgr->finishLifetime(use_index);
   }
 
-  assert(_constants.size() == _tensor_mgr->constTensors().size());
   _tensor_mgr->allocateConsts();
 
   // TODO Since `_parent_map` is filled for all Concat nodes even if the node this backend uses
   //      After refactoring BackendContext we can uncomment this
   // assert(_tensor_info_map.size() ==
-  //       _tensor_mgr->nonconstTensors().size() + _constants.size() + _parent_map.size());
+  //       _tensor_mgr->nonconstTensors().size() + num of constants of _tensor_info_map +
+  //       _parent_map.size());
   _tensor_mgr->allocateNonconsts();
 
   _tensor_mgr->allocateInternalBufferManager();
@@ -358,7 +354,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
     const auto &backend_layout = _tensor_layout_map[ind];
     auto tensor_info =
         asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN, backend_layout, true);
-    _tensor_mgr->buildTensor(ind, tensor_info, info.shape().rank(), _constants.contains(ind),
+    _tensor_mgr->buildTensor(ind, tensor_info, info.shape().rank(), info.isConstant(),
                              _uses_count_map[ind]);
   }
 

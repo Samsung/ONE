@@ -73,8 +73,8 @@ protected:
     const auto frontend_layout = frontendLayout();
     const auto backend_layout = backendLayout(index);
     ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                 obj.typeInfo(), obj.info().memAllocType()};
-    tensor_builder()->registerTensorInfo(index, backend_info, backend_layout, obj.isConstant());
+                                 obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
+    tensor_builder()->registerTensorInfo(index, backend_info, backend_layout);
   }
 
 protected:

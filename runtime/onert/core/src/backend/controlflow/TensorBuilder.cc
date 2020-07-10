@@ -36,12 +36,9 @@ TensorBuilder::TensorBuilder()
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout backend_layout, bool as_const)
+                                       ir::Layout backend_layout)
 {
   _tensor_info_map.emplace(ind, info);
-
-  if (as_const)
-    _constants.append(ind);
 
   _tensor_layout_map.insert({ind, backend_layout});
 
@@ -51,7 +48,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind], _constants.contains(ind));
+    _static_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind], info.isConstant());
   }
 }
 
