@@ -72,10 +72,70 @@ public:
     }
   }
 
+public: // context for dynamic tensor
+  /**
+   * @brief Prepare to run FunctionSequence which "might" handle dynamic tensor
+   * @note  Calling this does not mean that run() will handle dynamic tensor.
+   *        enableDynamicShapeInferer(true) will make run() will handle dynamic tensor.
+   */
+  void dynamicTensorContext(const ir::OpSequence *op_seq, const ir::Operations *operations,
+                            std::unique_ptr<exec::DynamicInferer> dynamic_shape_inferer,
+                            std::shared_ptr<backend::ITensorRegistry> tensor_registry,
+                            backend::IDynamicTensorManager *dynamic_tensor_manager)
+  {
+    _op_seq = op_seq;
+    _operations = operations;
+    _dynamic_shape_inferer = std::move(dynamic_shape_inferer);
+    _tensor_registry = tensor_registry;
+    _dynamic_tensor_manager = dynamic_tensor_manager;
+  }
+
+  /**
+   * @brief Call this function if this FunctionSequence handles dynamic tensors.
+   * @note When dynamic tensors are handled, enableDynamicShapeInferer(true) must be called before
+   *       run(). If not called, run() assumes that all tensors are static.
+   */
+  void enableDynamicShapeInferer(bool enable) { _enable_dynamic_shape_inferer = enable; }
+
+  const ir::OpSequence *opSeq()
+  {
+    assert(_op_seq);
+    return _op_seq;
+  }
+
+  const ir::Operations *operations()
+  {
+    assert(_operations);
+    return _operations;
+  }
+
+  std::shared_ptr<backend::ITensorRegistry> &tensorRegistry()
+  {
+    assert(_tensor_registry.get());
+    return _tensor_registry;
+  }
+
+  backend::IDynamicTensorManager *dynamicTensorManager()
+  {
+    assert(_dynamic_tensor_manager);
+    return _dynamic_tensor_manager;
+  }
+
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
+
+protected: // context to run this sequence when this sequence may handle dynamic tensors
+  bool _enable_dynamic_shape_inferer = false;
+  const ir::OpSequence *_op_seq = nullptr;
+  const ir::Operations *_operations = nullptr;
+  std::unique_ptr<exec::DynamicInferer> _dynamic_shape_inferer = nullptr;
+  std::shared_ptr<backend::ITensorRegistry> _tensor_registry = nullptr;
+  backend::IDynamicTensorManager *_dynamic_tensor_manager = nullptr;
 };
 
+//
+// TODO Deprecate this
+//
 /**
  * @brief Function sequence used for backend that supports dynamic tensor
  *        Such backend cannot use class FunctionSequence but use this class
