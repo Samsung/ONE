@@ -75,6 +75,15 @@ public:
   std::vector<OperationIndex>::const_iterator begin() const { return _operations.begin(); }
   std::vector<OperationIndex>::const_iterator end() const { return _operations.end(); }
 
+public:
+  /**
+   * @brief Set @c true if any operation in this opSequence has dynamic input
+   *        or dynamic output;
+   *        @c false if all operations' inputs and outputs are static tensors
+   */
+  void hasDynamicTensor(bool hasDynamicTensor) { _has_dynamic_tensor = hasDynamicTensor; }
+  bool hasDynamicTensor() const { return _has_dynamic_tensor; }
+
 private:
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
@@ -82,6 +91,9 @@ private:
 
 private:
   Layout _layout;
+
+private:
+  bool _has_dynamic_tensor;
 };
 
 std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations);

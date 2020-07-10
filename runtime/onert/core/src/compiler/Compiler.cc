@@ -213,8 +213,9 @@ void Compiler::compile(void)
     const auto primary_subg_idx = ir::SubgraphIndex{0};
     StaticInferer inferer(primary_subg_idx, lowered_subgs);
     lowered_subgs.at(primary_subg_idx)
-        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          inferer.infer(op_seq);
+        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+          auto has_dynamic_tensor = inferer.infer(op_seq);
+          op_seq.hasDynamicTensor(has_dynamic_tensor);
         });
     inferer.dump();
   }
@@ -243,7 +244,6 @@ void Compiler::compile(void)
     ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-
     auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), _options, _executors)};
     executor->setIndexedRanks(indexed_ranks);
