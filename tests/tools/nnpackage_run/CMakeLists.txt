@@ -9,6 +9,7 @@ endif(NOT BUILD_ONERT)
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnpackage_run.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
+list(APPEND NNPACKAGE_RUN_SRCS "src/randomgen.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)

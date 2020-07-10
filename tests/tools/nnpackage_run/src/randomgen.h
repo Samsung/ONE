@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_H5FORMATTER_H__
-#define __NNPACKAGE_RUN_H5FORMATTER_H__
+#ifndef __NNPACKAGE_RUN_RANDOMGEN_H__
+#define __NNPACKAGE_RUN_RANDOMGEN_H__
 
 #include <string>
 #include <vector>
@@ -26,16 +26,15 @@ struct nnfw_session;
 
 namespace nnpkg_run
 {
-class H5Formatter
+class RandomGenerator
 {
 public:
-  H5Formatter(nnfw_session *sess) : session_(sess) {}
-  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
-  void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs);
+  RandomGenerator(nnfw_session *sess) : session_(sess) {}
+  void generate(std::vector<Allocation> &inputs);
 
 private:
   nnfw_session *session_;
 };
 } // end of namespace
 
-#endif // __NNPACKAGE_RUN_H5FORMATTER_H__
+#endif // __NNPACKAGE_RUN_RANDOMGEN_H__
