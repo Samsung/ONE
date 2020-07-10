@@ -13,6 +13,7 @@ function preset_configure()
   REQUIRED_UNITS+=("oops" "pepper-assert" "foder")
   REQUIRED_UNITS+=("souschef")
   REQUIRED_UNITS+=("safemain")
+  REQUIRED_UNITS+=("arser")
   # Hermes Logging Framework
   REQUIRED_UNITS+=("hermes" "hermes-std")
   # loco IR and related utilities
