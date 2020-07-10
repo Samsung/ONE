@@ -259,6 +259,7 @@ GeneratedTests.maximum_broadcast
 GeneratedTests.maximum_broadcast_quant8
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.maximum_overflow
+GeneratedTests.maximum_quant8_nnfw
 GeneratedTests.maximum_simple
 GeneratedTests.maximum_simple_quant8
 GeneratedTests.mean

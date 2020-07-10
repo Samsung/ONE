@@ -39,7 +39,7 @@ public:
   }
 
 public:
-  void maxFloat32();
+  template <typename T> void maximum();
 
   void maxQuant8();
 
