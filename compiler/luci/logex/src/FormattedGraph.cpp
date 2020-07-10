@@ -269,6 +269,7 @@ private:
   IMPLEMENT(luci::CircleScatterNd)
   IMPLEMENT(luci::CircleSegmentSum)
   IMPLEMENT(luci::CircleSelect)
+  IMPLEMENT(luci::CircleSelectV2)
   IMPLEMENT(luci::CircleShape)
   IMPLEMENT(luci::CircleSin)
   IMPLEMENT(luci::CircleSlice)
@@ -1006,6 +1007,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleSegmentSum *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleSelect *node, locop::NodeSummary &s) const
+{
+  s.args().append("condition", tbl()->lookup(node->condition()));
+  s.args().append("t", tbl()->lookup(node->t()));
+  s.args().append("e", tbl()->lookup(node->e()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleSelectV2 *node,
+                                       locop::NodeSummary &s) const
 {
   s.args().append("condition", tbl()->lookup(node->condition()));
   s.args().append("t", tbl()->lookup(node->t()));
