@@ -14,7 +14,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, required=True)
 parser.add_argument('--num_data', type=int, required=True)
-parser.add_argument('--out', type=str, required=True)
+parser.add_argument('--output', type=str, required=True)
 args = parser.parse_args()
 
 model = args.model

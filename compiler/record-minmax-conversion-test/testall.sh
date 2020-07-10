@@ -41,7 +41,7 @@ for TESTCASE in "$@"; do
     "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
     --model "${TESTCASE_FILE}.tflite" \
     --num_data 3 \
-    --out "${TESTCASE_FILE}.tflite.input.h5"
+    --output "${TESTCASE_FILE}.tflite.input.h5"
 
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GENERATE INPUT"
