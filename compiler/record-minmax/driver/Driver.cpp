@@ -14,17 +14,40 @@
  * limitations under the License.
  */
 
-#include "Args.h"
 #include "RecordMinMax.h"
+
+#include <arser/arser.h>
 
 int entry(const int argc, char **argv)
 {
   using namespace record_minmax;
 
-  Args args(argc, argv);
-  auto input_model_path = args.getInputModelFilePath();
-  auto input_data_path = args.getInputDataFilePath();
-  auto output_model_path = args.getOutputModelFilePath();
+  arser::Arser arser(
+      "Embedding min/max values of activations to the circle model for post-training quantization");
+
+  arser.add_argument("--input_model")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(true)
+      .help("Input model filepath");
+
+  arser.add_argument("--input_data")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(true)
+      .help("Input data filepath");
+
+  arser.add_argument("--output_model")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .required(true)
+      .help("Output model filepath");
+
+  arser.parse(argc, argv);
+
+  auto input_model_path = arser.get<std::string>("--input_model");
+  auto input_data_path = arser.get<std::string>("--input_data");
+  auto output_model_path = arser.get<std::string>("--output_model");
 
   RecordMinMax rmm;
 
