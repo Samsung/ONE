@@ -28,6 +28,20 @@
 
 #include <cstring>
 
+namespace
+{
+
+template <typename T> T lexcial_cast(const std::string &str)
+{
+  std::istringstream ss;
+  ss.str(str);
+  T data;
+  ss >> data;
+  return data;
+}
+
+} // namespace
+
 namespace arser
 {
 
@@ -44,6 +58,14 @@ template <> struct TypeName<std::vector<int>>
 {
   static const char *Get() { return "vector<int>"; }
 };
+template <> struct TypeName<float>
+{
+  static const char *Get() { return "float"; }
+};
+template <> struct TypeName<std::vector<float>>
+{
+  static const char *Get() { return "vector<float>"; }
+};
 template <> struct TypeName<bool>
 {
   static const char *Get() { return "bool"; }
@@ -58,6 +80,8 @@ enum class DataType
 {
   INT32,
   INT32_VEC,
+  FLOAT,
+  FLOAT_VEC,
   BOOL,
   STR,
 };
@@ -88,6 +112,12 @@ public:
         break;
       case DataType::INT32_VEC:
         _type = "vector<int>";
+        break;
+      case DataType::FLOAT:
+        _type = "float";
+        break;
+      case DataType::FLOAT_VEC:
+        _type = "vector<float>";
         break;
       case DataType::BOOL:
         _type = "bool";
@@ -263,11 +293,7 @@ template <typename T> T Arser::get_impl(const std::string &arg_name, T *)
                              "You must make sure that the argument is given before accessing it. "
                              "You can do it by calling arser[\"argument\"].");
 
-  std::istringstream ss;
-  ss.str(arg->second->_values[0]);
-  T data;
-  ss >> data;
-  return data;
+  return ::lexcial_cast<T>(arg->second->_values[0]);
 }
 
 template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name, std::vector<T> *)
@@ -283,7 +309,7 @@ template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name
 
   std::vector<T> data;
   std::transform(arg->second->_values.begin(), arg->second->_values.end(), std::back_inserter(data),
-                 [](std::string str) -> T { return std::stoi(str); });
+                 [](std::string str) -> T { return ::lexcial_cast<T>(str); });
   return data;
 }
 
