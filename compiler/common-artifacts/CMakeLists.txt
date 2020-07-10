@@ -1,6 +1,6 @@
 # TODO add pbtxt
 
-nnas_find_package(HDF5 QUIET)
+find_package(HDF5 COMPONENTS CXX QUIET)
 
 if(NOT HDF5_FOUND)
   message("Couldn't find a package HDF5")
