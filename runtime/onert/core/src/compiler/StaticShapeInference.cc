@@ -25,9 +25,9 @@ namespace onert
 namespace compiler
 {
 
-void StaticInferer::handleBinaryArithmeticOp(const ir::Operation &op,
-                                             const ir::OperandIndex lhs_idx,
-                                             const ir::OperandIndex rhs_idx)
+void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
+                                                  const ir::OperandIndex lhs_idx,
+                                                  const ir::OperandIndex rhs_idx)
 {
   const auto &lhs = _operands.at(lhs_idx);
   const auto &rhs = _operands.at(rhs_idx);
@@ -46,7 +46,8 @@ void StaticInferer::handleBinaryArithmeticOp(const ir::Operation &op,
   output.info().shape(new_shape);
 }
 
-void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx)
+void StaticShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
+                                             const ir::OperandIndex input_idx)
 {
   const auto &input = _operands.at(input_idx);
 
@@ -66,7 +67,7 @@ void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Opera
   output.info().shape(new_shape);
 }
 
-void StaticInferer::dump()
+void StaticShapeInferer::dump()
 {
   auto get_shape_str = [](const ir::Shape &shape) {
     std::stringstream sstream;
@@ -86,28 +87,28 @@ void StaticInferer::dump()
   {
     const auto index = pair.first;
     const auto &lowered_subg = pair.second;
-    VERBOSE(StaticInferer) << "SubGraph #" << index.value() << std::endl;
+    VERBOSE(StaticShapeInferer) << "SubGraph #" << index.value() << std::endl;
     lowered_subg->graph().operands().iterate(
         [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-          VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
-                                 << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-                                 << get_shape_str(operand.info().shape()) << std::endl;
+          VERBOSE(StaticShapeInferer) << "Operand #" << ind.value() << ", "
+                                      << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                                      << get_shape_str(operand.info().shape()) << std::endl;
         });
   }
 }
 
-void StaticInferer::visit(const ir::operation::Abs &op)
+void StaticShapeInferer::visit(const ir::operation::Abs &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Add &op)
+void StaticShapeInferer::visit(const ir::operation::Add &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
                            op.getInputs().at(ir::operation::Add::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::ArgMax &op)
+void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -133,7 +134,7 @@ void StaticInferer::visit(const ir::operation::ArgMax &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::BatchMatMul &op)
+void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
 {
   const auto lhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::LHS);
   const auto rhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::RHS);
@@ -152,7 +153,7 @@ void StaticInferer::visit(const ir::operation::BatchMatMul &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::BroadcastTo &op)
+void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -185,18 +186,18 @@ void StaticInferer::visit(const ir::operation::BroadcastTo &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Cast &op)
+void StaticShapeInferer::visit(const ir::operation::Cast &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cast::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Comparison &op)
+void StaticShapeInferer::visit(const ir::operation::Comparison &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Comparison::Input::INPUT0),
                            op.getInputs().at(ir::operation::Comparison::Input::INPUT1));
 }
 
-void StaticInferer::visit(const ir::operation::Concat &op)
+void StaticShapeInferer::visit(const ir::operation::Concat &op)
 {
   const auto input_count = op.getInputs().size();
 
@@ -224,7 +225,7 @@ void StaticInferer::visit(const ir::operation::Concat &op)
   output.info().shape(out_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Conv2D &op)
+void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Conv2D::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -245,23 +246,23 @@ void StaticInferer::visit(const ir::operation::Conv2D &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Cos &op)
+void StaticShapeInferer::visit(const ir::operation::Cos &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Div &op)
+void StaticShapeInferer::visit(const ir::operation::Div &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Div::Input::LHS),
                            op.getInputs().at(ir::operation::Div::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Exp &op)
+void StaticShapeInferer::visit(const ir::operation::Exp &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Exp::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::ExpandDims &op)
+void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -292,7 +293,7 @@ void StaticInferer::visit(const ir::operation::ExpandDims &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Fill &op)
+void StaticShapeInferer::visit(const ir::operation::Fill &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Fill::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -321,7 +322,7 @@ void StaticInferer::visit(const ir::operation::Fill &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::FullyConnected &op)
+void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -346,12 +347,12 @@ void StaticInferer::visit(const ir::operation::FullyConnected &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::FusedBatchNorm &op)
+void StaticShapeInferer::visit(const ir::operation::FusedBatchNorm &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Gather &op)
+void StaticShapeInferer::visit(const ir::operation::Gather &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -381,7 +382,7 @@ void StaticInferer::visit(const ir::operation::Gather &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::If &op)
+void StaticShapeInferer::visit(const ir::operation::If &op)
 {
   auto &then_graph = _lowered_subgs.at(op.param().then_subg_index)->graph();
   auto &else_graph = _lowered_subgs.at(op.param().else_subg_index)->graph();
@@ -423,14 +424,14 @@ void StaticInferer::visit(const ir::operation::If &op)
   }
 
   // re-sizing operands of then subgraph
-  StaticInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
+  StaticShapeInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().then_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
         then_inferer.infer(op_seq);
       });
 
   // re-sizing operands of else subgraph
-  StaticInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
+  StaticShapeInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().else_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
         else_inferer.infer(op_seq);
@@ -458,39 +459,39 @@ void StaticInferer::visit(const ir::operation::If &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::Log &op)
+void StaticShapeInferer::visit(const ir::operation::Log &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Log::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::LogicalNot &op)
+void StaticShapeInferer::visit(const ir::operation::LogicalNot &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::LogicalOr &op)
+void StaticShapeInferer::visit(const ir::operation::LogicalOr &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::LogicalOr::Input::INPUT0),
                            op.getInputs().at(ir::operation::LogicalOr::Input::INPUT1));
 }
 
-void StaticInferer::visit(const ir::operation::Logistic &op)
+void StaticShapeInferer::visit(const ir::operation::Logistic &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::MatrixBandPart &op)
+void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Max &op)
+void StaticShapeInferer::visit(const ir::operation::Max &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Max::Input::LHS),
                            op.getInputs().at(ir::operation::Max::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Mean &op)
+void StaticShapeInferer::visit(const ir::operation::Mean &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Mean::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -531,7 +532,7 @@ void StaticInferer::visit(const ir::operation::Mean &op)
         break;
       }
       default:
-        throw std::runtime_error("StaticInferer Mean: Not supported data type");
+        throw std::runtime_error("StaticShapeInferer Mean: Not supported data type");
         break;
     }
   }
@@ -543,24 +544,24 @@ void StaticInferer::visit(const ir::operation::Mean &op)
   output.info().shape(output_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Min &op)
+void StaticShapeInferer::visit(const ir::operation::Min &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
                            op.getInputs().at(ir::operation::Min::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Mul &op)
+void StaticShapeInferer::visit(const ir::operation::Mul &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Mul::Input::LHS),
                            op.getInputs().at(ir::operation::Mul::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Neg &op)
+void StaticShapeInferer::visit(const ir::operation::Neg &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Neg::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::OneHot &op)
+void StaticShapeInferer::visit(const ir::operation::OneHot &op)
 {
   const auto indice_idx{op.getInputs().at(ir::operation::OneHot::Input::INDICES)};
   const auto &indice = _operands.at(indice_idx);
@@ -585,7 +586,7 @@ void StaticInferer::visit(const ir::operation::OneHot &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Pack &op)
+void StaticShapeInferer::visit(const ir::operation::Pack &op)
 {
   bool is_any_of_inputs_dynamic = [&]() -> bool {
     for (uint32_t i = 0; i < op.getInputs().size(); ++i)
@@ -624,7 +625,7 @@ void StaticInferer::visit(const ir::operation::Pack &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Pad &op)
+void StaticShapeInferer::visit(const ir::operation::Pad &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Pad::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -657,7 +658,7 @@ void StaticInferer::visit(const ir::operation::Pad &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Permute &op)
+void StaticShapeInferer::visit(const ir::operation::Permute &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
@@ -674,18 +675,18 @@ void StaticInferer::visit(const ir::operation::Permute &op)
   // Permute is a special operation that layouts of input/output may be different on backend
   // However, it is not applied here, so input/output have the same layout of frontend. Because
   // "ExecutorFactory" would convert shape of input/output accoding to the layouts when registering
-  // operand info to "TensorBuilder" after calling "StaticInferer"
+  // operand info to "TensorBuilder" after calling "StaticShapeInferer"
   const auto new_shape = input.info().shape();
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Pow &op)
+void StaticShapeInferer::visit(const ir::operation::Pow &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Pow::Input::LHS),
                            op.getInputs().at(ir::operation::Pow::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Range &op)
+void StaticShapeInferer::visit(const ir::operation::Range &op)
 {
   const auto start_idx{op.getInputs().at(ir::operation::Range::Input::START)};
   const auto limit_idx{op.getInputs().at(ir::operation::Range::Input::LIMIT)};
@@ -727,7 +728,7 @@ void StaticInferer::visit(const ir::operation::Range &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::ReduceAll &op)
+void StaticShapeInferer::visit(const ir::operation::ReduceAll &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -762,7 +763,7 @@ void StaticInferer::visit(const ir::operation::ReduceAll &op)
         break;
       }
       default:
-        throw std::runtime_error("StaticInferer ReduceAll: Not supported data type");
+        throw std::runtime_error("StaticShapeInferer ReduceAll: Not supported data type");
         break;
     }
   }
@@ -774,7 +775,7 @@ void StaticInferer::visit(const ir::operation::ReduceAll &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::ReduceMin &op)
+void StaticShapeInferer::visit(const ir::operation::ReduceMin &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -809,7 +810,7 @@ void StaticInferer::visit(const ir::operation::ReduceMin &op)
         break;
       }
       default:
-        throw std::runtime_error("StaticInferer ReduceMin: Not supported data type");
+        throw std::runtime_error("StaticShapeInferer ReduceMin: Not supported data type");
         break;
     }
   }
@@ -821,7 +822,7 @@ void StaticInferer::visit(const ir::operation::ReduceMin &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::ReduceProd &op)
+void StaticShapeInferer::visit(const ir::operation::ReduceProd &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -856,7 +857,7 @@ void StaticInferer::visit(const ir::operation::ReduceProd &op)
         break;
       }
       default:
-        throw std::runtime_error("StaticInferer ReduceProd: Not supported data type");
+        throw std::runtime_error("StaticShapeInferer ReduceProd: Not supported data type");
         break;
     }
   }
@@ -868,7 +869,7 @@ void StaticInferer::visit(const ir::operation::ReduceProd &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::ReduceSum &op)
+void StaticShapeInferer::visit(const ir::operation::ReduceSum &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -903,7 +904,7 @@ void StaticInferer::visit(const ir::operation::ReduceSum &op)
         break;
       }
       default:
-        throw std::runtime_error("StaticInferer ReduceSum: Not supported data type");
+        throw std::runtime_error("StaticShapeInferer ReduceSum: Not supported data type");
         break;
     }
   }
@@ -915,7 +916,7 @@ void StaticInferer::visit(const ir::operation::ReduceSum &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Reshape &op)
+void StaticShapeInferer::visit(const ir::operation::Reshape &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Reshape::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -980,22 +981,22 @@ void StaticInferer::visit(const ir::operation::Reshape &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::Reverse &op)
+void StaticShapeInferer::visit(const ir::operation::Reverse &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Reverse::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Round &op)
+void StaticShapeInferer::visit(const ir::operation::Round &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Round::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::RSQRT &op)
+void StaticShapeInferer::visit(const ir::operation::RSQRT &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::RSQRT::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Select &op)
+void StaticShapeInferer::visit(const ir::operation::Select &op)
 {
   const auto input_cond_idx{op.getInputs().at(ir::operation::Select::Input::CONDITION)};
   const auto &input_cond = _operands.at(input_cond_idx);
@@ -1022,7 +1023,7 @@ void StaticInferer::visit(const ir::operation::Select &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Shape &op)
+void StaticShapeInferer::visit(const ir::operation::Shape &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
@@ -1045,12 +1046,12 @@ void StaticInferer::visit(const ir::operation::Shape &op)
   output.info().shape(output_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Sin &op)
+void StaticShapeInferer::visit(const ir::operation::Sin &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Slice &op)
+void StaticShapeInferer::visit(const ir::operation::Slice &op)
 {
   const auto input_index{op.getInputs().at(ir::operation::Slice::Input::INPUT)};
   const auto &input = _operands.at(input_index);
@@ -1082,12 +1083,12 @@ void StaticInferer::visit(const ir::operation::Slice &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Softmax &op)
+void StaticShapeInferer::visit(const ir::operation::Softmax &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Softmax::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Split &op)
+void StaticShapeInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
@@ -1121,13 +1122,13 @@ void StaticInferer::visit(const ir::operation::Split &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::SquaredDifference &op)
+void StaticShapeInferer::visit(const ir::operation::SquaredDifference &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::SquaredDifference::Input::LHS),
                            op.getInputs().at(ir::operation::SquaredDifference::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Squeeze &op)
+void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -1146,7 +1147,7 @@ void StaticInferer::visit(const ir::operation::Squeeze &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::StridedSlice &op)
+void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
 {
   const auto input_index{op.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
   const auto &input = _operands.at(input_index);
@@ -1189,18 +1190,18 @@ void StaticInferer::visit(const ir::operation::StridedSlice &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Sub &op)
+void StaticShapeInferer::visit(const ir::operation::Sub &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Sub::Input::LHS),
                            op.getInputs().at(ir::operation::Sub::Input::RHS));
 }
 
-void StaticInferer::visit(const ir::operation::Tanh &op)
+void StaticShapeInferer::visit(const ir::operation::Tanh &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::Input::INPUT));
 }
 
-void StaticInferer::visit(const ir::operation::Tile &op)
+void StaticShapeInferer::visit(const ir::operation::Tile &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Tile::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -1231,7 +1232,7 @@ void StaticInferer::visit(const ir::operation::Tile &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Transpose &op)
+void StaticShapeInferer::visit(const ir::operation::Transpose &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
@@ -1252,7 +1253,7 @@ void StaticInferer::visit(const ir::operation::Transpose &op)
   output.info().shape(new_shape);
 }
 
-void StaticInferer::visit(const ir::operation::Unpack &op)
+void StaticShapeInferer::visit(const ir::operation::Unpack &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
@@ -1298,7 +1299,7 @@ void StaticInferer::visit(const ir::operation::Unpack &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::While &op)
+void StaticShapeInferer::visit(const ir::operation::While &op)
 {
   auto &cond_graph = _lowered_subgs.at(op.param().cond_subg_index)->graph();
   auto &body_graph = _lowered_subgs.at(op.param().body_subg_index)->graph();
@@ -1342,7 +1343,7 @@ void StaticInferer::visit(const ir::operation::While &op)
   }
 
   // re-sizing operands of body subgraph
-  StaticInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
+  StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().body_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
         body_inferer.infer(op_seq);
@@ -1389,7 +1390,7 @@ void StaticInferer::visit(const ir::operation::While &op)
     }
 
     // Set non-constant operands of body subgraph to dynamic
-    StaticInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
+    StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
     _lowered_subgs.at(op.param().body_subg_index)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
           body_inferer.infer(op_seq);
@@ -1399,7 +1400,7 @@ void StaticInferer::visit(const ir::operation::While &op)
   // re-sizing operands of cond subgraph
   // If check_unpredictable_dynamic is true, non-constant operands of cond subgraph would be set to
   // dynamic
-  StaticInferer cond_inferer(op.param().cond_subg_index, _lowered_subgs);
+  StaticShapeInferer cond_inferer(op.param().cond_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().cond_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
         cond_inferer.infer(op_seq);
@@ -1424,7 +1425,7 @@ void StaticInferer::visit(const ir::operation::While &op)
   }
 }
 
-void StaticInferer::visit(const ir::operation::ZerosLike &op)
+void StaticShapeInferer::visit(const ir::operation::ZerosLike &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ZerosLike::Input::INPUT));
 }

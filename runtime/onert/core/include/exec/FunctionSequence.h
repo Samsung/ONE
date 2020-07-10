@@ -84,7 +84,7 @@ class FunctionSequenceForDynamicBackend : public FunctionSequence
 {
 public:
   FunctionSequenceForDynamicBackend(const ir::OpSequence &op_seq, const ir::Operations &operations,
-                                    std::unique_ptr<DynamicInferer> dyn_shape_inferer,
+                                    std::unique_ptr<DynamicShapeInferer> dyn_shape_inferer,
                                     backend::IDynamicTensorManager *dyn_tensor_manager)
       : _op_seq(op_seq), _operations_ctx(operations),
         _dyn_shape_inferer(std::move(dyn_shape_inferer)), _dyn_tensor_manager(dyn_tensor_manager)
@@ -97,7 +97,7 @@ private:
   const ir::OpSequence &_op_seq;
   const ir::Operations &_operations_ctx;
   /// @brief shape inferer at execution time
-  std::unique_ptr<DynamicInferer> _dyn_shape_inferer;
+  std::unique_ptr<DynamicShapeInferer> _dyn_shape_inferer;
   backend::IDynamicTensorManager *_dyn_tensor_manager;
 };
 

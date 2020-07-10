@@ -35,11 +35,11 @@ namespace exec
  * @brief Class to infer shape of output tensor at execution time and
  *        allocate memory fo output tensor if needed
  */
-class DynamicInferer : public ir::OperationVisitor
+class DynamicShapeInferer : public ir::OperationVisitor
 {
 public:
-  DynamicInferer(const ir::Operands &operands, backend::IDynamicTensorManager *tensor_manager,
-                 const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+  DynamicShapeInferer(const ir::Operands &operands, backend::IDynamicTensorManager *tensor_manager,
+                      const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
       : _operands(operands), _dynamic_tensor_manager(tensor_manager),
         _tensor_registry(tensor_registry)
   {

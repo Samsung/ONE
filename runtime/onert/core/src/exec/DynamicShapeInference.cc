@@ -22,9 +22,9 @@ namespace onert
 namespace exec
 {
 
-void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
-                                              const ir::OperandIndex lhs_idx,
-                                              const ir::OperandIndex rhs_idx)
+void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
+                                                   const ir::OperandIndex lhs_idx,
+                                                   const ir::OperandIndex rhs_idx)
 {
   auto lhs = _tensor_registry->getITensor(lhs_idx);
   auto lhs_shape = lhs->getShape();
@@ -59,7 +59,8 @@ void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
+void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
+                                              const ir::OperandIndex input_ind)
 {
   // check if input is not dynamic
   auto input = _tensor_registry->getITensor(input_ind);
@@ -90,18 +91,18 @@ void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::Oper
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Abs &op)
+void DynamicShapeInferer::visit(const ir::operation::Abs &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Add &op)
+void DynamicShapeInferer::visit(const ir::operation::Add &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
                            op.getInputs().at(ir::operation::Add::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::ArgMax &op)
+void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -124,7 +125,7 @@ void DynamicInferer::visit(const ir::operation::ArgMax &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::BatchMatMul &op)
+void DynamicShapeInferer::visit(const ir::operation::BatchMatMul &op)
 {
   const auto lhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::LHS);
   const auto rhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::RHS);
@@ -145,7 +146,7 @@ void DynamicInferer::visit(const ir::operation::BatchMatMul &op)
   _dynamic_tensor_manager->applyShape(output_index, new_shape);
 }
 
-void DynamicInferer::visit(const ir::operation::BroadcastTo &op)
+void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
 {
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -169,18 +170,18 @@ void DynamicInferer::visit(const ir::operation::BroadcastTo &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Cast &op)
+void DynamicShapeInferer::visit(const ir::operation::Cast &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cast::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Comparison &op)
+void DynamicShapeInferer::visit(const ir::operation::Comparison &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Comparison::Input::INPUT0),
                            op.getInputs().at(ir::operation::Comparison::Input::INPUT1));
 }
 
-void DynamicInferer::visit(const ir::operation::Concat &op)
+void DynamicShapeInferer::visit(const ir::operation::Concat &op)
 {
   /*
     The state after compilation (satic shape inference) could be one of the following:
@@ -258,7 +259,7 @@ void DynamicInferer::visit(const ir::operation::Concat &op)
   _dynamic_tensor_manager->applyShape(output_ind, output_shape);
 }
 
-void DynamicInferer::visit(const ir::operation::Conv2D &op)
+void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
 {
   // check if input is not dynamic
   auto input_ind = op.getInputs().at(ir::operation::Conv2D::INPUT);
@@ -282,23 +283,23 @@ void DynamicInferer::visit(const ir::operation::Conv2D &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Cos &op)
+void DynamicShapeInferer::visit(const ir::operation::Cos &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Div &op)
+void DynamicShapeInferer::visit(const ir::operation::Div &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Div::Input::LHS),
                            op.getInputs().at(ir::operation::Div::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Exp &op)
+void DynamicShapeInferer::visit(const ir::operation::Exp &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Exp::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::ExpandDims &op)
+void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
 {
   // check if input is not dynamic
   auto input_ind = op.getInputs().at(ir::operation::ExpandDims::INPUT);
@@ -342,7 +343,7 @@ void DynamicInferer::visit(const ir::operation::ExpandDims &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Fill &op)
+void DynamicShapeInferer::visit(const ir::operation::Fill &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
@@ -365,7 +366,7 @@ void DynamicInferer::visit(const ir::operation::Fill &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::FullyConnected &op)
+void DynamicShapeInferer::visit(const ir::operation::FullyConnected &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -388,12 +389,12 @@ void DynamicInferer::visit(const ir::operation::FullyConnected &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::FusedBatchNorm &op)
+void DynamicShapeInferer::visit(const ir::operation::FusedBatchNorm &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::FusedBatchNorm::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Gather &op)
+void DynamicShapeInferer::visit(const ir::operation::Gather &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -420,39 +421,39 @@ void DynamicInferer::visit(const ir::operation::Gather &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Log &op)
+void DynamicShapeInferer::visit(const ir::operation::Log &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Log::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::LogicalNot &op)
+void DynamicShapeInferer::visit(const ir::operation::LogicalNot &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::LogicalOr &op)
+void DynamicShapeInferer::visit(const ir::operation::LogicalOr &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::LogicalOr::Input::INPUT0),
                            op.getInputs().at(ir::operation::LogicalOr::Input::INPUT1));
 }
 
-void DynamicInferer::visit(const ir::operation::Logistic &op)
+void DynamicShapeInferer::visit(const ir::operation::Logistic &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::MatrixBandPart &op)
+void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Max &op)
+void DynamicShapeInferer::visit(const ir::operation::Max &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Max::Input::LHS),
                            op.getInputs().at(ir::operation::Max::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Mean &op)
+void DynamicShapeInferer::visit(const ir::operation::Mean &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Mean::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -487,7 +488,7 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicInferer Mean: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer Mean: Not supported data type");
         break;
     }
   }
@@ -498,24 +499,24 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Min &op)
+void DynamicShapeInferer::visit(const ir::operation::Min &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
                            op.getInputs().at(ir::operation::Min::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Mul &op)
+void DynamicShapeInferer::visit(const ir::operation::Mul &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Mul::Input::LHS),
                            op.getInputs().at(ir::operation::Mul::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Neg &op)
+void DynamicShapeInferer::visit(const ir::operation::Neg &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Neg::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::OneHot &op)
+void DynamicShapeInferer::visit(const ir::operation::OneHot &op)
 {
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -541,7 +542,7 @@ void DynamicInferer::visit(const ir::operation::OneHot &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Pack &op)
+void DynamicShapeInferer::visit(const ir::operation::Pack &op)
 {
   bool is_any_of_inputs_dynamic = [&]() -> bool {
     for (uint32_t i = 0; i < op.getInputs().size(); ++i)
@@ -577,7 +578,7 @@ void DynamicInferer::visit(const ir::operation::Pack &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Pad &op)
+void DynamicShapeInferer::visit(const ir::operation::Pad &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
@@ -604,7 +605,7 @@ void DynamicInferer::visit(const ir::operation::Pad &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Permute &op)
+void DynamicShapeInferer::visit(const ir::operation::Permute &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   auto input = _tensor_registry->getITensor(input_idx);
@@ -645,13 +646,13 @@ void DynamicInferer::visit(const ir::operation::Permute &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Pow &op)
+void DynamicShapeInferer::visit(const ir::operation::Pow &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Pow::Input::LHS),
                            op.getInputs().at(ir::operation::Pow::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Range &op)
+void DynamicShapeInferer::visit(const ir::operation::Range &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
@@ -690,7 +691,7 @@ void DynamicInferer::visit(const ir::operation::Range &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::ReduceAll &op)
+void DynamicShapeInferer::visit(const ir::operation::ReduceAll &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -719,7 +720,7 @@ void DynamicInferer::visit(const ir::operation::ReduceAll &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicInferer ReduceAll: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer ReduceAll: Not supported data type");
         break;
     }
   }
@@ -734,7 +735,7 @@ void DynamicInferer::visit(const ir::operation::ReduceAll &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::ReduceMin &op)
+void DynamicShapeInferer::visit(const ir::operation::ReduceMin &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -763,7 +764,7 @@ void DynamicInferer::visit(const ir::operation::ReduceMin &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicInferer ReduceMin: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer ReduceMin: Not supported data type");
         break;
     }
   }
@@ -778,7 +779,7 @@ void DynamicInferer::visit(const ir::operation::ReduceMin &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::ReduceProd &op)
+void DynamicShapeInferer::visit(const ir::operation::ReduceProd &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -807,7 +808,7 @@ void DynamicInferer::visit(const ir::operation::ReduceProd &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicInferer ReduceProd: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer ReduceProd: Not supported data type");
         break;
     }
   }
@@ -822,7 +823,7 @@ void DynamicInferer::visit(const ir::operation::ReduceProd &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::ReduceSum &op)
+void DynamicShapeInferer::visit(const ir::operation::ReduceSum &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -851,7 +852,7 @@ void DynamicInferer::visit(const ir::operation::ReduceSum &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicInferer ReduceSum: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer ReduceSum: Not supported data type");
         break;
     }
   }
@@ -866,7 +867,7 @@ void DynamicInferer::visit(const ir::operation::ReduceSum &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Reshape &op)
+void DynamicShapeInferer::visit(const ir::operation::Reshape &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
@@ -943,22 +944,22 @@ void DynamicInferer::visit(const ir::operation::Reshape &op)
   }
 }
 
-void DynamicInferer::visit(const ir::operation::Reverse &op)
+void DynamicShapeInferer::visit(const ir::operation::Reverse &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Reverse::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Round &op)
+void DynamicShapeInferer::visit(const ir::operation::Round &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Round::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::RSQRT &op)
+void DynamicShapeInferer::visit(const ir::operation::RSQRT &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::RSQRT::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Select &op)
+void DynamicShapeInferer::visit(const ir::operation::Select &op)
 {
   const auto input_cond_idx = op.getInputs().at(ir::operation::Select::Input::CONDITION);
   const auto &input_cond = _tensor_registry->getITensor(input_cond_idx);
@@ -989,7 +990,7 @@ void DynamicInferer::visit(const ir::operation::Select &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Shape &op)
+void DynamicShapeInferer::visit(const ir::operation::Shape &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -1008,12 +1009,12 @@ void DynamicInferer::visit(const ir::operation::Shape &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Sin &op)
+void DynamicShapeInferer::visit(const ir::operation::Sin &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::Input::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Slice &op)
+void DynamicShapeInferer::visit(const ir::operation::Slice &op)
 {
   const auto input_index{op.getInputs().at(ir::operation::Slice::Input::INPUT)};
   const auto input = _tensor_registry->getITensor(input_index);
@@ -1039,12 +1040,12 @@ void DynamicInferer::visit(const ir::operation::Slice &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Softmax &op)
+void DynamicShapeInferer::visit(const ir::operation::Softmax &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Softmax::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Split &op)
+void DynamicShapeInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -1074,13 +1075,13 @@ void DynamicInferer::visit(const ir::operation::Split &op)
   }
 }
 
-void DynamicInferer::visit(const ir::operation::SquaredDifference &op)
+void DynamicShapeInferer::visit(const ir::operation::SquaredDifference &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::SquaredDifference::Input::LHS),
                            op.getInputs().at(ir::operation::SquaredDifference::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Squeeze &op)
+void DynamicShapeInferer::visit(const ir::operation::Squeeze &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
@@ -1102,7 +1103,7 @@ void DynamicInferer::visit(const ir::operation::Squeeze &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::StridedSlice &op)
+void DynamicShapeInferer::visit(const ir::operation::StridedSlice &op)
 {
 
   const auto input_index{op.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
@@ -1143,18 +1144,18 @@ void DynamicInferer::visit(const ir::operation::StridedSlice &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Sub &op)
+void DynamicShapeInferer::visit(const ir::operation::Sub &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Sub::Input::LHS),
                            op.getInputs().at(ir::operation::Sub::Input::RHS));
 }
 
-void DynamicInferer::visit(const ir::operation::Tanh &op)
+void DynamicShapeInferer::visit(const ir::operation::Tanh &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::INPUT));
 }
 
-void DynamicInferer::visit(const ir::operation::Tile &op)
+void DynamicShapeInferer::visit(const ir::operation::Tile &op)
 {
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -1179,7 +1180,7 @@ void DynamicInferer::visit(const ir::operation::Tile &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Transpose &op)
+void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
 {
   // check if output is not dynamic
   auto output_ind = op.getOutputs().at(0);
@@ -1201,7 +1202,7 @@ void DynamicInferer::visit(const ir::operation::Transpose &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicInferer::visit(const ir::operation::Unpack &op)
+void DynamicShapeInferer::visit(const ir::operation::Unpack &op)
 {
   // check if output is not dynamic
   const auto input_idx{op.getInputs().at(0)};
@@ -1231,7 +1232,7 @@ void DynamicInferer::visit(const ir::operation::Unpack &op)
   }
 }
 
-void DynamicInferer::visit(const ir::operation::ZerosLike &op)
+void DynamicShapeInferer::visit(const ir::operation::ZerosLike &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ZerosLike::INPUT));
 }
