@@ -21,3 +21,7 @@ target_link_libraries(record-minmax luci_export)
 target_link_libraries(record-minmax luci_interpreter)
 
 install(TARGETS record-minmax DESTINATION bin)
+
+nnas_find_package(GTest REQUIRED)
+GTest_AddTest(record_minmax_function_test "${CMAKE_CURRENT_SOURCE_DIR}/tests/RecordFunction.test.cpp")
+target_include_directories(record_minmax_function_test PRIVATE include)

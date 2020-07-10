@@ -43,11 +43,40 @@ int entry(const int argc, char **argv)
       .required(true)
       .help("Output model filepath");
 
+  arser.add_argument("--min_percentile")
+      .nargs(1)
+      .type(arser::DataType::FLOAT)
+      .help("Record n'th percentile of min");
+
+  arser.add_argument("--max_percentile")
+      .nargs(1)
+      .type(arser::DataType::FLOAT)
+      .help("Record n'th percentile of max");
+
+  arser.add_argument("--mode")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .help("Record mode. percentile (default) or moving_average");
+
   arser.parse(argc, argv);
 
   auto input_model_path = arser.get<std::string>("--input_model");
   auto input_data_path = arser.get<std::string>("--input_data");
   auto output_model_path = arser.get<std::string>("--output_model");
+
+  // Default values
+  std::string mode("percentile");
+  float min_percentile = 1.0;
+  float max_percentile = 99.0;
+
+  if (arser["--min_percentile"])
+    min_percentile = arser.get<float>("--min_percentile");
+
+  if (arser["--max_percentile"])
+    max_percentile = arser.get<float>("--max_percentile");
+
+  if (arser["--mode"])
+    mode = arser.get<std::string>("--mode");
 
   RecordMinMax rmm;
 
@@ -55,7 +84,7 @@ int entry(const int argc, char **argv)
   rmm.initialize(input_model_path);
 
   // Profile min/max while executing the given input data
-  rmm.profileData(input_data_path);
+  rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
 
   // Save profiled values to the model
   rmm.saveModel(output_model_path);
