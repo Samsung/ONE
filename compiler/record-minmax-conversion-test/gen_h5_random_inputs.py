@@ -8,7 +8,7 @@ import argparse
 # This script generates a pack of random input data (.h5) expected by the input tflite model
 #
 # Basic usage:
-#   gen_h5_inputs.py --model <path/to/tflite/model> --num_data <number/of/data> --out <path/to/output/data>
+#   gen_h5_inputs.py --model <path/to/tflite/model> --num_data <number/of/data> --output <path/to/output/data>
 #   ex: gen_h5_inputs.py --model add.tflite --num_data 3 --output add.tflite.input.h5
 #   (This will create add.tflite.input.h5 composed of three random inputs in the same directory as the model)
 parser = argparse.ArgumentParser()
@@ -21,7 +21,7 @@ model = args.model
 
 num_data = args.num_data
 
-output_path = args.out
+output_path = args.output
 
 # Build TFLite interpreter. (to get the information of model input)
 interpreter = tf.lite.Interpreter(model)
