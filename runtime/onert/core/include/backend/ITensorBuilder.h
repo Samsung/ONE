@@ -53,7 +53,7 @@ struct ITensorBuilder
    * @param as_const Whether this tensor is constant
    */
   virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                  ir::Layout backend_layout, bool as_const) = 0;
+                                  ir::Layout backend_layout) = 0;
 
   /**
    * @brief Check if the tensor has been registered with @c registerTensorInfo
