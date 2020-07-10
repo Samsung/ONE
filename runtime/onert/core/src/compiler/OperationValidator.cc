@@ -1333,5 +1333,18 @@ void OperationValidator::visit(const ir::operation::MatrixBandPart &node)
   OP_REQUIRES(_ctx.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
   OP_REQUIRES(_ctx.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
 }
+
+void OperationValidator::visit(const ir::operation::LogSoftmax &node)
+{
+  VERBOSE(LogSoftmax) << "Configure LOGSOFTMAX operation" << std::endl;
+
+  const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(0)};
+
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+}
 } // namespace compiler
 } // namespace onert

@@ -98,6 +98,7 @@ struct SoftmaxParams
   // beta is not really used (not a Tensorflow parameter) and not implemented
   // for LogSoftmax.
   double beta;
+  int axis;
   // uint8 inference params.  Used even when beta defaults to 1.0.
   int32_t input_multiplier;
   int32_t input_left_shift;

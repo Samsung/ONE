@@ -105,6 +105,7 @@ public:
   void visit(const ir::operation::BatchMatMul &) override;
   void visit(const ir::operation::BroadcastTo &) override;
   void visit(const ir::operation::FusedBatchNorm &) override;
+  void visit(const ir::operation::LogSoftmax &) override;
 
 private:
   const ir::Operands &_ctx;

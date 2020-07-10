@@ -208,6 +208,7 @@ GeneratedTests.local_response_norm_float_3
 GeneratedTests.local_response_norm_float_4
 GeneratedTests.log_4D_float_nnfw
 GeneratedTests.log_dynamic_nnfw
+GeneratedTests.log_softmax_nnfw*
 GeneratedTests.logical_and_1D_nnfw
 GeneratedTests.logical_and_2D_nnfw
 GeneratedTests.logical_and_3D_nnfw
