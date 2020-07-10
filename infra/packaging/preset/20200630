@@ -24,7 +24,7 @@ function preset_configure()
   # Tools
   REQUIRED_UNITS+=("tflite2circle" "circle2circle" "tflchef" "circlechef")
   REQUIRED_UNITS+=("tf2tfliteV2" "luci-interpreter" "circle-verify")
-  REQUIRED_UNITS+=("record-minmax circle-quantizer")
+  REQUIRED_UNITS+=("record-minmax" "circle-quantizer")
 
   # TODO Use "nncc configure" and "nncc build"
   cmake \
