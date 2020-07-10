@@ -218,7 +218,6 @@ GeneratedTests.transpose_conv_ex_float_1
 GeneratedTests.transpose_conv_ex_float_2
 GeneratedTests.transpose_conv_ex_float_3
 GeneratedTests.transpose_conv_ex_float_4
-GeneratedTests.transpose_quant8_1
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8
 GeneratedTests.transpose_v1_2_zero_sized
