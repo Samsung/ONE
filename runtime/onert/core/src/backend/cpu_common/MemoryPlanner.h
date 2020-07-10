@@ -149,8 +149,7 @@ private:
   std::unordered_set<ir::OperandIndex> _live_operands;
   ir::OperandIndexMap<std::unordered_set<ir::OperandIndex>> _interference_graph;
   // Sort operands by descending order of size
-  std::multimap<uint32_t, ir::OperandIndex, std::greater<uint32_t>> _map_size_to_operands;
-  std::multimap<uint32_t, ir::OperandIndex> _claim_table;
+  std::multimap<uint32_t, ir::OperandIndex, std::greater<uint32_t>> _operands;
 };
 
 } // namespace cpu_common
