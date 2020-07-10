@@ -44,7 +44,7 @@ using Shapes = std::vector<ir::Shape>;
 
 // Define shape calculation for operations. List them in alphabetic order.
 
-ir::Shape argMaxShapes(const ir::Shape &input_shape, int axis, int rank);
+ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
 
 ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
                             ir::Layout layout = ir::Layout::NHWC);
@@ -71,15 +71,15 @@ ir::Shape inferFillShape(const ir::Shape &in_shape, const int32_t *buf);
 
 ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
-ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                       int rank);
+ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
+                           int rank);
 
 ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
                             ir::Layout layout = ir::Layout::NHWC);
 
-ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis);
+ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis);
 
-ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num);
+ir::Shape inferPackShape(const ir::Shape &input_shape, int axis, int rank, int num);
 
 ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const size_t num_pads);
 
@@ -88,8 +88,8 @@ template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delt
 ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_elements,
                             const size_t total_num_elements);
 
-ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int> &axes,
-                            bool keep_dims);
+ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> &axes,
+                           bool keep_dims);
 
 template <float *> ir::Shape inferRangeShape(float *start_val, float *limit_val, float *delta_val);
 
@@ -133,7 +133,7 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier);
 
 ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
 
-ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank);
+ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank);
 
 } // namespace shape_inference
 } // namespace onert

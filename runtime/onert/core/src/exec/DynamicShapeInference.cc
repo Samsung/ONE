@@ -118,7 +118,7 @@ void DynamicInferer::visit(const ir::operation::ArgMax &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::argMaxShapes(input_shape, axis, rank);
+  ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis, rank);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -411,7 +411,7 @@ void DynamicInferer::visit(const ir::operation::Gather &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = shape_inference::gatherShapes(input_shape, indices_shape, axis, rank);
+  ir::Shape new_shape = shape_inference::inferGatherShape(input_shape, indices_shape, axis, rank);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -493,7 +493,7 @@ void DynamicInferer::visit(const ir::operation::Mean &op)
   }
   const auto keep_dims = op.param().keep_dims;
 
-  ir::Shape output_shape = shape_inference::inferReduceShapes(input_shape, axes_vec, keep_dims);
+  ir::Shape output_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
   _dynamic_tensor_manager->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
 }
@@ -536,7 +536,7 @@ void DynamicInferer::visit(const ir::operation::OneHot &op)
   assert(depth_buf);
   const auto axis_val = op.param().axis;
 
-  ir::Shape new_shape = shape_inference::onehotShape(indices_shape, *depth_buf, axis_val);
+  ir::Shape new_shape = shape_inference::inferOnehotShape(indices_shape, *depth_buf, axis_val);
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }
@@ -571,7 +571,7 @@ void DynamicInferer::visit(const ir::operation::Pack &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = shape_inference::packShapes(input_shape, axis, rank, num);
+  ir::Shape new_shape = shape_inference::inferPackShape(input_shape, axis, rank, num);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -728,7 +728,7 @@ void DynamicInferer::visit(const ir::operation::ReduceAll &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::inferReduceShapes(input_shape, axes_vec, keep_dims);
+  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -772,7 +772,7 @@ void DynamicInferer::visit(const ir::operation::ReduceMin &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::inferReduceShapes(input_shape, axes_vec, keep_dims);
+  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -816,7 +816,7 @@ void DynamicInferer::visit(const ir::operation::ReduceProd &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::inferReduceShapes(input_shape, axes_vec, keep_dims);
+  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -860,7 +860,7 @@ void DynamicInferer::visit(const ir::operation::ReduceSum &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::inferReduceShapes(input_shape, axes_vec, keep_dims);
+  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
 
   _dynamic_tensor_manager->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
@@ -1218,7 +1218,7 @@ void DynamicInferer::visit(const ir::operation::Unpack &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = shape_inference::unpackShapes(input_shape, axis, rank);
+  ir::Shape new_shape = shape_inference::inferUnpackShape(input_shape, axis, rank);
 
   for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
   {
