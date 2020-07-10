@@ -49,6 +49,7 @@
 #include "arm_compute/core/Utils.h"
 #include "arm_compute/core/Validate.h"
 #include "arm_compute/core/Window.h"
+#include "support/StringSupport.h"
 
 namespace arm_compute
 {
@@ -69,7 +70,7 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *scale_fac
 
   // Output must always be initialized
   ARM_COMPUTE_RETURN_ERROR_ON(output->tensor_shape().total_size() == 0);
-  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(output, 1, DataType::S8);
+  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(output, 1, DataType::QASYMM8_SIGNED);
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_SHAPES(input, output);
 
   return Status{};

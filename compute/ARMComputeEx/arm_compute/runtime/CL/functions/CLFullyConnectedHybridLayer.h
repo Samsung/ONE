@@ -50,7 +50,7 @@
 #include "arm_compute/core/CL/kernels/CLTransposeKernel.h"
 #include "arm_compute/runtime/MemoryGroup.h"
 #include "arm_compute/runtime/CL/CLTensor.h"
-#include "arm_compute/runtime/CL/functions/CLGEMMLowpMatrixMultiplyCoreEx.h"
+#include "arm_compute/runtime/CL/functions/CLGEMMLowpMatrixMultiplyCore.h"
 
 namespace arm_compute
 {
@@ -168,7 +168,7 @@ private:
   CLFullyConnectedHybridLayerReshapeWeights _reshape_weights_kernel;
   CLScaleFactorSymm8Kernel _scale_factor_kernel;
   CLQuantizationSymmetricKernel _quant_input_kernel;
-  CLGEMMLowpMatrixMultiplyCoreEx _mm_gemmlowp;
+  CLGEMMLowpMatrixMultiplyCore _mm_gemmlowp;
   CLMultiplyScaleFactorKernel _multiply_scale_kernel;
   CLGEMMMatrixAccumulateBiasesKernel _accumulate_biases_kernel; // TODO(COMPMID-1889): Use CLGEMM to
                                                                 // add bias in

@@ -18,20 +18,13 @@
 
 #include <arm_compute/runtime/NEON/functions/NEActivationLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NEBinaryLogicalOperation.h>
-#include <arm_compute/runtime/NEON/functions/NECast.h>
-#include <arm_compute/runtime/NEON/functions/NEDepthToSpaceLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NEEmbeddingLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/NEON/functions/NEGatherEx.h>
 #include <arm_compute/runtime/NEON/functions/NEHashtableLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEInstanceNormalizationLayerEx.h>
-#include <arm_compute/runtime/NEON/functions/NEPReLU.h>
-#include <arm_compute/runtime/NEON/functions/NEReduceMeanEx.h>
 #include <arm_compute/runtime/NEON/functions/NEReduceSum.h>
-#include <arm_compute/runtime/NEON/functions/NERNNLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NEReduceOperation.h>
-#include <arm_compute/runtime/NEON/functions/NESpaceToBatchLayerEx.h>
-#include <arm_compute/runtime/NEON/functions/NESpaceToDepthLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NETransposeConvLayer.h>
 
 #endif // __ARM_COMPUTE_NEFUNCTIONSEX_H__

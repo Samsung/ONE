@@ -45,6 +45,7 @@
 #include "arm_compute/core/CL/ICLTensor.h"
 #include "arm_compute/core/utils/misc/ShapeCalculatorEx.h"
 #include "arm_compute/core/UtilsEx.h"
+#include "support/StringSupport.h"
 
 using namespace arm_compute;
 
