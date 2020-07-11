@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "FuseInstanceNormPassInternal.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -114,8 +115,6 @@ bool NodeFiller<ARG_TYPE_1, ARG_TYPE_2>::with_commutative_args_of(const COMM_NOD
 } // namespace
 
 // Helper to check detail
-namespace
-{
 
 /// @return true  When node has shape of '1 x .. x 1 x depth'
 bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
@@ -234,8 +233,6 @@ bool is_instance_mean_v1(luci::CircleMean *mean)
   // TODO Check this fact, and if true, return true regardless of keep_dims
   return mean->keep_dims();
 }
-
-} // namespace
 
 // Helper to fuse Instance Norm
 namespace
