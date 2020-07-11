@@ -35,36 +35,10 @@ void If::configure()
   assert(_cond->element_type() == DataType::BOOL);
   assert(_cond->shape().num_elements() == 1);
 
-  // Configure both graphs.
   for (RuntimeGraph *graph : {_then_graph, _else_graph})
   {
     assert(graph->getInputTensors().size() == _inputs.size());
     assert(graph->getOutputTensors().size() == _outputs.size());
-
-    // Resize graph input tensors.
-    const auto &input_tensors = graph->getInputTensors();
-    for (size_t i = 0; i < _inputs.size(); ++i)
-    {
-      assert(input_tensors[i]->element_type() == _inputs[i]->element_type());
-      input_tensors[i]->resize(_inputs[i]->shape());
-    }
-    graph->configure();
-  }
-
-  // For now, output tensors of both graphs should have the same shape.
-  for (size_t i = 0; i < _outputs.size(); ++i)
-  {
-    Tensor *then_output = _then_graph->getOutputTensors()[i];
-    Tensor *else_output = _else_graph->getOutputTensors()[i];
-    assert(else_output->element_type() == then_output->element_type());
-    if (else_output->shape() != then_output->shape())
-      throw std::runtime_error("Dynamic shapes are not supported yet.");
-  }
-
-  const auto &output_tensors = _then_graph->getOutputTensors();
-  for (size_t i = 0; i < _outputs.size(); ++i)
-  {
-    _outputs[i]->resize(output_tensors[i]->shape());
   }
 }
 
@@ -79,8 +53,9 @@ void If::execute() const
   // Copy kernel inputs to active graph inputs.
   for (size_t i = 0; i < _inputs.size(); ++i)
   {
-    assert(graph_inputs[i]->element_type() == _inputs[i]->element_type() &&
-           graph_inputs[i]->shape() == _inputs[i]->shape());
+    assert(graph_inputs[i]->element_type() == _inputs[i]->element_type());
+    graph_inputs[i]->resize(_inputs[i]->shape());
+
     const int32_t num_elements = _inputs[i]->shape().num_elements();
     const std::size_t element_size = getDataTypeSize(_inputs[i]->element_type());
     std::memcpy(graph_inputs[i]->data<void>(), _inputs[i]->data<void>(),
@@ -92,8 +67,9 @@ void If::execute() const
   // Copy graph outputs to kernel outputs.
   for (size_t i = 0; i < _outputs.size(); ++i)
   {
-    assert(graph_outputs[i]->element_type() == _outputs[i]->element_type() &&
-           graph_outputs[i]->shape() == _outputs[i]->shape());
+    assert(graph_outputs[i]->element_type() == _outputs[i]->element_type());
+    _outputs[i]->resize(graph_outputs[i]->shape());
+
     const int32_t num_elements = _outputs[i]->shape().num_elements();
     const std::size_t element_size = getDataTypeSize(_outputs[i]->element_type());
     std::memcpy(_outputs[i]->data<void>(), graph_outputs[i]->data<void>(),
