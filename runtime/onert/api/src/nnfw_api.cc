@@ -109,6 +109,18 @@ NNFW_STATUS nnfw_run(nnfw_session *session)
   return session->run();
 }
 
+NNFW_STATUS nnfw_run_async(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->run_async();
+}
+
+NNFW_STATUS nnfw_await(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->await();
+}
+
 /*
  * Set input
  *
