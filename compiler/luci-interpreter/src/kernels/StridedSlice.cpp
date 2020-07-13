@@ -29,7 +29,7 @@ namespace luci_interpreter
 namespace kernels
 {
 
-const int kMaxDim = 4;
+const int max_dim = 4;
 
 inline int32_t positiveRemainder(int32_t dividend, int32_t divisor)
 {
@@ -60,7 +60,7 @@ void StridedSlice::configure()
   assert(_begin->element_type() == DataType::S32);
   assert(_end->element_type() == DataType::S32);
   assert(_strides->element_type() == DataType::S32);
-  assert(_input->shape().num_dims() <= kMaxDim);
+  assert(_input->shape().num_dims() <= max_dim);
   assert(params().ellipsis_mask == 0);
   assert(params().new_axis_mask == 0);
   if (_input->element_type() == DataType::U8)
@@ -71,29 +71,28 @@ void StridedSlice::configure()
   std::vector<int32_t> output_shape_vector;
   for (int i = 0; i < _input->shape().num_dims(); i++)
   {
-    int _idx = _input->shape().num_dims() - i - 1;
-    int32_t _stride_value = getTensorData<int32_t>(_strides)[_idx];
-    assert(_stride_value != 0);
-    bool _pos_stride = _stride_value > 0;
-    int _dim = _input->shape().dim(_idx);
+    int idx = _input->shape().num_dims() - i - 1;
+    int32_t stride_value = getTensorData<int32_t>(_strides)[idx];
+    assert(stride_value != 0);
+    bool pos_stride = stride_value > 0;
+    int dim = _input->shape().dim(idx);
 
-    int32_t _begin_value =
-        params().begin_mask & (1 << _idx)
-            ? _pos_stride ? 0 : _dim - 1
-            : clampedIndex(getTensorData<int32_t>(_begin)[_idx], _dim, _pos_stride);
-    int32_t _end_value = params().end_mask & (1 << _idx)
-                             ? _pos_stride ? 0 : _dim - 1
-                             : clampedIndex(getTensorData<int32_t>(_end)[_idx], _dim, _pos_stride);
-    bool _shrink_axis = params().shrink_axis_mask & (1 << _idx);
-    if (_shrink_axis)
+    int32_t begin_value = params().begin_mask & (1 << idx)
+                              ? pos_stride ? 0 : dim - 1
+                              : clampedIndex(getTensorData<int32_t>(_begin)[idx], dim, pos_stride);
+    int32_t end_value = params().end_mask & (1 << idx)
+                            ? pos_stride ? 0 : dim - 1
+                            : clampedIndex(getTensorData<int32_t>(_end)[idx], dim, pos_stride);
+    bool shrink_axis = params().shrink_axis_mask & (1 << idx);
+    if (shrink_axis)
     {
-      _end_value = _begin_value + 1;
+      end_value = begin_value + 1;
     }
-    int32_t _dim_shape = std::ceil((_end_value - _begin_value) / static_cast<float>(_stride_value));
-    _dim_shape = _dim_shape < 0 ? 0 : _dim_shape;
-    if (!_shrink_axis)
+    int32_t dim_shape = std::ceil((end_value - begin_value) / static_cast<float>(stride_value));
+    dim_shape = dim_shape < 0 ? 0 : dim_shape;
+    if (!shrink_axis)
     {
-      output_shape_vector.push_back(_dim_shape);
+      output_shape_vector.push_back(dim_shape);
     }
   }
   Shape output_shape = Shape(output_shape_vector.size());
@@ -109,7 +108,7 @@ void StridedSlice::execute() const
   std::vector<int32_t> starts;
   std::vector<int32_t> stops;
   std::vector<int32_t> strides;
-  for (int i = _input->shape().num_dims(); i < kMaxDim; i++)
+  for (int i = _input->shape().num_dims(); i < max_dim; i++)
   {
     starts.emplace_back(0);
     stops.emplace_back(1);
