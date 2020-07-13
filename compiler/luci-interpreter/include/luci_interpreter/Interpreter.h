@@ -61,7 +61,7 @@ public:
 
   void attachObserver(ExecutionObserver *observer);
 
-  inline Tensor *getTensorData(const loco::Node *node) { return _node_to_tensor[node]; }
+  const Tensor *getTensor(const loco::Node *node) { return _node_to_tensor[node]; }
 
 private:
   std::unique_ptr<class RuntimeModule> _runtime_module;
