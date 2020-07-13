@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -e
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+usage()
+{
+  echo "Convert TensorFlow model to circle."
+  echo "Usage: one-import-tf"
+  echo "    --input_path <path/to/tfmodel>"
+  echo "    --output_path <path/to/circle>"
+  echo "    --input_arrays <names of the input arrays, comma-separated>"
+  echo "    --input_shapes <input shapes, colon-separated>"
+  echo "    --output_arrays <names of the output arrays, comma-separated>"
+  exit 0
+}
+
+# Parse command-line arguments
+#
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--help')
+      usage
+      ;;
+    '--input_path')
+      export INPUT_PATH="$2"
+      shift 2
+      ;;
+    '--output_path')
+      export OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    '--input_arrays')
+      export INPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    '--input_shapes')
+      export INPUT_SHAPES="$2"
+      shift 2
+      ;;
+    '--output_arrays')
+      export OUTPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknow parameter: ${CUR}"
+      shift
+      ;;
+  esac
+done
+
+if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
+  echo "Error: input model not found"
+  echo ""
+  usage
+  exit 2
+fi
+
+FILE_BASE=$(basename ${OUTPUT_PATH})
+MODEL_NAME="${FILE_BASE%.*}"
+
+TMPDIR=$(mktemp -d)
+trap "{ rm -rf $TMPDIR; }" EXIT
+
+# activate python virtual environment
+VIRTUALENV_LINUX="${DRIVER_PATH}/venv/bin/activate"
+VIRTUALENV_WINDOWS="${DRIVER_PATH}/venv/Scripts/activate"
+
+if [ -e ${VIRTUALENV_LINUX} ]; then
+  source ${VIRTUALENV_LINUX}
+elif [ -e ${VIRTUALENV_WINDOWS} ]; then
+  source ${VIRTUALENV_WINDOWS}
+fi
+
+# remove previous log
+rm -rf "${OUTPUT_PATH}.log"
+
+# generate temporary tflite file
+echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" --v2 --input_path ${INPUT_PATH} \
+--input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
+--output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
+--output_arrays ${OUTPUT_ARRAYS} > "${OUTPUT_PATH}.log"
+echo " " >> "${OUTPUT_PATH}.log"
+
+python "${DRIVER_PATH}/tf2tfliteV2.py" --v2 --input_path ${INPUT_PATH} \
+--input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
+--output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
+--output_arrays ${OUTPUT_ARRAYS} >> "${OUTPUT_PATH}.log" 2>&1
+
+# convert .tflite to .circle
+echo " " >> "${OUTPUT_PATH}.log"
+echo "${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
+"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log"
+echo " " >> "${OUTPUT_PATH}.log"
+
+"${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
+"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
