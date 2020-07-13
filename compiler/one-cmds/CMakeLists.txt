@@ -4,6 +4,7 @@ set(ONE_COMMAND_FILES
     one-import-tflite
     one-optimize
     one-quantize
+    one-pack
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
