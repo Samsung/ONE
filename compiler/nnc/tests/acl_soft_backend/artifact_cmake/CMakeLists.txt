@@ -11,7 +11,13 @@ set(ODROID_ACL_BUILD_DIR ${ODROID_ACL_DIR}/build)
 find_library(OPEN_CL OpenCL /usr/lib/arm-linux-gnueabihf)
 find_library(ARM_COMPUTE arm_compute PATHS ${ODROID_ACL_BUILD_DIR})
 find_library(ARM_COMPUTE_CORE arm_compute_core PATHS ${ODROID_ACL_BUILD_DIR})
-find_package(HDF5 COMPONENTS CXX REQUIRED)
+# TODO This will be nnas_find_package
+find_package(HDF5 COMPONENTS CXX QUIET CONFIG)
+
+if(NOT HDF5_FOUND)
+  find_package(HDF5 COMPONENTS CXX REQUIRED MODULE)
+endif(NOT HDF5_FOUND)
+
 
 add_executable(nnc_test main.cpp AclArtifact.cpp)
 
