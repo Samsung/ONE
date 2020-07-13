@@ -51,8 +51,8 @@ while [ "$1" != "" ]; do
 
     # Dump scale, zp, weights values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
-      --tensors_to_hdf5 "${TESTCASE_FILE}.quantized.circle" \
-      "${TESTCASE_FILE}.quantized.circle.h5"
+      "${TESTCASE_FILE}.quantized.circle" \
+      --tensors_to_hdf5 "${TESTCASE_FILE}.quantized.circle.h5"
 
     # Compare result
     "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
