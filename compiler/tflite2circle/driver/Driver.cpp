@@ -36,7 +36,16 @@ int entry(int argc, char **argv)
       .type(arser::DataType::STR)
       .help("Give the path of circle file after conversion");
 
-  arser.parse(argc, argv);
+  try
+  {
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
+  }
 
   std::string tfl_path = arser.get<std::string>("tflite");
   std::string circle_path = arser.get<std::string>("circle");
