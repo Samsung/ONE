@@ -78,6 +78,9 @@ int entry(const int argc, char **argv)
   if (arser["--mode"])
     mode = arser.get<std::string>("--mode");
 
+  if (mode != "percentile" && mode != "moving_average")
+    throw std::runtime_error("Unsupported mode");
+
   RecordMinMax rmm;
 
   // Initialize interpreter and observer

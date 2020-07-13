@@ -156,6 +156,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
       min = getMovingAverage(minmax.min_vector, 0.9);
       max = getMovingAverage(minmax.max_vector, 0.9);
     }
+    assert(mode == "percentile" || mode == "moving_average");
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
     quantparam->min.push_back(min);
     quantparam->max.push_back(max);
