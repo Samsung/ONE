@@ -21,7 +21,13 @@ set(NNC_INSTALL_LIB_PATH ${NNC_INSTALL_PATH}/lib) # directory that contains othe
 #
 # find necessary packages
 #
-find_package(HDF5 COMPONENTS CXX QUIET)
+# TODO This will be nnas_find_package
+find_package(HDF5 COMPONENTS CXX QUIET CONFIG)
+
+if(NOT HDF5_FOUND)
+  find_package(HDF5 COMPONENTS CXX QUIET MODULE)
+endif(NOT HDF5_FOUND)
+
 # defines if hdf5 package was found
 if(HDF5_FOUND)
   set(NNC_HDF5_SUPPORTED ON)
