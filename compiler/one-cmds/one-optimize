@@ -125,7 +125,7 @@ rm -rf "${OUTPUT_PATH}.log"
 
 # NOTE do not wrap ${OPTIMIZE_OPTIONS} with ""
 # optimize circle
-echo "${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} 
+echo "${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} \
 "${INPUT_PATH}" "${OUTPUT_PATH}" > "${OUTPUT_PATH}.log"
 
 "${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} \
