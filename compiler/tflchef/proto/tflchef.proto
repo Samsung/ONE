@@ -290,6 +290,10 @@ message SelectOptions {
   // None
 }
 
+message SelectV2Options {
+  // None
+}
+
 message SplitOptions {
   optional int32 num_splits = 1;
 }

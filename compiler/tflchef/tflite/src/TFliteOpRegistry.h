@@ -130,6 +130,7 @@ private:
     REG_TFL_OP(SCATTER_ND, TFliteOpScatterNd);
     REG_TFL_OP(SEGMENT_SUM, TFliteOpSegmentSum);
     REG_TFL_OP(SELECT, TFliteOpSelect);
+    REG_TFL_OP(SELECT_V2, TFliteOpSelectV2);
     REG_TFL_OP(SHAPE, TFliteOpShape);
     REG_TFL_OP(SIN, TFliteOpSin);
     REG_TFL_OP(SLICE, TFliteOpSlice);

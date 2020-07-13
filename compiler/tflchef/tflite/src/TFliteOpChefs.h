@@ -93,6 +93,7 @@
 #include "Op/ScatterNd.h"
 #include "Op/SegmentSum.h"
 #include "Op/Select.h"
+#include "Op/SelectV2.h"
 #include "Op/Shape.h"
 #include "Op/Sin.h"
 #include "Op/Slice.h"
