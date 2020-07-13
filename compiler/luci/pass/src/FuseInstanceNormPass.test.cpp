@@ -23,7 +23,8 @@
 namespace
 {
 
-void setShape(luci::CircleNode &node, const std::vector<int> &v){
+void setShape(luci::CircleNode &node, const std::vector<int> &v)
+{
   node.rank(v.size());
   for (int i = 0; i < v.size(); ++i)
   {
@@ -53,7 +54,7 @@ TEST(FuseInstanceNormPass, is_quasi_1D_with_dummy_dim)
   EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
 
   setShape(const_node, {8, 1});
-  EXPECT_TRUE(is_quasi_1D_with_dummy_dim(&const_node, 8));
+  EXPECT_FALSE(is_quasi_1D_with_dummy_dim(&const_node, 8));
 
   setShape(const_node, {1, 8, 1});
   EXPECT_TRUE(is_quasi_1D_with_dummy_dim(&const_node, 8));
@@ -61,4 +62,3 @@ TEST(FuseInstanceNormPass, is_quasi_1D_with_dummy_dim)
   setShape(const_node, {1, 1, 1, 8, 1});
   EXPECT_TRUE(is_quasi_1D_with_dummy_dim(&const_node, 8));
 }
-
