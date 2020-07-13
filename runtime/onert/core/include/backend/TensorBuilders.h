@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_TENSOR_BUILDERS_H__
-#define __ONERT_COMPILER_TENSOR_BUILDERS_H__
+#ifndef __ONERT_BACKEND_TENSOR_BUILDERS_H__
+#define __ONERT_BACKEND_TENSOR_BUILDERS_H__
 
 #include <unordered_set>
 #include <memory>
@@ -26,7 +26,7 @@
 
 namespace onert
 {
-namespace compiler
+namespace backend
 {
 
 class TensorBuilders
@@ -71,7 +71,7 @@ private:
   std::shared_ptr<backend::controlflow::TensorBuilder> _cf_tensor_builder;
 };
 
-} // namespace compiler
+} // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_TENSOR_BUILDERS_H__
+#endif // __ONERT_BACKEND_TENSOR_BUILDERS_H__

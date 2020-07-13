@@ -77,14 +77,13 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare(void)
-{
-  _static_tensor_mgr->allocateConsts();
-  _static_tensor_mgr->allocateNonconsts();
-}
+void TensorBuilder::prepare(void) {}
 
-void TensorBuilder::allocate()
+void TensorBuilder::allocateAtCompileTime() { _static_tensor_mgr->allocateConsts(); }
+
+void TensorBuilder::allocateAtRunTime()
 {
+  _static_tensor_mgr->allocateNonconsts();
   // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }

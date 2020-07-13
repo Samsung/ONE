@@ -21,6 +21,9 @@
 
 // Used for custom kernel development
 
+// TODO nnfw_operand.allocation is currently tensor buffer (not operand buffer) in CustomKernel.cc
+//      Refine it to distinguish operand buffer and tensor buffer
+//      Note that tensor buffer should not be used during kernel generation(compilation time)
 /*
  * operand type, used only for custom operations
  */

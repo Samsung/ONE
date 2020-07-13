@@ -51,7 +51,8 @@ public:
    * @param code_map OpSequence and its code map
    */
   ParallelExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                   const compiler::TensorBuilders &tensor_builders, compiler::CodeMap &&code_map);
+                   std::unique_ptr<backend::TensorBuilders> tensor_builders,
+                   compiler::CodeMap &&code_map);
 
   void executeImpl() override;
 

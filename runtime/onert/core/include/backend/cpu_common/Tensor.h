@@ -99,9 +99,9 @@ public:
 
   virtual void increase_ref()
   {
-    assert(is_dynamic() ||
-           // when not dynamic
-           (_buffer != nullptr || _allocator != nullptr));
+    // assert(is_dynamic() ||
+    //        // when not dynamic
+    //        (_buffer != nullptr || _allocator != nullptr));
 
     ++_num_references;
   }

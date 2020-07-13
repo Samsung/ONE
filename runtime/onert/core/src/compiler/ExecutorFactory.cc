@@ -214,9 +214,10 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
 
-  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
+  auto tensor_builders =
+      std::make_unique<backend::TensorBuilders>(lowered_graph->backend_contexts(), true);
 
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &tensor_builder : *tensor_builders)
   {
     tensor_builder->prepare();
   }
@@ -232,7 +233,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
     if (cf_kernel_gen != nullptr)
     {
-      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setTensorBuilderSet(*tensor_builders);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
@@ -243,9 +244,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
   });
 
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &tensor_builder : *tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)
@@ -271,7 +272,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
     });
   }
 
-  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_builders,
+  auto exec = new exec::LinearExecutor{std::move(lowered_graph), std::move(tensor_builders),
                                        std::move(code_map), order};
 
   if (!options.trace_filepath.empty())
@@ -295,10 +296,11 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
+  auto tensor_builders =
+      std::make_unique<backend::TensorBuilders>(lowered_graph->backend_contexts(), true);
 
   // To make tensors never be deallocated, this is a workaround to use static memory planner
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &tensor_builder : *tensor_builders)
   {
     lowered_graph->graph().operands().iterate(
         [&](const ir::OperandIndex &ind, const ir::Operand &) {
@@ -309,7 +311,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
         });
   }
 
-  for (auto &tensor_builder : tensor_builders)
+  for (auto &tensor_builder : *tensor_builders)
   {
     tensor_builder->prepare();
   }
@@ -326,7 +328,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     if (cf_kernel_gen != nullptr)
     {
       assert(cf_kernel_gen != nullptr);
-      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setTensorBuilderSet(*tensor_builders);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
@@ -337,9 +339,9 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     builder.append(op_seq_index, {&op_seq, lower_info, std::move(fn_seq)});
   });
 
-  for (const auto &tensor_builder : tensor_builders)
+  for (const auto &tensor_builder : *tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)
@@ -368,13 +370,13 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec =
-        new exec::ParallelExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), std::move(tensor_builders),
+                                      std::move(code_map)};
   }
   else
   {
-    auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)};
+    auto dataflow_exec = new exec::DataflowExecutor{
+        std::move(lowered_graph), std::move(tensor_builders), std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

@@ -22,7 +22,7 @@
 #include <exec/IExecutor.h>
 #include <ir/Graph.h>
 
-#include "compiler/TensorBuilders.h"
+#include <backend/TensorBuilders.h>
 
 namespace onert
 {
@@ -36,7 +36,7 @@ class KernelGenerator : public IKernelGenerator
 public:
   KernelGenerator(const ir::Graph &graph);
 
-  void setTensorBuilderSet(const compiler::TensorBuilders &tensor_builder_set)
+  void setTensorBuilderSet(const backend::TensorBuilders &tensor_builder_set)
   {
     _tensor_builder_set = tensor_builder_set;
   }
@@ -59,7 +59,7 @@ private:
 
 private:
   const ir::Graph &_graph;
-  compiler::TensorBuilders _tensor_builder_set;
+  backend::TensorBuilders _tensor_builder_set;
   exec::ExecutorMap *_executor_map;
 };
 

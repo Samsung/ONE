@@ -98,7 +98,9 @@ public: // methods for static tensor allocation
    * @brief Allocate the tensors
    *        Before calling this, @c prepare must be called
    */
-  virtual void allocate() = 0;
+  virtual void allocateAtCompileTime() = 0;
+
+  virtual void allocateAtRunTime() = 0;
   /**
    * @brief Some actions after functions' @c IFunction::prepare method.
    *        This is called right after each function's @c IFunction::prepare function has been

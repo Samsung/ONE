@@ -36,7 +36,7 @@
 #include "backend/ITensorManager.h"
 #include "backend/ITensorBuilder.h"
 #include "exec/ExecutionObservee.h"
-#include "compiler/TensorBuilders.h"
+#include "backend/TensorBuilders.h"
 #include <list>
 
 namespace onert
@@ -53,7 +53,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-               const compiler::TensorBuilders &tensor_builders);
+               std::unique_ptr<backend::TensorBuilders> tensor_builders);
 
   virtual ~ExecutorBase() = default;
 
@@ -142,17 +142,29 @@ private:
     return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
   }
 
+  void allocateAtRunTime()
+  {
+    if (!_already_allocated)
+      for (auto &tensor_builder : *_tensor_builders)
+        tensor_builder->allocateAtRunTime();
+    _already_allocated = true;
+  }
+
 protected:
+  std::unique_ptr<ir::LoweredGraph> _lowered_graph;
+  std::unique_ptr<backend::TensorBuilders> _tensor_builders;
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
-  std::unique_ptr<ir::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   DynAllocInfoMap _input_to_dyn_alloc_info;
   DynAllocInfoMap _output_to_dyn_alloc_info;
-  backend::TensorManagerSet _tensor_mgrs;
+
+  // backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
+
+  bool _already_allocated = false;
 
 private:
   void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);

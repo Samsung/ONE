@@ -36,7 +36,8 @@ class Kernel : public ::onert::exec::IFunction
 public:
   explicit Kernel(nnfw_custom_eval evalFunction);
 
-  nnfw_custom_kernel_params _params;
+  backend::custom::CustomKernelConfigParams _in_params;
+
   char *_userdata;
   size_t _userdata_size;
 

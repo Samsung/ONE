@@ -25,15 +25,16 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-                           const compiler::TensorBuilders &tensor_builders)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
+                           std::unique_ptr<backend::TensorBuilders> tensor_builders)
+    : _lowered_graph{std::move(lowered_graph)}, _tensor_builders{std::move(tensor_builders)},
+      _graph{_lowered_graph->graph()}, _mutex()
 {
   auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
     std::vector<std::shared_ptr<backend::ITensor>> list;
     for (auto ind : ind_seq)
     {
       std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
+      for (auto &tensor_builder : *_tensor_builders)
       {
         tensor = tensor_builder->tensorAt(ind);
         if (tensor != nullptr)
@@ -59,7 +60,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
     for (auto ind : ind_seq)
     {
       std::shared_ptr<backend::ITensor> tensor;
-      for (auto &tensor_builder : tensor_builders)
+      for (auto &tensor_builder : *_tensor_builders)
       {
         tensor = tensor_builder->tensorAt(ind);
         if (tensor != nullptr)
@@ -82,19 +83,19 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
   _output_tensors = build_output_tensor_list(_graph.getOutputs());
 
   // Prepare each TensorManager on each backend
-  for (auto &tensor_builder : tensor_builders)
-  {
-    auto s_tensor_manager = tensor_builder->releaseStaticTensorManager();
-    if (s_tensor_manager != nullptr)
-      _tensor_mgrs.insert(std::move(s_tensor_manager));
+  // for (auto &tensor_builder : *_tensor_builders)
+  // {
+  //   auto s_tensor_manager = tensor_builder->releaseStaticTensorManager();
+  //   if (s_tensor_manager != nullptr)
+  //     _tensor_mgrs.insert(std::move(s_tensor_manager));
 
-    if (tensor_builder->supportDynamicTensor())
-    {
-      auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
-      if (d_tensor_manager != nullptr)
-        _tensor_mgrs.insert(std::move(d_tensor_manager));
-    }
-  }
+  //   if (tensor_builder->supportDynamicTensor())
+  //   {
+  //     auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
+  //     if (d_tensor_manager != nullptr)
+  //       _tensor_mgrs.insert(std::move(d_tensor_manager));
+  //   }
+  // }
 }
 
 std::unique_ptr<ISource> ExecutorBase::source(const ir::IOIndex &index, const ir::TypeInfo &type,
@@ -157,6 +158,9 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
 
+  // allocate memory for tensors (e.g., non const static tensor in case of CPU backend)
+  allocateAtRunTime();
+
   assert(src_tensors.size() == _graph.getInputs().size());
   assert(src_tensors.size() == _input_tensors.size());
   for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
@@ -202,6 +206,9 @@ void ExecutorBase::execute(const IODescription &desc)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+
+  // allocate memory for tensors (e.g., non const static tensor in case of CPU backend)
+  allocateAtRunTime();
 
   std::vector<std::unique_ptr<ISource>> sources{_graph.getInputs().size()};
   std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};

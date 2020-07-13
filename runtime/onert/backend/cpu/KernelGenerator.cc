@@ -579,21 +579,22 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   };
 
   auto fill_op_info = [&](const ir::OperandIndexSequence &opSeq,
-                          std::vector<custom::TypeInfo> &types, std::vector<void *> &allocs) {
+                          std::vector<custom::TypeInfo> &types,
+                          std::vector<std::shared_ptr<IPortableTensor>> &allocs) {
     for (auto &idx : opSeq)
     {
       const auto &operand = _ctx.at(idx);
       // TODO make sure using `_current_op_seq_layout` is correct for custom operations
       types.emplace_back(get_type_info(operand));
-      auto in_alloc = _tensor_builder->portableAt(idx)->buffer();
+      auto in_alloc = _tensor_builder->portableAt(idx);
       allocs.emplace_back(in_alloc);
     }
   };
 
   backend::custom::CustomKernelConfigParams params{};
 
-  fill_op_info(node.getInputs(), params.input_types, params.input_allocations);
-  fill_op_info(node.getOutputs(), params.output_types, params.output_allocations);
+  fill_op_info(node.getInputs(), params.input_types, params.input_tensors);
+  fill_op_info(node.getOutputs(), params.output_types, params.output_tensors);
 
   params.userdata = node.userdata().data;
   params.userdata_size = node.userdata().size;
