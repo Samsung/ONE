@@ -3,6 +3,7 @@ set(ONE_COMMAND_FILES
     one-import-tf
     one-import-tflite
     one-optimize
+    one-quantize
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
