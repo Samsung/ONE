@@ -30,11 +30,8 @@ int entry(int argc, char **argv)
   arser.add_argument("tflite")
       .nargs(1)
       .type(arser::DataType::STR)
-      .help("Give the path of tflite file you want to convert");
-  arser.add_argument("circle")
-      .nargs(1)
-      .type(arser::DataType::STR)
-      .help("Give the path of circle file after conversion");
+      .help("Source tflite file path to convert");
+  arser.add_argument("circle").nargs(1).type(arser::DataType::STR).help("Target circle file path");
 
   try
   {
