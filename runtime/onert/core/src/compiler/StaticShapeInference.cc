@@ -129,7 +129,7 @@ void StaticInferer::visit(const ir::operation::ArgMax &op)
   assert(0 <= axis && axis < rank);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::argMaxShapes(input.info().shape(), axis, rank);
+  ir::Shape new_shape = shape_inference::inferArgMaxShape(input.info().shape(), axis, rank);
   output.info().shape(new_shape);
 }
 
@@ -377,7 +377,7 @@ void StaticInferer::visit(const ir::operation::Gather &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::gatherShapes(input.info().shape(), indices.info().shape(), axis, rank);
+      shape_inference::inferGatherShape(input.info().shape(), indices.info().shape(), axis, rank);
   output.info().shape(new_shape);
 }
 
@@ -538,7 +538,7 @@ void StaticInferer::visit(const ir::operation::Mean &op)
   const auto keep_dims = op.param().keep_dims;
 
   ir::Shape output_shape =
-      shape_inference::inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
+      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
 
   output.info().shape(output_shape);
 }
@@ -581,7 +581,7 @@ void StaticInferer::visit(const ir::operation::OneHot &op)
   const auto *depth_buf = reinterpret_cast<const int32_t *>(depth.data()->base());
   assert(depth_buf);
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::onehotShape(indice.info().shape(), *depth_buf, axis);
+  ir::Shape new_shape = shape_inference::inferOnehotShape(indice.info().shape(), *depth_buf, axis);
   output.info().shape(new_shape);
 }
 
@@ -620,7 +620,7 @@ void StaticInferer::visit(const ir::operation::Pack &op)
   assert(0 <= axis && axis < rank);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::packShapes(input.info().shape(), axis, rank, num);
+  ir::Shape new_shape = shape_inference::inferPackShape(input.info().shape(), axis, rank, num);
   output.info().shape(new_shape);
 }
 
@@ -770,7 +770,7 @@ void StaticInferer::visit(const ir::operation::ReduceAll &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
+      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
@@ -817,7 +817,7 @@ void StaticInferer::visit(const ir::operation::ReduceMin &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
+      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
@@ -864,7 +864,7 @@ void StaticInferer::visit(const ir::operation::ReduceProd &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
+      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
@@ -911,7 +911,7 @@ void StaticInferer::visit(const ir::operation::ReduceSum &op)
 
   // re-sizing output shape
   ir::Shape new_shape =
-      shape_inference::inferReduceShapes(input.info().shape(), axes_vec, keep_dims);
+      shape_inference::inferReduceShape(input.info().shape(), axes_vec, keep_dims);
   output.info().shape(new_shape);
 }
 
@@ -1287,7 +1287,7 @@ void StaticInferer::visit(const ir::operation::Unpack &op)
     return;
   }
 
-  ir::Shape new_shape = shape_inference::unpackShapes(input.info().shape(), axis, rank);
+  ir::Shape new_shape = shape_inference::inferUnpackShape(input.info().shape(), axis, rank);
 
   // re-sizing output shape
   for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
