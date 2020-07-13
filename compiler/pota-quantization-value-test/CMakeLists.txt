@@ -108,13 +108,13 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 add_custom_target(pota_quantization_value_test_deps ALL DEPENDS ${TEST_DEPS} pota-quantization-value-test_python_deps)
 
 # Run tests
-# add_test(
-#   NAME pota_fake_wquant_test
-#   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh"
-#           "${TEST_CONFIG}"
-#           "${CMAKE_CURRENT_BINARY_DIR}"
-#           ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-# )
+add_test(
+  NAME pota_fake_wquant_test
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh"
+          "${TEST_CONFIG}"
+          "${CMAKE_CURRENT_BINARY_DIR}"
+          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
+)
 
 #add_test(
 #  NAME pota_record_minmax_test
