@@ -207,6 +207,36 @@ NNFW_STATUS nnfw_session::run()
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::run_async()
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::run_async : "
+              << "run_async should be run after prepare" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _execution->startExecute();
+
+  _state = State::RUNNING;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::await()
+{
+  if (!isStateRunning())
+  {
+    std::cerr << "Error during nnfw_session::run_await : "
+              << "run_await should be run after run_async" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _execution->waitFinish();
+
+  _state = State::FINISHED_RUN;
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
                                     size_t length)
 {
@@ -750,6 +780,19 @@ bool nnfw_session::isStatePrepared()
   {
     return false;
   }
+}
+
+bool nnfw_session::isStateRunning()
+{
+  if (_state == State::RUNNING)
+  {
+    assert(!_subgraphs);
+    assert(_compiler);
+    assert(_execution);
+    assert(!primary_subgraph()->isBuildingPhase());
+    return true;
+  }
+  return false;
 }
 
 bool nnfw_session::isStateFinishedRun()

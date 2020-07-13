@@ -34,3 +34,11 @@ TEST_F(ValidationTestFourAddModelsSetInput, run_002)
       ASSERT_EQ(nnfw_run(obj.session), NNFW_STATUS_NO_ERROR);
   }
 }
+
+TEST_F(ValidationTestFourAddModelsSetInput, run_async)
+{
+  for (auto obj : _objects)
+    ASSERT_EQ(nnfw_run_async(obj.session), NNFW_STATUS_NO_ERROR);
+  for (auto obj : _objects)
+    ASSERT_EQ(nnfw_await(obj.session), NNFW_STATUS_NO_ERROR);
+}
