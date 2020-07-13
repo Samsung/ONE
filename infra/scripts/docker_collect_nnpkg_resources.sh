@@ -59,28 +59,21 @@ pushd $ROOT_PATH > /dev/null
 
 REQUIRED_UNITS=()
 # Common Libraries
-REQUIRED_UNITS+=("angkor" "bino" "cwrap" "fipe" "pepper-str" "pepper-strcast" "pp" "stdex")
-REQUIRED_UNITS+=("oops" "pepper-assert" "cli" "safemain")
+REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp" "stdex")
+REQUIRED_UNITS+=("oops" "safemain" "foder" "arser" "oops")
 # Hermes Logging Framework
 REQUIRED_UNITS+=("hermes" "hermes-std")
 # loco IR and related utilities
 REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
-# loco IR extension: Custom Op Support
-REQUIRED_UNITS+=("locoex-customop")
-# TensorFlow Libraries
-REQUIRED_UNITS+=("tfinfo" "plier-tf")
-# TensorFlow GraphDef I/O
-REQUIRED_UNITS+=("mio-tf")
-# TensorFlow Frontend (.pb/.pbtxt -> loco.caninical)
-REQUIRED_UNITS+=("moco-log" "moco" "moco-tf")
-# TensorFlow Lite/Circle Backend (loco.canonical -> .tflite, loco.circle -> .circle)
-REQUIRED_UNITS+=("exo")
+# Circle compiler library (.circle -> .circle)
+REQUIRED_UNITS+=("luci")
+# Flatbuffer I/O
+REQUIRED_UNITS+=("mio-tflite" "mio-circle")
 # Tools
-REQUIRED_UNITS+=("tf2tflite" "tfkit" "i5diff")
-# nnkit and related utilities
-REQUIRED_UNITS+=("nnkit" "nnkit-intf" "nnkit-misc" "nnkit-tflite" "nnkit-tf")
-# tf2tflite_value_pbtxt_test
-REQUIRED_UNITS+=("tf2tflite-value-pbtxt-test")
+REQUIRED_UNITS+=("tflite2circle" "circle2circle" "luci-interpreter")
+REQUIRED_UNITS+=("souschef" "tflchef" "circlechef" "circle-verify")
+# common-artifacts
+REQUIRED_UNITS+=("common-artifacts")
 
 # Reset whitelist to build all
 ./nncc docker-run ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=release \
@@ -88,16 +81,19 @@ REQUIRED_UNITS+=("tf2tflite-value-pbtxt-test")
   $CONFIG_OPTIONS
 ./nncc docker-run ./nncc build -j4
 
-# tf2tflite_value_pbtxt_test to generate graphdef, input, golden data
-./nncc docker-run ./nncc test -R "tf2tflite_value_pbtxt_test"
-
 mkdir -p ${ARCHIVE_PATH}
 TEMP_DIR=$(mktemp -d -t resXXXX)
 rm -f ${TEMP_DIR}/*
-cp $NNCC_WORKSPACE/compiler/tf2tflite-value-pbtxt-test/*.h5 ${TEMP_DIR}
-cp $NNCC_WORKSPACE/compiler/tf2tflite-value-pbtxt-test/*.info ${TEMP_DIR}
-cp $NNCC_WORKSPACE/compiler/tf2tflite-value-pbtxt-test/*.pb ${TEMP_DIR}
-tar -zcf ${ARCHIVE_PATH}/test-resources.tar.gz -C ${TEMP_DIR} ./
+mkdir -p ${TEMP_DIR}/nnpkg-tcs
+
+# Copy nnpakcage only if it has its test data
+for nnpkg in $NNCC_WORKSPACE/compiler/common-artifacts/*; do
+  if [ -d $nnpkg/metadata/tc ]; then
+    cp -r $nnpkg ${TEMP_DIR}/nnpkg-tcs
+  fi
+done
+
+tar -zcf ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz -C ${TEMP_DIR} ./
 rm -rf ${TEMP_DIR}
 
 echo "resouce generation end"
