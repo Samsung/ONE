@@ -66,7 +66,7 @@ void LogSoftMaxLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    throw std::runtime_error{"NYI"};
+    throw std::runtime_error{"LogSoftmax : NYI"};
   }
   else
   {
