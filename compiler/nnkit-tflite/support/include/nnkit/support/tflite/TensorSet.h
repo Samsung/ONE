@@ -17,7 +17,7 @@
 #ifndef __NNKIT_SUPPORT_TFLITE_TENSOR_SET_H__
 #define __NNKIT_SUPPORT_TFLITE_TENSOR_SET_H__
 
-#include <tensorflow/contrib/lite/context.h>
+#include <tensorflow/lite/context.h>
 
 #include <cstdint>
 

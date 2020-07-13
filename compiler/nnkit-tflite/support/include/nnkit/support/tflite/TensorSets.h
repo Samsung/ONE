@@ -19,7 +19,7 @@
 
 #include "nnkit/support/tflite/TensorSet.h"
 
-#include <tensorflow/contrib/lite/interpreter.h>
+#include <tensorflow/lite/interpreter.h>
 
 namespace nnkit
 {
