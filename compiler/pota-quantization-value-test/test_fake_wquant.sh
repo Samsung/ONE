@@ -45,7 +45,7 @@ while [ "$1" != "" ]; do
 
     # Run circle-quantizer with --quantize_dequantize_weights
     "${CIRCLE_QUANTIZER_PATH}" \
-      --quantize_dequantize_weights float "${DTYPE}" "${GRANULARITY}" \
+      --quantize_dequantize_weights float32 "${DTYPE}" "${GRANULARITY}" \
       "${WORKDIR}/${MODELNAME}.circle" \
       "${TESTCASE_FILE}.fake_quantized.circle" 
 
