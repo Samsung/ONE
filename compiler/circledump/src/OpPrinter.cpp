@@ -728,6 +728,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
   // There is no Option for ROUND
   // There is no Option for SELECT
+  // There is no Option for SELECT_V2
   _op_map[circle::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN
   // There is no Option for SLICE
