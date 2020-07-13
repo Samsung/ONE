@@ -16,6 +16,7 @@
 
 #include "Dump.h"
 
+#include <arser/arser.h>
 #include <foder/FileLoader.h>
 
 #include <functional>
@@ -25,66 +26,41 @@
 #include <string>
 #include <vector>
 
-using OptionHook = std::function<std::unique_ptr<circletensordump::DumpInterface>(void)>;
-
-void print_help(const char *progname)
-{
-  std::cerr << "USAGE: " << progname << " options circle [hdf5]" << std::endl;
-  std::cerr << "   --tensors : dump tensors in circle file" << std::endl;
-  std::cerr << "   --tensors_to_hdf5 : dump tensors in circle file to hdf5 file" << std::endl;
-}
-
 int entry(int argc, char **argv)
 {
-  if (argc < 3)
+  arser::Arser arser{
+      "circle-tensordump allows users to retrieve tensor information from a Circle model file"};
+
+  arser.add_argument("circle").nargs(1).type(arser::DataType::STR).help("Circle file path to dump");
+  arser.add_argument("--tensors").nargs(0).help("Dump to console");
+  arser.add_argument("--tensors_to_hdf5")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .help("Dump to hdf5 file. Specify hdf5 file path to be dumped");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    print_help(argv[0]);
-    return EXIT_FAILURE;
+    arser.parse(argc, argv);
   }
-
-  // Simple argument parser (based on map)
-  std::map<std::string, OptionHook> argparse;
-
-  argparse["--tensors"] = [&](void) {
-    // dump all tensors
-    return std::move(std::make_unique<circletensordump::DumpTensors>());
-  };
-
-  argparse["--tensors_to_hdf5"] = [&](void) {
-    // dump all tensors to hdf5 file
-    return std::move(std::make_unique<circletensordump::DumpTensorsToHdf5>());
-  };
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
+  }
 
   std::unique_ptr<circletensordump::DumpInterface> dump;
 
-  const std::string tag{argv[1]};
-  auto it = argparse.find(tag);
-
-  std::string model_file = argv[2];
-  dump = std::move(it->second());
+  std::string model_file = arser.get<std::string>("circle");
   std::string output_path;
-
-  if (tag == "--tensors")
+  if (arser["--tensors_to_hdf5"])
   {
-    // DO NOTHING
+    dump = std::move(std::make_unique<circletensordump::DumpTensorsToHdf5>());
+    output_path = arser.get<std::string>("--tensors_to_hdf5");
   }
-  else if (tag == "--tensors_to_hdf5")
+  if (arser["--tensors"])
   {
-    if (argc != 4)
-    {
-      std::cerr << "Option '" << tag << "' needs hdf5 output path" << std::endl;
-      print_help(argv[0]);
-      return EXIT_FAILURE;
-    }
-    output_path = argv[3];
-  }
-  else
-  {
-    std::cerr << "Option '" << tag << "' is not supported" << std::endl;
-    print_help(argv[0]);
-    return EXIT_FAILURE;
+    dump = std::move(std::make_unique<circletensordump::DumpTensors>());
   }
 
   // Load Circle model from a circle file
