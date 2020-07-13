@@ -20,7 +20,6 @@
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
-#include "ShapeFixer.h"
 
 #include <backend/Backend.h>
 
@@ -51,7 +50,6 @@ public:
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, kb);
-    context->shape_fixer = std::make_shared<ShapeFixer>(operands);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;
