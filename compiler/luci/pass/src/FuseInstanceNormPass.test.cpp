@@ -32,7 +32,7 @@ void setShape(luci::CircleNode &node, const std::vector<int> &v)
   }
 }
 
-}
+} // namespace
 
 TEST(FuseInstanceNormPass, is_quasi_1D_with_dummy_dim)
 {
