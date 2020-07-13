@@ -19,7 +19,24 @@
 namespace luci
 {
 
-static std::string to_lower_case(std::string s)
+bool in_array(const std::string &str, const std::vector<std::string> &array)
+{
+  return std::find(array.begin(), array.end(), str) != array.end();
+}
+
+std::string to_string(const std::vector<std::string> &strings)
+{
+  assert(!strings.empty());
+
+  std::string res;
+  for (unsigned int i = 0; i < strings.size() - 1; i++)
+    res += strings[i] + ", ";
+
+  res += strings[strings.size() - 1];
+  return res;
+}
+
+std::string to_lower_case(std::string s)
 {
   std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return std::tolower(c); });
   return s;
