@@ -5,6 +5,7 @@ set(ONE_COMMAND_FILES
     one-optimize
     one-quantize
     one-pack
+    one-codegen
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
