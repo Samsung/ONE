@@ -45,7 +45,7 @@ while [ "$1" != "" ]; do
 
     # Run circle-quantizer with --quantize_with_minmax
     "${CIRCLE_QUANTIZER_PATH}" \
-      --quantize_with_minmax float "${DTYPE}" "${GRANULARITY}" \
+      --quantize_with_minmax float32 "${DTYPE}" "${GRANULARITY}" \
       "${TESTCASE_FILE}.minmax_recorded.circle" \
       "${TESTCASE_FILE}.quantized.circle" 
 
