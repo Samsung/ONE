@@ -133,13 +133,16 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
 bool is_quasi_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
 {
   auto rank = node->rank();
-  uint32_t axis;
-  for (axis = 0; (axis < rank - 1) && (axis != rank - 2); ++axis)
+  // minimal accepted shape is [1 x depth x 1]
+  if (rank < 3)
+    return false;
+  const auto depth_axis = rank - 2;
+  for (uint32_t axis = 0; axis < rank; ++axis)
   {
-    if (node->dim(axis).value() != 1)
+    if (axis != depth_axis && node->dim(axis).value() != 1)
       return false;
   }
-  return node->dim(axis).value() == depth;
+  return node->dim(depth_axis).value() == depth;
 }
 
 bool is_instance_mean_v0(luci::CircleMean *mean)
@@ -211,12 +214,13 @@ bool is_instance_mean_v1(luci::CircleMean *mean)
   if (red_indices->rank() != 1)
     return false;
   std::set<int32_t> red_indices_set;
-  {
-    // TODO Currently only support S32, support other types
-    assert(red_indices->dtype() == loco::DataType::S32);
-    for (uint32_t i = 0; i < red_indices->dim(0).value(); ++i)
-      red_indices_set.insert(red_indices->at<loco::DataType::S32>(i));
-  }
+
+  // TODO Currently only support S32, support other types
+  if (red_indices->dtype() != loco::DataType::S32)
+    return false;
+  for (uint32_t i = 0; i < red_indices->dim(0).value(); ++i)
+    red_indices_set.insert(red_indices->at<loco::DataType::S32>(i));
+
   if (red_indices_set.size() != 3)
     return false;
   if (red_indices_set.find(1) == red_indices_set.end())

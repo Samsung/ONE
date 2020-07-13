@@ -25,4 +25,4 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth);
 /// @return true  When node has shape of '1 x .. x depth x 1'
 bool is_quasi_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth);
 
-#endif __LUCI_CIRCLE_FUSE_INSTANCE_NORM_PASS_INTERNAL_H__
+#endif // __LUCI_CIRCLE_FUSE_INSTANCE_NORM_PASS_INTERNAL_H__
