@@ -31,6 +31,17 @@ namespace kernels
 
 const int max_dim = 4;
 
+// Use until std::clamp() is available from C++17.
+inline int Clamp(const int v, const int lo, const int hi)
+{
+  TFLITE_DCHECK(!(hi < lo));
+  if (hi < v)
+    return hi;
+  if (v < lo)
+    return lo;
+  return v;
+}
+
 inline int32_t positiveRemainder(int32_t dividend, int32_t divisor)
 {
   return (divisor + (dividend % divisor)) % divisor;
@@ -77,18 +88,78 @@ void StridedSlice::configure()
     bool pos_stride = stride_value > 0;
     int dim = _input->shape().dim(idx);
 
-    int32_t begin_value = params().begin_mask & (1 << idx)
-                              ? pos_stride ? 0 : dim - 1
-                              : clampedIndex(getTensorData<int32_t>(_begin)[idx], dim, pos_stride);
-    int32_t end_value = params().end_mask & (1 << idx)
-                            ? pos_stride ? 0 : dim - 1
-                            : clampedIndex(getTensorData<int32_t>(_end)[idx], dim, pos_stride);
-    bool shrink_axis = params().shrink_axis_mask & (1 << idx);
+    const auto begin_mask = params().begin_mask;
+    int32_t start = getTensorData<int32_t>(_begin)[idx];
+    if (begin_mask & 1 << idx)
+    {
+      if (pos_stride)
+      {
+        // Forward iteration - use the first element. These values will get
+        // clamped below (Note: We could have set them to 0 and axis_size-1, but
+        // use lowest() and max() to maintain symmetry with StopForAxis())
+        start = std::numeric_limits<int>::lowest();
+      }
+      else
+      {
+        // Backward iteration - use the last element.
+        start = std::numeric_limits<int>::max();
+      }
+    }
+    if (start < 0)
+    {
+      start += dim;
+    }
+    start = Clamp(start, 0, dim - 1);
+
+    const auto end_mask = params().end_mask;
+    const auto shrink_axis_mask = params().shrink_axis_mask;
+    const bool shrink_axis = shrink_axis_mask & (1 << idx);
+    int32_t end = getTensorData<int32_t>(_end)[idx];
+
     if (shrink_axis)
     {
-      end_value = begin_value + 1;
+      end = start + 1;
     }
-    int32_t dim_shape = std::ceil((end_value - begin_value) / static_cast<float>(stride_value));
+
+    // end_mask override
+    if (end_mask & (1 << idx))
+    {
+      if (pos_stride)
+      {
+        // Forward iteration - use the last element. These values will get
+        // clamped below
+        end = std::numeric_limits<int>::max();
+      }
+      else
+      {
+        // Backward iteration - use the first element.
+        end = std::numeric_limits<int>::lowest();
+      }
+    }
+    if (end < 0)
+    {
+      end += dim;
+    }
+
+    // Clamping
+    // Because the end index points one past the last element, we need slightly
+    // different clamping ranges depending on the direction.
+    if (pos_stride)
+    {
+      // Forward iteration
+      end = Clamp(end, 0, dim);
+    }
+    else
+    {
+      // Backward iteration
+      end = Clamp(end, -1, dim - 1);
+    }
+
+    if (shrink_axis)
+    {
+      end = start + 1;
+    }
+    int32_t dim_shape = std::ceil((end - start) / static_cast<float>(stride_value));
     dim_shape = dim_shape < 0 ? 0 : dim_shape;
     if (!shrink_axis)
     {
@@ -96,7 +167,7 @@ void StridedSlice::configure()
     }
   }
   Shape output_shape = Shape(output_shape_vector.size());
-  for (int i = 0; i < output_shape_vector.size(); i++)
+  for (int32_t i = 0; i < output_shape_vector.size(); i++)
   {
     output_shape.dim(i) = output_shape_vector[output_shape_vector.size() - i - 1];
   }
@@ -105,28 +176,22 @@ void StridedSlice::configure()
 
 void StridedSlice::execute() const
 {
-  std::vector<int32_t> starts;
-  std::vector<int32_t> stops;
-  std::vector<int32_t> strides;
-  for (int i = _input->shape().num_dims(); i < max_dim; i++)
-  {
-    starts.emplace_back(0);
-    stops.emplace_back(1);
-    strides.emplace_back(1);
-  }
-  for (int idx = 0; idx < _input->shape().num_dims(); ++idx)
-  {
-    starts.emplace_back(getTensorData<int32_t>(_begin)[idx]);
-    stops.emplace_back(getTensorData<int32_t>(_end)[idx]);
-    strides.emplace_back(getTensorData<int32_t>(_strides)[idx]);
-  }
-  int begin_mask = params().begin_mask << (4 - _input->shape().num_dims());
-  int end_mask = params().end_mask << (4 - _input->shape().num_dims());
-  int shrink_axis_mask = params().shrink_axis_mask << (4 - _input->shape().num_dims());
+  tflite::StridedSliceParams op_params;
+  op_params.start_indices_count = _input->shape().num_dims();
+  op_params.stop_indices_count = _input->shape().num_dims();
+  op_params.strides_count = _input->shape().num_dims();
 
-  assert(starts.size() == 4);
-  tflite::StridedSliceParams op_params = ::tflite::strided_slice::BuildStridedSliceParams(
-      begin_mask, end_mask, shrink_axis_mask, starts, stops, strides);
+  for (int i = 0; i < _input->shape().num_dims(); i++)
+  {
+    op_params.start_indices[i] = getTensorData<int32_t>(_begin)[i];
+    op_params.stop_indices[i] = getTensorData<int32_t>(_end)[i];
+    op_params.strides[i] = getTensorData<int32_t>(_strides)[i];
+  }
+  op_params.begin_mask = params().begin_mask;
+  op_params.ellipsis_mask = 0;
+  op_params.end_mask = params().end_mask;
+  op_params.new_axis_mask = 0;
+  op_params.shrink_axis_mask = params().shrink_axis_mask;
 
   switch (_input->element_type())
   {
