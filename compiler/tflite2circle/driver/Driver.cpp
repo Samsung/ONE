@@ -25,7 +25,7 @@
 
 int entry(int argc, char **argv)
 {
-  arser::Arser arser;
+  arser::Arser arser{"tflite2circle is a Tensorflow Lite to Circle model converter"};
 
   arser.add_argument("tflite")
       .nargs(1)
