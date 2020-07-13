@@ -77,12 +77,28 @@ TEST(GetNthPercentileTest, FloatWithNegative)
   EXPECT_FLOAT_NEAR(49.40456084968194, getNthPercentile(input, 99));
 }
 
+TEST(GetNthPercentileTest, SigleElement)
+{
+  std::vector<float> input{33};
+
+  EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 0));
+  EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 50));
+  EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 100));
+}
+
 TEST(GetNthPercentileTest, OutOfBoundary_NEG)
 {
   std::vector<float> input{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
   EXPECT_THROW(getNthPercentile(input, -1), std::runtime_error);
   EXPECT_THROW(getNthPercentile(input, 101), std::runtime_error);
+}
+
+TEST(GetNthPercentileTest, EmptyVector_NEG)
+{
+  std::vector<float> input;
+
+  EXPECT_THROW(getNthPercentile(input, 10), std::runtime_error);
 }
 
 } // namespace record_minmax
