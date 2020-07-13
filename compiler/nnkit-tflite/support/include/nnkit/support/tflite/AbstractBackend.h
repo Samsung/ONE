@@ -18,7 +18,7 @@
 #define __NNKIT_SUPPORT_TFLITE_ABSTRACT_BACKEND_H__
 
 #include <nnkit/Backend.h>
-#include <tensorflow/contrib/lite/interpreter.h>
+#include <tensorflow/lite/interpreter.h>
 
 namespace nnkit
 {

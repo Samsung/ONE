@@ -1,4 +1,4 @@
-nnas_find_package(TensorFlowLite QUIET EXACT 1.12)
+nnas_find_package(TensorFlowLite QUIET EXACT 1.13.1)
 
 if(NOT TensorFlowLite_FOUND)
   return()
