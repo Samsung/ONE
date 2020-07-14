@@ -211,7 +211,7 @@ void Compiler::compile(void)
   // Shape inference.
   {
     const auto primary_subg_idx = ir::SubgraphIndex{0};
-    StaticInferer inferer(primary_subg_idx, lowered_subgs);
+    StaticShapeInferer inferer(primary_subg_idx, lowered_subgs);
     lowered_subgs.at(primary_subg_idx)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
           inferer.infer(op_seq);
