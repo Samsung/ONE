@@ -258,6 +258,12 @@ struct FullyConnectedParams
   // FullyConnectedWeightsFormat weights_format;
 };
 
+struct L2NormParams
+{
+  // uint8 inference params.
+  int32_t input_zero_point;
+};
+
 struct GatherParams
 {
   int32_t axis;

@@ -69,6 +69,7 @@
 #include "ops/ZerosLikeLayer.h"
 #include "ops/SquaredDiffLayer.h"
 #include "ops/LogicalOrLayer.h"
+#include "ops/L2NormLayer.h"
 #include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
 #include "ops/BroadcastToLayer.h"
@@ -1202,6 +1203,21 @@ void KernelGenerator::visit(const ir::operation::LogicalOr &node)
   auto fn = std::make_unique<ops::LogicalOrLayer>();
 
   fn->configure(lhs_alloc, rhs_alloc, ofm_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::L2Normalization &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto input_alloc = _tensor_builder->portableAt(input_index).get();
+
+  auto fn = std::make_unique<ops::L2NormLayer>();
+
+  fn->configure(input_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }

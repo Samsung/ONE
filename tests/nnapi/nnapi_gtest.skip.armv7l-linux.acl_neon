@@ -93,6 +93,7 @@ GeneratedTests.greater_dynamic_float_nnfw
 GeneratedTests.greater_equal_boolean
 GeneratedTests.greater_equal_dynamic_float_nnfw
 GeneratedTests.less_boolean
+GeneratedTests.l2_normalization_quant8
 GeneratedTests.less_dynamic_float_nnfw
 GeneratedTests.less_equal_dynamic_float_nnfw
 GeneratedTests.log_4D_float_nnfw

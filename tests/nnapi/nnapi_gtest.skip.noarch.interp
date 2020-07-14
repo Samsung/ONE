@@ -189,6 +189,7 @@ GeneratedTests.hashtable_lookup_quant8
 GeneratedTests.l2_normalization
 GeneratedTests.l2_normalization_2
 GeneratedTests.l2_normalization_large
+GeneratedTests.l2_normalization_quant8
 GeneratedTests.l2_pool_float
 GeneratedTests.l2_pool_float_2
 GeneratedTests.l2_pool_float_large
