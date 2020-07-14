@@ -119,19 +119,9 @@ public:
                        params.stride_height);
     }
 
-    if (_need_im2col)
-    {
-      uint8_t *im2col_raw_data = _im2col_data.data();
-      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data, _im2col_shape, im2col_raw_data);
-    }
-    // TODO Apply optimized kernel if the optimized kernel is faster without im2col than the
-    // reference kernel
-    else
-    {
-      reference::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                      bias_data, output_shape, output_data);
-    }
+    uint8_t *im2col_raw_data = _im2col_data.data();
+    optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                    bias_data, output_shape, output_data, _im2col_shape, im2col_raw_data);
   }
 
 private:

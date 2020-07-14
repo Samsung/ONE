@@ -122,6 +122,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 
 void ConvolutionLayer::run()
 {
+  prepare();
+
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
     const auto ifm_shape = _input->getShape().asFeature(_input->layout());

@@ -113,7 +113,7 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
   return broadcastShapes(lhs_shape, rhs_shape);
 }
 
-ir::Shape argMaxShapes(const ir::Shape &input_shape, int axis, int rank)
+ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank)
 {
   ir::Shape out_shape;
   for (int idx = 0; idx < rank; ++idx)
@@ -139,8 +139,8 @@ ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgP
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
-ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int> &axes,
-                            bool keep_dims)
+ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> &axes,
+                           bool keep_dims)
 {
   int num_axis = axes.size();
   int input_num_dims = input_shape.rank();
@@ -390,8 +390,8 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
   return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }
 
-ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                       int rank)
+ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
+                           int rank)
 {
   ir::Shape out_shape;
   const int indices_rank = indices_shape.rank();
@@ -424,7 +424,7 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
-ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis)
+ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis)
 {
   assert(depth >= 0);
   const auto rank = input_shape.rank() + 1;
@@ -451,7 +451,7 @@ ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis)
   return newShape;
 }
 
-ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num)
+ir::Shape inferPackShape(const ir::Shape &input_shape, int axis, int rank, int num)
 {
   ir::Shape out_shape;
   int in_idx = 0;
@@ -931,7 +931,7 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
   return out_shape;
 }
 
-ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank)
+ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank)
 {
   ir::Shape out_shape;
 

@@ -40,7 +40,8 @@ for TESTCASE in "$@"; do
     source "${VIRTUALENV}/bin/activate"
     "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
     --model "${TESTCASE_FILE}.tflite" \
-    --num_data 3
+    --num_data 3 \
+    --output "${TESTCASE_FILE}.tflite.input.h5"
 
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GENERATE INPUT"
@@ -49,9 +50,9 @@ for TESTCASE in "$@"; do
 
     # Run record-minmax
     "${RECORD_MINMAX_PATH}" \
-      "${TESTCASE_FILE}.circle" \
-      "${TESTCASE_FILE}.tflite.input.h5" \
-      "${TESTCASE_FILE}.out.circle" 
+      --input_model "${TESTCASE_FILE}.circle" \
+      --input_data "${TESTCASE_FILE}.tflite.input.h5" \
+      --output_model "${TESTCASE_FILE}.out.circle" 
 
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"

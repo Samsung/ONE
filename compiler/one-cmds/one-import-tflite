@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -e
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+usage()
+{
+  echo "Convert TensorFlow lite model to circle."
+  echo "Usage: one-import-tflite"
+  echo "    --input_path <path/to/tflitemodel>"
+  echo "    --output_path <path/to/circle>"
+  exit 0
+}
+
+# Parse command-line arguments
+#
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--help')
+      usage
+      ;;
+    '--input_path')
+      export INPUT_PATH="$2"
+      shift 2
+      ;;
+    '--output_path')
+      export OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown parameter: ${CUR}"
+      shift
+      ;;
+  esac
+done
+
+if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
+  echo "Error: input model not found"
+  echo ""
+  usage
+  exit 2
+fi
+
+# remove previous log
+rm -rf "${OUTPUT_PATH}.log"
+
+# convert .tflite to .circle
+echo "${DRIVER_PATH}/tflite2circle" "${INPUT_PATH}" "${OUTPUT_PATH}" > "${OUTPUT_PATH}.log"
+
+"${DRIVER_PATH}/tflite2circle" "${INPUT_PATH}" "${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1

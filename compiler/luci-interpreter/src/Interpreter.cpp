@@ -76,8 +76,6 @@ Interpreter::Interpreter(const luci::Module *module)
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
   ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir);
   loader.load();
-
-  _runtime_module->configure();
 }
 
 Interpreter::~Interpreter() = default;

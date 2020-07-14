@@ -50,20 +50,6 @@ void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
   _kernels.push_back(std::move(kernel));
 }
 
-void RuntimeGraph::configure()
-{
-  // Configure the kernels, e.g. resize the tensors that they produce and do other kernel dependent
-  // initialization. This has to be done in execution order, because configuration of a kernel may
-  // (and in most cases does) depend on configurations of its predecessors.
-  // TODO Some kernels (ex. Reshape, Pad) need some of their input tensors (ex 'shape', 'paddings')
-  //  to be known in order to configure properly. This means that 'configure'  and 'execute' steps
-  //  should be interleaved. For now such 'dynamic' tensors are not supported.
-  for (const auto &kernel : _kernels)
-  {
-    kernel->configure();
-  }
-}
-
 void RuntimeGraph::execute() const
 {
   EventNotifier *event_notifier = _owning_module->getEventNotifier();
@@ -84,6 +70,9 @@ void RuntimeGraph::execute() const
       event_notifier->preOperatorExecute(kernel.get());
     }
 
+    // TODO The `configure` method should only be called if the outputs of an operator need to be
+    //  resized.
+    kernel->configure();
     kernel->execute();
 
     if (event_notifier != nullptr)

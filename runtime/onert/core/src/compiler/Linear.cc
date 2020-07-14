@@ -18,7 +18,6 @@
 
 #include "Linear.h"
 
-#include "backend/IShapeFixer.h"
 #include "backend/IConfig.h"
 #include "backend/IConstantInitializer.h"
 #include "backend/ITensorRegister.h"

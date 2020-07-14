@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+function Usage()
+{
+  echo "Usage: $0 [FRAMEWORK] ..."
+  echo "Available FRAMEWORK drivers:"
+  framework_exist=0
+  for file in "$DRIVER_PATH"/one-import-*;
+  do
+    framework_driver=$(basename $file)
+    framework=${framework_driver:11} # 11 is length of "one-import-"
+    echo "  $framework"
+    framework_exist=1
+  done
+  if [ $framework_exist == 0 ]; then
+    echo "  (There is no available import drivers)"
+  fi
+}
+
+# Get command from command-line
+FRAMEWORK=$1; shift
+FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
+
+if [[ -z "${FRAMEWORK_DRIVER}" ]]; then
+  Usage
+  exit 255
+fi
+
+FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
+
+if [[ ! -f "${FRAMEWORK_DRIVER_CMD}" ]]; then
+  echo "ERROR: '${FRAMEWORK_DRIVER}' is not supported"
+  Usage
+  exit 255
+fi
+
+"${FRAMEWORK_DRIVER_CMD}" "$@"

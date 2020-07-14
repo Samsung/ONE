@@ -29,7 +29,13 @@ if(NOT DEFINED ENV{ODROID_H5_DIR})
   return()
 endif()
 
-find_package(HDF5 COMPONENTS CXX REQUIRED)
+# TODO This will be nnas_find_package
+find_package(HDF5 COMPONENTS CXX QUIET CONFIG)
+
+if(NOT HDF5_FOUND)
+  find_package(HDF5 COMPONENTS CXX REQUIRED MODULE)
+endif(NOT HDF5_FOUND)
+
 nnas_find_package(GTest REQUIRED)
 
 # Provide the test suite with the information where to locate executalbes to run etc.

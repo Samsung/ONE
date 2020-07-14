@@ -64,8 +64,8 @@ while [ "$1" != "" ]; do
 
     # Dump min/max values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
-      --tensors_to_hdf5 "${TESTCASE_FILE}.minmax_recorded.circle" \
-      "${TESTCASE_FILE}.minmax_recorded.circle.h5"
+      "${TESTCASE_FILE}.minmax_recorded.circle" \
+      --tensors_to_hdf5 "${TESTCASE_FILE}.minmax_recorded.circle.h5"
 
     # Compare result
     "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
