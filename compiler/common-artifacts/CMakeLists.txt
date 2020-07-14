@@ -40,12 +40,7 @@ add_custom_target(common_artifacts_python_deps ALL
 
 #[[ Generate common resources ]]
 # TODO add pbtxt
-# TODO This will be nnas_find_package
-find_package(HDF5 COMPONENTS CXX QUIET CONFIG)
-
-if(NOT HDF5_FOUND)
-  find_package(HDF5 COMPONENTS CXX QUIET MODULE)
-endif(NOT HDF5_FOUND)
+nnas_find_package(HDF5 QUIET)
 
 if(NOT HDF5_FOUND)
   message("Couldn't find a package HDF5")
