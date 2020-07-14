@@ -9,9 +9,10 @@
 
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
+BINDIR="$1"; shift
 WORKDIR="$1"; shift
-INTERPRETER_DRIVER_PATH="${WORKDIR}/tester/luci_eval_tester"
-VIRTUALENV="${WORKDIR}/venv"
+INTERPRETER_DRIVER_PATH="${BINDIR}/tester/luci_eval_tester"
+VIRTUALENV="${WORKDIR}/venv_1_13_2"
 
 TESTED=()
 PASSED=()
@@ -21,11 +22,12 @@ for TESTCASE in "$@"; do
   TESTED+=("${TESTCASE}")
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
+  TEST_RESULT_FILE="${BINDIR}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}.passed"
+  PASSED_TAG="${TEST_RESULT_FILE}.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}.log" <(
+  cat > "${TEST_RESULT_FILE}.log" <(
     exec 2>&1
     set -ex
 
