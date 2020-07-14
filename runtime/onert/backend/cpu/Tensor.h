@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_TENSOR_H__
 
 #include <backend/cpu_common/Tensor.h>
+#include <ir/Data.h>
 
 namespace onert
 {
@@ -27,6 +28,64 @@ namespace cpu
 {
 
 using Tensor = cpu_common::Tensor;
+
+// Tensor which has data from external. To support this, assume below things
+// no padding, always NHWC layout, constant tensor and not dynamic
+class ExternalTensor : public Tensor
+{
+public:
+  ExternalTensor() = delete;
+
+public:
+  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout) : Tensor(info, layout)
+  {
+    assert(_layout == ir::Layout::NHWC);
+    assert(_info.isConstant());
+    assert(_info.isDynamic() == false);
+  }
+
+public:
+  void setData(const std::shared_ptr<ir::Data> data)
+  {
+    assert(data != nullptr);
+    _data = data;
+    // Note. Some op such as cker::Conv could take buffer as nullptr.
+    // That's why _buffer also would be used
+    _buffer = const_cast<uint8_t *>(_data->base());
+  }
+
+public:
+  uint8_t *buffer() const override { return _buffer; }
+
+  bool is_constant() const override { return true; }
+  bool is_dynamic() const override { return false; }
+  void set_dynamic() override
+  {
+    throw std::runtime_error("This tensor does not support changing dynamic");
+  }
+
+  void setShape(const ir::Shape &) override
+  {
+    throw std::runtime_error("This tensor does not support changing shape");
+  }
+
+  void increase_ref() override { ++_num_references; }
+
+  void decrease_ref() override
+  {
+    assert(_data != nullptr);
+    assert(_num_references > 0);
+    --_num_references;
+    if (_num_references == 0)
+    {
+      _data.reset();
+      _buffer = nullptr;
+    }
+  }
+
+private:
+  std::shared_ptr<const ir::Data> _data;
+};
 
 } // namespace cpu
 } // namespace backend

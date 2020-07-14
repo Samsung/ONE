@@ -68,6 +68,8 @@ public:
 
   void releaseData(void) { _data.reset(); }
 
+  std::shared_ptr<Data> shareData(void) const { return _data; }
+
   /**
    * @brief Get true if Operand is const, otherwise @c false
    a @return @c true if Operand is const, otherwise @c false
