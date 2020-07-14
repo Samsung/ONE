@@ -15,6 +15,7 @@
  */
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -55,7 +56,7 @@ int entry(int argc, char **argv)
   }
 
   // create flatbuffer builder
-  auto flatbuffer_builder = stdex::make_unique<flatbuffers::FlatBufferBuilder>(1024);
+  auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
   // convert tflite to circle
   tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model};

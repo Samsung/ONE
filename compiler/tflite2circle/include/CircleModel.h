@@ -23,7 +23,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <stdex/Memory.h>
 
 #include "TFLModel.h"
 
