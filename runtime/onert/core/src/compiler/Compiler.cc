@@ -104,7 +104,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs)
-    : _subgraphs{subgs}, _executors{nullptr}, _state{State::CREATED}
+    : _subgraphs{subgs}, _state{State::CREATED}
 {
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NN
@@ -123,7 +123,7 @@ void Compiler::checkProfilerConditions()
     throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
 }
 
-void Compiler::compile(void)
+std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
@@ -156,17 +156,18 @@ void Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
+  auto executors = std::make_shared<exec::ExecutorMap>();
+
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
   if (!checkCompilable())
   {
-    _executors = std::make_shared<exec::ExecutorMap>();
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      _executors->insert(std::make_pair(index, std::make_unique<interp::InterpExecutor>(subg)));
+      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
     _state = State::COMPILED;
-    return;
+    return executors;
   }
 
   // Mode check
@@ -230,7 +231,7 @@ void Compiler::compile(void)
     compiler::OperationValidator{lowered_subg->graph()}();
   }
 
-  _executors = std::make_shared<exec::ExecutorMap>();
+  executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -245,15 +246,16 @@ void Compiler::compile(void)
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
 
     auto executor = std::unique_ptr<exec::IExecutor>{
-        ExecutorFactory::get().create(std::move(lowered_subg), _options, _executors)};
+        ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    _executors->insert(std::make_pair(subg_index, std::move(executor)));
+    executors->insert(std::make_pair(subg_index, std::move(executor)));
   }
 
   /********************************
    * Code generation phase finished
    ********************************/
   _state = State::COMPILED;
+  return executors;
 }
 
 bool Compiler::checkCompilable()

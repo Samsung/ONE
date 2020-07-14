@@ -77,17 +77,12 @@ public:
 
 public:
   /**
-   * @brief   Run compilation. Compilation result will be saved in _plan
+   * @brief   Do compilation with the options
+   *
+   * @return std::shared_ptr<exec::ExecutorMap> Executors as a result of compilation
    */
-  void compile(void);
-  /**
-   * @brief       Pass plan reference
-   * @param[out]  plan  Plan reference to return\n
-   *                    Set nullptr if compile is not run yet
-   */
-  void release(std::shared_ptr<exec::ExecutorMap> &executors) { executors = _executors; }
+  std::shared_ptr<exec::ExecutorMap> compile(void);
 
-  void state(State state) { _state = state; }
   State state(void) const { return _state; }
 
   /**
@@ -115,7 +110,6 @@ private:
   // be updated by child executor. If you want to support subgraphs being called recursively, you
   // have to add allocate non-constant tensor memory of executors in execution time when each
   // subgraph is called.
-  std::shared_ptr<exec::ExecutorMap> _executors;
   State _state;
   CompilerOptions _options;
 };
