@@ -98,10 +98,6 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
   }
 
-  // 4. Operations that are specially handled
-  //    All configuration above will be ignored(overwritten)
-  op_type_map[ir::OpCode::Permute] = BackendManager::get().get("cpu");
-
   // Dump final assignment
   backend_resolver->iterate([&](const ir::OperationIndex &index, const backend::Backend &backend) {
     VERBOSE(ManualScheduler) << "backend for operation #" << index.value() << ": "
