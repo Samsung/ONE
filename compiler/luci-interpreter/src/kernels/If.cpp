@@ -37,6 +37,7 @@ void If::configure()
 
   for (RuntimeGraph *graph : {_then_graph, _else_graph})
   {
+    (void)graph;
     assert(graph->getInputTensors().size() == _inputs.size());
     assert(graph->getOutputTensors().size() == _outputs.size());
   }
