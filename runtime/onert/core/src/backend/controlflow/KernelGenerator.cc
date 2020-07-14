@@ -22,6 +22,7 @@
 #include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
 #include "exec/ExecutorBase.h"
+#include "exec/FunctionSequence.h"
 
 namespace onert
 {
@@ -30,8 +31,9 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph)
-    : _graph{graph}, _tensor_builder_set{}, _executor_map{nullptr}
+KernelGenerator::KernelGenerator(const ir::Graph &graph,
+                                 const std::shared_ptr<TensorBuilder> &tensor_builder)
+    : _graph{graph}, _tensor_builder{tensor_builder}, _tensor_builder_set{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_builder_set);
@@ -41,7 +43,17 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph)
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
-  _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  assert(_tensor_builder->dynamicTensorManager());
+  assert(_tensor_builder->tensorRegistry());
+
+  auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
+  auto dyn_shape_inferer = std::make_unique<exec::DynamicInferer>(
+      _graph.operands(), dyn_tensor_manager, _tensor_builder->tensorRegistry());
+
+  // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
+  _return_fn_seq = std::make_unique<exec::FunctionSequenceForDynamicBackend>(
+      op_seq, _graph.operations(), std::move(dyn_shape_inferer), dyn_tensor_manager);
+
   for (const auto &op_idx : op_seq.operations())
   {
     const auto &node = _graph.operations().at(op_idx);

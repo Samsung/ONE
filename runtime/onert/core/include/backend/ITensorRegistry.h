@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_ITENSOR_REGISTRY__
 #define __ONERT_BACKEND_ITENSOR_REGISTRY__
 
+#include <memory>
+
 #include "ir/Index.h"
 #include "backend/ITensor.h"
 
@@ -33,10 +35,17 @@ struct ITensorRegistry
   virtual ~ITensorRegistry() = default;
 
   /**
-   * @brief Returns pointer of ITensor
+   * @brief Returns pointer of ITensor among managed and external tensors
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
   virtual std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &) = 0;
+  /**
+   * @brief Returns pointer of ITensor among managed tensors
+   *
+   * Unlike @c getITensor , this function only searches from managed tensors
+   * @note  Return tensor cannot be used longer than dynamic tensor manager
+   */
+  virtual std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &) = 0;
 };
 
 } // namespace backend
@@ -67,6 +76,11 @@ public:
     auto external_tensor = _external.find(ind);
     if (external_tensor != _external.end())
       return external_tensor->second;
+    return getManagedTensor(ind);
+  }
+
+  std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &ind) override
+  {
     return getManagedTensor(ind);
   }
 
