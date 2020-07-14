@@ -1,5 +1,45 @@
-# TODO add pbtxt
+#[[ Generate common python virtual enviornment ]]
+find_package(PythonInterp 3 QUIET)
+find_package(PythonLibs 3 QUIET)
 
+if(NOT ${PYTHONINTERP_FOUND})
+  message(STATUS "Build common-artifacts: FALSE (Python3 is missing)")
+  return()
+endif()
+
+if(${PYTHON_VERSION_MINOR} LESS 3)
+  message(STATUS "Build common-artifacts: FALSE (You need to install Python version higher than 3.3)")
+  return()
+endif()
+
+# Create python virtual environment with tensorflow 1.13.1
+set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv_1_13_1")
+
+add_custom_command(
+  OUTPUT ${VIRTUALENV}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV}
+)
+
+# Create requirements.txt and install required pip packages
+set(REQUIREMENTS_FILE "requirements.txt")
+set(REQUIREMENTS_PATH "${CMAKE_CURRENT_BINARY_DIR}/${REQUIREMENTS_FILE}")
+
+add_custom_command(
+  OUTPUT ${REQUIREMENTS_PATH}
+  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.1" > ${REQUIREMENTS_PATH}
+  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_PATH} --upgrade
+  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_PATH}
+)
+
+add_custom_target(common_artifacts_python_deps ALL
+  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_PATH}
+)
+
+# TODO Create python virtual environment with tensorflow 2.3.0-rc0
+
+#[[ Generate common resources ]]
+# TODO add pbtxt
 # TODO This will be nnas_find_package
 find_package(HDF5 COMPONENTS CXX QUIET CONFIG)
 
