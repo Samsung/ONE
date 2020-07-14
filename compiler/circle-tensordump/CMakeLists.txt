@@ -10,6 +10,7 @@ if(NOT HDF5_FOUND)
 endif(NOT HDF5_FOUND)
 
 if(NOT HDF5_FOUND)
+  message(STATUS "HDF5 package not found")
   return()
 endif(NOT HDF5_FOUND)
 
