@@ -50,8 +50,8 @@ environment.
 one-import-tflite
 -----------------
 
-You can use one-import-tflite to convert TensorFlow lite model (.tflite) file to our
-circle model. Internally this will invoke tflite2circle.
+You can use one-import-tflite to convert TensorFlow lite model (.tflite) file to
+our circle model. Internally this will invoke tflite2circle.
 
 
 one-optimize
@@ -62,9 +62,9 @@ one-optimize provides network or operator transformation shown below.
 Current transformation options are
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
-- fuse_instnorm: This will convert subnetwork that can was generaged from
-  instance normalization operator to one InstanceNormalization operator that our
-  onert provides for faster execution.
+- fuse_instnorm: This will convert instance normalization related operators to
+  one InstanceNormalization operator that our onert provides for faster
+  execution.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator
 - resolve_customop_batchmatmul: This will convert Custom(BatchMatMul) to
   normal BatchMatMul operator
