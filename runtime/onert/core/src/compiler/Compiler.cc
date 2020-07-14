@@ -215,7 +215,7 @@ void Compiler::compile(void)
     lowered_subgs.at(primary_subg_idx)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
           auto has_dynamic_tensor = inferer.infer(op_seq);
-          op_seq.hasDynamicTensor(has_dynamic_tensor);
+          op_seq.has_dynamic_tensor(has_dynamic_tensor);
         });
     inferer.dump();
   }

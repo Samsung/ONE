@@ -441,7 +441,7 @@ void StaticInferer::visit(const ir::operation::If &op)
   _lowered_subgs.at(op.param().then_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
         bool has_dynamic_tensor = then_inferer.infer(op_seq);
-        op_seq.hasDynamicTensor(has_dynamic_tensor);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing operands of else subgraph
@@ -449,7 +449,7 @@ void StaticInferer::visit(const ir::operation::If &op)
   _lowered_subgs.at(op.param().else_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
         bool has_dynamic_tensor = else_inferer.infer(op_seq);
-        op_seq.hasDynamicTensor(has_dynamic_tensor);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing output shapes
@@ -1388,7 +1388,7 @@ void StaticInferer::visit(const ir::operation::While &op)
   _lowered_subgs.at(op.param().body_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
         bool has_dynamic_tensor = body_inferer.infer(op_seq);
-        op_seq.hasDynamicTensor(has_dynamic_tensor);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // Check whether while operation's shapes are predictable
@@ -1436,7 +1436,7 @@ void StaticInferer::visit(const ir::operation::While &op)
     _lowered_subgs.at(op.param().body_subg_index)
         ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
           bool has_dynamic_tensor = body_inferer.infer(op_seq);
-          op_seq.hasDynamicTensor(has_dynamic_tensor);
+          op_seq.has_dynamic_tensor(has_dynamic_tensor);
         });
   }
 
@@ -1447,7 +1447,7 @@ void StaticInferer::visit(const ir::operation::While &op)
   _lowered_subgs.at(op.param().cond_subg_index)
       ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
         bool has_dynamic_tensor = cond_inferer.infer(op_seq);
-        op_seq.hasDynamicTensor(has_dynamic_tensor);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing outputs of while operation

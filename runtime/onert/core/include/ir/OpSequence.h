@@ -81,8 +81,8 @@ public:
    *        or dynamic output;
    *        @c false if all operations' inputs and outputs are static tensors
    */
-  void hasDynamicTensor(bool hasDynamicTensor) { _has_dynamic_tensor = hasDynamicTensor; }
-  bool hasDynamicTensor() const { return _has_dynamic_tensor; }
+  void has_dynamic_tensor(bool has_dynamic_tensor) { _has_dynamic_tensor = has_dynamic_tensor; }
+  bool has_dynamic_tensor() const { return _has_dynamic_tensor; }
 
 private:
   OperandIndexSequence _inputs;
