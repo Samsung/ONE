@@ -6,6 +6,7 @@ set(ONE_COMMAND_FILES
     one-quantize
     one-pack
     one-codegen
+    one-prepare-venv
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
@@ -33,6 +34,7 @@ endforeach(ONE_COMMAND)
 
 set(ONE_COMMAND_FILES
     how-to-use-one-commands.txt
+    how-to-prepare-virtualenv.txt
 )
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
