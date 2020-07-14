@@ -50,7 +50,7 @@ environment.
 one-import-tflite
 -----------------
 
-You can use one-import-tf to convert TensorFlow lite model (.tflite) file to our
+You can use one-import-tflite to convert TensorFlow lite model (.tflite) file to our
 circle model. Internally this will invoke tflite2circle.
 
 
