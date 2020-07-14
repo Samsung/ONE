@@ -208,7 +208,7 @@ GeneratedTests.local_response_norm_float_3
 GeneratedTests.local_response_norm_float_4
 GeneratedTests.log_4D_float_nnfw
 GeneratedTests.log_dynamic_nnfw
-GeneratedTests.log_softmax_nnfw_1
+GeneratedTests.log_softmax_nnfw
 GeneratedTests.log_softmax_nnfw_2
 GeneratedTests.log_softmax_nnfw_3
 GeneratedTests.log_softmax_nnfw_4
