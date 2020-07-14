@@ -111,4 +111,4 @@ As of now, our ONE repo does not provide any code generation commands yet.
 
 Syntax: one-codegen [framework] [options]
 
-This will invoke [framework]-compile command if available.
+This will invoke [target-backend]-compile command if available.
