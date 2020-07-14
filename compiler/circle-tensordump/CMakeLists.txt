@@ -10,7 +10,7 @@ if(NOT HDF5_FOUND)
 endif(NOT HDF5_FOUND)
 
 if(NOT HDF5_FOUND)
-  message(STATUS "HDF5 package not found")
+  message(STATUS "Build circle-tensordump: FAILED (missing HDF5)")
   return()
 endif(NOT HDF5_FOUND)
 
