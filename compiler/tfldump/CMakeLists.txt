@@ -1,4 +1,5 @@
 if(NOT TARGET mio_tflite)
+  message(STATUS "Build tfldump: FAILED (missing mio_tflite)")
   return()
 endif(NOT TARGET mio_tflite)
 
