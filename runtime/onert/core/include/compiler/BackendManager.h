@@ -65,7 +65,7 @@ private:
 private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
-  backend::controlflow::Backend *_controlflow;
+  backend::controlflow::Backend *_controlflow{nullptr};
   /**
    * @brief load controlflow backend
    *
