@@ -123,6 +123,12 @@ struct StridedSliceParams
   int32_t shrink_axis_mask;
 };
 
+struct SqueezeParams
+{
+  int8_t squeeze_dims_count;
+  int32_t squeeze_dims[4];
+};
+
 struct TransposeConvParams
 {
   Padding padding;
