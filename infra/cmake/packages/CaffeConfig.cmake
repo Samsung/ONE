@@ -20,12 +20,7 @@ function(_Caffe_import)
     return()
   endif()
 
-  # TODO This will be nnas_find_package
-  find_package(HDF5 COMPONENTS HL QUIET CONFIG)
-
-  if(NOT HDF5_FOUND)
-    find_package(HDF5 COMPONENTS HL QUIET MODULE)
-  endif(NOT HDF5_FOUND)
+  nnas_find_package(HDF5 QUIET)
 
   if(NOT HDF5_FOUND)
     set(Caffe_FOUND FALSE PARENT_SCOPE)
