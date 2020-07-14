@@ -57,7 +57,7 @@ circle model. Internally this will invoke tflite2circle.
 one-optimize
 ------------
 
-one-optimize provides network or operator transformation shown below
+one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
