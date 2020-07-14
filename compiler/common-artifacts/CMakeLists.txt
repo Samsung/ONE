@@ -12,8 +12,8 @@ if(${PYTHON_VERSION_MINOR} LESS 3)
   return()
 endif()
 
-# Create python virtual environment with tensorflow 1.13.1
-set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv_1_13_1")
+# Create python virtual environment with tensorflow 1.13.2
+set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv_1_13_2")
 
 add_custom_command(
   OUTPUT ${VIRTUALENV}
@@ -26,7 +26,7 @@ set(REQUIREMENTS_PATH "${CMAKE_CURRENT_BINARY_DIR}/${REQUIREMENTS_FILE}")
 
 add_custom_command(
   OUTPUT ${REQUIREMENTS_PATH}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.1" > ${REQUIREMENTS_PATH}
+  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_PATH}
   COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_PATH} --upgrade
   DEPENDS ${VIRTUALENV} ${REQUIREMENTS_PATH}
