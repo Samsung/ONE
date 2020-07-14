@@ -57,6 +57,10 @@ public:
         _is_linear_exec{options.executor == "Linear"},
         _is_parallel_exec{options.executor == "Parallel"}
   {
+    // Workaround to avoid unused-private-field warning
+    // TODO use _backend_contexts and remove workaround
+    (void)_backend_contexts;
+
     for (auto &entry : backend_contexts)
     {
       _all_backends.push_back(entry.first);
