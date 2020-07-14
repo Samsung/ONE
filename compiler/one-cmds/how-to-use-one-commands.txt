@@ -86,7 +86,7 @@ Internally this calls circle-quantizer and record-minmax tools.
 one-pack
 --------
 
-one-pack will generate a package from circle model to nnpkg for our onert
+one-pack will generate a package from circle model to nnpackage for our onert
 runtime.
 
 Output is a folder with the model(s) and meta information
