@@ -1,4 +1,5 @@
 #
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
 # Copyright (C) 2018 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

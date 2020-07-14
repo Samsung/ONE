@@ -75,7 +75,10 @@ GeneratedTests.less_dynamic_float_nnfw
 GeneratedTests.less_equal_dynamic_float_nnfw
 GeneratedTests.log_4D_float_nnfw
 GeneratedTests.log_dynamic_nnfw
-GeneratedTests.log_softmax_nnfw*
+GeneratedTests.log_softmax_nnfw_1
+GeneratedTests.log_softmax_nnfw_2
+GeneratedTests.log_softmax_nnfw_3
+GeneratedTests.log_softmax_nnfw_4
 GeneratedTests.logical_not
 GeneratedTests.logical_not_1D_nnfw
 GeneratedTests.logical_not_4D_nnfw
