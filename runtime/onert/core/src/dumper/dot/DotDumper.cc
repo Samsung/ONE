@@ -48,19 +48,6 @@ void DotDumper::dump(const std::string &tag)
   ir::OperationIndexMap<std::unique_ptr<Operation>> operation_nodes;
   std::unordered_map<ir::OperandIndex, std::unique_ptr<Operand>> operand_nodes;
 
-  operations.iterate([&](const ir::OperationIndex &index, const ir::Operation &op) {
-    auto node = std::make_unique<Operation>(index, op);
-
-    for (auto output : op.getOutputs())
-    {
-      using onert::dumper::dot::Operand;
-      auto child = std::make_shared<Operand>(output, Operand::Type::MODEL_OUTPUT);
-      node->addEdge(child);
-    }
-
-    operation_nodes.emplace(index, std::move(node));
-  });
-
   auto backend_to_fillcolor = [](const backend::Backend *backend) {
     static const auto map = []() {
       std::unordered_map<const backend::Backend *, std::string> ret;
@@ -136,15 +123,28 @@ void DotDumper::dump(const std::string &tag)
         node->setAttribute("fillcolor", fillcolor);
       }
 
-      for (auto operation_index : object.getUses())
-      {
-        auto &operation = operations.at(operation_index);
-        auto child = std::make_shared<Operation>(operation_index, operation);
-        node->addEdge(child);
-      }
-
       operand_nodes.emplace(index, std::move(node));
     }
+  });
+
+  operations.iterate([&](const ir::OperationIndex &index, const ir::Operation &op) {
+    auto node = std::make_unique<Operation>(index, op);
+
+    for (auto input : op.getInputs())
+    {
+      using onert::dumper::dot::Operand;
+      auto &input_node = operand_nodes.at(input);
+      input_node->addOutEdge(node.get());
+    }
+
+    for (auto output : op.getOutputs())
+    {
+      using onert::dumper::dot::Operand;
+      auto &output_node = operand_nodes.at(output);
+      node->addOutEdge(output_node.get());
+    }
+
+    operation_nodes.emplace(index, std::move(node));
   });
 
   if (_lowered_graph)
