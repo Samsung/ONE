@@ -1,49 +1,3 @@
-find_package(PythonInterp 3 QUIET)
-find_package(PythonLibs 3 QUIET)
-
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build tf2tfliteV2-conversion-test: FALSE (Python3 is missing)")
-  return()
-endif()
-
-if(${PYTHON_VERSION_MINOR} LESS 3)
-  message(STATUS "Build tf2tfliteV2-conversion-test: FALSE (You need to install Python version higher than 3.3)")
-  return()
-endif()
-
-nnas_include(TargetRequire)
-
-unset(REQUIRED_TARGETS)
-list(APPEND REQUIRED_TARGETS tf2tfliteV2)
-TargetRequire_Return(${REQUIRED_TARGETS})
-
-message(STATUS "tf2tfliteV2-conversion-test: run tests")
-
-# Create python virtual environment
-set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv")
-
-add_custom_command(
-  OUTPUT ${VIRTUALENV}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV}
-)
-
-# Copy requirements.txt and install required pip packages
-set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${REQUIREMENTS_FILE}")
-set(REQUIREMENTS_BIN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${REQUIREMENTS_FILE}")
-
-add_custom_command(
-  OUTPUT ${REQUIREMENTS_BIN_PATH}
-  COMMAND ${CMAKE_COMMAND} -E copy ${REQUIREMENTS_SRC_PATH} ${REQUIREMENTS_BIN_PATH}
-  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install -r requirements.txt --upgrade
-  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_SRC_PATH}
-)
-
-add_custom_target(tf2tfliteV2_conversion_test_python_deps ALL
-  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_BIN_PATH}
-)
-
 nncc_find_resource(TensorFlowTests)
 
 #
@@ -116,6 +70,10 @@ add_custom_command(
 
 list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
+get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
+
+set(VIRTUALENV "${ARTIFACTS_BIN_PATH}/venv_1_13_2")
+
 ###
 ### Generate test.config
 ###
@@ -132,7 +90,6 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'VIRTUALENV=\"${VIRTUALENV}\"' >> ${TEST_CONFIG}
   DEPENDS
     tf2tfliteV2
-    tf2tfliteV2_conversion_test_python_deps
   COMMENT "Generate test configuration"
 )
 
