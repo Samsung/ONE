@@ -62,7 +62,7 @@ public:
   typedef decltype(
       functionExistsSfinae<TensorEvaluatorType, PacketType, IndexType>(nullptr)) status;
 
-  static const bool value = status::value;
+  static constexpr bool value = status::value;
 };
 
 // Compute a mask for loading/storing coefficients in/from a packet in a
