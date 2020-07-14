@@ -109,6 +109,6 @@ one-codegen
 one-codegen, like one-import will invoke backend code generation commands.
 As of now, our ONE repo does not provide any code generation commands yet.
 
-Syntax: one-codegen [framework] [options]
+Syntax: one-codegen [target-backend] [options]
 
 This will invoke [target-backend]-compile command if available.
