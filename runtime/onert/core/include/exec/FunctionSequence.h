@@ -78,10 +78,10 @@ public: // context for dynamic tensor
    * @note  Calling this does not mean that run() will handle dynamic tensor.
    *        enableDynamicShapeInferer(true) will make run() will handle dynamic tensor.
    */
-  void dynamicTensorContext(const ir::OpSequence *op_seq, const ir::Operations *operations,
-                            std::unique_ptr<exec::DynamicInferer> dynamic_shape_inferer,
-                            std::shared_ptr<backend::ITensorRegistry> tensor_registry,
-                            backend::IDynamicTensorManager *dynamic_tensor_manager)
+  void setDynamicTensorContext(const ir::OpSequence *op_seq, const ir::Operations *operations,
+                               std::unique_ptr<exec::DynamicInferer> dynamic_shape_inferer,
+                               std::shared_ptr<backend::ITensorRegistry> tensor_registry,
+                               backend::IDynamicTensorManager *dynamic_tensor_manager)
   {
     _op_seq = op_seq;
     _operations = operations;
