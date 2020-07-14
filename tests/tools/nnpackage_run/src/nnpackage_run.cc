@@ -20,10 +20,10 @@
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 #include "h5formatter.h"
 #endif
-#include "tflite/Diff.h"
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_debug.h"
+#include "randomgen.h"
 #ifdef RUY_PROFILER
 #include "ruy/profiler/profiler.h"
 #endif
@@ -32,21 +32,10 @@
 #include <chrono>
 #include <cstdlib>
 #include <iostream>
+#include <libgen.h>
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
-
-#include <libgen.h>
-
-namespace nnpkg_run
-{
-
-template <class T> void randomData(nnfw::misc::RandomGenerator &randgen, void *data, uint64_t size)
-{
-  for (uint64_t i = 0; i < size; i++)
-    reinterpret_cast<T *>(data)[i] = randgen.generate<T>();
-}
-}
 
 static const char *default_backend_cand = "acl_cl";
 
@@ -183,66 +172,23 @@ int main(const int argc, char **argv)
 
     // prepare input
     std::vector<Allocation> inputs(num_inputs);
-
-    auto generateInputs = [session, num_inputs, &inputs]() {
-      // generate random data
-      const int seed = 1;
-      nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
-      for (uint32_t i = 0; i < num_inputs; ++i)
-      {
-        nnfw_tensorinfo ti;
-        NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
-        auto input_size_in_bytes = bufsize_for(&ti);
-        inputs[i].alloc(input_size_in_bytes);
-        switch (ti.dtype)
-        {
-          case NNFW_TYPE_TENSOR_FLOAT32:
-            randomData<float>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-            randomData<uint8_t>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          case NNFW_TYPE_TENSOR_BOOL:
-            randomData<bool>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          case NNFW_TYPE_TENSOR_UINT8:
-            randomData<uint8_t>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          case NNFW_TYPE_TENSOR_INT32:
-            randomData<int32_t>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          case NNFW_TYPE_TENSOR_INT64:
-            randomData<int64_t>(randgen, inputs[i].data(), num_elems(&ti));
-            break;
-          default:
-            std::cerr << "Not supported input type" << std::endl;
-            std::exit(-1);
-        }
-        NNPR_ENSURE_STATUS(
-            nnfw_set_input(session, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
-        NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
-      }
-    };
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (!args.getLoadFilename().empty())
       H5Formatter(session).loadInputs(args.getLoadFilename(), inputs);
     else
-      generateInputs();
+      RandomGenerator(session).generate(inputs);
 #else
-    generateInputs();
+    RandomGenerator(session).generate(inputs);
 #endif
 
     // prepare output
-
     uint32_t num_outputs = 0;
     NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
     std::vector<Allocation> outputs(num_outputs);
-
     auto output_sizes = args.getOutputSizes();
     for (uint32_t i = 0; i < num_outputs; i++)
     {
       nnfw_tensorinfo ti;
-
       uint64_t output_size_in_bytes = 0;
       {
         auto found = output_sizes.find(i);
@@ -256,7 +202,6 @@ int main(const int argc, char **argv)
           output_size_in_bytes = found->second;
         }
       }
-
       outputs[i].alloc(output_size_in_bytes);
       NNPR_ENSURE_STATUS(
           nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
