@@ -1,6 +1,7 @@
 nnas_find_package(FlatBuffers QUIET)
 
 if(NOT FlatBuffers_FOUND)
+  message(STATUS "FlatBuffers package not found")
   return()
 endif(NOT FlatBuffers_FOUND)
 
