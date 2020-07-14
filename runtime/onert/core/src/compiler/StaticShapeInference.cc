@@ -38,6 +38,7 @@ void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
   if (lhs.info().isDynamic() || rhs.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -59,6 +60,7 @@ void StaticShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -121,6 +123,7 @@ void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -146,6 +149,7 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   if (lhs.info().isDynamic() || rhs.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -166,6 +170,7 @@ void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -175,6 +180,7 @@ void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
   if (!shape.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -213,6 +219,7 @@ void StaticShapeInferer::visit(const ir::operation::Concat &op)
     if (input.info().isDynamic())
     {
       output.info().setDynamic();
+      _return_has_dynamic_tensor = true;
       return;
     }
 
@@ -237,6 +244,7 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
   if (input.info().isDynamic() || ker.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -274,12 +282,14 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
   if (!axis.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -303,12 +313,14 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
   if (!input.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -338,6 +350,7 @@ void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
   if (input.info().isDynamic() || ker.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -368,6 +381,7 @@ void StaticShapeInferer::visit(const ir::operation::Gather &op)
   if (input.info().isDynamic() || indices.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -426,15 +440,17 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
   // re-sizing operands of then subgraph
   StaticShapeInferer then_inferer(op.param().then_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().then_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-        then_inferer.infer(op_seq);
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        bool has_dynamic_tensor = then_inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing operands of else subgraph
   StaticShapeInferer else_inferer(op.param().else_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().else_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-        else_inferer.infer(op_seq);
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        bool has_dynamic_tensor = else_inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing output shapes
@@ -455,6 +471,7 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
     else
     {
       output.info().setDynamic();
+      _return_has_dynamic_tensor = true;
     }
   }
 }
@@ -507,12 +524,14 @@ void StaticShapeInferer::visit(const ir::operation::Mean &op)
   if (input.info().isDynamic() || axes.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
   if (!axes.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -576,6 +595,7 @@ void StaticShapeInferer::visit(const ir::operation::OneHot &op)
   if (indice.info().isDynamic() || depth.info().isDynamic() || !depth.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -611,6 +631,7 @@ void StaticShapeInferer::visit(const ir::operation::Pack &op)
   if (is_any_of_inputs_dynamic)
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -641,6 +662,7 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
   if (input.info().isDynamic() || pad.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -648,6 +670,7 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
   if (!pad.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -668,6 +691,7 @@ void StaticShapeInferer::visit(const ir::operation::Permute &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -702,6 +726,7 @@ void StaticShapeInferer::visit(const ir::operation::Range &op)
   if (start_op.info().isDynamic() || limit_op.info().isDynamic() || delta_op.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -725,6 +750,7 @@ void StaticShapeInferer::visit(const ir::operation::Range &op)
   else
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
   }
 }
 
@@ -744,6 +770,7 @@ void StaticShapeInferer::visit(const ir::operation::ReduceAll &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -791,6 +818,7 @@ void StaticShapeInferer::visit(const ir::operation::ReduceMin &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -838,6 +866,7 @@ void StaticShapeInferer::visit(const ir::operation::ReduceProd &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -885,6 +914,7 @@ void StaticShapeInferer::visit(const ir::operation::ReduceSum &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -929,6 +959,7 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -958,6 +989,7 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
     {
       // if shape is NOT Const, set output shape to be dynamic_
       output.info().setDynamic();
+      _return_has_dynamic_tensor = true;
     }
   }
   // New shape is given by option
@@ -977,7 +1009,6 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
   else
   {
     throw std::runtime_error("Reshape: new shape is missing");
-    return;
   }
 }
 
@@ -1014,6 +1045,7 @@ void StaticShapeInferer::visit(const ir::operation::Select &op)
       input_false.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1036,6 +1068,7 @@ void StaticShapeInferer::visit(const ir::operation::Shape &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1065,6 +1098,7 @@ void StaticShapeInferer::visit(const ir::operation::Slice &op)
   if (input.info().isDynamic() || begins.info().isDynamic() || sizes.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1072,6 +1106,7 @@ void StaticShapeInferer::visit(const ir::operation::Slice &op)
   if (!(begins.isConstant() && sizes.isConstant()))
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1104,6 +1139,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
       ir::Operand &output = _operands.at(output_idx);
       output.info().setDynamic();
     }
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1139,6 +1175,7 @@ void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1164,12 +1201,14 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
       strides.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
   if (!(starts.isConstant() && ends.isConstant() && strides.isConstant()))
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1215,12 +1254,14 @@ void StaticShapeInferer::visit(const ir::operation::Tile &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
   if (!multiplier.isConstant())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1246,6 +1287,7 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   if (input.info().isDynamic())
   {
     output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
     return;
   }
   // set output shape, based on input and params
@@ -1268,7 +1310,7 @@ void StaticShapeInferer::visit(const ir::operation::Unpack &op)
       ir::Operand &output = _operands.at(output_idx);
       output.info().setDynamic();
     }
-
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1284,7 +1326,7 @@ void StaticShapeInferer::visit(const ir::operation::Unpack &op)
       ir::Operand &output = _operands.at(output_idx);
       output.info().setDynamic();
     }
-
+    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1345,8 +1387,9 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   // re-sizing operands of body subgraph
   StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().body_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-        body_inferer.infer(op_seq);
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        bool has_dynamic_tensor = body_inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // Check whether while operation's shapes are predictable
@@ -1392,8 +1435,9 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
     // Set non-constant operands of body subgraph to dynamic
     StaticShapeInferer body_inferer(op.param().body_subg_index, _lowered_subgs);
     _lowered_subgs.at(op.param().body_subg_index)
-        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-          body_inferer.infer(op_seq);
+        ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+          bool has_dynamic_tensor = body_inferer.infer(op_seq);
+          op_seq.has_dynamic_tensor(has_dynamic_tensor);
         });
   }
 
@@ -1402,8 +1446,9 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   // dynamic
   StaticShapeInferer cond_inferer(op.param().cond_subg_index, _lowered_subgs);
   _lowered_subgs.at(op.param().cond_subg_index)
-      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, const ir::OpSequence &op_seq) {
-        cond_inferer.infer(op_seq);
+      ->iterateTopolOpSeqs([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+        bool has_dynamic_tensor = cond_inferer.infer(op_seq);
+        op_seq.has_dynamic_tensor(has_dynamic_tensor);
       });
 
   // re-sizing outputs of while operation
@@ -1416,6 +1461,7 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
     if (cond_input.info().isDynamic())
     {
       output.info().setDynamic();
+      _return_has_dynamic_tensor = true;
     }
     else
     {
