@@ -30,7 +30,8 @@ namespace ops
 
 FullyConnectedLayer::FullyConnectedLayer()
     : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
-      _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena())
+      _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena()),
+      _is_hybrid(false)
 {
   // DO NOTHING
 }
