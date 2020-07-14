@@ -12,7 +12,6 @@ target_include_directories(tflite2circle PRIVATE include)
 target_include_directories(tflite2circle PRIVATE src)
 target_link_libraries(tflite2circle arser)
 target_link_libraries(tflite2circle safemain)
-target_link_libraries(tflite2circle stdex)
 target_link_libraries(tflite2circle mio_tflite)
 target_link_libraries(tflite2circle mio_circle)
 
