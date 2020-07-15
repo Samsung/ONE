@@ -37,13 +37,24 @@ function Usage()
   exit 255
 }
 
-# Get command from command-line
-BACKEND=$1; shift
-BACKEND_DRIVER="$BACKEND-compile"
+function version()
+{
+  $DRIVER_PATH/one-version one-codegen
+  exit 255
+}
 
-if [[ -z "${BACKEND_DRIVER}" ]]; then
+# Get command from command-line
+BACKEND=$1
+if [[ -z ${BACKEND} ]]; then
   Usage
 fi
+shift
+
+if [[ "${BACKEND}" == "--version" ]]; then
+  version
+fi
+
+BACKEND_DRIVER="${BACKEND}-compile"
 
 BACKEND_DRIVER_CMD="${DRIVER_PATH}/${BACKEND_DRIVER}"
 

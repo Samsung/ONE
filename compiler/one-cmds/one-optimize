@@ -22,6 +22,7 @@ usage()
 {
   echo "Optimize circle model."
   echo "Usage: one-optimize"
+  echo "    --version       Show version information and exit"
   echo "    --all           Enable all optimization algorithms"
   echo "    --fuse_bcq      Enable FuseBCQ Pass"
   echo "    --fuse_instnorm Enable FuseInstanceNormalization Pass"
@@ -33,6 +34,12 @@ usage()
   echo "                    Enable ResolveCustomOpMatMulPass Pass"
   echo "    --input_path <path/to/input/circle>"
   echo "    --output_path <path/to/output/circle>"
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-optimize
   exit 255
 }
 
@@ -51,6 +58,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
     '--all')
       OPTIMIZE_all=1
