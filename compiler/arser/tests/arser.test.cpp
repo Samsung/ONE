@@ -206,3 +206,26 @@ TEST(BasicTest, MultipleFloatValue)
 
   EXPECT_THROW(arser.get<std::vector<int>>("--add_float"), std::runtime_error);
 }
+
+TEST(BasicTest, MultipleStringValue)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--three_color")
+      .nargs(3)
+      .type(arser::DataType::STR_VEC)
+      .help("insert your three favorite color");
+
+  Prompt prompt("./color_factory --three_color red blue yellow");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--three_color"]);
+  std::vector<std::string> values = arser.get<std::vector<std::string>>("--three_color");
+  EXPECT_EQ("red", values.at(0));
+  EXPECT_EQ("blue", values.at(1));
+  EXPECT_EQ("yellow", values.at(2));
+
+  EXPECT_THROW(arser.get<std::vector<std::string>>("--color"), std::runtime_error);
+}
