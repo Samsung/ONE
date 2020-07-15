@@ -127,6 +127,7 @@ public:
   void visit(luci::CircleScatterNd *) final;
   void visit(luci::CircleSegmentSum *) final;
   void visit(luci::CircleSelect *) final;
+  void visit(luci::CircleSelectV2 *) final;
   void visit(luci::CircleShape *) final;
   void visit(luci::CircleSin *) final;
   void visit(luci::CircleSlice *) final;
@@ -843,6 +844,12 @@ void OperationExporter::visit(luci::CircleSelect *node)
 {
   export_simple(node, circle::BuiltinOperator_SELECT, circle::BuiltinOptions_SelectOptions,
                 CreateSelectOptions(builder).Union());
+}
+
+void OperationExporter::visit(luci::CircleSelectV2 *node)
+{
+  export_simple(node, circle::BuiltinOperator_SELECT_V2, circle::BuiltinOptions_SelectV2Options,
+                CreateSelectV2Options(builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleShape *node)
