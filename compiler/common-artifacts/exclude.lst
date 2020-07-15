@@ -1,11 +1,18 @@
-# circlize : Exclude from tflite-to-circle conversion(tflite2circle)
+#[[ circlize : Exclude from tflite-to-circle conversion(tflite2circle) ]]
+## TensorFlowLiteRecipes
 
-# optimize : Exclude from circle optimization(circle2circle)
+## CircleRecipes
+
+#[[ optimize : Exclude from circle optimization(circle2circle) ]]
+## TensorFlowLiteRecipes
 optimize(ReLU6_000)
 optimize(Where_000)
 optimize(Where_001)
 
-# tcgenerate : Exclude from test data generation(TestDataGenerator)
+## CircleRecipes
+
+#[[ tcgenerate : Exclude from test data generation(TestDataGenerator) ]]
+## TensorFlowLiteRecipes
 tcgenerate(Abs_000)
 tcgenerate(AddN_000)
 tcgenerate(Add_001) # runtime doesn't support
@@ -165,3 +172,10 @@ tcgenerate(While_003)
 tcgenerate(YUV_TO_RGB_000) # fix luci
 tcgenerate(YUV_TO_RGB_U8_000)
 tcgenerate(ZerosLike_000)
+
+## CircleRecipes
+tcgenerate(BCQFullyConnected_000)
+tcgenerate(BCQFullyConnected_001)
+tcgenerate(BCQGather_000)
+tcgenerate(CircleBatchMatMul_000)
+tcgenerate(InstanceNorm_000)
