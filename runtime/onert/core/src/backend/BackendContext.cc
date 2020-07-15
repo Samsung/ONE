@@ -57,12 +57,7 @@ void BackendContext::initConsts()
   {
     const auto &obj = _graph->operands().at(ind);
     if (obj.isConstant() && !constant_initializer->exist(ind))
-    {
-      if (_backend->config()->id() == "cpu")
-        constant_initializer->registerExternalInitializer(ind, obj);
-      else
-        constant_initializer->registerPermuteInitializer(ind, obj);
-    }
+      constant_initializer->registerDefaultInitializer(ind, obj);
   }
 
   constant_initializer->run();

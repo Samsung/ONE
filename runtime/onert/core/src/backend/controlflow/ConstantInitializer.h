@@ -38,8 +38,6 @@ public:
   {
   }
 
-  void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &) override {}
-
 private:
   std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
 

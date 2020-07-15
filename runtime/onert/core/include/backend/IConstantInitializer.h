@@ -195,6 +195,13 @@ protected:
   virtual std::shared_ptr<ITensorBuilder> tensor_builder() const = 0;
 
 public:
+  virtual void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj)
+  {
+    // use `registerPermuteInitializer` as default
+    registerPermuteInitializer(index, obj);
+  }
+
+public:
   void registerCopyInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
   void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
 
@@ -211,11 +218,6 @@ public:
     using namespace std::placeholders;
     _init_map[index] = std::bind(customInit, _1, _2);
   }
-
-  // TODO: For now the only cpu backend supports constant tensor to use data from external
-  // If the other backend supports (to do this, ExternalTensor should be such as IExternal),
-  // this can be not virtual function
-  virtual void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &) = 0;
 
 public:
   bool exist(const ir::OperandIndex &ind) { return _init_map.find(ind) != _init_map.end(); }

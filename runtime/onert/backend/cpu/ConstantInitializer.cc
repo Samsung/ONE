@@ -66,6 +66,12 @@ void ConstantInitializer::visit(const ir::operation::FullyConnected &node)
   }
 }
 
+void ConstantInitializer::registerDefaultInitializer(const ir::OperandIndex &index,
+                                                     const ir::Operand &obj)
+{
+  registerExternalInitializer(index, obj);
+}
+
 void ConstantInitializer::registerExternalInitializer(const ir::OperandIndex &index,
                                                       const ir::Operand &obj)
 {
