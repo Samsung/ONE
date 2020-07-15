@@ -22,8 +22,10 @@ namespace luci_interpreter
 {
 
 ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_module,
-                           RuntimeToIR &runtime_to_ir)
-    : _module(module), _runtime_module(runtime_module), _runtime_to_ir(runtime_to_ir)
+                           RuntimeToIR &runtime_to_ir,
+                           std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : _module(module), _runtime_module(runtime_module), _runtime_to_ir(runtime_to_ir),
+      _node_to_tensor(node_to_tensor)
 {
 }
 
@@ -39,7 +41,7 @@ void ModuleLoader::load()
   {
     const loco::Graph *graph = _module->graph(i);
     RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
-    GraphLoader loader(*this, graph, runtime_graph, _runtime_to_ir);
+    GraphLoader loader(*this, graph, runtime_graph, _runtime_to_ir, _node_to_tensor);
     loader.load();
   }
 }
