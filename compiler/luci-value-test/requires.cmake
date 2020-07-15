@@ -1,7 +1,6 @@
+require("common-artifacts")
 require("luci")
 require("luci-interpreter")
-require("tflchef")
-require("tflite2circle")
 require("safemain")
 require("oops")
 require("loco")
