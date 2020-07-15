@@ -9,7 +9,7 @@ Runtime Core has four modules. These are namespaces as well as directory names i
 - `ir`  stands for Intermediate Representation which contains Neural Network Graph data structures
 - `compiler` converts IR to an executable format
 - `exec` is an execution module which is the result of a compilation
-- `backend` is a backend interface
+- `backend` is an interface for memory management for operands and actual calculation of operations
 
 ### Module `ir`
 
