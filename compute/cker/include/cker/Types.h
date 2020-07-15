@@ -332,6 +332,12 @@ struct FusedBatchNormParams
   float epsilon;
 };
 
+struct SpaceToBatchParams
+{
+  // "Zero" padding for uint8 means padding with the output offset.
+  int32_t output_offset;
+};
+
 enum class Order
 {
   kColMajor,

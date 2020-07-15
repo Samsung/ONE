@@ -59,6 +59,7 @@
 #include "ops/SliceLayer.h"
 #include "ops/SoftMaxLayer.h"
 #include "ops/StridedSliceLayer.h"
+#include "ops/SpaceToBatchNDLayer.h"
 #include "ops/SplitLayer.h"
 #include "ops/SubLayer.h"
 #include "ops/TanhLayer.h"
@@ -1376,6 +1377,25 @@ void KernelGenerator::visit(const ir::operation::LogSoftmax &node)
   auto fn = std::make_unique<ops::LogSoftMaxLayer>();
 
   fn->configure(input_alloc, beta, axis, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::SpaceToBatchND::INPUT)};
+  const auto block_shape_index{node.getInputs().at(ir::operation::SpaceToBatchND::BLOCK_SIZE)};
+  const auto padding_index{node.getInputs().at(ir::operation::SpaceToBatchND::PADDINGS)};
+
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto input_alloc = _tensor_builder->portableAt(input_index).get();
+  auto block_shape_alloc = _tensor_builder->portableAt(block_shape_index).get();
+  auto padding_alloc = _tensor_builder->portableAt(padding_index).get();
+
+  auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
+
+  fn->configure(input_alloc, block_shape_alloc, padding_alloc, output_alloc);
 
   _return_fn = std::move(fn);
 }
