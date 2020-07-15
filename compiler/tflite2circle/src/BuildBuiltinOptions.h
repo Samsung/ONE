@@ -82,6 +82,7 @@
 #include "BuildBuiltinOptions/ScatterNdOptions.h"
 #include "BuildBuiltinOptions/SegmentSumOptions.h"
 #include "BuildBuiltinOptions/SelectOptions.h"
+#include "BuildBuiltinOptions/SelectV2Options.h"
 #include "BuildBuiltinOptions/ShapeOptions.h"
 // There is no SinOptions
 #include "BuildBuiltinOptions/SliceOptions.h"
