@@ -79,7 +79,7 @@ public: // context for dynamic tensor
    *        enableDynamicShapeInferer(true) will make run() will handle dynamic tensor.
    */
   void setDynamicTensorContext(const ir::OpSequence *op_seq, const ir::Operations *operations,
-                               std::unique_ptr<exec::DynamicInferer> dynamic_shape_inferer,
+                               std::unique_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer,
                                std::shared_ptr<backend::ITensorRegistry> tensor_registry,
                                backend::IDynamicTensorManager *dynamic_tensor_manager)
   {
@@ -128,7 +128,7 @@ protected: // context to run this sequence when this sequence may handle dynamic
   bool _enable_dynamic_shape_inferer = false;
   const ir::OpSequence *_op_seq = nullptr;
   const ir::Operations *_operations = nullptr;
-  std::unique_ptr<exec::DynamicInferer> _dynamic_shape_inferer = nullptr;
+  std::unique_ptr<exec::DynamicShapeInferer> _dynamic_shape_inferer = nullptr;
   std::shared_ptr<backend::ITensorRegistry> _tensor_registry = nullptr;
   backend::IDynamicTensorManager *_dynamic_tensor_manager = nullptr;
 };
