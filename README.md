@@ -6,6 +6,8 @@ SemVer)](https://img.shields.io/github/v/release/Samsung/ONE)](https://github.co
 
 # **ONE** (On-device Neural Engine)
 
+<img src='docs/images/logo_original_samsungblue_cropped.png' alt='ONE Logo' width='400' />
+
 A high-performance, on-device neural network inference framework.
 
 ## Goal
