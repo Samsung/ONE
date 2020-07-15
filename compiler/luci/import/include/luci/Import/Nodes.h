@@ -98,6 +98,7 @@
 #include "Nodes/CircleScatterNd.h"
 #include "Nodes/CircleSegmentSum.h"
 #include "Nodes/CircleSelect.h"
+#include "Nodes/CircleSelectV2.h"
 #include "Nodes/CircleShape.h"
 #include "Nodes/CircleSin.h"
 #include "Nodes/CircleSlice.h"
