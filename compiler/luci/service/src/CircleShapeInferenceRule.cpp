@@ -1467,6 +1467,17 @@ public:
     return loco::NodeShape{t_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleSelectV2 *node) final
+  {
+    auto c_shape = loco::shape_get(node->condition()).as<loco::TensorShape>();
+    auto t_shape = loco::shape_get(node->t()).as<loco::TensorShape>();
+    auto e_shape = loco::shape_get(node->e()).as<loco::TensorShape>();
+
+    // validate ability to broadcast shapes to each other
+    auto b_shape = broadcast_shape(broadcast_shape(c_shape, t_shape), e_shape);
+    return loco::NodeShape{b_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleShape *node) final
   {
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
