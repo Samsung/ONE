@@ -2186,6 +2186,29 @@ OperationFactory::OperationFactory()
     param.epsilon = operands.at(epsilon_index).asScalar<float>();
     return new operation::FusedBatchNorm{inputs, outputs, param};
   };
+
+  _map[ANEURALNETWORKS_LOG_SOFTMAX] = [](const OperationFactory::Param &init_param,
+                                         Operands &operands) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> A tensor specifying the input logits.
+    //  1 -> A scalar, specifying the positive scaling factor for the exponent, beta.
+    //  2 -> An scalar specifying the axis to reduce across.
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    const auto beta_index = OperandIndex{init_param.inputs[1]};
+    const auto axis_index = OperandIndex{init_param.inputs[2]};
+
+    operation::LogSoftmax::Param param;
+    param.beta = operands.at(beta_index).asScalar<float>();
+    param.axis = operands.at(axis_index).asScalar<int>();
+
+    return new operation::LogSoftmax{inputs, outputs, param};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,

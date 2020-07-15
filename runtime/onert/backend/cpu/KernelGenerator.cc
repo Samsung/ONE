@@ -73,6 +73,7 @@
 #include "ops/BatchMatMulLayer.h"
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
+#include "ops/LogSoftMaxLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1357,6 +1358,24 @@ void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
   auto fn = std::make_unique<ops::FusedBatchNormLayer>();
 
   fn->configure(input_allocs, epsilon, is_training, data_format, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::LogSoftmax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::LogSoftmax::Input::INPUT)};
+
+  const auto beta = node.param().beta;
+  const auto axis = node.param().axis;
+
+  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto input_alloc = _tensor_builder->at(input_index).get();
+
+  auto fn = std::make_unique<ops::LogSoftMaxLayer>();
+
+  fn->configure(input_alloc, beta, axis, output_alloc);
 
   _return_fn = std::move(fn);
 }
