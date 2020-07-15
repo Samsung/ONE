@@ -99,6 +99,9 @@ public:
   void visit(const ir::operation::MatrixBandPart &node) override;
 
 private:
+  void checkReduceOp(const ir::OperandIndex input_index, const ir::OperandIndex output_index);
+
+private:
   // TODO Remove _ctx field
   const ir::Graph &_graph;
   const ir::Operands &_ctx;
