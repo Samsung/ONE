@@ -229,3 +229,53 @@ TEST(BasicTest, MultipleStringValue)
 
   EXPECT_THROW(arser.get<std::vector<std::string>>("--color"), std::runtime_error);
 }
+
+void printBiography(void) { std::cerr << "When I was young.." << std::endl; }
+
+TEST(BasicTest, ExitWithFunctionCall)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--history").help("Show history and exit").exit_with(printBiography);
+
+  arser.add_argument("--name").nargs(1).type(arser::DataType::STR).help("Name your hero");
+
+  Prompt prompt("./hero --history");
+  /* act */ /* assert */
+  EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0),
+              "When I was young..");
+}
+
+void printVersion(std::string version) { std::cerr << "arser version : " << version << std::endl; }
+
+TEST(BasicTest, ExitWithFunctionCallWithBind)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--version")
+      .help("Show version and exit")
+      .exit_with(std::bind(printVersion, "1.2.0"));
+
+  Prompt prompt("./arser --version");
+  /* act */ /* assert */
+  EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0),
+              "arser version : 1.2.0");
+}
+
+TEST(BasicTest, ExitWithFunctionCallWithLamda)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--shutdown").help("Shut down your computer").exit_with([](void) {
+    std::cerr << "Good bye.." << std::endl;
+  });
+
+  arser.add_argument("OS").nargs(1).type(arser::DataType::STR).help("The OS you want to boot");
+
+  Prompt prompt("./computer --shutdown");
+  /* act */ /* assert */
+  EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0), "Good bye..");
+}
