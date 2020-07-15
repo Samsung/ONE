@@ -7,8 +7,9 @@ function(_GEMMLowpSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE TensorFlow 1.7 uses the following URL
-  envoption(GEMMLOWP_URL https://github.com/google/gemmlowp/archive/7c7c744640ddc3d0af18fb245b4d23228813a71b.zip)
+  # NOTE TensorFlow 1.12 uses the following URL
+  #      TensorFlow 1.13.1 uses the following URL
+  envoption(GEMMLOWP_URL https://github.com/google/gemmlowp/archive/38ebac7b059e84692f53e5938f97a9943c120d98.tar.gz)
 
   ExternalSource_Download(GEMMLOWP ${GEMMLOWP_URL})
 

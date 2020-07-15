@@ -36,12 +36,9 @@ TensorBuilder::TensorBuilder()
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout layout, bool as_const)
+                                       ir::Layout layout)
 {
   _tensor_info_map.emplace(ind, info);
-
-  if (as_const)
-    _constants.append(ind);
 
   // CPU backend supports only one layout as NHWC
   assert(layout == ir::Layout::NHWC);
@@ -51,7 +48,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, layout, _constants.contains(ind));
+    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
   }
 }
 

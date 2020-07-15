@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ISHAPE_FIXER_H__
-#define __ONERT_BACKEND_ISHAPE_FIXER_H__
+#include "ir/operation/LogSoftmax.h"
 
-#include <memory>
-#include <functional>
+#include <cassert>
 
-#include "ir/LowerInfoMap.h"
-#include "ITensorBuilder.h"
 #include "ir/OperationVisitor.h"
-#include "ir/OpSequence.h"
-#include <memory>
 
 namespace onert
 {
-namespace backend
+namespace ir
+{
+namespace operation
 {
 
-class IShapeFixer : public ir::OperationVisitor
+void LogSoftmax::accept(OperationVisitor &v) const { v.visit(*this); }
+
+LogSoftmax::LogSoftmax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                       const Param &param)
+    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
-public:
-  virtual ~IShapeFixer() = default;
+}
 
-protected:
-  using OperationVisitor::visit;
-};
-
-} // namespace backend
+} // namespace operation
+} // namespace ir
 } // namespace onert
-
-#endif // __ONERT_BACKEND_ISHAPE_FIXER_H__

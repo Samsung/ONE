@@ -1,6 +1,7 @@
 nnas_find_package(FlatBuffers QUIET)
 
 if(NOT FlatBuffers_FOUND)
+  message(STATUS "Build mio-tflite: FAILED (missing Flatbuffers)")
   return()
 endif(NOT FlatBuffers_FOUND)
 

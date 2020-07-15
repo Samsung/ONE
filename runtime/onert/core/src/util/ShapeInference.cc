@@ -113,7 +113,7 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
   return broadcastShapes(lhs_shape, rhs_shape);
 }
 
-ir::Shape argMaxShapes(const ir::Shape &input_shape, int axis, int rank)
+ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank)
 {
   ir::Shape out_shape;
   for (int idx = 0; idx < rank; ++idx)
@@ -139,8 +139,8 @@ ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgP
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
-ir::Shape inferReduceShapes(const ir::Shape &input_shape, const std::vector<int> &axes,
-                            bool keep_dims)
+ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> &axes,
+                           bool keep_dims)
 {
   int num_axis = axes.size();
   int input_num_dims = input_shape.rank();
@@ -390,8 +390,8 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
   return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }
 
-ir::Shape gatherShapes(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                       int rank)
+ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
+                           int rank)
 {
   ir::Shape out_shape;
   const int indices_rank = indices_shape.rank();
@@ -424,7 +424,7 @@ ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxP
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
-ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis)
+ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis)
 {
   assert(depth >= 0);
   const auto rank = input_shape.rank() + 1;
@@ -451,7 +451,7 @@ ir::Shape onehotShape(const ir::Shape &input_shape, const int depth, int axis)
   return newShape;
 }
 
-ir::Shape packShapes(const ir::Shape &input_shape, int axis, int rank, int num)
+ir::Shape inferPackShape(const ir::Shape &input_shape, int axis, int rank, int num)
 {
   ir::Shape out_shape;
   int in_idx = 0;
@@ -931,7 +931,7 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> 
   return out_shape;
 }
 
-ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank)
+ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank)
 {
   ir::Shape out_shape;
 
@@ -944,157 +944,6 @@ ir::Shape unpackShapes(const ir::Shape &input_shape, int axis, int rank)
   }
 
   return out_shape;
-}
-
-/*
-  StaticInferer
-  - Write methods except visit()
-  - For visit() of each operator, find each op's C file
-*/
-
-void StaticInferer::handleBinaryArithmeticOp(const ir::Operation &op,
-                                             const ir::OperandIndex lhs_idx,
-                                             const ir::OperandIndex rhs_idx)
-{
-  const auto &lhs = _operands.at(lhs_idx);
-  const auto &rhs = _operands.at(rhs_idx);
-
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
-  {
-    output.info().setDynamic();
-    return;
-  }
-
-  // re-sizing output shape
-  ir::Shape new_shape = inferEltwiseShape(lhs.info().shape(), rhs.info().shape());
-  output.info().shape(new_shape);
-}
-
-void StaticInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx)
-{
-  const auto &input = _operands.at(input_idx);
-
-  // get mutable output operand
-  const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    return;
-  }
-
-  // re-sizing output shape
-  ir::Shape new_shape = input.info().shape();
-  output.info().shape(new_shape);
-}
-
-void StaticInferer::dump()
-{
-  auto get_shape_str = [](const ir::Shape &shape) {
-    std::stringstream sstream;
-    sstream << "shape : {";
-    for (int i = 0; i < shape.rank(); i++)
-    {
-      if (i == 0)
-        sstream << shape.dim(i);
-      else
-        sstream << " " << shape.dim(i);
-    }
-    sstream << "}";
-    return sstream.str();
-  };
-
-  for (const auto &pair : _lowered_subgs)
-  {
-    const auto index = pair.first;
-    const auto &lowered_subg = pair.second;
-    VERBOSE(StaticInferer) << "SubGraph #" << index.value() << std::endl;
-    lowered_subg->graph().operands().iterate(
-        [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-          VERBOSE(StaticInferer) << "Operand #" << ind.value() << ", "
-                                 << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-                                 << get_shape_str(operand.info().shape()) << std::endl;
-        });
-  }
-}
-
-/*
- * DynamicInferer
-  - Write methods except visit()
-  - For visit() of each operator, find each op's C file
- */
-
-void DynamicInferer::handleBinaryArithmeticOp(const ir::Operation &op,
-                                              const ir::OperandIndex lhs_idx,
-                                              const ir::OperandIndex rhs_idx)
-{
-  auto lhs = _tensor_registry->getITensor(lhs_idx);
-  auto lhs_shape = lhs->getShape();
-
-  auto rhs = _tensor_registry->getITensor(rhs_idx);
-  auto rhs_shape = rhs->getShape();
-
-  /*
-    Here, the state after compilation (satic shape inference) could be one of the following:
-
-              lhs       rhs              output     execution-time shape inf required
-      ------------------------------------------    ---------------------------------
-      case 1) static    static           static      X
-      case 2) one or both are dynamic    dynamic     O
-
-    Then nnfw_apply_tensorinf() could change one or both inputs dynamic.
-    So, in this method, we have one more state and we have to re-calculate shape for this shape.
-
-      case 3) one or both are dynamic    static      O
-
-    So, only when all inputs are static, we can skip dynamic shape inference.
-  */
-  if ((!lhs->is_dynamic()) && (!rhs->is_dynamic()))
-    return;
-
-  auto output_idx = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_idx);
-
-  ir::Shape new_shape = inferEltwiseShape(lhs_shape, rhs_shape);
-
-  _dynamic_tensor_manager->applyShape(output_idx, new_shape);
-  assert(output->buffer() != nullptr);
-}
-
-void DynamicInferer::handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_ind)
-{
-  // check if input is not dynamic
-  auto input = _tensor_registry->getITensor(input_ind);
-  auto output_shape = input->getShape();
-
-  /*
-    Here, the state after compilation (satic shape inference) could be one of the following:
-
-              input      output    execution-time shape inf required
-      -------------------------    ---------------------------------
-      case 1) static     static      X
-      case 2) dynamic    dynamic     O
-
-    Then nnfw_apply_tensorinf() could change input dynamic.
-    So, in this method, we have one more state and we have to re-calculate shape for this shape.
-
-      case 3) dynamic    static      O
-
-    So, only when input is static, we can skip dynamic shape inference.
-  */
-  if (!input->is_dynamic())
-    return;
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-
-  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
-  assert(output->buffer() != nullptr);
 }
 
 } // namespace shape_inference

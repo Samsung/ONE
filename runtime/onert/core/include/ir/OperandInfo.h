@@ -65,8 +65,9 @@ public:
    * @param[in] typeInfo  Tensor data type
    * @param[in] alloc_type  When the thesor needs memory allocation
    */
-  OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type)
-      : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(false)
+  OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
+              bool is_const = false)
+      : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const)
   {
     // DO NOTHING
   }

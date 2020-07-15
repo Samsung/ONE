@@ -30,7 +30,8 @@ namespace ops
 
 FullyConnectedLayer::FullyConnectedLayer()
     : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
-      _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena())
+      _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena()),
+      _is_hybrid(false)
 {
   // DO NOTHING
 }
@@ -140,20 +141,19 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _bias = bias;
   _activation = activation;
   _output = output;
+  _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
+               weights->data_type() == OperandType::QUANT_INT8_SYMM;
 }
 
 void FullyConnectedLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32)
+  if (_is_hybrid)
   {
-    if (_weights->data_type() == OperandType::QUANT_INT8_SYMM)
-    {
-      fullyConnectedHybrid();
-    }
-    else
-    {
-      fullyConnectedFloat32();
-    }
+    fullyConnectedHybrid();
+  }
+  else if (_input->data_type() == OperandType::FLOAT32)
+  {
+    fullyConnectedFloat32();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
@@ -168,7 +168,21 @@ void FullyConnectedLayer::run()
 void FullyConnectedLayer::prepare()
 {
 #ifdef USE_RUY_GEMV
+  // TODO This is workaround
+  // The only fc hybrid will use ruy kernel
+  if (_input->data_type() != OperandType::FLOAT32 ||
+      _weights->data_type() != OperandType::QUANT_INT8_SYMM)
+  {
+    return;
+  }
+
   // NOTE. The condition to enable caching on ruy kernel can be changed according to ruy's version
+
+  // If input is dynamic, it changes total size of input
+  // If weights is not constant, weights cannot be cached
+  if (_input->is_dynamic() || !_weights->is_constant())
+    return;
+
   const int rows = getTensorShape(_weights).Dims(0);
   if (rows % 4 == 0)
   {
@@ -180,13 +194,8 @@ void FullyConnectedLayer::prepare()
       // TODO If it's possible to extract precaching from ruy kernel,
       // place this instead of below code
 
-      // Buffer could be nullptr if it is Model Input. which means that this is not constant,
-      // so it can't be cached
-      if (_weights->buffer() != nullptr)
-      {
-        // buffer will be used by ruy kernel as a cache key
-        _cached_weights = _weights->buffer();
-      }
+      // buffer will be used by ruy kernel as a cache key
+      _cached_weights = _weights->buffer();
     }
   }
 #endif

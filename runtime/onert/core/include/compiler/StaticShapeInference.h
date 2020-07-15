@@ -36,17 +36,17 @@ namespace compiler
  *        - if calculation cannot be done at compile time, mark the outputs to be dynamic, meaning
  *          shapes of outputs will be calculated during running kernels
  */
-class StaticInferer : public ir::OperationVisitor
+class StaticShapeInferer : public ir::OperationVisitor
 {
 public:
-  StaticInferer(
+  StaticShapeInferer(
       const ir::SubgraphIndex &subg_idx,
       const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
       : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
         _operations(lowered_subgs.at(subg_idx)->graph().operations())
   { /* empty */
   }
-  virtual ~StaticInferer() = default;
+  virtual ~StaticShapeInferer() = default;
 
 public:
   /**
@@ -54,16 +54,28 @@ public:
    *        If output shape cannot be known without running op, mark it so that it can be allocated
    *        when running kernel.
    * @param op_seq sequence of operations
+   * @return @c true if op_seq's input or output has any dynamic tensor; @c false otherwise.
    */
-  void infer(const ir::OpSequence &op_seq)
+  bool infer(const ir::OpSequence &op_seq)
   {
+    bool has_dynamic_tensor = false;
+
+    _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
+
     for (const auto &operation_idx : op_seq.operations())
     {
       _operations.at(operation_idx).accept(*this);
+
+      has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
     }
+
+    return has_dynamic_tensor;
   }
 
   void dump();
+
+private:
+  bool _return_has_dynamic_tensor;
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
@@ -89,6 +101,7 @@ private:
   void visit(const ir::operation::LogicalNot &op);
   void visit(const ir::operation::LogicalOr &op);
   void visit(const ir::operation::Logistic &op);
+  void visit(const ir::operation::L2Normalization &op);
   void visit(const ir::operation::MatrixBandPart &op);
   void visit(const ir::operation::Max &op);
   void visit(const ir::operation::Mean &op);

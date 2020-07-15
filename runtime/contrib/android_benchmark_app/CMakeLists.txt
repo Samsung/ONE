@@ -55,7 +55,7 @@ target_link_libraries(android_benchmark_native nnfw_lib_tflite)
 target_link_libraries(android_benchmark_native nnfw_lib_misc)
 target_link_libraries(android_benchmark_native log)
 
-nnfw_find_package(FlatBuffersSource REQUIRED)
+nnas_find_package(FlatBuffersSource EXACT 1.11 REQUIRED)
 target_include_directories(android_benchmark_native PUBLIC ${FlatBuffersSource_DIR}/include .)
 
 add_custom_target(android-benchmark-apk ALL

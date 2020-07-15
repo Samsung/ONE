@@ -970,6 +970,25 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
   }
 }
 
+void OperationValidator::visit(const ir::operation::L2Normalization &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::L2Normalization::Input::INPUT)};
+
+  auto ifm_shape = _ctx.at(ifm_index).shape();
+  auto ofm_shape = _ctx.at(ofm_index).shape();
+
+  OP_REQUIRES(ifm_shape.rank() == ofm_shape.rank());
+
+  for (auto i = 0; i < ifm_shape.rank(); i++)
+  {
+    OP_REQUIRES(ifm_shape.dim(i) == ofm_shape.dim(i));
+  }
+}
+
 void OperationValidator::visit(const ir::operation::Unpack &node)
 {
   const auto num{node.param().num};
@@ -1332,6 +1351,19 @@ void OperationValidator::visit(const ir::operation::MatrixBandPart &node)
   OP_REQUIRES(_ctx.at(input_index).shape().rank() >= 2);     // input must be more than 2 dim matrix
   OP_REQUIRES(_ctx.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
   OP_REQUIRES(_ctx.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
+}
+
+void OperationValidator::visit(const ir::operation::LogSoftmax &node)
+{
+  VERBOSE(LogSoftmax) << "Configure LOGSOFTMAX operation" << std::endl;
+
+  const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(0)};
+
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 } // namespace compiler
 } // namespace onert

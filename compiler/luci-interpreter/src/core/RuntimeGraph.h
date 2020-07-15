@@ -43,8 +43,6 @@ public:
 
   void addKernel(std::unique_ptr<Kernel> &&kernel);
 
-  void configure();
-
   void execute() const;
 
 private:

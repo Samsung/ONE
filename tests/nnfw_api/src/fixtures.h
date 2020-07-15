@@ -102,6 +102,31 @@ protected:
   }
 
   void TearDown() override { ValidationTestModelLoaded<PackageNo>::TearDown(); }
+
+  void SetInOutBuffers()
+  {
+    nnfw_tensorinfo ti_input;
+    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti_input), NNFW_STATUS_NO_ERROR);
+    uint64_t input_elements = num_elems(&ti_input);
+    EXPECT_EQ(input_elements, 1);
+    _input.resize(input_elements);
+    ASSERT_EQ(
+        nnfw_set_input(_session, 0, ti_input.dtype, _input.data(), sizeof(float) * input_elements),
+        NNFW_STATUS_NO_ERROR);
+
+    nnfw_tensorinfo ti_output;
+    ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
+    uint64_t output_elements = num_elems(&ti_output);
+    EXPECT_EQ(output_elements, 1);
+    _output.resize(output_elements);
+    ASSERT_EQ(nnfw_set_output(_session, 0, ti_output.dtype, _output.data(),
+                              sizeof(float) * output_elements),
+              NNFW_STATUS_NO_ERROR);
+  }
+
+protected:
+  std::vector<float> _input;
+  std::vector<float> _output;
 };
 
 template <int PackageNo> class ValidationTestFourModelsSetInput : public ValidationTest

@@ -11,9 +11,10 @@
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
 CONFIG_PATH="$1"; shift
+BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
 WORKDIR="$1"; shift
-VIRTUALENV="${WORKDIR}/venv"
+VIRTUALENV="${WORKDIR}/venv_1_13_2"
 
 source "${CONFIG_PATH}"
 
@@ -35,28 +36,29 @@ while [ "$1" != "" ]; do
   TESTED+=("${TESTCASE}")
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
+  TEST_RESULT_FILE="${BIN_PATH}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}.quantization.passed"
+  PASSED_TAG="${TEST_RESULT_FILE}.quantization.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}_quantization.log" <(
+  cat > "${TEST_RESULT_FILE}_quantization.log" <(
     exec 2>&1
     set -ex
 
     # Run circle-quantizer with --quantize_with_minmax
     "${CIRCLE_QUANTIZER_PATH}" \
-      --quantize_with_minmax float "${DTYPE}" "${GRANULARITY}" \
-      "${TESTCASE_FILE}.minmax_recorded.circle" \
-      "${TESTCASE_FILE}.quantized.circle" 
+      --quantize_with_minmax float32 "${DTYPE}" "${GRANULARITY}" \
+      "${TEST_RESULT_FILE}.minmax_recorded.circle" \
+      "${TEST_RESULT_FILE}.quantized.circle" 
 
     # Dump scale, zp, weights values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
-      --tensors_to_hdf5 "${TESTCASE_FILE}.quantized.circle" \
-      "${TESTCASE_FILE}.quantized.circle.h5"
+      "${TEST_RESULT_FILE}.quantized.circle" \
+      --tensors_to_hdf5 "${TEST_RESULT_FILE}.quantized.circle.h5"
 
     # Compare result
     "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
-      --input_h5 "${TESTCASE_FILE}.quantized.circle.h5" \
+      --input_h5 "${TEST_RESULT_FILE}.quantized.circle.h5" \
       --expect_dir "${SOURCE_PATH}/expected_outputs/${MODELNAME}/${GRANULARITY}/${DTYPE}/quantization" \
       --mode quantization
 

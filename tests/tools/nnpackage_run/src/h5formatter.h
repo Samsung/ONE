@@ -29,12 +29,12 @@ namespace nnpkg_run
 class H5Formatter
 {
 public:
-  H5Formatter(nnfw_session *sess) : session(sess) {}
+  H5Formatter(nnfw_session *sess) : session_(sess) {}
   void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
   void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs);
 
 private:
-  nnfw_session *session;
+  nnfw_session *session_;
 };
 } // end of namespace
 

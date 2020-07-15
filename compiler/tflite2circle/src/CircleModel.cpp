@@ -15,6 +15,7 @@
  */
 
 #include <iostream>
+#include <memory>
 
 #include "CircleModel.h"
 #include "DataLookup.h"
@@ -223,11 +224,11 @@ CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
 {
   const tflite::Model *tfl_model = model.load_model();
   _operator_codes_offset =
-      stdex::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
-  _subGraphs_offset = stdex::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
-  _buffers_offset = stdex::make_unique<Offset<BufferLink>>(fb, tfl_model->buffers());
+      std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
+  _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
+  _buffers_offset = std::make_unique<Offset<BufferLink>>(fb, tfl_model->buffers());
   _metadata_buffer_offset =
-      stdex::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());
+      std::make_unique<Offset<MetaDataBufferLink>>(fb, tfl_model->metadata_buffer());
   model_build();
 }
 

@@ -173,12 +173,15 @@ protected:
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
+  void loadLogSoftmax(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
   uint8_t *_base;
   // Memory page size
   int32_t _pagesize;
+  // loaded file description
+  int _fd;
   // Reference on loadable subgraphs
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
   const Model *_model;
@@ -191,14 +194,14 @@ protected:
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
 {
-  int fd = open(file_path, O_RDONLY);
-  if (fd < 0)
+  _fd = open(file_path, O_RDONLY);
+  if (_fd < 0)
   {
     throw std::runtime_error("Failed to open file " + std::string(file_path));
   }
 
   struct stat file_stat;
-  if (fstat(fd, &file_stat) != 0)
+  if (fstat(_fd, &file_stat) != 0)
   {
     throw std::runtime_error("Fstat failed or file " + std::string(file_path) +
                              " is not a regular file");
@@ -206,18 +209,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   int size = file_stat.st_size;
 
   // Map model file into memory region
-  _base = static_cast<uint8_t *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0));
+  _base = static_cast<uint8_t *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, _fd, 0));
   if (_base == MAP_FAILED)
   {
-    close(fd);
+    close(_fd);
     throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
   }
 
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
+  munmap(_base, size);
 
-  close(fd);
+  close(_fd);
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -361,7 +365,18 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   const auto *data = _model->buffers()->Get(tensor->buffer())->data();
   if (data != nullptr)
   {
-    auto ptr = std::make_unique<ir::MMapedData>(_base, _pagesize, data->data(), data->size());
+    using std::ptrdiff_t;
+    size_t data_size = data->size();
+    ptrdiff_t unaligned_offset_start = data->data() - _base;
+    ptrdiff_t offset_end = unaligned_offset_start + data_size;
+
+    // Calculated aligned offset from base address of mapped region
+    // munmap accepts memory address which is a multiple of the pagesize
+    ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
+    size_t mmap_size = offset_end - aligned_offset_start;
+
+    auto ptr = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                unaligned_offset_start, data_size);
     subg.setOperandValue(operand_index, std::move(ptr));
   }
 
@@ -1770,6 +1785,24 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalOr(const Operator *op,
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::LogSoftmax::Param param;
+
+  // In tflite, beta is fixed to 1.0 and axis is fixed to -1.
+  param.beta = 1.0f;
+  param.axis = -1;
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogSoftmax(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1982,6 +2015,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
       loadBatchMatMul(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:
+      loadLogSoftmax(op, subg);
       return;
     default:
       throw std::runtime_error(

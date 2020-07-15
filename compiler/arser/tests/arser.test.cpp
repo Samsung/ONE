@@ -74,13 +74,20 @@ TEST(BasicTest, OptionalArgument)
       .nargs(1)
       .type(arser::DataType::INT32)
       .help("Set a volume as you provided.");
+  arser.add_argument("--frequency")
+      .nargs(1)
+      .type(arser::DataType::FLOAT)
+      .help("Set a frequency as you provided.");
 
-  Prompt prompt("./radio --volume 5");
+  Prompt prompt("./radio --volume 5 --frequency 128.5");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
   EXPECT_TRUE(arser["--volume"]);
   EXPECT_EQ(5, arser.get<int>("--volume"));
+
+  EXPECT_TRUE(arser["--frequency"]);
+  EXPECT_FLOAT_EQ(128.5, arser.get<float>("--frequency"));
 
   EXPECT_FALSE(arser["--price"]);
   EXPECT_THROW(arser.get<bool>("--volume"), std::runtime_error);
@@ -176,4 +183,49 @@ TEST(BasicTest, MultipleOptionalArgument)
   EXPECT_EQ(234, data.at(2));
   EXPECT_EQ(3, data.at(3));
   EXPECT_EQ(334, data.at(4));
+}
+
+TEST(BasicTest, MultipleFloatValue)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--add_float")
+      .nargs(2)
+      .type(arser::DataType::FLOAT_VEC)
+      .help("Add two float numbers.");
+
+  Prompt prompt("./calculator --add_float 3.2 5.4");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--add_float"]);
+  std::vector<float> values = arser.get<std::vector<float>>("--add_float");
+  EXPECT_FLOAT_EQ(3.2, values.at(0));
+  EXPECT_FLOAT_EQ(5.4, values.at(1));
+
+  EXPECT_THROW(arser.get<std::vector<int>>("--add_float"), std::runtime_error);
+}
+
+TEST(BasicTest, MultipleStringValue)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--three_color")
+      .nargs(3)
+      .type(arser::DataType::STR_VEC)
+      .help("insert your three favorite color");
+
+  Prompt prompt("./color_factory --three_color red blue yellow");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--three_color"]);
+  std::vector<std::string> values = arser.get<std::vector<std::string>>("--three_color");
+  EXPECT_EQ("red", values.at(0));
+  EXPECT_EQ("blue", values.at(1));
+  EXPECT_EQ("yellow", values.at(2));
+
+  EXPECT_THROW(arser.get<std::vector<std::string>>("--color"), std::runtime_error);
 }

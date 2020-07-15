@@ -14,37 +14,51 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_SHAPE_FIXER_H__
-#define __ONERT_BACKEND_CPU_SHAPE_FIXER_H__
+#ifndef __ONERT_IR_OPERATION_LOGSOFTMAX_H__
+#define __ONERT_IR_OPERATION_LOGSOFTMAX_H__
 
-#include "TensorBuilder.h"
-#include "Tensor.h"
+#include <memory>
 
-#include <backend/IShapeFixer.h>
-#include <ir/Operands.h>
+#include "ir/Operation.h"
 
 namespace onert
 {
-namespace backend
+namespace ir
 {
-namespace cpu
+namespace operation
 {
 
-class ShapeFixer : public IShapeFixer
+class LogSoftmax : public Operation
 {
 public:
-  ShapeFixer(const ir::Operands &ctx);
+  enum Input
+  {
+    INPUT = 0
+  };
 
-  void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Div &) override;
-  void visit(const ir::operation::Pad &) override;
+  struct Param
+  {
+    float beta;
+    int axis;
+  };
+
+public:
+  LogSoftmax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+             const Param &param);
+
+public:
+  void accept(OperationVisitor &v) const override;
+  OpCode opcode() const final { return OpCode::Softmax; }
+
+public:
+  const Param &param() const { return _param; }
 
 private:
-  const ir::Operands &_ctx;
+  Param _param;
 };
 
-} // namespace cpu
-} // namespace backend
+} // namespace operation
+} // namespace ir
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_SHAPE_FIXER_H__
+#endif // __ONERT_IR_OPERATION_LOGSOFTMAX_H__

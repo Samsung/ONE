@@ -45,8 +45,6 @@ public:
     return getMainGraph()->getOutputTensors();
   }
 
-  void configure() { getMainGraph()->configure(); }
-
   void execute() const { getMainGraph()->execute(); }
 
 private:

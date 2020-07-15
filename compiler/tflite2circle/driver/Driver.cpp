@@ -15,43 +15,60 @@
  */
 
 #include <iostream>
+#include <memory>
+#include <string>
 #include <vector>
+
+#include <arser/arser.h>
 
 #include "CircleModel.h"
 #include "TFLModel.h"
 
 int entry(int argc, char **argv)
 {
-  if (argc != 3)
+  arser::Arser arser{"tflite2circle is a Tensorflow lite to circle model converter"};
+
+  arser.add_argument("tflite")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .help("Source tflite file path to convert");
+  arser.add_argument("circle").nargs(1).type(arser::DataType::STR).help("Target circle file path");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [tflite] [circle]" << std::endl;
-    return 255;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
   }
 
+  std::string tfl_path = arser.get<std::string>("tflite");
+  std::string circle_path = arser.get<std::string>("circle");
   // read tflite file
-  tflite2circle::TFLModel tfl_model(argv[1]);
+  tflite2circle::TFLModel tfl_model(tfl_path);
   if (!tfl_model.is_valid())
   {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load tflite '" << tfl_path << "'" << std::endl;
     return 255;
   }
 
   // create flatbuffer builder
-  auto flatbuffer_builder = stdex::make_unique<flatbuffers::FlatBufferBuilder>(1024);
+  auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
   // convert tflite to circle
   tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model};
 
-  std::ofstream outfile{argv[2], std::ios::binary};
+  std::ofstream outfile{circle_path, std::ios::binary};
 
   outfile.write(circle_model.base(), circle_model.size());
   outfile.close();
   // TODO find a better way of error handling
   if (outfile.fail())
   {
-    std::cerr << "ERROR: Failed to write circle '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to write circle '" << circle_path << "'" << std::endl;
     return 255;
   }
 

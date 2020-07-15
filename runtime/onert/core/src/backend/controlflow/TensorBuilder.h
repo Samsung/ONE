@@ -48,7 +48,7 @@ public:
    * @param[in] layout Operand data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout, bool as_const) override;
+                          ir::Layout backend_layout) override;
 
   void notifyFirstUse(const ir::OperandIndex &) override;
   void notifyLastUse(const ir::OperandIndex &) override;
@@ -90,7 +90,6 @@ private:
   std::unique_ptr<cpu_common::DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::Layout> _tensor_layout_map;
-  ir::OperandIndexSequence _constants;
 };
 
 } // namespace controlflow

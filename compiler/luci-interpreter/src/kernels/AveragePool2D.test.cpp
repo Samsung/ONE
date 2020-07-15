@@ -55,6 +55,71 @@ TEST(AveragePool2DTest, Float)
   };
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
+}
+
+TEST(AveragePool2DTest, Uint8_0)
+{
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
+  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+
+  std::vector<uint8_t> quant_input = quantize<uint8_t>(
+      {
+          0, -6, 12, 4,  //
+          -3, -2, 10, 7, //
+      },
+      quant_param.first, quant_param.second);
+  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear({0.0, 6.0})));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
+}
+
+TEST(AveragePool2DTest, Uint8_1)
+{
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
+  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+
+  std::vector<uint8_t> quant_input = quantize<uint8_t>(
+      {
+          0, 6, 12, 4, //
+          3, 2, 10, 7, //
+      },
+      quant_param.first, quant_param.second);
+  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear({2.75, 6.0})));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
 }
 
 } // namespace
