@@ -110,6 +110,11 @@ public:
 
   const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &managed_tensors() { return _managed; }
 
+  const ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> &external_tensors()
+  {
+    return _external;
+  }
+
 private:
   ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _external;
   ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _managed;
