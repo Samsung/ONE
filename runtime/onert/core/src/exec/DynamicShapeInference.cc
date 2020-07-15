@@ -453,52 +453,6 @@ void DynamicShapeInferer::visit(const ir::operation::Max &op)
                            op.getInputs().at(ir::operation::Max::Input::RHS));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Mean &op)
-{
-  const auto input_idx{op.getInputs().at(ir::operation::Mean::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
-
-  const auto axes_idx{op.getInputs().at(ir::operation::Mean::Input::AXES)};
-  const auto &axes = _tensor_registry->getITensor(axes_idx);
-
-  if ((!input->is_dynamic()) && !(axes->is_dynamic()))
-  {
-    return;
-  }
-
-  auto input_shape = input->getShape();
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-
-  std::vector<int32_t> axes_vec;
-  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
-  {
-    const auto buffer = axes->buffer() + axes->calcOffset({i});
-    switch (axes->data_type())
-    {
-      case ir::DataType::INT32:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
-        break;
-      }
-      case ir::DataType::INT64:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
-        break;
-      }
-      default:
-        throw std::runtime_error("DynamicShapeInferer Mean: Not supported data type");
-        break;
-    }
-  }
-  const auto keep_dims = op.param().keep_dims;
-
-  ir::Shape output_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
-  _dynamic_tensor_manager->applyShape(output_ind, output_shape);
-  assert(output->buffer() != nullptr);
-}
-
 void DynamicShapeInferer::visit(const ir::operation::Min &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
@@ -657,13 +611,13 @@ void DynamicShapeInferer::visit(const ir::operation::Range &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::ReduceAll &op)
+void DynamicShapeInferer::visit(const ir::operation::Reduce &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::ReduceAll::Input::INPUT)};
+  const auto input_idx{op.getInputs().at(ir::operation::Reduce::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
   auto input_shape = input->getShape();
 
-  const auto axes_idx{op.getInputs().at(ir::operation::ReduceAll::Input::AXES)};
+  const auto axes_idx{op.getInputs().at(ir::operation::Reduce::Input::AXES)};
   const auto &axes = _tensor_registry->getITensor(axes_idx);
 
   if (!input->is_dynamic())
@@ -686,139 +640,7 @@ void DynamicShapeInferer::visit(const ir::operation::ReduceAll &op)
         break;
       }
       default:
-        throw std::runtime_error("DynamicShapeInferer ReduceAll: Not supported data type");
-        break;
-    }
-  }
-  const auto keep_dims = op.param().keep_dims;
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-
-  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
-
-  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
-  assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::ReduceMin &op)
-{
-  const auto input_idx{op.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = input->getShape();
-
-  const auto axes_idx{op.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
-  const auto &axes = _tensor_registry->getITensor(axes_idx);
-
-  if (!input->is_dynamic())
-    return;
-
-  std::vector<int32_t> axes_vec;
-  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
-  {
-    const auto buffer = axes->buffer() + axes->calcOffset({i});
-    switch (axes->data_type())
-    {
-      case ir::DataType::INT32:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
-        break;
-      }
-      case ir::DataType::INT64:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
-        break;
-      }
-      default:
-        throw std::runtime_error("DynamicShapeInferer ReduceMin: Not supported data type");
-        break;
-    }
-  }
-  const auto keep_dims = op.param().keep_dims;
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-
-  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
-
-  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
-  assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::ReduceProd &op)
-{
-  const auto input_idx{op.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = input->getShape();
-
-  const auto axes_idx{op.getInputs().at(ir::operation::ReduceProd::Input::AXES)};
-  const auto &axes = _tensor_registry->getITensor(axes_idx);
-
-  if (!input->is_dynamic())
-    return;
-
-  std::vector<int32_t> axes_vec;
-  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
-  {
-    const auto buffer = axes->buffer() + axes->calcOffset({i});
-    switch (axes->data_type())
-    {
-      case ir::DataType::INT32:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
-        break;
-      }
-      case ir::DataType::INT64:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
-        break;
-      }
-      default:
-        throw std::runtime_error("DynamicShapeInferer ReduceProd: Not supported data type");
-        break;
-    }
-  }
-  const auto keep_dims = op.param().keep_dims;
-
-  auto output_ind = op.getOutputs().at(0);
-  auto output = _tensor_registry->getITensor(output_ind);
-
-  ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
-
-  _dynamic_tensor_manager->applyShape(output_ind, new_shape);
-  assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::ReduceSum &op)
-{
-  const auto input_idx{op.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = input->getShape();
-
-  const auto axes_idx{op.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
-  const auto &axes = _tensor_registry->getITensor(axes_idx);
-
-  if (!input->is_dynamic())
-    return;
-
-  std::vector<int32_t> axes_vec;
-  for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
-  {
-    const auto buffer = axes->buffer() + axes->calcOffset({i});
-    switch (axes->data_type())
-    {
-      case ir::DataType::INT32:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
-        break;
-      }
-      case ir::DataType::INT64:
-      {
-        axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
-        break;
-      }
-      default:
-        throw std::runtime_error("DynamicShapeInferer ReduceSum: Not supported data type");
+        throw std::runtime_error("DynamicShapeInferer " + op.name() + ": Not supported data type");
         break;
     }
   }

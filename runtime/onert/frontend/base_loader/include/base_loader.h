@@ -124,10 +124,9 @@ protected:
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTanh(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
-  void loadMean(const Operator *op, ir::Graph &subg);
+  void loadReduce(const Operator *op, ir::Graph &subg,
+                  ir::operation::Reduce::ReduceType reduce_type);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
-  void loadReduceAny(const Operator *op, ir::Graph &subg);
-  void loadReduceMax(const Operator *op, ir::Graph &subg);
   void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
@@ -138,7 +137,6 @@ protected:
   void loadSpaceToBatchND(const Operator *op, ir::Graph &subg);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBatchToSpaceND(const Operator *op, ir::Graph &subg);
-  void loadReduceSum(const Operator *op, ir::Graph &subg);
   void loadSqueeze(const Operator *op, ir::Graph &subg);
   void loadPrelu(const Operator *op, ir::Graph &subg);
   void loadSplit(const Operator *op, ir::Graph &subg);
@@ -155,7 +153,6 @@ protected:
   void loadCos(const Operator *op, ir::Graph &subg);
   void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
-  void loadReduceProd(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadNeg(const Operator *op, ir::Graph &subg);
@@ -868,17 +865,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMean(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(
+    const Operator *op, ir::Graph &subg, ir::operation::Reduce::ReduceType reduce_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Mean::Param param;
+  ir::operation::Reduce::Param param;
+  param.reduce_type = reduce_type;
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mean(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reduce(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -890,8 +889,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::ReduceAll::Param param;
-
+  ir::operation::Reduce::Param param;
+  param.reduce_type = ir::operation::Reduce::ReduceType::ALL;
   if (op->custom_options() == nullptr)
   {
     param.keep_dims = false;
@@ -905,36 +904,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
     param.keep_dims = attr_map["keep_dims"].AsBool();
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAll(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAny(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  ir::operation::ReduceAny::Param param;
-  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceAny(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceMax(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::ReduceMax::Param param;
-  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceMax(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reduce(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1090,21 +1060,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator
 
   std::unique_ptr<ir::Operation> new_op{
       new ir::operation::BatchToSpaceND{{input, block_shape}, outputs}};
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceSum(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::ReduceSum::Param param;
-  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::ReduceSum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
 
@@ -1585,21 +1540,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceProd(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::ReduceProd::Param param;
-  param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReduceProd(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1883,13 +1823,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadTranspose(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
-      loadMean(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MEAN);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_ANY:
-      loadReduceAny(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::ANY);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
-      loadReduceMax(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MAX);
       return;
     case BuiltinOperator::BuiltinOperator_REVERSE_V2:
       loadReverseV2(op, subg);
@@ -1916,7 +1856,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadBatchToSpaceND(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUM:
-      loadReduceSum(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::SUM);
       return;
     case BuiltinOperator::BuiltinOperator_CUSTOM:
       loadCustom(op, subg);
@@ -1972,7 +1912,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadShape(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
-      loadReduceProd(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::PROD);
       return;
     case BuiltinOperator::BuiltinOperator_IF:
       loadIf(op, subg);

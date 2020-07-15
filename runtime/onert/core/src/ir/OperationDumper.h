@@ -66,7 +66,6 @@ public:
   void visit(const operation::Logistic &) override;
   void visit(const operation::LSTM &) override;
   void visit(const operation::MaxPool2D &node) override;
-  void visit(const operation::Mean &) override;
   void visit(const operation::Mul &) override;
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
@@ -75,12 +74,7 @@ public:
   void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::Range &) override;
-  void visit(const operation::ReduceAll &) override;
-  void visit(const operation::ReduceAny &) override;
-  void visit(const operation::ReduceMax &) override;
-  void visit(const operation::ReduceMin &) override;
-  void visit(const operation::ReduceSum &) override;
-  void visit(const operation::ReduceProd &) override;
+  void visit(const operation::Reduce &) override;
   void visit(const operation::ReLU &) override;
   void visit(const operation::ReLU1 &) override;
   void visit(const operation::ReLU6 &) override;
