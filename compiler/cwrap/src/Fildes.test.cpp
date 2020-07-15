@@ -57,9 +57,13 @@ TEST(FildesTest, value_constructor)
 {
   DECLARE_TEMPLATE(name_template);
 
-  cwrap::Fildes fildes{make_temp(name_template)};
+  {
+    cwrap::Fildes fildes{make_temp(name_template)};
 
-  ASSERT_TRUE(cwrap::valid(fildes));
+    ASSERT_TRUE(cwrap::valid(fildes));
+  }
+
+  unlink(name_template);
 }
 
 TEST(FildesTest, move_constructor)
@@ -70,19 +74,24 @@ TEST(FildesTest, move_constructor)
   int src_fd = make_temp(src_template);
   int dst_fd = make_temp(dst_template);
 
-  cwrap::Fildes src{src_fd};
-  cwrap::Fildes dst{dst_fd};
+  {
+    cwrap::Fildes src{src_fd};
+    cwrap::Fildes dst{dst_fd};
 
-  dst = std::move(src);
+    dst = std::move(src);
 
-  ASSERT_FALSE(cwrap::valid(src));
-  ASSERT_TRUE(cwrap::valid(dst));
+    ASSERT_FALSE(cwrap::valid(src));
+    ASSERT_TRUE(cwrap::valid(dst));
 
-  ASSERT_EQ(dst.get(), src_fd);
+    ASSERT_EQ(dst.get(), src_fd);
 
-  // "src_fd" SHOULD be valid, and "dst_fd" SHOULD be closed
-  ASSERT_NE(fcntl(src_fd, F_GETFD), -1);
-  ASSERT_EQ(fcntl(dst_fd, F_GETFD), -1);
+    // "src_fd" SHOULD be valid, and "dst_fd" SHOULD be closed
+    ASSERT_NE(fcntl(src_fd, F_GETFD), -1);
+    ASSERT_EQ(fcntl(dst_fd, F_GETFD), -1);
+  }
+
+  unlink(src_template);
+  unlink(dst_template);
 }
 
 TEST(FildesTest, destructor)
@@ -96,4 +105,6 @@ TEST(FildesTest, destructor)
     cwrap::Fildes fildes{fd};
   }
   ASSERT_EQ(fcntl(fd, F_GETFD), -1);
+
+  unlink(name_template);
 }
