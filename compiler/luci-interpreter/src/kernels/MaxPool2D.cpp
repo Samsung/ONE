@@ -35,6 +35,8 @@ MaxPool2D::MaxPool2D(const Tensor *input, Tensor *output, const Pool2DParams &pa
 
 void MaxPool2D::configure()
 {
+  assert(_input->element_type() == _output->element_type());
+  assert(_input->shape().num_dims() == 4);
   const Shape &input_shape = _input->shape();
   const int32_t batches = input_shape.dim(0);
   const int32_t input_height = input_shape.dim(1);
@@ -52,6 +54,11 @@ void MaxPool2D::configure()
       computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
 
   _output->resize({batches, output_height, output_width, depth});
+  if (_input->element_type() == DataType::U8 || _input->element_type() == DataType::S8)
+  {
+    assert(_input->scale() == _output->scale());
+    assert(_input->zero_point() == _output->zero_point());
+  }
 }
 
 void MaxPool2D::execute() const
