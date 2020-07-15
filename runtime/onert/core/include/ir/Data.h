@@ -73,36 +73,32 @@ private:
 class MMapedData final : public ExternalData
 {
 public:
-  MMapedData(uint8_t *mmap_base, int32_t page_size, const uint8_t *base, size_t size)
-      : ExternalData(base, size), _mmap_base{mmap_base}, _page_size{page_size}
+  MMapedData(int fd, const std::ptrdiff_t mmap_offset, const size_t mmap_size,
+             const std::ptrdiff_t data_offset, const size_t data_size)
+      : ExternalData(nullptr, data_size),
+        _mmap_base(
+            static_cast<uint8_t *>(mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, fd, mmap_offset))),
+        _mmap_size(mmap_size), _offset(data_offset - mmap_offset)
   {
-    using std::ptrdiff_t;
-    // Calculate offset from base address of mapped region
-    ptrdiff_t unaligned_offset_start = base - _mmap_base;
-    ptrdiff_t unaligned_offset_end = unaligned_offset_start + size;
-
-    // Calculated aligned offset from base address of mapped region
-    // munmap accepts memory address which is a multiple of the pagesize
-    _offset_start = ((unaligned_offset_start + (_page_size - 1)) / _page_size) * _page_size;
-    ptrdiff_t aligned_offset_end = (unaligned_offset_end / _page_size) * _page_size;
-
-    _area_size = aligned_offset_end - _offset_start;
+    // DO NOTHING
   }
 
 public:
   ~MMapedData()
   {
-    if (_area_size > 0)
+    if (_mmap_size > 0)
     {
-      munmap(const_cast<uint8_t *>(_mmap_base) + _offset_start, _area_size);
+      munmap(const_cast<uint8_t *>(_mmap_base), _mmap_size);
     }
   }
 
+public:
+  const uint8_t *base(void) const override { return _mmap_base + _offset; }
+
 private:
   const uint8_t *_mmap_base;
-  const int32_t _page_size;
-  std::ptrdiff_t _offset_start;
-  size_t _area_size;
+  size_t _mmap_size;
+  std::ptrdiff_t _offset;
 };
 
 } // namespace ir
