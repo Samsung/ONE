@@ -158,6 +158,11 @@ private:
   void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);
 };
 
+/**
+ * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
+ */
+bool has_dynamic_input(const std::vector<std::shared_ptr<onert::backend::ITensor>> &input_tensors);
+
 } // namespace exec
 } // namespace onert
 
