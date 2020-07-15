@@ -12,9 +12,10 @@ SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GEN_SCRIPT_PATH="${SOURCE_PATH}/gen_h5_explicit_inputs.py"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
 CONFIG_PATH="$1"; shift
+BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
 WORKDIR="$1"; shift
-VIRTUALENV="${WORKDIR}/venv"
+VIRTUALENV="${WORKDIR}/venv_1_13_2"
 
 source "${CONFIG_PATH}"
 
@@ -36,11 +37,12 @@ while [ "$1" != "" ]; do
   TESTED+=("${TESTCASE}")
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
+  TEST_RESULT_FILE="${BIN_PATH}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}.record_minmax.passed"
+  PASSED_TAG="${TEST_RESULT_FILE}.record_minmax.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}_record_minmax.log" <(
+  cat > "${TEST_RESULT_FILE}_record_minmax.log" <(
     exec 2>&1
     set -ex
 
@@ -58,18 +60,18 @@ while [ "$1" != "" ]; do
 
     # Run record-minmax
     "${RECORD_MINMAX_PATH}" \
-      "${TESTCASE_FILE}.fake_quantized.circle" \
-      "${TESTCASE_FILE}.input.h5" \
-      "${TESTCASE_FILE}.minmax_recorded.circle" 
+      "${TEST_RESULT_FILE}.fake_quantized.circle" \
+      "${TEST_RESULT_FILE}.input.h5" \
+      "${TEST_RESULT_FILE}.minmax_recorded.circle" 
 
     # Dump min/max values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
-      "${TESTCASE_FILE}.minmax_recorded.circle" \
-      --tensors_to_hdf5 "${TESTCASE_FILE}.minmax_recorded.circle.h5"
+      "${TEST_RESULT_FILE}.minmax_recorded.circle" \
+      --tensors_to_hdf5 "${TEST_RESULT_FILE}.minmax_recorded.circle.h5"
 
     # Compare result
     "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
-      --input_h5 "${TESTCASE_FILE}.minmax_recorded.circle.h5" \
+      --input_h5 "${TEST_RESULT_FILE}.minmax_recorded.circle.h5" \
       --expect_dir "${SOURCE_PATH}/expected_outputs/${MODELNAME}/${GRANULARITY}/${DTYPE}/record_minmax" \
       --mode record_minmax
 

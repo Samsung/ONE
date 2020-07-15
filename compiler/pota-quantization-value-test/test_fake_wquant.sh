@@ -11,9 +11,10 @@
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
 CONFIG_PATH="$1"; shift
+BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
 WORKDIR="$1"; shift
-VIRTUALENV="${WORKDIR}/venv"
+VIRTUALENV="${WORKDIR}/venv_1_13_2"
 
 source "${CONFIG_PATH}"
 
@@ -35,11 +36,12 @@ while [ "$1" != "" ]; do
   TESTED+=("${TESTCASE}")
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
+  TEST_RESULT_FILE="${BIN_PATH}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}.fake_quantized.passed"
+  PASSED_TAG="${TEST_RESULT_FILE}.fake_quantized.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}_fake_quantization.log" <(
+  cat > "${TEST_RESULT_FILE}_fake_quantization.log" <(
     exec 2>&1
     set -ex
 
@@ -47,16 +49,16 @@ while [ "$1" != "" ]; do
     "${CIRCLE_QUANTIZER_PATH}" \
       --quantize_dequantize_weights float32 "${DTYPE}" "${GRANULARITY}" \
       "${WORKDIR}/${MODELNAME}.circle" \
-      "${TESTCASE_FILE}.fake_quantized.circle" 
+      "${TEST_RESULT_FILE}.fake_quantized.circle" 
 
     # Dump weights values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
-      "${TESTCASE_FILE}.fake_quantized.circle" \
-      --tensors_to_hdf5 "${TESTCASE_FILE}.fake_quantized.circle.h5"
+      "${TEST_RESULT_FILE}.fake_quantized.circle" \
+      --tensors_to_hdf5 "${TEST_RESULT_FILE}.fake_quantized.circle.h5"
 
     # Compare result
     "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
-      --input_h5 "${TESTCASE_FILE}.fake_quantized.circle.h5" \
+      --input_h5 "${TEST_RESULT_FILE}.fake_quantized.circle.h5" \
       --expect_dir "${SOURCE_PATH}/expected_outputs/${MODELNAME}/${GRANULARITY}/${DTYPE}/fake_quantization" \
       --mode fake_quantization
 
