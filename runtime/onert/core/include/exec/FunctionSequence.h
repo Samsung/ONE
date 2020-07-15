@@ -24,8 +24,8 @@
 #include "exec/IFunction.h"
 #include "exec/DynamicShapeInference.h"
 #include "ir/Operations.h"
-
-#include <memory>
+#include "backend/ITensorRegistry.h"
+#include "backend/IDynamicTensorManager.h"
 
 namespace onert
 {
@@ -72,22 +72,24 @@ public:
     }
   }
 
-public: // context for dynamic tensor
+public: // methods related to dynamic tensor
+  struct DynamicTensorCtx
+  {
+    const ir::OpSequence *op_seq = nullptr;
+    const ir::Operations *operations = nullptr;
+    std::shared_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer = nullptr;
+    std::shared_ptr<backend::ITensorRegistry> tensor_registry = nullptr;
+    backend::IDynamicTensorManager *dynamic_tensor_manager = nullptr;
+  };
+
   /**
    * @brief Prepare to run FunctionSequence which "might" handle dynamic tensor
    * @note  Calling this does not mean that run() will handle dynamic tensor.
    *        enableDynamicShapeInferer(true) will make run() will handle dynamic tensor.
    */
-  void setDynamicTensorContext(const ir::OpSequence *op_seq, const ir::Operations *operations,
-                               std::unique_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer,
-                               std::shared_ptr<backend::ITensorRegistry> tensor_registry,
-                               backend::IDynamicTensorManager *dynamic_tensor_manager)
+  void dynamic_tensor_ctx(std::shared_ptr<DynamicTensorCtx> &dynamic_tensor_ctx)
   {
-    _op_seq = op_seq;
-    _operations = operations;
-    _dynamic_shape_inferer = std::move(dynamic_shape_inferer);
-    _tensor_registry = tensor_registry;
-    _dynamic_tensor_manager = dynamic_tensor_manager;
+    _dynamic_tensor_ctx = dynamic_tensor_ctx;
   }
 
   /**
@@ -97,40 +99,12 @@ public: // context for dynamic tensor
    */
   void enableDynamicShapeInferer(bool enable) { _enable_dynamic_shape_inferer = enable; }
 
-  const ir::OpSequence *opSeq()
-  {
-    assert(_op_seq);
-    return _op_seq;
-  }
-
-  const ir::Operations *operations()
-  {
-    assert(_operations);
-    return _operations;
-  }
-
-  std::shared_ptr<backend::ITensorRegistry> &tensorRegistry()
-  {
-    assert(_tensor_registry.get());
-    return _tensor_registry;
-  }
-
-  backend::IDynamicTensorManager *dynamicTensorManager()
-  {
-    assert(_dynamic_tensor_manager);
-    return _dynamic_tensor_manager;
-  }
-
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
 
 protected: // context to run this sequence when this sequence may handle dynamic tensors
   bool _enable_dynamic_shape_inferer = false;
-  const ir::OpSequence *_op_seq = nullptr;
-  const ir::Operations *_operations = nullptr;
-  std::unique_ptr<exec::DynamicShapeInferer> _dynamic_shape_inferer = nullptr;
-  std::shared_ptr<backend::ITensorRegistry> _tensor_registry = nullptr;
-  backend::IDynamicTensorManager *_dynamic_tensor_manager = nullptr;
+  std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
 };
 
 //

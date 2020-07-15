@@ -29,21 +29,21 @@ void FunctionSequence::run()
 {
   if (_enable_dynamic_shape_inferer)
   {
-    if (_op_seq->size() != _functions.size())
+    if (_dynamic_tensor_ctx->op_seq->size() != _functions.size())
       throw std::runtime_error("operation and functions should be mapped one by one");
 
-    auto op_seq_iter = _op_seq->begin();
+    auto op_seq_iter = _dynamic_tensor_ctx->op_seq->begin();
     for (const auto &function : _functions)
     {
       // set shape of output and allocate memory when needed
-      auto &op = _operations->at(*op_seq_iter);
-      op.accept(*_dynamic_shape_inferer);
+      auto &op = _dynamic_tensor_ctx->operations->at(*op_seq_iter);
+      op.accept(*_dynamic_tensor_ctx->dynamic_shape_inferer);
 
       // run kernel
       function->run();
 
       // deallocate input tensors which is no longer used
-      _dynamic_tensor_manager->deallocInput(*op_seq_iter);
+      _dynamic_tensor_ctx->dynamic_tensor_manager->deallocInput(*op_seq_iter);
 
       op_seq_iter++;
     }
