@@ -25,12 +25,35 @@ namespace onert
 namespace exec
 {
 
-// for OpSequence only with static tensor
 void FunctionSequence::run()
 {
-  for (const auto &function : _functions)
+  if (_enable_dynamic_shape_inferer)
   {
-    function->run();
+    if (_op_seq->size() != _functions.size())
+      throw std::runtime_error("operation and functions should be mapped one by one");
+
+    auto op_seq_iter = _op_seq->begin();
+    for (const auto &function : _functions)
+    {
+      // set shape of output and allocate memory when needed
+      auto &op = _operations->at(*op_seq_iter);
+      op.accept(*_dynamic_shape_inferer);
+
+      // run kernel
+      function->run();
+
+      // deallocate input tensors which is no longer used
+      _dynamic_tensor_manager->deallocInput(*op_seq_iter);
+
+      op_seq_iter++;
+    }
+  }
+  else
+  {
+    for (const auto &function : _functions)
+    {
+      function->run();
+    }
   }
 }
 
@@ -55,6 +78,7 @@ void FunctionSequence::iterate(const std::function<void(IFunction &)> &fn)
   }
 }
 
+// TODO Remove this
 void FunctionSequenceForDynamicBackend::run()
 {
   if (_op_seq.size() != _functions.size())
