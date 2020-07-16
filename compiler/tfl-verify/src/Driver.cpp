@@ -16,9 +16,8 @@
 
 #include "VerifyFlatBuffers.h"
 
-#include <stdex/Memory.h>
-
 #include <iostream>
+#include <memory>
 #include <string>
 
 int entry(int argc, char **argv)
@@ -30,7 +29,7 @@ int entry(int argc, char **argv)
     std::cerr << "USAGE: " << argv[0] << " [tflite]" << std::endl;
     return 255;
   }
-  auto verifier = stdex::make_unique<VerifyFlatbuffers>();
+  auto verifier = std::make_unique<VerifyFlatbuffers>();
 
   std::string model_file = argv[argc - 1];
 
