@@ -39,7 +39,7 @@ public:
   }
 
 public:
-  void minFloat32();
+  template <typename T> void minimum();
 
   void minQuant8();
 

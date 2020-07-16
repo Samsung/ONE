@@ -276,6 +276,7 @@ GeneratedTests.minimum_broadcast
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.minimum_overflow
+GeneratedTests.minimum_quant8_nnfw
 GeneratedTests.minimum_simple
 GeneratedTests.minimum_simple_quant8
 GeneratedTests.mul_broadcast_quant8
