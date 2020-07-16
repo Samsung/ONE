@@ -44,7 +44,7 @@ public:
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Mul &) override;
-  void visit(const ir::operation::ReduceSum &) override;
+  void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Squeeze &) override;
   void visit(const ir::operation::Tanh &) override;
@@ -60,7 +60,6 @@ public:
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Logistic &) override;
-  void visit(const ir::operation::ReduceMax &) override;
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::LogicalAnd &) override;
   void visit(const ir::operation::LSTM &) override;
@@ -91,10 +90,8 @@ public:
   void visit(const ir::operation::Abs &) override;
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::Dequantize &) override;
-  void visit(const ir::operation::Mean &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::DepthToSpace &) override;
-  void visit(const ir::operation::ReduceMin &) override;
   void visit(const ir::operation::Split &) override;
   void visit(const ir::operation::Unpack &) override;
   void visit(const ir::operation::Pad &) override;

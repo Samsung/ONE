@@ -45,7 +45,6 @@ public:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::Dequantize &) override;
   void visit(const ir::operation::MaxPool2D &) override;
-  void visit(const ir::operation::Mean &) override;
   void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
@@ -68,9 +67,7 @@ public:
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::PReLU &) override;
-  void visit(const ir::operation::ReduceMax &) override;
-  void visit(const ir::operation::ReduceMin &) override;
-  void visit(const ir::operation::ReduceSum &) override;
+  void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::ReLU &) override;
   void visit(const ir::operation::ReLU1 &) override;
   void visit(const ir::operation::ReLU6 &) override;

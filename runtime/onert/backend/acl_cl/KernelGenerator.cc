@@ -417,12 +417,13 @@ void KernelGenerator::visit(const ir::operation::Mul &node)
       asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
 }
 
-void KernelGenerator::visit(const ir::operation::ReduceSum &node)
+void KernelGenerator::visit(const ir::operation::Reduce &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
+  const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
   const auto keep_dims{node.param().keep_dims};
+  const auto reduce_type = node.param().reduce_type;
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
@@ -432,13 +433,29 @@ void KernelGenerator::visit(const ir::operation::ReduceSum &node)
   const auto input_rank = _ctx.at(input_index).shape().rank();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = input_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, input_rank, frontend_layout, backend_layout);
 
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+  std::unique_ptr<arm_compute::IFunction> fn;
+  if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
+  {
+    auto l = std::make_unique<::arm_compute::CLReduceMean>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), acl_axes, keep_dims,
-                ::arm_compute::ReduceOperation::SUM);
+    const auto acl_axes =
+        acl_common::asCoordinates(axes, input_rank, frontend_layout, backend_layout);
+    l->configure(input_alloc->handle(), acl_axes, keep_dims, output_alloc->handle());
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::CLReduceOperation>(
+        _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+
+    const auto acl_axes = acl_common::asSet(axes, input_rank, frontend_layout, backend_layout);
+    l->configure(input_alloc->handle(), output_alloc->handle(), acl_axes, keep_dims,
+                 acl_common::convertReduceType(reduce_type));
+
+    fn = std::move(l);
+  }
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1030,34 +1047,6 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
       cell_state_in_alloc->handle(), scratch_buffer_alloc->handle(),
       output_state_out_alloc->handle(), cell_state_out_alloc->handle(), output_alloc->handle(),
       lstm_params, act_info, cell_clip, projection_clip);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReduceMax &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMax::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(output_index).get();
-  auto ifm_alloc = _tensor_builder->at(input_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(input_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), acl_axes, keep_dims,
-                arm_compute::ReduceOperation::MAX);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1812,33 +1801,6 @@ void KernelGenerator::visit(const ir::operation::Dequantize &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Mean &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::Mean::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto reduce_axes =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceMean>();
-
-  fn->configure(ifm_alloc->handle(), reduce_axes, keep_dims, ofm_alloc->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1879,34 +1841,6 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto fn = std::make_unique<::arm_compute::CLDepthToSpace>();
 
   fn->configure(input_alloc->handle(), output_alloc->handle(), block_size);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReduceMin &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), acl_axes, keep_dims,
-                ::arm_compute::ReduceOperation::MIN);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
