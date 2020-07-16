@@ -1,4 +1,7 @@
 /*
+ * Copyright (c) 2018 Mozilla
+ * Copyright (c) 2008-2011 Octasic Inc.
+ * Copyright (c) 2012-2017 Jean-Marc Valin
  * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
@@ -22,6 +25,8 @@
 #include "cker/Types.h"
 #include "cker/Utils.h"
 #include "cker/TensorUtils.h"
+#include "cker/index_data.h"
+#include "cker/weight_data.h"
 
 namespace nnfw
 {
@@ -54,6 +59,37 @@ public:
   std::vector<int32_t> accum_scratch;
 };
 
+static void sparse_sgemv_accum16(float *out, const float *w, int rows, const int *idx, const float *x) {
+    int i, j;
+    for (i = 0; i < rows; i += 16) {
+        int cols;
+        cols = *idx++;
+        for (j = 0; j < cols; j++) {
+            float * y;
+            float xj;
+            xj = x[*idx++];
+            y = &out[i];
+            y[0] += w[0] * xj;
+            y[1] += w[1] * xj;
+            y[2] += w[2] * xj;
+            y[3] += w[3] * xj;
+            y[4] += w[4] * xj;
+            y[5] += w[5] * xj;
+            y[6] += w[6] * xj;
+            y[7] += w[7] * xj;
+            y[8] += w[8] * xj;
+            y[9] += w[9] * xj;
+            y[10] += w[10] * xj;
+            y[11] += w[11] * xj;
+            y[12] += w[12] * xj;
+            y[13] += w[13] * xj;
+            y[14] += w[14] * xj;
+            y[15] += w[15] * xj;
+            w += 16;
+        }
+    }
+}
+
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
                            const float *input_data, const Shape &weights_shape,
                            const float *weights_data, const Shape &, const float *bias_data,
@@ -64,22 +100,32 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
   const int batch_size = total_input_size / input_size;
   const int num_units = weights_shape.Dims(0);
 
-  // Output = bias if bias tensor exists.
-  if (bias_data)
+        // Output = bias if bias tensor exists.
+   if (bias_data)
+   {
+     VectorBatchVectorAssign(bias_data, num_units, batch_size, output_data);
+   }
+   else
+   {
+     ZeroVector(output_data, batch_size * num_units);
+   }
+
+  // if weight shape is 1152 * 384, use sparse data.
+  if (num_units == 1152 && input_size == 384)
   {
-    VectorBatchVectorAssign(bias_data, num_units, batch_size, output_data);
+    const float *weights = weight_data;
+    const int *idx = index_data;
+    sparse_sgemv_accum16(output_data, weights, num_units, idx, input_data);
   }
   else
   {
-    ZeroVector(output_data, batch_size * num_units);
+    // Compute output += weight * input
+    MatrixBatchVectorMultiplyAccumulate(weights_data, num_units, input_size, input_data, batch_size,
+                                        output_data, /*result_stride=*/1);
   }
-
-  // Compute output += weight * input
-  MatrixBatchVectorMultiplyAccumulate(weights_data, num_units, input_size, input_data, batch_size,
-                                      output_data, /*result_stride=*/1);
-
-  // Apply activation function
+    // Apply activation function
   ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+
 }
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
