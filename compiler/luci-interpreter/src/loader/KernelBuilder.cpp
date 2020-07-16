@@ -431,13 +431,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
 {
   assert(node->arity() == 4);
 
-  if (dynamic_cast<const luci::CircleConst *>(node->begin()) == nullptr)
-    throw std::runtime_error("Dynamic begin is not yet supported.");
-  if (dynamic_cast<const luci::CircleConst *>(node->end()) == nullptr)
-    throw std::runtime_error("Dynamic end is not yet supported.");
-  if (dynamic_cast<const luci::CircleConst *>(node->strides()) == nullptr)
-    throw std::runtime_error("Dynamic strides is not yet supported.");
-
   const Tensor *input = getInputTensor(node->input());
   const Tensor *begin = getInputTensor(node->begin());
   const Tensor *end = getInputTensor(node->end());
