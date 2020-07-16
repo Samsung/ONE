@@ -157,6 +157,9 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
 
+  // TODO write code to allocate memory for static tensors by calling
+  //     tensor_builder.allocateAtRunTime()
+
   assert(src_tensors.size() == _graph.getInputs().size());
   assert(src_tensors.size() == _input_tensors.size());
   for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
@@ -202,6 +205,9 @@ void ExecutorBase::execute(const IODescription &desc)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+
+  // TODO write code to allocate memory for static tensors by calling
+  //     tensor_builder.allocateAtRunTime()
 
   std::vector<std::unique_ptr<ISource>> sources{_graph.getInputs().size()};
   std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};
