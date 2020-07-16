@@ -18,6 +18,7 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
+#include <misc/polymorphic_downcast.h>
 #include "PermuteLayer.h"
 
 namespace onert
@@ -55,12 +56,10 @@ void WhileLayer::run()
   // // Run cond subg
   // If there is no loop copy "_input_tensors" -> "_dst_tensors", else copy "cond subg inputs" ->
   // "_dst_tensors"
-  auto cond_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_cond_subg_index).get());
-  auto body_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_body_subg_index).get());
-  if ((cond_exec == nullptr) || (body_exec == nullptr))
-  {
-    throw std::runtime_error{"While: Invalid condition or body"};
-  }
+  auto cond_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
+      _executor_map->at(_cond_subg_index).get());
+  auto body_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
+      _executor_map->at(_body_subg_index).get());
 
   const auto &cond_graph = cond_exec->graph();
   const auto &cond_inputs_dyn_alloc = cond_exec->getInputsDynamicAllocInfo();
