@@ -36,7 +36,8 @@ public:
 
   void initialize(const std::string &input_model_path);
 
-  void profileData(const std::string &input_data_path);
+  void profileData(const std::string &mode, const std::string &input_data_path,
+                   float min_percentile, float max_percentile);
 
   void saveModel(const std::string &output_model_path);
 
