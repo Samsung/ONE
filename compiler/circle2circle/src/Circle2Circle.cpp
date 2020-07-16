@@ -129,7 +129,17 @@ int entry(int argc, char **argv)
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data = file_loader.load();
+  std::vector<char> model_data;
+
+  try
+  {
+    model_data = file_loader.load();
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cerr << err.what() << std::endl;
+    return EXIT_FAILURE;
+  }
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
   {
