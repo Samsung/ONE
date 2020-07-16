@@ -143,6 +143,12 @@ private:
   }
 
 protected:
+  /**
+   * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
+   */
+  bool hasDynamicInput();
+
+protected:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<ir::LoweredGraph> _lowered_graph;

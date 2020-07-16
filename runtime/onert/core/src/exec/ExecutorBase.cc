@@ -321,5 +321,15 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
   }
 }
 
+bool ExecutorBase::hasDynamicInput()
+{
+  for (auto &tensor : _input_tensors)
+  {
+    if (tensor->is_dynamic())
+      return true;
+  }
+  return false;
+}
+
 } // namespace exec
 } // namespace onert
