@@ -12,5 +12,6 @@ target_link_libraries(circle-quantizer luci_import)
 target_link_libraries(circle-quantizer luci_service)
 target_link_libraries(circle-quantizer luci_pass)
 target_link_libraries(circle-quantizer luci_export)
+target_link_libraries(circle-quantizer arser)
 
 install(TARGETS circle-quantizer DESTINATION bin)
