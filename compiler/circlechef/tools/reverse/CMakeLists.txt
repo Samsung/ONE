@@ -1,4 +1,5 @@
 add_executable(circlechef-reverse Driver.cpp)
+target_link_libraries(circlechef-reverse arser)
 target_link_libraries(circlechef-reverse circlechef_circle)
 target_link_libraries(circlechef-reverse safemain)
 target_link_libraries(circlechef-reverse foder)
