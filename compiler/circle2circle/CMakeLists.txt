@@ -19,6 +19,7 @@ target_link_libraries(circle2circle luci_import)
 target_link_libraries(circle2circle luci_service)
 target_link_libraries(circle2circle luci_pass)
 target_link_libraries(circle2circle luci_export)
+target_link_libraries(circle2circle arser)
 
 install(TARGETS circle2circle DESTINATION bin)
 
@@ -44,3 +45,4 @@ target_link_libraries(circle2circle_test luci_import)
 target_link_libraries(circle2circle_test luci_service)
 target_link_libraries(circle2circle_test luci_pass)
 target_link_libraries(circle2circle_test luci_export)
+target_link_libraries(circle2circle_test arser)
