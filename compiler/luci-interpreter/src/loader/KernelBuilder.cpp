@@ -36,6 +36,7 @@
 #include "kernels/Pad.h"
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
+#include "kernels/SpaceToDepth.h"
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
 #include "kernels/Unpack.h"
@@ -411,6 +412,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
   params.beta = node->beta();
 
   return std::make_unique<kernels::Softmax>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSpaceToDepth *node)
+{
+  assert(node->arity() == 1);
+  const Tensor *input = getInputTensor(node->input());
+
+  Tensor *output = getOutputTensor(node);
+
+  SpaceToDepthParams params{};
+  params.block_size = node->block_size();
+
+  return std::make_unique<kernels::SpaceToDepth>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
