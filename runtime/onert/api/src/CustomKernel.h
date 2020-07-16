@@ -35,6 +35,7 @@ class Kernel : public ::onert::exec::IFunction
 {
 public:
   explicit Kernel(nnfw_custom_eval evalFunction);
+  ~Kernel();
 
   nnfw_custom_kernel_params _params;
   char *_userdata;
