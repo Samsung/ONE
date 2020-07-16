@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <arser/arser.h>
 #include <circleread/Model.h>
 #include <circledump/Dump.h>
 
@@ -21,30 +22,37 @@
 
 int entry(int argc, char **argv)
 {
-  if (argc != 2)
+  arser::Arser arser;
+  arser.add_argument("circle").type(arser::DataType::STR).help("Circle file path to dump");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [circle]" << std::endl;
-    return 255;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cerr << err.what() << '\n';
+    std::cout << arser;
+    return 0;
   }
 
+  std::string circle_path = arser.get<std::string>("circle");
   // Load Circle model from a circle file
-  std::unique_ptr<circleread::Model> model = circleread::load_circle(argv[1]);
+  std::unique_ptr<circleread::Model> model = circleread::load_circle(circle_path);
   if (model == nullptr)
   {
-    std::cerr << "ERROR: Failed to load circle '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load circle '" << circle_path << "'" << std::endl;
     return 255;
   }
 
   const circle::Model *circlemodel = model->model();
   if (circlemodel == nullptr)
   {
-    std::cerr << "ERROR: Failed to load circle '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load circle '" << circle_path << "'" << std::endl;
     return 255;
   }
 
-  std::cout << "Dump: " << argv[1] << std::endl << std::endl;
+  std::cout << "Dump: " << circle_path << std::endl << std::endl;
 
   std::cout << circlemodel << std::endl;
 
