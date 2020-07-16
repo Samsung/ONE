@@ -18,9 +18,8 @@
 #include "benchmark/Phases.h"
 #include "benchmark/Types.h"
 
-#include <thread>
-#include <chrono>
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <sys/time.h>
 
