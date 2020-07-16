@@ -28,9 +28,9 @@ namespace controlflow
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()},
+    : _tensor_reg{new cpu_common::TensorRegistry()}, _user_tensor_reg{new UserTensorRegistry()},
       _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg, _user_tensor_reg)}
 {
   /* empty */
 }
@@ -95,7 +95,16 @@ void TensorBuilder::allocateAtRunTime()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _tensor_reg->getITensor(ind);
+  // NOTE Find from User Tensor Registry first
+  // FIXME There may be both user tensor and managed tensor for a `ind` which is a waste
+  auto user_tensor = _user_tensor_reg->getITensor(ind);
+  auto tensor = _tensor_reg->getITensor(ind);
+  if (user_tensor)
+  {
+    return user_tensor;
+  }
+  else
+    return tensor;
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
@@ -113,6 +122,12 @@ std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
 {
   return std::move(_dynamic_tensor_mgr);
+}
+
+void TensorBuilder::setUserTensor(const ir::OperandIndex &ind,
+                                  const std::shared_ptr<UserTensor> &tensor)
+{
+  _user_tensor_reg->setManagedTensor(ind, tensor);
 }
 
 } // namespace controlflow
