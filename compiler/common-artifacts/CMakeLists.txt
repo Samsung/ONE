@@ -43,7 +43,7 @@ add_custom_target(common_artifacts_python_deps ALL
 nnas_find_package(HDF5 QUIET)
 
 if(NOT HDF5_FOUND)
-  message("Couldn't find a package HDF5")
+  message(STATUS "Build common-artifacts: FAILED (missing HDF5)")
   return()
 endif(NOT HDF5_FOUND)
 
