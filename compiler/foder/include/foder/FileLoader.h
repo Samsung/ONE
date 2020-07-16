@@ -37,7 +37,10 @@ public:
   {
     std::ifstream file(_path, std::ios::binary | std::ios::in);
     if (!file.good())
-      throw std::runtime_error("Couldn't open file.");
+    {
+      std::string errmsg = "ERROR: Failed to open file: " + _path;
+      throw std::runtime_error(errmsg.c_str());
+    }
 
     file.unsetf(std::ios::skipws);
 
@@ -51,7 +54,10 @@ public:
     // read the data
     file.read(data.data(), fileSize);
     if (file.fail())
-      throw std::runtime_error("Couldn't read file.");
+    {
+      std::string errmsg = "ERROR: Failed to read file: " + _path;
+      throw std::runtime_error(errmsg.c_str());
+    }
 
     return data;
   }
