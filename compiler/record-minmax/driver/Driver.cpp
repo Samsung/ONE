@@ -58,7 +58,16 @@ int entry(const int argc, char **argv)
       .type(arser::DataType::STR)
       .help("Record mode. percentile (default) or moving_average");
 
-  arser.parse(argc, argv);
+  try
+  {
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
+  }
 
   auto input_model_path = arser.get<std::string>("--input_model");
   auto input_data_path = arser.get<std::string>("--input_data");
