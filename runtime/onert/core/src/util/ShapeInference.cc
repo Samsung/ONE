@@ -27,8 +27,6 @@
 #include <sstream>
 #include <cmath>
 
-// TODO Move this file to runtime/onert/core/src/util
-
 namespace onert
 {
 namespace shape_inference
@@ -639,6 +637,52 @@ ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins, c
     }
     out_shape.dim(idx) = size;
   }
+
+  return out_shape;
+}
+
+ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
+                                   const ir::Shape &padding_shape, const int32_t *block_shape_data,
+                                   const int32_t *padding_data)
+{
+  const uint32_t rank = input_shape.rank();
+  ir::Shape out_shape(rank);
+
+  // Currently, only 4D NHWC input/output op_context are supported.
+  // The 4D array need to have exactly 2 spatial dimensions.
+  // TODO(nupurgarg): Support arbitrary dimension in SpaceToBatchND.
+  const int32_t kInputDimensionNum = 4;
+  const int32_t kBlockSizeDimensionNum = 1;
+  const int32_t kSpatialDimensionNum = 2;
+
+  UNUSED_RELEASE(kInputDimensionNum);
+  UNUSED_RELEASE(kBlockSizeDimensionNum);
+  UNUSED_RELEASE(block_shape_shape);
+  UNUSED_RELEASE(padding_shape);
+
+  assert(block_shape_shape.rank() == kBlockSizeDimensionNum);
+  assert(block_shape_shape.dim(0) == kSpatialDimensionNum);
+  assert(padding_shape.dim(0) == kSpatialDimensionNum);
+  assert(padding_shape.dim(1) == 2); // fixed, meaning left/right padding for each element
+  assert(padding_shape.rank() == 2); // fixed, meaning dimension(dim 0) and padding length(dim 1)
+
+  // Ensures the input height and width (with padding) is a multiple of block
+  // shape height and width.
+  for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
+  {
+    int final_dim_size =
+        (input_shape.dim(dim + 1) + padding_data[dim * 2] + padding_data[dim * 2 + 1]);
+
+    assert(final_dim_size % block_shape_data[dim] == 0);
+
+    out_shape.dim(dim + 1) = final_dim_size / block_shape_data[dim];
+  }
+
+  const int output_batch_size = input_shape.dim(0) * block_shape_data[0] * block_shape_data[1];
+  const int output_channel_size = input_shape.dim(3);
+
+  out_shape.dim(0) = output_batch_size;
+  out_shape.dim(3) = output_channel_size;
 
   return out_shape;
 }

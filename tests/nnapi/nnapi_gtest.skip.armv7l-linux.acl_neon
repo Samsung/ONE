@@ -189,6 +189,7 @@ GeneratedTests.slice_dynamic_nnfw
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
 GeneratedTests.softmax_dynamic_nnfw
+GeneratedTests.space_to_batch_dynamic_float_nnfw
 GeneratedTests.split_dynamic_float_nnfw
 GeneratedTests.sqrt_
 GeneratedTests.squared_difference_ex_dynamic_nnfw
