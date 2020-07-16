@@ -62,6 +62,10 @@ DataType toInternalDtype(const H5::DataType &h5_type)
   return DataType::Unknown;
 }
 
+void readTensorData(H5::DataSet &tensor, uint8_t *buffer)
+{
+  tensor.read(buffer, H5::PredType::NATIVE_UINT8);
+}
 void readTensorData(H5::DataSet &tensor, float *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_FLOAT);
@@ -84,6 +88,14 @@ int32_t HDF5Importer::numInputs(int32_t record_idx)
 {
   auto records = _value_grp.openGroup(std::to_string(record_idx));
   return records.getNumObjs();
+}
+
+void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffer)
+{
+  auto record = _value_grp.openGroup(std::to_string(record_idx));
+  auto tensor = record.openDataSet(std::to_string(input_idx));
+
+  readTensorData(tensor, static_cast<uint8_t *>(buffer));
 }
 
 void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
