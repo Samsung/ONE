@@ -238,7 +238,7 @@ public:
         required_oarg_num++;
     }
     // parse argument
-    for (uint32_t c = 1; c < argc;)
+    for (int c = 1; c < argc;)
     {
       std::string arg_name{argv[c++]};
       auto arg = _arg_map.find(arg_name);
