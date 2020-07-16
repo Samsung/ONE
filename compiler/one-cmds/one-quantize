@@ -25,6 +25,8 @@ usage()
   echo "    --input_dtype     Input data type (supported: float32, default=float32)"
   echo "    --quantized_dtype Output quantized data type (supported: uint8, default=uint8)"
   echo "    --granularity     Quantize granularity (supported: layer, default=layer)"
+  echo "    --min_percentile  Minimum percentile (0.0~100.0, default=1.0)"
+  echo "    --max_percentile  Maximum percentile (0.0~100.0, default=99.0)"
   echo "    --input_path <path/to/input/circle>"
   echo "    --input_data <path/to/input/data>"
   echo "    --output_path <path/to/output/circle>"
@@ -34,6 +36,8 @@ usage()
 INPUT_DTYPE=float32
 QUANTIZED_DTYPE=uint8
 GRANULARITY=layer
+MIN_PERCENTILE=1
+MAX_PERCENTILE=99
 
 # Parse command-line arguments
 #
@@ -55,6 +59,14 @@ while [ "$#" -ne 0 ]; do
       ;;
     '--granularity')
       GRANULARITY="$2"
+      shift 2
+      ;;
+    '--min_percentile')
+      MIN_PERCENTILE="$2"
+      shift 2
+      ;;
+    '--max_percentile')
+      MAX_PERCENTILE="$2"
       shift 2
       ;;
 
@@ -120,6 +132,7 @@ echo " " >> "${OUTPUT_PATH}.log"
 "${DRIVER_PATH}/record-minmax" \
 --input_model "${TMPDIR}/${MODEL_NAME}.1.circle" \
 --input_data "${INPUT_DATA}" \
+--min_percentile ${MIN_PERCENTILE} --max_percentile ${MAX_PERCENTILE} \
 --output_model "${TMPDIR}/${MODEL_NAME}.2.circle" >> "${OUTPUT_PATH}.log" 2>&1
 
 echo " " >> "${OUTPUT_PATH}.log"
