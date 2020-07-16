@@ -321,9 +321,9 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
   }
 }
 
-bool hasDynamicTensor(const std::vector<std::shared_ptr<onert::backend::ITensor>> &input_tensors)
+bool ExecutorBase::hasDynamicInput()
 {
-  for (auto &tensor : input_tensors)
+  for (auto &tensor : _input_tensors)
   {
     if (tensor->is_dynamic())
       return true;
