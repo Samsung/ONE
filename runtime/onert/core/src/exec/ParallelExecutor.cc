@@ -127,7 +127,7 @@ void ParallelExecutor::executeImpl()
       notify(job_index);
     };
 
-    _scheduler->assign(std::make_unique<HookFunction>(job->fn(), setup, teardown), backend);
+    _scheduler->assign(std::make_unique<HookFunction>(job->fn_seq(), setup, teardown), backend);
     _finished_jobs[job_index] = std::move(job);
   }
 

@@ -25,9 +25,9 @@ namespace onert
 namespace exec
 {
 
-Job::Job(uint32_t index, IFunction *fn) : _index{index}, _fn{fn} {}
+Job::Job(uint32_t index, FunctionSequence *fn_seq) : _index{index}, _fn_seq{fn_seq} {}
 
-void Job::run() { _fn->run(); }
+void Job::run() { _fn_seq->run(); }
 
 } // namespace exec
 } // namespace onert
