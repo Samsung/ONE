@@ -1896,6 +1896,21 @@ OperationFactory::OperationFactory()
   //  1 -> int32, int64, An 1-D int tensor Index
   _map[ANEURALNETWORKS_BROADCAST_TO_EX] = createSimpleBinaryOp<operation::BroadcastTo>;
 
+  _map[ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX] = [](const OperationFactory::Param &init_param,
+                                                         Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Shape Tensor Index
+    //  1 -> int32, int64, An 1-D int tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    return new operation::StatelessRandomUniform{inputs, outputs};
+  };
+
   _map[ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX] = [](const OperationFactory::Param &init_param,
                                                     Operands &operands) {
     // Each input should be interpreted as follows:

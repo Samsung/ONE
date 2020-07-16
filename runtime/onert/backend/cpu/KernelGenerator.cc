@@ -78,6 +78,7 @@
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
 #include "ops/QuantizeLayer.h"
+#include "ops/StatelessRandomUniformLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1383,7 +1384,22 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
   auto fn = std::make_unique<ops::SpaceToDepthLayer>();
 
   fn->configure(input_tensor, block_size, output_tensor);
+  _return_fn = std::move(fn);
+}
 
+void KernelGenerator::visit(const ir::operation::StatelessRandomUniform &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto shape_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SHAPE)};
+  const auto seed_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SEED)};
+
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto shape_alloc = _tensor_builder->portableAt(shape_index).get();
+  auto seed_alloc = _tensor_builder->portableAt(seed_index).get();
+
+  auto fn = std::make_unique<ops::StatelessRandomUniformLayer>();
+
+  fn->configure(shape_alloc, seed_alloc, output_alloc);
   _return_fn = std::move(fn);
 }
 

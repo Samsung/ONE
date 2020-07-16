@@ -534,6 +534,7 @@ GeneratedTests.squeeze_float_1
 GeneratedTests.squeeze_float_1_relaxed
 GeneratedTests.squeeze_quant8_1
 GeneratedTests.squeeze_relaxed
+GeneratedTests.stateless_random_uniform_ex_nnfw
 GeneratedTests.strided_slice
 GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.strided_slice_float_1

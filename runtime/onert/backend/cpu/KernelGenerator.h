@@ -104,6 +104,7 @@ public:
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::Quantize &) override;
   void visit(const ir::operation::SpaceToDepth &) override;
+  void visit(const ir::operation::StatelessRandomUniform &) override;
 
 private:
   const ir::Operands &_ctx;

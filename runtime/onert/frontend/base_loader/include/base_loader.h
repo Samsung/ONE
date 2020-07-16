@@ -173,6 +173,7 @@ protected:
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadQuantize(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
+  void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1143,6 +1144,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const Operator *op,
+                                                                          ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::StatelessRandomUniform(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1162,7 +1175,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     BatchMatMul,
     Einsum,
     BroadcastTo,
-    FusedBatchNorm
+    FusedBatchNorm,
+    StatelessRandomUniform
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1174,6 +1188,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"Einsum", BuiltinOP::Einsum},
       {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
       {"BroadcastTo", BuiltinOP::BroadcastTo},
+      {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
   };
 
   try
@@ -1202,6 +1217,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
+        break;
+      case BuiltinOP::StatelessRandomUniform:
+        loadStatelessRandomUniform(op, subg);
         break;
       default:
         throw std::runtime_error{
