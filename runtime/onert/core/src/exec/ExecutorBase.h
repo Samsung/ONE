@@ -161,7 +161,7 @@ private:
 /**
  * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
  */
-bool has_dynamic_input(const std::vector<std::shared_ptr<onert::backend::ITensor>> &input_tensors);
+bool hasDynamicTensor(const std::vector<std::shared_ptr<onert::backend::ITensor>> &input_tensors);
 
 } // namespace exec
 } // namespace onert
