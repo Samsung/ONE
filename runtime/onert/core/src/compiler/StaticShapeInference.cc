@@ -924,6 +924,46 @@ void StaticShapeInferer::visit(const ir::operation::Softmax &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Softmax::Input::INPUT));
 }
 
+void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
+{
+  const auto output_index = op.getOutputs().at(0);
+  const auto input_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
+  const auto block_shape_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
+  const auto padding_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
+
+  ir::Operand &output = _operands.at(output_index);
+  const auto &input = _operands.at(input_idx);
+  const auto &block_shape = _operands.at(block_shape_idx);
+  const auto &padding = _operands.at(padding_idx);
+
+  if (input.info().isDynamic() || block_shape.info().isDynamic() || padding.info().isDynamic())
+  {
+    output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
+  // Whether input is constant or not does not affect whether output is dynamic or not
+  if (!(block_shape.isConstant() && padding.isConstant())) // TODO : Check this
+  {
+    output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
+  auto input_shape = input.info().shape();
+  auto block_shape_shape = block_shape.info().shape();
+  auto padding_shape = padding.info().shape();
+
+  auto block_shape_data = reinterpret_cast<const int32_t *>(block_shape.data()->base());
+  auto padding_data = reinterpret_cast<const int32_t *>(padding.data()->base());
+
+  ir::Shape new_shape = shape_inference::inferSpaceToBatchNDShape(
+      input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
+
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(0)};

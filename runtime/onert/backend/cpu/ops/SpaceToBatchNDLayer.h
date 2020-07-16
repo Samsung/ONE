@@ -40,8 +40,6 @@ public:
   void run() override;
 
 private:
-  void checkDimension();
-
   template <typename T> uint32_t getPad();
 
   template <typename T> void spaceToBatchND();

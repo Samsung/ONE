@@ -34,44 +34,11 @@ SpaceToBatchNDLayer::SpaceToBatchNDLayer()
   // DO NOTHING
 }
 
-// TO DO : move into shape inferer
-void SpaceToBatchNDLayer::checkDimension()
-{
-  const int kSpatialDimensionNum = 2;
-  if (_block_shape->dimension(0) != kSpatialDimensionNum)
-  {
-    throw std::runtime_error("SpaceToBatchND : block_shape(block_size) tensor's rank is wrong\n");
-  }
-
-  // Ensures the input height and width (with padding) is a multiple of block
-  // shape height and width.
-  for (int dim = 0; dim < kSpatialDimensionNum; ++dim)
-  {
-    int final_dim_size =
-        (_input->dimension(dim + 1) + reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2] +
-         reinterpret_cast<int32_t *>(_padding->buffer())[dim * 2 + 1]);
-
-    if (final_dim_size % reinterpret_cast<int32_t *>(_block_shape->buffer())[dim] != 0)
-    {
-      throw std::runtime_error(
-          "SpaceToBatchND : padded input's dimension is not a multiple of block size\n");
-    }
-
-    if ((int32_t)_output->dimension(dim + 1) !=
-        final_dim_size / reinterpret_cast<int32_t *>(_block_shape->buffer())[dim])
-    {
-      throw std::runtime_error("SpaceToBatchND : wrong output dimension\n");
-    }
-  }
-}
-
 template <> uint32_t SpaceToBatchNDLayer::getPad<float>() { return 0; }
 template <> uint32_t SpaceToBatchNDLayer::getPad<uint8_t>() { return _output->data_offset(); }
 
 template <typename T> void SpaceToBatchNDLayer::spaceToBatchND()
 {
-  checkDimension();
-
   nnfw::cker::SpaceToBatchParams params;
   params.output_offset = getPad<T>();
 
