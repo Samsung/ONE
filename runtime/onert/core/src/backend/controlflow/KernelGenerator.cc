@@ -47,7 +47,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->tensorRegistry());
 
   auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
-  auto dyn_shape_inferer = std::make_unique<exec::DynamicInferer>(
+  auto dyn_shape_inferer = std::make_unique<exec::DynamicShapeInferer>(
       _graph.operands(), dyn_tensor_manager, _tensor_builder->tensorRegistry());
 
   // TODO Always returning FunctionSequenceForDynamicBackend may cause performance issue
