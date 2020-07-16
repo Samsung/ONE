@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <arser/arser.h>
 #include <tflread/Model.h>
 #include <tfldump/Dump.h>
 
@@ -21,30 +22,37 @@
 
 int entry(int argc, char **argv)
 {
-  if (argc != 2)
+  arser::Arser arser;
+  arser.add_argument("tflite").type(arser::DataType::STR).help("TFLite file to dump");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [tflite]" << std::endl;
-    return 255;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << '\n';
+    std::cout << arser;
+    return 0;
   }
 
+  std::string tflite_path = arser.get<std::string>("tflite");
   // Load TF lite model from a tflite file
-  std::unique_ptr<tflread::Model> model = tflread::load_tflite(argv[1]);
+  std::unique_ptr<tflread::Model> model = tflread::load_tflite(tflite_path);
   if (model == nullptr)
   {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load tflite '" << tflite_path << "'" << std::endl;
     return 255;
   }
 
   const tflite::Model *tflmodel = model->model();
   if (tflmodel == nullptr)
   {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load tflite '" << tflite_path << "'" << std::endl;
     return 255;
   }
 
-  std::cout << "Dump: " << argv[1] << std::endl << std::endl;
+  std::cout << "Dump: " << tflite_path << std::endl << std::endl;
 
   std::cout << tflmodel << std::endl;
 
