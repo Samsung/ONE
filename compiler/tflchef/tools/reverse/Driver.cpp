@@ -16,6 +16,7 @@
 
 #include <tflchef/RecipeChef.h>
 
+#include <arser/arser.h>
 #include <foder/FileLoader.h>
 
 #include <memory>
@@ -23,21 +24,31 @@
 
 int entry(int argc, char **argv)
 {
-  if (argc != 3)
+  arser::Arser arser;
+  arser.add_argument("tflite")
+      .type(arser::DataType::STR)
+      .help("Source tflite file path to convert");
+  arser.add_argument("recipe").type(arser::DataType::STR).help("Target recipe file path");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [tflite] [output]" << std::endl;
-    return 255;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
   }
 
+  std::string tflite_path = arser.get<std::string>("tflite");
   // Load TF lite model from a tflite file
-  const foder::FileLoader fileLoader{argv[1]};
+  const foder::FileLoader fileLoader{tflite_path};
   std::vector<char> modelData = fileLoader.load();
   const tflite::Model *tflmodel = tflite::GetModel(modelData.data());
   if (tflmodel == nullptr)
   {
-    std::cerr << "ERROR: Failed to load tflite '" << argv[1] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load tflite '" << tflite_path << "'" << std::endl;
     return 255;
   }
 
@@ -49,11 +60,12 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  std::string recipe_path = arser.get<std::string>("recipe");
   // Save to a file
-  bool result = tflchef::write_recipe(argv[2], recipe);
+  bool result = tflchef::write_recipe(recipe_path, recipe);
   if (!result)
   {
-    std::cerr << "ERROR: Failed to write to recipe '" << argv[2] << "'" << std::endl;
+    std::cerr << "ERROR: Failed to write to recipe '" << recipe_path << "'" << std::endl;
     return 255;
   }
   return 0;
