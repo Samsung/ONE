@@ -75,7 +75,6 @@ public:
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::Max &op) override;
-  void visit(const ir::operation::Mean &op) override;
   void visit(const ir::operation::Min &op) override;
   void visit(const ir::operation::Mul &op) override;
   void visit(const ir::operation::Neg &op) override;
@@ -86,10 +85,7 @@ public:
   void visit(const ir::operation::Pow &op) override;
   // TODO write op starting from Q
   void visit(const ir::operation::Range &op) override;
-  void visit(const ir::operation::ReduceAll &op) override;
-  void visit(const ir::operation::ReduceMin &op) override;
-  void visit(const ir::operation::ReduceProd &op) override;
-  void visit(const ir::operation::ReduceSum &op) override;
+  void visit(const ir::operation::Reduce &op) override;
   void visit(const ir::operation::Reshape &op) override;
   void visit(const ir::operation::Round &op) override;
   void visit(const ir::operation::RSQRT &op) override;

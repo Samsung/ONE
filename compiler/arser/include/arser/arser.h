@@ -32,7 +32,7 @@
 namespace
 {
 
-template <typename T> T lexcial_cast(const std::string &str)
+template <typename T> T lexical_cast(const std::string &str)
 {
   std::istringstream ss;
   ss.str(str);
@@ -324,7 +324,7 @@ template <typename T> T Arser::get_impl(const std::string &arg_name, T *)
                              "You must make sure that the argument is given before accessing it. "
                              "You can do it by calling arser[\"argument\"].");
 
-  return ::lexcial_cast<T>(arg->second->_values[0]);
+  return ::lexical_cast<T>(arg->second->_values[0]);
 }
 
 template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name, std::vector<T> *)
@@ -340,7 +340,7 @@ template <typename T> std::vector<T> Arser::get_impl(const std::string &arg_name
 
   std::vector<T> data;
   std::transform(arg->second->_values.begin(), arg->second->_values.end(), std::back_inserter(data),
-                 [](std::string str) -> T { return ::lexcial_cast<T>(str); });
+                 [](std::string str) -> T { return ::lexical_cast<T>(str); });
   return data;
 }
 

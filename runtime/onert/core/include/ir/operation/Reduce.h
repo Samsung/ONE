@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_REDUCEPROD_H__
-#define __ONERT_IR_OPERATION_REDUCEPROD_H__
+#ifndef __ONERT_IR_OPERATION_REDUCE_H__
+#define __ONERT_IR_OPERATION_REDUCE_H__
 
 #include <memory>
 
@@ -28,7 +28,7 @@ namespace ir
 namespace operation
 {
 
-class ReduceProd : public Operation
+class Reduce : public Operation
 {
 public:
   enum Input
@@ -37,18 +37,31 @@ public:
     AXES = 1
   };
 
+  enum class ReduceType
+  {
+    ALL,
+    ANY,
+    MAX,
+    MEAN,
+    MIN,
+    PROD,
+    SUM
+  };
+
   struct Param
   {
+    ReduceType reduce_type;
     bool keep_dims;
   };
 
 public:
-  ReduceProd(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-             const Param &param);
+  Reduce(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+         const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::ReduceProd; }
+  std::string name() const override;
+  OpCode opcode() const final { return OpCode::Reduce; }
 
 public:
   const Param &param() const { return _param; }
@@ -61,4 +74,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_REDUCEPROD_H__
+#endif // __ONERT_IR_OPERATION_REDUCE_ALL_H__

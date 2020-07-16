@@ -20,30 +20,42 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 
+#include <arser/arser.h>
+
 #include <fstream>
 #include <iostream>
 
 int entry(int argc, char **argv)
 {
-  if (argc != 3)
+  arser::Arser arser;
+  arser.add_argument("recipe")
+      .type(arser::DataType::STR)
+      .help("Source recipe file path to convert");
+  arser.add_argument("circle").type(arser::DataType::STR).help("Target circle file path");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [recipe] [output]" << std::endl;
-    return 255;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
   }
 
   int32_t model_version = 1;
 
   ::circlechef::ModelRecipe model_recipe;
 
+  std::string recipe_path = arser.get<std::string>("recipe");
   // Load model recipe from a file
   {
-    std::ifstream is{argv[1]};
+    std::ifstream is{recipe_path};
     google::protobuf::io::IstreamInputStream iis{&is};
     if (!google::protobuf::TextFormat::Parse(&iis, &model_recipe))
     {
-      std::cerr << "ERROR: Failed to parse recipe '" << argv[1] << "'" << std::endl;
+      std::cerr << "ERROR: Failed to parse recipe '" << recipe_path << "'" << std::endl;
       return 255;
     }
 
@@ -55,16 +67,17 @@ int entry(int argc, char **argv)
 
   if (model_version > 1)
   {
-    std::cerr << "ERROR: Unsupported recipe version: " << model_version << ", '" << argv[1] << "'"
-              << std::endl;
+    std::cerr << "ERROR: Unsupported recipe version: " << model_version << ", '" << recipe_path
+              << "'" << std::endl;
     return 255;
   }
 
   auto generated_model = circlechef::cook(model_recipe);
 
+  std::string circle_path = arser.get<std::string>("circle");
   // Dump generated model into a file
   {
-    std::ofstream os{argv[2], std::ios::binary};
+    std::ofstream os{circle_path, std::ios::binary};
     os.write(generated_model.base(), generated_model.size());
   }
 

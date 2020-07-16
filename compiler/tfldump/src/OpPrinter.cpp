@@ -17,11 +17,11 @@
 #include "OpPrinter.h"
 #include "Read.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <flatbuffers/flexbuffers.h>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace tfldump
 {

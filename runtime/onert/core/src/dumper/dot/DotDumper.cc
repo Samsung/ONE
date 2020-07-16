@@ -133,6 +133,11 @@ void DotDumper::dump(const std::string &tag)
     for (auto input : op.getInputs())
     {
       using onert::dumper::dot::Operand;
+
+      // Constant input and dump level is ALL_BUT_CONSTANTS
+      if (operand_nodes.find(input) == operand_nodes.end())
+        continue;
+
       auto &input_node = operand_nodes.at(input);
       input_node->addOutEdge(node.get());
     }

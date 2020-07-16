@@ -67,6 +67,15 @@ public:
 Kernel::Kernel(const nnfw_custom_eval evalFunction)
     : _params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
 {
+  _params.inputs = _params.outputs = nullptr;
+}
+
+Kernel::~Kernel()
+{
+  if (_params.inputs)
+    delete[] _params.inputs;
+  if (_params.outputs)
+    delete[] _params.outputs;
 }
 
 void Kernel::configure(CustomKernelConfigParams &&inParams)

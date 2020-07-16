@@ -318,35 +318,6 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
       asAclFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
 }
 
-void KernelGenerator::visit(const ir::operation::Mean &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::Mean::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const int ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto fixed_axis =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
-
-  // NOTE NEReduceMean has a bug that does not support NHWC layout
-  //      NEReduceMean intermediate tensors are always NCHW layout
-  auto fn = std::make_unique<::arm_compute::NEReduceMeanEx>();
-
-  fn->configure(ifm_alloc->handle(), fixed_axis, keep_dims, ofm_alloc->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1187,80 +1158,53 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::ReduceMax &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMax::Input::AXES)};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto reduce_axes =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::NEReduceOperation>();
-
-  fn->configure(ifm_alloc->handle(), reduce_axes, false, ofm_alloc->handle(),
-                ::arm_compute::ReduceOperation::MAX);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReduceMin &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto reduce_axes =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::NEReduceOperation>();
-
-  fn->configure(ifm_alloc->handle(), reduce_axes, false, ofm_alloc->handle(),
-                ::arm_compute::ReduceOperation::MIN);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReduceSum &node)
+void KernelGenerator::visit(const ir::operation::Reduce &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
+  const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(input_index).shape().rank();
+  const auto input_rank = _ctx.at(input_index).shape().rank();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = input_alloc->layout();
   const auto reduce_axes =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
+      acl_common::asCoordinates(axes, input_rank, frontend_layout, backend_layout);
+  const auto reduce_type = node.param().reduce_type;
+  const auto keep_dims = node.param().keep_dims;
 
-  auto fn = std::make_unique<::arm_compute::NEReduceSum>();
+  std::unique_ptr<::arm_compute::IFunction> fn;
+  if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
+  {
+    // NOTE NEReduceMean has a bug that does not support NHWC layout
+    //      NEReduceMean intermediate tensors are always NCHW layout
+    auto l = std::make_unique<::arm_compute::NEReduceMeanEx>();
 
-  fn->configure(input_alloc->handle(), reduce_axes, false, output_alloc->handle());
+    l->configure(input_alloc->handle(), reduce_axes, keep_dims, output_alloc->handle());
+
+    fn = std::move(l);
+  }
+  else if (reduce_type == ir::operation::Reduce::ReduceType::SUM)
+  {
+    auto l = std::make_unique<::arm_compute::NEReduceSum>();
+
+    l->configure(input_alloc->handle(), reduce_axes, keep_dims, output_alloc->handle());
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::NEReduceOperation>();
+
+    l->configure(input_alloc->handle(), reduce_axes, keep_dims, output_alloc->handle(),
+                 acl_common::convertReduceType(reduce_type));
+
+    fn = std::move(l);
+  }
 
   auto acl_fn = asAclFunction(std::move(fn));
 

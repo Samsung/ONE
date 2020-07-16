@@ -26,6 +26,7 @@
 
 #include <stdex/Memory.h>
 #include <oops/InternalExn.h>
+#include <arser/arser.h>
 
 #include <functional>
 #include <iostream>
@@ -37,33 +38,8 @@ using OptionHook = std::function<int(const char **)>;
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 
-void print_help(const char *progname)
-{
-  std::cerr << "USAGE: " << progname << " [options] input output" << std::endl;
-  std::cerr << "Optimization options: " << std::endl;
-  std::cerr << "   --all : Enable all optimize options" << std::endl;
-  std::cerr << "   --fuse_bcq : Enable FuseBCQ Pass" << std::endl;
-  std::cerr << "   --fuse_instnorm : Enable FuseInstanceNormalization Pass" << std::endl;
-  std::cerr << "   --resolve_customop_add : Enable ResolveCustomOpAddPass Pass" << std::endl;
-  std::cerr << "   --resolve_customop_batchmatmul : Enable ResolveCustomOpBatchMatMulPass Pass"
-            << std::endl;
-  std::cerr << "   --resolve_customop_matmul : Enable ResolveCustomOpMatMulPass Pass" << std::endl;
-  std::cerr << "Execution options:" << std::endl;
-  std::cerr << "   --mute_warnings : Turn off warning messages" << std::endl;
-  std::cerr << "   --disable_validation : Turn off operator vaidations" << std::endl;
-  std::cerr << std::endl;
-}
-
 int entry(int argc, char **argv)
 {
-  if (argc < 3)
-  {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    print_help(argv[0]);
-    return 255;
-  }
-
   // Simple argument parser (based on map)
   std::map<std::string, OptionHook> argparse;
   luci::CircleOptimizer optimizer;
@@ -71,61 +47,110 @@ int entry(int argc, char **argv)
   auto options = optimizer.options();
   auto settings = luci::UserSettings::settings();
 
-  // TODO merge this with help message
-  argparse["--all"] = [&options](const char **) {
-    options->enable(Algorithms::FuseBCQ);
-    options->enable(Algorithms::FuseInstanceNorm);
-    options->enable(Algorithms::ResolveCustomOpAdd);
-    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-    return 0;
-  };
-  argparse["--fuse_bcq"] = [&options](const char **) {
-    options->enable(Algorithms::FuseBCQ);
-    return 0;
-  };
-  argparse["--fuse_instnorm"] = [&options](const char **) {
-    options->enable(Algorithms::FuseInstanceNorm);
-    return 0;
-  };
-  argparse["--resolve_customop_add"] = [&options](const char **) {
-    options->enable(Algorithms::ResolveCustomOpAdd);
-    return 0;
-  };
-  argparse["--resolve_customop_batchmatmul"] = [&options](const char **) {
-    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-    return 0;
-  };
-  argparse["--resolve_customop_matmul"] = [&options](const char **) {
-    options->enable(Algorithms::ResolveCustomOpMatMul);
-    return 0;
-  };
+  arser::Arser arser("circle2circle provides circle model optimization and transformations");
 
-  argparse["--mute_warnings"] = [&settings](const char **) {
-    settings->set(luci::UserSettings::Key::MuteWarnings, true);
-    return 0;
-  };
-  argparse["--disable_validation"] = [&settings](const char **) {
-    settings->set(luci::UserSettings::Key::DisableValidation, true);
-    return 0;
-  };
+  arser.add_argument("--all").nargs(0).required(false).help("Enable all optimize options");
 
-  for (int n = 1; n < argc - 2; ++n)
+  arser.add_argument("--fuse_bcq")
+      .nargs(0)
+      .required(false)
+      .help("This will fuse operators and apply Binary Coded Quantization");
+
+  arser.add_argument("--fuse_instnorm")
+      .nargs(0)
+      .required(false)
+      .help("This will fuse operators to InstanceNorm operator");
+
+  arser.add_argument("--resolve_customop_add")
+      .nargs(0)
+      .required(false)
+      .help("This will convert Custom(Add) to Add operator");
+
+  arser.add_argument("--resolve_customop_batchmatmul")
+      .nargs(0)
+      .required(false)
+      .help("This will convert Custom(BatchMatmul) to BatchMatmul operator");
+
+  arser.add_argument("--resolve_customop_matmul")
+      .nargs(0)
+      .required(false)
+      .help("This will convert Custom(Matmul) to Matmul operator");
+
+  arser.add_argument("--mute_warnings")
+      .nargs(0)
+      .required(false)
+      .help("This will turn off warning messages");
+
+  arser.add_argument("--disable_validation")
+      .nargs(0)
+      .required(false)
+      .help("This will turn off operator vaidations. May help input model investigation.");
+
+  arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
+  arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+
+  try
   {
-    const std::string tag{argv[n]};
-    auto it = argparse.find(tag);
-    if (it == argparse.end())
-    {
-      std::cerr << "Option '" << tag << "' is not supported" << std::endl;
-      std::cerr << std::endl;
-      print_help(argv[0]);
-      return 255;
-    }
-
-    n += it->second((const char **)&argv[n + 1]);
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 255;
   }
 
-  std::string input_path = argv[argc - 2];
-  std::string output_path = argv[argc - 1];
+  if (arser["--all"])
+  {
+    if (arser.get<bool>("--all"))
+    {
+      options->enable(Algorithms::FuseBCQ);
+      options->enable(Algorithms::FuseInstanceNorm);
+      options->enable(Algorithms::ResolveCustomOpAdd);
+      options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+      options->enable(Algorithms::ResolveCustomOpMatMul);
+    }
+  }
+
+  if (arser["--fuse_bcq"])
+  {
+    if (arser.get<bool>("--fuse_bcq"))
+      options->enable(Algorithms::FuseBCQ);
+  }
+  if (arser["--fuse_instnorm"])
+  {
+    if (arser.get<bool>("--fuse_instnorm"))
+      options->enable(Algorithms::FuseInstanceNorm);
+  }
+  if (arser["--resolve_customop_add"])
+  {
+    if (arser.get<bool>("--resolve_customop_add"))
+      options->enable(Algorithms::ResolveCustomOpAdd);
+  }
+  if (arser["--resolve_customop_batchmatmul"])
+  {
+    if (arser.get<bool>("--resolve_customop_batchmatmul"))
+      options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+  }
+  if (arser["--resolve_customop_matmul"])
+  {
+    if (arser.get<bool>("--resolve_customop_matmul"))
+      options->enable(Algorithms::ResolveCustomOpMatMul);
+  }
+
+  if (arser["--mute_warnings"])
+  {
+    if (arser.get<bool>("--mute_warnings"))
+      settings->set(luci::UserSettings::Key::MuteWarnings, true);
+  }
+  if (arser["--disable_validation"])
+  {
+    if (arser.get<bool>("--disable_validation"))
+      settings->set(luci::UserSettings::Key::DisableValidation, true);
+  }
+
+  std::string input_path = arser.get<std::string>("input");
+  std::string output_path = arser.get<std::string>("output");
 
   // Load model from the file
   foder::FileLoader file_loader{input_path};

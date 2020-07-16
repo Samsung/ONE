@@ -53,10 +53,8 @@ public:
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;
   void visit(const ir::operation::Permute &node) override;
-  void visit(const ir::operation::ReduceSum &node) override;
+  void visit(const ir::operation::Reduce &node) override;
   void visit(const ir::operation::Transpose &node) override;
-  void visit(const ir::operation::ReduceAny &node) override;
-  void visit(const ir::operation::ReduceMax &node) override;
   void visit(const ir::operation::RNN &node) override;
   void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
@@ -69,10 +67,8 @@ public:
   void visit(const ir::operation::TransposeConv &node) override;
   void visit(const ir::operation::Gather &node) override;
   void visit(const ir::operation::Dequantize &node) override;
-  void visit(const ir::operation::Mean &node) override;
   void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::Pack &node) override;
-  void visit(const ir::operation::ReduceMin &node) override;
   void visit(const ir::operation::LSTM &node) override;
   void visit(const ir::operation::L2Normalization &node) override;
   void visit(const ir::operation::Unpack &node) override;
@@ -86,7 +82,6 @@ public:
   void visit(const ir::operation::Sin &node) override;
   void visit(const ir::operation::RSQRT &node) override;
   void visit(const ir::operation::Shape &node) override;
-  void visit(const ir::operation::ReduceProd &node) override;
   void visit(const ir::operation::Reverse &node) override;
   void visit(const ir::operation::If &node) override;
   void visit(const ir::operation::While &node) override;
