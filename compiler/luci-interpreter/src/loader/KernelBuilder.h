@@ -63,6 +63,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleReshape *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSplit *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleStridedSlice *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleTranspose *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleTransposeConv *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleUnpack *node) override;

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2018 The TensorFlow Authors. All Rights Reserved.
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,20 +18,28 @@
 #include "benchmark/Phases.h"
 #include "benchmark/Types.h"
 
-#include <thread>
-#include <chrono>
 #include <cassert>
+#include <chrono>
 #include <iostream>
+#include <sys/time.h>
 
 namespace
 {
 
-inline uint64_t nowMicros()
+uint64_t nowMicros()
 {
-  auto time_point = std::chrono::high_resolution_clock::now();
-  auto since_epoch = time_point.time_since_epoch();
-  // default precision of high resolution clock is 10e-9 (nanoseconds)
-  return std::chrono::duration_cast<std::chrono::microseconds>(since_epoch).count();
+  struct timeval tv;
+  gettimeofday(&tv, nullptr);
+  return static_cast<uint64_t>(tv.tv_sec) * 1e6 + tv.tv_usec;
+}
+
+void SleepForMicros(uint64_t micros)
+{
+  timespec sleep_time;
+  sleep_time.tv_sec = micros / 1e6;
+  micros -= sleep_time.tv_sec * 1e6;
+  sleep_time.tv_nsec = micros * 1e3;
+  nanosleep(&sleep_time, nullptr);
 }
 }
 
@@ -78,7 +87,7 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
 
     if (_option.run_delay > 0 && p == PhaseEnum::EXECUTE && i != loop_num - 1)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(_option.run_delay));
+      SleepForMicros(_option.run_delay);
     }
   }
 

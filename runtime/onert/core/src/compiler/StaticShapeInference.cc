@@ -502,7 +502,6 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
 }
 
-
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
@@ -1156,8 +1155,8 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
 
   ir::Shape new_shape =
       shape_inference::inferSplitShape(input.info().shape(), axis_resolved, num_splits);
-  auto output_teonsors = op.getOutputs();
-  for (auto output_idx : output_teonsors)
+  auto output_tensors = op.getOutputs();
+  for (auto output_idx : output_tensors)
   {
     ir::Operand &output = _operands.at(output_idx);
     output.info().shape(new_shape);

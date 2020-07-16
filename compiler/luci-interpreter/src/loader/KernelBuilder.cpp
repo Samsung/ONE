@@ -37,6 +37,7 @@
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 #include "kernels/Split.h"
+#include "kernels/StridedSlice.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
@@ -424,6 +425,34 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
 
   // NOTE 'num_splits' attribute is ignored.
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *node)
+{
+  assert(node->arity() == 4);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->begin()) == nullptr)
+    throw std::runtime_error("Dynamic begin is not yet supported.");
+  if (dynamic_cast<const luci::CircleConst *>(node->end()) == nullptr)
+    throw std::runtime_error("Dynamic end is not yet supported.");
+  if (dynamic_cast<const luci::CircleConst *>(node->strides()) == nullptr)
+    throw std::runtime_error("Dynamic strides is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *begin = getInputTensor(node->begin());
+  const Tensor *end = getInputTensor(node->end());
+  const Tensor *strides = getInputTensor(node->strides());
+
+  Tensor *output = getOutputTensor(node);
+
+  StridedSliceParams params{};
+  params.begin_mask = node->begin_mask();
+  params.ellipsis_mask = node->ellipsis_mask();
+  params.end_mask = node->end_mask();
+  params.new_axis_mask = node->new_axis_mask();
+  params.shrink_axis_mask = node->shrink_axis_mask();
+
+  return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)

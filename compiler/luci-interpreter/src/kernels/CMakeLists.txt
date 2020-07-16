@@ -44,6 +44,8 @@ set(SOURCES
     Softmax.cpp
     Split.h
     Split.cpp
+    StridedSlice.h
+    StridedSlice.cpp
     Transpose.h
     Transpose.cpp
     TransposeConv.h
@@ -87,6 +89,7 @@ set(TEST_SOURCES
     Reshape.test.cpp
     Softmax.test.cpp
     Split.test.cpp
+    StridedSlice.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp
     Unpack.test.cpp)

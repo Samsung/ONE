@@ -21,6 +21,7 @@
 #include <typeinfo>
 
 #include <algorithm>
+#include <functional>
 #include <list>
 #include <map>
 #include <string>
@@ -157,10 +158,17 @@ public:
     return *this;
   }
 
+  Argument &exit_with(const std::function<void(void)> &func)
+  {
+    _func = func;
+    return *this;
+  }
+
 private:
   std::string _name;
   std::string _type;
   std::string _help_message;
+  std::function<void(void)> _func;
   uint32_t _nargs{1};
   bool _is_required{false};
   std::vector<std::string> _values;
@@ -197,10 +205,25 @@ public:
   {
     _program_name = argv[0];
     _program_name.erase(0, _program_name.find_last_of("/\\") + 1);
-    if (argc >= 2 && !std::strcmp(argv[1], "--help"))
+    if (argc >= 2)
     {
-      std::cout << *this;
-      std::exit(0);
+      if (!std::strcmp(argv[1], "--help"))
+      {
+        std::cout << *this;
+        std::exit(0);
+      }
+      else
+      {
+        for (const auto &arg : _arg_map)
+        {
+          const auto &func = arg.second->_func;
+          if (func && !std::strcmp(argv[1], arg.second->_name.c_str()))
+          {
+            func();
+            std::exit(0);
+          }
+        }
+      }
     }
     /*
     ** ./program_name [optional argument] [positional argument]
@@ -215,7 +238,7 @@ public:
         required_oarg_num++;
     }
     // parse argument
-    for (uint32_t c = 1; c < argc;)
+    for (int c = 1; c < argc;)
     {
       std::string arg_name{argv[c++]};
       auto arg = _arg_map.find(arg_name);

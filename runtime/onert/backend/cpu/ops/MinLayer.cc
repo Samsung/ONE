@@ -29,21 +29,25 @@ namespace cpu
 namespace ops
 {
 
-void MinLayer::minFloat32()
+template <typename T> void MinLayer::minimum()
 {
-  nnfw::cker::Min<float>(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-                         getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-                         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::Min<T>(getTensorShape(_lhs), reinterpret_cast<const T *>(_lhs->buffer()),
+                     getTensorShape(_rhs), reinterpret_cast<const T *>(_rhs->buffer()),
+                     getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
 }
 
 void MinLayer::minQuant8()
 {
-  // TODO Check whether cker for quant8 min produces correct results
-  // nnfw::cker::Min<uint8_t>(
-  //     getTensorShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
-  //     getTensorShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
-  //     getTensorShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
-
+  if (_lhs->data_scale() == _rhs->data_scale() && _lhs->data_scale() == _output->data_scale())
+  {
+    if (_lhs->data_offset() == _rhs->data_offset() && _lhs->data_offset() == _output->data_offset())
+    {
+      return nnfw::cker::Min<uint8_t>(
+          getTensorShape(_lhs), reinterpret_cast<const uint8_t *>(_lhs->buffer()),
+          getTensorShape(_rhs), reinterpret_cast<const uint8_t *>(_rhs->buffer()),
+          getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
+    }
+  }
   throw std::runtime_error("Min NYI for quantized");
 }
 
@@ -63,26 +67,15 @@ void MinLayer::run()
 {
   if (_lhs->data_type() == OperandType::FLOAT32)
   {
-    nnfw::cker::Min<float>(getTensorShape(_lhs), reinterpret_cast<const float *>(_lhs->buffer()),
-                           getTensorShape(_rhs), reinterpret_cast<const float *>(_rhs->buffer()),
-                           getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+    minimum<float>();
   }
   else if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    // TODO Check whether cker for quant8 min produces correct results
-    // nnfw::cker::Min<uint8_t>(
-    //     getTensorShape(_lhs), reinterpret_cast<const uint8_t*>(_lhs->buffer()),
-    //     getTensorShape(_rhs), reinterpret_cast<const uint8_t*>(_rhs->buffer()),
-    //     getTensorShape(_output), reinterpret_cast<uint8_t*>(_output->buffer()));
-
-    throw std::runtime_error("Min NYI for quantized");
+    minQuant8();
   }
   else if (_lhs->data_type() == OperandType::INT32)
   {
-    nnfw::cker::Min<int32_t>(
-        getTensorShape(_lhs), reinterpret_cast<const int32_t *>(_lhs->buffer()),
-        getTensorShape(_rhs), reinterpret_cast<const int32_t *>(_rhs->buffer()),
-        getTensorShape(_output), reinterpret_cast<int32_t *>(_output->buffer()));
+    minimum<int32_t>();
   }
   else
   {

@@ -74,7 +74,7 @@ public:
   void visit(const ir::operation::Pack &node) override;
   void visit(const ir::operation::ReduceMin &node) override;
   void visit(const ir::operation::LSTM &node) override;
-  void visit(const ir::operation::L2Normalization &node);
+  void visit(const ir::operation::L2Normalization &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::Min &node) override;
@@ -99,6 +99,9 @@ public:
   void visit(const ir::operation::Range &node) override;
   void visit(const ir::operation::MatrixBandPart &node) override;
   void visit(const ir::operation::LogSoftmax &node) override;
+
+private:
+  void checkReduceOp(const ir::OperandIndex input_index, const ir::OperandIndex output_index);
 
 private:
   // TODO Remove _ctx field

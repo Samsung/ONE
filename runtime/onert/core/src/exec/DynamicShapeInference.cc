@@ -447,7 +447,6 @@ void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::INPUT));
 }
 
-
 void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));

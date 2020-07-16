@@ -29,7 +29,7 @@ DotBuilder::DotBuilder() {}
 void DotBuilder::update(const Node &node_info)
 {
   add(node_info);
-  for (auto edge : node_info.edges())
+  for (auto edge : node_info.out_edges())
   {
     addEdge(node_info, *edge);
   }

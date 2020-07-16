@@ -62,15 +62,23 @@ unset(TEST_DEPS)
 
 # Include recipe repo
 nncc_find_resource(TensorFlowLiteRecipes)
+nncc_find_resource(CircleRecipes)
 set(TFLITE_RECIPE_REPO "${TensorFlowLiteRecipes_DIR}")
+set(CIRCLE_RECIPE_REPO "${CircleRecipes_DIR}")
 set(TEST_RECIPE_FILENAME "test.recipe")
 
 set(MODEL2NNPKG "${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh")
 # Get test case list
 unset(RECIPES)
-file(GLOB SUBDIR RELATIVE ${TFLITE_RECIPE_REPO} ${TFLITE_RECIPE_REPO}/*)
-foreach(DIR IN ITEMS ${SUBDIR})
+file(GLOB TFLITE_SUBDIR RELATIVE ${TFLITE_RECIPE_REPO} ${TFLITE_RECIPE_REPO}/*)
+foreach(DIR IN ITEMS ${TFLITE_SUBDIR})
   if(IS_DIRECTORY ${TFLITE_RECIPE_REPO}/${DIR})
+    list(APPEND RECIPES ${DIR})
+  endif()
+endforeach()
+file(GLOB CIRCLE_SUBDIR RELATIVE ${CIRCLE_RECIPE_REPO} ${CIRCLE_RECIPE_REPO}/*)
+foreach(DIR IN ITEMS ${CIRCLE_SUBDIR})
+  if(IS_DIRECTORY ${CIRCLE_RECIPE_REPO}/${DIR})
     list(APPEND RECIPES ${DIR})
   endif()
 endforeach()
@@ -91,12 +99,32 @@ include("exclude.lst")
 
 foreach(RECIPE IN ITEMS ${RECIPES})
   unset(OPT_FORMAT)
+  unset(MODEL_FORMAT)
+
   set(RECIPE_FILE "${RECIPE}.recipe")
-  set(RECIPE_SOURCE_PATH "${TFLITE_RECIPE_REPO}/${RECIPE}/${TEST_RECIPE_FILENAME}")
+  set(TFLITE_RECIPE_SOURCE_PATH "${TFLITE_RECIPE_REPO}/${RECIPE}/${TEST_RECIPE_FILENAME}")
+  set(CIRCLE_RECIPE_SOURCE_PATH "${CIRCLE_RECIPE_REPO}/${RECIPE}/${TEST_RECIPE_FILENAME}")
+
+  if(NOT EXISTS "${TFLITE_RECIPE_SOURCE_PATH}")
+    if(NOT EXISTS "${CIRCLE_RECIPE_SOURCE_PATH}")
+      message(FATAL_ERROR "Missing recipe of '${RECIPE}' test")
+    else()
+      # circle recipe
+      set(MODEL_FORMAT "circle")
+      set(RECIPE_SOURCE_PATH ${CIRCLE_RECIPE_SOURCE_PATH})
+    endif()
+  else()
+    # tflite recipe
+    set(MODEL_FORMAT "tflite")
+    set(RECIPE_SOURCE_PATH ${TFLITE_RECIPE_SOURCE_PATH})
+  endif()
+
   set(RECIPE_BINARY_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE_FILE}")
 
   set(TFLITE_FILE "${RECIPE}.tflite")
   set(TFLITE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${TFLITE_FILE}")
+  set(CIRCLE_FILE "${RECIPE}.circle")
+  set(CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CIRCLE_FILE}")
 
   # Copy .recipe
   add_custom_command(OUTPUT ${RECIPE_BINARY_PATH}
@@ -104,21 +132,18 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     DEPENDS ${RECIPE_SOURCE_PATH}
     COMMENT "Generate ${RECIPE_FILE}"
   )
+  list(APPEND TEST_DEPS ${RECIPE_BINARY_PATH})
 
-  # Generate .tflite
-  add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
-    COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-    DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
-    COMMENT "Generate ${TFLITE_FILE}"
-  )
-  set(MODEL_FORMAT "tflite")
+  if(${MODEL_FORMAT} STREQUAL "tflite")
+    # Generate .tflite
+    add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
+      COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
+      DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
+      COMMENT "Generate ${TFLITE_FILE}"
+    )
+    list(APPEND TEST_DEPS ${TFLITE_OUTPUT_PATH})
 
-  list(APPEND TEST_DEPS ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH})
-
-  set(CIRCLE_FILE "${RECIPE}.circle")
-  set(CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CIRCLE_FILE}")
-
-  if(NOT DEFINED NO_CIRCLIZE_${RECIPE})
+    if(NOT DEFINED NO_CIRCLIZE_${RECIPE})
     # Generate .circle
     add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
@@ -126,6 +151,15 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       COMMENT "Generate ${CIRCLE_FILE}"
     )
     set(MODEL_FORMAT "circle")
+    list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
+    endif()
+  else()
+    # Generate .circle
+    add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+    COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
+    DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
+    COMMENT "Generate ${CIRCLE_FILE}"
+    )
     list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
   endif()
 

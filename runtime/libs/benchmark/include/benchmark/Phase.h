@@ -27,10 +27,7 @@ namespace benchmark
 
 struct Phase
 {
-  Phase(const std::string &t, uint32_t c) : tag(t), count(c)
-  {
-    // DO NOTHING
-  }
+  Phase(const std::string &t, uint32_t c) : tag(t), count(c) { time.reserve(count); }
 
   const std::string tag;
   uint32_t count;
