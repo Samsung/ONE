@@ -60,17 +60,41 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
 
 /**
  * @brief  getMovingAverage calculates the weighted moving average of input vector
- *         The initial value is the first element of the vector
+ *         The initial value is the minimum (or maximum) value of the first batch of the vector
  */
-float getMovingAverage(std::vector<float> &vector, float alpha)
+float getMovingAverage(const std::vector<float> &vector, const float alpha,
+                       const uint8_t batch_size, bool is_min)
 {
   assert(!vector.empty());
   assert(alpha >= 0.0 && alpha <= 1.0);
+  assert(batch_size > 0);
 
-  float curr_avg = vector[0];
-  for (size_t i = 1; i < vector.size(); i++)
+  auto getBatchMinOrMax = [&](int start_index) {
+    assert(start_index >= 0 && start_index < vector.size());
+
+    float res = is_min ? std::numeric_limits<float>::max() : std::numeric_limits<float>::lowest();
+    for (int offset = 0; offset < batch_size; offset++)
+    {
+      int index = start_index + offset;
+      if (index >= vector.size())
+        break;
+
+      if (is_min)
+      {
+        res = vector[index] < res ? vector[index] : res;
+      }
+      else
+      {
+        res = vector[index] > res ? vector[index] : res;
+      }
+    }
+    return res;
+  };
+
+  float curr_avg = getBatchMinOrMax(0);
+  for (size_t i = batch_size; i < vector.size(); i += batch_size)
   {
-    curr_avg = curr_avg * alpha + vector[i] * (1.0 - alpha);
+    curr_avg = curr_avg * alpha + getBatchMinOrMax(i) * (1.0 - alpha);
   }
   return curr_avg;
 }
