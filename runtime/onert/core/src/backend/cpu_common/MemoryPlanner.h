@@ -23,6 +23,7 @@
 #define __ONERT_BACKEND_CPU_COMMON_MEMORY_PLANNER_H__
 
 #include <map>
+#include <vector>
 #include <unordered_set>
 #include <memory>
 
@@ -147,7 +148,7 @@ private:
   uint32_t _capacity;
   MemoryPlans _mem_plans;
   std::unordered_set<ir::OperandIndex> _live_operands;
-  ir::OperandIndexMap<std::unordered_set<ir::OperandIndex>> _interference_graph;
+  ir::OperandIndexMap<std::vector<ir::OperandIndex>> _interference_graph;
   // Sort operands by descending order of size
   std::multimap<uint32_t, ir::OperandIndex, std::greater<uint32_t>> _operands;
 };
