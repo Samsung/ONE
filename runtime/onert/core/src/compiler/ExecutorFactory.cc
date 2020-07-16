@@ -198,20 +198,9 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
         operand.info(),
         ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
 
-    VERBOSE_F() << "XXXXXXX " << ind.value() << std::endl;
-
     // Add tensor to controlflow TensorRegistry.
     cf_tensor_builder->setUserTensor(ind, tensor);
     ret.push_back(tensor);
-
-    // Set other tensors as external tensors
-    for (auto &tensor_builder : tensor_builders)
-    {
-      // FIXME This is a workaround registering all user tensors to all backends
-      // FIXME Handle when it is failed
-      VERBOSE_F() << "EXTERNAL TENSOR : " << ind << (tensor ? " GOOD" : " NULL") << std::endl;
-      tensor_builder->setExternalTensor(ind, tensor);
-    }
   }
   return ret;
 }
@@ -267,6 +256,28 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   {
     tensor_builder->prepare();
   }
+
+  // Set external portable tensors
+  lowered_graph->iterateTopolOpSeqs(
+      [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
+        auto lower_info = lowered_graph->getLowerInfo(op_seq_index);
+        auto &backend_ctx = lowered_graph->backend_contexts().at(lower_info->backend());
+        for (auto ind : (op_seq.getInputs() + op_seq.getOutputs()) | ir::Remove::DUPLICATED |
+                            ir::Remove::UNDEFINED)
+        {
+          // If an OpSequence input/output tensor does not have a own tensor object,
+          // it must be using external tensors, so find the tensor from other tensor builders and
+          // set the tensor to this tensor builder if portable
+          if (!backend_ctx->tensor_builder->tensorAt(ind))
+          {
+            auto tensor = tensor_builders.getITensor(ind);
+            assert(tensor); // The tensor must have been created in one of TensorBuilders
+            auto ptensor = std::dynamic_pointer_cast<backend::IPortableTensor>(tensor);
+            if (ptensor)
+              backend_ctx->tensor_builder->setExternalTensor(ind, ptensor);
+          }
+        }
+      });
 
   ExecutionBuilder builder;
 

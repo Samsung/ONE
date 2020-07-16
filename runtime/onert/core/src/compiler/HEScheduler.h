@@ -51,7 +51,7 @@ public:
    * @param[in] backend_resolver backend resolver
    */
   HEScheduler(const backend::BackendContexts &backend_contexts, const CompilerOptions &options)
-      : _backend_contexts{backend_contexts}, _is_supported{}, _backends_avail_time{}, _ops_eft{},
+      : _is_supported{}, _backends_avail_time{}, _ops_eft{},
         _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
         _is_profiling_mode{options.he_profiling_mode},
         _is_linear_exec{options.executor == "Linear"},
@@ -161,7 +161,6 @@ private:
   // whether it should assign these backends to these nodes:
   // * It stores false for unsupported nodes
   // * During rank calculation with enabled profiling mode it stores true for supported nodes
-  const backend::BackendContexts &_backend_contexts;
   std::unordered_map<const backend::Backend *, std::unordered_map<std::string, bool>> _is_supported;
   // Finishing and starting time of each backend
   std::unordered_map<const backend::Backend *, std::map<int64_t, int64_t>> _backends_avail_time;

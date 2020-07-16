@@ -23,6 +23,7 @@
 #include "backend/Backend.h"
 #include "backend/controlflow/Config.h"
 #include "backend/controlflow/TensorBuilder.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -64,6 +65,18 @@ public:
   std::shared_ptr<backend::controlflow::TensorBuilder> getControlflowTensorBuilder() const
   {
     return _cf_tensor_builder;
+  }
+
+  std::shared_ptr<backend::ITensor> getITensor(ir::OperandIndex ind)
+  {
+    for (auto &tensor_builder : _tensor_builders)
+    {
+      auto tensor = tensor_builder->tensorAt(ind);
+      VERBOSE_F() << "TENSOR " << ind << " found " << (tensor ? "YES" : "NO") << std::endl;
+      if (tensor)
+        return tensor;
+    }
+    return nullptr;
   }
 
 private:
