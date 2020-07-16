@@ -112,6 +112,12 @@ GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pad_dynamic_nnfw
+GeneratedTests.pad_v2_1_float
+GeneratedTests.pad_v2_1_quant8
+GeneratedTests.pad_v2_all_dims
+GeneratedTests.pad_v2_all_dims_quant8
+GeneratedTests.pad_v2_low_rank
+GeneratedTests.pad_v2_low_rank_quant8
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2

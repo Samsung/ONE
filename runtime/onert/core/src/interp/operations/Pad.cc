@@ -69,8 +69,8 @@ void invoke(const ITensor *input_tensor, const ITensor *pad_tensor, const ITenso
   const int32_t *pad_ptr = reinterpret_cast<const int32_t *>(pad_buffer);
   float *output_ptr = reinterpret_cast<float *>(output_buffer);
 
-  nnfw::cker::Pad(pad_ptr, pad_rank, cker_input_shape, input_ptr, cker_output_shape, output_ptr,
-                  nullptr);
+  nnfw::cker::Pad<float>(pad_ptr, pad_rank, cker_input_shape, input_ptr, cker_output_shape,
+                         output_ptr, nullptr);
 }
 
 void invokePad(const ExecEnv *env, const ir::Operation &node)

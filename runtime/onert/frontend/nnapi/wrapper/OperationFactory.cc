@@ -1901,13 +1901,20 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_PAD] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count >= 1);
+    assert(init_param.input_count >= 2 && init_param.input_count <= 3 &&
+           init_param.output_count >= 1);
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    if (init_param.input_count == 3)
+    {
+      inputs.append(OperandIndex{init_param.inputs[2]});
+    }
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     return new operation::Pad{inputs, outputs};
   };
+
+  _map[ANEURALNETWORKS_PAD_V2] = _map[ANEURALNETWORKS_PAD];
 
   _map[ANEURALNETWORKS_MINIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
