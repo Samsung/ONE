@@ -206,7 +206,7 @@ void OperationExporter::export_pool_2d(CirclePool2D *node, circle::BuiltinOperat
               "Should be L2Pool, MaxPool or AvgPool");
   LUCI_ASSERT(node->padding() != luci::Padding::UNDEFINED, "Padding is not set");
 
-  uint32_t op_idx = md.registerBuiltinOpcode(builtin_op);
+  uint32_t op_idx = md.registerBuiltinOpcode(builtin_op, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
@@ -226,7 +226,8 @@ void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator 
                                       circle::BuiltinOptions bot,
                                       flatbuffers::Offset<void> options_offset)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(bop);
+  uint32_t op_idx =
+      md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec{get_tensor_index(node)};
   for (uint32_t i = 0; i < node->arity(); ++i)
@@ -239,7 +240,8 @@ void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator 
 
 void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(bop);
+  uint32_t op_idx =
+      md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   for (uint32_t i = 0; i < node->arity(); ++i)
@@ -265,7 +267,7 @@ void OperationExporter::visit(luci::CircleAdd *node)
 
 void OperationExporter::visit(luci::CircleAddN *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ADD_N);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ADD_N, node->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
 
@@ -306,7 +308,7 @@ void OperationExporter::visit(luci::CircleBatchMatMul *node)
 
 void OperationExporter::visit(luci::CircleCast *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CAST);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CAST, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
@@ -334,7 +336,8 @@ void OperationExporter::visit(luci::CircleCeil *node)
 
 void OperationExporter::visit(luci::CircleConcatenation *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CONCATENATION);
+  uint32_t op_idx =
+      md.registerBuiltinOpcode(circle::BuiltinOperator_CONCATENATION, node->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
 
@@ -526,7 +529,7 @@ void OperationExporter::visit(luci::CircleIf *node)
   auto if_outs = loco::succs(node);
   assert(if_outs.size() == node->output_count());
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_IF);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_IF, node->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec;
 
@@ -807,7 +810,8 @@ void OperationExporter::visit(luci::CircleReverseSequence *node)
 
 void OperationExporter::visit(luci::CircleReverseV2 *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2);
+  uint32_t op_idx =
+      md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()), get_tensor_index(node->axis())};
   std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
   auto inputs = builder.CreateVector(inputs_vec);
@@ -901,7 +905,7 @@ void OperationExporter::visit(luci::CircleSplit *node)
   auto split_outs = loco::succs(node);
   assert(int32_t(split_outs.size()) == node->num_split());
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT, node->op_version());
   // NOTE BuiltinOperator_SPLIT input is placed at second position
   std::vector<int32_t> inputs_vec{get_tensor_index(node->split_dim()),
                                   get_tensor_index(node->input())};
@@ -940,7 +944,7 @@ void OperationExporter::visit(luci::CircleSplitV *node)
   auto split_outs = loco::succs(node);
   assert(int32_t(split_outs.size()) == node->num_split());
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT_V);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_SPLIT_V, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()),
                                   get_tensor_index(node->size_splits()),
                                   get_tensor_index(node->split_dim())};
@@ -1039,7 +1043,7 @@ void OperationExporter::visit(luci::CircleTopKV2 *node)
   int outs_count = int32_t(topkv2_outs.size());
   assert(outs_count == 2);
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_TOPK_V2);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_TOPK_V2, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->input()), get_tensor_index(node->k())};
   std::vector<int32_t> outputs_vec;
 
@@ -1103,7 +1107,7 @@ void OperationExporter::visit(luci::CircleUnpack *node)
       assert(false);
   }
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNPACK);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_UNPACK, node->op_version());
   std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
   std::vector<int32_t> outputs_vec;
 
@@ -1152,7 +1156,7 @@ void OperationExporter::visit(luci::CircleWhile *node)
   auto while_outs = loco::succs(node);
   assert(while_outs.size() == node->output_count());
 
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHILE);
+  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_WHILE, node->op_version());
   std::vector<int32_t> inputs_vec;
   std::vector<int32_t> outputs_vec;
 
