@@ -245,7 +245,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   for (auto &tensor_builder : tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)
@@ -339,7 +339,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   for (const auto &tensor_builder : tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)
