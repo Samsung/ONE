@@ -63,6 +63,11 @@ public:
   void readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
                   void *buffer);
 
+  // Read a raw tensor (no type/shape is specified)
+  void readTensor(int32_t record_idx, int32_t input_idx, void *buffer);
+
+  bool isRawData() { return _value_grp.attrExists("rawData"); }
+
   int32_t numRecords() { return _value_grp.getNumObjs(); }
 
   int32_t numInputs(int32_t record_idx);
