@@ -22,6 +22,35 @@
 #ifndef __ONERT_UTIL_UTILS_H__
 #define __ONERT_UTIL_UTILS_H__
 
+#include <string.h>
+
 #define UNUSED_RELEASE(a) (void)(a)
+
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+
+/**
+ * @brief Check required condition and report
+ *        Failed at func:line
+ */
+#define OP_REQUIRES(EXP)                                                                \
+  do                                                                                    \
+  {                                                                                     \
+    if (!(EXP))                                                                         \
+      throw std::runtime_error("Failed at " + std::string(__FILENAME__) + ":" +         \
+                               std::string(__func__) + ":" + std::to_string(__LINE__)); \
+  } while (0)
+
+/**
+ * @brief Check required condition and report
+ *        Failed at function:line <error message>
+ */
+#define OP_REQUIRES_MSG(EXP, MSG)                                                             \
+  do                                                                                          \
+  {                                                                                           \
+    if (!(EXP))                                                                               \
+      throw std::runtime_error("Failed at " + std::string(__FILENAME__) + ":" +               \
+                               std::string(__func__) + ":" + std::to_string(__LINE__) + " " + \
+                               MSG);                                                          \
+  } while (0)
 
 #endif // __ONERT_UTIL_UTILS_H__

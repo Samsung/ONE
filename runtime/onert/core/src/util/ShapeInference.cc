@@ -683,11 +683,18 @@ ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape
   UNUSED_RELEASE(block_shape_shape);
   UNUSED_RELEASE(padding_shape);
 
-  assert(block_shape_shape.rank() == kBlockSizeDimensionNum);
-  assert(block_shape_shape.dim(0) == kSpatialDimensionNum);
-  assert(padding_shape.dim(0) == kSpatialDimensionNum);
-  assert(padding_shape.dim(1) == 2); // fixed, meaning left/right padding for each element
-  assert(padding_shape.rank() == 2); // fixed, meaning dimension(dim 0) and padding length(dim 1)
+  OP_REQUIRES_MSG(block_shape_shape.rank() == kBlockSizeDimensionNum,
+                  "BLOCK_SIZE's rank should be 2");
+  OP_REQUIRES_MSG(block_shape_shape.dim(0) == kSpatialDimensionNum,
+                  "BLOCK_SIZE's length should be equal to SpatialDimensionNum");
+  OP_REQUIRES_MSG(padding_shape.dim(0) == kSpatialDimensionNum,
+                  "PADDINGS's length should be equal to SpatialDimensionNum");
+  OP_REQUIRES_MSG(padding_shape.dim(1) == 2,
+                  "PADDINGS's dimension 1 should be 2"); // fixed, meaning left/right
+                                                         // padding for each element
+  OP_REQUIRES_MSG(padding_shape.rank() == 2,
+                  "PADDINGS's should be 2"); // fixed, meaning dimension(dim 0) and
+                                             // padding length(dim 1)
 
   // Ensures the input height and width (with padding) is a multiple of block
   // shape height and width.
