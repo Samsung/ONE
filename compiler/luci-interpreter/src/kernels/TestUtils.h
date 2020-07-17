@@ -75,7 +75,7 @@ inline std::vector<T> quantize(const std::vector<float> &data, float scale, int3
   for (const auto &f : data)
   {
     q.push_back(static_cast<T>(std::max<float>(
-        std::numeric_limits<T>::min(),
+        std::numeric_limits<T>::lowest(),
         std::min<float>(std::numeric_limits<T>::max(), std::round(zero_point + (f / scale))))));
   }
   return q;
@@ -100,7 +100,7 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   }
   int32_t zero_point = 0;
   double scale = 0;
-  const T qmin = std::numeric_limits<T>::min();
+  const T qmin = std::numeric_limits<T>::lowest();
   const T qmax = std::numeric_limits<T>::max();
   const double qmin_double = qmin;
   const double qmax_double = qmax;
