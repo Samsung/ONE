@@ -66,14 +66,17 @@ void readTensorData(H5::DataSet &tensor, uint8_t *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_UINT8);
 }
+
 void readTensorData(H5::DataSet &tensor, float *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_FLOAT);
 }
+
 void readTensorData(H5::DataSet &tensor, int32_t *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_INT);
 }
+
 void readTensorData(H5::DataSet &tensor, int64_t *buffer)
 {
   tensor.read(buffer, H5::PredType::NATIVE_LONG);
