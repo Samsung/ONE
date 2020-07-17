@@ -198,8 +198,6 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
         operand.info(),
         ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
 
-    VERBOSE_F() << "XXXXXXX " << ind.value() << std::endl;
-
     // Add tensor to controlflow TensorRegistry.
     cf_tensor_builder->setUserTensor(ind, tensor);
     ret.push_back(tensor);
@@ -209,7 +207,6 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
     {
       // FIXME This is a workaround registering all user tensors to all backends
       // FIXME Handle when it is failed
-      VERBOSE_F() << "EXTERNAL TENSOR : " << ind << (tensor ? " GOOD" : " NULL") << std::endl;
       tensor_builder->setExternalTensor(ind, tensor);
     }
   }

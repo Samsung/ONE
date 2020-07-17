@@ -44,7 +44,9 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         std::shared_ptr<backend::ITensor> tensor;
         for (auto &tensor_builder : tensor_builders)
         {
-          tensor = tensor_builder->tensorRegistry()->getManagedITensor(ind);
+          auto tensor_registry = tensor_builder->tensorRegistry();
+          assert(tensor_registry);
+          tensor = tensor_registry->getManagedITensor(ind);
           if (tensor != nullptr)
           {
             if (tensor_builder->supportDynamicTensor())
@@ -67,7 +69,9 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         std::shared_ptr<backend::ITensor> tensor;
         for (auto &tensor_builder : tensor_builders)
         {
-          tensor = tensor_builder->tensorRegistry()->getManagedITensor(ind);
+          auto tensor_registry = tensor_builder->tensorRegistry();
+          assert(tensor_registry);
+          tensor = tensor_registry->getManagedITensor(ind);
           if (tensor != nullptr)
           {
             if (tensor_builder->supportDynamicTensor())
@@ -180,9 +184,6 @@ void ExecutorBase::execute(const IODescription &desc)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
-
-  std::vector<std::unique_ptr<ISource>> sources{_graph.getInputs().size()};
-  std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};
 
   // Set input(s)
   assert(_input_tensors.size() == desc.inputs.size());
