@@ -20,5 +20,6 @@ add_test(NAME luci_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "${ARTIFACTS_BIN_PATH}"
+          "${NNCC_OVERLAY_DIR}/venv_1_13_2"
           ${LUCI_VALUE_TESTS}
 )
