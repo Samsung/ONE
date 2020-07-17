@@ -43,7 +43,8 @@ public:
       const ir::SubgraphIndex &subg_idx,
       const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
       : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
-        _operations(lowered_subgs.at(subg_idx)->graph().operations())
+        _operations(lowered_subgs.at(subg_idx)->graph().operations()),
+        _return_has_dynamic_tensor(false)
   { /* empty */
   }
   virtual ~StaticShapeInferer() = default;
@@ -73,9 +74,6 @@ public:
   }
 
   void dump();
-
-private:
-  bool _return_has_dynamic_tensor;
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
@@ -152,6 +150,7 @@ private:
   // _operands and _operations can be changed by controlflow operation
   ir::Operands &_operands;     // operands of current subgraph
   ir::Operations &_operations; // operations of current subgraph
+  bool _return_has_dynamic_tensor;
 };
 
 } // namespace compiler

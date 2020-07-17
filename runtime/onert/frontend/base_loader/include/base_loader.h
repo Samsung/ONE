@@ -65,7 +65,7 @@ public:
    * @param graph reference on subgraphs
    */
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-      : _base{nullptr}, _pagesize(getpagesize()), _subgraphs(subgs), _model{nullptr}
+      : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr}
   {
   }
 
