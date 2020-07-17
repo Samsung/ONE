@@ -104,6 +104,8 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
   HDF5Importer importer(input_data_path);
   importer.importGroup();
 
+  bool is_raw_data = importer.isRawData();
+
   const auto num_records = importer.numRecords();
   if (num_records == 0)
     throw std::runtime_error("The input data file does not contain any record.");
@@ -123,13 +125,22 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
-      DataType dtype;
-      Shape shape(input_node->rank());
       std::vector<char> input_data(getTensorSize(input_node));
-      importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
 
-      // Check the type and the shape of the input data is valid
-      verifyTypeShape(input_node, dtype, shape);
+      if (!is_raw_data)
+      {
+        DataType dtype;
+        Shape shape(input_node->rank());
+        importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+
+        // Check the type and the shape of the input data is valid
+        verifyTypeShape(input_node, dtype, shape);
+      }
+      else
+      {
+        // Skip type/shape check for raw data
+        importer.readTensor(record_idx, input_idx, input_data.data());
+      }
 
       // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
       //       We can redcue the copy by directly writing data from file to interpreter inputs
@@ -138,6 +149,8 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
 
     _interpreter->interpret();
   }
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   auto minmax_map = _observer->minMaxData()->getMap();
   for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
