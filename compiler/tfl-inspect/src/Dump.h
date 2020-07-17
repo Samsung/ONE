@@ -51,6 +51,15 @@ public:
   void run(std::ostream &os, const tflite::Model *model);
 };
 
+class DumpOperatorVersion final : public DumpInterface
+{
+public:
+  DumpOperatorVersion() = default;
+
+public:
+  void run(std::ostream &os, const tflite::Model *model);
+};
+
 } // namespace tflinspect
 
 #endif // __DUMP_H__

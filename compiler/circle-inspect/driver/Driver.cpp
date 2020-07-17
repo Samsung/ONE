@@ -37,6 +37,7 @@ int entry(int argc, char **argv)
     std::cerr << "   --operators : dump operators in circle file" << std::endl;
     std::cerr << "   --conv2d_weight : dump Conv2D series weight operators in circle file"
               << std::endl;
+    std::cerr << "   --op_version : dump operator version of circle" << std::endl;
     return 255;
   }
 
@@ -51,6 +52,11 @@ int entry(int argc, char **argv)
   argparse["--conv2d_weight"] = [&](void) {
     // dump Conv2D, DepthwiseConv2D weight operators
     return std::move(stdex::make_unique<circleinspect::DumpConv2DWeight>());
+  };
+
+  argparse["--op_version"] = [&](void) {
+    // dump Conv2D, DepthwiseConv2D weight operators
+    return std::move(stdex::make_unique<circleinspect::DumpOperatorVersion>());
   };
 
   std::vector<std::unique_ptr<circleinspect::DumpInterface>> dumps;

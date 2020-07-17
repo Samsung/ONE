@@ -37,6 +37,7 @@ int entry(int argc, char **argv)
     std::cerr << "   --operators : dump operators in tflite file" << std::endl;
     std::cerr << "   --conv2d_weight : dump Conv2D series weight operators in tflite file"
               << std::endl;
+    std::cerr << "   --op_version : dump operator version of tflite" << std::endl;
     return 255;
   }
 
@@ -51,6 +52,11 @@ int entry(int argc, char **argv)
   argparse["--conv2d_weight"] = [&](void) {
     // dump Conv2D, DepthwiseConv2D weight operators
     return std::move(stdex::make_unique<tflinspect::DumpConv2DWeight>());
+  };
+
+  argparse["--op_version"] = [&](void) {
+    // dump Conv2D, DepthwiseConv2D weight operators
+    return std::move(stdex::make_unique<tflinspect::DumpOperatorVersion>());
   };
 
   std::vector<std::unique_ptr<tflinspect::DumpInterface>> dumps;

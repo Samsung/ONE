@@ -89,8 +89,9 @@ namespace luci
 {
 
 uint32_t SerializedModelData::registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
-                                                    const int32_t op_version)
+                                                    const int32_t op_version = 0)
 {
+  assert(op_version > 0);
   auto it = _operator_codes.find(OpCode{builtin_code, "", op_version});
   if (it != _operator_codes.end())
   {

@@ -430,6 +430,7 @@ message Operation {
   optional string type = 1;
   repeated string input = 2;
   repeated string output = 3;
+  optional int32 version = 4 [default = 1];
 
   optional Conv2DOptions conv2d_options = 100;
   optional Pool2DOptions averagepool2d_options = 101;
