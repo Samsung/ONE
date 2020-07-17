@@ -9,7 +9,7 @@ function(_RuySource_import)
 
   # NOTE Downloads source from latest ruy library (2020-04-10)
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/2e2658f964638ab7aa562d4b48b76007d44e38f0.tar.gz)
+  envoption(RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/ 9ad26c734d59e8abb4c32089b12bb31f8c721f61.tar.gz)
   ExternalSource_Download(RUY
     DIRNAME RUY
     URL ${RUY_URL})

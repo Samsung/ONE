@@ -372,6 +372,13 @@ enum class Order
   kRowMajor
 };
 
+enum class CachePolicy : std::uint8_t
+{
+  kNeverCache,
+  kCacheIfLargeSpeedup,
+  kAlwaysCache,
+};
+
 // MatrixParams encapsulates the parameters that Gemm needs about each
 // matrix, besides the buffer data pointer.
 // Compare to ruy::Matrix, which also encapsulates the data pointer.
@@ -393,7 +400,8 @@ template <typename Scalar> struct MatrixParams
   // Indicate whether the underlying data will remain unchanged for
   // some period of time. Defaults to false, but should be set to true
   // for unchanging data (e.g. weights buffers in many cases)
-  bool cacheable = false;
+  CachePolicy cache_policy = CachePolicy::kNeverCache;
+  // bool cacheable = false;
 };
 
 // Enumeration of broad categories of Gemm.
