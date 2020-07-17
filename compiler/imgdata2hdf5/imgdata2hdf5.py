@@ -45,7 +45,7 @@ with open(data_list, 'r') as f:
 # Input files
 num_converted = 0
 for imgdata in datalist:
-    with open(imgdata, 'r') as f:
+    with open(imgdata, 'rb') as f:
         sample = group.create_group(str(num_converted))
         num_converted += 1
         filename = os.path.basename(imgdata)
