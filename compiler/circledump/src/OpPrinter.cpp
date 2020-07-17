@@ -17,11 +17,11 @@
 #include "OpPrinter.h"
 #include "Read.h"
 
-#include <stdex/Memory.h>
+#include <memory>
 
 #include <flatbuffers/flexbuffers.h>
 
-using stdex::make_unique;
+using std::make_unique;
 
 namespace circledump
 {
@@ -742,6 +742,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique<ReverseSequencePrinter>();
   // There is no Option for ROUND
   // There is no Option for SELECT
+  // There is no Option for SELECT_V2
   _op_map[circle::BuiltinOperator_SHAPE] = make_unique<ShapePrinter>();
   // There is no Option for SIN
   // There is no Option for SLICE

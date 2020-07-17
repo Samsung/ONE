@@ -1,4 +1,5 @@
 /*
+ * Copyright 2018 The TensorFlow Authors. All Rights Reserved.
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +18,28 @@
 #include "benchmark/Phases.h"
 #include "benchmark/Types.h"
 
-#include <chrono>
 #include <cassert>
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
 
 namespace
 {
 
-inline uint64_t nowMicros()
+uint64_t nowMicros()
 {
-  auto time_point = std::chrono::high_resolution_clock::now();
-  auto since_epoch = time_point.time_since_epoch();
-  // default precision of high resolution clock is 10e-9 (nanoseconds)
-  return std::chrono::duration_cast<std::chrono::microseconds>(since_epoch).count();
+  struct timeval tv;
+  gettimeofday(&tv, nullptr);
+  return static_cast<uint64_t>(tv.tv_sec) * 1e6 + tv.tv_usec;
+}
+
+void SleepForMicros(uint64_t micros)
+{
+  timespec sleep_time;
+  sleep_time.tv_sec = micros / 1e6;
+  micros -= sleep_time.tv_sec * 1e6;
+  sleep_time.tv_nsec = micros * 1e3;
+  nanosleep(&sleep_time, nullptr);
 }
 }
 
@@ -36,7 +47,8 @@ namespace benchmark
 {
 
 Phases::Phases(const PhaseOption &option)
-    : _option(option), _mem_poll(std::chrono::milliseconds(5), option.memory_gpu)
+    : _option(option),
+      _mem_poll(std::chrono::milliseconds(option.memory_interval), option.memory_gpu)
 {
   // DO NOTHING
 }
@@ -72,6 +84,11 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
 
     if (post)
       (*post)(phase, i);
+
+    if (_option.run_delay > 0 && p == PhaseEnum::EXECUTE && i != loop_num - 1)
+    {
+      SleepForMicros(_option.run_delay);
+    }
   }
 
   if (p == PhaseEnum::END_OF_PHASE)

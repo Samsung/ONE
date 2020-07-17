@@ -74,8 +74,7 @@ public:
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, graph);
     auto compiler = new onert::compiler::Compiler{subgs};
-    compiler->compile();
-    compiler->release(executors);
+    executors = compiler->compile();
     delete compiler;
   }
 
@@ -138,9 +137,7 @@ TEST(ExecInstance, twoCompile)
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, graph);
   auto compiler = new onert::compiler::Compiler{subgs};
-  compiler->compile();
-  std::shared_ptr<onert::exec::ExecutorMap> executors2;
-  compiler->release(executors2);
+  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler->compile();
   auto execution2 = new onert::exec::Execution(executors2);
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};

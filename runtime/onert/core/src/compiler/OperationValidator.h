@@ -53,10 +53,8 @@ public:
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;
   void visit(const ir::operation::Permute &node) override;
-  void visit(const ir::operation::ReduceSum &node) override;
+  void visit(const ir::operation::Reduce &node) override;
   void visit(const ir::operation::Transpose &node) override;
-  void visit(const ir::operation::ReduceAny &node) override;
-  void visit(const ir::operation::ReduceMax &node) override;
   void visit(const ir::operation::RNN &node) override;
   void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
@@ -69,10 +67,8 @@ public:
   void visit(const ir::operation::TransposeConv &node) override;
   void visit(const ir::operation::Gather &node) override;
   void visit(const ir::operation::Dequantize &node) override;
-  void visit(const ir::operation::Mean &node) override;
   void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::Pack &node) override;
-  void visit(const ir::operation::ReduceMin &node) override;
   void visit(const ir::operation::LSTM &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::Pad &node) override;
@@ -85,7 +81,6 @@ public:
   void visit(const ir::operation::Sin &node) override;
   void visit(const ir::operation::RSQRT &node) override;
   void visit(const ir::operation::Shape &node) override;
-  void visit(const ir::operation::ReduceProd &node) override;
   void visit(const ir::operation::Reverse &node) override;
   void visit(const ir::operation::If &node) override;
   void visit(const ir::operation::While &node) override;
@@ -97,6 +92,10 @@ public:
   void visit(const ir::operation::LogicalOr &node) override;
   void visit(const ir::operation::Range &node) override;
   void visit(const ir::operation::MatrixBandPart &node) override;
+  void visit(const ir::operation::LogSoftmax &node) override;
+
+private:
+  void checkReduceOp(const ir::OperandIndex input_index, const ir::OperandIndex output_index);
 
 private:
   // TODO Remove _ctx field

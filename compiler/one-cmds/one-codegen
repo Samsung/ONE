@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+function Usage()
+{
+  echo "Usage: $0 [BACKEND] ..."
+  echo "Available BACKEND drivers:"
+  backend_exist=0
+  for file in `find $DRIVER_PATH -name *-compile -type f`;
+  do
+    backend_driver=$(basename $file)
+    sub_length=8
+    driver_length=$(expr ${#backend_driver} - ${sub_length})
+    backend=${backend_driver:0:${driver_length}} # 8 is length of "-compile"
+    echo "  $backend"
+    backend_exist=1
+  done
+  if [ $backend_exist == 0 ]; then
+    echo "  (There is no available backend drivers)"
+  fi
+}
+
+# Get command from command-line
+BACKEND=$1; shift
+BACKEND_DRIVER="$BACKEND-compile"
+
+if [[ -z "${BACKEND_DRIVER}" ]]; then
+  Usage
+  exit 255
+fi
+
+BACKEND_DRIVER_CMD="${DRIVER_PATH}/${BACKEND_DRIVER}"
+
+if [[ ! -f "${BACKEND_DRIVER_CMD}" ]]; then
+  echo "ERROR: '${BACKEND_DRIVER}' is not supported"
+  Usage
+  exit 255
+fi
+
+"${BACKEND_DRIVER_CMD}" "$@"

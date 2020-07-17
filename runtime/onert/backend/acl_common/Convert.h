@@ -20,10 +20,12 @@
 #include <arm_compute/core/TensorInfo.h>
 #include <arm_compute/core/SubTensorInfo.h>
 #include <arm_compute/core/TensorShape.h>
+#include <arm_compute/core/TypesEx.h>
 
 #include "ir/Layout.h"
 #include "ir/InternalType.h"
 #include "ir/Operand.h"
+#include "ir/operation/Reduce.h"
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
 #include "ir/Coordinates.h"
@@ -75,6 +77,8 @@ std::unique_ptr<T_Function> asFunction(std::unique_ptr<::arm_compute::IFunction>
 
 ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout);
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
+
+arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir);
 
 } // namespace acl_common
 } // namespace backend

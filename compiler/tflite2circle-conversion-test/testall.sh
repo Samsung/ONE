@@ -13,6 +13,7 @@ if [[ $# -lt 2 ]]; then
   exit 255
 fi
 
+BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIG_PATH="$1"; shift
 WORKDIR="$1"; shift
 
@@ -31,11 +32,11 @@ while [[ $# -ne 0 ]]; do
 
   TESTED+=("${PREFIX}")
 
-  PASSED_TAG="${PREFIX}.passed"
+  PASSED_TAG="${BINDIR}/${PREFIX}.passed"
 
   rm -f "${PASSED_TAG}"
 
-  cat > "${PREFIX}.log" <(
+  cat > "${BINDIR}/${PREFIX}.log" <(
     exec 2>&1
 
     echo "-- Found tflite: ${PREFIX}.tflite"
@@ -48,7 +49,7 @@ while [[ $# -ne 0 ]]; do
     # Generate circle
     "${TFLITE2CIRCLE_PATH}" \
       "${WORKDIR}/${PREFIX}.tflite" \
-      "${WORKDIR}/${PREFIX}.circle"
+      "${BINDIR}/${PREFIX}.circle"
 
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"

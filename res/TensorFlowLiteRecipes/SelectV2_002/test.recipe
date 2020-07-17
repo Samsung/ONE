@@ -1,0 +1,31 @@
+operand {
+  name: "cond"
+  type: BOOL
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "t"
+  type: FLOAT32
+  shape { dim: 3 dim: 2 dim: 3 }
+}
+operand {
+  name: "e"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 2 dim: 3 }
+}
+operation {
+  type: "SelectV2"
+  input: "cond"
+  input: "t"
+  input: "e"
+  output: "ofm"
+}
+input: "cond"
+input: "t"
+input: "e"
+output: "ofm"

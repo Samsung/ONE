@@ -37,7 +37,7 @@ public:
   void configure(const IPortableTensor *start, const IPortableTensor *limit,
                  const IPortableTensor *delta, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_start;

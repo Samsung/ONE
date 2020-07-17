@@ -24,8 +24,6 @@
 
 #include <backend/Backend.h>
 
-#include <backend/IShapeFixer.h>
-
 #include <memory>
 
 namespace onert
@@ -68,8 +66,7 @@ public:
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph);
-    context->shape_fixer = nullptr;
+    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;

@@ -184,15 +184,15 @@ void OperationValidator::visit(const ir::operation::Permute &node)
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 
-void OperationValidator::visit(const ir::operation::ReduceSum &node)
+void OperationValidator::visit(const ir::operation::Reduce &node)
 {
-  VERBOSE(Permute) << "Configure ReduceSum operation" << std::endl;
+  VERBOSE(Permute) << "Configure " + node.name() + " operation" << std::endl;
 
   const auto output_index{node.getOutputs().at(0)};
   if (_ctx.at(output_index).info().isDynamic())
     return;
 
-  const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
+  const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
   const auto input_shape = _ctx.at(input_index).shape();
   const auto output_shape = _ctx.at(output_index).shape();
 
@@ -247,100 +247,6 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
 
   OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
-}
-
-void OperationValidator::visit(const ir::operation::ReduceAny &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-
-  const auto input_index{node.getInputs().at(ir::operation::ReduceAny::Input::INPUT)};
-  auto output_shape = _ctx.at(output_index).shape();
-  auto input_shape = _ctx.at(input_index).shape();
-
-  OP_REQUIRES(input_shape.rank() <= 4);
-  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
-
-  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
-  // supports cases reducing height and width or reducing depth.
-  // TODO We have to support all cases of dimensions up to 4.
-  // For correct permuting, we have to set output's shape to be equal in dimension position of the
-  // input. But the positions of the same dimensions in the input and output may be set differently.
-  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
-  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
-  // extend it in 4 dimensions, it should be {1,1,3,5}.
-  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
-  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
-  // next operation is not desired.
-  if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
-  {
-    if (output_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
-                  input_shape.dim(3) == output_shape.dim(1));
-    }
-    else if (output_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
-                   input_shape.dim(1) == output_shape.dim(1) &&
-                   input_shape.dim(2) == output_shape.dim(2)) ||
-                  (input_shape.dim(0) == output_shape.dim(0) &&
-                   (input_shape.dim(1) == output_shape.dim(1) ||
-                    input_shape.dim(2) == output_shape.dim(1)) &&
-                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
-    }
-  }
-}
-
-void OperationValidator::visit(const ir::operation::ReduceMax &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-
-  const auto input_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  auto output_shape = _ctx.at(output_index).shape();
-  auto input_shape = _ctx.at(input_index).shape();
-
-  OP_REQUIRES(input_shape.rank() <= 4);
-  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
-
-  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
-  // supports cases reducing height and width or reducing depth.
-  // TODO We have to support all cases of dimensions up to 4.
-  // For correct permuting, we have to set output's shape to be equal in dimension position of the
-  // input. But the positions of the same dimensions in the input and output may be set differently.
-  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
-  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
-  // extend it in 4 dimensions, it should be {1,1,3,5}.
-  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
-  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
-  // next operation is not desired.
-  if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
-  {
-    if (output_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
-                  input_shape.dim(3) == output_shape.dim(1));
-    }
-    else if (output_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
-                   input_shape.dim(1) == output_shape.dim(1) &&
-                   input_shape.dim(2) == output_shape.dim(2)) ||
-                  (input_shape.dim(0) == output_shape.dim(0) &&
-                   (input_shape.dim(1) == output_shape.dim(1) ||
-                    input_shape.dim(2) == output_shape.dim(1)) &&
-                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
-    }
-  }
 }
 
 void OperationValidator::visit(const ir::operation::RNN &node)
@@ -628,48 +534,6 @@ void OperationValidator::visit(const ir::operation::Dequantize &node)
   OP_REQUIRES(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
 }
 
-void OperationValidator::visit(const ir::operation::Mean &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
-    return;
-
-  const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
-
-  const auto ifm_shape = _ctx.at(ifm_index).shape();
-  const auto ofm_shape = _ctx.at(ofm_index).shape();
-
-  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
-  // supports cases reducing height and width or reducing depth.
-  // TODO We have to support all cases of dimensions up to 4.
-  // For correct permuting, we have to set output's shape to be equal in dimension position of the
-  // input. But the positions of the same dimensions in the input and output may be set differently.
-  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
-  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
-  // extend it in 4 dimensions, it should be {1,1,3,5}.
-  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
-  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
-  // next operation is not desired.
-  if (ifm_shape.rank() == 4 && ifm_shape.rank() != ofm_shape.rank())
-  {
-    if (ofm_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
-    }
-    else if (ofm_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      OP_REQUIRES((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
-                   ifm_shape.dim(2) == ofm_shape.dim(2)) ||
-                  (ifm_shape.dim(0) == ofm_shape.dim(0) &&
-                   (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
-                   ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
-    }
-  }
-}
-
 void OperationValidator::visit(const ir::operation::DepthToSpace &node)
 {
   // param check
@@ -722,51 +586,6 @@ void OperationValidator::visit(const ir::operation::Pack &node)
   for (const auto &index : node.getInputs())
   {
     OP_REQUIRES(input_shape == _ctx.at(index).shape());
-  }
-}
-
-void OperationValidator::visit(const ir::operation::ReduceMin &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
-    return;
-
-  const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-
-  auto ifm_shape = _ctx.at(ifm_index).shape();
-  auto ofm_shape = _ctx.at(ofm_index).shape();
-
-  OP_REQUIRES(ifm_shape.rank() <= 4);
-  OP_REQUIRES(ofm_shape.rank() <= ifm_shape.rank());
-
-  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
-  // supports cases reducing height and width or reducing depth.
-  // TODO We have to support all cases of dimensions up to 4.
-  // For correct permuting, we have to set output's shape to be equal in dimension position of the
-  // input. But the positions of the same dimensions in the input and output may be set differently.
-  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
-  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
-  // extend it in 4 dimensions, it should be {1,1,3,5}.
-  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
-  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
-  // next operation is not desired.
-  if (ifm_shape.rank() == 4 && ifm_shape.rank() != ofm_shape.rank())
-  {
-    if (ofm_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(3) == ofm_shape.dim(1));
-    }
-    else if (ofm_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      OP_REQUIRES((ifm_shape.dim(0) == ofm_shape.dim(0) && ifm_shape.dim(1) == ofm_shape.dim(1) &&
-                   ifm_shape.dim(2) == ofm_shape.dim(2)) ||
-                  (ifm_shape.dim(0) == ofm_shape.dim(0) &&
-                   (ifm_shape.dim(1) == ofm_shape.dim(1) || ifm_shape.dim(2) == ofm_shape.dim(1)) &&
-                   ifm_shape.dim(3) == 1 && ofm_shape.dim(2) == 1));
-    }
   }
 }
 
@@ -1126,53 +945,6 @@ void OperationValidator::visit(const ir::operation::Shape &node)
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == 1);
 }
 
-void OperationValidator::visit(const ir::operation::ReduceProd &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-
-  const auto input_index{node.getInputs().at(ir::operation::ReduceProd::Input::INPUT)};
-  auto output_shape = _ctx.at(output_index).shape();
-  auto input_shape = _ctx.at(input_index).shape();
-
-  OP_REQUIRES(input_shape.rank() <= 4);
-  OP_REQUIRES(output_shape.rank() <= input_shape.rank());
-
-  // NOTE For the 4-dimensions, if the rank of input and output are different, this runtime only
-  // supports cases reducing height and width or reducing depth.
-  // TODO We have to support all cases of dimensions up to 4.
-  // For correct permuting, we have to set output's shape to be equal in dimension position of the
-  // input. But the positions of the same dimensions in the input and output may be set differently.
-  // For example {2,3,4,5}(input's shape) can be reduced to {3,5}(output's shape). The original
-  // output shape should be {1,3,1,5}, but real output shape may be {3,5}. If you simply try to
-  // extend it in 4 dimensions, it should be {1,1,3,5}.
-  // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
-  // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
-  // next operation is not desired.
-  if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
-  {
-    if (output_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
-                  input_shape.dim(3) == output_shape.dim(1));
-    }
-    else if (output_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(ifm and ofm) == 1) or (Reducing W and C(ifm and ofm) == 1)
-      OP_REQUIRES((input_shape.dim(0) == output_shape.dim(0) &&
-                   input_shape.dim(1) == output_shape.dim(1) &&
-                   input_shape.dim(2) == output_shape.dim(2)) ||
-                  (input_shape.dim(0) == output_shape.dim(0) &&
-                   (input_shape.dim(1) == output_shape.dim(1) ||
-                    input_shape.dim(2) == output_shape.dim(1)) &&
-                   input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
-    }
-  }
-}
-
 void OperationValidator::visit(const ir::operation::Reverse &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1286,6 +1058,7 @@ void OperationValidator::visit(const ir::operation::Tile &node)
   const auto multiple_index{node.getInputs().at(1)};
 
   OP_REQUIRES(_ctx.at(multiple_index).shape().rank() == 1);
+  OP_REQUIRES(_ctx.at(multiple_index).shape().dim(0) == _ctx.at(input_index).shape().rank());
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
@@ -1331,6 +1104,19 @@ void OperationValidator::visit(const ir::operation::MatrixBandPart &node)
   OP_REQUIRES(_ctx.at(input_index).shape().rank() >= 2);     // input must be more than 2 dim matrix
   OP_REQUIRES(_ctx.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
   OP_REQUIRES(_ctx.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
+}
+
+void OperationValidator::visit(const ir::operation::LogSoftmax &node)
+{
+  VERBOSE(LogSoftmax) << "Configure LOGSOFTMAX operation" << std::endl;
+
+  const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(0)};
+
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 } // namespace compiler
 } // namespace onert

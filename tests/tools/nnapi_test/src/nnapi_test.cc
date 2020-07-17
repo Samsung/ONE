@@ -23,24 +23,21 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "args.h"
+
 using namespace tflite;
 using namespace nnfw::tflite;
+using namespace nnapi_test;
 
 int main(const int argc, char **argv)
 {
-  if (argc < 2)
-  {
-    std::cerr << "nnapi_test\n\n";
-    std::cerr << "Usage: " << argv[0] << " <.tflite>\nOR\n";
-    std::cerr << "Usage: " << argv[0] << " <.tflite> <seed>\n\n";
-    return 1;
-  }
+  Args args(argc, argv);
 
-  const auto filename = argv[1];
+  const auto filename = args.getTfliteFilename();
 
   StderrReporter error_reporter;
 
-  auto model = FlatBufferModel::BuildFromFile(filename, &error_reporter);
+  auto model = FlatBufferModel::BuildFromFile(filename.c_str(), &error_reporter);
 
   if (model == nullptr)
   {
@@ -52,12 +49,11 @@ int main(const int argc, char **argv)
 
   try
   {
-    int32_t seed = 0;
-    if (argc == 3)
-    {
-      seed = std::atoi(argv[2]);
-    }
-    return nnfw::tflite::RandomTestRunner::make(seed).run(builder);
+    const auto seed = static_cast<uint32_t>(args.getSeed());
+    auto runner = nnfw::tflite::RandomTestRunner::make(seed);
+    const auto num_runs = static_cast<size_t>(args.getNumRuns());
+    runner.compile(builder);
+    return runner.run(num_runs);
   }
   catch (const std::exception &e)
   {

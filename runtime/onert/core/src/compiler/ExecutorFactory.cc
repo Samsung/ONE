@@ -27,7 +27,6 @@
 #include "compiler/Linear.h"
 #include "backend/IConstantInitializer.h"
 #include "backend/IKernelGenerator.h"
-#include "backend/IShapeFixer.h"
 #include "backend/IOptimizer.h"
 #include "backend/ITensorRegister.h"
 #include "backend/controlflow/Config.h"
@@ -169,9 +168,9 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
             const auto frontend_layout = op_seq.getLayout();
             const auto backend_layout = operand_lower_info.layout();
             ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                         obj.typeInfo(), obj.info().memAllocType()};
-            tensor_builder->registerTensorInfo(index, backend_info, backend_layout,
-                                               obj.isConstant());
+                                         obj.typeInfo(), obj.info().memAllocType(),
+                                         obj.isConstant()};
+            tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
           }
         }
       }
@@ -190,11 +189,6 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   // linearize
   assert(!lowered_graph->graph().isBuildingPhase());
-
-  for (auto &pair : backend_contexts)
-  {
-    pair.second->fixShapes();
-  }
 
   /*************************************************
    * Backend dependent analysis & optimization phase
@@ -220,11 +214,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
   Linear::dump(*lowered_graph, order);
   Linear::planTensors(*lowered_graph, order);
 
-  backend::TensorBuilderSet tensor_builders;
-  for (const auto &e : lowered_graph->backend_contexts())
-  {
-    tensor_builders.insert(e.second->tensor_builder);
-  }
+  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -255,7 +245,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 
   for (auto &tensor_builder : tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)
@@ -302,19 +292,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   initializeBackendContext(lowered_graph.get());
 
-  for (auto &pair : backend_contexts)
-  {
-    pair.second->fixShapes();
-  }
-
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  backend::TensorBuilderSet tensor_builders;
-  for (const auto &e : lowered_graph->backend_contexts())
-  {
-    tensor_builders.insert(e.second->tensor_builder);
-  }
+  TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
 
   // To make tensors never be deallocated, this is a workaround to use static memory planner
   for (auto &tensor_builder : tensor_builders)
@@ -358,7 +339,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   for (const auto &tensor_builder : tensor_builders)
   {
-    tensor_builder->allocate();
+    tensor_builder->allocateAtCompileTime();
   }
 
   for (auto &pair : backend_contexts)

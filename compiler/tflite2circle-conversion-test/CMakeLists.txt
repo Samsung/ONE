@@ -2,7 +2,6 @@ nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
 list(APPEND REQUIRED_TARGETS tflite2circle)
-list(APPEND REQUIRED_TARGETS tflchef)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
 nncc_find_resource(TensorFlowLiteRecipes)
@@ -21,28 +20,6 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     message(FATAL_ERROR "Missing '${RECIPE_PREFIX}' test")
   endif()
 
-  set(RECIPE_SOURCE_PATH "${TEST_REPO}/${PREFIX}/${TEST_RECIPE_FILENAME}")
-  set(RECIPE_FILE "${PREFIX}.recipe")
-  set(RECIPE_BINARY_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE_FILE}")
-
-  set(TFLITE_FILE "${PREFIX}.tflite")
-  set(TFLITE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${TFLITE_FILE}")
-
-  # Copy .recipe
-  add_custom_command(OUTPUT ${RECIPE_BINARY_PATH}
-    COMMAND ${CMAKE_COMMAND} -E copy "${RECIPE_SOURCE_PATH}" "${RECIPE_BINARY_PATH}"
-    DEPENDS ${RECIPE_SOURCE_PATH}
-    COMMENT "Generate ${RECIPE_FILE}"
-  )
-
-  # Generate .tflite
-  add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
-    COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-    DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
-    COMMENT "Generate ${TFLITE_FILE}"
-  )
-
-  list(APPEND TEST_DEPS ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH})
   list(APPEND TEST_NAMES ${PREFIX})
 endforeach(RECIPE IN ITEMS ${RECIPES})
 
@@ -60,6 +37,8 @@ add_custom_command(
 )
 
 list(APPEND TEST_DEPS "${TEST_RUNNER}")
+
+get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 ###
 ### Generate test.config
@@ -84,6 +63,6 @@ add_test(
   NAME tflite2circle_conversion_test
   COMMAND "${TEST_RUNNER}"
           "${TEST_CONFIG}"
-          "${CMAKE_CURRENT_BINARY_DIR}"
+          "${ARTIFACTS_BIN_PATH}"
           ${TEST_NAMES}
 )

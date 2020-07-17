@@ -18,10 +18,8 @@
 #include "nnfw.h"
 #include "nnfw_util.h"
 
-#include <cassert>
 #include <iostream>
 #include <stdexcept>
-#include <cstdlib>
 #include <H5Cpp.h>
 
 namespace nnpkg_run
@@ -31,7 +29,7 @@ static const char *h5_value_grpname = "value";
 void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
 {
   uint32_t num_inputs;
-  NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
+  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
   try
   {
     // Turn off the automatic error printing.
@@ -42,7 +40,7 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
       // allocate memory for data
       auto bufsz = bufsize_for(&ti);
       inputs[i].alloc(bufsz);
@@ -81,8 +79,8 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
         default:
           throw std::runtime_error("nnpkg_run can load f32, i32, qasymm8, bool and uint8.");
       }
-      NNPR_ENSURE_STATUS(nnfw_set_input(session, i, ti.dtype, inputs[i].data(), bufsz));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+      NNPR_ENSURE_STATUS(nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), bufsz));
+      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   }
   catch (const H5::Exception &e)
@@ -100,7 +98,7 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
 void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs)
 {
   uint32_t num_outputs;
-  NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
+  NNPR_ENSURE_STATUS(nnfw_output_size(session_, &num_outputs));
   try
   {
     // Turn off the automatic error printing.
@@ -111,7 +109,7 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
     for (uint32_t i = 0; i < num_outputs; i++)
     {
       nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session_, i, &ti));
       std::vector<hsize_t> dims(ti.rank);
       for (uint32_t j = 0; j < ti.rank; ++j)
       {

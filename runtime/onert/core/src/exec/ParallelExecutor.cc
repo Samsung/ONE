@@ -60,7 +60,7 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
 }
 
 ParallelExecutor::ParallelExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                   const backend::TensorBuilderSet &tensor_builders,
+                                   const compiler::TensorBuilders &tensor_builders,
                                    compiler::CodeMap &&code_map)
     : DataflowExecutor{std::move(lowered_graph), tensor_builders, std::move(code_map)}
 {
@@ -69,6 +69,8 @@ ParallelExecutor::ParallelExecutor(std::unique_ptr<ir::LoweredGraph> lowered_gra
 
 void ParallelExecutor::executeImpl()
 {
+  bool dynamic_input_exists = hasDynamicInput();
+
   // Init scheduler
   // TODO Consider to have distinct backend set in LowerInfoMap
   BackendSet backends;
@@ -127,7 +129,11 @@ void ParallelExecutor::executeImpl()
       notify(job_index);
     };
 
-    _scheduler->assign(std::make_unique<HookFunction>(job->fn(), setup, teardown), backend);
+    // dynamic tensor setting
+    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
+    job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
+
+    _scheduler->assign(std::make_unique<HookFunction>(job->fn_seq(), setup, teardown), backend);
     _finished_jobs[job_index] = std::move(job);
   }
 

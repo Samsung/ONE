@@ -18,6 +18,7 @@
 
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
+#include <misc/polymorphic_downcast.h>
 #include "PermuteLayer.h"
 
 namespace onert
@@ -64,19 +65,13 @@ void IfLayer::run()
   exec::ExecutorBase *subg_exec = nullptr;
   if (getResultCond(_cond_tensor.get()))
   {
-    subg_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_then_subg_index).get());
-    if (subg_exec == nullptr)
-    {
-      throw std::runtime_error{"If: Invalid then subgraph"};
-    }
+    subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
+        _executor_map->at(_then_subg_index).get());
   }
   else
   {
-    subg_exec = dynamic_cast<exec::ExecutorBase *>(_executor_map->at(_else_subg_index).get());
-    if (subg_exec == nullptr)
-    {
-      throw std::runtime_error{"If: Invalid else subgraph"};
-    }
+    subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
+        _executor_map->at(_else_subg_index).get());
   }
 
   const auto &subg_graph = subg_exec->graph();
@@ -124,20 +119,6 @@ void IfLayer::run()
 
   // Copy & run
   subg_exec->execute(_input_tensors, permute_op_input_to_subg_input);
-  for (size_t i = 0; i < _output_tensors.size(); ++i)
-  {
-    const auto output_tensor = _output_tensors.at(i);
-    const auto orig_output_shape = output_tensor->getShape();
-    const auto changed_output_shape = subg_exec->getOutputTensors().at(i)->getShape();
-    const auto &output_dyn_alloc_info = _outputs_dyn_alloc_info.find(output_tensor);
-    if (orig_output_shape != changed_output_shape &&
-        _outputs_dyn_alloc_info.find(output_tensor) != _outputs_dyn_alloc_info.end() &&
-        (_graph.operands().at(output_dyn_alloc_info->second.ind).getUses().size() > 0 ||
-         _graph.getOutputs().contains(output_dyn_alloc_info->second.ind)))
-    {
-      output_tensor->set_dynamic();
-    }
-  }
   permute_subg_output_to_op_output->run();
 }
 

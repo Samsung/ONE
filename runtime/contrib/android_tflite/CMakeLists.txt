@@ -2,7 +2,7 @@ if(NOT BUILD_ANDROID_TFLITE)
   return()
 endif(NOT BUILD_ANDROID_TFLITE)
 
-nnfw_find_package(TensorFlowLite REQUIRED)
+nnfw_find_package(TensorFlowLite EXACT 1.13.1 REQUIRED)
 
 if(NOT DEFINED NDK_DIR)
   message(FATAL_ERROR "NDK_DIR should be specified via environment variable")

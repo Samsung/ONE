@@ -56,21 +56,6 @@ void ConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  if (!_prepare)
-  {
-    bool is_replaced_weights = false;
-    kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-                   op_params.padding_type, is_replaced_weights);
-
-    if (is_replaced_weights)
-    {
-      auto kernel_tensor = dynamic_cast<const Tensor *>(_kernel);
-      if (kernel_tensor)
-        // TODO Remove const_cast
-        const_cast<Tensor *>(kernel_tensor)->decrease_ref();
-    }
-    _prepare = true;
-  }
   kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
          getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
          getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
@@ -105,14 +90,9 @@ void ConvolutionLayer::convQuant8()
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
+  op_params.is_replaced_weights = true;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  if (!_prepare)
-  {
-    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
-                        _strideWidth, _strideHeight);
-    _prepare = true;
-  }
   kernel(op_params, getTensorShape(_input), reinterpret_cast<const uint8_t *>(_input->buffer()),
          getTensorShape(_kernel), reinterpret_cast<const uint8_t *>(_kernel->buffer()),
          getTensorShape(_bias), reinterpret_cast<const int32_t *>(_bias->buffer()),
@@ -142,6 +122,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 
 void ConvolutionLayer::run()
 {
+  prepare();
+
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
     const auto ifm_shape = _input->getShape().asFeature(_input->layout());
@@ -182,6 +164,36 @@ void ConvolutionLayer::run()
   {
     throw std::runtime_error{"Conv: unsupported data type"};
   }
+}
+
+void ConvolutionLayer::prepare()
+{
+  if (_prepare)
+    return;
+
+  nnfw::cker::Conv &kernel = *_conv_kernel;
+  if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
+  {
+    bool is_transposed = false;
+    kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
+                   getPaddingType(_paddingType), is_transposed);
+
+    // Decrease reference of _kernel(weights) only when _kernel is constant
+    if (is_transposed)
+    {
+      auto kernel_tensor = dynamic_cast<const Tensor *>(_kernel);
+      if (kernel_tensor)
+        // TODO Remove const_cast
+        const_cast<Tensor *>(kernel_tensor)->decrease_ref();
+    }
+  }
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
+           !_input->is_dynamic() && !_output->is_dynamic())
+  {
+    kernel.prepareQuant(getTensorShape(_input), getTensorShape(_kernel), getTensorShape(_output),
+                        _strideWidth, _strideHeight);
+  }
+  _prepare = true;
 }
 
 #undef ANDROID_NN_CONV_PARAMETERS

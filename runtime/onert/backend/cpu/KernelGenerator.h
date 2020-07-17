@@ -72,11 +72,7 @@ public:
   void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::Transpose &) override;
-  void visit(const ir::operation::ReduceSum &) override;
-  void visit(const ir::operation::ReduceAll &) override;
-  void visit(const ir::operation::ReduceAny &) override;
-  void visit(const ir::operation::ReduceMax &) override;
-  void visit(const ir::operation::ReduceMin &) override;
+  void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::ReLU &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Slice &) override;
@@ -87,11 +83,9 @@ public:
   void visit(const ir::operation::Sin &) override;
   void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::Shape &) override;
-  void visit(const ir::operation::ReduceProd &) override;
   void visit(const ir::operation::Reverse &) override;
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::ArgMax &) override;
-  void visit(const ir::operation::Mean &) override;
   void visit(const ir::operation::Log &) override;
   void visit(const ir::operation::Round &) override;
   void visit(const ir::operation::Pow &) override;
@@ -105,6 +99,8 @@ public:
   void visit(const ir::operation::BatchMatMul &) override;
   void visit(const ir::operation::BroadcastTo &) override;
   void visit(const ir::operation::FusedBatchNorm &) override;
+  void visit(const ir::operation::LogSoftmax &) override;
+  void visit(const ir::operation::SpaceToBatchND &) override;
 
 private:
   const ir::Operands &_ctx;

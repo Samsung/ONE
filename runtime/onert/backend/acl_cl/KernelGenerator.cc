@@ -58,6 +58,8 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   //      (all derivatives have the same implementation for this)
   assert(!_return_fn_seq);
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
+  _return_fn_seq->enableDynamicShapeInferer(false);
+
   _current_op_seq_layout = op_seq.getLayout();
   for (const auto &operation_idx : op_seq.operations())
   {
@@ -417,12 +419,13 @@ void KernelGenerator::visit(const ir::operation::Mul &node)
       asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
 }
 
-void KernelGenerator::visit(const ir::operation::ReduceSum &node)
+void KernelGenerator::visit(const ir::operation::Reduce &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReduceSum::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceSum::Input::AXES)};
+  const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
   const auto keep_dims{node.param().keep_dims};
+  const auto reduce_type = node.param().reduce_type;
 
   auto output_alloc = _tensor_builder->at(output_index).get();
   auto input_alloc = _tensor_builder->at(input_index).get();
@@ -432,13 +435,29 @@ void KernelGenerator::visit(const ir::operation::ReduceSum &node)
   const auto input_rank = _ctx.at(input_index).shape().rank();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = input_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, input_rank, frontend_layout, backend_layout);
 
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+  std::unique_ptr<arm_compute::IFunction> fn;
+  if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
+  {
+    auto l = std::make_unique<::arm_compute::CLReduceMean>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), acl_axes, keep_dims,
-                ::arm_compute::ReduceOperation::SUM);
+    const auto acl_axes =
+        acl_common::asCoordinates(axes, input_rank, frontend_layout, backend_layout);
+    l->configure(input_alloc->handle(), acl_axes, keep_dims, output_alloc->handle());
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::CLReduceOperation>(
+        _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+
+    const auto acl_axes = acl_common::asSet(axes, input_rank, frontend_layout, backend_layout);
+    l->configure(input_alloc->handle(), output_alloc->handle(), acl_axes, keep_dims,
+                 acl_common::convertReduceType(reduce_type));
+
+    fn = std::move(l);
+  }
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1036,34 +1055,6 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::ReduceMax &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReduceMax::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMax::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(output_index).get();
-  auto ifm_alloc = _tensor_builder->at(input_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(input_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), acl_axes, keep_dims,
-                arm_compute::ReduceOperation::MAX);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::Comparison &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1111,7 +1102,30 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
 
   auto fn = std::make_unique<::arm_compute::CLStackLayer>();
 
+  // Disable applied dim_correction
+  std::vector<arm_compute::TensorShape> orig_inputs_acl_tensor_shapes;
+  for (const auto &input_index : input_indexes)
+  {
+    size_t input_rank = _ctx.at(input_index).shape().rank();
+    const auto &input_alloc = _tensor_builder->at(input_index);
+    orig_inputs_acl_tensor_shapes.emplace_back(input_alloc->info()->tensor_shape());
+    assert(input_rank == input_alloc->num_dimensions());
+    if (input_rank != input_alloc->info()->num_dimensions())
+    {
+      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+      input_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+          _ctx.at(input_index).shape(), _current_op_seq_layout, backend_layout, false));
+    }
+  }
+
   fn->configure(inputs, axis, output);
+
+  // Revert disabling applied dim_correction
+  assert(inputs.size() == orig_inputs_acl_tensor_shapes.size());
+  for (size_t i = 0; i < inputs.size(); ++i)
+  {
+    inputs.at(i)->info()->set_tensor_shape(orig_inputs_acl_tensor_shapes.at(i));
+  }
 
   _return_fn = asAclClFunction(std::move(fn));
 }
@@ -1330,22 +1344,11 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   assert(_ctx.at(paddings_index).data());
 
   std::unique_ptr<::arm_compute::IFunction> fn;
-  if (_ctx.at(ofm_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-  {
-    // NOTE CLSpaceToBatchLayer has a bug that padding's values are 0 even when zero point of
-    // QASYMM8 is not 0.
-    auto l = std::make_unique<::arm_compute::CLSpaceToBatchND>();
-    l->configure(ifm_alloc->handle(), block_size_alloc->handle(), paddings_alloc->handle(),
-                 ofm_alloc->handle());
-    fn = std::move(l);
-  }
-  else
-  {
-    auto l = std::make_unique<::arm_compute::CLSpaceToBatchLayer>();
-    l->configure(ifm_alloc->handle(), block_size_alloc->handle(), paddings_alloc->handle(),
-                 ofm_alloc->handle());
-    fn = std::move(l);
-  }
+
+  auto l = std::make_unique<::arm_compute::CLSpaceToBatchLayer>();
+  l->configure(ifm_alloc->handle(), block_size_alloc->handle(), paddings_alloc->handle(),
+               ofm_alloc->handle());
+  fn = std::move(l);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1651,8 +1654,6 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   const auto ifm_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape();
-
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (ifm_rank + axis_raw) : axis_raw);
@@ -1678,7 +1679,35 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
 
   auto fn = std::make_unique<::arm_compute::CLGatherEx>();
 
+  // input is n-D, indices k-D, output is (n + k - 1)-D
+  size_t n = ifm_rank;
+  assert(n == ifm_alloc->num_dimensions());
+  size_t k = _ctx.at(indices_index).shape().rank();
+  assert(k == indices_alloc->num_dimensions());
+
+  // Disable applied dim_correction
+  const auto orig_ifm_acl_tensor_shape = ifm_alloc->info()->tensor_shape();
+  if (n != ifm_alloc->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+    const auto ifm = _ctx.at(ifm_index);
+    ifm_alloc->info()->set_tensor_shape(
+        acl_common::asTensorShape(ifm.shape(), _current_op_seq_layout, backend_layout, false));
+  }
+  const auto orig_indice_acl_tensor_shape = indices_alloc->info()->tensor_shape();
+  if (k != indices_alloc->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and indices tensor is applied dim_correction
+    const auto indices = _ctx.at(indices_index);
+    indices_alloc->info()->set_tensor_shape(
+        acl_common::asTensorShape(indices.shape(), _current_op_seq_layout, backend_layout, false));
+  }
+
   fn->configure(ifm_alloc->handle(), indices_alloc->handle(), ofm_alloc->handle(), axis);
+
+  // Revert disabling applied dim_correction
+  ifm_alloc->info()->set_tensor_shape(orig_ifm_acl_tensor_shape);
+  indices_alloc->info()->set_tensor_shape(orig_indice_acl_tensor_shape);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1774,33 +1803,6 @@ void KernelGenerator::visit(const ir::operation::Dequantize &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Mean &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Mean::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::Mean::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto reduce_axes =
-      acl_common::asCoordinates(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceMean>();
-
-  fn->configure(ifm_alloc->handle(), reduce_axes, keep_dims, ofm_alloc->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1841,34 +1843,6 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto fn = std::make_unique<::arm_compute::CLDepthToSpace>();
 
   fn->configure(input_alloc->handle(), output_alloc->handle(), block_size);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReduceMin &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReduceMin::Input::INPUT)};
-  const auto axes_index{node.getInputs().at(ir::operation::ReduceMin::Input::AXES)};
-  const auto keep_dims{node.param().keep_dims};
-
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-
-  // Convert to ACL axes taking into account negative values and possible duplicates.
-  const auto &axes = _ctx.at(axes_index);
-  const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
-  const auto acl_axes = acl_common::asSet(axes, ifm_rank, frontend_layout, backend_layout);
-
-  auto fn = std::make_unique<::arm_compute::CLReduceOperation>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), acl_axes, keep_dims,
-                ::arm_compute::ReduceOperation::MIN);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1927,6 +1901,22 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
     axis += input_rank;
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
 
+  // Disable applied dim_correction
+  std::vector<arm_compute::TensorShape> orig_outputs_acl_tensor_shapes;
+  for (const auto &output_index : output_indexes)
+  {
+    size_t output_rank = _ctx.at(output_index).shape().rank();
+    const auto &output_alloc = _tensor_builder->at(output_index);
+    orig_outputs_acl_tensor_shapes.emplace_back(output_alloc->info()->tensor_shape());
+    assert(output_rank == output_alloc->num_dimensions());
+    if (output_rank != output_alloc->info()->num_dimensions())
+    {
+      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+      output_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+          _ctx.at(output_index).shape(), _current_op_seq_layout, backend_layout, false));
+    }
+  }
+
   auto fn = std::make_unique<::arm_compute::CLUnstack>();
 
   fn->configure(input, outputs, axis);
@@ -1952,20 +1942,36 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   auto input = _tensor_builder->at(input_index).get()->handle();
   auto output = _tensor_builder->at(output_index).get()->handle();
 
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = _tensor_builder->at(input_index).get()->layout();
+
   ::arm_compute::PaddingList padding_list;
   padding_list.resize(rank);
   for (int32_t n = 0; n < rank; ++n)
   {
     const int32_t *from = reinterpret_cast<const int32_t *>(pad_base) + (n * 2);
 
-    const auto frontend_layout = _current_op_seq_layout;
-    const auto backend_layout = _tensor_builder->at(input_index).get()->layout();
     const auto axis =
         acl_common::ToARMComputeAxis(rank, n, frontend_layout, backend_layout).value();
     padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};
   }
   auto fn = std::make_unique<::arm_compute::CLPadLayer>();
+
+  // Disable applied dim_correction
+  size_t input_rank = _ctx.at(input_index).shape().rank();
+  const auto &input_alloc = _tensor_builder->at(input_index);
+  assert(input_rank == input_alloc->num_dimensions());
+  if (input_rank != input_alloc->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+    input_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+        _ctx.at(input_index).shape(), frontend_layout, backend_layout, false));
+  }
+
   fn->configure(input, output, padding_list, pixel_value);
+
+  // Do not revert disabling applied dim_correction CLPadKernel has cl kernel for 4-dimension
+  // It would produce a mistach of result
 
   _return_fn = asAclClFunction(std::move(fn));
 }

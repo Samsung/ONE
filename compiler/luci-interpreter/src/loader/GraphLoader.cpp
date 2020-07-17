@@ -42,8 +42,12 @@ template <DataType DT> const void *getNodeDataImpl(const luci::CircleConst *node
   const int32_t num_elements = node->size<DT>();
 
   *data_size = num_elements * element_size;
-  // FIXME There is no good way to get the pointer to the data currently.
-  return &node->at<DT>(0);
+  if (*data_size > 0)
+  {
+    // FIXME There is no good way to get the pointer to the data currently.
+    return &node->at<DT>(0);
+  }
+  return nullptr;
 }
 
 const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
@@ -99,9 +103,10 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 } // namespace
 
 GraphLoader::GraphLoader(const ModuleLoader &module_loader, const loco::Graph *graph,
-                         RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir)
+                         RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+                         std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
     : _module_loader(module_loader), _graph(graph), _runtime_graph(runtime_graph),
-      _runtime_to_ir(runtime_to_ir)
+      _runtime_to_ir(runtime_to_ir), _node_to_tensor(node_to_tensor)
 {
 }
 
@@ -140,7 +145,8 @@ void GraphLoader::loadTensors()
     {
       size_t data_size{};
       const void *const_data = getNodeData(const_node, &data_size);
-      tensor->writeData(const_data, data_size);
+      if (const_data != nullptr)
+        tensor->writeData(const_data, data_size);
     }
 
     _node_to_tensor.emplace(node, tensor.get());
@@ -182,7 +188,9 @@ void GraphLoader::loadOperators()
 
     if (isExecutableNode(node))
     {
-      _runtime_graph->addKernel(node->accept(&kernel_builder));
+      std::unique_ptr<Kernel> kernel = node->accept(&kernel_builder);
+      _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
+      _runtime_graph->addKernel(std::move(kernel));
     }
   }
 }

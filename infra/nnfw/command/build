@@ -7,18 +7,5 @@ if [[ ! -d "${BUILD_PATH}" ]]; then
   exit 255
 fi
 
-# Set parallel build
-# TODO Use argument instead of environment variable
-HOST_OS=${HOST_OS:-linux}
-NPROCS=${NPROCS:-1}
-PARALLEL_BUILD=${PARALLEL_BUILD:-1}
-
-if [ "${PARALLEL_BUILD}" == "1" ]; then
-  # Get number of processors (linux only for now)
-  if [ "${HOST_OS}" == "linux" ]; then
-    NPROCS="$(grep -c ^processor /proc/cpuinfo)"
-  fi
-fi
-
 cd ${BUILD_PATH}
-make -j ${NPROCS} "$@"
+make "$@"

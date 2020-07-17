@@ -258,6 +258,40 @@ NNFW_STATUS nnfw_prepare(nnfw_session *session);
 NNFW_STATUS nnfw_run(nnfw_session *session);
 
 /**
+ * @brief     Run inference asynchronously
+ *
+ * <p>This function must be called after model is loaded by {@link nnfw_load_model_from_file},
+ * session is prepared for inference by {@link nnfw_prepare}, set input and output buffers
+ * by {@link nnfw_set_input} and {@link nnfw_set_output}.</p>
+ *
+ * <p>This function returns immediately after starting a thread to run the inference.
+ * To get the result of it or to do the next inference with {@link nnfw_run} or
+ * {@link nnfw_run_async}, {@link nnfw_await} must be called to ensure the current asynchronous
+ * inference has finished. Only one asynchronous inference is allowed at a time for a session.
+ * If this function is called while the previous one is still running, it returns an error.</p>
+ *
+ * @param[in] session The session to run inference
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_run_async(nnfw_session *session);
+
+/**
+ * @brief     Wait for asynchronous run to finish
+ *
+ * <p>This function must be called after calling {@link nnfw_run_asnyc}, and can be called only once
+ * for a {@link nnfw_run_async} call.
+ *
+ * <p>When this function returns, it means that this session has finished the asynchronous run. Then
+ * the user can safely use the output data.</p>
+ *
+ * <p>This function returns after the asynchronous inference is finished.</p>
+ *
+ * @param[in] session The session to run inference
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_await(nnfw_session *session);
+
+/**
  * @brief     Set input buffer
  *
  * This function must be called after {@link nnfw_prepare}, \p buffer given to this function can be

@@ -1,0 +1,58 @@
+operand {
+  name: "i_a"
+  type: FLOAT32
+  shape { dim: 5 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "i_b"
+  type: INT32
+  shape { dim: 5 dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "128.0"
+  }
+}
+operand {
+  name: "idx"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "i_c"
+  type: INT32
+  shape { dim: 1 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "5"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 32 }
+}
+operation {
+  type: "BCQGather"
+  input: "i_a"
+  input: "i_b"
+  input: "idx"
+  input: "i_c"
+  output: "ofm"
+  bcq_gather_options {
+    input_hidden_size: 32
+    axis: 0
+  }
+}
+output: "ofm"

@@ -114,6 +114,15 @@ struct SoftmaxParams
   float beta;
 };
 
+struct StridedSliceParams
+{
+  int32_t begin_mask;
+  int32_t end_mask;
+  int32_t ellipsis_mask;
+  int32_t new_axis_mask;
+  int32_t shrink_axis_mask;
+};
+
 struct TransposeConvParams
 {
   Padding padding;

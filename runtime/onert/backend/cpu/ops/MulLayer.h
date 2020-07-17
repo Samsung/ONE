@@ -47,7 +47,7 @@ public:
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
                  const ir::Activation activation, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_lhs;

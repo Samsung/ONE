@@ -357,14 +357,6 @@ void OperationDumper::visit(const MaxPool2D &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Mean &node)
-{
-  VERBOSE(LIR) << "* Mean" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Mean::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Mul &node)
 {
   VERBOSE(LIR) << "* Mul" << std::endl;
@@ -441,50 +433,10 @@ void OperationDumper::visit(const PReLU &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const ReduceAll &node)
+void OperationDumper::visit(const Reduce &node)
 {
-  VERBOSE(LIR) << "* ReduceAll" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceAll::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReduceAny &node)
-{
-  VERBOSE(LIR) << "* ReduceAny" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceAny::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReduceMax &node)
-{
-  VERBOSE(LIR) << "* ReduceMax" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceMax::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReduceMin &node)
-{
-  VERBOSE(LIR) << "* ReduceMin" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceMin::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReduceSum &node)
-{
-  VERBOSE(LIR) << "* ReduceSum" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceSum::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReduceProd &node)
-{
-  VERBOSE(LIR) << "* ReduceProd" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReduceProd::Input::INPUT) << ")"
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Reduce::Input::INPUT) << ")"
                << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }

@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 namespace luci_interpreter
 {
@@ -37,6 +38,12 @@ public:
 
   // Called when the value of a tensor has been updated during execution.
   virtual void postTensorWrite(const luci::CircleNode *node, const Tensor *tensor);
+
+  // Called before / after executing an operator.
+  // Note that these methods are not called for auxiliary operators (CircleInput, CircleOutput,
+  // CircleConst and Circle*Out).
+  virtual void preOperatorExecute(const luci::CircleNode *node);
+  virtual void postOperatorExecute(const luci::CircleNode *node);
 };
 
 class Interpreter
@@ -54,11 +61,14 @@ public:
 
   void attachObserver(ExecutionObserver *observer);
 
+  const Tensor *getTensor(const loco::Node *node) { return _node_to_tensor[node]; }
+
 private:
   std::unique_ptr<class RuntimeModule> _runtime_module;
 
   // Observer functionality support.
   std::unique_ptr<struct RuntimeToIR> _runtime_to_ir;
+  std::unordered_map<const loco::Node *, Tensor *> _node_to_tensor;
   std::unique_ptr<class EventNotifier> _event_notifier;
   std::vector<ExecutionObserver *> _observers;
 };

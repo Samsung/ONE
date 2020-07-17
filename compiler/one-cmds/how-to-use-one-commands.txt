@@ -1,0 +1,114 @@
+About
+-----
+
+Last update: 2020-07-14
+
+This document briefly explains how to use one-* commands.
+Detailed options are not explained here. Run the command to see options.
+
+Compilation flow for running with onert;
+1) one-import will import model files generated from famous frameworks
+2) one-optimize will optimize models. This step is optional.
+3) one-quantize will quantize models. This step is also optional.
+4) one-pack will pack to nnpkg so that we can run the model with our onert
+   runtime
+
+Compilation flow for NPU
+1) one-import will import model files generated from famous frameworks
+2) one-optimize will optimize models. This step is optional.
+3) one-quantize will quantize models. Depending on the NPUs.
+4) one-codegen will compile to binary codes.
+
+
+one-import
+-----------
+
+one-import will invokes one-import-* commands.
+
+Syntax: one-import [framework] [options]
+
+Currently supported frameworks are 'tf', 'tflite' for TensorFlow and TensorFlow
+lite.
+
+
+one-import-tf
+-------------
+
+This will convert TensorFlow model (.pb) file to our circle model. You can also
+directly call this command. one-import-tf invokes tf2tfliteV2.py script that
+will internally use TensorFlow lite converter and then invoke tflite2circle
+converter to convert tflite model to circle model. 
+
+As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
+installed in your system. We recommand to use 2.3.0rc0 for now.
+
+We provide python virtual environment and one-import-tf will enter and leave
+this environment so that you don't need to explictly 'activate' virtual
+environment.
+
+
+one-import-tflite
+-----------------
+
+You can use one-import-tflite to convert TensorFlow lite model (.tflite) file to
+our circle model. Internally this will invoke tflite2circle.
+
+
+one-optimize
+------------
+
+one-optimize provides network or operator transformation shown below.
+
+Current transformation options are
+- fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
+   - read https://arxiv.org/abs/2005.09904 for detailed information
+- fuse_instnorm: This will convert instance normalization related operators to
+  one InstanceNormalization operator that our onert provides for faster
+  execution.
+- resolve_customop_add: This will convert Custom(Add) to normal Add operator
+- resolve_customop_batchmatmul: This will convert Custom(BatchMatMul) to
+  normal BatchMatMul operator
+- resolve_customop_matmul: This will convert Custom(MatMul) to normal MatMul
+  operator
+
+
+one-quantize
+------------
+
+one-quantize will quantize float32 model to uint8 so that the model can benefit
+for speed that our onert runtime and NPU provides. For convolution type
+operators we currently support layer-wise quantization. Later we will support
+int16 and channel-wise quantization.
+
+Internally this calls circle-quantizer and record-minmax tools.
+
+
+one-pack
+--------
+
+one-pack will generate a package from circle model to nnpackage for our onert
+runtime.
+
+Output is a folder with the model(s) and meta information.
+
+ex) if you have a model named '20200719.circle' and want to pack to 'testnnpack'
+
+$ one-pack -i 20200709.circle -o testnnpack
+
+$ tree testnnpack
+testnnpack
+└── 20200709
+    ├── 20200709.circle
+    └── metadata
+        └── MANIFEST
+
+
+one-codegen
+-----------
+
+one-codegen, like one-import will invoke backend code generation commands.
+As of now, our ONE repo does not provide any code generation commands yet.
+
+Syntax: one-codegen [target-backend] [options]
+
+This will invoke [target-backend]-compile command if available.

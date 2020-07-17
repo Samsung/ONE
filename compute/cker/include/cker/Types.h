@@ -98,6 +98,7 @@ struct SoftmaxParams
   // beta is not really used (not a Tensorflow parameter) and not implemented
   // for LogSoftmax.
   double beta;
+  int axis;
   // uint8 inference params.  Used even when beta defaults to 1.0.
   int32_t input_multiplier;
   int32_t input_left_shift;
@@ -329,6 +330,12 @@ struct FusedBatchNormParams
   bool is_training;
   std::string data_format; // UNKNOWN(0), NHWC(1), NCHW(2)
   float epsilon;
+};
+
+struct SpaceToBatchParams
+{
+  // "Zero" padding for uint8 means padding with the output offset.
+  int32_t output_offset;
 };
 
 enum class Order

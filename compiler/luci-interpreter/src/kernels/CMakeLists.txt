@@ -1,14 +1,5 @@
-nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowEigenSource EXACT 2.1.0 QUIET)
 find_package(Threads REQUIRED)
 nnas_find_package(GTest REQUIRED)
-
-if (NOT TensorFlowSource_FOUND OR
-    NOT TensorFlowGEMMLowpSource_FOUND OR
-    NOT TensorFlowEigenSource_FOUND)
-  return()
-endif ()
 
 set(SOURCES
     Add.h
@@ -53,6 +44,8 @@ set(SOURCES
     Softmax.cpp
     Split.h
     Split.cpp
+    StridedSlice.h
+    StridedSlice.cpp
     Transpose.h
     Transpose.cpp
     TransposeConv.h
@@ -96,6 +89,7 @@ set(TEST_SOURCES
     Reshape.test.cpp
     Softmax.test.cpp
     Split.test.cpp
+    StridedSlice.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp
     Unpack.test.cpp)

@@ -78,7 +78,7 @@ bool DataflowExecutor::noWaitingJobs()
 }
 
 DataflowExecutor::DataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
-                                   const backend::TensorBuilderSet &tensor_builders,
+                                   const compiler::TensorBuilders &tensor_builders,
                                    compiler::CodeMap &&code_map)
     : ExecutorBase{std::move(lowered_graph), tensor_builders}, _code_map{std::move(code_map)}
 {
@@ -126,6 +126,8 @@ void DataflowExecutor::executeImpl()
 {
   assert(noWaitingJobs());
 
+  bool dynamic_input_exists = hasDynamicInput();
+
   // Execution setup
   _waiting_jobs.swap(_finished_jobs); // Move finished jobs to waiting jobs
 
@@ -153,6 +155,10 @@ void DataflowExecutor::executeImpl()
         _lowered_graph->getLowerInfo()->op_seq.at(op_seq_index)->backend();
 
     _subject.notifyJobBegin(this, op_seq, backend);
+
+    // check if FunctionSequence needs to handle dynamic tensor
+    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || dynamic_input_exists;
+    job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
 
     job->run();
 

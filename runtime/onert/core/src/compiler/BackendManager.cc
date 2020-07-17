@@ -49,20 +49,16 @@ BackendManager::BackendManager() { loadControlflowBackend(); }
 
 void BackendManager::loadControlflowBackend()
 {
-  // Add controlflow Backend
-  auto backend_create = []() -> backend::Backend * {
-    return new onert::backend::controlflow::Backend;
-  };
+  auto backend_object = std::unique_ptr<backend::controlflow::Backend, backend_destroy_t>(
+      new backend::controlflow::Backend, [](backend::Backend *backend) { delete backend; });
 
-  auto backend_destroy = [](backend::Backend *backend) { delete backend; };
-
-  auto backend_object =
-      std::unique_ptr<backend::Backend, backend_destroy_t>(backend_create(), backend_destroy);
   bool initialized = backend_object->config()->initialize(); // Call initialize here?
   if (!initialized)
   {
     throw std::runtime_error(backend::controlflow::Config::ID + " backend initialization failed");
   }
+  _controlflow = backend_object.get(); // Save the controlflow backend implementation pointer
+  assert(_controlflow);
   _gen_map.emplace(backend_object->config()->id(), std::move(backend_object));
 }
 
@@ -144,10 +140,7 @@ const backend::Backend *BackendManager::get(const std::string &key) const
   return nullptr;
 }
 
-const backend::Backend *BackendManager::getControlflow() const
-{
-  return get(backend::controlflow::Config::ID);
-}
+const backend::controlflow::Backend *BackendManager::getControlflow() const { return _controlflow; }
 
 } // namespace compiler
 } // namespace onert

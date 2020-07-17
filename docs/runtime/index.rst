@@ -15,3 +15,4 @@ Runtime
   ./compute.md
   ./executors.md
   ./backend-api.md
+  ./heterogeneous-execution.md

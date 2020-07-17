@@ -27,6 +27,12 @@
 namespace luci
 {
 
+bool in_array(const std::string &, const std::vector<std::string> &);
+
+std::string to_string(const std::vector<std::string> &);
+
+std::string to_lower_case(std::string);
+
 loco::DataType str_to_dtype(const std::string &);
 
 QuantizationGranularity str_to_granularity(const std::string &);

@@ -1,2 +1,0 @@
-# TODO : Handling TF v2
-tensorflow==1.13.1

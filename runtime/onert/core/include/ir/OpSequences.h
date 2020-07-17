@@ -48,7 +48,6 @@ public:
    * @return OpSequenceIndex
    */
   OpSequenceIndex emplace(std::unique_ptr<OpSequence> &&op_seq);
-
   /**
    * @brief Check if an operation does exist in any OpSequences
    *
@@ -78,7 +77,11 @@ public:
   void removeFromOpSequence(const OperationIndex &operation_index);
 
 private:
+  void cacheSequenceIndex(const OpSequenceIndex &seq_index, const OperationIndex &op_index) const;
+  OpSequenceIndex *findSequenceIndex(const OperationIndex &operation_index) const;
+
   OpSequenceIndex findOperation(const OperationIndex &operation_index) const;
+  mutable std::unordered_map<OperationIndex, OpSequenceIndex> _seq_indexes;
 };
 
 } // namespace ir

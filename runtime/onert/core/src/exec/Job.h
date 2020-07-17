@@ -19,7 +19,7 @@
 
 #include <unordered_set>
 
-#include "exec/IFunction.h"
+#include "exec/FunctionSequence.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexSequence.h"
 #include "backend/Backend.h"
@@ -36,11 +36,11 @@ public:
    * @brief Constructs a Job object
    *
    * @param index Operation index for this job
-   * @param fn compiled code to run this job
+   * @param fn_seq compiled code to run this job
    * @param inputs Input operand list
    * @param outputs Output operand list
    */
-  Job(uint32_t index, IFunction *fn);
+  Job(uint32_t index, FunctionSequence *fn_seq);
   /**
    * @brief Execute the compiled code
    */
@@ -56,11 +56,11 @@ public:
    *
    * @return Pointer of the function
    */
-  IFunction *fn() { return _fn; }
+  FunctionSequence *fn_seq() { return _fn_seq; }
 
 private:
   uint32_t _index;
-  IFunction *_fn;
+  FunctionSequence *_fn_seq;
 };
 
 } // namespace exec

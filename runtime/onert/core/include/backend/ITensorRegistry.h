@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_ITENSOR_REGISTRY__
 #define __ONERT_BACKEND_ITENSOR_REGISTRY__
 
+#include <memory>
+
 #include "ir/Index.h"
 #include "backend/ITensor.h"
 
@@ -33,10 +35,17 @@ struct ITensorRegistry
   virtual ~ITensorRegistry() = default;
 
   /**
-   * @brief Returns pointer of ITensor
+   * @brief Returns pointer of ITensor among managed and external tensors
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
   virtual std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &) = 0;
+  /**
+   * @brief Returns pointer of ITensor among managed tensors
+   *
+   * Unlike @c getITensor , this function only searches from managed tensors
+   * @note  Return tensor cannot be used longer than dynamic tensor manager
+   */
+  virtual std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &) = 0;
 };
 
 } // namespace backend
@@ -70,17 +79,20 @@ public:
     return getManagedTensor(ind);
   }
 
+  std::shared_ptr<ITensor> getManagedITensor(const ir::OperandIndex &ind) override
+  {
+    return getManagedTensor(ind);
+  }
+
   std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
   {
     auto external_tensor = _external.find(ind);
     if (external_tensor != _external.end())
     {
-      auto external_portable_tensor =
-          std::dynamic_pointer_cast<IPortableTensor>(external_tensor->second);
-      if (external_portable_tensor)
+      if (external_tensor->second)
         return external_tensor->second;
     }
-    return std::dynamic_pointer_cast<IPortableTensor>(getManagedTensor(ind));
+    return getManagedTensor(ind);
   }
 
   std::shared_ptr<T_Tensor> getManagedTensor(const ir::OperandIndex &ind)
@@ -111,6 +123,11 @@ public:
   }
 
   const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &managed_tensors() { return _managed; }
+
+  const ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> &external_tensors()
+  {
+    return _external;
+  }
 
 private:
   ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _external;

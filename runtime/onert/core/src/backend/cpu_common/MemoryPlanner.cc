@@ -112,7 +112,7 @@ void FirstFitPlanner::release(const ir::OperandIndex &ind)
 
 WICPlanner::WICPlanner()
     : _initialized(false), _capacity(0), _mem_plans(), _live_operands(), _interference_graph(),
-      _map_size_to_operands(), _claim_table()
+      _operands()
 {
   // DO NOTHING
 }
@@ -121,13 +121,14 @@ void WICPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
   assert(size != 0);
 
-  _map_size_to_operands.insert({size, ind});
-  for (auto &live_operand : _live_operands)
+  _operands.emplace(size, ind);
+  _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),
+                                  _live_operands.cend());
+  for (const auto &live_operand : _live_operands)
   {
-    _interference_graph[live_operand].insert(ind);
-    _interference_graph[ind].insert(live_operand);
+    _interference_graph[live_operand].emplace_back(ind);
   }
-  _live_operands.insert(ind);
+  _live_operands.emplace(ind);
 
   VERBOSE(WIC_PLANNER) << "claim(#" << ind.value() << "): [" << size << "sz]" << std::endl;
 }
@@ -142,40 +143,44 @@ void WICPlanner::release(const ir::OperandIndex &ind)
  * Build memory plans using liveness and size of operands
  * 1. Build inference graph at claim
  *   - Two operands interfere if they have overlapped live range
- * 2. Sort operands descending order of size
+ * 2. Sort operands in descending order of size
  *   - Use std::multimap to sort operands
  * 3. Allocate memory block for sorted operands
  *   - Find free memory block which does not overlap with interfered operands
  */
 void WICPlanner::buildMemoryPlans()
 {
-  for (auto &size_to_operand : _map_size_to_operands)
+  for (const auto &operand : _operands)
   {
-    uint32_t size = size_to_operand.first;
-    ir::OperandIndex ind = size_to_operand.second;
+    uint32_t size = operand.first;
+    const ir::OperandIndex &ind = operand.second;
     VERBOSE(WIC_PLANNER) << "build_plan(#" << ind.value() << "): [" << size << "sz]" << std::endl;
 
-    // Find firstfit which does not interfere with live operands
     uint32_t next_offset = 0;
-    if (_interference_graph.find(ind) != _interference_graph.end())
+    if (_interference_graph.count(ind))
     {
-      std::unordered_set<ir::OperandIndex> &interferences = _interference_graph.find(ind)->second;
-      for (auto &mem_claim : _claim_table)
+      // Find interfered memory plans and sort them by offset
+      std::multimap<uint32_t, uint32_t> interfered_plans;
+      for (const auto &interference : _interference_graph[ind])
       {
-        if (interferences.find(mem_claim.second) != interferences.end())
+        if (_mem_plans.count(interference))
+          interfered_plans.emplace(_mem_plans[interference].offset, _mem_plans[interference].size);
+      }
+
+      // Find free memory block in first-fit manner
+      for (const auto &interfered_plan : interfered_plans)
+      {
+        auto claimed_base_offset = interfered_plan.first;
+        auto claimed_size = interfered_plan.second;
+        VERBOSE(WIC_PLANNER) << "interfere : [+" << claimed_base_offset << ", " << claimed_size
+                             << "sz]" << std::endl;
+        if (next_offset + size <= claimed_base_offset)
         {
-          auto claimed_base_offset = mem_claim.first;
-          auto claimed_size = _mem_plans[mem_claim.second].size;
-          VERBOSE(WIC_PLANNER) << "interfere (#" << mem_claim.second.value() << "): [+"
-                               << claimed_base_offset << ", " << claimed_size << "sz]" << std::endl;
-          if (next_offset + size <= claimed_base_offset)
-          {
-            break;
-          }
-          else if (next_offset < claimed_base_offset + claimed_size)
-          {
-            next_offset = claimed_base_offset + claimed_size;
-          }
+          break;
+        }
+        else if (next_offset < claimed_base_offset + claimed_size)
+        {
+          next_offset = claimed_base_offset + claimed_size;
         }
       }
     }
@@ -184,7 +189,6 @@ void WICPlanner::buildMemoryPlans()
       VERBOSE(WIC_PLANNER) << "No interference" << std::endl;
     }
 
-    _claim_table.insert({next_offset, ind});
     _mem_plans[ind] = {next_offset, size};
     VERBOSE(WIC_PLANNER) << "alloc(#" << ind.value() << "): [+" << next_offset << ", " << size
                          << "sz]" << std::endl;
@@ -196,8 +200,7 @@ void WICPlanner::buildMemoryPlans()
   }
   _initialized = true;
   _interference_graph.clear();
-  _map_size_to_operands.clear();
-  _claim_table.clear();
+  _operands.clear();
 }
 
 WICPlanner::MemoryPlans &WICPlanner::memory_plans()

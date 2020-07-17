@@ -65,7 +65,7 @@ public:
 };
 
 Kernel::Kernel(const nnfw_custom_eval evalFunction)
-    : _params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
+    : _in_params(), _userdata(nullptr), _userdata_size(0), _evalFunction(evalFunction)
 {
 }
 
@@ -74,24 +74,40 @@ void Kernel::configure(CustomKernelConfigParams &&inParams)
   _userdata = inParams.userdata;
   _userdata_size = inParams.userdata_size;
 
-  _params.ninputs = inParams.input_allocations.size();
-  _params.inputs = new nnfw_operand[_params.ninputs];
-  for (size_t i = 0; i < _params.ninputs; ++i)
-  {
-    _params.inputs[i] =
-        APIConverter::convertOperand(inParams.input_allocations[i], inParams.input_types[i]);
-  }
-
-  _params.noutputs = inParams.output_allocations.size();
-  _params.outputs = new nnfw_operand[_params.noutputs];
-  for (size_t i = 0; i < _params.noutputs; ++i)
-  {
-    _params.outputs[i] =
-        APIConverter::convertOperand(inParams.output_allocations[i], inParams.output_types[i]);
-  }
+  _in_params = std::move(inParams);
 }
 
-void Kernel::run() { _evalFunction(&_params, _userdata, _userdata_size); }
+void Kernel::run()
+{
+  nnfw_custom_kernel_params params;
+
+  // set input tensor buffer and types
+  params.ninputs = _in_params.input_tensors.size();
+  params.inputs = new nnfw_operand[params.ninputs];
+
+  for (size_t i = 0; i < params.ninputs; ++i)
+  {
+    auto *buf = _in_params.input_tensors[i]->buffer();
+    assert(buf);
+    params.inputs[i] = APIConverter::convertOperand(buf, _in_params.input_types[i]);
+  }
+
+  // set output tensor buffer and types
+  params.noutputs = _in_params.output_tensors.size();
+  params.outputs = new nnfw_operand[params.noutputs];
+
+  for (size_t i = 0; i < params.noutputs; ++i)
+  {
+    auto *buf = _in_params.output_tensors[i]->buffer();
+    assert(buf);
+    params.outputs[i] = APIConverter::convertOperand(buf, _in_params.output_types[i]);
+  }
+
+  _evalFunction(&params, _userdata, _userdata_size);
+
+  delete[] params.inputs;
+  delete[] params.outputs;
+}
 
 } // namespace custom
 } // namespace frontend

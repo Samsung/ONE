@@ -1,4 +1,4 @@
-nnfw_find_package(TensorFlowLite QUIET)
+nnfw_find_package(TensorFlowLite EXACT 1.13.1 QUIET)
 if(NOT TensorFlowLite_FOUND)
   message(STATUS "Check tensorflow lite library extension build: need tensorflow lite library")
   return()

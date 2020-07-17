@@ -1,0 +1,3 @@
+#--------------- Remote Machine Setting ---------------#
+# set(REMOTE_IP "xxx.xxx.xxx.xxx")
+# set(REMOTE_USER "remote_username")

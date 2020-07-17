@@ -35,12 +35,13 @@ public:
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
   void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
   {
-    _compiler->release(executors);
+    executors = _executors;
   }
 
 private:
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
+  std::shared_ptr<onert::exec::ExecutorMap> _executors;
 };
 
 #endif

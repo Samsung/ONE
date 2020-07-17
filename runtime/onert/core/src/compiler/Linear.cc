@@ -18,7 +18,6 @@
 
 #include "Linear.h"
 
-#include "backend/IShapeFixer.h"
 #include "backend/IConfig.h"
 #include "backend/IConstantInitializer.h"
 #include "backend/ITensorRegister.h"
@@ -114,7 +113,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
       const auto info = obj.info();
       const auto backend_layout = factor.layout();
       // TODO Change tensor info to have permuted shape
-      tensor_builder->registerTensorInfo(ind, info, backend_layout, is_const);
+      tensor_builder->registerTensorInfo(ind, info, backend_layout);
     }
 
     tensor_builder_map[ind] = tensor_builder;

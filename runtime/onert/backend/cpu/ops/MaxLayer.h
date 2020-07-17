@@ -39,13 +39,13 @@ public:
   }
 
 public:
-  void maxFloat32();
+  template <typename T> void maximum();
 
   void maxQuant8();
 
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output);
 
-  void run();
+  void run() override;
 
 private:
   const IPortableTensor *_lhs;

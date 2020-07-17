@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "Model.h"
+#include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
 #include <luci/Service/Validate.h>
@@ -66,22 +66,17 @@ int entry(int argc, char **argv)
   std::cout << "[INFO] Circle is '" << input_path << "'" << std::endl;
 
   // Load model from the file
-  std::unique_ptr<luci::Model> model = luci::load_model(input_path);
-  if (model == nullptr)
+  foder::FileLoader file_loader{input_path};
+  std::vector<char> model_data = file_loader.load();
+  const circle::Model *circle_model = circle::GetModel(model_data.data());
+  if (circle_model == nullptr)
   {
-    std::cerr << "ERROR: Failed to load '" << input_path << "'" << std::endl;
-    return 255;
-  }
-
-  const circle::Model *input_model = model->model();
-  if (input_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to read '" << input_path << "'" << std::endl;
-    return 255;
+    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
+    return EXIT_FAILURE;
   }
 
   luci::Importer importer;
-  auto module = importer.importModule(input_model);
+  auto module = importer.importModule(circle_model);
   assert(module->size() > 0);
 
   for (size_t g = 0; g < module->size(); ++g)

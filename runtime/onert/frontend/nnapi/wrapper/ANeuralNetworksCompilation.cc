@@ -32,7 +32,7 @@ bool ANeuralNetworksCompilation::finish() noexcept
 {
   try
   {
-    _compiler->compile();
+    _executors = _compiler->compile();
   }
   catch (const std::exception &e)
   {

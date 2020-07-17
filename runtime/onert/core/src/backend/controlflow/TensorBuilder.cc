@@ -28,20 +28,17 @@ namespace controlflow
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()},
+    : _tensor_reg{new cpu_common::TensorRegistry()}, _user_tensor_reg{new UserTensorRegistry()},
       _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg, _user_tensor_reg)}
 {
   /* empty */
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout backend_layout, bool as_const)
+                                       ir::Layout backend_layout)
 {
   _tensor_info_map.emplace(ind, info);
-
-  if (as_const)
-    _constants.append(ind);
 
   _tensor_layout_map.insert({ind, backend_layout});
 
@@ -51,7 +48,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind], _constants.contains(ind));
+    _static_tensor_mgr->buildTensor(ind, info, _tensor_layout_map[ind], info.isConstant());
   }
 }
 
@@ -86,15 +83,28 @@ void TensorBuilder::prepare(void)
   _static_tensor_mgr->allocateNonconsts();
 }
 
-void TensorBuilder::allocate()
+void TensorBuilder::allocateAtCompileTime()
 {
-  // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
-  //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
+  // TODO Write code here
+}
+
+void TensorBuilder::allocateAtRunTime()
+{
+  // TODO Write code here
 }
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  return _tensor_reg->getITensor(ind);
+  // NOTE Find from User Tensor Registry first
+  // FIXME There may be both user tensor and managed tensor for a `ind` which is a waste
+  auto user_tensor = _user_tensor_reg->getITensor(ind);
+  auto tensor = _tensor_reg->getITensor(ind);
+  if (user_tensor)
+  {
+    return user_tensor;
+  }
+  else
+    return tensor;
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
@@ -112,6 +122,12 @@ std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
 {
   return std::move(_dynamic_tensor_mgr);
+}
+
+void TensorBuilder::setUserTensor(const ir::OperandIndex &ind,
+                                  const std::shared_ptr<UserTensor> &tensor)
+{
+  _user_tensor_reg->setManagedTensor(ind, tensor);
 }
 
 } // namespace controlflow

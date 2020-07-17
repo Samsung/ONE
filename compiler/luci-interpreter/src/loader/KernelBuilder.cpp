@@ -37,6 +37,7 @@
 #include "kernels/Reshape.h"
 #include "kernels/Softmax.h"
 #include "kernels/Split.h"
+#include "kernels/StridedSlice.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
@@ -117,8 +118,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleArgMax *node)
 {
   assert(node->arity() == 2);
-  if (dynamic_cast<const luci::CircleConst *>(node->dimension()) == nullptr)
-    throw std::runtime_error("Dynamic dimension is not yet supported.");
   const Tensor *input1 = getInputTensor(node->input());
   const Tensor *input2 = getInputTensor(node->dimension());
   Tensor *output = getOutputTensor(node);
@@ -349,9 +348,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMean *node)
 {
   assert(node->arity() == 2);
 
-  if (dynamic_cast<const luci::CircleConst *>(node->reduction_indices()) == nullptr)
-    throw std::runtime_error("Dynamic axes is not yet supported.");
-
   const Tensor *input = getInputTensor(node->input());
   const Tensor *axes = getInputTensor(node->reduction_indices());
   Tensor *output = getOutputTensor(node);
@@ -385,9 +381,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
 {
   assert(node->arity() == 2);
 
-  if (dynamic_cast<const luci::CircleConst *>(node->paddings()) == nullptr)
-    throw std::runtime_error("Dynamic padding is not yet supported.");
-
   const Tensor *input = getInputTensor(node->input());
   const Tensor *paddings = getInputTensor(node->paddings());
   Tensor *output = getOutputTensor(node);
@@ -398,9 +391,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
 {
   assert(node->arity() == 2);
-
-  if (dynamic_cast<const luci::CircleConst *>(node->shape()) == nullptr)
-    throw std::runtime_error("Dynamic shape is not yet supported.");
 
   const Tensor *input = getInputTensor(node->tensor());
   const Tensor *shape = getInputTensor(node->shape());
@@ -429,9 +419,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
   assert(node->arity() == 2);
   assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
 
-  if (dynamic_cast<const luci::CircleConst *>(node->split_dim()) == nullptr)
-    throw std::runtime_error("Dynamic axis is not yet supported.");
-
   const Tensor *axis = getInputTensor(node->split_dim());
   const Tensor *input = getInputTensor(node->input());
   std::vector<Tensor *> outputs = getOutputTensors(output_nodes);
@@ -440,12 +427,37 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *node)
+{
+  assert(node->arity() == 4);
+
+  if (dynamic_cast<const luci::CircleConst *>(node->begin()) == nullptr)
+    throw std::runtime_error("Dynamic begin is not yet supported.");
+  if (dynamic_cast<const luci::CircleConst *>(node->end()) == nullptr)
+    throw std::runtime_error("Dynamic end is not yet supported.");
+  if (dynamic_cast<const luci::CircleConst *>(node->strides()) == nullptr)
+    throw std::runtime_error("Dynamic strides is not yet supported.");
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *begin = getInputTensor(node->begin());
+  const Tensor *end = getInputTensor(node->end());
+  const Tensor *strides = getInputTensor(node->strides());
+
+  Tensor *output = getOutputTensor(node);
+
+  StridedSliceParams params{};
+  params.begin_mask = node->begin_mask();
+  params.ellipsis_mask = node->ellipsis_mask();
+  params.end_mask = node->end_mask();
+  params.new_axis_mask = node->new_axis_mask();
+  params.shrink_axis_mask = node->shrink_axis_mask();
+
+  return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
 {
   assert(node->arity() == 3);
-
-  if (dynamic_cast<const luci::CircleConst *>(node->inputSizes()) == nullptr)
-    throw std::runtime_error("Dynamic OutputShape is not yet supported.");
 
   const Tensor *input_sizes = getInputTensor(node->inputSizes());
   const Tensor *filter = getInputTensor(node->filter());
@@ -482,8 +494,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
 {
   assert(node->arity() == 2);
 
-  if (dynamic_cast<const luci::CircleConst *>(node->perm()) == nullptr)
-    throw std::runtime_error("Dynamic perm is not yet supported.");
   const Tensor *input = getInputTensor(node->a());
   const Tensor *perm = getInputTensor(node->perm());
   Tensor *output = getOutputTensor(node);

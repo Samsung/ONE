@@ -63,7 +63,44 @@ def GetOperatorList(oplist_file):
     return opcode_list
 
 
-def GenerateOperatorCodes(new_builder, sample_model, used_operators_dic):
+def GetUsedSubgraphsList(sample_model, subg_num, operator_list, used_subgraphs_list):
+    import tflite.IfOptions
+    import tflite.WhileOptions
+
+    subg_list = []
+
+    selected_subgraph = sample_model.Subgraphs(subg_num)
+
+    for operator_idx in operator_list:
+        selected_operator = selected_subgraph.Operators(operator_idx)
+        if selected_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions(
+        ).IfOptions:
+            selected_builtin_option = selected_operator.BuiltinOptions()
+            if_option = tflite.IfOptions.IfOptions()
+            if_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+            subg_list.append(if_option.ElseSubgraphIndex())
+            subg_list.append(if_option.ThenSubgraphIndex())
+
+        if selected_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions(
+        ).WhileOptions:
+            selected_builtin_option = selected_operator.BuiltinOptions()
+            while_option = tflite.WhileOptions.WhileOptions()
+            while_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+            subg_list.append(while_option.BodySubgraphIndex())
+            subg_list.append(while_option.CondSubgraphIndex())
+
+    for idx in subg_list:
+        if idx not in used_subgraphs_list:
+            used_subgraphs_list.append(idx)
+            GetUsedSubgraphsList(sample_model, idx,
+                                 range(sample_model.Subgraphs(idx).OperatorsLength() - 1),
+                                 used_subgraphs_list)
+
+
+def GenerateOperatorCodes(new_builder, sample_model, used_opcodes_dic,
+                          used_subgraphs_dic):
     operator_code_num = sample_model.OperatorCodesLength()
     new_operator_code_list = []
     new_operator_code_string_list = {}
@@ -73,7 +110,7 @@ def GenerateOperatorCodes(new_builder, sample_model, used_operators_dic):
 
     # Create operator_code string
     for operator_code_idx in range(operator_code_num):
-        if operator_code_idx in used_operators_dic:
+        if operator_code_idx in used_opcodes_dic:
             operator_code = sample_model.OperatorCodes(operator_code_idx)
             operator_code_string = operator_code.CustomCode()
             if operator_code_string and (operator_code_string != "") and (
@@ -83,7 +120,7 @@ def GenerateOperatorCodes(new_builder, sample_model, used_operators_dic):
 
     # Create tables of operator_code
     for operator_code_idx in range(operator_code_num):
-        if operator_code_idx in used_operators_dic:
+        if operator_code_idx in used_opcodes_dic:
             operator_code = sample_model.OperatorCodes(operator_code_idx)
 
             # Create operator_code table
@@ -224,7 +261,8 @@ def GenerateTensors(new_builder, selected_subgraph, used_tensors_dic, used_buffe
     return new_builder.EndVector(new_tensor_num)
 
 
-def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_type):
+def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_type,
+                          used_subgraphs_dic):
 
     # Conv2D option
     import tflite.Conv2DOptions
@@ -847,17 +885,46 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
     # MirrorPadOptions: not supported
     # AbsOptions: not supported
     # SplitVOptions: not supported
+
+    # IfOptions
+    import tflite.IfOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().IfOptions:
+
+        if_option = tflite.IfOptions.IfOptions()
+        if_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.IfOptions.IfOptionsStart(new_builder)
+        tflite.IfOptions.IfOptionsAddElseSubgraphIndex(
+            new_builder, used_subgraphs_dic[if_option.ElseSubgraphIndex()])
+        tflite.IfOptions.IfOptionsAddThenSubgraphIndex(
+            new_builder, used_subgraphs_dic[if_option.ThenSubgraphIndex()])
+        return tflite.IfOptions.IfOptionsEnd(new_builder)
+
+    # WhileOptions
+    import tflite.WhileOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().WhileOptions:
+
+        while_option = tflite.WhileOptions.WhileOptions()
+        while_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.WhileOptions.WhileOptionsStart(new_builder)
+        tflite.WhileOptions.WhileOptionsAddBodySubgraphIndex(
+            new_builder, used_subgraphs_dic[while_option.BodySubgraphIndex()])
+        tflite.WhileOptions.WhileOptionsAddCondSubgraphIndex(
+            new_builder, used_subgraphs_dic[while_option.CondSubgraphIndex()])
+        return tflite.WhileOptions.WhileOptionsEnd(new_builder)
+
     # Cannot handle builtin option type yet
     print("Cannot handle this option yet")
     exit(1)
 
 
-def GenerateOperator(new_builder, selected_operator, used_tensors_dic,
-                     used_operators_dic):
+def GenerateOperator(new_builder, selected_operator, used_tensors_dic, used_opcodes_dic,
+                     used_subgraphs_dic):
 
     # define opcode_index
     opcode_index = selected_operator.OpcodeIndex()
-    new_opcode_index = used_operators_dic[opcode_index]
+    new_opcode_index = used_opcodes_dic[opcode_index]
 
     # create input vector
     input_num = selected_operator.InputsLength()
@@ -886,8 +953,8 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic,
     builtin_option_type = selected_operator.BuiltinOptionsType()
     if builtin_option_type != 0:
         selected_builtin_option = selected_operator.BuiltinOptions()
-        new_builtin_option = GenerateBuiltinOption(new_builder, selected_builtin_option,
-                                                   builtin_option_type)
+        new_builtin_option = GenerateBuiltinOption(
+            new_builder, selected_builtin_option, builtin_option_type, used_subgraphs_dic)
 
     # Create custum option vector
     custom_option_num = selected_operator.CustomOptionsLength()
@@ -916,8 +983,8 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic,
     return tflite.Operator.OperatorEnd(new_builder)
 
 
-def GenerateOperators(new_builder, selected_subgraph, opcode_list, used_tensors_dic,
-                      used_operators_dic):
+def GenerateOperators(new_builder, selected_subgraph, operator_list, used_tensors_dic,
+                      used_opcodes_dic, used_subgraphs_dic):
     operator_num = selected_subgraph.OperatorsLength()
     new_operator_list = []
 
@@ -925,10 +992,11 @@ def GenerateOperators(new_builder, selected_subgraph, opcode_list, used_tensors_
         return 0
 
     for operator_idx in range(operator_num):
-        if operator_idx in opcode_list:
+        if operator_idx in operator_list:
             selected_operator = selected_subgraph.Operators(operator_idx)
             new_operator = GenerateOperator(new_builder, selected_operator,
-                                            used_tensors_dic, used_operators_dic)
+                                            used_tensors_dic, used_opcodes_dic,
+                                            used_subgraphs_dic)
             new_operator_list.append(new_operator)
 
     new_operator_num = len(new_operator_list)
@@ -942,9 +1010,9 @@ def GenerateOperators(new_builder, selected_subgraph, opcode_list, used_tensors_
     return new_builder.EndVector(new_operator_num)
 
 
-def GenerateSubgraph(new_builder, selected_subgraph, opcode_list, new_input_tensor,
+def GenerateSubgraph(new_builder, selected_subgraph, operator_list, new_input_tensor,
                      new_output_tensor, used_tensors_dic, used_buffers_dic,
-                     used_operators_dic):
+                     used_opcodes_dic, used_subgraphs_dic):
 
     # Tensors
     tensors = GenerateTensors(new_builder, selected_subgraph, used_tensors_dic,
@@ -962,15 +1030,15 @@ def GenerateSubgraph(new_builder, selected_subgraph, opcode_list, new_input_tens
     # Create output vector for subgraph table
     new_output_tensor_num = len(new_output_tensor)
     if new_output_tensor_num != 0:
-        tflite.SubGraph.SubGraphStartInputsVector(new_builder, new_output_tensor_num)
+        tflite.SubGraph.SubGraphStartOutputsVector(new_builder, new_output_tensor_num)
         for output_tensor_idx in reversed(new_output_tensor):
             new_output_tensor_idx = used_tensors_dic[output_tensor_idx]
             new_builder.PrependInt32(new_output_tensor_idx)
         new_outputs = new_builder.EndVector(new_output_tensor_num)
 
     # Operators
-    operators = GenerateOperators(new_builder, selected_subgraph, opcode_list,
-                                  used_tensors_dic, used_operators_dic)
+    operators = GenerateOperators(new_builder, selected_subgraph, operator_list,
+                                  used_tensors_dic, used_opcodes_dic, used_subgraphs_dic)
 
     # Name
     subgraph_name = selected_subgraph.Name()
@@ -992,19 +1060,43 @@ def GenerateSubgraph(new_builder, selected_subgraph, opcode_list, new_input_tens
     return tflite.SubGraph.SubGraphEnd(new_builder)
 
 
-def GenerateSubgraphs(args, new_builder, sample_model, opcode_list, new_input_tensor,
+def GenerateSubgraphs(args, new_builder, sample_model, operator_list, new_input_tensor,
                       new_output_tensor, used_tensors_dic, used_buffers_dic,
-                      used_operators_dic):
+                      used_opcodes_dic, used_subgraphs_dic):
+
     new_subgraph_list = []
 
-    # We think only one subgraph
+    # The selected subgraph will be primary subgraph of the model to be created newly
     selected_subgraph = sample_model.Subgraphs(args.subgraph)
-    new_subgraph = GenerateSubgraph(new_builder, selected_subgraph, opcode_list,
-                                    new_input_tensor, new_output_tensor, used_tensors_dic,
-                                    used_buffers_dic, used_operators_dic)
-    new_subgraph_list.append(new_subgraph)
 
-    new_subgraph_num = 1
+    # k: old subg index, v: new subg index
+    # new subg index is sequential in used_subgraphs_dic
+    for k, v in used_subgraphs_dic.items():
+        print("Append subgraphs, old index : ", k, ", new index : ", v)
+        if k == args.subgraph:
+            assert v == 0
+            new_subgraph = GenerateSubgraph(new_builder, selected_subgraph, operator_list,
+                                            new_input_tensor, new_output_tensor,
+                                            used_tensors_dic, used_buffers_dic,
+                                            used_opcodes_dic, used_subgraphs_dic)
+            new_subgraph_list.append(new_subgraph)
+        else:
+            subg = sample_model.Subgraphs(k)
+            subg_opperator_idx_list = range(subg.OperatorsLength())
+            subg_input_tensors = subg.InputsAsNumpy()
+            subg_output_tensors = subg.OutputsAsNumpy()
+            subg_tensors = range(subg.TensorsLength())
+            subg_tensors_dic = {tensor_idx: tensor_idx for tensor_idx in subg_tensors}
+            subg_buffers_dic = {(subg.Tensors(idx)).Buffer():
+                                (subg.Tensors(idx)).Buffer()
+                                for idx in subg_tensors}
+            new_subgraph = GenerateSubgraph(new_builder, subg, subg_opperator_idx_list,
+                                            subg_input_tensors, subg_output_tensors,
+                                            subg_tensors_dic, subg_buffers_dic,
+                                            used_opcodes_dic, used_subgraphs_dic)
+            new_subgraph_list.append(new_subgraph)
+
+    new_subgraph_num = len(new_subgraph_list)
     tflite.Model.ModelStartSubgraphsVector(new_builder, new_subgraph_num)
     for subgraph_idx in reversed(range(new_subgraph_num)):
         new_builder.PrependUOffsetTRelative(new_subgraph_list[subgraph_idx])
@@ -1056,19 +1148,20 @@ def GenerateBuffers(new_builder, sample_model, used_buffers_dic):
     return new_builder.EndVector(new_buffer_num)
 
 
-def GenerateModel(args, new_builder, sample_model, opcode_list, new_input_tensors,
+def GenerateModel(args, new_builder, sample_model, operator_list, new_input_tensors,
                   new_output_tensors, used_tensors_dic, used_buffers_dic,
-                  used_operators_dic):
+                  used_opcodes_dic, used_subgraphs_dic):
     # uint
     version = sample_model.Version()
 
     # pointer of operator code 'table' vector
-    operator_codes = GenerateOperatorCodes(new_builder, sample_model, used_operators_dic)
+    operator_codes = GenerateOperatorCodes(new_builder, sample_model, used_opcodes_dic,
+                                           used_subgraphs_dic)
 
     # subgraphs
-    subgraphs = GenerateSubgraphs(args, new_builder, sample_model, opcode_list,
+    subgraphs = GenerateSubgraphs(args, new_builder, sample_model, operator_list,
                                   new_input_tensors, new_output_tensors, used_tensors_dic,
-                                  used_buffers_dic, used_operators_dic)
+                                  used_buffers_dic, used_opcodes_dic, used_subgraphs_dic)
 
     # description
     description_string = new_builder.CreateString(sample_model.Description())
@@ -1111,7 +1204,7 @@ def main(args):
     subgraph = args.subgraph
 
     # Parse operator list file
-    opcode_list = GetOperatorList(oplist_file)
+    operator_list = GetOperatorList(oplist_file)
 
     # Get sample model and subgraph
     # We use only 1st subgraph
@@ -1120,30 +1213,49 @@ def main(args):
     sample_model = tflite.Model.Model.GetRootAsModel(sample_buf, 0)
     sample_subgraph = sample_model.Subgraphs(subgraph)
 
+    used_subgraphs_list = []
+    used_subgraphs_list.append(args.subgraph)
+    GetUsedSubgraphsList(sample_model, args.subgraph, operator_list, used_subgraphs_list)
+
+    used_subgraphs_dic = {}
+    for new_subgraph_idx in range(len(used_subgraphs_list)):
+        sample_subgraph_idx = used_subgraphs_list[new_subgraph_idx]
+        used_subgraphs_dic[sample_subgraph_idx] = new_subgraph_idx
+
     # Collect used tensor & used operator
     used_tensors = []
-    used_operators = []
+    used_opcodes = []
 
-    for opcode_idx in opcode_list:
-        opcode = sample_subgraph.Operators(opcode_idx)
-        for input_idx in range(opcode.InputsLength()):
-            input_tensor_idx = opcode.Inputs(input_idx)
+    for operator_idx in operator_list:
+        operator = sample_subgraph.Operators(operator_idx)
+        for input_idx in range(operator.InputsLength()):
+            input_tensor_idx = operator.Inputs(input_idx)
             if not input_tensor_idx == -1 and not input_tensor_idx in used_tensors:
                 # default: same as input sample
                 used_tensors.append(input_tensor_idx)
 
-        for output_idx in range(opcode.OutputsLength()):
-            output_tensor_idx = opcode.Outputs(output_idx)
+        for output_idx in range(operator.OutputsLength()):
+            output_tensor_idx = operator.Outputs(output_idx)
             if not output_tensor_idx in used_tensors:
                 # default: same as input sample
                 used_tensors.append(output_tensor_idx)
 
-        opcode_idx = opcode.OpcodeIndex()
-        if not opcode_idx in used_operators:
-            used_operators.append(opcode_idx)
+        opcode_idx = operator.OpcodeIndex()
+        if not opcode_idx in used_opcodes:
+            used_opcodes.append(opcode_idx)
+
+    # Append opcodes of child subgraphs
+    for subgraph_idx in used_subgraphs_list:
+        if subgraph_idx == subgraph:
+            continue
+        for operator_idx in range(sample_model.Subgraphs(subgraph_idx).OperatorsLength()):
+            operator = sample_model.Subgraphs(subgraph_idx).Operators(operator_idx)
+            opcode_idx = operator.OpcodeIndex()
+            if not opcode_idx in used_opcodes:
+                used_opcodes.append(opcode_idx)
 
     used_tensors.sort()
-    used_operators.sort()
+    used_opcodes.sort()
 
     # Collect used buffer
     # buffer[0] should be blank. So it should start from 1
@@ -1153,14 +1265,23 @@ def main(args):
         # key and value is same in prepare phase
         buf_idx = (sample_subgraph.Tensors(used_tensor)).Buffer()
         used_buffers.append(buf_idx)
+
+    # Append buffers of tensors of child subgraphs
+    for subgraph_idx in used_subgraphs_list:
+        if subgraph_idx == subgraph:
+            continue
+        for tensor_idx in range(sample_model.Subgraphs(subgraph_idx).TensorsLength()):
+            tensor = sample_model.Subgraphs(subgraph_idx).Tensors(tensor_idx)
+            used_buffers.append(tensor.Buffer())
+
     used_buffers.sort()
 
     # Assign new index for operator
-    used_operators_dic = {}
+    used_opcodes_dic = {}
 
-    for new_operator_idx in range(len(used_operators)):
-        sample_operator_idx = used_operators[new_operator_idx]
-        used_operators_dic[sample_operator_idx] = new_operator_idx
+    for new_operator_idx in range(len(used_opcodes)):
+        sample_operator_idx = used_opcodes[new_operator_idx]
+        used_opcodes_dic[sample_operator_idx] = new_operator_idx
 
     # Assign new index for tensor
     used_tensors_dic = {}
@@ -1180,10 +1301,10 @@ def main(args):
     new_input_tensors = used_tensors[:]
     new_output_tensors = used_tensors[:]
 
-    for opcode_idx in opcode_list:
-        opcode = sample_subgraph.Operators(opcode_idx)
-        for input_idx in range(opcode.InputsLength()):
-            input_tensor_idx = opcode.Inputs(input_idx)
+    for operator_idx in operator_list:
+        operator = sample_subgraph.Operators(operator_idx)
+        for input_idx in range(operator.InputsLength()):
+            input_tensor_idx = operator.Inputs(input_idx)
             if input_tensor_idx == -1:
                 continue
             if input_tensor_idx in new_output_tensors:
@@ -1194,8 +1315,8 @@ def main(args):
                 if matched_buffer.DataLength() != 0:
                     new_input_tensors.remove(input_tensor_idx)
 
-        for output_idx in range(opcode.OutputsLength()):
-            output_tensor_idx = opcode.Outputs(output_idx)
+        for output_idx in range(operator.OutputsLength()):
+            output_tensor_idx = operator.Outputs(output_idx)
             if output_tensor_idx in new_input_tensors:
                 new_input_tensors.remove(output_tensor_idx)
             if output_tensor_idx in new_output_tensors:
@@ -1218,9 +1339,9 @@ def main(args):
     # Create new model file
     new_builder = flatbuffers.Builder(1024)
 
-    new_model = GenerateModel(args, new_builder, sample_model, opcode_list,
+    new_model = GenerateModel(args, new_builder, sample_model, operator_list,
                               new_input_tensors, new_output_tensors, used_tensors_dic,
-                              used_buffers_dic, used_operators_dic)
+                              used_buffers_dic, used_opcodes_dic, used_subgraphs_dic)
 
     Finish(new_builder, new_model)
     new_buf = new_builder.Output()

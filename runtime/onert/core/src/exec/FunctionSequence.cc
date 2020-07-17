@@ -19,19 +19,54 @@
 #include "ir/Operation.h"
 #include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorRegistry.h"
-#include "util/ShapeInference.h"
+#include "util/logging.h"
 
 namespace onert
 {
 namespace exec
 {
 
-// for OpSequence only with static tensor
 void FunctionSequence::run()
 {
-  for (const auto &function : _functions)
+  if (_enable_dynamic_shape_inferer)
   {
-    function->run();
+    if (_dynamic_tensor_ctx->op_seq->size() != _functions.size())
+      throw std::runtime_error("operation and functions should be mapped one by one");
+
+    auto op_seq_iter = _dynamic_tensor_ctx->op_seq->begin();
+    for (const auto &function : _functions)
+    {
+      // set shape of output and allocate memory when needed
+      auto &op = _dynamic_tensor_ctx->operations->at(*op_seq_iter);
+      op.accept(*_dynamic_tensor_ctx->dynamic_shape_inferer);
+
+      auto *sub_func_seq = dynamic_cast<FunctionSequence *>(function.get());
+      if (sub_func_seq != nullptr)
+      {
+        sub_func_seq->enableDynamicShapeInferer(true);
+        sub_func_seq->dynamic_tensor_ctx(dynamic_tensor_ctx());
+      }
+
+      // run kernel
+      function->run();
+
+      // deallocate input tensors which is no longer used
+      _dynamic_tensor_ctx->dynamic_tensor_manager->deallocInput(*op_seq_iter);
+
+      op_seq_iter++;
+    }
+  }
+  else
+  {
+    for (const auto &function : _functions)
+    {
+      auto *sub_func_seq = dynamic_cast<FunctionSequence *>(function.get());
+      if (sub_func_seq != nullptr)
+      {
+        sub_func_seq->enableDynamicShapeInferer(false);
+      }
+      function->run();
+    }
   }
 }
 
@@ -53,28 +88,6 @@ void FunctionSequence::iterate(const std::function<void(IFunction &)> &fn)
   for (const auto &func : _functions)
   {
     fn(*func);
-  }
-}
-
-void FunctionSequenceForDynamicBackend::run()
-{
-  if (_op_seq.size() != _functions.size())
-    throw std::runtime_error("operation and functions should be mapped one by one");
-
-  auto op_seq_iter = _op_seq.begin();
-  for (const auto &function : _functions)
-  {
-    // set shape of output and allocate memory when needed
-    auto &op = _operations_ctx.at(*op_seq_iter);
-    op.accept(*_dyn_shape_inferer);
-
-    // run kernel
-    function->run();
-
-    // deallocate input tensors which is no longer used
-    _dyn_tensor_manager->deallocInput(*op_seq_iter);
-
-    op_seq_iter++;
   }
 }
 

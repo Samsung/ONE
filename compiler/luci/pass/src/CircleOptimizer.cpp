@@ -20,6 +20,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
+#include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 // TODO add more passes
@@ -112,6 +113,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
   }
+  if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
+  }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
@@ -138,9 +143,25 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Fake quantization of weights
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {
+    static const std::vector<std::string> fakeq_supported_input_dtype{"float32"};
+    static const std::vector<std::string> fakeq_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> fakeq_supported_granularity{"layer"};
+
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+
+    if (!in_array(to_lower_case(input_dtype), fakeq_supported_input_dtype))
+      throw std::runtime_error("Unsupported input type. List of supported input type: " +
+                               to_string(fakeq_supported_input_dtype));
+
+    if (!in_array(to_lower_case(output_dtype), fakeq_supported_output_dtype))
+      throw std::runtime_error("Unsupported output type. List of supported output type: " +
+                               to_string(fakeq_supported_output_dtype));
+
+    if (!in_array(to_lower_case(granularity), fakeq_supported_granularity))
+      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
+                               to_string(fakeq_supported_granularity));
 
     luci::QuantizeDequantizeWeightsPass fake_quantizer(
         str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
@@ -150,9 +171,25 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Actual quantization of weights, bias, and activation
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
+    static const std::vector<std::string> qwmm_supported_input_dtype{"float32"};
+    static const std::vector<std::string> qwmm_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> qwmm_supported_granularity{"layer"};
+
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+
+    if (!in_array(to_lower_case(input_dtype), qwmm_supported_input_dtype))
+      throw std::runtime_error("Unsupported input type. List of supported input types: " +
+                               to_string(qwmm_supported_input_dtype));
+
+    if (!in_array(to_lower_case(output_dtype), qwmm_supported_output_dtype))
+      throw std::runtime_error("Unsupported output type. List of supported output types: " +
+                               to_string(qwmm_supported_output_dtype));
+
+    if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
+      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
+                               to_string(qwmm_supported_granularity));
 
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));

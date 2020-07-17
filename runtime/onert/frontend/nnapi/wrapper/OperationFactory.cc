@@ -82,6 +82,30 @@ uint32_t getUint32Scalar(Operands &operands, const OperandIndex index)
   return static_cast<uint32_t>(int32_value);
 }
 
+OperationFactory::Generator
+getReduceGenerator(const onert::ir::operation::Reduce::ReduceType reduce_type)
+{
+  return [reduce_type](const OperationFactory::Param &init_param, Operands &operands) {
+    assert(init_param.input_count == 3);
+    assert(init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+    //  1 -> Reduced Axes Tensor Index
+    //  2 -> keep_dims Index
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::Reduce::Param param;
+    param.reduce_type = reduce_type;
+    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
+
+    return new operation::Reduce{inputs, outputs, param};
+  };
+}
+
 } // namespace
 
 OperationFactory &OperationFactory::get()
@@ -530,25 +554,8 @@ OperationFactory::OperationFactory()
 
   _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
 
-  _map[ANEURALNETWORKS_REDUCE_SUM] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 3);
-    assert(init_param.output_count == 1);
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Reduced Axes Tensor Index
-    //  2 -> keep_dims Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::ReduceSum::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceSum{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_REDUCE_SUM] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
 
   // ANEURALNETWORKS_REDUCE_SUM_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_SUM_EX
@@ -922,64 +929,14 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_REDUCE_ALL] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
+  _map[ANEURALNETWORKS_REDUCE_ALL] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ALL);
 
-    OperandIndexSequence outputs{init_param.outputs[0]};
+  _map[ANEURALNETWORKS_REDUCE_ANY] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ANY);
 
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::ReduceAll::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceAll{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_REDUCE_ANY] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::ReduceAny::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceAny{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_REDUCE_MAX] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
-
-    operation::ReduceMax::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceMax{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_REDUCE_MAX] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MAX);
 
   // ANEURALNETWORKS_REDUCE_MAX_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_MAX_EX
@@ -1772,10 +1729,11 @@ OperationFactory::OperationFactory()
     //  2 -> keep_dims Index
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
-    operation::Mean::Param param;
+    operation::Reduce::Param param;
+    param.reduce_type = operation::Reduce::ReduceType::MEAN;
     param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>() != 0;
 
-    return new operation::Mean{inputs, outputs, param};
+    return new operation::Reduce{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_LOCAL_RESPONSE_NORMALIZATION] = [](const OperationFactory::Param &init_param,
@@ -1833,26 +1791,8 @@ OperationFactory::OperationFactory()
     return new operation::Pack{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_REDUCE_MIN] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    std::vector<std::int32_t> axes =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
-
-    operation::ReduceMin::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceMin{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_REDUCE_MIN] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MIN);
 
   // ANEURALNETWORKS_REDUCE_MIN_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_MIN_EX
@@ -1978,24 +1918,8 @@ OperationFactory::OperationFactory()
     return new operation::Shape{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_REDUCE_PROD] = [](const OperationFactory::Param &init_param,
-                                         Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    //  2 -> keep_dims Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::ReduceProd::Param param;
-    param.keep_dims = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int8_t>() != 0;
-
-    return new operation::ReduceProd{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_REDUCE_PROD] =
+      getReduceGenerator(onert::ir::operation::Reduce::ReduceType::PROD);
 
   _map[ANEURALNETWORKS_ROUND_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
@@ -2185,6 +2109,29 @@ OperationFactory::OperationFactory()
     const OperandIndex epsilon_index{init_param.inputs[init_param.input_count - 1]};
     param.epsilon = operands.at(epsilon_index).asScalar<float>();
     return new operation::FusedBatchNorm{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_LOG_SOFTMAX] = [](const OperationFactory::Param &init_param,
+                                         Operands &operands) {
+    assert(init_param.input_count == 3 && init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> A tensor specifying the input logits.
+    //  1 -> A scalar, specifying the positive scaling factor for the exponent, beta.
+    //  2 -> An scalar specifying the axis to reduce across.
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    const auto beta_index = OperandIndex{init_param.inputs[1]};
+    const auto axis_index = OperandIndex{init_param.inputs[2]};
+
+    operation::LogSoftmax::Param param;
+    param.beta = operands.at(beta_index).asScalar<float>();
+    param.axis = operands.at(axis_index).asScalar<int>();
+
+    return new operation::LogSoftmax{inputs, outputs, param};
   };
 }
 

@@ -1,3 +1,4 @@
+require("arser")
 require("nnkit")
 require("cwrap")
 require("mio-tflite")

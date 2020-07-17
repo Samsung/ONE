@@ -142,10 +142,12 @@ nncc::core::ADT::tensor::Buffer<T> avgPool2D(const loco::AvgPool2D *avgpool2d,
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::AvgPool2D *avgpool2d)
+using namespace locomotiv;
+
+void exectute_node(loco::AvgPool2D *avgpool2d)
 {
   auto ifm_data = annot_data(avgpool2d->ifm());
 
@@ -176,5 +178,12 @@ void NodeExecution::execute(loco::AvgPool2D *avgpool2d)
   annot_data(avgpool2d, std::move(avgpool2d_data));
   annot_domain(avgpool2d, loco::Domain::Feature);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::AvgPool2D *avgpool2d) { exectute_node(avgpool2d); }
 
 } // namespace locomotiv

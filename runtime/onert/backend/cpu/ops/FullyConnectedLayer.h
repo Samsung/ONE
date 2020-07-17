@@ -68,8 +68,9 @@ private:
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;
 
+  bool _is_hybrid;
+
 #ifdef USE_RUY_GEMV
-  bool _is_weights_freed = false;     // weights is already freed?
   uint8_t *_cached_weights = nullptr; // weights to be cached and a key
 #endif
 };

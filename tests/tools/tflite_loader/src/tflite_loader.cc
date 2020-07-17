@@ -80,10 +80,11 @@ void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, g);
   auto compiler = new onert::compiler::Compiler(subgs);
+  std::shared_ptr<onert::exec::ExecutorMap> executors;
   // Compilation
   try
   {
-    compiler->compile();
+    executors = compiler->compile();
   }
   catch (const std::exception &e)
   {
@@ -94,8 +95,6 @@ void executeGraph(const std::shared_ptr<onert::ir::Graph> &g,
 
   std::cout << "[Execution] Graph compiled!" << std::endl;
 
-  std::shared_ptr<onert::exec::ExecutorMap> executors;
-  compiler->release(executors);
   auto execution = std::make_shared<onert::exec::Execution>(executors);
 
   // Setting IO

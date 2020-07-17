@@ -49,7 +49,13 @@ void LinearExecutor::executeImpl()
     ruy::profiler::ScopeLabel label(seq_to_label(op_seq, _graph.operations()));
 #endif
     _subject.notifyJobBegin(this, op_seq, backend);
-    code.fn_seq->run();
+
+    auto &fn_seq = code.fn_seq;
+    bool handle_dynamic_tensor = op_seq->has_dynamic_tensor() || hasDynamicInput();
+
+    fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
+    fn_seq->run();
+
     _subject.notifyJobEnd(this, op_seq, backend);
   }
   _subject.notifyModelEnd(this);

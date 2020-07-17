@@ -15,6 +15,7 @@
  */
 
 #include "RecordMinMax.h"
+#include "RecordFunction.h"
 #include "CircleExpContract.h"
 #include "MinMaxObserver.h"
 #include "HDF5Importer.h"
@@ -35,23 +36,6 @@ using DataType = luci_interpreter::DataType;
 
 namespace
 {
-
-/**
- * @brief  getMovingAverage calculates the weighted moving average of input vector
- *         The initial value is the first element of the vector
- */
-float getMovingAverage(std::vector<float> &vector, float alpha)
-{
-  assert(!vector.empty());
-  assert(alpha >= 0.0 && alpha <= 1.0);
-
-  float curr_avg = vector[0];
-  for (size_t i = 1; i < vector.size(); i++)
-  {
-    curr_avg = curr_avg * alpha + vector[i] * (1.0 - alpha);
-  }
-  return curr_avg;
-}
 
 /**
  * @brief  getTensorSize will return size in bytes
@@ -114,7 +98,8 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   _interpreter->attachObserver(_observer.get());
 }
 
-void RecordMinMax::profileData(const std::string &input_data_path)
+void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
+                               float min_percentile, float max_percentile)
 {
   HDF5Importer importer(input_data_path);
   importer.importGroup();
@@ -160,9 +145,18 @@ void RecordMinMax::profileData(const std::string &input_data_path)
     auto node = iter->first;
     auto minmax = iter->second;
 
-    float min = getMovingAverage(minmax.min_vector, 0.9);
-    float max = getMovingAverage(minmax.max_vector, 0.9);
-
+    float min, max;
+    if (mode == "percentile")
+    {
+      min = getNthPercentile(minmax.min_vector, min_percentile);
+      max = getNthPercentile(minmax.max_vector, max_percentile);
+    }
+    else if (mode == "moving_average")
+    {
+      min = getMovingAverage(minmax.min_vector, 0.9);
+      max = getMovingAverage(minmax.max_vector, 0.9);
+    }
+    assert(mode == "percentile" || mode == "moving_average");
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
     quantparam->min.push_back(min);
     quantparam->max.push_back(max);

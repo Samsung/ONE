@@ -21,6 +21,10 @@
 #include <backend/ITensorBuilder.h>
 #include <exec/IExecutor.h>
 #include <ir/Graph.h>
+#include "TensorBuilder.h"
+#include "compiler/TensorBuilders.h"
+
+#include "compiler/TensorBuilders.h"
 
 namespace onert
 {
@@ -32,9 +36,9 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Graph &graph);
+  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder);
 
-  void setTensorBuilderSet(const TensorBuilderSet &tensor_builder_set)
+  void setTensorBuilderSet(const compiler::TensorBuilders &tensor_builder_set)
   {
     _tensor_builder_set = tensor_builder_set;
   }
@@ -57,7 +61,8 @@ private:
 
 private:
   const ir::Graph &_graph;
-  TensorBuilderSet _tensor_builder_set;
+  std::shared_ptr<TensorBuilder> _tensor_builder;
+  compiler::TensorBuilders _tensor_builder_set;
   exec::ExecutorMap *_executor_map;
 };
 

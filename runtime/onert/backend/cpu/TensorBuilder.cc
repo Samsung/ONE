@@ -36,12 +36,9 @@ TensorBuilder::TensorBuilder()
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout layout, bool as_const)
+                                       ir::Layout layout)
 {
   _tensor_info_map.emplace(ind, info);
-
-  if (as_const)
-    _constants.append(ind);
 
   // CPU backend supports only one layout as NHWC
   assert(layout == ir::Layout::NHWC);
@@ -51,7 +48,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, layout, _constants.contains(ind));
+    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
   }
 }
 
@@ -86,10 +83,14 @@ void TensorBuilder::prepare(void)
   _static_tensor_mgr->allocateNonconsts();
 }
 
-void TensorBuilder::allocate()
+void TensorBuilder::allocateAtCompileTime()
 {
-  // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
-  //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
+  // TODO Write code here
+}
+
+void TensorBuilder::allocateAtRunTime()
+{
+  // TODO Write code here
 }
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)

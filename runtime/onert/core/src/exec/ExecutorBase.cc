@@ -25,7 +25,7 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
-                           const backend::TensorBuilderSet &tensor_builders)
+                           const compiler::TensorBuilders &tensor_builders)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
   auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
@@ -157,6 +157,9 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
 
+  // TODO write code to allocate memory for static tensors by calling
+  //     tensor_builder.allocateAtRunTime()
+
   assert(src_tensors.size() == _graph.getInputs().size());
   assert(src_tensors.size() == _input_tensors.size());
   for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
@@ -202,6 +205,9 @@ void ExecutorBase::execute(const IODescription &desc)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+
+  // TODO write code to allocate memory for static tensors by calling
+  //     tensor_builder.allocateAtRunTime()
 
   std::vector<std::unique_ptr<ISource>> sources{_graph.getInputs().size()};
   std::vector<std::unique_ptr<ISink>> sinks{_graph.getOutputs().size()};
@@ -319,6 +325,16 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
 
     dyn_alloc_info->second.dyn_tensor_manager->applyShape(operand_ind, changed_input_shape);
   }
+}
+
+bool ExecutorBase::hasDynamicInput()
+{
+  for (auto &tensor : _input_tensors)
+  {
+    if (tensor->is_dynamic())
+      return true;
+  }
+  return false;
 }
 
 } // namespace exec

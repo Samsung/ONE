@@ -1,0 +1,30 @@
+# This recipe is to test zero size tensor for luci and luci-interpreter
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 0 dim: 1 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 0 dim: 1 }
+  filler {
+    tag: "explicit"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 0 dim: 1 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm1"
+output: "ofm"

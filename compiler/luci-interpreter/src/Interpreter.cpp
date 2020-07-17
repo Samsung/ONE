@@ -29,12 +29,13 @@ namespace
 class EventNotifierImpl final : public EventNotifier
 {
 public:
-  EventNotifierImpl(RuntimeToIR &runtime_to_ir, const std::vector<ExecutionObserver *> &observers)
+  EventNotifierImpl(const RuntimeToIR &runtime_to_ir,
+                    const std::vector<ExecutionObserver *> &observers)
       : _runtime_to_ir(runtime_to_ir), _observers(observers)
   {
   }
 
-  void postTensorWrite(Tensor *tensor) const override
+  void postTensorWrite(const Tensor *tensor) override
   {
     assert(tensor != nullptr);
     for (const auto &observer : _observers)
@@ -43,8 +44,26 @@ public:
     }
   }
 
+  void preOperatorExecute(const Kernel *kernel) override
+  {
+    assert(kernel != nullptr);
+    for (const auto &observer : _observers)
+    {
+      observer->preOperatorExecute(_runtime_to_ir.kernel_to_node.at(kernel));
+    }
+  }
+
+  void postOperatorExecute(const Kernel *kernel) override
+  {
+    assert(kernel != nullptr);
+    for (const auto &observer : _observers)
+    {
+      observer->postOperatorExecute(_runtime_to_ir.kernel_to_node.at(kernel));
+    }
+  }
+
 private:
-  RuntimeToIR &_runtime_to_ir;
+  const RuntimeToIR &_runtime_to_ir;
   const std::vector<ExecutionObserver *> &_observers;
 };
 
@@ -55,10 +74,8 @@ Interpreter::Interpreter(const luci::Module *module)
   _runtime_to_ir = std::make_unique<RuntimeToIR>();
   _event_notifier = std::make_unique<EventNotifierImpl>(*_runtime_to_ir, _observers);
   _runtime_module = std::make_unique<RuntimeModule>(_event_notifier.get());
-  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir);
+  ModuleLoader loader(module, _runtime_module.get(), *_runtime_to_ir, _node_to_tensor);
   loader.load();
-
-  _runtime_module->configure();
 }
 
 Interpreter::~Interpreter() = default;
@@ -72,7 +89,8 @@ void Interpreter::writeInputTensor(const luci::CircleInput *input_node, const vo
     const std::string &name = input_node->name();
     throw std::runtime_error("Cannot find tensor for input node named \"" + name + "\".");
   }
-  tensor->writeData(data, data_size);
+  if (data != nullptr)
+    tensor->writeData(data, data_size);
 }
 
 void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *data,
@@ -84,7 +102,8 @@ void Interpreter::readOutputTensor(const luci::CircleOutput *output_node, void *
     const std::string &name = output_node->name();
     throw std::runtime_error("Cannot find tensor for output node named \"" + name + "\".");
   }
-  tensor->readData(data, data_size);
+  if (data != nullptr)
+    tensor->readData(data, data_size);
 }
 
 void Interpreter::interpret() { _runtime_module->execute(); }
@@ -99,5 +118,9 @@ void Interpreter::attachObserver(ExecutionObserver *observer)
 ExecutionObserver::~ExecutionObserver() = default;
 
 void ExecutionObserver::postTensorWrite(const luci::CircleNode *, const Tensor *) {}
+
+void ExecutionObserver::preOperatorExecute(const luci::CircleNode *) {}
+
+void ExecutionObserver::postOperatorExecute(const luci::CircleNode *) {}
 
 } // namespace luci_interpreter

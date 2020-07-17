@@ -73,6 +73,8 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(LOGICAL_OR, CircleLogicalOrGraphBuilder);                                    // 84
   CIRCLE_NODE(LOGISTIC, CircleLogisticGraphBuilder);                                       // 14
   CIRCLE_NODE(LOG_SOFTMAX, CircleLogSoftmaxGraphBuilder);                                  // 50
+  CIRCLE_NODE(MATRIX_DIAG, CircleMatrixDiagGraphBuilder);                                  // 113
+  CIRCLE_NODE(MATRIX_SET_DIAG, CircleMatrixSetDiagGraphBuilder);                           // 115
   CIRCLE_NODE(MAXIMUM, CircleMaximumGraphBuilder);                                         // 55
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                                   // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                                               // 40
@@ -99,11 +101,13 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(RESIZE_BILINEAR, CircleResizeBilinearGraphBuilder);                          // 23
   CIRCLE_NODE(RESIZE_NEAREST_NEIGHBOR, CircleResizeNearestNeighborGraphBuilder);           // 97
   CIRCLE_NODE(REVERSE_SEQUENCE, CircleReverseSequenceGraphBuilder);                        // 112
+  CIRCLE_NODE(REVERSE_V2, CircleReverseV2GraphBuilder);                                    // 105
   CIRCLE_NODE(ROUND, CircleRoundGraphBuilder);                                             // 116
   CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76
   CIRCLE_NODE(SCATTER_ND, CircleScatterNdGraphBuilder);                                    // 122
   CIRCLE_NODE(SEGMENT_SUM, CircleSegmentSumGraphBuilder);                                  // 125
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                                           // 64
+  CIRCLE_NODE(SELECT_V2, CircleSelectV2GraphBuilder);                                      // 123
   CIRCLE_NODE(SHAPE, CircleShapeGraphBuilder);                                             // 77
   CIRCLE_NODE(SIN, CircleSinGraphBuilder);                                                 // 66
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                                             // 65
@@ -152,14 +156,10 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_PADV2 = 60,
   // BuiltinOperator_FAKE_QUANT = 80,
-  // BuiltinOperator_REVERSE_V2 = 105,
-  // BuiltinOperator_MATRIX_DIAG = 113,
   // BuiltinOperator_QUANTIZE = 114,
-  // BuiltinOperator_MATRIX_SET_DIAG = 115,
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
-  // BuiltinOperator_SELECT_V2 = 123,
   // BuiltinOperator_DENSIFY = 124,
 }
 

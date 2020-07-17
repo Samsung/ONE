@@ -17,7 +17,6 @@
 #include "backend/BackendContext.h"
 
 #include "ir/Operation.h"
-#include "backend/IShapeFixer.h"
 #include "backend/IConstantInitializer.h"
 
 namespace onert
@@ -30,18 +29,6 @@ void BackendContext::initialize(const std::vector<OperationInfo> &operation_list
 {
   _operation_list = operation_list;
   _operand_list = operand_list;
-}
-
-void BackendContext::fixShapes()
-{
-  // shape_fixer is an optional component so it could be nullptr
-  if (!shape_fixer)
-    return;
-
-  for (auto &op : _operation_list)
-  {
-    _graph->operations().at(op.index).accept(*shape_fixer);
-  }
 }
 
 void BackendContext::initConsts()

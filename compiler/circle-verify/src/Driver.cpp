@@ -16,23 +16,31 @@
 
 #include "VerifyFlatBuffers.h"
 
-#include <stdex/Memory.h>
+#include <arser/arser.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 int entry(int argc, char **argv)
 {
-  if (argc != 2)
-  {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [circle]" << std::endl;
-    return 255;
-  }
-  auto verifier = stdex::make_unique<VerifyFlatbuffers>();
+  arser::Arser arser;
+  arser.add_argument("circle").type(arser::DataType::STR).help("Circle file path to verify");
 
-  std::string model_file = argv[argc - 1];
+  try
+  {
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
+    return 0;
+  }
+
+  auto verifier = std::make_unique<VerifyFlatbuffers>();
+
+  std::string model_file = arser.get<std::string>("circle");
 
   std::cout << "[ RUN       ] Check " << model_file << std::endl;
 

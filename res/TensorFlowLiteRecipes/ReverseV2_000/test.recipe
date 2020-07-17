@@ -1,0 +1,30 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 dim: 5 }
+}
+operand {
+  name: "axis"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "3" arg: "2"  
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 dim: 5 }
+}
+operation {
+  type: "ReverseV2"
+  reversev2_options {
+  }
+  input: "ifm"
+  input: "axis"
+  output: "ofm"
+}
+input: "ifm"
+input: "axis"
+output: "ofm"

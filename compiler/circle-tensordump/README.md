@@ -1,6 +1,6 @@
 # circle-tensordump
 
-_circle-tensordump allows users to retrieve tensor information from a Circle model file
+_circle-tensordump_ allows users to retrieve tensor information from a Circle model file
 
 ## options
 

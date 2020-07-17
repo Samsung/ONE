@@ -106,18 +106,18 @@ public:
    *
    * @param[in] dotinfo A node that the new edge will be connected to
    */
-  void addEdge(std::shared_ptr<Node> dotinfo) { _children.emplace_back(dotinfo); }
+  void addOutEdge(Node *dotinfo) { _out_edges.emplace_back(dotinfo); }
   /**
-   * @brief Return list of edges
+   * @brief Return list of out edges
    *
    * @return Edges
    */
-  const std::vector<std::shared_ptr<Node>> &edges() const { return _children; }
+  const std::vector<Node *> &out_edges() const { return _out_edges; }
 
 private:
   std::string _id;
   std::unordered_map<std::string, std::string> _attributes;
-  std::vector<std::shared_ptr<Node>> _children;
+  std::vector<Node *> _out_edges;
 };
 
 } // namespace dot

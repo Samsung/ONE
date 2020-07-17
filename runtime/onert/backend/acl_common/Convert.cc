@@ -265,6 +265,21 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
   }
 }
 
+arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
+{
+  switch (reduce_type_ir)
+  {
+    case ir::operation::Reduce::ReduceType::MAX:
+      return arm_compute::ReduceOperation::MAX;
+    case ir::operation::Reduce::ReduceType::MIN:
+      return arm_compute::ReduceOperation::MIN;
+    case ir::operation::Reduce::ReduceType::SUM:
+      return arm_compute::ReduceOperation::SUM;
+    default:
+      throw std::runtime_error("convertReduceType: Not supported operation yet");
+  }
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert
