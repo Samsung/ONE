@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CUSTOM_KERNEL_BUILDER_H__
 #define __ONERT_BACKEND_CUSTOM_KERNEL_BUILDER_H__
 
+#include "backend/IPortableTensor.h"
 #include "misc/tensor/Shape.h"
 #include "ir/DataType.h"
 
@@ -50,10 +51,10 @@ struct TypeInfo
 
 struct CustomKernelConfigParams
 {
-  std::vector<void *> input_allocations;
+  std::vector<std::shared_ptr<backend::IPortableTensor>> input_tensors;
   std::vector<TypeInfo> input_types;
 
-  std::vector<void *> output_allocations;
+  std::vector<std::shared_ptr<backend::IPortableTensor>> output_tensors;
   std::vector<TypeInfo> output_types;
 
   char *userdata;
