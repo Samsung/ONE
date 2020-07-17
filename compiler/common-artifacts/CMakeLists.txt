@@ -13,13 +13,8 @@ if(${PYTHON_VERSION_MINOR} LESS 3)
 endif()
 
 # Create python virtual environment with tensorflow 1.13.2
-set(VIRTUALENV "${CMAKE_CURRENT_BINARY_DIR}/venv_1_13_2")
 set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv_1_13_2")
 
-add_custom_command(
-  OUTPUT ${VIRTUALENV}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV}
-)
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY}
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY}
@@ -27,16 +22,8 @@ add_custom_command(
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_PATH "${CMAKE_CURRENT_BINARY_DIR}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH "${NNCC_OVERLAY_DIR}/${REQUIREMENTS_FILE}")
 
-add_custom_command(
-  OUTPUT ${REQUIREMENTS_PATH}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_PATH}
-  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_PATH} --upgrade
-  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_PATH}
-)
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH}
@@ -46,7 +33,7 @@ add_custom_command(
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV} ${REQUIREMENTS_PATH} ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH}
+  DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH}
 )
 
 # TODO Create python virtual environment with tensorflow 2.3.0-rc0
