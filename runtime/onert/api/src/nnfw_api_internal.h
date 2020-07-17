@@ -52,11 +52,47 @@ class Compiler;
 struct nnfw_session
 {
 private:
+  /**
+   * @brief Enum class to express the session's state
+   *
+   * State transition diagram:
+   *
+   *           +--------------+
+   *           | INITIALIZED  |
+   *           +--------------+
+   *             |
+   *             | load_model
+   *             v
+   *           +--------------+
+   *           | MODEL_LOADED |
+   *           +--------------+
+   *             |
+   *             | prepare
+   *             v
+   *           +--------------+
+   *           |   PREPARED   | --------+
+   *           +--------------+         |
+   *             |                      |
+   *             | run                  |
+   *             v                      |
+   *           +--------------+  run    |
+   *           |              | -----+  |
+   *   +-----> | FINISHED_RUN |      |  | run_async
+   *   |       |              | <----+  |
+   *   |       +--------------+         |
+   *   |         |                      |
+   *   | await   | run_async            |
+   *   |         v                      |
+   *   |       +--------------+         |
+   *   +------ |   RUNNING    | <-------+
+   *           +--------------+
+   */
   enum class State
   {
     INITIALIZED,  //< Session is initialized and nothing has done to it
     MODEL_LOADED, //< Model is loaded
     PREPARED,     //< Prepared(compiled) for execution
+    RUNNING,      //< Execution is in progress (only for asynchronous execution)
     FINISHED_RUN  //< Executed at least once
   };
 
@@ -67,6 +103,9 @@ public:
   NNFW_STATUS load_model_from_file(const char *package_file_path);
   NNFW_STATUS prepare();
   NNFW_STATUS run();
+
+  NNFW_STATUS run_async();
+  NNFW_STATUS await();
 
   NNFW_STATUS set_input(uint32_t index, NNFW_TYPE type, const void *buffer, size_t length);
   NNFW_STATUS set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
@@ -96,6 +135,7 @@ private:
   bool isStateInitialized();
   bool isStateModelLoaded();
   bool isStatePrepared();
+  bool isStateRunning();
   bool isStateFinishedRun();
   bool isStatePreparedOrFinishedRun();
 
