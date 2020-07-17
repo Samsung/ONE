@@ -40,6 +40,8 @@ set(SOURCES
     Pad.cpp
     Reshape.h
     Reshape.cpp
+    Slice.h
+    Slice.cpp
     Softmax.h
     Softmax.cpp
     SpaceToDepth.h
@@ -91,6 +93,7 @@ set(TEST_SOURCES
     Mul.test.cpp
     Pad.test.cpp
     Reshape.test.cpp
+    Slice.test.cpp
     Softmax.test.cpp
     SpaceToDepth.test.cpp
     Split.test.cpp
