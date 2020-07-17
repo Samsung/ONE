@@ -27,12 +27,19 @@ group = h5_file.create_group("value")
 # If this flag is set in the hdf5 file, record-minmax will skip type/shape check
 group.attrs['rawData'] = '1'
 
+if os.path.isfile(data_list) == False:
+    raise SystemExit("No such file. " + data_list)
+
 # Data list
 datalist = []
 with open(data_list, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        datalist.append(line.rstrip())
+        filename = line.rstrip()
+        if os.path.isfile(filename):
+            datalist.append(filename)
+        else:
+            raise SystemExit("No such file. " + filename)
 
 # Input files
 num_converted = 0
