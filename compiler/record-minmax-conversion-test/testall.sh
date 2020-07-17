@@ -13,7 +13,7 @@ GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "$CONFIG_PATH")
 WORKDIR="$1"; shift
-VIRTUALENV="${WORKDIR}/venv_1_13_2"
+VIRTUALENV="$1"; shift
 
 source "${CONFIG_PATH}"
 

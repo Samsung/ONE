@@ -37,5 +37,6 @@ add_test(
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
           "${TEST_CONFIG}"
           "${ARTIFACTS_BIN_PATH}"
+          "${NNCC_OVERLAY_DIR}/venv_1_13_2"
           ${RECORD_MINMAX_CONVERSION_TEST}
 )
