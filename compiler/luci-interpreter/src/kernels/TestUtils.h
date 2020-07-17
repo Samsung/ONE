@@ -71,7 +71,6 @@ std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &
 template <typename T>
 inline std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
-  assert(!std::is_floating_point<T>::value);
   std::vector<T> q;
   for (const auto &f : data)
   {
@@ -85,7 +84,6 @@ inline std::vector<T> quantize(const std::vector<float> &data, float scale, int3
 template <typename T>
 inline std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
 {
-  assert(!std::is_floating_point<T>::value);
   std::vector<float> f;
   for (const T &q : data)
   {
@@ -98,7 +96,7 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
 {
   if (std::is_floating_point<T>::value)
   {
-    return {0.0, 0};
+    return {1.0f, 0};
   }
   int32_t zero_point = 0;
   double scale = 0;

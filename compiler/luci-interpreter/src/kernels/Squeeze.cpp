@@ -86,20 +86,12 @@ void Squeeze::execute() const
     num_output = num_output * _output->shape().dim(i);
   }
 
-  assert(num_input * sizeof(getDataTypeSize(_input->element_type())) ==
-         num_output * sizeof(getDataTypeSize(_output->element_type())));
+  assert(num_input * getDataTypeSize(_input->element_type()) ==
+         num_output * getDataTypeSize(_output->element_type()));
 
-  switch (_input->element_type())
-  {
-    case DataType::FLOAT32:
-      memcpy(_output->data<float>(), _input->data<float>(), sizeof(float) * num_input);
-      break;
-    case DataType::U8:
-      memcpy(_output->data<uint8_t>(), _input->data<uint8_t>(), sizeof(uint8_t) * num_input);
-      break;
-    default:
-      throw std::runtime_error("Unsupported type.");
-  }
+  const auto *input_data = _input->data<void>();
+  auto *output_data = _output->data<void>();
+  std::memcpy(output_data, input_data, getDataTypeSize(_input->element_type()) * num_input);
 }
 
 } // namespace kernels

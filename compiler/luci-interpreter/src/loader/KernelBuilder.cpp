@@ -464,8 +464,9 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
   Tensor *output = getOutputTensor(node);
 
   SqueezeParams params{};
+  assert(node->squeeze_dims().size() <= 4);
   params.squeeze_dims_count = node->squeeze_dims().size();
-  for (size_t i = 0; i < node->squeeze_dims().size(); i++)
+  for (size_t i = 0; i < params.squeeze_dims_count; i++)
   {
     params.squeeze_dims[i] = node->squeeze_dims().at(i);
   }
