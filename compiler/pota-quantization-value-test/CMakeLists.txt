@@ -15,6 +15,8 @@ unset(TEST_DEPS)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_1_13_2")
+
 ###
 ### Generate test.config
 ###
@@ -26,6 +28,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_QUANTIZER_PATH=\"$<TARGET_FILE:circle-quantizer>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_TENSORDUMP_PATH=\"$<TARGET_FILE:circle-tensordump>\"' >> ${TEST_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'VIRTUALENV=\"${VIRTUALENV}\"' >> ${TEST_CONFIG}
   DEPENDS record-minmax
   DEPENDS circle-quantizer
   DEPENDS circle-tensordump

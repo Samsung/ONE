@@ -15,7 +15,6 @@ CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
 WORKDIR="$1"; shift
-VIRTUALENV="${WORKDIR}/venv_1_13_2"
 
 source "${CONFIG_PATH}"
 
