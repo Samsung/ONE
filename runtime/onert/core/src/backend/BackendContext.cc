@@ -44,7 +44,7 @@ void BackendContext::initConsts()
     const auto &obj = _graph->operands().at(ind);
     if (obj.isConstant() && !constant_initializer->exist(ind))
     {
-      constant_initializer->registerPermuteInitializer(ind, obj);
+      constant_initializer->registerDefaultInitializer(ind, obj);
     }
   }
 

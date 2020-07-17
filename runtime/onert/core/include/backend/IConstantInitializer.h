@@ -195,6 +195,12 @@ protected:
   virtual std::shared_ptr<ITensorBuilder> tensor_builder() const = 0;
 
 public:
+  virtual void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj)
+  {
+    registerPermuteInitializer(index, obj); // as default
+  }
+
+public:
   void registerCopyInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
   void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
 
