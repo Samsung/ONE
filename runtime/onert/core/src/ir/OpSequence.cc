@@ -43,7 +43,7 @@ namespace onert
 namespace ir
 {
 
-OpSequence::OpSequence(Layout layout) : _layout{layout}
+OpSequence::OpSequence(Layout layout) : _layout{layout}, _has_dynamic_tensor{false}
 {
   // DO NOTHING
 }

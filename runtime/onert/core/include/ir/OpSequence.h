@@ -91,8 +91,6 @@ private:
 
 private:
   Layout _layout;
-
-private:
   bool _has_dynamic_tensor;
 };
 
