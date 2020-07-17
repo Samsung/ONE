@@ -35,11 +35,12 @@ datalist = []
 with open(data_list, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        filename = line.rstrip()
-        if os.path.isfile(filename):
-            datalist.append(filename)
-        else:
-            raise SystemExit("No such file. " + filename)
+        if line.strip():
+            filename = line.rstrip()
+            if os.path.isfile(filename):
+                datalist.append(filename)
+            else:
+                raise SystemExit("No such file. " + filename)
 
 # Input files
 num_converted = 0
