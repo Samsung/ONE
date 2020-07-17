@@ -24,4 +24,4 @@ target_link_libraries(test_onert_frontend_nnapi PRIVATE ${LIB_ONERT} dl)
 target_link_libraries(test_onert_frontend_nnapi PRIVATE gtest)
 target_link_libraries(test_onert_frontend_nnapi PRIVATE gtest_main)
 
-install(TARGETS test_onert_frontend_nnapi DESTINATION unittest)
+install(TARGETS test_onert_frontend_nnapi DESTINATION unittest_standalone)

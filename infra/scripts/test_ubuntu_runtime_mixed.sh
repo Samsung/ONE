@@ -26,6 +26,11 @@ echo "==== Run nnfw_api_gtest end ===="
 echo
 popd > /dev/null
 
+Product/out/unittest_standalone/test_compute
+Product/out/unittest_standalone/test_onert
+Product/out/unittest_standalone/test_onert_backend_cpu_common
+Product/out/unittest_standalone/test_onert_frontend_nnapi
+Product/out/unittest_standalone/tflite_test
 
 pushd ${ROOT_PATH}
 
