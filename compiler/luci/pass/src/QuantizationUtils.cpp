@@ -83,7 +83,8 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
     assert(min >= 0 && max >= 0);
     nudged_zero_point = kMinScale;
     scale = max / (qmax_double - qmin_double);
-    WARN(l) << "The minimum and maximum values are all positive." << std::endl;
+    if (min > 0 && max > 0)
+      WARN(l) << "The minimum and maximum values are all positive." << std::endl;
   }
   else if (zero_point_double >= qmax_double)
   {
