@@ -82,6 +82,7 @@ message Operation {
   optional string type = 1;
   repeated string input = 2;
   repeated string output = 3;
+  optional int32 version = 4 [default = 1];
 
   optional BatchMatMulOptions batch_matmul_options = 100;
   optional InstanceNormOptions instance_norm_options = 101;
