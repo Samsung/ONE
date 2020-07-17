@@ -32,4 +32,4 @@ add_executable(tflite_test src/tflite_test.cc)
 ## Link test executable against gtest & gtest_main
 target_link_libraries(tflite_test gtest gtest_main ${LIB_PTHREAD})
 ## install test binary for packaging
-install(TARGETS tflite_test DESTINATION unittest)
+install(TARGETS tflite_test DESTINATION unittest_standalone)

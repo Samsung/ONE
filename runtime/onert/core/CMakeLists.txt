@@ -37,4 +37,4 @@ target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} onert_core)
 target_link_libraries(${TEST_ONERT_BACKEND_CPU_COMMON} gtest gtest_main dl ${LIB_PTHREAD})
 
 add_test(${TEST_ONERT_BACKEND_CPU_COMMON} ${TEST_ONERT_BACKEND_CPU_COMMON})
-install(TARGETS ${TEST_ONERT_BACKEND_CPU_COMMON} DESTINATION unittest)
+install(TARGETS ${TEST_ONERT_BACKEND_CPU_COMMON} DESTINATION unittest_standalone)

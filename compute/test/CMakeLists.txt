@@ -10,4 +10,4 @@ target_link_libraries(${TEST_COMPUTE} gtest_main)
 target_link_libraries(${TEST_COMPUTE} ${LIB_PTHREAD} dl)
 add_test(${TEST_COMPUTE} ${TEST_COMPUTE})
 
-install(TARGETS ${TEST_COMPUTE} DESTINATION unittest)
+install(TARGETS ${TEST_COMPUTE} DESTINATION unittest_standalone)
