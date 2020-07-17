@@ -166,6 +166,12 @@ tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000) # fix luci
 tcgenerate(TopKV2_001) # fix luci
 tcgenerate(TransposeConv_000) # fix interpreter
+tcgenerate(Unique_000)
+tcgenerate(Unique_001)
+tcgenerate(Unique_002)
+tcgenerate(Unique_003)
+tcgenerate(Unique_U8_000)
+tcgenerate(Unique_U8_001)
 tcgenerate(Where_000) # luci NYI
 tcgenerate(Where_001) # luci NYI
 tcgenerate(While_000) # fix luci
