@@ -125,7 +125,6 @@ GeneratedTests.select_v1_2_one_dim_quant8
 GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.slice_5
 GeneratedTests.slice_6
-GeneratedTests.slice_7
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
