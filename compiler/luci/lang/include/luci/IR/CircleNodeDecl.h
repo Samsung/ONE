@@ -57,10 +57,14 @@ struct CircleNode : public loco::Node,
   ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(ShapeStatus ss) { _shape_status = ss; }
 
+  int32_t op_version(void) const { return _op_version; }
+  void op_version(int32_t op_version) { _op_version = op_version; }
+
 private:
   NodeName _name;
   std::unique_ptr<CircleQuantParam> _quantparam;
   ShapeStatus _shape_status{ShapeStatus::UNDEFINED};
+  int32_t _op_version = 1;
 };
 
 template <CircleOpcode Code> struct CircleNodeImpl : public CircleNode
