@@ -34,6 +34,10 @@ int entry(int argc, char **argv)
   arser.add_argument("--conv2d_weight")
       .nargs(0)
       .help("Dump Conv2D series weight operators in circle file");
+  arser.add_argument("--op_version")
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .help("Dump circle operator version");
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file to inspect");
 
   try
@@ -47,12 +51,17 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  if (!arser["--operators"] && !arser["--conv2d_weight"])
+  if (!arser["--operators"] && !arser["--conv2d_weight"] && !arser["--op_version"])
   {
     std::cout << "At least one option must be specified" << std::endl;
     std::cout << arser;
     return 255;
   }
+
+  argparse["--op_version"] = [&](void) {
+    // dump circle operator version
+    return std::move(stdex::make_unique<circleinspect::DumpOperatorVersion>());
+  };
 
   std::vector<std::unique_ptr<circleinspect::DumpInterface>> dumps;
 
@@ -60,6 +69,8 @@ int entry(int argc, char **argv)
     dumps.push_back(std::make_unique<circleinspect::DumpOperators>());
   if (arser["--conv2d_weight"])
     dumps.push_back(std::make_unique<circleinspect::DumpConv2DWeight>());
+  if (arser["--conv2d_weight"])
+    dumps.push_back(std::make_unique<circleinspect::DumpOperatorVersion>());
 
   std::string model_file = arser.get<std::string>("circle");
 
