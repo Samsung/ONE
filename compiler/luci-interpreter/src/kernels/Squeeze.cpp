@@ -75,23 +75,12 @@ void Squeeze::configure()
 
 void Squeeze::execute() const
 {
-  size_t num_input = 1;
-  size_t num_output = 1;
-  for (int i = 0; i < _input->shape().num_dims(); i++)
-  {
-    num_input = num_input * _input->shape().dim(i);
-  }
-  for (int i = 0; i < _output->shape().num_dims(); i++)
-  {
-    num_output = num_output * _output->shape().dim(i);
-  }
-
-  assert(num_input * getDataTypeSize(_input->element_type()) ==
-         num_output * getDataTypeSize(_output->element_type()));
+  assert(_input->shape().num_elements() == _output->shape().num_elements());
 
   const auto *input_data = _input->data<void>();
   auto *output_data = _output->data<void>();
-  std::memcpy(output_data, input_data, getDataTypeSize(_input->element_type()) * num_input);
+  std::memcpy(output_data, input_data,
+              getDataTypeSize(_input->element_type()) * _input->shape().num_elements());
 }
 
 } // namespace kernels
