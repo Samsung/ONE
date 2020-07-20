@@ -26,19 +26,22 @@ void DumpOperators::run(std::ostream &os, const circle::Model *model)
 {
   circleinspect::Reader reader(model);
 
-  assert(reader.num_subgraph() == 1);
-  reader.select_subgraph(0);
+  const uint32_t subgraph_size = reader.num_subgraph();
 
-  auto ops = reader.operators();
-
-  // dump operators
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t g = 0; g < subgraph_size; g++)
   {
-    const auto op = ops->Get(i);
+    reader.select_subgraph(g);
+    auto ops = reader.operators();
 
-    auto op_name = reader.opcode_name(op);
+    // dump operators
+    for (uint32_t i = 0; i < ops->Length(); ++i)
+    {
+      const auto op = ops->Get(i);
 
-    os << op_name << std::endl;
+      auto op_name = reader.opcode_name(op);
+
+      os << op_name << std::endl;
+    }
   }
 }
 
@@ -92,42 +95,45 @@ void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
 {
   circleinspect::Reader reader(model);
 
-  assert(reader.num_subgraph() == 1);
-  reader.select_subgraph(0);
+  const uint32_t subgraph_size = reader.num_subgraph();
 
-  auto ops = reader.operators();
-
-  // dump Conv2D, DepthwiseConv2D and its weight input operator
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t g = 0; g < subgraph_size; g++)
   {
-    const auto op = ops->Get(i);
-    auto bc = reader.builtin_code(op);
+    reader.select_subgraph(g);
+    auto ops = reader.operators();
 
-    if (bc == circle::BuiltinOperator_CONV_2D || bc == circle::BuiltinOperator_DEPTHWISE_CONV_2D)
+    // dump Conv2D, DepthwiseConv2D and its weight input operator
+    for (uint32_t i = 0; i < ops->Length(); ++i)
     {
-      const std::vector<int32_t> &inputs = circleinspect::as_index_vector(op->inputs());
-      if (inputs.size() < 2)
+      const auto op = ops->Get(i);
+      auto bc = reader.builtin_code(op);
+
+      if (bc == circle::BuiltinOperator_CONV_2D || bc == circle::BuiltinOperator_DEPTHWISE_CONV_2D)
       {
-        throw std::runtime_error("Operator has invalid input");
+        const std::vector<int32_t> &inputs = circleinspect::as_index_vector(op->inputs());
+        if (inputs.size() < 2)
+        {
+          throw std::runtime_error("Operator has invalid input");
+        }
+        auto weight_input = inputs[1]; // Tensor ID of weight input
+
+        const auto op_weight = operator_match_output(reader, weight_input);
+        const auto buffer_size = tensor_buffer_size(reader, weight_input);
+
+        std::string weight_op_name = "?";
+
+        if (op_weight == nullptr && buffer_size > 0)
+        {
+          weight_op_name = "CONST";
+        }
+        else if (op_weight != nullptr)
+        {
+          weight_op_name = reader.opcode_name(op_weight);
+        }
+
+        auto op_name = reader.opcode_name(op);
+        os << op_name << "," << weight_op_name << std::endl;
       }
-      auto weight_input = inputs[1]; // Tensor ID of weight input
-
-      const auto op_weight = operator_match_output(reader, weight_input);
-      const auto buffer_size = tensor_buffer_size(reader, weight_input);
-
-      std::string weight_op_name = "?";
-
-      if (op_weight == nullptr && buffer_size > 0)
-      {
-        weight_op_name = "CONST";
-      }
-      else if (op_weight != nullptr)
-      {
-        weight_op_name = reader.opcode_name(op_weight);
-      }
-
-      auto op_name = reader.opcode_name(op);
-      os << op_name << "," << weight_op_name << std::endl;
     }
   }
 }
