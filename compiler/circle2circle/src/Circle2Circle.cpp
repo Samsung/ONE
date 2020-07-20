@@ -49,41 +49,49 @@ int entry(int argc, char **argv)
 
   arser::Arser arser("circle2circle provides circle model optimization and transformations");
 
-  arser.add_argument("--all").nargs(0).required(false).help("Enable all optimize options");
+  arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
+      "Enable all optimize options");
 
   arser.add_argument("--fuse_bcq")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will fuse operators and apply Binary Coded Quantization");
 
   arser.add_argument("--fuse_instnorm")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will fuse operators to InstanceNorm operator");
 
   arser.add_argument("--resolve_customop_add")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will convert Custom(Add) to Add operator");
 
   arser.add_argument("--resolve_customop_batchmatmul")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will convert Custom(BatchMatmul) to BatchMatmul operator");
 
   arser.add_argument("--resolve_customop_matmul")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will convert Custom(Matmul) to Matmul operator");
 
   arser.add_argument("--mute_warnings")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will turn off warning messages");
 
   arser.add_argument("--disable_validation")
       .nargs(0)
       .required(false)
+      .default_value(false)
       .help("This will turn off operator vaidations. May help input model investigation.");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
@@ -100,54 +108,29 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  if (arser["--all"])
+  if (arser.get<bool>("--all"))
   {
-    if (arser.get<bool>("--all"))
-    {
-      options->enable(Algorithms::FuseBCQ);
-      options->enable(Algorithms::FuseInstanceNorm);
-      options->enable(Algorithms::ResolveCustomOpAdd);
-      options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-      options->enable(Algorithms::ResolveCustomOpMatMul);
-    }
+    options->enable(Algorithms::FuseBCQ);
+    options->enable(Algorithms::FuseInstanceNorm);
+    options->enable(Algorithms::ResolveCustomOpAdd);
+    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+    options->enable(Algorithms::ResolveCustomOpMatMul);
   }
+  if (arser.get<bool>("--fuse_bcq"))
+    options->enable(Algorithms::FuseBCQ);
+  if (arser.get<bool>("--fuse_instnorm"))
+    options->enable(Algorithms::FuseInstanceNorm);
+  if (arser.get<bool>("--resolve_customop_add"))
+    options->enable(Algorithms::ResolveCustomOpAdd);
+  if (arser.get<bool>("--resolve_customop_batchmatmul"))
+    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
+  if (arser.get<bool>("--resolve_customop_matmul"))
+    options->enable(Algorithms::ResolveCustomOpMatMul);
 
-  if (arser["--fuse_bcq"])
-  {
-    if (arser.get<bool>("--fuse_bcq"))
-      options->enable(Algorithms::FuseBCQ);
-  }
-  if (arser["--fuse_instnorm"])
-  {
-    if (arser.get<bool>("--fuse_instnorm"))
-      options->enable(Algorithms::FuseInstanceNorm);
-  }
-  if (arser["--resolve_customop_add"])
-  {
-    if (arser.get<bool>("--resolve_customop_add"))
-      options->enable(Algorithms::ResolveCustomOpAdd);
-  }
-  if (arser["--resolve_customop_batchmatmul"])
-  {
-    if (arser.get<bool>("--resolve_customop_batchmatmul"))
-      options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-  }
-  if (arser["--resolve_customop_matmul"])
-  {
-    if (arser.get<bool>("--resolve_customop_matmul"))
-      options->enable(Algorithms::ResolveCustomOpMatMul);
-  }
-
-  if (arser["--mute_warnings"])
-  {
-    if (arser.get<bool>("--mute_warnings"))
-      settings->set(luci::UserSettings::Key::MuteWarnings, true);
-  }
-  if (arser["--disable_validation"])
-  {
-    if (arser.get<bool>("--disable_validation"))
-      settings->set(luci::UserSettings::Key::DisableValidation, true);
-  }
+  if (arser.get<bool>("--mute_warnings"))
+    settings->set(luci::UserSettings::Key::MuteWarnings, true);
+  if (arser.get<bool>("--disable_validation"))
+    settings->set(luci::UserSettings::Key::DisableValidation, true);
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
