@@ -406,6 +406,10 @@ message SegmentSumOptions {
   // NONE
 }
 
+message UniqueOptions {
+  optional TensorType idx_out_type = 1 [default = INT32];
+}
+
 message WhereOptions {
  // None
 }
@@ -518,7 +522,7 @@ message Operation {
   optional ResizeNearestNeighborOptions resize_nearest_neighbor_options = 183;
   optional LeakyReluOptions leaky_relu_options = 184;
   optional MirrorPadOptions mirrorpad_options = 185;
-  // UniqueOptions 186
+  optional UniqueOptions unique_options = 186;
   optional ReverseV2Options reversev2_options = 187;
   // AddNOptions 188
   optional GatherNdOptions gather_nd_options = 189;
