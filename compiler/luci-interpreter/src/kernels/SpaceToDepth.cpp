@@ -37,10 +37,10 @@ void SpaceToDepth::configure()
   assert(_input->element_type() == _output->element_type());
 
   const int block_size = params().block_size;
-  const int input_height = _input->shape().dim(1);
-  const int input_width = _input->shape().dim(2);
-  int output_height = input_height / block_size;
-  int output_width = input_width / block_size;
+  const int32_t input_height = _input->shape().dim(1);
+  const int32_t input_width = _input->shape().dim(2);
+  int32_t output_height = input_height / block_size;
+  int32_t output_width = input_width / block_size;
 
   assert(input_height == output_height * block_size);
   assert(input_width == output_width * block_size);

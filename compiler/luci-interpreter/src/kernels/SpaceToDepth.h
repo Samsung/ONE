@@ -20,7 +20,6 @@
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
 
-#include <cstdint>
 #include <vector>
 
 namespace luci_interpreter
