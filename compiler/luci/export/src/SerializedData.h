@@ -30,6 +30,7 @@ struct OpCode
 {
   circle::BuiltinOperator opcode;
   std::string custom_code{""};
+  int32_t version = 1;
 
   bool operator==(const OpCode &rhs) const
   {
@@ -88,7 +89,7 @@ struct SerializedModelData final
    * @param builtin_code
    * @return idx of opcode in table of opcodes (see schema)
    */
-  uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code);
+  uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code, const int32_t op_version);
   uint32_t registerCustomOpcode(const std::string &custom_op);
 };
 
