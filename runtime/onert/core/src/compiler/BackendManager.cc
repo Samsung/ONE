@@ -70,17 +70,30 @@ void BackendManager::loadBackend(const std::string &backend)
   }
 
   // TODO Remove indentation
+  // Workaround If backend have dynamic library with "-boost" suffix naming,
+  //            BackendManager load library with "-boost" suffix instead of library without suffix
+  //            This feature is used for custom backend extension to support additional operations
   {
+    const std::string backend_boost_so = "libbackend_" + backend + "-boost" + SHARED_LIB_EXT;
     const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
-    void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
 
+    void *handle = dlopen(backend_boost_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
     if (handle == nullptr)
     {
-      VERBOSE_F() << "Failed to load backend '" << backend << "' - " << dlerror() << std::endl;
-      return;
-    }
+      handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
 
-    VERBOSE_F() << "Successfully loaded '" << backend << "' - " << backend_so << "\n";
+      if (handle == nullptr)
+      {
+        VERBOSE_F() << "Failed to load backend '" << backend << "' - " << dlerror() << std::endl;
+        return;
+      }
+
+      VERBOSE_F() << "Successfully loaded '" << backend << "' - " << backend_so << "\n";
+    }
+    else
+    {
+      VERBOSE_F() << "Successfully loaded '" << backend << "' - " << backend_boost_so << "\n";
+    }
 
     {
       // load object creator function
