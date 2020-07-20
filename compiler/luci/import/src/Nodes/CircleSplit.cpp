@@ -67,6 +67,7 @@ void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
   auto tensors_ptr = context->reader()->tensors_ptr();
   assert(tensors_ptr != nullptr);
 
@@ -90,6 +91,7 @@ void CircleSplitGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
     // Let's use name of output 0 as Split name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
+    node->op_version(opcodes[op.opcode_index].get()->version);
 
     // NOTE We don't set quantization for Split itself but to virtual outputs
   }
