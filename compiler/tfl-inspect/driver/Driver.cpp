@@ -57,9 +57,9 @@ int entry(int argc, char **argv)
   std::vector<std::unique_ptr<tflinspect::DumpInterface>> dumps;
 
   if (arser["--operators"])
-    dumps.push_back(std::move(stdex::make_unique<tflinspect::DumpOperators>()));
+    dumps.push_back(stdex::make_unique<tflinspect::DumpOperators>());
   if (arser["--conv2d_weight"])
-    dumps.push_back(std::move(stdex::make_unique<tflinspect::DumpConv2DWeight>()));
+    dumps.push_back(stdex::make_unique<tflinspect::DumpConv2DWeight>());
 
   std::string model_file = arser.get<std::string>("tflite");
 
