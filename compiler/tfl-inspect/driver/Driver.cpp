@@ -35,9 +35,9 @@ int entry(int argc, char **argv)
       .nargs(0)
       .help("Dump Conv2D series weight operators in tflite file");
   arser.add_argument("--op_version")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Dump tflite operator version");
+      .nargs(1)
+      .type(arser::DataType::STR)
+      .help("Dump tflite operator version");
   arser.add_argument("tflite").type(arser::DataType::STR).help("TFLite file to inspect");
 
   try
