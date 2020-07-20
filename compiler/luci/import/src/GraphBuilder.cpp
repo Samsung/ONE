@@ -30,6 +30,7 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
   auto tensors_ptr = context->reader()->tensors_ptr();
   assert(tensors_ptr != nullptr);
 
@@ -62,6 +63,9 @@ void GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext *conte
       node->shape_status(ShapeStatus::NOSHAPE);
     else
       node->shape_status(ShapeStatus::VALID);
+
+    // mark operator version
+    node->op_version(opcodes[op.opcode_index].get()->version);
   }
 
   // Register node's only output.
