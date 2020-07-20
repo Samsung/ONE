@@ -129,7 +129,7 @@ bool is_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
   return node->dim(axis).value() == depth;
 }
 
-/// @return true  When node has shape of '1 x .. x depth x 1'
+/// @return true if node shape consists of ones, except the one before the last dim: 1,...1,depth,1
 bool is_quasi_1D_with_dummy_dim(luci::CircleConst *node, uint32_t depth)
 {
   auto rank = node->rank();
@@ -193,7 +193,7 @@ bool is_instance_mean_v0(luci::CircleMean *mean)
 bool is_instance_mean_v1(luci::CircleMean *mean)
 {
   //
-  // CHECK 1) input is rank 5
+  // CHECK 1) input is rank 5 (NHWCX)
   //
   auto input = mean->input();
   if (not loco::shape_known(input))
@@ -203,7 +203,7 @@ bool is_instance_mean_v1(luci::CircleMean *mean)
     return false;
 
   //
-  // CHECK 2) 'reduction indices' is CircleConst of value [1,2,4], that is HW of NHWC
+  // CHECK 2) 'reduction indices' is CircleConst of value [1,2,4], that is HWX of NHWCX input shape
   //
   // TODO Support equivalent case, like [-3,-2]
   // TODO Support non-Const case?
