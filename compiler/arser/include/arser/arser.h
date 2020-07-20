@@ -40,6 +40,7 @@ template <typename T> T lexical_cast(const std::string &str)
   ss >> data;
   return data;
 }
+
 template <> bool lexical_cast(const std::string &str)
 {
   bool data = true;
