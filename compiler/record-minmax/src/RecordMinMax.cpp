@@ -166,8 +166,8 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     }
     else if (mode == "moving_average")
     {
-      min = getMovingAverage(minmax.min_vector, 0.9);
-      max = getMovingAverage(minmax.max_vector, 0.9);
+      min = getMovingAverage(minmax.min_vector, 0.9, 16, true);
+      max = getMovingAverage(minmax.max_vector, 0.9, 16, false);
     }
     assert(mode == "percentile" || mode == "moving_average");
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
