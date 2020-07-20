@@ -26,15 +26,22 @@ namespace
 
 using namespace testing;
 
-TEST(SpaceToDepthTest, Float)
+template <typename T> class SpaceToDepthTest : public ::testing::Test
 {
-  std::vector<float> input_data{1.4, 2.3, 3.2, 4.1, 5.4, 6.3, 7.2, 8.1};
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(SpaceToDepthTest, DataTypes);
+
+TYPED_TEST(SpaceToDepthTest, SimpleCase)
+{
+  std::vector<TypeParam> input_data{1, 5, 6, 7, 2, 3, 4, 8};
   Shape input_shape{1, 2, 2, 2};
-  Tensor input_tensor{DataType::FLOAT32, input_shape, {{}, {}}, ""};
-  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(float));
-  std::vector<float> output_data{1.4, 2.3, 3.2, 4.1, 5.4, 6.3, 7.2, 8.1};
+  Tensor input_tensor{getElementType<TypeParam>(), input_shape, {{}, {}}, ""};
+  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(TypeParam));
+  std::vector<TypeParam> output_data{1, 5, 6, 7, 2, 3, 4, 8};
   std::vector<int32_t> output_shape{1, 1, 1, 8};
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
 
   SpaceToDepthParams params{};
   params.block_size = 2;
@@ -43,33 +50,8 @@ TEST(SpaceToDepthTest, Float)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(output_data)));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-}
-
-TEST(SpaceToDepthTest, Uint8)
-{
-  std::pair<float, int32_t> quant_params = quantizationParams<uint8_t>(-12.7f, 12.8f);
-  std::vector<uint8_t> input_data = quantize<uint8_t>({1.4, 2.3, 3.2, 4.1, 5.4, 6.3, 7.2, 8.1},
-                                                      quant_params.first, quant_params.second);
-  Shape input_shape{1, 2, 2, 2};
-  Tensor input_tensor{DataType::U8, input_shape, {{quant_params.first}, {quant_params.second}}, ""};
-  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(uint8_t));
-  std::vector<float> output_data{1.4, 2.3, 3.2, 4.1, 5.4, 6.3, 7.2, 8.1};
-  std::vector<int32_t> output_shape{1, 1, 1, 8};
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_params.first, quant_params.second);
-
-  SpaceToDepthParams params{};
-  params.block_size = 2;
-
-  SpaceToDepth kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  kernel.execute();
-
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),
+              ::testing::ElementsAreArray(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
