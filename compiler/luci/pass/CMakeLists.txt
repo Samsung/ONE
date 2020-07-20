@@ -1,6 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-#file(GLOB_RECURSE TESTS "src/*.test.cpp")
-#list(REMOVE_ITEM SOURCES ${TESTS})
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(luci_pass SHARED ${SOURCES})
 target_include_directories(luci_pass PRIVATE src)
@@ -16,14 +16,14 @@ target_link_libraries(luci_pass PRIVATE nncc_common)
 target_link_libraries(luci_pass PRIVATE oops)
 install(TARGETS luci_pass DESTINATION lib)
 
-# TODO enable for tests
-#if(NOT ENABLE_TEST)
-#  return()
-#endif(NOT ENABLE_TEST)
-#
-#nnas_find_package(GTest REQUIRED)
-#
-#GTest_AddTest(luci_pass_test ${TESTS})
-#target_include_directories(luci_pass_test PRIVATE src)
-#target_link_libraries(luci_pass_test luci_pass)
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_pass_test ${TESTS})
+target_include_directories(luci_pass_test PRIVATE src)
+target_link_libraries(luci_pass_test luci_pass)
+target_link_libraries(luci_pass_test luci_lang)
 #target_link_libraries(luci_pass_test oops)
