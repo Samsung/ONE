@@ -35,8 +35,7 @@ Squeeze::Squeeze(const Tensor *input, Tensor *output, const SqueezeParams &param
 void Squeeze::configure()
 {
   int input_num_dims = _input->shape().num_dims();
-  int num_squeeze_dims = params().squeeze_dims_count;
-  const int *squeeze_dims = params().squeeze_dims;
+  int num_squeeze_dims = params().squeeze_dims.size();
   assert(input_num_dims <= 8);
   bool should_squeeze[8] = {false};
   int num_squeezed_dims = 0;
@@ -55,7 +54,8 @@ void Squeeze::configure()
   {
     for (int idx = 0; idx < num_squeeze_dims; ++idx)
     {
-      int current = squeeze_dims[idx] < 0 ? squeeze_dims[idx] + input_num_dims : squeeze_dims[idx];
+      int current = params().squeeze_dims[idx] < 0 ? params().squeeze_dims[idx] + input_num_dims
+                                                   : params().squeeze_dims[idx];
       assert(current >= 0 && current < input_num_dims && _input->shape().dim(current) == 1);
       if (!should_squeeze[current])
         ++num_squeezed_dims;

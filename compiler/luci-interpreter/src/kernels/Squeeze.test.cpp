@@ -28,30 +28,24 @@ using namespace testing;
 
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<float> input_data, std::initializer_list<float> output_data,
-           DataType element_type, int8_t squeeze_dims_count, std::vector<int32_t> squeeze_dims)
+           std::initializer_list<T> input_data, std::initializer_list<T> output_data,
+           DataType element_type, std::vector<int32_t> squeeze_dims)
 {
   Tensor input_tensor{element_type, input_shape, {}, ""};
-  std::vector<T> update_input_data;
-  for (auto &elem : input_data)
-  {
-    update_input_data.push_back(static_cast<T>(elem));
-  }
-  input_tensor.writeData(update_input_data.data(), update_input_data.size() * sizeof(T));
+  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
   Tensor output_tensor = makeOutputTensor(element_type);
 
   SqueezeParams params{};
-  params.squeeze_dims_count = squeeze_dims_count;
   for (size_t i = 0; i < squeeze_dims.size(); i++)
   {
-    params.squeeze_dims[i] = squeeze_dims.at(i);
+    params.squeeze_dims.push_back(squeeze_dims.at(i));
   }
 
   Squeeze kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
@@ -66,11 +60,11 @@ TYPED_TEST(SqueezeTest, TotalTest)
 {
   Check<TypeParam>(
       /*input_shape=*/{1, 24, 1}, /*output_shape=*/{24},
-      /*input_data=*/{1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,  9.0,  10.0, 11.0, 12.0,
-                      13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0},
-      /*output_data=*/{1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,  9.0,  10.0, 11.0, 12.0,
-                       13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0},
-      getElementType<TypeParam>(), 2, {-1, 0});
+      /*input_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
+                      13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+      /*output_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
+                       13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+      getElementType<TypeParam>(), {-1, 0});
 }
 
 } // namespace
