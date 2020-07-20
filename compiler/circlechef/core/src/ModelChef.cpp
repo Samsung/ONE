@@ -163,17 +163,23 @@ OpChefRegistry &op_chef_registry(void)
   return registry;
 }
 
-/// @brief This will prepare a set of unique builtin codes in the mode recipe
-std::set<circle::BuiltinOperator>
-gather_builtincode_set(const ::circlechef::ModelRecipe &model_recipe)
+/// @brief This will prepare a map of unique builtin codes in the model recipe
+std::map<circle::BuiltinOperator, int32_t>
+gather_builtincode_map(const ::circlechef::ModelRecipe &model_recipe)
 {
-  std::set<circle::BuiltinOperator> builtin_set;
+  // Key and value of the map are BuiltinOperator and operator version
+  std::map<circle::BuiltinOperator, int32_t> builtin_map;
+
   for (const auto &operation : model_recipe.operation())
   {
     auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
     if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
       continue;
-    builtin_set.insert(op_chef->code());
+
+    // Various operation version is unified as the highest version among them
+    if (builtin_map.find(op_chef->code()) == builtin_map.end() ||
+        builtin_map[op_chef->code()] < operation.version())
+      builtin_map[op_chef->code()] = operation.version();
   }
 
   // Add ops used in Graphs(subgraphs)
@@ -185,11 +191,15 @@ gather_builtincode_set(const ::circlechef::ModelRecipe &model_recipe)
       auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
       if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
         continue;
-      builtin_set.insert(op_chef->code());
+
+      // Various operation version is unified as the highest version among them
+      if (builtin_map.find(op_chef->code()) == builtin_map.end() ||
+          builtin_map[op_chef->code()] < operation.version())
+        builtin_map[op_chef->code()] = operation.version();
     }
   }
 
-  return builtin_set;
+  return builtin_map;
 }
 
 /// @brief This will prepare a set of unique custom codes in the mode recipe
@@ -229,7 +239,7 @@ struct CookParams
   std::vector<flatbuffers::Offset<::circle::OperatorCode>> &code_vec;
   std::vector<flatbuffers::Offset<::circle::SubGraph>> &subgraph_vec;
   std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder;
-  std::set<circle::BuiltinOperator> &builtin_code_set;
+  std::map<circle::BuiltinOperator, int32_t> &builtin_code_map;
   std::string noname;
 };
 
@@ -241,7 +251,7 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
   std::vector<flatbuffers::Offset<::circle::OperatorCode>> &code_vec = cp.code_vec;
   std::vector<flatbuffers::Offset<::circle::SubGraph>> &subgraph_vec = cp.subgraph_vec;
   std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder = cp.flatbuffer_builder;
-  std::set<circle::BuiltinOperator> &builtin_code_set = cp.builtin_code_set;
+  std::map<circle::BuiltinOperator, int32_t> &builtin_code_map = cp.builtin_code_map;
 
   // Operand-related
   std::vector<flatbuffers::Offset<::circle::Tensor>> tensor_vec;
@@ -454,11 +464,11 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
     // Create Operator
     circle::OperatorBuilder op_builder{*flatbuffer_builder};
 
-    // Get operator code index from builtin_code_set with assumption, order of
-    // builtin_code_set is same as that of code_vec
-    auto op_it = builtin_code_set.find(op_chef->code());
-    assert(op_it != builtin_code_set.end());
-    uint32_t opcode_index = std::distance(builtin_code_set.begin(), op_it);
+    // Get operator code index from builtin_code_map with assumption, order of
+    // builtin_code_map is same as that of code_vec
+    auto op_it = builtin_code_map.find(op_chef->code());
+    assert(op_it != builtin_code_map.end());
+    uint32_t opcode_index = std::distance(builtin_code_map.begin(), op_it);
 
     op_builder.add_opcode_index(opcode_index);
     op_builder.add_inputs(inputs);
@@ -532,11 +542,13 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   std::vector<flatbuffers::Offset<::circle::SubGraph>> subgraph_vec;
 
   // Create OperatorCode with Builtin Operator
-  std::set<circle::BuiltinOperator> builtin_code_set = gather_builtincode_set(model_recipe);
-  for (auto opcode : builtin_code_set)
+  std::map<circle::BuiltinOperator, int32_t> builtin_code_map =
+      gather_builtincode_map(model_recipe);
+  for (auto const &opcode : builtin_code_map)
   {
     circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    code_builder.add_builtin_code(opcode);
+    code_builder.add_builtin_code(opcode.first);
+    code_builder.add_version(opcode.second);
     auto code = code_builder.Finish();
     // Update OperatorCode vector
     code_vec.emplace_back(code);
@@ -545,7 +557,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   // Create OperatorCode with Custom Operator
   std::set<std::string> custom_code_set = gather_customcode_set(model_recipe);
   if (custom_code_set.size())
-    builtin_code_set.insert(circle::BuiltinOperator_CUSTOM);
+    builtin_code_map[circle::BuiltinOperator_CUSTOM] = 1;
 
   for (auto opcode : custom_code_set)
   {
@@ -570,7 +582,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   //
   // Create Main graph
   //
-  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_set, "main"};
+  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_map, "main"};
 
   cook_graph<::circlechef::ModelRecipe>(model_recipe, cp);
 
@@ -585,7 +597,7 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
     stringStream << "sub_" << (g + 1);
 
     CookParams cp{buffer_vec,         code_vec,         subgraph_vec,
-                  flatbuffer_builder, builtin_code_set, stringStream.str()};
+                  flatbuffer_builder, builtin_code_map, stringStream.str()};
 
     cook_graph<::circlechef::Graph>(graph, cp);
   }
