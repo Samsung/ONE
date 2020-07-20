@@ -172,7 +172,12 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
             os << std::endl << strqindent;
         }
         if (q_params->zero_point())
+        {
           os << "zeropt(" << q_params->zero_point() << ") ";
+          if (q_params->zero_point()->size() > 1)
+            os << std::endl << strqindent;
+        }
+        os << "quantized_dimension(" << q_params->quantized_dimension() << ")";
 
         os << std::endl;
       }
