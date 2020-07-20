@@ -279,3 +279,66 @@ TEST(BasicTest, ExitWithFunctionCallWithLamda)
   /* act */ /* assert */
   EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0), "Good bye..");
 }
+
+TEST(BasicTest, DefaultValue)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--delivery")
+      .nargs(3)
+      .type(arser::DataType::STR_VEC)
+      .default_value("pizza", "chicken", "hamburger")
+      .help("Enter three foods that you want to deliver");
+  arser.add_argument("--assistant")
+      .type(arser::DataType::STR)
+      .default_value("Bixby")
+      .help("Enter name of your assistant");
+  arser.add_argument("--sound")
+      .type(arser::DataType::BOOL)
+      .nargs(1)
+      .default_value(true)
+      .help("Sound on/off");
+  arser.add_argument("--number")
+      .type(arser::DataType::INT32_VEC)
+      .nargs(4)
+      .default_value(1, 2, 3, 4)
+      .help("Enter the number that you want to call");
+  arser.add_argument("--time")
+      .type(arser::DataType::INT32_VEC)
+      .nargs(3)
+      .default_value(0, 0, 0)
+      .help("Current time(H/M/S)");
+  arser.add_argument("--name")
+      .type(arser::DataType::STR)
+      .nargs(1)
+      .default_value("no name")
+      .help("Enter your name");
+
+  Prompt prompt("/phone --time 1 52 34 --name arser");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  // 3 strings, no argument
+  std::vector<std::string> delivery = arser.get<std::vector<std::string>>("--delivery");
+  EXPECT_EQ("pizza", delivery.at(0));
+  EXPECT_EQ("chicken", delivery.at(1));
+  EXPECT_EQ("hamburger", delivery.at(2));
+  // 1 string, no argument
+  EXPECT_EQ("Bixby", arser.get<std::string>("--assistant"));
+  // 1 bool, no argument
+  EXPECT_EQ(true, arser.get<bool>("--sound"));
+  // 4 integer, no argument
+  std::vector<int> number = arser.get<std::vector<int>>("--number");
+  EXPECT_EQ(1, number.at(0));
+  EXPECT_EQ(2, number.at(1));
+  EXPECT_EQ(3, number.at(2));
+  EXPECT_EQ(4, number.at(3));
+  // 3 integer, 3 arguments
+  std::vector<int> time = arser.get<std::vector<int>>("--time");
+  EXPECT_EQ(1, time.at(0));
+  EXPECT_EQ(52, time.at(1));
+  EXPECT_EQ(34, time.at(2));
+  // 1 string, 1 argument
+  EXPECT_EQ("arser", arser.get<std::string>("--name"));
+}
