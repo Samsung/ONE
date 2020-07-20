@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_CUSTOM_KERNEL_BUILDER_H__
 
 #include "backend/IPortableTensor.h"
-#include "misc/tensor/Shape.h"
+#include "ir/Shape.h"
 #include "ir/DataType.h"
 
 #include <vector>
@@ -41,11 +41,9 @@ namespace backend
 namespace custom
 {
 
-using Shape = nnfw::misc::tensor::Shape;
-
 struct TypeInfo
 {
-  Shape shape;
+  ir::Shape shape;
   ir::DataType dtype;
 };
 

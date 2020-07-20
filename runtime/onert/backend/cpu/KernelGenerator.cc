@@ -603,17 +603,6 @@ void KernelGenerator::visit(const ir::operation::Einsum &node)
 
 void KernelGenerator::visit(const ir::operation::Custom &node)
 {
-  auto get_type_info = [](const ir::Operand &operand) -> custom::TypeInfo {
-    const auto &frontend_shape = operand.shape();
-    custom::Shape shape(frontend_shape.rank());
-    for (auto d = 0; d < frontend_shape.rank(); ++d)
-    {
-      shape.dim(d) = frontend_shape.dim(d);
-    }
-
-    return {shape, operand.typeInfo().type()};
-  };
-
   auto fill_op_info = [&](const ir::OperandIndexSequence &opSeq,
                           std::vector<custom::TypeInfo> &types,
                           std::vector<std::shared_ptr<IPortableTensor>> &allocs) {
@@ -621,7 +610,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
     {
       const auto &operand = _ctx.at(idx);
       // TODO make sure using `_current_op_seq_layout` is correct for custom operations
-      types.emplace_back(get_type_info(operand));
+      types.emplace_back(custom::TypeInfo{operand.shape(), operand.typeInfo().type()});
       auto in_alloc = _tensor_builder->portableAt(idx);
       allocs.emplace_back(in_alloc);
     }
