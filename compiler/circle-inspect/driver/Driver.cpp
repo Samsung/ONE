@@ -57,9 +57,9 @@ int entry(int argc, char **argv)
   std::vector<std::unique_ptr<circleinspect::DumpInterface>> dumps;
 
   if (arser["--operators"])
-    dumps.push_back(std::move(std::make_unique<circleinspect::DumpOperators>()));
+    dumps.push_back(std::make_unique<circleinspect::DumpOperators>());
   if (arser["--conv2d_weight"])
-    dumps.push_back(std::move(std::make_unique<circleinspect::DumpConv2DWeight>()));
+    dumps.push_back(std::make_unique<circleinspect::DumpConv2DWeight>());
 
   std::string model_file = arser.get<std::string>("circle");
 
