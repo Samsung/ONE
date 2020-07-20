@@ -16,6 +16,7 @@
 
 #include "Dump.h"
 
+#include <arser/arser.h>
 #include <foder/FileLoader.h>
 #include <stdex/Memory.h>
 
@@ -25,52 +26,42 @@
 #include <vector>
 #include <string>
 
-using OptionHook = std::function<std::unique_ptr<tflinspect::DumpInterface>(void)>;
-
 int entry(int argc, char **argv)
 {
-  if (argc < 3)
+  arser::Arser arser{"tfl-inspect allows users to retrieve various information from a TensorFlow "
+                     "Lite model files"};
+  arser.add_argument("--operators").nargs(0).help("Dump operators in tflite file");
+  arser.add_argument("--conv2d_weight")
+      .nargs(0)
+      .help("Dump Conv2D series weight operators in tflite file");
+  arser.add_argument("tflite").type(arser::DataType::STR).help("TFLite file to inspect");
+
+  try
   {
-    std::cerr << "ERROR: Failed to parse arguments" << std::endl;
-    std::cerr << std::endl;
-    std::cerr << "USAGE: " << argv[0] << " [options] [tflite]" << std::endl;
-    std::cerr << "   --operators : dump operators in tflite file" << std::endl;
-    std::cerr << "   --conv2d_weight : dump Conv2D series weight operators in tflite file"
-              << std::endl;
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cout << err.what() << std::endl;
+    std::cout << arser;
     return 255;
   }
 
-  // Simple argument parser (based on map)
-  std::map<std::string, OptionHook> argparse;
-
-  argparse["--operators"] = [&](void) {
-    // dump all operators
-    return std::move(stdex::make_unique<tflinspect::DumpOperators>());
-  };
-
-  argparse["--conv2d_weight"] = [&](void) {
-    // dump Conv2D, DepthwiseConv2D weight operators
-    return std::move(stdex::make_unique<tflinspect::DumpConv2DWeight>());
-  };
+  if (!arser["--operators"] && !arser["--conv2d_weight"])
+  {
+    std::cout << "At least one option must be specified" << std::endl;
+    std::cout << arser;
+    return 255;
+  }
 
   std::vector<std::unique_ptr<tflinspect::DumpInterface>> dumps;
 
-  for (int n = 1; n < argc - 1; ++n)
-  {
-    const std::string tag{argv[n]};
+  if (arser["--operators"])
+    dumps.push_back(std::move(stdex::make_unique<tflinspect::DumpOperators>()));
+  if (arser["--conv2d_weight"])
+    dumps.push_back(std::move(stdex::make_unique<tflinspect::DumpConv2DWeight>()));
 
-    auto it = argparse.find(tag);
-    if (it == argparse.end())
-    {
-      std::cerr << "Option '" << tag << "' is not supported" << std::endl;
-      return 255;
-    }
-    auto dump = it->second();
-    assert(dump != nullptr);
-    dumps.push_back(std::move(dump));
-  }
-
-  std::string model_file = argv[argc - 1];
+  std::string model_file = arser.get<std::string>("tflite");
 
   // Load TF lite model from a tflite file
   foder::FileLoader fileLoader{model_file};
@@ -78,7 +69,7 @@ int entry(int argc, char **argv)
   const tflite::Model *tfliteModel = tflite::GetModel(modelData.data());
   if (tfliteModel == nullptr)
   {
-    std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load tflite '" << model_file << "'" << std::endl;
     return 255;
   }
 
