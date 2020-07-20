@@ -70,6 +70,9 @@ void BackendManager::loadBackend(const std::string &backend)
   }
 
   // TODO Remove indentation
+  // Workaround If backend have dynamic library with "-boost" suffix naming,
+  //            BackendManager load library with "-boost" suffix instead of library without suffix
+  //            This feature is used for custom backend extension to support additional operations
   {
     const std::string backend_boost_so = "libbackend_" + backend + "-boost" + SHARED_LIB_EXT;
     const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
