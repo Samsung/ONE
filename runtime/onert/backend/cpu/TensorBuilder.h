@@ -56,8 +56,7 @@ public:
   bool isRegistered(const ir::OperandIndex &) const override;
 
   void prepare(void) override;
-  void allocateAtCompileTime() override;
-  void allocateAtRunTime() override;
+  void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
   /**

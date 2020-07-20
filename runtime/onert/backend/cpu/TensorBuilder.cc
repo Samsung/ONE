@@ -83,14 +83,10 @@ void TensorBuilder::prepare(void)
   _static_tensor_mgr->allocateNonconsts();
 }
 
-void TensorBuilder::allocateAtCompileTime()
+void TensorBuilder::allocate()
 {
-  // TODO Write code here
-}
-
-void TensorBuilder::allocateAtRunTime()
-{
-  // TODO Write code here
+  // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
+  //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
