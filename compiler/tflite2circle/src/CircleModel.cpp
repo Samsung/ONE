@@ -90,6 +90,7 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
         flatbuffers::Offset<flatbuffers::Vector<float>> max;
         flatbuffers::Offset<flatbuffers::Vector<float>> scale;
         flatbuffers::Offset<flatbuffers::Vector<int64_t>> zero_point;
+        int32_t quantized_dimension = it->quantization()->quantized_dimension();
 
         if (it->quantization()->min() && it->quantization()->max())
         {
@@ -111,7 +112,9 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
           zero_point = fb->CreateVector(tfzerop);
         }
 
-        quantization = circle::CreateQuantizationParameters(*fb, min, max, scale, zero_point);
+        quantization = circle::CreateQuantizationParameters(*fb, min, max, scale, zero_point,
+                                                            circle::QuantizationDetails_NONE, 0,
+                                                            quantized_dimension);
       }
       // is_variable
       bool is_variable = it->is_variable();
