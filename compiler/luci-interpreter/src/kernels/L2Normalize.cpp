@@ -28,33 +28,33 @@ namespace kernels
 {
 
 L2Normalize::L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params)
-    : KernelWithParams<L2NormParams>(params), _input(input), _output(output)
+    : KernelWithParams<L2NormParams>({input}, {output}, params)
 {
 }
 
 void L2Normalize::configure()
 {
-  assert(_input->shape().num_dims() <= 4);
-  assert(_output->element_type() == DataType::FLOAT32 || _output->element_type() == DataType::U8);
-  assert(_input->element_type() == _output->element_type());
-  if (_output->element_type() == DataType::U8)
+  assert(input()->shape().num_dims() <= 4);
+  assert(output()->element_type() == DataType::FLOAT32 || output()->element_type() == DataType::U8);
+  assert(input()->element_type() == output()->element_type());
+  if (output()->element_type() == DataType::U8)
   {
-    assert(_output->scale() == (1. / 128.));
-    assert(_output->zero_point() == 128);
+    assert(output()->scale() == (1. / 128.));
+    assert(output()->zero_point() == 128);
   }
   assert(params().activation == Activation::NONE);
-  _output->resize(_input->shape());
+  output()->resize(input()->shape());
 }
 
 void L2Normalize::execute() const
 {
-  switch (_output->element_type())
+  switch (output()->element_type())
   {
     case DataType::FLOAT32:
       eval<float>(0);
       break;
     case DataType::U8:
-      eval<uint8_t>(_input->zero_point());
+      eval<uint8_t>(input()->zero_point());
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -65,9 +65,9 @@ template <typename T> void L2Normalize::eval(int32_t zero_point) const
 {
   tflite::L2NormalizationParams op_params{};
   op_params.input_zero_point = zero_point;
-  tflite::optimized_ops::L2Normalization(op_params, getTensorShape(_input),
-                                         getTensorData<T>(_input), getTensorShape(_output),
-                                         getTensorData<T>(_output));
+  tflite::optimized_ops::L2Normalization(op_params, getTensorShape(input()),
+                                         getTensorData<T>(input()), getTensorShape(output()),
+                                         getTensorData<T>(output()));
 }
 
 } // namespace kernels

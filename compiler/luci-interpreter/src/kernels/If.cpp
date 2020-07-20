@@ -23,57 +23,64 @@ namespace luci_interpreter
 namespace kernels
 {
 
-If::If(const Tensor *cond, std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
+static std::vector<const Tensor *> joinInputs(const Tensor *cond,
+                                              const std::vector<const Tensor *> &inputs)
+{
+  std::vector<const Tensor *> result{cond};
+  result.insert(result.cend(), inputs.cbegin(), inputs.cend());
+  return result;
+}
+
+If::If(const Tensor *cond, const std::vector<const Tensor *> &inputs, std::vector<Tensor *> outputs,
        RuntimeGraph *then_graph, RuntimeGraph *else_graph)
-    : _cond(cond), _inputs(std::move(inputs)), _outputs(std::move(outputs)),
-      _then_graph(then_graph), _else_graph(else_graph)
+    : Kernel(joinInputs(cond, inputs), std::move(outputs)), _then_graph(then_graph),
+      _else_graph(else_graph)
 {
 }
 
 void If::configure()
 {
-  assert(_cond->element_type() == DataType::BOOL);
-  assert(_cond->shape().num_elements() == 1);
+  assert(cond()->element_type() == DataType::BOOL);
+  assert(cond()->shape().num_elements() == 1);
 
   for (RuntimeGraph *graph : {_then_graph, _else_graph})
   {
     (void)graph;
-    assert(graph->getInputTensors().size() == _inputs.size());
-    assert(graph->getOutputTensors().size() == _outputs.size());
+    assert(graph->getInputTensors().size() == getInputTensors().size() - 1);
+    assert(graph->getOutputTensors().size() == getOutputTensors().size());
   }
 }
 
 void If::execute() const
 {
-  const bool cond_value = _cond->data<bool>()[0];
+  const bool cond_value = cond()->data<bool>()[0];
 
   RuntimeGraph *active_graph = cond_value ? _then_graph : _else_graph;
   const auto &graph_inputs = active_graph->getInputTensors();
   const auto &graph_outputs = active_graph->getOutputTensors();
 
   // Copy kernel inputs to active graph inputs.
-  for (size_t i = 0; i < _inputs.size(); ++i)
+  for (size_t i = 0; i < getInputTensors().size() - 1; ++i)
   {
-    assert(graph_inputs[i]->element_type() == _inputs[i]->element_type());
-    graph_inputs[i]->resize(_inputs[i]->shape());
+    assert(graph_inputs[i]->element_type() == input(i)->element_type());
+    graph_inputs[i]->resize(input(i)->shape());
 
-    const int32_t num_elements = _inputs[i]->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(_inputs[i]->element_type());
-    std::memcpy(graph_inputs[i]->data<void>(), _inputs[i]->data<void>(),
-                num_elements * element_size);
+    const int32_t num_elements = input(i)->shape().num_elements();
+    const std::size_t element_size = getDataTypeSize(input(i)->element_type());
+    std::memcpy(graph_inputs[i]->data<void>(), input(i)->data<void>(), num_elements * element_size);
   }
 
   active_graph->execute();
 
   // Copy graph outputs to kernel outputs.
-  for (size_t i = 0; i < _outputs.size(); ++i)
+  for (size_t i = 0; i < getOutputTensors().size(); ++i)
   {
-    assert(graph_outputs[i]->element_type() == _outputs[i]->element_type());
-    _outputs[i]->resize(graph_outputs[i]->shape());
+    assert(graph_outputs[i]->element_type() == output(i)->element_type());
+    output(i)->resize(graph_outputs[i]->shape());
 
-    const int32_t num_elements = _outputs[i]->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(_outputs[i]->element_type());
-    std::memcpy(_outputs[i]->data<void>(), graph_outputs[i]->data<void>(),
+    const int32_t num_elements = output(i)->shape().num_elements();
+    const std::size_t element_size = getDataTypeSize(output(i)->element_type());
+    std::memcpy(output(i)->data<void>(), graph_outputs[i]->data<void>(),
                 num_elements * element_size);
   }
 }

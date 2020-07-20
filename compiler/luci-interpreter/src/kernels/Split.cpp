@@ -26,27 +26,27 @@ namespace kernels
 {
 
 Split::Split(const Tensor *axis, const Tensor *input, std::vector<Tensor *> outputs)
-    : _axis(axis), _input(input), _outputs(std::move(outputs))
+    : Kernel({axis, input}, std::move(outputs))
 {
 }
 
 void Split::configure()
 {
-  assert(_axis->shape().num_elements() == 1);
-  _axis_value = getTensorData<int32_t>(_axis)[0];
+  assert(axis()->shape().num_elements() == 1);
+  _axis_value = getTensorData<int32_t>(axis())[0];
   if (_axis_value < 0)
-    _axis_value += _input->shape().num_dims();
-  assert(_axis_value >= 0 && _axis_value < _input->shape().num_dims());
+    _axis_value += input()->shape().num_dims();
+  assert(_axis_value >= 0 && _axis_value < input()->shape().num_dims());
 
-  const int32_t input_size = _input->shape().dim(_axis_value);
+  const int32_t input_size = input()->shape().dim(_axis_value);
   assert(input_size % _outputs.size() == 0);
   const int32_t slice_size = input_size / _outputs.size();
 
-  Shape output_shape = _input->shape();
+  Shape output_shape = input()->shape();
   output_shape.dim(_axis_value) = slice_size;
-  for (Tensor *_output : _outputs)
+  for (Tensor *output : _outputs)
   {
-    _output->resize(output_shape);
+    output->resize(output_shape);
   }
 }
 
@@ -56,14 +56,14 @@ void Split::execute() const
   params.num_split = _outputs.size();
   params.axis = _axis_value;
 
-#define TF_LITE_SPLIT(scalar)                                                                   \
-  {                                                                                             \
-    VectorOfTensors<scalar, false> all_outputs(_outputs);                                       \
-    tflite::optimized_ops::Split(params, getTensorShape(_input), getTensorData<scalar>(_input), \
-                                 all_outputs.shapes(), all_outputs.data());                     \
+#define TF_LITE_SPLIT(scalar)                                                                     \
+  {                                                                                               \
+    VectorOfTensors<scalar, false> all_outputs(_outputs);                                         \
+    tflite::optimized_ops::Split(params, getTensorShape(input()), getTensorData<scalar>(input()), \
+                                 all_outputs.shapes(), all_outputs.data());                       \
   }
 
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
       TF_LITE_SPLIT(float);

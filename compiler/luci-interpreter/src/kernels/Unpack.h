@@ -30,17 +30,14 @@ class Unpack : public KernelWithParams<UnpackParams>
 public:
   Unpack(const Tensor *input, std::vector<Tensor *> outputs, const UnpackParams &params);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_outputs}; }
+  const Tensor *input() const { return _inputs[0]; }
+  Tensor *output(int index) const { return _outputs[index]; }
 
   void configure() override;
   void execute() const override;
 
 private:
   template <typename T> void executeImpl() const;
-
-  const Tensor *const _input;
-  const std::vector<Tensor *> _outputs;
 };
 
 } // namespace kernels

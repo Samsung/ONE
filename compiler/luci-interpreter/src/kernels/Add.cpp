@@ -30,19 +30,19 @@ namespace kernels
 {
 
 Add::Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddParams &params)
-    : KernelWithParams<AddParams>(params), _input1(input1), _input2(input2), _output(output)
+    : KernelWithParams<AddParams>({input1, input2}, {output}, params)
 {
 }
 
 void Add::configure()
 {
-  assert(_input1->element_type() == _input2->element_type());
-  _output->resize(calculateShapeForBroadcast(_input1->shape(), _input2->shape()));
+  assert(input1()->element_type() == input2()->element_type());
+  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
 void Add::execute() const
 {
-  switch (_input1->element_type())
+  switch (input1()->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -66,27 +66,27 @@ void Add::evalFloat() const
   params.float_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(_input1), getTensorShape(_input2), &params);
+      getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastAdd4DSlow(
-        params, getTensorShape(_input1), getTensorData<float>(_input1), getTensorShape(_input2),
-        getTensorData<float>(_input2), getTensorShape(_output), getTensorData<float>(_output));
+        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
+        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
-    tflite::reference_ops::Add(params, getTensorShape(_input1), getTensorData<float>(_input1),
-                               getTensorShape(_input2), getTensorData<float>(_input2),
-                               getTensorShape(_output), getTensorData<float>(_output));
+    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<float>(input1()),
+                               getTensorShape(input2()), getTensorData<float>(input2()),
+                               getTensorShape(output()), getTensorData<float>(output()));
   }
 }
 
 void Add::evalQuantized() const
 {
-  const auto input1_scale = static_cast<double>(_input1->scale());
-  const auto input2_scale = static_cast<double>(_input2->scale());
-  const auto output_scale = static_cast<double>(_output->scale());
+  const auto input1_scale = static_cast<double>(input1()->scale());
+  const auto input2_scale = static_cast<double>(input2()->scale());
+  const auto output_scale = static_cast<double>(output()->scale());
 
   const int left_shift = 20;
   const double twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);
@@ -102,37 +102,38 @@ void Add::evalQuantized() const
 
   int32_t activation_min{};
   int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, _output, &activation_min, &activation_max);
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
   tflite::ArithmeticParams params{};
   params.left_shift = left_shift;
   // The kernel expects inputs' zero points to be negated.
-  params.input1_offset = -_input1->zero_point(); // Note the '-'.
+  params.input1_offset = -input1()->zero_point(); // Note the '-'.
   params.input1_multiplier = input1_multiplier;
   params.input1_shift = input1_shift;
-  params.input2_offset = -_input2->zero_point(); // Note the '-'.
+  params.input2_offset = -input2()->zero_point(); // Note the '-'.
   params.input2_multiplier = input2_multiplier;
   params.input2_shift = input2_shift;
-  params.output_offset = _output->zero_point();
+  params.output_offset = output()->zero_point();
   params.output_multiplier = output_multiplier;
   params.output_shift = output_shift;
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(_input1), getTensorShape(_input2), &params);
+      getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastAdd4DSlow(
-        params, getTensorShape(_input1), getTensorData<uint8_t>(_input1), getTensorShape(_input2),
-        getTensorData<uint8_t>(_input2), getTensorShape(_output), getTensorData<uint8_t>(_output));
+        params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
+        getTensorShape(input2()), getTensorData<uint8_t>(input2()), getTensorShape(output()),
+        getTensorData<uint8_t>(output()));
   }
   else
   {
-    tflite::reference_ops::Add(params, getTensorShape(_input1), getTensorData<uint8_t>(_input1),
-                               getTensorShape(_input2), getTensorData<uint8_t>(_input2),
-                               getTensorShape(_output), getTensorData<uint8_t>(_output));
+    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
+                               getTensorShape(input2()), getTensorData<uint8_t>(input2()),
+                               getTensorShape(output()), getTensorData<uint8_t>(output()));
   }
 }
 

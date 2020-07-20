@@ -31,21 +31,20 @@ namespace kernels
 
 StridedSlice::StridedSlice(const Tensor *input, const Tensor *begin, const Tensor *end,
                            const Tensor *strides, Tensor *output, const StridedSliceParams &params)
-    : KernelWithParams<StridedSliceParams>(params), _input(input), _begin(begin), _end(end),
-      _strides(strides), _output(output)
+    : KernelWithParams<StridedSliceParams>({input, begin, end, strides}, {output}, params)
 {
 }
 
 void StridedSlice::configure()
 {
-  assert(_begin->shape().num_dims() == 1);
-  assert(_end->shape().num_dims() == 1);
-  assert(_strides->shape().num_dims() == 1);
-  assert(_input->element_type() == _output->element_type());
-  assert(_begin->element_type() == DataType::S32);
-  assert(_end->element_type() == DataType::S32);
-  assert(_strides->element_type() == DataType::S32);
-  assert(_input->shape().num_dims() <= 4);
+  assert(begin()->shape().num_dims() == 1);
+  assert(end()->shape().num_dims() == 1);
+  assert(strides()->shape().num_dims() == 1);
+  assert(input()->element_type() == output()->element_type());
+  assert(begin()->element_type() == DataType::S32);
+  assert(end()->element_type() == DataType::S32);
+  assert(strides()->element_type() == DataType::S32);
+  assert(input()->shape().num_dims() <= 4);
   if (params().ellipsis_mask != 0)
   {
     throw std::runtime_error("ellipsis_mask is not implemented yet.");
@@ -54,21 +53,21 @@ void StridedSlice::configure()
   {
     throw std::runtime_error("new_axis_mask is not implemented yet.");
   }
-  if (_input->element_type() == DataType::U8)
+  if (input()->element_type() == DataType::U8)
   {
-    assert(_input->scale() == _output->scale());
-    assert(_input->zero_point() == _output->zero_point());
+    assert(input()->scale() == output()->scale());
+    assert(input()->zero_point() == output()->zero_point());
   }
-  tflite::StridedSliceParams op_params;
-  op_params.start_indices_count = _input->shape().num_dims();
-  op_params.stop_indices_count = _input->shape().num_dims();
-  op_params.strides_count = _input->shape().num_dims();
+  tflite::StridedSliceParams op_params{};
+  op_params.start_indices_count = input()->shape().num_dims();
+  op_params.stop_indices_count = input()->shape().num_dims();
+  op_params.strides_count = input()->shape().num_dims();
 
-  for (int i = 0; i < _input->shape().num_dims(); i++)
+  for (int i = 0; i < input()->shape().num_dims(); i++)
   {
-    op_params.start_indices[i] = getTensorData<int32_t>(_begin)[i];
-    op_params.stop_indices[i] = getTensorData<int32_t>(_end)[i];
-    op_params.strides[i] = getTensorData<int32_t>(_strides)[i];
+    op_params.start_indices[i] = getTensorData<int32_t>(begin())[i];
+    op_params.stop_indices[i] = getTensorData<int32_t>(end())[i];
+    op_params.strides[i] = getTensorData<int32_t>(strides())[i];
   }
   op_params.begin_mask = params().begin_mask;
   op_params.ellipsis_mask = 0;
@@ -76,14 +75,14 @@ void StridedSlice::configure()
   op_params.new_axis_mask = 0;
   op_params.shrink_axis_mask = params().shrink_axis_mask;
   std::vector<int32_t> output_shape_vector;
-  for (int i = 0; i < _input->shape().num_dims(); i++)
+  for (int i = 0; i < input()->shape().num_dims(); i++)
   {
-    int idx = _input->shape().num_dims() - i - 1;
-    int32_t stride = getTensorData<int32_t>(_strides)[idx];
+    int idx = input()->shape().num_dims() - i - 1;
+    int32_t stride = getTensorData<int32_t>(strides())[idx];
     assert(stride != 0);
-    int32_t begin = ::tflite::strided_slice::StartForAxis(op_params, getTensorShape(_input), idx);
+    int32_t begin = ::tflite::strided_slice::StartForAxis(op_params, getTensorShape(input()), idx);
     int32_t end =
-        ::tflite::strided_slice::StopForAxis(op_params, getTensorShape(_input), idx, begin);
+        ::tflite::strided_slice::StopForAxis(op_params, getTensorShape(input()), idx, begin);
 
     const bool shrink_axis = params().shrink_axis_mask & (1 << idx);
     if (shrink_axis)
@@ -103,21 +102,21 @@ void StridedSlice::configure()
   {
     output_shape.dim(i) = output_shape_vector[output_shape_vector.size() - i - 1];
   }
-  _output->resize(output_shape);
+  output()->resize(output_shape);
 }
 
 void StridedSlice::execute() const
 {
-  tflite::StridedSliceParams op_params;
-  op_params.start_indices_count = _input->shape().num_dims();
-  op_params.stop_indices_count = _input->shape().num_dims();
-  op_params.strides_count = _input->shape().num_dims();
+  tflite::StridedSliceParams op_params{};
+  op_params.start_indices_count = input()->shape().num_dims();
+  op_params.stop_indices_count = input()->shape().num_dims();
+  op_params.strides_count = input()->shape().num_dims();
 
-  for (int i = 0; i < _input->shape().num_dims(); i++)
+  for (int i = 0; i < input()->shape().num_dims(); i++)
   {
-    op_params.start_indices[i] = getTensorData<int32_t>(_begin)[i];
-    op_params.stop_indices[i] = getTensorData<int32_t>(_end)[i];
-    op_params.strides[i] = getTensorData<int32_t>(_strides)[i];
+    op_params.start_indices[i] = getTensorData<int32_t>(begin())[i];
+    op_params.stop_indices[i] = getTensorData<int32_t>(end())[i];
+    op_params.strides[i] = getTensorData<int32_t>(strides())[i];
   }
   op_params.begin_mask = params().begin_mask;
   op_params.ellipsis_mask = 0;
@@ -125,17 +124,17 @@ void StridedSlice::execute() const
   op_params.new_axis_mask = 0;
   op_params.shrink_axis_mask = params().shrink_axis_mask;
 
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::reference_ops::StridedSlice(op_params, getTensorShape(_input),
-                                          getTensorData<float>(_input), getTensorShape(_output),
-                                          getTensorData<float>(_output));
+      tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
+                                          getTensorData<float>(input()), getTensorShape(output()),
+                                          getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::reference_ops::StridedSlice(op_params, getTensorShape(_input),
-                                          getTensorData<uint8_t>(_input), getTensorShape(_output),
-                                          getTensorData<uint8_t>(_output));
+      tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
+                                          getTensorData<uint8_t>(input()), getTensorShape(output()),
+                                          getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");
