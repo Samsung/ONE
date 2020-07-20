@@ -53,6 +53,7 @@ void CircleCustomGraphBuilder::build(const circle::OperatorT &op,
   }
   node->custom_options(std::vector<uint8_t>{op.custom_options.begin(), op.custom_options.end()});
   node->custom_code(opcode.custom_code);
+  // Operator version of custom is always 1, so do nothing
 
   uint32_t output_count = outputs.size();
 

@@ -67,6 +67,7 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
   const std::vector<int32_t> &inputs = op.inputs;
   const std::vector<int32_t> &outputs = op.outputs;
   const auto &tensors = context->reader()->tensors();
+  const auto &opcodes = context->reader()->opcodes();
 
   std::vector<CircleNode *> input_nodes;
   for (const int32_t input_tensor_index : inputs)
@@ -96,6 +97,7 @@ void CircleWhileGraphBuilder::build(const circle::OperatorT &op, GraphBuilderCon
     // Lets use name of output 0 as While name
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     node->name(tensor_name(output_tensor));
+    node->op_version(opcodes[op.opcode_index].get()->version);
 
     // NOTE We don't set quantization for While itself but to virtual outputs
   }
