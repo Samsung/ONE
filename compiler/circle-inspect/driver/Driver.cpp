@@ -58,11 +58,6 @@ int entry(int argc, char **argv)
     return 255;
   }
 
-  argparse["--op_version"] = [&](void) {
-    // dump circle operator version
-    return std::move(stdex::make_unique<circleinspect::DumpOperatorVersion>());
-  };
-
   std::vector<std::unique_ptr<circleinspect::DumpInterface>> dumps;
 
   if (arser["--operators"])
