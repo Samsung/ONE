@@ -41,6 +41,14 @@ template <typename T> T lexical_cast(const std::string &str)
   return data;
 }
 
+template <> bool lexical_cast(const std::string &str)
+{
+  bool data = true;
+  if (str == "false" || str == "False" || str == "FALSE" || str == "0")
+    data = false;
+  return data;
+}
+
 } // namespace
 
 namespace arser
