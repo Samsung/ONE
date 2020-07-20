@@ -833,6 +833,38 @@ void DynamicShapeInferer::visit(const ir::operation::Softmax &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Softmax::INPUT));
 }
 
+void DynamicShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
+  const auto block_shape_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
+  const auto padding_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
+  auto output_idx{op.getOutputs().at(0)};
+
+  const auto &input = _tensor_registry->getITensor(input_idx);
+  const auto &block_shape = _tensor_registry->getITensor(block_shape_idx);
+  const auto &padding = _tensor_registry->getITensor(padding_idx);
+  auto output = _tensor_registry->getITensor(output_idx);
+
+  if (!(input->is_dynamic() || block_shape->is_dynamic() || padding->is_dynamic() ||
+        output->is_dynamic()))
+  {
+    return;
+  }
+
+  auto input_shape = input->getShape();
+  auto block_shape_shape = block_shape->getShape();
+  auto padding_shape = padding->getShape();
+
+  auto block_shape_data = reinterpret_cast<int32_t *>(block_shape->buffer());
+  auto padding_data = reinterpret_cast<int32_t *>(padding->buffer());
+
+  ir::Shape new_shape = shape_inference::inferSpaceToBatchNDShape(
+      input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
+
+  _dynamic_tensor_manager->applyShape(output_idx, new_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::Split::Input::INPUT)};

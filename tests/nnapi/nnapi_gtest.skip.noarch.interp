@@ -453,6 +453,7 @@ GeneratedTests.softmax_dynamic_nnfw
 GeneratedTests.softmax_quant8_1
 GeneratedTests.softmax_quant8_2
 GeneratedTests.space_to_batch
+GeneratedTests.space_to_batch_dynamic_float_nnfw
 GeneratedTests.space_to_batch_float_1
 GeneratedTests.space_to_batch_float_1_nnfw
 GeneratedTests.space_to_batch_float_2

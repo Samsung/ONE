@@ -94,6 +94,7 @@ public:
   void visit(const ir::operation::Sin &op) override;
   void visit(const ir::operation::Slice &op) override;
   void visit(const ir::operation::Softmax &op) override;
+  void visit(const ir::operation::SpaceToBatchND &op) override;
   void visit(const ir::operation::Split &op) override;
   void visit(const ir::operation::Squeeze &op) override;
   void visit(const ir::operation::StridedSlice &op) override;

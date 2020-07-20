@@ -101,6 +101,10 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
 ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *begins,
                           const int32_t *sizes);
 
+ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
+                                   const ir::Shape &padding_shape, const int32_t *block_shape_data,
+                                   const int32_t *padding_data);
+
 ir::Shape inferSplitShape(const ir::Shape input_shape, int axis_value, int num_splits);
 
 ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Squeeze::Param &param);
