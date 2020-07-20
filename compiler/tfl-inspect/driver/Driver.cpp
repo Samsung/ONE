@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "Model.h"
 #include "Dump.h"
 
+#include <foder/FileLoader.h>
 #include <stdex/Memory.h>
 
 #include <functional>
@@ -73,23 +73,18 @@ int entry(int argc, char **argv)
   std::string model_file = argv[argc - 1];
 
   // Load TF lite model from a tflite file
-  auto model = tflinspect::load_tflite(model_file);
-  if (model == nullptr)
+  foder::FileLoader fileLoader{model_file};
+  std::vector<char> modelData = fileLoader.load();
+  const tflite::Model *tfliteModel = tflite::GetModel(modelData.data());
+  if (tfliteModel == nullptr)
   {
-    std::cerr << "ERROR: Failed to load tflite '" << model_file << "'" << std::endl;
-    return 255;
-  }
-
-  const tflite::Model *tflmodel = model->model();
-  if (tflmodel == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load tflite '" << model_file << "'" << std::endl;
+    std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
     return 255;
   }
 
   for (auto &dump : dumps)
   {
-    dump->run(std::cout, tflmodel);
+    dump->run(std::cout, tfliteModel);
   }
 
   return 0;
