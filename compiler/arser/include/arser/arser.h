@@ -188,7 +188,7 @@ public:
 
   template <typename T> Argument &default_value(const T value)
   {
-    if ((_nargs == 1 && TypeName<T>::Get() == _type) ||
+    if ((_nargs <= 1 && TypeName<T>::Get() == _type) ||
         (_nargs > 1 && TypeName<std::vector<T>>::Get() == _type))
       _values.emplace_back(::to_string(value));
     else
@@ -204,7 +204,7 @@ public:
 
   template <typename T, typename... Ts> Argument &default_value(const T value, const Ts... values)
   {
-    if ((_nargs == 1 && TypeName<T>::Get() == _type) ||
+    if ((_nargs <= 1 && TypeName<T>::Get() == _type) ||
         (_nargs > 1 && TypeName<std::vector<T>>::Get() == _type))
     {
       _values.emplace_back(::to_string(value));
