@@ -30,15 +30,11 @@ class Elu : public Kernel
 public:
   Elu(const Tensor *input, Tensor *output);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input() const { return _inputs[0]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
-
-private:
-  const Tensor *const _input;
-  Tensor *const _output;
 };
 
 } // namespace kernels

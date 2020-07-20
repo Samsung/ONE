@@ -27,11 +27,17 @@ namespace luci_interpreter
 // Base class for all kernels.
 class Kernel
 {
+protected:
+  Kernel(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs)
+      : _inputs(std::move(inputs)), _outputs(std::move(outputs))
+  {
+  }
+
 public:
   virtual ~Kernel() = default;
 
-  virtual std::vector<const Tensor *> getInputTensors() const = 0;
-  virtual std::vector<Tensor *> getOutputTensors() const = 0;
+  std::vector<const Tensor *> getInputTensors() const { return _inputs; }
+  std::vector<Tensor *> getOutputTensors() const { return _outputs; }
 
   // Configures the kernel.
   // This function is currently called once for each kernel during interpreter construction,
@@ -40,14 +46,24 @@ public:
 
   // Executes the kernel.
   virtual void execute() const = 0;
+
+protected:
+  // NOTE Prefer not to use these in derived classes.
+  const std::vector<const Tensor *> _inputs;
+  const std::vector<Tensor *> _outputs;
 };
 
 // Base class for kernels with parameters.
 template <typename Params> class KernelWithParams : public Kernel
 {
-public:
-  explicit KernelWithParams(const Params &params) : _params(params) {}
+protected:
+  KernelWithParams(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
+                   const Params &params)
+      : Kernel(std::move(inputs), std::move(outputs)), _params(params)
+  {
+  }
 
+public:
   const Params &params() const { return _params; }
 
 protected:

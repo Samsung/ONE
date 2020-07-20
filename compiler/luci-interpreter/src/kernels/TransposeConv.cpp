@@ -31,43 +31,42 @@ namespace kernels
 
 TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
                              Tensor *output, const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>(params), _output_shape(output_shape), _filter(filter),
-      _input(input), _output(output)
+    : KernelWithParams<TransposeConvParams>({output_shape, filter, input}, {output}, params)
 {
 }
 
 void TransposeConv::configure()
 {
-  assert(_output_shape->shape().num_dims() == 1);
-  assert(_input->shape().num_dims() == 4);
-  assert(_filter->shape().num_dims() == 4);
-  assert(_input->element_type() == DataType::FLOAT32 || _input->element_type() == DataType::U8);
-  assert(_input->element_type() == _output->element_type());
-  assert(_input->shape().dim(3) == _filter->shape().dim(3));
-  if (_input->element_type() == DataType::U8)
+  assert(output_shape()->shape().num_dims() == 1);
+  assert(input()->shape().num_dims() == 4);
+  assert(filter()->shape().num_dims() == 4);
+  assert(input()->element_type() == DataType::FLOAT32 || input()->element_type() == DataType::U8);
+  assert(input()->element_type() == output()->element_type());
+  assert(input()->shape().dim(3) == filter()->shape().dim(3));
+  if (input()->element_type() == DataType::U8)
   {
     _scratch_tensor =
-        std::make_unique<Tensor>(DataType::S32, _output->shape(), AffineQuantization{}, "");
+        std::make_unique<Tensor>(DataType::S32, output()->shape(), AffineQuantization{}, "");
     double real_multiplier = 0.0;
-    const double input_product_scale = _input->scale() * _filter->scale();
+    const double input_product_scale = input()->scale() * filter()->scale();
     assert(input_product_scale >= 0);
-    real_multiplier = input_product_scale / _output->scale();
+    real_multiplier = input_product_scale / output()->scale();
     int exponent;
     quantizeMultiplier(real_multiplier, &_output_multiplier, &exponent);
     _output_shift = -exponent;
   }
 
-  int dims = _output_shape->shape().dim(0);
-  Shape output_shape(dims);
-  const int32_t *shape_data = getTensorData<int32_t>(_output_shape);
-  for (int i = 0; i < dims; i++)
-    output_shape.dim(i) = shape_data[i];
-  _output->resize(output_shape);
+  const int num_dims = output_shape()->shape().dim(0);
+  Shape out_shape(num_dims);
+  const auto *shape_data = getTensorData<int32_t>(output_shape());
+  for (int i = 0; i < num_dims; i++)
+    out_shape.dim(i) = shape_data[i];
+  output()->resize(out_shape);
 }
 
 void TransposeConv::execute() const
 {
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -82,11 +81,11 @@ void TransposeConv::execute() const
 
 void TransposeConv::evalFloat() const
 {
-  const int width = _output->shape().dim(2);
-  const int height = _output->shape().dim(1);
+  const int width = output()->shape().dim(2);
+  const int height = output()->shape().dim(1);
 
-  const int filter_width = _filter->shape().dim(2);
-  const int filter_height = _filter->shape().dim(1);
+  const int filter_width = filter()->shape().dim(2);
+  const int filter_height = filter()->shape().dim(1);
 
   int unused_output_height, unused_output_width;
   unused_output_width =
@@ -94,7 +93,7 @@ void TransposeConv::evalFloat() const
   unused_output_height =
       computeOutputSize(params().padding, height, filter_height, params().stride_height, 1);
   int32_t offset = 0;
-  tflite::ConvParams op_params;
+  tflite::ConvParams op_params{};
   op_params.padding_type = tflite::PaddingType::kSame;
   op_params.padding_values.height = computePaddingWithOffset(
       params().stride_height, 1, height, filter_height, unused_output_height, &offset);
@@ -106,21 +105,21 @@ void TransposeConv::evalFloat() const
   op_params.stride_width = params().stride_width;
   op_params.output_multiplier = _output_multiplier;
   tflite::reference_ops::TransposeConv(
-      op_params, getTensorShape(_input), getTensorData<float>(_input), getTensorShape(_filter),
-      getTensorData<float>(_filter), getTensorShape(_output), getTensorData<float>(_output),
+      op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+      getTensorData<float>(filter()), getTensorShape(output()), getTensorData<float>(output()),
       tflite::RuntimeShape(), (float *)nullptr);
 }
 
 void TransposeConv::evalQuantized() const
 {
-  int32_t input_offset = -_input->zero_point();
-  int32_t filter_offset = -_filter->zero_point();
-  int32_t output_offset = _filter->zero_point();
-  const int width = _output->shape().dim(2);
-  const int height = _output->shape().dim(1);
+  int32_t input_offset = -input()->zero_point();
+  int32_t filter_offset = -filter()->zero_point();
+  int32_t output_offset = filter()->zero_point();
+  const int width = output()->shape().dim(2);
+  const int height = output()->shape().dim(1);
 
-  const int filter_width = _filter->shape().dim(2);
-  const int filter_height = _filter->shape().dim(1);
+  const int filter_width = filter()->shape().dim(2);
+  const int filter_height = filter()->shape().dim(1);
 
   int unused_output_height, unused_output_width;
   unused_output_width =
@@ -128,7 +127,7 @@ void TransposeConv::evalQuantized() const
   unused_output_height =
       computeOutputSize(params().padding, height, filter_height, params().stride_height, 1);
   int32_t offset = 0;
-  tflite::ConvParams op_params;
+  tflite::ConvParams op_params{};
   op_params.padding_type = tflite::PaddingType::kSame;
   op_params.padding_values.height = computePaddingWithOffset(
       params().stride_height, 1, height, filter_height, unused_output_height, &offset);
@@ -145,8 +144,8 @@ void TransposeConv::evalQuantized() const
   op_params.quantized_activation_max = std::numeric_limits<uint8_t>::max();
 
   tflite::reference_ops::TransposeConv(
-      op_params, getTensorShape(_input), getTensorData<uint8>(_input), getTensorShape(_filter),
-      getTensorData<uint8>(_filter), getTensorShape(_output), getTensorData<uint8>(_output),
+      op_params, getTensorShape(input()), getTensorData<uint8>(input()), getTensorShape(filter()),
+      getTensorData<uint8>(filter()), getTensorShape(output()), getTensorData<uint8>(output()),
       tflite::RuntimeShape(), (uint8 *)nullptr, getTensorData<int32_t>(_scratch_tensor.get()));
 }
 

@@ -29,17 +29,17 @@ namespace kernels
 {
 
 Unpack::Unpack(const Tensor *input, std::vector<Tensor *> outputs, const UnpackParams &params)
-    : KernelWithParams<UnpackParams>(params), _input(input), _outputs(std::move(outputs))
+    : KernelWithParams<UnpackParams>({input}, std::move(outputs), params)
 {
 }
 
 void Unpack::configure()
 {
-  const Shape &input_shape = _input->shape();
+  const Shape &input_shape = input()->shape();
 
   int axis = _params.axis;
   if (axis < 0)
-    axis += _input->shape().num_dims();
+    axis += input()->shape().num_dims();
   assert(axis >= 0 && axis < input_shape.num_dims());
 
   Shape output_shape(input_shape.num_dims() - 1);
@@ -52,7 +52,7 @@ void Unpack::configure()
 
   for (Tensor *output : _outputs)
   {
-    assert(output->element_type() == _input->element_type());
+    assert(output->element_type() == input()->element_type());
     output->resize(output_shape);
   }
 }
@@ -63,13 +63,13 @@ template <typename T> void Unpack::executeImpl() const
   params.axis = _params.axis;
   params.num_split = _outputs.size();
   VectorOfTensors<T, false> all_outputs(_outputs);
-  tflite::reference_ops::Unpack<T>(params, getTensorShape(_input), getTensorData<T>(_input),
+  tflite::reference_ops::Unpack<T>(params, getTensorShape(input()), getTensorData<T>(input()),
                                    **all_outputs.shapes(), all_outputs.data());
 }
 
 void Unpack::execute() const
 {
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
       return executeImpl<float>();

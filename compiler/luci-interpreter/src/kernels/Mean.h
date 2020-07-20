@@ -32,8 +32,9 @@ class Mean : public KernelWithParams<ReducerParams>
 public:
   Mean(const Tensor *input, const Tensor *axes, Tensor *output, const ReducerParams &params);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input, _axes}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input() const { return _inputs[0]; }
+  const Tensor *axes() const { return _inputs[1]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
@@ -43,9 +44,6 @@ private:
   void evalQuantized() const;
 
 private:
-  const Tensor *const _input;
-  const Tensor *const _axes;
-  Tensor *const _output;
   std::unique_ptr<Tensor> _temp_index;
   std::unique_ptr<Tensor> _resolved_axes;
   std::unique_ptr<Tensor> _temp_sum;
