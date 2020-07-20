@@ -427,7 +427,7 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
     stream << arg._name << " ";
     std::string arg_name = arg._name.substr(2);
     std::for_each(arg_name.begin(), arg_name.end(),
-                  [&stream](const char &c) { stream << static_cast<const char>(::toupper(c)); });
+                  [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
     stream << " ";
   }
   // rest of the optional argument
@@ -441,7 +441,7 @@ std::ostream &operator<<(std::ostream &stream, const Arser &parser)
       stream << " ";
       std::string arg_name = arg._name.substr(2);
       std::for_each(arg_name.begin(), arg_name.end(),
-                    [&stream](const char &c) { stream << static_cast<const char>(::toupper(c)); });
+                    [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
     }
     stream << "]"
            << " ";
