@@ -80,10 +80,16 @@ fi
 INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 
+INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1)
+
 # generate tflite file
 python "${ROOT}/bin/tf2tfliteV2.py" --v2 --input_path ${GRAPHDEF_FILE} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
---input_arrays ${INPUT} --output_arrays ${OUTPUT}
+--input_arrays ${INPUT} --output_arrays ${OUTPUT} || \
+python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
+--output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
+--input_arrays ${INPUT} --input_shapes ${INPUT_SHAPES} \
+--output_arrays ${OUTPUT}
 
 # convert .tflite to .circle
 "${ROOT}/bin/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" "${TMPDIR}/${MODEL_NAME}.tmp.circle"
