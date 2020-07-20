@@ -65,8 +65,7 @@ public:
   bool isRegistered(const ir::OperandIndex &) const override;
 
   void prepare(void) override;
-  void allocateAtCompileTime() override;
-  void allocateAtRunTime() override;
+  void allocate() override;
   void postFunctionPrepare() override;
 
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
@@ -227,7 +226,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::prepare(void)
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocateAtCompileTime(void)
+void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
 {
   // Update lifetime sequence to apply subtensor optimization
 
@@ -301,12 +300,6 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocateAtCompileTime(v
   _tensor_mgr->allocateNonconsts();
 
   _tensor_mgr->allocateInternalBufferManager();
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocateAtRunTime(void)
-{
-  // Everything is allocated at compile time
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
