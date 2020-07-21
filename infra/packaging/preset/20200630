@@ -28,7 +28,7 @@ function preset_configure()
   REQUIRED_UNITS+=("record-minmax" "circle-quantizer")
   REQUIRED_UNITS+=("one-cmds")
 
-  NPROC=$(cat /proc/cpuinfo | grep -c processor)
+  NPROC=${NPROC:-$(cat /proc/cpuinfo | grep -c processor)}
 
   # TODO Use "nncc configure" and "nncc build"
   cmake \
