@@ -68,6 +68,7 @@ public:
   void set_dynamic() override { _dynamic = true; }
   ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
+  bool is_constant() const override { return false; }
 
 private:
   ir::OperandInfo _info;
