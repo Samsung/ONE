@@ -200,4 +200,21 @@ verify_file_format()
   echo ${ACTUAL}
 }
 
+op_version()
+{
+  argc_check $# 1
+  file_path_check ${COMPILED_FILE}
+  file_path_check ${INSPECT_PROG_PATH}
+
+  set -o pipefail
+
+  ACTUAL=`init_error_log ; \
+          ${INSPECT_PROG_PATH} --op_version ${COMPILED_FILE} | \
+          awk -F, -v opname="$1" '{ if ($1 == opname) print $2}'`
+
+  check_success_exit_code $? 0
+
+  echo ${ACTUAL}
+}
+
 # TODO define more qullity test function
