@@ -10,6 +10,16 @@ version 2.3.0rc0, recommanded 2.x version as of now, so that 'one-import-tf'
 command can execute properly.
 
 
+Prerequisite
+------------
+
+Please install these required packages before venv preparation.
+
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install python3-pip python3-venv
+
+
 How to run
 ----------
 
@@ -23,11 +33,5 @@ There will be venv folder as of result.
 Trouble shooting
 ----------------
 
-If you have any problems, run below commands to install required packages.
-
-$ sudo apt-get update
-$ sudo apt-get upgrade
-$ sudo apt-get install python3-pip python3-venv
-
-If you still have problems, please click 'New issue' at
+If you have any problems, please click 'New issue' at
 https://github.com/Samsung/ONE/issues page.
