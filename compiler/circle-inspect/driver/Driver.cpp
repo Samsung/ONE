@@ -64,7 +64,7 @@ int entry(int argc, char **argv)
     dumps.push_back(std::make_unique<circleinspect::DumpOperators>());
   if (arser["--conv2d_weight"])
     dumps.push_back(std::make_unique<circleinspect::DumpConv2DWeight>());
-  if (arser["--conv2d_weight"])
+  if (arser["--op_version"])
     dumps.push_back(std::make_unique<circleinspect::DumpOperatorVersion>());
 
   std::string model_file = arser.get<std::string>("circle");
