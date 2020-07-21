@@ -60,35 +60,8 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     }
 
     auto insert_set = operand_li->use_factors() - operand_li->def_factors();
-    auto def_factor = operand_li->def_factors().getOnlyElement();
-
-    auto compatible_backends = [](auto backend1, auto backend2) {
-      // TODO This is a workaround for not inserting Permute between cpu and controlflow.
-      //      To be general, we need another way of checking they are compatible.
-      const auto cf = backend::controlflow::Config::ID;
-      const auto cpu = "cpu";
-      const auto id1 = backend1->config()->id();
-      const auto id2 = backend2->config()->id();
-      // NOTE This is to skip Permute insertion for model inputs(controlflow -> cpu), but not
-      // outputs. This function currently assumes that backend1 is Def and backend2 is Use. However
-      // it is going to be fixed soon.
-      // TODO make both ways work
-      return (id1 == cpu && id2 == cf);
-    };
-
     for (auto factor : insert_set)
     {
-      // Check exceptional cases that Permute ops are not inserted
-      if (factor.layout() == def_factor.layout() &&
-          compatible_backends(factor.backend(), def_factor.backend()))
-      {
-        VERBOSE(PermutationInsertionPass) << "Permutation Insertion is skipped for operand "
-                                          << index << " / as the tensor is compatible with backend "
-                                          << factor.backend()->config()->id() << std::endl;
-        factor_to_index.emplace(factor, index);
-        continue;
-      }
-
       const auto permute_operation_index = insertPermute(index, factor);
       permute_indexes.push_back(permute_operation_index);
       const auto &permute_operation = _graph.operations().at(permute_operation_index);

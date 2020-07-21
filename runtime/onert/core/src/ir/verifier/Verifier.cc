@@ -80,12 +80,24 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
     for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &operand = graph.operands().at(operand_index);
-      mismatches += (operand.getUses().contains(index) ? 0 : 1);
+      bool operand_has_use = operand.getUses().contains(index);
+      if (!operand_has_use)
+      {
+        VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
+                                        << operand_index << " to Operation " << index << std::endl;
+        mismatches += 1;
+      }
     }
     for (auto operand_index : node.getOutputs())
     {
       auto &operand = graph.operands().at(operand_index);
-      mismatches += (operand.getDef().contains(index) ? 0 : 1);
+      bool operand_has_use = operand.getDef().contains(index);
+      if (!operand_has_use)
+      {
+        VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
+                                        << operand_index << " to Operation " << index << std::endl;
+        mismatches += 1;
+      }
     }
   });
   return mismatches == 0;

@@ -49,6 +49,7 @@ public:
 
 public:
   const PermuteFactorSet &def_factors(void) const { return _def_factors; }
+  PermuteFactorSet &def_factors(void) { return _def_factors; }
   const PermuteFactorSet &use_factors(void) const { return _use_factors; }
 
 public:

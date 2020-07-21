@@ -77,6 +77,10 @@ public:
    */
   bool empty() const { return _set.empty(); }
   /**
+   * @brief Remove all the elements in the set
+   */
+  void clear() { return _set.clear(); }
+  /**
    * @brief Get whether a given element exists in the set
    *
    * @param e A given element

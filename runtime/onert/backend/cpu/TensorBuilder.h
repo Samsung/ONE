@@ -90,8 +90,8 @@ public:
 
 private:
   const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
-  std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   std::unique_ptr<cpu_common::DynamicTensorManager> _dynamic_tensor_mgr;
+  std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
 };
 

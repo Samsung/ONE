@@ -171,6 +171,7 @@ public:
   int32_t data_offset() const override { return _info.typeInfo().offset(); }
   const ir::OperandInfo &tensorInfo() const override { return _info; }
   uint64_t num_elements() const override { return _info.shape().num_elements(); };
+  backend::IDynamicTensorManager *dynamic_tensor_manager() override { return nullptr; }
 
 private:
   const ir::OperandInfo _info;
