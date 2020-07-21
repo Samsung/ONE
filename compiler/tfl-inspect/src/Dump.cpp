@@ -151,23 +151,25 @@ void DumpOperatorVersion::run(std::ostream &os, const tflite::Model *model)
 
   tflinspect::Reader reader(model);
 
-  // This assert is subject to be changed later
-  assert(reader.num_subgraph() == 1);
-  reader.select_subgraph(0);
+  const uint32_t subgraph_size = reader.num_subgraph();
 
-  auto ops = reader.operators();
-
-  // Dump operators' version
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t g = 0; g < subgraph_size; g++)
   {
-    const auto op = ops->Get(i);
+    reader.select_subgraph(g);
+    auto ops = reader.operators();
 
-    auto op_name = reader.opcode_name(op);
-    auto op_version = reader.opcodes().at(op->opcode_index())->version();
+    // dump Conv2D, DepthwiseConv2D and its weight input operator
+    for (uint32_t i = 0; i < ops->Length(); ++i)
+    {
+      const auto op = ops->Get(i);
 
-    if (op_version_map.find(op_name) == op_version_map.end() ||
-        op_version_map[op_name] < op_version)
-      op_version_map[op_name] = op_version;
+      auto op_name = reader.opcode_name(op);
+      auto op_version = reader.opcodes().at(op->opcode_index())->version();
+
+      if (op_version_map.find(op_name) == op_version_map.end() ||
+          op_version_map[op_name] < op_version)
+        op_version_map[op_name] = op_version;
+    }
   }
 
   for (auto op : op_version_map)
