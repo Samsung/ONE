@@ -68,7 +68,7 @@ Let's say we have some functions written in a certain programming language. Then
 
 With generated tensors and kernels, the compiler creates executor objects. There are 3 types of executors are supported - Linear, Dataflow, and Parallel. Linear executor is the default executor and Dataflow Executor and Parallel Executor are experimental.
 
-For more about executors, please refer to [Executors](./executors.md) document.
+For more about executors, please refer to [Executors](executors.md) document.
 
 ### Module `exec`
 
@@ -83,4 +83,4 @@ For more about executors, please refer to [Executors](./executors.md) document.
 
 Backends are plugins and they are loaded dynamically(via `dlopen`). So this module is a set of interface classes for backend implementation. `compiler` can compile with a variety of backends without knowing specific backend implementation.
 
-Backend interface classes are mostly about memory management and kernel generation. For more, please refer to [Backend API](./backend-api.md) document.
+Backend interface classes are mostly about memory management and kernel generation. For more, please refer to [Backend API](backend-api.md) document.
