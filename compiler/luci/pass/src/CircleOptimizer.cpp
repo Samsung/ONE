@@ -145,7 +145,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   {
     static const std::vector<std::string> fakeq_supported_input_dtype{"float32"};
     static const std::vector<std::string> fakeq_supported_output_dtype{"uint8"};
-    static const std::vector<std::string> fakeq_supported_granularity{"layer"};
+    static const std::vector<std::string> fakeq_supported_granularity{"layer", "channel"};
 
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
@@ -173,7 +173,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   {
     static const std::vector<std::string> qwmm_supported_input_dtype{"float32"};
     static const std::vector<std::string> qwmm_supported_output_dtype{"uint8"};
-    static const std::vector<std::string> qwmm_supported_granularity{"layer"};
+    static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
 
     auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
     auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
