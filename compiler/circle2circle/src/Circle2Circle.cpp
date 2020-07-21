@@ -33,15 +33,12 @@
 #include <map>
 #include <string>
 
-using OptionHook = std::function<int(const char **)>;
-
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 
 int entry(int argc, char **argv)
 {
   // Simple argument parser (based on map)
-  std::map<std::string, OptionHook> argparse;
   luci::CircleOptimizer optimizer;
 
   auto options = optimizer.options();
