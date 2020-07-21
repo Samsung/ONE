@@ -23,18 +23,17 @@
 
 namespace luci_interpreter
 {
-
 namespace kernels
 {
 
 Squeeze::Squeeze(const Tensor *input, Tensor *output, const SqueezeParams &params)
-    : KernelWithParams<SqueezeParams>(params), _input(input), _output(output)
+    : KernelWithParams<SqueezeParams>({input}, {output}, params)
 {
 }
 
 void Squeeze::configure()
 {
-  int input_num_dims = _input->shape().num_dims();
+  int input_num_dims = input()->shape().num_dims();
   int num_squeeze_dims = params().squeeze_dims.size();
   assert(input_num_dims <= 8);
   bool should_squeeze[8] = {false};
@@ -43,7 +42,7 @@ void Squeeze::configure()
   {
     for (int idx = 0; idx < input_num_dims; ++idx)
     {
-      if (_input->shape().dim(idx) == 1)
+      if (input()->shape().dim(idx) == 1)
       {
         should_squeeze[idx] = true;
         ++num_squeezed_dims;
@@ -56,7 +55,7 @@ void Squeeze::configure()
     {
       int current = params().squeeze_dims[idx] < 0 ? params().squeeze_dims[idx] + input_num_dims
                                                    : params().squeeze_dims[idx];
-      assert(current >= 0 && current < input_num_dims && _input->shape().dim(current) == 1);
+      assert(current >= 0 && current < input_num_dims && input()->shape().dim(current) == 1);
       if (!should_squeeze[current])
         ++num_squeezed_dims;
       should_squeeze[current] = true;
@@ -67,20 +66,20 @@ void Squeeze::configure()
   {
     if (!should_squeeze[in_idx])
     {
-      output_shape.dim(out_idx++) = _input->shape().dim(in_idx);
+      output_shape.dim(out_idx++) = input()->shape().dim(in_idx);
     }
   }
-  _output->resize(output_shape);
+  output()->resize(output_shape);
 }
 
 void Squeeze::execute() const
 {
-  assert(_input->shape().num_elements() == _output->shape().num_elements());
+  assert(input()->shape().num_elements() == output()->shape().num_elements());
 
-  const auto *input_data = _input->data<void>();
-  auto *output_data = _output->data<void>();
+  const auto *input_data = input()->data<void>();
+  auto *output_data = output()->data<void>();
   std::memcpy(output_data, input_data,
-              getDataTypeSize(_input->element_type()) * _input->shape().num_elements());
+              getDataTypeSize(input()->element_type()) * input()->shape().num_elements());
 }
 
 } // namespace kernels

@@ -30,18 +30,14 @@ class L2Normalize : public KernelWithParams<L2NormParams>
 public:
   L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input() const { return _inputs[0]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
 
 private:
   template <typename T> void eval(int32_t zero_point) const;
-
-private:
-  const Tensor *const _input;
-  Tensor *const _output;
 };
 
 } // namespace kernels

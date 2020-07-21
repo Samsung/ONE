@@ -28,25 +28,17 @@ namespace kernels
 class If : public Kernel
 {
 public:
-  If(const Tensor *cond, std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
+  If(const Tensor *cond, const std::vector<const Tensor *> &inputs, std::vector<Tensor *> outputs,
      RuntimeGraph *then_graph, RuntimeGraph *else_graph);
 
-  std::vector<const Tensor *> getInputTensors() const override
-  {
-    std::vector<const Tensor *> input_tensors{_cond};
-    input_tensors.insert(input_tensors.cend(), _inputs.cbegin(), _inputs.cend());
-    return input_tensors;
-  }
-
-  std::vector<Tensor *> getOutputTensors() const override { return _outputs; }
+  const Tensor *cond() const { return _inputs[0]; }
+  const Tensor *input(int index) const { return _inputs[1 + index]; }
+  Tensor *output(int index) const { return _outputs[index]; }
 
   void configure() override;
   void execute() const override;
 
 private:
-  const Tensor *const _cond;
-  const std::vector<const Tensor *> _inputs;
-  const std::vector<Tensor *> _outputs;
   RuntimeGraph *const _then_graph;
   RuntimeGraph *const _else_graph;
 };
