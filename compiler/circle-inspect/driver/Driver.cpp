@@ -35,9 +35,8 @@ int entry(int argc, char **argv)
       .nargs(0)
       .help("Dump Conv2D series weight operators in circle file");
   arser.add_argument("--op_version")
-      .nargs(1)
-      .type(arser::DataType::STR)
-      .help("Dump circle operator version");
+      .nargs(0)
+      .help("Dump versions of the operators in circle file");
   arser.add_argument("circle").type(arser::DataType::STR).help("Circle file to inspect");
 
   try
