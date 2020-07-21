@@ -556,7 +556,8 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
 
   // Create OperatorCode with Custom Operator
   std::set<std::string> custom_code_set = gather_customcode_set(model_recipe);
-  if (custom_code_set.size())
+  if (custom_code_set.size() &&
+      builtin_code_map.find(circle::BuiltinOperator_CUSTOM) == builtin_code_map.end())
     builtin_code_map[circle::BuiltinOperator_CUSTOM] = 1;
 
   for (auto opcode : custom_code_set)
