@@ -80,7 +80,7 @@ fi
 INPUT=$(awk -F, '/^input/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' ' | paste -d, -s)
 
-INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1)
+INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1 | tr -d ' ' | xargs | tr ' ' ':')
 
 # generate tflite file
 python "${ROOT}/bin/tf2tfliteV2.py" --v2 --input_path ${GRAPHDEF_FILE} \
