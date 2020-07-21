@@ -413,6 +413,7 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
       quant_builder.add_min(quant_min);
       quant_builder.add_scale(quant_scale);
       quant_builder.add_zero_point(quant_zero_point);
+      quant_builder.add_quantized_dimension(quant.quantized_dimension());
 
       // Update QuantizationParameters Index
       quant_index = quant_builder.Finish();

@@ -138,7 +138,8 @@ bool is_quantized(const CircleNode *node)
          node->dtype() == loco::DataType::S32;  // bias
 }
 
-void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_factor)
+void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
+                            int32_t &channel_dim_index)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
 
@@ -153,7 +154,6 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   uint32_t indices[4] = {
       0,
   };
-  int channel_dim_index{0};
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
@@ -189,7 +189,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
 }
 
 void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
-                             std::vector<float> &scaling_factor)
+                             std::vector<float> &scaling_factor, int32_t &channel_dim_index)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
 
@@ -204,7 +204,6 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   uint32_t indices[4] = {
       0,
   };
-  int channel_dim_index{0};
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
@@ -472,15 +471,18 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
           assert(quantparam != nullptr);
           auto min = quantparam->min;
           auto scaling_factor = quantparam->scale;
+          int32_t channel_dim_index = 0;
 
           if (output_type == loco::DataType::U8)
           {
-            asym_wquant_per_channel(circle_const, min, scaling_factor);
+            asym_wquant_per_channel(circle_const, min, scaling_factor, channel_dim_index);
           }
           else
           {
-            sym_wquant_per_channel(circle_const, scaling_factor);
+            sym_wquant_per_channel(circle_const, scaling_factor, channel_dim_index);
           }
+
+          quantparam->quantized_dimension = channel_dim_index;
         }
         // Find min/max per layer-wise
         else
