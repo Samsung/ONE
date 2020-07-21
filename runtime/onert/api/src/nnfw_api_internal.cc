@@ -76,7 +76,7 @@ nnfw_session::~nnfw_session() = default;
 NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 {
   if (!isStateInitialized())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   if (!package_dir)
   {
@@ -156,7 +156,7 @@ NNFW_STATUS nnfw_session::prepare()
       std::cerr << "invalid state";
     }
     std::cerr << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!_subgraphs || !primary_subgraph() || primary_subgraph()->isBuildingPhase())
@@ -188,7 +188,7 @@ NNFW_STATUS nnfw_session::run()
   {
     std::cerr << "Error during nnfw_session::run : "
               << "run should be run after prepare" << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
   }
 
   try
@@ -211,7 +211,7 @@ NNFW_STATUS nnfw_session::run_async()
   {
     std::cerr << "Error during nnfw_session::run_async : "
               << "run_async should be run after prepare" << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
   }
 
   _execution->startExecute();
@@ -241,7 +241,7 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
   if (!isStatePreparedOrFinishedRun())
   {
     std::cerr << "Error during nnfw_session::set_input : invalid state" << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!buffer && length != 0)
@@ -270,7 +270,7 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
   if (!isStatePreparedOrFinishedRun())
   {
     std::cerr << "Error during nnfw_session::set_output : invalid state" << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
   }
 
   if (!buffer && length != 0)
@@ -296,7 +296,7 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
 NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 {
   if (isStateInitialized()) // Model is not loaded
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   try
   {
@@ -318,7 +318,7 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
 NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 {
   if (isStateInitialized()) // Model is not loaded
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   try
   {
@@ -410,7 +410,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     {
       std::cerr << "Error during set_input_tensorinfo : should be run after load_model"
                 << std::endl;
-      return NNFW_STATUS_ERROR;
+      return NNFW_STATUS_INVALID_STATE;
     }
 
     if (ti.rank <= 0 || ti.rank > NNFW_MAX_RANK)
@@ -463,6 +463,9 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
 
 NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
+  if (isStateInitialized())
+    return NNFW_STATUS_INVALID_STATE;
+
   try
   {
     if (ti == nullptr)
@@ -499,7 +502,7 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 {
   if (isStateInitialized())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   if (ti == nullptr)
   {
@@ -570,7 +573,7 @@ static std::string get_op_backend_string(std::string op)
 NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 {
   if (!isStateModelLoaded())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   try
   {
@@ -596,7 +599,7 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
 {
   if (!isStateModelLoaded())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   try
   {
@@ -627,7 +630,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
 NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 {
   if (!isStateModelLoaded())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   auto &options = _compiler->options();
 
@@ -693,7 +696,7 @@ onert::ir::Graph *nnfw_session::primary_subgraph()
 NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)
 {
   if (!isStateModelLoaded())
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_INVALID_STATE;
 
   auto &options = _compiler->options();
 

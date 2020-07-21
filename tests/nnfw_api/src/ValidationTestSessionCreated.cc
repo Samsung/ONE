@@ -58,7 +58,7 @@ TEST_F(ValidationTestSessionCreated, neg_load_invalid_package_1)
       nnfw_load_model_from_file(
           _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD_NO_MANIFEST).c_str()),
       NNFW_STATUS_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_invalid_package_2)
@@ -67,52 +67,52 @@ TEST_F(ValidationTestSessionCreated, neg_load_invalid_package_2)
                 _session,
                 NNPackages::get().getModelAbsolutePath(NNPackages::ADD_INVALID_MANIFEST).c_str()),
             NNFW_STATUS_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_prepare_001)
 {
   // nnfw_load_model_from_file was not called
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_run_001)
 {
   // nnfw_load_model_from_file and nnfw_prepare was not called
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_set_input_001)
 {
-  // Invalid state
-  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_set_output_001)
 {
-  // Invalid state
-  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_get_input_size)
 {
   uint32_t size = 10000;
-  ASSERT_EQ(nnfw_input_size(_session, &size), NNFW_STATUS_ERROR);
-  ASSERT_EQ(size, 10000);
+  ASSERT_EQ(nnfw_input_size(_session, &size), NNFW_STATUS_INVALID_STATE);
+  ASSERT_EQ(size, 10000); // Remain unchanged
 }
 
 TEST_F(ValidationTestSessionCreated, neg_get_output_size)
 {
   uint32_t size = 10000;
-  ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_ERROR);
-  ASSERT_EQ(size, 10000);
+  ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_INVALID_STATE);
+  ASSERT_EQ(size, 10000); // Remain unchanged
 }
 
 TEST_F(ValidationTestSessionCreated, neg_output_tensorinfo)
 {
   nnfw_tensorinfo tensor_info;
   // model is not loaded
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_INVALID_STATE);
   // model is not loaded and tensor_info is null
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_INVALID_STATE);
 }

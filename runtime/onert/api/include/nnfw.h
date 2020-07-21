@@ -99,6 +99,8 @@ typedef enum {
   NNFW_STATUS_ERROR = 1,
   /** Unexpected null argument is given. */
   NNFW_STATUS_UNEXPECTED_NULL = 2,
+  /** When a function was called but it is not valid for the current session state. */
+  NNFW_STATUS_INVALID_STATE = 3,
 } NNFW_STATUS;
 
 /**
