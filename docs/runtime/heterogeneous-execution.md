@@ -12,11 +12,11 @@ Here is another case. Let's say we have a model that is not sequential so there 
 
 ![Add-3Conv model](heterogeneous-execution-add-3-conv-model.png)
 
-Say we have 3 backends that are based on CPU, GPU and NPU(Neural Processing Unit) respectively. After executing Add, 3 Conv2D operations are ready to run. We may utilize those backends with [Parallel Executor (experimental)](./executors.md#parallel-executor-experimental). For this case we may get performance gain regardless of kernels' speed as those are run in parallel independently.
+Say we have 3 backends that are based on CPU, GPU and NPU(Neural Processing Unit) respectively. After executing Add, 3 Conv2D operations are ready to run. We may utilize those backends with [Parallel Executor (experimental)](executors.md#parallel-executor-experimental). For this case we may get performance gain regardless of kernels' speed as those are run in parallel independently.
 
 ## Graph Transformation
 
-Unfortunately it is not that simple to get performance gain. As each backend has its own memory management module, a copy must be done between backend boundaries. Plus, it may require layout changes so "Permute" operations are added from  `PermutationInsertionPass`. This process is done from [Lowering](./core.md#1-lowering) phase of compilation.
+Unfortunately it is not that simple to get performance gain. As each backend has its own memory management module, a copy must be done between backend boundaries. Plus, it may require layout changes so "Permute" operations are added from  `PermutationInsertionPass`. This process is done from [Lowering](core.md#1-lowering) phase of compilation.
 
 Here is an example of that. Let's say we have assigned different backends for Add and Conv2D. So a Permute operation is inserted between them.
 
