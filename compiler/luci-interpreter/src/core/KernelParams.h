@@ -110,11 +110,6 @@ struct ReducerParams
   bool keep_dims;
 };
 
-struct SpaceToDepthParams
-{
-  int block_size;
-};
-
 struct SoftmaxParams
 {
   float beta;
