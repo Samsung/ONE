@@ -432,10 +432,10 @@ NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index,
  *
  * <p>Supported backends differs on each platforms.
  * For example, `x86_64` supports "cpu" only.
- * Can set multiple backends by semicolon (ex: "acl_cl;cpu").
- * Among the multiple backends, the 1st element is used as default backend.</p>
- *
- * @note      Possible backend strings are: "cpu", "acl_cl", "acl_neon", "srcn"
+ * Multiple backends can be set and they must be separated by a semicolon (ex: "acl_cl;cpu").
+ * For each backend string, `libbackend_{backend}.so` will be dynamically loaded during
+ * {@link nnfw_prepare}.
+ * Among the multiple backends, the 1st element is used as the default backend.</p>
  *
  * @param[in] session session to which avilable backends are set
  * @param[in] backends available backends on which nnfw uses
@@ -449,12 +449,10 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
  *
  * This function should be called before {@link nnfw_prepare} is invoked.
  *
- * <p>Supported backends differs on each platforms.
- * For example, `x86_64` supports "cpu" only.
- * The backend for op has higher priority than available backends specified by
- * nnfw_set_available_backends.</p>
+ * <p>The backend for op has higher priority than available backends specified by
+ * {@link nnfw_set_available_backends}.</p>
  *
- * @note      Possible backend strings are: "cpu", "acl_cl", "acl_neon"
+ * @deprecated Deprecated since 1.8.0.
  *
  * @param[in] session session to be modified
  * @param[in] op operation to be set
