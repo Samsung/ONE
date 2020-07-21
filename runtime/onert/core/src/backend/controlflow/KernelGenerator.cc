@@ -122,6 +122,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
   std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
   const auto output_tensor_builder = getTensorBuilder(output_index);
+  VERBOSE(PERMUTE_FIND_TB) << output_index << " -> " << output_tensor_builder.get() << std::endl;
   assert(output_tensor_builder != nullptr);
   if (output_tensor_builder->supportDynamicTensor())
   {
@@ -197,7 +198,8 @@ KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
   std::shared_ptr<backend::ITensorBuilder> ret;
   for (auto tensor_builder : _tensor_builder_set)
   {
-    auto tensor = tensor_builder->tensorAt(index);
+    auto reg = tensor_builder->tensorRegistry();
+    auto tensor = reg ? reg->getManagedITensor(index) : tensor_builder->tensorAt(index);
     if (tensor)
     {
       ret = tensor_builder;

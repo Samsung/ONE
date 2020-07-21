@@ -39,7 +39,7 @@ public:
   bool supportDynamicTensor() override
   {
     // TODO Make this backend to support dynamic tensor or not to build non-constant tensor
-    return false;
+    return true;
   }
   bool supportFP16() override { return false; }
 

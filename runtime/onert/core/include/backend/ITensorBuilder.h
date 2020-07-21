@@ -70,10 +70,7 @@ struct ITensorBuilder
    *
    * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
    */
-  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry()
-  {
-    throw std::runtime_error("tensorRegistry(): NYI");
-  }
+  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry() = 0;
 
 public: // methods for static tensor allocation
   /**
@@ -113,6 +110,18 @@ public: // methods for static tensor allocation
    * @return std::shared_ptr<ITensor> The tensor object
    */
   virtual std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) = 0;
+
+  /**
+   * @brief Set the External Tensor object
+   *
+   * @return true if succeeded
+   * @return false if failed or unsupported
+   */
+  virtual bool setExternalTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
+  {
+    return false;
+  }
+
   /**
    * @brief Iterate over tensors
    *

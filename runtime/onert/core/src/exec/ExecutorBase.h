@@ -53,6 +53,8 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    */
   ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
+               const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
+               const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                const compiler::TensorBuilders &tensor_builders);
 
   virtual ~ExecutorBase() = default;
@@ -91,56 +93,6 @@ public:
   }
 
   const DynAllocInfoMap &getInputsDynamicAllocInfo() const { return _input_to_dyn_alloc_info; }
-
-private:
-  std::unique_ptr<ISource> source(const ir::IOIndex &index, const ir::TypeInfo &type,
-                                  const void *buffer, size_t length, ir::Layout io_layout);
-  std::unique_ptr<ISink> sink(const ir::IOIndex &index, const ir::TypeInfo &type, void *buffer,
-                              size_t length, ir::Layout io_layout);
-
-  template <typename T>
-  std::unique_ptr<ISource> source(const ir::IOIndex &index, const void *buffer, size_t length,
-                                  ir::Layout io_layout)
-  {
-    const auto operand_index = _graph.getInputs().at(index);
-    const auto &operand = _graph.operands().at(operand_index);
-
-    const auto tensor = _input_tensors[index.value()];
-    const auto tensor_layout = tensor->layout();
-
-    if (((io_layout == ir::Layout::NHWC) && (tensor_layout == ir::Layout::NCHW)) ||
-        ((io_layout == ir::Layout::NCHW) && (tensor_layout == ir::Layout::NHWC)))
-    {
-      return std::make_unique<PermutateSource<T>>(buffer, length, operand.shape(), io_layout);
-    }
-    // TODO Change this to return error
-    assert(io_layout != ir::Layout::UNKNOWN ||
-           (tensor_layout != ir::Layout::NCHW && tensor_layout != ir::Layout::NCHW));
-
-    return std::make_unique<CopySource<T>>(buffer, length, operand.shape());
-  }
-
-  template <typename T>
-  std::unique_ptr<ISink> sink(const ir::IOIndex &index, void *buffer, size_t length,
-                              ir::Layout io_layout)
-  {
-    const auto operand_index = _graph.getOutputs().at(index);
-    const auto &operand = _graph.operands().at(operand_index);
-    const auto tensor = _output_tensors[index.value()];
-    const auto tensor_layout = tensor->layout();
-    const auto tensor_shape = convertShape(tensor->getShape(), tensor->layout(), io_layout);
-
-    if (((tensor_layout == ir::Layout::NCHW) && (io_layout == ir::Layout::NHWC)) ||
-        ((tensor_layout == ir::Layout::NHWC) && (io_layout == ir::Layout::NCHW)))
-    {
-      return std::make_unique<PermutateSink<T>>(buffer, length, tensor_shape, io_layout);
-    }
-    // TODO Change this to return error
-    assert(io_layout != ir::Layout::UNKNOWN ||
-           (tensor_layout != ir::Layout::NCHW && tensor_layout != ir::Layout::NCHW));
-
-    return std::make_unique<CopySink<T>>(buffer, length, operand.shape());
-  }
 
 protected:
   /**

@@ -39,7 +39,7 @@ class UserTensor : public IPortableTensor
 {
 public:
   UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-      : _info{info}, _layout{layout}, _buffer{buffer}, _size{size}
+      : _info{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
   {
   }
 
@@ -64,7 +64,8 @@ public:
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_offset() const override { return _info.typeInfo().offset(); }
-  bool is_dynamic() const override { return false; }
+  bool is_dynamic() const override { return _dynamic; }
+  void set_dynamic() override { _dynamic = true; }
   ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
 
@@ -73,6 +74,7 @@ private:
   ir::Layout _layout;
   uint8_t *_buffer;
   size_t _size;
+  bool _dynamic;
 };
 
 } // namespace controlflow
