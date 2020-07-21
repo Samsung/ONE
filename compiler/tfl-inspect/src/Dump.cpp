@@ -141,3 +141,41 @@ void DumpConv2DWeight::run(std::ostream &os, const tflite::Model *model)
 }
 
 } // namespace tflinspect
+
+namespace tflinspect
+{
+
+void DumpOperatorVersion::run(std::ostream &os, const tflite::Model *model)
+{
+  std::map<std::string, int32_t> op_version_map;
+
+  tflinspect::Reader reader(model);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    auto ops = reader.operators();
+
+    // dump Conv2D, DepthwiseConv2D and its weight input operator
+    for (uint32_t i = 0; i < ops->Length(); ++i)
+    {
+      const auto op = ops->Get(i);
+
+      auto op_name = reader.opcode_name(op);
+      auto op_version = reader.opcodes().at(op->opcode_index())->version();
+
+      if (op_version_map.find(op_name) == op_version_map.end() ||
+          op_version_map[op_name] < op_version)
+        op_version_map[op_name] = op_version;
+    }
+  }
+
+  for (auto op : op_version_map)
+  {
+    os << op.first << "," << op.second << std::endl;
+  }
+}
+
+} // namespace tflinspect
