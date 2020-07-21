@@ -28,11 +28,14 @@ function preset_configure()
   REQUIRED_UNITS+=("record-minmax" "circle-quantizer")
   REQUIRED_UNITS+=("one-cmds")
 
+  NPROC=${NPROC:-$(cat /proc/cpuinfo | grep -c processor)}
+
   # TODO Use "nncc configure" and "nncc build"
   cmake \
     -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}" \
     -DCMAKE_BUILD_TYPE=release \
     -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
+    -DEXTERNALS_BUILD_THREADS=$((NPROC/2)) \
     ${EXTRA_OPTIONS[@]} \
     "${NNAS_PROJECT_PATH}/infra/nncc"
 }
