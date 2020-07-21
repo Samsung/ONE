@@ -33,15 +33,19 @@ class Mul : public KernelWithParams<MulParams>
 public:
   Mul(const Tensor *input1, const Tensor *input2, Tensor *output, const MulParams &params);
 
-  const Tensor *input1() const { return _inputs[0]; }
-  const Tensor *input2() const { return _inputs[1]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input1, _input2}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
 
 private:
   void evalFloat() const;
+
+private:
+  const Tensor *const _input1;
+  const Tensor *const _input2;
+  Tensor *const _output;
 };
 
 } // namespace kernels

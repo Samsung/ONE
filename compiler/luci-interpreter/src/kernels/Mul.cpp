@@ -29,19 +29,19 @@ namespace kernels
 {
 
 Mul::Mul(const Tensor *input1, const Tensor *input2, Tensor *output, const MulParams &params)
-    : KernelWithParams<MulParams>({input1, input2}, {output}, params)
+    : KernelWithParams<MulParams>(params), _input1(input1), _input2(input2), _output(output)
 {
 }
 
 void Mul::configure()
 {
-  assert(input1()->element_type() == input2()->element_type());
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
+  assert(_input1->element_type() == _input2->element_type());
+  _output->resize(calculateShapeForBroadcast(_input1->shape(), _input2->shape()));
 }
 
 void Mul::execute() const
 {
-  switch (input1()->element_type())
+  switch (_input1->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -62,19 +62,19 @@ void Mul::evalFloat() const
   params.float_activation_max = activation_max;
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-      getTensorShape(input1()), getTensorShape(input2()), &params);
+      getTensorShape(_input1), getTensorShape(_input2), &params);
 
   if (need_broadcast)
   {
     tflite::reference_ops::BroadcastMul4DSlow(
-        params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-        getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
+        params, getTensorShape(_input1), getTensorData<float>(_input1), getTensorShape(_input2),
+        getTensorData<float>(_input2), getTensorShape(_output), getTensorData<float>(_output));
   }
   else
   {
-    tflite::reference_ops::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                               getTensorShape(input2()), getTensorData<float>(input2()),
-                               getTensorShape(output()), getTensorData<float>(output()));
+    tflite::reference_ops::Mul(params, getTensorShape(_input1), getTensorData<float>(_input1),
+                               getTensorShape(_input2), getTensorData<float>(_input2),
+                               getTensorShape(_output), getTensorData<float>(_output));
   }
 }
 

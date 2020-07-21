@@ -24,53 +24,52 @@ namespace kernels
 {
 
 ArgMax::ArgMax(const Tensor *input, const Tensor *axis, Tensor *output, const ArgMaxParams &params)
-    : KernelWithParams<ArgMaxParams>({input, axis}, {output}, params)
+    : KernelWithParams<ArgMaxParams>(params), _input(input), _axis(axis), _output(output)
 {
 }
 
 void ArgMax::configure()
 {
-  assert(axis()->element_type() == DataType::S32 || axis()->element_type() == DataType::S64);
-  assert(input()->shape().num_dims() >= 1);
-  const Shape &input_shape = input()->shape();
+  assert(_axis->element_type() == DataType::S32 || _axis->element_type() == DataType::S64);
+  assert(_input->shape().num_dims() >= 1);
+  const Shape &input_shape = _input->shape();
   const int num_dims = input_shape.num_dims();
   Shape output_shape(num_dims - 1);
 
   // If axis value is negative, then update by adding input_shape's num_dims.
   // If updated value also negative, then assert.
-  assert(axis()->shape().num_elements() == 1);
-  int axis_value = getTensorData<int32_t>(axis())[0];
-  if (axis_value < 0)
-    axis_value = axis_value + num_dims;
-  assert(axis_value >= 0);
+  assert(_axis->shape().num_elements() == 1);
+  int axis = getTensorData<int32_t>(_axis)[0];
+  if (axis < 0)
+    axis = axis + num_dims;
+  assert(axis >= 0);
 
   int j = 0;
   for (int i = 0; i < num_dims; i++)
   {
-    if (i == axis_value)
+    if (i == axis)
       continue;
     output_shape.dim(j++) = input_shape.dim(i);
   }
 
-  assert(output()->element_type() == _params.output_type);
+  assert(_output->element_type() == _params.output_type);
 
-  output()->resize(output_shape);
+  _output->resize(output_shape);
 }
 
 void ArgMax::execute() const
 {
 
-#define TF_LITE_ARG_MAX(data_type, axis_type, output_type)                                     \
-  tflite::optimized_ops::ArgMinMax(getTensorShape(input()), getTensorData<data_type>(input()), \
-                                   getTensorData<axis_type>(axis()), getTensorShape(output()), \
-                                   getTensorData<output_type>(output()),                       \
-                                   std::greater<data_type>())
-  if (axis()->element_type() == DataType::S32)
+#define TF_LITE_ARG_MAX(data_type, axis_type, output_type)                                   \
+  tflite::optimized_ops::ArgMinMax(getTensorShape(_input), getTensorData<data_type>(_input), \
+                                   getTensorData<axis_type>(_axis), getTensorShape(_output), \
+                                   getTensorData<output_type>(_output), std::greater<data_type>())
+  if (_axis->element_type() == DataType::S32)
   {
     switch (_params.output_type)
     {
       case DataType::S32:
-        switch (input()->element_type())
+        switch (_input->element_type())
         {
           case DataType::FLOAT32:
             TF_LITE_ARG_MAX(float, int32_t, int32_t);
@@ -83,7 +82,7 @@ void ArgMax::execute() const
         }
         break;
       case DataType::S64:
-        switch (input()->element_type())
+        switch (_input->element_type())
         {
           case DataType::FLOAT32:
             TF_LITE_ARG_MAX(float, int32_t, int64_t);
@@ -104,7 +103,7 @@ void ArgMax::execute() const
     switch (_params.output_type)
     {
       case DataType::S32:
-        switch (input()->element_type())
+        switch (_input->element_type())
         {
           case DataType::FLOAT32:
             TF_LITE_ARG_MAX(float, int64_t, int32_t);
@@ -117,7 +116,7 @@ void ArgMax::execute() const
         }
         break;
       case DataType::S64:
-        switch (input()->element_type())
+        switch (_input->element_type())
         {
           case DataType::FLOAT32:
             TF_LITE_ARG_MAX(float, int64_t, int64_t);

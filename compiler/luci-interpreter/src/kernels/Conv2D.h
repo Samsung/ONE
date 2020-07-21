@@ -33,10 +33,8 @@ public:
   Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
          const Conv2DParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  const Tensor *filter() const { return _inputs[1]; }
-  const Tensor *bias() const { return _inputs[2]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _filter, _bias}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
@@ -46,6 +44,10 @@ private:
   void evalQuantized() const;
 
 private:
+  const Tensor *const _input;
+  const Tensor *const _filter;
+  const Tensor *const _bias;
+  Tensor *const _output;
   std::unique_ptr<Tensor> _im2col;
   int32_t _padding_height{};
   int32_t _padding_width{};

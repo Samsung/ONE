@@ -29,7 +29,7 @@ namespace kernels
 
 Concatenation::Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
                              const ConcatenationParams &params)
-    : KernelWithParams<ConcatenationParams>(std::move(inputs), {output}, params)
+    : KernelWithParams<ConcatenationParams>(params), _inputs(std::move(inputs)), _output(output)
 {
 }
 
@@ -71,7 +71,7 @@ void Concatenation::configure()
   if (t0->element_type() == DataType::S8)
     throw std::runtime_error("Unsupported type.");
 
-  output()->resize(output_shape);
+  _output->resize(output_shape);
 }
 
 void Concatenation::execute() const
@@ -102,21 +102,21 @@ template <typename T> void Concatenation::evalGeneric() const
 {
   int axis = _params.axis;
   if (axis < 0)
-    axis += output()->shape().num_dims();
+    axis += _output->shape().num_dims();
 
   VectorOfTensors<T, true> inputs(_inputs);
   tflite::ConcatenationParams params{};
   params.axis = axis;
   params.inputs_count = _inputs.size();
   tflite::reference_ops::Concatenation(params, inputs.shapes(), inputs.data(),
-                                       getTensorShape(output()), getTensorData<T>(output()));
+                                       getTensorShape(_output), getTensorData<T>(_output));
 }
 
 void Concatenation::evalQuantized() const
 {
   int axis = _params.axis;
   if (axis < 0)
-    axis += output()->shape().num_dims();
+    axis += _output->shape().num_dims();
 
   VectorOfQuantizedTensors<true> inputs(_inputs);
   tflite::ConcatenationParams params{};
@@ -124,12 +124,12 @@ void Concatenation::evalQuantized() const
   params.input_zeropoint = inputs.zero_point();
   params.input_scale = inputs.scale();
   params.inputs_count = _inputs.size();
-  params.output_zeropoint = output()->zero_point();
-  params.output_scale = output()->scale();
+  params.output_zeropoint = _output->zero_point();
+  params.output_scale = _output->scale();
 
   tflite::reference_ops::ConcatenationWithScaling(params, inputs.shapes(), inputs.data(),
-                                                  getTensorShape(output()),
-                                                  getTensorData<uint8_t>(output()));
+                                                  getTensorShape(_output),
+                                                  getTensorData<uint8_t>(_output));
 }
 
 } // namespace kernels

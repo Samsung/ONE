@@ -30,19 +30,19 @@ namespace kernels
 {
 
 L2Pool2D::L2Pool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-    : KernelWithParams<Pool2DParams>({input}, {output}, params)
+    : KernelWithParams<Pool2DParams>(params), _input(input), _output(output)
 {
 }
 
 void L2Pool2D::configure()
 {
-  assert(input()->shape().num_dims() == 4);
-  assert(input()->element_type() == output()->element_type());
+  assert(_input->shape().num_dims() == 4);
+  assert(_input->element_type() == _output->element_type());
 
-  int batches = input()->shape().dim(0);
-  int height = input()->shape().dim(1);
-  int width = input()->shape().dim(2);
-  int channels_out = input()->shape().dim(3);
+  int batches = _input->shape().dim(0);
+  int height = _input->shape().dim(1);
+  int width = _input->shape().dim(2);
+  int channels_out = _input->shape().dim(3);
 
   // Matching GetWindowedOutputSize in TensorFlow.
   auto padding = params().padding;
@@ -55,13 +55,13 @@ void L2Pool2D::configure()
   _padding_height =
       computePadding(params().stride_height, 1, height, params().filter_height, out_height);
 
-  assert(input()->element_type() == DataType::FLOAT32);
-  output()->resize({batches, out_height, out_width, channels_out});
+  assert(_input->element_type() == DataType::FLOAT32);
+  _output->resize({batches, out_height, out_width, channels_out});
 }
 
 void L2Pool2D::execute() const
 {
-  switch (input()->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
       float activation_min, activation_max;
@@ -75,9 +75,8 @@ void L2Pool2D::execute() const
       op_params.padding_values.width = _padding_width;
       op_params.float_activation_min = activation_min;
       op_params.float_activation_max = activation_max;
-      tflite::optimized_ops::L2Pool(op_params, getTensorShape(input()),
-                                    getTensorData<float>(input()), getTensorShape(output()),
-                                    getTensorData<float>(output()));
+      tflite::optimized_ops::L2Pool(op_params, getTensorShape(_input), getTensorData<float>(_input),
+                                    getTensorShape(_output), getTensorData<float>(_output));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

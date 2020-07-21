@@ -25,22 +25,24 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Logistic::Logistic(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+Logistic::Logistic(const Tensor *input, Tensor *output) : _input(input), _output(output), _table{0}
+{
+}
 
 void Logistic::configure()
 {
-  assert(input()->element_type() == output()->element_type());
-  if (input()->element_type() == DataType::U8)
+  assert(_input->element_type() == _output->element_type());
+  if (_input->element_type() == DataType::U8)
   {
-    assert(output()->scale() == 1. / 256);
+    assert(_output->scale() == 1. / 256);
     populateLookupTable();
   }
-  output()->resize(input()->shape());
+  _output->resize(_input->shape());
 }
 
 void Logistic::execute() const
 {
-  switch (input()->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -55,15 +57,15 @@ void Logistic::execute() const
 
 void Logistic::evalFloat() const
 {
-  tflite::reference_ops::Logistic(getTensorShape(input()), getTensorData<float>(input()),
-                                  getTensorShape(output()), getTensorData<float>(output()));
+  tflite::reference_ops::Logistic(getTensorShape(_input), getTensorData<float>(_input),
+                                  getTensorShape(_output), getTensorData<float>(_output));
 }
 
 void Logistic::evalQuantized() const
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
-  uint8_t *output_data = getTensorData<uint8_t>(output());
-  const uint8_t *input_data = getTensorData<uint8_t>(input());
+  const int size = tflite::MatchingFlatSize(getTensorShape(_input), getTensorShape(_output));
+  uint8_t *output_data = getTensorData<uint8_t>(_output);
+  const uint8_t *input_data = getTensorData<uint8_t>(_input);
   for (int i = 0; i < size; ++i)
   {
     output_data[i] = getTableValue(input_data[i]);
@@ -72,10 +74,10 @@ void Logistic::evalQuantized() const
 
 void Logistic::populateLookupTable()
 {
-  const auto input_scale = static_cast<double>(input()->scale());
-  const auto input_zero_point = static_cast<int32_t>(input()->zero_point());
-  const auto output_scale = static_cast<double>(output()->scale());
-  const auto output_zero_point = static_cast<int32_t>(output()->zero_point());
+  const auto input_scale = static_cast<double>(_input->scale());
+  const auto input_zero_point = static_cast<int32_t>(_input->zero_point());
+  const auto output_scale = static_cast<double>(_output->scale());
+  const auto output_zero_point = static_cast<int32_t>(_output->zero_point());
   const float inverse_scale = 1 / output_scale;
   int32_t maxval = std::numeric_limits<uint8_t>::max();
   int32_t minval = std::numeric_limits<uint8_t>::min();
