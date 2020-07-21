@@ -40,6 +40,8 @@ struct LoaderDomain
   using Tensor = onert_tflite::Tensor;
   using TensorType = onert_tflite::TensorType;
   using SubGraph = onert_tflite::SubGraph;
+  using DimensionType = onert_tflite::DimensionType;
+  using SparseIndexVector = onert_tflite::SparseIndexVector;
 
   static const char *EnumNameBuiltinOperator(BuiltinOperator e)
   {

@@ -53,6 +53,8 @@ protected:
   using SubGraph = typename LoaderDomain::SubGraph;
   using Tensor = typename LoaderDomain::Tensor;
   using TensorType = typename LoaderDomain::TensorType;
+  using DimensionType = typename LoaderDomain::DimensionType;
+  using SparseIndexVector = typename LoaderDomain::SparseIndexVector;
 
 protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
@@ -302,6 +304,23 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::deallocateMmappedArea
   }
 }
 
+/* Copied from tensorflow lite. Need to append copyright */
+template <typename T> bool Copy(const T *data_ptr, std::vector<uint16_t> &arr)
+{
+  if (data_ptr->values() == nullptr)
+  {
+    return false;
+  }
+
+  int size = data_ptr->values()->size();
+  arr.reserve(size);
+  for (int i = 0; i < size; i++)
+  {
+    arr.emplace_back(static_cast<uint16_t>(data_ptr->values()->Get(i)));
+  }
+  return true;
+}
+
 template <typename LoaderDomain, typename SpecificLoader>
 ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Tensor *tensor,
                                                                        ir::Graph &subg)
@@ -358,6 +377,61 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   }
   // Create TypeInfo
   ir::TypeInfo type_info(data_type, scale, zero_point);
+  // Sparsity
+  auto src_sparsity = tensor->sparsity();
+  if (src_sparsity != nullptr)
+  {
+    std::vector<uint16_t> w1_segments;
+    std::vector<uint16_t> w1_indices;
+    // ignore traversal_order, block_map
+    // load metadata
+    const size_t dim_metadata_size = src_sparsity->dim_metadata()->size();
+    if (dim_metadata_size != 2)
+      throw std::runtime_error("sparse tensor is supported only for 2D");
+    const auto *src_metadata = src_sparsity->dim_metadata()->Get(0);
+    if (src_metadata->format() != DimensionType::DimensionType_DENSE)
+      throw std::runtime_error("sparse tensor dim[0] is not DENSE");
+    src_metadata = src_sparsity->dim_metadata()->Get(1);
+    if (src_metadata->format() != DimensionType::DimensionType_SPARSE_CSR)
+      throw std::runtime_error("sparse tensor dim[0] is not SPARSE_CSR");
+
+    auto ParseSparseIndexVector = [src_metadata, &w1_segments, &w1_indices]() {
+      if (src_metadata->array_segments() == nullptr || src_metadata->array_indices() == nullptr)
+        return false;
+      bool status = true;
+      switch (src_metadata->array_segments_type())
+      {
+        case SparseIndexVector::SparseIndexVector_Int32Vector:
+          status = Copy(src_metadata->array_segments_as_Int32Vector(), w1_segments);
+          break;
+        case SparseIndexVector::SparseIndexVector_Uint16Vector:
+          status = Copy(src_metadata->array_segments_as_Uint16Vector(), w1_segments);
+          break;
+        case SparseIndexVector::SparseIndexVector_Uint8Vector:
+          status = Copy(src_metadata->array_segments_as_Uint8Vector(), w1_segments);
+          break;
+        default:
+          return false;
+      }
+      if (status != true)
+        return false;
+      switch (src_metadata->array_indices_type())
+      {
+        case SparseIndexVector::SparseIndexVector_Int32Vector:
+          return Copy(src_metadata->array_indices_as_Int32Vector(), w1_indices);
+        case SparseIndexVector::SparseIndexVector_Uint16Vector:
+          return Copy(src_metadata->array_indices_as_Uint16Vector(), w1_indices);
+        case SparseIndexVector::SparseIndexVector_Uint8Vector:
+          return Copy(src_metadata->array_indices_as_Uint8Vector(), w1_indices);
+        default:
+          break;
+      }
+      return false;
+    };
+    if (ParseSparseIndexVector() == false)
+      throw std::runtime_error("Error during parsing sparsity index information");
+    type_info.sparse2DMetadata(std::move(w1_segments), std::move(w1_indices));
+  }
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
 

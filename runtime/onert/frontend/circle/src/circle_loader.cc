@@ -53,6 +53,8 @@ struct LoaderDomain
   using Tensor = circle::Tensor;
   using TensorType = circle::TensorType;
   using SubGraph = circle::SubGraph;
+  using DimensionType = circle::DimensionType;
+  using SparseIndexVector = circle::SparseIndexVector;
 
   static const char *EnumNameBuiltinOperator(BuiltinOperator e)
   {
