@@ -1301,8 +1301,8 @@ void KernelGenerator::visit(const ir::operation::LogSoftmax &node)
   const auto beta = node.param().beta;
   const auto axis = node.param().axis;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto input_alloc = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::LogSoftMaxLayer>();
 
