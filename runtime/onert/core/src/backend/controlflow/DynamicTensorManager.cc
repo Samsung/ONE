@@ -36,7 +36,7 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<cpu_common::Ten
 void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
   // NOTE Handle user tensors first
-  auto user_tensor = _user_tensors->getManagedTensor(ind);
+  auto user_tensor = _user_tensors->getNativeTensor(ind);
   if (user_tensor)
   {
     // User tensors cannot be reallocated.
@@ -47,8 +47,8 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     user_tensor->setShape(new_shape);
   }
 
-  // NOTE Then handle managed tensors
-  auto tensor = _tensors->getManagedTensor(ind);
+  // NOTE Then handle native tensors
+  auto tensor = _tensors->getNativeTensor(ind);
   assert(tensor);
 
   bool previously_dynamic = tensor->is_dynamic();
@@ -101,9 +101,9 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  assert(_tensors->getManagedTensor(ind) == nullptr);
+  assert(_tensors->getNativeTensor(ind) == nullptr);
   auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout);
-  _tensors->setManagedTensor(ind, tensor);
+  _tensors->setNativeTensor(ind, tensor);
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
@@ -130,7 +130,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   auto &input_set = find->second;
   for (auto input_ind : input_set)
   {
-    if (!_tensors->getManagedTensor(input_ind)->is_dynamic())
+    if (!_tensors->getNativeTensor(input_ind)->is_dynamic())
       continue;
 
     _dynamic_mem_mgr->deallocate(input_ind);
@@ -141,7 +141,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  if (!_tensors->getManagedTensor(output_ind)->is_dynamic())
+  if (!_tensors->getNativeTensor(output_ind)->is_dynamic())
     return;
 
   _dynamic_mem_mgr->deallocate(output_ind);

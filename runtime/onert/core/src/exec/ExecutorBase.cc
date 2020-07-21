@@ -46,7 +46,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         {
           auto tensor_registry = tensor_builder->tensorRegistry();
           assert(tensor_registry);
-          tensor = tensor_registry->getManagedITensor(ind);
+          tensor = tensor_registry->getNativeITensor(ind);
           if (tensor != nullptr)
           {
             if (tensor_builder->supportDynamicTensor())
@@ -71,7 +71,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         {
           auto tensor_registry = tensor_builder->tensorRegistry();
           assert(tensor_registry);
-          tensor = tensor_registry->getManagedITensor(ind);
+          tensor = tensor_registry->getNativeITensor(ind);
           if (tensor != nullptr)
           {
             if (tensor_builder->supportDynamicTensor())
