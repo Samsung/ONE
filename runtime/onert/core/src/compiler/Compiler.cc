@@ -47,6 +47,7 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
   CompilerOptions options;
   options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  options.is_primary_subgraph = false;
   options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   options.op_seq_max_node = util::getConfigInt(util::config::OP_SEQ_MAX_NODE);
