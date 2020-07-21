@@ -5,7 +5,6 @@ list(APPEND REQUIRED_TARGETS circle-inspect)
 list(APPEND REQUIRED_TARGETS circle-verify)
 list(APPEND REQUIRED_TARGETS circle2circle)
 list(APPEND REQUIRED_TARGETS dredd_rule_lib)
-list(APPEND REQUIRED_TARGETS testDataGenerator)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
 unset(TEST_DEPS)
@@ -99,6 +98,7 @@ list(APPEND TEST_DEPS "${RULE_LIB_BINARY_PATH}")
 
 # Generate dependencies
 add_custom_target(circle2circle_dredd_recipe_test ALL DEPENDS ${TEST_DEPS})
+add_dependencies(circle2circle_dredd_recipe_test common_artifacts_deps)
 
 # Run tests
 add_test(
