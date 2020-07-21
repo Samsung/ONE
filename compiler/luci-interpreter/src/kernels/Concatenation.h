@@ -31,8 +31,8 @@ public:
   Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
                 const ConcatenationParams &params);
 
-  std::vector<const Tensor *> getInputTensors() const override { return _inputs; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input(int index) const { return _inputs[index]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
@@ -40,10 +40,6 @@ public:
 private:
   template <typename T> void evalGeneric() const;
   void evalQuantized() const;
-
-private:
-  const std::vector<const Tensor *> _inputs;
-  Tensor *const _output;
 };
 
 } // namespace kernels

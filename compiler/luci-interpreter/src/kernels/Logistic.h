@@ -29,8 +29,8 @@ class Logistic : public Kernel
 public:
   Logistic(const Tensor *input, Tensor *output);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input() const { return _inputs[0]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
@@ -43,9 +43,7 @@ private:
   uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
 
 private:
-  const Tensor *const _input;
-  Tensor *const _output;
-  uint8_t _table[256];
+  uint8_t _table[256]{};
 };
 
 } // namespace kernels

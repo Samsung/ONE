@@ -30,16 +30,14 @@ class Split : public Kernel
 public:
   Split(const Tensor *axis, const Tensor *input, std::vector<Tensor *> outputs);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_axis, _input}; }
-  std::vector<Tensor *> getOutputTensors() const override { return _outputs; }
+  const Tensor *axis() const { return _inputs[0]; }
+  const Tensor *input() const { return _inputs[1]; }
+  Tensor *output(int index) const { return _outputs[index]; }
 
   void configure() override;
   void execute() const override;
 
 private:
-  const Tensor *const _axis;
-  const Tensor *const _input;
-  const std::vector<Tensor *> _outputs;
   int32_t _axis_value{};
 };
 

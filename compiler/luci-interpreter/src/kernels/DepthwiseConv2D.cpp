@@ -30,8 +30,7 @@ namespace kernels
 
 DepthwiseConv2D::DepthwiseConv2D(const Tensor *input, const Tensor *filter, const Tensor *bias,
                                  Tensor *output, const DepthwiseConv2DParams &params)
-    : KernelWithParams<DepthwiseConv2DParams>(params), _input(input), _filter(filter), _bias(bias),
-      _output(output)
+    : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output}, params)
 {
 }
 
@@ -47,22 +46,22 @@ void DepthwiseConv2D::configure()
   // (5) | int16 int8   int64 int16  | quantized per channel 16x8
   //
   // We only support (1) and (3) for now.
-  if (_input->element_type() == DataType::FLOAT32 && _filter->element_type() == DataType::FLOAT32)
+  if (input()->element_type() == DataType::FLOAT32 && filter()->element_type() == DataType::FLOAT32)
   {
-    assert(_bias == nullptr || _bias->element_type() == DataType::FLOAT32);
+    assert(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
   }
-  else if (_input->element_type() == DataType::U8 && _filter->element_type() == DataType::U8)
+  else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
-    assert(_bias == nullptr || _bias->element_type() == DataType::S32);
+    assert(bias() == nullptr || bias()->element_type() == DataType::S32);
   }
   else
   {
     throw std::runtime_error("Unsupported type.");
   }
-  assert(_output->element_type() == _input->element_type());
+  assert(output()->element_type() == input()->element_type());
 
-  const Shape &input_shape = _input->shape();
-  const Shape &filter_shape = _filter->shape();
+  const Shape &input_shape = input()->shape();
+  const Shape &filter_shape = filter()->shape();
   assert(input_shape.num_dims() == 4 && filter_shape.num_dims() == 4);
 
   const int32_t batches = input_shape.dim(0);
@@ -74,8 +73,8 @@ void DepthwiseConv2D::configure()
   const int32_t filter_width = filter_shape.dim(2);
   const int32_t channels_out = filter_shape.dim(3);
 
-  assert(_bias == nullptr ||
-         (_bias->shape().num_dims() == 1 && _bias->shape().dim(0) == channels_out));
+  assert(bias() == nullptr ||
+         (bias()->shape().num_dims() == 1 && bias()->shape().dim(0) == channels_out));
 
   const int32_t output_height =
       computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,
@@ -89,15 +88,15 @@ void DepthwiseConv2D::configure()
   _padding_width = computePadding(_params.stride_width, _params.dilation_width_factor, input_width,
                                   filter_width, output_width);
 
-  _output->resize({batches, output_height, output_width, channels_out});
+  output()->resize({batches, output_height, output_width, channels_out});
 }
 
 void DepthwiseConv2D::execute() const
 {
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      if (_filter->element_type() == DataType::FLOAT32)
+      if (filter()->element_type() == DataType::FLOAT32)
       {
         evalFloat();
         break;
@@ -128,17 +127,17 @@ void DepthwiseConv2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  tflite::reference_ops::DepthwiseConv(params, getTensorShape(_input), getTensorData<float>(_input),
-                                       getTensorShape(_filter), getTensorData<float>(_filter),
-                                       getTensorShape(_bias), getTensorData<float>(_bias),
-                                       getTensorShape(_output), getTensorData<float>(_output));
+  tflite::reference_ops::DepthwiseConv(
+      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
+      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+      getTensorShape(output()), getTensorData<float>(output()));
 }
 
 void DepthwiseConv2D::evalQuantized() const
 {
-  const auto input_scale = static_cast<double>(_input->scale());
-  const auto filter_scale = static_cast<double>(_filter->scale());
-  const auto output_scale = static_cast<double>(_output->scale());
+  const auto input_scale = static_cast<double>(input()->scale());
+  const auto filter_scale = static_cast<double>(filter()->scale());
+  const auto output_scale = static_cast<double>(output()->scale());
 
   const double real_multiplier = input_scale * filter_scale / output_scale;
   int32_t output_multiplier{};
@@ -147,7 +146,7 @@ void DepthwiseConv2D::evalQuantized() const
 
   int32_t activation_min{};
   int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, _output, &activation_min, &activation_max);
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
 
   tflite::DepthwiseParams params{};
   params.padding_values.height = _padding_height;
@@ -158,18 +157,18 @@ void DepthwiseConv2D::evalQuantized() const
   params.dilation_width_factor = _params.dilation_width_factor;
   params.depth_multiplier = _params.depth_multiplier;
   // The kernel expects input and filter zero points to be negated.
-  params.input_offset = -_input->zero_point();    // Note the '-'.
-  params.weights_offset = -_filter->zero_point(); // Note the '-'.
-  params.output_offset = _output->zero_point();
+  params.input_offset = -input()->zero_point();    // Note the '-'.
+  params.weights_offset = -filter()->zero_point(); // Note the '-'.
+  params.output_offset = output()->zero_point();
   params.output_multiplier = output_multiplier;
   params.output_shift = output_shift;
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
   tflite::reference_ops::DepthwiseConv(
-      params, getTensorShape(_input), getTensorData<uint8_t>(_input), getTensorShape(_filter),
-      getTensorData<uint8_t>(_filter), getTensorShape(_bias), getTensorData<int32_t>(_bias),
-      getTensorShape(_output), getTensorData<uint8_t>(_output));
+      params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
+      getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
+      getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels

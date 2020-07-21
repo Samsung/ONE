@@ -30,16 +30,12 @@ class Transpose : public Kernel
 public:
   Transpose(const Tensor *input, const Tensor *perm, Tensor *output);
 
-  std::vector<const Tensor *> getInputTensors() const override { return {_input, _perm}; }
-  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
+  const Tensor *input() const { return _inputs[0]; }
+  const Tensor *perm() const { return _inputs[1]; }
+  Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
-
-private:
-  const Tensor *const _input;
-  const Tensor *const _perm;
-  Tensor *const _output;
 };
 
 } // namespace kernels
