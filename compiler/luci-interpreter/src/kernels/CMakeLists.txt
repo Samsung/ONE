@@ -48,6 +48,8 @@ set(SOURCES
     Split.cpp
     StridedSlice.h
     StridedSlice.cpp
+    Squeeze.h
+    Squeeze.cpp
     Transpose.h
     Transpose.cpp
     TransposeConv.h
@@ -93,6 +95,7 @@ set(TEST_SOURCES
     SpaceToDepth.test.cpp
     Split.test.cpp
     StridedSlice.test.cpp
+    Squeeze.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp
     Unpack.test.cpp)

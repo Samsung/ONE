@@ -22,6 +22,7 @@
 #include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
+#include <vector>
 
 namespace luci_interpreter
 {
@@ -126,6 +127,11 @@ struct StridedSliceParams
   int32_t ellipsis_mask;
   int32_t new_axis_mask;
   int32_t shrink_axis_mask;
+};
+
+struct SqueezeParams
+{
+  std::vector<int32_t> squeeze_dims;
 };
 
 struct TransposeConvParams

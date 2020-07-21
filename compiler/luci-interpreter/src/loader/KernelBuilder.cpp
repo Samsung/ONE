@@ -39,6 +39,7 @@
 #include "kernels/SpaceToDepth.h"
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
+#include "kernels/Squeeze.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
@@ -467,6 +468,23 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
   params.shrink_axis_mask = node->shrink_axis_mask();
 
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  SqueezeParams params{};
+  assert(node->squeeze_dims().size() <= 4);
+  for (size_t i = 0; i < node->squeeze_dims().size(); i++)
+  {
+    params.squeeze_dims.push_back(node->squeeze_dims().at(i));
+  }
+
+  return std::make_unique<kernels::Squeeze>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
