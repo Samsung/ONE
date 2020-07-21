@@ -76,15 +76,15 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto block_size_alloc = _tensor_builder->at(block_size_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto block_size_tensor = _tensor_builder->at(block_size_index).get();
 
   assert(_ctx.at(block_size_index).data());
 
   auto fn = std::make_unique<::arm_compute::CLBatchToSpaceLayer>();
 
-  fn->configure(ifm_alloc->handle(), block_size_alloc->handle(), ofm_alloc->handle());
+  fn->configure(ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -96,15 +96,15 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Cast::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
   const auto input_sub_type = _ctx.at(ifm_index).typeInfo().type() == ir::DataType::BOOL8
                                   ? arm_compute::SubDataType::BOOL
                                   : arm_compute::SubDataType::NONE;
 
   auto fn = std::make_unique<::arm_compute::CLCast>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), input_sub_type);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), input_sub_type);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -132,10 +132,10 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
                                             ker_width, ker_height);
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto ker_alloc = _tensor_builder->at(ker_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto ker_tensor = _tensor_builder->at(ker_index).get();
+  auto bias_tensor = _tensor_builder->at(bias_index).get();
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
@@ -143,8 +143,9 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   auto fn = std::make_unique<::arm_compute::CLConvolutionLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
 
-  fn->configure(ifm_alloc->handle(), ker_alloc->handle(), bias_alloc->handle(), ofm_alloc->handle(),
-                conv_info, ::arm_compute::WeightsInfo(), ::arm_compute::Size2D(1U, 1U), act_info);
+  fn->configure(ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(),
+                ofm_tensor->handle(), conv_info, ::arm_compute::WeightsInfo(),
+                ::arm_compute::Size2D(1U, 1U), act_info);
 
   _return_fn = asAclClFunction(std::move(fn));
 }
@@ -171,10 +172,10 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto ker_alloc = _tensor_builder->at(ker_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto ker_tensor = _tensor_builder->at(ker_index).get();
+  auto bias_tensor = _tensor_builder->at(bias_index).get();
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
@@ -182,8 +183,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   {
     auto fn = std::make_unique<::arm_compute::CLDepthwiseConvolutionLayer>();
 
-    fn->configure(ifm_alloc->handle(), ker_alloc->handle(), bias_alloc->handle(),
-                  ofm_alloc->handle(), conv_info, multiplier, act_info);
+    fn->configure(ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(),
+                  ofm_tensor->handle(), conv_info, multiplier, act_info);
 
     _return_fn = asAclClFunction(std::move(fn));
   }
@@ -217,8 +218,8 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
   VERBOSE(MaxPool2D) << "PAD(L): " << padding.left << std::endl;
   VERBOSE(MaxPool2D) << "PAD(R): " << padding.right << std::endl;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   ::arm_compute::PoolingLayerInfo info{::arm_compute::PoolingType::MAX,
                                        ::arm_compute::Size2D{kw, kh},
@@ -226,10 +227,11 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
@@ -260,8 +262,8 @@ void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
   VERBOSE(AvgPool2D) << "PAD(L): " << padding.left << std::endl;
   VERBOSE(AvgPool2D) << "PAD(R): " << padding.right << std::endl;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::AVG, ::arm_compute::Size2D{kw, kh},
@@ -269,10 +271,11 @@ void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Concat &node)
@@ -296,7 +299,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
     return;
   }
 
-  auto output_alloc = _tensor_builder->at(ofm_index).get();
+  auto output_tensor = _tensor_builder->at(ofm_index).get();
   std::vector<::arm_compute::ICLTensor *> input_tensors;
   for (auto &ifm_ind : input_indexes)
     input_tensors.emplace_back(_tensor_builder->at(ifm_ind)->handle());
@@ -305,7 +308,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   if (input_indexes.size() < 2)
   {
     auto l = std::make_unique<::arm_compute::CLCopy>();
-    l->configure(input_tensors.at(0), output_alloc->handle());
+    l->configure(input_tensors.at(0), output_tensor->handle());
     fn = std::move(l);
   }
   else
@@ -313,10 +316,10 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
     auto l = std::make_unique<::arm_compute::CLConcatenateLayer>();
     const auto rank = _ctx.at(ofm_index).shape().rank();
     const auto frontend_layout = _current_op_seq_layout;
-    const auto backend_layout = output_alloc->layout();
+    const auto backend_layout = output_tensor->layout();
     const auto fixed_axis =
         acl_common::ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value();
-    l->configure(input_tensors, output_alloc->handle(), fixed_axis);
+    l->configure(input_tensors, output_tensor->handle(), fixed_axis);
     fn = std::move(l);
   }
 
@@ -369,12 +372,12 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 
   const auto activation = node.param().activation;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  const auto input_alloc = _tensor_builder->at(input_index).get();
-  const auto weight_alloc = _tensor_builder->at(weight_index).get();
-  const auto bias_alloc = _tensor_builder->at(bias_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  const auto input_tensor = _tensor_builder->at(input_index).get();
+  const auto weight_tensor = _tensor_builder->at(weight_index).get();
+  const auto bias_tensor = _tensor_builder->at(bias_index).get();
   const auto frontend_layout = _current_op_seq_layout;
-  const auto acl_layout = output_alloc->handle()->info()->data_layout();
+  const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
   auto fn = std::make_unique<arm_compute::CLFullyConnectedReshapingLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
@@ -387,15 +390,15 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
     assert(_ctx.at(weight_index).data());
   }
   fn->configure(
-      input_alloc->handle(), weight_alloc->handle(), bias_alloc->handle(), output_alloc->handle(),
-      needs_reshape,
+      input_tensor->handle(), weight_tensor->handle(), bias_tensor->handle(),
+      output_tensor->handle(), needs_reshape,
       ::onert::backend::acl_common::asTensorShape(
           reshape, frontend_layout, ::onert::backend::acl_common::asRuntimeLayout(acl_layout)),
       kernel_type);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
       asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, output_alloc->handle()));
+      ActivationBuilder::generate(activation, output_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Mul &node)
@@ -406,17 +409,18 @@ void KernelGenerator::visit(const ir::operation::Mul &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLPixelWiseMultiplication>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle(), 1.0, // scale
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
                 arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Reduce &node)
@@ -427,14 +431,14 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   const auto keep_dims{node.param().keep_dims};
   const auto reduce_type = node.param().reduce_type;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   const auto &axes = _ctx.at(axes_index);
   const auto input_rank = _ctx.at(input_index).shape().rank();
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = input_alloc->layout();
+  const auto backend_layout = input_tensor->layout();
 
   std::unique_ptr<arm_compute::IFunction> fn;
   if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
@@ -443,7 +447,7 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
 
     const auto acl_axes =
         acl_common::asCoordinates(axes, input_rank, frontend_layout, backend_layout);
-    l->configure(input_alloc->handle(), acl_axes, keep_dims, output_alloc->handle());
+    l->configure(input_tensor->handle(), acl_axes, keep_dims, output_tensor->handle());
 
     fn = std::move(l);
   }
@@ -453,7 +457,7 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
         _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
 
     const auto acl_axes = acl_common::asSet(axes, input_rank, frontend_layout, backend_layout);
-    l->configure(input_alloc->handle(), output_alloc->handle(), acl_axes, keep_dims,
+    l->configure(input_tensor->handle(), output_tensor->handle(), acl_axes, keep_dims,
                  acl_common::convertReduceType(reduce_type));
 
     fn = std::move(l);
@@ -469,13 +473,13 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   // NOTE This operation must not be changed the layout from frontend to backend
   //      So, PermutationOperationPass makes layouts of frontend and backend the same.
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = output_alloc->layout();
+  const auto backend_layout = output_tensor->layout();
   assert((_ctx.at(input_index).shape().rank() < 4 && _ctx.at(output_index).shape().rank() < 4) ||
          frontend_layout == backend_layout);
   UNUSED_RELEASE(frontend_layout);
@@ -483,7 +487,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
 
   auto fn = std::make_unique<::arm_compute::CLReshapeLayer>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle());
+  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -503,10 +507,10 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   (void)dims;
   (void)ndim;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
   auto fn = std::make_unique<arm_compute::CLReshapeLayer>();
-  fn->configure(input_alloc->handle(), output_alloc->handle());
+  fn->configure(input_tensor->handle(), output_tensor->handle());
   auto acl_fn = asAclClFunction(std::move(fn));
   _return_fn = std::move(acl_fn);
 }
@@ -516,15 +520,15 @@ void KernelGenerator::visit(const ir::operation::Tanh &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Tanh::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<arm_compute::CLActivationLayer>();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, 1.0f, 1.0f};
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), act_info);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -538,13 +542,13 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
 
   const auto beta = node.param().beta;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLSoftmaxLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), beta);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), beta);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -558,10 +562,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   const auto begins_index{node.getInputs().at(ir::operation::Slice::Input::BEGINS)};
   const auto sizes_index{node.getInputs().at(ir::operation::Slice::Input::SIZES)};
 
-  auto outputData_alloc = _tensor_builder->at(output_index).get();
-  auto inputData_alloc = _tensor_builder->at(input_index).get();
+  auto outputData_tensor = _tensor_builder->at(output_index).get();
+  auto inputData_tensor = _tensor_builder->at(input_index).get();
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = inputData_alloc->layout();
+  const auto backend_layout = inputData_tensor->layout();
 
   // Set initializers for indices data such as order of inputData
   int input_rank = _ctx.at(input_index).shape().rank();
@@ -613,7 +617,7 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
 
   auto fn = std::make_unique<::arm_compute::CLSlice>();
 
-  fn->configure(inputData_alloc->handle(), outputData_alloc->handle(), starts_set, ends_set);
+  fn->configure(inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -628,10 +632,10 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
 
-  auto outputData_alloc = _tensor_builder->at(output_index).get();
-  auto inputData_alloc = _tensor_builder->at(input_index).get();
+  auto outputData_tensor = _tensor_builder->at(output_index).get();
+  auto inputData_tensor = _tensor_builder->at(input_index).get();
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = inputData_alloc->layout();
+  const auto backend_layout = inputData_tensor->layout();
 
   // Set initializers for indices data such as order of inputData
   int input_rank = _ctx.at(input_index).shape().rank();
@@ -704,7 +708,7 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
 
   auto fn = std::make_unique<::arm_compute::CLStridedSlice>();
 
-  fn->configure(inputData_alloc->handle(), outputData_alloc->handle(), starts_set, ends_set,
+  fn->configure(inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set,
                 strides_set, begin_mask, end_mask, shrink_axis_mask);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -720,10 +724,10 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 
   const auto rank = _ctx.at(ifm_idx).shape().rank();
 
-  auto ofm_alloc = _tensor_builder->at(ofm_idx).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_idx).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_idx).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_idx).get();
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
+  const auto backend_layout = ifm_tensor->layout();
 
   std::vector<std::int32_t> pv(perm.cbegin(), perm.cend());
   // Reversed
@@ -732,7 +736,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 
   auto fn = std::make_unique<::arm_compute::CLPermute>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), backend_pv);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), backend_pv);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -747,17 +751,18 @@ void KernelGenerator::visit(const ir::operation::Add &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLArithmeticAddition>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle(),
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
                 arm_compute::ConvertPolicy::SATURATE);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Sub &node)
@@ -768,17 +773,18 @@ void KernelGenerator::visit(const ir::operation::Sub &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLArithmeticSubtraction>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle(),
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
                 arm_compute::ConvertPolicy::SATURATE);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Div &node)
@@ -789,16 +795,17 @@ void KernelGenerator::visit(const ir::operation::Div &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLArithmeticDivision>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle());
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Exp &node)
@@ -806,12 +813,12 @@ void KernelGenerator::visit(const ir::operation::Exp &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Exp::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLExpLayer>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle());
+  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -823,12 +830,12 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLReshapeLayer>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle());
+  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -842,20 +849,21 @@ void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
   const auto gamma_index{node.getInputs().at(ir::operation::InstanceNorm::Input::GAMMA)};
   const auto beta_index{node.getInputs().at(ir::operation::InstanceNorm::Input::BETA)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto gamma_alloc = _tensor_builder->at(gamma_index).get();
-  auto beta_alloc = _tensor_builder->at(beta_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto gamma_tensor = _tensor_builder->at(gamma_index).get();
+  auto beta_tensor = _tensor_builder->at(beta_index).get();
   auto epsilon = node.param().epsilon;
   auto activation = node.param().activation;
 
   auto fn = std::make_unique<::arm_compute::CLInstanceNormalizationLayerEx>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), gamma_alloc->handle(),
-                beta_alloc->handle(), epsilon);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), gamma_tensor->handle(),
+                beta_tensor->handle(), epsilon);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Logistic &node)
@@ -863,15 +871,15 @@ void KernelGenerator::visit(const ir::operation::Logistic &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Logistic::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
 
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), act_info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -884,13 +892,13 @@ void KernelGenerator::visit(const ir::operation::LogicalAnd &node)
   const auto input0_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT0)};
   const auto input1_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT1)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input0_alloc = _tensor_builder->at(input0_index).get();
-  auto input1_alloc = _tensor_builder->at(input1_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input0_tensor = _tensor_builder->at(input0_index).get();
+  auto input1_tensor = _tensor_builder->at(input1_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLBinaryLogicalOp>();
 
-  fn->configure(input0_alloc->handle(), input1_alloc->handle(), output_alloc->handle(),
+  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
                 ::arm_compute::BinaryLogicalOperation::AND);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -981,27 +989,28 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   const auto projection_clip = projection_threshold;
   assert(cell_clip >= 0.f && projection_clip >= 0.f);
 
-  auto scratch_buffer_alloc = _tensor_builder->at(scratch_buffer_index).get();
-  auto output_state_out_alloc = _tensor_builder->at(output_state_out_index).get();
-  auto cell_state_out_alloc = _tensor_builder->at(cell_state_out_index).get();
-  auto output_alloc = _tensor_builder->at(output_index).get();
+  auto scratch_buffer_tensor = _tensor_builder->at(scratch_buffer_index).get();
+  auto output_state_out_tensor = _tensor_builder->at(output_state_out_index).get();
+  auto cell_state_out_tensor = _tensor_builder->at(cell_state_out_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
 
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
-  auto input_to_forget_weights_alloc = _tensor_builder->at(input_to_forget_weights_index).get();
-  auto input_to_cell_weights_alloc = _tensor_builder->at(input_to_cell_weights_index).get();
-  auto input_to_output_weights_alloc = _tensor_builder->at(input_to_output_weights_index).get();
-  auto recurrent_to_forget_weights_alloc =
+  auto input_to_forget_weights_tensor = _tensor_builder->at(input_to_forget_weights_index).get();
+  auto input_to_cell_weights_tensor = _tensor_builder->at(input_to_cell_weights_index).get();
+  auto input_to_output_weights_tensor = _tensor_builder->at(input_to_output_weights_index).get();
+  auto recurrent_to_forget_weights_tensor =
       _tensor_builder->at(recurrent_to_forget_weights_index).get();
-  auto recurrent_to_cell_weights_alloc = _tensor_builder->at(recurrent_to_cell_weights_index).get();
-  auto recurrent_to_output_weights_alloc =
+  auto recurrent_to_cell_weights_tensor =
+      _tensor_builder->at(recurrent_to_cell_weights_index).get();
+  auto recurrent_to_output_weights_tensor =
       _tensor_builder->at(recurrent_to_output_weights_index).get();
 
-  auto forget_gate_bias_alloc = _tensor_builder->at(forget_gate_bias_index).get();
-  auto cell_bias_alloc = _tensor_builder->at(cell_bias_index).get();
-  auto output_gate_bias_alloc = _tensor_builder->at(output_gate_bias_index).get();
-  auto output_state_in_alloc = _tensor_builder->at(output_state_in_index).get();
-  auto cell_state_in_alloc = _tensor_builder->at(cell_state_in_index).get();
+  auto forget_gate_bias_tensor = _tensor_builder->at(forget_gate_bias_index).get();
+  auto cell_bias_tensor = _tensor_builder->at(cell_bias_index).get();
+  auto output_gate_bias_tensor = _tensor_builder->at(output_gate_bias_index).get();
+  auto output_state_in_tensor = _tensor_builder->at(output_state_in_index).get();
+  auto cell_state_in_tensor = _tensor_builder->at(cell_state_in_index).get();
 
   auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
 
@@ -1010,45 +1019,47 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   ::arm_compute::LSTMParams<::arm_compute::ICLTensor> lstm_params{};
   if (has_cifg_param)
   {
-    auto input_to_input_weights_alloc =
+    auto input_to_input_weights_tensor =
         _tensor_builder->at(input_to_input_weights_index).get(); // optional
-    auto recurrent_to_input_weights_alloc =
+    auto recurrent_to_input_weights_tensor =
         _tensor_builder->at(recurrent_to_input_weights_index).get(); // optional
     auto cell_to_input_weights_handle =
         has_peephole_param ? _tensor_builder->at(cell_to_input_weights_index).get()->handle()
                            : nullptr; // optional (non-cifg && peephole)
-    auto input_gate_bias_alloc = _tensor_builder->at(input_gate_bias_index).get(); // optional
-    lstm_params.set_cifg_params(input_to_input_weights_alloc->handle(),
-                                recurrent_to_input_weights_alloc->handle(),
-                                cell_to_input_weights_handle, input_gate_bias_alloc->handle());
+    auto input_gate_bias_tensor = _tensor_builder->at(input_gate_bias_index).get(); // optional
+    lstm_params.set_cifg_params(input_to_input_weights_tensor->handle(),
+                                recurrent_to_input_weights_tensor->handle(),
+                                cell_to_input_weights_handle, input_gate_bias_tensor->handle());
   }
   if (has_peephole_param)
   {
-    auto cell_to_forget_weights_alloc =
+    auto cell_to_forget_weights_tensor =
         _tensor_builder->at(cell_to_forget_weights_index).get(); // optional
-    auto cell_to_output_weights_alloc =
+    auto cell_to_output_weights_tensor =
         _tensor_builder->at(cell_to_output_weights_index).get(); // optional
-    lstm_params.set_peephole_params(cell_to_forget_weights_alloc->handle(),
-                                    cell_to_output_weights_alloc->handle());
+    lstm_params.set_peephole_params(cell_to_forget_weights_tensor->handle(),
+                                    cell_to_output_weights_tensor->handle());
   }
   if (has_projection_param)
   {
-    auto projection_weights_alloc = _tensor_builder->at(projection_weights_index).get(); // optional
+    auto projection_weights_tensor =
+        _tensor_builder->at(projection_weights_index).get(); // optional
     auto projection_bias_handle = has_projection_bias
                                       ? _tensor_builder->at(projection_bias_index).get()->handle()
                                       : nullptr; // optional
-    lstm_params.set_projection_params(projection_weights_alloc->handle(), projection_bias_handle);
+    lstm_params.set_projection_params(projection_weights_tensor->handle(), projection_bias_handle);
   }
 
-  fn->configure(
-      input_alloc->handle(), input_to_forget_weights_alloc->handle(),
-      input_to_cell_weights_alloc->handle(), input_to_output_weights_alloc->handle(),
-      recurrent_to_forget_weights_alloc->handle(), recurrent_to_cell_weights_alloc->handle(),
-      recurrent_to_output_weights_alloc->handle(), forget_gate_bias_alloc->handle(),
-      cell_bias_alloc->handle(), output_gate_bias_alloc->handle(), output_state_in_alloc->handle(),
-      cell_state_in_alloc->handle(), scratch_buffer_alloc->handle(),
-      output_state_out_alloc->handle(), cell_state_out_alloc->handle(), output_alloc->handle(),
-      lstm_params, act_info, cell_clip, projection_clip);
+  fn->configure(input_tensor->handle(), input_to_forget_weights_tensor->handle(),
+                input_to_cell_weights_tensor->handle(), input_to_output_weights_tensor->handle(),
+                recurrent_to_forget_weights_tensor->handle(),
+                recurrent_to_cell_weights_tensor->handle(),
+                recurrent_to_output_weights_tensor->handle(), forget_gate_bias_tensor->handle(),
+                cell_bias_tensor->handle(), output_gate_bias_tensor->handle(),
+                output_state_in_tensor->handle(), cell_state_in_tensor->handle(),
+                scratch_buffer_tensor->handle(), output_state_out_tensor->handle(),
+                cell_state_out_tensor->handle(), output_tensor->handle(), lstm_params, act_info,
+                cell_clip, projection_clip);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1063,13 +1074,13 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
 
   const auto comparison_type = node.param().comparison_type;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input0_alloc = _tensor_builder->at(input0_index).get();
-  auto input1_alloc = _tensor_builder->at(input1_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input0_tensor = _tensor_builder->at(input0_index).get();
+  auto input1_tensor = _tensor_builder->at(input1_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLComparison>();
 
-  fn->configure(input0_alloc->handle(), input1_alloc->handle(), output_alloc->handle(),
+  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
                 (arm_compute::ComparisonOperation)comparison_type);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -1107,13 +1118,13 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   for (const auto &input_index : input_indexes)
   {
     size_t input_rank = _ctx.at(input_index).shape().rank();
-    const auto &input_alloc = _tensor_builder->at(input_index);
-    orig_inputs_acl_tensor_shapes.emplace_back(input_alloc->info()->tensor_shape());
-    assert(input_rank == input_alloc->num_dimensions());
-    if (input_rank != input_alloc->info()->num_dimensions())
+    const auto &input_tensor = _tensor_builder->at(input_index);
+    orig_inputs_acl_tensor_shapes.emplace_back(input_tensor->info()->tensor_shape());
+    assert(input_rank == input_tensor->num_dimensions());
+    if (input_rank != input_tensor->info()->num_dimensions())
     {
       // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      input_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+      input_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
           _ctx.at(input_index).shape(), _current_op_seq_layout, backend_layout, false));
     }
   }
@@ -1135,8 +1146,8 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(0)};
   const auto permute_type = node.getPermuteType();
-  auto ofm_alloc = _tensor_builder->at(ofm_idx).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_idx).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_idx).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_idx).get();
   const auto rank = _ctx.at(ofm_idx).shape().rank();
   assert(_ctx.at(ifm_idx).shape().rank() == _ctx.at(ofm_idx).shape().rank());
 
@@ -1149,7 +1160,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 
     auto l = std::make_unique<::arm_compute::CLPermute>();
 
-    l->configure(ifm_alloc->handle(), ofm_alloc->handle(), pv);
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), pv);
 
     fn = std::move(l);
   }
@@ -1160,7 +1171,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 
     auto l = std::make_unique<::arm_compute::CLPermute>();
 
-    l->configure(ifm_alloc->handle(), ofm_alloc->handle(), pv);
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), pv);
 
     fn = std::move(l);
   }
@@ -1168,7 +1179,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   {
     auto l = std::make_unique<::arm_compute::CLCopy>();
 
-    l->configure(ifm_alloc->handle(), ofm_alloc->handle());
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
 
     fn = std::move(l);
   }
@@ -1183,12 +1194,12 @@ void KernelGenerator::visit(const ir::operation::RSQRT &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::RSQRT::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLRsqrtLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle());
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
 
   _return_fn = asAclClFunction(std::move(fn));
 }
@@ -1198,15 +1209,15 @@ void KernelGenerator::visit(const ir::operation::ReLU &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ReLU::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<arm_compute::CLActivationLayer>();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), act_info);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1219,12 +1230,12 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLScale>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(),
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(),
                 ::arm_compute::InterpolationPolicy::BILINEAR, ::arm_compute::BorderMode::REPLICATE,
                 ::arm_compute::PixelValue(0.f), ::arm_compute::SamplingPolicy::TOP_LEFT);
 
@@ -1238,15 +1249,15 @@ void KernelGenerator::visit(const ir::operation::ReLU1 &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ReLU1::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
 
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), act_info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1258,15 +1269,15 @@ void KernelGenerator::visit(const ir::operation::ReLU6 &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ReLU6::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.0f};
 
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), act_info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1288,25 +1299,25 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
 
   const auto activation = node.param().activation;
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto hidden_state_out_alloc = _tensor_builder->at(hidden_state_out_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto hidden_state_out_tensor = _tensor_builder->at(hidden_state_out_index).get();
 
-  auto input_alloc = _tensor_builder->at(input_index).get();
-  auto weights_alloc = _tensor_builder->at(weights_index).get();
-  auto recurrent_weights_alloc = _tensor_builder->at(recurrent_weights_index).get();
-  auto bias_alloc = _tensor_builder->at(bias_index).get();
-  auto hidden_state_in_alloc = _tensor_builder->at(hidden_state_in_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
+  auto weights_tensor = _tensor_builder->at(weights_index).get();
+  auto recurrent_weights_tensor = _tensor_builder->at(recurrent_weights_index).get();
+  auto bias_tensor = _tensor_builder->at(bias_index).get();
+  auto hidden_state_in_tensor = _tensor_builder->at(hidden_state_in_index).get();
   auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
 
   auto copy_layer = std::make_unique<::arm_compute::CLCopy>();
-  copy_layer->configure(hidden_state_in_alloc->handle(), hidden_state_out_alloc->handle());
+  copy_layer->configure(hidden_state_in_tensor->handle(), hidden_state_out_tensor->handle());
   _return_fn = asAclClFunction(std::move(copy_layer));
 
   auto fn = std::make_unique<::arm_compute::CLRNNLayerEx>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-  fn->configure(input_alloc->handle(), weights_alloc->handle(), recurrent_weights_alloc->handle(),
-                bias_alloc->handle(), hidden_state_out_alloc->handle(), output_alloc->handle(),
-                act_info);
+  fn->configure(input_tensor->handle(), weights_tensor->handle(),
+                recurrent_weights_tensor->handle(), bias_tensor->handle(),
+                hidden_state_out_tensor->handle(), output_tensor->handle(), act_info);
   _return_fn = asAclClFunction(std::move(fn));
 }
 
@@ -1315,12 +1326,12 @@ void KernelGenerator::visit(const ir::operation::Floor &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Floor::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLFloor>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle());
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1335,10 +1346,10 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
       node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto block_size_alloc = _tensor_builder->at(block_size_index).get();
-  auto paddings_alloc = _tensor_builder->at(paddings_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto block_size_tensor = _tensor_builder->at(block_size_index).get();
+  auto paddings_tensor = _tensor_builder->at(paddings_index).get();
 
   assert(_ctx.at(block_size_index).data());
   assert(_ctx.at(paddings_index).data());
@@ -1346,8 +1357,8 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   std::unique_ptr<::arm_compute::IFunction> fn;
 
   auto l = std::make_unique<::arm_compute::CLSpaceToBatchLayer>();
-  l->configure(ifm_alloc->handle(), block_size_alloc->handle(), paddings_alloc->handle(),
-               ofm_alloc->handle());
+  l->configure(ifm_tensor->handle(), block_size_tensor->handle(), paddings_tensor->handle(),
+               ofm_tensor->handle());
   fn = std::move(l);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -1362,12 +1373,12 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
 
   auto block_size = node.param().block_size;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLSpaceToDepth>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), block_size);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), block_size);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1389,8 +1400,8 @@ void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
       ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
   const auto activation = node.param().activation;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::L2, ::arm_compute::Size2D{kw, kh},
@@ -1398,10 +1409,11 @@ void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_alloc->handle()));
+      asAclClFunction(std::move(fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
@@ -1410,13 +1422,13 @@ void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
   const auto lookups_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::LOOKUPS)};
   const auto values_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::VALUES)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto lookups_alloc = _tensor_builder->at(lookups_index).get();
-  auto values_alloc = _tensor_builder->at(values_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto lookups_tensor = _tensor_builder->at(lookups_index).get();
+  auto values_tensor = _tensor_builder->at(values_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLEmbeddingLookup>();
 
-  fn->configure(values_alloc->handle(), output_alloc->handle(), lookups_alloc->handle());
+  fn->configure(values_tensor->handle(), output_tensor->handle(), lookups_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1442,15 +1454,15 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
   float beta = 0.5f;                             // pow(reduction, -0.5) = 1 / sqrt(reduction)
   float bias = 0.0f;                             // Don't offset the reduction.
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(::arm_compute::NormType::CROSS_MAP,
                                                                radius, alpha, beta, bias, false);
 
   auto fn = std::make_unique<::arm_compute::CLNormalizationLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), norm_info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1466,17 +1478,17 @@ void KernelGenerator::visit(const ir::operation::HashtableLookup &node)
   const auto keys_index{node.getInputs().at(ir::operation::HashtableLookup::Input::KEYS)};
   const auto values_index{node.getInputs().at(ir::operation::HashtableLookup::Input::VALUES)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto hits_alloc = _tensor_builder->at(hits_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto hits_tensor = _tensor_builder->at(hits_index).get();
 
-  auto lookups_alloc = _tensor_builder->at(lookups_index).get();
-  auto keys_alloc = _tensor_builder->at(keys_index).get();
-  auto values_alloc = _tensor_builder->at(values_index).get();
+  auto lookups_tensor = _tensor_builder->at(lookups_index).get();
+  auto keys_tensor = _tensor_builder->at(keys_index).get();
+  auto values_tensor = _tensor_builder->at(values_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLHashtableLookup>();
 
-  fn->configure(lookups_alloc->handle(), keys_alloc->handle(), values_alloc->handle(),
-                output_alloc->handle(), hits_alloc->handle());
+  fn->configure(lookups_tensor->handle(), keys_tensor->handle(), values_tensor->handle(),
+                output_tensor->handle(), hits_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1489,13 +1501,13 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
   const auto ifm_index{node.getInputs().at(ir::operation::PReLU::Input::INPUT)};
   const auto alpha_index{node.getInputs().at(ir::operation::PReLU::Input::ALPHA)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto alpha_alloc = _tensor_builder->at(alpha_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto alpha_tensor = _tensor_builder->at(alpha_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLPReLU>();
 
-  fn->configure(ifm_alloc->handle(), alpha_alloc->handle(), ofm_alloc->handle());
+  fn->configure(ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1528,17 +1540,17 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
     invalid_vertical = ofm_shape.H - (1 + (ifm_shape.H - 1) * stride.vertical) - (ker_shape.H - 1);
   }
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto ker_alloc = _tensor_builder->at(ker_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto ker_tensor = _tensor_builder->at(ker_index).get();
 
   const auto tconv_info = acl_common::asPadStrideInfo(padding, stride);
 
   auto fn = std::make_unique<::arm_compute::CLTransposeConvLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
 
-  fn->configure(ifm_alloc->handle(), ker_alloc->handle(), nullptr, ofm_alloc->handle(), tconv_info,
-                invalid_horizontal, invalid_vertical);
+  fn->configure(ifm_tensor->handle(), ker_tensor->handle(), nullptr, ofm_tensor->handle(),
+                tconv_info, invalid_horizontal, invalid_vertical);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1550,15 +1562,15 @@ void KernelGenerator::visit(const ir::operation::SQRT &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::SQRT::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::SQRT};
 
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), act_info);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1571,13 +1583,13 @@ void KernelGenerator::visit(const ir::operation::LogicalOr &node)
   const auto input0_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT0)};
   const auto input1_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT1)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input0_alloc = _tensor_builder->at(input0_index).get();
-  auto input1_alloc = _tensor_builder->at(input1_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input0_tensor = _tensor_builder->at(input0_index).get();
+  auto input1_tensor = _tensor_builder->at(input1_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLBitwiseOr>();
 
-  fn->configure(input0_alloc->handle(), input1_alloc->handle(), output_alloc->handle());
+  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1589,12 +1601,12 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::LogicalNot::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLBitwiseNot>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle());
+  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1607,13 +1619,13 @@ void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLElementwiseSquaredDiff>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle());
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1634,13 +1646,13 @@ void KernelGenerator::visit(const ir::operation::TopKV2 &node)
 
   const auto k = node.param().k;
 
-  auto values_alloc = _tensor_builder->at(outputValues_index).get();
-  auto indices_alloc = _tensor_builder->at(outputIndices_index).get();
-  auto input_alloc = _tensor_builder->at(inputData_index).get();
+  auto values_tensor = _tensor_builder->at(outputValues_index).get();
+  auto indices_tensor = _tensor_builder->at(outputIndices_index).get();
+  auto input_tensor = _tensor_builder->at(inputData_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLTopKV2>();
 
-  fn->configure(input_alloc->handle(), k, values_alloc->handle(), indices_alloc->handle());
+  fn->configure(input_tensor->handle(), k, values_tensor->handle(), indices_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1659,9 +1671,9 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   const auto axis_value = (axis_raw < 0 ? (ifm_rank + axis_raw) : axis_raw);
   const int axis = ::onert::backend::acl_common::ToARMComputeAxis(ifm_rank, axis_value).value();
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  auto indices_alloc = _tensor_builder->at(indices_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  auto indices_tensor = _tensor_builder->at(indices_index).get();
 
   // NOTE The frontend layout and backend layout must be the same for this operation.
   //      If not the same, we have to add a stage(?) to perform permutation of output tensor. It
@@ -1671,43 +1683,43 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   //      a model. For example, if a model in NHWC has this operation as output rank == 4, indices
   //      rank == 2 and axis == 2, this operation should work as the axis W and C, but the axis W
   //      and C are not sequential in NCHW. So the backend in NCHW cannot handle this case.
-  const auto backend_layout = ofm_alloc->layout();
+  const auto backend_layout = ofm_tensor->layout();
   UNUSED_RELEASE(backend_layout);
-  assert(backend_layout == ifm_alloc->layout());
-  assert(backend_layout == indices_alloc->layout());
+  assert(backend_layout == ifm_tensor->layout());
+  assert(backend_layout == indices_tensor->layout());
   assert(ifm_rank < 4 || _current_op_seq_layout == backend_layout);
 
   auto fn = std::make_unique<::arm_compute::CLGatherEx>();
 
   // input is n-D, indices k-D, output is (n + k - 1)-D
   size_t n = ifm_rank;
-  assert(n == ifm_alloc->num_dimensions());
+  assert(n == ifm_tensor->num_dimensions());
   size_t k = _ctx.at(indices_index).shape().rank();
-  assert(k == indices_alloc->num_dimensions());
+  assert(k == indices_tensor->num_dimensions());
 
   // Disable applied dim_correction
-  const auto orig_ifm_acl_tensor_shape = ifm_alloc->info()->tensor_shape();
-  if (n != ifm_alloc->info()->num_dimensions())
+  const auto orig_ifm_acl_tensor_shape = ifm_tensor->info()->tensor_shape();
+  if (n != ifm_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
     const auto ifm = _ctx.at(ifm_index);
-    ifm_alloc->info()->set_tensor_shape(
+    ifm_tensor->info()->set_tensor_shape(
         acl_common::asTensorShape(ifm.shape(), _current_op_seq_layout, backend_layout, false));
   }
-  const auto orig_indice_acl_tensor_shape = indices_alloc->info()->tensor_shape();
-  if (k != indices_alloc->info()->num_dimensions())
+  const auto orig_indice_acl_tensor_shape = indices_tensor->info()->tensor_shape();
+  if (k != indices_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and indices tensor is applied dim_correction
     const auto indices = _ctx.at(indices_index);
-    indices_alloc->info()->set_tensor_shape(
+    indices_tensor->info()->set_tensor_shape(
         acl_common::asTensorShape(indices.shape(), _current_op_seq_layout, backend_layout, false));
   }
 
-  fn->configure(ifm_alloc->handle(), indices_alloc->handle(), ofm_alloc->handle(), axis);
+  fn->configure(ifm_tensor->handle(), indices_tensor->handle(), ofm_tensor->handle(), axis);
 
   // Revert disabling applied dim_correction
-  ifm_alloc->info()->set_tensor_shape(orig_ifm_acl_tensor_shape);
-  indices_alloc->info()->set_tensor_shape(orig_indice_acl_tensor_shape);
+  ifm_tensor->info()->set_tensor_shape(orig_ifm_acl_tensor_shape);
+  indices_tensor->info()->set_tensor_shape(orig_indice_acl_tensor_shape);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1719,12 +1731,12 @@ void KernelGenerator::visit(const ir::operation::Neg &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Neg::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLNeg>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle());
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1736,15 +1748,15 @@ void KernelGenerator::visit(const ir::operation::Abs &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Abs::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   const ::arm_compute::ActivationLayerInfo act_info{
       ::arm_compute::ActivationLayerInfo::ActivationFunction::ABS};
 
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), act_info);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1761,11 +1773,11 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   assert((ifm_shape.rank() - 1) == ofm_shape.rank());
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   auto frontend_layout = _current_op_seq_layout;
-  auto backend_layout = ifm_alloc->layout();
+  auto backend_layout = ifm_tensor->layout();
 
   int axis_value = node.param().axis;
   if (axis_value < 0)
@@ -1778,7 +1790,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   auto fn = std::make_unique<::arm_compute::CLArgOperation>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), {acl_axis},
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), {acl_axis},
                 ::arm_compute::ArgOperation::MAX);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -1791,12 +1803,12 @@ void KernelGenerator::visit(const ir::operation::Dequantize &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLCast>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), arm_compute::SubDataType::NONE);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), arm_compute::SubDataType::NONE);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1814,15 +1826,15 @@ void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &nod
   auto beta = node.param().beta;
   auto bias = node.param().bias;
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(
       ::arm_compute::NormType::CROSS_MAP, radius * 2 + 1, alpha, beta, bias, false);
 
   auto fn = std::make_unique<::arm_compute::CLNormalizationLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), norm_info);
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1837,12 +1849,12 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto block_size = node.param().block_size;
   assert(block_size > 0);
 
-  auto output_alloc = _tensor_builder->at(output_index).get();
-  auto input_alloc = _tensor_builder->at(input_index).get();
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto input_tensor = _tensor_builder->at(input_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLDepthToSpace>();
 
-  fn->configure(input_alloc->handle(), output_alloc->handle(), block_size);
+  fn->configure(input_tensor->handle(), output_tensor->handle(), block_size);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1860,13 +1872,13 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   for (const auto &output : node.getOutputs())
     output_indexes.emplace_back(output);
 
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
-  std::vector<arm_compute::ICLTensor *> output_allocs;
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
+  std::vector<arm_compute::ICLTensor *> output_tensors;
   for (const auto &ofm_ind : output_indexes)
-    output_allocs.emplace_back(_tensor_builder->at(ofm_ind).get()->handle());
+    output_tensors.emplace_back(_tensor_builder->at(ofm_ind).get()->handle());
 
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = ifm_alloc->layout();
+  const auto backend_layout = ifm_tensor->layout();
   auto axis = node.param().axis;
   if (axis < 0)
     axis += ifm_rank;
@@ -1874,7 +1886,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   auto fn = std::make_unique<::arm_compute::CLSplit>();
 
-  fn->configure(ifm_alloc->handle(), output_allocs, axis);
+  fn->configure(ifm_tensor->handle(), output_tensors, axis);
 
   _return_fn = asAclClFunction(std::move(fn));
 }
@@ -1906,13 +1918,13 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   for (const auto &output_index : output_indexes)
   {
     size_t output_rank = _ctx.at(output_index).shape().rank();
-    const auto &output_alloc = _tensor_builder->at(output_index);
-    orig_outputs_acl_tensor_shapes.emplace_back(output_alloc->info()->tensor_shape());
-    assert(output_rank == output_alloc->num_dimensions());
-    if (output_rank != output_alloc->info()->num_dimensions())
+    const auto &output_tensor = _tensor_builder->at(output_index);
+    orig_outputs_acl_tensor_shapes.emplace_back(output_tensor->info()->tensor_shape());
+    assert(output_rank == output_tensor->num_dimensions());
+    if (output_rank != output_tensor->info()->num_dimensions())
     {
       // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      output_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+      output_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
           _ctx.at(output_index).shape(), _current_op_seq_layout, backend_layout, false));
     }
   }
@@ -1959,12 +1971,12 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
 
   // Disable applied dim_correction
   size_t input_rank = _ctx.at(input_index).shape().rank();
-  const auto &input_alloc = _tensor_builder->at(input_index);
-  assert(input_rank == input_alloc->num_dimensions());
-  if (input_rank != input_alloc->info()->num_dimensions())
+  const auto &input_tensor = _tensor_builder->at(input_index);
+  assert(input_rank == input_tensor->num_dimensions());
+  if (input_rank != input_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-    input_alloc->info()->set_tensor_shape(acl_common::asTensorShape(
+    input_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
         _ctx.at(input_index).shape(), frontend_layout, backend_layout, false));
   }
 
@@ -1982,13 +1994,13 @@ void KernelGenerator::visit(const ir::operation::Min &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLElementwiseMin>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle());
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -2001,13 +2013,13 @@ void KernelGenerator::visit(const ir::operation::Max &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto lhs_alloc = _tensor_builder->at(lhs_index).get();
-  auto rhs_alloc = _tensor_builder->at(rhs_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLElementwiseMax>();
 
-  fn->configure(lhs_alloc->handle(), rhs_alloc->handle(), ofm_alloc->handle());
+  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -2019,12 +2031,12 @@ void KernelGenerator::visit(const ir::operation::ConvertFp32ToFp16 &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ConvertFp32ToFp16::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLDepthConvertLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), ::arm_compute::ConvertPolicy::SATURATE,
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), ::arm_compute::ConvertPolicy::SATURATE,
                 0);
 
   auto acl_fn = asAclClFunction(std::move(fn));
@@ -2037,12 +2049,12 @@ void KernelGenerator::visit(const ir::operation::ConvertFp16ToFp32 &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ConvertFp16ToFp32::Input::INPUT)};
 
-  auto ofm_alloc = _tensor_builder->at(ofm_index).get();
-  auto ifm_alloc = _tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
   auto fn = std::make_unique<::arm_compute::CLDepthConvertLayer>();
 
-  fn->configure(ifm_alloc->handle(), ofm_alloc->handle(), ::arm_compute::ConvertPolicy::SATURATE,
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), ::arm_compute::ConvertPolicy::SATURATE,
                 0);
 
   auto acl_fn = asAclClFunction(std::move(fn));
