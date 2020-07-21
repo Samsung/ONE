@@ -73,9 +73,8 @@ public:
     // Compile
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, graph);
-    auto compiler = new onert::compiler::Compiler{subgs};
-    executors = compiler->compile();
-    delete compiler;
+    onert::compiler::Compiler compiler{subgs};
+    executors = compiler.compile();
   }
 
 public:
@@ -98,19 +97,17 @@ TEST(ExecInstance, simple)
   float output_buffer[4] = {};
   const float output_expected[4] = {5, -2, 0, -1};
 
-  auto execution = new onert::exec::Execution(executors);
+  onert::exec::Execution execution{executors};
 
-  execution->setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
-  execution->setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
-  execution->setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution->execute();
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.execute();
 
   for (auto i = 0; i < 4; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
   }
-
-  delete execution;
 }
 
 TEST(ExecInstance, twoCompile)
@@ -118,7 +115,7 @@ TEST(ExecInstance, twoCompile)
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
   auto executors1 = mockup.executors;
-  auto execution1 = new onert::exec::Execution(executors1);
+  onert::exec::Execution execution1{executors1};
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -129,38 +126,34 @@ TEST(ExecInstance, twoCompile)
   float exe1_output_buffer[4] = {};
   const float exe1_output_expected[4] = {5, -2, 0, -1};
 
-  execution1->setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
-  execution1->setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
-  execution1->setOutput(output, reinterpret_cast<void *>(exe1_output_buffer), 16);
+  execution1.setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
+  execution1.setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
+  execution1.setOutput(output, reinterpret_cast<void *>(exe1_output_buffer), 16);
 
   // Make new executor: compile again
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, graph);
-  auto compiler = new onert::compiler::Compiler{subgs};
-  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler->compile();
-  auto execution2 = new onert::exec::Execution(executors2);
+  onert::compiler::Compiler compiler{subgs};
+  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler.compile();
+  onert::exec::Execution execution2{executors2};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
   const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
   float exe2_output_buffer[4] = {};
   const float exe2_output_expected[4] = {2, 5, -2, 7};
 
-  execution2->setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
-  execution2->setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
-  execution2->setOutput(output, reinterpret_cast<void *>(exe2_output_buffer), 16);
+  execution2.setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
+  execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
+  execution2.setOutput(output, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1->execute();
-  execution2->execute();
+  execution1.execute();
+  execution2.execute();
 
   for (auto i = 0; i < 4; i++)
   {
     EXPECT_EQ(exe1_output_buffer[i], exe1_output_expected[i]);
     EXPECT_EQ(exe2_output_buffer[i], exe2_output_expected[i]);
   }
-
-  delete compiler;
-  delete execution1;
-  delete execution2;
 }
 
 // Support two initialized execution instance then ordered execution
@@ -178,32 +171,29 @@ TEST(ExecInstance, twoExecution)
   const float exe1_output_expected[4] = {5, -2, 0, -1};
   const float exe2_output_expected[4] = {2, 5, -2, 7};
 
-  auto execution1 = new onert::exec::Execution(executors);
-  execution1->setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
-  execution1->setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
-  execution1->setOutput(output1, reinterpret_cast<void *>(exe1_output_buffer), 16);
+  onert::exec::Execution execution1{executors};
+  execution1.setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
+  execution1.setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
+  execution1.setOutput(output1, reinterpret_cast<void *>(exe1_output_buffer), 16);
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
   const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
   float exe2_output_buffer[4] = {};
 
   // Make new execution
-  auto execution2 = new onert::exec::Execution(executors);
-  execution2->setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
-  execution2->setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
-  execution2->setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
+  onert::exec::Execution execution2{executors};
+  execution2.setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
+  execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
+  execution2.setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1->execute();
-  execution2->execute();
+  execution1.execute();
+  execution2.execute();
 
   for (auto i = 0; i < 4; i++)
   {
     EXPECT_EQ(exe1_output_buffer[i], exe1_output_expected[i]);
     EXPECT_EQ(exe2_output_buffer[i], exe2_output_expected[i]);
   }
-
-  delete execution1;
-  delete execution2;
 }
 
 class Inference
@@ -222,14 +212,12 @@ public:
     auto input2 = IOIndex{1};
     auto output1 = IOIndex{0};
 
-    auto execution = new onert::exec::Execution(_executors);
-    execution->setInput(input1, reinterpret_cast<const void *>(_input1), 16);
-    execution->setInput(input2, reinterpret_cast<const void *>(_input2), 16);
-    execution->setOutput(output1, reinterpret_cast<void *>(_output), 16);
+    onert::exec::Execution execution{_executors};
+    execution.setInput(input1, reinterpret_cast<const void *>(_input1), 16);
+    execution.setInput(input2, reinterpret_cast<const void *>(_input2), 16);
+    execution.setOutput(output1, reinterpret_cast<void *>(_output), 16);
 
-    execution->execute();
-
-    delete execution;
+    execution.execute();
   }
 
 private:
@@ -288,20 +276,18 @@ TEST(ExecInstance, async)
   float output_buffer[4] = {};
   const float output_expected[4] = {5, -2, 0, -1};
 
-  auto execution = new onert::exec::Execution(executors);
+  onert::exec::Execution execution{executors};
 
-  execution->setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
-  execution->setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
-  execution->setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution->startExecute();
-  execution->waitFinish();
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.startExecute();
+  execution.waitFinish();
 
   for (auto i = 0; i < 4; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
   }
-
-  delete execution;
 }
 
 } // namespace
