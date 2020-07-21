@@ -42,8 +42,6 @@ set(SOURCES
     Reshape.cpp
     Softmax.h
     Softmax.cpp
-    SpaceToDepth.h
-    SpaceToDepth.cpp
     Split.h
     Split.cpp
     StridedSlice.h
@@ -92,7 +90,6 @@ set(TEST_SOURCES
     Pad.test.cpp
     Reshape.test.cpp
     Softmax.test.cpp
-    SpaceToDepth.test.cpp
     Split.test.cpp
     StridedSlice.test.cpp
     Squeeze.test.cpp
