@@ -40,7 +40,7 @@ while [[ $# -ne 0 ]]; do
   cat > "${PREFIX}.log" <(
     exec 2>&1
 
-    echo "-- Found tflite: ${PREFIX}.tflite"
+    echo "-- Found circle: ${PREFIX}.opt.circle"
 
     # Exit immediately if any command fails
     set -e
