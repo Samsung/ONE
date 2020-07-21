@@ -175,7 +175,7 @@ def GenerateQuantization(new_builder, selected_quantization):
     # Create zero_point vector
     zeropoint_num = selected_quantization.ZeroPointLength()
     if zeropoint_num != 0:
-        tflite.QuantizationParameters.QuantizationParametersStartScaleVector(
+        tflite.QuantizationParameters.QuantizationParametersStartZeroPointVector(
             new_builder, zeropoint_num)
         for zeropoint_idx in reversed(range(zeropoint_num)):
             new_builder.PrependInt64(selected_quantization.ZeroPoint(zeropoint_idx))
