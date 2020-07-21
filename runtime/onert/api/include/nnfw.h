@@ -204,7 +204,7 @@ NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package
  * See {@link nnfw_prepare} for information applying updated tensor info
  * If this function is called many times for same index, tensor info is overwritten
  *
- * @note This function will be deprecated in 1.7.0. Use {@link nnfw_set_input_tensorinfo} instead.
+ * @deprecated Deprecated since 1.7.0. Use {@link nnfw_set_input_tensorinfo} instead.
  *
  * @param[in] session     Session to the input tensor info is to be set
  * @param[in] index       Index of input to be applied (0-indexed)
