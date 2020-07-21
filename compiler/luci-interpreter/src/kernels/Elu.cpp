@@ -27,21 +27,21 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Elu::Elu(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+Elu::Elu(const Tensor *input, Tensor *output) : _input(input), _output(output) {}
 
 void Elu::configure()
 {
-  assert(input()->element_type() == output()->element_type());
-  output()->resize(input()->shape());
+  assert(_input->element_type() == _output->element_type());
+  _output->resize(_input->shape());
 }
 
 void Elu::execute() const
 {
-  switch (input()->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::Elu(getTensorShape(input()), getTensorData<float>(input()),
-                                 getTensorShape(output()), getTensorData<float>(output()));
+      tflite::optimized_ops::Elu(getTensorShape(_input), getTensorData<float>(_input),
+                                 getTensorShape(_output), getTensorData<float>(_output));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

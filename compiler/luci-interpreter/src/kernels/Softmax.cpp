@@ -29,19 +29,19 @@ namespace kernels
 {
 
 Softmax::Softmax(const Tensor *input, Tensor *output, const SoftmaxParams &params)
-    : KernelWithParams<SoftmaxParams>({input}, {output}, params)
+    : KernelWithParams<SoftmaxParams>(params), _input(input), _output(output)
 {
 }
 
 void Softmax::configure()
 {
-  assert(input()->element_type() == output()->element_type());
-  output()->resize(input()->shape());
+  assert(_input->element_type() == _output->element_type());
+  _output->resize(_input->shape());
 }
 
 void Softmax::execute() const
 {
-  switch (input()->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -56,8 +56,8 @@ void Softmax::evalFloat() const
   tflite::SoftmaxParams params{};
   params.beta = _params.beta;
 
-  tflite::reference_ops::Softmax(params, getTensorShape(input()), getTensorData<float>(input()),
-                                 getTensorShape(output()), getTensorData<float>(output()));
+  tflite::reference_ops::Softmax(params, getTensorShape(_input), getTensorData<float>(_input),
+                                 getTensorShape(_output), getTensorData<float>(_output));
 }
 
 } // namespace kernels

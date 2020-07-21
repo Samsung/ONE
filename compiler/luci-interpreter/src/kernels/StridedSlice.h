@@ -31,14 +31,21 @@ public:
   StridedSlice(const Tensor *input, const Tensor *begin, const Tensor *end, const Tensor *strides,
                Tensor *output, const StridedSliceParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  const Tensor *begin() const { return _inputs[1]; }
-  const Tensor *end() const { return _inputs[2]; }
-  const Tensor *strides() const { return _inputs[3]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override
+  {
+    return {_input, _begin, _end, _strides};
+  }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
+
+private:
+  const Tensor *const _input;
+  const Tensor *const _begin;
+  const Tensor *const _end;
+  const Tensor *const _strides;
+  Tensor *const _output;
 };
 
 } // namespace kernels

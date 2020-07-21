@@ -30,30 +30,31 @@ namespace kernels
 
 FullyConnected::FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias,
                                Tensor *output, const FullyConnectedParams &params)
-    : KernelWithParams<FullyConnectedParams>({input, weights, bias}, {output}, params)
+    : KernelWithParams<FullyConnectedParams>(params), _input(input), _weights(weights), _bias(bias),
+      _output(output)
 {
 }
 
 void FullyConnected::configure()
 {
-  if (weights()->element_type() != DataType::FLOAT32)
+  if (_weights->element_type() != DataType::FLOAT32)
     throw std::runtime_error("Unsupported type.");
 
-  assert(input()->element_type() == DataType::FLOAT32);
-  assert(weights()->element_type() == DataType::FLOAT32);
-  assert(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
+  assert(_input->element_type() == DataType::FLOAT32);
+  assert(_weights->element_type() == DataType::FLOAT32);
+  assert(_bias == nullptr || _bias->element_type() == DataType::FLOAT32);
 
-  const Shape &input_shape = input()->shape();
-  const Shape &weights_shape = weights()->shape();
+  const Shape &input_shape = _input->shape();
+  const Shape &weights_shape = _weights->shape();
 
   assert(weights_shape.num_dims() == 2);
-  assert(bias() == nullptr || bias()->shape().num_elements() == weights_shape.dim(0));
+  assert(_bias == nullptr || _bias->shape().num_elements() == weights_shape.dim(0));
 
   assert(input_shape.num_elements() % weights_shape.dim(1) == 0);
   const int32_t batch_size = input_shape.num_elements() / weights_shape.dim(1);
   const int32_t num_units = weights_shape.dim(0);
 
-  output()->resize({batch_size, num_units});
+  _output->resize({batch_size, num_units});
 }
 
 void FullyConnected::execute() const { evalFloat(); }
@@ -70,9 +71,9 @@ void FullyConnected::evalFloat() const
   params.weights_format = tflite::FullyConnectedWeightsFormat::kDefault;
 
   tflite::reference_ops::FullyConnected(
-      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(weights()),
-      getTensorData<float>(weights()), getTensorShape(bias()), getTensorData<float>(bias()),
-      getTensorShape(output()), getTensorData<float>(output()));
+      params, getTensorShape(_input), getTensorData<float>(_input), getTensorShape(_weights),
+      getTensorData<float>(_weights), getTensorShape(_bias), getTensorData<float>(_bias),
+      getTensorShape(_output), getTensorData<float>(_output));
 }
 
 } // namespace kernels

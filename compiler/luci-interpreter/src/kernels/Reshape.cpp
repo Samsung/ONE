@@ -65,24 +65,24 @@ static void resolveUnknownDimension(const Shape &input_shape, Shape *output_shap
 }
 
 Reshape::Reshape(const Tensor *input, const Tensor *shape, Tensor *output)
-    : Kernel({input, shape}, {output})
+    : _input(input), _shape(shape), _output(output)
 {
 }
 
 void Reshape::configure()
 {
-  Shape output_shape = extractShapeFromTensor(shape());
-  resolveUnknownDimension(input()->shape(), &output_shape);
-  output()->resize(output_shape);
+  Shape output_shape = extractShapeFromTensor(_shape);
+  resolveUnknownDimension(_input->shape(), &output_shape);
+  _output->resize(output_shape);
 }
 
 void Reshape::execute() const
 {
-  const auto *input_data = input()->data<void>();
-  auto *output_data = output()->data<void>();
+  const auto *input_data = _input->data<void>();
+  auto *output_data = _output->data<void>();
 
-  const size_t element_size = getDataTypeSize(input()->element_type());
-  const int32_t num_elements = input()->shape().num_elements();
+  const size_t element_size = getDataTypeSize(_input->element_type());
+  const int32_t num_elements = _input->shape().num_elements();
   std::memcpy(output_data, input_data, num_elements * element_size);
 }
 

@@ -30,21 +30,21 @@ namespace kernels
 
 LocalResponseNormalization::LocalResponseNormalization(
     const Tensor *input, Tensor *output, const LocalResponseNormalizationParams &params)
-    : KernelWithParams<LocalResponseNormalizationParams>({input}, {output}, params)
+    : KernelWithParams<LocalResponseNormalizationParams>(params), _input(input), _output(output)
 {
 }
 
 void LocalResponseNormalization::configure()
 {
-  assert(input()->shape().num_dims() == 4);
-  assert(output()->element_type() == DataType::FLOAT32);
-  assert(input()->element_type() == output()->element_type());
-  output()->resize(input()->shape());
+  assert(_input->shape().num_dims() == 4);
+  assert(_output->element_type() == DataType::FLOAT32);
+  assert(_input->element_type() == _output->element_type());
+  _output->resize(_input->shape());
 }
 
 void LocalResponseNormalization::execute() const
 {
-  switch (output()->element_type())
+  switch (_output->element_type())
   {
     case DataType::FLOAT32:
       tflite::LocalResponseNormalizationParams op_params;
@@ -53,8 +53,8 @@ void LocalResponseNormalization::execute() const
       op_params.alpha = params().alpha;
       op_params.beta = params().beta;
       tflite::optimized_ops::LocalResponseNormalization(
-          op_params, getTensorShape(input()), getTensorData<float>(input()),
-          getTensorShape(output()), getTensorData<float>(output()));
+          op_params, getTensorShape(_input), getTensorData<float>(_input), getTensorShape(_output),
+          getTensorData<float>(_output));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

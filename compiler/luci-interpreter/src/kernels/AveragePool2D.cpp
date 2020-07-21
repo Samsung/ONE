@@ -29,13 +29,13 @@ namespace kernels
 {
 
 AveragePool2D::AveragePool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-    : KernelWithParams<Pool2DParams>({input}, {output}, params)
+    : KernelWithParams<Pool2DParams>(params), _input(input), _output(output)
 {
 }
 
 void AveragePool2D::configure()
 {
-  const Shape &input_shape = input()->shape();
+  const Shape &input_shape = _input->shape();
 
   const int32_t batches = input_shape.dim(0);
   const int32_t input_height = input_shape.dim(1);
@@ -52,12 +52,12 @@ void AveragePool2D::configure()
   _padding_width =
       computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
 
-  output()->resize({batches, output_height, output_width, depth});
+  _output->resize({batches, output_height, output_width, depth});
 }
 
 void AveragePool2D::execute() const
 {
-  switch (input()->element_type())
+  switch (_input->element_type())
   {
     case DataType::FLOAT32:
       evalFloat();
@@ -86,15 +86,15 @@ void AveragePool2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  tflite::reference_ops::AveragePool(params, getTensorShape(input()), getTensorData<float>(input()),
-                                     getTensorShape(output()), getTensorData<float>(output()));
+  tflite::reference_ops::AveragePool(params, getTensorShape(_input), getTensorData<float>(_input),
+                                     getTensorShape(_output), getTensorData<float>(_output));
 }
 
 void AveragePool2D::evalQuantized() const
 {
   int32_t activation_min{};
   int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+  calculateActivationRangeQuantized(_params.activation, _output, &activation_min, &activation_max);
 
   tflite::PoolParams params{};
   params.padding_values.height = _padding_height;
@@ -106,9 +106,8 @@ void AveragePool2D::evalQuantized() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  tflite::reference_ops::AveragePool(params, getTensorShape(input()),
-                                     getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                     getTensorData<uint8_t>(output()));
+  tflite::reference_ops::AveragePool(params, getTensorShape(_input), getTensorData<uint8_t>(_input),
+                                     getTensorShape(_output), getTensorData<uint8_t>(_output));
 }
 
 } // namespace kernels

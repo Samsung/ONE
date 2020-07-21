@@ -30,12 +30,16 @@ class ArgMax : public KernelWithParams<ArgMaxParams>
 public:
   ArgMax(const Tensor *input, const Tensor *axis, Tensor *output, const ArgMaxParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  const Tensor *axis() const { return _inputs[1]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _axis}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
+
+private:
+  const Tensor *const _input;
+  const Tensor *const _axis;
+  Tensor *const _output;
 };
 
 } // namespace kernels

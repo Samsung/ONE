@@ -30,8 +30,8 @@ class LeakyRelu : public KernelWithParams<LeakyReluParams>
 public:
   LeakyRelu(const Tensor *input, Tensor *output, const LeakyReluParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
@@ -39,6 +39,10 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
+
+private:
+  const Tensor *const _input;
+  Tensor *const _output;
 
 private:
   uint8_t _q_alpha = 0;

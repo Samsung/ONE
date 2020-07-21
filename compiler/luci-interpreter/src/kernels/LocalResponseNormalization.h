@@ -31,11 +31,15 @@ public:
   LocalResponseNormalization(const Tensor *input, Tensor *output,
                              const LocalResponseNormalizationParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
+
+private:
+  const Tensor *const _input;
+  Tensor *const _output;
 };
 
 } // namespace kernels

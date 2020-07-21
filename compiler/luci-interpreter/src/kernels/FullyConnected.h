@@ -31,16 +31,20 @@ public:
   FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias, Tensor *output,
                  const FullyConnectedParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  const Tensor *weights() const { return _inputs[1]; }
-  const Tensor *bias() const { return _inputs[2]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input, _weights, _bias}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
 
 private:
   void evalFloat() const;
+
+private:
+  const Tensor *const _input;
+  const Tensor *const _weights;
+  const Tensor *const _bias;
+  Tensor *const _output;
 };
 
 } // namespace kernels

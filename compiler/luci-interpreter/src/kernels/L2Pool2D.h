@@ -32,15 +32,18 @@ class L2Pool2D : public KernelWithParams<Pool2DParams>
 public:
   L2Pool2D(const Tensor *input, Tensor *output, const Pool2DParams &params);
 
-  const Tensor *input() const { return _inputs[0]; }
-  Tensor *output() const { return _outputs[0]; }
+  std::vector<const Tensor *> getInputTensors() const override { return {_input}; }
+  std::vector<Tensor *> getOutputTensors() const override { return {_output}; }
 
   void configure() override;
   void execute() const override;
 
 private:
-  int32_t _padding_height = 0;
-  int32_t _padding_width = 0;
+  const Tensor *const _input;
+  Tensor *const _output;
+
+  int _padding_height = 0;
+  int _padding_width = 0;
 };
 
 } // namespace kernels
