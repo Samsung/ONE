@@ -24,13 +24,11 @@
 #include <luci/CircleExporter.h>
 #include <luci/UserSettings.h>
 
-#include <stdex/Memory.h>
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
 
 #include <functional>
 #include <iostream>
-#include <map>
 #include <string>
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
