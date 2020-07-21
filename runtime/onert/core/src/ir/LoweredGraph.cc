@@ -23,6 +23,7 @@
 #include "pass/ConstantLoweringPass.h"
 #include "pass/PermutationOperationPass.h"
 #include "pass/PermutationInsertionPass.h"
+#include "pass/PermutationEliminationPass.h"
 #include "ir/GraphIterator.h"
 #include "verifier/Verifier.h"
 #include "backend/Backend.h"
@@ -122,6 +123,9 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     pass::PermutationInsertionPass pi_pass(*this);
     pi_pass.run();
+
+    pass::PermutationEliminationPass pe_pass(*this);
+    pe_pass.run();
 
     _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
   }
