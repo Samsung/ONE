@@ -25,6 +25,7 @@
 
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
+#include <vconone/vconone.h>
 
 #include <functional>
 #include <iostream>
@@ -35,6 +36,12 @@ using OptionHook = std::function<int(const char **)>;
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
+
+void print_version(void)
+{
+  std::cout << "circle-quantizer version " << vconone::get_string() << std::endl;
+  std::cout << vconone::get_copyright() << std::endl;
+}
 
 int entry(int argc, char **argv)
 {
@@ -49,13 +56,20 @@ int entry(int argc, char **argv)
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
 
+  arser.add_argument("--version")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("Show version information and exit")
+      .exit_with(print_version);
+
   arser.add_argument(qdqw)
       .nargs(3)
       .type(arser::DataType::STR_VEC)
       .required(false)
       .help("Quantize-dequantize weight values required action before quantization. "
             "Three arguments required: input_dtype(float32) "
-            "output_dtype(uint8) granularity(layer)");
+            "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(qwmm)
       .nargs(3)
@@ -63,7 +77,7 @@ int entry(int argc, char **argv)
       .required(false)
       .help("Quantize with min/max values. "
             "Three arguments required: input_dtype(float32) "
-            "output_dtype(uint8) granularity(layer)");
+            "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");

@@ -70,6 +70,7 @@ public:
   void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::Pack &node) override;
   void visit(const ir::operation::LSTM &node) override;
+  void visit(const ir::operation::L2Normalization &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::Min &node) override;

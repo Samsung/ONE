@@ -73,7 +73,9 @@ def _get_parser():
         "-s",
         "--input_shapes",
         type=str,
-        help="Shapes corresponding to --input_arrays, colon-separated.")
+        help=
+        "Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")"
+    )
     parser.add_argument(
         "-O",
         "--output_arrays",

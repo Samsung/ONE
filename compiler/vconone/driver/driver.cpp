@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __MODEL_H__
-#define __MODEL_H__
+#include <vconone/vconone.h>
 
-#include <memory>
 #include <string>
+#include <iostream>
 
-struct ModelData
+int main(int argc, char *argv[])
 {
-  virtual ~ModelData() = default;
+  auto str = vconone::get_string();
+  if (argc >= 2)
+  {
+    for (int c = 1; c < argc; ++c)
+      std::cout << argv[c] << " ";
+    std::cout << "version " << str << std::endl;
+    std::cout << vconone::get_copyright() << std::endl;
+  }
+  else
+    std::cout << str;
 
-  virtual const void *data(void) const = 0;
-  virtual const size_t size(void) const = 0;
-};
-
-/**
- * @brief Load TF Lite model (as a raw data) from a given path
- *
- * @note May return a nullptr
- */
-std::unique_ptr<ModelData> load_modeldata(const std::string &path);
-
-#endif // __MODEL_H__
+  return 0;
+}

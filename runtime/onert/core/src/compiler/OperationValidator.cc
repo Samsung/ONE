@@ -789,6 +789,25 @@ void OperationValidator::visit(const ir::operation::LSTM &node)
   }
 }
 
+void OperationValidator::visit(const ir::operation::L2Normalization &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::L2Normalization::Input::INPUT)};
+
+  auto ifm_shape = _ctx.at(ifm_index).shape();
+  auto ofm_shape = _ctx.at(ofm_index).shape();
+
+  OP_REQUIRES(ifm_shape.rank() == ofm_shape.rank());
+
+  for (auto i = 0; i < ifm_shape.rank(); i++)
+  {
+    OP_REQUIRES(ifm_shape.dim(i) == ofm_shape.dim(i));
+  }
+}
+
 void OperationValidator::visit(const ir::operation::Unpack &node)
 {
   const auto num{node.param().num};

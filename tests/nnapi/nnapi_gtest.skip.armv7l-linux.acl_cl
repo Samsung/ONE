@@ -68,6 +68,7 @@ GeneratedTests.gather_float16_7
 GeneratedTests.gather_float16_8
 GeneratedTests.greater_dynamic_float_nnfw
 GeneratedTests.greater_equal_dynamic_float_nnfw
+GeneratedTests.l2_normalization_quant8_nnfw
 GeneratedTests.less_dynamic_float_nnfw
 GeneratedTests.less_equal_dynamic_float_nnfw
 GeneratedTests.log_4D_float_nnfw

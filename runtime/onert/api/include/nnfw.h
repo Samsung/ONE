@@ -87,13 +87,20 @@ typedef enum {
 } NNFW_TYPE;
 
 /**
- * @brief Result Values
+ * @brief Result values returned from a call to an API function
  */
 typedef enum {
   /** Successful */
   NNFW_STATUS_NO_ERROR = 0,
-  /** Failed */
+  /**
+   * An error code for general use.
+   * Mostly used when there is no specific value for that certain situation.
+   */
   NNFW_STATUS_ERROR = 1,
+  /** Unexpected null argument is given. */
+  NNFW_STATUS_UNEXPECTED_NULL = 2,
+  /** When a function was called but it is not valid for the current session state. */
+  NNFW_STATUS_INVALID_STATE = 3,
 } NNFW_STATUS;
 
 /**
@@ -199,7 +206,7 @@ NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package
  * See {@link nnfw_prepare} for information applying updated tensor info
  * If this function is called many times for same index, tensor info is overwritten
  *
- * @note This function will be deprecated in 1.7.0. Use {@link nnfw_set_input_tensorinfo} instead.
+ * @deprecated Deprecated since 1.7.0. Use {@link nnfw_set_input_tensorinfo} instead.
  *
  * @param[in] session     Session to the input tensor info is to be set
  * @param[in] index       Index of input to be applied (0-indexed)

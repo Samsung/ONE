@@ -38,9 +38,6 @@ GeneratedTests.gather_float16_8
 GeneratedTests.hashtable_lookup_float
 GeneratedTests.hashtable_lookup_float_4D_nnfw
 GeneratedTests.hashtable_lookup_quant8
-GeneratedTests.l2_normalization
-GeneratedTests.l2_normalization_2
-GeneratedTests.l2_normalization_large
 GeneratedTests.l2_pool_float
 GeneratedTests.l2_pool_float_2
 GeneratedTests.l2_pool_float_large
@@ -125,7 +122,6 @@ GeneratedTests.select_v1_2_one_dim_quant8
 GeneratedTests.select_v1_2_two_dim_quant8
 GeneratedTests.slice_5
 GeneratedTests.slice_6
-GeneratedTests.slice_7
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8

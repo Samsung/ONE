@@ -49,8 +49,8 @@ void LogSoftMaxLayer::logsoftmaxQuant8()
   // NYI
 }
 
-void LogSoftMaxLayer::configure(const Tensor *input, const float beta, const int axis,
-                                Tensor *output)
+void LogSoftMaxLayer::configure(const IPortableTensor *input, const float beta, const int axis,
+                                IPortableTensor *output)
 {
   _input = input;
   _output = output;

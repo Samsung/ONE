@@ -24,21 +24,21 @@ namespace kernels
 {
 
 SpaceToDepth::SpaceToDepth(const Tensor *input, Tensor *output, const SpaceToDepthParams &params)
-    : KernelWithParams<SpaceToDepthParams>(params), _input(input), _output(output)
+    : KernelWithParams<SpaceToDepthParams>({input}, {output}, params)
 {
 }
 
 void SpaceToDepth::configure()
 {
-  assert(_input->shape().num_dims() == 4);
-  assert(_output->element_type() == DataType::FLOAT32 || _output->element_type() == DataType::U8 ||
-         _output->element_type() == DataType::S8 || _output->element_type() == DataType::S32 ||
-         _output->element_type() == DataType::S64);
-  assert(_input->element_type() == _output->element_type());
+  assert(input()->shape().num_dims() == 4);
+  assert(output()->element_type() == DataType::FLOAT32 ||
+         output()->element_type() == DataType::U8 || output()->element_type() == DataType::S8 ||
+         output()->element_type() == DataType::S32 || output()->element_type() == DataType::S64);
+  assert(input()->element_type() == output()->element_type());
 
   const int block_size = params().block_size;
-  const int32_t input_height = _input->shape().dim(1);
-  const int32_t input_width = _input->shape().dim(2);
+  const int32_t input_height = input()->shape().dim(1);
+  const int32_t input_width = input()->shape().dim(2);
   int32_t output_height = input_height / block_size;
   int32_t output_width = input_width / block_size;
 
@@ -46,29 +46,29 @@ void SpaceToDepth::configure()
   assert(input_width == output_width * block_size);
 
   Shape output_shape(4);
-  output_shape.dim(0) = _input->shape().dim(0);
+  output_shape.dim(0) = input()->shape().dim(0);
   output_shape.dim(1) = output_height;
   output_shape.dim(2) = output_width;
-  output_shape.dim(3) = _input->shape().dim(3) * block_size * block_size;
+  output_shape.dim(3) = input()->shape().dim(3) * block_size * block_size;
 
-  _output->resize(output_shape);
+  output()->resize(output_shape);
 }
 
 void SpaceToDepth::execute() const
 {
   tflite::SpaceToDepthParams op_params{};
   op_params.block_size = params().block_size;
-  switch (_input->element_type())
+  switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::SpaceToDepth(op_params, getTensorShape(_input),
-                                          getTensorData<float>(_input), getTensorShape(_output),
-                                          getTensorData<float>(_output));
+      tflite::optimized_ops::SpaceToDepth(op_params, getTensorShape(input()),
+                                          getTensorData<float>(input()), getTensorShape(output()),
+                                          getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::optimized_ops::SpaceToDepth(op_params, getTensorShape(_input),
-                                          getTensorData<uint8_t>(_input), getTensorShape(_output),
-                                          getTensorData<uint8_t>(_output));
+      tflite::optimized_ops::SpaceToDepth(op_params, getTensorShape(input()),
+                                          getTensorData<uint8_t>(input()), getTensorShape(output()),
+                                          getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

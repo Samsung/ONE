@@ -22,9 +22,16 @@ usage()
 {
   echo "Package circle to nnpkg"
   echo "Usage: one-pack"
+  echo "    -v, --version Show version information and exit"
   echo "    -i <path/to/circle>"
   echo "    -o <path/to/nnpackage/folder>"
-  exit 0
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-pack
+  exit 255
 }
 
 # Parse command-line arguments
@@ -35,6 +42,12 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '-v')
+      version
+      ;;
+    '--version')
+      version
       ;;
     '-i')
       export INPUT_PATH="$2"
@@ -55,7 +68,6 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
   usage
-  exit 2
 fi
 
 # remove previous log

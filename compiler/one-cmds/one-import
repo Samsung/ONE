@@ -18,7 +18,7 @@ DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function Usage()
 {
-  echo "Usage: $0 [FRAMEWORK] ..."
+  echo "Usage: one-import [FRAMEWORK] ..."
   echo "Available FRAMEWORK drivers:"
   framework_exist=0
   for file in "$DRIVER_PATH"/one-import-*;
@@ -31,23 +31,34 @@ function Usage()
   if [ $framework_exist == 0 ]; then
     echo "  (There is no available import drivers)"
   fi
+
+  exit 255
+}
+
+function version()
+{
+  $DRIVER_PATH/one-version one-import-tf
+  exit 255
 }
 
 # Get command from command-line
-FRAMEWORK=$1; shift
-FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
-
-if [[ -z "${FRAMEWORK_DRIVER}" ]]; then
+FRAMEWORK=$1
+if [[ -z ${FRAMEWORK} ]]; then
   Usage
-  exit 255
 fi
+shift
+
+if [ ${FRAMEWORK} = "--version" ]; then
+  version
+fi
+
+FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
 
 FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
 
 if [[ ! -f "${FRAMEWORK_DRIVER_CMD}" ]]; then
   echo "ERROR: '${FRAMEWORK_DRIVER}' is not supported"
   Usage
-  exit 255
 fi
 
 "${FRAMEWORK_DRIVER_CMD}" "$@"
