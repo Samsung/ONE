@@ -24,9 +24,24 @@
 #include "CircleModel.h"
 #include "TFLModel.h"
 
+#include <vconone/vconone.h>
+
+void print_version(void)
+{
+  std::cout << "tflite2circle version " << vconone::get_string() << std::endl;
+  std::cout << vconone::get_copyright() << std::endl;
+}
+
 int entry(int argc, char **argv)
 {
   arser::Arser arser{"tflite2circle is a Tensorflow lite to circle model converter"};
+
+  arser.add_argument("--version")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("Show version information and exit")
+      .exit_with(print_version);
 
   arser.add_argument("tflite")
       .nargs(1)
