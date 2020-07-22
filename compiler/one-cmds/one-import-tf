@@ -22,11 +22,18 @@ usage()
 {
   echo "Convert TensorFlow model to circle."
   echo "Usage: one-import-tf"
+  echo "    --version Show version information and exit"
   echo "    --input_path <path/to/tfmodel>"
   echo "    --output_path <path/to/circle>"
   echo "    --input_arrays <names of the input arrays, comma-separated>"
   echo "    --input_shapes <input shapes, colon-separated>"
   echo "    --output_arrays <names of the output arrays, comma-separated>"
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-import-tf
   exit 255
 }
 
@@ -38,6 +45,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
     '--input_path')
       export INPUT_PATH="$2"
