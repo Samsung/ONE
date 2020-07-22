@@ -350,8 +350,8 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           circle_node->dtype(loco::DataType::S16);
         }
 
-        circle_node->quantparam()->max[0] = nudged_max;
-        circle_node->quantparam()->min[0] = nudged_min;
+        circle_node->quantparam()->min.clear();
+        circle_node->quantparam()->max.clear();
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
       }
@@ -481,6 +481,8 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
           {
             sym_wquant_per_channel(circle_const, scaling_factor);
           }
+          quantparam->min.clear();
+          quantparam->max.clear();
         }
         // Find min/max per layer-wise
         else
@@ -493,6 +495,8 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
           auto min = quantparam->min[0];
           auto scaling_factor = quantparam->scale[0];
           asym_wquant_per_layer(circle_const, min, scaling_factor);
+          quantparam->min.clear();
+          quantparam->max.clear();
         }
       }
     }
