@@ -66,7 +66,7 @@ int entry(const int argc, char **argv)
   {
     std::cout << err.what() << std::endl;
     std::cout << arser;
-    return 0;
+    return 255;
   }
 
   auto input_model_path = arser.get<std::string>("--input_model");
