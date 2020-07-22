@@ -31,7 +31,7 @@ usage()
   echo "    --input_path <path/to/input/circle>"
   echo "    --input_data <path/to/input/data>"
   echo "    --output_path <path/to/output/circle>"
-  exit 0
+  exit 255
 }
 
 INPUT_DTYPE=float32
@@ -100,13 +100,11 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
   usage
-  exit 2
 fi
 if [ -z ${INPUT_DATA} ] || [ ! -e ${INPUT_DATA} ]; then
   echo "Error: input data not found"
   echo ""
   usage
-  exit 2
 fi
 
 FILE_BASE=$(basename ${OUTPUT_PATH})

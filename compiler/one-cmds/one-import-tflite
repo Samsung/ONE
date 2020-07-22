@@ -24,7 +24,7 @@ usage()
   echo "Usage: one-import-tflite"
   echo "    --input_path <path/to/tflitemodel>"
   echo "    --output_path <path/to/circle>"
-  exit 0
+  exit 255
 }
 
 # Parse command-line arguments
@@ -55,7 +55,6 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
   usage
-  exit 2
 fi
 
 # remove previous log

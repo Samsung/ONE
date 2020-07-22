@@ -31,6 +31,8 @@ function Usage()
   if [ $framework_exist == 0 ]; then
     echo "  (There is no available import drivers)"
   fi
+
+  exit 255
 }
 
 # Get command from command-line
@@ -39,7 +41,6 @@ FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
 
 if [[ -z "${FRAMEWORK_DRIVER}" ]]; then
   Usage
-  exit 255
 fi
 
 FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
@@ -47,7 +48,6 @@ FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
 if [[ ! -f "${FRAMEWORK_DRIVER_CMD}" ]]; then
   echo "ERROR: '${FRAMEWORK_DRIVER}' is not supported"
   Usage
-  exit 255
 fi
 
 "${FRAMEWORK_DRIVER_CMD}" "$@"
