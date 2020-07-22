@@ -18,7 +18,7 @@ DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function Usage()
 {
-  echo "Usage: $0 [FRAMEWORK] ..."
+  echo "Usage: one-import [FRAMEWORK] ..."
   echo "Available FRAMEWORK drivers:"
   framework_exist=0
   for file in "$DRIVER_PATH"/one-import-*;

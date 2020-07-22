@@ -18,7 +18,7 @@ DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function Usage()
 {
-  echo "Usage: $0 [BACKEND] ..."
+  echo "Usage: one-codegen [BACKEND] ..."
   echo "Available BACKEND drivers:"
   backend_exist=0
   for file in `find $DRIVER_PATH -name *-compile -type f`;
