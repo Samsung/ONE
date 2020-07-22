@@ -37,8 +37,8 @@ list(APPEND TFLITE_SRCS "${FarmhashSource_DIR}/src/farmhash.cc")
 
 list(APPEND TFLITE_INCLUDES "${TensorFlowSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${AbseilSource_DIR}")
-list(APPEND TFLITE_INCLUDES "${GEMMLowpSource_DIR}")
 list(APPEND TFLITE_INCLUDES "${FarmhashSource_DIR}/src")
+list(APPEND TFLITE_INCLUDES "${GEMMLowpSource_DIR}")
 
 if(NEON2SSESource_FOUND)
   list(APPEND TFLITE_INCLUDES "${NEON2SSESource_DIR}")
