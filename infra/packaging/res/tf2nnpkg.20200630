@@ -14,9 +14,15 @@ command_exists() {
 usage()
 {
   echo "Convert TensorFlow model to nnpackage."
-  echo "Usage: tf2nnpkg --info <path/to/info> --graphdef <path/to/pb> [OPTION] -o <path/to/nnpkg/directory>"
-  exit 0
+  echo "Usage: tf2nnpkg"
+  echo "    --info <path/to/info>"
+  echo "    --graphdef <path/to/pb>"
+  echo "    -o <path/to/nnpkg/directory>"
+  echo "    --v2 (optional) Use TF 2.x interface"
+  exit 255
 }
+
+TF_INTERFACE="--v1"
 
 # Parse command-line arguments
 #
@@ -38,6 +44,10 @@ while [ "$#" -ne 0 ]; do
     '-o')
       export OUTPUT_DIR="$2"
       shift 2
+      ;;
+    '--v2')
+      TF_INTERFACE="--v2"
+      shift
       ;;
     *)
       echo "${CUR}"
@@ -83,10 +93,7 @@ OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' '
 INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1 | tr -d ' ' | xargs | tr ' ' ':')
 
 # generate tflite file
-python "${ROOT}/bin/tf2tfliteV2.py" --v2 --input_path ${GRAPHDEF_FILE} \
---output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
---input_arrays ${INPUT} --output_arrays ${OUTPUT} || \
-python "${ROOT}/bin/tf2tfliteV2.py" --v1 --input_path ${GRAPHDEF_FILE} \
+python "${ROOT}/bin/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${GRAPHDEF_FILE} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --input_arrays ${INPUT} --input_shapes ${INPUT_SHAPES} \
 --output_arrays ${OUTPUT}
