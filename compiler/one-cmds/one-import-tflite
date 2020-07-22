@@ -22,8 +22,15 @@ usage()
 {
   echo "Convert TensorFlow lite model to circle."
   echo "Usage: one-import-tflite"
+  echo "    --version Show version information and exit"
   echo "    --input_path <path/to/tflitemodel>"
   echo "    --output_path <path/to/circle>"
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-import-tflite
   exit 255
 }
 
@@ -35,6 +42,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
     '--input_path')
       export INPUT_PATH="$2"

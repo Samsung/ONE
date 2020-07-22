@@ -35,13 +35,24 @@ function Usage()
   exit 255
 }
 
-# Get command from command-line
-FRAMEWORK=$1; shift
-FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
+function version()
+{
+  $DRIVER_PATH/one-version one-import-tf
+  exit 255
+}
 
-if [[ -z "${FRAMEWORK_DRIVER}" ]]; then
+# Get command from command-line
+FRAMEWORK=$1
+if [[ -z ${FRAMEWORK} ]]; then
   Usage
 fi
+shift
+
+if [ ${FRAMEWORK} = "--version" ]; then
+  version
+fi
+
+FRAMEWORK_DRIVER="one-import-$FRAMEWORK"
 
 FRAMEWORK_DRIVER_CMD="${DRIVER_PATH}/${FRAMEWORK_DRIVER}"
 

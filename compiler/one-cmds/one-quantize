@@ -22,6 +22,7 @@ usage()
 {
   echo "Quantize circle model."
   echo "Usage: one-quantize"
+  echo "    --version         Show version information and exit"
   echo "    --input_dtype     Input data type (supported: float32, default=float32)"
   echo "    --quantized_dtype Output quantized data type (supported: uint8, default=uint8)"
   echo "    --granularity     Quantize granularity (supported: layer, channel, default=layer)"
@@ -31,6 +32,12 @@ usage()
   echo "    --input_path <path/to/input/circle>"
   echo "    --input_data <path/to/input/data>"
   echo "    --output_path <path/to/output/circle>"
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-quantize
   exit 255
 }
 
@@ -49,6 +56,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
 
     '--input_dtype')
