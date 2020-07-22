@@ -100,11 +100,13 @@ list(APPEND TEST_DEPS "${RULE_LIB_BINARY_PATH}")
 add_custom_target(circle2circle_dredd_recipe_test ALL DEPENDS ${TEST_DEPS})
 add_dependencies(circle2circle_dredd_recipe_test common_artifacts_deps)
 
+get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
+
 # Run tests
 add_test(
   NAME circle2circle_dredd_recipe_test
   COMMAND "${TEST_RUNNER}"
           "${TEST_CONFIG}"
-          "${CMAKE_CURRENT_BINARY_DIR}"
+          "${ARTIFACTS_BIN_PATH}"
           ${TEST_NAMES}
 )

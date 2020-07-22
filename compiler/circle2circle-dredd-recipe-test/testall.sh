@@ -13,21 +13,22 @@ if [[ $# -lt 2 ]]; then
   exit 255
 fi
 
+WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONFIG_PATH="$1"; shift
-WORKDIR="$1"; shift
+RESOURCE_DIR="$1"; shift
 
 source "${CONFIG_PATH}"
 
 echo "-- Found circle-inspect: ${CIRCLE_INSPECT_PATH}"
 echo "-- Found circle-verify: ${CIRCLE_VERIFY_PATH}"
 echo "-- Found circle2circle: ${CIRCLE2CIRCLE_PATH}"
-echo "-- Found workdir: ${WORKDIR}"
+echo "-- Found common-artifacts: ${RESOURCE_DIR}"
 
 TESTED=()
 PASSED=()
 FAILED=()
 
-pushd "${WORKDIR}"
+pushd ${WORKDIR}
 while [[ $# -ne 0 ]]; do
   PREFIX="$1"; shift
 
@@ -55,7 +56,7 @@ while [[ $# -ne 0 ]]; do
     set +x
 
     # (COMPILED_FILE, INSPECT_PROG_PATH, VERIFY_PROG_PATH, ERROR_LOG) must be set for rule-lib.sh
-    COMPILED_FILE="${WORKDIR}/${PREFIX}.opt.circle"
+    COMPILED_FILE="${PREFIX}.opt.circle"
     INSPECT_PROG_PATH=${CIRCLE_INSPECT_PATH}
     VERIFY_PROG_PATH=${CIRCLE_VERIFY_PATH}
     ERROR_LOG="${PREFIX}.error"
@@ -66,7 +67,7 @@ while [[ $# -ne 0 ]]; do
     trap 'echo "** ERROR **" ; cat "${ERROR_LOG}"' ERR
 
     source rule-lib.sh
-    source "${PREFIX}.rule"
+    source "${RESOURCE_DIR}/${PREFIX}.rule"
 
     # unset
     trap - ERR
