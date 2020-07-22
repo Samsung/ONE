@@ -34,9 +34,9 @@ Slice::Slice(const Tensor *input, const Tensor *begin, const Tensor *size, Tenso
 }
 
 template <typename T>
-inline bool calculateOutputShapeVector(const Tensor *input, const Tensor *begin, const Tensor *size,
-                                       std::vector<int32_t> *output_shape_vector)
+Shape calculateOutputShapeVector(const Tensor *input, const Tensor *begin, const Tensor *size)
 {
+  Shape output_shape = Shape(input->shape().num_dims());
   for (int idx = 0; idx < input->shape().num_dims(); idx++)
   {
     T size_value = getTensorData<T>(size)[idx];
@@ -44,7 +44,7 @@ inline bool calculateOutputShapeVector(const Tensor *input, const Tensor *begin,
     {
       if (size_value != -1)
       {
-        return false;
+        throw std::runtime_error("Invalid size.");
       }
       size_value = input->shape().dim(idx) - getTensorData<T>(begin)[idx];
     }
@@ -52,17 +52,17 @@ inline bool calculateOutputShapeVector(const Tensor *input, const Tensor *begin,
     {
       if (input->shape().dim(idx) < getTensorData<T>(begin)[idx] + size_value)
       {
-        return false;
+        throw std::runtime_error("Invalid begin and size.");
       }
     }
-    output_shape_vector->push_back(static_cast<int>(size_value));
+    output_shape.dim(idx) = static_cast<int>(size_value);
   }
-  return true;
+  return output_shape;
 }
 
 template <typename T>
-inline void getBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
-                                   std::vector<int> *begins, std::vector<int> *sizes)
+void getBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
+                            std::vector<int> *begins, std::vector<int> *sizes)
 {
   for (int idx = dimensions - 1; idx >= 0; --idx)
   {
@@ -80,28 +80,18 @@ void Slice::configure()
   assert(size()->shape().num_dims() == 1);
   assert(input()->shape().num_dims() <= max_dim);
 
-  std::vector<int32_t> output_shape_vector;
-
   if (begin()->element_type() == DataType::S32)
   {
-    assert(calculateOutputShapeVector<int32_t>(input(), begin(), size(), &output_shape_vector));
+    output()->resize(calculateOutputShapeVector<int32_t>(input(), begin(), size()));
   }
   else if (begin()->element_type() == DataType::S64)
   {
-    assert(calculateOutputShapeVector<int64_t>(input(), begin(), size(), &output_shape_vector));
+    output()->resize(calculateOutputShapeVector<int64_t>(input(), begin(), size()));
   }
   else
   {
     throw std::runtime_error("Unsupported type.");
   }
-
-  Shape output_shape(output_shape_vector.size());
-  for (size_t i = 0; i < output_shape_vector.size(); i++)
-  {
-    output_shape.dim(i) = output_shape_vector.at(i);
-  }
-
-  output()->resize(output_shape);
 }
 
 void Slice::execute() const
