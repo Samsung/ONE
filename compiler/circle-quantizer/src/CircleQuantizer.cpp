@@ -55,7 +55,7 @@ int entry(int argc, char **argv)
       .required(false)
       .help("Quantize-dequantize weight values required action before quantization. "
             "Three arguments required: input_dtype(float32) "
-            "output_dtype(uint8) granularity(layer)");
+            "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(qwmm)
       .nargs(3)
@@ -63,7 +63,7 @@ int entry(int argc, char **argv)
       .required(false)
       .help("Quantize with min/max values. "
             "Three arguments required: input_dtype(float32) "
-            "output_dtype(uint8) granularity(layer)");
+            "output_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
