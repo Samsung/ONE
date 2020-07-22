@@ -26,6 +26,7 @@
 
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
+#include <vconone/vconone.h>
 
 #include <functional>
 #include <iostream>
@@ -33,6 +34,12 @@
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
+
+void print_version(void)
+{
+  std::cout << "circle2circle version " << vconone::get_string() << std::endl;
+  std::cout << vconone::get_copyright() << std::endl;
+}
 
 int entry(int argc, char **argv)
 {
@@ -43,6 +50,13 @@ int entry(int argc, char **argv)
   auto settings = luci::UserSettings::settings();
 
   arser::Arser arser("circle2circle provides circle model optimization and transformations");
+
+  arser.add_argument("--version")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("Show version information and exit")
+      .exit_with(print_version);
 
   arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
       "Enable all optimize options");
