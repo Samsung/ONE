@@ -17,6 +17,13 @@
 #include "RecordMinMax.h"
 
 #include <arser/arser.h>
+#include <vconone/vconone.h>
+
+void print_version(void)
+{
+  std::cout << "record-minmax version " << vconone::get_string() << std::endl;
+  std::cout << vconone::get_copyright() << std::endl;
+}
 
 int entry(const int argc, char **argv)
 {
@@ -24,6 +31,13 @@ int entry(const int argc, char **argv)
 
   arser::Arser arser(
       "Embedding min/max values of activations to the circle model for post-training quantization");
+
+  arser.add_argument("--version")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("Show version information and exit")
+      .exit_with(print_version);
 
   arser.add_argument("--input_model")
       .nargs(1)
