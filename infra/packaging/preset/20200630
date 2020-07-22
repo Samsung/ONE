@@ -14,6 +14,7 @@ function preset_configure()
   REQUIRED_UNITS+=("souschef")
   REQUIRED_UNITS+=("safemain")
   REQUIRED_UNITS+=("arser")
+  REQUIRED_UNITS+=("vconone")
   # Hermes Logging Framework
   REQUIRED_UNITS+=("hermes" "hermes-std")
   # loco IR and related utilities
