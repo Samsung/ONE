@@ -19,6 +19,7 @@ target_link_libraries(record-minmax safemain)
 target_link_libraries(record-minmax luci_import)
 target_link_libraries(record-minmax luci_export)
 target_link_libraries(record-minmax luci_interpreter)
+target_link_libraries(record-minmax vconone)
 
 install(TARGETS record-minmax DESTINATION bin)
 
