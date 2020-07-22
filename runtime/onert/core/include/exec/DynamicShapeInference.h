@@ -72,6 +72,7 @@ public:
   void visit(const ir::operation::LogicalNot &op) override;
   void visit(const ir::operation::LogicalOr &op) override;
   void visit(const ir::operation::Logistic &op) override;
+  void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::Max &op) override;
   void visit(const ir::operation::Min &op) override;
