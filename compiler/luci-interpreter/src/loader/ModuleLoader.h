@@ -36,11 +36,6 @@ public:
 
   void load();
 
-  RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const
-  {
-    return _graph_to_runtime_graph.at(graph);
-  }
-
 private:
   const luci::Module *_module;
   RuntimeModule *_runtime_module;

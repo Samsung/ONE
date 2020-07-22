@@ -24,18 +24,18 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 namespace luci_interpreter
 {
 
-class GraphLoader;
-class ModuleLoader;
-
 class KernelBuilder : public luci::CircleNodeVisitor<std::unique_ptr<Kernel>>
 {
 public:
-  KernelBuilder(const ModuleLoader &module_loader, const GraphLoader &graph_loader)
-      : _module_loader(module_loader), _graph_loader(graph_loader)
+  KernelBuilder(
+      const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+      const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+      : _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
   {
   }
 
@@ -82,8 +82,8 @@ private:
   RuntimeGraph *getRuntimeGraph(const loco::Graph *graph) const;
 
 private:
-  const ModuleLoader &_module_loader;
-  const GraphLoader &_graph_loader;
+  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
+  const std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
 } // namespace luci_interpreter

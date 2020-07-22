@@ -27,29 +27,25 @@
 namespace luci_interpreter
 {
 
-class ModuleLoader;
-
 class GraphLoader
 {
 public:
-  GraphLoader(const ModuleLoader &module_loader, const loco::Graph *graph,
-              RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+  GraphLoader(const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+              const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
               std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
 
   void load();
-
-  Tensor *getTensorForNode(const loco::Node *node) const { return _node_to_tensor.at(node); }
 
 private:
   void loadOperators();
   void initInputOutputTensors() const;
   void loadTensors();
 
-  const ModuleLoader &_module_loader;
   const loco::Graph *_graph;
   RuntimeGraph *_runtime_graph;
   RuntimeToIR &_runtime_to_ir;
 
+  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
   std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
 };
 
