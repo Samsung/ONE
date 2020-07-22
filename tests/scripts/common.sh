@@ -18,13 +18,12 @@ MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function get_result_of_benchmark_test()
 {
-    local RUN_TEST_SH=$1
-    local DRIVER_BIN=$2
-    local MODEL=$3
-    local LOG_FILE=$4
+    local DRIVER_BIN=$1
+    local MODEL=$2
+    local LOG_FILE=$3
 
     local RET=0
-    $RUN_TEST_SH --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
+    $MY_PATH/framework/run_test.sh --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
     RET=$?
     if [[ $RET -ne 0 ]]; then
         echo "Testing $MODEL aborted... exit code: $RET"
@@ -68,7 +67,7 @@ function run_benchmark_and_print()
     LOG_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.txt
     RESULT_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.result
     print_with_dots $MSG
-    RESULT=$(get_result_of_benchmark_test $BENCHMARK_RUN_TEST_SH $DRIVER_BIN $MODEL $LOG_FILE)
+    RESULT=$(get_result_of_benchmark_test $DRIVER_BIN $MODEL $LOG_FILE)
     echo "$RESULT ms"
     print_result_of_benchmark_test "$MSG" "$RESULT" $RESULT_FILE
     sleep $PAUSE_TIME_IN_SEC

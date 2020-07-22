@@ -18,7 +18,6 @@ MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source $MY_PATH/common.sh
 
-BENCHMARK_RUN_TEST_SH=
 BENCHMARK_DRIVER_BIN=
 BENCHMARK_REPORT_DIR=
 BENCHMARK_MODELS_FILE=
@@ -30,7 +29,7 @@ EXECUTORS="Linear Parallel" #TODO: accept this list as argument
 
 function Usage()
 {
-    echo "Usage: ./$0 --reportdir=. --runtestsh=tests/scripts/framework/run_test.sh --driverbin=Product/out/bin/tflite_run"
+    echo "Usage: ./$0 --reportdir=. --driverbin=Product/out/bin/tflite_run"
 }
 
 for i in "$@"
@@ -42,9 +41,6 @@ do
             ;;
         --test_op)
             TEST_OP="true"
-            ;;
-        --runtestsh=*)
-            BENCHMARK_RUN_TEST_SH=${i#*=}
             ;;
         --driverbin=*)
             BENCHMARK_DRIVER_BIN=${i#*=}
@@ -147,9 +143,8 @@ function run_onert_with_all_config()
     local REPORT_MODEL_DIR=$2
     local PAUSE_TIME_IN_SEC=$3
     local BENCHMARK_DRIVER_BIN=$4
-    local BENCHMARK_RUN_TEST_SH=$5
-    local EXECUTORS=$6
-    local BACKEND_LIST=$7
+    local EXECUTORS=$5
+    local BACKEND_LIST=$6
 
     export USE_NNAPI=1
 
@@ -163,18 +158,18 @@ function run_onert_with_all_config()
     done
     export BACKENDS=$BACKENDS_TO_USE
     if [ "$TEST_OP" == "false" ]; then
-        profile_for_he_shed $REPORT_MODEL_DIR $BENCHMARK_RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $PROFILING_RUN_CNT
+        profile_for_he_shed $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN $MODEL $PROFILING_RUN_CNT
     fi
 
     for executor in $EXECUTORS; do
         export EXECUTOR=$executor
         if [ "$TEST_OP" == "false" ]; then
-            run_with_he_scheduler $REPORT_MODEL_DIR $BENCHMARK_RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $executor
+            run_with_he_scheduler $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN $MODEL $executor
         fi
         for backend in $BACKEND_LIST; do
             export OP_BACKEND_ALLOPS=$backend
             run_benchmark_and_print "tflite_onert_"$executor"_executor_$backend" "TFLite onert $executor Executor $backend"\
-                                    $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH
+                                    $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN
         done
     done
     unset USE_NNAPI EXECUTOR OP_BACKEND_ALLOPS BACKENDS
@@ -215,14 +210,14 @@ function run_benchmark_test()
 
         # TFLite+CPU
         unset USE_NNAPI
-        run_benchmark_and_print "tflite_cpu" "TFLite CPU" $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH
+        run_benchmark_and_print "tflite_cpu" "TFLite CPU" $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN
 
         # run onert
         if [ "$TEST_OP" == "true" ]; then
           # Operation test don't need to test each scheduler
-          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "Linear" "$BACKEND_LIST"
+          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN "Linear" "$BACKEND_LIST"
         else
-          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN $BENCHMARK_RUN_TEST_SH "$EXECUTORS" "$BACKEND_LIST"
+          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN "$EXECUTORS" "$BACKEND_LIST"
         fi
 
         if [[ $i -ne $(echo $BENCHMARK_MODEL_LIST | wc -w)-1 ]]; then
