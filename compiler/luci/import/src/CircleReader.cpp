@@ -156,6 +156,7 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
   const auto &max = quantization->max;
   const auto &scale = quantization->scale;
   const auto &zero_point = quantization->zero_point;
+  const auto &quantized_dimension = quantization->quantized_dimension;
 
   if ((!min.empty() && !max.empty()) || (!scale.empty() && !zero_point.empty()))
   {
@@ -165,6 +166,7 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
     quantparam->max = max;
     quantparam->scale = scale;
     quantparam->zerop = zero_point;
+    quantparam->quantized_dimension = quantized_dimension;
 
     return quantparam;
   }
