@@ -51,16 +51,12 @@ public:
    * @param[in] backend_resolver backend resolver
    */
   HEScheduler(const backend::BackendContexts &backend_contexts, const CompilerOptions &options)
-      : _backend_contexts{backend_contexts}, _is_supported{}, _backends_avail_time{}, _ops_eft{},
+      : _is_supported{}, _backends_avail_time{}, _ops_eft{},
         _op_to_rank{std::make_shared<ir::OperationIndexMap<int64_t>>()},
         _is_profiling_mode{options.he_profiling_mode},
         _is_linear_exec{options.executor == "Linear"},
         _is_parallel_exec{options.executor == "Parallel"}
   {
-    // Workaround to avoid unused-private-field warning
-    // TODO use _backend_contexts and remove workaround
-    (void)_backend_contexts;
-
     for (auto &entry : backend_contexts)
     {
       _all_backends.push_back(entry.first);
@@ -165,7 +161,6 @@ private:
   // whether it should assign these backends to these nodes:
   // * It stores false for unsupported nodes
   // * During rank calculation with enabled profiling mode it stores true for supported nodes
-  const backend::BackendContexts &_backend_contexts;
   std::unordered_map<const backend::Backend *, std::unordered_map<std::string, bool>> _is_supported;
   // Finishing and starting time of each backend
   std::unordered_map<const backend::Backend *, std::map<int64_t, int64_t>> _backends_avail_time;
@@ -175,8 +170,7 @@ private:
   std::unique_ptr<compiler::BackendResolver> _backend_resolver;
   std::unique_ptr<exec::ExecTime> _exec_time;
   const ir::Graph *_graph{nullptr};
-  std::vector<const backend::Backend *>
-      _all_backends; // TODO Remove this and use _backend_contexts instead
+  std::vector<const backend::Backend *> _all_backends;
   const backend::Backend *_cpu_backend{nullptr}; // TODO Change this to controlflow_backend
   bool _is_profiling_mode;
   bool _is_linear_exec;
