@@ -33,6 +33,8 @@ function Usage()
   if [ $backend_exist == 0 ]; then
     echo "  (There is no available backend drivers)"
   fi
+
+  exit 255
 }
 
 # Get command from command-line
@@ -41,7 +43,6 @@ BACKEND_DRIVER="$BACKEND-compile"
 
 if [[ -z "${BACKEND_DRIVER}" ]]; then
   Usage
-  exit 255
 fi
 
 BACKEND_DRIVER_CMD="${DRIVER_PATH}/${BACKEND_DRIVER}"
@@ -49,7 +50,6 @@ BACKEND_DRIVER_CMD="${DRIVER_PATH}/${BACKEND_DRIVER}"
 if [[ ! -f "${BACKEND_DRIVER_CMD}" ]]; then
   echo "ERROR: '${BACKEND_DRIVER}' is not supported"
   Usage
-  exit 255
 fi
 
 "${BACKEND_DRIVER_CMD}" "$@"

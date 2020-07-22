@@ -27,7 +27,7 @@ usage()
   echo "    --input_arrays <names of the input arrays, comma-separated>"
   echo "    --input_shapes <input shapes, colon-separated>"
   echo "    --output_arrays <names of the output arrays, comma-separated>"
-  exit 0
+  exit 255
 }
 
 # Parse command-line arguments
