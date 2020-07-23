@@ -20,7 +20,7 @@
 
 #include <string>
 #include <cassert>
-#include <stdexcpet>
+#include <stdexcept>
 
 using Shape = luci_interpreter::Shape;
 using DataType = luci_interpreter::DataType;
