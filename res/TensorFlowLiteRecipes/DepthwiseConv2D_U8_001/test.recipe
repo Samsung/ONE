@@ -1,0 +1,61 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 112 dim: 112 dim: 4 }
+  quant { min: 0 max: 6 scale: 0.0235294 zero_point: 0 }
+}
+operand {
+  name: "ker"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+  quant {
+    min: -30.3175 min: -0.779597 min: -10.2751 min: -10.8594
+    max: 4.35049 max: 2.70807 max: 11.0269 max: 20.97
+    scale:0.135953 scale: 0.0136771 scale: 0.0835375 scale: 0.124821
+    zero_point:223 zero_point: 57 zero_point: 123 zero_point: 87
+    quantized_dimension: 3
+  }
+}
+operand {
+  name: "bias"
+  type: INT32
+  shape { dim: 4 }
+	filler {
+	  tag: "gaussian"
+	  arg: "0"
+	  arg: "1.0"
+	}
+  quant {
+    scale: 1.4758e-16 scale: 3.15185e-05 scale: 2.20685e-05 scale: 1.72205e-16
+    zero_point: 0 zero_point: 0 zero_point: 0 zero_point: 0
+  }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 112 dim: 112 dim: 4 }
+  quant { min: 0 max: 6 scale: 0.0235294 zero_point: 0 }
+
+}
+operation {
+  type: "DepthwiseConv2D"
+  depthwiseconv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    depth_multiplier: 1
+    activation : RELU6
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+input: "ker"
+output: "ofm"
