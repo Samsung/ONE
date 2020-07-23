@@ -195,11 +195,4 @@ void GraphLoader::loadOperators()
   }
 }
 
-void GraphLoader::load()
-{
-  loadTensors();
-  initInputOutputTensors();
-  loadOperators();
-}
-
 } // namespace luci_interpreter

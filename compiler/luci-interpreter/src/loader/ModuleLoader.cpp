@@ -43,7 +43,9 @@ void ModuleLoader::load()
     RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
     GraphLoader loader(graph, runtime_graph, _runtime_to_ir, _graph_to_runtime_graph,
                        _node_to_tensor);
-    loader.load();
+    loader.loadTensors();
+    loader.initInputOutputTensors();
+    loader.loadOperators();
   }
 }
 
