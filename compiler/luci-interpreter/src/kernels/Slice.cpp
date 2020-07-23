@@ -34,7 +34,7 @@ Slice::Slice(const Tensor *input, const Tensor *begin, const Tensor *size, Tenso
 }
 
 template <typename T>
-Shape calculateOutputShapeVector(const Tensor *input, const Tensor *begin, const Tensor *size)
+Shape calculateOutputShape(const Tensor *input, const Tensor *begin, const Tensor *size)
 {
   Shape output_shape = Shape(input->shape().num_dims());
   for (int idx = 0; idx < input->shape().num_dims(); idx++)
@@ -82,11 +82,11 @@ void Slice::configure()
 
   if (begin()->element_type() == DataType::S32)
   {
-    output()->resize(calculateOutputShapeVector<int32_t>(input(), begin(), size()));
+    output()->resize(calculateOutputShape<int32_t>(input(), begin(), size()));
   }
   else if (begin()->element_type() == DataType::S64)
   {
-    output()->resize(calculateOutputShapeVector<int64_t>(input(), begin(), size()));
+    output()->resize(calculateOutputShape<int64_t>(input(), begin(), size()));
   }
   else
   {
