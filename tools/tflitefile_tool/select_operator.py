@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
 #
