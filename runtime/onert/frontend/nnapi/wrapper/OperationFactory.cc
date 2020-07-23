@@ -2133,6 +2133,15 @@ OperationFactory::OperationFactory()
 
     return new operation::LogSoftmax{inputs, outputs, param};
   };
+
+  _map[ANEURALNETWORKS_QUANTIZE] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Quantize{inputs, outputs};
+  };
 }
 
 Operation *OperationFactory::create(ANeuralNetworksOperationType type,
