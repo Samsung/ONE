@@ -302,7 +302,10 @@ encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam 
     scale = builder.CreateVector(quantparam->scale);
     zero_point = builder.CreateVector(quantparam->zerop);
   }
-  return circle::CreateQuantizationParameters(builder, min, max, scale, zero_point);
+  // Note: QuantizationDetails is not supported
+  return circle::CreateQuantizationParameters(builder, min, max, scale, zero_point,
+                                              circle::QuantizationDetails::QuantizationDetails_NONE,
+                                              0, quantparam->quantized_dimension);
 }
 
 void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
