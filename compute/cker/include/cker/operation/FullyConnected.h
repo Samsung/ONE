@@ -208,6 +208,66 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   return;
 }
 
+inline void FullyConnectedSparseWeight(const FullyConnectedParams &params, const Shape &input_shape,
+                                       const float *input_data, const Shape &weights_shape,
+                                       const float *weights_data, const Shape &bias_shape,
+                                       const float *bias_data, const Shape &output_shape,
+                                       float *output_data, int w0_size, const uint16_t *w1_segments,
+                                       const uint16_t *w1_indices)
+{
+  UNUSED_RELEASE(params);
+  UNUSED_RELEASE(input_shape);
+
+  assert(weights_shape.DimensionsCount() == 2);
+  assert(output_shape.DimensionsCount() == 2);
+
+  const int output_elements = output_shape.FlatSize();
+  const int output_dims_count = output_shape.DimensionsCount();
+  const int weights_dims_count = weights_shape.DimensionsCount();
+  const int batches = FlatSizeSkipDim(output_shape, output_dims_count - 1);
+  const int output_depth =
+      MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
+  const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
+
+  for (int i = 0; i < output_elements; ++i)
+  {
+    output_data[i] = 0.f;
+  }
+
+  for (int b = 0; b < batches; ++b)
+  {
+    for (int idx_0 = 0; idx_0 < w0_size; ++idx_0)
+    {
+      for (int pw1 = w1_segments[idx_0]; pw1 < w1_segments[idx_0 + 1]; ++pw1)
+      {
+        int idx_1 = w1_indices[pw1];
+        output_data[b * output_depth + idx_0] +=
+            weights_data[pw1] * input_data[b * accum_depth + idx_1];
+      }
+    }
+  }
+
+  UNUSED_RELEASE(bias_shape);
+  if (bias_data)
+  {
+    for (int b = 0; b < batches; ++b)
+    {
+      for (int i = 0; i < output_depth; ++i)
+      {
+        float total = output_data[b * output_depth + i];
+        float bias_value = bias_data[i];
+        output_data[b * output_depth + i] = total + bias_value;
+      }
+    }
+  }
+  // Apply activation function to floats.
+  if (params.activation != FusedActivationFunctionType::kNone)
+  {
+    // Apply activation function
+    ApplyActivationToVector(output_data, batches * output_depth, params.activation, output_data);
+  }
+}
+
 } // namespace cker
 } // namespace nnfw
 
