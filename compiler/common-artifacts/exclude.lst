@@ -5,9 +5,6 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
-optimize(ReLU6_000)
-optimize(Where_000)
-optimize(Where_001)
 
 ## CircleRecipes
 
@@ -97,7 +94,7 @@ tcgenerate(Neg_000)
 tcgenerate(Net_Dangle_001)
 tcgenerate(Net_InstanceNorm_001)
 tcgenerate(Net_InstanceNorm_002)
-tcgenerate(Net_ZeroDim_001) # fix luci
+tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(NotEqual_000)
 tcgenerate(OneHot_000)
 tcgenerate(OneHot_001)
@@ -121,9 +118,9 @@ tcgenerate(ReduceProd_001)
 tcgenerate(ReduceProd_002)
 tcgenerate(ReduceProd_003)
 tcgenerate(ReLU_000)
-tcgenerate(ReLU6_000) # luci NYI
+tcgenerate(ReLU6_000)
 tcgenerate(ReLUN1To1_000)
-tcgenerate(Reshape_003) # fix luci
+tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
 tcgenerate(Reshape_U8_000)
 tcgenerate(ResizeBilinear_000)
 tcgenerate(ResizeNearestNeighbor_000)
@@ -149,7 +146,7 @@ tcgenerate(SpaceToBatchND_002)
 tcgenerate(SpaceToBatchND_003)
 tcgenerate(SpaceToDepth_000)
 tcgenerate(SparseToDense_000)
-tcgenerate(SplitV_000) # fix luci
+tcgenerate(SplitV_000)
 tcgenerate(Sqrt_000)
 tcgenerate(Square_000)
 tcgenerate(SquaredDifference_000)
@@ -165,22 +162,21 @@ tcgenerate(Sum_001)
 tcgenerate(Tanh_000)
 tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
-tcgenerate(TopKV2_000) # fix luci
-tcgenerate(TopKV2_001) # fix luci
-tcgenerate(TransposeConv_000) # fix interpreter
+tcgenerate(TopKV2_000)
+tcgenerate(TopKV2_001)
 tcgenerate(Unique_000)
 tcgenerate(Unique_001)
 tcgenerate(Unique_002)
 tcgenerate(Unique_003)
 tcgenerate(Unique_U8_000)
 tcgenerate(Unique_U8_001)
-tcgenerate(Where_000) # luci NYI
-tcgenerate(Where_001) # luci NYI
-tcgenerate(While_000) # fix luci
+tcgenerate(Where_000)
+tcgenerate(Where_001)
+tcgenerate(While_000)
 tcgenerate(While_001)
 tcgenerate(While_002)
 tcgenerate(While_003)
-tcgenerate(YUV_TO_RGB_000) # fix luci
+tcgenerate(YUV_TO_RGB_000)
 tcgenerate(YUV_TO_RGB_U8_000)
 tcgenerate(ZerosLike_000)
 
