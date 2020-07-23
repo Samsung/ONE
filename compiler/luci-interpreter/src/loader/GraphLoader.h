@@ -34,13 +34,11 @@ public:
               const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
               std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
 
-  void load();
+  void loadTensors();
+  void initInputOutputTensors() const;
+  void loadOperators();
 
 private:
-  void loadOperators();
-  void initInputOutputTensors() const;
-  void loadTensors();
-
   const loco::Graph *_graph;
   RuntimeGraph *_runtime_graph;
   RuntimeToIR &_runtime_to_ir;
