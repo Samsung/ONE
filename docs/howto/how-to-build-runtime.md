@@ -13,7 +13,7 @@ In the Ubuntu, you can easily install it with the following command.
 
 ```
 $ sudo apt-get install cmake libboost-all-dev
-``` 
+```
 
 If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in the https://github.com/Samsung/ONE/blob/master/infra/docker/Dockerfile.1804 file.
 
@@ -44,7 +44,7 @@ python3-venv \
 scons \
 software-properties-common \
 unzip \
-wget 
+wget
 
 $ mkdir /tmp/gtest
 $ cd /tmp/gtest
@@ -63,7 +63,7 @@ In a typical linux development environment, including Ubuntu, you can build the 
 ```
 $ git clone https://github.com/Samsung/ONE.git one
 $ cd one
-$ cp -n Makefile.template Makefile; make install
+$ make -f Makefile.template install
 ```
 
 Unfortunately, the debug build on the x86_64 architecture currently has an error. To solve the problem, you must use gcc version 9 or higher. Another workaround is to do a release build rather than a debug build. This is not a suitable method for debugging during development, but it is enough to check the function of the runtime. To release build the runtime, add the environment variable `BUILD_TYPE=release` to the build command as follows.
