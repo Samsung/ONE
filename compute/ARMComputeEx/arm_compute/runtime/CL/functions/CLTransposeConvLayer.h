@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (c) 2017-2018 ARM Limited.
+ * Copyright (c) 2017-2020 ARM Limited.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -37,16 +37,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #ifndef __ARM_COMPUTE_CLTRANSPOSECONVLAYER_H__
 #define __ARM_COMPUTE_CLTRANSPOSECONVLAYER_H__
 
-#include "arm_compute/runtime/CL/functions/CLConvolutionLayer.h"
-#include "arm_compute/runtime/CL/functions/CLTransposeConvLayerUpsample.h"
-
-#include "arm_compute/core/CPP/kernels/CPPFlipWeightsKernel.h"
-
-#include "arm_compute/runtime/CL/CLTensor.h"
+#include "arm_compute/runtime/CL/functions/CLDirectTransposeConvLayer.h"
+#include "arm_compute/runtime/CL/functions/CLGEMMDeconvolutionLayer.h"
 #include "arm_compute/runtime/IFunction.h"
 #include "arm_compute/runtime/IMemoryManager.h"
 
@@ -54,119 +49,102 @@
 
 namespace arm_compute
 {
-class ICLTensor;
-/** Function to run the transpose convolution layer.
+/** Basic function to compute the deconvolution layer. This function calls the following OpenCL
+ * kernels/functions:
  *
- * @note This layer was copied in order to fix a bug computing to wrong output dimensions.
- *
- * TransposeConv Layer is the backward pass of Convolution Layer. First we transform the input
- * depending on the stride and pad info and then perform a 1x1
- * convolution pass. Input stride defines how many zeroes we should put between each element of the
- * input, pad is the amount of padding and finally a is a user
- * specified value where a < stride - 1, that increases the padding top and right of the input
- * image.
- *
- *  The relation between input to output is as follows:
- *  \f[
- *       width\_output = (width\_input - 1) \cdot stride\_x - \cdot padding\_x + kernel\_x
- *  \f]
- *  \f[
- *       height\_output = (height\_input - 1) \cdot stride\_y - \cdot padding\_y + kernel\_y
- *  \f]
- *
- *  where:
- *      width_input is the size of the first input dimension.
- *      height_input is the size of the second input dimension.
- *      width_output is the size of the first output dimension.
- *      height_output is the size of the second output dimension.
- *      kernel_x and kernel_y are the convolution sizes in x and y.
- *      stride_x and stride_y is the input stride of the first and second dimension.
- *
- * The weights used by Deconvolution are supposed to be the same as the ones used for Convolution.
- * Therefore, it will be necessary to use the weights in the
- * reverse order to perform an actual convolution. This is achieved by using the @ref
- * CPPFlipWeightsKernel.
- *
- * This function calls the following OpenCL kernels/functions:
- *
- * -# @ref CLTransposeConvLayerUpsample
- * -# @ref CLConvolutionLayer
- *
+ * -# @ref CLGEMMDeconvolutionLayer
+ * -# @ref CLDirectTransposeConvLayer
  */
 class CLTransposeConvLayer : public IFunction
 {
 public:
-  /** Constructor */
+  /** Default constructor */
   CLTransposeConvLayer(std::shared_ptr<IMemoryManager> memory_manager = nullptr);
-  /** Prevent instances of this class from being copied (As this class contains pointers) */
-  CLTransposeConvLayer(const CLTransposeConvLayer &) = delete;
-  /** Default move constructor */
-  CLTransposeConvLayer(CLTransposeConvLayer &&) = default;
-  /** Prevent instances of this class from being copied (As this class contains pointers) */
-  CLTransposeConvLayer &operator=(const CLTransposeConvLayer &) = delete;
-  /** Default move assignment operator */
-  CLTransposeConvLayer &operator=(CLTransposeConvLayer &&) = default;
+
   /** Set the input, weights, biases and output tensors.
    *
-   * @param[in,out] input          Input tensor. 3 lower dimensions represent a single input,
-   *                               and an optional 4th dimension for batch of inputs.
-   *                               Data types supported: QASYMM8/F16/F32.
-   * @param[in]     weights        The 4d weights with dimensions [width, height, IFM, OFM].
-   *                               Data type supported: Same as @p input.
-   * @param[in]     bias           (Optional) The biases have one dimension. Data type supported:
-   *                               Same as @p input.
-   * @param[out]    output         Output tensor. The output has the same number of dimensions
-   *                               as the @p input.
-   * @param[in]     info           Contains padding and policies to be used in the
-   *                               transpose convolution, this is decribed in @ref PadStrideInfo.
-   * @param[in]     invalid_right  The number of zeros added to right edge of the output.
-   * @param[in]     invalid_bottom The number of zeros added to top edge of the output.
-   * @param[in]     weights_info   (Optional) Weights information needed for @ref
-   *                               CLConvolutionLayer, specifies if the weights tensor has been
-   *                               reshaped with @ref CLWeightsReshapeKernel.
+   * @param[in,out] input        Input tensor. 3 lower dimensions represent a single input, and an
+ * optional 4th dimension for batch of inputs. Data types supported: QASYMM8_SIGNED/QASYMM8/F16/F32.
+   * @param[in]     weights      The 4d weights with dimensions [width, height, IFM, OFM]. Data type
+ * supported: Same as @p input.
+   * @param[in]     bias         (Optional) The biases have one dimension. Data type supported: Same
+ * as @p input.
+   * @param[out]    output       Output tensor. The output has the same number of dimensions as the
+ * @p input.
+   * @param[in]     deconv_info  Contains padding and policies to be used in the deconvolution, this
+ * is described in @ref PadStrideInfo.
+ * @param[in] invalid_right  The number of zeros added to right edge of the output.
+ * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
+   * @param[in]     weights_info (Optional) Weights information needed for @ref CLConvolutionLayer,
+ * specifies if the weights tensor has been reshaped with @ref CLWeightsReshapeKernel.
+   *
    */
   void configure(ICLTensor *input, ICLTensor *weights, const ICLTensor *bias, ICLTensor *output,
-                 const PadStrideInfo &info, unsigned int invalid_right, unsigned int invalid_bottom,
+                 const PadStrideInfo &deconv_info, unsigned int invalid_right,
+                 unsigned int invalid_bottom, const WeightsInfo &weights_info = WeightsInfo());
+  /** Set the input, weights, biases and output tensors.
+   *
+   * @param[in]     compile_context The compile context to be used.
+   * @param[in,out] input           Input tensor. 3 lower dimensions represent a single input, and
+ * an optional 4th dimension for batch of inputs. Data types supported:
+ * QASYMM8_SIGNED/QASYMM8/F16/F32.
+   * @param[in]     weights         The 4d weights with dimensions [width, height, IFM, OFM]. Data
+ * type supported: Same as @p input.
+   * @param[in]     bias            (Optional) The biases have one dimension. Data type supported:
+ * Same as @p input.
+   * @param[out]    output          Output tensor. The output has the same number of dimensions as
+ * the @p input.
+   * @param[in]     deconv_info     Contains padding and policies to be used in the deconvolution,
+ * this is described in @ref PadStrideInfo.
+ * @param[in] invalid_right  The number of zeros added to right edge of the output.
+ * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
+   * @param[in]     weights_info    (Optional) Weights information needed for @ref
+ * CLConvolutionLayer, specifies if the weights tensor has been reshaped with @ref
+ * CLWeightsReshapeKernel.
+   *
+   */
+  void configure(const CLCompileContext &compile_context, ICLTensor *input, ICLTensor *weights,
+                 const ICLTensor *bias, ICLTensor *output, const PadStrideInfo &deconv_info,
+                 unsigned int invalid_right, unsigned int invalid_bottom,
                  const WeightsInfo &weights_info = WeightsInfo());
   /** Static function to check if given info will lead to a valid configuration of @ref
-   * CLTransposeConvLayer
+ * CLTransposeConvLayer
    *
-   * @param[in] input           Input tensor info. 3 lower dimensions represent a single input,
-   *                            and an optional 4th dimension for batch of inputs.
-   *                            Data types supported: QASYMM8/F16/F32.
-   * @param[in] weights         The 4d weights info with dimensions [width, height, IFM, OFM].
-   *                            Data type supported: Same as @p input.
-   * @param[in] bias            (Optional) The biases have one dimension. Data type supported:
-   *                            Same as @p input.
-   * @param[in] output          Output tensor info. The output has the same number of dimensions
-   *                            as the @p input.
-   * @param[in] info            Contains padding and policies to be used in the
-   *                            transpose convolution, this is decribed in @ref PadStrideInfo.
-   * @param[in] innvalid_right  The number of zeros added to right edge of the output.
-   * @param[in] invalid_bottom  The number of zeros added to top edge of the output.
-   * @param[in] weights_info    (Optional) Weights information needed for @ref CLConvolutionLayer,
-   *                            specifies if the weights tensor has been reshaped with @ref
-   *                            CLWeightsReshapeKernel.
+   * @param[in] input        Input tensor info. 3 lower dimensions represent a single input, and an
+ * optional 4th dimension for batch of inputs. Data types supported: QASYMM8_SIGNED/QASYMM8/F16/F32.
+   * @param[in] weights      The 4d weights info with dimensions [width, height, IFM, OFM]. Data
+ * type supported: Same as @p input.
+   * @param[in] bias         (Optional) The biases have one dimension. Data type supported: Same as
+ * @p input.
+   * @param[in] output       Output tensor info. The output has the same number of dimensions as the
+ * @p input.
+   * @param[in] deconv_info  Contains padding and policies to be used in the deconvolution, this is
+ * described in @ref PadStrideInfo.
+ * @param[in] invalid_right  The number of zeros added to right edge of the output.
+ * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
+   * @param[in] weights_info (Optional) Weights information needed for @ref CLConvolutionLayer,
+ * specifies if the weights tensor has been reshaped with @ref CLWeightsReshapeKernel.
+   *
    * @return a status
    */
   static Status validate(const ITensorInfo *input, const ITensorInfo *weights,
-                         const ITensorInfo *bias, ITensorInfo *output, const PadStrideInfo &info,
-                         unsigned int innvalid_right, unsigned int invalid_bottom,
+                         const ITensorInfo *bias, ITensorInfo *output,
+                         const PadStrideInfo &deconv_info, unsigned int invalid_right,
+                         unsigned int invalid_bottom,
                          const WeightsInfo &weights_info = WeightsInfo());
 
+  static DeconvolutionMethod
+  get_deconvolution_method(const ITensorInfo *input, const ITensorInfo *weights,
+                           const ITensorInfo *bias, ITensorInfo *output,
+                           const PadStrideInfo &deconv_info, unsigned int invalid_right,
+                           unsigned int invalid_bottom, const WeightsInfo &weights_info);
   // Inherited methods overridden:
   void run() override;
   void prepare() override;
 
 private:
-  MemoryGroup _memory_group;
-  CLTransposeConvLayerUpsample _scale_f;
-  CLConvolutionLayer _conv_f;
-  CPPFlipWeightsKernel _flip_weights;
-  CLTensor _scaled_output;
-  ICLTensor *_original_weights;
-  CLTensor _weights_flipped;
-  bool _is_prepared;
+  std::shared_ptr<IMemoryManager> _memory_manager;
+  std::unique_ptr<IFunction> _function;
 };
-}
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_CLTRANSPOSECONVLAYER_H__ */

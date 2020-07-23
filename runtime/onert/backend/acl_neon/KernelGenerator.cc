@@ -150,12 +150,23 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NECast>();
+  std::unique_ptr<::arm_compute::IFunction> fn;
+  if (ifm_tensor->data_type() == ofm_tensor->data_type())
+  {
+    auto l = std::make_unique<::arm_compute::NECopy>();
 
-  auto input_sub_type = _ctx.at(ifm_index).typeInfo().type() == ir::DataType::BOOL8
-                            ? arm_compute::SubDataType::BOOL
-                            : arm_compute::SubDataType::NONE;
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), input_sub_type);
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::NECast>();
+
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), arm_compute::ConvertPolicy::SATURATE);
+
+    fn = std::move(l);
+  }
 
   auto acl_fn = asAclFunction(std::move(fn));
 
@@ -212,7 +223,7 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto output_tensor = _tensor_builder->at(output_index).get();
   auto input_tensor = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEDepthToSpaceLayerEx>();
+  auto fn = std::make_unique<::arm_compute::NEDepthToSpaceLayer>();
 
   fn->configure(input_tensor->handle(), output_tensor->handle(), block_size);
 
@@ -309,9 +320,9 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
-  ::arm_compute::PoolingLayerInfo info{::arm_compute::PoolingType::MAX,
-                                       ::arm_compute::Size2D{kw, kh},
-                                       acl_common::asPadStrideInfo(padding, stride)};
+  ::arm_compute::PoolingLayerInfo info{
+      ::arm_compute::PoolingType::MAX, ::arm_compute::Size2D{kw, kh},
+      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride)};
 
   auto fn = std::make_unique<::arm_compute::NEPoolingLayer>();
 
@@ -354,7 +365,8 @@ void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::AVG, ::arm_compute::Size2D{kw, kh},
-      acl_common::asPadStrideInfo(padding, stride), true /* exclude_padding */};
+      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride),
+      true /* exclude_padding */};
 
   auto fn = std::make_unique<::arm_compute::NEPoolingLayer>();
 
@@ -692,6 +704,7 @@ void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::L2, ::arm_compute::Size2D{kw, kh},
+      ifm_tensor->info()->data_layout(),
       ::onert::backend::acl_common::asPadStrideInfo(padding, stride)};
 
   auto fn = std::make_unique<::arm_compute::NEPoolingLayer>();
@@ -1153,7 +1166,7 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
 
   std::unique_ptr<::arm_compute::IFunction> fn;
 
-  auto l = std::make_unique<::arm_compute::NEPReLU>();
+  auto l = std::make_unique<::arm_compute::NEPReluLayer>();
 
   l->configure(ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
 
@@ -1186,9 +1199,7 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   std::unique_ptr<::arm_compute::IFunction> fn;
   if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
   {
-    // NOTE NEReduceMean has a bug that does not support NHWC layout
-    //      NEReduceMean intermediate tensors are always NCHW layout
-    auto l = std::make_unique<::arm_compute::NEReduceMeanEx>();
+    auto l = std::make_unique<::arm_compute::NEReduceMean>();
 
     l->configure(input_tensor->handle(), reduce_axes, keep_dims, output_tensor->handle());
 
@@ -1352,7 +1363,7 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
   copy_layer->configure(hidden_state_in_tensor->handle(), hidden_state_out_tensor->handle());
   _return_fn = asAclFunction(std::move(copy_layer));
 
-  auto fn = std::make_unique<::arm_compute::NERNNLayerEx>(
+  auto fn = std::make_unique<::arm_compute::NERNNLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
   fn->configure(input_tensor->handle(), weights_tensor->handle(),
                 recurrent_weights_tensor->handle(), bias_tensor->handle(),
@@ -1423,6 +1434,18 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
 
   auto output_tensor = _tensor_builder->at(output_index).get();
   auto input_tensor = _tensor_builder->at(input_index).get();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = input_tensor->layout();
+
+  // Disable applied dim_correction
+  const size_t input_rank = _ctx.at(input_index).shape().rank();
+  if (input_rank != input_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and input tensor is applied dim_correction
+    const auto input = _ctx.at(input_index);
+    input_tensor->info()->set_tensor_shape(
+        acl_common::asTensorShape(input.shape(), frontend_layout, backend_layout, false));
+  }
 
   auto fn = std::make_unique<::arm_compute::NESoftmaxLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
@@ -1450,9 +1473,7 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   assert(_ctx.at(block_size_index).data());
   assert(_ctx.at(paddings_index).data());
 
-  // NESpaceToBatchLayer has a bug that padding's values are 0 even when zero point of QASYMM8 is
-  // not 0.
-  auto fn = std::make_unique<::arm_compute::NESpaceToBatchLayerEx>();
+  auto fn = std::make_unique<::arm_compute::NESpaceToBatchLayer>();
 
   fn->configure(ifm_tensor->handle(), block_size_tensor->handle(), paddings_tensor->handle(),
                 ofm_tensor->handle());
@@ -1472,7 +1493,7 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NESpaceToDepthLayerEx>();
+  auto fn = std::make_unique<::arm_compute::NESpaceToDepthLayer>();
 
   fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), block_size);
 

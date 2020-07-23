@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (c) 2017-2019 ARM Limited.
+ * Copyright (c) 2017-2020 ARM Limited.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -37,16 +37,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #ifndef __ARM_COMPUTE_NETRANSPOSECONVLAYER_H__
 #define __ARM_COMPUTE_NETRANSPOSECONVLAYER_H__
 
-#include "arm_compute/runtime/CPP/functions/CPPUpsampleEx.h"
+#include "arm_compute/runtime/CPP/functions/CPPUpsample.h"
 #include "arm_compute/runtime/NEON/functions/NEConvolutionLayer.h"
 #include "arm_compute/runtime/NEON/functions/NEDirectConvolutionLayer.h"
-#include "arm_compute/runtime/NEON/functions/NEPermute.h"
+#include "arm_compute/runtime/NEON/functions/NEReverse.h"
 
-#include "arm_compute/core/CPP/kernels/CPPFlipWeightsKernel.h"
 #include "arm_compute/core/Types.h"
 #include "arm_compute/runtime/IFunction.h"
 #include "arm_compute/runtime/IMemoryManager.h"
@@ -59,8 +57,8 @@ namespace arm_compute
 {
 /** Function to run the deconvolution layer.
  *
- * Transpose convolution Layer is the backward pass of Convolution Layer. First we transform the
- * input depending on the stride and pad info and then perfrom a 1x1
+ * Deconvolution Layer is the backward pass of Convolution Layer. First we transform the input
+ * depending on the stride and pad info and then perfrom a 1x1
  * convolution pass. Input stride defines how many zeroes we should put between each element of the
  * input, pad is the amount of padding and finaly a is a user
  * specified value where a < stride - 1 that increases the padding top and right of the input image.
@@ -81,21 +79,22 @@ namespace arm_compute
  *      kernel_x and kernel_y are the convolution sizes in x and y.
  *      stride_x and stride_y is the input stride of the first and second dimension.
  *
- * The weights used by Transpose convolution are supposed to be the same as the ones used for
- * Convolution. Therefore, it will be necessary to use the weights in the
- * reverse order to perform an actual convolution. This is achieved by using the @ref
- * CPPFlipWeightsKernel.
+ * The weights used by Deconvolution are supposed to be the same as the ones used for Convolution.
+ * Therefore, it will be necessary to use the weights in the
+ * reverse order to perform an actual convolution. This is achieved by using @ref NEReverse.
  *
  * This function calls the following NEON kernels/functions:
  *
- * -# @ref CPPUpsample
+ * -# @ref CPPUpsampleEx
  * -# @ref NEConvolutionLayer
+ * -# @ref NEPermute
+ * -# @ref NEReverse
  *
  */
 class NETransposeConvLayer : public IFunction
 {
 public:
-  /** Default constructor */
+  /** Constructor */
   NETransposeConvLayer(std::shared_ptr<IMemoryManager> memory_manager = nullptr);
 
   /** Prevent instances of this class from being copied (As this class contains pointers) */
@@ -112,37 +111,38 @@ public:
   /** Set the input, weights, biases and output tensors.
    *
    * @param[in,out] input   Input tensor. 3 lower dimensions represent a single input, and an
-   * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8.
+ * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
    * @param[in]     weights The 4d weights with dimensions [width, height, IFM, OFM]. Data type
-   * supported: Same as @p input.
+ * supported: Same as @p input.
    * @param[in]     bias    Optional, ignored if NULL. The biases have one dimension. Data type
-   * supported: Data types supported: S32 for QASYMM8 input, F32 for F32 input, F16 for F16 input.
+ * supported: Data types supported: S32 for QASYMM8 and QASYMM8_SIGNED input, F32 for F32 input, F16
+ * for F16 input.
    * @param[out]    output  Output tensor. The output has the same number of dimensions as the @p
-   * input.
+ * input.
    * @param[in]     info    Contains padding and policies to be used in the deconvolution, this is
-   * decribed in @ref PadStrideInfo.
-   * @param[in]     invalid_right  The number of zeros added to right edge of the output.
-   * @param[in]     invalid_bottom The number of zeros added to top edge of the output.
+ * decribed in @ref PadStrideInfo.
+ * @param[in]     invalid_right  The number of zeros added to right edge of the output.
+ * @param[in]     invalid_bottom The number of zeros added to bottom edge of the output.
    *
    */
   void configure(ITensor *input, const ITensor *weights, const ITensor *bias, ITensor *output,
                  const PadStrideInfo &info, unsigned int invalid_right,
                  unsigned int invalid_bottom);
   /** Static function to check if given info will lead to a valid configuration of @ref
-   * NETransposeConvLayer
+ * NETransposeConvLayer
    *
    * @param[in] input   Input tensor info. 3 lower dimensions represent a single input, and an
-   * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8.
+ * optional 4th dimension for batch of inputs. Data types supported: F32/F16/QASYMM8/QASYMM8_SIGNED.
    * @param[in] weights The 4d weights info with dimensions [width, height, IFM, OFM]. Data type
-   * supported: Same as @p input.
+ * supported: Same as @p input.
    * @param[in] bias    (Optional) The biases have one dimension. Data type supported: Data types
-   * supported: S32 for QASYMM8 input, F32 for F32 input, F16 for F16 input.
+ * supported: S32 for QASYMM8 and QASYMM8_SIGNED input, F32 for F32 input, F16 for F16 input.
    * @param[in] output  Output tensor info. The output has the same number of dimensions as the @p
-   * input.
+ * input.
    * @param[in] info    Contains padding and policies to be used in the deconvolution, this is
-   * decribed in @ref PadStrideInfo.
-   * @param[in] innvalid_right  The number of zeros added to right edge of the output.
-   * @param[in] invalid_bottom  The number of zeros added to top edge of the output.
+ * decribed in @ref PadStrideInfo.
+ * @param[in] innvalid_right  The number of zeros added to right edge of the output.
+ * @param[in] invalid_bottom  The number of zeros added to bottom edge of the output.
    *
    * @return a status
    */
@@ -158,17 +158,11 @@ public:
 private:
   MemoryGroup _memory_group;
   NEConvolutionLayer _conv_f;
-  CPPUpsampleEx _upsample_f;
-  CPPFlipWeightsKernel _flip_weights;
-  NEPermute _permute_input;
-  NEPermute _permute_weights;
-  NEPermute _permute_output;
+  CPPUpsample _upsample_f;
+  NEReverse _flip_weights;
   Tensor _scaled_output;
   Tensor _weights_flipped;
-  Tensor _permuted_input;
-  Tensor _permuted_weights;
-  Tensor _permuted_output;
-  bool _is_nchw;
+  Tensor _flip_axis;
   const ITensor *_original_weights;
   ITensor *_input;
   PadStrideInfo _info;

@@ -98,13 +98,25 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
 
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
-  const auto input_sub_type = _ctx.at(ifm_index).typeInfo().type() == ir::DataType::BOOL8
-                                  ? arm_compute::SubDataType::BOOL
-                                  : arm_compute::SubDataType::NONE;
 
-  auto fn = std::make_unique<::arm_compute::CLCast>();
+  std::unique_ptr<::arm_compute::IFunction> fn;
+  if (ifm_tensor->data_type() == ofm_tensor->data_type())
+  {
+    auto l = std::make_unique<::arm_compute::CLCopy>();
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), input_sub_type);
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::CLCast>();
+
+    // TODO Support converting float to int32 as round down
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), arm_compute::ConvertPolicy::SATURATE);
+
+    fn = std::move(l);
+  }
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -221,9 +233,9 @@ void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
-  ::arm_compute::PoolingLayerInfo info{::arm_compute::PoolingType::MAX,
-                                       ::arm_compute::Size2D{kw, kh},
-                                       acl_common::asPadStrideInfo(padding, stride)};
+  ::arm_compute::PoolingLayerInfo info{
+      ::arm_compute::PoolingType::MAX, ::arm_compute::Size2D{kw, kh},
+      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride)};
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
 
@@ -267,7 +279,8 @@ void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::AVG, ::arm_compute::Size2D{kw, kh},
-      acl_common::asPadStrideInfo(padding, stride), true /* exclude_padding */};
+      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride),
+      true /* exclude_padding */};
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
 
@@ -1313,7 +1326,7 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
   copy_layer->configure(hidden_state_in_tensor->handle(), hidden_state_out_tensor->handle());
   _return_fn = asAclClFunction(std::move(copy_layer));
 
-  auto fn = std::make_unique<::arm_compute::CLRNNLayerEx>(
+  auto fn = std::make_unique<::arm_compute::CLRNNLayer>(
       _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
   fn->configure(input_tensor->handle(), weights_tensor->handle(),
                 recurrent_weights_tensor->handle(), bias_tensor->handle(),
@@ -1376,7 +1389,7 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
 
-  auto fn = std::make_unique<::arm_compute::CLSpaceToDepth>();
+  auto fn = std::make_unique<::arm_compute::CLSpaceToDepthLayer>();
 
   fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), block_size);
 
@@ -1405,6 +1418,7 @@ void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
 
   ::arm_compute::PoolingLayerInfo info{
       ::arm_compute::PoolingType::L2, ::arm_compute::Size2D{kw, kh},
+      ifm_tensor->info()->data_layout(),
       ::onert::backend::acl_common::asPadStrideInfo(padding, stride)};
 
   auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
@@ -1505,7 +1519,7 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
   auto ifm_tensor = _tensor_builder->at(ifm_index).get();
   auto alpha_tensor = _tensor_builder->at(alpha_index).get();
 
-  auto fn = std::make_unique<::arm_compute::CLPReLU>();
+  auto fn = std::make_unique<::arm_compute::CLPReluLayer>();
 
   fn->configure(ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
 
@@ -1530,7 +1544,6 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
          (node.param().padding.type == ir::PaddingType::VALID));
   auto padding = ir::calculatePadding(node.param().padding, ofm_shape, ifm_shape, stride,
                                       ker_shape.W, ker_shape.H);
-
   uint32_t invalid_horizontal = 0;
   uint32_t invalid_vertical = 0;
   if (node.param().padding.type == ir::PaddingType::VALID)
@@ -1788,10 +1801,10 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto acl_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
 
-  auto fn = std::make_unique<::arm_compute::CLArgOperation>();
+  auto fn = std::make_unique<::arm_compute::CLArgMinMaxLayer>();
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), {acl_axis},
-                ::arm_compute::ArgOperation::MAX);
+  fn->configure(ifm_tensor->handle(), acl_axis, ofm_tensor->handle(),
+                ::arm_compute::ReductionOperation::ARG_IDX_MAX);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1806,9 +1819,9 @@ void KernelGenerator::visit(const ir::operation::Dequantize &node)
   auto output_tensor = _tensor_builder->at(output_index).get();
   auto input_tensor = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::CLCast>();
+  auto fn = std::make_unique<::arm_compute::CLDequantizationLayer>();
 
-  fn->configure(input_tensor->handle(), output_tensor->handle(), arm_compute::SubDataType::NONE);
+  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1852,7 +1865,7 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto output_tensor = _tensor_builder->at(output_index).get();
   auto input_tensor = _tensor_builder->at(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::CLDepthToSpace>();
+  auto fn = std::make_unique<::arm_compute::CLDepthToSpaceLayer>();
 
   fn->configure(input_tensor->handle(), output_tensor->handle(), block_size);
 
