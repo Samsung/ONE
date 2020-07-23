@@ -27,6 +27,7 @@ _HDF5_build()
 find_path(HDF5_CONFIG_DIR "hdf5-config.cmake"
           PATHS ${EXT_OVERLAY_DIR}
           PATH_SUFFIXES
+            cmake
             share/cmake
             share/cmake/hdf5
             cmake/hdf5
