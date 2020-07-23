@@ -62,6 +62,7 @@ tflite
 "
 
 model_type=""
+tf_intf_version=""
 
 for ext in $supported_model_types; do
   [ -e "$indir/$tcname"."$ext" ] && model_type=$ext
@@ -73,7 +74,9 @@ if [[ "$model_type" == "" ]]; then
 fi
 
 if [[ "$model_type" == "pb" ]]; then
-  $tf2nnpkg --info "$indir/$tcname".info --graphdef "$indir/$tcname"."$model_type" -o "$outdir"
+  [ -f "$indir/$tcname"."v2" ] && tf_intf_version="--v2"
+  $tf2nnpkg --info "$indir/$tcname".info --graphdef "$indir/$tcname"."$model_type" \
+  "$tf_intf_version" -o "$outdir"
 else
   $model2nnpkg -o "$outdir" "$indir/$tcname"."$model_type"
 fi
