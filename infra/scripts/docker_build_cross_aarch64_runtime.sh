@@ -6,7 +6,7 @@ CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$CURRENT_PATH/../../"
 
 # prepare rootfs
-if [ ! -d $ROOTFS_DIR ]; then
+if [ -z "$ROOTFS_DIR" ] || [ ! -d $ROOTFS_DIR ]; then
   echo "It will use default rootfs path"
 else
   DOCKER_VOLUMES+=" -v $ROOTFS_DIR:/opt/rootfs"
