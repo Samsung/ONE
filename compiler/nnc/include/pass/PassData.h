@@ -31,8 +31,7 @@ class PassData
 public:
   /* implicit */ PassData(std::nullptr_t data)
       : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-        _dataContainer{.unknown = data},
-        _dataType(PDT::UNKNOWN)
+        _dataContainer{.unknown = data}, _dataType(PDT::UNKNOWN)
   {
   }
 
@@ -41,8 +40,7 @@ public:
    */
   /* implicit */ PassData(mir::Graph *graph)
       : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-        _dataContainer{.graph = graph},
-        _dataType(PDT::GRAPH)
+        _dataContainer{.graph = graph}, _dataType(PDT::GRAPH)
   {
   }
 
@@ -61,8 +59,7 @@ public:
    */
   /* implicit */ PassData(mir::TensorVariant *tv)
       : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-        _dataContainer{.tensorVariant = tv},
-        _dataType(PDT::TENSOR_VARIANT)
+        _dataContainer{.tensorVariant = tv}, _dataType(PDT::TENSOR_VARIANT)
   {
   }
 
@@ -87,7 +84,8 @@ private:
   } _dataType;
 
   // union contains all pointers to objects that can be returned from passes
-  union {
+  union
+  {
     mir::Graph *graph;
     mir::TensorVariant *tensorVariant;
     void *unknown;

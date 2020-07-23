@@ -7,5 +7,9 @@ filters = np.random.uniform(low=-1., high=1, size=[5, 5, 3, 32]).astype(np.float
 strides = (1, 2, 2, 1)
 dilations = (1, 2, 2, 1)
 
-op_ = tf.compat.v1.nn.conv2d(
-    in_, filters, strides, "VALID", data_format="NHWC", dilations=dilations)
+op_ = tf.compat.v1.nn.conv2d(in_,
+                             filters,
+                             strides,
+                             "VALID",
+                             data_format="NHWC",
+                             dilations=dilations)

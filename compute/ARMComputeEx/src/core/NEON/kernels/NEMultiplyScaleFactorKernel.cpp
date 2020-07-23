@@ -123,8 +123,10 @@ inline float32x4x4_t multiply_scale_vec(const int32x4x4_t &iv, float scale)
   const float32x4_t vscale = vdupq_n_f32(scale);
 
   const float32x4x4_t ret = {{
-      vmulq_f32(vcvtq_f32_s32(iv.val[0]), vscale), vmulq_f32(vcvtq_f32_s32(iv.val[1]), vscale),
-      vmulq_f32(vcvtq_f32_s32(iv.val[2]), vscale), vmulq_f32(vcvtq_f32_s32(iv.val[3]), vscale),
+      vmulq_f32(vcvtq_f32_s32(iv.val[0]), vscale),
+      vmulq_f32(vcvtq_f32_s32(iv.val[1]), vscale),
+      vmulq_f32(vcvtq_f32_s32(iv.val[2]), vscale),
+      vmulq_f32(vcvtq_f32_s32(iv.val[3]), vscale),
   }};
   return ret;
 }

@@ -60,9 +60,10 @@ const ArtifactModule &AclCppOpGenerator::generate(mir::Graph *g)
   _parInVar = _artifactClass->var(false, "std::ifstream", "_parIn");
   _parIn = _parInVar->use();
   string par_file_name = _module.name() + ".par";
-  _constrBlock->call("open", {AF::lit("\"" + par_file_name + "\""),
-                              AF::lit("std::ios_base::in | std::ios_base::binary")},
-                     _parIn);
+  _constrBlock->call(
+      "open",
+      {AF::lit("\"" + par_file_name + "\""), AF::lit("std::ios_base::in | std::ios_base::binary")},
+      _parIn);
   auto file_fail = _constrBlock->ifCond(AF::call("fail", {}, _parIn));
   auto file_fail_block = file_fail->getBlock();
   file_fail_block->addStatement(
@@ -619,9 +620,10 @@ shared_ptr<ArtifactId> AclCppOpGenerator::genAddition(const string &prefix, size
   auto arithmetic_add_layer = arithmetic_add_layer_var->use();
 
   // Generate the call: arithmetic_add_layer.configure(&in1, &in2, &out);
-  _constrBlock->call("configure", {AF::ref(in1), AF::ref(in2), AF::ref(out),
-                                   AF::lit("arm_compute::ConvertPolicy::WRAP")},
-                     arithmetic_add_layer);
+  _constrBlock->call(
+      "configure",
+      {AF::ref(in1), AF::ref(in2), AF::ref(out), AF::lit("arm_compute::ConvertPolicy::WRAP")},
+      arithmetic_add_layer);
 
   // Generate the call: arithmetic_add_layer.run();
   _infBlock->call("run", {}, arithmetic_add_layer);
@@ -696,8 +698,8 @@ string AclCppOpGenerator::tensorName(const Operation::Output *ir_tensor) const
   if (!tensor_name.empty())
   {
     tensor_name = "_" + tensor_name;
-    replace_if(tensor_name.begin(), tensor_name.end(), [](char c) { return std::isalnum(c) == 0; },
-               '_');
+    replace_if(
+        tensor_name.begin(), tensor_name.end(), [](char c) { return std::isalnum(c) == 0; }, '_');
   }
   else
   {

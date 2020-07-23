@@ -26,7 +26,7 @@ namespace moco
 
 /**
  * @brief  Constant folder for Const + Mul -> Const
-*/
+ */
 class ConstantFoldMul : public logo::Pass
 {
 public:

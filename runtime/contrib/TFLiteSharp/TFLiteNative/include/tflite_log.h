@@ -18,7 +18,8 @@
 #define _TFLITE_LOG_H_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /*__cplusplus*/
 
 #define ERROR 1

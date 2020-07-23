@@ -43,32 +43,31 @@ def _get_parser():
 
     # Converter version.
     converter_version = parser.add_mutually_exclusive_group(required=True)
-    converter_version.add_argument(
-        "--v1", action="store_true", help="Use TensorFlow Lite Converter 1.x")
-    converter_version.add_argument(
-        "--v2", action="store_true", help="Use TensorFlow Lite Converter 2.x")
+    converter_version.add_argument("--v1",
+                                   action="store_true",
+                                   help="Use TensorFlow Lite Converter 1.x")
+    converter_version.add_argument("--v2",
+                                   action="store_true",
+                                   help="Use TensorFlow Lite Converter 2.x")
 
     # Input and output path.
-    parser.add_argument(
-        "-i",
-        "--input_path",
-        type=str,
-        help="Full filepath of the input file.",
-        required=True)
-    parser.add_argument(
-        "-o",
-        "--output_path",
-        type=str,
-        help="Full filepath of the output file.",
-        required=True)
+    parser.add_argument("-i",
+                        "--input_path",
+                        type=str,
+                        help="Full filepath of the input file.",
+                        required=True)
+    parser.add_argument("-o",
+                        "--output_path",
+                        type=str,
+                        help="Full filepath of the output file.",
+                        required=True)
 
     # Input and output arrays.
-    parser.add_argument(
-        "-I",
-        "--input_arrays",
-        type=str,
-        help="Names of the input arrays, comma-separated.",
-        required=True)
+    parser.add_argument("-I",
+                        "--input_arrays",
+                        type=str,
+                        help="Names of the input arrays, comma-separated.",
+                        required=True)
     parser.add_argument(
         "-s",
         "--input_shapes",
@@ -76,12 +75,11 @@ def _get_parser():
         help=
         "Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")"
     )
-    parser.add_argument(
-        "-O",
-        "--output_arrays",
-        type=str,
-        help="Names of the output arrays, comma-separated.",
-        required=True)
+    parser.add_argument("-O",
+                        "--output_arrays",
+                        type=str,
+                        help="Names of the output arrays, comma-separated.",
+                        required=True)
 
     return parser
 
@@ -151,16 +149,15 @@ def _v2_convert(flags):
         except (_text_format.ParseError, DecodeError):
             raise IOError("Unable to parse input file '{}'.".format(flags.input_path))
 
-    wrap_func = wrap_frozen_graph(
-        graph_def,
-        inputs=[
-            _str + ":0" if len(_str.split(":")) == 1 else _str
-            for _str in _parse_array(flags.input_arrays)
-        ],
-        outputs=[
-            _str + ":0" if len(_str.split(":")) == 1 else _str
-            for _str in _parse_array(flags.output_arrays)
-        ])
+    wrap_func = wrap_frozen_graph(graph_def,
+                                  inputs=[
+                                      _str + ":0" if len(_str.split(":")) == 1 else _str
+                                      for _str in _parse_array(flags.input_arrays)
+                                  ],
+                                  outputs=[
+                                      _str + ":0" if len(_str.split(":")) == 1 else _str
+                                      for _str in _parse_array(flags.output_arrays)
+                                  ])
     converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
 
     converter.allow_custom_ops = True

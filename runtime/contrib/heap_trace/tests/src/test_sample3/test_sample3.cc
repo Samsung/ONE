@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-extern "C" {
+extern "C"
+{
 
-void funcDefinedInTestSample3_ButWrappedInTestSample1() {}
+  void funcDefinedInTestSample3_ButWrappedInTestSample1() {}
 }

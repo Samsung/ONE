@@ -31,7 +31,8 @@ __BEGIN_DECLS
 /**
  * @brief Extended operation types
  */
-typedef enum {
+typedef enum
+{
   /** extends operation. */
 
   /**

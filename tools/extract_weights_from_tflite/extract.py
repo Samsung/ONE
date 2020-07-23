@@ -60,8 +60,9 @@ for i in range(len(j['buffers'])):
     b = j['buffers'][i]
     if 'data' in b:
         if i not in buffer_name_map:
-            print("buffer %d is not found in buffer_name_map. skip printing the buffer..."
-                  % i)
+            print(
+                "buffer %d is not found in buffer_name_map. skip printing the buffer..." %
+                i)
             continue
 
         filename = "%s.npy" % (buffer_name_map[i]['name'])

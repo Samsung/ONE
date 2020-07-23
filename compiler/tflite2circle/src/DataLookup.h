@@ -27,19 +27,19 @@ namespace tflite2circle
  * @brief Returns circle builtin_code according to tflite.
  *
  * @note You can see a list of currently supported BuiltinOperator in TFLOperator.lst file.
-*/
+ */
 circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop);
 
 /**
  * @brief Returns circle TensorType according to tflite.
  *
  * @note You can see a list of currently supported TensorType in TFLTensorType.lst file.
-*/
+ */
 circle::TensorType get_circle_tensortype(tflite::TensorType tfl_tt);
 
 /**
  * @brief Returns circle Padding enum according to tflite.
-*/
+ */
 circle::Padding get_circle_padding(tflite::Padding tfl_p);
 
 /**
@@ -47,7 +47,7 @@ circle::Padding get_circle_padding(tflite::Padding tfl_p);
  *
  * @note You can see a list of currently supported ActivationFunctionType in
  *       TFLActivationFunctionType.lst file.
-*/
+ */
 circle::ActivationFunctionType
 get_circle_activation_function_type(tflite::ActivationFunctionType tfl_aft);
 
@@ -60,7 +60,7 @@ get_circle_activation_function_type(tflite::ActivationFunctionType tfl_aft);
  *       This function calls the build_circle_##BuiltinOptions internally(e.g.
  *       build_circle_AbsOptions, build_circle_AddOptions, etc.), so refer to it for a more
  *       detailed implementation.
-*/
+ */
 flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuilder &fb,
                                                      const tflite::Operator *op);
 
@@ -68,12 +68,12 @@ flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuil
  * @brief Returns circle builtin_options_type according to tflite.
  *
  * @note You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file.
-*/
+ */
 circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *op);
 
 /**
  * @brief Returns circle MirrorPadMode according to tflite.
-*/
+ */
 circle::MirrorPadMode get_circle_mirrorpad_mode(tflite::MirrorPadMode tfl_mode);
 
 } // namespace tflite2circle

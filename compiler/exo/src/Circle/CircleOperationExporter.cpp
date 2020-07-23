@@ -89,13 +89,19 @@ public:
   void visit(loco::ReLU *) final;
   void visit(loco::ReLU6 *) final;
   void visit(loco::Tanh *) final;
-  void visit(loco::Push *) final { /* DO NOTHING */}
-  void visit(loco::Pull *) final { /* DO NOTHING */}
+  void visit(loco::Push *) final
+  { /* DO NOTHING */
+  }
+  void visit(loco::Pull *) final
+  { /* DO NOTHING */
+  }
   void visit(loco::FeatureEncode *) final;
   void visit(loco::FeatureDecode *) final;
   void visit(loco::FilterEncode *) final;
   void visit(loco::DepthwiseFilterEncode *) final;
-  void visit(loco::ConstGen *) final { /* skip, everything is done in exportOpDefinedTensors */}
+  void visit(loco::ConstGen *) final
+  { /* skip, everything is done in exportOpDefinedTensors */
+  }
   void visit(loco::MaxPool2D *) final;
   void visit(loco::AvgPool2D *) final;
   void visit(loco::Conv2D *) final;

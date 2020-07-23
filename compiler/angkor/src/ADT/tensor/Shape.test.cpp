@@ -76,8 +76,8 @@ TEST(ADT_TENSOR_SHAPE, copy)
 
 TEST(ADT_TENSOR_SHAPE, num_elements_rank_0)
 {
-  using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
+  using nncc::core::ADT::tensor::Shape;
 
   Shape rank_0_shape;
 
@@ -86,24 +86,24 @@ TEST(ADT_TENSOR_SHAPE, num_elements_rank_0)
 
 TEST(ADT_TENSOR_SHAPE, num_elements_zero)
 {
-  using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
+  using nncc::core::ADT::tensor::Shape;
 
   ASSERT_EQ(0, num_elements(Shape{0, 0, 0, 0}));
 }
 
 TEST(ADT_TENSOR_SHAPE, num_elements_nonzero)
 {
-  using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
+  using nncc::core::ADT::tensor::Shape;
 
   ASSERT_EQ(6, num_elements(Shape{2, 3}));
 }
 
 TEST(ADT_TENSOR_SHAPE, num_elements_nulldim)
 {
-  using nncc::core::ADT::tensor::Shape;
   using nncc::core::ADT::tensor::num_elements;
+  using nncc::core::ADT::tensor::Shape;
 
   ASSERT_EQ(0, num_elements(Shape{2, 0, 3}));
 }

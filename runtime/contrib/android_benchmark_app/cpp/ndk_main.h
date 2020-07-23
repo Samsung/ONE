@@ -21,7 +21,8 @@
 #ifndef _Included_com_ndk_tflbench_MainActivity
 #define _Included_com_ndk_tflbench_MainActivity
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 #undef com_ndk_tflbench_MainActivity_BIND_ABOVE_CLIENT
 #define com_ndk_tflbench_MainActivity_BIND_ABOVE_CLIENT 8L
@@ -79,28 +80,29 @@ extern "C" {
 #define com_ndk_tflbench_MainActivity_RESULT_FIRST_USER 1L
 #undef com_ndk_tflbench_MainActivity_RESULT_OK
 #define com_ndk_tflbench_MainActivity_RESULT_OK -1L
-/*
- * Class:     com_ndk_tflbench_MainActivity
- * Method:    getModelName
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_com_ndk_tflbench_MainActivity_getModelName(JNIEnv *, jobject);
+  /*
+   * Class:     com_ndk_tflbench_MainActivity
+   * Method:    getModelName
+   * Signature: ()Ljava/lang/String;
+   */
+  JNIEXPORT jstring JNICALL Java_com_ndk_tflbench_MainActivity_getModelName(JNIEnv *, jobject);
 
-/*
- * Class:     com_ndk_tflbench_MainActivity
- * Method:    runInterpreterBenchmark
- * Signature: (Ljava/nio/MappedByteBuffer;)V
- */
-JNIEXPORT void JNICALL Java_com_ndk_tflbench_MainActivity_runInterpreterBenchmark(JNIEnv *, jobject,
-                                                                                  jobject);
+  /*
+   * Class:     com_ndk_tflbench_MainActivity
+   * Method:    runInterpreterBenchmark
+   * Signature: (Ljava/nio/MappedByteBuffer;)V
+   */
+  JNIEXPORT void JNICALL Java_com_ndk_tflbench_MainActivity_runInterpreterBenchmark(JNIEnv *,
+                                                                                    jobject,
+                                                                                    jobject);
 
-/*
- * Class:     com_ndk_tflbench_MainActivity
- * Method:    runNNAPIBenchmark
- * Signature: (Ljava/nio/MappedByteBuffer;)V
- */
-JNIEXPORT void JNICALL Java_com_ndk_tflbench_MainActivity_runNNAPIBenchmark(JNIEnv *, jobject,
-                                                                            jobject);
+  /*
+   * Class:     com_ndk_tflbench_MainActivity
+   * Method:    runNNAPIBenchmark
+   * Signature: (Ljava/nio/MappedByteBuffer;)V
+   */
+  JNIEXPORT void JNICALL Java_com_ndk_tflbench_MainActivity_runNNAPIBenchmark(JNIEnv *, jobject,
+                                                                              jobject);
 
 #ifdef __cplusplus
 }

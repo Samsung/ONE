@@ -61,8 +61,9 @@ void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shap
 
       const T band_start =
           num_lower_diags < 0 ? 0 : std::min(col_num, std::max(T{0}, row - num_lower_diags));
-      const T band_end = num_upper_diags < 0 ? col_num : std::min(static_cast<T>(col_num),
-                                                                  row + num_upper_diags + 1);
+      const T band_end = num_upper_diags < 0
+                             ? col_num
+                             : std::min(static_cast<T>(col_num), row + num_upper_diags + 1);
 
       for (T band_idx = band_start; band_idx < band_end; band_idx++)
       {

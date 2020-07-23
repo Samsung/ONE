@@ -44,8 +44,8 @@ template <typename T> class ITemplSink : public ISink
 public:
   ITemplSink(void *output_buffer, const size_t &output_size, const ir::Shape &shape,
              const bool copy, ir::Layout io_layout)
-      : _output_buffer{reinterpret_cast<T *>(output_buffer)}, _output_size{output_size},
-        _shape{shape}, _copy{copy}, _io_layout{io_layout}
+      : _output_buffer{reinterpret_cast<T *>(output_buffer)},
+        _output_size{output_size}, _shape{shape}, _copy{copy}, _io_layout{io_layout}
   {
   }
 

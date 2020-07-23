@@ -25,12 +25,12 @@
 #include <nncc/core/ADT/tensor/IndexEnumerator.h>
 #include <nncc/core/ADT/tensor/LexicalLayout.h>
 
+using nncc::core::ADT::tensor::Buffer;
 using nncc::core::ADT::tensor::Index;
 using nncc::core::ADT::tensor::IndexEnumerator;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
 using nncc::core::ADT::tensor::Shape;
-using nncc::core::ADT::tensor::Buffer;
 
 #include <cassert>
 #include <stdexcept>

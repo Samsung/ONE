@@ -34,8 +34,8 @@ using nncc::core::ADT::feature::num_elements;
 
 using nncc::core::ADT::kernel::num_elements;
 
-using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::IndexEnumerator;
+using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::num_elements;
 
 //

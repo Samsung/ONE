@@ -40,8 +40,8 @@ TEST(ADT_KERNEL_SHAPE, num_elements)
   const uint32_t H = 4;
   const uint32_t W = 5;
 
-  using nncc::core::ADT::kernel::Shape;
   using nncc::core::ADT::kernel::num_elements;
+  using nncc::core::ADT::kernel::Shape;
 
   ASSERT_EQ(N * C * H * W, num_elements(Shape{N, C, H, W}));
 }

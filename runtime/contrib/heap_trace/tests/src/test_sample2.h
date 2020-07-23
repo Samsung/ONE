@@ -17,10 +17,11 @@
 #ifndef TEST_SAMPLE2_H
 #define TEST_SAMPLE2_H
 
-extern "C" {
+extern "C"
+{
 
-void funcDefinedOnlyInTestSample2();
-void funcWhichCallFuncDefinedInTestSample3();
+  void funcDefinedOnlyInTestSample2();
+  void funcWhichCallFuncDefinedInTestSample3();
 }
 
 #endif // ! TEST_SAMPLE2_H

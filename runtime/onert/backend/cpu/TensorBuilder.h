@@ -57,7 +57,9 @@ public:
 
   void prepare(void) override;
   void allocate() override;
-  void postFunctionPrepare() override { /* DO NOTHING */}
+  void postFunctionPrepare() override
+  { /* DO NOTHING */
+  }
 
   /**
    * @brief Get tensor with a specific OperandIndex

@@ -18,8 +18,8 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::kernel::Shape;
 using nncc::core::ADT::kernel::Layout;
+using nncc::core::ADT::kernel::Shape;
 
 static uint32_t offset_0(const Shape &, uint32_t, uint32_t, uint32_t, uint32_t) { return 0; }
 static uint32_t offset_1(const Shape &, uint32_t, uint32_t, uint32_t, uint32_t) { return 1; }

@@ -38,8 +38,11 @@ if __name__ == '__main__':
         'modelfile',
         type=str,
         help='path to modelfile in either graph_def (.pb) or tflite (.tflite)')
-    parser.add_argument(
-        '-o', '--output', action='store', dest="out_dir", help="output directory")
+    parser.add_argument('-o',
+                        '--output',
+                        action='store',
+                        dest="out_dir",
+                        help="output directory")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
@@ -107,8 +110,8 @@ if __name__ == '__main__':
         config = tf.compat.v1.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.compat.v1.Session(config=config) as sess:
-            output_values = sess.run(
-                output_names, feed_dict=dict(zip(input_names, input_values)))
+            output_values = sess.run(output_names,
+                                     feed_dict=dict(zip(input_names, input_values)))
 
     elif extension == ".tflite":
         # load TFLite model and allocate tensors
@@ -174,8 +177,9 @@ if __name__ == '__main__':
             if not dtype.name in supported_dtypes:
                 print("ERR: Supported input types are {}".format(supported_dtypes))
                 sys.exit(-1)
-            val_grp.create_dataset(
-                str(idx), data=input_values[idx], dtype=h5dtypes[dtype.name])
+            val_grp.create_dataset(str(idx),
+                                   data=input_values[idx],
+                                   dtype=h5dtypes[dtype.name])
             name_grp.attrs[str(idx)] = input_names[idx]
 
     with h5py.File(out_dir + "expected.h5", 'w') as hf:
@@ -186,6 +190,7 @@ if __name__ == '__main__':
             if not dtype.name in supported_dtypes:
                 print("ERR: Supported output types are {}".format(supported_dtypes))
                 sys.exit(-1)
-            val_grp.create_dataset(
-                str(idx), data=output_values[idx], dtype=h5dtypes[dtype.name])
+            val_grp.create_dataset(str(idx),
+                                   data=output_values[idx],
+                                   dtype=h5dtypes[dtype.name])
             name_grp.attrs[str(idx)] = output_names[idx]

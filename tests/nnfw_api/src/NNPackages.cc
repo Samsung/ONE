@@ -26,11 +26,18 @@
 // NOTE Must match `enum TestPackages`
 const char *TEST_PACKAGE_NAMES[] = {
     // for validation test
-    "add", "add_no_manifest", "add_invalid_manifest",
+    "add",
+    "add_no_manifest",
+    "add_invalid_manifest",
 
     // for dynamic tensor test
-    "input_reshaping_add", "dynamic_tensor_reshape", "unknown_dim_input_concat",
-    "add_unspecified_rank_inputs", "neg", "while_dynamic", "if_dynamic",
+    "input_reshaping_add",
+    "dynamic_tensor_reshape",
+    "unknown_dim_input_concat",
+    "add_unspecified_rank_inputs",
+    "neg",
+    "while_dynamic",
+    "if_dynamic",
 };
 
 NNPackages &NNPackages::get()

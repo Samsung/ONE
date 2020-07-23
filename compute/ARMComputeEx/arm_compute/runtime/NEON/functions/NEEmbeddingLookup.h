@@ -84,5 +84,5 @@ public:
   static Status validate(const ITensorInfo *input, const ITensorInfo *output,
                          const ITensorInfo *lookups);
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_NEEMBEDDINGLOOKUP_H__ */

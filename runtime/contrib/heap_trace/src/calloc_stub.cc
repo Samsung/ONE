@@ -22,25 +22,26 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-void *calloc(size_t number_of_elements, size_t size_of_one_element) noexcept
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  if (isCurrentAllocationForSymbolSearcherInternalUsage())
+  void *calloc(size_t number_of_elements, size_t size_of_one_element) noexcept
   {
-    return MemoryPoolForSymbolSearcherInternals{}.allocate(number_of_elements *
-                                                           size_of_one_element);
-  }
+    static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  static auto originalFunction = findFunctionByName<void *, size_t, size_t>("calloc");
-  void *result = originalFunction(number_of_elements, size_of_one_element);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
-  {
-    GlobalTrace->logAllocationEvent(result, number_of_elements * size_of_one_element);
-  }
+    if (isCurrentAllocationForSymbolSearcherInternalUsage())
+    {
+      return MemoryPoolForSymbolSearcherInternals{}.allocate(number_of_elements *
+                                                             size_of_one_element);
+    }
 
-  return result;
-}
+    static auto originalFunction = findFunctionByName<void *, size_t, size_t>("calloc");
+    void *result = originalFunction(number_of_elements, size_of_one_element);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logAllocationEvent(result, number_of_elements * size_of_one_element);
+    }
+
+    return result;
+  }
 }

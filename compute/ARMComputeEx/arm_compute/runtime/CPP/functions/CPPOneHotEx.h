@@ -64,5 +64,5 @@ public:
   void configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
                  const ITensor *off_value, ITensor *output, const int axis);
 };
-}
+} // namespace arm_compute
 #endif /* __ARM_COMPUTE_CPPONEHOT_EX_H__ */

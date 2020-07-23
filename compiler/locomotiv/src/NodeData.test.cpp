@@ -23,9 +23,9 @@
 #include <gtest/gtest.h>
 
 using nncc::core::ADT::tensor::Index;
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
+using nncc::core::ADT::tensor::Shape;
 
 TEST(NodeData, as_s32_buffer_wrapper)
 {

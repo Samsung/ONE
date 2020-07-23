@@ -47,7 +47,7 @@ class BinaryInputNode : public TestNode
 public:
   BinaryInputNode() : TestNode(2) {}
 };
-}
+} // namespace
 
 TEST(CustomOpTest, VariadicArityNode_arity_0)
 {

@@ -52,11 +52,9 @@ class _OperationComputeMethod(object):
 
     Anyway, we can calculate total operations on this way. This can apply to the way of pooling.
     '''
-
     def ComputeOperationForConv2D(self, tf_operator, inputs, outputs):
-        assert (
-            tf_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions()
-            .Conv2DOptions)
+        assert (tf_operator.BuiltinOptionsType() ==
+                tflite.BuiltinOptions.BuiltinOptions().Conv2DOptions)
 
         # NOTE: Assume that conv2d operator always take 3 tensors as inputs
         #       and both width and height are the same.
@@ -68,8 +66,8 @@ class _OperationComputeMethod(object):
         output_tensor = outputs[0].tf_tensor
 
         # kernel_ops = (kernel_w * kernel_h * input_channel * 2(multiply and add))
-        kernel_ops = (
-            weight_tensor.Shape(2) * weight_tensor.Shape(1) * input_tensor.Shape(3))
+        kernel_ops = (weight_tensor.Shape(2) * weight_tensor.Shape(1) *
+                      input_tensor.Shape(3))
 
         # total ops
         #     = batch_size * output_channel * output_width * output_height * kernel_ops
@@ -84,9 +82,8 @@ class _OperationComputeMethod(object):
     # NOTE: Reference the comment 'NOTE' of ComputeOperationForConv2D
 
     def ComputeOperationForPooling(self, tf_operator, inputs, outputs):
-        assert (
-            tf_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions()
-            .Pool2DOptions)
+        assert (tf_operator.BuiltinOptionsType() ==
+                tflite.BuiltinOptions.BuiltinOptions().Pool2DOptions)
 
         dummy_input_tensor = inputs[0].tf_tensor
         output_tensor = outputs[0].tf_tensor
@@ -110,9 +107,8 @@ class _OperationComputeMethod(object):
         return (add_instr_num, mul_instr_num, nonlinear_instr_num)
 
     def ComputeOperationForSoftmax(self, tf_operator, inputs, outputs):
-        assert (
-            tf_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions()
-            .SoftmaxOptions)
+        assert (tf_operator.BuiltinOptionsType() ==
+                tflite.BuiltinOptions.BuiltinOptions().SoftmaxOptions)
 
         input_tensor = inputs[0].tf_tensor
 
@@ -126,9 +122,8 @@ class _OperationComputeMethod(object):
         return (add_instr_num, mul_instr_num, nonlinear_instr_num)
 
     def ComputeOperationForFullyConnected(self, tf_operator, inputs, outputs):
-        assert (
-            tf_operator.BuiltinOptionsType() == tflite.BuiltinOptions.BuiltinOptions()
-            .FullyConnectedOptions)
+        assert (tf_operator.BuiltinOptionsType() ==
+                tflite.BuiltinOptions.BuiltinOptions().FullyConnectedOptions)
 
         # NOTE: Assume that fully_connected operator always take 3 tensors as inputs
         #       and its X tensor's shape is [1, 1, 1, input_dim] with

@@ -37,8 +37,8 @@ TEST(ADT_FEATURE_SHAPE, num_elements)
   const uint32_t H = 4;
   const uint32_t W = 5;
 
-  using nncc::core::ADT::feature::Shape;
   using nncc::core::ADT::feature::num_elements;
+  using nncc::core::ADT::feature::Shape;
 
   ASSERT_EQ(C * H * W, num_elements(Shape{C, H, W}));
 }

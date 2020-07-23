@@ -126,7 +126,7 @@ template <typename Device, typename T> struct BroadcastTo
     }
   }
 };
-} // functor
+} // namespace functor
 
 template <typename T>
 inline void BroadcastTo(const Shape &input_shape, T *input_data, const Shape &output_shape,

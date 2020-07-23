@@ -73,7 +73,7 @@ public:
   }
 };
 
-} // namespace anonymous
+} // namespace
 
 int main(const int argc, char **argv)
 {
@@ -214,27 +214,31 @@ int main(const int argc, char **argv)
   // only warmup.
   if (verbose == 0)
   {
-    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               args.getWarmupRuns());
-    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               args.getNumRuns(), true);
+    phases.run(
+        "WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+        args.getWarmupRuns());
+    phases.run(
+        "EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+        args.getNumRuns(), true);
   }
   else
   {
-    phases.run("WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getWarmupRuns());
-    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
-               [&](const benchmark::Phase &phase, uint32_t nth) {
-                 std::cout << "... "
-                           << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                           << std::endl;
-               },
-               args.getNumRuns(), true);
+    phases.run(
+        "WARMUP", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+        [&](const benchmark::Phase &phase, uint32_t nth) {
+          std::cout << "... "
+                    << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                    << std::endl;
+        },
+        args.getWarmupRuns());
+    phases.run(
+        "EXECUTE", [&](const benchmark::Phase &, uint32_t) { interpreter->Invoke(); },
+        [&](const benchmark::Phase &phase, uint32_t nth) {
+          std::cout << "... "
+                    << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                    << std::endl;
+        },
+        args.getNumRuns(), true);
   }
 
   std::cout << "output tensor indices = [";

@@ -36,6 +36,6 @@ public:
 private:
   nnfw_session *session_;
 };
-} // end of namespace
+} // namespace nnpkg_run
 
 #endif // __NNPACKAGE_RUN_H5FORMATTER_H__

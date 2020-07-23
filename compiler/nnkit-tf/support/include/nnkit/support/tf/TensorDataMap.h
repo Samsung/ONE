@@ -41,7 +41,9 @@ using nnkit::support::tftestinfo::ParsedTensor;
 class TensorDataMap
 {
 public:
-  TensorDataMap() { /* empty */}
+  TensorDataMap()
+  { /* empty */
+  }
 
   uint8_t *allocate(const ParsedTensor *parsed_tensor)
   {

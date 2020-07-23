@@ -129,7 +129,9 @@ class TFLAveragePool2D final : public FixedArityNode<1, TFLNodeImpl<TFLOpcode::A
                                public TFLNodeMixin<TFLNodeTrait::FusedActFunc>
 {
 public:
-  TFLAveragePool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  TFLAveragePool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }
@@ -325,7 +327,9 @@ class TFLMaxPool2D final : public FixedArityNode<1, TFLNodeImpl<TFLOpcode::MAX_P
                            public TFLNodeMixin<TFLNodeTrait::FusedActFunc>
 {
 public:
-  TFLMaxPool2D() : _padding(Padding::UNDEFINED) { /* empty */}
+  TFLMaxPool2D() : _padding(Padding::UNDEFINED)
+  { /* empty */
+  }
 
 public:
   loco::Node *value(void) const { return at(0)->node(); }

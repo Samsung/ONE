@@ -175,11 +175,10 @@ class KernelReporter(object):
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument(
-        "--backends",
-        type=str,
-        default='cpu,acl_cl,acl_neon',
-        help="backend list to report (use comma)")
+    arg_parser.add_argument("--backends",
+                            type=str,
+                            default='cpu,acl_cl,acl_neon',
+                            help="backend list to report (use comma)")
     arg_parser.add_argument("--md5", action='store_true', help="Print for md5")
     arg_parser.add_argument("base", type=str, help="onert base directory")
     args = arg_parser.parse_args()

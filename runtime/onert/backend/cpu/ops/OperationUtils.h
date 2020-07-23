@@ -41,7 +41,8 @@ namespace cpu
 namespace ops
 {
 
-union DataPtr {
+union DataPtr
+{
   uint8_t *u8;
   int8_t *i8;
   uint32_t *u32;

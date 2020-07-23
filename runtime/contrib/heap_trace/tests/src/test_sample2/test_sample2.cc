@@ -17,8 +17,12 @@
 #include "../test_sample2.h"
 #include "../test_sample3.h"
 
-extern "C" {
+extern "C"
+{
 
-void funcDefinedOnlyInTestSample2() {}
-void funcWhichCallFuncDefinedInTestSample3() { funcDefinedInTestSample3_ButWrappedInTestSample1(); }
+  void funcDefinedOnlyInTestSample2() {}
+  void funcWhichCallFuncDefinedInTestSample3()
+  {
+    funcDefinedInTestSample3_ButWrappedInTestSample1();
+  }
 }

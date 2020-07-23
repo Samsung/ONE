@@ -22,21 +22,22 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-void free(void *p) noexcept
+extern "C"
 {
-  MemoryPoolForSymbolSearcherInternals pool;
-  if (pool.containsMemorySpaceStartedFromPointer(p))
-  {
-    return pool.deallocate(p);
-  }
 
-  static auto originalFunction = findFunctionByName<void, void *>("free");
-  originalFunction(p);
-  if (!Trace::Guard{}.isActive())
+  void free(void *p) noexcept
   {
-    GlobalTrace->logDeallocationEvent(p);
+    MemoryPoolForSymbolSearcherInternals pool;
+    if (pool.containsMemorySpaceStartedFromPointer(p))
+    {
+      return pool.deallocate(p);
+    }
+
+    static auto originalFunction = findFunctionByName<void, void *>("free");
+    originalFunction(p);
+    if (!Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logDeallocationEvent(p);
+    }
   }
-}
 }

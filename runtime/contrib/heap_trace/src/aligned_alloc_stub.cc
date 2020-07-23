@@ -22,24 +22,25 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-void *aligned_alloc(size_t alignment, size_t sz) noexcept
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  if (isCurrentAllocationForSymbolSearcherInternalUsage())
+  void *aligned_alloc(size_t alignment, size_t sz) noexcept
   {
-    return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
-  }
+    static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  static auto originalFunction = findFunctionByName<void *, size_t, size_t>("aligned_alloc");
-  void *result = originalFunction(alignment, sz);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
-  {
-    GlobalTrace->logAllocationEvent(result, sz);
-  }
+    if (isCurrentAllocationForSymbolSearcherInternalUsage())
+    {
+      return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
+    }
 
-  return result;
-}
+    static auto originalFunction = findFunctionByName<void *, size_t, size_t>("aligned_alloc");
+    void *result = originalFunction(alignment, sz);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logAllocationEvent(result, sz);
+    }
+
+    return result;
+  }
 }

@@ -125,11 +125,11 @@ const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, const int
           "st4 {v0.s, v1.s, v2.s, v3.s}[2], [%[shuffled_vectors_ptr]], #16\n"
           "st4 {v0.s, v1.s, v2.s, v3.s}[3], [%[shuffled_vectors_ptr]], #16\n"
 
-          : [unshuffled_vec0_ptr] "+r"(unshuffled_vec0_ptr),
-            [unshuffled_vec1_ptr] "+r"(unshuffled_vec1_ptr),
-            [unshuffled_vec2_ptr] "+r"(unshuffled_vec2_ptr),
-            [unshuffled_vec3_ptr] "+r"(unshuffled_vec3_ptr),
-            [shuffled_vectors_ptr] "+r"(shuffled_vectors_ptr)
+          : [ unshuffled_vec0_ptr ] "+r"(unshuffled_vec0_ptr),
+            [ unshuffled_vec1_ptr ] "+r"(unshuffled_vec1_ptr),
+            [ unshuffled_vec2_ptr ] "+r"(unshuffled_vec2_ptr),
+            [ unshuffled_vec3_ptr ] "+r"(unshuffled_vec3_ptr),
+            [ shuffled_vectors_ptr ] "+r"(shuffled_vectors_ptr)
           :
           : "v0", "v1", "v2", "v3", "cc", "memory");
     }
@@ -264,10 +264,11 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(const int8_t *__restr
           "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
           "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
           "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-          : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
-            [result_ptr] "+r"(result_ptr), [mat_ptr2] "+r"(mat_ptr2), [mat_ptr3] "+r"(mat_ptr3)
-          : [mat_ptr0_end] "r"(mat_ptr0_end), [scaling_factors_ptr] "r"(scaling_factors_ptr),
-            [wide_rows] "r"(wide_rows)
+          : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
+            [ result_ptr ] "+r"(result_ptr), [ mat_ptr2 ] "+r"(mat_ptr2),
+            [ mat_ptr3 ] "+r"(mat_ptr3)
+          : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
+            [ wide_rows ] "r"(wide_rows)
           : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
             "v13", "cc", "memory");
     }
@@ -300,102 +301,102 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
       const int32_t *batch_offsets_ptr = input_offset + batch;
       const int32_t is_channel_scale_nullptr = per_channel_scale == nullptr;
       const int32_t is_row_sums_nullptr = row_sums_ptr == nullptr;
-      asm volatile("dup v0.4s, wzr\n"
-                   "dup v1.4s, wzr\n"
-                   "dup v2.4s, wzr\n"
-                   "dup v3.4s, wzr\n"
-                   // Load zero points.
-                   "ld1 {v7.4s}, [%[batch_offsets_ptr]]\n"
-                   "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
-                   // Zero out zero point accumulators.
-                   "dup v14.4s, wzr\n"
-                   "dup v15.4s, wzr\n"
+      asm volatile(
+          "dup v0.4s, wzr\n"
+          "dup v1.4s, wzr\n"
+          "dup v2.4s, wzr\n"
+          "dup v3.4s, wzr\n"
+          // Load zero points.
+          "ld1 {v7.4s}, [%[batch_offsets_ptr]]\n"
+          "ld1 {v4.4s}, [%[scaling_factors_ptr]]\n"
+          // Zero out zero point accumulators.
+          "dup v14.4s, wzr\n"
+          "dup v15.4s, wzr\n"
 
-                   // Load per channel scales if not null.
-                   "cmp %w[is_channel_scale_nullptr], #0\n"
-                   "bne 1f\n"
-                   "ld1r {v16.4s}, [%[channel_scales_ptr]], #4\n"
-                   "ld1r {v17.4s}, [%[channel_scales_ptr]]\n"
-                   "fmul v16.4s, v16.4s, v4.4s\n"
-                   "fmul v17.4s, v17.4s, v4.4s\n"
-                   "b 2f\n"
-                   "1:\n"
-                   "mov v16.16b, v4.16b\n"
-                   "mov v17.16b, v4.16b\n"
-                   "2:\n"
-                   "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
-                   "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
-                   "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
-                   "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
-                   "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
-                   ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
-                   "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
-                   ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
-                   ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
-                   ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
-                   ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
-                   "cmp %w[is_row_sums_nullptr], #1\n"
-                   "bne 3f\n"
-                   // Accumulate row_sums for zero point calculations.
-                   "saddlp v12.8h, v12.16b\n"
-                   "saddlp v13.8h, v13.16b\n"
-                   "sadalp v14.4s, v12.8h\n"
-                   "sadalp v15.4s, v13.8h\n"
-                   "3:\n"
-                   "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
-                   "bne 2b\n"
-                   "add v0.4s, v0.4s, v1.4s\n"
-                   "add v2.4s, v2.4s, v3.4s\n"
+          // Load per channel scales if not null.
+          "cmp %w[is_channel_scale_nullptr], #0\n"
+          "bne 1f\n"
+          "ld1r {v16.4s}, [%[channel_scales_ptr]], #4\n"
+          "ld1r {v17.4s}, [%[channel_scales_ptr]]\n"
+          "fmul v16.4s, v16.4s, v4.4s\n"
+          "fmul v17.4s, v17.4s, v4.4s\n"
+          "b 2f\n"
+          "1:\n"
+          "mov v16.16b, v4.16b\n"
+          "mov v17.16b, v4.16b\n"
+          "2:\n"
+          "ld1 {v12.16b}, [%[mat_ptr0]], #16\n"
+          "ld1 {v8.16b}, [%[vec_ptr]], #16\n"
+          ".word 0x4f8ce100  // sdot v0.4s, v8.16b, v12.4b[0]\n"
+          "ld1 {v9.16b}, [%[vec_ptr]], #16\n"
+          ".word 0x4face121  // sdot v1.4s, v9.16b, v12.4b[1]\n"
+          "ld1 {v10.16b}, [%[vec_ptr]], #16\n"
+          ".word 0x4f8ce940  // sdot v0.4s, v10.16b, v12.4b[2]\n"
+          "ld1 {v11.16b}, [%[vec_ptr]], #16\n"
+          ".word 0x4face961  // sdot v1.4s, v11.16b, v12.4b[3]\n"
+          "ld1 {v13.16b}, [%[mat_ptr1]], #16\n"
+          ".word 0x4f8de102  // sdot v2.4s, v8.16b, v13.4b[0]\n"
+          ".word 0x4fade123  // sdot v3.4s, v9.16b, v13.4b[1]\n"
+          ".word 0x4f8de942  // sdot v2.4s, v10.16b, v13.4b[2]\n"
+          ".word 0x4fade963  // sdot v3.4s, v11.16b, v13.4b[3]\n"
+          "cmp %w[is_row_sums_nullptr], #1\n"
+          "bne 3f\n"
+          // Accumulate row_sums for zero point calculations.
+          "saddlp v12.8h, v12.16b\n"
+          "saddlp v13.8h, v13.16b\n"
+          "sadalp v14.4s, v12.8h\n"
+          "sadalp v15.4s, v13.8h\n"
+          "3:\n"
+          "cmp %[mat_ptr0], %[mat_ptr0_end]\n"
+          "bne 2b\n"
+          "add v0.4s, v0.4s, v1.4s\n"
+          "add v2.4s, v2.4s, v3.4s\n"
 
-                   "cmp %w[is_row_sums_nullptr], #1\n"
-                   "bne 4f\n"
-                   // Calculate zero point offsets.
-                   "addv s14, v14.4s\n"
-                   "addv s15, v15.4s\n"
-                   "dup v14.4s, v14.s[0]\n"
-                   "dup v15.4s, v15.s[0]\n"
-                   "b 5f\n"
-                   "4:\n"
-                   "ld1r {v14.4s}, [%[row_sums_ptr]], #4\n"
-                   "ld1r {v15.4s}, [%[row_sums_ptr]]\n"
-                   "5:\n"
+          "cmp %w[is_row_sums_nullptr], #1\n"
+          "bne 4f\n"
+          // Calculate zero point offsets.
+          "addv s14, v14.4s\n"
+          "addv s15, v15.4s\n"
+          "dup v14.4s, v14.s[0]\n"
+          "dup v15.4s, v15.s[0]\n"
+          "b 5f\n"
+          "4:\n"
+          "ld1r {v14.4s}, [%[row_sums_ptr]], #4\n"
+          "ld1r {v15.4s}, [%[row_sums_ptr]]\n"
+          "5:\n"
 
-                   "mul v14.4s, v14.4s, v7.4s\n"
-                   "mul v15.4s, v15.4s, v7.4s\n"
-                   "sub v0.4s, v0.4s, v14.4s\n"
-                   "sub v2.4s, v2.4s, v15.4s\n"
+          "mul v14.4s, v14.4s, v7.4s\n"
+          "mul v15.4s, v15.4s, v7.4s\n"
+          "sub v0.4s, v0.4s, v14.4s\n"
+          "sub v2.4s, v2.4s, v15.4s\n"
 
-                   "scvtf v0.4s, v0.4s\n"
-                   "scvtf v1.4s, v2.4s\n"
+          "scvtf v0.4s, v0.4s\n"
+          "scvtf v1.4s, v2.4s\n"
 
-                   // Multiply scale.
-                   "fmul v0.4s, v16.4s, v0.4s\n"
-                   "fmul v1.4s, v17.4s, v1.4s\n"
+          // Multiply scale.
+          "fmul v0.4s, v16.4s, v0.4s\n"
+          "fmul v1.4s, v17.4s, v1.4s\n"
 
-                   "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-                   "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-                   "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
-                   "fadd v9.4s, v9.4s, v0.4s\n"
-                   "fadd v10.4s, v10.4s, v1.4s\n"
-                   "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
-                   "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-                   : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
-                     [result_ptr] "+r"(result_ptr), [row_sums_ptr] "+r"(row_sums_ptr)
-                   : [mat_ptr0_end] "r"(mat_ptr0_end),
-                     [scaling_factors_ptr] "r"(scaling_factors_ptr), [wide_rows] "r"(wide_rows),
-                     [channel_scales_ptr] "r"(channel_scales_ptr),
-                     [batch_offsets_ptr] "r"(batch_offsets_ptr),
-                     [is_channel_scale_nullptr] "r"(is_channel_scale_nullptr),
-                     [is_row_sums_nullptr] "r"(is_row_sums_nullptr)
-                   : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11",
-                     "v12", "v13", "v14", "v15", "v16", "v17", "w0", "w1", "cc", "memory");
+          "ld2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+          "ld2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+          "ld2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+          "ld2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+          "sub %[result_ptr], %[result_ptr], %[wide_rows], lsl #2\n"
+          "fadd v9.4s, v9.4s, v0.4s\n"
+          "fadd v10.4s, v10.4s, v1.4s\n"
+          "st2 {v9.s, v10.s}[0], [%[result_ptr]], %[wide_rows]\n"
+          "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
+          "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
+          "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
+          : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
+            [ result_ptr ] "+r"(result_ptr), [ row_sums_ptr ] "+r"(row_sums_ptr)
+          : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
+            [ wide_rows ] "r"(wide_rows), [ channel_scales_ptr ] "r"(channel_scales_ptr),
+            [ batch_offsets_ptr ] "r"(batch_offsets_ptr),
+            [ is_channel_scale_nullptr ] "r"(is_channel_scale_nullptr),
+            [ is_row_sums_nullptr ] "r"(is_row_sums_nullptr)
+          : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
+            "v13", "v14", "v15", "v16", "v17", "w0", "w1", "cc", "memory");
     }
   }
 

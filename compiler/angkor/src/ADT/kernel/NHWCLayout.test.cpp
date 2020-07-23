@@ -18,8 +18,8 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::kernel::Shape;
 using nncc::core::ADT::kernel::NHWCLayout;
+using nncc::core::ADT::kernel::Shape;
 
 TEST(ADT_KERNEL_KERNEL_NHWC_LAYOUT, ch_increment)
 {

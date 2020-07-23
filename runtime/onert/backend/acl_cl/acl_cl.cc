@@ -18,16 +18,17 @@
 
 #include "Backend.h"
 
-extern "C" {
-onert::backend::Backend *onert_backend_create()
+extern "C"
 {
-  VERBOSE(onert_backend_create) << "'acl_cl' loaded\n";
-  return new onert::backend::acl_cl::Backend;
-}
+  onert::backend::Backend *onert_backend_create()
+  {
+    VERBOSE(onert_backend_create) << "'acl_cl' loaded\n";
+    return new onert::backend::acl_cl::Backend;
+  }
 
-void onert_backend_destroy(onert::backend::Backend *backend)
-{
-  VERBOSE(onert_backend_create) << "'acl_cl' unloaded\n";
-  delete backend;
-}
+  void onert_backend_destroy(onert::backend::Backend *backend)
+  {
+    VERBOSE(onert_backend_create) << "'acl_cl' unloaded\n";
+    delete backend;
+  }
 }

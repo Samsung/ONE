@@ -24,10 +24,10 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
 using nncc::core::ADT::tensor::IndexEnumerator;
 using nncc::core::ADT::tensor::LexicalLayout;
+using nncc::core::ADT::tensor::Shape;
 
 namespace
 {

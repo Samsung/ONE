@@ -18,8 +18,8 @@
 
 #include <cassert>
 
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
+using nncc::core::ADT::tensor::Shape;
 
 // NOTE This forward declaration is introduced to minimize code diff
 static uint32_t lexical_offset(const Shape &shape, const Index &index)

@@ -86,8 +86,8 @@ def compare_quantization(tensor, tensor_name, expect_dir):
         if key == "zero_point":
             expected_zero_point = np.array(json_load["zero_point"])
             input_zero_point = tensor["zero_point"][:]
-            if np.allclose(
-                    input_zero_point, expected_zero_point, rtol=0, atol=0) == False:
+            if np.allclose(input_zero_point, expected_zero_point, rtol=0,
+                           atol=0) == False:
                 print("Quantized zero_point of " + tensor_name + " (" +
                       str(input_zero_point) + ") do not match with expected value (" +
                       str(expected_zero_point) + ").")

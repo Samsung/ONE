@@ -30,9 +30,9 @@
 #include <limits>
 
 using nncc::core::ADT::tensor::Index;
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
+using nncc::core::ADT::tensor::Shape;
 
 TEST(NodeExecution_EltwiseSqrt, f32)
 {

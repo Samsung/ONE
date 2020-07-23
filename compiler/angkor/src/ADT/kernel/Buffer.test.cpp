@@ -19,9 +19,9 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::kernel::Shape;
-using nncc::core::ADT::kernel::NCHWLayout;
 using nncc::core::ADT::kernel::Buffer;
+using nncc::core::ADT::kernel::NCHWLayout;
+using nncc::core::ADT::kernel::Shape;
 
 using nncc::core::ADT::kernel::make_buffer;
 

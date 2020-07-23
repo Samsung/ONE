@@ -160,5 +160,5 @@ private:
   CLTopKV2Store _store_kernel;
 #endif
 };
-}
+} // namespace arm_compute
 #endif // __ARM_COMPUTE_CLTOPK_V2_H__

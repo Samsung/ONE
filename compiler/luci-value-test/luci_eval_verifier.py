@@ -29,12 +29,11 @@ num_inputs = len(interpreter.get_input_details())
 for i in range(num_inputs):
     input_details = interpreter.get_input_details()[i]
     if input_details["dtype"] == np.float32:
-        input_data = np.array(
-            np.random.random_sample(input_details["shape"]), input_details["dtype"])
+        input_data = np.array(np.random.random_sample(input_details["shape"]),
+                              input_details["dtype"])
     elif input_details["dtype"] == np.uint8:
-        input_data = np.array(
-            np.random.randint(0, 256, size=input_details["shape"]),
-            input_details["dtype"])
+        input_data = np.array(np.random.randint(0, 256, size=input_details["shape"]),
+                              input_details["dtype"])
     else:
         raise SystemExit("Unsupported input dtype")
 
@@ -50,12 +49,11 @@ output_details = interpreter.get_output_details()[0]
 ref_output_data = interpreter.get_tensor(output_details["index"])
 
 # Execute luci interpreter.
-subprocess.run(
-    [
-        driver, circle_model,
-        str(num_inputs), circle_model + ".input", circle_model + ".output"
-    ],
-    check=True)
+subprocess.run([
+    driver, circle_model,
+    str(num_inputs), circle_model + ".input", circle_model + ".output"
+],
+               check=True)
 output_data = np.fromfile(circle_model + ".output", output_details["dtype"])
 shape_file = open(circle_model + ".output.shape", 'r')
 output_shape = [int(i) for i in shape_file.read().split(',')]
@@ -69,8 +67,8 @@ try:
             raise SystemExit("Execution result of " + tflite_model +
                              " does not match with " + circle_model)
     elif output_details["dtype"] == np.float32:
-        if np.allclose(
-                luci_output_data, ref_output_data, rtol=1.e-5, atol=1.e-5) == False:
+        if np.allclose(luci_output_data, ref_output_data, rtol=1.e-5,
+                       atol=1.e-5) == False:
             raise SystemExit("Execution result of " + tflite_model +
                              " does not match with " + circle_model)
     else:

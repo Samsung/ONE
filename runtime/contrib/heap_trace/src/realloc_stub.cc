@@ -22,25 +22,26 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-void *realloc(void *ptr, size_t sz) noexcept
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  if (isCurrentAllocationForSymbolSearcherInternalUsage())
+  void *realloc(void *ptr, size_t sz) noexcept
   {
-    return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
-  }
+    static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  static auto originalFunction = findFunctionByName<void *, void *, size_t>("realloc");
-  void *result = originalFunction(ptr, sz);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
-  {
-    GlobalTrace->logDeallocationEvent(ptr);
-    GlobalTrace->logAllocationEvent(result, sz);
-  }
+    if (isCurrentAllocationForSymbolSearcherInternalUsage())
+    {
+      return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
+    }
 
-  return result;
-}
+    static auto originalFunction = findFunctionByName<void *, void *, size_t>("realloc");
+    void *result = originalFunction(ptr, sz);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logDeallocationEvent(ptr);
+      GlobalTrace->logAllocationEvent(result, sz);
+    }
+
+    return result;
+  }
 }

@@ -25,8 +25,8 @@
 
 #include <sstream>
 
-using stdex::make_unique;
 using enco::concat;
+using stdex::make_unique;
 
 #define S(content) #content
 

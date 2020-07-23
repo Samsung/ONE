@@ -125,24 +125,29 @@ class TFLiteModelFileParser(object):
 if __name__ == '__main__':
     # Define argument and read
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument(
-        "input_file", type=argparse.FileType('rb'), help="tflite file to read")
-    arg_parser.add_argument(
-        '-v', '--verbose', type=int, default=1, help="set print level (0~1, default: 1)")
-    arg_parser.add_argument(
-        '-t', '--tensor', nargs='*', help="tensor ID to print information (default: all)")
-    arg_parser.add_argument(
-        '-o',
-        '--operator',
-        nargs='*',
-        help="operator ID to print information (default: all)")
-    arg_parser.add_argument(
-        '-c',
-        '--config',
-        action='store_true',
-        help="Save the configuration file per operator")
-    arg_parser.add_argument(
-        '-p', '--prefix', help="file prefix to be saved (with -c/--config option)")
+    arg_parser.add_argument("input_file",
+                            type=argparse.FileType('rb'),
+                            help="tflite file to read")
+    arg_parser.add_argument('-v',
+                            '--verbose',
+                            type=int,
+                            default=1,
+                            help="set print level (0~1, default: 1)")
+    arg_parser.add_argument('-t',
+                            '--tensor',
+                            nargs='*',
+                            help="tensor ID to print information (default: all)")
+    arg_parser.add_argument('-o',
+                            '--operator',
+                            nargs='*',
+                            help="operator ID to print information (default: all)")
+    arg_parser.add_argument('-c',
+                            '--config',
+                            action='store_true',
+                            help="Save the configuration file per operator")
+    arg_parser.add_argument('-p',
+                            '--prefix',
+                            help="file prefix to be saved (with -c/--config option)")
     args = arg_parser.parse_args()
 
     # Call main function

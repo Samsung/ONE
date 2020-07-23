@@ -115,7 +115,7 @@ __kernel void instance_normalization_ex(TENSOR4D_DECLARATION(input),
                                             ,
                                         VECTOR_DECLARATION(beta)
 #endif // BETA
-                                            )
+)
 {
   Tensor4D in = CONVERT_TO_TENSOR4D_STRUCT_NO_STEP(input, 0);
 #ifndef IN_PLACE

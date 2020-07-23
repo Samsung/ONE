@@ -18,10 +18,11 @@
 
 #include "../../../src/symbol_searcher.h"
 
-extern "C" {
-
-void *funcDefinedInTestSample3_ButWrappedInTestSample1()
+extern "C"
 {
-  return findSymbol("funcDefinedInTestSample3_ButWrappedInTestSample1");
-}
+
+  void *funcDefinedInTestSample3_ButWrappedInTestSample1()
+  {
+    return findSymbol("funcDefinedInTestSample3_ButWrappedInTestSample1");
+  }
 }

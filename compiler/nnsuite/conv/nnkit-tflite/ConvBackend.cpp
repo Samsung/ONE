@@ -76,8 +76,8 @@ static inline std::vector<int> as_dims(const nncc::core::ADT::kernel::Shape &sha
 ConvBackend::ConvBackend(const nnsuite::conv::Model &model)
     : _ifm_name{model.ifm_name()}, _ofm_name{model.ofm_name()}
 {
-  using nncc::core::ADT::kernel::Overlay;
   using nncc::core::ADT::kernel::NHWCLayout;
+  using nncc::core::ADT::kernel::Overlay;
 
   using nncc::core::ADT::kernel::make_overlay;
   using nncc::core::ADT::kernel::num_elements;

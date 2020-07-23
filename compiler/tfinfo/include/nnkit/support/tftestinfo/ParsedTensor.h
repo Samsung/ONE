@@ -66,7 +66,9 @@ public:
       _shape.dim(rank) = shape.at(rank);
   }
 
-  ~ParsedTensor() { /* empty */}
+  ~ParsedTensor()
+  { /* empty */
+  }
 
 public:
   Kind kind() const { return _kind; }

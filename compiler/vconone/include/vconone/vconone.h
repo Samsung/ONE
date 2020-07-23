@@ -31,7 +31,8 @@ struct four
   uint16_t build; // build is not used for now
 };
 
-union version {
+union version
+{
   uint64_t v;
   four f;
 };

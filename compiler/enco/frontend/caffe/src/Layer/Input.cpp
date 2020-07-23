@@ -23,8 +23,8 @@
 
 using namespace nncc::core::ADT;
 
-using tensor::num_elements;
 using tensor::LexicalLayout;
+using tensor::num_elements;
 
 namespace caffeimport
 {

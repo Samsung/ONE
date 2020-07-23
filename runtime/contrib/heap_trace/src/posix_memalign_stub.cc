@@ -22,25 +22,27 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-int posix_memalign(void **memptr, size_t alignment, size_t size) noexcept
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](int result) -> bool { return result == 0; };
 
-  if (isCurrentAllocationForSymbolSearcherInternalUsage())
+  int posix_memalign(void **memptr, size_t alignment, size_t size) noexcept
   {
-    *memptr = MemoryPoolForSymbolSearcherInternals{}.allocate(size);
-    return 0;
-  }
+    static auto isOriginalFunctionCallSuccessful = [](int result) -> bool { return result == 0; };
 
-  static auto originalFunction = findFunctionByName<int, void **, size_t, size_t>("posix_memalign");
-  int result = originalFunction(memptr, alignment, size);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
-  {
-    GlobalTrace->logAllocationEvent(*memptr, size);
-  }
+    if (isCurrentAllocationForSymbolSearcherInternalUsage())
+    {
+      *memptr = MemoryPoolForSymbolSearcherInternals{}.allocate(size);
+      return 0;
+    }
 
-  return result;
-}
+    static auto originalFunction =
+        findFunctionByName<int, void **, size_t, size_t>("posix_memalign");
+    int result = originalFunction(memptr, alignment, size);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logAllocationEvent(*memptr, size);
+    }
+
+    return result;
+  }
 }

@@ -40,11 +40,11 @@ inline uint32_t compute_out_size(uint32_t image_size, uint32_t filter_size, uint
 }
 
 using nncc::core::ADT::tensor::Buffer;
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
 using nncc::core::ADT::tensor::IndexEnumerator;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
+using nncc::core::ADT::tensor::Shape;
 
 /**
  * @brief Calculates Conv2D

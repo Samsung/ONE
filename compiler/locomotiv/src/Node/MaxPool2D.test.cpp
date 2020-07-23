@@ -30,10 +30,10 @@
 
 namespace
 {
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
 using nncc::core::ADT::tensor::make_overlay;
+using nncc::core::ADT::tensor::Shape;
 
 void run_test(const float *ifm, const float *expected_ofm, const Shape &ifm_shape,
               const Shape &ofm_shape, const uint32_t window_v, const uint32_t window_h,

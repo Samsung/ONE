@@ -1,0 +1,49 @@
+operand {
+    name: "ifm"
+    type: UINT8
+    shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+    quant { min: 0 max: 128 scale: 2 zero_point: 2 }
+  }
+  operand {
+    name: "ker"
+    type: UINT8
+    shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+    filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+    }
+    quant { min: 0 max: 255 scale: 1 zero_point: 1 }
+  }
+  operand {
+    name: "bias"
+    type: UINT8
+    shape { dim: 1 }
+    filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+    }
+    quant { min: 0 max: 255 scale: 1 zero_point: 1 }
+  }
+  operand {
+    name: "ofm"
+    type: UINT8
+    shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+    quant { min: 0 max: 80 scale: 1.5 zero_point: 3 }
+  }
+  operation {
+    type: "Conv2D"
+    conv2d_options {
+      padding: VALID
+      stride_w: 1
+      stride_h: 1
+    }
+    input: "ifm"
+    input: "ker"
+    input: "bias"
+    output: "ofm"
+  }
+  input: "ifm"
+  output: "ofm"
+  

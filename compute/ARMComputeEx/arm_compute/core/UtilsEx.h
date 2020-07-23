@@ -67,5 +67,5 @@ transposeconv_output_dimensions(unsigned int in_width, unsigned int in_height,
                                 unsigned int kernel_width, unsigned int kernel_height,
                                 const PadStrideInfo &info, unsigned int invalid_right,
                                 unsigned int invalid_top);
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_UTILSEX_H__ */

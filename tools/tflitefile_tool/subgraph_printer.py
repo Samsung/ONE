@@ -43,8 +43,8 @@ class SubgraphPrinter(object):
         if self.print_all_tensor == True and self.print_all_operator == True:
             self.PrintModelInfo()
             self.PrintAllOperatorsInList()
-            graph_stats.PrintGraphStats(
-                graph_stats.CalcGraphStats(self.op_parser), self.verbose)
+            graph_stats.PrintGraphStats(graph_stats.CalcGraphStats(self.op_parser),
+                                        self.verbose)
 
         if self.print_all_tensor == False:
             print('')

@@ -122,8 +122,8 @@ Backend::Backend(const char *pb_path, const char *info_path)
 void Backend::prepare(const std::function<void(nnkit::TensorContext &)> &f)
 {
   using nncc::core::ADT::tensor::Buffer;
-  using nncc::core::ADT::tensor::make_buffer;
   using nncc::core::ADT::tensor::LexicalLayout;
+  using nncc::core::ADT::tensor::make_buffer;
 
   // allocate memory for inputs of loco interpreter
   std::vector<std::unique_ptr<Buffer<float>>> buf_list; // TODO Support more types other than float

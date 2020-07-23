@@ -16,6 +16,7 @@
 
 #include "../test_sample4.h"
 
-extern "C" {
-void funcDefinedOnlyInTestSample4() {}
+extern "C"
+{
+  void funcDefinedOnlyInTestSample4() {}
 }

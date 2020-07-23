@@ -145,8 +145,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "op_subst",
         help="substring of operations. only info of these operasions will be printed.")
-    parser.add_argument(
-        "--summary", help="print summary of operations", action="store_true")
+    parser.add_argument("--summary",
+                        help="print summary of operations",
+                        action="store_true")
     parser.add_argument("--name_prefix", help="filtered by speficied name prefix")
 
     args = parser.parse_args()

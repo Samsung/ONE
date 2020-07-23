@@ -21,8 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::kernel::Shape;
 using nncc::core::ADT::kernel::IndexEnumerator;
+using nncc::core::ADT::kernel::Shape;
 
 TEST(ADT_KERNEL_INDEX_ENUMERATOR, iterate_full_range)
 {

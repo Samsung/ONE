@@ -13,8 +13,11 @@ parser.add_argument(
     help=
     "Path to the text file which lists the absolute paths of the raw image data files to be converted.",
     required=True)
-parser.add_argument(
-    "-o", "--output_path", type=str, help="Path to the output hdf5 file.", required=True)
+parser.add_argument("-o",
+                    "--output_path",
+                    type=str,
+                    help="Path to the output hdf5 file.",
+                    required=True)
 
 args = parser.parse_args()
 data_list = args.data_list

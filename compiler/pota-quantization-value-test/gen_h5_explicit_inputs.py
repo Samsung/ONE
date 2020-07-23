@@ -52,8 +52,8 @@ for i, record in enumerate(records):
         for j, line in enumerate(lines):
             data = np.array(line.split(','))
             input_detail = input_details[j]
-            input_data = np.array(
-                data.reshape(input_detail["shape"]), input_detail["dtype"])
+            input_data = np.array(data.reshape(input_detail["shape"]),
+                                  input_detail["dtype"])
             sample.create_dataset(str(j), data=input_data)
 
 h5_file.close()

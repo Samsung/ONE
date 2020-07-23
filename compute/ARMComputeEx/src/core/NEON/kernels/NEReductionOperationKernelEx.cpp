@@ -246,28 +246,29 @@ template <typename T, int S> struct RedOpX
     }
     auto vec_res_value = wrapper::vdup_n(init_res_value, ExactTagType{});
 
-    execute_window_loop(in_slice,
-                        [&](const Coordinates &) {
-                          const auto in_ptr = reinterpret_cast<const T *>(input.ptr());
-                          const auto vec_elements = wrapper::vloadq(in_ptr);
+    execute_window_loop(
+        in_slice,
+        [&](const Coordinates &) {
+          const auto in_ptr = reinterpret_cast<const T *>(input.ptr());
+          const auto vec_elements = wrapper::vloadq(in_ptr);
 
-                          switch (op)
-                          {
-                            case ReduceOperation::MIN:
-                            {
-                              vec_res_value = wrapper::vmin(vec_elements, vec_res_value);
-                              break;
-                            }
-                            case ReduceOperation::MAX:
-                            {
-                              vec_res_value = wrapper::vmax(vec_elements, vec_res_value);
-                              break;
-                            }
-                            default:
-                              ARM_COMPUTE_ERROR("Not supported");
-                          }
-                        },
-                        input);
+          switch (op)
+          {
+            case ReduceOperation::MIN:
+            {
+              vec_res_value = wrapper::vmin(vec_elements, vec_res_value);
+              break;
+            }
+            case ReduceOperation::MAX:
+            {
+              vec_res_value = wrapper::vmax(vec_elements, vec_res_value);
+              break;
+            }
+            default:
+              ARM_COMPUTE_ERROR("Not supported");
+          }
+        },
+        input);
 
     switch (op)
     {
@@ -302,26 +303,27 @@ struct RedOpX_qasymm8
       vec_res_value = wrapper::vdup_n(*input.ptr(), wrapper::traits::vector_128_tag{});
     }
 
-    execute_window_loop(in_slice,
-                        [&](const Coordinates &) {
-                          const auto vec_elements = wrapper::vloadq(input.ptr());
-                          switch (op)
-                          {
-                            case ReduceOperation::MIN:
-                            {
-                              vec_res_value = wrapper::vmin(vec_elements, vec_res_value);
-                              break;
-                            }
-                            case ReduceOperation::MAX:
-                            {
-                              vec_res_value = wrapper::vmax(vec_elements, vec_res_value);
-                              break;
-                            }
-                            default:
-                              ARM_COMPUTE_ERROR("Not supported");
-                          }
-                        },
-                        input);
+    execute_window_loop(
+        in_slice,
+        [&](const Coordinates &) {
+          const auto vec_elements = wrapper::vloadq(input.ptr());
+          switch (op)
+          {
+            case ReduceOperation::MIN:
+            {
+              vec_res_value = wrapper::vmin(vec_elements, vec_res_value);
+              break;
+            }
+            case ReduceOperation::MAX:
+            {
+              vec_res_value = wrapper::vmax(vec_elements, vec_res_value);
+              break;
+            }
+            default:
+              ARM_COMPUTE_ERROR("Not supported");
+          }
+        },
+        input);
 
     switch (op)
     {
@@ -657,8 +659,9 @@ void NEReductionOperationKernelEx::configure(const ITensor *input, ITensor *outp
   _output = output;
   _border_size =
       (axis == 0)
-          ? BorderSize(0, num_elems_processed_per_iteration -
-                              (input->info()->dimension(0) % num_elems_processed_per_iteration),
+          ? BorderSize(0,
+                       num_elems_processed_per_iteration -
+                           (input->info()->dimension(0) % num_elems_processed_per_iteration),
                        0, 0)
           : BorderSize();
   _op = op;

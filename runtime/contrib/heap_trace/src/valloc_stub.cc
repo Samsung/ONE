@@ -22,24 +22,25 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-void *valloc(size_t sz) noexcept
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  if (isCurrentAllocationForSymbolSearcherInternalUsage())
+  void *valloc(size_t sz) noexcept
   {
-    return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
-  }
+    static auto isOriginalFunctionCallSuccessful = [](void *result) -> bool { return result; };
 
-  static auto originalFunction = findFunctionByName<void *, size_t>("valloc");
-  void *result = originalFunction(sz);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
-  {
-    GlobalTrace->logAllocationEvent(result, sz);
-  }
+    if (isCurrentAllocationForSymbolSearcherInternalUsage())
+    {
+      return MemoryPoolForSymbolSearcherInternals{}.allocate(sz);
+    }
 
-  return result;
-}
+    static auto originalFunction = findFunctionByName<void *, size_t>("valloc");
+    void *result = originalFunction(sz);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logAllocationEvent(result, sz);
+    }
+
+    return result;
+  }
 }

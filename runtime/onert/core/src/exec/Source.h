@@ -47,8 +47,8 @@ template <typename T> class ITemplSource : public ISource
 public:
   ITemplSource(const void *input_buffer, const size_t &input_size, const ir::Shape &shape,
                const bool copy, ir::Layout io_layout)
-      : _input_buffer{reinterpret_cast<const T *>(input_buffer)}, _input_size{input_size},
-        _shape{shape}, _copy(copy), _io_layout{io_layout}
+      : _input_buffer{reinterpret_cast<const T *>(input_buffer)},
+        _input_size{input_size}, _shape{shape}, _copy(copy), _io_layout{io_layout}
   {
   }
 

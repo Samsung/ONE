@@ -19,9 +19,9 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::feature::Shape;
 using nncc::core::ADT::feature::CHWLayout;
 using nncc::core::ADT::feature::Overlay;
+using nncc::core::ADT::feature::Shape;
 
 using nncc::core::ADT::feature::make_overlay;
 

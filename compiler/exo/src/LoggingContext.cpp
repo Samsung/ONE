@@ -37,4 +37,4 @@ hermes::Context *LoggingContext::get(void)
   return ctx;
 }
 
-} // namespac exo
+} // namespace exo

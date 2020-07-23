@@ -137,7 +137,7 @@ TEST(Conv2DTest, Uint8)
           // First batch
           1, 1, 1, 1, // row = 1
           2, 2, 2, 2, // row = 2
-          // Second batch
+                      // Second batch
           1, 2, 3, 4, // row = 1
           1, 2, 3, 4, // row = 2
       },

@@ -186,9 +186,8 @@ static void checkConvLikeOp(const ::caffe2::OperatorDef &op)
   if (has_custom_pad && hasArgument(op.arg(), "pad"))
     throw std::runtime_error("Custom pad can't be combined with overall pad");
 
-  if (has_custom_pad &&
-      !(hasArgument(op.arg(), "pad_l") && hasArgument(op.arg(), "pad_r") &&
-        hasArgument(op.arg(), "pad_t") && hasArgument(op.arg(), "pad_b")))
+  if (has_custom_pad && !(hasArgument(op.arg(), "pad_l") && hasArgument(op.arg(), "pad_r") &&
+                          hasArgument(op.arg(), "pad_t") && hasArgument(op.arg(), "pad_b")))
     throw std::runtime_error("If one custom pad specified - all custom pads must be specified");
 
   // Kernel size

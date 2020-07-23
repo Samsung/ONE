@@ -42,9 +42,9 @@ class ModelAnalyzer : public mir::Visitor
 {
 public:
   /**
- * @brief contructs inference sequence
- * @param g pointer to graph to linearize
- */
+   * @brief contructs inference sequence
+   * @param g pointer to graph to linearize
+   */
   void analyze(const mir::Graph *g);
 
   void visit(mir::ops::AbsOp &) override;

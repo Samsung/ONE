@@ -26,7 +26,8 @@
 /**
  * @brief Union to provide bitwise conversion of integer and float
  */
-union BitwiseIntToFloat {
+union BitwiseIntToFloat
+{
   int i;
   float f;
 };

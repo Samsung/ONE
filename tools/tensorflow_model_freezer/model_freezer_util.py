@@ -123,8 +123,9 @@ def savePbAndCkpt(sess, directory, fn_prefix):
     saver = tf.train.Saver()
     saver.save(sess, os.path.join(directory, 'checkoiint', fn_prefix + '.ckpt'))
 
-    return (os.path.join(directory, fn_prefix + '.pb'),
-            os.path.join(directory, fn_prefix + '.pbtxt'),
+    return (os.path.join(directory,
+                         fn_prefix + '.pb'), os.path.join(directory,
+                                                          fn_prefix + '.pbtxt'),
             os.path.join(directory, 'checkoiint', fn_prefix + '.ckpt'))
 
 

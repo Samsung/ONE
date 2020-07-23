@@ -23,30 +23,33 @@
 #include "tensorflow/lite/tools/mutable_op_resolver.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /*__cplusplus*/
 
-typedef enum {
-  /** 32-bit signed integer. */
-  INT32 = 1,
+  typedef enum
+  {
+    /** 32-bit signed integer. */
+    INT32 = 1,
 
-  /** 32-bit single precision floating point. */
-  FLOAT32 = 2,
+    /** 32-bit single precision floating point. */
+    FLOAT32 = 2,
 
-  /** 8-bit unsigned integer. */
-  UINT8 = 3,
+    /** 8-bit unsigned integer. */
+    UINT8 = 3,
 
-  /** 64-bit signed integer. */
-  INT64 = 4
-} TFLiteNativeType;
+    /** 64-bit signed integer. */
+    INT64 = 4
+  } TFLiteNativeType;
 
-void tflite_interpreter_setNumThreads(long *interpreterHandle, int numThreads);
+  void tflite_interpreter_setNumThreads(long *interpreterHandle, int numThreads);
 
-long long tflite_flatbuffermodel_BuildFromFile(char *modelPath);
+  long long tflite_flatbuffermodel_BuildFromFile(char *modelPath);
 
-long long tflite_builder_interpreterBuilder(long *modelHandle);
+  long long tflite_builder_interpreterBuilder(long *modelHandle);
 
-void *tflite_interpreter_run(long *interpreterHandle, void *values, int inputLength, int dataType);
+  void *tflite_interpreter_run(long *interpreterHandle, void *values, int inputLength,
+                               int dataType);
 
 #ifdef __cplusplus
 }

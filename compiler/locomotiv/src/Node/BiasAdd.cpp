@@ -86,9 +86,9 @@ void NodeExecution::execute(loco::BiasAdd<loco::Domain::Feature> *bias_add)
 
 namespace
 {
+using locomotiv::make_data;
 using locomotiv::NodeData;
 using locomotiv::validate;
-using locomotiv::make_data;
 
 std::unique_ptr<NodeData> calc(const NodeData *input_data, const NodeData *bias_data, uint32_t axis)
 {

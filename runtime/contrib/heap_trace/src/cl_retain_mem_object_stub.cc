@@ -23,21 +23,22 @@
 
 extern std::unique_ptr<Trace> GlobalTrace;
 
-extern "C" {
-
-cl_int clRetainMemObject(cl_mem mem)
+extern "C"
 {
-  static auto isOriginalFunctionCallSuccessful = [](cl_int result) -> bool {
-    return result == CL_SUCCESS;
-  };
 
-  auto originalFunction = findFunctionByName<cl_int, cl_mem>("clRetainMemObject");
-  cl_int result = originalFunction(mem);
-  if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+  cl_int clRetainMemObject(cl_mem mem)
   {
-    GlobalTrace->logAllocationEvent(mem, 0);
-  }
+    static auto isOriginalFunctionCallSuccessful = [](cl_int result) -> bool {
+      return result == CL_SUCCESS;
+    };
 
-  return result;
-}
+    auto originalFunction = findFunctionByName<cl_int, cl_mem>("clRetainMemObject");
+    cl_int result = originalFunction(mem);
+    if (isOriginalFunctionCallSuccessful(result) && !Trace::Guard{}.isActive())
+    {
+      GlobalTrace->logAllocationEvent(mem, 0);
+    }
+
+    return result;
+  }
 }

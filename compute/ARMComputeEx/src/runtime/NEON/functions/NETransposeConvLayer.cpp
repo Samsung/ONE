@@ -35,17 +35,9 @@ namespace arm_compute
 {
 
 NETransposeConvLayer::NETransposeConvLayer(std::shared_ptr<IMemoryManager> memory_manager) // NOLINT
-    : _memory_group(std::move(memory_manager)),
-      _conv_f(),
-      _upsample_f(),
-      _flip_weights(),
-      _scaled_output(),
-      _weights_flipped(),
-      _flip_axis(),
-      _original_weights(nullptr),
-      _input(nullptr),
-      _info(),
-      _is_prepared(false)
+    : _memory_group(std::move(memory_manager)), _conv_f(), _upsample_f(), _flip_weights(),
+      _scaled_output(), _weights_flipped(), _flip_axis(), _original_weights(nullptr),
+      _input(nullptr), _info(), _is_prepared(false)
 {
 }
 

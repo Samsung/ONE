@@ -30,8 +30,8 @@
 
 using stdex::make_unique;
 
-using std::chrono::milliseconds;
 using std::chrono::microseconds;
+using std::chrono::milliseconds;
 
 using milliseconds_f = std::chrono::duration<float, std::milli>;
 

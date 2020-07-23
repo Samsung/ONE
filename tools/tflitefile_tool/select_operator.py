@@ -20,8 +20,8 @@ import numpy
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tflite'))
 sys.path.append(
-    os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), '../../externals/flatbuffers/python'))
+    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                 '../../externals/flatbuffers/python'))
 
 import flatbuffers
 import tflite.Model
@@ -953,8 +953,9 @@ def GenerateOperator(new_builder, selected_operator, used_tensors_dic, used_opco
     builtin_option_type = selected_operator.BuiltinOptionsType()
     if builtin_option_type != 0:
         selected_builtin_option = selected_operator.BuiltinOptions()
-        new_builtin_option = GenerateBuiltinOption(
-            new_builder, selected_builtin_option, builtin_option_type, used_subgraphs_dic)
+        new_builtin_option = GenerateBuiltinOption(new_builder, selected_builtin_option,
+                                                   builtin_option_type,
+                                                   used_subgraphs_dic)
 
     # Create custum option vector
     custom_option_num = selected_operator.CustomOptionsLength()
@@ -1335,18 +1336,20 @@ def main(args):
 if __name__ == '__main__':
     # Define argument and read
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument(
-        "input_model",
-        type=argparse.FileType('rb'),
-        help="input tflite model file to read")
-    arg_parser.add_argument(
-        "opcode_list",
-        type=argparse.FileType('r'),
-        help="text file including selected operator list")
-    arg_parser.add_argument(
-        "output_model", type=argparse.FileType('wb'), help="output tflite model file")
-    arg_parser.add_argument(
-        '-g', '--subgraph', type=int, default=0, help="subgraph to use (default: 0)")
+    arg_parser.add_argument("input_model",
+                            type=argparse.FileType('rb'),
+                            help="input tflite model file to read")
+    arg_parser.add_argument("opcode_list",
+                            type=argparse.FileType('r'),
+                            help="text file including selected operator list")
+    arg_parser.add_argument("output_model",
+                            type=argparse.FileType('wb'),
+                            help="output tflite model file")
+    arg_parser.add_argument('-g',
+                            '--subgraph',
+                            type=int,
+                            default=0,
+                            help="subgraph to use (default: 0)")
 
     # TODO
     #   Select multiple subgraph

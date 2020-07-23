@@ -17,9 +17,10 @@
 #ifndef TEST_SAMPLE4_H
 #define TEST_SAMPLE4_H
 
-extern "C" {
+extern "C"
+{
 
-void funcDefinedOnlyInTestSample4();
+  void funcDefinedOnlyInTestSample4();
 }
 
 #endif // ! TEST_SAMPLE4_H

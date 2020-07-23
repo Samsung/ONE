@@ -48,11 +48,11 @@ inline uint32_t compute_out_size(uint32_t image_size, uint32_t whole_pad, uint32
 }
 
 using nncc::core::ADT::tensor::Buffer;
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
 using nncc::core::ADT::tensor::IndexEnumerator;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
+using nncc::core::ADT::tensor::Shape;
 
 template <typename T>
 nncc::core::ADT::tensor::Buffer<T> maxPool2D(const loco::MaxPool2D *maxpool2d,

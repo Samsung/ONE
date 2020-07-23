@@ -100,8 +100,8 @@ template <typename TFNode> bool canonicalize_eltwise_binary_node(TFNode *node)
   // Create a node
   auto canonical_node = graph->nodes()->template create<CanonicalNodeT>();
 
-  using moco::tf::eltwise::binary::connect_to;
   using moco::tf::broadcast_to;
+  using moco::tf::eltwise::binary::connect_to;
 
   // update connections
   std::make_pair(node_A, node_B) | broadcast_to(out_shape) | connect_to(canonical_node);

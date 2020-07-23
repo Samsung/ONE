@@ -30,8 +30,8 @@ namespace tf
 {
 
 /**
-* @brief Canonicalize TF-dialect TFSoftmax into canonical Softmax node
-*/
+ * @brief Canonicalize TF-dialect TFSoftmax into canonical Softmax node
+ */
 class SoftmaxCanonicalizer : public SimpleNodeTransform<moco::TFSoftmax>
 {
 public:

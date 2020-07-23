@@ -17,9 +17,10 @@
 #ifndef TEST_SAMPLE1_H
 #define TEST_SAMPLE1_H
 
-extern "C" {
+extern "C"
+{
 
-void *funcDefinedInTestSample3_ButWrappedInTestSample1();
+  void *funcDefinedInTestSample3_ButWrappedInTestSample1();
 }
 
 #endif // ! TEST_SAMPLE1_H

@@ -51,7 +51,7 @@ private:
   std::unique_ptr<::tflite::FlatBufferModel> _model;
   std::unique_ptr<::tflite::Interpreter> _interp;
 };
-}
+} // namespace
 
 #include <nnkit/CmdlineArguments.h>
 #include <stdex/Memory.h>

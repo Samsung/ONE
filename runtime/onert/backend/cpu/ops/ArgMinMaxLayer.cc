@@ -42,7 +42,7 @@ template <typename T> std::function<bool(T, T)> GetComparefunction(bool is_arg_m
     return std::less<T>();
   }
 }
-}
+} // namespace
 
 void ArgMinMaxLayer::configure(const IPortableTensor *input, IPortableTensor *output, int32_t axis,
                                bool is_arg_max)

@@ -31,10 +31,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Extract subgraph from pb file')
 
     parser.add_argument("input_file", help="pb file to read")
-    parser.add_argument(
-        "--output_node_names",
-        help="A list of strings specifying the destination node names.",
-        required=True)
+    parser.add_argument("--output_node_names",
+                        help="A list of strings specifying the destination node names.",
+                        required=True)
     parser.add_argument("output_file", help="pb file to write")
 
     args = parser.parse_args()

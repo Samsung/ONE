@@ -46,8 +46,8 @@ void EltwiseBuilder::build(const ::caffe::LayerParameter &layer, GraphBuilderCon
   const auto &param = layer.eltwise_param();
 
   using ::caffe::EltwiseParameter_EltwiseOp;
-  using ::caffe::EltwiseParameter_EltwiseOp_SUM;
   using ::caffe::EltwiseParameter_EltwiseOp_PROD;
+  using ::caffe::EltwiseParameter_EltwiseOp_SUM;
 
   using Reducer = std::function<coco::Op *(coco::Op * lhs, coco::Op * rhs)>;
   using ReducerRegistry = std::map<EltwiseParameter_EltwiseOp, Reducer>;

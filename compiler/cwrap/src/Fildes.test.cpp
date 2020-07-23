@@ -44,7 +44,7 @@ int make_temp(char *name_template)
   return fd;
 }
 
-} // namespace make_temp
+} // namespace
 
 TEST(FildesTest, default_constructor)
 {

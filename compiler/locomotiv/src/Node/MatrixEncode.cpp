@@ -30,10 +30,10 @@ namespace
 {
 
 using nncc::core::ADT::tensor::Buffer;
-using nncc::core::ADT::tensor::make_buffer;
-using nncc::core::ADT::tensor::LexicalLayout;
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::IndexEnumerator;
+using nncc::core::ADT::tensor::LexicalLayout;
+using nncc::core::ADT::tensor::make_buffer;
+using nncc::core::ADT::tensor::Shape;
 
 template <typename T>
 std::unique_ptr<locomotiv::NodeData> matrix_encode(const loco::MatrixEncode *node,

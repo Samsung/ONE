@@ -21,8 +21,8 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::IndexEnumerator;
+using nncc::core::ADT::tensor::Shape;
 
 TEST(IR_INPUT, ctor_should_set_shape)
 {

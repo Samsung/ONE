@@ -30,10 +30,10 @@
 
 namespace
 {
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
 using nncc::core::ADT::tensor::make_overlay;
+using nncc::core::ADT::tensor::Shape;
 
 template <typename T>
 void run_test(const T *lhs, const T *rhs, const T *expected_output, const Shape &lhs_shape,

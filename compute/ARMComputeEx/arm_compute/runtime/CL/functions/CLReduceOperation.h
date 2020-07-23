@@ -115,5 +115,5 @@ private:
   std::unique_ptr<CLReduceOperationKernel[]> _reduce_kernels{nullptr};
   CLReshapeLayer _reshape;
 };
-}
+} // namespace arm_compute
 #endif /*__ARM_COMPUTE_CLREDUCEOPERATION_H__ */

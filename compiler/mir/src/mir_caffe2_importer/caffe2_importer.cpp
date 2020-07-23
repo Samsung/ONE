@@ -328,7 +328,7 @@ const std::map<std::string, SupportedCaffe2OpType> Caffe2Importer::_operatorType
     {"Reshape", SupportedCaffe2OpType::reshape},
     {"GivenTensorInt64Fill", SupportedCaffe2OpType::givenTensorInt64Fill},
 };
-}
+} // namespace
 
 namespace mir_caffe2
 {

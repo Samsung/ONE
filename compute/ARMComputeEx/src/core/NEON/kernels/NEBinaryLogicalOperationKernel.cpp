@@ -103,8 +103,10 @@ template <BinaryLogicalOperation op>
 inline uint8x16x4_t elementwise_logic_op(const uint8x16x4_t &a, const uint8x16x4_t &b)
 {
   uint8x16x4_t out = {{
-      elementwise_logic_op<op>(a.val[0], b.val[0]), elementwise_logic_op<op>(a.val[1], b.val[1]),
-      elementwise_logic_op<op>(a.val[2], b.val[2]), elementwise_logic_op<op>(a.val[3], b.val[3]),
+      elementwise_logic_op<op>(a.val[0], b.val[0]),
+      elementwise_logic_op<op>(a.val[1], b.val[1]),
+      elementwise_logic_op<op>(a.val[2], b.val[2]),
+      elementwise_logic_op<op>(a.val[3], b.val[3]),
   }};
   return out;
 }

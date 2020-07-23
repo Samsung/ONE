@@ -451,7 +451,8 @@ void HandleSigInt(int)
   }
 }
 
-int main(int argc, char *argv[]) try
+int main(int argc, char *argv[])
+try
 {
   namespace po = boost::program_options;
   po::options_description desc("Run a model on multiple binary images and print"

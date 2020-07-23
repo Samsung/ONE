@@ -54,14 +54,8 @@ using namespace arm_compute::misc::shape_calculator;
 
 CLDirectTransposeConvLayer::CLDirectTransposeConvLayer(
     std::shared_ptr<IMemoryManager> memory_manager) // NOLINT
-    : _memory_group(std::move(memory_manager)),
-      _scale_f(),
-      _conv_f(),
-      _flip_weights(),
-      _scaled_output(),
-      _original_weights(nullptr),
-      _weights_flipped(),
-      _flip_axis(),
+    : _memory_group(std::move(memory_manager)), _scale_f(), _conv_f(), _flip_weights(),
+      _scaled_output(), _original_weights(nullptr), _weights_flipped(), _flip_axis(),
       _is_prepared(false)
 {
 }

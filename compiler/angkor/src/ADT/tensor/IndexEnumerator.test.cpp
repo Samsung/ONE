@@ -21,9 +21,9 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
 using nncc::core::ADT::tensor::IndexEnumerator;
+using nncc::core::ADT::tensor::Shape;
 
 TEST(ADT_TENSOR_INDEX_ENUMERATOR, iterate_full_range)
 {

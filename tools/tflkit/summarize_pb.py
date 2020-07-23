@@ -6,7 +6,6 @@ import re
 
 class cd:
     """Context manager for changing the current working directory"""
-
     def __init__(self, newPath):
         self.newPath = os.path.expanduser(newPath)
 
@@ -66,12 +65,11 @@ def SummarizeGraph(args):
         vstr = ""
     PrintName(args.input_file)
     with cd(args.tensorflow_path):
-        proc = subprocess.Popen(
-            [
-                'bazel-bin/tensorflow/tools/graph_transforms/summarize_graph',
-                '--in_graph=' + args.input_file
-            ],
-            stdout=subprocess.PIPE)
+        proc = subprocess.Popen([
+            'bazel-bin/tensorflow/tools/graph_transforms/summarize_graph',
+            '--in_graph=' + args.input_file
+        ],
+                                stdout=subprocess.PIPE)
         while True:
             line = proc.stdout.readline().decode()
             if args.verbose:
@@ -92,15 +90,13 @@ def SummarizeGraph(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '--input_file',
-        required=True,
-        type=lambda s: CheckExt((['pb']), s),
-        help='pb file to read')
-    parser.add_argument(
-        '--tensorflow_path',
-        default='../../externals/tensorflow',
-        help='TensorFlow git repository path')
+    parser.add_argument('--input_file',
+                        required=True,
+                        type=lambda s: CheckExt((['pb']), s),
+                        help='pb file to read')
+    parser.add_argument('--tensorflow_path',
+                        default='../../externals/tensorflow',
+                        help='TensorFlow git repository path')
     parser.add_argument('--verbose', action='store_true')
     args = parser.parse_args()
 

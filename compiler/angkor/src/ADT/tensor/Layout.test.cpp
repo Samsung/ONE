@@ -18,8 +18,8 @@
 
 #include <gtest/gtest.h>
 
-using nncc::core::ADT::tensor::Shape;
 using nncc::core::ADT::tensor::Index;
+using nncc::core::ADT::tensor::Shape;
 
 static uint32_t offset_0(const Shape &, const Index &) { return 0; }
 static uint32_t offset_1(const Shape &, const Index &) { return 1; }
