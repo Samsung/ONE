@@ -78,8 +78,11 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
   MatrixBatchVectorMultiplyAccumulate(weights_data, num_units, input_size, input_data, batch_size,
                                       output_data, /*result_stride=*/1);
 
-  // Apply activation function
-  ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+  if (params.activation != FusedActivationFunctionType::kNone)
+  {
+    // Apply activation function
+    ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+  }
 }
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
