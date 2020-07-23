@@ -14,8 +14,11 @@ command_exists() {
 usage()
 {
   echo "Convert TensorFlow model to nnpackage."
-  echo "Usage: tf2nnpkg --info <path/to/info> --graphdef <path/to/pb> [OPTION] -o <path/to/nnpkg/directory>"
-  exit 0
+  echo "Usage: tf2nnpkg"
+  echo "    --info <path/to/info>"
+  echo "    --graphdef <path/to/pb>"
+  echo "    -o <path/to/nnpkg/directory>"
+  exit 255
 }
 
 # Parse command-line arguments
