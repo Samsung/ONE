@@ -198,7 +198,11 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
 #endif
 
   // Apply activation function to floats.
-  ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+  if (params.activation != FusedActivationFunctionType::kNone)
+  {
+    // Apply activation function
+    ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+  }
   return;
 }
 
