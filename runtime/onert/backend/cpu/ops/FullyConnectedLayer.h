@@ -53,6 +53,8 @@ public:
 
   void fullyConnectedHybrid();
 
+  void fullyConnectedSparseWeight();
+
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
                  const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output,
                  const std::shared_ptr<ExternalContext> &external_context);
