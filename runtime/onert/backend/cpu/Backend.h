@@ -19,6 +19,7 @@
 
 #include "Config.h"
 #include "ConstantInitializer.h"
+#include "ExternalContext.h"
 #include "KernelGenerator.h"
 
 #include <backend/Backend.h>
@@ -35,7 +36,7 @@ namespace cpu
 class Backend : public ::onert::backend::Backend
 {
 public:
-  Backend() : _config{std::make_shared<Config>()} {}
+  Backend() : _config{std::make_shared<Config>()}, _external_context(new ExternalContext) {}
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
@@ -49,7 +50,8 @@ public:
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, kb);
+    context->kernel_gen =
+        std::make_shared<KernelGenerator>(operands, operations, tb, kb, _external_context);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;
@@ -57,6 +59,7 @@ public:
 
 private:
   std::shared_ptr<IConfig> _config;
+  std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace cpu

@@ -546,7 +546,7 @@ bool NeonIsZeroVector(const float *vector, int v_size)
 
 void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
                         const int8_t *input_to_gate_weights, int32_t n_batch, int32_t n_input,
-                        int32_t n_output, int32_t, int32_t *scratch)
+                        int32_t n_output, int32_t, int32_t *scratch, ruy::Context *ruy_context)
 {
   MatrixParams<int8_t> lhs_params;
   lhs_params.order = Order::kRowMajor;
@@ -571,8 +571,6 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   }
 
   // Below code is from tflite::cpu_backend_gemm::detail::GemmImplUsingRuy
-  ruy::Context *ruy_context = ruy_support::GetRuyContext();
-
   ruy::Matrix<int8_t> ruy_lhs;
   ruy::Matrix<int8_t> ruy_rhs;
   ruy::Matrix<int32_t> ruy_dst;
@@ -851,13 +849,13 @@ void NeonMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, 
                                              const int m_cols, const int8_t *__restrict__ vectors,
                                              const float *scaling_factors, int n_batch,
                                              int32_t *scratch, float *__restrict__ result,
-                                             int result_stride)
+                                             int result_stride, ruy::Context *ruy_context)
 {
   if (m_rows % 4 == 0 && result_stride == 1)
   {
     const int32_t *bias = static_cast<const int32_t *>(nullptr);
     NeonCpuBackendGemm(vectors, bias, matrix, n_batch, m_cols, m_rows,
-                       /*output_zp =*/0, scratch);
+                       /*output_zp =*/0, scratch, ruy_context);
 
     // Multiply by float scaling factors and write to result
     const int total_size = n_batch * m_rows;
