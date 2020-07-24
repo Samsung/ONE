@@ -38,6 +38,16 @@ const std::string node_name_prefix(luci::NodeName node_name)
 {
   std::string prefix = node_name;
 
+  if (prefix.find("ReadVariableOp/resource/") != std::string::npos)
+  {
+    const auto start_index = prefix.find("ReadVariableOp/resource/");
+
+    const auto left_prefix = prefix.substr(0, start_index);
+    const auto right_prefix = prefix.substr(start_index + 24);
+
+    prefix = left_prefix + right_prefix;
+  }
+
   if (prefix.find("Tensordot/") != std::string::npos)
   {
     const auto index = prefix.find("Tensordot/");
@@ -47,6 +57,11 @@ const std::string node_name_prefix(luci::NodeName node_name)
   {
     const auto index = prefix.find("kernel/");
     prefix = prefix.substr(0, index - 1);
+  }
+  else if (prefix.find("/bcqinfo_") != std::string::npos)
+  {
+    const auto index = prefix.find("/bcqinfo_");
+    prefix = prefix.substr(0, index);
   }
 
   return prefix;
@@ -107,7 +122,13 @@ public:
   bool do_w_x(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
-    return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
+
+    if (_do_w_x[prefix]->dtype() == loco::DataType::S32)
+      return _do_w_x[prefix]->at<loco::DataType::S32>(0) == 1;
+    else if (_do_w_x[prefix]->dtype() == loco::DataType::BOOL)
+      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
+    else
+      throw std::runtime_error("do_w_x should be int or bool");
   }
 
   luci::CircleConst *get_alpha(luci::CircleConst *node)
@@ -268,7 +289,7 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_gather->input_clusters(converter.packed_clusters(params));
 
         const auto binary_hidden_size =
-            loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(0).value() * 32;
+            loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
         bcq_gather->input_hidden_size(binary_hidden_size);
 
         if (converter.do_w_x(params))
@@ -297,13 +318,10 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_fc->weights_binary(converter.get_packed_binary_code(weights));
         bcq_fc->bias(fully_connected->bias());
         bcq_fc->weights_clusters(converter.packed_clusters(weights));
-
-        const auto binary_hidden_size =
-            loco::must_cast<luci::CircleConst *>(bcq_fc->weights_binary())->dim(1).value() * 32;
-        bcq_fc->weights_hidden_size(binary_hidden_size);
         bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
 
         loco::Node *bcq_input = fully_connected->input();
+        int32_t batch_rank = 0;
 
         // If input of BCQFullyConnected has more than rank 2, we should reshape it as rank 2
         const auto original_input = loco::must_cast<luci::CircleNode *>(fully_connected->input());
@@ -329,16 +347,28 @@ bool FuseBCQPass::run(loco::Graph *g)
           reshape->shape(new_shape);
 
           bcq_input = reshape;
+          batch_rank = original_input->rank() - 2;
         }
 
         // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
         if (converter.do_w_x(weights))
         {
+          const auto binary_hidden_size =
+              loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                  ->dim(batch_rank)
+                  .value();
+          bcq_fc->weights_hidden_size(binary_hidden_size);
           bcq_fc->input(bcq_input);
           loco::replace(fully_connected).with(bcq_fc);
         }
         else
         {
+          const auto binary_hidden_size =
+              loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                  ->dim(1 + batch_rank)
+                  .value();
+          bcq_fc->weights_hidden_size(binary_hidden_size);
+
           auto perm = g->nodes()->create<luci::CircleConst>();
           perm->dtype(loco::DataType::S32);
           perm->size<loco::DataType::S32>(2);
