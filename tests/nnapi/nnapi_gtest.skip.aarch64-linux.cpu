@@ -76,7 +76,6 @@ GeneratedTests.minimum_simple_quant8
 GeneratedTests.neg
 GeneratedTests.neg_3D_int_nnfw
 GeneratedTests.neg_4D_int_nnfw
-GeneratedTests.pad_quant8_nnfw
 GeneratedTests.prelu
 GeneratedTests.prelu_broadcast_float_1_nnfw
 GeneratedTests.prelu_broadcast_quant8_1_nnfw

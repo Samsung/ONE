@@ -753,8 +753,16 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
 
   auto fn = std::make_unique<ops::PadLayer>();
 
-  fn->configure(input, output, pad_base, pad_rank);
+  bool isPadV2 = node.getInputs().size() == 3 ? true : false;
+  const void *value = nullptr;
 
+  if (isPadV2)
+  {
+    const auto value_index{node.getInputs().at(ir::operation::Pad::Input::VALUE)};
+    value = reinterpret_cast<const void *>(_ctx.at(value_index).data()->base());
+  }
+
+  fn->configure(input, output, pad_base, pad_rank, value);
   _return_fn = std::move(fn);
 }
 
