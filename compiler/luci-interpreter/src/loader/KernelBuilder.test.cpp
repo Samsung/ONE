@@ -43,28 +43,24 @@ using namespace testing;
 class KernelBuilderTest : public Test
 {
 protected:
-  luci::CircleInput *createInputNode(loco::DataType dtype)
-  {
-    return createNode<luci::CircleInput>(dtype);
-  }
+  luci::CircleInput *createInputNode() { return createNode<luci::CircleInput>(); }
 
-  template <typename NodeT> NodeT *createNode(loco::DataType output_type)
+  template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
   {
-    auto *node = _graph.nodes()->create<NodeT>();
-    node->dtype(output_type);
+    auto *node = _graph.nodes()->create<NodeT>(std::forward<Args>(args)...);
+    // The actual type does not matter for the purpose of the tests.
+    // NOTE The type is meaningless for nodes with multiple outputs (corresponding *Out nodes carry
+    //  actual output types).
+    node->dtype(loco::DataType::FLOAT32);
     return node;
   }
 
-  template <typename NodeOutT, typename... DT>
-  std::vector<NodeOutT *> createNodeOuts(loco::Node *node, DT... output_types)
+  template <typename NodeOutT> NodeOutT *createNodeOut(loco::Node *node, int index)
   {
-    std::vector<NodeOutT *> outputs{createNode<NodeOutT>(output_types)...};
-    for (size_t i = 0; i < sizeof...(output_types); ++i)
-    {
-      outputs[i]->input(node);
-      outputs[i]->index(i);
-    }
-    return outputs;
+    auto *node_out = createNode<NodeOutT>();
+    node_out->input(node);
+    node_out->index(index);
+    return node_out;
   }
 
   template <typename KernelT> std::unique_ptr<KernelT> buildKernel(const luci::CircleNode *op)
@@ -95,10 +91,10 @@ private:
 
 TEST_F(KernelBuilderTest, Add)
 {
-  auto *input1 = createInputNode(loco::DataType::FLOAT32);
-  auto *input2 = createInputNode(loco::DataType::FLOAT32);
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
 
-  auto *op = createNode<luci::CircleAdd>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleAdd>();
   op->x(input1);
   op->y(input2);
 
@@ -115,9 +111,9 @@ TEST_F(KernelBuilderTest, Add)
 
 TEST_F(KernelBuilderTest, AveragePool2D)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleAveragePool2D>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleAveragePool2D>();
   op->value(input);
 
   op->padding(luci::Padding::SAME);
@@ -142,11 +138,11 @@ TEST_F(KernelBuilderTest, AveragePool2D)
 
 TEST_F(KernelBuilderTest, Conv2D)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
-  auto *filter = createInputNode(loco::DataType::FLOAT32);
-  auto *bias = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
+  auto *filter = createInputNode();
+  auto *bias = createInputNode();
 
-  auto *op = createNode<luci::CircleConv2D>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleConv2D>();
   op->input(input);
   op->filter(filter);
   op->bias(bias);
@@ -175,11 +171,11 @@ TEST_F(KernelBuilderTest, Conv2D)
 
 TEST_F(KernelBuilderTest, DepthwiseConv2D)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
-  auto *filter = createInputNode(loco::DataType::FLOAT32);
-  auto *bias = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
+  auto *filter = createInputNode();
+  auto *bias = createInputNode();
 
-  auto *op = createNode<luci::CircleDepthwiseConv2D>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleDepthwiseConv2D>();
   op->input(input);
   op->filter(filter);
   op->bias(bias);
@@ -210,9 +206,9 @@ TEST_F(KernelBuilderTest, DepthwiseConv2D)
 
 TEST_F(KernelBuilderTest, L2Normalize)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleL2Normalize>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleL2Normalize>();
   op->x(input);
 
   op->fusedActivationFunction(luci::FusedActFunc::RELU);
@@ -227,9 +223,9 @@ TEST_F(KernelBuilderTest, L2Normalize)
 
 TEST_F(KernelBuilderTest, L2Pool2D)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleL2Pool2D>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleL2Pool2D>();
   op->value(input);
 
   op->padding(luci::Padding::SAME);
@@ -254,9 +250,9 @@ TEST_F(KernelBuilderTest, L2Pool2D)
 
 TEST_F(KernelBuilderTest, LocalResponseNormalization)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleLocalResponseNormalization>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleLocalResponseNormalization>();
   op->input(input);
 
   op->radius(11);
@@ -277,9 +273,9 @@ TEST_F(KernelBuilderTest, LocalResponseNormalization)
 
 TEST_F(KernelBuilderTest, MaxPool2D)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleMaxPool2D>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleMaxPool2D>();
   op->value(input);
 
   op->padding(luci::Padding::SAME);
@@ -304,10 +300,10 @@ TEST_F(KernelBuilderTest, MaxPool2D)
 
 TEST_F(KernelBuilderTest, Mul)
 {
-  auto *input1 = createInputNode(loco::DataType::FLOAT32);
-  auto *input2 = createInputNode(loco::DataType::FLOAT32);
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
 
-  auto *op = createNode<luci::CircleMul>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleMul>();
   op->x(input1);
   op->y(input2);
 
@@ -324,9 +320,9 @@ TEST_F(KernelBuilderTest, Mul)
 
 TEST_F(KernelBuilderTest, Softmax)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleSoftmax>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleSoftmax>();
   op->logits(input);
 
   op->beta(11.0f);
@@ -341,10 +337,10 @@ TEST_F(KernelBuilderTest, Softmax)
 
 TEST_F(KernelBuilderTest, Transpose)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
-  auto *perm = createInputNode(loco::DataType::S32);
+  auto *input = createInputNode();
+  auto *perm = createInputNode();
 
-  auto *op = createNode<luci::CircleTranspose>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleTranspose>();
   op->a(input);
   op->perm(perm);
 
@@ -358,11 +354,11 @@ TEST_F(KernelBuilderTest, Transpose)
 
 TEST_F(KernelBuilderTest, TransposeConv)
 {
-  auto *output_shape = createInputNode(loco::DataType::S32);
-  auto *filter = createInputNode(loco::DataType::FLOAT32);
-  auto *input = createInputNode(loco::DataType::FLOAT32);
+  auto *output_shape = createInputNode();
+  auto *filter = createInputNode();
+  auto *input = createInputNode();
 
-  auto *op = createNode<luci::CircleTransposeConv>(loco::DataType::FLOAT32);
+  auto *op = createNode<luci::CircleTransposeConv>();
   op->inputSizes(output_shape);
   op->filter(filter);
   op->outBackprop(input);
@@ -385,22 +381,22 @@ TEST_F(KernelBuilderTest, TransposeConv)
 
 TEST_F(KernelBuilderTest, Unpack)
 {
-  auto *input = createInputNode(loco::DataType::FLOAT32);
-  auto *op = createNode<luci::CircleUnpack>(loco::DataType::FLOAT32);
-  auto outputs =
-      createNodeOuts<luci::CircleUnpackOut>(op, loco::DataType::FLOAT32, loco::DataType::FLOAT32);
+  auto *input = createInputNode();
+  auto *op = createNode<luci::CircleUnpack>();
+  auto *output1 = createNodeOut<luci::CircleUnpackOut>(op, 0);
+  auto *output2 = createNodeOut<luci::CircleUnpackOut>(op, 1);
 
   op->value(input);
 
-  op->num(outputs.size());
+  op->num(2);
   op->axis(11);
 
   auto kernel = buildKernel<kernels::Unpack>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
-  checkTensor(kernel->output(0), outputs[0]);
-  checkTensor(kernel->output(1), outputs[1]);
+  checkTensor(kernel->output(0), output1);
+  checkTensor(kernel->output(1), output2);
   EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
 }
 
