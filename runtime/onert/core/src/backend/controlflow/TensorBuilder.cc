@@ -92,7 +92,7 @@ void TensorBuilder::allocate()
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
   // NOTE Find from User Tensor Registry first
-  // FIXME There may be both user tensor and managed tensor for a `ind` which is a waste
+  // FIXME There may be both user tensor and native tensor for a `ind` which is a waste
   auto user_tensor = _user_tensor_reg->getITensor(ind);
   auto tensor = _tensor_reg->getITensor(ind);
   if (user_tensor)
@@ -107,7 +107,7 @@ void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->ite
 
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  return _tensor_reg->getManagedTensor(ind);
+  return _tensor_reg->getNativeTensor(ind);
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
@@ -123,7 +123,7 @@ std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
 void TensorBuilder::setUserTensor(const ir::OperandIndex &ind,
                                   const std::shared_ptr<UserTensor> &tensor)
 {
-  _user_tensor_reg->setManagedTensor(ind, tensor);
+  _user_tensor_reg->setNativeTensor(ind, tensor);
 }
 
 } // namespace controlflow

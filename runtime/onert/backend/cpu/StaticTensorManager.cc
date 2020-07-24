@@ -61,12 +61,12 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   if (as_const)
   {
     auto tensor = std::make_shared<ExternalTensor>(tensor_info, backend_layout);
-    _tensors->setExternalTensor(ind, tensor);
+    _tensors->setMigrantTensor(ind, tensor);
   }
   else
   {
     auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-    _tensors->setManagedTensor(ind, tensor);
+    _tensors->setMigrantTensor(ind, tensor);
   }
   _as_constants[ind] = as_const;
 }
