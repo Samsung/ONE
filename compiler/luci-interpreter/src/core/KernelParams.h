@@ -56,6 +56,11 @@ struct Conv2DParams
   Activation activation;
 };
 
+struct DepthToSpaceParams
+{
+  int block_size;
+};
+
 struct DepthwiseConv2DParams
 {
   Padding padding;
