@@ -224,7 +224,7 @@ void ExecutorFactory::prepareExternalTensors(ir::LoweredGraph &lowered_graph,
             assert(tensor); // The tensor must have been created in one of TensorBuilders
             auto ptensor = std::dynamic_pointer_cast<backend::IPortableTensor>(tensor);
             if (ptensor)
-              backend_ctx->tensor_builder->setExternalTensor(ind, ptensor);
+              backend_ctx->tensor_builder->setMigrantTensor(ind, ptensor);
           }
         }
       });

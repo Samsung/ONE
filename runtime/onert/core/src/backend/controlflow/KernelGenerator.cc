@@ -199,7 +199,7 @@ KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
   for (auto tensor_builder : _tensor_builder_set)
   {
     auto reg = tensor_builder->tensorRegistry();
-    auto tensor = reg ? reg->getManagedITensor(index) : tensor_builder->tensorAt(index);
+    auto tensor = reg ? reg->getNativeITensor(index) : tensor_builder->tensorAt(index);
     if (tensor)
     {
       ret = tensor_builder;

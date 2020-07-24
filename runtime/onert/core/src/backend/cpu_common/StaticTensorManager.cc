@@ -76,18 +76,18 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, ir::Layout backend_layout,
                                       bool as_const)
 {
-  assert(!_tensors->getManagedTensor(ind));
+  assert(!_tensors->getNativeTensor(ind));
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-  _tensors->setManagedTensor(ind, tensor);
+  _tensors->setNativeTensor(ind, tensor);
   _as_constants[ind] = as_const;
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
-  assert(_tensors->getManagedTensor(ind));
+  assert(_tensors->getNativeTensor(ind));
 
   // This method is called only when a tensor has proper shape
-  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
+  assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
@@ -95,10 +95,10 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
-  assert(_tensors->getManagedTensor(ind));
+  assert(_tensors->getNativeTensor(ind));
 
   // This method is called only when a tensor has proper shape
-  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
+  assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);

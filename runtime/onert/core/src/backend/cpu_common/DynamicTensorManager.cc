@@ -35,7 +35,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
 {
   VERBOSE_F() << ind << std::endl;
 
-  auto tensor = _tensors->getManagedTensor(ind);
+  auto tensor = _tensors->getNativeTensor(ind);
   assert(tensor);
 
   bool previously_dynamic = tensor->is_dynamic();
@@ -88,9 +88,9 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  assert(_tensors->getManagedTensor(ind) == nullptr);
+  assert(_tensors->getNativeTensor(ind) == nullptr);
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-  _tensors->setManagedTensor(ind, tensor);
+  _tensors->setNativeTensor(ind, tensor);
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
@@ -117,7 +117,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   auto &input_set = find->second;
   for (auto input_ind : input_set)
   {
-    auto *tensor = _tensors->getManagedTensor(input_ind).get();
+    auto *tensor = _tensors->getNativeTensor(input_ind).get();
     if (!tensor->is_dynamic())
       continue;
 
@@ -131,7 +131,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  auto *tensor = _tensors->getManagedTensor(output_ind).get();
+  auto *tensor = _tensors->getNativeTensor(output_ind).get();
   if (!tensor->is_dynamic())
     return;
 
