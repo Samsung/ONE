@@ -97,7 +97,7 @@ public:
   void visit(const ir::operation::Quantize &node) override;
 
 private:
-  void checkReduceOp(const ir::OperandIndex input_index, const ir::OperandIndex output_index);
+  void checkUnaryOp(const ir::Operation &node);
 
 private:
   // TODO Remove _ctx field
