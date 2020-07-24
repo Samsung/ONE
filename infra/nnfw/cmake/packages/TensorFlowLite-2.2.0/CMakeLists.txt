@@ -100,7 +100,7 @@ target_include_directories(tensorflow-lite-2.2.0 SYSTEM PUBLIC ${TFLITE_INCLUDES
 target_compile_definitions(tensorflow-lite-2.2.0 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK -DTFLITE_WITH_RUY -DTFLITE_WITH_RUY_GEMV")
 set_property(TARGET tensorflow-lite-2.2.0 PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(tensorflow-lite-2.2.0 eigen ${LIB_PTHREAD} dl)
-if(${BUILD_WITH_NNAPI})
+if(NOT ANDROID AND ${BUILD_WITH_NNAPI})
   target_link_libraries(tensorflow-lite-2.2.0 rt)
 endif()
 
