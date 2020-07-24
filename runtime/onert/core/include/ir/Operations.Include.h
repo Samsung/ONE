@@ -103,3 +103,4 @@
 #include "ir/operation/BatchMatMul.h"
 #include "ir/operation/FusedBatchNorm.h"
 #include "ir/operation/LogSoftmax.h"
+#include "ir/operation/Quantize.h"

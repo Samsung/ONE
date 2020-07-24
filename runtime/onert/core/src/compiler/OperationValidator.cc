@@ -1137,5 +1137,25 @@ void OperationValidator::visit(const ir::operation::LogSoftmax &node)
 
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
+
+void OperationValidator::visit(const ir::operation::Quantize &node)
+{
+  VERBOSE(Quantize) << "Configure Quantize operation" << std::endl;
+
+  OP_REQUIRES(node.getInputs().size() == 1);
+  OP_REQUIRES(node.getOutputs().size() == 1);
+
+  const auto input_index{node.getInputs().at(0)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32);
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+}
 } // namespace compiler
 } // namespace onert
