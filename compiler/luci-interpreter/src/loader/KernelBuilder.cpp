@@ -35,6 +35,7 @@
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
 #include "kernels/Reshape.h"
+#include "kernels/Reverse.h"
 #include "kernels/Slice.h"
 #include "kernels/Softmax.h"
 #include "kernels/SpaceToDepth.h"
@@ -399,6 +400,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
 
   // NOTE 'newShape' attribute is ignored.
   return std::make_unique<kernels::Reshape>(input, shape, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->tensor());
+  const Tensor *axes = getInputTensor(node->axis());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Reverse>(input, axes, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)
