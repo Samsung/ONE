@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
 #define __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__
 
+#include <backend/IExternalContext.h>
 #include <util/ConfigSource.h>
 #include <ruy/context.h>
 
@@ -32,7 +33,7 @@ namespace backend
 namespace cpu
 {
 
-class ExternalContext
+class ExternalContext : public IExternalContext
 {
 public:
   ExternalContext() : _ruy_context(new ruy::Context)
