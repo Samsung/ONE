@@ -52,6 +52,17 @@ union DataPtr {
   void *v;
 };
 
+union ConstDataPtr {
+  const uint8_t *u8;
+  const int8_t *i8;
+  const uint32_t *u32;
+  const int32_t *i32;
+  const bool *b;
+  const float *f;
+  const int64_t *i64;
+  const void *v;
+};
+
 uint32_t getNumberOfDimensions(const IPortableTensor *tensor);
 
 uint32_t getNumberOfElements(const IPortableTensor *tensor);
