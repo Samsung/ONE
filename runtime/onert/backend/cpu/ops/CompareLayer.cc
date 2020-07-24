@@ -35,6 +35,14 @@ namespace
 using OpType = onert::ir::operation::Comparison::ComparisonType;
 using namespace onert::backend::cpu;
 
+// Assumes these enum values to be in the order like this
+static_assert(static_cast<int>(OpType::Equal) == 0, "An OpType value has changed!");
+static_assert(static_cast<int>(OpType::NotEqual) == 1, "An OpType value has changed!");
+static_assert(static_cast<int>(OpType::Greater) == 2, "An OpType value has changed!");
+static_assert(static_cast<int>(OpType::GreaterEqual) == 3, "An OpType value has changed!");
+static_assert(static_cast<int>(OpType::Less) == 4, "An OpType value has changed!");
+static_assert(static_cast<int>(OpType::LessEqual) == 5, "An OpType value has changed!");
+
 template <typename T>
 void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
                    OpType op_type)
@@ -68,13 +76,6 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
       GreaterEqualWithScaling, LessWithScaling,     LessEqualWithScaling,
   };
 
-  // Assumes these enum values to be in the order like this
-  static_assert(static_cast<int>(OpType::Equal) == 0, "An OpType value has changed!");
-  static_assert(static_cast<int>(OpType::NotEqual) == 1, "An OpType value has changed!");
-  static_assert(static_cast<int>(OpType::Greater) == 2, "An OpType value has changed!");
-  static_assert(static_cast<int>(OpType::GreaterEqual) == 3, "An OpType value has changed!");
-  static_assert(static_cast<int>(OpType::Less) == 4, "An OpType value has changed!");
-  static_assert(static_cast<int>(OpType::LessEqual) == 5, "An OpType value has changed!");
   static_assert(sizeof(broadcast_fns) == sizeof(non_broadcast_fns),
                 "Sizes of broadcast_fns and non_broadcast_fns must match!");
 
@@ -95,94 +96,33 @@ void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
 {
   bool requires_broadcast = !HaveSameShapes(lhs, rhs);
 
-  if (requires_broadcast)
-  {
-    switch (op_type)
-    {
-      case OpType::Equal:
-        Broadcast4DSlowEqual(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::NotEqual:
-        Broadcast4DSlowNotEqual(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::Greater:
-        Broadcast4DSlowGreater(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::GreaterEqual:
-        Broadcast4DSlowGreaterEqual(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::Less:
-        Broadcast4DSlowLess(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                            getExtendedTensorShape(output),
-                            reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::LessEqual:
-        Broadcast4DSlowLessEqual(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      default:
-        throw std::runtime_error{"Invalid OpType for CompareLayer"};
-    }
-  }
-  else // if (requires_broadcast == false)
-  {
-    switch (op_type)
-    {
-      case OpType::Equal:
-        EqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                       getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                       getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::NotEqual:
-        NotEqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                          getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                          getExtendedTensorShape(output),
-                          reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::Greater:
-        GreaterNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                         getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                         getExtendedTensorShape(output),
-                         reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::GreaterEqual:
-        GreaterEqualNoScaling(
-            getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-            getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-            getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::Less:
-        LessNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                      getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                      getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
-        break;
-      case OpType::LessEqual:
-        LessEqualNoScaling(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
-                           getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
-                           getExtendedTensorShape(output),
-                           reinterpret_cast<bool *>(output->buffer()));
-        break;
-      default:
-        throw std::runtime_error{"Invalid OpType for CompareLayer"};
-    }
-  }
-  return;
+  using CompareFunction =
+      void (*)(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
+               const T *input2_data, const Shape &output_shape, bool *output_data);
+
+  static const CompareFunction broadcast_fns[] = {
+      Broadcast4DSlowEqual,        Broadcast4DSlowNotEqual, Broadcast4DSlowGreater,
+      Broadcast4DSlowGreaterEqual, Broadcast4DSlowLess,     Broadcast4DSlowLessEqual,
+  };
+  static const CompareFunction non_broadcast_fns[] = {
+      EqualNoScaling,        NotEqualNoScaling, GreaterNoScaling,
+      GreaterEqualNoScaling, LessNoScaling,     LessEqualNoScaling,
+  };
+
+  static_assert(sizeof(broadcast_fns) == sizeof(non_broadcast_fns),
+                "Sizes of broadcast_fns and non_broadcast_fns must match!");
+
+  auto index = static_cast<int>(op_type);
+  if (index < 0 || index >= static_cast<int>(sizeof(broadcast_fns) / sizeof(broadcast_fns[0])))
+    throw std::runtime_error{"Invalid OpType for CompareLayer"};
+
+  CompareFunction fn = (requires_broadcast ? broadcast_fns[index] : non_broadcast_fns[index]);
+
+  fn(getExtendedTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+     getExtendedTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+     getExtendedTensorShape(output), reinterpret_cast<bool *>(output->buffer()));
 }
+
 } // namespace
 
 CompareLayer::CompareLayer()
