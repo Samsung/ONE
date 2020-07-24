@@ -407,10 +407,10 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
   assert(node->arity() == 2);
 
   const Tensor *input = getInputTensor(node->tensor());
-  const Tensor *axis = getInputTensor(node->axis());
+  const Tensor *axes = getInputTensor(node->axis());
   Tensor *output = getOutputTensor(node);
 
-  return std::make_unique<kernels::Reverse>(input, axis, output);
+  return std::make_unique<kernels::Reverse>(input, axes, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)

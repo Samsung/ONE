@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +27,10 @@ namespace kernels
 class Reverse : public Kernel
 {
 public:
-  Reverse(const Tensor *input, const Tensor *axis, Tensor *output);
+  Reverse(const Tensor *input, const Tensor *axes, Tensor *output);
 
   const Tensor *input() const { return _inputs[0]; }
-  const Tensor *axis() const { return _inputs[1]; }
+  const Tensor *axes() const { return _inputs[1]; }
   Tensor *output() const { return _outputs[0]; }
 
   void configure() override;

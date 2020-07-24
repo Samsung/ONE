@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,28 +24,33 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Reverse::Reverse(const Tensor *input, const Tensor *axis, Tensor *output)
-    : Kernel({input, axis}, {output})
+Reverse::Reverse(const Tensor *input, const Tensor *axes, Tensor *output)
+    : Kernel({input, axes}, {output})
 {
 }
 
 void Reverse::configure()
 {
-  assert(axis()->shape().num_dims() == 1);
-  assert(input()->shape().num_elements() >= axis()->shape().num_elements());
+  assert(axes()->shape().num_dims() == 1);
+  assert(input()->shape().num_dims() >= axes()->shape().num_elements());
   if (input()->element_type() != DataType::S32 && input()->element_type() != DataType::FLOAT32 &&
       input()->element_type() != DataType::U8 && input()->element_type() != DataType::S16 &&
       input()->element_type() != DataType::S64)
   {
     throw std::runtime_error("Unsupported input type.");
   }
-  if (axis()->element_type() != DataType::S32)
+  if (axes()->element_type() != DataType::S32)
   {
-    throw std::runtime_error("Unsupported axis type.");
+    throw std::runtime_error("Unsupported axes type.");
   }
-  if (axis()->shape().num_elements() > 1)
+  if (axes()->shape().num_elements() > 1)
   {
-    throw std::runtime_error("Current does not support more than 1 axis.");
+    throw std::runtime_error("Current implementation does not support more than 1 axis.");
+  }
+  int axis_value = getTensorData<int32_t>(axes())[0];
+  if (axis_value < 0 || axis_value >= input()->shape().num_dims())
+  {
+    throw std::runtime_error("Invalid axes value");
   }
   assert(input()->element_type() == output()->element_type());
 
@@ -55,11 +59,7 @@ void Reverse::configure()
 
 void Reverse::execute() const
 {
-  int axis_value = getTensorData<int32_t>(axis())[0];
-  if (axis_value < 0 || axis_value >= input()->shape().num_dims())
-  {
-    throw std::runtime_error("Invalid axis value");
-  }
+  int axis_value = getTensorData<int32_t>(axes())[0];
   switch (output()->element_type())
   {
     case DataType::FLOAT32:
