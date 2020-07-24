@@ -492,6 +492,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
   return std::make_unique<kernels::Squeeze>(input, output, params);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->a());
+  const Tensor *perm = getInputTensor(node->perm());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Transpose>(input, perm, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
 {
   assert(node->arity() == 3);
@@ -525,17 +536,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)
 
   // NOTE 'num' attribute is ignored.
   return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
-{
-  assert(node->arity() == 2);
-
-  const Tensor *input = getInputTensor(node->a());
-  const Tensor *perm = getInputTensor(node->perm());
-  Tensor *output = getOutputTensor(node);
-
-  return std::make_unique<kernels::Transpose>(input, perm, output);
 }
 
 } // namespace luci_interpreter
