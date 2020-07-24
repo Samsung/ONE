@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_BACKEND_H__
 #define __ONERT_BACKEND_CPU_BACKEND_H__
 
+#include "BackendContext.h"
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
@@ -39,9 +40,9 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<BackendContext> newContext(const ir::Graph &graph,
-                                             const std::shared_ptr<custom::IKernelBuilder> &kb,
-                                             bool) const override
+  std::unique_ptr<onert::backend::BackendContext>
+  newContext(const ir::Graph &graph, const std::shared_ptr<custom::IKernelBuilder> &kb,
+             bool) const override
   {
     const auto &operands = graph.operands();
     const auto &operations = graph.operations();
@@ -49,7 +50,8 @@ public:
     auto tb = std::make_shared<TensorBuilder>();
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, kb);
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, kb,
+                                                            context->external_context());
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;

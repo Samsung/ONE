@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_OPS_FULLYCONNECTEDLAYER_H__
 
 #include <backend/IPortableTensor.h>
+#include "../ExternalContext.h"
 #include "OperationUtils.h"
 
 #include <exec/IFunction.h>
@@ -53,7 +54,8 @@ public:
   void fullyConnectedHybrid();
 
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
-                 const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output);
+                 const IPortableTensor *bias, ir::Activation activation, IPortableTensor *output,
+                 const std::shared_ptr<ExternalContext> &external_context);
 
   void run() override;
 
@@ -67,6 +69,8 @@ private:
 
   ir::Activation _activation;
   std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;
+
+  std::shared_ptr<ExternalContext> _external_context;
 
   bool _is_hybrid;
 

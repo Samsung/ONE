@@ -122,9 +122,11 @@ ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_
 KernelGenerator::KernelGenerator(
     const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
     const std::shared_ptr<TensorBuilder> &tensor_builder,
-    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder)
+    const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
+    const std::shared_ptr<ExternalContext> &external_context)
     : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
-      _kernel_builder(kernel_builder), _current_op_seq_layout(ir::Layout::UNKNOWN)
+      _kernel_builder(kernel_builder), _current_op_seq_layout(ir::Layout::UNKNOWN),
+      _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -364,7 +366,8 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
-  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor);
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor,
+                _external_context);
 
   _return_fn = std::move(fn);
 }

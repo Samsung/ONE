@@ -32,7 +32,7 @@ namespace ops
 FullyConnectedLayer::FullyConnectedLayer()
     : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
       _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena()),
-      _is_hybrid(false)
+      _external_context(nullptr), _is_hybrid(false)
 {
   // DO NOTHING
 }
@@ -103,7 +103,8 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
       getTensorShape(_weights), reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena,
+      _external_context->ruy_context());
 #else
   nnfw::cker::FullyConnectedHybrid(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
@@ -111,7 +112,8 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       (_cached_weights) ? reinterpret_cast<const int8_t *>(_cached_weights)
                         : reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena,
+      _external_context->ruy_context());
 
 // TODO Remove this ifdef
 #ifdef EXPERIMENTAL_RUY_FEATURE
@@ -152,7 +154,8 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, ir::Activation activation,
-                                    IPortableTensor *output)
+                                    IPortableTensor *output,
+                                    const std::shared_ptr<ExternalContext> &external_context)
 {
   _input = input;
   _weights = weights;
@@ -161,6 +164,7 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _output = output;
   _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
                weights->data_type() == OperandType::QUANT_INT8_SYMM;
+  _external_context = external_context;
 }
 
 void FullyConnectedLayer::run()
