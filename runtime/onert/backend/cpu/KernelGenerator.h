@@ -102,6 +102,7 @@ public:
   void visit(const ir::operation::FusedBatchNorm &) override;
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
+  void visit(const ir::operation::Quantize &) override;
 
 private:
   const ir::Operands &_ctx;

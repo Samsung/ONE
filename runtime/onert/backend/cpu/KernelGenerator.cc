@@ -76,6 +76,7 @@
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
+#include "ops/QuantizeLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1342,6 +1343,21 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
 
   fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Quantize &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::Quantize::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+
+  auto fn = std::make_unique<ops::QuantizeLayer>();
+
+  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
