@@ -18,6 +18,7 @@
 
 #include "../Tensor.h"
 #include <cker/operation/FullyConnected.h>
+#include <cker/TensorUtils.h>
 
 namespace onert
 {
@@ -167,6 +168,15 @@ void FullyConnectedLayer::run()
 
 void FullyConnectedLayer::prepare()
 {
+  if (_bias && _bias->is_constant())
+  {
+    const int bias_size = getTensorShape(_bias).FlatSize();
+    if (nnfw::cker::IsZeroVector(reinterpret_cast<float *>(_bias->buffer()), bias_size))
+    {
+      _bias = nullptr;
+    }
+  }
+
 #ifdef USE_RUY_GEMV
   // TODO This is workaround
   // The only fc hybrid will use ruy kernel
