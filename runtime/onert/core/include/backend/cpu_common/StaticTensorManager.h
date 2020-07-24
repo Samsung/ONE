@@ -19,7 +19,7 @@
 
 #include "MemoryManager.h"
 
-#include "backend/ITensorManager.h"
+#include "backend/IStaticTensorManager.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
@@ -31,7 +31,7 @@ namespace backend
 namespace cpu_common
 {
 
-class StaticTensorManager : public backend::ITensorManager
+class StaticTensorManager : public backend::IStaticTensorManager
 {
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg);
