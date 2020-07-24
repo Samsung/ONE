@@ -16,14 +16,25 @@
 #ifndef __ARM_COMPUTE_CLFUNCTIONSEX_H__
 #define __ARM_COMPUTE_CLFUNCTIONSEX_H__
 
+#include <arm_compute/runtime/CL/functions/CLArgOperation.h>
+#include <arm_compute/runtime/CL/functions/CLBatchToSpaceND.h>
 #include <arm_compute/runtime/CL/functions/CLBinaryLogicalOp.h>
+#include <arm_compute/runtime/CL/functions/CLCast.h>
+#include <arm_compute/runtime/CL/functions/CLDepthToSpace.h>
 #include <arm_compute/runtime/CL/functions/CLEmbeddingLookup.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/CL/functions/CLGatherEx.h>
 #include <arm_compute/runtime/CL/functions/CLHashtableLookup.h>
 #include <arm_compute/runtime/CL/functions/CLInstanceNormalizationLayerEx.h>
+#include <arm_compute/runtime/CL/functions/CLLogicalNot.h>
 #include <arm_compute/runtime/CL/functions/CLNeg.h>
+#include <arm_compute/runtime/CL/functions/CLPixelWiseDivision.h>
+#include <arm_compute/runtime/CL/functions/CLPReLU.h>
 #include <arm_compute/runtime/CL/functions/CLReduceOperation.h>
+#include <arm_compute/runtime/CL/functions/CLRNNLayerEx.h>
+#include <arm_compute/runtime/CL/functions/CLSpaceToDepth.h>
+#include <arm_compute/runtime/CL/functions/CLSplit.h>
+#include <arm_compute/runtime/CL/functions/CLStridedSliceEx.h>
 #include <arm_compute/runtime/CL/functions/CLTopKV2.h>
 #include <arm_compute/runtime/CL/functions/CLTransposeConvLayer.h>
 

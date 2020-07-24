@@ -58,7 +58,7 @@ namespace
 Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const ITensorInfo &output)
 {
   ARM_COMPUTE_RETURN_ON_ERROR(
-      NEGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
+      NEGEMMLowpMatrixMultiplyCoreEx::validate(&input, &weights, nullptr, &output));
 
   return Status{};
 }
@@ -66,7 +66,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
 void NEFullyConnectedHybridLayerReshapeWeights::configure(const ITensor *input, ITensor *output)
 {
-  auto k = support::cpp14::make_unique<NETransposeKernel>();
+  auto k = arm_compute::support::cpp14::make_unique<NETransposeKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }
@@ -158,8 +158,7 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
 
   // Quantize input
   _quantized_input.allocator()->init(
-      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S8));
   _scale_factor.allocator()->init(
       TensorInfo(TensorShape{output->info()->dimension(1)}, 1, DataType::F32));
   _quant_input_kernel.configure(input, &_quantized_input, &_scale_factor);
@@ -187,7 +186,7 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   ARM_COMPUTE_UNUSED(fc_info.retain_internal_weights);
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, weights, output);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::F16, DataType::F32);
-  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(weights, 1, DataType::QASYMM8_SIGNED);
+  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(weights, 1, DataType::S8);
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
   ARM_COMPUTE_RETURN_ERROR_ON(weights->num_dimensions() > 2);
   ARM_COMPUTE_RETURN_ERROR_ON(output->num_dimensions() > 2);
@@ -225,9 +224,8 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(0) != weights_to_use->dimension(1));
 
   // Validate quantization kernel
-  const ITensorInfo &quantized_input =
-      TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_data_type(
-          DataType::QASYMM8_SIGNED));
+  const ITensorInfo &quantized_input = TensorInfo(
+      input->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S8));
   const ITensorInfo &scale_factor = TensorInfo(TensorShape{output->dimension(1)}, 1, DataType::F32);
   ARM_COMPUTE_RETURN_ON_ERROR(
       NEQuantizationSymmetricKernel::validate(input, &quantized_input, &scale_factor));

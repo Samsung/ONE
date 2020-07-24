@@ -41,14 +41,14 @@
 #include "arm_compute/runtime/CPP/functions/CPPOneHotEx.h"
 
 #include "arm_compute/core/CPP/kernels/CPPOneHotKernelEx.h"
-#include "support/MemorySupport.h"
+#include "support/ToolchainSupport.h"
 
 using namespace arm_compute;
 
 void CPPOneHotEx::configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
                             const ITensor *off_value, ITensor *output, const int axis)
 {
-  auto k = support::cpp14::make_unique<CPPOneHotKernelEx>();
+  auto k = arm_compute::support::cpp14::make_unique<CPPOneHotKernelEx>();
   k->configure(indices, depth, on_value, off_value, output, axis);
   _kernel = std::move(k);
 }

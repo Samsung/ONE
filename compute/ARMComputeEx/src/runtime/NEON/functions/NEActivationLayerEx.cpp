@@ -42,7 +42,7 @@
 
 #include "arm_compute/core/NEON/kernels/NEActivationLayerKernelEx.h"
 #include "arm_compute/runtime/IRuntimeContext.h"
-#include "support/MemorySupport.h"
+#include "support/ToolchainSupport.h"
 
 namespace arm_compute
 {
@@ -53,7 +53,7 @@ NEActivationLayerEx::NEActivationLayerEx(IRuntimeContext *ctx) // NOLINT
 void NEActivationLayerEx::configure(ITensor *input, ITensor *output,
                                     ActivationLayerInfo activation_info)
 {
-  auto k = support::cpp14::make_unique<NEActivationLayerKernelEx>();
+  auto k = arm_compute::support::cpp14::make_unique<NEActivationLayerKernelEx>();
   k->configure(input, output, activation_info);
   _kernel = std::move(k);
 }

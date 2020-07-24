@@ -46,7 +46,7 @@
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
 #include "arm_compute/core/utils/quantization/AsymmHelpers.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
-#include "support/MemorySupport.h"
+#include "support/ToolchainSupport.h"
 
 #include <algorithm>
 
@@ -141,7 +141,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
 void CLFullyConnectedLayerReshapeWeightsEx::configure(const ICLTensor *input, ICLTensor *output)
 {
-  auto k = support::cpp14::make_unique<CLTransposeKernel>();
+  auto k = arm_compute::support::cpp14::make_unique<CLTransposeKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }

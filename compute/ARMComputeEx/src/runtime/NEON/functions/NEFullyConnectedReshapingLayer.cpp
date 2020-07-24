@@ -56,17 +56,12 @@ void NEFullyConnectedReshapingLayer::configure(const arm_compute::ITensor *input
       assert(kernel_type == KernelType::PREPROCESSED_WEIGHTS);
 
       bool is_hybrid = input->info()->data_type() == DataType::F32 &&
-                       (weights->info()->data_type() == DataType::S8 ||
-                        weights->info()->data_type() == DataType::QASYMM8_SIGNED);
+                       weights->info()->data_type() == DataType::S8;
 
       if (is_hybrid)
       {
         auto fc = new arm_compute::NEFullyConnectedHybridLayer{_memory_manager};
-        ITensorInfo *weights_info = const_cast<ITensorInfo *>(_weights->info());
-        const auto orgin_weights_data_type = weights_info->data_type();
-        weights_info->set_data_type(DataType::QASYMM8_SIGNED);
         fc->configure(input_to_use, _weights, _biases, _output);
-        weights_info->set_data_type(orgin_weights_data_type);
         return std::unique_ptr<arm_compute::IFunction>(fc);
       }
       else

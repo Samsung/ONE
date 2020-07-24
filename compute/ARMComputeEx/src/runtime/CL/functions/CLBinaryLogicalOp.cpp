@@ -48,7 +48,7 @@ using namespace arm_compute;
 void CLBinaryLogicalOp::configure(ICLTensor *input1, ICLTensor *input2, ICLTensor *output,
                                   BinaryLogicalOperation op)
 {
-  auto k = support::cpp14::make_unique<CLBinaryLogicalOpKernel>();
+  auto k = arm_compute::support::cpp14::make_unique<CLBinaryLogicalOpKernel>();
   k->configure(input1, input2, output, op);
   _kernel = std::move(k);
 

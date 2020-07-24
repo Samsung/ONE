@@ -48,7 +48,7 @@
 #include "arm_compute/core/TensorInfo.h"
 #include "arm_compute/core/Utils.h"
 #include "arm_compute/core/Window.h"
-#include "support/StringSupport.h"
+
 #include "support/ToolchainSupport.h"
 
 namespace arm_compute

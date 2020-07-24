@@ -55,7 +55,16 @@ using namespace arm_compute;
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map = {
     // ARMComputeEx kernels
+    {"arg_op", "arg_operation.cl"},
+    {"arithmetic_add_qasymm8", "arithmetic_op_quantized.cl"},
     {"binary_logical_op", "binary_logical_op.cl"},
+    {"cast", "cast.cl"},
+    {"cast_qasymm_in", "cast.cl"},
+    {"cast_qasymm_out", "cast.cl"},
+    {"comparison_op", "comparison_op.cl"},
+    {"comparison_op_qasymm8", "comparison_op_quantized.cl"},
+    {"depth_to_space_nchw", "depth_to_space.cl"},
+    {"depth_to_space_nhwc", "depth_to_space.cl"},
     {"embedding_lookup", "embedding_lookup.cl"},
     {"gather_ex", "gather_ex.cl"},
     {"gather_ex_1d", "gather_ex.cl"},
@@ -65,6 +74,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"instance_normalization_ex", "instance_normalization_ex.cl"},
     {"multiply_scale_factor", "multiply_scale_factor.cl"},
     {"neg_tensor", "neg_tensor.cl"},
+    {"permute_generic", "permute_ex.cl"},
+    {"pixelwise_mul_qasymm8", "pixelwise_mul_quantized.cl"},
+    {"prelu", "prelu.cl"},
+    {"prelu_qasymm8", "prelu_quantized.cl"},
     {"quantization_symm8", "quantization_symm8.cl"},
     {"reduce_min_max", "reduce_operation.cl"},
     {"reduce_sum_mean", "reduce_operation.cl"},
@@ -78,13 +91,27 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"radixsort_reorder", "topkv2_radixsort.cl"},
     {"topkv2_quicksort", "topkv2_quicksort.cl"},
     {"scale_factor_symm8", "scale_factor.cl"},
+    {"space_to_depth_nchw", "space_to_depth.cl"},
+    {"space_to_depth_nhwc", "space_to_depth.cl"},
 };
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
     {
+        "arg_operation.cl",
+#include "./cl_kernels/arg_operation.clembed"
+    },
+    {
+        "cast.cl",
+#include "./cl_kernels/cast.clembed"
+    },
+    {
         "embedding_lookup.cl",
 #include "./cl_kernels/embedding_lookup.clembed"
+    },
+    {
+        "depth_to_space.cl",
+#include "./cl_kernels/depth_to_space.clembed"
     },
     {
         "gather_ex.cl",
@@ -123,6 +150,14 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
 #include "./cl_kernels/neg_tensor.clembed"
     },
     {
+        "prelu.cl",
+#include "./cl_kernels/prelu.clembed"
+    },
+    {
+        "prelu_quantized.cl",
+#include "./cl_kernels/prelu_quantized.clembed"
+    },
+    {
         "quantization_symm8.cl",
 #include "./cl_kernels/quantization_symm8.clembed"
     },
@@ -133,6 +168,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
     {
         "scale_factor.cl",
 #include "./cl_kernels/scale_factor.clembed"
+    },
+    {
+        "space_to_depth.cl",
+#include "./cl_kernels/space_to_depth.clembed"
     },
     {
         "topkv2.cl",
