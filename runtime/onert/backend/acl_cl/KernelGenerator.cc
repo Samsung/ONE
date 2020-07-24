@@ -348,10 +348,11 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   auto output_tensor = _tensor_builder->at(output_index).get();
   const auto activation = node.param().activation;
 
-  auto fn = acl_common::kernelGenFullyConnected<acl_common::AclClFunction, ::arm_compute::ICLTensor, ::arm_compute::CLFullyConnectedReshapingLayer>(node, _ctx, _tensor_builder, _current_op_seq_layout);
+  auto fn = acl_common::kernelGenFullyConnected<acl_common::AclClFunction, ::arm_compute::ICLTensor,
+                                                ::arm_compute::CLFullyConnectedReshapingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout);
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      std::move(fn),
-      ActivationBuilder::generate(activation, output_tensor->handle()));
+      std::move(fn), ActivationBuilder::generate(activation, output_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Mul &node)
@@ -861,7 +862,8 @@ void KernelGenerator::visit(const ir::operation::LogicalAnd &node)
 
 void KernelGenerator::visit(const ir::operation::LSTM &node)
 {
-  _return_fn = acl_common::kernelGenLSTM<acl_common::AclClFunction, ::arm_compute::ICLTensor, ::arm_compute::CLLSTMLayer>(node, _ctx, _tensor_builder);
+  _return_fn = acl_common::kernelGenLSTM<acl_common::AclClFunction, ::arm_compute::ICLTensor,
+                                         ::arm_compute::CLLSTMLayer>(node, _ctx, _tensor_builder);
 }
 
 void KernelGenerator::visit(const ir::operation::Comparison &node)

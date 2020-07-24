@@ -31,8 +31,11 @@ namespace backend
 namespace acl_common
 {
 
-template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer, typename T_TensorBuilder>
-std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands, const std::shared_ptr<T_TensorBuilder> &tensor_builder)
+template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
+          typename T_TensorBuilder>
+std::unique_ptr<exec::IFunction>
+kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
+              const std::shared_ptr<T_TensorBuilder> &tensor_builder)
 {
   // TODO Support dynamic rnn
   // TODO Fix subtle error in the case of non-CIFG, non-peephole and No Projection.
@@ -127,8 +130,7 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node, 
   auto input_to_output_weights_tensor = tensor_builder->at(input_to_output_weights_index).get();
   auto recurrent_to_forget_weights_tensor =
       tensor_builder->at(recurrent_to_forget_weights_index).get();
-  auto recurrent_to_cell_weights_tensor =
-      tensor_builder->at(recurrent_to_cell_weights_index).get();
+  auto recurrent_to_cell_weights_tensor = tensor_builder->at(recurrent_to_cell_weights_index).get();
   auto recurrent_to_output_weights_tensor =
       tensor_builder->at(recurrent_to_output_weights_index).get();
 
@@ -168,8 +170,7 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node, 
   }
   if (has_projection_param)
   {
-    auto projection_weights_tensor =
-        tensor_builder->at(projection_weights_index).get(); // optional
+    auto projection_weights_tensor = tensor_builder->at(projection_weights_index).get(); // optional
     auto projection_bias_handle = has_projection_bias
                                       ? tensor_builder->at(projection_bias_index).get()->handle()
                                       : nullptr; // optional
@@ -190,8 +191,11 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node, 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
 
-template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer, typename T_TensorBuilder>
-std::unique_ptr<exec::IFunction> kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands, const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout)
+template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
+          typename T_TensorBuilder>
+std::unique_ptr<exec::IFunction>
+kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands,
+                        const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout)
 {
   using ir::operation::FullyConnected;
 
@@ -240,8 +244,8 @@ std::unique_ptr<exec::IFunction> kernelGenFullyConnected(const ir::operation::Fu
   const auto frontend_layout = layout;
   const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
-  auto fn = std::make_unique<T_ACLLayer>(
-      tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+  auto fn =
+      std::make_unique<T_ACLLayer>(tensor_builder->acl_tensor_manager()->internal_buffer_manager());
 
   typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
   if (operands.at(weight_index).isConstant())
