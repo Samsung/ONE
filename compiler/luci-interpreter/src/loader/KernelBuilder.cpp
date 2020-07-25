@@ -120,14 +120,14 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleArgMax *node)
 {
   assert(node->arity() == 2);
-  const Tensor *input1 = getInputTensor(node->input());
-  const Tensor *input2 = getInputTensor(node->dimension());
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *axis = getInputTensor(node->dimension());
   Tensor *output = getOutputTensor(node);
 
   ArgMaxParams params{};
   params.output_type = node->output_type();
 
-  return std::make_unique<kernels::ArgMax>(input1, input2, output, params);
+  return std::make_unique<kernels::ArgMax>(input, axis, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
@@ -224,14 +224,14 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   assert(node->arity() == 3);
 
   const Tensor *input = getInputTensor(node->input());
-  const Tensor *filter = getInputTensor(node->weights());
+  const Tensor *weights = getInputTensor(node->weights());
   const Tensor *bias = getOptionalInputTensor(node->bias());
   Tensor *output = getOutputTensor(node);
 
   FullyConnectedParams params{};
   params.activation = node->fusedActivationFunction();
 
-  return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
+  return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
@@ -466,6 +466,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  SqueezeParams params{};
+  params.squeeze_dims = node->squeeze_dims();
+
+  return std::make_unique<kernels::Squeeze>(input, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *node)
 {
   assert(node->arity() == 4);
@@ -485,23 +498,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
   params.shrink_axis_mask = node->shrink_axis_mask();
 
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
-{
-  assert(node->arity() == 1);
-
-  const Tensor *input = getInputTensor(node->input());
-  Tensor *output = getOutputTensor(node);
-
-  SqueezeParams params{};
-  assert(node->squeeze_dims().size() <= 4);
-  for (size_t i = 0; i < node->squeeze_dims().size(); i++)
-  {
-    params.squeeze_dims.push_back(node->squeeze_dims().at(i));
-  }
-
-  return std::make_unique<kernels::Squeeze>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
