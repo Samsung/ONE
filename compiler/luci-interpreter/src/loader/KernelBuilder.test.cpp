@@ -18,15 +18,27 @@
 #include "loader/KernelBuilder.h"
 
 #include <kernels/Add.h>
+#include <kernels/ArgMax.h>
 #include <kernels/AveragePool2D.h>
+#include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
 #include <kernels/DepthwiseConv2D.h>
+#include <kernels/Elu.h>
+#include <kernels/FullyConnected.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
+#include <kernels/LeakyRelu.h>
 #include <kernels/LocalResponseNormalization.h>
+#include <kernels/Logistic.h>
 #include <kernels/MaxPool2D.h>
+#include <kernels/Mean.h>
 #include <kernels/Mul.h>
+#include <kernels/Slice.h>
 #include <kernels/Softmax.h>
+#include <kernels/SpaceToDepth.h>
+#include <kernels/Split.h>
+#include <kernels/Squeeze.h>
+#include <kernels/StridedSlice.h>
 #include <kernels/Transpose.h>
 #include <kernels/TransposeConv.h>
 #include <kernels/Unpack.h>
@@ -109,6 +121,26 @@ TEST_F(KernelBuilderTest, Add)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, ArgMax)
+{
+  auto *input = createInputNode();
+  auto *axis = createInputNode();
+
+  auto *op = createNode<luci::CircleArgMax>();
+  op->input(input);
+  op->dimension(axis);
+
+  op->output_type(loco::DataType::FLOAT32);
+
+  auto kernel = buildKernel<kernels::ArgMax>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().output_type, Eq(op->output_type()));
+}
+
 TEST_F(KernelBuilderTest, AveragePool2D)
 {
   auto *input = createInputNode();
@@ -134,6 +166,25 @@ TEST_F(KernelBuilderTest, AveragePool2D)
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Concatenation)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleConcatenation>(2);
+  op->values(0, input1);
+  op->values(1, input2);
+  op->axis(11);
+
+  auto kernel = buildKernel<kernels::Concatenation>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(0), input1);
+  checkTensor(kernel->input(1), input2);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
 }
 
 TEST_F(KernelBuilderTest, Conv2D)
@@ -204,6 +255,43 @@ TEST_F(KernelBuilderTest, DepthwiseConv2D)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, Elu)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleElu>();
+  op->features(input);
+
+  auto kernel = buildKernel<kernels::Elu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, FullyConnected)
+{
+  auto *input = createInputNode();
+  auto *weights = createInputNode();
+  auto *bias = createInputNode();
+
+  auto *op = createNode<luci::CircleFullyConnected>();
+  op->input(input);
+  op->weights(weights);
+  op->bias(bias);
+
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::FullyConnected>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->weights(), weights);
+  checkTensor(kernel->bias(), bias);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
 TEST_F(KernelBuilderTest, L2Normalize)
 {
   auto *input = createInputNode();
@@ -248,6 +336,20 @@ TEST_F(KernelBuilderTest, L2Pool2D)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, LeakyRelu)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLeakyRelu>();
+  op->features(input);
+
+  auto kernel = buildKernel<kernels::LeakyRelu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, LocalResponseNormalization)
 {
   auto *input = createInputNode();
@@ -269,6 +371,20 @@ TEST_F(KernelBuilderTest, LocalResponseNormalization)
   EXPECT_THAT(kernel->params().bias, Eq(op->bias()));
   EXPECT_THAT(kernel->params().alpha, Eq(op->alpha()));
   EXPECT_THAT(kernel->params().beta, Eq(op->beta()));
+}
+
+TEST_F(KernelBuilderTest, Logistic)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogistic>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Logistic>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, MaxPool2D)
@@ -298,6 +414,26 @@ TEST_F(KernelBuilderTest, MaxPool2D)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, Mean)
+{
+  auto *input = createInputNode();
+  auto *axes = createInputNode();
+
+  auto *op = createNode<luci::CircleMean>();
+  op->input(input);
+  op->reduction_indices(axes);
+
+  op->keep_dims(true);
+
+  auto kernel = buildKernel<kernels::Mean>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().keep_dims, Eq(op->keep_dims()));
+}
+
 TEST_F(KernelBuilderTest, Mul)
 {
   auto *input1 = createInputNode();
@@ -318,6 +454,26 @@ TEST_F(KernelBuilderTest, Mul)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, Slice)
+{
+  auto *input = createInputNode();
+  auto *begin = createInputNode();
+  auto *size = createInputNode();
+
+  auto *op = createNode<luci::CircleSlice>();
+  op->input(input);
+  op->begin(begin);
+  op->size(size);
+
+  auto kernel = buildKernel<kernels::Slice>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->begin(), begin);
+  checkTensor(kernel->size(), size);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, Softmax)
 {
   auto *input = createInputNode();
@@ -333,6 +489,96 @@ TEST_F(KernelBuilderTest, Softmax)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().beta, Eq(op->beta()));
+}
+
+TEST_F(KernelBuilderTest, SpaceToDepth)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleSpaceToDepth>();
+  op->input(input);
+
+  op->block_size(11);
+
+  auto kernel = buildKernel<kernels::SpaceToDepth>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().block_size, op->block_size());
+}
+
+TEST_F(KernelBuilderTest, Split)
+{
+  auto *axis = createInputNode();
+  auto *input = createInputNode();
+  auto *op = createNode<luci::CircleSplit>();
+  auto *output1 = createNodeOut<luci::CircleSplitOut>(op, 0);
+  auto *output2 = createNodeOut<luci::CircleSplitOut>(op, 1);
+
+  op->split_dim(axis);
+  op->input(input);
+
+  op->num_split(2);
+
+  auto kernel = buildKernel<kernels::Split>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(0), output1);
+  checkTensor(kernel->output(1), output2);
+}
+
+TEST_F(KernelBuilderTest, Squeeze)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleSqueeze>();
+  op->input(input);
+
+  op->squeeze_dims({11, 13});
+
+  auto kernel = buildKernel<kernels::Squeeze>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().squeeze_dims, ElementsAreArray(op->squeeze_dims()));
+}
+
+TEST_F(KernelBuilderTest, StridedSlice)
+{
+  auto *input = createInputNode();
+  auto *begin = createInputNode();
+  auto *end = createInputNode();
+  auto *strides = createInputNode();
+
+  auto *op = createNode<luci::CircleStridedSlice>();
+  op->input(input);
+  op->begin(begin);
+  op->end(end);
+  op->strides(strides);
+
+  op->begin_mask(11);
+  op->ellipsis_mask(13);
+  op->end_mask(17);
+  op->new_axis_mask(19);
+  op->shrink_axis_mask(23);
+
+  auto kernel = buildKernel<kernels::StridedSlice>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->begin(), begin);
+  checkTensor(kernel->end(), end);
+  checkTensor(kernel->strides(), strides);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().begin_mask, Eq(op->begin_mask()));
+  EXPECT_THAT(kernel->params().ellipsis_mask, Eq(op->ellipsis_mask()));
+  EXPECT_THAT(kernel->params().end_mask, Eq(op->end_mask()));
+  EXPECT_THAT(kernel->params().new_axis_mask, Eq(op->new_axis_mask()));
+  EXPECT_THAT(kernel->params().shrink_axis_mask, Eq(op->shrink_axis_mask()));
 }
 
 TEST_F(KernelBuilderTest, Transpose)
