@@ -61,12 +61,12 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   if (as_const)
   {
     auto tensor = std::make_shared<ExternalTensor>(tensor_info, backend_layout);
-    _tensors->setMigrantTensor(ind, tensor);
+    _tensors->setNativeTensor(ind, tensor);
   }
   else
   {
     auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-    _tensors->setMigrantTensor(ind, tensor);
+    _tensors->setNativeTensor(ind, tensor);
   }
   _as_constants[ind] = as_const;
 }
@@ -96,8 +96,6 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
   for (const auto &it : _tensors->managed_tensors())
-    fn(it.first);
-  for (const auto &it : _tensors->external_tensors())
     fn(it.first);
 }
 
