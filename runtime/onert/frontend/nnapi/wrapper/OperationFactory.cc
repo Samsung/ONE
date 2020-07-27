@@ -121,6 +121,18 @@ Operation *CreateSimpleUnaryOp(const OperationFactory::Param &init_param, Operan
   return new T{inputs, outputs};
 }
 
+// A generator function for binary ops with no params
+template <typename T>
+Operation *createSimpleBinaryOp(const OperationFactory::Param &init_param, Operands &)
+{
+  assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+  OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+  OperandIndexSequence outputs{init_param.outputs[0]};
+
+  return new T{inputs, outputs};
+}
+
 } // namespace
 
 OperationFactory &OperationFactory::get()
@@ -131,20 +143,10 @@ OperationFactory &OperationFactory::get()
 
 OperationFactory::OperationFactory()
 {
-  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = [](const OperationFactory::Param &init_param,
-                                               Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Block size Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::BatchToSpaceND{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Block size Index
+  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = createSimpleBinaryOp<operation::BatchToSpaceND>;
 
   _map[ANEURALNETWORKS_DEPTHWISE_CONV_2D] = [](const OperationFactory::Param &init_param,
                                                Operands &operands) {
@@ -772,19 +774,10 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_EXP_EX
   _map[ANEURALNETWORKS_EXP_EX] = _map[ANEURALNETWORKS_EXP];
 
-  _map[ANEURALNETWORKS_EXPAND_DIMS] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::ExpandDims{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Axis Tensor Index
+  _map[ANEURALNETWORKS_EXPAND_DIMS] = createSimpleBinaryOp<operation::ExpandDims>;
 
   _map[ANEURALNETWORKS_GREATER] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -953,19 +946,7 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_LOGICAL_AND] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::LogicalAnd{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_LOGICAL_AND] = createSimpleBinaryOp<operation::LogicalAnd>;
 
   // ANEURALNETWORKS_LOGICAL_AND_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_AND_EX
@@ -1739,23 +1720,9 @@ OperationFactory::OperationFactory()
 
   _map[ANEURALNETWORKS_PAD_V2] = _map[ANEURALNETWORKS_PAD];
 
-  _map[ANEURALNETWORKS_MINIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
+  _map[ANEURALNETWORKS_MINIMUM] = createSimpleBinaryOp<operation::Min>;
 
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Min{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_MAXIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Max{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_MAXIMUM] = createSimpleBinaryOp<operation::Max>;
 
   _map[ANEURALNETWORKS_ONE_HOT_EX] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {
@@ -1838,34 +1805,15 @@ OperationFactory::OperationFactory()
     return new operation::Range{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_POW] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
+  // Each input should be interpreted as follows:
+  //  0 -> LHS Tensor Index
+  //  1 -> RHS Tensor Index
+  _map[ANEURALNETWORKS_POW] = createSimpleBinaryOp<operation::Pow>;
 
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> LHS Tensor Index
-    //  1 -> RHS Tensor Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::Pow{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_FILL_EX] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> A tensor, specifying the input.
-    //  1 -> A 1-D tensor, specifying the value
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Fill{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> A tensor, specifying the input.
+  //  1 -> A 1-D tensor, specifying the value
+  _map[ANEURALNETWORKS_FILL_EX] = createSimpleBinaryOp<operation::Fill>;
 
   _map[ANEURALNETWORKS_ZEROS_LIKE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
@@ -1879,20 +1827,10 @@ OperationFactory::OperationFactory()
     return new operation::ZerosLike{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_TILE] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Multiple Tensor Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::Tile{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Multiple Tensor Index
+  _map[ANEURALNETWORKS_TILE] = createSimpleBinaryOp<operation::Tile>;
 
   _map[ANEURALNETWORKS_MATRIX_BAND_PART_EX] = [](const OperationFactory::Param &init_param,
                                                  Operands &) {
@@ -1954,21 +1892,9 @@ OperationFactory::OperationFactory()
     return new operation::Einsum{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = [](const OperationFactory::Param &init_param,
-                                             Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> int32, int64, An 1-D int tensor Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::BroadcastTo{inputs, outputs};
-  };
+  //  0 -> Input Tensor Index
+  //  1 -> int32, int64, An 1-D int tensor Index
+  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = createSimpleBinaryOp<operation::BroadcastTo>;
 
   _map[ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX] = [](const OperationFactory::Param &init_param,
                                                     Operands &operands) {
