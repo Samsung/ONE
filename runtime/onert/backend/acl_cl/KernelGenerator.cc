@@ -344,75 +344,15 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
 
 void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 {
-  using ir::operation::FullyConnected;
-
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
-  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
-  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
-
-  const auto input_rank = _ctx.at(input_index).shape().rank();
-
-  const auto output_size =
-      _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 1);
-  UNUSED_RELEASE(output_size);
-  assert(_ctx.at(bias_index).shape().dim(0) == output_size);
-  assert(_ctx.at(weight_index).shape().dim(0) == output_size);
-  const auto batch_size =
-      _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 2);
-  const auto input_size =
-      _ctx.at(weight_index).shape().dim(_ctx.at(weight_index).shape().rank() - 1);
-
-  // Check for reshaping input's shape into rank-2
-  bool needs_reshape = false;
-  ir::Shape reshape(2);
-  if (input_rank == 3 || input_rank == 4)
-  {
-    const auto &ifm_shape = _ctx.at(input_index).shape();
-    auto feature_size = 1;
-    for (int i = 0; i < ifm_shape.rank(); ++i)
-    {
-      feature_size *= ifm_shape.dim(i);
-    }
-
-    UNUSED_RELEASE(feature_size);
-    assert(feature_size == batch_size * input_size);
-
-    // for reshaping
-    needs_reshape = true;
-    reshape.dim(0) = batch_size; /* H */
-    reshape.dim(1) = input_size; /* W */
-  }
-
+  auto output_tensor = _tensor_builder->at(output_index).get();
   const auto activation = node.param().activation;
 
-  auto output_tensor = _tensor_builder->at(output_index).get();
-  const auto input_tensor = _tensor_builder->at(input_index).get();
-  const auto weight_tensor = _tensor_builder->at(weight_index).get();
-  const auto bias_tensor = _tensor_builder->at(bias_index).get();
-  const auto frontend_layout = _current_op_seq_layout;
-  const auto acl_layout = output_tensor->handle()->info()->data_layout();
-
-  auto fn = std::make_unique<arm_compute::CLFullyConnectedReshapingLayer>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  arm_compute::CLFullyConnectedReshapingLayer::KernelType kernel_type =
-      arm_compute::CLFullyConnectedReshapingLayer::KernelType::GENERAL;
-  if (_ctx.at(weight_index).isConstant())
-  {
-    kernel_type = arm_compute::CLFullyConnectedReshapingLayer::KernelType::PREPROCESSED_WEIGHTS;
-    assert(_ctx.at(weight_index).data());
-  }
-  fn->configure(
-      input_tensor->handle(), weight_tensor->handle(), bias_tensor->handle(),
-      output_tensor->handle(), needs_reshape,
-      ::onert::backend::acl_common::asTensorShape(
-          reshape, frontend_layout, ::onert::backend::acl_common::asRuntimeLayout(acl_layout)),
-      kernel_type);
-
+  auto fn = acl_common::kernelGenFullyConnected<acl_common::AclClFunction, ::arm_compute::ICLTensor,
+                                                ::arm_compute::CLFullyConnectedReshapingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout);
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, output_tensor->handle()));
+      std::move(fn), ActivationBuilder::generate(activation, output_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Mul &node)
