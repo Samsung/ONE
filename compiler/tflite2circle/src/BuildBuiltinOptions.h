@@ -62,6 +62,7 @@
 #include "BuildBuiltinOptions/MirrorPadOptions.h"
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NegOptions.h"
+#include "BuildBuiltinOptions/NonMaxSuppressionV4Options.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
 #include "BuildBuiltinOptions/OneHotOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
