@@ -134,14 +134,6 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
       {
         tensor->increase_ref();
       }
-      else
-      {
-        auto pt = _tensor_builder->portableAt(ind); // from external
-        assert(pt != nullptr);
-        auto et = dynamic_cast<const ExternalTensor *>(pt.get());
-        assert(et);
-        const_cast<ExternalTensor *>(et)->increase_ref();
-      }
     }
   }
 }
