@@ -136,6 +136,7 @@ void GraphLoader::loadTensors()
       const luci::CircleQuantParam *params = node->quantparam();
       quantization.scale.assign(params->scale.cbegin(), params->scale.cend());
       quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
+      quantization.quantized_dimension = params->quantized_dimension;
     }
 
     auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
