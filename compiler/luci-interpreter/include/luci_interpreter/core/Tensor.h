@@ -79,12 +79,11 @@ private:
 //
 // Note that due to historical and performance reasons, per-tensor quantization uses unsigned
 // integer types, while per-channel uses signed types assuming 'zero_point' == 0.
-//
-// TODO Add 'quantized_dimension' field for per-channel case when IR provides it.
 struct AffineQuantization
 {
   std::vector<float> scale;
   std::vector<int32_t> zero_point;
+  int32_t quantized_dimension;
 };
 
 class Tensor
@@ -107,6 +106,12 @@ public:
     assert(_quantization.zero_point.size() == 1);
     return _quantization.zero_point[0];
   }
+
+  const std::vector<float> &scales() const { return _quantization.scale; }
+
+  const std::vector<int32_t> &zero_points() const { return _quantization.zero_point; }
+
+  int32_t quantized_dimension() const { return _quantization.quantized_dimension; }
 
   template <typename T> const T *data() const { return reinterpret_cast<const T *>(_data.get()); }
 
