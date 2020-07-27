@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+
+import tensorflow as tf
+
+import argparse
+import sys
+
+
+def _get_parser():
+    """
+    Returns an ArgumentParser for generating info file.
+    """
+    parser = argparse.ArgumentParser(
+        description=("Command line tool to generated info file of BCQ applied model"))
+
+    # Input and output path.
+    parser.add_argument(
+        "-i",
+        "--input_path",
+        type=str,
+        help="Full filepath of the input file.",
+        required=True)
+    parser.add_argument(
+        "-o",
+        "--output_path",
+        type=str,
+        help="Full filepath of the output file.",
+        required=True)
+    parser.add_argument(
+        "-p",
+        "--print_mode",
+        type=str,
+        help="Supported print mode : full_infofile, output_arrays",
+        required=True)
+
+    return parser
+
+
+def load_graph(frozen_graph_filename):
+    """
+    Load graph from frozen pb file
+    """
+    with tf.compat.v1.gfile.GFile(frozen_graph_filename, "rb") as f:
+        graph_def = tf.compat.v1.GraphDef()
+        graph_def.ParseFromString(f.read())
+    with tf.Graph().as_default() as graph:
+        tf.import_graph_def(graph_def, name='')
+    return graph
+
+
+def dtype2str(dtype):
+    if dtype == "int32":
+        return "TF_INT32"
+    elif dtype == "int64":
+        return "TF_INT64"
+    elif dtype == "float32":
+        return "TF_FLOAT"
+    elif dtype == "bool":
+        return "TF_BOOL"
+    else:
+        raise Exception("Not supported dtype")
+
+
+def generate_full_info_file(flags):
+    graph_model = load_graph(flags.input_path)
+    graph_model_def = graph_model.as_graph_def()
+    ops = graph_model.get_operations()
+
+    input_names = [op.outputs[0].name for op in ops if op.type == "Placeholder"]
+    output_names = [tensor.name for op in ops for tensor in op.outputs]
+    for op in ops:
+        for t in op.inputs:
+            if t.name in output_names:
+                output_names.remove(t.name)
+
+    input_dtypes = [graph_model.get_tensor_by_name(name).dtype for name in input_names]
+    output_dtypes = [graph_model.get_tensor_by_name(name).dtype for name in output_names]
+
+    input_shapes = [graph_model.get_tensor_by_name(name).shape for name in input_names]
+    output_shapes = [graph_model.get_tensor_by_name(name).shape for name in output_names]
+
+    f = open(flags.output_path, 'w')
+    for index in range(len(input_names)):
+        input_name = input_names[index]
+        input_dtype = input_dtypes[index]
+        input_shape = input_shapes[index]
+
+        info_str = "input, " + input_name + ", " + dtype2str(input_dtype) + ", ["
+        for dim in range(len(input_shape)):
+            if dim > 0:
+                info_str += ","
+            info_str += str(input_shape[dim])
+        info_str += "]\n"
+        
+        f.write(info_str)
+    for index in range(len(output_names)):
+        output_name = output_names[index]
+        output_dtype = output_dtypes[index]
+        output_shape = output_shapes[index]
+
+        info_str = "output, " + output_name + ", " + dtype2str(output_dtype) + ", ["
+        for dim in range(len(output_shape)):
+            if dim > 0:
+                info_str += ","
+            info_str += str(output_shape[dim])
+        info_str += "]\n"
+        
+        f.write(info_str)
+    f.close()
+
+
+def print_output_arrays(flags):
+    graph_model = load_graph(flags.input_path)
+    graph_model_def = graph_model.as_graph_def()
+    ops = graph_model.get_operations()
+
+    output_names = [op.outputs[0].name for op in ops if op.type == "Const" and "bcqinfo_" in op.outputs[0].name]
+
+    comma_needed = False
+    output_arrays = ""
+    
+    for output_name in output_names:
+        if comma_needed == True:
+            output_arrays += ","
+        output_arrays += output_name
+        comma_needed = True
+
+    f = open(flags.output_path, 'w')
+    f.write(output_arrays)
+    f.close()
+
+
+def main():
+    # Parse argument.
+    parser = _get_parser()
+    flags = parser.parse_known_args(args=sys.argv[1:])
+
+    print_mode = flags[0].print_mode
+
+    if print_mode == "full_infofile":
+        # Generate info file, which includes original input, original output
+        # and BCQ information nodes
+        generate_full_info_file(flags[0])
+    elif print_mode == "output_arrays":
+        # Generate output_arrays with comma-separated
+        print_output_arrays(flags[0])
+    else:
+        raise Exception("Not supported print mode")
+
+
+if __name__ == "__main__":
+    main()

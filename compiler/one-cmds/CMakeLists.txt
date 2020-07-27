@@ -1,5 +1,6 @@
 set(ONE_COMMAND_FILES
     one-import
+    one-import-bcq
     one-import-tf
     one-import-tflite
     one-optimize
