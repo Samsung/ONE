@@ -78,8 +78,8 @@ public:
   std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
   {
     static_assert(std::is_base_of<ITensor, T_Tensor>::value, "T_Tensor must derive from ITensor.");
-    auto external_tensor = _external.find(ind);
-    if (external_tensor != _external.end())
+    auto external_tensor = _migrant.find(ind);
+    if (external_tensor != _migrant.end())
       return external_tensor->second;
     return getNativeTensor(ind);
   }
@@ -91,8 +91,8 @@ public:
 
   std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
   {
-    auto external_tensor = _external.find(ind);
-    if (external_tensor != _external.end())
+    auto external_tensor = _migrant.find(ind);
+    if (external_tensor != _migrant.end())
     {
       if (external_tensor->second)
         return external_tensor->second;
@@ -102,8 +102,8 @@ public:
 
   std::shared_ptr<T_Tensor> getNativeTensor(const ir::OperandIndex &ind)
   {
-    auto tensor = _managed.find(ind);
-    if (tensor != _managed.end())
+    auto tensor = _native.find(ind);
+    if (tensor != _native.end())
       return tensor->second;
     return nullptr;
   }
@@ -112,33 +112,33 @@ public:
   {
     // TODO Uncomment this as two tensors for an index is not allowed.
     //      But now it is temporarily allowed as a workaround. External one hides Managed one.
-    // auto itr = _managed.find(ind);
-    // if (itr != _managed.end() && itr->second != nullptr && tensor != nullptr)
+    // auto itr = _native.find(ind);
+    // if (itr != _native.end() && itr->second != nullptr && tensor != nullptr)
     //  throw std::runtime_error{
     //      "Tried to set an migrant tensor but an native tensor already exists."};
-    _external[ind] = tensor;
+    _migrant[ind] = tensor;
     return true;
   }
 
   void setNativeTensor(const ir::OperandIndex &ind, const std::shared_ptr<T_Tensor> &tensor)
   {
-    auto itr = _external.find(ind);
-    if (itr != _external.end() && itr->second != nullptr && tensor != nullptr)
+    auto itr = _migrant.find(ind);
+    if (itr != _migrant.end() && itr->second != nullptr && tensor != nullptr)
       throw std::runtime_error{
           "Tried to set a native tensor but an migrant tensor already exists."};
-    _managed[ind] = tensor;
+    _native[ind] = tensor;
   }
 
-  const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &managed_tensors() { return _managed; }
+  const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &native_tensors() { return _native; }
 
-  const ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> &external_tensors()
+  const ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> &migrant_tensors()
   {
-    return _external;
+    return _migrant;
   }
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _external;
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _managed;
+  ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _migrant;
+  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _native;
 };
 
 } // namespace backend
