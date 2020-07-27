@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 
+#include "backend/IStaticTensorManager.h"
 #include "backend/cpu_common/MemoryManager.h"
 #include "backend/cpu_common/TensorRegistry.h"
 #include "backend/ITensorManager.h"
@@ -30,7 +31,7 @@ namespace backend
 namespace cpu
 {
 
-class StaticTensorManager : public backend::ITensorManager
+class StaticTensorManager : public backend::IStaticTensorManager
 {
 public:
   StaticTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg);
