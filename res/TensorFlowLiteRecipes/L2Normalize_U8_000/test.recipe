@@ -1,0 +1,22 @@
+operand {
+  name: "ifm1"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 0.0078125 zero_point: 128}
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 0.0078125 zero_point: 128}
+}
+operation {
+  type: "L2Normalize"
+  l2norm_options {
+    activation: NONE
+  }
+  input: "ifm1"
+  output: "ofm"
+}
+input: "ifm1"
+output: "ofm"
