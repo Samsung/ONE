@@ -36,7 +36,7 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : _tensors->managed_tensors())
+  for (auto &pair : _tensors->native_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -95,7 +95,7 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (const auto &it : _tensors->managed_tensors())
+  for (const auto &it : _tensors->native_tensors())
     fn(it.first);
 }
 
