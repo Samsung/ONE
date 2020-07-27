@@ -125,10 +125,8 @@ public:
 
     if (_do_w_x[prefix]->dtype() == loco::DataType::S32)
       return _do_w_x[prefix]->at<loco::DataType::S32>(0) == 1;
-    else if (_do_w_x[prefix]->dtype() == loco::DataType::BOOL)
-      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
     else
-      throw std::runtime_error("do_w_x should be int or bool");
+      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
   }
 
   luci::CircleConst *get_alpha(luci::CircleConst *node)
@@ -245,6 +243,18 @@ public:
     clear_nodes(_dequant_weight);
   }
 
+  bool is_bcqinfo_valid()
+  {
+    // do_w_x should be int32 or bool type
+    for (auto n : _do_w_x)
+    {
+      if (n.second->dtype() != loco::DataType::BOOL && n.second->dtype() != loco::DataType::S32)
+        return false;
+    }
+
+    return true;
+  }
+
 private:
   std::map<std::string, luci::CircleConst *> _do_w_x;
   std::map<std::string, luci::CircleConst *> _alpha;
@@ -274,6 +284,9 @@ bool FuseBCQPass::run(loco::Graph *g)
     }
   }
 
+  if (!converter.is_bcqinfo_valid())
+    return false;
+
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     if (auto gather = dynamic_cast<luci::CircleGather *>(node))
@@ -288,6 +301,7 @@ bool FuseBCQPass::run(loco::Graph *g)
         bcq_gather->indices(gather->indices());
         bcq_gather->input_clusters(converter.packed_clusters(params));
 
+        // input_binary shape : [output_size, hidden_size]
         const auto binary_hidden_size =
             loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
         bcq_gather->input_hidden_size(binary_hidden_size);
