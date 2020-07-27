@@ -189,6 +189,79 @@ kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
 
+template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
+          typename T_TensorBuilder>
+std::unique_ptr<exec::IFunction>
+kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands,
+                        const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout)
+{
+  using ir::operation::FullyConnected;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+
+  const auto input_rank = operands.at(input_index).shape().rank();
+
+  const auto output_size =
+      operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
+  UNUSED_RELEASE(output_size);
+  assert(operands.at(bias_index).shape().dim(0) == output_size);
+  assert(operands.at(weight_index).shape().dim(0) == output_size);
+  const auto batch_size =
+      operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 2);
+  const auto input_size =
+      operands.at(weight_index).shape().dim(operands.at(weight_index).shape().rank() - 1);
+
+  // Check for reshaping input's shape into rank-2
+  bool needs_reshape = false;
+  ir::Shape reshape(2);
+  if (input_rank == 3 || input_rank == 4)
+  {
+    const auto &ifm_shape = operands.at(input_index).shape();
+    auto feature_size = 1;
+    for (int i = 0; i < ifm_shape.rank(); ++i)
+    {
+      feature_size *= ifm_shape.dim(i);
+    }
+
+    UNUSED_RELEASE(feature_size);
+    assert(feature_size == batch_size * input_size);
+
+    // for reshaping
+    needs_reshape = true;
+    reshape.dim(0) = batch_size; /* H */
+    reshape.dim(1) = input_size; /* W */
+  }
+
+  auto output_tensor = tensor_builder->at(output_index).get();
+  const auto input_tensor = tensor_builder->at(input_index).get();
+  const auto weight_tensor = tensor_builder->at(weight_index).get();
+  const auto bias_tensor = tensor_builder->at(bias_index).get();
+  const auto frontend_layout = layout;
+  const auto acl_layout = output_tensor->handle()->info()->data_layout();
+
+  auto fn =
+      std::make_unique<T_ACLLayer>(tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+
+  typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
+  if (operands.at(weight_index).isConstant())
+  {
+    kernel_type = T_ACLLayer::KernelType::PREPROCESSED_WEIGHTS;
+    assert(operands.at(weight_index).data());
+  }
+
+  fn->configure(
+      input_tensor->handle(), weight_tensor->handle(), bias_tensor->handle(),
+      output_tensor->handle(), needs_reshape,
+      ::onert::backend::acl_common::asTensorShape(
+          reshape, frontend_layout, ::onert::backend::acl_common::asRuntimeLayout(acl_layout)),
+      kernel_type);
+
+  return std::make_unique<T_FunctionWrapper>(std::move(fn));
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert
