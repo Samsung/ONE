@@ -67,6 +67,31 @@ const std::string node_name_prefix(luci::NodeName node_name)
   return prefix;
 }
 
+/**
+ * @brief Create CircleOutputExclude operation, which has same shape and dtype with
+ *        original circle_node.
+ */
+luci::CircleOutputExclude *createNoOp(luci::CircleNode *circle_node)
+{
+  auto graph = circle_node->graph();
+  auto noOp = graph->nodes()->create<luci::CircleOutputExclude>();
+
+  if (circle_node->shape_status() == luci::ShapeStatus::VALID)
+  {
+    noOp->dtype(circle_node->dtype());
+    noOp->rank(circle_node->rank());
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
+      noOp->dim(i) = circle_node->dim(i);
+  }
+  else
+  {
+    // For type inference
+    noOp->dtype(loco::DataType::FLOAT32);
+  }
+
+  return noOp;
+};
+
 } // namespace
 
 namespace
@@ -191,27 +216,7 @@ public:
    */
   void clear_BCQ_nodes()
   {
-    auto createNoOp = [](luci::CircleNode *circle_node) {
-      auto graph = circle_node->graph();
-      auto noOp = graph->nodes()->create<luci::CircleOutputExclude>();
-
-      if (circle_node->shape_status() == luci::ShapeStatus::VALID)
-      {
-        noOp->dtype(circle_node->dtype());
-        noOp->rank(circle_node->rank());
-        for (uint32_t i = 0; i < circle_node->rank(); ++i)
-          noOp->dim(i) = circle_node->dim(i);
-      }
-      else
-      {
-        // For type inference
-        noOp->dtype(loco::DataType::FLOAT32);
-      }
-
-      return noOp;
-    };
-
-    auto clear_nodes = [createNoOp](std::map<std::string, luci::CircleConst *> &nodes) {
+    auto clear_nodes = [](std::map<std::string, luci::CircleConst *> &nodes) {
       for (auto &n : nodes)
       {
         auto node = n.second;
