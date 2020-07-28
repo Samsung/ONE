@@ -232,7 +232,7 @@ std::vector<hsize_t> hdf5_dims_cast(const flatbuffers::Vector<T> *data,
 }
 
 /**
- *  This function writes data to given hdf5 file like below.
+ *  This function writes vector data to given hdf5 file like below.
  *
  *  GROUP "group_name"
  *   ㄴDATATYPE "type"
@@ -241,9 +241,9 @@ std::vector<hsize_t> hdf5_dims_cast(const flatbuffers::Vector<T> *data,
  *   ㄴDATA "data"
  */
 template <typename T>
-void write_data_to_hdf5(H5::H5File &file, std::string &group_name, std::string dataset_name,
-                        const H5::PredType &type, const flatbuffers::Vector<T> *data,
-                        std::vector<hsize_t> dims)
+void write_vector_data_to_hdf5(H5::H5File &file, std::string &group_name, std::string dataset_name,
+                               const H5::PredType &type, const flatbuffers::Vector<T> *data,
+                               std::vector<hsize_t> dims)
 {
   if (data == nullptr)
     return;
@@ -251,6 +251,17 @@ void write_data_to_hdf5(H5::H5File &file, std::string &group_name, std::string d
   auto dataset = std::make_unique<H5::DataSet>(
       file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
   dataset->write(data->data(), type);
+}
+
+/// @brief This function writes scalar data to given hdf5 file
+template <typename T>
+void write_scalar_data_to_hdf5(H5::H5File &file, std::string &group_name, std::string dataset_name,
+                               const H5::PredType &type, T data)
+{
+  auto dataspace = std::make_unique<H5::DataSpace>(H5S_SCALAR);
+  auto dataset = std::make_unique<H5::DataSet>(
+      file.createDataSet(group_name + "/" + dataset_name, type, *dataspace));
+  dataset->write(&data, type);
 }
 
 } // namespace
@@ -300,8 +311,9 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
       auto buff_data_ptr = reader.buffers()->Get(buff_idx)->data();
       if (buff_data_ptr)
       {
-        ::write_data_to_hdf5(file, group_name, "weights", ::hdf5_dtype_cast(tensor->type()),
-                             buff_data_ptr, ::hdf5_dims_cast(buff_data_ptr, tensor->shape()));
+        ::write_vector_data_to_hdf5(file, group_name, "weights", ::hdf5_dtype_cast(tensor->type()),
+                                    buff_data_ptr,
+                                    ::hdf5_dims_cast(buff_data_ptr, tensor->shape()));
       }
 
       // write quantization parameters
@@ -309,22 +321,20 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
       if (quant_param)
       {
         auto min = quant_param->min();
-        ::write_data_to_hdf5(file, group_name, "min", H5::PredType::NATIVE_FLOAT, min,
-                             ::hdf5_dims_cast(min));
+        ::write_vector_data_to_hdf5(file, group_name, "min", H5::PredType::NATIVE_FLOAT, min,
+                                    ::hdf5_dims_cast(min));
         auto max = quant_param->max();
-        ::write_data_to_hdf5(file, group_name, "max", H5::PredType::NATIVE_FLOAT, max,
-                             ::hdf5_dims_cast(max));
+        ::write_vector_data_to_hdf5(file, group_name, "max", H5::PredType::NATIVE_FLOAT, max,
+                                    ::hdf5_dims_cast(max));
         auto scale = quant_param->scale();
-        ::write_data_to_hdf5(file, group_name, "scale", H5::PredType::NATIVE_FLOAT, scale,
-                             ::hdf5_dims_cast(scale));
+        ::write_vector_data_to_hdf5(file, group_name, "scale", H5::PredType::NATIVE_FLOAT, scale,
+                                    ::hdf5_dims_cast(scale));
         auto zero_point = quant_param->zero_point();
-        ::write_data_to_hdf5(file, group_name, "zero_point", H5::PredType::NATIVE_INT64, zero_point,
-                             ::hdf5_dims_cast(zero_point));
+        ::write_vector_data_to_hdf5(file, group_name, "zero_point", H5::PredType::NATIVE_INT64,
+                                    zero_point, ::hdf5_dims_cast(zero_point));
         auto quantized_dimension = quant_param->quantized_dimension();
-        auto dataspace = std::make_unique<H5::DataSpace>(H5S_SCALAR);
-        auto dataset = std::make_unique<H5::DataSet>(file.createDataSet(
-            group_name + "/quantized_dimension", H5::PredType::NATIVE_INT32, *dataspace));
-        dataset->write(&quantized_dimension, H5::PredType::NATIVE_INT32);
+        ::write_scalar_data_to_hdf5(file, group_name, "quantized_dimension",
+                                    H5::PredType::NATIVE_INT32, quantized_dimension);
       }
     }
   }
