@@ -9,7 +9,9 @@ This directory includes some tools related with BCQ.
 `preserve_bcq_info` is for preserving constant nodes which include BCQ information.
 When `.pb` file is converted to `.tflite` file by TFlite converter, constant nodes whose values are exactly same are removed and then linked to only one representative node.
 This makes us impossible to know what constant node should be linked to a node which we want to apply BCQ.
-Therefore, we should preserve these BCQ information.
+One of the solutions is making all the same constant nodes different by inserting unique values and ignore the newly generated unique values when BCQ fusing is applied.
+`preserve_bcq_info` will generate and insert unique dummy values to the constant nodes whose values are same not to be removed by Tensorflow Lite converter.
+As a result, BCQ information will be preserved.
 
 ### How to use
 
