@@ -35,6 +35,7 @@ public:
   Args(const int argc, char **argv);
   void print(void);
 
+  std::string getExecutableBasename(void) const { return _executable_basename; }
   const std::string &getPackageFilename(void) const { return _package_filename; }
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
@@ -60,6 +61,7 @@ private:
   po::positional_options_description _positional;
   po::options_description _options;
 
+  std::string _executable_basename;
   std::string _package_filename;
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;

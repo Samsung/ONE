@@ -251,6 +251,8 @@ void Args::Parse(const int argc, char **argv)
     return;
   }
 
+    _executable_basename = basename(argv[0]);
+
   try
   {
     po::notify(vm);

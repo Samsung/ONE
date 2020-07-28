@@ -34,6 +34,7 @@
 #include <iostream>
 #include <libgen.h>
 #include <stdexcept>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -61,13 +62,12 @@ NNFW_STATUS resolve_op_backend(nnfw_session *session)
   return NNFW_STATUS_NO_ERROR;
 }
 
-int main(const int argc, char **argv)
+int run(nnpkg_run::Args args)
 {
   using namespace nnpkg_run;
 
   try
   {
-    Args args(argc, argv);
     auto nnpackage_path = args.getPackageFilename();
     if (args.printVersion())
     {
@@ -275,7 +275,7 @@ int main(const int argc, char **argv)
         std::cerr << "E: during getting realpath from nnpackage_path." << std::endl;
         exit(-1);
       }
-      exec_basename = basename(argv[0]);
+      exec_basename = args.getExecutableBasename();
     }
 
     benchmark::writeResult(result, exec_basename, nnpkg_basename, backend_name);
@@ -285,6 +285,35 @@ int main(const int argc, char **argv)
   catch (std::runtime_error &e)
   {
     std::cerr << "E: Fail to run by runtime error:" << e.what() << std::endl;
+    exit(-1);
+  }
+}
+
+int main(const int argc, char **argv)
+{
+  try
+  {
+    nnpkg_run::Args args(argc, argv);
+
+    int num_threads = 4;
+
+    if (num_threads > 1)
+    {
+      std::vector<std::thread> threads;
+      for (int i = 0; i < num_threads; i++)
+        threads.push_back(std::thread(run, args));
+
+      for (auto &th : threads)
+        th.join();
+    }
+    else
+    {
+      run(args);
+    }
+  }
+  catch (std::runtime_error &e)
+  {
+    std::cerr << "E: Fail to parse arguments:" << e.what() << std::endl;
     exit(-1);
   }
 }
