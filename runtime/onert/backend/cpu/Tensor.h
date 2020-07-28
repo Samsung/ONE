@@ -29,8 +29,11 @@ namespace cpu
 
 using Tensor = cpu_common::Tensor;
 
-// Tensor which has data from external. To support this, assume below things
-// no padding, always NHWC layout, constant tensor and not dynamic
+/**
+ * @brief Class that uses data from external. This class uses the data from external
+ *        instead of copying it. To support this, assume below things no padding,
+ *        always NHWC layout, constant tensor and not dynamic.
+ */
 class ExternalTensor : public Tensor
 {
 public:
@@ -45,6 +48,11 @@ public:
   }
 
 public:
+  /**
+   * @brief     set Data to be shared from external so that this ExternalTensor will not be
+   *            allocated on CPU backend
+   * @param[in] data    data of Operand to be set
+   */
   void setData(const std::shared_ptr<ir::Data> data)
   {
     assert(data != nullptr);
