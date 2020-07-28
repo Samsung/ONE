@@ -122,9 +122,6 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     pass::PermutationInsertionPass pi_pass(*this);
     pi_pass.run();
-    // Implemented code no longer works.
-    // pass::PermutationEliminationPass pe_pass(*this);
-    // pe_pass.run();
 
     _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
   }
