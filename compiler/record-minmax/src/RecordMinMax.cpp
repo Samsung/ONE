@@ -158,7 +158,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     auto node = iter->first;
     auto minmax = iter->second;
 
-    float min, max;
+    float min{0.0f}, max{0.0f};
     if (mode == "percentile")
     {
       min = getNthPercentile(minmax.min_vector, min_percentile);
