@@ -95,6 +95,9 @@ template <float *> ir::Shape inferRangeShape(float *start_val, float *limit_val,
 
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
 
+ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t output_height,
+                                   const int32_t output_width);
+
 ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
                            const ir::Shape &input_false_shape);
 

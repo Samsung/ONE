@@ -916,6 +916,24 @@ void OperationValidator::visit(const ir::operation::Shape &node)
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == 1);
 }
 
+void OperationValidator::visit(const ir::operation::ResizeBilinear &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
+
+  if (_ctx.at(output_index).info().isDynamic())
+  {
+    return;
+  }
+  OP_REQUIRES(_ctx.at(input_index).shape().rank() == 4);
+  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 4);
+
+  auto align_corners = node.param().align_corners;
+  auto half_pixel_centers = node.param().half_pixel_centers;
+
+  OP_REQUIRES(!align_corners || !half_pixel_centers);
+}
+
 void OperationValidator::visit(const ir::operation::Reverse &node)
 {
   const auto output_index{node.getOutputs().at(0)};

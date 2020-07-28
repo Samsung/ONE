@@ -50,6 +50,7 @@
 #include "ops/ReduceLayer.h"
 #include "ops/ReLULayer.h"
 #include "ops/ReshapeLayer.h"
+#include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
 #include "ops/RoundLayer.h"
 #include "ops/RsqrtLayer.h"
@@ -1033,6 +1034,27 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
   auto fn = std::make_unique<ops::ShapeLayer>();
 
   fn->configure(ifm_tensor, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::INPUT)};
+
+  auto output_height = node.param().height_out;
+  auto output_width = node.param().width_out;
+  auto align_corners = node.param().align_corners;
+  auto half_pixel_centers = node.param().half_pixel_centers;
+
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+
+  auto fn = std::make_unique<ops::ResizeBilinearLayer>();
+
+  fn->configure(input_tensor, output_tensor, output_height, output_width, align_corners,
+                half_pixel_centers);
 
   _return_fn = std::move(fn);
 }

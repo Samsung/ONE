@@ -82,6 +82,7 @@ public:
   void visit(const ir::operation::Sin &node) override;
   void visit(const ir::operation::RSQRT &node) override;
   void visit(const ir::operation::Shape &node) override;
+  void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &node) override;
   void visit(const ir::operation::If &node) override;
   void visit(const ir::operation::While &node) override;

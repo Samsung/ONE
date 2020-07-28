@@ -779,6 +779,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
   ir::operation::ResizeBilinear::Param param;
   param.height_out = size_v[0];
   param.width_out = size_v[1];
+  param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
+  param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ResizeBilinear({input}, outputs, param));
   subg.addOperation(std::move(new_op));

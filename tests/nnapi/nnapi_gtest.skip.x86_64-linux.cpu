@@ -115,8 +115,6 @@ GeneratedTests.relu6_quant8_1
 GeneratedTests.relu6_quant8_2
 GeneratedTests.relu_quant8_1
 GeneratedTests.relu_quant8_2
-GeneratedTests.resize_bilinear
-GeneratedTests.resize_bilinear_2
 GeneratedTests.rnn
 GeneratedTests.rnn_state
 GeneratedTests.rsqrt
