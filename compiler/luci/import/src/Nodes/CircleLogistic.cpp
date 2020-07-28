@@ -32,21 +32,7 @@ bool CircleLogisticGraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 1)
     return false;
 
-  // Must be one of the following types
-  // float16, float32, float64, complex64, or complex128
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
-  switch (tensor->type)
-  {
-    case circle::TensorType_FLOAT16:
-    case circle::TensorType_FLOAT32:
-    case circle::TensorType_FLOAT64:
-    case circle::TensorType_COMPLEX64:
-      break;
-    default:
-      return false;
-  }
-
   if (tensors.at(inputs[0])->type != tensors.at(outputs[0])->type)
     return false;
 
