@@ -45,6 +45,7 @@ private:
 private:
   static void initializeBackendContext(ir::LoweredGraph *lowered_graph);
   static void runTensorRegistration(ir::LoweredGraph *lowered_graph,
+                                    const backend::BackendContexts &contexts,
                                     const std::vector<ir::OpSequenceIndex> &order);
   static std::vector<std::shared_ptr<backend::ITensor>>
   initializeModelIOTensors(ir::LoweredGraph &lowered_graph,

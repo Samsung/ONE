@@ -133,6 +133,7 @@ void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
 }
 
 void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
+                                            const backend::BackendContexts &contexts,
                                             const std::vector<ir::OpSequenceIndex> &order)
 {
   for (const auto index : order)
@@ -149,32 +150,17 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
     else
     {
       // Default registration
-      for (const auto op_idx : op_seq)
+      for (auto index : contexts.at(backend)->operand_list())
       {
-        const auto &op = lowered_graph->graph().operations().at(op_idx);
-        for (const auto &index : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
-        {
-          if (!tensor_builder->isRegistered(index))
-          {
-            const auto &operand_lower_info =
-                lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
+        const auto &operand_lower_info =
+            lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
 
-            // E.g., permute (CPU) -> tensor A -> MaxPool2D(acl_cl)
-            // op.getOutputs() of permute (CPU) returns tensor A
-            // but tensor A belongs to the backend of acl_cl.
-            // So, we have to make this tensor NOT registered for CPU.
-            if (operand_lower_info.backend() != backend)
-              continue;
-
-            const auto &obj = lowered_graph->graph().operands().at(index);
-            const auto frontend_layout = op_seq.getLayout();
-            const auto backend_layout = operand_lower_info.layout();
-            ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                         obj.typeInfo(), obj.info().memAllocType(),
-                                         obj.isConstant()};
-            tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
-          }
-        }
+        const auto &obj = lowered_graph->graph().operands().at(index);
+        const auto frontend_layout = op_seq.getLayout();
+        const auto backend_layout = operand_lower_info.layout();
+        ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
+                                     obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
+        tensor_builder->registerTensorInfo(index, backend_info, backend_layout);
       }
     }
   }
@@ -262,7 +248,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
    ***********************/
 
   auto order = Linear::linearize(*lowered_graph);
-  runTensorRegistration(lowered_graph.get(), order);
+  runTensorRegistration(lowered_graph.get(), backend_contexts, order);
 
   std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
@@ -357,7 +343,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   initializeBackendContext(lowered_graph.get());
 
   auto order = Linear::linearize(*lowered_graph);
-  runTensorRegistration(lowered_graph.get(), order);
+  runTensorRegistration(lowered_graph.get(), backend_contexts, order);
 
   std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
