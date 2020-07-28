@@ -344,6 +344,11 @@ struct SpaceToBatchParams
   int32_t output_offset;
 };
 
+struct SpaceToDepthParams
+{
+  int32_t block_size;
+};
+
 enum class Order
 {
   kColMajor,

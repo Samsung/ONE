@@ -129,9 +129,6 @@ GeneratedTests.slice_6
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
-GeneratedTests.space_to_depth_float_1
-GeneratedTests.space_to_depth_float_2
-GeneratedTests.space_to_depth_float_3
 GeneratedTests.space_to_depth_quant8_1
 GeneratedTests.space_to_depth_quant8_2
 GeneratedTests.sqrt_

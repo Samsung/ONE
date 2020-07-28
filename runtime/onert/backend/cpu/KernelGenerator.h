@@ -103,6 +103,7 @@ public:
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::Quantize &) override;
+  void visit(const ir::operation::SpaceToDepth &) override;
 
 private:
   const ir::Operands &_ctx;

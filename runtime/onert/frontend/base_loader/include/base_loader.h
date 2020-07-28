@@ -172,6 +172,7 @@ protected:
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadQuantize(const Operator *op, ir::Graph &subg);
+  void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1124,6 +1125,22 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *o
   std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  ir::operation::SpaceToDepth::Param param;
+
+  const auto *options = op->builtin_options_as_SpaceToDepthOptions();
+
+  param.block_size = options->block_size();
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::SpaceToDepth(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
 
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
@@ -1974,6 +1991,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_QUANTIZE:
       loadQuantize(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:
+      loadSpaceToDepth(op, subg);
       return;
     default:
       throw std::runtime_error(

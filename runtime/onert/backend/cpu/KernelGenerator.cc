@@ -60,6 +60,7 @@
 #include "ops/SoftMaxLayer.h"
 #include "ops/StridedSliceLayer.h"
 #include "ops/SpaceToBatchNDLayer.h"
+#include "ops/SpaceToDepthLayer.h"
 #include "ops/SplitLayer.h"
 #include "ops/SubLayer.h"
 #include "ops/TanhLayer.h"
@@ -1366,6 +1367,22 @@ void KernelGenerator::visit(const ir::operation::Quantize &node)
   auto fn = std::make_unique<ops::QuantizeLayer>();
 
   fn->configure(input_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::SpaceToDepth::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+  auto block_size = node.param().block_size;
+
+  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+
+  auto fn = std::make_unique<ops::SpaceToDepthLayer>();
+
+  fn->configure(input_tensor, block_size, output_tensor);
 
   _return_fn = std::move(fn);
 }
