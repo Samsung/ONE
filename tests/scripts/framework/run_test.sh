@@ -155,7 +155,7 @@ run_tests()
         MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
 
         # Find model file for downloaded by zip
-        if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
+        if [ "${MODELFILE_NAME##*.}" = "zip" ]; then
             pushd $TEST_CACHE_PATH
             MODELFILE=$TEST_CACHE_PATH/$(ls *.tflite)
             popd
@@ -257,11 +257,11 @@ find_tests()
 mkdir -p $REPORT_DIR
 TESTS_TO_RUN=$(find_tests ${TEST_LIST[@]})
 
-if [[ "$DOWNLOAD_MODEL" = "on" ]]; then
+if [ "$DOWNLOAD_MODEL" = "on" ]; then
     download_tests $TESTS_TO_RUN
 fi
 
-if [[ "$RUN_TEST" = "on" ]]; then
+if [ "$RUN_TEST" = "on" ]; then
     run_tests $TESTS_TO_RUN
 fi
 exit $?
