@@ -29,7 +29,7 @@ namespace cpu
 
 TensorBuilder::TensorBuilder()
     : _tensor_reg{new cpu_common::TensorRegistry()},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
+      _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
       _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
 {
   /* empty */
@@ -77,11 +77,7 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare(void)
-{
-  _static_tensor_mgr->allocateConsts();
-  _static_tensor_mgr->allocateNonconsts();
-}
+void TensorBuilder::prepare(void) { _static_tensor_mgr->allocateNonconsts(); }
 
 void TensorBuilder::allocate()
 {
@@ -107,7 +103,7 @@ bool TensorBuilder::setMigrantTensor(const ir::OperandIndex &ind,
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeTensor(ind);
 }
