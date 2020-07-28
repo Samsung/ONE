@@ -70,6 +70,13 @@ fi
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # convert .tflite to .circle
 echo "${DRIVER_PATH}/tflite2circle" "${INPUT_PATH}" "${OUTPUT_PATH}" > "${OUTPUT_PATH}.log"
 
