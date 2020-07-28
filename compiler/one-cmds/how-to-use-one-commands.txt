@@ -1,7 +1,7 @@
 About
 -----
 
-Last update: 2020-07-14
+Last update: 2020-07-??
 
 This document briefly explains how to use one-* commands.
 Detailed options are not explained here. Run the command to see options.
@@ -29,6 +29,27 @@ Syntax: one-import [framework] [options]
 
 Currently supported frameworks are 'tf', 'tflite' for TensorFlow and TensorFlow
 lite.
+
+one-import-bcq
+-------------
+
+This will convert Tensorflow model file (.pb) to our circle model file with applying BCQ.
+To execute this command, original Tensorflow model file must include BCQ information.
+
+This command invokes following scripts internally.
+- preserve_bcq_info : Prevent BCQ information vanishing problem
+- generate_bcq_info : Designate BCQ information nodes as model output automatically
+- tf2tfliteV2 : Convert Tensorflow model to tflite model
+- tflite2circle : Convert Tensorflow Lite model to circle model
+When this command is finished, BCQ information nodes will be removed if applying BCQ
+is done correctly without any errors.
+
+As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
+installed in your system. We recommand to use 2.3.0rc0 for now.
+
+We provide python virtual environment and one-import-bcq will enter and leave
+this environment so that you don't need to explictly 'activate' virtual
+environment.
 
 
 one-import-tf
