@@ -428,7 +428,39 @@ bool FuseBCQPass::run(loco::Graph *g)
 {
   bool changed = false;
 
-  changed = BCQFuser<1>().fuseBCQ(g);
+  // Find BCQ version information and check validity.
+  luci::CircleConst *version_node = nullptr;
+  for (auto node : loco::all_nodes(g))
+  {
+    if (auto circle_const = dynamic_cast<luci::CircleConst *>(node))
+    {
+      if(circle_const->name().find("/bcqinfo_version") != std::string::npos)
+      {
+        // There should be only one bcqinfo_version in the model
+        if(version_node != nullptr)
+        {
+          assert(false && "Multiple version information found");
+          return false;
+        }
+
+        version_node = circle_const;
+      }
+    }
+  }
+
+  // If version node is not found, regard it as version 1.
+  int32_t bcq_version = (version_node == nullptr) ? version_node->at<loco::DataType::S32>(0) : 1;
+
+  if (bcq_version == 1)
+    changed = BCQFuser<1>().fuseBCQ(g);
+  else
+    assert(false && "Not supported BCQ version");
+
+  if (changed && !version_node)
+  {
+    // If BCQ is applied and version node was found, remove the node.
+    loco::replace(version_node).with(createNoOp(version_node));
+  }
 
   return changed;
 }
