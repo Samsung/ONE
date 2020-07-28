@@ -72,7 +72,6 @@ def preserve_bcq_info(flags):
 
     for node in original_graph_model_def.node:
         if node.op == "Const":
-
             # Because bcqinfo_do_w_x is BOOL type, we cannot add dummy value at the end.
             # Therefore we should convert the type to INT32 type.
             if "/bcqinfo_do_w_x" in node.name:
