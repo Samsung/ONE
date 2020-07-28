@@ -22,6 +22,7 @@
 #include "backend/ITensor.h"
 #include "exec/IExecutor.h"
 #include "ir/LoweredGraph.h"
+#include "TensorBuilders.h"
 
 namespace onert
 {
@@ -48,6 +49,8 @@ private:
   static std::vector<std::shared_ptr<backend::ITensor>>
   initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
                            const ir::OperandIndexSequence &indices);
+  static void prepareExternalTensors(ir::LoweredGraph &lowered_graph,
+                                     TensorBuilders &tensor_builders);
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,

@@ -76,6 +76,7 @@
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
+#include "ops/QuantizeLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -752,8 +753,16 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
 
   auto fn = std::make_unique<ops::PadLayer>();
 
-  fn->configure(input, output, pad_base, pad_rank);
+  bool isPadV2 = node.getInputs().size() == 3 ? true : false;
+  const void *value = nullptr;
 
+  if (isPadV2)
+  {
+    const auto value_index{node.getInputs().at(ir::operation::Pad::Input::VALUE)};
+    value = reinterpret_cast<const void *>(_ctx.at(value_index).data()->base());
+  }
+
+  fn->configure(input, output, pad_base, pad_rank, value);
   _return_fn = std::move(fn);
 }
 
@@ -1342,6 +1351,21 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
 
   fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Quantize &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::Quantize::Input::INPUT)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+
+  auto fn = std::make_unique<ops::QuantizeLayer>();
+
+  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }

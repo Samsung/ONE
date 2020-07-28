@@ -33,7 +33,7 @@ target_include_directories(nnpackage_run PRIVATE src)
 target_include_directories(nnpackage_run PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(nnpackage_run onert_core onert tflite_loader)
-target_link_libraries(nnpackage_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite jsoncpp)
+target_link_libraries(nnpackage_run nnfw_lib_tflite jsoncpp)
 target_link_libraries(nnpackage_run nnfw-dev)
 target_link_libraries(nnpackage_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
 target_link_libraries(nnpackage_run nnfw_lib_benchmark)

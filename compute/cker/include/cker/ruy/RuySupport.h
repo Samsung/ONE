@@ -24,7 +24,7 @@
 
 namespace
 {
-const int kDefaultNumThreadpoolThreads = 4;
+const int kDefaultNumThreadpoolThreads = 1;
 }
 
 namespace nnfw

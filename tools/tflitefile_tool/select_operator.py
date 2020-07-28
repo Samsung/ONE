@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -1180,23 +1180,6 @@ def GenerateModel(args, new_builder, sample_model, operator_list, new_input_tens
     return tflite.Model.ModelEnd(new_builder)
 
 
-def Finish(new_builder, new_model):
-    # Cusrom implementation: identifier
-    # Python API don't support identifier input yet
-    # Reference: Finish(self, rootTable)) in builder.py, Finish(uoffset_t root, const char *file_identifier, bool size_prefix) in flatbuffers.h
-    new_builder.Prep(new_builder.minalign,
-                     flatbuffers.number_types.UOffsetTFlags.bytewidth)
-
-    new_builder.PrependByte(0x33)
-    new_builder.PrependByte(0x4c)
-    new_builder.PrependByte(0x46)
-    new_builder.PrependByte(0x54)
-
-    new_builder.PrependUOffsetTRelative(new_model)
-    new_builder.finished = True
-    return new_builder.Head()
-
-
 def main(args):
     input_model_file = args.input_model
     oplist_file = args.opcode_list
@@ -1343,7 +1326,7 @@ def main(args):
                               new_input_tensors, new_output_tensors, used_tensors_dic,
                               used_buffers_dic, used_opcodes_dic, used_subgraphs_dic)
 
-    Finish(new_builder, new_model)
+    new_builder.Finish(new_model, file_identifier=b'TFL3')
     new_buf = new_builder.Output()
 
     output_model_file.write(new_buf)

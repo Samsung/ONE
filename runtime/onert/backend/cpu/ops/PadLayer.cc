@@ -33,33 +33,40 @@ PadLayer::PadLayer()
   // DO NOTHING
 }
 
-void PadLayer::padFloat32()
+template <typename T> void PadLayer::padImpl(const T *constant_value_data)
 {
-  nnfw::cker::Pad(_padData, _padRank, getTensorShape(_input),
-                  reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_output),
-                  reinterpret_cast<float *>(_output->buffer()), _constantValueData.f);
+  nnfw::cker::Pad<T>(_padData, _padRank, getTensorShape(_input),
+                     reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
+                     reinterpret_cast<T *>(_output->buffer()), constant_value_data);
 }
-void PadLayer::padQuant8() { throw std::runtime_error("Quantized Pad isn't supported NYI"); }
 
 void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                         const int32_t *padData, int32_t padRank, uint8_t *constantValueData)
+                         const int32_t *padData, int32_t padRank, const void *constantValueData)
 {
   _input = input;
   _output = output;
   memcpy(_padData, padData, sizeof(_padData));
   _padRank = padRank;
-  _constantValueData.u8 = constantValueData;
+  _constantValueData.v = constantValueData;
 }
 
 void PadLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    padFloat32();
+    padImpl<float>(_constantValueData.f);
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    padQuant8();
+    if (_constantValueData.u8 == nullptr)
+    {
+      uint8_t pad_value = static_cast<uint8_t>(_output->data_offset());
+      padImpl<uint8_t>(&pad_value);
+    }
+    else
+    {
+      padImpl<uint8_t>(_constantValueData.u8);
+    }
   }
   else
   {

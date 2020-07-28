@@ -166,7 +166,7 @@ Result::Result(const Phases &phases)
   if (option.memory)
   {
     print_memory = true;
-    for (int i = PhaseEnum::MODEL_LOAD; i <= PhaseEnum::EXECUTE; ++i)
+    for (int i = PhaseEnum::MODEL_LOAD; i < PhaseEnum::EXECUTE; ++i)
     {
       auto phase = phases.at(gPhaseStrings[i]);
       for (int j = MemoryType::RSS; j <= MemoryType::PSS; ++j)

@@ -145,6 +145,7 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
           data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT64);
           break;
         }
+        case NNFW_TYPE_TENSOR_UINT8:
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
         {
           H5::DataSet data_set =
@@ -157,13 +158,6 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
           H5::DataSet data_set =
               value_group.createDataSet(std::to_string(i), H5::PredType::STD_I8LE, data_space);
           data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT8);
-          break;
-        }
-        case NNFW_TYPE_TENSOR_UINT8:
-        {
-          H5::DataSet data_set =
-              value_group.createDataSet(std::to_string(i), H5::PredType::STD_U8BE, data_space);
-          data_set.write(outputs[i].data(), H5::PredType::NATIVE_UINT8);
           break;
         }
         default:

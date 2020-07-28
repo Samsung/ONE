@@ -33,7 +33,7 @@ public:
   {
     INPUT = 0,
     PAD = 1,
-    // VALUE = 2 Not allow padding value operand yet
+    VALUE = 2
   };
 
 public:

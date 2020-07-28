@@ -1,8 +1,6 @@
 FROM ubuntu:16.04
 
 ARG UBUNTU_MIRROR
-ENV http_proxy $http_proxy
-ENV https_proxy $https_proxy
 
 RUN if [ -n "$http_proxy" ] ; then echo "Acquire::http::proxy \"${http_proxy}\";" >> /etc/apt/apt.conf ; fi
 RUN if [ -n "$https_proxy" ] ; then echo "Acquire::https::proxy \"${https_proxy}\";" >> /etc/apt/apt.conf ; fi
@@ -22,6 +20,7 @@ RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 
 # Additonal tools
 RUN apt-get update && apt-get -qqy install doxygen graphviz wget unzip clang-format-3.9 python3 python3-pip python3-venv hdf5-tools pylint
+RUN pip3 install --upgrade pip
 RUN pip3 install yapf==0.22.0 numpy
 
 # Install google test (source)

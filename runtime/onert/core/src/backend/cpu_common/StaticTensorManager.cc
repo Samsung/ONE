@@ -33,7 +33,7 @@ StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &
 
 void StaticTensorManager::allocateConsts(void)
 {
-  for (auto &pair : _tensors->managed_tensors())
+  for (auto &pair : _tensors->native_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -42,9 +42,9 @@ void StaticTensorManager::allocateConsts(void)
       auto mem_alloc = _const_mgr->allocate(ind, tensor->total_size());
       tensor->setBuffer(mem_alloc);
       auto buffer = mem_alloc->base();
-      VERBOSE(CPU_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()
-                                       << "): " << static_cast<void *>(buffer)
-                                       << "size : " << tensor->total_size() << std::endl;
+      VERBOSE(CPU_COMMON_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()
+                                              << "): " << static_cast<void *>(buffer)
+                                              << "size : " << tensor->total_size() << std::endl;
     }
   }
 }
@@ -53,7 +53,7 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : _tensors->managed_tensors())
+  for (auto &pair : _tensors->native_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second;
@@ -62,8 +62,8 @@ void StaticTensorManager::allocateNonconsts(void)
       auto *buffer = _nonconst_mgr->getBuffer(ind);
       tensor->setBuffer(buffer);
 
-      VERBOSE(CPU_StaticTensorManager) << "TENSOR(#" << ind.value()
-                                       << "): " << static_cast<void *>(buffer) << std::endl;
+      VERBOSE(CPU_COMMON_StaticTensorManager) << "TENSOR(#" << ind.value()
+                                              << "): " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }
@@ -76,18 +76,18 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, ir::Layout backend_layout,
                                       bool as_const)
 {
-  assert(!_tensors->getManagedTensor(ind));
+  assert(!_tensors->getNativeTensor(ind));
   auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
-  _tensors->setManagedTensor(ind, tensor);
+  _tensors->setNativeTensor(ind, tensor);
   _as_constants[ind] = as_const;
 }
 
 void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 {
-  assert(_tensors->getManagedTensor(ind));
+  assert(_tensors->getNativeTensor(ind));
 
   // This method is called only when a tensor has proper shape
-  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
+  assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->claimPlan(ind, size);
@@ -95,10 +95,10 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 {
-  assert(_tensors->getManagedTensor(ind));
+  assert(_tensors->getNativeTensor(ind));
 
   // This method is called only when a tensor has proper shape
-  assert(!_tensors->getManagedTensor(ind)->is_dynamic());
+  assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   if (!_as_constants[ind])
     _nonconst_mgr->releasePlan(ind);
@@ -106,7 +106,7 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (const auto &it : _tensors->managed_tensors())
+  for (const auto &it : _tensors->native_tensors())
     fn(it.first);
 }
 
