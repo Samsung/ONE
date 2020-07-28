@@ -48,14 +48,4 @@ function preset_install()
 
   # Install tf2nnpkg
   install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.${PRESET}" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
-
-  # Create python virtual enviornment
-  python3 -m venv "${NNAS_INSTALL_PREFIX}/bin/venv"
-
-  # Install tensorflow
-  source "${NNAS_INSTALL_PREFIX}/bin/venv/bin/activate"
-  python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-    install -U pip setuptools
-  python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-    install tensorflow-cpu==2.3.0rc0
 }
