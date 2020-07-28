@@ -79,9 +79,10 @@ def preserve_bcq_info(flags):
                 substitution_dict[node.name] = tf.make_tensor_proto(
                     [int(original_tensor[0]), unique_value.gen()], tf.int32)
 
-            if ("/bcqinfo_number_of_clusters" in node.name
-                    or "/bcqinfo_size_of_clusters" in node.name
-                    or "/bcqinfo_qbits_of_clusters" in node.name):
+            preserved_bcqinfo_list = ["/bcqinfo_number_of_clusters", "/bcqinfo_size_of_clusters", 
+                "/bcqinfo_qbits_of_clusters"]
+
+            if any(name in node.name for name in preserved_bcqinfo_list):
                 original_tensor = tf.make_ndarray(
                     node.attr["value"].tensor)  # variable name change
                 substitution_dict[node.name] = tf.make_tensor_proto(
