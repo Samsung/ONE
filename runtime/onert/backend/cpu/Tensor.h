@@ -30,9 +30,10 @@ namespace cpu
 using Tensor = cpu_common::Tensor;
 
 /**
- * @brief Class that uses data from external. This class uses the data from external
- *        instead of copying it. To support this, assume below things no padding,
- *        always NHWC layout, constant tensor and not dynamic.
+ * @brief Class that uses data from external memory that is not managed by a backend
+ *        instead of allocating and copying the data. ExternalTensor's data pointer points to
+ *        mmapped area of tflite or circle file. To support this, assume below things
+ *        no padding, always NHWC layout, constant tensor and not dynamic.
  */
 class ExternalTensor : public Tensor
 {
