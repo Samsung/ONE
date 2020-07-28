@@ -49,10 +49,8 @@ TEST(LogisticTest, Float)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(LogisticTest, Uint8)
-{
-  // Need to Implement GetDequantizedOutput Function.
-}
+// TODO Uint8
+// Need to Implement GetDequantizedOutput Function.
 
 } // namespace
 } // namespace kernels

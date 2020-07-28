@@ -142,6 +142,8 @@ TEST(NodeExecution_MatMul, f32_2x3_3x3)
   };
 
   run_test<float>(lhs, rhs, out, Shape{2, 3}, Shape{3, 3}, Shape{2, 3}, loco::DataType::FLOAT32);
+
+  SUCCEED();
 }
 
 /* from the code below:
@@ -183,6 +185,8 @@ TEST(NodeExecution_MatMul, s32_4x2_2x6)
   };
 
   run_test<int32_t>(lhs, rhs, out, Shape{4, 2}, Shape{2, 6}, Shape{4, 6}, loco::DataType::S32);
+
+  SUCCEED();
 }
 
 // clang-format on

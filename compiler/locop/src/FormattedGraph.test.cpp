@@ -28,6 +28,8 @@ TEST(LinearV1FormatterTest, simple)
 
   // TODO Validate the output (when the implementation becomes stable)
   std::cout << locop::fmt<locop::LinearV1>(g) << std::endl;
+
+  SUCCEED();
 }
 
 TEST(LinearV1FormatterTest, user_defined_node_summary_builder)
@@ -68,6 +70,7 @@ TEST(LinearV1FormatterTest, user_defined_node_summary_builder)
   std::cout << locop::fmt<locop::LinearV1>(g).with(stdex::make_unique<MyFactory>()) << std::endl;
 
   // TODO Check whether MyBuilder actually sees all the nodes in a graph
+
   SUCCEED();
 }
 
@@ -139,5 +142,6 @@ TEST(LinearV1FormatterTest, node_summary_builder_composition)
   std::cout << locop::fmt<locop::LinearV1>(g).with(stdex::make_unique<MyFactory>()) << std::endl;
 
   // TODO Check whether MyBuilder actually sees all the nodes in a graph
+
   SUCCEED();
 }
