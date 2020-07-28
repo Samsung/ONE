@@ -75,6 +75,7 @@ private:
   bool _is_hybrid;
 
 #ifdef USE_RUY_GEMV
+  bool _is_weights_freed = false;
   uint8_t *_cached_weights = nullptr; // weights to be cached and a key
 #ifdef EXPERIMENTAL_RUY_FEATURE
   bool _is_weights_freed = false; // is weights freed?
