@@ -5,6 +5,12 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(Unique_000)
+optimize(Unique_001)
+optimize(Unique_002)
+optimize(Unique_003)
+optimize(Unique_U8_000)
+optimize(Unique_U8_001)
 
 ## CircleRecipes
 
