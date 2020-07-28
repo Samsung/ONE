@@ -132,6 +132,13 @@ fi
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # NOTE do not wrap ${OPTIMIZE_OPTIONS} with ""
 # optimize circle
 echo "${DRIVER_PATH}/circle2circle" ${OPTIMIZE_OPTIONS} \

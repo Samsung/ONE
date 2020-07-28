@@ -126,6 +126,13 @@ trap "{ rm -rf $TMPDIR; }" EXIT
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # quantize circle
 echo "${DRIVER_PATH}/circle-quantizer" \
 --quantize_dequantize_weights ${INPUT_DTYPE} ${QUANTIZED_DTYPE} ${GRANULARITY} \

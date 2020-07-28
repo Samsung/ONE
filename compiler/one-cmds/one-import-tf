@@ -109,6 +109,13 @@ fi
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # generate temporary tflite file
 echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${INPUT_PATH} \
 --input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
