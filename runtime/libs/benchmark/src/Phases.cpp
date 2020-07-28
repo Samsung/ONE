@@ -66,7 +66,9 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
     uint64_t t = 0u;
     t = nowMicros();
 
-    exec(phase, i);
+    std::thread th = std::thread(exec, phase, i);
+
+    th.join();
 
     t = nowMicros() - t;
 
