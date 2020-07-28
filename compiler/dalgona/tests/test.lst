@@ -1,0 +1,16 @@
+singleOpTest(Add_000)
+#singleOpTest(Add_001)   # luci-interpreter does not handle 0-sized input
+singleOpTest(Conv2D_000)
+singleOpTest(Conv2D_001)
+singleOpTest(Conv2D_002)
+singleOpTest(Conv2D_003)
+singleOpTest(DepthwiseConv2D_000)
+singleOpTest(DepthwiseConv2D_001)
+singleOpTest(FullyConnected_000)
+singleOpTest(FullyConnected_001)
+#singleOpTest(FullyConnected_002) # CIRCLEOUTPUTEXCLUDE is not yet supported in luci-interpreter
+singleOpTest(FullyConnected_003)
+singleOpTest(InstanceNorm_000)
+singleOpTest(InstanceNorm_001)
+singleOpTest(TransposeConv_000)
+singleOpTest(TransposeConv_001)
