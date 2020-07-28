@@ -23,7 +23,7 @@ function install_model()
 {
     # download tflite model files
     pushd $HOST_HOME
-    tests/scripts/framework/run_test.sh --download=on
+    tests/scripts/framework/run_test.sh --download=on --run=off
     # TODO Since this command removes model file(.zip),
     # We must always download the file unlike model file(.tflite).
     # Because caching applies only to tflite file.

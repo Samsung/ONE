@@ -28,10 +28,12 @@ function Usage()
     echo "Usage: ./$0 --driverbin={such as tflite_run} {tests to test or empty for all of tests}"
     echo "Usage: ./$0 --driverbin=Product/out/bin/tflite_run --reportdir=report --tapname=verification.tap avgpool1 avgpool2"
     echo ""
-    echo "--download            - (default=off) Download model files. Other options is ignored"
-    echo "--driverbin           - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
-    echo "--reportdir           - (default=report) directory to place tap files"
-    echo "--tapname             - (default=framework_test.tap) file name to be written for tap"
+    echo "--download            - (default=on) Download model files"
+    echo "--run                 - (default=on) Test model files"
+    echo "--driverbin           - (default=../../Product/out/bin/tflite_run) Runner for runnning model tests"
+    echo "--reportdir           - (default=report) Directory to place tap files"
+    echo "--tapname             - (default=framework_test.tap) File name to be written for tap"
+    echo "--md5                 - (default=on) MD5 check when download model files"
     echo ""
 }
 
@@ -43,7 +45,11 @@ function need_download()
         return 0;
     fi
     # Ignore checking md5 in cache
+    # TODO Use "--md5" option only and remove IGNORE_MD5 environment variable
     if [ ! -z $IGNORE_MD5 ] && [ "$IGNORE_MD5" == "1" ]; then
+        return 1
+    fi
+    if [ "$MD5_CHECK" = "off" ]; then
         return 1
     fi
 
@@ -60,7 +66,9 @@ function need_download()
 DRIVER_BIN=""
 TAP_NAME="framework_test.tap"
 TEST_LIST=()
-DOWNLOAD_MODE="off"
+DOWNLOAD_MODEL="on"
+RUN_TEST="on"
+MD5_CHECK="on"
 
 # Support environment variable setting for mirror server
 FIXED_MODELFILE_SERVER="${MODELFILE_SERVER:-}"
@@ -84,6 +92,12 @@ do
         --download=*)
             DOWNLOAD_MODE=${i#*=}
             ;;
+        --md5=*)
+            MD5_CHECK=${i#*=}
+            ;;
+        --run=*)
+            RUN_TEST=${i#*=}
+            ;;
         *)
             TEST_LIST+=( $i )
             ;;
@@ -100,7 +114,7 @@ if [ ! -n "$DRIVER_BIN" ]; then
 fi
 
 # Check test driver setting
-if [ ! -e $DRIVER_BIN ] && [ "$DOWNLOAD_MODE" != "on" ]; then
+if [ ! -e $DRIVER_BIN ] && [ "$RUN_TEST" = "on" ]; then
     echo "Cannot find test driver" $DRIVER_BIN ": please set proper DRIVER_BIN"
     exit 1
 fi
@@ -139,33 +153,9 @@ run_tests()
 
         TEST_CACHE_PATH=$CACHE_ROOT_PATH/$TEST_NAME
         MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
-        MODELFILE_URL="$MODELFILE_SERVER_PATH/$MODELFILE_NAME"
-        if [ -n  "$FIXED_MODELFILE_SERVER" ]; then
-            MODELFILE_URL="$FIXED_MODELFILE_SERVER/$MODELFILE_NAME"
-        fi
-
-        # Download model file
-        if [ ! -e $TEST_CACHE_PATH ]; then
-            mkdir -p $TEST_CACHE_PATH
-        fi
-
-        # Download unless we have it in cache (Also check md5sum)
-        if need_download "$MODELFILE" "$MODELFILE_URL"; then
-            echo ""
-            echo "Download test file for $TEST_NAME"
-            echo "======================"
-
-            rm -f $MODELFILE # Remove invalid file if exists
-            pushd $TEST_CACHE_PATH
-            wget -nv $MODELFILE_URL
-            if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
-                unzip -o $MODELFILE_NAME
-            fi
-            popd
-        fi
 
         # Find model file for downloaded by zip
-        if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
+        if [ "${MODELFILE_NAME##*.}" = "zip" ]; then
             pushd $TEST_CACHE_PATH
             MODELFILE=$TEST_CACHE_PATH/$(ls *.tflite)
             popd
@@ -178,7 +168,6 @@ run_tests()
         # Run driver to test framework
         $DRIVER_BIN $MODELFILE
 
-        #$DRIVER_BIN $MODELFILE
         if [[ $? -eq 0 ]]; then
             echo "ok $i - $TEST_NAME" >> $REPORT_DIR/$TAP_NAME
         else
@@ -268,10 +257,11 @@ find_tests()
 mkdir -p $REPORT_DIR
 TESTS_TO_RUN=$(find_tests ${TEST_LIST[@]})
 
-if [[ "$DOWNLOAD_MODE" == "on" ]]; then
+if [ "$DOWNLOAD_MODEL" = "on" ]; then
     download_tests $TESTS_TO_RUN
-    exit 0;
 fi
 
-run_tests $TESTS_TO_RUN
+if [ "$RUN_TEST" = "on" ]; then
+    run_tests $TESTS_TO_RUN
+fi
 exit $?
