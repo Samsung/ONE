@@ -54,6 +54,15 @@ pushd $ROOT_PATH > /dev/null
 mkdir -p ${NNCC_INSTALL_PREFIX}
 ./nncc docker-run ./nnas create-package --prefix "${PWD}/${NNCC_INSTALL_PREFIX}" -- "${CONFIG_OPTIONS}"
 
+# create python virtual environment
+python3 -m venv "${NNCC_INSTALL_PREFIX}/bin/venv"
+
+source "${NNCC_INSTALL_PREFIX}/bin/venv/bin/activate"
+python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+  install -U pip setuptools
+python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
+  install tensorflow-cpu==2.3.0rc0
+
 mkdir -p ${ARCHIVE_PATH}
 tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./
 
