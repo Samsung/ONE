@@ -14,7 +14,7 @@ Therefore, we should preserve these BCQ information.
 ### How to use
 
 ```bash
-python preserve_bcq_info.py \
+preserve_bcq_info \
 --input_path /path/to/original_model.pb \
 --output_path /path/to/preserved_model.pb
 ```
