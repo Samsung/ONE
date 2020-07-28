@@ -136,6 +136,7 @@ void DumpTensors::run(std::ostream &os, const circle::Model *model, const std::s
         auto max = quant_param->max();
         auto scale = quant_param->scale();
         auto zero_point = quant_param->zero_point();
+        auto quantized_dimension = quant_param->quantized_dimension();
 
         os << " " + print_format2 + "   ├── min        : ";
         ::print_comma_sepearted(os, min);
@@ -146,8 +147,10 @@ void DumpTensors::run(std::ostream &os, const circle::Model *model, const std::s
         os << " " + print_format2 + "   ├── scale      : ";
         ::print_comma_sepearted(os, scale);
         os << std::endl;
-        os << " " + print_format2 + "   └── zero_point : ";
+        os << " " + print_format2 + "   ├── zero_point : ";
         ::print_comma_sepearted(os, zero_point);
+        os << std::endl;
+        os << " " + print_format2 + "   └── quantized_dimension : " << quantized_dimension;
         os << std::endl;
       }
 
@@ -317,6 +320,11 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
         auto zero_point = quant_param->zero_point();
         ::write_data_to_hdf5(file, group_name, "zero_point", H5::PredType::NATIVE_INT64, zero_point,
                              ::hdf5_dims_cast(zero_point));
+        auto quantized_dimension = quant_param->quantized_dimension();
+        auto dataspace = std::make_unique<H5::DataSpace>(H5S_SCALAR);
+        auto dataset = std::make_unique<H5::DataSet>(file.createDataSet(
+            group_name + "/quantized_dimension", H5::PredType::NATIVE_INT32, *dataspace));
+        dataset->write(&quantized_dimension, H5::PredType::NATIVE_INT32);
       }
     }
   }
