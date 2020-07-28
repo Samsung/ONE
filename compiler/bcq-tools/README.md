@@ -6,7 +6,7 @@ This directory includes some tools related with BCQ.
 
 ### Purpose
 
-`preserve_bcq_info` is for preserving constant nodes which are including BCQ information.
+`preserve_bcq_info` is for preserving constant nodes which include BCQ information.
 When `.pb` file is converted to `.tflite` file by TFlite converter, constant nodes whose values are exactly same are removed and then linked to only one representative node.
 It causes information missing problem because we don't know which constant nodes should be linked to even we still want to apply BCQ.
 Therefore, we should preserve these BCQ information.
