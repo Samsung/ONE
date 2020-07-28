@@ -48,7 +48,7 @@ void ConstantInitializer::registerExternalInitializer(const ir::OperandIndex &in
   _init_map[index] = [](const onert::ir::Operand &model_obj, onert::backend::ITensor &itensor) {
     auto data = model_obj.shareData();
     assert(data && data->base());
-    ExternalTensor &tensor = reinterpret_cast<ExternalTensor &>(itensor);
+    ExternalTensor &tensor = dynamic_cast<ExternalTensor &>(itensor);
     tensor.setData(data);
   };
 }
