@@ -44,3 +44,35 @@ For your information, unique dummy value starts from -1 and moves to -2, -3, ...
 ### Caution
 
 - Newly generated dummy values should be ignored when the constant nodes are used.
+
+## generate_bcq_output_arrays
+
+### Purpose
+
+To apply BCQ, BCQ information nodes should be designated as model output so that they are alive even after TFLite conversion is finished.
+However, there are so many nodes to designate and sometimes we cannot copy and paste all of them because the string size is too big.
+`generate_bcq_output_arrays` is for generating output_arrays, which include BCQ information nodes.
+
+### How to use
+
+```bash
+generate_bcq_output_arrays \
+--input_path /path/to/original_model.pb \
+--output_path /path/to/output_arrays.txt
+```
+
+### How it works
+
+```
+[Original BCQ information nodes]
+const(value=[1, 2, 3, -1], name='const1')
+const(value=[1, 2, 3, -2], name='const2')
+const(value=[1, 2, 3, -3], name='const3')
+
+[Generated output_arrays]
+,const1,const2,const3
+```
+
+### Caution
+
+- Generated output_arrays will be start with comma.
