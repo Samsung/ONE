@@ -41,11 +41,15 @@ TEST(CircleWhileTest, constructor)
 TEST(CircleWhileTestDeath, invalid_arity_NEG)
 {
   ASSERT_DEBUG_DEATH(luci::CircleWhile very_long_name_while_node(0, 1), "");
+
+  SUCCEED();
 }
 
 TEST(CircleWhileTestDeath, invalid_output_count_NEG)
 {
   ASSERT_DEBUG_DEATH(luci::CircleWhile while_node(2, 0), "");
+
+  SUCCEED();
 }
 
 TEST(CircleWhileTestDeath, invalid_input_get_index_NEG)
