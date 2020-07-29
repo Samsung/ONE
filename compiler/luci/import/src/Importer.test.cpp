@@ -20,4 +20,9 @@
 
 #include <gtest/gtest.h>
 
-TEST(TensorFlowLiteImport, Dummy) { luci::Importer import; }
+TEST(TensorFlowLiteImport, Dummy)
+{
+  luci::Importer import;
+
+  SUCCEED();
+}

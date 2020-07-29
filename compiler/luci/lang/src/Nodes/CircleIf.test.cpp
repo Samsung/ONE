@@ -41,11 +41,15 @@ TEST(CircleIfTest, constructor)
 TEST(CircleIfTestDeath, invalid_arity_NEG)
 {
   ASSERT_DEBUG_DEATH(luci::CircleIf very_long_name_if_node(0, 1), "");
+
+  SUCCEED();
 }
 
 TEST(CircleIfTestDeath, invalid_output_count_NEG)
 {
   ASSERT_DEBUG_DEATH(luci::CircleIf if_node(2, 0), "");
+
+  SUCCEED();
 }
 
 TEST(CircleIfTestDeath, invalid_input_get_index_NEG)
