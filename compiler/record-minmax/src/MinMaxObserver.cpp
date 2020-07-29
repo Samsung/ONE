@@ -38,7 +38,8 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
   assert(node->opcode() != luci::CircleOpcode::UNPACK);
   assert(node->opcode() != luci::CircleOpcode::WHILE);
 
-  if (node->opcode() == luci::CircleOpcode::CONST)
+  if (node->opcode() == luci::CircleOpcode::CONST ||
+      node->opcode() == luci::CircleOpcode::CIRCLECONST)
   {
     // node is not activation. Do nothing.
     return;
