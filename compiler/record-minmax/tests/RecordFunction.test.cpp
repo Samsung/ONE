@@ -32,6 +32,8 @@ TEST(GetNthPercentileTest, Edge)
 
   EXPECT_FLOAT_NEAR(0, getNthPercentile(input, 0));
   EXPECT_FLOAT_NEAR(9, getNthPercentile(input, 100));
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, Simple)
@@ -47,6 +49,8 @@ TEST(GetNthPercentileTest, Simple)
   {
     EXPECT_FLOAT_NEAR(0.09 * std::floor(i) + 0.045, getNthPercentile(input, i));
   }
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, Float)
@@ -61,6 +65,8 @@ TEST(GetNthPercentileTest, Float)
   EXPECT_FLOAT_NEAR(2.799942346802177, getNthPercentile(input, 1));
   EXPECT_FLOAT_NEAR(7.768503955476342, getNthPercentile(input, 3.14));
   EXPECT_FLOAT_NEAR(99.40456084968194, getNthPercentile(input, 99));
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, FloatWithNegative)
@@ -75,6 +81,8 @@ TEST(GetNthPercentileTest, FloatWithNegative)
   EXPECT_FLOAT_NEAR(-47.20005765319782, getNthPercentile(input, 1));
   EXPECT_FLOAT_NEAR(-42.23149604452366, getNthPercentile(input, 3.14));
   EXPECT_FLOAT_NEAR(49.40456084968194, getNthPercentile(input, 99));
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, SigleElement)
@@ -84,6 +92,8 @@ TEST(GetNthPercentileTest, SigleElement)
   EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 0));
   EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 50));
   EXPECT_FLOAT_NEAR(33, getNthPercentile(input, 100));
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, OutOfBoundary_NEG)
@@ -92,6 +102,8 @@ TEST(GetNthPercentileTest, OutOfBoundary_NEG)
 
   EXPECT_THROW(getNthPercentile(input, -1), std::runtime_error);
   EXPECT_THROW(getNthPercentile(input, 101), std::runtime_error);
+
+  SUCCEED();
 }
 
 TEST(GetNthPercentileTest, EmptyVector_NEG)
@@ -99,6 +111,8 @@ TEST(GetNthPercentileTest, EmptyVector_NEG)
   std::vector<float> input;
 
   EXPECT_THROW(getNthPercentile(input, 10), std::runtime_error);
+
+  SUCCEED();
 }
 
 } // namespace record_minmax
