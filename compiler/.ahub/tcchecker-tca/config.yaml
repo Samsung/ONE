@@ -1,0 +1,54 @@
+version: 2
+test:
+  - name: NN Compiler
+    testCaseLanguage: CPP
+    testFW: GTEST
+    testCaseFolder:
+      - ./angkor
+      - ./arser
+      - ./circle2circle
+      - ./circle-quantizer
+      - ./cwrap
+      - ./foder
+      - ./hermes
+      - ./hermes-std
+      - ./loco
+      - ./locomotiv
+      - ./locop
+      - ./logo
+      - ./logo-core
+      - ./luci
+      - ./luci-interpreter
+      - ./luci-value-test
+      - ./mio-circle
+      - ./mio-tflite
+      - ./oops
+      - ./pepper-assert
+      - ./pepper-str
+      - ./pepper-strcast
+      - ./pp
+      - ./record-minmax
+      - ./safemain
+      - ./souschef
+      - ./stdex
+      - ./tflite2circle
+
+    testFile:
+      - extension: .test.cpp
+        any: true
+
+    testCase:
+      - condition:
+        - functionName:
+            starts:
+              - TEST
+
+    negativeTestCase:
+      - condition:
+        - testName:
+            ends:
+              - _NEG
+
+    positiveTestCase:
+      - condition:
+        - inverse: negativeTestCase
