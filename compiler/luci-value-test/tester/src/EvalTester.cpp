@@ -39,9 +39,17 @@ void readDataFromFile(const std::string &filename, char *data, size_t data_size)
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
 }
 
-void writeDataToFile(const std::string &filename, const char *data, size_t data_size)
+void writeDataToFile(const std::string &filename, const char *data, size_t data_size, bool append)
 {
-  std::ofstream fs(filename, std::ofstream::binary);
+  std::ofstream fs;
+  if (append)
+  {
+    fs = std::ofstream(filename, std::ofstream::app);
+  }
+  else
+  {
+    fs = std::ofstream(filename, std::ofstream::binary);
+  }
   if (fs.fail())
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
   if (fs.write(data, data_size).fail())
@@ -141,24 +149,30 @@ int entry(int argc, char **argv)
 
   // Get output.
   const auto output_nodes = loco::output_nodes(module->graph());
-  // TODO: Support multiple outputs
-  assert(output_nodes.size() == 1);
-  const auto *output_node = dynamic_cast<const luci::CircleOutput *>(output_nodes[0]);
-  std::vector<char> output_data(getTensorSize(output_node));
-  interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
-
-  // Output data is written in ${output_file}
-  // (ex: Add.circle.output)
-  // Output shape is written in ${output_file}.shape
-  // (ex: Add.circle.output.shape)
-  // TODO: Use HDF5 file format
-  writeDataToFile(output_file, output_data.data(), output_data.size());
-  auto shape_str = std::to_string(output_node->dim(0).value());
-  for (int i = 1; i < output_node->rank(); i++)
+  for (int i = 0; i < module->graph()->outputs()->size(); i++)
   {
-    shape_str += ",";
-    shape_str += std::to_string(output_node->dim(i).value());
+    const auto *output_node = dynamic_cast<const luci::CircleOutput *>(output_nodes[i]);
+    std::vector<char> output_data(getTensorSize(output_node));
+    interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
+
+    // Output data is written in ${output_file}
+    // (ex: Add.circle.output)
+    // Output shape is written in ${output_file}.shape
+    // (ex: Add.circle.output.shape)
+    // TODO: Use HDF5 file format
+    writeDataToFile(output_file, output_data.data(), output_data.size(), i != 0);
+    auto shape_str = std::to_string(output_node->dim(0).value());
+    if (i != 0)
+    {
+      shape_str = "\n" + shape_str;
+    }
+    for (int i = 1; i < output_node->rank(); i++)
+    {
+      shape_str += ",";
+      shape_str += std::to_string(output_node->dim(i).value());
+    }
+    writeDataToFile(std::string(output_file) + ".shape", shape_str.c_str(), shape_str.size(),
+                    i != 0);
   }
-  writeDataToFile(std::string(output_file) + ".shape", shape_str.c_str(), shape_str.size());
   return EXIT_SUCCESS;
 }
