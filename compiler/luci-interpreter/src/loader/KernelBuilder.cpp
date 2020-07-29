@@ -21,6 +21,7 @@
 #include "kernels/AveragePool2D.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
+#include "kernels/DepthToSpace.h"
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
@@ -186,6 +187,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConv2D *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthToSpace *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  DepthToSpaceParams params{};
+  params.block_size = node->block_size();
+
+  return std::make_unique<kernels::DepthToSpace>(input, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *node)

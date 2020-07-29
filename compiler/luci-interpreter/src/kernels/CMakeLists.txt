@@ -12,6 +12,8 @@ set(SOURCES
     Concatenation.cpp
     Conv2D.h
     Conv2D.cpp
+    DepthToSpace.h
+    DepthToSpace.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
     Elu.h
@@ -81,6 +83,7 @@ set(TEST_SOURCES
     AveragePool2D.test.cpp
     Concatenation.test.cpp
     Conv2D.test.cpp
+    DepthToSpace.test.cpp
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     FullyConnected.test.cpp
