@@ -22,6 +22,7 @@
 #include <kernels/AveragePool2D.h>
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
+#include <kernels/DepthToSpace.h>
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Elu.h>
 #include <kernels/FullyConnected.h>
@@ -33,6 +34,9 @@
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
+#include <kernels/Pad.h>
+#include <kernels/Reshape.h>
+#include <kernels/Reverse.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
@@ -220,6 +224,23 @@ TEST_F(KernelBuilderTest, Conv2D)
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
+TEST_F(KernelBuilderTest, DepthToSpace)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleDepthToSpace>();
+  op->input(input);
+
+  op->block_size(11);
+
+  auto kernel = buildKernel<kernels::DepthToSpace>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().block_size, Eq(op->block_size()));
+}
+
 TEST_F(KernelBuilderTest, DepthwiseConv2D)
 {
   auto *input = createInputNode();
@@ -343,11 +364,14 @@ TEST_F(KernelBuilderTest, LeakyRelu)
   auto *op = createNode<luci::CircleLeakyRelu>();
   op->features(input);
 
+  op->alpha(11.0f);
+
   auto kernel = buildKernel<kernels::LeakyRelu>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().alpha, Eq(op->alpha()));
 }
 
 TEST_F(KernelBuilderTest, LocalResponseNormalization)
@@ -452,6 +476,57 @@ TEST_F(KernelBuilderTest, Mul)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Pad)
+{
+  auto *input = createInputNode();
+  auto *paddings = createInputNode();
+
+  auto *op = createNode<luci::CirclePad>();
+  op->input(input);
+  op->paddings(paddings);
+
+  auto kernel = buildKernel<kernels::Pad>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->paddings(), paddings);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Reshape)
+{
+  auto *input = createInputNode();
+  auto *shape = createInputNode();
+
+  auto *op = createNode<luci::CircleReshape>();
+  op->tensor(input);
+  op->shape(shape);
+
+  auto kernel = buildKernel<kernels::Reshape>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->shape(), shape);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, ReverseV2)
+{
+  auto *input = createInputNode();
+  auto *axes = createInputNode();
+
+  auto *op = createNode<luci::CircleReverseV2>();
+  op->tensor(input);
+  op->axis(axes);
+
+  auto kernel = buildKernel<kernels::Reverse>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Slice)
@@ -644,6 +719,24 @@ TEST_F(KernelBuilderTest, Unpack)
   checkTensor(kernel->output(0), output1);
   checkTensor(kernel->output(1), output2);
   EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
+}
+
+TEST_F(KernelBuilderTest, NonExisting1_NEG)
+{
+  auto *op = createNode<luci::CircleConst>();
+  ASSERT_ANY_THROW(buildKernel<Kernel>(op));
+}
+
+TEST_F(KernelBuilderTest, NonExisting2_NEG)
+{
+  auto *op = createNode<luci::CircleInput>();
+  ASSERT_ANY_THROW(buildKernel<Kernel>(op));
+}
+
+TEST_F(KernelBuilderTest, NonExisting3_NEG)
+{
+  auto *op = createNode<luci::CircleOutput>();
+  ASSERT_ANY_THROW(buildKernel<Kernel>(op));
 }
 
 } // namespace
