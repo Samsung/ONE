@@ -599,7 +599,9 @@ void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
 {
   export_simple(node, circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION,
                 circle::BuiltinOptions_LocalResponseNormalizationOptions,
-                CreateLocalResponseNormalizationOptions(builder).Union());
+                CreateLocalResponseNormalizationOptions(builder, node->radius(), node->bias(),
+                                                        node->alpha(), node->beta())
+                    .Union());
 }
 
 void OperationExporter::visit(luci::CircleLog *node)
