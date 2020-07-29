@@ -293,22 +293,25 @@ int main(const int argc, char **argv)
 {
   try
   {
-    nnpkg_run::Args args(argc, argv);
-
-    int num_threads = 4;
-
-    if (num_threads > 1)
+    for (int k = 0; k < 10; k++)
     {
-      std::vector<std::thread> threads;
-      for (int i = 0; i < num_threads; i++)
-        threads.push_back(std::thread(run, args));
+      nnpkg_run::Args args(argc, argv);
 
-      for (auto &th : threads)
-        th.join();
-    }
-    else
-    {
-      run(args);
+      int num_threads = 4;
+
+      if (num_threads > 1)
+      {
+        std::vector<std::thread> threads;
+        for (int i = 0; i < num_threads; i++)
+          threads.push_back(std::thread(run, args));
+
+        for (auto &th : threads)
+          th.join();
+      }
+      else
+      {
+        run(args);
+      }
     }
   }
   catch (std::runtime_error &e)
