@@ -30,4 +30,6 @@ TEST(FormattedTensorShapeTest, BracketFormat)
   tensor_shape->dim(0) = 4;
 
   std::cout << fmt<TensorShapeFormat::Bracket>(tensor_shape.get()) << std::endl;
+
+  SUCCEED();
 }

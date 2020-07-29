@@ -28,6 +28,8 @@ TEST(LinearV1FormatterTest, simple)
 
   // TODO Validate the output (when the implementation becomes stable)
   std::cout << locop::fmt<locop::LinearV1>(g) << std::endl;
+
+  SUCCEED();
 }
 
 TEST(LinearV1FormatterTest, user_defined_node_summary_builder)
