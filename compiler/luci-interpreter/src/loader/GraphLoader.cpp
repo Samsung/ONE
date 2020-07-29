@@ -70,6 +70,7 @@ bool isExecutableNode(const luci::CircleNode *node)
   {
     // These nodes denote inputs / outputs of a graph.
     case luci::CircleOpcode::CONST:
+    case luci::CircleOpcode::CIRCLECONST:
     case luci::CircleOpcode::CIRCLEINPUT:
     case luci::CircleOpcode::CIRCLEOUTPUT:
     // The following nodes denote outputs of multiple-output nodes.
