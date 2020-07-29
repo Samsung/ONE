@@ -25,7 +25,7 @@ function Usage()
 }
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_PATH=$DRIVER_PATH/../tests/scripts
+SCRIPT_PATH=$DRIVER_PATH/../tests
 export PATH=$DRIVER_PATH:$PATH
 
 COMMAND=$1; shift
@@ -40,7 +40,7 @@ case $COMMAND in
     usage
     ;;
   'unittest')
-    source $SCRIPT_PATH/unittest.sh $@
+    source $SCRIPT_PATH/unittest $@
     ;;
   *)
     echo "Unknown command: ${1}"
