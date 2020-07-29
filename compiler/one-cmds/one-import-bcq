@@ -133,7 +133,7 @@ if [ -z ${INPUT_SHAPES} ]; then
   --input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
   --input_arrays ${INPUT_ARRAYS} \
   --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
-  --output_arrays ${OUTPUT_ARRAYS},$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") > "${OUTPUT_PATH}.log" \
+  --output_arrays ${OUTPUT_ARRAYS}$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") > "${OUTPUT_PATH}.log" \
   || echo "BCQ information or output_arrays not found" > "${OUTPUT_PATH}.log"
   echo " " >> "${OUTPUT_PATH}.log"
 
@@ -141,21 +141,22 @@ if [ -z ${INPUT_SHAPES} ]; then
   --input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
   --input_arrays ${INPUT_ARRAYS} \
   --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
-  --output_arrays ${OUTPUT_ARRAYS},$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") \
+  --output_arrays ${OUTPUT_ARRAYS}$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") \
   || echo "BCQ information or output_arrays not found" >> "${OUTPUT_PATH}.log" 2>&1
 else
   echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} \
   --input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
   --input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
   --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
-  --output_arrays ${OUTPUT_ARRAYS},$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") > "${OUTPUT_PATH}.log"  \
+  --output_arrays ${OUTPUT_ARRAYS}$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") > "${OUTPUT_PATH}.log"  \
   || echo "BCQ information or output_arrays not found" > "${OUTPUT_PATH}.log"
   echo " " >> "${OUTPUT_PATH}.log"
 
-  python "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
+  python "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} \
+  --input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
   --input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
   --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
-  --output_arrays ${OUTPUT_ARRAYS},$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") \
+  --output_arrays ${OUTPUT_ARRAYS}$(cat "${TMPDIR}/${MODEL_NAME}_preserved.info") \
   || echo "BCQ information or output_arrays not found" >> "${OUTPUT_PATH}.log" 2>&1
 fi
 

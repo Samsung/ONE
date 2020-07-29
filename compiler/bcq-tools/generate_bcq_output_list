@@ -116,14 +116,15 @@ def print_output_arrays(flags):
 
     output_names = [op.outputs[0].name for op in ops if op.type == "Const" and "bcqinfo_" in op.outputs[0].name]
 
-    comma_needed = False
-    output_arrays = ""
-    
+    output_arrays = ""    
     for output_name in output_names:
-        if comma_needed == True:
-            output_arrays += ","
-        output_arrays += output_name
-        comma_needed = True
+        output_arrays += ","
+
+        colon_index = output_name.find(":")
+        if colon_index == -1:
+            output_arrays += output_name
+        else:
+            output_arrays += output_name[:colon_index]
 
     f = open(flags.output_path, 'w')
     f.write(output_arrays)
