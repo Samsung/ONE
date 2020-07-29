@@ -127,6 +127,7 @@ public:
         {
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
+          bcq_gather->op_version(1);
           bcq_gather->input_scales(get_alpha(params));
           bcq_gather->input_binary(get_packed_binary_code(params));
           bcq_gather->indices(gather->indices());
@@ -159,6 +160,7 @@ public:
         {
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
+          bcq_fc->op_version(1);
           bcq_fc->weights_scales(get_alpha(weights));
           bcq_fc->weights_binary(get_packed_binary_code(weights));
           bcq_fc->bias(fully_connected->bias());
