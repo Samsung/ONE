@@ -15,22 +15,19 @@ TEST_OS="linux"
 # This test requires test model installation
 pushd ${ROOT_PATH} > /dev/null
 echo
-echo "==== Run nnfw_api_gtest begin ===="
+echo "==== Install nnpackage for nnfw_api_gtest begin ===="
 echo
+
 NNFW_API_TEST_MODEL_INSTALLER=tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh
 TEST_BIN=Product/out/unittest_standalone/nnfw_api_gtest
 $NNFW_API_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
-${TEST_BIN}
-echo
-echo "==== Run nnfw_api_gtest end ===="
-echo
-popd > /dev/null
 
-Product/out/unittest_standalone/test_compute
-Product/out/unittest_standalone/test_onert
-Product/out/unittest_standalone/test_onert_backend_cpu_common
-Product/out/unittest_standalone/test_onert_frontend_nnapi
-Product/out/unittest_standalone/tflite_test
+echo
+echo "==== Install nnpackage for nnfw_api_gtest end ===="
+echo
+
+Product/out/bin/onert-test unittest --reportdir=report --unittestdir=Product/out/unittest_standalone
+popd > /dev/null
 
 pushd ${ROOT_PATH}
 
