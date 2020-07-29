@@ -40,8 +40,8 @@ template <typename T> void SpaceToDepthLayer::spaceToDepth()
   params.block_size = _block_size;
 
   nnfw::cker::SpaceToDepth(params, getTensorShape(_input),
-                           reinterpret_cast<const float *>(_input->buffer()),
-                           getTensorShape(_output), reinterpret_cast<T *>(_output->buffer()));
+                           reinterpret_cast<const T *>(_input->buffer()), getTensorShape(_output),
+                           reinterpret_cast<T *>(_output->buffer()));
 }
 
 void SpaceToDepthLayer::configure(const IPortableTensor *input, const int32_t block_size,
@@ -57,6 +57,10 @@ void SpaceToDepthLayer::run()
   if (_input->data_type() == OperandType::FLOAT32)
   {
     spaceToDepth<float>();
+  }
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  {
+    spaceToDepth<uint8_t>();
   }
   else
   {
