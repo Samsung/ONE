@@ -18,6 +18,9 @@
 
 #include <gtest/gtest.h>
 
+namespace
+{
+
 class Logger final : public hermes::Source
 {
 public:
@@ -27,6 +30,8 @@ public:
 
 Logger::Logger(hermes::Context *ctx) { activate(ctx->sources(), ctx->bus()); }
 Logger::~Logger() { deactivate(); }
+
+} // namespace
 
 TEST(HermesTest, logger_constructor_NEG)
 {
