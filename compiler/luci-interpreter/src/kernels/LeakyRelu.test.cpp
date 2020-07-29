@@ -61,14 +61,13 @@ TEST(LeakReluTest, FloatSimple)
                    1.0f, -0.5f, -1.0f, // Row 2
                },
                /*alpha=*/0.5f, getElementType<float>());
+
+  SUCCEED();
 }
 
-TEST(LeakReluTest, Uint8Simple)
-{
-  // TODO
-  // Implement GetDequantizedOutput Function.
-  // Create Test for Uint8 Case
-}
+// TODO Uint8Simple
+// Implement GetDequantizedOutput Function.
+// Create Test for Uint8 Case
 
 } // namespace
 } // namespace kernels

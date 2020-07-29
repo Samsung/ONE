@@ -68,6 +68,8 @@ TEST(TransposeConvTest, FloatSimple)
       /*output_data=*/{29, 62, 83, 75, 99, 192, 237, 198, 207, 372, 417, 330, 263, 446, 485, 365},
       /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1,
       getElementType<float>());
+
+  SUCCEED();
 }
 
 TEST(TransposeConvTest, FloatTwoFiltersTest)
@@ -82,20 +84,17 @@ TEST(TransposeConvTest, FloatTwoFiltersTest)
                        3352, 3652, 2760},
       /*params.padding=*/luci::Padding::SAME, /*stride_height=*/1, /*stride_width=*/1,
       getElementType<float>());
+
+  SUCCEED();
 }
 
-TEST(TransposeConvTest, Uint8Simple)
-{
-  // TODO
-  // Implement GetDequantizedOutput Function.
-  // Create Test for Uint8 Case
-}
-TEST(TransposeConvTest, Uint8FiltersTest)
-{
-  // TODO
-  // Implement GetDequantizedOutput Function.
-  // Create Test for Uint8 Case
-}
+// TODO Uint8Simple
+// Implement GetDequantizedOutput Function.
+// Create Test for Uint8 Case
+
+// TODO Uint8FiltersTest
+// Implement GetDequantizedOutput Function.
+// Create Test for Uint8 Case
 
 } // namespace
 } // namespace kernels
