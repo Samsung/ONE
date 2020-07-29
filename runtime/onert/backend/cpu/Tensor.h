@@ -32,8 +32,10 @@ using Tensor = cpu_common::Tensor;
 /**
  * @brief Class that uses data from external memory that is not managed by a backend
  *        instead of allocating and copying the data. ExternalTensor's data pointer points to
- *        mmapped area of tflite or circle file. To support this, assume below things
- *        no padding, always NHWC layout, constant tensor and not dynamic.
+ *        an address of memory such as where memory is already allocated, or mmapped area.
+ *        This is meaning that ExternalTensor can take all of types' ir::Data.
+ *        To support this, assume below things no padding, always NHWC layout,
+ *        constant tensor and not dynamic.
  */
 class ExternalTensor : public Tensor
 {
