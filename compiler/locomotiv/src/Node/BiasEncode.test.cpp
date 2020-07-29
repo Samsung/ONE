@@ -90,6 +90,16 @@ template <typename T> void test()
 }
 } // namespace
 
-TEST(NodeExecution_BiasEncode, s32) { test<int32_t>(); }
+TEST(NodeExecution_BiasEncode, s32)
+{
+  test<int32_t>();
 
-TEST(NodeExecution_BiasEncode, f32) { test<float>(); }
+  SUCCEED();
+}
+
+TEST(NodeExecution_BiasEncode, f32)
+{
+  test<float>();
+
+  SUCCEED();
+}
