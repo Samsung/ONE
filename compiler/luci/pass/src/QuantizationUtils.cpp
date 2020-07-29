@@ -99,6 +99,13 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
     nudged_zero_point = static_cast<uint8_t>(std::round(zero_point_double));
   }
 
+  // protect scale from being very low due to overflow
+  if (scale < 1e-5)
+  {
+    scale = 1e-5;
+    nudged_zero_point = static_cast<uint8_t>(std::round(qmin_double - rmin / scale));
+  }
+
   nudged_min = static_cast<float>((qmin_double - nudged_zero_point) * scale);
   nudged_max = static_cast<float>((qmax_double - nudged_zero_point) * scale);
 
