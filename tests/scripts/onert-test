@@ -28,13 +28,18 @@ DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_PATH=$DRIVER_PATH/../tests/scripts
 export PATH=$DRIVER_PATH:$PATH
 
+COMMAND=$1; shift
+if [[ -z "${COMMAND}" ]]; then
+  Usage
+  exit 255
+fi
+
 # Parse command
-case $1 in
+case $COMMAND in
   '--help')
     usage
     ;;
   'unittest')
-    shift
     source $SCRIPT_PATH/unittest.sh $@
     ;;
   *)
