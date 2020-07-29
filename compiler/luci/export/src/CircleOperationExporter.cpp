@@ -890,7 +890,7 @@ void OperationExporter::visit(luci::CircleSpaceToDepth *node)
 {
   export_simple(node, circle::BuiltinOperator_SPACE_TO_DEPTH,
                 circle::BuiltinOptions_SpaceToDepthOptions,
-                CreateSpaceToDepthOptions(builder).Union());
+                CreateSpaceToDepthOptions(builder, node->block_size()).Union());
 }
 
 void OperationExporter::visit(luci::CircleSparseToDense *node)
