@@ -430,7 +430,7 @@ namespace luci
 bool FuseBCQPass::run(loco::Graph *g)
 {
   bool changed = false;
-  
+
   changed = BCQFuser<1>().fuseBCQ(g);
 
   return changed;
