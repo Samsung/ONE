@@ -205,90 +205,27 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
 void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
 {
+  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::CLPoolingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::MAX);
+
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::MaxPool2D::Input::INPUT)};
-
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-
-  const auto kh = node.param().kh;
-  const auto kw = node.param().kw;
-  const auto stride = node.param().stride;
-  const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
-  const auto activation = node.param().activation;
-
-  VERBOSE(MaxPool2D) << "IFM_H: " << ifm_shape.H << std::endl;
-  VERBOSE(MaxPool2D) << "IFM_W: " << ifm_shape.W << std::endl;
-  VERBOSE(MaxPool2D) << "OFM_H: " << ofm_shape.H << std::endl;
-  VERBOSE(MaxPool2D) << "OFM_W: " << ofm_shape.W << std::endl;
-  VERBOSE(MaxPool2D) << "KER_H: " << kh << std::endl;
-  VERBOSE(MaxPool2D) << "KER_W: " << kw << std::endl;
-  VERBOSE(MaxPool2D) << "STRIDE_H: " << stride.vertical << std::endl;
-  VERBOSE(MaxPool2D) << "STRIDE_W: " << stride.horizontal << std::endl;
-  VERBOSE(MaxPool2D) << "PAD(T): " << padding.top << std::endl;
-  VERBOSE(MaxPool2D) << "PAD(B): " << padding.bottom << std::endl;
-  VERBOSE(MaxPool2D) << "PAD(L): " << padding.left << std::endl;
-  VERBOSE(MaxPool2D) << "PAD(R): " << padding.right << std::endl;
-
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
-
-  ::arm_compute::PoolingLayerInfo info{
-      ::arm_compute::PoolingType::MAX, ::arm_compute::Size2D{kw, kh},
-      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride)};
-
-  auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
-
+  const auto activation = node.param().activation;
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
+      asAclClFunction(std::move(raw_fn)),
       ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
 {
+  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::CLPoolingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::AVG);
+
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::AvgPool2D::Input::INPUT)};
-
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-
-  const auto kh = node.param().kh;
-  const auto kw = node.param().kw;
-  const auto stride = node.param().stride;
-  const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
-  const auto activation = node.param().activation;
-
-  VERBOSE(AvgPool2D) << "IFM_H: " << ifm_shape.H << std::endl;
-  VERBOSE(AvgPool2D) << "IFM_W: " << ifm_shape.W << std::endl;
-  VERBOSE(AvgPool2D) << "OFM_H: " << ofm_shape.H << std::endl;
-  VERBOSE(AvgPool2D) << "OFM_W: " << ofm_shape.W << std::endl;
-  VERBOSE(AvgPool2D) << "KER_H: " << kh << std::endl;
-  VERBOSE(AvgPool2D) << "KER_W: " << kw << std::endl;
-  VERBOSE(AvgPool2D) << "STRIDE_H: " << stride.vertical << std::endl;
-  VERBOSE(AvgPool2D) << "STRIDE_W: " << stride.horizontal << std::endl;
-  VERBOSE(AvgPool2D) << "PAD(T): " << padding.top << std::endl;
-  VERBOSE(AvgPool2D) << "PAD(B): " << padding.bottom << std::endl;
-  VERBOSE(AvgPool2D) << "PAD(L): " << padding.left << std::endl;
-  VERBOSE(AvgPool2D) << "PAD(R): " << padding.right << std::endl;
-
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
-
-  ::arm_compute::PoolingLayerInfo info{
-      ::arm_compute::PoolingType::AVG, ::arm_compute::Size2D{kw, kh},
-      ifm_tensor->info()->data_layout(), acl_common::asPadStrideInfo(padding, stride),
-      true /* exclude_padding */};
-
-  auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
-
+  const auto activation = node.param().activation;
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
+      asAclClFunction(std::move(raw_fn)),
       ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
@@ -1187,33 +1124,14 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
 
 void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
 {
+  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::CLPoolingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::L2);
+
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::L2Pool2D::Input::INPUT)};
-
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-
-  uint32_t kw = node.param().kw;
-  uint32_t kh = node.param().kh;
-  const auto stride = node.param().stride;
-  const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
-  const auto activation = node.param().activation;
-
   auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->at(ifm_index).get();
-
-  ::arm_compute::PoolingLayerInfo info{
-      ::arm_compute::PoolingType::L2, ::arm_compute::Size2D{kw, kh},
-      ifm_tensor->info()->data_layout(),
-      ::onert::backend::acl_common::asPadStrideInfo(padding, stride)};
-
-  auto fn = std::make_unique<::arm_compute::CLPoolingLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
-
+  const auto activation = node.param().activation;
   _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
+      asAclClFunction(std::move(raw_fn)),
       ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 

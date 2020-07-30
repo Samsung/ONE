@@ -21,6 +21,7 @@
 #include <ir/Operands.h>
 
 #include <ir/operation/LSTM.h>
+#include <arm_compute/runtime/CL/CLFunctions.h>
 
 namespace onert
 {
@@ -260,6 +261,53 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
       kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
+}
+
+template <typename T_ACLLayer, typename T_PoolOp, typename T_TensorBuilder>
+std::unique_ptr<::arm_compute::IFunction>
+kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
+                const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout,
+                ::arm_compute::PoolingType pooling_type)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(0)};
+
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(layout);
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(layout);
+
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto stride = node.param().stride;
+  const auto padding =
+      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+
+  VERBOSE(Pool2DParam) << "IFM_H: " << ifm_shape.H << std::endl;
+  VERBOSE(Pool2DParam) << "IFM_W: " << ifm_shape.W << std::endl;
+  VERBOSE(Pool2DParam) << "OFM_H: " << ofm_shape.H << std::endl;
+  VERBOSE(Pool2DParam) << "OFM_W: " << ofm_shape.W << std::endl;
+  VERBOSE(Pool2DParam) << "KER_H: " << kh << std::endl;
+  VERBOSE(Pool2DParam) << "KER_W: " << kw << std::endl;
+  VERBOSE(Pool2DParam) << "STRIDE_H: " << stride.vertical << std::endl;
+  VERBOSE(Pool2DParam) << "STRIDE_W: " << stride.horizontal << std::endl;
+  VERBOSE(Pool2DParam) << "PAD(T): " << padding.top << std::endl;
+  VERBOSE(Pool2DParam) << "PAD(B): " << padding.bottom << std::endl;
+  VERBOSE(Pool2DParam) << "PAD(L): " << padding.left << std::endl;
+  VERBOSE(Pool2DParam) << "PAD(R): " << padding.right << std::endl;
+
+  auto ofm_tensor = tensor_builder->at(ofm_index).get();
+  auto ifm_tensor = tensor_builder->at(ifm_index).get();
+
+  bool exclude_padding = (pooling_type == ::arm_compute::PoolingType::AVG);
+
+  ::arm_compute::PoolingLayerInfo info{
+      pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),
+      acl_common::asPadStrideInfo(padding, stride), exclude_padding};
+
+  auto fn = std::make_unique<T_ACLLayer>();
+
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
+
+  return std::move(fn);
 }
 
 } // namespace acl_common
