@@ -248,6 +248,7 @@ private:
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
   IMPLEMENT(luci::CirclePad)
+  IMPLEMENT(luci::CirclePadV2)
   IMPLEMENT(luci::CirclePow)
   IMPLEMENT(luci::CirclePRelu)
   IMPLEMENT(luci::CircleRange)
@@ -855,6 +856,15 @@ bool CircleNodeSummaryBuilder::summary(const luci::CirclePad *node, locop::NodeS
 {
   s.args().append("input", tbl()->lookup(node->input()));
   s.args().append("paddings", tbl()->lookup(node->paddings()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CirclePadV2 *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("paddings", tbl()->lookup(node->paddings()));
+  s.args().append("constant_values", tbl()->lookup(node->constant_values()));
   s.state(locop::NodeSummary::State::Complete);
   return true;
 }

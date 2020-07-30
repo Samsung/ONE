@@ -154,6 +154,10 @@ message PadOptions {
   // None
 }
 
+message PadV2Options {
+  // None
+}
+
 message MirrorPadOptions {
   optional MirrorPadMode mode = 1 [default = REFLECT];
 }
@@ -508,7 +512,7 @@ message Operation {
   optional LogSoftmaxOptions log_softmax_options = 168;
   // DequantizeOptions 169
   optional NegOptions neg_options = 170;
-  // PadV2Options 171
+  optional PadV2Options padv2_options = 171;
   optional LessEqualOptions lessequal_options = 172;
   optional SliceOptions slice_options = 173;
   optional TransposeConvOptions transpose_conv_options = 174;

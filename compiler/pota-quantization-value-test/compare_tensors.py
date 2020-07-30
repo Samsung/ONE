@@ -70,9 +70,9 @@ def compare_quantization(tensor, tensor_name, expect_dir):
             expected_weights = np.array(json_load["weights"])
             input_weights = tensor["weights"][:]
             if np.allclose(input_weights, expected_weights, rtol=0, atol=0) == False:
-                print("Quantized weights of " + tensor_name + " (" + str(input_weights) +
-                      ") do not match with expected value (" + str(expected_weights) +
-                      ").")
+                print(
+                    "Quantized weights of " + tensor_name + " (" + str(input_weights) +
+                    ") do not match with expected value (" + str(expected_weights) + ").")
                 failed_cases += 1
 
         if key == "scale":
