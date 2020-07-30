@@ -7,7 +7,7 @@ function(_Pybind11Source_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(PYBIND11_URL https://github.com/pybind/pybind11/archive/v2.3.0.tar.gz)
+  envoption(PYBIND11_URL https://github.com/pybind/pybind11/archive/v2.5.0.tar.gz)
 
   ExternalSource_Download(PYBIND11 ${PYBIND11_URL})
 
