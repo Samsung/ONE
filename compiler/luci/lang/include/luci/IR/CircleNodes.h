@@ -74,6 +74,7 @@
 #include "Nodes/CircleOneHot.h"
 #include "Nodes/CirclePack.h"
 #include "Nodes/CirclePad.h"
+#include "Nodes/CirclePadV2.h"
 #include "Nodes/CirclePow.h"
 #include "Nodes/CirclePRelu.h"
 #include "Nodes/CircleRange.h"

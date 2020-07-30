@@ -42,19 +42,17 @@ class OptionPrinter(object):
 
     def GetOptionString(self):
         if (self.op_name == "AVERAGE_POOL_2D" or self.op_name == "MAX_POOL_2D"):
-            return "{}, {}, {}".format(
-                "Filter W:H = {}:{}".format(self.options.FilterWidth(),
-                                            self.options.FilterHeight()),
-                "Stride W:H = {}:{}".format(self.options.StrideW(),
-                                            self.options.StrideH()),
-                "Padding = {}".format(self.GetPadding()))
+            return "{}, {}, {}".format("Filter W:H = {}:{}".format(
+                self.options.FilterWidth(),
+                self.options.FilterHeight()), "Stride W:H = {}:{}".format(
+                    self.options.StrideW(), self.options.StrideH()),
+                                       "Padding = {}".format(self.GetPadding()))
         elif (self.op_name == "CONV_2D"):
-            return "{}, {}, {}".format(
-                "Stride W:H = {}:{}".format(self.options.StrideW(),
-                                            self.options.StrideH()),
-                "Dilation W:H = {}:{}".format(self.options.DilationWFactor(),
-                                              self.options.DilationHFactor()),
-                "Padding = {}".format(self.GetPadding()))
+            return "{}, {}, {}".format("Stride W:H = {}:{}".format(
+                self.options.StrideW(),
+                self.options.StrideH()), "Dilation W:H = {}:{}".format(
+                    self.options.DilationWFactor(), self.options.DilationHFactor()),
+                                       "Padding = {}".format(self.GetPadding()))
         elif (self.op_name == "DEPTHWISE_CONV_2D"):
             # yapf: disable
             return "{}, {}, {}, {}".format(
