@@ -35,7 +35,7 @@ namespace verifier
 struct IVerifier
 {
   virtual ~IVerifier() = default;
-  virtual bool verify(const Graph &graph) const = 0;
+  virtual bool verify(const Graph &graph) const noexcept = 0;
 };
 
 } // namespace verifier
@@ -52,13 +52,13 @@ namespace verifier
 class DAGChecker : public IVerifier
 {
 public:
-  bool verify(const Graph &graph) const override;
+  bool verify(const Graph &graph) const noexcept override;
 };
 
 class EdgeConsistencyChecker : public IVerifier
 {
 public:
-  bool verify(const Graph &graph) const override;
+  bool verify(const Graph &graph) const noexcept override;
 };
 
 } // namespace verifier
