@@ -81,7 +81,7 @@ NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
   if (!package_dir)
   {
     std::cerr << "package_dir is null." << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!null_terminating(package_dir, MAX_PATH_LENGTH))
@@ -303,7 +303,7 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
     if (number == nullptr)
     {
       std::cerr << "Error during nnfw_session::input_size, number is null pointer." << std::endl;
-      return NNFW_STATUS_ERROR;
+      return NNFW_STATUS_UNEXPECTED_NULL;
     }
     *number = primary_subgraph()->getInputs().size();
   }
@@ -325,7 +325,7 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
     if (number == nullptr)
     {
       std::cerr << "Error during nnfw_session::output_size, number is null pointer." << std::endl;
-      return NNFW_STATUS_ERROR;
+      return NNFW_STATUS_UNEXPECTED_NULL;
     }
     *number = primary_subgraph()->getOutputs().size();
   }
@@ -472,7 +472,7 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     {
       std::cerr << "Error during nnfw_session::input_tensorinfo, tensorinfo is null pointer."
                 << std::endl;
-      return NNFW_STATUS_ERROR;
+      return NNFW_STATUS_UNEXPECTED_NULL;
     }
     if (index >= primary_subgraph()->getInputs().size())
     {
@@ -508,7 +508,7 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   {
     std::cerr << "Error during nnfw_session::output_tensorinfo, tensorinfo is null pointer."
               << std::endl;
-    return NNFW_STATUS_ERROR;
+    return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (index >= primary_subgraph()->getOutputs().size())
@@ -577,10 +577,10 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 
   try
   {
-    if (!backends || null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
-    {
+    if (!backends)
+      return NNFW_STATUS_UNEXPECTED_NULL;
+    if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
       return NNFW_STATUS_ERROR;
-    }
 
     auto &options = _compiler->options();
 
@@ -603,11 +603,11 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
 
   try
   {
-    if (!op || !null_terminating(op, MAX_OP_NAME_LENGTH) || !backend ||
+    if (!op || !backend)
+      return NNFW_STATUS_UNEXPECTED_NULL;
+    if (!null_terminating(op, MAX_OP_NAME_LENGTH) ||
         !null_terminating(backend, MAX_BACKEND_NAME_LENGTH))
-    {
       return NNFW_STATUS_ERROR;
-    }
 
     auto key = get_op_backend_string(op);
 
@@ -631,6 +631,9 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 {
   if (!isStateModelLoaded())
     return NNFW_STATUS_INVALID_STATE;
+
+  if (!key || !value)
+    return NNFW_STATUS_UNEXPECTED_NULL;
 
   auto &options = _compiler->options();
 
@@ -697,6 +700,9 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
 {
   if (!isStateModelLoaded())
     return NNFW_STATUS_INVALID_STATE;
+
+  if (!key || !value)
+    return NNFW_STATUS_UNEXPECTED_NULL;
 
   auto &options = _compiler->options();
 

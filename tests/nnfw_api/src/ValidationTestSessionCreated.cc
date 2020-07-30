@@ -40,7 +40,7 @@ TEST_F(ValidationTestSessionCreated, neg_load_session_1)
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_2)
 {
-  ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_load_model_from_file(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_3)
