@@ -32,7 +32,7 @@ namespace verifier
 // DAGChecker
 //
 
-bool DAGChecker::verify(const Graph &graph) const
+bool DAGChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
   bool cyclic = false;
@@ -72,10 +72,10 @@ bool DAGChecker::verify(const Graph &graph) const
 // EdgeConsistencyVerifier
 //
 
-bool EdgeConsistencyChecker::verify(const Graph &graph) const
+bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
-  uint32_t mismatches = 0;
+  uint32_t errors = 0;
   operations.iterate([&](const OperationIndex &index, const Operation &node) {
     for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
@@ -88,7 +88,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
           VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
                                           << operand_index << " to Operation " << index
                                           << std::endl;
-          mismatches += 1;
+          errors += 1;
         }
       }
       catch (const std::out_of_range &e)
@@ -96,7 +96,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
         VERBOSE(EdgeConsistencyChecker)
             << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand "
             << operand_index << ", but the operand object is not present in the graph" << std::endl;
-        mismatches += 1;
+        errors += 1;
       }
     }
     for (auto operand_index : node.getOutputs())
@@ -110,7 +110,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
           VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
                                           << operand_index << " to Operation " << index
                                           << std::endl;
-          mismatches += 1;
+          errors += 1;
         }
       }
       catch (const std::out_of_range &e)
@@ -118,11 +118,14 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const
         VERBOSE(EdgeConsistencyChecker)
             << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand "
             << operand_index << ", but the operand object is not present in the graph" << std::endl;
-        mismatches += 1;
+        errors += 1;
       }
     }
   });
-  return mismatches == 0;
+
+  VERBOSE(EdgeConsistencyChecker) << "Total Number of errors : " << errors << std::endl;
+
+  return errors == 0;
 }
 
 } // namespace verifier
