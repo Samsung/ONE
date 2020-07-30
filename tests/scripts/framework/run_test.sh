@@ -34,6 +34,8 @@ function Usage()
     echo "--reportdir           - (default=report) Directory to place tap files"
     echo "--tapname             - (default=framework_test.tap) File name to be written for tap"
     echo "--md5                 - (default=on) MD5 check when download model files"
+    echo "--configdir           - (default=$TEST_ROOT_PATH) Config directory to download and test model"
+    echo "--cachedir            - (default=$CACHE_ROOT_PATH) Directory to download model"
     echo ""
 }
 
@@ -97,6 +99,12 @@ do
             ;;
         --run=*)
             RUN_TEST=${i#*=}
+            ;;
+        --configdir=*)
+            TEST_ROOT_PATH=${i#*=}
+            ;;
+        --cachedir=*)
+            CACHE_ROOT_PATH=${i#*=}
             ;;
         *)
             TEST_LIST+=( $i )
