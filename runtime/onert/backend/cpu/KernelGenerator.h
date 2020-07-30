@@ -74,6 +74,7 @@ public:
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::ReLU &) override;
+  void visit(const ir::operation::ReLU6 &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;

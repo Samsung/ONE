@@ -49,6 +49,7 @@
 #include "ops/RangeLayer.h"
 #include "ops/ReduceLayer.h"
 #include "ops/ReLULayer.h"
+#include "ops/ReLU6Layer.h"
 #include "ops/ReshapeLayer.h"
 #include "ops/ReverseLayer.h"
 #include "ops/RoundLayer.h"
@@ -870,6 +871,21 @@ void KernelGenerator::visit(const ir::operation::ReLU &node)
   auto input_tensor = _tensor_builder->portableAt(input_index).get();
 
   auto fn = std::make_unique<ops::ReLULayer>();
+
+  fn->configure(input_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::ReLU6 &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+
+  auto fn = std::make_unique<ops::ReLU6Layer>();
 
   fn->configure(input_tensor, output_tensor);
 
