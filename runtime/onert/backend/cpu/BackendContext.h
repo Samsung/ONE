@@ -45,6 +45,9 @@ public:
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 private:
+  // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,
+  //      the thread pool is also created in duplicate
+  // TODO Create one ruy context for session
   std::shared_ptr<ExternalContext> _external_context;
 };
 
