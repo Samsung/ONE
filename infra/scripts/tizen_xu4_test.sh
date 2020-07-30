@@ -23,12 +23,12 @@ function install_model()
 {
     # download tflite model files
     pushd $HOST_HOME
-    tests/scripts/framework/run_test.sh --download=on --run=off
+    tests/scripts/models/run_test.sh --download=on --run=off
     # TODO Since this command removes model file(.zip),
     # We must always download the file unlike model file(.tflite).
     # Because caching applies only to tflite file.
     find tests -name "*.zip" -exec rm {} \;
-    tar -zcf cache.tar.gz tests/scripts/framework/cache
+    tar -zcf cache.tar.gz tests/scripts/models/cache
     $SDB_CMD push cache.tar.gz $TEST_ROOT/.
     rm -rf cache.tar.gz
     $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT

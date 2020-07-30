@@ -3,5 +3,6 @@
 --exclude=build
 --exclude=tags
 --exclude=tests/scripts/framework/cache
+--exclude=tests/scripts/models/cache
 --exclude=tools/cross/rootfs
 --exclude=doxygen

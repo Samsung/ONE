@@ -11,7 +11,7 @@ TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../.."
 BENCHMARK_DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run
 REPORT_DIR=$ARTIFACT_PATH/report
-RUN_TEST_SH=$ARTIFACT_PATH/tests/scripts/framework/run_test.sh
+RUN_TEST_SH=$ARTIFACT_PATH/tests/scripts/models/run_test.sh
 BENCHMARK_MODEL_LIST="MODELS/inception_nonslim MODELS/inception_slim MODELS/mobilenet"
 
 if [ ! -e "$RUN_TEST_SH" ]; then
