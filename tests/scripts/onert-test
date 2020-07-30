@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+[[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_PATH=$(readlink -e $DRIVER_PATH/../)
+COMMAND_PATH=$INSTALL_PATH/tests/command
+BIN_PATH=$INSTALL_PATH/bin
+
+export PATH=$BIN_PATH:$PATH
+
+function Usage()
+{
+  echo "Usage: $0 [COMMAND] ..."
+  echo "Command:"
+  for file in $COMMAND_PATH/*;
+  do
+    echo "    $(basename "$file")"
+  done
+  exit 255
+}
+
+COMMAND=$1; shift
+if [[ -z $COMMAND ]] || [[ $COMMAND == "--help" ]]; then
+  Usage
+  exit 255
+fi
+
+COMMAND_FILE=$COMMAND_PATH/$COMMAND
+if [[ ! -f $COMMAND_FILE ]]; then
+  echo "ERROR: '$COMMAND' is not supported"
+  exit 255
+fi
+
+source $COMMAND_FILE $@

@@ -2,6 +2,12 @@ if(NOT INSTALL_TEST_SCRIPTS)
   return()
 endif(NOT INSTALL_TEST_SCRIPTS)
 
+# Install test driver
+file(GLOB TEST_DRIVER_SCRIPT onert-test)
+install(PROGRAMS ${TEST_DRIVER_SCRIPT} DESTINATION test)
+
+# TODO Below install to tests/ will be deprecated
+
 # Install test scripts
 file(GLOB TEST_SCRIPTS "*.sh")
 install(PROGRAMS ${TEST_SCRIPTS} DESTINATION tests/scripts)
