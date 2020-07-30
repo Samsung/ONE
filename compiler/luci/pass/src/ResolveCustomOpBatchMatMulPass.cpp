@@ -23,7 +23,7 @@
 namespace
 {
 
-void resolve_custom_op(luci::CircleCustom *cop)
+bool resolve_custom_op(luci::CircleCustom *cop)
 {
   const std::string custom_code = cop->custom_code();
   const std::vector<uint8_t> custom_options = cop->custom_options();
@@ -41,7 +41,9 @@ void resolve_custom_op(luci::CircleCustom *cop)
     batch_matmul->adj_y(map["adj_y"].AsBool());
 
     replace(cop).with(batch_matmul);
+    return true;
   }
+  return false;
 }
 
 } // namespace
@@ -58,8 +60,7 @@ bool ResolveCustomOpBatchMatMulPass::run(loco::Graph *g)
     if (not cop)
       continue;
 
-    resolve_custom_op(cop);
-    changed = true;
+    changed |= resolve_custom_op(cop);
   }
 
   return changed;
