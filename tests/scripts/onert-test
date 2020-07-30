@@ -16,35 +16,34 @@
 
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
 
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_PATH=$(readlink -e $DRIVER_PATH/../)
+COMMAND_PATH=$INSTALL_PATH/tests/command
+BIN_PATH=$INSTALL_PATH/bin
+
+export PATH=$BIN_PATH:$PATH
+
 function Usage()
 {
   echo "Usage: $0 [COMMAND] ..."
   echo "Command:"
-  echo "  unittest"
+  for file in $COMMAND_PATH/*;
+  do
+    echo "    $(basename "$file")"
+  done
   exit 255
 }
 
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_PATH=$DRIVER_PATH/../tests
-export PATH=$DRIVER_PATH:$PATH
-
 COMMAND=$1; shift
-if [[ -z "${COMMAND}" ]]; then
+if [[ -z $COMMAND ]] || [[ $COMMAND == "--help" ]]; then
   Usage
   exit 255
 fi
 
-# Parse command
-case $COMMAND in
-  '--help')
-    Usage
-    ;;
-  'unittest')
-    source $SCRIPT_PATH/unittest $@
-    ;;
-  *)
-    echo "Unknown command: ${1}"
-    exit 1
-    ;;
-esac
+COMMAND_FILE=$COMMAND_PATH/$COMMAND
+if [[ ! -f $COMMAND_FILE ]]; then
+  echo "ERROR: '$COMMAND' is not supported"
+  exit 255
+fi
 
+source $COMMAND_FILE $@

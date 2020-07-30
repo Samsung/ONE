@@ -4,8 +4,7 @@ endif(NOT INSTALL_TEST_SCRIPTS)
 
 # Install test driver
 file(GLOB TEST_DRIVERS onert-test)
-install(PROGRAMS ${TEST_DRIVERS} DESTINATION bin)
+install(PROGRAMS ${TEST_DRIVERS} DESTINATION test)
 
 # Install test scripts
-file(GLOB TEST_SCRIPTS command/unittest)
-install(FILES ${TEST_SCRIPTS} DESTINATION tests)
+install(DIRECTORY command DESTINATION test)
