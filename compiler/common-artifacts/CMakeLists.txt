@@ -13,14 +13,14 @@ if(${PYTHON_VERSION_MINOR} LESS 3)
 endif()
 
 # Create python virtual environment with tensorflow 1.13.2
-set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv_1_13_2")
+set(VIRTUALENV_OVERLAY_TF_1_13_2 "${NNCC_OVERLAY_DIR}/venv_1_13_2")
 
 # Create python virtual environment with tensorflow 2.3.0-rc0
 set(VIRTUALENV_OVERLAY_TF_2_3_0_RC0 "${NNCC_OVERLAY_DIR}/venv_2_3_0-rc0")
 
 add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY}
+  OUTPUT ${VIRTUALENV_OVERLAY_TF_1_13_2}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_1_13_2}
 )
 
 add_custom_command(
@@ -30,15 +30,15 @@ add_custom_command(
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH_TF_1_13_2 "${VIRTUALENV_OVERLAY_TF_1_13_2}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0 "${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/${REQUIREMENTS_FILE}")
 
 add_custom_command(
-  OUTPUT ${REQUIREMENTS_OVERLAY_PATH}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH}
-  COMMAND ${VIRTUALENV_OVERLAY}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH}
+  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
+  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
+  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
 )
 
 add_custom_command(
@@ -52,7 +52,7 @@ add_custom_command(
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
 )
 
 #[[ Generate common resources ]]
