@@ -8,7 +8,7 @@
 *.pyc
 
 # Test cache for model download
-/tests/scripts/framework/cache
+/tests/scripts/**/cache
 
 # Test report
 /report

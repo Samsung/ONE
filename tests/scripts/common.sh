@@ -23,7 +23,7 @@ function get_result_of_benchmark_test()
     local LOG_FILE=$3
 
     local RET=0
-    $MY_PATH/framework/run_test.sh --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
+    $MY_PATH/models/run_test.sh --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
     RET=$?
     if [[ $RET -ne 0 ]]; then
         echo "Testing $MODEL aborted... exit code: $RET"
