@@ -297,11 +297,9 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   auto ofm_tensor = tensor_builder->at(ofm_index).get();
   auto ifm_tensor = tensor_builder->at(ifm_index).get();
 
-  bool exclude_padding = (pooling_type == ::arm_compute::PoolingType::AVG);
-
   ::arm_compute::PoolingLayerInfo info{
       pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),
-      acl_common::asPadStrideInfo(padding, stride), exclude_padding};
+      acl_common::asPadStrideInfo(padding, stride), true /* exclude_padding */};
 
   auto fn = std::make_unique<T_ACLLayer>();
 
