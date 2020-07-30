@@ -109,8 +109,6 @@ GeneratedTests.relu1_float_1
 GeneratedTests.relu1_float_2
 GeneratedTests.relu1_quant8_1
 GeneratedTests.relu1_quant8_2
-GeneratedTests.relu6_float_1
-GeneratedTests.relu6_float_2
 GeneratedTests.relu6_quant8_1
 GeneratedTests.relu6_quant8_2
 GeneratedTests.relu_quant8_1
