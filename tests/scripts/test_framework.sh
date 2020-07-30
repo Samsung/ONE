@@ -82,7 +82,7 @@ if [ ! -z "$FRAMEWORKTEST_LIST_FILE" ]; then
     MODELLIST=$(cat "${FRAMEWORKTEST_LIST_FILE}")
 fi
 
-$MY_PATH/framework/run_test.sh --driverbin=$FWTEST_DRIVER_BIN \
+$MY_PATH/models/run_test.sh --driverbin=$FWTEST_DRIVER_BIN \
     --reportdir=$FWTEST_REPORT_DIR \
     --tapname=$FWTEST_TAP_NAME \
     ${MODELLIST:-} \

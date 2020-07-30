@@ -16,10 +16,10 @@ install(PROGRAMS ${TEST_SCRIPTS} DESTINATION tests/scripts)
 file(GLOB TEST_LISTS "list/*.txt")
 install(FILES ${TEST_LISTS} DESTINATION tests/scripts/list)
 
-# Install framework test script
-file(GLOB FRAMEWORKTEST_SCRIPT "framework/run_test.sh")
-install(PROGRAMS ${FRAMEWORKTEST_SCRIPT} DESTINATION tests/scripts/framework)
+# Install models test script
+file(GLOB MODEL_TEST_SCRIPT "models/run_test.sh")
+install(PROGRAMS ${MODEL_TEST_SCRIPT} DESTINATION tests/scripts/models)
 
-# Install framework test list file
-file(GLOB FRAMEWORKTEST_DIR framework/tests)
-install(DIRECTORY ${FRAMEWORKTEST_DIR} DESTINATION tests/scripts/framework)
+# Install models test list file
+file(GLOB MODEL_TEST_DIR models/config)
+install(DIRECTORY ${MODEL_TEST_DIR} DESTINATION tests/scripts/models)

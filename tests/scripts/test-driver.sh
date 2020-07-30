@@ -166,7 +166,7 @@ if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
         --test_op \
         --driverbin=$DRIVER_BIN \
         --reportdir=$REPORT_DIR/benchmark_op \
-        --modelfilepath=$ARTIFACT_PATH/tests/scripts/framework
+        --modelfilepath=$ARTIFACT_PATH/tests/scripts/models
 fi
 
 # Make json file. Actually, this process is only needed on CI. That's why it is in test-driver.sh.
