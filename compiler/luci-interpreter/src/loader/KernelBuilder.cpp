@@ -269,6 +269,11 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
                                        else_graph);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
+{
+  throw std::runtime_error("Input node cannot be executed.");
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node)
 {
   assert(node->arity() == 1);
@@ -335,11 +340,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Logistic>(input, output);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
-{
-  throw std::runtime_error("Input node cannot be executed.");
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
