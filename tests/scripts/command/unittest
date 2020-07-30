@@ -15,10 +15,9 @@
 # limitations under the License.
 
 COMMAND_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
+INSTALL_PATH=$COMMAND_PATH/../
 UNITTEST_REPORT_DIR=
-UNITTEST_TEST_DIR=$COMMAND_PATH/../unittest
-UNITTEST_TEST_DIR="$(readlink -f $UNITTEST_TEST_DIR)"
+UNITTEST_TEST_DIR=$(realpath $INSTALL_PATH/unittest)
 UNITTEST_RESULT=0
 UNITTEST_RUN_ALL=""
 

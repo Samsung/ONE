@@ -37,7 +37,7 @@ fi
 # Parse command
 case $COMMAND in
   '--help')
-    usage
+    Usage
     ;;
   'unittest')
     source $SCRIPT_PATH/unittest $@
