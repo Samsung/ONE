@@ -1,0 +1,150 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -e
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+usage()
+{
+  echo "Convert TensorFlow model with BCQ to circle."
+  echo "Usage: one-import-bcq"
+  echo "    --version Show version information and exit"
+  echo "    --input_path <path/to/tfmodel/with/BCQ>"
+  echo "    --output_path <path/to/circle>"
+  echo "    --input_arrays <names of the input arrays, comma-separated>"
+  echo "    --input_shapes <input shapes, colon-separated>"
+  echo "    --output_arrays <names of the output arrays, comma-separated>"
+  echo "    --v2 Use TensorFlow 2.x interface (default is 1.x interface)"
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-import-bcq
+  exit 255
+}
+
+TF_INTERFACE="--v1"
+
+# Parse command-line arguments
+#
+while [ "$#" -ne 0 ]; do
+  CUR="$1"
+
+  case $CUR in
+    '--help')
+      usage
+      ;;
+    '--version')
+      version
+      ;;
+    '--input_path')
+      export INPUT_PATH="$2"
+      shift 2
+      ;;
+    '--output_path')
+      export OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    '--input_arrays')
+      export INPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    '--input_shapes')
+      export INPUT_SHAPES="$2"
+      shift 2
+      ;;
+    '--output_arrays')
+      export OUTPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    '--v2')
+      TF_INTERFACE="--v2"
+      shift
+      ;;
+    *)
+      echo "Unknown parameter: ${CUR}"
+      shift
+      ;;
+  esac
+done
+
+if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
+  echo "Error: input model not found"
+  echo ""
+  usage
+  exit 2
+fi
+
+FILE_BASE=$(basename ${OUTPUT_PATH})
+MODEL_NAME="${FILE_BASE%.*}"
+
+TMPDIR=$(mktemp -d)
+trap "{ rm -rf $TMPDIR; }" EXIT
+
+# activate python virtual environment
+VIRTUALENV_LINUX="${DRIVER_PATH}/venv/bin/activate"
+VIRTUALENV_WINDOWS="${DRIVER_PATH}/venv/Scripts/activate"
+
+if [ -e ${VIRTUALENV_LINUX} ]; then
+  source ${VIRTUALENV_LINUX}
+elif [ -e ${VIRTUALENV_WINDOWS} ]; then
+  source ${VIRTUALENV_WINDOWS}
+fi
+
+# remove previous log
+rm -rf "${OUTPUT_PATH}.log"
+
+# generate temporary preserved pb file
+echo "${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
+--output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb"  > "${OUTPUT_PATH}.log"
+echo " " >> "${OUTPUT_PATH}.log"
+
+"${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
+--output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" >> "${OUTPUT_PATH}.log" 2>&1
+
+# generate output_arrays automatically
+echo "${DRIVER_PATH}/generate_bcq_output_arrays" \
+--input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
+--output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" > "${OUTPUT_PATH}.log"
+echo " " >> "${OUTPUT_PATH}.log"
+
+"${DRIVER_PATH}/generate_bcq_output_arrays" \
+--input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
+--output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" >> "${OUTPUT_PATH}.log" 2>&1
+
+# generate temporary tflite file
+CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
+CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_preserved.pb "
+CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
+CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
+CONVERT_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS}$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
+if [ ! -z ${INPUT_SHAPES} ]; then
+  CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
+fi
+
+echo ${CONVERT_SCRIPT} > "${OUTPUT_PATH}.log"
+$CONVERT_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
+
+# convert .tflite to .circle
+echo " " >> "${OUTPUT_PATH}.log"
+echo "${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
+"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log"
+echo " " >> "${OUTPUT_PATH}.log"
+
+"${DRIVER_PATH}/tflite2circle" "${TMPDIR}/${MODEL_NAME}.tflite" \
+"${OUTPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
