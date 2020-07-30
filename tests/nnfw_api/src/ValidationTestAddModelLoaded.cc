@@ -73,12 +73,12 @@ TEST_F(ValidationTestAddModelLoaded, neg_set_output)
 
 TEST_F(ValidationTestAddModelLoaded, neg_get_input_size)
 {
-  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_get_output_size)
 {
-  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_load_model)
@@ -92,5 +92,5 @@ TEST_F(ValidationTestAddModelLoaded, neg_load_model)
 TEST_F(ValidationTestAddModelLoaded, neg_output_tensorinfo)
 {
   // tensor_info is null
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
