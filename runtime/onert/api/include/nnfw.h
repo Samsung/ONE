@@ -101,6 +101,8 @@ typedef enum {
   NNFW_STATUS_UNEXPECTED_NULL = 2,
   /** When a function was called but it is not valid for the current session state. */
   NNFW_STATUS_INVALID_STATE = 3,
+  /** When it is out of memory */
+  NNFW_STATUS_OUT_OF_MEMORY = 4,
 } NNFW_STATUS;
 
 /**
