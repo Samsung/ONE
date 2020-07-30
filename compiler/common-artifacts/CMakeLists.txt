@@ -15,14 +15,23 @@ endif()
 # Create python virtual environment with tensorflow 1.13.2
 set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv_1_13_2")
 
+# Create python virtual environment with tensorflow 2.3.0-rc0
+set(VIRTUALENV_OVERLAY_TF_2_3_0_RC0 "${NNCC_OVERLAY_DIR}/venv_2_3_0-rc0")
+
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY}
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY}
 )
 
+add_custom_command(
+  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
+)
+
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_OVERLAY_PATH "${NNCC_OVERLAY_DIR}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0 "${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/${REQUIREMENTS_FILE}")
 
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH}
@@ -32,11 +41,19 @@ add_custom_command(
   DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH}
 )
 
-add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH}
+add_custom_command(
+  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.3.0-rc0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
 )
 
-# TODO Create python virtual environment with tensorflow 2.3.0-rc0
+add_custom_target(common_artifacts_python_deps ALL
+  DEPENDS ${VIRTUALENV_OVERLAY} ${REQUIREMENTS_OVERLAY_PATH} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+)
 
 #[[ Generate common resources ]]
 # TODO add pbtxt
