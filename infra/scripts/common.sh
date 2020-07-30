@@ -19,10 +19,13 @@
 #   Run ./tests/scripts/test-driver.sh script unittest
 #
 # NNPackageTest $1 $2
-#   Run ./tests/scripts/nnpkg_test.sh script nnpackage test
+#   Run ${INSTALL_PATH}/test/onert nnpkg-test command: nnpackage test
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
+
+# CI Install path
+INSTALL_PATH=$ROOT_PATH/Product/out
 
 function CheckTestPrepared()
 {
@@ -75,7 +78,7 @@ function Unittests()
 
   # Backup original nnapi_gtest.skip
   # TODO Pass skiplist to test-driver.sh
-  SKIPLIST_FILE="${ROOT_PATH}/Product/out/unittest/nnapi_gtest.skip"
+  SKIPLIST_FILE="$INSTALL_PATH/unittest/nnapi_gtest.skip"
   BACKUP_FILE="${SKIPLIST_FILE}.backup"
   if [[ "$2" != "" ]]; then
     cp ${SKIPLIST_FILE} ${BACKUP_FILE}
@@ -115,7 +118,7 @@ function NNPackageTest()
   do
     for entry in "nnpkg-tcs"/$f; do
       if [ -e $entry ]; then
-        BACKENDS="$1" tests/scripts/nnpkg_test.sh -d -i nnpkg-tcs $(basename "$entry")
+        BACKENDS="$1" $INSTALL_PATH/test/onert-test nnpkg-test -d -i nnpkg-tcs $(basename "$entry")
       fi
     done
     EXITCODE_F=$?

@@ -62,7 +62,7 @@ ssh "${REMOTE_USER}@${REMOTE_IP}" "mkdir -p ${REMOTE_WORKDIR}/Product/"
 scp -r "${RUNTIME_LIBRARY_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/Product/"
 
 # Send nnpkg_test.sh
-scp "${NNPKG_TEST_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/"
+#scp "${NNPKG_TEST_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/"
 
 TESTED=()
 PASSED=()
@@ -120,8 +120,8 @@ while [[ $# -ne 0 ]]; do
 
     # Run test_arm_nnpkg in remote machine
     scp -r "${WORKDIR}/${PREFIX}/" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/${PREFIX}/"
-    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./nnpkg_test.sh -i . -o  ${PREFIX}/metadata/tc ${PREFIX}"
-    
+    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./Product/out/test/onert-test nnpkg-test -i . -o  ${PREFIX}/metadata/tc ${PREFIX}"
+
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"
     fi

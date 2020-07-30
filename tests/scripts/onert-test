@@ -18,7 +18,7 @@
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_PATH=$(readlink -e $DRIVER_PATH/../)
-COMMAND_PATH=$INSTALL_PATH/tests/command
+COMMAND_PATH=$INSTALL_PATH/test/command
 BIN_PATH=$INSTALL_PATH/bin
 
 export PATH=$BIN_PATH:$PATH

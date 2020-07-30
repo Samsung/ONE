@@ -9,7 +9,7 @@ command_exists() {
 progname=$(basename "${BASH_SOURCE[0]}")
 indir="."
 outdir="."
-nnpkg_run=${nnpkg_run:-"Product/out/bin/nnpackage_run"}
+nnpkg_run=${nnpkg_run:-"nnpackage_run"}
 difftool=${difftool:-"h5diff"}
 delete_dumped_on_failure=0
 

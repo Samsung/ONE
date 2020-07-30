@@ -15,7 +15,7 @@
         set(REMOTE_IP "xxx.xxx.xxx.xxx")
         set(REMOTE_USER "remote_username")
         ```
-    - If any recipe is added, or if `REMOTE_IP` and `REMOTE_USER` is not given, `tf2nnpackage-value-remote-test` will not be created. 
+    - If any recipe is added, or if `REMOTE_IP` and `REMOTE_USER` is not given, `tf2nnpackage-value-remote-test` will not be created.
 1. (Optional) ssh authentication
     - This test uses `ssh` and `scp` commands, and those commands require a password of remote machine whenever they are called. This means that you should enter the password everytime when `ssh` and `scp` require.
     - This test resolves the problem by using `ssh-copy-id`, which copies the public key of host machine to `authorized_keys` of remote machine. Because of that, this test will ask the password of remote machine only once, at the first time. This is the only user interaction while running this test.
@@ -39,7 +39,7 @@
 ### Generated Files While Running
 
 - All related files(`pb`, `circle`, `h5` ... etc.) are taken from `build/compiler/common-artifacts` folder.
-- `nnpkg_test.sh`, runtime products and each nnpackage are sent to `REMOTE_WORKDIR` in remote machine.
+- Runtime products and each nnpackage are sent to `REMOTE_WORKDIR` in remote machine.
 - Each test result is generated in `build/compiler/common-artifacts` with the name `${RECIPE}.log`
 
 ### Check Test Result

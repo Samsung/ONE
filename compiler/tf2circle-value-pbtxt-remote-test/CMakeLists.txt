@@ -141,7 +141,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'MODEL2NNPKG_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh\"' >> ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'NNPKG_TEST_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/tests/scripts/nnpkg_test.sh\"' >> ${TEST_CONFIG}
+  #COMMAND ${CMAKE_COMMAND} -E echo 'NNPKG_TEST_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/tests/scripts/nnpkg_test.sh\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'RUNTIME_LIBRARY_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/Product/out/\"' >> ${TEST_CONFIG}
   DEPENDS
     nnkit-run

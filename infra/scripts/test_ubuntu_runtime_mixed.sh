@@ -26,7 +26,7 @@ echo
 echo "==== Install nnpackage for nnfw_api_gtest end ===="
 echo
 
-Product/out/bin/onert-test unittest --reportdir=report --unittestdir=Product/out/unittest_standalone
+Product/out/test/onert-test unittest --reportdir=report --unittestdir=Product/out/unittest_standalone
 popd > /dev/null
 
 pushd ${ROOT_PATH}
