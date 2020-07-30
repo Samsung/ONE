@@ -305,7 +305,7 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
 
   fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
 
-  return std::move(fn);
+  return fn;
 }
 
 } // namespace acl_common
