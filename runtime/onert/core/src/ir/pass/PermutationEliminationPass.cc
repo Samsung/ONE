@@ -37,60 +37,115 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
   auto in_operand = node.getInputs().at(0);
   auto out_operand = node.getOutputs().at(0);
 
+  auto in_def_factor = _lowered_graph.getLowerInfo(in_operand)->def_factors().getOnlyElement();
+  auto out_def_factor = _lowered_graph.getLowerInfo(out_operand)->def_factors().getOnlyElement();
+
+  auto in_backend_id = in_def_factor.backend()->config()->id();
+  auto out_backend_id = out_def_factor.backend()->config()->id();
+
   // Check if two tensors are compatible
   {
-    auto in_def_factor = _lowered_graph.getLowerInfo(in_operand)->def_factors().getOnlyElement();
-    auto out_def_factor = _lowered_graph.getLowerInfo(out_operand)->def_factors().getOnlyElement();
-
-    auto in_backend_id = in_def_factor.backend()->config()->id();
-    auto out_backend_id = out_def_factor.backend()->config()->id();
-
-    if (!(in_backend_id == backend::controlflow::Config::ID && out_backend_id == "cpu"))
+    // TODO Fix this workaround that removes only Permute between cpu and controlflow backend.
+    //      This should be general.
+    if (!((in_backend_id == backend::controlflow::Config::ID && out_backend_id == "cpu") ||
+          (in_backend_id == "cpu" && out_backend_id == backend::controlflow::Config::ID)))
       return;
   }
 
-  // XXX Check if output tensor is model output (How? we do not know if this is primary or not)
-
-  // Make OpSequences(that use the output) use the input
+  if (_graph.getOutputs().contains(out_operand))
   {
+    // Exceptional case : When the output operand is a model output
+    // In this case we keep the output and remove the input
+
+    auto &out_operand_obj = _graph.operands().at(out_operand);
+    out_operand_obj.removeDef(_op_ind);
+    _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      if (!op_seq.getOutputs().contains(in_operand))
+        return;
+
+      // Update OpSequence/Operation edges and Operand edges
+      op_seq.replaceOutputs(in_operand, out_operand);
+      for (auto op : op_seq.operations())
+      {
+        auto &operation_obj = _graph.operations().at(op);
+        if (operation_obj.getOutputs().contains(in_operand))
+        {
+          operation_obj.replaceOutputs(in_operand, out_operand);
+          out_operand_obj.insertDef(op);
+        }
+      }
+    });
+
+    // Remove Permute operation, enclosing OpSequence and the operand
+    {
+      _graph.removeOperand(in_operand);
+
+      auto op_seq_ind = _lowered_graph.op_seqs().getOperation(_op_ind);
+      // Assumes enclosing OpSequence contatins just this Permute operation
+      assert(_lowered_graph.op_seqs().at(op_seq_ind).size() == 1);
+      _lowered_graph.op_seqs().remove(op_seq_ind);
+      _graph.operations().remove(_op_ind);
+    }
+
+    _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
+      if (!op_seq.getInputs().contains(in_operand))
+        return;
+
+      op_seq.replaceInputs(in_operand, out_operand);
+      for (auto op : op_seq.operations())
+      {
+        auto &operation_obj = _graph.operations().at(op);
+        if (operation_obj.getInputs().contains(in_operand))
+        {
+          operation_obj.replaceInputs(in_operand, out_operand);
+          out_operand_obj.insertUse(op);
+        }
+      }
+    });
+
+    VERBOSE(removePermute) << "Permute Op removed, node index : " << _op_ind << std::endl;
+    VERBOSE(removePermute) << "  - Input (removed) Operand : " << in_operand << std::endl;
+    VERBOSE(removePermute) << "  - Output(kept)    Operand : " << out_operand << std::endl;
+  }
+  else
+  {
+    // Otherwise keep the input and remove the output
+
     auto &in_operand_obj = _graph.operands().at(in_operand);
     in_operand_obj.removeUse(_op_ind);
 
+    // Make OpSequences(that use the output) use the input
     _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
       if (!op_seq.getInputs().contains(out_operand))
         return;
 
-      // Update OpSequence/Operation edges and Operand edges
-      if (op_seq.getInputs().contains(out_operand))
+      op_seq.replaceInputs(out_operand, in_operand);
+      for (auto op : op_seq.operations())
       {
-        op_seq.replaceInputs(out_operand, in_operand);
-        for (auto op : op_seq.operations())
+        auto &operation_obj = _graph.operations().at(op);
+        if (operation_obj.getInputs().contains(out_operand))
         {
-          auto &operation_obj = _graph.operations().at(op);
-          if (operation_obj.getInputs().contains(out_operand))
-          {
-            operation_obj.replaceInputs(out_operand, in_operand);
-            in_operand_obj.insertUse(op);
-          }
+          operation_obj.replaceInputs(out_operand, in_operand);
+          in_operand_obj.insertUse(op);
         }
       }
     });
+
+    // Remove Permute operation, enclosing OpSequence and the operand
+    {
+      _graph.removeOperand(out_operand);
+
+      auto op_seq_ind = _lowered_graph.op_seqs().getOperation(_op_ind);
+      // Assumes enclosing OpSequence contatins just this Permute operation
+      assert(_lowered_graph.op_seqs().at(op_seq_ind).size() == 1);
+      _lowered_graph.op_seqs().remove(op_seq_ind);
+      _graph.operations().remove(_op_ind);
+    }
+
+    VERBOSE(removePermute) << "Permute Op removed, node index : " << _op_ind << std::endl;
+    VERBOSE(removePermute) << "  - Input (kept)    Operand : " << in_operand << std::endl;
+    VERBOSE(removePermute) << "  - Output(removed) Operand : " << out_operand << std::endl;
   }
-
-  // Remove Permute operation, enclosing OpSequence and the operand
-  {
-    _graph.removeOperand(out_operand);
-
-    auto op_seq_ind = _lowered_graph.op_seqs().getOperation(_op_ind);
-    // Assumes enclosing OpSequence contatins just this Permute operation
-    assert(_lowered_graph.op_seqs().at(op_seq_ind).size() == 1);
-    _lowered_graph.op_seqs().remove(op_seq_ind);
-    _graph.operations().remove(_op_ind);
-  }
-
-  VERBOSE(removePermute) << "Permute Op removed, node index : " << _op_ind << std::endl;
-  VERBOSE(removePermute) << "  - Input (kept)    Operand : " << in_operand << std::endl;
-  VERBOSE(removePermute) << "  - Output(removed) Operand : " << out_operand << std::endl;
 }
 
 } // namespace pass
