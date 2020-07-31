@@ -39,17 +39,9 @@ void readDataFromFile(const std::string &filename, char *data, size_t data_size)
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
 }
 
-void writeDataToFile(const std::string &filename, const char *data, size_t data_size, bool append)
+void writeDataToFile(const std::string &filename, const char *data, size_t data_size)
 {
-  std::ofstream fs;
-  if (append)
-  {
-    fs = std::ofstream(filename, std::ofstream::app);
-  }
-  else
-  {
-    fs = std::ofstream(filename, std::ofstream::binary);
-  }
+  std::ofstream fs(filename, std::ofstream::binary);
   if (fs.fail())
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
   if (fs.write(data, data_size).fail())
@@ -160,19 +152,14 @@ int entry(int argc, char **argv)
     // Output shape is written in ${output_file}.shape
     // (ex: Add.circle.output.shape)
     // TODO: Use HDF5 file format
-    writeDataToFile(output_file, output_data.data(), output_data.size(), i != 0);
+    writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(), output_data.size());
     auto shape_str = std::to_string(output_node->dim(0).value());
-    if (i != 0)
-    {
-      shape_str = "\n" + shape_str;
-    }
-    for (int i = 1; i < output_node->rank(); i++)
+    for (int j = 1; j < output_node->rank(); j++)
     {
       shape_str += ",";
-      shape_str += std::to_string(output_node->dim(i).value());
+      shape_str += std::to_string(output_node->dim(j).value());
     }
-    writeDataToFile(std::string(output_file) + ".shape", shape_str.c_str(), shape_str.size(),
-                    i != 0);
+    writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(), shape_str.size());
   }
   return EXIT_SUCCESS;
 }

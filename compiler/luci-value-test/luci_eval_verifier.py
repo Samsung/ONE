@@ -48,9 +48,6 @@ for i in range(num_inputs):
 # Do inference
 interpreter.invoke()
 
-# Get reference output data.
-output_details = interpreter.get_output_details()[0]
-
 # Execute luci interpreter.
 subprocess.run(
     [
@@ -58,22 +55,18 @@ subprocess.run(
         str(num_inputs), circle_model + ".input", circle_model + ".output"
     ],
     check=True)
-output_data = np.fromfile(circle_model + ".output", output_details["dtype"])
-shape_file = open(circle_model + ".output.shape", 'r')
-luci_output_data = []
-for line in shape_file.readlines():
-    output_shape = [int(i) for i in line.split(',')]
-    tmp_data = np.split(output_data, [np.prod(output_shape)])
-    luci_output_data.append(np.reshape(tmp_data[0], output_shape))
-    output_data = tmp_data[1]
-shape_file.close()
 
 # Compare the results.
 for idx in range(len(interpreter.get_output_details())):
+    output_details = interpreter.get_output_details()[idx]
+    output_data = np.fromfile(circle_model + ".output" + str(idx), output_details["dtype"])
+    shape_file = open(circle_model + ".output" + str(idx) + ".shape", 'r')
+    output_shape = [int(i) for i in shape_file.read().split(',')]
+    luci_output_data = np.reshape(output_data, output_shape)
     try:
         if output_details["dtype"] == np.uint8:
             if np.allclose(
-                    luci_output_data[idx],
+                    luci_output_data,
                     interpreter.get_tensor(
                         interpreter.get_output_details()[idx]["index"]),
                     rtol=0,
@@ -82,7 +75,7 @@ for idx in range(len(interpreter.get_output_details())):
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.float32:
             if np.allclose(
-                    luci_output_data[idx],
+                    luci_output_data,
                     interpreter.get_tensor(
                         interpreter.get_output_details()[idx]["index"]),
                     rtol=1.e-5,
@@ -91,7 +84,7 @@ for idx in range(len(interpreter.get_output_details())):
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int64:
             if np.allclose(
-                    luci_output_data[idx],
+                    luci_output_data,
                     interpreter.get_tensor(
                         interpreter.get_output_details()[idx]["index"]),
                     rtol=0,
@@ -100,7 +93,7 @@ for idx in range(len(interpreter.get_output_details())):
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int32:
             if np.allclose(
-                    luci_output_data[idx],
+                    luci_output_data,
                     interpreter.get_tensor(
                         interpreter.get_output_details()[idx]["index"]),
                     rtol=0,
