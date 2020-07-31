@@ -38,13 +38,13 @@ class ExternalContext : public IExternalContext
 public:
   ExternalContext() : _ruy_context(new ruy::Context)
   {
-    SetMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
 #ifdef USE_RUY_GEMV
     _ruy_context->cache_policy = ruy::kCacheLHSOnNarrowMul;
 #endif
   }
 
-  void SetMaxNumThreads(int max_num_threads)
+  void setMaxNumThreads(int max_num_threads)
   {
     const int target_num_threads =
         max_num_threads > -1 ? max_num_threads : kDefaultNumThreadpoolThreads;

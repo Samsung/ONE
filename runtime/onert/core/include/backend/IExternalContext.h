@@ -25,7 +25,7 @@ namespace backend
 struct IExternalContext
 {
   virtual ~IExternalContext() = default;
-  virtual void SetMaxNumThreads(int) = 0;
+  virtual void setMaxNumThreads(int) = 0;
 };
 
 } // namespace backend
