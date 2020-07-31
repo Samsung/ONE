@@ -59,7 +59,8 @@ subprocess.run(
 # Compare the results.
 for idx in range(len(interpreter.get_output_details())):
     output_details = interpreter.get_output_details()[idx]
-    output_data = np.fromfile(circle_model + ".output" + str(idx), output_details["dtype"])
+    output_data = np.fromfile(circle_model + ".output" + str(idx),
+                              output_details["dtype"])
     shape_file = open(circle_model + ".output" + str(idx) + ".shape", 'r')
     output_shape = [int(i) for i in shape_file.read().split(',')]
     luci_output_data = np.reshape(output_data, output_shape)

@@ -129,7 +129,7 @@ int entry(int argc, char **argv)
   assert(num_inputs == input_nodes.size());
   for (int32_t i = 0; i < num_inputs; i++)
   {
-    const auto *input_node = dynamic_cast<const luci::CircleInput *>(input_nodes[i]);
+    const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[i]);
     std::vector<char> input_data(getTensorSize(input_node));
     readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data.data(),
                      input_data.size());
@@ -143,23 +143,24 @@ int entry(int argc, char **argv)
   const auto output_nodes = loco::output_nodes(module->graph());
   for (int i = 0; i < module->graph()->outputs()->size(); i++)
   {
-    const auto *output_node = dynamic_cast<const luci::CircleOutput *>(output_nodes[i]);
+    const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
     std::vector<char> output_data(getTensorSize(output_node));
     interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
 
     // Output data is written in ${output_file}
-    // (ex: Add.circle.output)
+    // (ex: Add.circle.output0)
     // Output shape is written in ${output_file}.shape
-    // (ex: Add.circle.output.shape)
-    // TODO: Use HDF5 file format
-    writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(), output_data.size());
+    // (ex: Add.circle.output0.shape)
+    writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(),
+                    output_data.size());
     auto shape_str = std::to_string(output_node->dim(0).value());
     for (int j = 1; j < output_node->rank(); j++)
     {
       shape_str += ",";
       shape_str += std::to_string(output_node->dim(j).value());
     }
-    writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(), shape_str.size());
+    writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(),
+                    shape_str.size());
   }
   return EXIT_SUCCESS;
 }
