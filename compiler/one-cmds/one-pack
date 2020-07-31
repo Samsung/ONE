@@ -70,17 +70,20 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   usage
 fi
 
+INPUT_FILE=$(basename "${INPUT_PATH}")
+LOG_FILE="${INPUT_FILE%.*}.pack.log"
+
 # remove previous log
-rm -rf "${OUTPUT_PATH}.log"
+rm -rf "${LOG_FILE}"
 
 show_err_onexit()
 {
-  cat "${OUTPUT_PATH}.log"
+  cat "${LOG_FILE}"
 }
 
 trap show_err_onexit ERR
 
 # Package circle model file to nnpkg
-echo "${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" > "${OUTPUT_PATH}.log"
+echo "${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" > "${LOG_FILE}"
 
-"${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" >> "${OUTPUT_PATH}.log" 2>&1
+"${DRIVER_PATH}/model2nnpkg.sh" -o "${OUTPUT_PATH}" "${INPUT_PATH}" >> "${LOG_FILE}" 2>&1
