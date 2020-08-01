@@ -1,0 +1,22 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 2 dim: 2 dim: 12 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "SpaceToDepth"
+  space_to_depth_options {
+    block_size: 2
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
