@@ -130,9 +130,17 @@ def _v1_convert(flags):
         ]
         input_shapes = dict(list(zip(input_arrays, input_shapes_list)))
 
-    converter = tf.compat.v1.lite.TFLiteConverter.from_frozen_graph(
-        flags.input_path, _parse_array(flags.input_arrays),
-        _parse_array(flags.output_arrays), input_shapes)
+    retry_with_keras = False
+    try:
+        converter = tf.compat.v1.lite.TFLiteConverter.from_frozen_graph(
+            flags.input_path, _parse_array(flags.input_arrays),
+            _parse_array(flags.output_arrays), input_shapes)
+    except:
+        retry_with_keras = True
+
+    if (retry_with_keras):
+        keras_model = tf.compat.v1.keras.models.load_model(flags.input_path)
+        converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(keras_model)
 
     converter.allow_custom_ops = True
 
@@ -151,17 +159,25 @@ def _v2_convert(flags):
         except (_text_format.ParseError, DecodeError):
             raise IOError("Unable to parse input file '{}'.".format(flags.input_path))
 
-    wrap_func = wrap_frozen_graph(
-        graph_def,
-        inputs=[
-            _str + ":0" if len(_str.split(":")) == 1 else _str
-            for _str in _parse_array(flags.input_arrays)
-        ],
-        outputs=[
-            _str + ":0" if len(_str.split(":")) == 1 else _str
-            for _str in _parse_array(flags.output_arrays)
-        ])
-    converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
+    retry_with_keras = False
+    try:
+        wrap_func = wrap_frozen_graph(
+            graph_def,
+            inputs=[
+                _str + ":0" if len(_str.split(":")) == 1 else _str
+                for _str in _parse_array(flags.input_arrays)
+            ],
+            outputs=[
+                _str + ":0" if len(_str.split(":")) == 1 else _str
+                for _str in _parse_array(flags.output_arrays)
+            ])
+        converter = tf.lite.TFLiteConverter.from_concrete_functions([wrap_func])
+    except:
+        retry_with_keras = True
+
+    if (retry_with_keras):
+        keras_model = tf.keras.models.load_model(flags.input_path)
+        converter = tf.lite.TFLiteConverter.from_keras_model(keras_model)
 
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
