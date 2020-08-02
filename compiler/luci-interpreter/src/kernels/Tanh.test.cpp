@@ -28,9 +28,9 @@ using namespace testing;
 
 TEST(TanhTest, Float)
 {
-    // TODO fix input & output ref data.
+  // TODO fix input & output ref data.
 
-    // TODO make a Shape checking of output_tensor.
+  // TODO make a Shape checking of output_tensor.
 }
 
 // TODO Uint8

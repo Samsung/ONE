@@ -27,26 +27,26 @@ namespace kernels
 class Tanh : public Kernel
 {
 public:
-    Tanh(const Tensor *input, Tensor *output);
+  Tanh(const Tensor *input, Tensor *output);
 
-    const Tensor *input() const { return _inputs[0]; }
-    Tensor *output() const { return _outputs[0]; }
+  const Tensor *input() const { return _inputs[0]; }
+  Tensor *output() const { return _outputs[0]; }
 
-    void configure() override;
-    void execute() const override;
-
-private:
-    void evalFloat() const;
-    void evalQuantized() const;
-    void populateLookupTable();
-    void setTableValue(uint8_t value, uint8_t idx) { _table[idx] = value; };
-    uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
+  void configure() override;
+  void execute() const override;
 
 private:
-    uint8_t _table[256]{};
+  void evalFloat() const;
+  void evalQuantized() const;
+  void populateLookupTable();
+  void setTableValue(uint8_t value, uint8_t idx) { _table[idx] = value; };
+  uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
+
+private:
+  uint8_t _table[256]{};
 };
 
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_LOGISTIC_H
+#endif // LUCI_INTERPRETER_KERNELS_TANH_H
