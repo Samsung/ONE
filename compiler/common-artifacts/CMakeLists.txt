@@ -38,7 +38,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
   COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2}
 )
 
 add_custom_command(
@@ -48,7 +48,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
 )
 
 add_custom_target(common_artifacts_python_deps ALL
