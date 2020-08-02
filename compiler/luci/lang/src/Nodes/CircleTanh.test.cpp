@@ -33,22 +33,22 @@ TEST(CircleTanhTest, constructor)
 
 TEST(CircleTanhTest, input_NEG)
 {
-  luci::CircleTanh neg_node;
+  luci::CircleTanh tanh_node;
   luci::CircleTanh node;
 
-  neg_node.x(&node);
-  ASSERT_NE(nullptr, neg_node.x());
+  tanh_node.x(&node);
+  ASSERT_NE(nullptr, tanh_node.x());
 
-  neg_node.x(nullptr);
-  ASSERT_EQ(nullptr, neg_node.x());
+  tanh_node.x(nullptr);
+  ASSERT_EQ(nullptr, tanh_node.x());
 }
 
 TEST(CircleTanhTest, arity_NEG)
 {
-  luci::CircleTanh neg_node;
+  luci::CircleTanh tanh_node;
 
-  ASSERT_NO_THROW(neg_node.arg(0));
-  ASSERT_THROW(neg_node.arg(1), std::out_of_range);
+  ASSERT_NO_THROW(tanh_node.arg(0));
+  ASSERT_THROW(tanh_node.arg(1), std::out_of_range);
 }
 
 TEST(CircleTanhTest, visit_mutable_NEG)
@@ -57,10 +57,10 @@ TEST(CircleTanhTest, visit_mutable_NEG)
   {
   };
 
-  luci::CircleTanh neg_node;
+  luci::CircleTanh tanh_node;
 
   TestVisitor tv;
-  ASSERT_THROW(neg_node.accept(&tv), std::exception);
+  ASSERT_THROW(tanh_node.accept(&tv), std::exception);
 }
 
 TEST(CircleTanhTest, visit_NEG)
@@ -69,8 +69,8 @@ TEST(CircleTanhTest, visit_NEG)
   {
   };
 
-  luci::CircleTanh neg_node;
+  luci::CircleTanh tanh_node;
 
   TestVisitor tv;
-  ASSERT_THROW(neg_node.accept(&tv), std::exception);
+  ASSERT_THROW(tanh_node.accept(&tv), std::exception);
 }
