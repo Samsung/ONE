@@ -56,6 +56,8 @@ set(SOURCES
     StridedSlice.cpp
     Squeeze.h
     Squeeze.cpp
+    Tanh.h
+    Tanh.cpp
     Transpose.h
     Transpose.cpp
     TransposeConv.h
@@ -105,6 +107,7 @@ set(TEST_SOURCES
     Split.test.cpp
     StridedSlice.test.cpp
     Squeeze.test.cpp
+    Tanh.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp
     Unpack.test.cpp)
