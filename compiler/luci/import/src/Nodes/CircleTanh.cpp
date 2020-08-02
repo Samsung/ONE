@@ -28,21 +28,13 @@ bool CircleTanhGraphBuilder::validate(const ValidateArgs &args) const
   const auto &inputs = args.op.inputs;
   if (inputs.size() != 1)
     return false;
+  const auto &outputs = args.op.outputs;
+  if (outputs.size() != 1)
+    return false;
 
-  // Must be one of the following types
-  // bfloat16, half (float16), float32, float64, complex64, complex128
-  // Currently, circle supports float16, float32, complex64
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
-  switch (tensor->type)
-  {
-    case circle::TensorType_FLOAT16:
-    case circle::TensorType_FLOAT32:
-    case circle::TensorType_COMPLEX64:
-      break;
-    default:
-      return false;
-  }
+  if (tensors.at(inputs[0])->type != tensors.at(outputs[0])->type)
+    return false;
 
   return true;
 }
