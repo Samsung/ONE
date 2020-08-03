@@ -6,6 +6,9 @@ endif(NOT INSTALL_TEST_SCRIPTS)
 file(GLOB TEST_DRIVER_SCRIPT onert-test)
 install(PROGRAMS ${TEST_DRIVER_SCRIPT} DESTINATION test)
 
+# Commands don't have execute permission itself
+install(DIRECTORY command DESTINATION test)
+
 # TODO Below install to tests/ will be deprecated
 
 # Install test scripts

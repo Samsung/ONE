@@ -17,8 +17,8 @@
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-INSTALL_PATH=$(readlink -e $DRIVER_PATH/../)
-COMMAND_PATH=$INSTALL_PATH/tests/command
+INSTALL_PATH="$(dirname $DRIVER_PATH)"
+COMMAND_PATH=$INSTALL_PATH/test/command
 BIN_PATH=$INSTALL_PATH/bin
 
 export PATH=$BIN_PATH:$PATH
