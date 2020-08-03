@@ -102,6 +102,7 @@ public:
   void visit(luci::CircleMirrorPad *) final;
   void visit(luci::CircleMul *) final;
   void visit(luci::CircleNeg *) final;
+  void visit(luci::CircleNonMaxSuppressionV4 *) final;
   void visit(luci::CircleNotEqual *) final;
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
@@ -166,6 +167,7 @@ public:
   // Virtual for multiple-outputs
   void visit(luci::CircleCustomOut *) final {}
   void visit(luci::CircleIfOut *) final {}
+  void visit(luci::CircleNonMaxSuppressionV4Out *) final {}
   void visit(luci::CircleSplitOut *) final {}
   void visit(luci::CircleSplitVOut *) final {}
   void visit(luci::CircleTopKV2Out *) final {}
@@ -691,6 +693,49 @@ void OperationExporter::visit(luci::CircleNeg *node)
 {
   export_simple(node, circle::BuiltinOperator_NEG, circle::BuiltinOptions_NegOptions,
                 CreateNegOptions(builder).Union());
+}
+
+void OperationExporter::visit(luci::CircleNonMaxSuppressionV4 *node)
+{
+  auto nms_outs = loco::succs(node);
+  assert(nms_outs.size() == 2);
+
+  uint32_t op_idx =
+      md.registerBuiltinOpcode(circle::BuiltinOperator_NON_MAX_SUPPRESSION_V4, node->op_version());
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->boxes()),           get_tensor_index(node->scores()),
+      get_tensor_index(node->max_output_size()), get_tensor_index(node->iou_threshold()),
+      get_tensor_index(node->score_threshold()),
+  };
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < nms_outs.size(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : nms_outs)
+    {
+      auto nms_out = loco::must_cast<luci::CircleNonMaxSuppressionV4Out *>(out);
+      if (nms_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(nms_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid NonMaxSuppressionV4 output");
+    }
+  }
+
+  auto inputs = builder.CreateVector(inputs_vec);
+  auto outputs = builder.CreateVector(outputs_vec);
+  auto options = CreateNonMaxSuppressionV4Options(builder);
+  auto op_offset =
+      CreateOperator(builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_NonMaxSuppressionV4Options, options.Union());
+  gd._operators.push_back(op_offset);
 }
 
 void OperationExporter::visit(luci::CircleNotEqual *node)
