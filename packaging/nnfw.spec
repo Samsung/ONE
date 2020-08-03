@@ -62,6 +62,12 @@ Requires: %{name}-devel = %{version}-%{release}
 %description plugin-devel
 NNFW development package for backend plugin developer
 
+%package minimal-app
+Summary: Minimal test binary for VD manual test
+
+%description minimal-app
+Minimal test binary for VD manual test
+
 %if %{test_build} == 1
 %package test
 Summary: NNFW Test
@@ -83,7 +89,7 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
 %define build_env NNFW_WORKSPACE=build
-%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off
+%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off -DBUILD_MINIMAL_SAMPLE=on
 
 # Set option for test build (and coverage test build)
 %define test_install_home /opt/usr/nnfw-test
@@ -134,8 +140,10 @@ tar -zcf test-suite.tar.gz infra/scripts tests/scripts
 %ifarch arm armv7l aarch64
 
 mkdir -p %{buildroot}%{_libdir}
+mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
+install -m 755 build/out/bin/minimal %{buildroot}%{_bindir}
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
@@ -193,6 +201,11 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
+
+%files minimal-app
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%{_bindir}/minimal
 
 %if %{test_build} == 1
 %files test
