@@ -15,8 +15,8 @@ endif()
 # Create python virtual environment with tensorflow 1.13.2
 set(VIRTUALENV_OVERLAY_TF_1_13_2 "${NNCC_OVERLAY_DIR}/venv_1_13_2")
 
-# Create python virtual environment with tensorflow 2.3.0-rc0
-set(VIRTUALENV_OVERLAY_TF_2_3_0_RC0 "${NNCC_OVERLAY_DIR}/venv_2_3_0-rc0")
+# Create python virtual environment with tensorflow 2.3.0
+set(VIRTUALENV_OVERLAY_TF_2_3_0 "${NNCC_OVERLAY_DIR}/venv_2_3_0")
 
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY_TF_1_13_2}
@@ -24,14 +24,14 @@ add_custom_command(
 )
 
 add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
+  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_3_0}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_3_0}
 )
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_1_13_2 "${VIRTUALENV_OVERLAY_TF_1_13_2}/${REQUIREMENTS_FILE}")
-set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0 "${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0 "${VIRTUALENV_OVERLAY_TF_2_3_0}/${REQUIREMENTS_FILE}")
 
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
@@ -42,17 +42,17 @@ add_custom_command(
 )
 
 add_custom_command(
-  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
-  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.3.0-rc0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
-  COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0}
+  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
+  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
+  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.3.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
+  COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0}
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${VIRTUALENV_OVERLAY_TF_2_3_0_RC0} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0_RC0}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${VIRTUALENV_OVERLAY_TF_2_3_0} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
 )
 
 #[[ Generate common resources ]]
