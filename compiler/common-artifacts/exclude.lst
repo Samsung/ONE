@@ -129,6 +129,7 @@ tcgenerate(ReLUN1To1_000)
 tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
 tcgenerate(Reshape_U8_000)
 tcgenerate(ResizeBilinear_000)
+tcgenerate(ResizeBilinear_U8_000) # luci-interpreter
 tcgenerate(ResizeNearestNeighbor_000)
 tcgenerate(ReverseSequence_000)
 tcgenerate(ReverseV2_000)
