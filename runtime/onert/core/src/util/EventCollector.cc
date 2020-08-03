@@ -99,8 +99,8 @@ void EventCollector::onEvent(const Event &event)
       break;
   }
 
-  // TODO: Add resurece measurement(e.g. RSS)
-  // when ready with low overhead in release build
+// TODO: Add resurece measurement(e.g. RSS)
+// when ready with low overhead in release build
 #ifdef DEBUG
   emit_rusage(_rec, ts);
 #endif
