@@ -28,6 +28,7 @@ function preset_configure()
   REQUIRED_UNITS+=("tf2tfliteV2" "luci-interpreter" "circle-verify")
   REQUIRED_UNITS+=("record-minmax" "circle-quantizer")
   REQUIRED_UNITS+=("one-cmds")
+  REQUIRED_UNITS+=("bcq-tools")
 
   NPROC=${NPROC:-$(cat /proc/cpuinfo | grep -c processor)}
 
