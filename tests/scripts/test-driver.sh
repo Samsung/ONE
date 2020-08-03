@@ -123,7 +123,7 @@ source $TEST_DRIVER_DIR/common.sh
 
 # Run unittest in each part such as Runtime
 if [ "$ALLTEST_ON" == "true" ] || [ "$UNITTEST_ON" == "true" ]; then
-    $TEST_DRIVER_DIR/unittest.sh \
+    source $TEST_DRIVER_DIR/command/unittest \
         --reportdir=$REPORT_DIR \
         --unittestdir=$UNIT_TEST_DIR
 fi

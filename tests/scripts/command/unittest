@@ -14,22 +14,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+COMMAND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALL_DIR="$(dirname $(dirname $COMMAND_DIR))"
 UNITTEST_REPORT_DIR=
-UNITTEST_TEST_DIR=
+UNITTEST_TEST_DIR=$INSTALL_DIR/unittest
 UNITTEST_RESULT=0
 UNITTEST_RUN_ALL=""
 
 function Usage()
 {
     # TODO: Fill this
-    echo "Usage: LD_LIBRARY_PATH=Product/out/lib ./$0 --reportdir=report --unittestdir=Product/out/unittest"
+    echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "      --reportdir=PATH        Path to write unittest report"
+    echo "      --unittestdir=PATH      Path to run unittest (default: $UNITTEST_TEST_DIR"
 }
 
-get_gtest_option()
+function get_gtest_option()
 {
     local UNITTEST_REPORT_FILE=$(basename $TEST_BIN)
-    local output_option="--gtest_output=xml:$UNITTEST_REPORT_DIR/$UNITTEST_REPORT_FILE.xml"
+    local output_option
     local filter_option
+    if [ -n "$UNITTEST_REPORT_DIR" ]; then
+        output_option="--gtest_output=xml:$UNITTEST_REPORT_DIR/$UNITTEST_REPORT_FILE.xml"
+    fi
     if [ -r "$TEST_BIN.skip" ]; then
       filter_option="--gtest_filter=-$(grep -v '#' "$TEST_BIN.skip" | tr '\n' ':')"
     fi
@@ -49,15 +58,15 @@ do
         --unittestdir=*)
             UNITTEST_TEST_DIR=${i#*=}
             ;;
-        --runall)
-            UNITTEST_RUN_ALL="true"
+        *)
+            echo "Unknown option: $i"
+            exit 1
+        ;;
     esac
     shift
 done
 
-# TODO: handle exceptions for params
-
-if [ ! -e "$UNITTEST_REPORT_DIR" ]; then
+if [ -n "$UNITTEST_REPORT_DIR" ] && [ ! -e "$UNITTEST_REPORT_DIR" ]; then
     mkdir -p $UNITTEST_REPORT_DIR
 fi
 
@@ -73,21 +82,9 @@ for TEST_BIN in `find $UNITTEST_TEST_DIR -maxdepth 1 -type f -executable`; do
     echo "============================================"
     echo "Starting set $num_unittest: $TEST_BIN..."
     echo "============================================"
-    TEMP_UNITTEST_RESULT=0
 
-    if [ "$UNITTEST_RUN_ALL" == "true" ]; then
-        for TEST_LIST_VERBOSE_LINE in $($TEST_BIN --gtest_list_tests); do
-            if [[ $TEST_LIST_VERBOSE_LINE == *\. ]]; then
-                TEST_LIST_CATEGORY=$TEST_LIST_VERBOSE_LINE
-            else
-                TEST_LIST_ITEM="$TEST_LIST_CATEGORY""$TEST_LIST_VERBOSE_LINE"
-                $TEST_BIN --gtest_filter=$TEST_LIST_ITEM --gtest_output="xml:$UNITTEST_REPORT_DIR/$TEST_LIST_ITEM.xml"
-            fi
-        done
-    else
-        $TEST_BIN $(get_gtest_option)
-        TEMP_UNITTEST_RESULT=$?
-    fi
+    $TEST_BIN $(get_gtest_option)
+    TEMP_UNITTEST_RESULT=$?
 
     if [[ $TEMP_UNITTEST_RESULT -ne 0 ]]; then
         UNITTEST_RESULT=$TEMP_UNITTEST_RESULT
