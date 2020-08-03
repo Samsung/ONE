@@ -62,7 +62,7 @@ mkdir -p ${NNCC_INSTALL_PREFIX}
   install -U pip setuptools
 ./nncc docker-run "${NNCC_INSTALL_PREFIX}/bin/venv/bin/python" \
   -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install tensorflow-cpu==2.3.0rc0
+  install tensorflow-cpu==2.3.0
 
 mkdir -p ${ARCHIVE_PATH}
 tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./
