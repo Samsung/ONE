@@ -486,6 +486,20 @@ ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const
   return ret;
 }
 
+ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t output_height,
+                                   const int32_t output_width)
+{
+  assert(in_shape.rank() == 4);
+  ir::Shape ret(in_shape.rank());
+
+  ret.dim(0) = in_shape.dim(0);
+  ret.dim(1) = output_height;
+  ret.dim(2) = output_width;
+  ret.dim(3) = in_shape.dim(3);
+
+  return ret;
+}
+
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val)
 {
   ir::Shape out_shape(static_cast<int>(1));

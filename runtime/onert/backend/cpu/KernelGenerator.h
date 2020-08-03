@@ -86,6 +86,7 @@ public:
   void visit(const ir::operation::Sin &) override;
   void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::Shape &) override;
+  void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &) override;
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::ArgMax &) override;

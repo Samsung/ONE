@@ -737,6 +737,31 @@ void DynamicShapeInferer::visit(const ir::operation::Reshape &op)
   }
 }
 
+void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
+{
+  // check if output is not dynamic
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  auto input_ind = op.getInputs().at(ir::operation::Reshape::Input::INPUT);
+  auto input = _tensor_registry->getITensor(input_ind);
+
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+    return;
+
+  // getting output shape from input shape and Params
+  auto output_shape = shape_inference::inferResizeBilinearShape(
+      input->getShape(), op.param().height_out, op.param().width_out);
+
+  // if shape is changed, change output shape and reallocate output tensor memory
+  if (output_shape != output->getShape() || output->buffer() == nullptr)
+  {
+    // change on output shape
+    _dynamic_tensor_manager->applyShape(output_ind, output_shape);
+  }
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::Reverse &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Reverse::INPUT));

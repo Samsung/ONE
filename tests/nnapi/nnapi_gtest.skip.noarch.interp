@@ -423,6 +423,7 @@ GeneratedTests.relu_quant8_2
 GeneratedTests.reshape_dynamic_nnfw
 GeneratedTests.resize_bilinear
 GeneratedTests.resize_bilinear_2
+GeneratedTests.resize_bilinear_quant8_nnfw
 GeneratedTests.reverse_ex_1d
 GeneratedTests.reverse_ex_3d
 GeneratedTests.reverse_ex_dynamic_1D

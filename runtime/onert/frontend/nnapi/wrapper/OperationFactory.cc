@@ -1024,7 +1024,8 @@ OperationFactory::OperationFactory()
     operation::ResizeBilinear::Param param;
     param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
     param.width_out = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>();
-
+    param.align_corners = false;
+    param.half_pixel_centers = false;
     return new operation::ResizeBilinear{inputs, outputs, param};
   };
 

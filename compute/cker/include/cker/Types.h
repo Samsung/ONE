@@ -277,6 +277,14 @@ struct InstanceNormParams
   float float_activation_max;
 };
 
+struct ResizeBilinearParams
+{
+  int32_t output_height;
+  int32_t output_width;
+  bool align_corners;
+  bool half_pixel_centers;
+};
+
 struct TransposeConvParams
 {
   PaddingType padding_type;

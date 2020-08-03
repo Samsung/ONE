@@ -89,6 +89,7 @@ public:
   void visit(const ir::operation::Reshape &op) override;
   void visit(const ir::operation::Round &op) override;
   void visit(const ir::operation::RSQRT &op) override;
+  void visit(const ir::operation::ResizeBilinear &op) override;
   void visit(const ir::operation::Reverse &op) override;
   void visit(const ir::operation::Select &op) override;
   void visit(const ir::operation::Shape &op) override;

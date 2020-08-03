@@ -33,13 +33,15 @@ class ResizeBilinear : public Operation
 public:
   enum Input
   {
-    INPUT = 0
+    INPUT = 0,
   };
 
   struct Param
   {
     int32_t height_out;
     int32_t width_out;
+    bool align_corners;
+    bool half_pixel_centers;
   };
 
 public:
