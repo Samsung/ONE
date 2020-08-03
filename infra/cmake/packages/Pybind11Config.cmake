@@ -10,8 +10,9 @@ function(_Pybind11_import)
   ExternalBuild_CMake(CMAKE_DIR   ${Pybind11Source_DIR}
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/PYBIND11/build
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      IDENTIFIER  "2.3.0"
-                      PKG_NAME    "PYBIND11")
+                      IDENTIFIER  "2.5.0"
+                      PKG_NAME    "PYBIND11"
+                      EXTRA_OPTS "-DPYBIND11_TEST:BOOL=OFF")
 
   find_path(Pybind11_INCLUDE_DIRS NAMES pybind11.h PATHS ${EXT_OVERLAY_DIR} PATH_SUFFIXES include/pybind11)
 
