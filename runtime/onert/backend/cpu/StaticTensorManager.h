@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_STATICTENSOR_MANAGER_H__
 
 #include "backend/IStaticTensorManager.h"
+#include "backend/cpu_common/DynamicTensorManager.h"
 #include "backend/cpu_common/MemoryManager.h"
 #include "backend/cpu_common/TensorRegistry.h"
 #include "backend/ITensorManager.h"
@@ -34,7 +35,8 @@ namespace cpu
 class StaticTensorManager : public backend::IStaticTensorManager
 {
 public:
-  StaticTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg);
+  StaticTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
+                      cpu_common::DynamicTensorManager *dynamic_tensor_manager);
   virtual ~StaticTensorManager() = default;
 
   void allocateNonconsts(void);
@@ -52,6 +54,7 @@ private:
   std::unique_ptr<cpu_common::MemoryManager> _nonconst_mgr;
   const std::shared_ptr<cpu_common::TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
+  cpu_common::DynamicTensorManager *_dynamic_tensor_manager;
 };
 
 } // namespace cpu

@@ -128,6 +128,7 @@ private:
   /**
    * @brief To allocate memory for output tensor if needed
    */
+  // TODO Remove this, as it is no longer used
   backend::IDynamicTensorManager *_dynamic_tensor_manager;
   /**
    * @brief To get tensor object and access tensor-level info, e.g., ITensor::buffer()

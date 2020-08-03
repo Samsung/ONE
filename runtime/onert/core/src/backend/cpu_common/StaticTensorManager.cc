@@ -16,6 +16,7 @@
 
 #include "backend/cpu_common/StaticTensorManager.h"
 
+#include "backend/cpu_common/DynamicTensorManager.h"
 #include <util/logging.h>
 
 namespace onert
@@ -77,7 +78,7 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       bool as_const)
 {
   assert(!_tensors->getNativeTensor(ind));
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, nullptr);
   _tensors->setNativeTensor(ind, tensor);
   _as_constants[ind] = as_const;
 }

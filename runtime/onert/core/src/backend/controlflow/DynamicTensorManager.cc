@@ -45,6 +45,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     if (buffer_size < new_size)
       throw std::runtime_error{"ExecutorBase: output buffer size is less than output tensor size"};
     user_tensor->setShape(new_shape);
+    return;
   }
 
   // NOTE Then handle native tensors
@@ -102,7 +103,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        ir::Layout backend_layout)
 {
   assert(_tensors->getNativeTensor(ind) == nullptr);
-  auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout);
+  auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout, this);
   _tensors->setNativeTensor(ind, tensor);
 }
 
