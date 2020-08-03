@@ -106,7 +106,7 @@ SELECT_V2 | O |   |  
 SHAPE | O | O | O
 SIN | O | O | O
 SKIP_GRAM | O |   |  
-SLICE | O | O |  
+SLICE | O | O | O
 SOFTMAX | O | O | O
 SPACE_TO_BATCH_ND | O | O | O
 SPACE_TO_DEPTH | O | O | O
