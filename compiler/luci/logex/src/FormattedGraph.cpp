@@ -244,6 +244,7 @@ private:
   IMPLEMENT(luci::CircleMirrorPad)
   IMPLEMENT(luci::CircleMul)
   IMPLEMENT(luci::CircleNeg)
+  IMPLEMENT(luci::CircleNonMaxSuppressionV4)
   IMPLEMENT(luci::CircleNotEqual)
   IMPLEMENT(luci::CircleOneHot)
   IMPLEMENT(luci::CirclePack)
@@ -303,6 +304,7 @@ private:
   IMPLEMENT(luci::CircleInput)
   IMPLEMENT(luci::CircleOutput)
   IMPLEMENT(luci::CircleIfOut)
+  IMPLEMENT(luci::CircleNonMaxSuppressionV4Out)
   IMPLEMENT(luci::CircleSplitOut)
   IMPLEMENT(luci::CircleSplitVOut)
   IMPLEMENT(luci::CircleTopKV2Out)
@@ -823,6 +825,19 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleNeg *node, locop::NodeS
   return use_x(tbl(), node, s);
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleNonMaxSuppressionV4 *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("boxes", pepper::str(node->boxes()));
+  s.args().append("scores", pepper::str(node->scores()));
+  s.args().append("max_output_size", pepper::str(node->max_output_size()));
+  s.args().append("iou_threshold", pepper::str(node->iou_threshold()));
+  s.args().append("score_threshold", pepper::str(node->score_threshold()));
+
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleNotEqual *node,
                                        locop::NodeSummary &s) const
 {
@@ -1304,6 +1319,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpackOut *node,
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleIfOut *node, locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleNonMaxSuppressionV4Out *node,
+                                       locop::NodeSummary &s) const
 {
   return use_input(tbl(), node, s);
 }
