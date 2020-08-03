@@ -294,7 +294,7 @@ int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model,
   }
 
   const ANeuralNetworksOperationTypeEx FIRST_OPERATION = ANEURALNETWORKS_CAST_EX;
-  const ANeuralNetworksOperationTypeEx LAST_OPERATION = ANEURALNETWORKS_ADDV2_EX;
+  const ANeuralNetworksOperationTypeEx LAST_OPERATION = ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX;
   if ((type < FIRST_OPERATION) || (type > LAST_OPERATION))
   {
     VERBOSE(NNAPI::Model) << "addOperation: Invalid operation type" << std::endl;

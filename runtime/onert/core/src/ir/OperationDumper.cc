@@ -613,6 +613,15 @@ void OperationDumper::visit(const SquaredDifference &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const StatelessRandomUniform &node)
+{
+  VERBOSE(LIR) << "* StatelessRandomUniform" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(StatelessRandomUniform::Input::SHAPE)
+               << ", " << node.getInputs().at(StatelessRandomUniform::Input::SEED) << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Squeeze &node)
 {
   VERBOSE(LIR) << "* Squeeze" << std::endl;

@@ -96,6 +96,7 @@ public:
   void visit(const operation::Squeeze &) override;
   void visit(const operation::Slice &) override;
   void visit(const operation::StridedSlice &) override;
+  void visit(const operation::StatelessRandomUniform &) override;
   void visit(const operation::Sub &) override;
   void visit(const operation::Tanh &) override;
   void visit(const operation::Tile &) override;
