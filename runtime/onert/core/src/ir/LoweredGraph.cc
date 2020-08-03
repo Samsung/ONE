@@ -485,6 +485,12 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     // Check for branching down
     for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
     {
+      // TODO Fix this workaround for the case of model outputs that are used by another operation
+      //      This is needed since the branching is decided by operation, but for model outputs,
+      //      there is controlflow backen(use backend) but no actual use operation exists
+      if (_graph.getOutputs().contains(output))
+        return false;
+
       const auto &output_obj = _graph.operands().at(output);
       for (const auto &use : output_obj.getUses())
       {
