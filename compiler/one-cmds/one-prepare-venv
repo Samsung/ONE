@@ -49,4 +49,4 @@ source "${VENV_ACTIVATE}"
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install -U pip setuptools
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install tensorflow-cpu==2.3.0rc0
+  install tensorflow-cpu==2.3.0

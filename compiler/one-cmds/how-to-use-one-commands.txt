@@ -45,7 +45,7 @@ When this command is finished, BCQ information nodes will be removed if BCQ info
 was valid and applying BCQ is done correctly without any errors.
 
 As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
-installed in your system. We recommand to use 2.3.0rc0 for now.
+installed in your system. We recommand to use 2.3.0 for now.
 
 We provide python virtual environment and one-import-bcq will enter and leave
 this environment so that you don't need to explictly 'activate' virtual
@@ -61,7 +61,7 @@ will internally use TensorFlow lite converter and then invoke tflite2circle
 converter to convert tflite model to circle model. 
 
 As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
-installed in your system. We recommand to use 2.3.0rc0 for now.
+installed in your system. We recommand to use 2.3.0 for now.
 
 We provide python virtual environment and one-import-tf will enter and leave
 this environment so that you don't need to explictly 'activate' virtual
