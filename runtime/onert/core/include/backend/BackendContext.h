@@ -56,6 +56,8 @@ public:
   {
   }
 
+  virtual ~BackendContext() = default;
+
   void initialize(const std::vector<OperationInfo> &operation_list,
                   const std::vector<ir::OperandIndex> &operand_list);
   void initConsts();

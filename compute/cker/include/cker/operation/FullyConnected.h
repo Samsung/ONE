@@ -18,6 +18,7 @@
 #ifndef __NNFW_CKER_FULLY_CONNECTED_H__
 #define __NNFW_CKER_FULLY_CONNECTED_H__
 
+#include <ruy/context.h>
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
@@ -143,7 +144,7 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
                                  const float *input_data, const Shape &filter_shape,
                                  const int8_t *filter_data, const Shape &, const float *bias_data,
                                  const Shape &output_shape, float *output_data,
-                                 FCTempArena &temp_arena)
+                                 FCTempArena &temp_arena, ruy::Context *ruy_context)
 {
   int total_input_size = input_shape.FlatSize();
   const int input_size = filter_shape.Dims(1);
@@ -189,11 +190,12 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   int32_t *scratch = temp_arena.accum_scratch.data();
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, scratch, output_data,
-                                      /*result_stride=*/1);
+                                      /*result_stride=*/1, ruy_context);
 #else
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, output_data,
                                       /*result_stride=*/1);
+  UNUSED_RELEASE(ruy_context);
   UNUSED_RELEASE(output_shape);
 #endif
 

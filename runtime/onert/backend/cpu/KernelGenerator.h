@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 
+#include "ExternalContext.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
 
@@ -37,7 +38,8 @@ class KernelGenerator : public IKernelGenerator
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
                   const std::shared_ptr<TensorBuilder> &tensor_builder,
-                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder);
+                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
+                  const std::shared_ptr<ExternalContext> &external_context);
 
   using IKernelGenerator::visit;
 
@@ -112,6 +114,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   ir::Layout _current_op_seq_layout;
+  const std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace cpu
