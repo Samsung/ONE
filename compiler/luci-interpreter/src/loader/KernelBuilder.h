@@ -76,7 +76,7 @@ public:
 private:
   const Tensor *getInputTensor(const loco::Node *node) const;
 
-  const Tensor *getOptionalInputTensor(const loco::Node *node) const;
+  const Tensor *getOptionalInputTensor(loco::Node *node) const;
 
   Tensor *getOutputTensor(const loco::Node *node) const;
 

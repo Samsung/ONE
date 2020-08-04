@@ -74,9 +74,12 @@ const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
   return tensor;
 }
 
-const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) const
+const Tensor *KernelBuilder::getOptionalInputTensor(loco::Node *node) const
 {
-  // TODO Revise this when optional inputs are implemented in the IR.
+  if (dynamic_cast<luci::CircleOutputExclude *>(node))
+  {
+    return nullptr;
+  }
   return getInputTensor(node);
 }
 
