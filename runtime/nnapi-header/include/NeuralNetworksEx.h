@@ -560,7 +560,24 @@ typedef enum {
    */
   ANEURALNETWORKS_ADDV2_EX = 50039,
 
-  ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX = 50040
+  ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX = 50040,
+
+  /** Splits a tensor value into a list of sub tensors.
+   *
+   * Supported tensor {@link OperandCode}:
+   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32, ANEURALNETWORKS_TENSOR_INT32}
+   *
+   * Supported tensor rank: up to 4
+   *
+   * Inputs:
+   * * 0: A tensor to split.
+   * * 1: A tensor containing the sizes of each output tensor along split_dim
+   * * 2: The dimension along which to split
+   *
+   * Outputs:
+   * * 0: Tensor objects resulting from splitting value.
+   */
+  ANEURALNETWORKS_SPLIT_V_EX = 50041
 
 } OperationCodeEx; // extends OperationCode
 

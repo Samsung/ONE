@@ -339,6 +339,12 @@ struct SplitParams
   int16_t axis;
 };
 
+struct SplitVParams
+{
+  uint16_t num_split;
+  int16_t axis;
+};
+
 struct FusedBatchNormParams
 {
   bool is_training;

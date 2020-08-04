@@ -79,6 +79,7 @@
 #include "ir/operation/Pack.h"
 #include "ir/operation/Select.h"
 #include "ir/operation/Split.h"
+#include "ir/operation/SplitV.h"
 #include "ir/operation/Unpack.h"
 #include "ir/operation/Pad.h"
 #include "ir/operation/Min.h"

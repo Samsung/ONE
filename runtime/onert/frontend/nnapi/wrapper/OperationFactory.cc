@@ -1681,6 +1681,23 @@ OperationFactory::OperationFactory()
     return new operation::Split{inputs, outputs, param};
   };
 
+  _map[ANEURALNETWORKS_SPLIT_V_EX] = [](const OperationFactory::Param &init_param,
+                                        Operands &operands) {
+    assert(init_param.input_count == 4);
+    assert(init_param.output_count >= 1); // At least one output tensor and axis
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+    OperandIndexSequence outputs;
+    for (uint32_t n = 0; n < init_param.output_count; ++n)
+    {
+      outputs.append(OperandIndex{init_param.outputs[n]});
+    }
+
+    operation::SplitV::Param param;
+    param.num_splits = operands.at(OperandIndex{init_param.inputs[3]}).asScalar<std::int32_t>();
+    return new operation::SplitV{inputs, outputs, param};
+  };
+
   // ANEURALNETWORKS_SPLIT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_SPLIT_EX
   _map[ANEURALNETWORKS_SPLIT_EX] = _map[ANEURALNETWORKS_SPLIT];
