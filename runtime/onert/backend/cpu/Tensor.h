@@ -43,7 +43,8 @@ public:
   ExternalTensor() = delete;
 
 public:
-  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout) : Tensor(info, layout)
+  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout)
+      : Tensor(info, layout, nullptr)
   {
     assert(_layout == ir::Layout::NHWC);
     assert(_info.isConstant());

@@ -38,12 +38,16 @@ namespace controlflow
 class UserTensor : public IPortableTensor
 {
 public:
-  UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-      : _info{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
+  UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size,
+             IDynamicTensorManager *dynamic_tensor_manager)
+      : _info{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false},
+        _dynamic_tensor_manager{dynamic_tensor_manager}
   {
   }
 
-  UserTensor(const ir::OperandInfo &info, ir::Layout layout) : UserTensor{info, layout, nullptr, 0}
+  UserTensor(const ir::OperandInfo &info, ir::Layout layout,
+             IDynamicTensorManager *dynamic_tensor_manager)
+      : UserTensor{info, layout, nullptr, 0, dynamic_tensor_manager}
   {
   }
 
@@ -69,6 +73,7 @@ public:
   ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
   bool is_constant() const override { return false; }
+  IDynamicTensorManager *dynamic_tensor_manager() override { return _dynamic_tensor_manager; }
 
 private:
   ir::OperandInfo _info;
@@ -76,6 +81,7 @@ private:
   uint8_t *_buffer;
   size_t _size;
   bool _dynamic;
+  IDynamicTensorManager *_dynamic_tensor_manager;
 };
 
 } // namespace controlflow

@@ -196,7 +196,8 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_shared<backend::controlflow::UserTensor>(
         operand.info(),
-        ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */);
+        ir::Layout::NHWC, /* FIXME find op_seq for this operand and use frontend_layout */
+        cf_tensor_builder->dynamicTensorManager());
 
     // Add tensor to controlflow TensorRegistry.
     cf_tensor_builder->setUserTensor(ind, tensor);

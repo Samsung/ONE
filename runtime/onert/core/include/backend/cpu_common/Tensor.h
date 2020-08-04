@@ -35,8 +35,10 @@ public:
   Tensor() = delete;
 
 public:
-  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
-      : _info(info), _layout(layout), _buffer(nullptr), _num_references(0), _allocator(nullptr)
+  Tensor(const ir::OperandInfo &info, const ir::Layout layout,
+         IDynamicTensorManager *dynamic_tensor_manager)
+      : _info(info), _layout(layout), _buffer(nullptr), _num_references(0),
+        _dynamic_tensor_manager(dynamic_tensor_manager), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -96,6 +98,7 @@ public:
   bool is_constant() const override { return _info.isConstant(); }
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
+  IDynamicTensorManager *dynamic_tensor_manager() override { return _dynamic_tensor_manager; }
 
   virtual void increase_ref()
   {
@@ -130,6 +133,7 @@ protected:
   ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
+  IDynamicTensorManager *_dynamic_tensor_manager;
 
 private:
   std::shared_ptr<Allocator> _allocator;

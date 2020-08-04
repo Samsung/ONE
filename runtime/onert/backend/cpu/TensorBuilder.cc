@@ -29,8 +29,8 @@ namespace cpu
 
 TensorBuilder::TensorBuilder()
     : _tensor_reg{new cpu_common::TensorRegistry()},
-      _static_tensor_mgr{new StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
+      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
+      _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }

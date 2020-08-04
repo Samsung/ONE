@@ -89,7 +89,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        ir::Layout backend_layout)
 {
   assert(_tensors->getNativeTensor(ind) == nullptr);
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, this);
   _tensors->setNativeTensor(ind, tensor);
 }
 
