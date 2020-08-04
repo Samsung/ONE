@@ -107,7 +107,6 @@ protected:
   void loadSoftmax(const Operator *op, ir::Graph &subg);
   void loadMaxPool2D(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
-  void loadInstanceNorm(const Operator *op, ir::Graph &subg);
   void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
   void loadAdd(const Operator *op, ir::Graph &subg);
@@ -165,8 +164,6 @@ protected:
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadLogicalOr(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
-  void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
-  void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
@@ -591,25 +588,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConcatenation(const Operator 
   // activation unused
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Concat(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadInstanceNorm(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::InstanceNorm::Param param;
-  const auto *options = op->builtin_options_as_InstanceNormOptions();
-
-  param.activation = convertActivation(options->fused_activation_function());
-  // Use default value 1e-5 if value of epsilon is zero
-  param.epsilon = options->epsilon() == 0.f ? 1e-5 : options->epsilon();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::InstanceNorm(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1065,42 +1043,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator
 
   std::unique_ptr<ir::Operation> new_op{
       new ir::operation::BatchToSpaceND{{input, block_shape}, outputs}};
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBCQGather(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::BCQGather::Param param;
-  const auto *options = op->builtin_options_as_BCQGatherOptions();
-  param.input_hidden_size = options->input_hidden_size();
-  param.axis = options->axis();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::BCQGather(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBCQFullyConnected(const Operator *op,
-                                                                     ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::BCQFullyConnected::Param param;
-  const auto *options = op->builtin_options_as_BCQFullyConnectedOptions();
-  param.weights_hidden_size = options->weights_hidden_size();
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::BCQFullyConnected(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

@@ -69,6 +69,11 @@ struct LoaderDomain
 
 class CircleLoader final : public base_loader::BaseLoader<LoaderDomain, CircleLoader>
 {
+protected:
+  void loadInstanceNorm(const Operator *op, ir::Graph &subg);
+  void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
+  void loadBCQGather(const Operator *op, ir::Graph &subg);
+
 public:
   using BaseLoader::BaseLoader;
 
@@ -137,6 +142,57 @@ public:
     }
   }
 };
+
+void CircleLoader::loadInstanceNorm(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::InstanceNorm::Param param;
+  const auto *options = op->builtin_options_as_InstanceNormOptions();
+
+  param.activation = convertActivation(options->fused_activation_function());
+  // Use default value 1e-5 if value of epsilon is zero
+  param.epsilon = options->epsilon() == 0.f ? 1e-5 : options->epsilon();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::InstanceNorm(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadBCQGather(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQGather::Param param;
+  const auto *options = op->builtin_options_as_BCQGatherOptions();
+  param.input_hidden_size = options->input_hidden_size();
+  param.axis = options->axis();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BCQGather(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQFullyConnected::Param param;
+  const auto *options = op->builtin_options_as_BCQFullyConnectedOptions();
+  param.weights_hidden_size = options->weights_hidden_size();
+  param.activation = convertActivation(options->fused_activation_function());
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BCQFullyConnected(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
 
 } // namespace
 
