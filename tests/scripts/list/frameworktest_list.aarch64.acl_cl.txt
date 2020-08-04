@@ -27,7 +27,7 @@ pack
 pad
 reduce_max
 reduce_mean
-reduce_sum
+reduce_sum/float
 relu
 relu6
 reshape
