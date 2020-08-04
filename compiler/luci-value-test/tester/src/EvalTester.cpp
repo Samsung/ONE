@@ -153,14 +153,23 @@ int entry(int argc, char **argv)
     // (ex: Add.circle.output0.shape)
     writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(),
                     output_data.size());
-    auto shape_str = std::to_string(output_node->dim(0).value());
-    for (int j = 1; j < output_node->rank(); j++)
+    // In case of Tensor output is Scalar value.
+    // The output tensor with rank 0 is treated as a scalar with shape (1)
+    if (output_node->rank() == 0)
     {
-      shape_str += ",";
-      shape_str += std::to_string(output_node->dim(j).value());
+      writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", "1", 1);
     }
-    writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(),
-                    shape_str.size());
+    else
+    {
+      auto shape_str = std::to_string(output_node->dim(0).value());
+      for (int j = 1; j < output_node->rank(); j++)
+      {
+        shape_str += ",";
+        shape_str += std::to_string(output_node->dim(j).value());
+      }
+      writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(),
+                      shape_str.size());
+    }
   }
   return EXIT_SUCCESS;
 }
