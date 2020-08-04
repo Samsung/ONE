@@ -30,7 +30,6 @@ echo "-- Found nnkit-run: ${NNKIT_RUN_PATH}"
 echo "-- Found TF backend: ${TF_BACKEND_PATH}"
 echo "-- Found TF2CIRCLE: ${TF2CIRCLE_PATH}"
 echo "-- Found MODEL2NNPKG: ${MODEL2NNPKG_PATH}"
-echo "-- Found nnpkg_test: ${NNPKG_TEST_PATH}"
 echo "-- Found Runtime library: ${RUNTIME_LIBRARY_PATH}"
 echo "-- Found randomize action: ${RANDOMIZE_ACTION_PATH}"
 echo "-- Found HDF5 export action: ${HDF5_EXPORT_ACTION_PATH}"
@@ -40,11 +39,6 @@ echo "-- Found workdir: ${WORKDIR}"
 if [ -z ${MODEL2NNPKG_PATH} ] || [ ! -f ${MODEL2NNPKG_PATH} ]; then
   echo "MODEL2NNPKG is not found"
   exit 3
-fi
-
-if [ -z ${NNPKG_TEST_PATH} ] || [ ! -f ${NNPKG_TEST_PATH} ]; then
-  echo "nnpkg_test is not found"
-  exit 4
 fi
 
 # Register remote machine ssh information
@@ -60,9 +54,6 @@ fi
 # Send runtime library files
 ssh "${REMOTE_USER}@${REMOTE_IP}" "mkdir -p ${REMOTE_WORKDIR}/Product/"
 scp -r "${RUNTIME_LIBRARY_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/Product/"
-
-# Send nnpkg_test.sh
-scp "${NNPKG_TEST_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/"
 
 TESTED=()
 PASSED=()
@@ -120,8 +111,8 @@ while [[ $# -ne 0 ]]; do
 
     # Run test_arm_nnpkg in remote machine
     scp -r "${WORKDIR}/${PREFIX}/" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/${PREFIX}/"
-    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./nnpkg_test.sh -i . -o  ${PREFIX}/metadata/tc ${PREFIX}"
-    
+    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./Product/out/test/onert-test nnpkg-test -i . -o  ${PREFIX}/metadata/tc ${PREFIX}"
+
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"
     fi
