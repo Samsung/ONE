@@ -26,7 +26,7 @@ if [ -f ${VENV_ACTIVATE} ]; then
 fi
 
 # Install prerequisites
-python3 -m pip install -U virtualenv
+python3 -m pip install --user -U virtualenv
 
 function error_no_ensurepip ()
 {
