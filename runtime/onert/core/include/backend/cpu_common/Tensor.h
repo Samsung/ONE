@@ -45,19 +45,32 @@ public:
 
 public:
   // Only one of two method 'setBuffer' must be called once
+
+  /**
+   * @brief Set the Buffer object. This method is called for static and non-const tensor
+   */
   void setBuffer(uint8_t *buffer)
   {
-    assert(_buffer == nullptr && _allocator == nullptr);
+    assert(_buffer == nullptr);
     _buffer = buffer;
   }
+
+  /**
+   * @brief Set the Buffer object. This method is called for dynamic or const tensor
+   */
   void setBuffer(const std::shared_ptr<Allocator> &alloc)
   {
-    assert(_buffer == nullptr && _allocator == nullptr);
+    assert(_buffer == nullptr);
     _allocator = alloc;
+    _buffer = alloc->base();
   }
 
   // This works just as setBuffer but it simply overwrite existing Allocator without nullptr check
-  void overwriteBuffer(const std::shared_ptr<Allocator> &alloc) { _allocator = alloc; }
+  void overwriteBuffer(const std::shared_ptr<Allocator> &alloc)
+  {
+    _allocator = alloc;
+    _buffer = alloc->base();
+  }
 
   /**
    * @brief Mark this tensor does not have memory.
@@ -70,13 +83,7 @@ public:
   }
 
 public:
-  uint8_t *buffer() const override
-  {
-    if (_allocator != nullptr)
-      return _allocator->base();
-    else
-      return _buffer;
-  }
+  uint8_t *buffer() const override { return _buffer; }
   /**
    * @brief Get dimension by index
    *
@@ -104,7 +111,7 @@ public:
   {
     assert(is_dynamic() ||
            // when not dynamic
-           (_buffer != nullptr || _allocator != nullptr));
+           (_buffer != nullptr));
 
     ++_num_references;
   }
@@ -113,12 +120,12 @@ public:
     assert(_buffer != nullptr || _allocator != nullptr);
     assert(_num_references > 0);
     --_num_references;
-    // Only constant tensor has allocator pointer
+    // constant tensor and dynamic tensor has _allocator
     if (_num_references == 0)
     {
       if (_buffer != nullptr)
         _buffer = nullptr;
-      else
+      if (_allocator != nullptr)
       {
         _allocator->release();
         _allocator = nullptr;
@@ -136,6 +143,12 @@ protected:
   IDynamicTensorManager *_dynamic_tensor_manager;
 
 private:
+  /**
+   * @brief Memory allocator for dynamic tensor and const tensor
+   *        Since maintaing _allocator and also _buffer makes confusion,
+   *        we will mainly use _buffer (not _allocator.base()) for memory pointer in this code.
+   *        _allocator(shared_ptr) is used to guarantee that we have valid _buffer.
+   */
   std::shared_ptr<Allocator> _allocator;
 };
 
