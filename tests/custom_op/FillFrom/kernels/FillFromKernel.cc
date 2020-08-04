@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "nnfw_dev.h"
+#include "nnfw_experimental.h"
 
 #include "flatbuffers/flexbuffers.h"
 

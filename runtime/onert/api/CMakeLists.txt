@@ -4,9 +4,9 @@ set(ONERT_DEV nnfw-dev)
 add_library(${ONERT_DEV} SHARED ${API_SRC})
 
 # Public headers to publish
-# nnfw_debug.h is header for runtime developer, so it will not be installed
-# But runtime developer can use nnfw_debug.h by linking nnfw-dev
-set(NNFW_API_HEADERS include/nnfw.h include/nnfw_dev.h)
+# nnfw_internal.h is header for runtime developer, so it will not be installed
+# But runtime developer can use nnfw_internal.h by linking nnfw-dev
+set(NNFW_API_HEADERS include/nnfw.h include/nnfw_experimental.h)
 
 target_link_libraries(${ONERT_DEV} PUBLIC nnfw-nnapi-header)
 target_link_libraries(${ONERT_DEV} PUBLIC onert_core)

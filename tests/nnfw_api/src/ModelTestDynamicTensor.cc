@@ -15,7 +15,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <nnfw_debug.h>
+#include <nnfw_internal.h>
 
 #include "common.h"
 #include "fixtures.h"
