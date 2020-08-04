@@ -27,7 +27,6 @@ function Usage()
     echo "--artifactpath            - (default={test-driver.sh's path}/../../) it should contain tests/ and Product/"
     echo ""
     echo "Following options are needed when you want to tests of specific types. If you don't pass any one, unittest and verification will be run"
-    echo "--unittest                - (default=on) run unit test"
     echo "--frameworktest           - (default=off) run framework test"
     echo "--verification            - (default=on) run verification"
     echo "--frameworktest_list_file - filepath of model list for test"
@@ -38,7 +37,6 @@ function Usage()
     echo "etc."
     echo "--framework_driverbin     - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
     echo "--verification_driverbin  - (default=../../Product/out/bin/nnapi_test) runner for runnning verification tests"
-    echo "--unittestdir             - (default=\$ARTIFACT_PATH/Product/out/unittest) directory that has unittest binaries for unit test"
     echo ""
     echo "--reportdir               - (default=\$ARTIFACT_PATH/report) directory to save report"
     echo ""
@@ -48,9 +46,7 @@ TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../../"
 FRAMEWORK_DRIVER_BIN=""
 VERIFICATION_DRIVER_BIN=""
-UNIT_TEST_DIR=""
 ALLTEST_ON="true"
-UNITTEST_ON="false"
 FRAMEWORKTEST_ON="false"
 VERIFICATION_ON="false"
 BENCHMARK_ONERT_OP_ON="false"
@@ -71,13 +67,6 @@ do
             ;;
         --verification_driverbin=*)
             VERIFICATION_DRIVER_BIN=${i#*=}
-            ;;
-        --unittestdir=*)
-            UNIT_TEST_DIR=${i#*=}
-            ;;
-        --unittest)
-            ALLTEST_ON="false"
-            UNITTEST_ON="true"
             ;;
         --frameworktest)
             ALLTEST_ON="false"
@@ -120,13 +109,6 @@ if [ -z "$REPORT_DIR" ]; then
 fi
 
 source $TEST_DRIVER_DIR/common.sh
-
-# Run unittest in each part such as Runtime
-if [ "$ALLTEST_ON" == "true" ] || [ "$UNITTEST_ON" == "true" ]; then
-    source $TEST_DRIVER_DIR/command/unittest \
-        --reportdir=$REPORT_DIR \
-        --unittestdir=$UNIT_TEST_DIR
-fi
 
 # Run tflite_run with various tflite models
 if [ "$FRAMEWORKTEST_ON" == "true" ]; then

@@ -91,7 +91,7 @@ do
     export EXECUTOR="${EXECUTOR}"
   fi
 
-  Unittests "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
+  NNAPIGTest "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
   TFLiteModelVerification "${BACKEND}" "${FRAMEWORK_TESTLIST}" "${REPORT_PATH}"
 
   if [ $EXECUTOR = "Interpreter" ]; then
