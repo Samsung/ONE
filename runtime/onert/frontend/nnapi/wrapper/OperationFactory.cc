@@ -133,6 +133,81 @@ Operation *createSimpleBinaryOp(const OperationFactory::Param &init_param, Opera
   return new T{inputs, outputs};
 }
 
+// A generator function for binary ops with no params
+template <typename T>
+Operation *createPool2DOp(const OperationFactory::Param &init_param, Operands &operands)
+{
+  assert(init_param.input_count == 7 || init_param.input_count == 10);
+  assert(init_param.output_count == 1);
+
+  // In common
+  //  0 -> IFM Tensor Index
+  OperandIndexSequence inputs{init_param.inputs[0]};
+  OperandIndexSequence outputs{init_param.outputs[0]};
+
+  typename T::Param param;
+  if (init_param.input_count == 7) // support implicit padding
+  {
+    // Each input should be interpreted as follows:
+    //
+    //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
+    //  2 -> Horizontal (over width) Stride Index
+    //  3 -> Vertial (over height) Stride Index
+    //  4 -> Filter Width Index
+    //  5 -> Filter Height Index
+    //  6 -> FuseCode (activation) Index
+
+    const auto padding_index = OperandIndex{init_param.inputs[1]};
+    const auto hstride_index = OperandIndex{init_param.inputs[2]};
+    const auto vstride_index = OperandIndex{init_param.inputs[3]};
+    const auto kw_index = OperandIndex{init_param.inputs[4]};
+    const auto kh_index = OperandIndex{init_param.inputs[5]};
+    const auto activation_index = OperandIndex{init_param.inputs[6]};
+
+    param.padding.type =
+        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+    param.stride = makeStride(operands, hstride_index, vstride_index);
+    param.kw = getUint32Scalar(operands, kw_index);
+    param.kh = operands.at(kh_index).asScalar<uint32_t>();
+    param.activation =
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+  }
+  else // support explicit padding
+  {
+    // Each input should be interpreted as follows:
+    //
+    //  1 -> Padding_left index
+    //  2 -> Padding_right index
+    //  3 -> Padding_top index
+    //  4 -> Padding_bottom index
+    //  5 -> Horizontal (over width) Stride Index
+    //  6 -> Vertial (over height) Stride Index
+    //  7 -> Filter Width Index
+    //  8 -> Filter Height Index
+    //  9 -> FuseCode (activation) Index
+
+    const auto padding_left_index = OperandIndex{init_param.inputs[1]};
+    const auto padding_right_index = OperandIndex{init_param.inputs[2]};
+    const auto padding_top_index = OperandIndex{init_param.inputs[3]};
+    const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
+    const auto hstride_index = OperandIndex{init_param.inputs[5]};
+    const auto vstride_index = OperandIndex{init_param.inputs[6]};
+    const auto kw_index = OperandIndex{init_param.inputs[7]};
+    const auto kh_index = OperandIndex{init_param.inputs[8]};
+    const auto activation_index = OperandIndex{init_param.inputs[9]};
+
+    param.padding.type = PaddingType::EXPLICIT;
+    param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
+                                              padding_top_index, padding_bottom_index);
+    param.stride = makeStride(operands, hstride_index, vstride_index);
+    param.kw = getUint32Scalar(operands, kw_index);
+    param.kh = getUint32Scalar(operands, kh_index);
+    param.activation =
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+  }
+  return new T{inputs, outputs, param};
+}
+
 } // namespace
 
 OperationFactory &OperationFactory::get()
@@ -220,153 +295,9 @@ OperationFactory::OperationFactory()
     return new operation::DepthwiseConv2D{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_MAX_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                         Operands &operands) {
-    assert(init_param.input_count == 7 || init_param.input_count == 10);
-    assert(init_param.output_count == 1);
+  _map[ANEURALNETWORKS_MAX_POOL_2D] = createPool2DOp<operation::MaxPool2D>;
 
-    // In common
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::MaxPool2D::Param param;
-    if (init_param.input_count == 7) // support implicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = operands.at(kh_index).asScalar<uint32_t>();
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else if (init_param.input_count == 10) // support explicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    return new operation::MaxPool2D{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_AVERAGE_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                             Operands &operands) {
-    // TODO We may reuse code here for MAX_POOL_2D. Seems like these two are identical
-    assert(init_param.input_count == 7 || init_param.input_count == 10);
-    assert(init_param.output_count == 1);
-
-    // In common
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::AvgPool2D::Param param;
-    if (init_param.input_count == 7) // support implicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else if (init_param.input_count == 10) // support explicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-
-    return new operation::AvgPool2D{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_AVERAGE_POOL_2D] = createPool2DOp<operation::AvgPool2D>;
 
   _map[ANEURALNETWORKS_CONCATENATION] = [](const OperationFactory::Param &init_param,
                                            Operands &operands) {
@@ -1128,76 +1059,7 @@ OperationFactory::OperationFactory()
     return new operation::SpaceToDepth{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_L2_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 10 || init_param.input_count == 7);
-    assert(init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    operation::L2Pool2D::Param param;
-
-    if (init_param.input_count == 7) // Imlicit Padding case
-    {
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else // Explicit Padding case
-    {
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-
-    return new operation::L2Pool2D{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_L2_POOL_2D] = createPool2DOp<operation::L2Pool2D>;
 
   _map[ANEURALNETWORKS_EMBEDDING_LOOKUP] = [](const OperationFactory::Param &init_param,
                                               Operands &) {
