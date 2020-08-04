@@ -154,7 +154,7 @@ int entry(int argc, char **argv)
     writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(),
                     output_data.size());
     // In case of Tensor output is Scalar value.
-    // undefined output will not appear in output of interpreter.
+    // The output tensor with rank 0 is treated as a scalar with shape (1)
     if (output_node->rank() == 0)
     {
       writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", "1", 1);
