@@ -6,6 +6,8 @@ This test framework consists of 3 kinds of tests:
 
 - Validation Tests (fixture format `ValidationTest???`)
     - Basic positive/negative tests with simple nnpackages
+- Generated Model Tests (fixture format `GenModelTest`)
+    - One-time inference test with variety of generated models
 - Regression Tests (fixture format `RegressionTest`, test format `GitHub###`)
     - When you see bugs/crashes while using those API
     - Must refer a github issue
