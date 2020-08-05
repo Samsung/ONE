@@ -1,3 +1,4 @@
+require("arser")
 require("circle2circle")
 require("circlechef")
 require("foder")
