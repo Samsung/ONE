@@ -116,8 +116,6 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena,
       _external_context->ruy_context());
 
-// TODO Remove this ifdef
-#ifdef EXPERIMENTAL_RUY_FEATURE
   if (_cached_weights == nullptr || _is_weights_freed)
     return;
 
@@ -147,7 +145,6 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   {
     _is_weights_freed = true;
   }
-#endif
 #endif
 }
 
@@ -197,8 +194,7 @@ void FullyConnectedLayer::prepare()
     }
   }
 
-#ifdef USE_RUY_GEMV
-#ifdef EXPERIMENTAL_RUY_FEATURE
+#if defined(__ARM_NEON__) && defined(USE_RUY_GEMV)
   // TODO This is workaround
   // The only fc hybrid will use ruy kernel
   if (_input->data_type() != OperandType::FLOAT32 ||
@@ -229,7 +225,6 @@ void FullyConnectedLayer::prepare()
       _cached_weights = _weights->buffer();
     }
   }
-#endif
 #endif
 }
 
