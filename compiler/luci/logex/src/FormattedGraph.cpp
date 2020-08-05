@@ -291,6 +291,7 @@ private:
   IMPLEMENT(luci::CircleTopKV2)
   IMPLEMENT(luci::CircleTranspose)
   IMPLEMENT(luci::CircleTransposeConv)
+  IMPLEMENT(luci::CircleUnique)
   IMPLEMENT(luci::CircleUnpack)
   IMPLEMENT(luci::CircleWhere)
   IMPLEMENT(luci::CircleWhile)
@@ -306,6 +307,7 @@ private:
   IMPLEMENT(luci::CircleSplitOut)
   IMPLEMENT(luci::CircleSplitVOut)
   IMPLEMENT(luci::CircleTopKV2Out)
+  IMPLEMENT(luci::CircleUniqueOut)
   IMPLEMENT(luci::CircleUnpackOut)
   IMPLEMENT(luci::CircleWhileOut)
 #undef IMPLEMENT
@@ -1227,6 +1229,14 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTransposeConv *node,
   return true;
 }
 
+bool CircleNodeSummaryBuilder::summary(const luci::CircleUnique *node, locop::NodeSummary &s) const
+{
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("idx_out_type", to_str(node->idx_out_type()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool CircleNodeSummaryBuilder::summary(const luci::CircleUnpack *node, locop::NodeSummary &s) const
 {
   s.args().append("value", tbl()->lookup(node->value()));
@@ -1290,6 +1300,16 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleTopKV2Out *node,
 {
   s.args().append("topkv2", tbl()->lookup(node->input()));
   s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleUniqueOut *node,
+                                       locop::NodeSummary &s) const
+{
+  s.args().append("unique", tbl()->lookup(node->input()));
+
+  s.state(locop::NodeSummary::State::Complete);
+
   return true;
 }
 
