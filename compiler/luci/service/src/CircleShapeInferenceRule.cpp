@@ -1121,6 +1121,40 @@ public:
     return loco::NodeShape{output_shape};
   }
 
+  loco::NodeShape visit(const luci::CirclePadV2 *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+
+    // TODO support non-const case
+    // TODO support other data type
+    LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+    LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
+
+    int32_t n = paddings->dim(0).value();
+    int32_t v = paddings->dim(1).value();
+
+    LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
+    LUCI_ASSERT(n == int32_t(input_shape.rank()),
+                "paddings [n, 2] should have same value of input rank");
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(input_shape.rank());
+    for (int32_t ni = 0; ni < n; ++ni)
+    {
+      int32_t idx = ni * 2;
+      int value = input_shape.dim(ni).value();
+      value += paddings->at<S32>(idx + 0); // left
+      value += paddings->at<S32>(idx + 1); // right
+      output_shape.dim(ni) = value;
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
   loco::NodeShape visit(const luci::CirclePow *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CirclePRelu *node) final
