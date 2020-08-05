@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_DEBUG_H__
-#define __NNFW_DEBUG_H__
+#ifndef __NNFW_INTERNAL_H__
+#define __NNFW_INTERNAL_H__
 
 #include "nnfw.h"
 
@@ -23,4 +23,4 @@ NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *
 
 NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size);
 
-#endif // __NNFW_DEBUG_H__
+#endif // __NNFW_INTERNAL_H__

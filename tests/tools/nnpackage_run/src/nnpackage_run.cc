@@ -22,7 +22,7 @@
 #endif
 #include "nnfw.h"
 #include "nnfw_util.h"
-#include "nnfw_debug.h"
+#include "nnfw_internal.h"
 #include "randomgen.h"
 #ifdef RUY_PROFILER
 #include "ruy/profiler/profiler.h"

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_DEV_H__
-#define __NNFW_DEV_H__
+#ifndef __NNFW_EXPERIMENTAL_H__
+#define __NNFW_EXPERIMENTAL_H__
 
 #include "nnfw.h"
 
@@ -62,4 +62,4 @@ typedef struct
 NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
                                          custom_kernel_registration_info *info);
 
-#endif // __NNFW_DEV_H__
+#endif // __NNFW_EXPERIMENTAL_H__

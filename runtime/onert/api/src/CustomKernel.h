@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_CUSTOM_KERNEL_H__
 #define __ONERT_BACKEND_CUSTOM_KERNEL_H__
 
-#include "nnfw_dev.h"
+#include "nnfw_experimental.h"
 
 #include "backend/CustomKernelBuilder.h"
 #include "exec/IFunction.h"

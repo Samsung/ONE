@@ -42,7 +42,7 @@ typedef void (*nnfw_custom_eval)(nnfw_custom_kernel_params *params, char *userda
 ```
 
 The structures and relevant APIs are defined in nnfw APIs.
-Please see `nnfw_dev.h` for detail.
+Please see `nnfw_experimental.h` for detail.
 
 You can find example in `nnfw` repository.
 

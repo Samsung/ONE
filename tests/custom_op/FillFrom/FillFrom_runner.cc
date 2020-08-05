@@ -15,7 +15,7 @@
  */
 
 #include "nnfw.h"
-#include "nnfw_dev.h"
+#include "nnfw_experimental.h"
 
 #include <cassert>
 #include <iostream>

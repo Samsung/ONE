@@ -18,7 +18,7 @@
 #define __API_NNFW_API_INTERNAL_H__
 
 #include "nnfw.h"
-#include "nnfw_dev.h"
+#include "nnfw_experimental.h"
 
 #include <util/GeneralConfigSource.h>
 

@@ -107,7 +107,7 @@ $ tree -L 3 ./Product/out
 │   │   ├── NeuralNetworksEx.h
 │   │   ├── NeuralNetworksExtensions.h
 │   │   ├── NeuralNetworks.h
-│   │   ├── nnfw_dev.h
+│   │   ├── nnfw_experimental.h
 │   │   └── nnfw.h
 │   └── onert
 │       ├── backend
