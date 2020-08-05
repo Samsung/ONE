@@ -8,6 +8,7 @@
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 WORKDIR="$1"; shift
+BINDIR="$1"; shift
 VERIFY_BINARY_PATH="$1"; shift
 
 TESTED=()
@@ -19,14 +20,14 @@ for TESTCASE in "$@"; do
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}_w.passed"
+  PASSED_TAG="${BINDIR}/${TESTCASE}_w.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}_w.log" <(
+  cat > "${BINDIR}/${TESTCASE}_w.log" <(
     exec 2>&1
     set -ex
 
-    "${VERIFY_BINARY_PATH}" "${TESTCASE_FILE}.circle" "${TESTCASE_FILE}_w.circle"
+    "${VERIFY_BINARY_PATH}" "${TESTCASE_FILE}.circle" "${BINDIR}/${TESTCASE}_w.circle"
 
     if [[ $? -eq 0 ]]; then
       touch "${PASSED_TAG}"

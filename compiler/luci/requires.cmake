@@ -1,3 +1,4 @@
+require("common-artifacts")
 require("foder")
 require("loco")
 require("locop")

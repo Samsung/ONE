@@ -11,6 +11,7 @@ VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export LUCI_LOG=100
 
 WORKDIR="$1"; shift
+BINDIR="$1"; shift
 VERIFY_BINARY_PATH="$1"; shift
 
 TESTED=()
@@ -22,10 +23,10 @@ for TESTCASE in "$@"; do
 
   TESTCASE_FILE="${WORKDIR}/${TESTCASE}"
 
-  PASSED_TAG="${TESTCASE_FILE}.passed"
+  PASSED_TAG="${BINDIR}/${TESTCASE}.passed"
   rm -f "${PASSED_TAG}"
 
-  cat > "${TESTCASE_FILE}.log" <(
+  cat > "${BINDIR}/${TESTCASE}.log" <(
     exec 2>&1
     set -ex
 
