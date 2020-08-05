@@ -14,7 +14,7 @@ difftool=${difftool:-"h5diff"}
 delete_dumped_on_failure=0
 
 usage() {
-  echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [options] nnpackage_test"
+  echo "Usage: $0 $progname [options] nnpackage_test"
   echo "Run an nnpackage testcase"
   echo ""
   echo "Returns"
@@ -33,8 +33,8 @@ usage() {
   echo "   difftool         path to i5diff or h5diff (default=h5diff)"
   echo ""
   echo "Examples:"
-  echo "    $progname Add_000                => run $indir/Add_000 and check output"
-  echo "    $progname -i nnpkg-tcs Add_000   => run nnpkg-tcs/Add_000 and check output"
+  echo "    $0 $progname Add_000                => run $indir/Add_000 and check output"
+  echo "    $0 $progname -i nnpkg-tcs Add_000   => run nnpkg-tcs/Add_000 and check output"
   exit 1
 }
 
