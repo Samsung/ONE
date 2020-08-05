@@ -16,6 +16,7 @@
 
 #include "nnfw.h"
 #include <vector>
+#include <iostream>
 
 uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
@@ -65,5 +66,6 @@ int main(const int argc, char **argv)
 
   nnfw_close_session(session);
 
+  std::cout << "nnpackage " << argv[1] << " runs successfully." << std::endl;
   return 0;
 }
