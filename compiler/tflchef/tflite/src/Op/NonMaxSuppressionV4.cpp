@@ -17,6 +17,7 @@
 #include "NonMaxSuppressionV4.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -26,27 +27,18 @@ void TFliteOpNonMaxSuppressionV4::filler(const tflite::Operator *op, TFliteImpor
 {
   const auto &inputs = *op->inputs();
 
-  // for input max_output_size
-  const tflite::Tensor *tensor = import->tensors()->Get(inputs[2]);
-  assert(tensor->type() == tflite::TensorType::TensorType_INT32);
-  const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
-  if (buffer && buffer->data() != nullptr)
-  {
-    auto vec = extract_buffer<int32_t>(buffer);
-    import->set_tensor_filler(inputs[2], vec);
-  }
+  const tflite::Tensor *max_output_size_tensor = import->tensors()->Get(inputs[2]);
+  assert(max_output_size_tensor->type() == tflite::TensorType::TensorType_INT32);
 
-  // for iou and score thresholds
-  for (int32_t index = 3; index <= 4; ++index)
+  const tflite::Tensor *iou_threshold_tensor = import->tensors()->Get(inputs[3]);
+  assert(iou_threshold_tensor->type() == tflite::TensorType::TensorType_FLOAT32);
+
+  const tflite::Tensor *score_threshold_tensor = import->tensors()->Get(inputs[4]);
+  assert(score_threshold_tensor->type() == tflite::TensorType::TensorType_FLOAT32);
+
+  for (int32_t index = 2; index < 5; ++index)
   {
-    const tflite::Tensor *tensor = import->tensors()->Get(inputs[index]);
-    assert(tensor->type() == tflite::TensorType::TensorType_FLOAT32);
-    const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
-    if (buffer && buffer->data() != nullptr)
-    {
-      auto vec = extract_buffer<float>(buffer);
-      import->set_tensor_filler(inputs[index], vec);
-    }
+    fill_tensor_to_import(index, import);
   }
 }
 
