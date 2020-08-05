@@ -14,8 +14,10 @@ output = tf.compat.v1.identity(r, name="Output")
 
 # by adding the following code, [[1 1 1 1 1 1 1 1 1 1]] and (1, 10) will be printed
 #
+# import numpy as np
+# x_val = np.array([[1]])
 # with tf.Session() as sess:
-#   result = sess.run(r)
+#   result = sess.run(r, feed_dict={x:x_val})
 #   print(result)
 #   print(result.shape)
 
