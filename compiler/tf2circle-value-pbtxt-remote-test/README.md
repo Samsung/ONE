@@ -36,13 +36,13 @@
         #--------------- Remote Machine Setting ---------------#
         set(REMOTE_IP "xxx.xxx.xxx.xxx")
         set(REMOTE_USER "remote_username")
-        
+
         #--------------------- Tests list ---------------------#
         add(UNIT_Add_000)
         add(UNIT_Add_001)
         ...
         ```
-    - If any Tensorflow model is added, or if `REMOTE_IP` and `REMOTE_USER` is not given, `tf2circle-value-pbtxt-remote-test` will not be created. 
+    - If any Tensorflow model is added, or if `REMOTE_IP` and `REMOTE_USER` is not given, `tf2circle-value-pbtxt-remote-test` will not be created.
 1. (Optional) ssh authentication
     - This test uses `ssh` and `scp` commands, and those commands require a password of remote machine whenever they are called. This means that you should enter the password everytime when `ssh` and `scp` require.
     - This test resolves the problem by using `ssh-copy-id`, which copies the public key of host machine to `authorized_keys` of remote machine. Because of that, this test will ask the password of remote machine only once, at the first time. This is the only user interaction while running this test.
@@ -71,7 +71,7 @@
         ├ Result_latest -> Result_YYMMDD_hhmmss.csv
         ├ Result_YYMMDD_hhmmss.csv
         ├ ...
-        | 
+        |
         ├ UNIT_Add_000
         |     ├ metadata
         |     |     ├ MANIFEST
@@ -91,16 +91,16 @@
         |
         ├ ...
     ```
-- `nnpkg_test.sh`, runtime products and each nnpackage are sent to `REMOTE_WORKDIR` in remote machine.
+- Runtime products and each nnpackage are sent to `REMOTE_WORKDIR` in remote machine.
 - (TBD) Modify script not to remove obtained h5 file.
     ```
     REMOTE_WORKDIR
-        ├ nnpkg_test.sh
         |
         ├ Product
         |     └ out
         |        ├ bin
         |        ├ lib
+        |        ├ test
         |        ├ ...
         |
         ├ UNIT_Add_000
