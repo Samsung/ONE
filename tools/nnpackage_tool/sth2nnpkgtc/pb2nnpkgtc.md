@@ -55,7 +55,7 @@ test_model.conv2d_transpose
 
 # @ target
 $ OP_BACKEND_ALLOPS=cpu \
-tests/scripts/nnpkg_test.sh test_model.conv2d_transpose
+onert/test/onert-test nnpkg-test test_model.conv2d_transpose
 [  Run  ] ./test_model.out   Pass
 [Compare] ./test_model.out   Pass
 ```

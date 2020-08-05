@@ -42,5 +42,5 @@ nnpkg-tcs/cast
 
 # @ target
 # run nnpkg with nnpackage_run and compare with h5diff
-$ tests/scripts/nnpkg_test.sh -i nnpkg-tcs cast
+$ onert/test/onert-test nnpkg-test -i nnpkg-tcs cast
 ```

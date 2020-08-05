@@ -19,10 +19,13 @@
 #   Run ./tests/scripts/test-driver.sh script unittest
 #
 # NNPackageTest $1 $2
-#   Run ./tests/scripts/nnpkg_test.sh script nnpackage test
+#   Run [INSTALL_PATH]/test/onert-test nnpkg-test command
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
+
+# Install path on CI
+INSTALL_PATH=$ROOT_PATH/Product/out
 
 function CheckTestPrepared()
 {
@@ -115,7 +118,7 @@ function NNPackageTest()
   do
     for entry in "nnpkg-tcs"/$f; do
       if [ -e $entry ]; then
-        BACKENDS="$1" tests/scripts/nnpkg_test.sh -d -i nnpkg-tcs $(basename "$entry")
+        BACKENDS="$1" $INSTALL_PATH/test/onert-test nnpkg-test -d -i nnpkg-tcs $(basename "$entry")
       fi
     done
     EXITCODE_F=$?
