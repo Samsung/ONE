@@ -56,7 +56,7 @@ const std::string node_name_prefix(luci::NodeName node_name)
   else if (prefix.find("/MatMul") != std::string::npos)
   {
     const auto index = prefix.find("/MatMul");
-    prefix = prefix.substr(0, index - 1);
+    prefix = prefix.substr(0, index);
   }
   else if (prefix.find("kernel/") != std::string::npos)
   {
