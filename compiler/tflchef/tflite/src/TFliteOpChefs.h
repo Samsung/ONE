@@ -72,6 +72,7 @@
 #include "Op/OneHot.h"
 #include "Op/Pack.h"
 #include "Op/Pad.h"
+#include "Op/PadV2.h"
 #include "Op/Pow.h"
 #include "Op/PRelu.h"
 #include "Op/Range.h"

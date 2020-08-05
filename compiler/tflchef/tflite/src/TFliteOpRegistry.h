@@ -109,6 +109,7 @@ private:
     REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
     REG_TFL_OP(PAD, TFliteOpPad);
+    REG_TFL_OP(PADV2, TFliteOpPadV2);
     REG_TFL_OP(POW, TFliteOpPow);
     REG_TFL_OP(PRELU, TFliteOpPRelu);
     REG_TFL_OP(RANGE, TFliteOpRange);
