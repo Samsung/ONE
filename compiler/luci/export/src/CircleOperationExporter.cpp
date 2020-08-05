@@ -106,6 +106,7 @@ public:
   void visit(luci::CircleOneHot *) final;
   void visit(luci::CirclePack *) final;
   void visit(luci::CirclePad *) final;
+  void visit(luci::CirclePadV2 *) final;
   void visit(luci::CirclePow *) final;
   void visit(luci::CirclePRelu *) final;
   void visit(luci::CircleRange *) final;
@@ -717,6 +718,12 @@ void OperationExporter::visit(luci::CirclePad *node)
 {
   export_simple(node, circle::BuiltinOperator_PAD, circle::BuiltinOptions_PadOptions,
                 CreatePadOptions(builder).Union());
+}
+
+void OperationExporter::visit(luci::CirclePadV2 *node)
+{
+  export_simple(node, circle::BuiltinOperator_PADV2, circle::BuiltinOptions_PadV2Options,
+                CreatePadV2Options(builder).Union());
 }
 
 void OperationExporter::visit(luci::CirclePow *node)
