@@ -63,11 +63,8 @@ template <typename T> void geneate_random_data(std::mt19937 &gen, void *data, ui
   }
 }
 
-void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t seed = 0)
+void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t seed)
 {
-  std::random_device rd; // used to obtain a seed for the random number engine
-  if (not seed)
-    seed = rd();
   std::mt19937 gen(seed); // standard mersenne_twister_engine seeded with rd()
 
   switch (dtype)
@@ -157,6 +154,7 @@ int entry(int argc, char **argv)
   std::unique_ptr<H5::Group> output_value_group =
       std::make_unique<H5::Group>(output_file.createGroup("value"));
 
+  std::random_device rd; // used to obtain a seed for the random number engine
   uint32_t input_index = 0;
   for (uint32_t g = 0; g < circle_model->subgraphs()->size(); g++)
   {
@@ -196,9 +194,9 @@ int entry(int argc, char **argv)
 
       // generate random data
       if (arser["--fixed_seed"])
-        fill_random_data(data.data(), data_size, input_node->dtype(), 1);
+        fill_random_data(data.data(), data_size, input_node->dtype(), 0);
       else
-        fill_random_data(data.data(), data_size, input_node->dtype());
+        fill_random_data(data.data(), data_size, input_node->dtype(), rd());
 
       dataset->write(data.data(), dtype);
 
