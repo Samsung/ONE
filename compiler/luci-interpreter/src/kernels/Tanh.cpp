@@ -82,7 +82,7 @@ void Tanh::populateLookupTable()
   for (int32_t val = minval; val <= maxval; ++val)
   {
     const float dequantized = input_scale * (val - input_zero_point);
-    const float transformed = 1.0f / (1.0f + std::exp(-dequantized));
+    const float transformed = std::tanh(dequantized);
     const float rescaled = std::round(transformed * inverse_scale);
     const int32_t quantized = static_cast<int32_t>(rescaled + output_zero_point);
     setTableValue(static_cast<uint8_t>(std::max(std::min(maxval, quantized), minval)),
