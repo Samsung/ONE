@@ -350,11 +350,7 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   IPortableTensor *crops_alloc = nullptr;
   const auto NNApiInputs = 2;
 
-  if (node.getInputs().size() == NNApiInputs)
-  {
-    crops_alloc = nullptr;
-  }
-  else
+  if (node.getInputs().size() != NNApiInputs)
   {
     const auto crops_data_index{node.getInputs().at(ir::operation::BatchToSpaceND::CROPS_DATA)};
     crops_alloc = _tensor_builder->portableAt(crops_data_index).get();

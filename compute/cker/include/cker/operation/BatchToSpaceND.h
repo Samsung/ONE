@@ -20,6 +20,8 @@
 
 #include "cker/Shape.h"
 
+#define UNUSED(x) ((void)(x))
+
 namespace nnfw
 {
 namespace cker
@@ -49,13 +51,29 @@ inline void BatchToSpaceND(const Shape &unextended_input1_shape, const T *input1
                            const int32_t *block_shape_data, const int32_t *crops_data,
                            const Shape &unextended_output_shape, T *output_data)
 {
+  auto input_dim = unextended_input1_shape.DimensionsCount();
+  auto output_dim = unextended_output_shape.DimensionsCount();
 
-  assert(unextended_input1_shape.DimensionsCount() >= 3);
-  assert(unextended_input1_shape.DimensionsCount() <= 4);
-  assert(unextended_input1_shape.DimensionsCount() == unextended_output_shape.DimensionsCount());
+  assert(input_dim == 3 || input_dim == 4);
+  assert(input_dim == output_dim);
 
-  const Shape input1_shape = Shape::ExtendedShape(4, unextended_input1_shape);
-  const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
+  UNUSED(input_dim);
+  UNUSED(output_dim);
+
+  // Extends the input/output shape from 3D to 4D if needed, NHC -> NH1C.
+  auto extend_shape = [](const Shape &shape) {
+    if (shape.DimensionsCount() == 4)
+    {
+      return shape;
+    }
+    Shape new_shape(4, 1);
+    new_shape.SetDim(0, shape.Dims(0));
+    new_shape.SetDim(1, shape.Dims(1));
+    new_shape.SetDim(3, shape.Dims(2));
+    return new_shape;
+  };
+  const Shape input1_shape = extend_shape(unextended_input1_shape);
+  const Shape output_shape = extend_shape(unextended_output_shape);
 
   const int32_t output_width = output_shape.Dims(2);
   const int32_t output_height = output_shape.Dims(1);

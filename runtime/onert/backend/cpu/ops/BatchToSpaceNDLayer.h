@@ -51,7 +51,6 @@ private:
   IPortableTensor *_output;
   IPortableTensor *_block_shape;
   IPortableTensor *_crops;
-  //  const int32_t *_crops_buffer;
 };
 
 } // namespace ops

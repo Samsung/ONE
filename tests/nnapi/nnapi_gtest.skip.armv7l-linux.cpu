@@ -1,6 +1,4 @@
 GeneratedTests.abs_
-GeneratedTests.batch_to_space
-GeneratedTests.batch_to_space_float_1
 GeneratedTests.batch_to_space_quant8_1
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
