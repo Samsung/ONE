@@ -876,6 +876,16 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
     # RangeOptions: not supported
     # ResizeNearestNeighborOptions: not supported
     # LeakyReluOptions: not supported
+    import tflite.LeakyReluOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().LeakyReluOptions:
+
+        leaky_relu_option = tflite.LeakyReluOptions.LeakyReluOptions()
+        leaky_relu_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.LeakyReluOptions.LeakyReluOptionsStart(new_builder)
+        tflite.LeakyReluOptions.LeakyReluOptionsAddAlpha(new_builder,
+                                                         leaky_relu_option.Alpha())
+        return tflite.LeakyReluOptions.LeakyReluOptionsEnd(new_builder)
 
     # SquaredDifferenceOptions
     import tflite.SquaredDifferenceOptions

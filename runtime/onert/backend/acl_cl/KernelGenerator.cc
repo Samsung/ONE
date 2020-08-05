@@ -1723,6 +1723,26 @@ void KernelGenerator::visit(const ir::operation::ConvertFp16ToFp32 &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::LeakyRelu &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::LeakyRelu::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+
+  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
+
+  const ::arm_compute::ActivationLayerInfo act_info{
+      ::arm_compute::ActivationLayerInfo::ActivationFunction::LEAKY_RELU, node.param().alpha};
+
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 } // namespace acl_cl
 } // namespace backend
 } // namespace onert

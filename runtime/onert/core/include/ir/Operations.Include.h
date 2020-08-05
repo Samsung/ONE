@@ -98,3 +98,4 @@
 #include "ir/operation/LogSoftmax.h"
 #include "ir/operation/Quantize.h"
 #include "ir/operation/StatelessRandomUniform.h"
+#include "ir/operation/LeakyRelu.h"

@@ -94,6 +94,7 @@ public:
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::ConvertFp32ToFp16 &) override;
   void visit(const ir::operation::ConvertFp16ToFp32 &) override;
+  void visit(const ir::operation::LeakyRelu &) override;
 
 private:
   const ir::Operands &_ctx;
