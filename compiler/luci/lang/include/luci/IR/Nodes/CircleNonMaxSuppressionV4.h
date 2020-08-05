@@ -55,7 +55,7 @@ public:
   }
 
 private:
-  bool _pad_to_max_output_size{0};
+  bool _pad_to_max_output_size{false};
 };
 
 } // namespace luci

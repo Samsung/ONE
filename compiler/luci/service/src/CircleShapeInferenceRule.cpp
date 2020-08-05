@@ -2041,7 +2041,7 @@ public:
 
     auto unknown = loco::TensorShape{loco::Dimension()};
     auto max_output_size = dynamic_cast<const luci::CircleConst *>(nmsv4->max_output_size());
-    if (max_output_size == nullptr)
+    if (max_output_size == nullptr || max_output_size->size<S32>() < 1)
       return unknown; // we need CircleConst for max output size
     LUCI_ASSERT(max_output_size->dtype() == S32, "Only support int32 for max_output_size");
 
