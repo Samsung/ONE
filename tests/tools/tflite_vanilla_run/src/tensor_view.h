@@ -20,8 +20,8 @@
  * @ingroup  COM_AI_RUNTIME
  */
 
-#ifndef __TFLITE_RUN_2_2_0_TENSOR_VIEW_H__
-#define __TFLITE_RUN_2_2_0_TENSOR_VIEW_H__
+#ifndef __TFLITE_VANILLA_RUN_TENSOR_VIEW_H__
+#define __TFLITE_VANILLA_RUN_TENSOR_VIEW_H__
 
 #include "tensorflow/lite/interpreter.h"
 
@@ -30,7 +30,7 @@
 #include "misc/tensor/Reader.h"
 #include "misc/tensor/NonIncreasingStride.h"
 
-namespace TFLiteRun220
+namespace TFLiteVanillaRun
 {
 
 /**
@@ -112,6 +112,6 @@ public:
   }
 };
 
-} // namespace TFLiteRun220
+} // namespace TFLiteVanillaRun
 
-#endif // __TFLITE_RUN_2_2_0_TENSOR_VIEW_H__
+#endif // __TFLITE_VANILLA_RUN_TENSOR_VIEW_H__

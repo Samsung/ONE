@@ -18,7 +18,7 @@
 
 #include <iostream>
 
-namespace TFLiteRun220
+namespace TFLiteVanillaRun
 {
 
 Args::Args(const int argc, char **argv) noexcept
@@ -205,4 +205,4 @@ void Args::Parse(const int argc, char **argv)
   }
 }
 
-} // end of namespace TFLiteRun220
+} // end of namespace TFLiteVanillaRun

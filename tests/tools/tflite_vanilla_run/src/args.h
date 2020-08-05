@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __TFLITE_RUN_2_2_0_ARGS_H__
-#define __TFLITE_RUN_2_2_0_ARGS_H__
+#ifndef __TFLITE_VANILLA_RUN_ARGS_H__
+#define __TFLITE_VANILLA_RUN_ARGS_H__
 
 #include <string>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
-namespace TFLiteRun220
+namespace TFLiteVanillaRun
 {
 
 class Args
@@ -68,6 +68,6 @@ private:
   int _verbose_level;
 };
 
-} // end of namespace TFLiteRun220
+} // end of namespace TFLiteVanillaRun
 
-#endif // __TFLITE_RUN_2_2_0_ARGS_H__
+#endif // __TFLITE_VANILLA_RUN_ARGS_H__

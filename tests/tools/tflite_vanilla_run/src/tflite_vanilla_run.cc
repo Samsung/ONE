@@ -79,7 +79,7 @@ int main(const int argc, char **argv)
 {
   tflite::StderrReporter error_reporter;
 
-  TFLiteRun220::Args args(argc, argv);
+  TFLiteVanillaRun::Args args(argc, argv);
 
   std::chrono::milliseconds t_model_load(0), t_prepare(0);
 
@@ -148,7 +148,7 @@ int main(const int argc, char **argv)
     if (tensor->type == kTfLiteInt32)
     {
       // Generate singed 32-bit integer (s32) input
-      auto tensor_view = TFLiteRun220::TensorView<int32_t>::make(*interpreter, o);
+      auto tensor_view = TFLiteVanillaRun::TensorView<int32_t>::make(*interpreter, o);
 
       int32_t value = 0;
 
@@ -163,7 +163,7 @@ int main(const int argc, char **argv)
     else if (tensor->type == kTfLiteUInt8)
     {
       // Generate unsigned 8-bit integer input
-      auto tensor_view = TFLiteRun220::TensorView<uint8_t>::make(*interpreter, o);
+      auto tensor_view = TFLiteVanillaRun::TensorView<uint8_t>::make(*interpreter, o);
 
       uint8_t value = 0;
 
@@ -177,7 +177,7 @@ int main(const int argc, char **argv)
     else if (tensor->type == kTfLiteBool)
     {
       // Generate bool input
-      auto tensor_view = TFLiteRun220::TensorView<bool>::make(*interpreter, o);
+      auto tensor_view = TFLiteVanillaRun::TensorView<bool>::make(*interpreter, o);
 
       auto fp = static_cast<bool (nnfw::misc::RandomGenerator::*)(
           const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
