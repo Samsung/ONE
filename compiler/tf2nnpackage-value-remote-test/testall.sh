@@ -27,14 +27,8 @@ RESULT_CSV="${BINDIR}/Result_${CURRENT_DATETIME}.csv"
 
 source "${CONFIG_PATH}"
 
-echo "-- Found nnpkg_test: ${NNPKG_TEST_PATH}"
 echo "-- Found Runtime library: ${RUNTIME_LIBRARY_PATH}"
 echo "-- Found workdir: ${WORKDIR}"
-
-if [ -z ${NNPKG_TEST_PATH} ] || [ ! -f ${NNPKG_TEST_PATH} ]; then
-  echo "nnpkg_test is not found"
-  exit 4
-fi
 
 # Register remote machine ssh information
 cat /dev/zero | ssh-keygen -q -N ""
@@ -49,9 +43,6 @@ fi
 # Send runtime library files
 ssh "${REMOTE_USER}@${REMOTE_IP}" "mkdir -p ${REMOTE_WORKDIR}/Product/"
 scp -r "${RUNTIME_LIBRARY_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/Product/"
-
-# Send nnpkg_test.sh
-scp "${NNPKG_TEST_PATH}" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/"
 
 TESTED=()
 PASSED=()
@@ -84,8 +75,8 @@ while [[ $# -ne 0 ]]; do
     PREFIX=${PREFIX}.opt ;
     fi
     scp -r "${PREFIX}/" "${REMOTE_USER}@${REMOTE_IP}:${REMOTE_WORKDIR}/${PREFIX}/"
-    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./nnpkg_test.sh ${PREFIX}"
-    
+    ssh "${REMOTE_USER}@${REMOTE_IP}" "cd ${REMOTE_WORKDIR}; ./Product/out/test/onert-test nnpkg-test ${PREFIX}"
+
     if [[ $? -eq 0 ]]; then
       touch "${BINDIR}/${PASSED_TAG}"
     fi

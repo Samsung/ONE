@@ -33,12 +33,12 @@ endforeach()
 
 get_target_property(ARTIFACTS_SRC_PATH testDataGenerator SOURCE_DIR)
 
-# In this test, only the runtime test is performed because the test from tf to 
-# nnpackage is done in common-artifacts, and for this runtime test, generation of 
+# In this test, only the runtime test is performed because the test from tf to
+# nnpackage is done in common-artifacts, and for this runtime test, generation of
 # test data is required. And, tcgenerate in ${ARTIFACTS_SRC_PATH}/exclude.lst
 # means it won't generate test data, which is why below "tcgenerate" macro excludes
-# specific opearators from runtime test. 
-# Also, since circlize and optimize macro included in `exclude.lst` file is only 
+# specific opearators from runtime test.
+# Also, since circlize and optimize macro included in `exclude.lst` file is only
 # needed in common-artifacts, it has no function here.
 macro(circlize)
 endmacro()
@@ -72,7 +72,6 @@ set(TEST_CONFIG "${CMAKE_CURRENT_BINARY_DIR}/test.config")
 add_custom_command(
   OUTPUT ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'NNPKG_TEST_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/tests/scripts/nnpkg_test.sh\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'RUNTIME_LIBRARY_PATH=\"${NNAS_PROJECT_SOURCE_DIR}/Product/out/\"' >> ${TEST_CONFIG}
   COMMENT "Generate test configuration"
 )
