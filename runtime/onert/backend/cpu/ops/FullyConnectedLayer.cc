@@ -19,6 +19,7 @@
 #include "../Tensor.h"
 #include <cker/operation/FullyConnected.h>
 #include <cker/TensorUtils.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
@@ -130,23 +131,21 @@ void FullyConnectedLayer::fullyConnectedHybrid()
   if (nnfw::cker::IsZeroVector(reinterpret_cast<float *>(_input->buffer()), input_size))
     return;
 
+  auto weight_tensor = nnfw::misc::polymorphic_downcast<const Tensor *>(_weights);
+
   // This weight tensor could be other ops' const tensor.
   // Therefore, below reference should be checked like following
-  auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
-  if (weight_tensor)
+  auto tensor = const_cast<Tensor *>(weight_tensor);
+  if (tensor->buffer() == nullptr) // ref is already 0?
   {
-    auto tensor = const_cast<Tensor *>(weight_tensor);
-    if (tensor->buffer() == nullptr) // ref is already 0?
-    {
-      _is_weights_freed = true;
-      return;
-    }
+    _is_weights_freed = true;
+    return;
+  }
 
-    tensor->decrease_ref();
-    if (tensor->buffer() == nullptr) // ref == 0?
-    {
-      _is_weights_freed = true;
-    }
+  tensor->decrease_ref();
+  if (tensor->buffer() == nullptr) // ref == 0?
+  {
+    _is_weights_freed = true;
   }
 #endif
 #endif
