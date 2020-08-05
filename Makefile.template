@@ -108,7 +108,9 @@ build: build_internal
 
 install: $(TIMESTAMP_INSTALL)
 
-create_tar: runtime_tar_internal
+create_package: runtime_tar_internal
+
+create_acl_tar: acl_tar_internal
 
 clean:
 	rm -rf $(WORKSPACE)
@@ -149,10 +151,13 @@ install_internal:
 	touch $(TIMESTAMP_INSTALL)
 
 runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
-	tar -zcf nnfw-package.tar.gz -C $(INSTALL_PATH) lib
-	tar -zcf nnfw-dev-package.tar.gz -C $(INSTALL_PATH) include/nnfw
-	tar -zcf nnfw-internal-dev-package.tar.gz -C $(INSTALL_PATH) include/onert
-	mv nnfw-*package.tar.gz $(INSTALL_PATH)/.
+	tar -zcf $(WORKSPACE)/nnfw-package.tar.gz -C $(INSTALL_PATH) lib
+	tar -zcf $(WORKSPACE)/nnfw-devel-package.tar.gz -C $(INSTALL_PATH) include/nnfw
+	tar -zcf $(WORKSPACE)/nnfw-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
+	tar -zcf $(WORKSPACE)/nnfw-test-package.tar.gz -C ${INSTALL_PATH} bin tests test unittest unittest_standalone
+
+acl_tar_internal: $(BUILD_FOLDER)
+	tar -zcf $(WORKSPACE)/nnfw-acl.tar.gz -C ${OVERLAY_FOLDER} lib
 
 install_internal_acl:
 # Workaround to install acl for test (ignore error when there is no file to copy)
