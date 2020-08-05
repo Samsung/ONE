@@ -364,7 +364,7 @@ message GatherNdOptions {
 }
 
 message NonMaxSuppressionV4Options {
-  optional bool pad_to_max_output_size = 1 [default = false];
+  // None
 }
 
 message NotEqualOptions {

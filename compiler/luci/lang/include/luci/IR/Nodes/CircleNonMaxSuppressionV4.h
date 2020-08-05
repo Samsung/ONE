@@ -46,16 +46,6 @@ public:
 
   loco::Node *score_threshold(void) const { return at(4)->node(); }
   void score_threshold(loco::Node *node) { at(4)->node(node); }
-
-public:
-  bool pad_to_max_output_size(void) const { return _pad_to_max_output_size; }
-  void pad_to_max_output_size(bool pad_to_max_output_size)
-  {
-    _pad_to_max_output_size = pad_to_max_output_size;
-  }
-
-private:
-  bool _pad_to_max_output_size{false};
 };
 
 } // namespace luci
