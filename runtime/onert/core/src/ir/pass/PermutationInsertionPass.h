@@ -38,6 +38,7 @@ public:
   std::string id() override { return "PermutationInsertionPass"; }
   void callback(const OperandIndex &index, Operand &object) override;
 
+private:
   /**
    * @brief Insert Permute operation that has given operand as input
    *
@@ -48,8 +49,6 @@ public:
    */
   OperationIndex insertPermute(const OperandIndex &operand_index,
                                const operand::PermuteFactor &factor);
-
-private:
 };
 
 } // namespace pass
