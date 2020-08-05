@@ -53,18 +53,21 @@ void CLFullyConnectedReshapingLayer::configure(const arm_compute::ICLTensor *inp
       fc->configure(input_to_use, _weights, _biases, _output);
       return std::unique_ptr<arm_compute::IFunction>(fc);
     }
-    else
+    else if (kernel_type == KernelType::PREPROCESSED_WEIGHTS)
     {
-      assert(kernel_type == KernelType::PREPROCESSED_WEIGHTS);
-
       bool is_hybrid = (input->info()->data_type() == DataType::F32 ||
                         input->info()->data_type() == DataType::F16) &&
-                       weights->info()->data_type() == DataType::S8;
+                       (weights->info()->data_type() == DataType::S8 ||
+                        weights->info()->data_type() == DataType::QASYMM8_SIGNED);
 
       if (is_hybrid)
       {
         auto fc = new arm_compute::CLFullyConnectedHybridLayer{_memory_manager};
+        ITensorInfo *weights_info = const_cast<ITensorInfo *>(_weights->info());
+        const auto orgin_weights_data_type = weights_info->data_type();
+        weights_info->set_data_type(DataType::QASYMM8_SIGNED);
         fc->configure(input_to_use, _weights, _biases, _output);
+        weights_info->set_data_type(orgin_weights_data_type);
         return std::unique_ptr<arm_compute::IFunction>(fc);
       }
       else
@@ -74,6 +77,11 @@ void CLFullyConnectedReshapingLayer::configure(const arm_compute::ICLTensor *inp
         return std::unique_ptr<arm_compute::IFunction>(fc);
       }
     }
+    else
+    {
+      throw std::runtime_error("CLFullyConnectedReshapingLayer: Unsupported kernel type");
+    }
+
   }();
 
   if (_needs_reshape)

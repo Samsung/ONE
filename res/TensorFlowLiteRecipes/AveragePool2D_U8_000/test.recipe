@@ -1,0 +1,26 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 7 dim: 7 dim: 1 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "AveragePool2D"
+  averagepool2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+    filter_width: 2
+    filter_height: 2
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -22,7 +22,7 @@ TEST(ModuleTest, consturctor)
 {
   auto gs = luci::make_module();
 
-  GTEST_SUCCEED();
+  SUCCEED();
 }
 
 TEST(ModuleTest, add)

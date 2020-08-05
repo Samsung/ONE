@@ -46,7 +46,7 @@
 #include "arm_compute/core/NEON/kernels/NEMuliplyScaleFactorKernel.h"
 #include "arm_compute/core/NEON/kernels/NETransposeKernel.h"
 #include "arm_compute/runtime/MemoryGroup.h"
-#include "arm_compute/runtime/NEON/functions/NEGEMMLowpMatrixMultiplyCoreEx.h"
+#include "arm_compute/runtime/NEON/functions/NEGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/NEON/INESimpleFunctionNoBorder.h"
 #include "arm_compute/runtime/Tensor.h"
 
@@ -164,7 +164,7 @@ private:
   MemoryGroup _memory_group;
   NEFullyConnectedHybridLayerReshapeWeights _reshape_weights_function;
   NEQuantizationSymmetricKernel _quant_input_kernel;
-  NEGEMMLowpMatrixMultiplyCoreEx _mm_gemmlowp;
+  NEGEMMLowpMatrixMultiplyCore _mm_gemmlowp;
   NEMultiplyScaleFactorKernel _multiply_scale_kernel;
   NEGEMMMatrixAccumulateBiasesKernel _accumulate_biases_kernel;
   Tensor _reshape_weights_output;

@@ -18,4 +18,6 @@ add_subdirectory(core)
 add_subdirectory(circle)
 # Tools
 add_subdirectory(tools)
-add_subdirectory(tests)
+if(ENABLE_TEST)
+  add_subdirectory(tests)
+endif(ENABLE_TEST)

@@ -42,8 +42,7 @@ public:
   void run() override;
 
 private:
-  void sliceFloat32();
-  void sliceQuant8();
+  template <typename T> void sliceImpl();
 
   template <typename T>
   void GetBeginAndSizeVectors(int dimensions, const IPortableTensor *begin,

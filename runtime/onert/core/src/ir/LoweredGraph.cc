@@ -23,6 +23,7 @@
 #include "pass/ConstantLoweringPass.h"
 #include "pass/PermutationOperationPass.h"
 #include "pass/PermutationInsertionPass.h"
+#include "pass/PermutationEliminationPass.h"
 #include "ir/GraphIterator.h"
 #include "verifier/Verifier.h"
 #include "backend/Backend.h"
@@ -122,9 +123,9 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
     pass::PermutationInsertionPass pi_pass(*this);
     pi_pass.run();
-    // Implemented code no longer works.
-    // pass::PermutationEliminationPass pe_pass(*this);
-    // pe_pass.run();
+
+    pass::PermutationEliminationPass pe_pass(*this);
+    pe_pass.run();
 
     _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
   }
@@ -488,6 +489,12 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     // Check for branching down
     for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
     {
+      // TODO Fix this workaround for the case of model outputs that are used by another operation
+      //      This is needed since the branching is decided by operation, but for model outputs,
+      //      there is controlflow backen(use backend) but no actual use operation exists
+      if (_graph.getOutputs().contains(output))
+        return false;
+
       const auto &output_obj = _graph.operands().at(output);
       for (const auto &use : output_obj.getUses())
       {

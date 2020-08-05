@@ -46,7 +46,7 @@ void SliceLayer::GetBeginAndSizeVectors(int dimensions, const IPortableTensor *b
   }
 }
 
-void SliceLayer::sliceFloat32()
+template <typename T> void SliceLayer::sliceImpl()
 {
   const int kMaxDim = nnfw::cker::Shape::kMaxSmallSize;
 
@@ -74,14 +74,8 @@ void SliceLayer::sliceFloat32()
   }
 
   nnfw::cker::Slice(op_params, getExtendedTensorShape(_input),
-                    reinterpret_cast<const float *>(_input->buffer()),
-                    reinterpret_cast<float *>(_output->buffer()));
-}
-
-void SliceLayer::sliceQuant8()
-{
-  // cker quant8 slice is not implemented yet
-  throw std::runtime_error{"NYI"};
+                    reinterpret_cast<const T *>(_input->buffer()),
+                    reinterpret_cast<T *>(_output->buffer()));
 }
 
 void SliceLayer::configure(const IPortableTensor *input, const IPortableTensor *begin,
@@ -97,11 +91,11 @@ void SliceLayer::run()
 {
   if (_input->data_type() == OperandType::FLOAT32)
   {
-    sliceFloat32();
+    sliceImpl<float>();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    sliceQuant8();
+    sliceImpl<uint8_t>();
   }
   else
   {

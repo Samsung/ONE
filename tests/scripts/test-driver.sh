@@ -38,7 +38,6 @@ function Usage()
     echo "etc."
     echo "--framework_driverbin     - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
     echo "--verification_driverbin  - (default=../../Product/out/bin/nnapi_test) runner for runnning verification tests"
-    echo "--runtestsh               - (default=\$ARTIFACT_PATH/tests/scripts/framework/run_test.sh) run_test.sh with path where it is for framework test and verification"
     echo "--unittestdir             - (default=\$ARTIFACT_PATH/Product/out/unittest) directory that has unittest binaries for unit test"
     echo ""
     echo "--reportdir               - (default=\$ARTIFACT_PATH/report) directory to save report"
@@ -49,7 +48,6 @@ TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../../"
 FRAMEWORK_DRIVER_BIN=""
 VERIFICATION_DRIVER_BIN=""
-RUN_TEST_SH=""
 UNIT_TEST_DIR=""
 ALLTEST_ON="true"
 UNITTEST_ON="false"
@@ -73,9 +71,6 @@ do
             ;;
         --verification_driverbin=*)
             VERIFICATION_DRIVER_BIN=${i#*=}
-            ;;
-        --runtestsh=*)
-            RUN_TEST_SH=${i#*=}
             ;;
         --unittestdir=*)
             UNIT_TEST_DIR=${i#*=}
@@ -116,15 +111,6 @@ done
 
 ARTIFACT_PATH="$(readlink -f $ARTIFACT_PATH)"
 
-if [ -z "$RUN_TEST_SH" ]; then
-    RUN_TEST_SH=$ARTIFACT_PATH/tests/scripts/framework/run_test.sh
-fi
-
-if [ ! -e "$RUN_TEST_SH" ]; then
-    echo "Cannot find $RUN_TEST_SH"
-    exit 1
-fi
-
 if [ -z "$UNIT_TEST_DIR" ]; then
     UNIT_TEST_DIR=$ARTIFACT_PATH/Product/out/unittest
 fi
@@ -137,7 +123,7 @@ source $TEST_DRIVER_DIR/common.sh
 
 # Run unittest in each part such as Runtime
 if [ "$ALLTEST_ON" == "true" ] || [ "$UNITTEST_ON" == "true" ]; then
-    $TEST_DRIVER_DIR/unittest.sh \
+    source $TEST_DRIVER_DIR/command/unittest \
         --reportdir=$REPORT_DIR \
         --unittestdir=$UNIT_TEST_DIR
 fi
@@ -149,7 +135,6 @@ if [ "$FRAMEWORKTEST_ON" == "true" ]; then
     fi
 
     $TEST_DRIVER_DIR/test_framework.sh \
-        --runtestsh=$RUN_TEST_SH \
         --driverbin=$FRAMEWORK_DRIVER_BIN \
         --reportdir=$REPORT_DIR \
         --tapname=framework_test.tap \
@@ -166,7 +151,6 @@ if [ "$ALLTEST_ON" == "true" ] || [ "$VERIFICATION_ON" == "true" ]; then
 
     # verification uses the same script as frameworktest does
     $TEST_DRIVER_DIR/test_framework.sh \
-        --runtestsh=$RUN_TEST_SH \
         --driverbin=$VERIFICATION_DRIVER_BIN \
         --reportdir=$REPORT_DIR \
         --tapname=verification_test.tap \
@@ -180,10 +164,9 @@ if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
 
     $TEST_DRIVER_DIR/benchmark_nnapi.sh \
         --test_op \
-        --runtestsh=$RUN_TEST_SH \
         --driverbin=$DRIVER_BIN \
         --reportdir=$REPORT_DIR/benchmark_op \
-        --modelfilepath=$ARTIFACT_PATH/tests/scripts/framework
+        --modelfilepath=$ARTIFACT_PATH/tests/scripts/models
 fi
 
 # Make json file. Actually, this process is only needed on CI. That's why it is in test-driver.sh.

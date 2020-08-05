@@ -35,6 +35,7 @@ message TensorQuantization {
   repeated float max = 2;
   repeated float scale = 3;
   repeated int64 zero_point = 4;
+  optional int32 quantized_dimension = 5 [default = 0];
 }
 
 message Operand {

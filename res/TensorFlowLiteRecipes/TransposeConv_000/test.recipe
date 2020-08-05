@@ -10,7 +10,7 @@ operand {
 operand {
   name: "ker"
   type: FLOAT32
-  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+  shape { dim: 3 dim: 1 dim: 1 dim: 3 }
   filler {
     tag: "gaussian"
     arg: "0.0"

@@ -22,13 +22,23 @@ usage()
 {
   echo "Convert TensorFlow model to circle."
   echo "Usage: one-import-tf"
+  echo "    --version Show version information and exit"
   echo "    --input_path <path/to/tfmodel>"
   echo "    --output_path <path/to/circle>"
   echo "    --input_arrays <names of the input arrays, comma-separated>"
   echo "    --input_shapes <input shapes, colon-separated>"
   echo "    --output_arrays <names of the output arrays, comma-separated>"
-  exit 0
+  echo "    --v2 Use TensorFlow 2.x interface (default is 1.x interface)"
+  exit 255
 }
+
+version()
+{
+  $DRIVER_PATH/one-version one-import-tf
+  exit 255
+}
+
+TF_INTERFACE="--v1"
 
 # Parse command-line arguments
 #
@@ -38,6 +48,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
     '--input_path')
       export INPUT_PATH="$2"
@@ -58,6 +71,10 @@ while [ "$#" -ne 0 ]; do
     '--output_arrays')
       export OUTPUT_ARRAYS="$2"
       shift 2
+      ;;
+    '--v2')
+      TF_INTERFACE="--v2"
+      shift
       ;;
     *)
       echo "Unknown parameter: ${CUR}"
@@ -92,14 +109,21 @@ fi
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # generate temporary tflite file
-echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" --v2 --input_path ${INPUT_PATH} \
+echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${INPUT_PATH} \
 --input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --output_arrays ${OUTPUT_ARRAYS} > "${OUTPUT_PATH}.log"
 echo " " >> "${OUTPUT_PATH}.log"
 
-python "${DRIVER_PATH}/tf2tfliteV2.py" --v2 --input_path ${INPUT_PATH} \
+python "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${INPUT_PATH} \
 --input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
 --output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
 --output_arrays ${OUTPUT_ARRAYS} >> "${OUTPUT_PATH}.log" 2>&1

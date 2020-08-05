@@ -106,6 +106,108 @@ getReduceGenerator(const onert::ir::operation::Reduce::ReduceType reduce_type)
   };
 }
 
+template <typename T>
+Operation *CreateSimpleUnaryOp(const OperationFactory::Param &init_param, Operands &)
+{
+  assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+  OperandIndexSequence outputs{init_param.outputs[0]};
+
+  // Each input should be interpreted as follows:
+  //
+  //  0 -> Input Tensor Index
+  OperandIndexSequence inputs{init_param.inputs[0]};
+
+  return new T{inputs, outputs};
+}
+
+// A generator function for binary ops with no params
+template <typename T>
+Operation *createSimpleBinaryOp(const OperationFactory::Param &init_param, Operands &)
+{
+  assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+  OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+  OperandIndexSequence outputs{init_param.outputs[0]};
+
+  return new T{inputs, outputs};
+}
+
+// A generator function for binary ops with no params
+template <typename T>
+Operation *createPool2DOp(const OperationFactory::Param &init_param, Operands &operands)
+{
+  assert(init_param.input_count == 7 || init_param.input_count == 10);
+  assert(init_param.output_count == 1);
+
+  // In common
+  //  0 -> IFM Tensor Index
+  OperandIndexSequence inputs{init_param.inputs[0]};
+  OperandIndexSequence outputs{init_param.outputs[0]};
+
+  typename T::Param param;
+  if (init_param.input_count == 7) // support implicit padding
+  {
+    // Each input should be interpreted as follows:
+    //
+    //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
+    //  2 -> Horizontal (over width) Stride Index
+    //  3 -> Vertial (over height) Stride Index
+    //  4 -> Filter Width Index
+    //  5 -> Filter Height Index
+    //  6 -> FuseCode (activation) Index
+
+    const auto padding_index = OperandIndex{init_param.inputs[1]};
+    const auto hstride_index = OperandIndex{init_param.inputs[2]};
+    const auto vstride_index = OperandIndex{init_param.inputs[3]};
+    const auto kw_index = OperandIndex{init_param.inputs[4]};
+    const auto kh_index = OperandIndex{init_param.inputs[5]};
+    const auto activation_index = OperandIndex{init_param.inputs[6]};
+
+    param.padding.type =
+        NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
+    param.stride = makeStride(operands, hstride_index, vstride_index);
+    param.kw = getUint32Scalar(operands, kw_index);
+    param.kh = operands.at(kh_index).asScalar<uint32_t>();
+    param.activation =
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+  }
+  else // support explicit padding
+  {
+    // Each input should be interpreted as follows:
+    //
+    //  1 -> Padding_left index
+    //  2 -> Padding_right index
+    //  3 -> Padding_top index
+    //  4 -> Padding_bottom index
+    //  5 -> Horizontal (over width) Stride Index
+    //  6 -> Vertial (over height) Stride Index
+    //  7 -> Filter Width Index
+    //  8 -> Filter Height Index
+    //  9 -> FuseCode (activation) Index
+
+    const auto padding_left_index = OperandIndex{init_param.inputs[1]};
+    const auto padding_right_index = OperandIndex{init_param.inputs[2]};
+    const auto padding_top_index = OperandIndex{init_param.inputs[3]};
+    const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
+    const auto hstride_index = OperandIndex{init_param.inputs[5]};
+    const auto vstride_index = OperandIndex{init_param.inputs[6]};
+    const auto kw_index = OperandIndex{init_param.inputs[7]};
+    const auto kh_index = OperandIndex{init_param.inputs[8]};
+    const auto activation_index = OperandIndex{init_param.inputs[9]};
+
+    param.padding.type = PaddingType::EXPLICIT;
+    param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
+                                              padding_top_index, padding_bottom_index);
+    param.stride = makeStride(operands, hstride_index, vstride_index);
+    param.kw = getUint32Scalar(operands, kw_index);
+    param.kh = getUint32Scalar(operands, kh_index);
+    param.activation =
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+  }
+  return new T{inputs, outputs, param};
+}
+
 } // namespace
 
 OperationFactory &OperationFactory::get()
@@ -116,20 +218,10 @@ OperationFactory &OperationFactory::get()
 
 OperationFactory::OperationFactory()
 {
-  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = [](const OperationFactory::Param &init_param,
-                                               Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Block size Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::BatchToSpaceND{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Block size Index
+  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = createSimpleBinaryOp<operation::BatchToSpaceND>;
 
   _map[ANEURALNETWORKS_DEPTHWISE_CONV_2D] = [](const OperationFactory::Param &init_param,
                                                Operands &operands) {
@@ -203,153 +295,9 @@ OperationFactory::OperationFactory()
     return new operation::DepthwiseConv2D{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_MAX_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                         Operands &operands) {
-    assert(init_param.input_count == 7 || init_param.input_count == 10);
-    assert(init_param.output_count == 1);
+  _map[ANEURALNETWORKS_MAX_POOL_2D] = createPool2DOp<operation::MaxPool2D>;
 
-    // In common
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::MaxPool2D::Param param;
-    if (init_param.input_count == 7) // support implicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = operands.at(kh_index).asScalar<uint32_t>();
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else if (init_param.input_count == 10) // support explicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    return new operation::MaxPool2D{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_AVERAGE_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                             Operands &operands) {
-    // TODO We may reuse code here for MAX_POOL_2D. Seems like these two are identical
-    assert(init_param.input_count == 7 || init_param.input_count == 10);
-    assert(init_param.output_count == 1);
-
-    // In common
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::AvgPool2D::Param param;
-    if (init_param.input_count == 7) // support implicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else if (init_param.input_count == 10) // support explicit padding
-    {
-      // Each input should be interpreted as follows:
-      //
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-
-    return new operation::AvgPool2D{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_AVERAGE_POOL_2D] = createPool2DOp<operation::AvgPool2D>;
 
   _map[ANEURALNETWORKS_CONCATENATION] = [](const OperationFactory::Param &init_param,
                                            Operands &operands) {
@@ -724,44 +672,11 @@ OperationFactory::OperationFactory()
     return new operation::Squeeze{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_TANH] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
+  _map[ANEURALNETWORKS_TANH] = CreateSimpleUnaryOp<operation::Tanh>;
 
-    OperandIndexSequence outputs{init_param.outputs[0]};
+  _map[ANEURALNETWORKS_LOG] = CreateSimpleUnaryOp<operation::Log>;
 
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Tanh{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_LOG] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Log{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_LOGISTIC] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Logistic{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_LOGISTIC] = CreateSimpleUnaryOp<operation::Logistic>;
 
   _map[ANEURALNETWORKS_DIV] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -784,36 +699,16 @@ OperationFactory::OperationFactory()
     return new operation::Div{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_EXP] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Exp{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_EXP] = CreateSimpleUnaryOp<operation::Exp>;
 
   // ANEURALNETWORKS_EXP_EX is deprecated
   // TODO Remove ANEURALNETWORKS_EXP_EX
   _map[ANEURALNETWORKS_EXP_EX] = _map[ANEURALNETWORKS_EXP];
 
-  _map[ANEURALNETWORKS_EXPAND_DIMS] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Axis Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::ExpandDims{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Axis Tensor Index
+  _map[ANEURALNETWORKS_EXPAND_DIMS] = createSimpleBinaryOp<operation::ExpandDims>;
 
   _map[ANEURALNETWORKS_GREATER] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -982,19 +877,7 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_LOGICAL_AND] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::LogicalAnd{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_LOGICAL_AND] = createSimpleBinaryOp<operation::LogicalAnd>;
 
   // ANEURALNETWORKS_LOGICAL_AND_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_AND_EX
@@ -1018,18 +901,7 @@ OperationFactory::OperationFactory()
     return new operation::LogicalAnd{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_RSQRT] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::RSQRT{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_RSQRT] = CreateSimpleUnaryOp<operation::RSQRT>;
 
   _map[ANEURALNETWORKS_SELECT] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -1065,18 +937,7 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_RSQRT_EX
   _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];
 
-  _map[ANEURALNETWORKS_RELU] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::ReLU{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_RELU] = CreateSimpleUnaryOp<operation::ReLU>;
 
   _map[ANEURALNETWORKS_RESIZE_BILINEAR] = [](const OperationFactory::Param &init_param,
                                              Operands &operands) {
@@ -1094,35 +955,14 @@ OperationFactory::OperationFactory()
     operation::ResizeBilinear::Param param;
     param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
     param.width_out = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>();
-
+    param.align_corners = false;
+    param.half_pixel_centers = false;
     return new operation::ResizeBilinear{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_RELU1] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
+  _map[ANEURALNETWORKS_RELU1] = CreateSimpleUnaryOp<operation::ReLU1>;
 
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::ReLU1{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_RELU6] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::ReLU6{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_RELU6] = CreateSimpleUnaryOp<operation::ReLU6>;
 
   _map[ANEURALNETWORKS_REVERSE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -1219,76 +1059,7 @@ OperationFactory::OperationFactory()
     return new operation::SpaceToDepth{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_L2_POOL_2D] = [](const OperationFactory::Param &init_param,
-                                        Operands &operands) {
-    assert(init_param.input_count == 10 || init_param.input_count == 7);
-    assert(init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> IFM Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    operation::L2Pool2D::Param param;
-
-    if (init_param.input_count == 7) // Imlicit Padding case
-    {
-      //  1 -> Padding Code (ANEURALNETWORKS_PADDING_SAME or ANEURALNETWORKS_PADDING_VALID) Index
-      //  2 -> Horizontal (over width) Stride Index
-      //  3 -> Vertial (over height) Stride Index
-      //  4 -> Filter Width Index
-      //  5 -> Filter Height Index
-      //  6 -> FuseCode (activation) Index
-      const auto padding_index = OperandIndex{init_param.inputs[1]};
-      const auto hstride_index = OperandIndex{init_param.inputs[2]};
-      const auto vstride_index = OperandIndex{init_param.inputs[3]};
-      const auto kw_index = OperandIndex{init_param.inputs[4]};
-      const auto kh_index = OperandIndex{init_param.inputs[5]};
-      const auto activation_index = OperandIndex{init_param.inputs[6]};
-
-      param.padding.type =
-          NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-    else // Explicit Padding case
-    {
-      //  1 -> Padding_left index
-      //  2 -> Padding_right index
-      //  3 -> Padding_top index
-      //  4 -> Padding_bottom index
-      //  5 -> Horizontal (over width) Stride Index
-      //  6 -> Vertial (over height) Stride Index
-      //  7 -> Filter Width Index
-      //  8 -> Filter Height Index
-      //  9 -> FuseCode (activation) Index
-      const auto padding_left_index = OperandIndex{init_param.inputs[1]};
-      const auto padding_right_index = OperandIndex{init_param.inputs[2]};
-      const auto padding_top_index = OperandIndex{init_param.inputs[3]};
-      const auto padding_bottom_index = OperandIndex{init_param.inputs[4]};
-      const auto hstride_index = OperandIndex{init_param.inputs[5]};
-      const auto vstride_index = OperandIndex{init_param.inputs[6]};
-      const auto kw_index = OperandIndex{init_param.inputs[7]};
-      const auto kh_index = OperandIndex{init_param.inputs[8]};
-      const auto activation_index = OperandIndex{init_param.inputs[9]};
-
-      param.padding.type = PaddingType::EXPLICIT;
-      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
-                                                padding_top_index, padding_bottom_index);
-      param.stride = makeStride(operands, hstride_index, vstride_index);
-      param.kw = getUint32Scalar(operands, kw_index);
-      param.kh = getUint32Scalar(operands, kh_index);
-      param.activation =
-          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-    }
-
-    return new operation::L2Pool2D{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_L2_POOL_2D] = createPool2DOp<operation::L2Pool2D>;
 
   _map[ANEURALNETWORKS_EMBEDDING_LOOKUP] = [](const OperationFactory::Param &init_param,
                                               Operands &) {
@@ -1438,18 +1209,7 @@ OperationFactory::OperationFactory()
     return new operation::LogicalOr{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_LOGICAL_NOT] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::LogicalNot{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_LOGICAL_NOT] = CreateSimpleUnaryOp<operation::LogicalNot>;
 
   // ANEURALNETWORKS_LOGICAL_NOT_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_NOT_EX
@@ -1649,35 +1409,13 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_GATHER_EX
   _map[ANEURALNETWORKS_GATHER_EX] = _map[ANEURALNETWORKS_GATHER];
 
-  _map[ANEURALNETWORKS_NEG] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Neg{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_NEG] = CreateSimpleUnaryOp<operation::Neg>;
 
   // ANEURALNETWORKS_NEG_EX is deprecated
   // TODO Remove ANEURALNETWORKS_NEG_EX
   _map[ANEURALNETWORKS_NEG_EX] = _map[ANEURALNETWORKS_NEG];
 
-  _map[ANEURALNETWORKS_ABS] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Abs{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_ABS] = CreateSimpleUnaryOp<operation::Abs>;
 
   // ANEURALNETWORKS_ABS_EX is deprecated
   // TODO Remove ANEURALNETWORKS_ABS_EX
@@ -1704,18 +1442,7 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_ARGMAX_EX
   _map[ANEURALNETWORKS_ARGMAX_EX] = _map[ANEURALNETWORKS_ARGMAX];
 
-  _map[ANEURALNETWORKS_DEQUANTIZE] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    return new operation::Dequantize{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_DEQUANTIZE] = CreateSimpleUnaryOp<operation::Dequantize>;
 
   _map[ANEURALNETWORKS_MEAN] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -1841,31 +1568,24 @@ OperationFactory::OperationFactory()
   };
 
   _map[ANEURALNETWORKS_PAD] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count >= 1);
+    assert(init_param.input_count >= 2 && init_param.input_count <= 3 &&
+           init_param.output_count >= 1);
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    if (init_param.input_count == 3)
+    {
+      inputs.append(OperandIndex{init_param.inputs[2]});
+    }
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     return new operation::Pad{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_MINIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
+  _map[ANEURALNETWORKS_PAD_V2] = _map[ANEURALNETWORKS_PAD];
 
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
+  _map[ANEURALNETWORKS_MINIMUM] = createSimpleBinaryOp<operation::Min>;
 
-    return new operation::Min{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_MAXIMUM] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Max{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_MAXIMUM] = createSimpleBinaryOp<operation::Max>;
 
   _map[ANEURALNETWORKS_ONE_HOT_EX] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {
@@ -1948,34 +1668,15 @@ OperationFactory::OperationFactory()
     return new operation::Range{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_POW] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
+  // Each input should be interpreted as follows:
+  //  0 -> LHS Tensor Index
+  //  1 -> RHS Tensor Index
+  _map[ANEURALNETWORKS_POW] = createSimpleBinaryOp<operation::Pow>;
 
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> LHS Tensor Index
-    //  1 -> RHS Tensor Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::Pow{inputs, outputs};
-  };
-
-  _map[ANEURALNETWORKS_FILL_EX] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> A tensor, specifying the input.
-    //  1 -> A 1-D tensor, specifying the value
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::Fill{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> A tensor, specifying the input.
+  //  1 -> A 1-D tensor, specifying the value
+  _map[ANEURALNETWORKS_FILL_EX] = createSimpleBinaryOp<operation::Fill>;
 
   _map[ANEURALNETWORKS_ZEROS_LIKE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 1 && init_param.output_count == 1);
@@ -1989,20 +1690,10 @@ OperationFactory::OperationFactory()
     return new operation::ZerosLike{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_TILE] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Input Tensor Index
-    //  1 -> Multiple Tensor Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::Tile{inputs, outputs};
-  };
+  // Each input should be interpreted as follows:
+  //  0 -> Input Tensor Index
+  //  1 -> Multiple Tensor Index
+  _map[ANEURALNETWORKS_TILE] = createSimpleBinaryOp<operation::Tile>;
 
   _map[ANEURALNETWORKS_MATRIX_BAND_PART_EX] = [](const OperationFactory::Param &init_param,
                                                  Operands &) {
@@ -2064,20 +1755,23 @@ OperationFactory::OperationFactory()
     return new operation::Einsum{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = [](const OperationFactory::Param &init_param,
-                                             Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
+  //  0 -> Input Tensor Index
+  //  1 -> int32, int64, An 1-D int tensor Index
+  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = createSimpleBinaryOp<operation::BroadcastTo>;
 
+  _map[ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX] = [](const OperationFactory::Param &init_param,
+                                                         Operands &) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     // Each input should be interpreted as follows:
     //
-    //  0 -> Input Tensor Index
+    //  0 -> Shape Tensor Index
     //  1 -> int32, int64, An 1-D int tensor Index
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
-    return new operation::BroadcastTo{inputs, outputs};
+    return new operation::StatelessRandomUniform{inputs, outputs};
   };
 
   _map[ANEURALNETWORKS_FUSED_BATCH_NORM_V3_EX] = [](const OperationFactory::Param &init_param,
@@ -2132,6 +1826,15 @@ OperationFactory::OperationFactory()
     param.axis = operands.at(axis_index).asScalar<int>();
 
     return new operation::LogSoftmax{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_QUANTIZE] = [](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    return new operation::Quantize{inputs, outputs};
   };
 }
 

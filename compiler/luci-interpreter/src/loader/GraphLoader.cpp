@@ -16,7 +16,6 @@
 
 #include "loader/GraphLoader.h"
 
-#include "loader/ModuleLoader.h"
 #include "loader/KernelBuilder.h"
 
 #include <loco/IR/Algorithm.h>
@@ -70,7 +69,7 @@ bool isExecutableNode(const luci::CircleNode *node)
   switch (node->opcode())
   {
     // These nodes denote inputs / outputs of a graph.
-    case luci::CircleOpcode::CONST:
+    case luci::CircleOpcode::CIRCLECONST:
     case luci::CircleOpcode::CIRCLEINPUT:
     case luci::CircleOpcode::CIRCLEOUTPUT:
     // The following nodes denote outputs of multiple-output nodes.
@@ -102,11 +101,12 @@ bool isTensorProducingNode(const luci::CircleNode *node)
 
 } // namespace
 
-GraphLoader::GraphLoader(const ModuleLoader &module_loader, const loco::Graph *graph,
-                         RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
-                         std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-    : _module_loader(module_loader), _graph(graph), _runtime_graph(runtime_graph),
-      _runtime_to_ir(runtime_to_ir), _node_to_tensor(node_to_tensor)
+GraphLoader::GraphLoader(
+    const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
+    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
+    std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
+    : _graph(graph), _runtime_graph(runtime_graph), _runtime_to_ir(runtime_to_ir),
+      _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor)
 {
 }
 
@@ -136,6 +136,7 @@ void GraphLoader::loadTensors()
       const luci::CircleQuantParam *params = node->quantparam();
       quantization.scale.assign(params->scale.cbegin(), params->scale.cend());
       quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
+      quantization.quantized_dimension = params->quantized_dimension;
     }
 
     auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
@@ -178,7 +179,7 @@ void GraphLoader::initInputOutputTensors() const
 
 void GraphLoader::loadOperators()
 {
-  KernelBuilder kernel_builder(_module_loader, *this);
+  KernelBuilder kernel_builder(_graph_to_runtime_graph, _node_to_tensor);
 
   // Create kernels for executable nodes. This has to be done in execution order.
   for (const loco::Node *loco_node :
@@ -193,13 +194,6 @@ void GraphLoader::loadOperators()
       _runtime_graph->addKernel(std::move(kernel));
     }
   }
-}
-
-void GraphLoader::load()
-{
-  loadTensors();
-  initInputOutputTensors();
-  loadOperators();
 }
 
 } // namespace luci_interpreter

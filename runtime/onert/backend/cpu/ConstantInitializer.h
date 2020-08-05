@@ -36,6 +36,15 @@ public:
                       const std::shared_ptr<TensorBuilder> &tensor_builder);
 
 public:
+  void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj) override;
+
+  // TODO: For now the only cpu backend supports constant tensor to use data from external
+  // If the other backend supports (to do this,
+  // ExternalTensor should be abstract such as IExternal, maybe),
+  // this can be an interface of IConstantInitializer
+  void registerExternalInitializer(const ir::OperandIndex &, const ir::Operand &);
+
+public:
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;

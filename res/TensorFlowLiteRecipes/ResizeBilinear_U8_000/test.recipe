@@ -1,0 +1,32 @@
+operand {
+  name: "ifm1"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "size"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "constant" arg: "16" arg: "16"
+  }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 16 dim: 16 dim: 3 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "ResizeBilinear"
+  input: "ifm1"
+  input: "size"
+  output: "ofm"
+  resize_bilinear_options {
+    align_corners: false
+    half_pixel_centers: false
+  }
+}
+input: "ifm1"
+output: "ofm"

@@ -72,6 +72,7 @@ public:
   void visit(const ir::operation::LogicalNot &op) override;
   void visit(const ir::operation::LogicalOr &op) override;
   void visit(const ir::operation::Logistic &op) override;
+  void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::Max &op) override;
   void visit(const ir::operation::Min &op) override;
@@ -88,6 +89,7 @@ public:
   void visit(const ir::operation::Reshape &op) override;
   void visit(const ir::operation::Round &op) override;
   void visit(const ir::operation::RSQRT &op) override;
+  void visit(const ir::operation::ResizeBilinear &op) override;
   void visit(const ir::operation::Reverse &op) override;
   void visit(const ir::operation::Select &op) override;
   void visit(const ir::operation::Shape &op) override;
@@ -127,6 +129,7 @@ private:
   /**
    * @brief To allocate memory for output tensor if needed
    */
+  // TODO Remove this, as it is no longer used
   backend::IDynamicTensorManager *_dynamic_tensor_manager;
   /**
    * @brief To get tensor object and access tensor-level info, e.g., ITensor::buffer()

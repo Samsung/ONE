@@ -21,6 +21,7 @@
 #include "kernels/AveragePool2D.h"
 #include "kernels/Concatenation.h"
 #include "kernels/Conv2D.h"
+#include "kernels/DepthToSpace.h"
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Elu.h"
 #include "kernels/FullyConnected.h"
@@ -35,6 +36,8 @@
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
 #include "kernels/Reshape.h"
+#include "kernels/Reverse.h"
+#include "kernels/Slice.h"
 #include "kernels/Softmax.h"
 #include "kernels/SpaceToDepth.h"
 #include "kernels/Split.h"
@@ -43,8 +46,6 @@
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
-#include "loader/GraphLoader.h"
-#include "loader/ModuleLoader.h"
 
 #include <stdexcept>
 
@@ -68,7 +69,7 @@ static std::vector<const loco::Node *> collectOutputNodes(const luci::CircleNode
 
 const Tensor *KernelBuilder::getInputTensor(const loco::Node *node) const
 {
-  const Tensor *tensor = _graph_loader.getTensorForNode(node);
+  const Tensor *tensor = _node_to_tensor.at(node);
   assert(tensor != nullptr);
   return tensor;
 }
@@ -81,7 +82,7 @@ const Tensor *KernelBuilder::getOptionalInputTensor(const loco::Node *node) cons
 
 Tensor *KernelBuilder::getOutputTensor(const loco::Node *node) const
 {
-  Tensor *tensor = _graph_loader.getTensorForNode(node);
+  Tensor *tensor = _node_to_tensor.at(node);
   assert(tensor != nullptr);
   return tensor;
 }
@@ -98,7 +99,7 @@ KernelBuilder::getOutputTensors(const std::vector<const loco::Node *> &nodes) co
 
 RuntimeGraph *KernelBuilder::getRuntimeGraph(const loco::Graph *graph) const
 {
-  RuntimeGraph *runtime_graph = _module_loader.getRuntimeGraph(graph);
+  RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
   assert(runtime_graph != nullptr);
   return runtime_graph;
 }
@@ -120,14 +121,14 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAdd *node)
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleArgMax *node)
 {
   assert(node->arity() == 2);
-  const Tensor *input1 = getInputTensor(node->input());
-  const Tensor *input2 = getInputTensor(node->dimension());
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *axis = getInputTensor(node->dimension());
   Tensor *output = getOutputTensor(node);
 
   ArgMaxParams params{};
   params.output_type = node->output_type();
 
-  return std::make_unique<kernels::ArgMax>(input1, input2, output, params);
+  return std::make_unique<kernels::ArgMax>(input, axis, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleAveragePool2D *node)
@@ -188,6 +189,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleConv2D *node)
   return std::make_unique<kernels::Conv2D>(input, filter, bias, output, params);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthToSpace *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  DepthToSpaceParams params{};
+  params.block_size = node->block_size();
+
+  return std::make_unique<kernels::DepthToSpace>(input, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *node)
 {
   assert(node->arity() == 3);
@@ -224,14 +238,14 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   assert(node->arity() == 3);
 
   const Tensor *input = getInputTensor(node->input());
-  const Tensor *filter = getInputTensor(node->weights());
+  const Tensor *weights = getInputTensor(node->weights());
   const Tensor *bias = getOptionalInputTensor(node->bias());
   Tensor *output = getOutputTensor(node);
 
   FullyConnectedParams params{};
   params.activation = node->fusedActivationFunction();
 
-  return std::make_unique<kernels::FullyConnected>(input, filter, bias, output, params);
+  return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
@@ -253,6 +267,11 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
 
   return std::make_unique<kernels::If>(cond, std::move(inputs), std::move(outputs), then_graph,
                                        else_graph);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
+{
+  throw std::runtime_error("Input node cannot be executed.");
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleL2Normalize *node)
@@ -321,11 +340,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Logistic>(input, output);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleInput *)
-{
-  throw std::runtime_error("Input node cannot be executed.");
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
@@ -402,6 +416,30 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
   return std::make_unique<kernels::Reshape>(input, shape, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->tensor());
+  const Tensor *axes = getInputTensor(node->axis());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Reverse>(input, axes, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)
+{
+  assert(node->arity() == 3);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *begin = getInputTensor(node->begin());
+  const Tensor *size = getInputTensor(node->size());
+
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Slice>(input, begin, size, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSoftmax *node)
 {
   assert(node->arity() == 1);
@@ -442,6 +480,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->input());
+  Tensor *output = getOutputTensor(node);
+
+  SqueezeParams params{};
+  params.squeeze_dims = node->squeeze_dims();
+
+  return std::make_unique<kernels::Squeeze>(input, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *node)
 {
   assert(node->arity() == 4);
@@ -463,21 +514,15 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
 }
 
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
 {
-  assert(node->arity() == 1);
+  assert(node->arity() == 2);
 
-  const Tensor *input = getInputTensor(node->input());
+  const Tensor *input = getInputTensor(node->a());
+  const Tensor *perm = getInputTensor(node->perm());
   Tensor *output = getOutputTensor(node);
 
-  SqueezeParams params{};
-  assert(node->squeeze_dims().size() <= 4);
-  for (size_t i = 0; i < node->squeeze_dims().size(); i++)
-  {
-    params.squeeze_dims.push_back(node->squeeze_dims().at(i));
-  }
-
-  return std::make_unique<kernels::Squeeze>(input, output, params);
+  return std::make_unique<kernels::Transpose>(input, perm, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
@@ -513,17 +558,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleUnpack *node)
 
   // NOTE 'num' attribute is ignored.
   return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
-}
-
-std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
-{
-  assert(node->arity() == 2);
-
-  const Tensor *input = getInputTensor(node->a());
-  const Tensor *perm = getInputTensor(node->perm());
-  Tensor *output = getOutputTensor(node);
-
-  return std::make_unique<kernels::Transpose>(input, perm, output);
 }
 
 } // namespace luci_interpreter

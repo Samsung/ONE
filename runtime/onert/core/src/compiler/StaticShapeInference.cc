@@ -497,6 +497,11 @@ void StaticShapeInferer::visit(const ir::operation::Logistic &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::Input::INPUT));
 }
 
+void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
+{
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
+}
+
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
@@ -810,6 +815,35 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
   else
   {
     throw std::runtime_error("Reshape: new shape is missing");
+  }
+}
+
+void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
+  const auto &input = _operands.at(input_idx);
+
+  // get mutable output operand
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  // if input is dynamic, output also becomes dynamic
+  if (input.info().isDynamic())
+  {
+    output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
+  // Shape inferencing logic based on Params
+  ir::Shape new_shape = shape_inference::inferResizeBilinearShape(
+      input.shape(), op.param().height_out, op.param().width_out);
+
+  // if size_op is from Const, TFLC put the shape of output into tensor
+  if (new_shape != output.shape())
+  {
+    // change on output shape
+    output.info().shape(new_shape);
   }
 }
 

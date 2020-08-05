@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FWTEST_RUN_TEST_SH=
+MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 FWTEST_DRIVER_BIN=
 FWTEST_REPORT_DIR=
 FWTEST_TAP_NAME=
@@ -25,7 +26,6 @@ function Usage()
 {
     echo "Usage Example:"
     echo "./$0 \\"
-    echo "  --runtestsh=tests/scripts/framework/run_test.sh \\ # Test runner script path"
     echo "  --driverbin=Product/out/bin/tflite_run \\  # Test driver path"
     echo "  --frameworktest_list_file=tests/scripts/list/frameworktest_list.armv7l.cpu.txt \\"
     echo "  --reportdir=report \\            # Directory for the report files will be saved"
@@ -41,9 +41,6 @@ do
     case $i in
         -h|--help|help)
             Usage
-            ;;
-        --runtestsh=*)
-            FWTEST_RUN_TEST_SH=${i#*=}
             ;;
         --driverbin=*)
             FWTEST_DRIVER_BIN=${i#*=}
@@ -67,7 +64,6 @@ do
     shift
 done
 
-[ ! -z "$FWTEST_RUN_TEST_SH" ] || Usage
 [ ! -z "$FWTEST_DRIVER_BIN" ] || Usage
 [ ! -z "$FWTEST_REPORT_DIR" ] || Usage
 [ ! -z "$FWTEST_TAP_NAME" ] || Usage
@@ -86,7 +82,7 @@ if [ ! -z "$FRAMEWORKTEST_LIST_FILE" ]; then
     MODELLIST=$(cat "${FRAMEWORKTEST_LIST_FILE}")
 fi
 
-$FWTEST_RUN_TEST_SH --driverbin=$FWTEST_DRIVER_BIN \
+$MY_PATH/models/run_test.sh --driverbin=$FWTEST_DRIVER_BIN \
     --reportdir=$FWTEST_REPORT_DIR \
     --tapname=$FWTEST_TAP_NAME \
     ${MODELLIST:-} \

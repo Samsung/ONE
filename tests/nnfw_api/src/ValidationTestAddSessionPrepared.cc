@@ -102,7 +102,7 @@ TEST_F(ValidationTestAddSessionPrepared, neg_run_during_async_run)
 {
   SetInOutBuffers();
   ASSERT_EQ(nnfw_run_async(_session), NNFW_STATUS_NO_ERROR);
-  EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_INVALID_STATE);
   ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_NO_ERROR);
 }
 
@@ -139,12 +139,12 @@ TEST_F(ValidationTestAddSessionPrepared, neg_set_output_002)
 
 TEST_F(ValidationTestAddSessionPrepared, neg_get_input_size)
 {
-  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_get_output_size)
 {
-  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_load_model)
@@ -152,13 +152,13 @@ TEST_F(ValidationTestAddSessionPrepared, neg_load_model)
   // Load model twice
   ASSERT_EQ(nnfw_load_model_from_file(
                 _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
-            NNFW_STATUS_ERROR);
+            NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_prepare)
 {
   // Call Prepare twice
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_INVALID_STATE);
 }
 
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting

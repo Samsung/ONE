@@ -29,15 +29,22 @@ namespace cpu
 
 using Tensor = cpu_common::Tensor;
 
-// Tensor which has data from external. To support this, assume below things
-// no padding, always NHWC layout, constant tensor and not dynamic
+/**
+ * @brief Class that uses data from external memory that is not managed by a backend
+ *        instead of allocating and copying the data. ExternalTensor's data pointer points to
+ *        an address of memory such as where memory is already allocated, or mmapped area.
+ *        This is meaning that ExternalTensor can take all of types' ir::Data.
+ *        To support this, assume below things no padding, always NHWC layout,
+ *        constant tensor and not dynamic.
+ */
 class ExternalTensor : public Tensor
 {
 public:
   ExternalTensor() = delete;
 
 public:
-  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout) : Tensor(info, layout)
+  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout)
+      : Tensor(info, layout, nullptr)
   {
     assert(_layout == ir::Layout::NHWC);
     assert(_info.isConstant());
@@ -45,6 +52,11 @@ public:
   }
 
 public:
+  /**
+   * @brief     set Data to be shared from external so that this ExternalTensor will not be
+   *            allocated on CPU backend
+   * @param[in] data    data of Operand to be set
+   */
   void setData(const std::shared_ptr<ir::Data> data)
   {
     assert(data != nullptr);

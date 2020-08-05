@@ -29,8 +29,8 @@ namespace cpu
 
 TensorBuilder::TensorBuilder()
     : _tensor_reg{new cpu_common::TensorRegistry()},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)}
+      _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
+      _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }
@@ -77,11 +77,7 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
-void TensorBuilder::prepare(void)
-{
-  _static_tensor_mgr->allocateConsts();
-  _static_tensor_mgr->allocateNonconsts();
-}
+void TensorBuilder::prepare(void) { _static_tensor_mgr->allocateNonconsts(); }
 
 void TensorBuilder::allocate()
 {
@@ -99,17 +95,17 @@ std::shared_ptr<IPortableTensor> TensorBuilder::portableAt(const ir::OperandInde
   return _tensor_reg->getPortableTensor(ind);
 }
 
-bool TensorBuilder::setExternalTensor(const ir::OperandIndex &ind,
-                                      const std::shared_ptr<IPortableTensor> &tensor)
+bool TensorBuilder::setMigrantTensor(const ir::OperandIndex &ind,
+                                     const std::shared_ptr<IPortableTensor> &tensor)
 {
-  return _tensor_reg->setExternalTensor(ind, tensor);
+  return _tensor_reg->setMigrantTensor(ind, tensor);
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
-  return _tensor_reg->getManagedTensor(ind);
+  return _tensor_reg->getNativeTensor(ind);
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)

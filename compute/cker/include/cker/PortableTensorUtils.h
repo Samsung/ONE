@@ -20,6 +20,7 @@
 
 #include "cker/Types.h"
 #include "cker/neon/neon_check.h"
+#include <ruy/context.h>
 
 #include <cstring>
 #include <cmath>
@@ -142,7 +143,7 @@ void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matr
                                                  const int8_t *__restrict__ vector,
                                                  const float *scaling_factors, int n_batch,
                                                  int32_t *, float *__restrict__ result,
-                                                 int result_stride)
+                                                 int result_stride, ruy::Context *)
 {
   PortableMatrixBatchVectorMultiplyAccumulate(matrix, m_rows, m_cols, vector, scaling_factors,
                                               n_batch, result, result_stride);

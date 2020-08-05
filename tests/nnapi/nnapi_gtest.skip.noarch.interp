@@ -188,6 +188,7 @@ GeneratedTests.hashtable_lookup_quant8
 GeneratedTests.l2_normalization
 GeneratedTests.l2_normalization_2
 GeneratedTests.l2_normalization_large
+GeneratedTests.l2_normalization_quant8_nnfw
 GeneratedTests.l2_pool_float
 GeneratedTests.l2_pool_float_2
 GeneratedTests.l2_pool_float_large
@@ -312,6 +313,12 @@ GeneratedTests.pack_ex_2D_int_2
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pad_dynamic_nnfw
 GeneratedTests.pad_quant8_nnfw
+GeneratedTests.pad_v2_1_float
+GeneratedTests.pad_v2_1_quant8
+GeneratedTests.pad_v2_all_dims
+GeneratedTests.pad_v2_all_dims_quant8
+GeneratedTests.pad_v2_low_rank
+GeneratedTests.pad_v2_low_rank_quant8
 GeneratedTests.pow_2D_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw
 GeneratedTests.pow_broadcast_float_nnfw_2
@@ -331,6 +338,15 @@ GeneratedTests.prelu_weight_as_input_quant8
 GeneratedTests.prelu_weight_as_input_quant8_2
 GeneratedTests.prelu_weight_as_input_quant8_3
 GeneratedTests.prelu_weight_as_input_quant8_4
+GeneratedTests.quantize_quant8
+GeneratedTests.quantize_quant8_2
+GeneratedTests.quantize_quant8_3
+GeneratedTests.quantize_quant8_4
+GeneratedTests.quantize_quant8_5
+GeneratedTests.quantize_quant8_6
+GeneratedTests.quantize_quant8_7
+GeneratedTests.quantize_quant8_8
+GeneratedTests.quantize_zero_sized
 GeneratedTests.range_ex_float_1
 GeneratedTests.range_ex_float_1_all_constant_inputs
 GeneratedTests.range_ex_float_1_dynamic_nnfw
@@ -407,6 +423,7 @@ GeneratedTests.relu_quant8_2
 GeneratedTests.reshape_dynamic_nnfw
 GeneratedTests.resize_bilinear
 GeneratedTests.resize_bilinear_2
+GeneratedTests.resize_bilinear_quant8_nnfw
 GeneratedTests.reverse_ex_1d
 GeneratedTests.reverse_ex_3d
 GeneratedTests.reverse_ex_dynamic_1D
@@ -518,6 +535,7 @@ GeneratedTests.squeeze_float_1
 GeneratedTests.squeeze_float_1_relaxed
 GeneratedTests.squeeze_quant8_1
 GeneratedTests.squeeze_relaxed
+GeneratedTests.stateless_random_uniform_ex_nnfw
 GeneratedTests.strided_slice
 GeneratedTests.strided_slice_dynamic_nnfw
 GeneratedTests.strided_slice_float_1

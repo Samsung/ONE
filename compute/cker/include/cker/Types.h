@@ -259,6 +259,12 @@ struct FullyConnectedParams
   // FullyConnectedWeightsFormat weights_format;
 };
 
+struct L2NormParams
+{
+  // uint8 inference params.
+  int32_t input_zero_point;
+};
+
 struct GatherParams
 {
   int32_t axis;
@@ -269,6 +275,14 @@ struct InstanceNormParams
   float epsilon;
   float float_activation_min;
   float float_activation_max;
+};
+
+struct ResizeBilinearParams
+{
+  int32_t output_height;
+  int32_t output_width;
+  bool align_corners;
+  bool half_pixel_centers;
 };
 
 struct TransposeConvParams
@@ -336,6 +350,11 @@ struct SpaceToBatchParams
 {
   // "Zero" padding for uint8 means padding with the output offset.
   int32_t output_offset;
+};
+
+struct SpaceToDepthParams
+{
+  int32_t block_size;
 };
 
 enum class Order

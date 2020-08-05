@@ -22,6 +22,7 @@ usage()
 {
   echo "Optimize circle model."
   echo "Usage: one-optimize"
+  echo "    --version       Show version information and exit"
   echo "    --all           Enable all optimization algorithms"
   echo "    --fuse_bcq      Enable FuseBCQ Pass"
   echo "    --fuse_instnorm Enable FuseInstanceNormalization Pass"
@@ -33,7 +34,13 @@ usage()
   echo "                    Enable ResolveCustomOpMatMulPass Pass"
   echo "    --input_path <path/to/input/circle>"
   echo "    --output_path <path/to/output/circle>"
-  exit 0
+  exit 255
+}
+
+version()
+{
+  $DRIVER_PATH/one-version one-optimize
+  exit 255
 }
 
 OPTIMIZE_all=0
@@ -51,6 +58,9 @@ while [ "$#" -ne 0 ]; do
   case $CUR in
     '--help')
       usage
+      ;;
+    '--version')
+      version
       ;;
     '--all')
       OPTIMIZE_all=1
@@ -96,7 +106,6 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
   usage
-  exit 2
 fi
 
 OPTIMIZE_OPTIONS=""
@@ -122,6 +131,13 @@ fi
 
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
+
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
 
 # NOTE do not wrap ${OPTIMIZE_OPTIONS} with ""
 # optimize circle

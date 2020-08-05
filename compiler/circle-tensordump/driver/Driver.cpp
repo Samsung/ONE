@@ -46,7 +46,7 @@ int entry(int argc, char **argv)
   {
     std::cout << err.what() << std::endl;
     std::cout << arser;
-    return 0;
+    return 255;
   }
 
   std::unique_ptr<circletensordump::DumpInterface> dump;

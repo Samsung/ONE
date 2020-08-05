@@ -28,7 +28,7 @@ make TARGET_OS=android \
     EXT_ACL_FOLDER=/home/hanjoung/ws/temp/arm_compute-v19.05-bin-android/lib/android-arm64-v8a-neon-cl \
     ANDROID_BUILD_TOOLS_DIR=/home/hanjoung/ws/android-tools/sdk/build-tools/27.0.3/ \
     ANDROID_SDK_DIR=/home/hanjoung/ws/android-tools/sdk \
-    TFLITE_MODEL_PATH=/Users/hanjoung/ws/ghent/STAR/nnfw/tests/scripts/framework/cache/MODELS/mobilenet/mobilenet_v1_0.25_128.tflite \
+    TFLITE_MODEL_PATH=/Users/hanjoung/ws/ghent/STAR/nnfw/tests/scripts/models/cache/MODELS/mobilenet/mobilenet_v1_0.25_128.tflite \
     ANDROID_BOOST_ROOT=/home/hanjoung/ws/gh/moritz-wundke/Boost-for-Android/build/out/arm64-v8a
 ```
 

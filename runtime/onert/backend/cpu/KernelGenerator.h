@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__
 
+#include "ExternalContext.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
 
@@ -37,7 +38,8 @@ class KernelGenerator : public IKernelGenerator
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
                   const std::shared_ptr<TensorBuilder> &tensor_builder,
-                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder);
+                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
+                  const std::shared_ptr<ExternalContext> &external_context);
 
   using IKernelGenerator::visit;
 
@@ -74,6 +76,7 @@ public:
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::ReLU &) override;
+  void visit(const ir::operation::ReLU6 &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
@@ -83,6 +86,7 @@ public:
   void visit(const ir::operation::Sin &) override;
   void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::Shape &) override;
+  void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &) override;
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::ArgMax &) override;
@@ -94,6 +98,7 @@ public:
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Tile &) override;
   void visit(const ir::operation::LogicalOr &) override;
+  void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::Range &) override;
   void visit(const ir::operation::MatrixBandPart &) override;
   void visit(const ir::operation::BatchMatMul &) override;
@@ -101,6 +106,9 @@ public:
   void visit(const ir::operation::FusedBatchNorm &) override;
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
+  void visit(const ir::operation::Quantize &) override;
+  void visit(const ir::operation::SpaceToDepth &) override;
+  void visit(const ir::operation::StatelessRandomUniform &) override;
 
 private:
   const ir::Operands &_ctx;
@@ -108,6 +116,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   ir::Layout _current_op_seq_layout;
+  const std::shared_ptr<ExternalContext> _external_context;
 };
 
 } // namespace cpu

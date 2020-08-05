@@ -558,7 +558,9 @@ typedef enum {
    * Outputs:
    * * 0: The sum, a tensor of the same type as input0.
    */
-  ANEURALNETWORKS_ADDV2_EX = 50039
+  ANEURALNETWORKS_ADDV2_EX = 50039,
+
+  ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX = 50040
 
 } OperationCodeEx; // extends OperationCode
 

@@ -12,6 +12,8 @@ set(SOURCES
     Concatenation.cpp
     Conv2D.h
     Conv2D.cpp
+    DepthToSpace.h
+    DepthToSpace.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
     Elu.h
@@ -40,6 +42,10 @@ set(SOURCES
     Pad.cpp
     Reshape.h
     Reshape.cpp
+    Reverse.h
+    Reverse.cpp
+    Slice.h
+    Slice.cpp
     Softmax.h
     Softmax.cpp
     SpaceToDepth.h
@@ -77,6 +83,7 @@ set(TEST_SOURCES
     AveragePool2D.test.cpp
     Concatenation.test.cpp
     Conv2D.test.cpp
+    DepthToSpace.test.cpp
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     FullyConnected.test.cpp
@@ -91,6 +98,8 @@ set(TEST_SOURCES
     Mul.test.cpp
     Pad.test.cpp
     Reshape.test.cpp
+    Reverse.test.cpp
+    Slice.test.cpp
     Softmax.test.cpp
     SpaceToDepth.test.cpp
     Split.test.cpp

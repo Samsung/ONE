@@ -181,6 +181,8 @@ std::unique_ptr<ModelRecipe> generate_recipe(const circle::Model *model)
         for (uint32_t idx = 0; idx < quant->zero_point()->size(); ++idx)
           chef_quant->add_zero_point(quant->zero_point()->Get(idx));
       }
+      circlechef::TensorQuantization *chef_quant = operand->mutable_quant();
+      chef_quant->set_quantized_dimension(quant->quantized_dimension());
     }
   }
 

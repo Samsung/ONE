@@ -112,12 +112,12 @@ public: // methods for static tensor allocation
   virtual std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) = 0;
 
   /**
-   * @brief Set the External Tensor object
+   * @brief Set the migrant tensor object
    *
    * @return true if succeeded
    * @return false if failed or unsupported
    */
-  virtual bool setExternalTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
+  virtual bool setMigrantTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
   {
     return false;
   }

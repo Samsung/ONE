@@ -18,6 +18,7 @@
 
 #include "../Tensor.h"
 #include <cker/operation/FullyConnected.h>
+#include <cker/TensorUtils.h>
 
 namespace onert
 {
@@ -31,7 +32,7 @@ namespace ops
 FullyConnectedLayer::FullyConnectedLayer()
     : _input(nullptr), _weights(nullptr), _bias(nullptr), _output(nullptr),
       _activation(ir::Activation::NONE), _temp_arena(new nnfw::cker::FCTempArena()),
-      _is_hybrid(false)
+      _external_context(nullptr), _is_hybrid(false)
 {
   // DO NOTHING
 }
@@ -102,7 +103,8 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
       getTensorShape(_weights), reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena,
+      _external_context->ruy_context());
 #else
   nnfw::cker::FullyConnectedHybrid(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
@@ -110,17 +112,35 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       (_cached_weights) ? reinterpret_cast<const int8_t *>(_cached_weights)
                         : reinterpret_cast<const int8_t *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena);
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), temp_arena,
+      _external_context->ruy_context());
 
-// TODO Enable calling decrease_ref
-#if 0
+// TODO Remove this ifdef
+#ifdef EXPERIMENTAL_RUY_FEATURE
   if (_cached_weights == nullptr || _is_weights_freed)
     return;
 
+  // '_cached_weights is not nullptr and _is_weights_freed is false' means
+  // this weight shape is satisfied with the ruy kernel's prepack cache's condition.
+  // After entering here, it will not enter again except below the case - input is zero-vector
+
+  // if input's elements are filled with zero, it by-passes(does not enter ruy-kernel path)
+  // so that handle this case
+  const int input_size = getTensorShape(_input).FlatSize();
+  if (nnfw::cker::IsZeroVector(reinterpret_cast<float *>(_input->buffer()), input_size))
+    return;
+
+  // This weight tensor could be other ops' const tensor.
+  // Therefore, below reference should be checked like following
   auto weight_tensor = dynamic_cast<const Tensor *>(_weights);
   if (weight_tensor)
   {
     auto tensor = const_cast<Tensor *>(weight_tensor);
+    if (tensor->buffer() == nullptr) // ref is already 0?
+    {
+      _is_weights_freed = true;
+      return;
+    }
 
     tensor->decrease_ref();
     if (tensor->buffer() == nullptr) // ref == 0?
@@ -128,13 +148,14 @@ void FullyConnectedLayer::fullyConnectedHybrid()
       _is_weights_freed = true;
     }
   }
-#endif // if 0
+#endif
 #endif
 }
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, ir::Activation activation,
-                                    IPortableTensor *output)
+                                    IPortableTensor *output,
+                                    const std::shared_ptr<ExternalContext> &external_context)
 {
   _input = input;
   _weights = weights;
@@ -143,6 +164,7 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _output = output;
   _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
                weights->data_type() == OperandType::QUANT_INT8_SYMM;
+  _external_context = external_context;
 }
 
 void FullyConnectedLayer::run()
@@ -167,7 +189,17 @@ void FullyConnectedLayer::run()
 
 void FullyConnectedLayer::prepare()
 {
+  if (_bias && _bias->is_constant())
+  {
+    const int bias_size = getTensorShape(_bias).FlatSize();
+    if (nnfw::cker::IsZeroVector(reinterpret_cast<float *>(_bias->buffer()), bias_size))
+    {
+      _bias = nullptr;
+    }
+  }
+
 #ifdef USE_RUY_GEMV
+#ifdef EXPERIMENTAL_RUY_FEATURE
   // TODO This is workaround
   // The only fc hybrid will use ruy kernel
   if (_input->data_type() != OperandType::FLOAT32 ||
@@ -198,6 +230,7 @@ void FullyConnectedLayer::prepare()
       _cached_weights = _weights->buffer();
     }
   }
+#endif
 #endif
 }
 

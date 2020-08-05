@@ -41,8 +41,11 @@ void ModuleLoader::load()
   {
     const loco::Graph *graph = _module->graph(i);
     RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
-    GraphLoader loader(*this, graph, runtime_graph, _runtime_to_ir, _node_to_tensor);
-    loader.load();
+    GraphLoader loader(graph, runtime_graph, _runtime_to_ir, _graph_to_runtime_graph,
+                       _node_to_tensor);
+    loader.loadTensors();
+    loader.initInputOutputTensors();
+    loader.loadOperators();
   }
 }
 

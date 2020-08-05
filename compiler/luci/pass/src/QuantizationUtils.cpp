@@ -24,6 +24,13 @@
 namespace luci
 {
 
+uint8_t fp32_to_uint8_cast(float f)
+{
+  assert(std::numeric_limits<uint8_t>::min() <= f);
+  assert(f <= std::numeric_limits<uint8_t>::max());
+  return static_cast<uint8_t>(f);
+}
+
 void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                           float &nudged_min, float &nudged_max)
 {
@@ -78,7 +85,7 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   }
   else
     zero_point_double = qmin_double - rmin / scale;
-  if (zero_point_double <= qmin_double)
+  if (min >= 0)
   {
     assert(min >= 0 && max >= 0);
     nudged_zero_point = kMinScale;
@@ -86,7 +93,7 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
     if (min > 0 && max > 0)
       WARN(l) << "The minimum and maximum values are all positive." << std::endl;
   }
-  else if (zero_point_double >= qmax_double)
+  else if (max < 0)
   {
     assert(min < 0 && max < 0);
     nudged_zero_point = kMaxScale;
@@ -96,7 +103,14 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   else
   {
     assert(min < 0 && max >= 0);
-    nudged_zero_point = static_cast<uint8_t>(std::round(zero_point_double));
+    nudged_zero_point = fp32_to_uint8_cast(std::round(zero_point_double));
+  }
+
+  // protect scale from being very low due to overflow
+  if (scale < 1e-5)
+  {
+    scale = 1e-5;
+    nudged_zero_point = fp32_to_uint8_cast(std::round(qmin_double - rmin / scale));
   }
 
   nudged_min = static_cast<float>((qmin_double - nudged_zero_point) * scale);

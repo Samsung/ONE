@@ -35,7 +35,12 @@ TEST(CircleCustomTest, constructor)
   ASSERT_EQ(0, custom_node.custom_code().size());
 }
 
-TEST(CircleCustomTest, constructor_NEG) { ASSERT_DEBUG_DEATH(luci::CircleCustom{0}, ""); }
+TEST(CircleCustomTest, constructor_NEG)
+{
+  ASSERT_DEBUG_DEATH(luci::CircleCustom{0}, "");
+
+  SUCCEED();
+}
 
 TEST(CircleCustomTest, invalidIndex_NEG)
 {

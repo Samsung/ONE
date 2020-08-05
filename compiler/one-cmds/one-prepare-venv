@@ -26,7 +26,19 @@ if [ -f ${VENV_ACTIVATE} ]; then
 fi
 
 # Install prerequisites
-python3 -m pip install -U virtualenv
+python3 -m pip install --user -U virtualenv
+
+function error_no_ensurepip ()
+{
+  echo "ERROR: python3 'ensurepip' module is not found."
+  echo "       On ubuntu, try following command:"
+  echo
+  echo "         apt install python$(python3 --version | awk '{print $2}' | awk -F. '{print $1"."$2}')-venv"
+  echo
+  echo "       You may need root privilege for this."
+  exit 1
+}
+python3 -m ensurepip --version > /dev/null 2>&1 || error_no_ensurepip
 
 # Create python virtual enviornment
 python3 -m venv "${DRIVER_PATH}/venv"
@@ -37,4 +49,4 @@ source "${VENV_ACTIVATE}"
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install -U pip setuptools
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install tensorflow-cpu==2.3.0rc0
+  install tensorflow-cpu==2.3.0

@@ -130,6 +130,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                                          // 48
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
   CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
+  CIRCLE_NODE(UNIQUE, CircleUniqueGraphBuilder);                                           // 103
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHERE, CircleWhereGraphBuilder);                                             // 109
   CIRCLE_NODE(WHILE, CircleWhileGraphBuilder);                                             // 119
@@ -155,7 +156,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_FAKE_QUANT = 80,
-  // BuiltinOperator_UNIQUE = 103,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_HARD_SWISH = 117,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,

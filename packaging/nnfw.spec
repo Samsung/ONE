@@ -1,6 +1,6 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.6.0
+Version: 1.7.0
 Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause
@@ -30,7 +30,7 @@ BuildRequires:  flatbuffers-devel
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
 BuildRequires:  python
-BuildRequires:  libarmcl-devel
+BuildRequires:  libarmcl-devel >= v20.05
 %endif
 
 Requires(post): /sbin/ldconfig

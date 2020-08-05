@@ -32,7 +32,7 @@ namespace verifier
 // DAGChecker
 //
 
-bool DAGChecker::verify(const Graph &graph) const
+bool DAGChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
   bool cyclic = false;
@@ -72,23 +72,60 @@ bool DAGChecker::verify(const Graph &graph) const
 // EdgeConsistencyVerifier
 //
 
-bool EdgeConsistencyChecker::verify(const Graph &graph) const
+bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
-  uint32_t mismatches = 0;
+  uint32_t errors = 0;
   operations.iterate([&](const OperationIndex &index, const Operation &node) {
     for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
-      auto &operand = graph.operands().at(operand_index);
-      mismatches += (operand.getUses().contains(index) ? 0 : 1);
+      try
+      {
+        auto &operand = graph.operands().at(operand_index);
+        bool operand_has_use = operand.getUses().contains(index);
+        if (!operand_has_use)
+        {
+          VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
+                                          << operand_index << " to Operation " << index
+                                          << std::endl;
+          errors += 1;
+        }
+      }
+      catch (const std::out_of_range &e)
+      {
+        VERBOSE(EdgeConsistencyChecker)
+            << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand "
+            << operand_index << ", but the operand object is not present in the graph" << std::endl;
+        errors += 1;
+      }
     }
     for (auto operand_index : node.getOutputs())
     {
-      auto &operand = graph.operands().at(operand_index);
-      mismatches += (operand.getDef().contains(index) ? 0 : 1);
+      try
+      {
+        auto &operand = graph.operands().at(operand_index);
+        bool operand_has_def = operand.getDef().contains(index);
+        if (!operand_has_def)
+        {
+          VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
+                                          << operand_index << " to Operation " << index
+                                          << std::endl;
+          errors += 1;
+        }
+      }
+      catch (const std::out_of_range &e)
+      {
+        VERBOSE(EdgeConsistencyChecker)
+            << "[ERROR] OPEARAND NOT FOUND : Operation " << index << " has Operand "
+            << operand_index << ", but the operand object is not present in the graph" << std::endl;
+        errors += 1;
+      }
     }
   });
-  return mismatches == 0;
+
+  VERBOSE(EdgeConsistencyChecker) << "Total Number of errors : " << errors << std::endl;
+
+  return errors == 0;
 }
 
 } // namespace verifier

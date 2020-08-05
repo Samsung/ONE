@@ -45,7 +45,7 @@
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
 #include "arm_compute/core/utils/quantization/AsymmHelpers.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
-#include "support/ToolchainSupport.h"
+#include "support/MemorySupport.h"
 
 #include <algorithm>
 
@@ -60,7 +60,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
   ARM_COMPUTE_UNUSED(weights);
   ARM_COMPUTE_UNUSED(output);
   ARM_COMPUTE_RETURN_ON_ERROR(
-      CLGEMMLowpMatrixMultiplyCoreEx::validate(&input, &weights, nullptr, &output));
+      CLGEMMLowpMatrixMultiplyCore::validate(&input, &weights, nullptr, &output));
 
   return Status{};
 }
@@ -68,7 +68,7 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 
 void CLFullyConnectedHybridLayerReshapeWeights::configure(const ICLTensor *input, ICLTensor *output)
 {
-  auto k = arm_compute::support::cpp14::make_unique<CLTransposeKernel>();
+  auto k = support::cpp14::make_unique<CLTransposeKernel>();
   k->configure(input, output);
   _kernel = std::move(k);
 }
@@ -172,7 +172,8 @@ void CLFullyConnectedHybridLayer::configure(const ICLTensor *input, const ICLTen
 
   // Quantize input
   _quantized_input.allocator()->init(
-      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S8));
+      input->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(
+          DataType::QASYMM8_SIGNED));
   _memory_group.manage(&_quantized_input);
   _quant_input_kernel.configure(input, &_scale_factor, &_quantized_input);
 
@@ -199,7 +200,7 @@ Status CLFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
 {
   ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, weights, output);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::F16, DataType::F32);
-  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(weights, 1, DataType::S8);
+  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(weights, 1, DataType::QASYMM8_SIGNED);
   ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
   ARM_COMPUTE_RETURN_ERROR_ON(weights->num_dimensions() > 2);
 
@@ -256,8 +257,9 @@ Status CLFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   ARM_COMPUTE_RETURN_ON_ERROR(CLScaleFactorSymm8Kernel::validate(input, &scale_factor));
 
   // Validate quantization symm8 kernel
-  const ITensorInfo &quantized_input = TensorInfo(
-      input->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S8));
+  const ITensorInfo &quantized_input =
+      TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_data_type(
+          DataType::QASYMM8_SIGNED));
   ARM_COMPUTE_RETURN_ON_ERROR(
       CLQuantizationSymmetricKernel::validate(input, &scale_factor, &quantized_input));
 

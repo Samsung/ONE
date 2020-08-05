@@ -26,9 +26,10 @@ namespace nnfw
 {
 namespace cker
 {
+template <typename T>
 inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &input_shape,
-                const float *input_data, const Shape &output_shape, float *output_data,
-                const float *constant_value_data)
+                const T *input_data, const Shape &output_shape, T *output_data,
+                const T *constant_value_data)
 {
   // Note, this is pad with mode=`CONSTANT`: it doesn't support `REFLECT` and `SYMMETRIC`
   // TODO: come up with more subtle solution that uses subtensors like arm compute
@@ -38,7 +39,7 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
   /** List of padding information */
   using PaddingList = std::vector<PaddingInfo>;
 
-  auto constant_value = constant_value_data ? *constant_value_data : 0;
+  const T constant_value = constant_value_data ? *constant_value_data : 0;
   assert(output_shape.DimensionsCount() == input_shape.DimensionsCount());
 
   PaddingList padding_list(pad_rank);
@@ -64,7 +65,7 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
     {
       const int32_t in_row_len = input_shape.Dims(0);
       std::fill_n(output_data, padding_list[0].first, constant_value);
-      std::memcpy(output_data + padding_list[0].first, input_data, in_row_len * sizeof(float));
+      std::memcpy(output_data + padding_list[0].first, input_data, in_row_len * sizeof(T));
       std::fill_n(output_data + padding_list[0].first + in_row_len, padding_list[0].second,
                   constant_value);
       break;
@@ -89,7 +90,7 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
         out_offset += padding_list[1].first;
 
         // copy a row of input data
-        memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(float));
+        memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(T));
 
         out_offset += in_row_len;
 
@@ -132,7 +133,7 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
           out_offset += padding_list[2].first;
 
           // copy a row of input data
-          memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(float));
+          memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(T));
 
           out_offset += in_row_len;
 
@@ -191,7 +192,7 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
             out_c_offset += padding_list[3].first;
 
             // copy a row of input data
-            memcpy(output_data + out_c_offset, input_data + in_offset, in_row_len * sizeof(float));
+            memcpy(output_data + out_c_offset, input_data + in_offset, in_row_len * sizeof(T));
 
             out_c_offset += in_row_len;
 

@@ -44,11 +44,9 @@ Different from cross build for linux,
 Here is an example of using Makefile.
 
 ```bash
-cp -n Makefile.template Makefile
-
 TARGET_OS=android \
 CROSS_BUILD=1 \
 NDK_DIR=/path/android-tools/r20/ndk \
 EXT_ACL_FOLDER=/path/arm_compute-v19.11.1-bin-android/lib/android-arm64-v8a-neon-cl \
-make install
+make -f Makefile.template install
 ```

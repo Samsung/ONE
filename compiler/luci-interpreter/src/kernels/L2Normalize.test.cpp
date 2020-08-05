@@ -45,12 +45,9 @@ TEST(L2NormalizeTest, Float)
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
 }
 
-TEST(L2NormalizeTest, Uint8Quantized)
-{
-  // TODO
-  // Implement GetDequantizedOutput Function.
-  // Create Test for Uint8 Case
-}
+// TODO Uint8Quantized
+// Implement GetDequantizedOutput Function.
+// Create Test for Uint8 Case
 
 } // namespace
 } // namespace kernels

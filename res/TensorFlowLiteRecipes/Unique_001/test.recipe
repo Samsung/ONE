@@ -1,0 +1,27 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "ofm_idx"
+  type: INT64
+  shape { dim: 4 }
+}
+operation {
+  type: "Unique"
+  unique_options {
+    idx_out_type: INT64
+  }
+  input: "ifm"
+  output: "ofm"
+  output: "ofm_idx"
+}
+input: "ifm"
+output: "ofm"
+output: "ofm_idx"

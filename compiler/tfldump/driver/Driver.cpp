@@ -33,7 +33,7 @@ int entry(int argc, char **argv)
   {
     std::cout << err.what() << '\n';
     std::cout << arser;
-    return 0;
+    return 255;
   }
 
   std::string tflite_path = arser.get<std::string>("tflite");

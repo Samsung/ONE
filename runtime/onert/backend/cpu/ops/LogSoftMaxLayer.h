@@ -40,13 +40,14 @@ public:
 
   void logsoftmaxQuant8();
 
-  void configure(const Tensor *input, const float beta, const int axis, Tensor *output);
+  void configure(const IPortableTensor *input, const float beta, const int axis,
+                 IPortableTensor *output);
 
   void run();
 
 private:
-  const Tensor *_input;
-  Tensor *_output;
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
 
   float _beta;
   int _axis;

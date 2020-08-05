@@ -67,14 +67,190 @@ const std::string node_name_prefix(luci::NodeName node_name)
   return prefix;
 }
 
+/**
+ * @brief Create CircleOutputExclude operation, which has same shape and dtype with
+ *        original circle_node.
+ */
+luci::CircleOutputExclude *createNoOp(luci::CircleNode *circle_node)
+{
+  auto graph = circle_node->graph();
+  auto noOp = graph->nodes()->create<luci::CircleOutputExclude>();
+
+  if (circle_node->shape_status() == luci::ShapeStatus::VALID)
+  {
+    noOp->dtype(circle_node->dtype());
+    noOp->rank(circle_node->rank());
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
+      noOp->dim(i) = circle_node->dim(i);
+  }
+  else
+  {
+    // For type inference
+    noOp->dtype(loco::DataType::FLOAT32);
+  }
+
+  return noOp;
+};
+
 } // namespace
 
 namespace
 {
 
-class BCQConverter final
+// V means the version of BCQ.
+template <int32_t V> class BCQFuser;
+
+template <> class BCQFuser<1>
 {
 public:
+  bool fuseBCQ(loco::Graph *g)
+  {
+    bool changed = false;
+
+    for (auto node : loco::all_nodes(g))
+    {
+      if (auto circle_const = dynamic_cast<luci::CircleConst *>(node))
+      {
+        add_BCQ_info_node(circle_const);
+      }
+    }
+
+    if (!is_bcqinfo_valid())
+      return false;
+
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      if (auto gather = dynamic_cast<luci::CircleGather *>(node))
+      {
+        auto params = dynamic_cast<luci::CircleConst *>(gather->params());
+        if (params != nullptr && has_BCQ_info(params))
+        {
+          auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
+
+          bcq_gather->op_version(1);
+          bcq_gather->input_scales(get_alpha(params));
+          bcq_gather->input_binary(get_packed_binary_code(params));
+          bcq_gather->indices(gather->indices());
+          bcq_gather->input_clusters(packed_clusters(params));
+
+          // input_binary shape : [output_size, hidden_size]
+          const auto binary_hidden_size =
+              loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
+          bcq_gather->input_hidden_size(binary_hidden_size);
+
+          if (do_w_x(params))
+          {
+            bcq_gather->axis(gather->axis());
+          }
+          else
+          {
+            const auto axis_transpose = (gather->axis() == 0) ? 1 : 0;
+            bcq_gather->axis(axis_transpose);
+          }
+
+          loco::replace(gather).with(bcq_gather);
+
+          changed = true;
+        }
+      }
+      else if (auto fully_connected = dynamic_cast<luci::CircleFullyConnected *>(node))
+      {
+        auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights());
+        if (weights != nullptr && has_BCQ_info(weights))
+        {
+          auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
+
+          bcq_fc->op_version(1);
+          bcq_fc->weights_scales(get_alpha(weights));
+          bcq_fc->weights_binary(get_packed_binary_code(weights));
+          bcq_fc->bias(fully_connected->bias());
+          bcq_fc->weights_clusters(packed_clusters(weights));
+          bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
+
+          loco::Node *bcq_input = fully_connected->input();
+          int32_t batch_rank = 0;
+
+          // If input of BCQFullyConnected has more than rank 2, we should reshape it as rank 2
+          const auto original_input = loco::must_cast<luci::CircleNode *>(fully_connected->input());
+          if (original_input->shape_status() == luci::ShapeStatus::VALID &&
+              original_input->rank() > 2)
+          {
+            auto new_shape = g->nodes()->create<luci::CircleConst>();
+            new_shape->dtype(loco::DataType::S32);
+            new_shape->size<loco::DataType::S32>(2);
+            new_shape->rank(1);
+            new_shape->dim(0) = 2;
+
+            auto batch_size = 1;
+            for (uint32_t i = 0; i < original_input->rank() - 1; ++i)
+              batch_size *= original_input->dim(i).value();
+
+            new_shape->at<loco::DataType::S32>(0) = batch_size;
+            new_shape->at<loco::DataType::S32>(1) =
+                original_input->dim(original_input->rank() - 1).value();
+            new_shape->shape_status(luci::ShapeStatus::VALID);
+
+            auto reshape = g->nodes()->create<luci::CircleReshape>();
+            reshape->tensor(original_input);
+            reshape->shape(new_shape);
+
+            bcq_input = reshape;
+            batch_rank = original_input->rank() - 2;
+          }
+
+          // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
+          if (do_w_x(weights))
+          {
+            const auto binary_hidden_size =
+                loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                    ->dim(batch_rank)
+                    .value();
+            bcq_fc->weights_hidden_size(binary_hidden_size);
+            bcq_fc->input(bcq_input);
+            loco::replace(fully_connected).with(bcq_fc);
+          }
+          else
+          {
+            const auto binary_hidden_size =
+                loco::must_cast<luci::CircleNode *>(fully_connected->input())
+                    ->dim(1 + batch_rank)
+                    .value();
+            bcq_fc->weights_hidden_size(binary_hidden_size);
+
+            auto perm = g->nodes()->create<luci::CircleConst>();
+            perm->dtype(loco::DataType::S32);
+            perm->size<loco::DataType::S32>(2);
+            perm->rank(1);
+            perm->dim(0) = 2;
+            perm->at<loco::DataType::S32>(0) = 1;
+            perm->at<loco::DataType::S32>(1) = 0;
+            perm->shape_status(luci::ShapeStatus::VALID);
+
+            auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
+            input_transpose->a(bcq_input);
+            input_transpose->perm(perm);
+
+            bcq_fc->input(input_transpose);
+
+            auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+            output_transpose->a(bcq_fc);
+            output_transpose->perm(perm);
+
+            loco::replace(fully_connected).with(output_transpose);
+          }
+
+          changed = true;
+        }
+      }
+    }
+
+    if (changed)
+      clear_BCQ_nodes();
+
+    return changed;
+  }
+
+private:
   void add_BCQ_info_node(luci::CircleConst *node)
   {
     const auto node_name = node->name();
@@ -119,16 +295,65 @@ public:
     return has_info;
   }
 
+  /**
+   * @brief Exclude BCQ information nodes which are used for fusing BCQ operations
+   *        from graph output by using CircleOutputExclude
+   */
+  void clear_BCQ_nodes()
+  {
+    auto clear_nodes = [](std::map<std::string, luci::CircleConst *> &nodes) {
+      for (auto &n : nodes)
+      {
+        auto node = n.second;
+
+        for (auto s : loco::succs(node))
+        {
+          if (auto outnode = dynamic_cast<luci::CircleOutput *>(s))
+          {
+            outnode->from(createNoOp(node));
+          }
+          else if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(s))
+          {
+            for (auto o : loco::succs(reshape_node))
+            {
+              auto circle_output = loco::must_cast<luci::CircleOutput *>(o);
+              circle_output->from(createNoOp(reshape_node));
+            }
+          }
+        }
+      }
+    };
+
+    clear_nodes(_do_w_x);
+    clear_nodes(_alpha);
+    clear_nodes(_packed_binary_code);
+    clear_nodes(_number_of_clusters);
+    clear_nodes(_size_of_clusters);
+    clear_nodes(_qbits_of_clusters);
+    clear_nodes(_dequant_weight);
+  }
+
+  bool is_bcqinfo_valid()
+  {
+    // do_w_x should be int32 or bool type
+    for (auto n : _do_w_x)
+    {
+      if (n.second->dtype() != loco::DataType::BOOL && n.second->dtype() != loco::DataType::S32)
+        return false;
+    }
+
+    return true;
+  }
+
+private:
   bool do_w_x(luci::CircleConst *node)
   {
     const auto prefix = node_name_prefix(node->name());
 
     if (_do_w_x[prefix]->dtype() == loco::DataType::S32)
       return _do_w_x[prefix]->at<loco::DataType::S32>(0) == 1;
-    else if (_do_w_x[prefix]->dtype() == loco::DataType::BOOL)
-      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
     else
-      throw std::runtime_error("do_w_x should be int or bool");
+      return _do_w_x[prefix]->at<loco::DataType::BOOL>(0);
   }
 
   luci::CircleConst *get_alpha(luci::CircleConst *node)
@@ -187,64 +412,6 @@ public:
     return packed_clusters;
   }
 
-  /**
-   * @brief Exclude BCQ information nodes which are used for fusing BCQ operations
-   *        from graph output by using CircleOutputExclude
-   */
-  void clear_BCQ_nodes()
-  {
-    auto createNoOp = [](luci::CircleNode *circle_node) {
-      auto graph = circle_node->graph();
-      auto noOp = graph->nodes()->create<luci::CircleOutputExclude>();
-
-      if (circle_node->shape_status() == luci::ShapeStatus::VALID)
-      {
-        noOp->dtype(circle_node->dtype());
-        noOp->rank(circle_node->rank());
-        for (uint32_t i = 0; i < circle_node->rank(); ++i)
-          noOp->dim(i) = circle_node->dim(i);
-      }
-      else
-      {
-        // For type inference
-        noOp->dtype(loco::DataType::FLOAT32);
-      }
-
-      return noOp;
-    };
-
-    auto clear_nodes = [createNoOp](std::map<std::string, luci::CircleConst *> &nodes) {
-      for (auto &n : nodes)
-      {
-        auto node = n.second;
-
-        for (auto s : loco::succs(node))
-        {
-          if (auto outnode = dynamic_cast<luci::CircleOutput *>(s))
-          {
-            outnode->from(createNoOp(node));
-          }
-          else if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(s))
-          {
-            for (auto o : loco::succs(reshape_node))
-            {
-              auto circle_output = loco::must_cast<luci::CircleOutput *>(o);
-              circle_output->from(createNoOp(reshape_node));
-            }
-          }
-        }
-      }
-    };
-
-    clear_nodes(_do_w_x);
-    clear_nodes(_alpha);
-    clear_nodes(_packed_binary_code);
-    clear_nodes(_number_of_clusters);
-    clear_nodes(_size_of_clusters);
-    clear_nodes(_qbits_of_clusters);
-    clear_nodes(_dequant_weight);
-  }
-
 private:
   std::map<std::string, luci::CircleConst *> _do_w_x;
   std::map<std::string, luci::CircleConst *> _alpha;
@@ -262,142 +429,41 @@ namespace luci
 
 bool FuseBCQPass::run(loco::Graph *g)
 {
-  BCQConverter converter;
-
   bool changed = false;
 
+  // Find BCQ version information and check validity.
+  luci::CircleConst *version_node = nullptr;
   for (auto node : loco::all_nodes(g))
   {
     if (auto circle_const = dynamic_cast<luci::CircleConst *>(node))
     {
-      converter.add_BCQ_info_node(circle_const);
+      if (circle_const->name().find("/bcqinfo_version") != std::string::npos)
+      {
+        // There should be only one bcqinfo_version in the model
+        if (version_node != nullptr)
+        {
+          assert(false && "Multiple version information found");
+          return false;
+        }
+
+        version_node = circle_const;
+      }
     }
   }
 
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  // If version node is not found, regard it as version 1.
+  int32_t bcq_version = (version_node != nullptr) ? version_node->at<loco::DataType::S32>(0) : 1;
+
+  if (bcq_version == 1)
+    changed = BCQFuser<1>().fuseBCQ(g);
+  else
+    assert(false && "Not supported BCQ version");
+
+  if (changed && version_node != nullptr)
   {
-    if (auto gather = dynamic_cast<luci::CircleGather *>(node))
-    {
-      auto params = dynamic_cast<luci::CircleConst *>(gather->params());
-      if (params != nullptr && converter.has_BCQ_info(params))
-      {
-        auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
-
-        bcq_gather->input_scales(converter.get_alpha(params));
-        bcq_gather->input_binary(converter.get_packed_binary_code(params));
-        bcq_gather->indices(gather->indices());
-        bcq_gather->input_clusters(converter.packed_clusters(params));
-
-        const auto binary_hidden_size =
-            loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
-        bcq_gather->input_hidden_size(binary_hidden_size);
-
-        if (converter.do_w_x(params))
-        {
-          bcq_gather->axis(gather->axis());
-        }
-        else
-        {
-          const auto axis_transpose = (gather->axis() == 0) ? 1 : 0;
-          bcq_gather->axis(axis_transpose);
-        }
-
-        loco::replace(gather).with(bcq_gather);
-
-        changed = true;
-      }
-    }
-    else if (auto fully_connected = dynamic_cast<luci::CircleFullyConnected *>(node))
-    {
-      auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights());
-      if (weights != nullptr && converter.has_BCQ_info(weights))
-      {
-        auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
-
-        bcq_fc->weights_scales(converter.get_alpha(weights));
-        bcq_fc->weights_binary(converter.get_packed_binary_code(weights));
-        bcq_fc->bias(fully_connected->bias());
-        bcq_fc->weights_clusters(converter.packed_clusters(weights));
-        bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
-
-        loco::Node *bcq_input = fully_connected->input();
-        int32_t batch_rank = 0;
-
-        // If input of BCQFullyConnected has more than rank 2, we should reshape it as rank 2
-        const auto original_input = loco::must_cast<luci::CircleNode *>(fully_connected->input());
-        if (original_input->shape_status() == ShapeStatus::VALID && original_input->rank() > 2)
-        {
-          auto new_shape = g->nodes()->create<luci::CircleConst>();
-          new_shape->dtype(loco::DataType::S32);
-          new_shape->size<loco::DataType::S32>(2);
-          new_shape->rank(1);
-          new_shape->dim(0) = 2;
-
-          auto batch_size = 1;
-          for (uint32_t i = 0; i < original_input->rank() - 1; ++i)
-            batch_size *= original_input->dim(i).value();
-
-          new_shape->at<loco::DataType::S32>(0) = batch_size;
-          new_shape->at<loco::DataType::S32>(1) =
-              original_input->dim(original_input->rank() - 1).value();
-          new_shape->shape_status(ShapeStatus::VALID);
-
-          auto reshape = g->nodes()->create<luci::CircleReshape>();
-          reshape->tensor(original_input);
-          reshape->shape(new_shape);
-
-          bcq_input = reshape;
-          batch_rank = original_input->rank() - 2;
-        }
-
-        // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
-        if (converter.do_w_x(weights))
-        {
-          const auto binary_hidden_size =
-              loco::must_cast<luci::CircleNode *>(fully_connected->input())
-                  ->dim(batch_rank)
-                  .value();
-          bcq_fc->weights_hidden_size(binary_hidden_size);
-          bcq_fc->input(bcq_input);
-          loco::replace(fully_connected).with(bcq_fc);
-        }
-        else
-        {
-          const auto binary_hidden_size =
-              loco::must_cast<luci::CircleNode *>(fully_connected->input())
-                  ->dim(1 + batch_rank)
-                  .value();
-          bcq_fc->weights_hidden_size(binary_hidden_size);
-
-          auto perm = g->nodes()->create<luci::CircleConst>();
-          perm->dtype(loco::DataType::S32);
-          perm->size<loco::DataType::S32>(2);
-          perm->rank(1);
-          perm->dim(0) = 2;
-          perm->at<loco::DataType::S32>(0) = 1;
-          perm->at<loco::DataType::S32>(1) = 0;
-          perm->shape_status(ShapeStatus::VALID);
-
-          auto input_transpose = g->nodes()->create<luci::CircleTranspose>();
-          input_transpose->a(bcq_input);
-          input_transpose->perm(perm);
-
-          bcq_fc->input(input_transpose);
-
-          auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
-          output_transpose->a(bcq_fc);
-          output_transpose->perm(perm);
-
-          loco::replace(fully_connected).with(output_transpose);
-        }
-
-        changed = true;
-      }
-    }
+    // If BCQ is applied and version node was found, remove the node.
+    loco::replace(version_node).with(createNoOp(version_node));
   }
-
-  if (changed)
-    converter.clear_BCQ_nodes();
 
   return changed;
 }

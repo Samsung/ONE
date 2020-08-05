@@ -49,6 +49,7 @@
 #include "arm_compute/core/Utils.h"
 #include "arm_compute/core/Validate.h"
 #include "arm_compute/core/Window.h"
+#include "support/StringSupport.h"
 
 using namespace arm_compute;
 

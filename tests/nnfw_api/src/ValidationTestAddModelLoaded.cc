@@ -51,29 +51,34 @@ TEST_F(ValidationTestAddModelLoaded, output_tensorinfo)
   ASSERT_EQ(tensor_info.dims[0], 1);
 }
 
-TEST_F(ValidationTestAddModelLoaded, neg_run_001)
+TEST_F(ValidationTestAddModelLoaded, neg_run)
 {
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+  // nnfw_prepare is not called
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_INVALID_STATE);
 }
 
-TEST_F(ValidationTestAddModelLoaded, neg_set_input_001)
+TEST_F(ValidationTestAddModelLoaded, neg_set_input)
 {
-  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  // nnfw_prepare is not called
+  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_INVALID_STATE);
 }
 
-TEST_F(ValidationTestAddModelLoaded, neg_set_output_001)
+TEST_F(ValidationTestAddModelLoaded, neg_set_output)
 {
-  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0), NNFW_STATUS_ERROR);
+  // nnfw_prepare is not called
+  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, nullptr, 0),
+            NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_get_input_size)
 {
-  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_input_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_get_output_size)
 {
-  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_size(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_load_model)
@@ -81,11 +86,11 @@ TEST_F(ValidationTestAddModelLoaded, neg_load_model)
   // load model twice
   ASSERT_EQ(nnfw_load_model_from_file(
                 _session, NNPackages::get().getModelAbsolutePath(NNPackages::ADD).c_str()),
-            NNFW_STATUS_ERROR);
+            NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestAddModelLoaded, neg_output_tensorinfo)
 {
   // tensor_info is null
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
 }

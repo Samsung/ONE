@@ -48,7 +48,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Softmax; }
+  OpCode opcode() const final { return OpCode::LogSoftmax; }
 
 public:
   const Param &param() const { return _param; }

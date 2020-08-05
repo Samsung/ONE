@@ -50,7 +50,7 @@ CLInstanceNormalizationLayerEx::CLInstanceNormalizationLayerEx() {}
 void CLInstanceNormalizationLayerEx::configure(ICLTensor *input, ICLTensor *output,
                                                ICLTensor *gamma, ICLTensor *beta, float epsilon)
 {
-  auto k = arm_compute::support::cpp14::make_unique<CLInstanceNormalizationLayerKernelEx>();
+  auto k = support::cpp14::make_unique<CLInstanceNormalizationLayerKernelEx>();
   k->configure(input, output, gamma, beta, epsilon);
   _kernel = std::move(k);
 }

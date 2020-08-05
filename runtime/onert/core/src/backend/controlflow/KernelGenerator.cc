@@ -81,23 +81,23 @@ void KernelGenerator::visit(const ir::operation::If &node)
   std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_alloc = getTensor(input_index);
+    auto input_tensor = getTensor(input_index);
 
-    input_tensors.emplace_back(input_alloc);
+    input_tensors.emplace_back(input_tensor);
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
   exec::DynAllocInfoMap outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_alloc = getTensor(output_index);
+    auto output_tensor = getTensor(output_index);
 
-    output_tensors.emplace_back(output_alloc);
+    output_tensors.emplace_back(output_tensor);
     const auto output_tensor_builder = getTensorBuilder(output_index);
     if (output_tensor_builder->supportDynamicTensor())
     {
       auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
-      outputs_dyn_alloc_info[output_alloc] = exec::DynAllocInfo{output_index, output_dyn_manager};
+      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index, output_dyn_manager};
     }
   }
 
@@ -146,24 +146,24 @@ void KernelGenerator::visit(const ir::operation::While &node)
   std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
   for (const auto input_index : node.getInputs())
   {
-    auto input_alloc = getTensor(input_index);
+    auto input_tensor = getTensor(input_index);
 
-    input_tensors.emplace_back(input_alloc);
+    input_tensors.emplace_back(input_tensor);
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
   std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
-    auto output_alloc = getTensor(output_index);
+    auto output_tensor = getTensor(output_index);
 
-    output_tensors.emplace_back(output_alloc);
+    output_tensors.emplace_back(output_tensor);
 
     const auto output_tensor_builder = getTensorBuilder(output_index);
     if (output_tensor_builder->supportDynamicTensor())
     {
       auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
-      outputs_dyn_alloc_info[output_alloc] = exec::DynAllocInfo{output_index, output_dyn_manager};
+      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index, output_dyn_manager};
     }
   }
 
@@ -199,7 +199,7 @@ KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
   for (auto tensor_builder : _tensor_builder_set)
   {
     auto reg = tensor_builder->tensorRegistry();
-    auto tensor = reg ? reg->getManagedITensor(index) : tensor_builder->tensorAt(index);
+    auto tensor = reg ? reg->getNativeITensor(index) : tensor_builder->tensorAt(index);
     if (tensor)
     {
       ret = tensor_builder;

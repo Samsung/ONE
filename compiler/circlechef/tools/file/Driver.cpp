@@ -41,7 +41,7 @@ int entry(int argc, char **argv)
   {
     std::cout << err.what() << std::endl;
     std::cout << arser;
-    return 0;
+    return 255;
   }
 
   int32_t model_version = 1;

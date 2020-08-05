@@ -39,12 +39,10 @@ public:
   PadLayer();
 
 public:
-  void padFloat32();
-
-  void padQuant8();
+  template <typename T> void padImpl(const T *constant_value_data);
 
   void configure(const IPortableTensor *input, IPortableTensor *output, const int32_t *padData,
-                 int32_t padRank, uint8_t *constantValueData = nullptr);
+                 int32_t padRank, const void *constantValueData = nullptr);
 
   void run() override;
 
@@ -54,7 +52,7 @@ private:
 
   int32_t _padData[8];
   int32_t _padRank;
-  DataPtr _constantValueData;
+  ConstDataPtr _constantValueData;
 };
 
 } // namespace ops

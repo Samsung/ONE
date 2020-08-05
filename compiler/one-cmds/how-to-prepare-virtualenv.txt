@@ -1,12 +1,12 @@
 About
 -----
 
-Last update: 2020-07-14
+Last update: 2020-08-03
 
 This document explains about 'one-prepare-venv' command.
 
 'one-prepare-venv' will prepare python3 virtual environment with tensorflow-cpu
-version 2.3.0rc0, recommanded 2.x version as of now, so that 'one-import-tf'
+version 2.3.0, recommanded 2.x version as of now, so that 'one-import-tf'
 command can execute properly.
 
 

@@ -171,6 +171,9 @@ protected:
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
+  void loadQuantize(const Operator *op, ir::Graph &subg);
+  void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
+  void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -778,6 +781,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
   ir::operation::ResizeBilinear::Param param;
   param.height_out = size_v[0];
   param.width_out = size_v[1];
+  param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
+  param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ResizeBilinear({input}, outputs, param));
   subg.addOperation(std::move(new_op));
@@ -1123,6 +1128,34 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *o
   std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  ir::operation::SpaceToDepth::Param param;
+
+  const auto *options = op->builtin_options_as_SpaceToDepthOptions();
+
+  param.block_size = options->block_size();
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::SpaceToDepth(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const Operator *op,
+                                                                          ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::StatelessRandomUniform(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
 
 template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
@@ -1144,7 +1177,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     BatchMatMul,
     Einsum,
     BroadcastTo,
-    FusedBatchNorm
+    FusedBatchNorm,
+    StatelessRandomUniform
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1156,6 +1190,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"Einsum", BuiltinOP::Einsum},
       {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
       {"BroadcastTo", BuiltinOP::BroadcastTo},
+      {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
   };
 
   try
@@ -1184,6 +1219,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
+        break;
+      case BuiltinOP::StatelessRandomUniform:
+        loadStatelessRandomUniform(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1743,6 +1781,18 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadQuantize(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Quantize(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1958,6 +2008,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:
       loadLogSoftmax(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_QUANTIZE:
+      loadQuantize(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:
+      loadSpaceToDepth(op, subg);
       return;
     default:
       throw std::runtime_error(

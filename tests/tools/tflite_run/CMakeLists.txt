@@ -13,7 +13,7 @@ add_executable(tflite_run ${TFLITE_RUN_SRCS})
 target_include_directories(tflite_run PRIVATE src)
 target_include_directories(tflite_run PRIVATE ${Boost_INCLUDE_DIRS})
 
-target_link_libraries(tflite_run tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib_tflite)
+target_link_libraries(tflite_run nnfw_lib_tflite)
 target_link_libraries(tflite_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 target_link_libraries(tflite_run nnfw_lib_benchmark)

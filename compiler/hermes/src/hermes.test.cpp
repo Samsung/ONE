@@ -18,7 +18,28 @@
 
 #include <gtest/gtest.h>
 
-TEST(HermesTest, simple_usecase)
+namespace
 {
-  // TO BE FILLED
+
+class Logger final : public hermes::Source
+{
+public:
+  Logger(hermes::Context *ctx);
+  ~Logger();
+};
+
+Logger::Logger(hermes::Context *ctx) { activate(ctx->sources(), ctx->bus()); }
+Logger::~Logger() { deactivate(); }
+
+} // namespace
+
+TEST(HermesTest, logger_constructor_NEG)
+{
+  hermes::Context context;
+  // we expect segmentfault from nullptr->sources()
+  ASSERT_DEATH(Logger logger(&context), "");
+
+  SUCCEED();
 }
+
+// TODO add HermesTest simple_usecase
