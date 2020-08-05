@@ -23,4 +23,16 @@ NNFW_STATUS nnfw_set_config(nnfw_session *session, const char *key, const char *
 
 NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value, size_t value_size);
 
+/**
+ * @brief Load a circle model from buffer.
+ *
+ * The buffer must outlive the session.
+ *
+ * @param[in] session session
+ * @param[in] buffer  Pointer to the buffer
+ * @param[in] size    Buffer size
+ * @return NNFW_STATUS
+ */
+NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size);
+
 #endif // __NNFW_INTERNAL_H__

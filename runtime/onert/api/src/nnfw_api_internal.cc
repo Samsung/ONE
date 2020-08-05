@@ -73,6 +73,24 @@ nnfw_session::nnfw_session()
 
 nnfw_session::~nnfw_session() = default;
 
+NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
+{
+  if (!isStateInitialized())
+    return NNFW_STATUS_INVALID_STATE;
+
+  if (!buffer)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (size == 0)
+    return NNFW_STATUS_ERROR;
+
+  _subgraphs = onert::circle_loader::loadModel(buffer, size);
+  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
+
+  _state = State::MODEL_LOADED;
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::load_model_from_file(const char *package_dir)
 {
   if (!isStateInitialized())

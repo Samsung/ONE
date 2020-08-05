@@ -77,6 +77,13 @@ public:
    * @param file_path
    */
   void loadFromFile(const char *file_path);
+  /**
+   * @brief Load a model from a buffer
+   *
+   * @param buffer buffer pointer
+   * @param size buffer size
+   */
+  void loadFromBuffer(uint8_t *buffer, size_t size);
 
 protected:
   ~BaseLoader() = default;
@@ -225,6 +232,15 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   munmap(_base, size);
 
   close(_fd);
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromBuffer(uint8_t *buffer,
+                                                                          size_t size)
+{
+  _base = buffer;
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
+  loadModel();
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
@@ -441,18 +457,26 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   if (data != nullptr)
   {
     using std::ptrdiff_t;
-    size_t data_size = data->size();
-    ptrdiff_t unaligned_offset_start = data->data() - _base;
-    ptrdiff_t offset_end = unaligned_offset_start + data_size;
+    std::unique_ptr<ir::Data> data_obj;
+    if (_fd == -1) // Model is from memory
+    {
+      data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
+    }
+    else // Model is loaded(mmap'd) from a file
+    {
+      size_t data_size = data->size();
+      ptrdiff_t unaligned_offset_start = data->data() - _base;
+      ptrdiff_t offset_end = unaligned_offset_start + data_size;
 
-    // Calculated aligned offset from base address of mapped region
-    // munmap accepts memory address which is a multiple of the pagesize
-    ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
-    size_t mmap_size = offset_end - aligned_offset_start;
+      // Calculated aligned offset from base address of mapped region
+      // munmap accepts memory address which is a multiple of the pagesize
+      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
+      size_t mmap_size = offset_end - aligned_offset_start;
 
-    auto ptr = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
-                                                unaligned_offset_start, data_size);
-    subg.setOperandValue(operand_index, std::move(ptr));
+      data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                  unaligned_offset_start, data_size);
+    }
+    subg.setOperandValue(operand_index, std::move(data_obj));
   }
 
   // Name unused

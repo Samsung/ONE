@@ -21,5 +21,6 @@ target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_T
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)
+target_link_libraries(${RUNTIME_NNFW_API_TEST} circle_schema)
 
 install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest_standalone)
