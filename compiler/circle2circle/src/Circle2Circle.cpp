@@ -61,6 +61,12 @@ int entry(int argc, char **argv)
   arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
       "Enable all optimize options");
 
+  arser.add_argument("--fuse_batchnorm_with_tconv")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fuse BatchNorm operators to Transposed Convolution operator");
+
   arser.add_argument("--fuse_bcq")
       .nargs(0)
       .required(false)
@@ -119,12 +125,15 @@ int entry(int argc, char **argv)
 
   if (arser.get<bool>("--all"))
   {
+    options->enable(Algorithms::FuseBatchNormWithTConv);
     options->enable(Algorithms::FuseBCQ);
     options->enable(Algorithms::FuseInstanceNorm);
     options->enable(Algorithms::ResolveCustomOpAdd);
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
   }
+  if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
+    options->enable(Algorithms::FuseBatchNormWithTConv);
   if (arser.get<bool>("--fuse_bcq"))
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
