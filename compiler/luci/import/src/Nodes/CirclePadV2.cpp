@@ -28,7 +28,8 @@ bool CirclePadV2GraphBuilder::validate(const ValidateArgs &args) const
   if (args.op.inputs.size() != 3)
     return false;
 
-  // TODO do attribute checks
+  if (args.op.outputs.size() != 1)
+    return false;
 
   return true;
 }

@@ -721,7 +721,7 @@ void OperationExporter::visit(luci::CirclePad *node)
 void OperationExporter::visit(luci::CirclePadV2 *node)
 {
   export_simple(node, circle::BuiltinOperator_PADV2, circle::BuiltinOptions_PadV2Options,
-                CreatePadOptions(builder).Union());
+                CreatePadV2Options(builder).Union());
 }
 
 void OperationExporter::visit(luci::CirclePow *node)
