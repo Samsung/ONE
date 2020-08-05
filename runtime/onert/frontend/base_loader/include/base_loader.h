@@ -140,6 +140,7 @@ protected:
   void loadSqueeze(const Operator *op, ir::Graph &subg);
   void loadPrelu(const Operator *op, ir::Graph &subg);
   void loadSplit(const Operator *op, ir::Graph &subg);
+  void loadSplitV(const Operator *op, ir::Graph &subg);
   void loadSlice(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
@@ -1312,6 +1313,23 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadSplitV(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::SplitV::Param param{};
+
+  const auto *options = op->builtin_options_as_SplitVOptions();
+  param.num_splits = options->num_splits();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::SplitV(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadSlice(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1919,6 +1937,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_SPLIT:
       loadSplit(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_SPLIT_V:
+      loadSplitV(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SLICE:
       loadSlice(op, subg);

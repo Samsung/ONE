@@ -109,6 +109,7 @@ public:
   void visit(const ir::operation::Quantize &) override;
   void visit(const ir::operation::SpaceToDepth &) override;
   void visit(const ir::operation::StatelessRandomUniform &) override;
+  void visit(const ir::operation::SplitV &) override;
 
 private:
   const ir::Operands &_ctx;

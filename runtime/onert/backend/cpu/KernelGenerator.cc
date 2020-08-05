@@ -64,6 +64,7 @@
 #include "ops/SpaceToBatchNDLayer.h"
 #include "ops/SpaceToDepthLayer.h"
 #include "ops/SplitLayer.h"
+#include "ops/SplitVLayer.h"
 #include "ops/SubLayer.h"
 #include "ops/TanhLayer.h"
 #include "ops/TileLayer.h"
@@ -1441,6 +1442,30 @@ void KernelGenerator::visit(const ir::operation::StatelessRandomUniform &node)
   auto fn = std::make_unique<ops::StatelessRandomUniformLayer>();
 
   fn->configure(shape_alloc, seed_alloc, output_alloc);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::SplitV &node)
+{
+  const auto num_splits = node.param().num_splits;
+  assert(num_splits == static_cast<int>(node.getOutputs().size()));
+
+  const auto input_idx{node.getInputs().at(ir::operation::SplitV::Input::INPUT)};
+  const auto size_splits{node.getInputs().at(ir::operation::SplitV::Input::SIZE_SPLITS)};
+  const auto split_dim{node.getInputs().at(ir::operation::SplitV::Input::SPLIT_DIM)};
+
+  auto in_tensor = _tensor_builder->portableAt(input_idx).get();
+  auto in_size_splits = _tensor_builder->portableAt(size_splits).get();
+  auto in_split_dim = _tensor_builder->portableAt(split_dim).get();
+
+  std::vector<IPortableTensor *> out_tensors;
+  for (auto &output_idx : node.getOutputs())
+    out_tensors.emplace_back(_tensor_builder->portableAt(output_idx).get());
+
+  auto fn = std::make_unique<ops::SplitVLayer>();
+
+  fn->configure(in_tensor, in_size_splits, in_split_dim, num_splits, out_tensors);
+
   _return_fn = std::move(fn);
 }
 
