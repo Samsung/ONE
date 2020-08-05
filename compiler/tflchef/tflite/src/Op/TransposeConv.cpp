@@ -35,6 +35,10 @@ void TFliteOpTransposeConv::filler(const tflite::Operator *op, TFliteImport *imp
     auto vec = extract_buffer<int32_t>(buffer);
     import->set_tensor_filler(inputs[0], vec);
   }
+
+  // filter
+  const tflite::Tensor *filter_tensor = import->tensors()->Get(inputs[1]);
+  import->set_tensor_filler(inputs[1]);
 }
 
 tflchef::Operation *TFliteOpTransposeConv::build(const tflite::Operator *op, TFliteImport *import,
