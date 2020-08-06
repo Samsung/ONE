@@ -20,6 +20,7 @@
 #include "ops/AddLayer.h"
 #include "ops/ArgMinMaxLayer.h"
 #include "ops/AvgPoolLayer.h"
+#include "ops/BatchToSpaceNDLayer.h"
 #include "ops/CastLayer.h"
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
@@ -331,6 +332,32 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   auto fn = std::make_unique<ops::ConcatLayer>();
 
   fn->configure(input_tensors, axis, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::BatchToSpaceND::INPUT)};
+  const auto block_size_index{node.getInputs().at(ir::operation::BatchToSpaceND::BLOCK_SIZE)};
+
+  auto output_alloc = _tensor_builder->portableAt(output_index).get();
+  auto input_alloc = _tensor_builder->portableAt(input_index).get();
+  auto block_size_alloc = _tensor_builder->portableAt(block_size_index).get();
+
+  auto fn = std::make_unique<ops::BatchToSpaceNDLayer>();
+
+  IPortableTensor *crops_alloc = nullptr;
+  const auto NNApiInputs = 2;
+
+  if (node.getInputs().size() != NNApiInputs)
+  {
+    const auto crops_data_index{node.getInputs().at(ir::operation::BatchToSpaceND::CROPS_DATA)};
+    crops_alloc = _tensor_builder->portableAt(crops_data_index).get();
+  }
+
+  fn->configure(input_alloc, output_alloc, block_size_alloc, crops_alloc);
 
   _return_fn = std::move(fn);
 }

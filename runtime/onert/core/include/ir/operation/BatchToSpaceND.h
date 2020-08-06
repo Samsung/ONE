@@ -32,7 +32,8 @@ public:
   enum Input
   {
     INPUT = 0,
-    BLOCK_SIZE = 1
+    BLOCK_SIZE = 1,
+    CROPS_DATA = 2
   };
 
 public:
