@@ -50,7 +50,7 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
   params.stride_height = stride_height;
   params.stride_width = stride_width;
 
-  TransposeConv kernel(&output_shape_tensor, &weight_tensor, &input_data_tensor, &output_tensor,
+  TransposeConv kernel(&output_shape_tensor, &weight_tensor, &input_data_tensor, nullptr, &output_tensor,
                        params);
   kernel.configure();
   kernel.execute();
