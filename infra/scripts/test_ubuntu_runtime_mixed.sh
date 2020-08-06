@@ -14,16 +14,14 @@ TEST_OS="linux"
 
 # This test requires test model installation
 pushd ${ROOT_PATH} > /dev/null
-echo
-echo "==== Run nnfw_api_gtest begin ===="
-echo
-NNFW_API_TEST_MODEL_INSTALLER=tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh
-TEST_BIN=Product/out/unittest_standalone/nnfw_api_gtest
-$NNFW_API_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
-echo
-echo "==== Run nnfw_api_gtest end ===="
-echo
+echo ""
+echo "==== Run standalone unittest begin ===="
+echo ""
+Product/out/test/onert-test prepare-model --model=nnpackage
 Product/out/test/onert-test unittest --unittestdir=Product/out/unittest_standalone
+echo ""
+echo "==== Run standalone unittest end ===="
+echo ""
 
 # NOTE Fixed backend assignment by type of operation
 # TODO Enhance this with randomized test
