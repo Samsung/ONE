@@ -148,6 +148,28 @@ void FullyConnectedLayer::fullyConnectedHybrid()
 #endif
 }
 
+void FullyConnectedLayer::fullyConnectedSparseWeight()
+{
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
+  nnfw::cker::FullyConnectedParams op_params;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+  op_params.activation = convertActivationType(_activation);
+
+  int w0_size = getTensorShape(_weights).Dims(0);
+  const uint16_t *w1_segments = _weights->w1_segments();
+  const uint16_t *w1_indices = _weights->w1_indices();
+
+  nnfw::cker::FullyConnectedSparseWeight(
+      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w0_size, w1_segments,
+      w1_indices);
+}
+
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, ir::Activation activation,
                                     IPortableTensor *output,
@@ -168,6 +190,10 @@ void FullyConnectedLayer::run()
   if (_is_hybrid)
   {
     fullyConnectedHybrid();
+  }
+  else if (_weights->is_sparse())
+  {
+    fullyConnectedSparseWeight();
   }
   else if (_input->data_type() == OperandType::FLOAT32)
   {

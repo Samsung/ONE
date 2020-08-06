@@ -42,6 +42,8 @@ public:
   float scale() const { return _scale; }
   int32_t offset() const { return _offset; }
   bool sparse() const { return _sparse; }
+  const uint16_t *w1_segments() const { return _w1_segments.data(); }
+  const uint16_t *w1_indices() const { return _w1_indices.data(); }
 
 public:
   void type(const DataType type) { _type = type; }

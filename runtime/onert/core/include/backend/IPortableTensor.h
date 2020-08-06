@@ -37,6 +37,9 @@ class IPortableTensor : public ITensor
 {
 public:
   virtual ~IPortableTensor() = default;
+  virtual bool is_sparse() const { return false; }
+  virtual const uint16_t *w1_segments() const { return nullptr; }
+  virtual const uint16_t *w1_indices() const { return nullptr; }
 
 public:
   bool has_padding() const final { return false; }
