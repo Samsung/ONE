@@ -23,6 +23,10 @@ REPORT_DIR="report"
 
 RUN_DISABLED="true"
 
+function command_exists() {
+	command -v "$@" > /dev/null 2>&1
+}
+
 function Usage()
 {
     echo "Usage: ./$0 --driverbin={such as tflite_run} {tests to test or empty for all of tests}"
@@ -122,7 +126,7 @@ if [ ! -n "$DRIVER_BIN" ]; then
 fi
 
 # Check test driver setting
-if [ ! -e $DRIVER_BIN ] && [ "$RUN_TEST" = "on" ]; then
+if [ ! command_exists $DRIVER_BIN ] && [ "$RUN_TEST" = "on" ]; then
     echo "Cannot find test driver" $DRIVER_BIN ": please set proper DRIVER_BIN"
     exit 1
 fi
