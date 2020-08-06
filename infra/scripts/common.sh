@@ -15,14 +15,17 @@
 # TFLiteModelVerification $1 $2 $3
 #   Run ./tests/scripts/test-driver.sh script verification test
 #
-# Unittests $1 $2 $3
-#   Run ./tests/scripts/test-driver.sh script unittest
+# NNAPIGTest $1 $2 $3
+#   Run [INSTALL_PATH]/test/onert-test unittest command for nnapi gtest
 #
 # NNPackageTest $1 $2
 #   Run ./tests/scripts/nnpkg_test.sh script nnpackage test
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
+
+# Install path on CI
+INSTALL_PATH=$ROOT_PATH/Product/out
 
 function CheckTestPrepared()
 {
@@ -64,10 +67,10 @@ function TFLiteModelVerification()
 }
 
 # $1: (required) backend
-# $2: (required) unittest skiplist file relative path from nnfw root directory
+# $2: (required) nnapi gtest skiplist file relative path from nnfw root directory
 #                pass empty string if there is no test list
 # $3: (required) relative path for report from nnfw root directory
-function Unittests()
+function NNAPIGTest()
 {
   [[ $# -ne 3 ]] && echo "Invalid function argument setting" && exit 1
 
@@ -75,7 +78,7 @@ function Unittests()
 
   # Backup original nnapi_gtest.skip
   # TODO Pass skiplist to test-driver.sh
-  SKIPLIST_FILE="${ROOT_PATH}/Product/out/unittest/nnapi_gtest.skip"
+  SKIPLIST_FILE="${INSTALL_PATH}/unittest/nnapi_gtest.skip"
   BACKUP_FILE="${SKIPLIST_FILE}.backup"
   if [[ "$2" != "" ]]; then
     cp ${SKIPLIST_FILE} ${BACKUP_FILE}
@@ -83,10 +86,9 @@ function Unittests()
   fi
 
   export BACKENDS=$1
-  ./tests/scripts/test-driver.sh \
+  $INSTALL_PATH/test/onert-test unittest \
     --reportdir=$ROOT_PATH/$3 \
-    --unittest \
-    .
+    --unittestdir=$INSTALL_PATH/unittest
   unset BACKENDS
 
   # TODO Pass skiplist to test-driver.sh

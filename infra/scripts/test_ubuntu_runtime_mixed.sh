@@ -20,19 +20,10 @@ echo
 NNFW_API_TEST_MODEL_INSTALLER=tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh
 TEST_BIN=Product/out/unittest_standalone/nnfw_api_gtest
 $NNFW_API_TEST_MODEL_INSTALLER --install-dir ${TEST_BIN}_models
-${TEST_BIN}
 echo
 echo "==== Run nnfw_api_gtest end ===="
 echo
-popd > /dev/null
-
-Product/out/unittest_standalone/test_compute
-Product/out/unittest_standalone/test_onert
-Product/out/unittest_standalone/test_onert_backend_cpu_common
-Product/out/unittest_standalone/test_onert_frontend_nnapi
-Product/out/unittest_standalone/tflite_test
-
-pushd ${ROOT_PATH}
+Product/out/test/onert-test unittest --unittestdir=Product/out/unittest_standalone
 
 # NOTE Fixed backend assignment by type of operation
 # TODO Enhance this with randomized test
@@ -65,5 +56,5 @@ export OP_BACKEND_Conv2D="cpu"
 export OP_BACKEND_MaxPool2D="acl_cl"
 export OP_BACKEND_AvgPool2D="acl_neon"
 export ACL_LAYOUT="NCHW"
-Unittests "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
+NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
 TFLiteModelVerification "acl_cl;acl_neon;cpu" "${TESTLIST_PREFIX}.intersect.txt" "report/mixed"
