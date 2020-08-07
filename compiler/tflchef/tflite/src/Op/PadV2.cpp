@@ -24,7 +24,7 @@ namespace tflchef
 void TFliteOpPadV2::filler(const tflite::Operator *op, TFliteImport *import,
                            tflchef::ModelRecipe *model_recipe) const
 {
-  // Filler for indices and shape
+  // Filler for paddings and constant_values
   fill_tensor_to_import(1, import);
 }
 
