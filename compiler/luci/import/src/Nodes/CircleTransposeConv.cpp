@@ -27,7 +27,7 @@ namespace luci
 
 bool CircleTransposeConvGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (args.op.inputs.size() != 3)
+  if (args.op.inputs.size() != 3 && args.op.inputs.size() != 4)
     return false;
 
   const auto &inputs = args.op.inputs;
@@ -60,6 +60,17 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
   node->inputSizes(inputs[0]);
   node->filter(inputs[1]);
   node->outBackprop(inputs[2]);
+  CircleOutputExclude *bias = nullptr;
+  if (inputs.size() == 3)
+    bias = graph->nodes()->create<CircleOutputExclude>();
+  else
+    bias = dynamic_cast<luci::CircleOutputExclude *>(inputs.at(3));
+  node->bias(bias);
+
+  if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
+  {
+    bias->dtype(loco::DataType::FLOAT32);
+  }
 
   const auto *options = op.builtin_options.AsTransposeConvOptions();
   node->padding(luci_padding(options->padding));
