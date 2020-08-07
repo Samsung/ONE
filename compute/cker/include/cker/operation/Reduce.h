@@ -159,6 +159,92 @@ public:
                             num_resolved_axis, temp_index_data(), reducer, output_data);
   }
 
+  // Computes the mean of elements across dimensions given in axis.
+  // It does so in two stages, first calculates the sum of elements along the axis
+  // then divides it by the number of element in axis for quantized values.
+  template <typename T, typename U>
+  inline bool QuantizedMeanOrSum(const T *input_data, int32_t input_zero_point, float input_scale,
+                                 const Shape &input_shape, T *output_data,
+                                 int32_t output_zero_point, float output_scale,
+                                 const Shape &output_shape, const std::vector<int> &axes,
+                                 bool /*keep_dims*/, U *temp_sum, bool compute_sum,
+                                 U reducer(const U current, const T in))
+  {
+    // Reset output data.
+    size_t num_outputs = 1;
+    for (int idx = 0; idx < output_shape.DimensionsCount(); ++idx)
+    {
+      size_t current = static_cast<size_t>(output_shape.Dims(idx));
+      // Overflow prevention.
+      if (num_outputs > std::numeric_limits<size_t>::max() / current)
+      {
+        return false;
+      }
+      num_outputs *= current;
+    }
+    for (size_t idx = 0; idx < num_outputs; ++idx)
+    {
+      output_data[idx] = T();
+      temp_sum[idx] = U();
+    }
+
+    // Resolve axis.
+    int num_resolved_axis = 0;
+    if (!ResolveAxis(input_shape.DimensionsCount(), axes, resolved_axis_data(), &num_resolved_axis))
+    {
+      return false;
+    }
+
+    if (!ReduceImpl<T, U>(input_data, input_shape, output_shape, resolved_axis_data(),
+                          num_resolved_axis, temp_index_data(), reducer, temp_sum))
+    {
+      return false;
+    }
+
+    // Calculate mean by dividing output_data by num of aggregated element.
+    U num_elements_in_axis = 1;
+    for (int idx = 0; idx < num_resolved_axis; ++idx)
+    {
+      size_t current = static_cast<size_t>(input_shape.Dims(resolved_axis_data()[idx]));
+      // Overflow prevention.
+      if (current > static_cast<size_t>(std::numeric_limits<U>::max() / num_elements_in_axis))
+      {
+        return false;
+      }
+      num_elements_in_axis *= current;
+    }
+
+    if (num_elements_in_axis > 0)
+    {
+      const float scale = input_scale / output_scale;
+      if (compute_sum)
+      {
+        // TODO(b/116341117): Eliminate float and do this completely in 8bit.
+        const float bias = -input_zero_point * scale * num_elements_in_axis + 0.5f;
+        for (size_t idx = 0; idx < num_outputs; ++idx)
+        {
+          const U value =
+              static_cast<U>(std::round(temp_sum[idx] * scale + bias)) + output_zero_point;
+          output_data[idx] = static_cast<T>(value);
+        }
+      }
+      else
+      {
+        const float bias = -input_zero_point * scale + 0.5f;
+        for (size_t idx = 0; idx < num_outputs; ++idx)
+        {
+          float float_mean =
+              static_cast<float>(temp_sum[idx]) / static_cast<float>(num_elements_in_axis);
+          float result = std::min(std::round(float_mean * scale + bias) + output_zero_point,
+                                  static_cast<float>(std::numeric_limits<T>::max()));
+          result = std::max(result, static_cast<float>(std::numeric_limits<T>::min()));
+          output_data[idx] = static_cast<T>(result);
+        }
+      }
+    }
+    return true;
+  }
+
   inline int32_t *resolved_axis_data(void)
   {
     return _resolved_axis.size() ? _resolved_axis.data() : _resolved_axis_small;

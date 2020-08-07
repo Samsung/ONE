@@ -18,7 +18,7 @@ mul
 pack
 pad
 reduce_max
-reduce_sum
+reduce_sum/float
 relu
 relu6
 reshape/reshape1
