@@ -2,7 +2,7 @@
 
 RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
 
-RULE    "TCONV_EXIST"     $(op_count TRANSPOSE_CONV) '=' 1
+RULE    "TCONV_EXIST"             $(op_count TRANSPOSE_CONV) '=' 1
 RULE    "NO_MUL"                  $(op_count MUL) '=' 0
 # TODO Current implemenation is fusing only mul op with tconv
-RULE    "ADD_EXIST"           $(op_count ADD) '=' 1
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0

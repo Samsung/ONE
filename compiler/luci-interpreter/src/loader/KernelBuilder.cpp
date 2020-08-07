@@ -530,7 +530,7 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
 {
-  assert(node->arity() == 3);
+  assert(node->arity() == 4);
 
   const Tensor *input_sizes = getInputTensor(node->inputSizes());
   const Tensor *filter = getInputTensor(node->filter());

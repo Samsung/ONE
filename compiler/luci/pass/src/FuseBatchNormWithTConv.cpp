@@ -15,7 +15,7 @@
  */
 
 #include "luci/Pass/FuseBatchNormWithTConv.h"
-#include <iostream>
+
 #include <luci/IR/CircleNodes.h>
 
 namespace
@@ -23,6 +23,11 @@ namespace
 
 bool fused_batch_norm_with_tconv(luci::CircleTransposeConv *tconv)
 {
+  // check whether it has bias or not. This optimization works only if it doesn't.
+  auto bias = dynamic_cast<luci::CircleOutputExclude *>(tconv->bias());
+  if (not bias)
+    return false;
+
   // get weight of tconv
   auto filter = dynamic_cast<luci::CircleConst *>(tconv->filter());
   if (not filter)
@@ -39,22 +44,46 @@ bool fused_batch_norm_with_tconv(luci::CircleTransposeConv *tconv)
   if (mul->dtype() != loco::DataType::FLOAT32)
     return false;
 
+  // get add node
+  auto mul_output = loco::succs(mul);
+  assert(mul_output.size() == 1);
+  auto add = dynamic_cast<luci::CircleAdd *>(*mul_output.begin());
+  if (not add)
+    return false;
+  if (add->dtype() != loco::DataType::FLOAT32)
+    return false;
+  if (add->fusedActivationFunction() != luci::FusedActFunc::NONE &&
+      add->fusedActivationFunction() != luci::FusedActFunc::RELU6)
+    return false;
+
   // get scale of batchnorm
   auto scale = dynamic_cast<luci::CircleConst *>(mul->y());
   if (not scale)
     return false;
 
-  // mul dim(0) == tconv filter channel dim
+  // scale dim(0) == tconv filter channel dim
   if (filter->rank() != 4)
     return false;
   auto filter_channel_dim = filter->dim(3).value();
   if (scale->rank() != 1)
     return false;
-  auto mul_dim = scale->dim(0).value();
-  if (filter_channel_dim != mul_dim)
+  auto scale_dim = scale->dim(0).value();
+  if (filter_channel_dim != scale_dim)
     return false;
 
-  // filter weight = filter weight * mul
+  // get shift of batchnorm
+  auto shift = dynamic_cast<luci::CircleConst *>(add->y());
+  if (not shift)
+    return false;
+
+  // shift dim(0) == tconv filter channel dim
+  if (shift->rank() != 1)
+    return false;
+  auto shift_dim = shift->dim(0).value();
+  if (filter_channel_dim != shift_dim)
+    return false;
+
+  // filter weight = filter weight * mul(scale) + add(shift)
   uint32_t filter_batch_dim = filter->dim(0).value();
   uint32_t filter_height_dim = filter->dim(1).value();
   uint32_t filter_width_dim = filter->dim(2).value();
@@ -73,9 +102,24 @@ bool fused_batch_norm_with_tconv(luci::CircleTransposeConv *tconv)
       }
     }
   }
-  // remove mul node
-  replace(mul).with(tconv);
-  // TODO add bias attribute to tconv
+
+  // fuse shift with transposed conv
+  tconv->bias(shift);
+
+  if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
+  {
+    // separate relu op from add op
+    auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
+    relu->features(tconv);
+
+    // remove mul node
+    replace(add).with(relu);
+  }
+  else
+  {
+    replace(add).with(tconv);
+  }
+
   return true;
 }
 
