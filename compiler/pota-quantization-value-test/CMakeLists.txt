@@ -49,21 +49,21 @@ add_test(
           ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
 )
 
-#add_test(
-#  NAME pota_record_minmax_test
-#  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh"
-#          "${TEST_CONFIG}"
-#          "${ARTIFACTS_BIN_PATH}"
-#          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-#)
+add_test(
+  NAME pota_record_minmax_test
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh"
+          "${TEST_CONFIG}"
+          "${ARTIFACTS_BIN_PATH}"
+          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
+)
 
-#add_test(
-#  NAME pota_quantization_test
-#  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh"
-#          "${TEST_CONFIG}"
-#          "${ARTIFACTS_BIN_PATH}"
-#          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-#)
+add_test(
+  NAME pota_quantization_test
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh"
+          "${TEST_CONFIG}"
+          "${ARTIFACTS_BIN_PATH}"
+          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
+)
 
-#set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
-#set_tests_properties(pota_quantization_test PROPERTIES DEPENDS pota_record_minmax_test)
+set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
+set_tests_properties(pota_quantization_test PROPERTIES DEPENDS pota_record_minmax_test)
