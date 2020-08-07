@@ -49,6 +49,13 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  if (arser["--tensors_to_hdf5"] == arser["--tensors"])
+  {
+    std::cout << "[Error] You must specify one option for how to print." << std::endl;
+    std::cout << arser;
+    return 255;
+  }
+
   std::unique_ptr<circletensordump::DumpInterface> dump;
 
   std::string model_file = arser.get<std::string>("circle");
