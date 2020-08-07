@@ -16,7 +16,6 @@
 
 #include "RecordMinMax.h"
 #include "RecordFunction.h"
-#include "CircleExpContract.h"
 #include "MinMaxObserver.h"
 #include "HDF5Importer.h"
 
@@ -185,9 +184,7 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
 {
   // Export to output Circle file
   luci::CircleExporter exporter;
-  CircleExpContract contract(_module.get(), output_model_path);
-
-  if (!exporter.invoke(&contract))
+  if (!exporter.exportToFile(_module.get(), output_model_path))
   {
     throw std::runtime_error("ERROR: Failed to export '" + output_model_path + "'");
   }

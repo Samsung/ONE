@@ -61,4 +61,23 @@ bool CircleExporter::invoke(Contract *contract) const
   return contract->store(ptr, size);
 }
 
+bool CircleExporter::exportToFile(luci::Module *module, const std::string &filepath) const
+{
+  if (!module)
+    return false;
+
+  CircleExporterImpl impl(module);
+
+  const char *ptr = impl.getBufferPointer();
+  const size_t size = impl.getBufferSize();
+
+  if (!ptr)
+    INTERNAL_EXN("Graph was not serialized by FlatBuffer for some reason");
+
+  std::ofstream fs(filepath.c_str(), std::ofstream::binary);
+  fs.write(ptr, size);
+
+  return fs.good();
+}
+
 } // namespace luci

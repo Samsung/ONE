@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "CircleExpContract.h"
-
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
@@ -156,10 +154,7 @@ int entry(int argc, char **argv)
 
   // Export to output Circle file
   luci::CircleExporter exporter;
-
-  CircleExpContract contract(module.get(), output_path);
-
-  if (!exporter.invoke(&contract))
+  if (!exporter.exportToFile(module.get(), output_path))
   {
     std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
     return 255;
