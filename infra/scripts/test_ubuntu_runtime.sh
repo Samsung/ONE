@@ -68,7 +68,7 @@ else
 fi
 
 UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
-FRAMEWORK_TESTLIST="tests/scripts/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
+FRAMEWORK_TESTLIST="Product/out/test/list/frameworktest_list.${TEST_ARCH}.${BACKEND}.txt"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
 
@@ -103,7 +103,7 @@ done
 
 # Current support acl_cl backend testlist only
 # TODO Support more backends
-TFLITE_LOADER_TESTLIST="tests/scripts/list/tflite_loader_list.${TEST_ARCH}.txt"
+TFLITE_LOADER_TESTLIST="Product/out/test/list/tflite_loader_list.${TEST_ARCH}.txt"
 if [[ $TFLITE_LOADER = "1" ]]; then
   TFLiteLoaderTest "${BACKEND}" "${TFLITE_LOADER_TESTLIST}" "${REPORT_BASE}/loader/${EXECUTOR}"
 

@@ -28,7 +28,7 @@ echo ""
 BACKENDS=(acl_cl acl_neon cpu)
 
 # Get the intersect of framework test list files
-TESTLIST_PREFIX="tests/scripts/list/frameworktest_list.${TEST_ARCH}"
+TESTLIST_PREFIX="Product/out/test/list/frameworktest_list.${TEST_ARCH}"
 SKIPLIST_PREFIX="Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}"
 sort $TESTLIST_PREFIX.${BACKENDS[0]}.txt > $TESTLIST_PREFIX.intersect.txt
 sort $SKIPLIST_PREFIX.${BACKENDS[0]} > $SKIPLIST_PREFIX.union
