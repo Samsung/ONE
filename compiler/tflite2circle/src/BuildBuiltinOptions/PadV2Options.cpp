@@ -16,8 +16,6 @@
 
 #include "PadV2Options.h"
 
-#include <cassert>
-
 namespace tflite2circle
 {
 
