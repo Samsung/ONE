@@ -31,8 +31,8 @@ bool CircleReduceAnyGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_0 = tensors.at(inputs[0]);
-  const auto &tensor_1 = tensors.at(inputs[1]);
+  const auto &tensor_0 = tensors.at(inputs.at(0));
+  const auto &tensor_1 = tensors.at(inputs.at(1));
   const auto &tensor_o = tensors.at(outputs[0]);
 
   if (tensor_0->type != circle::TensorType_BOOL)
@@ -57,8 +57,8 @@ CircleNode *CircleReduceAnyGraphBuilder::build_node(const circle::OperatorT &op,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleReduceAny>();
-  node->input(inputs[0]);
-  node->reduction_indices(inputs[1]);
+  node->input(inputs.at(0));
+  node->reduction_indices(inputs.at(1));
 
   const auto *options = op.builtin_options.AsReducerOptions();
   node->keep_dims(options->keep_dims);

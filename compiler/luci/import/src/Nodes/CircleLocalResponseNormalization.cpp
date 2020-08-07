@@ -37,7 +37,7 @@ CircleNode *CircleLocalResponseNormalizationGraphBuilder::build_node(
     const circle::OperatorT &op, const std::vector<CircleNode *> &inputs, loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLocalResponseNormalization>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   const auto *options = op.builtin_options.AsLocalResponseNormalizationOptions();
   node->radius(options->radius);

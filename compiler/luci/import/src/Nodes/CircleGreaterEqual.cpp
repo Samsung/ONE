@@ -40,7 +40,7 @@ bool CircleGreaterEqualGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &tensors = args.reader.tensors();
 
-  if (tensors[inputs[0]]->type != tensors[inputs[1]]->type)
+  if (tensors[inputs.at(0)]->type != tensors[inputs.at(1)]->type)
   {
     return false;
   }
@@ -53,8 +53,8 @@ CircleNode *CircleGreaterEqualGraphBuilder::build_node(const circle::OperatorT &
                                                        loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleGreaterEqual>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

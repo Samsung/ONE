@@ -36,7 +36,7 @@ bool CircleGatherNdGraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 1)
     return false;
 
-  auto &indices_tensor = args.reader.tensors()[inputs[1]];
+  auto &indices_tensor = args.reader.tensors()[inputs.at(1)];
 
   if (!(indices_tensor->type == circle::TensorType::TensorType_INT32 ||
         indices_tensor->type == circle::TensorType::TensorType_INT64))
@@ -53,8 +53,8 @@ CircleNode *CircleGatherNdGraphBuilder::build_node(const circle::OperatorT &,
 {
   auto *node = graph->nodes()->create<CircleGatherNd>();
 
-  node->params(inputs[0]);
-  node->indices(inputs[1]);
+  node->params(inputs.at(0));
+  node->indices(inputs.at(1));
 
   // GatherNd options empty
 

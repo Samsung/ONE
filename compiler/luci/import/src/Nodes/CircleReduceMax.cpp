@@ -33,7 +33,7 @@ bool CircleReduceMaxGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_axis = tensors.at(inputs[1]);
+  const auto &tensor_axis = tensors.at(inputs.at(1));
 
   switch (tensor_axis->type)
   {
@@ -52,8 +52,8 @@ CircleNode *CircleReduceMaxGraphBuilder::build_node(const circle::OperatorT &op,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleReduceMax>();
-  node->input(inputs[0]);
-  node->reduction_indices(inputs[1]);
+  node->input(inputs.at(0));
+  node->reduction_indices(inputs.at(1));
 
   const auto *options = op.builtin_options.AsReducerOptions();
   node->keep_dims(options->keep_dims);

@@ -35,7 +35,7 @@ bool CircleWhereGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_condition = tensors.at(inputs[0]);
+  const auto &tensor_condition = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
 
   if (tensor_condition->type != circle::TensorType_BOOL)
@@ -52,7 +52,7 @@ CircleNode *CircleWhereGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleWhere>();
-  node->condition(inputs[0]);
+  node->condition(inputs.at(0));
 
   return node;
 }

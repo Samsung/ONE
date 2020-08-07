@@ -36,7 +36,7 @@ CircleNode *CircleNegGraphBuilder::build_node(const circle::OperatorT &,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleNeg>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   return node;
 }

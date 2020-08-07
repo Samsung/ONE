@@ -59,7 +59,7 @@ bool CircleUnpackGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   const auto &shape = tensor->shape;
   auto shape_size = static_cast<int32_t>(shape.size());
   if (shape_size > 0)

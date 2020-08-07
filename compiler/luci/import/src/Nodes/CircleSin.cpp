@@ -33,7 +33,7 @@ bool CircleSinGraphBuilder::validate(const ValidateArgs &args) const
 
   // input type check
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type)
   {
     case circle::TensorType_FLOAT16:
@@ -53,7 +53,7 @@ CircleNode *CircleSinGraphBuilder::build_node(const circle::OperatorT &,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSin>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   // No options for Sin
 

@@ -31,7 +31,7 @@ bool CircleLogicalNotGraphBuilder::validate(const ValidateArgs &args) const
   // Only BOOL type is allowed for the input
   const auto &inputs = args.op.inputs;
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   if (tensor->type != circle::TensorType::TensorType_BOOL)
     return false;
 
@@ -43,7 +43,7 @@ CircleNode *CircleLogicalNotGraphBuilder::build_node(const circle::OperatorT &,
                                                      loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLogicalNot>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   return node;
 }

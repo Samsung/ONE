@@ -39,7 +39,7 @@ CircleNode *CircleLeakyReluGraphBuilder::build_node(const circle::OperatorT &op,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLeakyRelu>();
-  node->features(inputs[0]);
+  node->features(inputs.at(0));
 
   const auto *options = op.builtin_options.AsLeakyReluOptions();
   node->alpha(options->alpha);

@@ -32,12 +32,12 @@ bool CircleScatterNdGraphBuilder::validate(const ValidateArgs &args) const
   // indices must have the same type as shape
   const auto &tensors = args.reader.tensors();
 
-  if (tensors[inputs[0]]->type != tensors[inputs[2]]->type)
+  if (tensors[inputs.at(0)]->type != tensors[inputs.at(2)]->type)
     return false;
 
   // indices must be either int32 or int64
-  if (tensors[inputs[0]]->type != circle::TensorType_INT32 &&
-      tensors[inputs[0]]->type != circle::TensorType_INT64)
+  if (tensors[inputs.at(0)]->type != circle::TensorType_INT32 &&
+      tensors[inputs.at(0)]->type != circle::TensorType_INT64)
     return false;
 
   return true;
@@ -48,9 +48,9 @@ CircleNode *CircleScatterNdGraphBuilder::build_node(const circle::OperatorT &,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleScatterNd>();
-  node->indices(inputs[0]);
-  node->updates(inputs[1]);
-  node->shape(inputs[2]);
+  node->indices(inputs.at(0));
+  node->updates(inputs.at(1));
+  node->shape(inputs.at(2));
 
   return node;
 }

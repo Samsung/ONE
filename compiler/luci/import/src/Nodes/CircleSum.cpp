@@ -34,8 +34,8 @@ CircleNode *CircleSumGraphBuilder::build_node(const circle::OperatorT &op,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSum>();
-  node->input(inputs[0]);
-  node->reduction_indices(inputs[1]);
+  node->input(inputs.at(0));
+  node->reduction_indices(inputs.at(1));
 
   const auto *options = op.builtin_options.AsReducerOptions();
   node->keep_dims(options->keep_dims);

@@ -37,8 +37,8 @@ CircleNode *CircleFillGraphBuilder::build_node(const circle::OperatorT &op,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleFill>();
-  node->dims(inputs[0]);
-  node->value(inputs[1]);
+  node->dims(inputs.at(0));
+  node->value(inputs.at(1));
 
   const auto *options = op.builtin_options.AsFillOptions();
   (void)options;

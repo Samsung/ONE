@@ -39,8 +39,8 @@ CircleNode *CircleSubGraphBuilder::build_node(const circle::OperatorT &op,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSub>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   const auto *options = op.builtin_options.AsSubOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));

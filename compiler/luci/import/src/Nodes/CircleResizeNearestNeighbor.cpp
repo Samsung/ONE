@@ -37,8 +37,8 @@ CircleNode *CircleResizeNearestNeighborGraphBuilder::build_node(
     const circle::OperatorT &op, const std::vector<CircleNode *> &inputs, loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleResizeNearestNeighbor>();
-  node->input(inputs[0]);
-  node->size(inputs[1]);
+  node->input(inputs.at(0));
+  node->size(inputs.at(1));
 
   const auto *options = op.builtin_options.AsResizeNearestNeighborOptions();
   node->align_corners(options->align_corners);

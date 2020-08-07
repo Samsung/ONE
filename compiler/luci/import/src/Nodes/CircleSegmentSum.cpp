@@ -33,9 +33,9 @@ bool CircleSegmentSumGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_in = tensors.at(inputs[0]);
+  const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
-  const auto &tensor_ids = tensors.at(inputs[1]);
+  const auto &tensor_ids = tensors.at(inputs.at(1));
 
   switch (tensor_ids->type)
   {
@@ -59,8 +59,8 @@ CircleNode *CircleSegmentSumGraphBuilder::build_node(const circle::OperatorT &,
                                                      loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSegmentSum>();
-  node->input(inputs[0]);
-  node->segment_ids(inputs[1]);
+  node->input(inputs.at(0));
+  node->segment_ids(inputs.at(1));
 
   return node;
 }

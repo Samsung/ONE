@@ -38,9 +38,9 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
                                                          loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleFullyConnected>();
-  node->input(inputs[0]);
-  node->weights(inputs[1]);
-  node->bias(inputs[2]); // bias is optional
+  node->input(inputs.at(0));
+  node->weights(inputs.at(1));
+  node->bias(inputs.at(2)); // bias is optional
 
   // TODO Find and move to appropriate place for setting optional input
   if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))

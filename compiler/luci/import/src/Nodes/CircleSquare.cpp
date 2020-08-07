@@ -33,7 +33,7 @@ bool CircleSquareGraphBuilder::validate(const ValidateArgs &args) const
   // bfloat16, half (float16), float32, float64, complex64, complex128
   // Currently, circle supports float16, float32, complex64
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   switch (tensor->type)
   {
     case circle::TensorType_INT32:
@@ -55,7 +55,7 @@ CircleNode *CircleSquareGraphBuilder::build_node(const circle::OperatorT &,
                                                  loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSquare>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   return node;
 }

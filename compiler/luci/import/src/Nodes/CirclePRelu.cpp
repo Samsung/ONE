@@ -39,8 +39,8 @@ CircleNode *CirclePReluGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CirclePRelu>();
-  node->input(inputs[0]);
-  node->alpha(inputs[1]);
+  node->input(inputs.at(0));
+  node->alpha(inputs.at(1));
 
   // PRelu options are empty
 

@@ -35,7 +35,7 @@ bool CircleEluGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
 
   switch (tensor->type)
   {
@@ -56,7 +56,7 @@ CircleNode *CircleEluGraphBuilder::build_node(const circle::OperatorT &,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleElu>();
-  node->features(inputs[0]);
+  node->features(inputs.at(0));
 
   return node;
 }

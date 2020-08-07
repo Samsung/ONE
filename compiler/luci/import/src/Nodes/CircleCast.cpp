@@ -47,7 +47,7 @@ bool CircleCastGraphBuilder::validate(const ValidateArgs &args) const
     const circle::TensorT &output_tensor = *tensors[outputs[0]];
     auto name = tensor_name(output_tensor);
 
-    const auto &tensor_in = tensors.at(inputs[0]);
+    const auto &tensor_in = tensors.at(inputs.at(0));
     if (tensor_in->type != options->in_data_type)
     {
       if (settings->get(luci::UserSettings::Key::DisableValidation))
@@ -77,7 +77,7 @@ CircleNode *CircleCastGraphBuilder::build_node(const circle::OperatorT &op,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleCast>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   const auto *options = op.builtin_options.AsCastOptions();
   if (options != nullptr)
@@ -87,7 +87,7 @@ CircleNode *CircleCastGraphBuilder::build_node(const circle::OperatorT &op,
   }
   else
   {
-    node->in_data_type(inputs[0]->dtype());
+    node->in_data_type(inputs.at(0)->dtype());
     node->out_data_type(loco::DataType::Unknown);
     // type inference should use node->dtype() for Unknown
     // export should use BuiltinOptions_NONE for Unknown

@@ -36,10 +36,10 @@ CircleNode *CircleSparseToDenseGraphBuilder::build_node(const circle::OperatorT 
                                                         loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSparseToDense>();
-  node->indices(inputs[0]);
-  node->output_shape(inputs[1]);
-  node->values(inputs[2]);
-  node->default_value(inputs[3]);
+  node->indices(inputs.at(0));
+  node->output_shape(inputs.at(1));
+  node->values(inputs.at(2));
+  node->default_value(inputs.at(3));
 
   const auto *options = op.builtin_options.AsSparseToDenseOptions();
   node->validate_indices(options->validate_indices);

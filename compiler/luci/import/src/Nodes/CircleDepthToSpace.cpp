@@ -40,7 +40,7 @@ bool CircleDepthToSpaceGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &tensors = args.reader.tensors();
 
-  if (tensors[outputs[0]]->type != tensors[inputs[0]]->type)
+  if (tensors[outputs[0]]->type != tensors[inputs.at(0)]->type)
   {
     return false;
   }
@@ -56,7 +56,7 @@ CircleNode *CircleDepthToSpaceGraphBuilder::build_node(const circle::OperatorT &
                                                        loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleDepthToSpace>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   const auto *options = op.builtin_options.AsDepthToSpaceOptions();
   node->block_size(options->block_size);

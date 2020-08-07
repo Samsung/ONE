@@ -41,7 +41,7 @@ CircleNode *CircleSpaceToDepthGraphBuilder::build_node(const circle::OperatorT &
                                                        loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSpaceToDepth>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   const auto *options = op.builtin_options.AsSpaceToDepthOptions();
   node->block_size(options->block_size);

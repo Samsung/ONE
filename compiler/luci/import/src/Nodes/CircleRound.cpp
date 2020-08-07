@@ -37,7 +37,7 @@ bool CircleRoundGraphBuilder::validate(const ValidateArgs &args) const
   // bfloat16, half (float16), float32, float64, complex64, complex128
   // Currently, circle supports float16, float32, complex64
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_in = tensors.at(inputs[0]);
+  const auto &tensor_in = tensors.at(inputs.at(0));
   const auto &tensor_out = tensors.at(outputs[0]);
 
   switch (tensor_in->type)
@@ -63,7 +63,7 @@ CircleNode *CircleRoundGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleRound>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   return node;
 }

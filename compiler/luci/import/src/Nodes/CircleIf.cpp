@@ -43,7 +43,7 @@ bool CircleIfGraphBuilder::validate(const ValidateArgs &args) const
 
   // input 0 should be BOOL type
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   if (tensor->type != circle::TensorType_BOOL)
     return false;
 

@@ -35,7 +35,7 @@ bool CircleMaximumGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
 
   switch (tensor->type)
   {
@@ -49,7 +49,7 @@ bool CircleMaximumGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensors[inputs[1]]->type != tensor->type)
+  if (tensors[inputs.at(1)]->type != tensor->type)
     return false;
 
   if (tensors[outputs[0]]->type != tensor->type)
@@ -63,8 +63,8 @@ CircleNode *CircleMaximumGraphBuilder::build_node(const circle::OperatorT &,
                                                   loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleMaximum>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

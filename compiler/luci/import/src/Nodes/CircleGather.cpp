@@ -56,8 +56,8 @@ CircleNode *CircleGatherGraphBuilder::build_node(const circle::OperatorT &op,
 {
   auto *node = graph->nodes()->create<CircleGather>();
 
-  node->params(inputs[0]);
-  node->indices(inputs[1]);
+  node->params(inputs.at(0));
+  node->indices(inputs.at(1));
 
   const auto *options = op.builtin_options.AsGatherOptions();
   node->axis(options->axis);

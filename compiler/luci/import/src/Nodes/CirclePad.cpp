@@ -38,8 +38,8 @@ CircleNode *CirclePadGraphBuilder::build_node(const circle::OperatorT &op,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CirclePad>();
-  node->input(inputs[0]);
-  node->paddings(inputs[1]);
+  node->input(inputs.at(0));
+  node->paddings(inputs.at(1));
 
   const auto *options = op.builtin_options.AsPadOptions();
   (void)options; // There are no options.

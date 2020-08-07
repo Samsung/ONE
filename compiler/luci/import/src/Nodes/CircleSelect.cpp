@@ -33,7 +33,7 @@ bool CircleSelectGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
   if (tensor->type != circle::TensorType_BOOL)
     return false;
   // TODO check dtypes for input 1, 2
@@ -46,9 +46,9 @@ CircleNode *CircleSelectGraphBuilder::build_node(const circle::OperatorT &,
                                                  loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSelect>();
-  node->condition(inputs[0]);
-  node->t(inputs[1]);
-  node->e(inputs[2]);
+  node->condition(inputs.at(0));
+  node->t(inputs.at(1));
+  node->e(inputs.at(2));
 
   return node;
 }

@@ -33,7 +33,7 @@ bool CircleSpaceToBatchNDGraphBuilder::validate(const ValidateArgs &args) const
 
   // input 1 and 2 should have INT32/INT64 type
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_1 = tensors.at(inputs[1]);
+  const auto &tensor_1 = tensors.at(inputs.at(1));
   switch (tensor_1->type)
   {
     case circle::TensorType_INT32:
@@ -42,7 +42,7 @@ bool CircleSpaceToBatchNDGraphBuilder::validate(const ValidateArgs &args) const
     default:
       return false;
   }
-  const auto &tensor_2 = tensors.at(inputs[2]);
+  const auto &tensor_2 = tensors.at(inputs.at(2));
   switch (tensor_2->type)
   {
     case circle::TensorType_INT32:
@@ -53,7 +53,7 @@ bool CircleSpaceToBatchNDGraphBuilder::validate(const ValidateArgs &args) const
   }
 
   // Only support input shape dimension 3 and 4 only
-  const auto &tensor_0 = tensors.at(inputs[0]);
+  const auto &tensor_0 = tensors.at(inputs.at(0));
   const auto t_0_s = tensor_0->shape.size();
   if (t_0_s != 3 && t_0_s != 4)
     return false;
@@ -68,9 +68,9 @@ CircleNode *CircleSpaceToBatchNDGraphBuilder::build_node(const circle::OperatorT
                                                          loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSpaceToBatchND>();
-  node->input(inputs[0]);
-  node->block_shape(inputs[1]);
-  node->paddings(inputs[2]);
+  node->input(inputs.at(0));
+  node->block_shape(inputs.at(1));
+  node->paddings(inputs.at(2));
 
   // No options for SpaceToBatchND
 

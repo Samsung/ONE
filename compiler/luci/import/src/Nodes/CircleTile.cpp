@@ -34,10 +34,10 @@ bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
   if (outputs.size() != 1)
     return false;
 
-  // Multiples (inputs[1]) must be one of the following types
+  // Multiples (inputs.at(1)) must be one of the following types
   // int32, int64
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[1]);
+  const auto &tensor = tensors.at(inputs.at(1));
   switch (tensor->type)
   {
     case circle::TensorType_INT32:
@@ -48,7 +48,7 @@ bool CircleTileGraphBuilder::validate(const ValidateArgs &args) const
   }
 
   // Type of input and output must be the same
-  if (tensors.at(inputs[0])->type != tensors.at(outputs[0])->type)
+  if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
     return false;
 
   return true;
@@ -59,8 +59,8 @@ CircleNode *CircleTileGraphBuilder::build_node(const circle::OperatorT &,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleTile>();
-  node->input(inputs[0]);
-  node->multiples(inputs[1]);
+  node->input(inputs.at(0));
+  node->multiples(inputs.at(1));
 
   return node;
 }
