@@ -26,6 +26,7 @@ void TFliteOpPadV2::filler(const tflite::Operator *op, TFliteImport *import,
 {
   // Filler for paddings and constant_values
   fill_tensor_to_import(1, import);
+  fill_tensor_to_import(2, import);
 }
 
 tflchef::Operation *TFliteOpPadV2::build(const tflite::Operator *op, TFliteImport *import,
