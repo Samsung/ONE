@@ -62,7 +62,7 @@ CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
 {
   // If the second input is not provided, generate it based on the value of the attribute.
   // TODO Presence of the second input is the current requirement of the IR.
-  auto *shape_node = (inputs.size() == 2) ? inputs[1] : nullptr;
+  auto *shape_node = (inputs.size() == 2) ? inputs.at(1) : nullptr;
   if (shape_node == nullptr)
   {
     const auto *options = op.builtin_options.AsReshapeOptions();
@@ -77,7 +77,7 @@ CircleNode *CircleReshapeGraphBuilder::build_node(const circle::OperatorT &op,
   }
 
   auto *node = graph->nodes()->create<CircleReshape>();
-  node->tensor(inputs[0]);
+  node->tensor(inputs.at(0));
   node->shape(shape_node);
 
   const auto *options = op.builtin_options.AsReshapeOptions();

@@ -39,7 +39,7 @@ CircleNode *CircleReluGraphBuilder::build_node(const circle::OperatorT &,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleRelu>();
-  node->features(inputs[0]);
+  node->features(inputs.at(0));
 
   return node;
 }

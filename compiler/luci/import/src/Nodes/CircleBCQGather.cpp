@@ -37,10 +37,10 @@ CircleNode *CircleBCQGatherGraphBuilder::build_node(const circle::OperatorT &op,
 {
   auto *node = graph->nodes()->create<CircleBCQGather>();
 
-  node->input_scales(inputs[0]);
-  node->input_binary(inputs[1]);
-  node->indices(inputs[2]);
-  node->input_clusters(inputs[3]);
+  node->input_scales(inputs.at(0));
+  node->input_binary(inputs.at(1));
+  node->indices(inputs.at(2));
+  node->input_clusters(inputs.at(3));
 
   const auto *options = op.builtin_options.AsBCQGatherOptions();
   node->input_hidden_size(options->input_hidden_size);

@@ -38,9 +38,9 @@ CircleNode *CircleInstanceNormGraphBuilder::build_node(const circle::OperatorT &
                                                        loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleInstanceNorm>();
-  node->input(inputs[0]);
-  node->gamma(inputs[1]);
-  node->beta(inputs[2]);
+  node->input(inputs.at(0));
+  node->gamma(inputs.at(1));
+  node->beta(inputs.at(2));
 
   const auto *options = op.builtin_options.AsInstanceNormOptions();
   node->epsilon(options->epsilon);

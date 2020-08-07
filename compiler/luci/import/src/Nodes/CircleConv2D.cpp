@@ -39,11 +39,11 @@ CircleNode *CircleConv2DGraphBuilder::build_node(const circle::OperatorT &op,
                                                  loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleConv2D>();
-  node->input(inputs[0]);
-  node->filter(inputs[1]);
+  node->input(inputs.at(0));
+  node->filter(inputs.at(1));
   // For now, bias is required (checked in `verify` method).
   assert(inputs.size() == 3);
-  node->bias(inputs[2]);
+  node->bias(inputs.at(2));
 
   const auto *options = op.builtin_options.AsConv2DOptions();
   node->padding(luci_padding(options->padding));

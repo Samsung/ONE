@@ -32,9 +32,9 @@ bool CircleTransposeConvGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &tensors = args.reader.tensors();
-  const auto &filter_tensor = tensors.at(inputs[1]);
+  const auto &filter_tensor = tensors.at(inputs.at(1));
   const auto &filter_shape = filter_tensor.get()->shape;
-  const auto &ifm_tensor = tensors.at(inputs[2]);
+  const auto &ifm_tensor = tensors.at(inputs.at(2));
   const auto &ifm_shape = ifm_tensor.get()->shape;
 
   // ifm and filters must be 4-D tensor
@@ -57,9 +57,9 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
 {
   auto *node = graph->nodes()->create<CircleTransposeConv>();
 
-  node->inputSizes(inputs[0]);
-  node->filter(inputs[1]);
-  node->outBackprop(inputs[2]);
+  node->inputSizes(inputs.at(0));
+  node->filter(inputs.at(1));
+  node->outBackprop(inputs.at(2));
 
   const auto *options = op.builtin_options.AsTransposeConvOptions();
   node->padding(luci_padding(options->padding));

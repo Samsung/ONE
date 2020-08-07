@@ -39,7 +39,7 @@ bool CircleLessGraphBuilder::validate(const ValidateArgs &args) const
   }
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor = tensors.at(inputs[0]);
+  const auto &tensor = tensors.at(inputs.at(0));
 
   switch (tensor->type)
   {
@@ -56,7 +56,7 @@ bool CircleLessGraphBuilder::validate(const ValidateArgs &args) const
       return false;
   }
 
-  if (tensors[inputs[1]]->type != tensor->type)
+  if (tensors[inputs.at(1)]->type != tensor->type)
   {
     return false;
   }
@@ -69,8 +69,8 @@ CircleNode *CircleLessGraphBuilder::build_node(const circle::OperatorT &,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLess>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

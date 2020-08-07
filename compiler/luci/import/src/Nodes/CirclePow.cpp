@@ -39,8 +39,8 @@ CircleNode *CirclePowGraphBuilder::build_node(const circle::OperatorT &,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CirclePow>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   // Pow options are empty
 

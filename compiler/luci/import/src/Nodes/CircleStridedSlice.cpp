@@ -42,10 +42,10 @@ CircleNode *CircleStridedSliceGraphBuilder::build_node(const circle::OperatorT &
                                                        loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleStridedSlice>();
-  node->input(inputs[0]);
-  node->begin(inputs[1]);
-  node->end(inputs[2]);
-  node->strides(inputs[3]);
+  node->input(inputs.at(0));
+  node->begin(inputs.at(1));
+  node->end(inputs.at(2));
+  node->strides(inputs.at(3));
 
   const auto *options = op.builtin_options.AsStridedSliceOptions();
   node->begin_mask(options->begin_mask);

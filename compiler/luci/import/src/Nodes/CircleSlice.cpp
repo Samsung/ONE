@@ -42,9 +42,9 @@ CircleNode *CircleSliceGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSlice>();
-  node->input(inputs[0]);
-  node->begin(inputs[1]);
-  node->size(inputs[2]);
+  node->input(inputs.at(0));
+  node->begin(inputs.at(1));
+  node->size(inputs.at(2));
 
   return node;
 }

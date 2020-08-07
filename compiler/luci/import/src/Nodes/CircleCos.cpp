@@ -36,7 +36,7 @@ CircleNode *CircleCosGraphBuilder::build_node(const circle::OperatorT &,
                                               loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleCos>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   // No options for Cos
 

@@ -39,8 +39,8 @@ CircleNode *CircleTransposeGraphBuilder::build_node(const circle::OperatorT &op,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleTranspose>();
-  node->a(inputs[0]);
-  node->perm(inputs[1]);
+  node->a(inputs.at(0));
+  node->perm(inputs.at(1));
 
   const auto *options = op.builtin_options.AsTransposeOptions();
   (void)options;

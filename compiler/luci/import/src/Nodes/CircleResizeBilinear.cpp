@@ -38,8 +38,8 @@ CircleNode *CircleResizeBilinearGraphBuilder::build_node(const circle::OperatorT
                                                          loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleResizeBilinear>();
-  node->input(inputs[0]);
-  node->size(inputs[1]);
+  node->input(inputs.at(0));
+  node->size(inputs.at(1));
 
   const auto *options = op.builtin_options.AsResizeBilinearOptions();
   node->align_corners(options->align_corners);

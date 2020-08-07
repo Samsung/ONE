@@ -46,7 +46,7 @@ CircleNode *CircleL2NormalizeGraphBuilder::build_node(const circle::OperatorT &o
                                                       loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleL2Normalize>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
   const auto *options = op.builtin_options.AsL2NormOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
 

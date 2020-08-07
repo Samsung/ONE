@@ -38,7 +38,7 @@ CircleNode *CircleL2Pool2DGraphBuilder::build_node(const circle::OperatorT &op,
                                                    loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleL2Pool2D>();
-  node->value(inputs[0]);
+  node->value(inputs.at(0));
 
   const auto *options = op.builtin_options.AsPool2DOptions();
   node->padding(luci_padding(options->padding));

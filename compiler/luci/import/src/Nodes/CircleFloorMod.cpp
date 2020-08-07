@@ -33,8 +33,8 @@ bool CircleFloorModGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_in_0 = tensors.at(inputs[0]);
-  const auto &tensor_in_1 = tensors.at(inputs[1]);
+  const auto &tensor_in_0 = tensors.at(inputs.at(0));
+  const auto &tensor_in_1 = tensors.at(inputs.at(1));
   if (tensor_in_0->type != tensor_in_1->type)
     return false;
 
@@ -48,8 +48,8 @@ CircleNode *CircleFloorModGraphBuilder::build_node(const circle::OperatorT &,
                                                    loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleFloorMod>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

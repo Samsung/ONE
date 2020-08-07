@@ -38,7 +38,7 @@ CircleNode *CircleSoftmaxGraphBuilder::build_node(const circle::OperatorT &op,
                                                   loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleSoftmax>();
-  node->logits(inputs[0]);
+  node->logits(inputs.at(0));
 
   const auto *options = op.builtin_options.AsSoftmaxOptions();
   node->beta(options->beta);

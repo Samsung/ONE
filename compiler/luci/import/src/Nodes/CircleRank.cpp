@@ -38,7 +38,7 @@ CircleNode *CircleRankGraphBuilder::build_node(const circle::OperatorT &,
                                                loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleRank>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   return node;
 }

@@ -34,8 +34,8 @@ bool CircleReverseSequenceGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_in = tensors.at(inputs[0]);
-  const auto &tensor_lengths = tensors.at(inputs[1]);
+  const auto &tensor_in = tensors.at(inputs.at(0));
+  const auto &tensor_lengths = tensors.at(inputs.at(1));
   const auto &tensor_out = tensors.at(outputs[0]);
 
   switch (tensor_lengths->type)
@@ -58,8 +58,8 @@ CircleNode *CircleReverseSequenceGraphBuilder::build_node(const circle::Operator
                                                           loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleReverseSequence>();
-  node->input(inputs[0]);
-  node->seq_lengths(inputs[1]);
+  node->input(inputs.at(0));
+  node->seq_lengths(inputs.at(1));
 
   const auto *options = op.builtin_options.AsReverseSequenceOptions();
   node->seq_axis(options->seq_dim);

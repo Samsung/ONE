@@ -46,8 +46,8 @@ CircleNode *CircleLogicalAndGraphBuilder::build_node(const circle::OperatorT &,
                                                      loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLogicalAnd>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

@@ -39,8 +39,8 @@ bool CircleFloorDivGraphBuilder::validate(const ValidateArgs &args) const
   }
 
   const auto &tensors = args.reader.tensors();
-  const auto &tensor_in_0 = tensors.at(inputs[0]);
-  const auto &tensor_in_1 = tensors.at(inputs[1]);
+  const auto &tensor_in_0 = tensors.at(inputs.at(0));
+  const auto &tensor_in_1 = tensors.at(inputs.at(1));
   const auto &tensor_out = tensors.at(outputs[0]);
 
   if (tensor_in_0->type != tensor_in_1->type)
@@ -59,8 +59,8 @@ CircleNode *CircleFloorDivGraphBuilder::build_node(const circle::OperatorT &,
                                                    loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleFloorDiv>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

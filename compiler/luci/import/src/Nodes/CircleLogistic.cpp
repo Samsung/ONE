@@ -33,7 +33,7 @@ bool CircleLogisticGraphBuilder::validate(const ValidateArgs &args) const
     return false;
 
   const auto &tensors = args.reader.tensors();
-  if (tensors.at(inputs[0])->type != tensors.at(outputs[0])->type)
+  if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
     return false;
 
   return true;
@@ -44,7 +44,7 @@ CircleNode *CircleLogisticGraphBuilder::build_node(const circle::OperatorT &,
                                                    loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleLogistic>();
-  node->x(inputs[0]);
+  node->x(inputs.at(0));
 
   return node;
 }

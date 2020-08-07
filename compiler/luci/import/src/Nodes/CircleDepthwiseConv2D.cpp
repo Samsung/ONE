@@ -40,11 +40,11 @@ CircleNode *CircleDepthwiseConv2DGraphBuilder::build_node(const circle::Operator
                                                           loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleDepthwiseConv2D>();
-  node->input(inputs[0]);
-  node->filter(inputs[1]);
+  node->input(inputs.at(0));
+  node->filter(inputs.at(1));
   if (inputs.size() != 3)
     throw oops::UserExn("DepthwiseConv2d without bias is unsupported");
-  node->bias(inputs[2]);
+  node->bias(inputs.at(2));
 
   const auto *options = op.builtin_options.AsDepthwiseConv2DOptions();
   node->padding(luci_padding(options->padding));

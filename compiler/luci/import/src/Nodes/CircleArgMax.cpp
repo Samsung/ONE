@@ -36,8 +36,8 @@ CircleNode *CircleArgMaxGraphBuilder::build_node(const circle::OperatorT &op,
                                                  loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleArgMax>();
-  node->input(inputs[0]);
-  node->dimension(inputs[1]);
+  node->input(inputs.at(0));
+  node->dimension(inputs.at(1));
 
   const auto *options = op.builtin_options.AsArgMaxOptions();
   node->output_type(luci_datatype(options->output_type));

@@ -34,8 +34,8 @@ CircleNode *CircleBatchMatMulGraphBuilder::build_node(const circle::OperatorT &o
                                                       loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleBatchMatMul>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   const auto *options = op.builtin_options.AsBatchMatMulOptions();
   node->adj_x(options->adjoint_lhs);

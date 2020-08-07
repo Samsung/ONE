@@ -36,9 +36,9 @@ CircleNode *CircleRangeGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleRange>();
-  node->start(inputs[0]);
-  node->limit(inputs[1]);
-  node->delta(inputs[2]);
+  node->start(inputs.at(0));
+  node->limit(inputs.at(1));
+  node->delta(inputs.at(2));
 
   return node;
 }

@@ -39,7 +39,7 @@ CircleNode *CircleZerosLikeGraphBuilder::build_node(const circle::OperatorT &,
                                                     loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleZerosLike>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   // ZerosLikeOptinos are empty
 

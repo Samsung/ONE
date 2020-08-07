@@ -42,7 +42,7 @@ CircleNode *CircleShapeGraphBuilder::build_node(const circle::OperatorT &op,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleShape>();
-  node->input(inputs[0]);
+  node->input(inputs.at(0));
 
   const auto *options = op.builtin_options.AsShapeOptions();
   node->out_type(luci_datatype(options->out_type));

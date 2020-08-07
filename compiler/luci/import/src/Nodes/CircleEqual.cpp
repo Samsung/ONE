@@ -34,7 +34,7 @@ bool CircleEqualGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &tensors = args.reader.tensors();
 
-  return tensors[inputs[0]]->type == tensors[inputs[1]]->type;
+  return tensors[inputs.at(0)]->type == tensors[inputs.at(1)]->type;
 }
 
 CircleNode *CircleEqualGraphBuilder::build_node(const circle::OperatorT &,
@@ -42,8 +42,8 @@ CircleNode *CircleEqualGraphBuilder::build_node(const circle::OperatorT &,
                                                 loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleEqual>();
-  node->x(inputs[0]);
-  node->y(inputs[1]);
+  node->x(inputs.at(0));
+  node->y(inputs.at(1));
 
   return node;
 }

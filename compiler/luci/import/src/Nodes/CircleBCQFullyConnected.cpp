@@ -37,11 +37,11 @@ CircleNode *CircleBCQFullyConnectedGraphBuilder::build_node(const circle::Operat
 {
   auto *node = graph->nodes()->create<CircleBCQFullyConnected>();
 
-  node->input(inputs[0]);
-  node->weights_scales(inputs[1]);
-  node->weights_binary(inputs[2]);
-  node->bias(inputs[3]);
-  node->weights_clusters(inputs[4]);
+  node->input(inputs.at(0));
+  node->weights_scales(inputs.at(1));
+  node->weights_binary(inputs.at(2));
+  node->bias(inputs.at(3));
+  node->weights_clusters(inputs.at(4));
 
   // TODO Find and move to appropriate place for setting optional input
   if (auto bias = dynamic_cast<luci::CircleOutputExclude *>(node->bias()))
