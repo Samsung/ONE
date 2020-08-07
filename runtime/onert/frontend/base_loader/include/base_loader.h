@@ -1112,12 +1112,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto block_shape = inputs.at(1);
-  auto crops = inputs.at(2);
 
-  std::unique_ptr<ir::Operation> new_op{
-      new ir::operation::BatchToSpaceND{{input, block_shape, crops}, outputs}};
+  std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchToSpaceND{inputs, outputs}};
   subg.addOperation(std::move(new_op));
 }
 
