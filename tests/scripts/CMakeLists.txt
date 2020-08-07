@@ -9,6 +9,14 @@ install(PROGRAMS ${TEST_DRIVER_SCRIPT} DESTINATION test)
 # Commands don't have execute permission itself
 install(DIRECTORY command DESTINATION test)
 
+# Install models test script
+file(GLOB MODEL_TEST_SCRIPT "models/run_test.sh")
+install(PROGRAMS ${MODEL_TEST_SCRIPT} DESTINATION test/models)
+
+# Install nnpackage test config
+file(GLOB MODEL_TEST_DIR LIST_DIRECTORIES true nnfw_api_gtest/models/*)
+install(DIRECTORY ${MODEL_TEST_DIR} DESTINATION test/models/nnpackage)
+
 # TODO Below install to tests/ will be deprecated
 
 # Install test scripts
