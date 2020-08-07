@@ -50,16 +50,12 @@ function TFLiteModelVerification()
 
   export BACKENDS=$1
   if [[ "$2" == "" ]]; then
-    ./tests/scripts/test-driver.sh \
-      --reportdir=$ROOT_PATH/$3 \
-      --verification \
-      .
+    $INSTALL_PATH/test/onert-test verify-tflite --api=nnapi \
+      --reportdir=$ROOT_PATH/$3
   else
-    ./tests/scripts/test-driver.sh \
-      --frameworktest_list_file=$2 \
-      --reportdir=$ROOT_PATH/$3 \
-      --verification \
-      .
+    $INSTALL_PATH/test/onert-test verify-tflite --api=nnapi \
+      --list=$2 \
+      --reportdir=$ROOT_PATH/$3
   fi
   unset BACKENDS
 
@@ -146,16 +142,11 @@ function TFLiteLoaderTest()
 
   export BACKENDS=$1
   if [[ "$2" == "" ]]; then
-    ./tests/scripts/test-driver.sh \
-      --frameworktest \
-      --framework_driverbin="$ROOT_PATH/Product/out/bin/tflite_loader_test_tool" \
+    $INSTALL_PATH/test/onert-test verify-tflite --api=loader \
       --reportdir=$ROOT_PATH/$3
-      .
   else
-    ./tests/scripts/test-driver.sh \
-      --frameworktest \
-      --framework_driverbin="$ROOT_PATH/Product/out/bin/tflite_loader_test_tool" \
-      --frameworktest_list_file=tests/scripts/list/tflite_loader_list.${TEST_ARCH}.txt \
+    $INSTALL_PATH/test/onert-test verify-tflite --api=loader \
+      --list=$2 \
       --reportdir=$ROOT_PATH/$3
   fi
   unset BACKENDS
