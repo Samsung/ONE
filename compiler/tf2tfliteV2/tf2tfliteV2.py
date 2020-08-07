@@ -55,7 +55,7 @@ def _get_parser():
         action="store_const",
         dest="model_format",
         const="graph_def",
-        help="Use graph def file")
+        help="Use graph def file(default)")
     model_format_arg.add_argument(
         "--saved_model",
         action="store_const",
