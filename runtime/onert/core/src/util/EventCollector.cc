@@ -54,6 +54,7 @@ private:
   std::string _ts;
 };
 
+#ifdef DEBUG
 inline void emit_rusage(EventRecorder *rec, const std::string &ts)
 {
   struct rusage ru;
@@ -81,6 +82,7 @@ inline void emit_rusage(EventRecorder *rec, const std::string &ts)
     rec->emit(evt);
   }
 }
+#endif
 
 } // namespace
 
