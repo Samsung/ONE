@@ -47,6 +47,9 @@ python tf2tfliteV2.py \
   -h, --help            show this help message and exit
   --v1                  Use TensorFlow Lite Converter 1.x
   --v2                  Use TensorFlow Lite Converter 2.x
+  --graph_def           Use graph def file(default)
+  --saved_model         Use saved model
+  --keras_model         Use keras model
   -i INPUT_PATH, --input_path INPUT_PATH
                         Full filepath of the input file.
   -o OUTPUT_PATH, --output_path OUTPUT_PATH
@@ -55,7 +58,8 @@ python tf2tfliteV2.py \
                         Names of the input arrays, comma-separated.
   -s INPUT_SHAPES, --input_shapes INPUT_SHAPES
                         Shapes corresponding to --input_arrays, colon-
-                        separated.
+                        separated.(ex:"1,4,4,3:1,20,20,3")
   -O OUTPUT_ARRAYS, --output_arrays OUTPUT_ARRAYS
                         Names of the output arrays, comma-separated.
+
 ```
