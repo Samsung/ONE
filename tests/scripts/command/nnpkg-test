@@ -14,7 +14,7 @@ difftool=${difftool:-"h5diff"}
 delete_dumped_on_failure=0
 
 usage() {
-  echo "Usage: $progname [options] nnpackage_test"
+  echo "Usage: $0 $progname [options] nnpackage_test"
   echo "Run an nnpackage testcase"
   echo ""
   echo "Returns"
@@ -29,12 +29,12 @@ usage() {
   echo "         (dumped file are always deleted on success) (default=$delete_dumped_on_failure)"
   echo ""
   echo "Environment variables:"
-  echo "   nnpackage_run    path to nnpackage_run (default=Product/out/bin/nnpackage_run)"
+  echo "   nnpackage_run    path to nnpackage_run (default=nnpackage_run)"
   echo "   difftool         path to i5diff or h5diff (default=h5diff)"
   echo ""
   echo "Examples:"
-  echo "    $progname Add_000                => run $indir/Add_000 and check output"
-  echo "    $progname -i nnpkg-tcs Add_000   => run nnpkg-tcs/Add_000 and check output"
+  echo "    $0 $progname Add_000                => run $indir/Add_000 and check output"
+  echo "    $0 $progname -i nnpkg-tcs Add_000   => run nnpkg-tcs/Add_000 and check output"
   exit 1
 }
 
@@ -61,11 +61,6 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-if [ ! -e Product ]; then
-  echo "error: please make sure to run this script in nnfw home."
-  exit 1
-fi
-
 tcname=$(basename "$1")
 nnpkg="$indir/$tcname"
 
@@ -78,6 +73,7 @@ fi
 
 if ! command_exists $nnpkg_run; then
   echo "error: runner "$nnpkg_run" does not exist."
+  echo "       if $nnpkg_run exists, please set PATH to $nnpkg_run"
   exit 1
 fi
 

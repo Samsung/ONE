@@ -19,7 +19,7 @@
 #   Run [INSTALL_PATH]/test/onert-test unittest command for nnapi gtest
 #
 # NNPackageTest $1 $2
-#   Run ./tests/scripts/nnpkg_test.sh script nnpackage test
+#   Run [INSTALL_PATH]/test/onert-test nnpkg-test command
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
@@ -117,7 +117,7 @@ function NNPackageTest()
   do
     for entry in "nnpkg-tcs"/$f; do
       if [ -e $entry ]; then
-        BACKENDS="$1" tests/scripts/nnpkg_test.sh -d -i nnpkg-tcs $(basename "$entry")
+        BACKENDS="$1" $INSTALL_PATH/test/onert-test nnpkg-test -d -i nnpkg-tcs $(basename "$entry")
       fi
     done
     EXITCODE_F=$?
