@@ -69,7 +69,7 @@ def compare_quantization(tensor, tensor_name, expect_dir):
         if key == "weights":
             expected_weights = np.array(json_load["weights"])
             input_weights = tensor["weights"][:]
-            if np.allclose(input_weights, expected_weights, rtol=0, atol=0) == False:
+            if np.allclose(input_weights, expected_weights, rtol=0, atol=1) == False:
                 print("Quantized weights of " + tensor_name + " (" + str(input_weights) +
                       ") do not match with expected value (" + str(expected_weights) +
                       ").")
@@ -87,7 +87,7 @@ def compare_quantization(tensor, tensor_name, expect_dir):
             expected_zero_point = np.array(json_load["zero_point"])
             input_zero_point = tensor["zero_point"][:]
             if np.allclose(
-                    input_zero_point, expected_zero_point, rtol=0, atol=0) == False:
+                    input_zero_point, expected_zero_point, rtol=0, atol=1) == False:
                 print("Quantized zero_point of " + tensor_name + " (" +
                       str(input_zero_point) + ") do not match with expected value (" +
                       str(expected_zero_point) + ").")

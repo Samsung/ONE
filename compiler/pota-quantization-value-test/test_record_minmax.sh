@@ -59,9 +59,9 @@ while [ "$1" != "" ]; do
 
     # Run record-minmax
     "${RECORD_MINMAX_PATH}" \
-      "${TEST_RESULT_FILE}.fake_quantized.circle" \
-      "${TEST_RESULT_FILE}.input.h5" \
-      "${TEST_RESULT_FILE}.minmax_recorded.circle" 
+      --input_model "${TEST_RESULT_FILE}.fake_quantized.circle" \
+      --input_data "${TESTCASE_FILE}.input.h5" \
+      --output_model "${TEST_RESULT_FILE}.minmax_recorded.circle" 
 
     # Dump min/max values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \
