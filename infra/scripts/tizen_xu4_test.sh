@@ -28,14 +28,16 @@ function install_model()
     # We must always download the file unlike model file(.tflite).
     # Because caching applies only to tflite file.
     find tests -name "*.zip" -exec rm {} \;
-    tar -zcf cache.tar.gz tests/scripts/models/cache
+    tar -zcf cache.tar.gz -C tests/scripts/models cache
     $SDB_CMD push cache.tar.gz $TEST_ROOT/.
     rm -rf cache.tar.gz
-    $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT
+    $SDB_CMD shell tar -zxf $TEST_ROOT/cache.tar.gz -C $TEST_ROOT/Product/out/test/models
 
     # download api test model file for nnfw_api_gtest
     MODEL_CACHE_DIR=$(mktemp -d)
-    tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh --install-dir $MODEL_CACHE_DIR
+    tests/scripts/models/run_test.sh --download=on --run=off \
+        --configdir=test/scripts/nnfw_api_gtest/models \
+        --cachedir=$MODEL_CACHE_DIR
     tar -zcf $MODEL_CACHE_DIR/api_model_test.tar.gz -C $MODEL_CACHE_DIR .
     $SDB_CMD push $MODEL_CACHE_DIR/api_model_test.tar.gz $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/
     $SDB_CMD shell tar -zxf $TEST_ROOT/Product/out/unittest_standalone/nnfw_api_gtest_models/api_model_test.tar.gz \
@@ -157,7 +159,7 @@ else
   rm -rf ${GCOV_DIR}/*
   pushd ${GCOV_DIR}
 
-  sdb pull ${TEST_ROOT}/tests/scripts/build_path.txt
+  sdb pull ${TEST_ROOT}/Product/out/test/build_path.txt
   SRC_PREFIX=`cat build_path.txt`
   GCOV_PREFIX_STRIP=`echo "${SRC_PREFIX}" | grep -o '/' | wc -l`
   GCOV_DATA_PATH="/opt/usr/nnfw-gcov"
