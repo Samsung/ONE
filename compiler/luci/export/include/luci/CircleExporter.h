@@ -57,9 +57,6 @@ public:
 public:
   // invoke(...) returns false on failure.
   bool invoke(Contract *) const;
-
-  // exportToFile(...) returns false on failure.
-  bool exportToFile(luci::Module *module, const std::string &filepath) const;
 };
 
 } // namespace luci

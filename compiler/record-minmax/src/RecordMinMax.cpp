@@ -21,6 +21,7 @@
 
 #include <luci/Importer.h>
 #include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
 
 #include <algorithm>
@@ -184,7 +185,10 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
 {
   // Export to output Circle file
   luci::CircleExporter exporter;
-  if (!exporter.exportToFile(_module.get(), output_model_path))
+
+  luci::CircleFileExpContract contract(_module.get(), output_model_path);
+
+  if (!exporter.invoke(&contract))
   {
     throw std::runtime_error("ERROR: Failed to export '" + output_model_path + "'");
   }

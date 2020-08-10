@@ -20,6 +20,7 @@
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 #include <luci/UserSettings.h>
 
 #include <oops/InternalExn.h>
@@ -182,7 +183,10 @@ int entry(int argc, char **argv)
 
   // Export to output Circle file
   luci::CircleExporter exporter;
-  if (!exporter.exportToFile(module.get(), output_path))
+
+  luci::CircleFileExpContract contract(module.get(), output_path);
+
+  if (!exporter.invoke(&contract))
   {
     std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
     return 255;

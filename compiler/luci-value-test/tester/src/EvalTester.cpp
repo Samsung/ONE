@@ -17,6 +17,7 @@
 #include <luci/Importer.h>
 #include <luci_interpreter/Interpreter.h>
 #include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -103,7 +104,10 @@ int entry(int argc, char **argv)
 
   // Export to a Circle file
   luci::CircleExporter exporter;
-  if (!exporter.exportToFile(initial_module.get(), intermediate_filename))
+
+  luci::CircleFileExpContract contract(initial_module.get(), intermediate_filename);
+
+  if (!exporter.invoke(&contract))
   {
     std::cerr << "ERROR: Failed to export '" << intermediate_filename << "'" << std::endl;
     return EXIT_FAILURE;
