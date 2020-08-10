@@ -1010,6 +1010,12 @@ public:
 
   loco::NodeShape visit(const luci::CircleNeg *node) final { return use_x(node); }
 
+  loco::NodeShape visit(const luci::CircleNonMaxSuppressionV4 *node) final
+  {
+    const auto boxes_shape = loco::shape_get(node->boxes()).as<loco::TensorShape>();
+    return loco::NodeShape{boxes_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleNotEqual *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleOneHot *node) final
@@ -2029,6 +2035,34 @@ public:
     assert(*then_graph_output->shape() == *else_graph_output->shape());
 
     return loco::NodeShape{*then_graph_output->shape()};
+  }
+
+  loco::NodeShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto nmsv4 = dynamic_cast<const luci::CircleNonMaxSuppressionV4 *>(node->input());
+    if (nmsv4 == nullptr)
+      INTERNAL_EXN("CircleNonMaxSuppressionV4 IR is not configured correctly");
+
+    auto index = node->index();
+    if (index == 1)
+      return loco::TensorShape({0});
+
+    assert(index == 0);
+
+    auto unknown = loco::TensorShape{loco::Dimension()};
+    auto max_output_size = dynamic_cast<const luci::CircleConst *>(nmsv4->max_output_size());
+    if (max_output_size == nullptr)
+      return unknown; // we need CircleConst for max output size
+
+    LUCI_ASSERT(max_output_size->dtype() == S32, "Only support int32 for max_output_size");
+
+    if (max_output_size->size<S32>() < 1)
+      return unknown;
+
+    auto max_output_size_value = uint32_t(max_output_size->at<S32>(0));
+    return loco::TensorShape{max_output_size_value};
   }
 
   loco::NodeShape visit(const luci::CircleSplitOut *node) final
