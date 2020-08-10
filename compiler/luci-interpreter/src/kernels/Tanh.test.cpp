@@ -54,7 +54,8 @@ TEST(TanhTest, Uint8)
   float kMin = -1;
   float kMax = 127.f / 128.f;
   float kTanhTolerance = 2 * (1. / 256);
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(8 * kMin, 8 * kMax);
+  std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(8 * kMin, 8 * kMax);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(kMin, kMax);
   std::vector<float> input_data{
       0,  -6, 2, 4, //
       -4, -2, 8, 1, //
@@ -69,10 +70,12 @@ TEST(TanhTest, Uint8)
       0,  -6, 2, 4, //
       -4, -2, 8, 1, //
   };
-  Tensor input_tensor{DataType::U8, {2, 6, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  Tensor input_tensor{
+      DataType::U8, {2, 6, 4, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
+  Tensor output_tensor =
+      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
   std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+      quantize<uint8_t>(input_data, input_quant_param.first, input_quant_param.second);
   input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   Tanh kernel(&input_tensor, &output_tensor);
