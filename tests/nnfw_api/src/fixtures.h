@@ -23,6 +23,8 @@
 
 #include "NNPackages.h"
 
+#define NNFW_ENSURE_CALL(EXPR) ASSERT_EQ((EXPR), NNFW_STATUS_NO_ERROR)
+
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
   uint64_t n = 1;
