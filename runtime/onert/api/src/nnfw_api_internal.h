@@ -127,8 +127,14 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
+  //
+  // Internal-only API
+  //
+
   NNFW_STATUS set_config(const char *key, const char *value);
   NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
+
+  NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
 
 private:
   onert::ir::Graph *primary_subgraph();

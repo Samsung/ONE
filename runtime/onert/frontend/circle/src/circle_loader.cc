@@ -206,5 +206,13 @@ std::unique_ptr<ir::Subgraphs> loadModel(const char *filename)
   return subgraphs;
 }
 
+std::unique_ptr<ir::Subgraphs> loadModel(uint8_t *buffer, size_t size)
+{
+  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  CircleLoader loader(subgraphs);
+  loader.loadFromBuffer(buffer, size);
+  return subgraphs;
+}
+
 } // namespace circle_loader
 } // namespace onert
