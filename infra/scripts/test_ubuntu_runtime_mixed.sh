@@ -23,6 +23,11 @@ echo ""
 echo "==== Run standalone unittest end ===="
 echo ""
 
+# Test custom op
+pushd ${ROOT_PATH} > /dev/null
+./Product/out/test/FillFrom_runner
+popd > /dev/null
+
 # NOTE Fixed backend assignment by type of operation
 # TODO Enhance this with randomized test
 BACKENDS=(acl_cl acl_neon cpu)
