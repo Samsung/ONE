@@ -106,9 +106,4 @@ done
 TFLITE_LOADER_TESTLIST="Product/out/test/list/tflite_loader_list.${TEST_ARCH}.txt"
 if [[ $TFLITE_LOADER = "1" ]]; then
   TFLiteLoaderTest "${BACKEND}" "${TFLITE_LOADER_TESTLIST}" "${REPORT_BASE}/loader/${EXECUTOR}"
-
-  # Test custom op
-  pushd ${ROOT_PATH} > /dev/null
-  ./Product/out/tests/FillFrom_runner
-  popd > /dev/null
 fi
