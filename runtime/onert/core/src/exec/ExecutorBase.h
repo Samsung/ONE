@@ -29,7 +29,6 @@
 #include "ir/LowerInfoMap.h"
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
-#include "compiler/OperandContext.h"
 #include "exec/ExecTime.h"
 #include "exec/IFunction.h"
 #include "backend/IDynamicTensorManager.h"
