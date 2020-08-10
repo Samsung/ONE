@@ -363,6 +363,10 @@ message GatherNdOptions {
   // None
 }
 
+message NonMaxSuppressionV4Options {
+  // None
+}
+
 message NotEqualOptions {
   // None
 }
@@ -535,7 +539,7 @@ message Operation {
   optional MatrixSetDiagOptions matrix_set_diag_options = 195;
   // HardSwishOptions 196
   optional DepthToSpaceOptions depth_to_space_options = 197;
-  // NonMaxSuppressionV4Options 198
+  optional NonMaxSuppressionV4Options non_max_suppression_v4_options = 198;
   // NonMaxSuppressionV5Options 199
   optional ScatterNdOptions scatter_nd_options = 200;
   optional NotEqualOptions notequal_options = 201;
