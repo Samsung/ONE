@@ -104,8 +104,7 @@ bool EdgeConsistencyChecker::verify(const Graph &graph) const noexcept
       try
       {
         auto &operand = graph.operands().at(operand_index);
-        bool operand_has_def = operand.getDef().contains(index);
-        if (!operand_has_def)
+        if (operand.getDef() != index)
         {
           VERBOSE(EdgeConsistencyChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
                                           << operand_index << " to Operation " << index

@@ -415,7 +415,8 @@ void LoweredGraph::dumpLowerInfo()
 
       const auto lower_info = getLowerInfo(index);
       const auto &shape = object.shape();
-      std::string def_ops = operation_index_to_string(object.getDef());
+      std::string def_ops =
+          object.getDef().valid() ? std::to_string(object.getDef().value()) : "N/A";
       std::string use_ops = operation_index_to_string(object.getUses());
       std::string def_layouts = factors_to_string(lower_info->def_factors());
       std::string use_layouts = factors_to_string(lower_info->use_factors());
@@ -475,7 +476,8 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       const auto &input_obj = _graph.operands().at(input);
-      for (const auto &def : input_obj.getDef())
+      auto def = input_obj.getDef();
+      if (def.valid())
       {
         branched_set.insert(def);
         if (branched_set.size() > 1)

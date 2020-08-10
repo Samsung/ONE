@@ -45,8 +45,8 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
       if (_replace_operands_map.count(key) == 0)
       {
         auto new_object = object;
+        new_object.unsetDef();
         // TODO Remove const_case
-        const_cast<OperationIndexSet &>(new_object.getDef()).clear();
         const_cast<OperationIndexSet &>(new_object.getUses()).clear();
         const auto new_index = _graph.operands().emplace(new_object);
         _replace_operands_map[key] = new_index;
@@ -71,7 +71,7 @@ void ConstantInsertionPass::callback(const OperationIndex &node_index, Operation
 
       // Remove this node from uses of origin operand
       // Constant operand has no def.
-      assert(object.getDef().size() == 0);
+      assert(!object.getDef().valid());
       object.removeUse(node_index);
 
       // Remove origin operand

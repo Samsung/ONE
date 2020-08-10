@@ -96,7 +96,7 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
     }
 
     uses_map[ind] = obj.getUses().size();
-    def_map[ind] = obj.getDef().size(); // should be 1 or 0
+    def_map[ind] = obj.getDef().valid() ? 1 : 0;
 
     bool is_const = obj.isConstant();
     if (is_const)
