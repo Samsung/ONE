@@ -193,6 +193,7 @@ protected:
   const Model *_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
+  std::unordered_map<ir::OperandIndex, std::string> _tensor_names;
   // Verifier
   std::unique_ptr<Verifier> _verifier;
 };
@@ -450,8 +451,8 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
     subg.setOperandValue(operand_index, std::move(data_obj));
   }
 
-  // Name unused
-  // auto name = tensor->name();
+  _tensor_names.emplace(operand_index, tensor->name()->str());
+
   // Variablie
   if (tensor->is_variable())
     throw std::runtime_error("Variable tensor not supported!");

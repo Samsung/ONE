@@ -37,6 +37,7 @@
 #define MAX_BACKEND_NAME_LENGTH 32
 #define MAX_OP_NAME_LENGTH 64
 #define MAX_PATH_LENGTH 1024
+#define MAX_TENSOR_NAME_LENGTH 64
 
 // Is null-terminating in length ?
 static bool null_terminating(const char *str, uint32_t length)
@@ -62,6 +63,29 @@ static onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
     return onert::ir::Layout::NCHW;
   }
   return onert::ir::Layout::UNKNOWN;
+}
+
+NNFW_STATUS getTensorIndexImpl(onert::ir::IOIndex io_index, const char *tensorname, uint32_t *index)
+{
+  if (!tensorname || !index)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (!null_terminating(tensorname, MAX_TENSOR_NAME_LENGTH))
+  {
+    std::cerr << "nnpackage path is too long" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (io_index.undefined())
+  {
+    // Not found
+    return NNFW_STATUS_ERROR;
+  }
+  else
+  {
+    *index = io_index.value();
+    return NNFW_STATUS_NO_ERROR;
+  }
 }
 
 nnfw_session::nnfw_session()
@@ -839,4 +863,16 @@ bool nnfw_session::isStateFinishedRun()
 bool nnfw_session::isStatePreparedOrFinishedRun()
 {
   return isStatePrepared() || isStateFinishedRun();
+}
+
+NNFW_STATUS nnfw_session::input_tensorindex(const char *tensorname, uint32_t *index)
+{
+  auto ind_found = primary_subgraph()->getInputIndex(tensorname);
+  return getTensorIndexImpl(ind_found, tensorname, index);
+}
+
+NNFW_STATUS nnfw_session::output_tensorindex(const char *tensorname, uint32_t *index)
+{
+  auto ind_found = primary_subgraph()->getOutputIndex(tensorname);
+  return getTensorIndexImpl(ind_found, tensorname, index);
 }

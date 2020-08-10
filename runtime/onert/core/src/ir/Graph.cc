@@ -56,16 +56,32 @@ void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
   _operands.at(ind).data(std::move(data));
 }
 
-void Graph::addInput(const OperandIndex &ind)
+void Graph::addInput(const OperandIndex &ind, const std::string &name)
 {
   assert(isBuildingPhase());
+  if (!name.empty())
+    _name_to_input.emplace(name, IOIndex{_inputs.size()});
   _inputs.append(ind);
 }
 
-void Graph::addOutput(const OperandIndex &ind)
+void Graph::addOutput(const OperandIndex &ind, const std::string &name)
 {
   assert(isBuildingPhase());
+  if (!name.empty())
+    _name_to_output.emplace(name, IOIndex{_outputs.size()});
   _outputs.append(ind);
+}
+
+IOIndex Graph::getInputIndex(const std::string &name) const
+{
+  auto itr = _name_to_input.find(name);
+  return (itr == _name_to_input.end()) ? IOIndex{} : itr->second;
+}
+
+IOIndex Graph::getOutputIndex(const std::string &name) const
+{
+  auto itr = _name_to_output.find(name);
+  return (itr == _name_to_output.end()) ? IOIndex{} : itr->second;
 }
 
 void Graph::finishBuilding(void)

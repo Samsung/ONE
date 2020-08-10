@@ -62,4 +62,38 @@ typedef struct
 NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
                                          custom_kernel_registration_info *info);
 
+/**
+ * @brief Get the input tensor index by name
+ *
+ * This function finds an input tensor of the given name.
+ * If found, the index value is set to the address that @c index points to, and returns
+ * @c NNFW_STATUS_NO_ERROR. Otherwise, @c index is unchanged and returns @c NNFW_STATUS_ERROR .
+ *
+ * @note If two or more input tensors are of the same name, the one with the lowest index is always
+ *       returned.
+ *
+ * @param[in]  session    the session object
+ * @param[in]  tensorname the name of the tensor to find, a null terminated char pointer string
+ * @param[out] index      the index to be ret
+ * @return     @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index);
+
+/**
+ * @brief Get the input tensor index by name
+ *
+ * This function finds an input tensor of the given name.
+ * If found, the index value is set to the address that @c index points to, and returns
+ * @c NNFW_STATUS_NO_ERROR. Otherwise, @c index is unchanged and returns @c NNFW_STATUS_ERROR .
+ *
+ * @note If two or more input tensors are of the same name, the one with the lowest index is always
+ *       returned.
+ *
+ * @param[in]  session    the session object
+ * @param[in]  tensorname the name of the tensor to find, a null terminated char pointer string
+ * @param[out] index      the index to be ret
+ * @return     @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index);
+
 #endif // __NNFW_EXPERIMENTAL_H__

@@ -122,8 +122,6 @@ public:
   NNFW_STATUS input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
 
-  NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
-
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
@@ -133,8 +131,15 @@ public:
 
   NNFW_STATUS set_config(const char *key, const char *value);
   NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
-
   NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
+
+  //
+  // Experimental API
+  //
+
+  NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
+  NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
+  NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
 
 private:
   onert::ir::Graph *primary_subgraph();
