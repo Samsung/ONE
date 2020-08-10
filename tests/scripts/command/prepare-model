@@ -52,13 +52,13 @@ done
 
 if [[ $DOWNLOAD_MODEL == "all" ]] || [[ $DOWNLOAD_MODEL == "tflite" ]]; then
     # Download tflite models
-    $INSTALL_DIR/tests/scripts/models/run_test.sh --download=on --run=off --md5=$MD5_CHECK
+    $INSTALL_DIR/test/models/run_test.sh --download=on --run=off --md5=$MD5_CHECK
 fi
 
 if [[ $DOWNLOAD_MODEL == "all" ]] || [[ $DOWNLOAD_MODEL == "nnpackage" ]]; then
     # Download nnpackage model
     NNPACKAGE_CONFIG_DIR=$INSTALL_DIR/test/models/nnpackage/
     NNPACKAGE_CACHE_DIR=$INSTALL_DIR/unittest_standalone/nnfw_api_gtest_models/
-    $INSTALL_DIR/tests/scripts/models/run_test.sh --download=on --run=off --md5=$MD5_CHECK \
+    $INSTALL_DIR/test/models/run_test.sh --download=on --run=off --md5=$MD5_CHECK \
         --configdir=$NNPACKAGE_CONFIG_DIR --cachedir=$NNPACKAGE_CACHE_DIR
 fi

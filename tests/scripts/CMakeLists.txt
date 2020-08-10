@@ -17,20 +17,6 @@ install(PROGRAMS ${MODEL_TEST_SCRIPT} DESTINATION test/models)
 file(GLOB MODEL_TEST_DIR LIST_DIRECTORIES true nnfw_api_gtest/models/*)
 install(DIRECTORY ${MODEL_TEST_DIR} DESTINATION test/models/nnpackage)
 
-# TODO Below install to tests/ will be deprecated
-
-# Install test scripts
-file(GLOB TEST_SCRIPTS "*.sh")
-install(PROGRAMS ${TEST_SCRIPTS} DESTINATION tests/scripts)
-
 # Install test list
 file(GLOB TEST_LISTS "list/*.txt")
-install(FILES ${TEST_LISTS} DESTINATION tests/scripts/list)
-
-# Install models test script
-file(GLOB MODEL_TEST_SCRIPT "models/run_test.sh")
-install(PROGRAMS ${MODEL_TEST_SCRIPT} DESTINATION tests/scripts/models)
-
-# Install models test list file
-file(GLOB MODEL_TEST_DIR models/config)
-install(DIRECTORY ${MODEL_TEST_DIR} DESTINATION tests/scripts/models)
+install(FILES ${TEST_LISTS} DESTINATION test/list)
