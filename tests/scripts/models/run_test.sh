@@ -125,6 +125,11 @@ if [ ! -n "$DRIVER_BIN" ]; then
     DRIVER_BIN="$NNFW_HOME/Product/out/bin/tflite_run"
 fi
 
+if [ ! -d "$TEST_ROOT_PATH" ]; then
+    echo "Cannot find config directory for test: please set proper configdir"
+    exit 1
+fi
+
 # Check test driver setting
 if [ ! command_exists $DRIVER_BIN ] && [ "$RUN_TEST" = "on" ]; then
     echo "Cannot find test driver" $DRIVER_BIN ": please set proper DRIVER_BIN"
