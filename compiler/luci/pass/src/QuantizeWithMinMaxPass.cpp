@@ -281,6 +281,10 @@ bool is_weights(CircleNode *node)
     if (dw_conv != nullptr && dw_conv->filter() == circle_const)
       return true;
 
+    auto t_conv = dynamic_cast<CircleTransposeConv *>(out);
+    if (t_conv != nullptr && t_conv->filter() == circle_const && circle_const->rank() == 4)
+      return true;
+
     auto fc = dynamic_cast<CircleFullyConnected *>(out);
     if (fc != nullptr && fc->weights() == circle_const)
       return true;
