@@ -32,10 +32,10 @@ void MatrixBandPart(const T num_lower_diags, const T num_upper_diags, const Shap
 {
   auto last_dim = input_shape.DimensionsCount() - 1;
 
-  T batch_num = 0;
+  T batch_num = 1;
   for (int dim = 0; dim < last_dim - 2; dim++)
   {
-    batch_num += input_shape.Dims(dim);
+    batch_num *= input_shape.Dims(dim);
   }
 
   const T row_num = input_shape.Dims(last_dim - 1);
