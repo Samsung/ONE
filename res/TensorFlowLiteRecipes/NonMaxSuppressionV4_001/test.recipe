@@ -46,7 +46,6 @@ operation {
 }
 input: "boxes"
 input: "scores"
-input: "max_output_size"
 input: "iou_threshold"
 input: "score_threshold"
 output: "selected_indices"
