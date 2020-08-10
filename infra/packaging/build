@@ -85,7 +85,7 @@ function join_by
 # Invoke "preset_configure" function that the preset provides
 preset_configure
 
-NPROC=$(cat /proc/cpuinfo | grep -c processor)
+NPROC=${NPROC:-$(cat /proc/cpuinfo | grep -c processor)}
 cmake --build . -- -j$((NPROC/2)) all
 cmake --build . -- install
 # Install NN Package tools
