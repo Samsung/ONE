@@ -37,9 +37,7 @@ public:
   BatchToSpaceNDLayer();
 
 public:
-  void batchToSpaceNDFloat32();
-
-  void batchToSpaceNDQuant8();
+  template <typename T> void batchToSpaceNDGeneric();
 
   void configure(const IPortableTensor *input, IPortableTensor *output,
                  IPortableTensor *block_shape, IPortableTensor *crops);
