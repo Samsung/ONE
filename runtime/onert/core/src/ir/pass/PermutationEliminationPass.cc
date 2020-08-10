@@ -59,7 +59,8 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
     // In this case we keep the output and remove the input
 
     auto &out_operand_obj = _graph.operands().at(out_operand);
-    out_operand_obj.removeDef(_op_ind);
+    assert(out_operand_obj.getDef() == _op_ind);
+    out_operand_obj.unsetDef();
     _lowered_graph.op_seqs().iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
       if (!op_seq.getOutputs().contains(in_operand))
         return;
@@ -72,7 +73,7 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
         if (operation_obj.getOutputs().contains(in_operand))
         {
           operation_obj.replaceOutputs(in_operand, out_operand);
-          out_operand_obj.insertDef(op);
+          out_operand_obj.setDef(op);
         }
       }
     });

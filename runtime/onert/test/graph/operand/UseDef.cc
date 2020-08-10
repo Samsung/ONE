@@ -65,12 +65,12 @@ TEST(graph_operand_usedef, usedef_test)
   ASSERT_EQ(verifier.verify(graph), true);
 
   // Check def
-  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(mocknode_index1), true);
-  ASSERT_EQ(graph.operands().at(operand_index2).getDef().contains(mocknode_index2), true);
-  ASSERT_EQ(graph.operands().at(output_operand).getDef().contains(multiinput_index), true);
+  ASSERT_EQ(graph.operands().at(operand_index1).getDef(), mocknode_index1);
+  ASSERT_EQ(graph.operands().at(operand_index2).getDef(), mocknode_index2);
+  ASSERT_EQ(graph.operands().at(output_operand).getDef(), multiinput_index);
 
-  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(mocknode_index2), false);
-  ASSERT_EQ(graph.operands().at(operand_index1).getDef().contains(multiinput_index), false);
+  ASSERT_NE(graph.operands().at(operand_index1).getDef(), mocknode_index2);
+  ASSERT_NE(graph.operands().at(operand_index1).getDef(), multiinput_index);
 
   // Check use
   ASSERT_EQ(graph.operands().at(input_operand).getUses().contains(mocknode_index1), true);

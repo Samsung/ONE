@@ -316,7 +316,7 @@ void Fp32ToFp16Converter::appendNewOpSeqForConvertFp16ToFp32(const ir::OpSequenc
 
     // manipulate output of operation and op_seq
     // - replace output of the last operation's output to new operand
-    //    with old operand's removeDef and new operand's appendDef()
+    //    with old operand's unsetDef and new operand's appendDef()
     manipulateOutput(op_seq_ind, op_seq_output_ind, new_op_ind);
 
     // new op
@@ -584,8 +584,9 @@ void Fp32ToFp16Converter::manipulateOutput(const ir::OpSequenceIndex &op_seq_ind
   last_node.replaceOutputs(op_seq_output_ind, new_op_ind);
 
   // op_seq_obj doesn't have uses/def
-  output_obj.removeDef(last_node_ind);
-  new_op_obj.insertDef(last_node_ind);
+  assert(output_obj.getDef() == last_node_ind);
+  output_obj.unsetDef();
+  new_op_obj.setDef(last_node_ind);
 }
 
 ir::OperationIndex
@@ -603,7 +604,7 @@ Fp32ToFp16Converter::newOperationConvertFp32ToFp16(const ir::OperandIndex &op_se
   const auto new_node_ind = operations.push(std::move(new_node));
 
   input_obj.insertUse(new_node_ind);
-  new_op_obj.insertDef(new_node_ind);
+  new_op_obj.setDef(new_node_ind);
 
   return new_node_ind;
 }
@@ -623,7 +624,7 @@ Fp32ToFp16Converter::newOperationConvertFp16ToFp32(const ir::OperandIndex &op_se
   const auto new_node_ind = operations.push(std::move(new_node));
 
   new_op_obj.insertUse(new_node_ind);
-  output_obj.insertDef(new_node_ind);
+  output_obj.setDef(new_node_ind);
 
   return new_node_ind;
 }
@@ -925,7 +926,8 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     for (auto &ind : first_node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       auto &obj = operands.at(ind);
-      obj.removeDef(first_node_ind);
+      assert(obj.getDef() == first_node_ind);
+      obj.unsetDef();
       VERBOSE(Fp32ToFp16Converter) << "Operand #" << ind.value() << "'s Def(Node#"
                                    << first_node_ind.value() << ") is removed" << std::endl;
     }

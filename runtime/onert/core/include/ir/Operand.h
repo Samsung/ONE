@@ -49,11 +49,11 @@ public:
   size_t operandSize(void) const;
 
   const OperationIndexSet &getUses() const { return _uses; }
-  const OperationIndexSet &getDef() const { return _def; }
+  OperationIndex getDef() const { return _def; }
   void insertUse(const OperationIndex &idx);
   void removeUse(const OperationIndex &idx);
-  void insertDef(const OperationIndex &idx);
-  void removeDef(const OperationIndex &idx);
+  void setDef(const OperationIndex &idx);
+  void unsetDef();
 
 public:
   void type(const DataType type) { _info.type(type); };
@@ -107,7 +107,7 @@ private:
   std::shared_ptr<Data> _data;
 
   OperationIndexSet _uses;
-  OperationIndexSet _def; // size is 0 (constant) or 1 (from def operation)
+  OperationIndex _def;
 };
 
 } // namespace ir

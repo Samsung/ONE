@@ -207,7 +207,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   // Update Use/Def info
   {
     _graph.operands().at(operand_index).insertUse(node_index);
-    _graph.operands().at(out_operand_index).insertDef(node_index);
+    _graph.operands().at(out_operand_index).setDef(node_index);
   }
   return node_index;
 }

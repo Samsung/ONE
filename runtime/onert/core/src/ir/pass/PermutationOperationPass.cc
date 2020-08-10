@@ -39,8 +39,8 @@ void PermutationOperationPass::applyExpandRanks(const Operation &node)
   const auto &output_ind = node.getOutputs().at(0);
   const auto &output = _graph.operands().at(output_ind);
 
-  assert(output.getDef().size() == 1);
-  const auto &node_index = *output.getDef().begin();
+  assert(output.getDef().valid());
+  const auto node_index = output.getDef();
   const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
   const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
   const auto backend_layout = _lowered_graph.getLowerInfo(op_seq_index)->layout();
@@ -80,8 +80,8 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   const auto &output_ind = node.getOutputs().at(0);
   const auto &output_obj = _graph.operands().at(output_ind);
 
-  assert(output_obj.getDef().size() == 1);
-  const auto &node_index = *output_obj.getDef().begin();
+  assert(output_obj.getDef().valid());
+  const auto node_index = output_obj.getDef();
   const auto &op_seq_index = _lowered_graph.op_seqs().getOperation(node_index);
 
   const auto frontend_layout = _lowered_graph.op_seqs().at(op_seq_index).getLayout();
@@ -200,7 +200,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       lower_info->addUsePermuteFactor(new_factor);
 
       // Whether if node's input is an input of model or a constant
-      if (_graph.operands().at(input).getDef().size() == 0 &&
+      if (!_graph.operands().at(input).getDef().valid() &&
           (lower_info->def_factors().size() == 1 &&
            lower_info->def_factors().getOnlyElement() == removed_factor))
       {

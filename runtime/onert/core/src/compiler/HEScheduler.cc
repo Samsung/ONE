@@ -105,7 +105,7 @@ static bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
       continue;
 
     // This operand is output of operation, not weight or bias
-    if (operand.getDef().size() > 0)
+    if (operand.getDef().valid())
       ++prev_op_cnt;
 
     // Current node has multiple inputs as concat or at the beginning of the separated branch
@@ -599,7 +599,8 @@ int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Opera
     const auto &input_operand = _graph->operands().at(input_operand_idx);
     const bool quant = input_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM;
 
-    for (const auto &input_node_idx : input_operand.getDef())
+    auto input_node_idx = input_operand.getDef();
+    if (input_node_idx.valid())
     {
       // Data transfer cost from parent's node backend to current node's backend:
       auto parent_backend = _backend_resolver->getBackend(input_node_idx);

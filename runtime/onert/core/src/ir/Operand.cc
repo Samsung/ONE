@@ -42,20 +42,9 @@ void Operand::insertUse(const OperationIndex &idx) { _uses.insert(idx); }
 
 void Operand::removeUse(const OperationIndex &idx) { _uses.remove(idx); }
 
-void Operand::insertDef(const OperationIndex &idx)
-{
-  assert(!isConstant());
-  assert(_def.size() == 0);
+void Operand::setDef(const OperationIndex &idx) { _def = idx; }
 
-  _def.insert(idx);
-}
-
-void Operand::removeDef(const OperationIndex &idx)
-{
-  assert(_def.contains(idx));
-
-  _def.remove(idx);
-}
+void Operand::unsetDef() { _def = OperationIndex{}; }
 
 } // namespace ir
 } // namespace onert
