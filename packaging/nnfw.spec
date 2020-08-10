@@ -143,7 +143,7 @@ mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
-install -m 755 build/out/bin/minimal %{buildroot}%{_bindir}
+install -m 755 build/out/bin/onert-minimal-app %{buildroot}%{_bindir}
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
@@ -205,7 +205,7 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%{_bindir}/minimal
+%{_bindir}/onert-minimal-app
 
 %if %{test_build} == 1
 %files test
