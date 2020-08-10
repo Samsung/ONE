@@ -82,6 +82,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MIRROR_PAD, CircleMirrorPadGraphBuilder);                                    // 100
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                                                 // 18
   CIRCLE_NODE(NEG, CircleNegGraphBuilder);                                                 // 59
+  CIRCLE_NODE(NON_MAX_SUPPRESSION_V4, CircleNonMaxSuppressionV4GraphBuilder);              // 120,
   CIRCLE_NODE(NOT_EQUAL, CircleNotEqualGraphBuilder);                                      // 72
   CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                                          // 85
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                                               // 83
@@ -158,7 +159,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_FAKE_QUANT = 80,
   // BuiltinOperator_QUANTIZE = 114,
   // BuiltinOperator_HARD_SWISH = 117,
-  // BuiltinOperator_NON_MAX_SUPPRESSION_V4 = 120,
   // BuiltinOperator_NON_MAX_SUPPRESSION_V5 = 121,
   // BuiltinOperator_DENSIFY = 124,
 }

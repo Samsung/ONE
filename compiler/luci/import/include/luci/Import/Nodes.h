@@ -73,6 +73,7 @@
 #include "Nodes/CircleMirrorPad.h"
 #include "Nodes/CircleMul.h"
 #include "Nodes/CircleNeg.h"
+#include "Nodes/CircleNonMaxSuppressionV4.h"
 #include "Nodes/CircleNotEqual.h"
 #include "Nodes/CircleOneHot.h"
 #include "Nodes/CirclePack.h"
