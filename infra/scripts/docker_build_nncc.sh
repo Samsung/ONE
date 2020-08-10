@@ -65,7 +65,7 @@ mkdir -p ${NNCC_INSTALL_PREFIX}
   install tensorflow-cpu==2.3.0
 
 mkdir -p ${ARCHIVE_PATH}
-tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} ./ --except "bin/venv"
+tar -zcf ${ARCHIVE_PATH}/nncc-package.tar.gz -C ${NNCC_INSTALL_PREFIX} --exclude "bin/venv" ./
 tar -zcf ${ARCHIVE_PATH}/nncc-venv-package.tar.gz -C ${NNCC_INSTALL_PREFIX} bin/venv
 
 popd > /dev/null
