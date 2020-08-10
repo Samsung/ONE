@@ -51,14 +51,10 @@ TEST(TanhTest, Float)
 
 TEST(TanhTest, Uint8)
 {
-  float scale = 1.f / 128;
-  int32_t zero_point = 0;
   float kMin = -1;
-  // float kMin = 0;
   float kMax = 127.f / 128.f;
-  // float kMax = 255;
   float kTanhTolerance = 2 * (1. / 256);
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(8 * kMin, 8 * kMax);
   std::vector<float> input_data{
       0,  -6, 2, 4, //
       -4, -2, 8, 1, //
@@ -73,18 +69,17 @@ TEST(TanhTest, Uint8)
       0,  -6, 2, 4, //
       -4, -2, 8, 1, //
   };
-  Tensor input_tensor{
-      DataType::U8, {2, 6, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor{DataType::U8, {2, 6, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
   std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first * 8, quant_param.second * 8);
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
   input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
-  std::vector<float> output_data{
+  std::vector<float> ref_output_data{
       0.0,       -0.999987, 0.964027, 0.999329, //
       -0.999329, -0.96402,  0.99999,  0.76159,  //
       0.0,       -0.999987, 0.964027, 0.999329, //
@@ -97,26 +92,12 @@ TEST(TanhTest, Uint8)
       -0.999329, -0.96402,  0.99999,  0.76159,  //
       0.0,       -0.999987, 0.964027, 0.999329, //
       -0.999329, -0.96402,  0.99999,  0.76159,  //
-  };
-  std::vector<uint8_t> ref_output_data{
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
-      128, 0, 251, 255, //
-      0,   5, 255, 225, //
   };
   std::vector<int32_t> ref_output_shape{2, 6, 4, 1};
   EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
                                   output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(output_data, kTanhTolerance)));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kTanhTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
 } // namespace

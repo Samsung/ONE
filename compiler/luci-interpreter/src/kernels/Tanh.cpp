@@ -32,7 +32,6 @@ void Tanh::configure()
   assert(input()->element_type() == output()->element_type());
   if (input()->element_type() == DataType::U8)
   {
-    assert(output()->scale() == 1. / 128);
     populateLookupTable();
   }
   output()->resize(input()->shape());
