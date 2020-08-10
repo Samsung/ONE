@@ -197,7 +197,7 @@ find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. 
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l aarch64
-%dir %{_includedir}/nnfw
+%dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
