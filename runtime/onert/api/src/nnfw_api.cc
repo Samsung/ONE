@@ -341,3 +341,9 @@ NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t
   // It should not be reached.
   return NNFW_STATUS_ERROR;
 }
+
+NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->load_circle_from_buffer(buffer, size);
+}

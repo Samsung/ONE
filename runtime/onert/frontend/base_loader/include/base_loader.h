@@ -77,6 +77,13 @@ public:
    * @param file_path
    */
   void loadFromFile(const char *file_path);
+  /**
+   * @brief Load a model from a buffer
+   *
+   * @param buffer buffer pointer
+   * @param size buffer size
+   */
+  void loadFromBuffer(uint8_t *buffer, size_t size);
 
 protected:
   ~BaseLoader() = default;
@@ -222,6 +229,15 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   munmap(_base, size);
 
   close(_fd);
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromBuffer(uint8_t *buffer,
+                                                                          size_t size)
+{
+  _base = buffer;
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
+  loadModel();
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
