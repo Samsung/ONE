@@ -87,8 +87,8 @@ inline void BatchToSpaceND(const Shape &unextended_input1_shape, const T *input1
   const int32_t block_shape_height = block_shape_data[0];
   const int32_t block_shape_width = block_shape_data[1];
 
-  const int crops_top = crops_data[0];
-  const int crops_left = crops_data[2];
+  const int32_t crops_top = crops_data[0];
+  const int32_t crops_left = crops_data[2];
 
   for (int in_batch = 0; in_batch < input_batch_size; ++in_batch)
   {

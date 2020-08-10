@@ -44,12 +44,12 @@ void BatchToSpaceNDLayer::batchToSpaceNDFloat32()
   }
   else
   {
-    _crops_buffer = reinterpret_cast<const int *>(_crops);
+    _crops_buffer = reinterpret_cast<const int32_t *>(_crops->buffer());
   }
-  nnfw::cker::BatchToSpaceND(getTensorShape(_input),
-                             reinterpret_cast<const float *>(_input->buffer()),
-                             reinterpret_cast<const int *>(_block_shape->buffer()), _crops_buffer,
-                             getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+  nnfw::cker::BatchToSpaceND(
+      getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+      reinterpret_cast<const int32_t *>(_block_shape->buffer()), _crops_buffer,
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
 }
 
 void BatchToSpaceNDLayer::configure(const IPortableTensor *input, IPortableTensor *output,
