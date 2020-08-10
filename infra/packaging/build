@@ -86,6 +86,7 @@ function join_by
 preset_configure
 
 NPROC=${NPROC:-$(cat /proc/cpuinfo | grep -c processor)}
+echo "[BUILD] \"make\" with -j${NPROC} option. You can specify the number of jobs by defining NPROC"
 cmake --build . -- -j$((NPROC/2)) all
 cmake --build . -- install
 # Install NN Package tools
