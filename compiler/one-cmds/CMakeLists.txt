@@ -27,7 +27,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
   install(FILES ${ONE_COMMAND}
           PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-                      GROUP_READ GROUP_WRITE GROUP_EXECUTE
+                      GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
           
