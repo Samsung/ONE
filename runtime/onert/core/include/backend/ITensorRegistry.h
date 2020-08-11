@@ -110,22 +110,20 @@ public:
 
   bool setMigrantTensor(const ir::OperandIndex &ind, const std::shared_ptr<IPortableTensor> &tensor)
   {
-    // TODO Uncomment this as two tensors for an index is not allowed.
-    //      But now it is temporarily allowed as a workaround. External one hides Managed one.
-    // auto itr = _native.find(ind);
-    // if (itr != _native.end() && itr->second != nullptr && tensor != nullptr)
-    //  throw std::runtime_error{
-    //      "Tried to set an migrant tensor but an native tensor already exists."};
+    assert(tensor != nullptr);
+    auto itr = _native.find(ind);
+    if (itr != _native.end())
+      throw std::runtime_error{"Tried to set a migrant tensor but a native tensor already exists."};
     _migrant[ind] = tensor;
     return true;
   }
 
   void setNativeTensor(const ir::OperandIndex &ind, const std::shared_ptr<T_Tensor> &tensor)
   {
+    assert(tensor != nullptr);
     auto itr = _migrant.find(ind);
-    if (itr != _migrant.end() && itr->second != nullptr && tensor != nullptr)
-      throw std::runtime_error{
-          "Tried to set a native tensor but an migrant tensor already exists."};
+    if (itr != _migrant.end())
+      throw std::runtime_error{"Tried to set a native tensor but a migrant tensor already exists."};
     _native[ind] = tensor;
   }
 
