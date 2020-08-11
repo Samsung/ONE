@@ -1,3 +1,7 @@
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 set(TEST_COMPUTE test_compute)
 
 file(GLOB_RECURSE TESTS "*.cc")
