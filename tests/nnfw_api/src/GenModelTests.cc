@@ -34,22 +34,22 @@
 class GenModelTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { NNFW_ENSURE_CALL(nnfw_create_session(&_so.session)); }
+  void SetUp() override { NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session)); }
 
   void TearDown() override
   {
-    NNFW_ENSURE_CALL(nnfw_load_circle_from_buffer(_so.session, _cbuf.buffer(), _cbuf.size()));
-    NNFW_ENSURE_CALL(nnfw_prepare(_so.session));
+    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, _cbuf.buffer(), _cbuf.size()));
+    NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
 
     // In/Out buffer settings
     {
       uint32_t num_inputs;
-      NNFW_ENSURE_CALL(nnfw_input_size(_so.session, &num_inputs));
+      NNFW_ENSURE_SUCCESS(nnfw_input_size(_so.session, &num_inputs));
       _so.inputs.resize(num_inputs);
       for (uint32_t ind = 0; ind < _so.inputs.size(); ind++)
       {
         nnfw_tensorinfo ti;
-        NNFW_ENSURE_CALL(nnfw_input_tensorinfo(_so.session, ind, &ti));
+        NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_so.session, ind, &ti));
         uint64_t input_elements = num_elems(&ti);
         _so.inputs[ind].resize(input_elements);
 
@@ -59,12 +59,12 @@ protected:
       }
 
       uint32_t num_outputs;
-      NNFW_ENSURE_CALL(nnfw_output_size(_so.session, &num_outputs));
+      NNFW_ENSURE_SUCCESS(nnfw_output_size(_so.session, &num_outputs));
       _so.outputs.resize(num_outputs);
       for (uint32_t ind = 0; ind < _so.outputs.size(); ind++)
       {
         nnfw_tensorinfo ti;
-        NNFW_ENSURE_CALL(nnfw_output_tensorinfo(_so.session, ind, &ti));
+        NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
         uint64_t output_elements = num_elems(&ti);
         _so.outputs[ind].resize(output_elements);
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
@@ -83,7 +83,7 @@ protected:
         memcpy(_so.inputs[i].data(), _ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
       }
 
-      NNFW_ENSURE_CALL(nnfw_run(_so.session));
+      NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
 
       ASSERT_EQ(_so.outputs.size(), _ref_outputs.size());
       for (uint32_t i = 0; i < _so.outputs.size(); i++)
@@ -97,7 +97,7 @@ protected:
       }
     }
 
-    NNFW_ENSURE_CALL(nnfw_close_session(_so.session));
+    NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
   }
 
 protected:

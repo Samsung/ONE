@@ -67,22 +67,22 @@ protected:
   {
     NNFW_STATUS res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_INT32, new_shape.data(),
                                      sizeof(int) * new_shape.size());
-    ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(res);
 
     res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
                           sizeof(float) * actual_output_size);
-    ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(res);
   }
 
   void prepare_and_set_input_output(const std::vector<int> &new_shape, int actual_output_size,
                                     std::vector<float> *actual_output)
   {
-    ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
     NNFW_STATUS res = NNFW_STATUS_ERROR;
 
     res = nnfw_prepare(_session);
-    ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(res);
 
     set_input_output(new_shape, actual_output_size, actual_output);
     // real test case should start from calling nnfw_run()
@@ -102,11 +102,11 @@ protected:
 
     if (no_run_error)
     {
-      ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+      NNFW_ENSURE_SUCCESS(res);
 
       // output shape check
       nnfw_tensorinfo info;
-      ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &info), NNFW_STATUS_NO_ERROR);
+      NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &info));
       ASSERT_EQ(info.rank, new_shape.size());
       for (uint32_t d = 0; d < info.rank; ++d)
         ASSERT_EQ(info.dims[d], new_shape[d]);
@@ -137,7 +137,7 @@ TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_to_3x2)
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // output value check
   for (int i = 0; i < expected.size(); ++i)
@@ -163,10 +163,10 @@ TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_to_wrong_3x3)
 
 TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_multiple_executions)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   NNFW_STATUS res = nnfw_prepare(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
@@ -184,10 +184,10 @@ TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_multiple_executions)
 
 TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_multiple_executions)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   NNFW_STATUS res = nnfw_prepare(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
@@ -217,8 +217,8 @@ protected:
                                       const std::vector<float> &input1,
                                       std::vector<float> *actual_output, nnfw_tensorinfo input0_ti)
   {
-    ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
-    ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+    NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
 
     ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
                              sizeof(float) * input0.size()),
@@ -250,7 +250,7 @@ protected:
  */
 TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   const std::vector<float> input0 = {1, 2, 3};          // of shape [1, 3]
   const std::vector<float> input1 = {4, 5, 6, 7, 8, 9}; // of shape [2, 3]
@@ -260,14 +260,14 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
 
   // input reshaping to [1, 3]
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 3}};
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
   set_input_output(_session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // output value check
   for (int i = 0; i < expected.size(); ++i)
@@ -291,7 +291,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
  */
 TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_shape)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   const std::vector<float> input0 = {1, 2, 3};          // of shape [3, 1], wrong shape
   const std::vector<float> input1 = {4, 5, 6, 7, 8, 9}; // of shape [2, 3]
@@ -300,7 +300,7 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
 
   // input reshaping to [3, 1]
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
 
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
 }
@@ -330,7 +330,7 @@ using TestDynamicTensorApplyTensorInfoBinaryOp =
 
 TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_compilation_add)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   // input reshaping to [2, 2, 3]
   nnfw_tensorinfo input0_ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {2, 2, 3}};
@@ -341,15 +341,15 @@ TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_comp
   std::vector<float> expected_output = {1.1 * 2, 2.1 * 2, 3.1 * 2, 4.1 * 2,  5.1 * 2,  6.1 * 2,
                                         7.1 * 2, 8.1 * 2, 9.1 * 2, 10.1 * 2, 11.1 * 2, 12.1 * 2};
 
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
 
   set_input_output(_session, input0, input1, actual_output);
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // output value check
   for (int i = 0; i < expected_output.size(); ++i)
@@ -374,7 +374,7 @@ using TestDynamicTensorApplyTensorInfoUnaryOp = ValidationTestModelLoaded<NNPack
 
 TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compilation_neg)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
 
   nnfw_tensorinfo input0_ti_original = {NNFW_TYPE_TENSOR_FLOAT32, 2, {4, 4}};
 
@@ -397,21 +397,21 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
     expected_output[i] = -1 * input0[i];
   }
 
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
   // input shape check
   {
     nnfw_tensorinfo ti = {};
-    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(input0_ti_original, ti));
   }
 
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &input0_ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
 
   // input shape check
   {
     nnfw_tensorinfo ti = {};
-    ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
   }
 
@@ -419,7 +419,7 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
 
   // Do inference
   NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // output value check
   for (int i = 0; i < expected_output.size(); ++i)
@@ -435,20 +435,20 @@ const static std::vector<float> while_dynamic_output0{ 0.0388205424, 0.042615629
 
 TEST_F(TestWhileDynamicModelLoaded, run_verify)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
   std::vector<float> actual_output0(10);
 
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
 
   set_input_output(_session, while_dynamic_input0, actual_output0);
 
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
   nnfw_tensorinfo ti_output0_expected = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}};
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &ti));
   ASSERT_TRUE(tensorInfoEqual(ti, ti_output0_expected));
 
   // output value check
@@ -458,11 +458,11 @@ TEST_F(TestWhileDynamicModelLoaded, run_verify)
 
 TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {1, 28, 28}};
-  ASSERT_EQ(nnfw_set_input_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
 
   // Insufficient size of output (10 or more is sufficient)
   std::vector<float> actual_output0(9);
@@ -482,27 +482,27 @@ const static std::vector<float> if_dynamic_output0{ 0.0444660522, 0.0271649156, 
 
 TEST_F(TestIfDynamicModelLoaded, run_verify)
 {
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
 
   nnfw_tensorinfo ti_output0_expected = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 10}};
 
   // Output tensor sizes are inferenced after `nnfw_prepare`
   {
     nnfw_tensorinfo ti;
-    ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(ti, ti_output0_expected));
   }
 
   std::vector<float> actual_output0(10);
   set_input_output(_session, if_dynamic_input0, actual_output0);
 
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
 
   // Check output tensor sizes again
   {
     nnfw_tensorinfo ti;
-    ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(ti, ti_output0_expected));
   }
 

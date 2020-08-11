@@ -19,14 +19,14 @@
 
 TEST_F(ValidationTestSingleSession, create_001)
 {
-  ASSERT_EQ(nnfw_create_session(&_session), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_close_session(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
 }
 
 TEST_F(ValidationTestSingleSession, query_info_u32)
 {
   uint32_t val = 0;
-  ASSERT_EQ(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, &val), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, &val));
 }
 
 TEST_F(ValidationTestSingleSession, neg_create_001)

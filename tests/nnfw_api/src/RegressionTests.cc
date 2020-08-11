@@ -22,17 +22,17 @@ TEST_F(RegressionTest, github_1535)
   auto package_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
 
   nnfw_session *session1 = nullptr;
-  ASSERT_EQ(nnfw_create_session(&session1), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_load_model_from_file(session1, package_path.c_str()), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_available_backends(session1, "cpu;acl_cl;acl_neon"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(session1), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session1));
+  NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(session1, package_path.c_str()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session1, "cpu;acl_cl;acl_neon"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session1));
 
   nnfw_session *session2 = nullptr;
-  ASSERT_EQ(nnfw_create_session(&session2), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_load_model_from_file(session2, package_path.c_str()), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_available_backends(session2, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_prepare(session2), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session2));
+  NNFW_ENSURE_SUCCESS(nnfw_load_model_from_file(session2, package_path.c_str()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session2, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session2));
 
-  ASSERT_EQ(nnfw_close_session(session1), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_close_session(session2), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session1));
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session2));
 }

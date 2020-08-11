@@ -35,8 +35,8 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 {
   NNFW_STATUS res = NNFW_STATUS_ERROR;
 
-  ASSERT_EQ(nnfw_set_available_backends(_session, "cpu"), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_set_config(_session, "EXECUTOR", "Linear"), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "EXECUTOR", "Linear"));
 
   // input and output values
   const std::vector<float> input1 = {0, 1, 2, 3, 4, 5, 6, 7}; // of changed shape [4, 2]
@@ -56,7 +56,7 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
   res = nnfw_set_input_tensorinfo(_session, 0, &ti);
 
   res = nnfw_prepare(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   nnfw_tensorinfo ti_input = {}; // Static inference result will be stored
   nnfw_input_tensorinfo(_session, 0, &ti_input);
@@ -68,21 +68,21 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 
   res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
                        sizeof(float) * input1.size());
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
   res = nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
                        sizeof(float) * input2.size());
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   uint64_t output_num_elements = tensorInfoNumElements(ti_output);
   ASSERT_EQ(output_num_elements, expected.size());
   std::vector<float> actual_output(output_num_elements);
   res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
                         sizeof(float) * actual_output.size());
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // Do inference
   res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(res);
 
   // compare
   for (int i = 0; i < expected.size(); ++i)

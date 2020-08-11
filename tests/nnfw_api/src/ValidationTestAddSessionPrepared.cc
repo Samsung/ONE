@@ -23,7 +23,7 @@ TEST_F(ValidationTestAddSessionPrepared, run)
 {
   SetInOutBuffers();
   _input[0] = 3.0;
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
   ASSERT_FLOAT_EQ(_output[0], 5.0);
 }
 
@@ -31,11 +31,11 @@ TEST_F(ValidationTestAddSessionPrepared, run_twice)
 {
   SetInOutBuffers();
   _input[0] = 4.0;
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
   ASSERT_FLOAT_EQ(_output[0], 6.0);
 
   _input[0] = 5.0f;
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
   ASSERT_FLOAT_EQ(_output[0], 7.0);
 }
 
@@ -43,8 +43,8 @@ TEST_F(ValidationTestAddSessionPrepared, run_async)
 {
   SetInOutBuffers();
   _input[0] = 3.0;
-  ASSERT_EQ(nnfw_run_async(_session), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run_async(_session));
+  NNFW_ENSURE_SUCCESS(nnfw_await(_session));
   ASSERT_FLOAT_EQ(_output[0], 5.0);
 }
 
@@ -58,21 +58,21 @@ TEST_F(ValidationTestAddSessionPrepared, set_input_001)
 TEST_F(ValidationTestAddSessionPrepared, get_input_size)
 {
   uint32_t size = 0;
-  ASSERT_EQ(nnfw_input_size(_session, &size), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_input_size(_session, &size));
   ASSERT_EQ(size, 1);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, get_output_size)
 {
   uint32_t size = 0;
-  ASSERT_EQ(nnfw_output_size(_session, &size), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_output_size(_session, &size));
   ASSERT_EQ(size, 1);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, output_tensorinfo)
 {
   nnfw_tensorinfo tensor_info;
-  ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &tensor_info), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &tensor_info));
   ASSERT_EQ(tensor_info.rank, 1);
   ASSERT_EQ(tensor_info.dims[0], 1);
 }
@@ -86,24 +86,24 @@ TEST_F(ValidationTestAddSessionPrepared, neg_await_without_async_run)
 TEST_F(ValidationTestAddSessionPrepared, neg_await_after_sync_run)
 {
   SetInOutBuffers();
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_session));
   ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_await_twice)
 {
   SetInOutBuffers();
-  ASSERT_EQ(nnfw_run_async(_session), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run_async(_session));
+  NNFW_ENSURE_SUCCESS(nnfw_await(_session));
   ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_run_during_async_run)
 {
   SetInOutBuffers();
-  ASSERT_EQ(nnfw_run_async(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run_async(_session));
   EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_INVALID_STATE);
-  ASSERT_EQ(nnfw_await(_session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_await(_session));
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_set_input_001)
