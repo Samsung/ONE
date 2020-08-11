@@ -17,17 +17,16 @@
 #include "KernelGenerator.h"
 
 #include "ops/AbsLayer.h"
-#include "ops/AddLayer.h"
 #include "ops/ArgMinMaxLayer.h"
 #include "ops/AvgPoolLayer.h"
 #include "ops/BatchToSpaceNDLayer.h"
+#include "ops/BinaryArithmeticLayer.h"
 #include "ops/CastLayer.h"
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
 #include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
-#include "ops/DivLayer.h"
 #include "ops/EinsumLayer.h"
 #include "ops/ExpLayer.h"
 #include "ops/ExpandDimsLayer.h"
@@ -40,7 +39,6 @@
 #include "ops/MaxPoolLayer.h"
 #include "ops/MeanLayer.h"
 #include "ops/MinLayer.h"
-#include "ops/MulLayer.h"
 #include "ops/NegLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
@@ -66,7 +64,6 @@
 #include "ops/SpaceToDepthLayer.h"
 #include "ops/SplitLayer.h"
 #include "ops/SplitVLayer.h"
-#include "ops/SubLayer.h"
 #include "ops/TanhLayer.h"
 #include "ops/TileLayer.h"
 #include "ops/TransposeLayer.h"
@@ -102,6 +99,24 @@ namespace cpu
 
 namespace
 {
+ops::ArithmeticType
+convertArithmeticType(ir::operation::BinaryArithmetic::ArithmeticType arithmetic_type_ir)
+{
+  switch (arithmetic_type_ir)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+      return ops::ArithmeticType::kAdd;
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+      return ops::ArithmeticType::kSub;
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+      return ops::ArithmeticType::kMul;
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+      return ops::ArithmeticType::kDiv;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
 ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
 {
   switch (reduce_type_ir)
@@ -459,11 +474,11 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Add &node)
+void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Add::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Add::Input::RHS)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
 
   const auto activation = node.param().activation;
 
@@ -471,9 +486,10 @@ void KernelGenerator::visit(const ir::operation::Add &node)
   auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
   auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
 
-  auto fn = std::make_unique<ops::AddLayer>();
+  auto fn = std::make_unique<ops::BinaryArithmeticLayer>();
 
-  fn->configure(lhs_tensor, rhs_tensor, activation, ofm_tensor);
+  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor, activation,
+                convertArithmeticType(node.param().arithmetic_type));
 
   _return_fn = std::move(fn);
 }
@@ -534,46 +550,6 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Sub &node)
-{
-  // The same as Add
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Sub::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Sub::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::SubLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, activation, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Mul &node)
-{
-  // The same as Add
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Mul::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Mul::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::MulLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, activation, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::OneHot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -596,26 +572,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto fn = std::make_unique<ops::OneHotLayer>();
 
   fn->configure(indices_tensor, depth_tensor, onvalue_tensor, offvalue_tensor, output_tensor, axis);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Div &node)
-{
-  // The same as Add
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Div::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Div::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::DivLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, activation, ofm_tensor);
 
   _return_fn = std::move(fn);
 }

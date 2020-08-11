@@ -105,12 +105,6 @@ void DynamicShapeInferer::visit(const ir::operation::Abs &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::INPUT));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Add &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
-                           op.getInputs().at(ir::operation::Add::Input::RHS));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
@@ -153,6 +147,12 @@ void DynamicShapeInferer::visit(const ir::operation::BatchMatMul &op)
 
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs_shape, rhs_shape, op.param());
   dynamicTensorManagerOf(output)->applyShape(output_index, new_shape);
+}
+
+void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
+{
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
+                           op.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
@@ -295,12 +295,6 @@ void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
 void DynamicShapeInferer::visit(const ir::operation::Cos &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Div &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Div::Input::LHS),
-                           op.getInputs().at(ir::operation::Div::Input::RHS));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Exp &op)
@@ -471,12 +465,6 @@ void DynamicShapeInferer::visit(const ir::operation::Min &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
                            op.getInputs().at(ir::operation::Min::Input::RHS));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Mul &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Mul::Input::LHS),
-                           op.getInputs().at(ir::operation::Mul::Input::RHS));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Neg &op)
@@ -1001,12 +989,6 @@ void DynamicShapeInferer::visit(const ir::operation::StridedSlice &op)
 
   dynamicTensorManagerOf(output)->applyShape(output_index, output_shape);
   assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Sub &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Sub::Input::LHS),
-                           op.getInputs().at(ir::operation::Sub::Input::RHS));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Tanh &op)

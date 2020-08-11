@@ -37,13 +37,13 @@ public:
 
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
+  void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::MaxPool2D &) override;
   void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Squeeze &) override;
@@ -52,10 +52,7 @@ public:
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::Transpose &) override;
-  void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Cast &) override;
-  void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::InstanceNorm &) override;

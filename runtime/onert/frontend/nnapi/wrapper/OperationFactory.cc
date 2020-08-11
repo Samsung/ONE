@@ -83,6 +83,31 @@ uint32_t getUint32Scalar(Operands &operands, const OperandIndex index)
 }
 
 OperationFactory::Generator
+getBinaryArithmeticGenerator(const onert::ir::operation::BinaryArithmetic::ArithmeticType op_type)
+{
+  return [op_type](const OperationFactory::Param &init_param, Operands &operands) {
+    assert(init_param.input_count == 3);
+    assert(init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Lefthand side operand
+    //  1 -> Righthand side operand
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::BinaryArithmetic::Param param;
+    param.arithmetic_type = op_type;
+    const auto activation_index = OperandIndex{init_param.inputs[2]};
+    param.activation =
+        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+
+    return new operation::BinaryArithmetic{inputs, outputs, param};
+  };
+}
+
+OperationFactory::Generator
 getReduceGenerator(const onert::ir::operation::Reduce::ReduceType reduce_type)
 {
   return [reduce_type](const OperationFactory::Param &init_param, Operands &operands) {
@@ -479,26 +504,8 @@ OperationFactory::OperationFactory()
     return new Conv2D{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_ADD] = [](const OperationFactory::Param &init_param, Operands &operands) {
-    assert(init_param.input_count == 3);
-    assert(init_param.output_count == 1);
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Lefthand side operand
-    //  1 -> Righthand side operand
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::Add::Param param;
-
-    const auto activation_index = OperandIndex{init_param.inputs[2]};
-    param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-
-    return new operation::Add{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_ADD] =
+      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::ADD);
 
   _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
 
@@ -509,26 +516,8 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_REDUCE_SUM_EX
   _map[ANEURALNETWORKS_REDUCE_SUM_EX] = _map[ANEURALNETWORKS_REDUCE_SUM];
 
-  _map[ANEURALNETWORKS_SUB] = [](const OperationFactory::Param &init_param, Operands &operands) {
-    assert(init_param.input_count == 3);
-    assert(init_param.output_count == 1);
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Lefthand side operand
-    //  1 -> Righthand side operand
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::Sub::Param param;
-
-    const auto activation_index = OperandIndex{init_param.inputs[2]};
-    param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-
-    return new operation::Sub{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_SUB] =
+      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::SUB);
 
   _map[ANEURALNETWORKS_SLICE] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
@@ -611,27 +600,8 @@ OperationFactory::OperationFactory()
     return new operation::Transpose{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_MUL] = [](const OperationFactory::Param &init_param, Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> LHS Tensor Index
-    //  1 -> RHS Tensor Index
-    //  2 -> Activation Index
-
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Mul::Param param;
-
-    const auto activation_index = OperandIndex{init_param.inputs[2]};
-    param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-
-    return new operation::Mul{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_MUL] =
+      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::MUL);
 
   _map[ANEURALNETWORKS_SQUEEZE] = [](const OperationFactory::Param &init_param,
                                      Operands &operands) {
@@ -678,26 +648,8 @@ OperationFactory::OperationFactory()
 
   _map[ANEURALNETWORKS_LOGISTIC] = CreateSimpleUnaryOp<operation::Logistic>;
 
-  _map[ANEURALNETWORKS_DIV] = [](const OperationFactory::Param &init_param, Operands &operands) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> LHS Tensor Index
-    //  1 -> RHS Tensor Index
-    //  2 -> Activation Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Div::Param param;
-
-    const auto activation_index = OperandIndex{init_param.inputs[2]};
-    param.activation =
-        NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
-
-    return new operation::Div{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_DIV] =
+      getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::DIV);
 
   _map[ANEURALNETWORKS_EXP] = CreateSimpleUnaryOp<operation::Exp>;
 

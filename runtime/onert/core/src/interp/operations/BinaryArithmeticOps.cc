@@ -19,9 +19,7 @@
 #include "OperationUtil.h"
 
 #include "interp/Registration.h"
-#include "ir/operation/Add.h"
-#include "ir/operation/Sub.h"
-#include "ir/operation/Mul.h"
+#include "ir/operation/BinaryArithmetic.h"
 #include "misc/polymorphic_downcast.h"
 #include "cker/Types.h"
 
@@ -39,12 +37,13 @@ enum class OpType
   MUL
 };
 
-template <typename node_type> void prepareAdd(ExecEnv *env, const ir::Operation &node)
+void prepare(ExecEnv *env, const ir::Operation &node)
 {
-  const auto &add_node = nnfw::misc::polymorphic_downcast<const node_type &>(node);
+  const auto &arithmetic_node =
+      nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
 
-  const auto lhs_index = node.getInputs().at(add_node.LHS);
-  const auto rhs_index = node.getInputs().at(add_node.RHS);
+  const auto lhs_index = node.getInputs().at(arithmetic_node.LHS);
+  const auto rhs_index = node.getInputs().at(arithmetic_node.RHS);
   const auto out_index = node.getOutputs().at(0);
 
   const auto lhs_tensor = env->tensorAt(lhs_index);
@@ -54,7 +53,7 @@ template <typename node_type> void prepareAdd(ExecEnv *env, const ir::Operation 
   // TODO Util function to compare TensorInfo
   if (lhs_tensor->data_type() != rhs_tensor->data_type())
   {
-    throw std::runtime_error{"Interp(Add): Different input types"};
+    throw std::runtime_error{"Interp(" + arithmetic_node.name() + "): Different input types"};
   }
 
   bool try_broadcast = (lhs_tensor->tensorInfo().shape() != rhs_tensor->tensorInfo().shape());
@@ -65,7 +64,7 @@ template <typename node_type> void prepareAdd(ExecEnv *env, const ir::Operation 
                                         rhs_tensor->tensorInfo().shape(), success);
     if (!success)
     {
-      throw std::runtime_error{"Interp(Add): Fail to brodcasting"};
+      throw std::runtime_error{"Interp(" + arithmetic_node.name() + "): Fail to brodcasting"};
     }
 
     auto output_info =
@@ -86,7 +85,7 @@ template <typename node_type> void prepareAdd(ExecEnv *env, const ir::Operation 
   // TODO Util function to compare TensorInfo
   if (lhs_tensor->data_type() != out_tensor->data_type())
   {
-    throw std::runtime_error{"Interp(Add): Invalid output type"};
+    throw std::runtime_error{"Interp(" + arithmetic_node.name() + "): Invalid output type"};
   }
 }
 
@@ -103,9 +102,9 @@ inline void setActivationParams(int32_t min, int32_t max,
   params->quantized_activation_max = max;
 }
 
-template <typename raw_type, typename param_type, OpType op_type>
+template <typename raw_type, OpType op_type>
 void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor *out_tensor,
-            const param_type &param)
+            const ir::operation::BinaryArithmetic::Param &param)
 {
   const auto lhs_buffer = lhs_tensor->bufferRO();
   const auto rhs_buffer = rhs_tensor->bufferRO();
@@ -146,13 +145,11 @@ void invoke(const ITensor *lhs_tensor, const ITensor *rhs_tensor, const ITensor 
                                                out_shape, out_ptr);
 }
 
-template <typename node_type, typename param_type, OpType op_type>
-void invokeAdd(const ExecEnv *env, const ir::Operation &node)
+template <OpType op_type>
+void invokeBinaryArithmetic(const ExecEnv *env, const ir::operation::BinaryArithmetic &node)
 {
-  const auto &arithmetic_node = nnfw::misc::polymorphic_downcast<const node_type &>(node);
-
-  const auto lhs_index = node.getInputs().at(arithmetic_node.LHS);
-  const auto rhs_index = node.getInputs().at(arithmetic_node.RHS);
+  const auto lhs_index = node.getInputs().at(node.LHS);
+  const auto rhs_index = node.getInputs().at(node.RHS);
   const auto out_index = node.getOutputs().at(0);
   const auto lhs_tensor = env->tensorAt(lhs_index);
   const auto rhs_tensor = env->tensorAt(rhs_index);
@@ -161,38 +158,46 @@ void invokeAdd(const ExecEnv *env, const ir::Operation &node)
 
   if (data_type == ir::DataType::INT32)
   {
-    invoke<int32_t, param_type, op_type>(lhs_tensor, rhs_tensor, out_tensor,
-                                         arithmetic_node.param());
+    invoke<int32_t, op_type>(lhs_tensor, rhs_tensor, out_tensor, node.param());
   }
   else if (data_type == ir::DataType::FLOAT32)
   {
-    invoke<float, param_type, op_type>(lhs_tensor, rhs_tensor, out_tensor, arithmetic_node.param());
+    invoke<float, op_type>(lhs_tensor, rhs_tensor, out_tensor, node.param());
   }
   else
   {
     throw std::runtime_error{"NYI: Unsupported data type"};
   }
 }
+
+void invokeBinaryArithmeticOps(const ExecEnv *env, const ir::Operation &node)
+{
+  const auto &arithmetic_node =
+      nnfw::misc::polymorphic_downcast<const ir::operation::BinaryArithmetic &>(node);
+
+  switch (arithmetic_node.param().arithmetic_type)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+      invokeBinaryArithmetic<OpType::ADD>(env, arithmetic_node);
+      break;
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+      invokeBinaryArithmetic<OpType::SUB>(env, arithmetic_node);
+      break;
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+      invokeBinaryArithmetic<OpType::MUL>(env, arithmetic_node);
+      break;
+    default:
+      throw std::runtime_error{"Interp(BinaryArithmetic): NYI unsupported operation " +
+                               arithmetic_node.name()};
+      break;
+  }
+}
+
 } // namespace
 
-OpKernel *getAdd()
+OpKernel *getBinaryArithmetic()
 {
-  static OpKernel kernel = {prepareAdd<ir::operation::Add>,
-                            invokeAdd<ir::operation::Add, ir::operation::Add::Param, OpType::ADD>};
-  return &kernel;
-}
-
-OpKernel *getSub()
-{
-  static OpKernel kernel = {prepareAdd<ir::operation::Sub>,
-                            invokeAdd<ir::operation::Sub, ir::operation::Sub::Param, OpType::SUB>};
-  return &kernel;
-}
-
-OpKernel *getMul()
-{
-  static OpKernel kernel = {prepareAdd<ir::operation::Mul>,
-                            invokeAdd<ir::operation::Mul, ir::operation::Mul::Param, OpType::MUL>};
+  static OpKernel kernel = {prepare, invokeBinaryArithmeticOps};
   return &kernel;
 }
 

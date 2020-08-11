@@ -21,7 +21,7 @@
 #include "ir/Graph.h"
 #include "interp/InterpExecutor.h"
 #include "exec/Execution.h"
-#include "ir/operation/Add.h"
+#include "ir/operation/BinaryArithmetic.h"
 
 namespace
 {
@@ -57,11 +57,13 @@ protected:
 
     // Add operations
 
-    operation::Add::Param param;
+    operation::BinaryArithmetic::Param param;
+    param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param.activation = Activation::NONE;
     auto input_set = OperandIndexSequence{operand_lhs, operand_rhs};
     auto output_set = OperandIndexSequence{operand_result};
-    _graph->addOperation(std::make_unique<operation::Add>(input_set, output_set, param));
+    _graph->addOperation(
+        std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
 
     // Identify model inputs and outputs
 
@@ -112,17 +114,21 @@ protected:
 
     // 2nd add operations (result2 <= result1 + rhs2)
 
-    operation::Add::Param param1;
+    operation::BinaryArithmetic::Param param1;
+    param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param1.activation = Activation::NONE;
     auto input_set1 = OperandIndexSequence{operand_lhs, operand_rhs1};
     auto output_set1 = OperandIndexSequence{operand_result1};
-    _graph->addOperation(std::make_unique<operation::Add>(input_set1, output_set1, param1));
+    _graph->addOperation(
+        std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
 
-    operation::Add::Param param2;
+    operation::BinaryArithmetic::Param param2;
+    param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param2.activation = Activation::NONE;
     auto input_set2 = OperandIndexSequence{operand_result1, operand_rhs2};
     auto output_set2 = OperandIndexSequence{operand_result2};
-    _graph->addOperation(std::make_unique<operation::Add>(input_set2, output_set2, param2));
+    _graph->addOperation(
+        std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
 
     // Identify model inputs and outputs
 
@@ -170,11 +176,13 @@ protected:
 
     // Add operations
 
-    operation::Add::Param param;
+    operation::BinaryArithmetic::Param param;
+    param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
     param.activation = Activation::NONE;
     auto input_set = OperandIndexSequence{operand_lhs, operand_rhs};
     auto output_set = OperandIndexSequence{operand_result};
-    _graph->addOperation(std::make_unique<operation::Add>(input_set, output_set, param));
+    _graph->addOperation(
+        std::make_unique<operation::BinaryArithmetic>(input_set, output_set, param));
 
     // Identify model inputs and outputs
 

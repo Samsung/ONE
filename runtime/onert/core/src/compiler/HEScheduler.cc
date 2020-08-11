@@ -54,42 +54,10 @@ static bool isQuant(const ir::Graph &graph, const ir::Operation &node)
   return false;
 }
 
-static bool isWorkaroundSkip(const ir::Graph &graph, const backend::Backend *backend,
-                             const ir::Operation &node, bool quant)
+static bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::Operation &,
+                             bool)
 {
-  /* TODO: this is workaround, come up with better solution if have.
-      Adding exception in stage doesn't help. Because if there is a record for add without
-      broadcast, scheduling will select it since it doesn't distinguish broadcast and
-      non-broadcast like it does for quant non-quantized*/
-  if (backend->config()->id() == "cpu" &&
-      (node.opcode() == ir::OpCode::Add || node.opcode() == ir::OpCode::Sub ||
-       node.opcode() == ir::OpCode::Mul))
-  {
-    const auto lhs_index{node.getInputs().at(ir::operation::Add::Input::LHS)};
-    const auto rhs_index{node.getInputs().at(ir::operation::Add::Input::RHS)};
-    /*Broadcasting isn't supported on CPU: no way to differ the existing exec_time record with and
-     * without broadcasting*/
-    if (!(graph.operands().at(lhs_index).shape() == graph.operands().at(rhs_index).shape()))
-    {
-      return true;
-    }
-  }
-  /* TODO: this is workaround, come up with better solution if have.
-          Adding exception in stage doesn't help. Because if there is a record for Mul without
-          broadcast, scheduling will select it since it doesn't distinguish broadcast and
-          non-broadcast like it does for quant non-quantized*/
-  else if (backend->config()->id() == "acl_neon" && node.opcode() == ir::OpCode::Mul)
-  {
-    const auto lhs_index{node.getInputs().at(ir::operation::Mul::Input::LHS)};
-    const auto rhs_index{node.getInputs().at(ir::operation::Mul::Input::RHS)};
-
-    // Nontrivial broadcasting isn't supported yet
-    if (quant ||
-        !(graph.operands().at(lhs_index).shape() == graph.operands().at(rhs_index).shape()))
-    {
-      return true;
-    }
-  }
+  // Now, there is no workaround
   return false;
 }
 

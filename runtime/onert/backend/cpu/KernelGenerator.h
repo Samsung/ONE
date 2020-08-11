@@ -55,10 +55,7 @@ public:
   void visit(const ir::operation::Squeeze &) override;
   void visit(const ir::operation::Softmax &) override;
   void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Sub &) override;
-  void visit(const ir::operation::Mul &) override;
-  void visit(const ir::operation::Div &) override;
+  void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Einsum &) override;
   void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Custom &node) override;
