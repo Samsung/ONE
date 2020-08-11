@@ -257,6 +257,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return loco::dtype_get(node->boxes());
   }
 
+  loco::DataType visit(const luci::CircleNonMaxSuppressionV5 *node) final
+  {
+    return loco::dtype_get(node->boxes());
+  }
+
   loco::DataType visit(const luci::CircleNotEqual *) final { return loco::DataType::BOOL; }
 
   loco::DataType visit(const luci::CirclePack *node) final
@@ -587,6 +592,17 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     (void)node;
     assert(node->index() == 0 || node->index() == 1);
     return loco::DataType::S32;
+  }
+
+  loco::DataType visit(const luci::CircleNonMaxSuppressionV5Out *node) final
+  {
+    (void)node;
+    if (node->index() == 0 || node->index() == 2)
+    {
+      return loco::DataType::S32;
+    }
+    assert(node->index() == 1);
+    return loco::DataType::FLOAT32;
   }
 
   loco::DataType visit(const luci::CircleSplitOut *node) final
