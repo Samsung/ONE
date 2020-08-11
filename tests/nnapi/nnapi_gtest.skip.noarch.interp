@@ -216,6 +216,8 @@ GeneratedTests.log_softmax_nnfw
 GeneratedTests.log_softmax_nnfw_2
 GeneratedTests.log_softmax_nnfw_3
 GeneratedTests.log_softmax_nnfw_4
+GeneratedTests.log_softmax_nnfw_5
+GeneratedTests.log_softmax_nnfw_quant8
 GeneratedTests.logical_and_1D_nnfw
 GeneratedTests.logical_and_2D_nnfw
 GeneratedTests.logical_and_3D_nnfw

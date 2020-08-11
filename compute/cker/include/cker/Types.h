@@ -106,6 +106,9 @@ struct SoftmaxParams
   int32_t reverse_scaling_divisor;
   int32_t reverse_scaling_right_shift;
   int diff_min;
+  int32_t zero_point;
+  float scale;
+  float *table;
 };
 
 struct PackParams

@@ -45,12 +45,15 @@ public:
 
   void run();
 
+  void PopulateLookupTable(const float kBeta);
+
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
 
   float _beta;
   int _axis;
+  float _table[256];
 };
 
 } // namespace ops

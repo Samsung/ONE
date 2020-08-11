@@ -34,6 +34,16 @@ LogSoftMaxLayer::LogSoftMaxLayer() : _input(nullptr), _output(nullptr), _beta(0.
   // DO NOTHING
 }
 
+void LogSoftMaxLayer::PopulateLookupTable(const float kBeta)
+{
+  const float scale = -_input->data_scale() * kBeta;
+  const int32_t max_uint8 = std::numeric_limits<uint8_t>::max();
+  for (int32_t val = 0; val <= max_uint8; ++val)
+  {
+    _table[max_uint8 - val] = expf(scale * val);
+  }
+}
+
 void LogSoftMaxLayer::logsoftmaxFloat32()
 {
   nnfw::cker::SoftmaxParams op_params;
@@ -46,7 +56,15 @@ void LogSoftMaxLayer::logsoftmaxFloat32()
 
 void LogSoftMaxLayer::logsoftmaxQuant8()
 {
-  // NYI
+  nnfw::cker::SoftmaxParams op_params;
+  op_params.beta = _beta;
+  op_params.axis = _axis;
+  op_params.table = _table;
+  op_params.zero_point = _output->data_offset();
+  op_params.scale = _output->data_scale();
+  nnfw::cker::LogSoftmax(op_params, _input->data_scale(), getTensorShape(_input),
+                         reinterpret_cast<const uint8_t *>(_input->buffer()),
+                         getTensorShape(_output), reinterpret_cast<uint8_t *>(_output->buffer()));
 }
 
 void LogSoftMaxLayer::configure(const IPortableTensor *input, const float beta, const int axis,
@@ -56,6 +74,10 @@ void LogSoftMaxLayer::configure(const IPortableTensor *input, const float beta, 
   _output = output;
   _beta = beta;
   _axis = axis;
+  if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+  {
+    PopulateLookupTable(_beta);
+  }
 }
 
 void LogSoftMaxLayer::run()
@@ -66,7 +88,7 @@ void LogSoftMaxLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    throw std::runtime_error{"LogSoftmax : NYI"};
+    logsoftmaxQuant8();
   }
   else
   {
