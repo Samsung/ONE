@@ -1,2 +1,3 @@
 addTest(Conv2D_004 layer uint8)
 addTest(DepthwiseConv2D_002 layer uint8)
+addTest(TransposeConv_001 layer uint8)
