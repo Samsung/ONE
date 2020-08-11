@@ -21,8 +21,8 @@ using ValidationTestFourAddModelsSetInput = ValidationTestFourModelsSetInput<NNP
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_001)
 {
-  ASSERT_EQ(nnfw_run(_objects[0].session), NNFW_STATUS_NO_ERROR);
-  ASSERT_EQ(nnfw_run(_objects[1].session), NNFW_STATUS_NO_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_run(_objects[0].session));
+  NNFW_ENSURE_SUCCESS(nnfw_run(_objects[1].session));
 }
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_002)
@@ -31,14 +31,14 @@ TEST_F(ValidationTestFourAddModelsSetInput, run_002)
   while (rep--)
   {
     for (auto obj : _objects)
-      ASSERT_EQ(nnfw_run(obj.session), NNFW_STATUS_NO_ERROR);
+      NNFW_ENSURE_SUCCESS(nnfw_run(obj.session));
   }
 }
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_async)
 {
   for (auto obj : _objects)
-    ASSERT_EQ(nnfw_run_async(obj.session), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_run_async(obj.session));
   for (auto obj : _objects)
-    ASSERT_EQ(nnfw_await(obj.session), NNFW_STATUS_NO_ERROR);
+    NNFW_ENSURE_SUCCESS(nnfw_await(obj.session));
 }
