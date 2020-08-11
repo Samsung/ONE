@@ -132,7 +132,7 @@ tar -xf %{SOURCE1005} -C ./externals
 %if %{coverage_build} == 1
 pwd > tests/scripts/build_path.txt
 %endif # coverage_build
-tar -zcf test-suite.tar.gz infra/scripts tests/scripts
+tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
 %endif # arm armv7l aarch64
 
@@ -162,13 +162,14 @@ install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin
 %if %{test_build} == 1
 %{test_build_env} ./nnfw install
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp tests/nnapi/nnapi_gtest.skip.* %{buildroot}%{test_install_dir}/unittest/.
+cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{buildroot}%{test_install_dir}/unittest/.
 cp %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1
 mkdir -p %{buildroot}%{test_install_home}/gcov
 find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
+install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
 %endif # coverage_build
 %endif # test_build
 
