@@ -141,6 +141,8 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
     const auto backend = lowered_graph->getLowerInfo(index)->backend();
     const auto tensor_register = lowered_graph->backend_contexts().at(backend)->tensor_register;
     auto tensor_builder = lowered_graph->backend_contexts().at(backend)->tensor_builder;
+    auto model_io = lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs();
+
     if (tensor_register)
     {
       // Custom registration
@@ -154,7 +156,7 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
         const auto &op = lowered_graph->graph().operations().at(op_idx);
         for (const auto &index : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
         {
-          if (!tensor_builder->isRegistered(index))
+          if (!tensor_builder->isRegistered(index) && !model_io.contains(index))
           {
             const auto &operand_lower_info =
                 lowered_graph->getLowerInfo(index)->def_factors().getOnlyElement();
@@ -200,7 +202,7 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
         cf_tensor_builder->dynamicTensorManager());
 
     // Add tensor to controlflow TensorRegistry.
-    cf_tensor_builder->setUserTensor(ind, tensor);
+    cf_tensor_builder->setNativeUserTensor(ind, tensor);
     ret.push_back(tensor);
   }
   return ret;

@@ -82,14 +82,13 @@ public:
    *        If not, program will crash with assert or exception.
    * @return shared_ptr<operand::Tensor>
    */
-  std::shared_ptr<cpu_common::Tensor> at(const ir::OperandIndex &ind);
-  void setUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
+  std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
+  void setNativeUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
 
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:
-  const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
-  const std::shared_ptr<UserTensorRegistry> _user_tensor_reg;
+  const std::shared_ptr<TensorRegistry> _tensor_reg;
   std::unique_ptr<cpu_common::StaticTensorManager> _static_tensor_mgr;
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
