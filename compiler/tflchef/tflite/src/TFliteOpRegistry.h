@@ -106,6 +106,7 @@ private:
     REG_TFL_OP(MUL, TFliteOpMul);
     REG_TFL_OP(NEG, TFliteOpNeg);
     REG_TFL_OP(NON_MAX_SUPPRESSION_V4, TFliteOpNonMaxSuppressionV4);
+    REG_TFL_OP(NON_MAX_SUPPRESSION_V5, TFliteOpNonMaxSuppressionV5);
     REG_TFL_OP(NOT_EQUAL, TFliteOpNotEqual);
     REG_TFL_OP(ONE_HOT, TFliteOpOneHot);
     REG_TFL_OP(PACK, TFliteOpPack);
