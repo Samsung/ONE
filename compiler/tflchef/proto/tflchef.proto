@@ -371,6 +371,10 @@ message NonMaxSuppressionV4Options {
   // None
 }
 
+message NonMaxSuppressionV5Options {
+  // None
+}
+
 message NotEqualOptions {
   // None
 }
@@ -544,7 +548,7 @@ message Operation {
   // HardSwishOptions 196
   optional DepthToSpaceOptions depth_to_space_options = 197;
   optional NonMaxSuppressionV4Options non_max_suppression_v4_options = 198;
-  // NonMaxSuppressionV5Options 199
+  optional NonMaxSuppressionV5Options non_max_suppression_v5_options = 199;
   optional ScatterNdOptions scatter_nd_options = 200;
   optional NotEqualOptions notequal_options = 201;
   optional ExpandDimsOptions expand_dims_options = 202;
