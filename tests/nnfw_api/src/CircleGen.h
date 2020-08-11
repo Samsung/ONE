@@ -87,6 +87,7 @@ public:
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
                                     int stride_w, int stride_h, int filter_w, int filter_h,
                                     circle::ActivationFunctionType actfn);
+  uint32_t addOperatorCos(const OperatorParams &params);
 
   // NOTE Please add addOperator functions ABOVE this lie
   // ===== Add Operator methods end =====

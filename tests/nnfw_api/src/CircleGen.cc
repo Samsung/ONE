@@ -97,6 +97,13 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
+{
+  auto options = circle::CreateCosOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_COS,
+                                circle::BuiltinOptions_CosOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction
