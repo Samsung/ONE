@@ -122,6 +122,80 @@ TEST(AveragePool2DTest, Uint8_1)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
 }
 
+TEST(AveragePool2DTest, Invalid_Input_Shape_NEG)
+{
+  Shape input_shape{1, 3, 5};
+  std::vector<float> input_data{
+      -4, -3, -2, -1, 0,  //
+      1,  2,  3,  4,  5,  //
+      6,  7,  8,  9,  10, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 3;
+  params.stride_height = 1;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(AveragePool2DTest, In_Out_Type_NEG)
+{
+  Shape input_shape{1, 3, 5, 1};
+  std::vector<float> input_data{
+      -4, -3, -2, -1, 0,  //
+      1,  2,  3,  4,  5,  //
+      6,  7,  8,  9,  10, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 3;
+  params.stride_height = 1;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(AveragePool2DTest, Quant_Param_NEG)
+{
+  std::pair<float, int32_t> quant_param1 = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
+  std::pair<float, int32_t> quant_param2 = quantizationParams<uint8_t>(-7.875f, 7.875f);
+  Tensor input_tensor{
+      DataType::U8, {1, 2, 4, 1}, {{quant_param1.first}, {quant_param1.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param2.first, quant_param2.second);
+
+  std::vector<uint8_t> quant_input = quantize<uint8_t>(
+      {
+          0, -6, 12, 4,  //
+          -3, -2, 10, 7, //
+      },
+      quant_param1.first, quant_param1.second);
+  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 2;
+  params.stride_width = 2;
+  params.activation = Activation::RELU6;
+
+  AveragePool2D kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
