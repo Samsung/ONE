@@ -36,7 +36,10 @@ Add::Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddPa
 
 void Add::configure()
 {
-  assert(input1()->element_type() == input2()->element_type());
+  if (input1()->element_type() != input2()->element_type())
+  {
+    throw std::runtime_error("Input Tensor Data Type Mismatch.");
+  }
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
