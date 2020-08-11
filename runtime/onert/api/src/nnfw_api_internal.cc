@@ -65,7 +65,8 @@ static onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-NNFW_STATUS getTensorIndexImpl(onert::ir::IOIndex io_index, const char *tensorname, uint32_t *index)
+NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensorname,
+                               uint32_t *index, bool is_input)
 {
   if (!tensorname || !index)
     return NNFW_STATUS_UNEXPECTED_NULL;
@@ -76,14 +77,16 @@ NNFW_STATUS getTensorIndexImpl(onert::ir::IOIndex io_index, const char *tensorna
     return NNFW_STATUS_ERROR;
   }
 
-  if (io_index.undefined())
+  auto ind_found = is_input ? graph.getInputIndex(tensorname) : graph.getOutputIndex(tensorname);
+
+  if (ind_found.undefined())
   {
     // Not found
     return NNFW_STATUS_ERROR;
   }
   else
   {
-    *index = io_index.value();
+    *index = ind_found.value();
     return NNFW_STATUS_NO_ERROR;
   }
 }
@@ -867,12 +870,10 @@ bool nnfw_session::isStatePreparedOrFinishedRun()
 
 NNFW_STATUS nnfw_session::input_tensorindex(const char *tensorname, uint32_t *index)
 {
-  auto ind_found = primary_subgraph()->getInputIndex(tensorname);
-  return getTensorIndexImpl(ind_found, tensorname, index);
+  return getTensorIndexImpl(*primary_subgraph(), tensorname, index, true);
 }
 
 NNFW_STATUS nnfw_session::output_tensorindex(const char *tensorname, uint32_t *index)
 {
-  auto ind_found = primary_subgraph()->getOutputIndex(tensorname);
-  return getTensorIndexImpl(ind_found, tensorname, index);
+  return getTensorIndexImpl(*primary_subgraph(), tensorname, index, false);
 }

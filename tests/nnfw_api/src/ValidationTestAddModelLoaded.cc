@@ -48,6 +48,17 @@ TEST_F(ValidationTestAddModelLoaded, output_tensorinfo)
   ASSERT_EQ(tensor_info.dims[0], 1);
 }
 
+TEST_F(ValidationTestAddModelLoaded, input_output_tensorindex)
+{
+  uint32_t in_ind = 100;
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorindex(_session, "X_input", &in_ind));
+  ASSERT_EQ(in_ind, 0);
+
+  uint32_t out_ind = 100;
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorindex(_session, "ADD_TOP", &out_ind));
+  ASSERT_EQ(out_ind, 0);
+}
+
 TEST_F(ValidationTestAddModelLoaded, neg_run)
 {
   // nnfw_prepare is not called
@@ -90,4 +101,17 @@ TEST_F(ValidationTestAddModelLoaded, neg_output_tensorinfo)
 {
   // tensor_info is null
   ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_input_output_tensorindex)
+{
+  uint32_t in_ind = 100;
+  ASSERT_EQ(nnfw_input_tensorindex(_session, "ADD_TOP", &in_ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(in_ind, 100);
+  ASSERT_EQ(nnfw_input_tensorindex(_session, "y_var", &in_ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(in_ind, 100);
+
+  uint32_t out_ind = 100;
+  ASSERT_EQ(nnfw_output_tensorindex(_session, "X_input", &out_ind), NNFW_STATUS_ERROR);
+  ASSERT_EQ(out_ind, 100);
 }
