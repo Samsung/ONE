@@ -169,6 +169,33 @@ TEST(AddTest, Float)
   }
 }
 
+TEST(AddTest, Input_Output_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {2});
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  AddParams params{};
+  params.activation = Activation::RELU;
+
+  Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(AddTest, Invalid_Input_Type_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S64>({1}, {1});
+  Tensor input2_tensor = makeInputTensor<DataType::S64>({1}, {2});
+  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  AddParams params{};
+  params.activation = Activation::RELU;
+
+  Add kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
+  kernel.configure();
+  EXPECT_ANY_THROW(kernel.execute());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
