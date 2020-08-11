@@ -32,6 +32,44 @@ namespace nnfw
 namespace cker
 {
 
+// Performs softmax along the input of size (input_size * batch_size).
+inline void Softmax(const float *in, const int input_size, const int batch_size, const float beta,
+                    float *out)
+{
+  assert(input_size > 0);
+
+  // For each batch
+  for (int b = 0; b < batch_size; b++)
+  {
+    // Find the max coeff.
+    float max_coeff = in[0];
+    for (int i = 1; i < input_size; i++)
+    {
+      if (in[i] > max_coeff)
+        max_coeff = in[i];
+    }
+
+    // Compute the normalized sum of exps.
+    float exp_sum = 0.0;
+    for (int i = 0; i < input_size; i++)
+    {
+      out[i] = std::exp((in[i] - max_coeff) * beta);
+      exp_sum += out[i];
+    }
+
+    // Divide by the sum of exps.
+    float reciprocal_sum_exp = 1.f / exp_sum;
+    for (int i = 0; i < input_size; i++)
+    {
+      out[i] *= reciprocal_sum_exp;
+    }
+
+    // Advance in and out pointers for the next batch.
+    in += input_size;
+    out += input_size;
+  }
+}
+
 inline void Softmax(const SoftmaxParams &params, const Shape &input_shape, const float *input_data,
                     const Shape &output_shape, float *output_data)
 {
