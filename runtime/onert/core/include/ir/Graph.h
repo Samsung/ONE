@@ -60,8 +60,8 @@ public:
   OperandIndex addOperand(const Shape &shape, const TypeInfo &type);
   OperationIndex addOperation(std::unique_ptr<Operation> &&node);
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
-  void addInput(const OperandIndex &ind);
-  void addOutput(const OperandIndex &ind);
+  void addInput(const OperandIndex &ind, const std::string &name = "");
+  void addOutput(const OperandIndex &ind, const std::string &name = "");
   void finishBuilding(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   bool isBuildingPhase(void) const { return _phase == Phase::BUILDING; }
@@ -94,6 +94,8 @@ public:
   OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getOutputs() const { return _outputs; }
   OperandIndexSequence &getOutputs() { return _outputs; }
+  IOIndex getInputIndex(const std::string &name) const;
+  IOIndex getOutputIndex(const std::string &name) const;
   const Operands &operands() const { return _operands; }
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
@@ -108,6 +110,8 @@ private:
   Operands _operands;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
+  std::unordered_map<std::string, IOIndex> _name_to_input;
+  std::unordered_map<std::string, IOIndex> _name_to_output;
   // Child subgraphs
   std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
