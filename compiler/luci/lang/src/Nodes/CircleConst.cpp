@@ -73,6 +73,7 @@ template <loco::DataType DT> typename loco::DataTypeImpl<DT>::Type &CircleConst:
 INSTANTIATE(loco::DataType::S64);
 INSTANTIATE(loco::DataType::S32);
 INSTANTIATE(loco::DataType::S16);
+INSTANTIATE(loco::DataType::S8);
 INSTANTIATE(loco::DataType::FLOAT32);
 INSTANTIATE(loco::DataType::U8);
 INSTANTIATE(loco::DataType::BOOL);

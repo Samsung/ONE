@@ -118,6 +118,10 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
         copy_data<loco::DataType::U8>(buffer, num_elements, const_node);
         break;
 
+      case loco::DataType::S8:
+        copy_data<loco::DataType::S8>(buffer, num_elements, const_node);
+        break;
+
       case loco::DataType::S16:
         copy_data<loco::DataType::S16>(buffer, num_elements, const_node);
         break;

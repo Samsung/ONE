@@ -39,6 +39,7 @@ public:
       ResolveCustomOpMatMul,
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
+      Requantize,
     };
 
     enum AlgorithmParameters
