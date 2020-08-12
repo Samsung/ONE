@@ -93,7 +93,7 @@ protected:
         auto &output = _so.outputs[i];
         ASSERT_EQ(output.size(), ref_output.size());
         for (uint32_t e = 0; e < ref_output.size(); e++)
-          ASSERT_FLOAT_EQ(ref_output[e], output[e]);
+          EXPECT_NEAR(ref_output[e], output[e], 0.001); // TODO better way for handling FP error?
       }
     }
 
@@ -149,4 +149,18 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
 
   _ref_inputs = {{1, 3, 2, 4}};
   _ref_outputs = {{2.5}};
+}
+
+TEST_F(GenModelTest, OneOp_Cos)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorCos({{in}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  _cbuf = cgen.finish();
+
+  const float pi = 3.141592653589793;
+  _ref_inputs = {{0, pi / 2, pi, 7}};
+  _ref_outputs = {{1, 0, -1, 0.75390225434}};
 }
