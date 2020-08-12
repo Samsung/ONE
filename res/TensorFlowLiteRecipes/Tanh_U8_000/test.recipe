@@ -1,0 +1,19 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  quant { min: 0 max: 2 scale: 0.0078125 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  quant { min: 0 max: 2 scale: 0.0078125 zero_point: 0 }
+}
+operation {
+  type: "Tanh"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
