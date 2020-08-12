@@ -18,7 +18,7 @@ echo ${PROJECT_DIR:=${PWD}}
 
 java -jar $PROJECT_DIR/tca-standalone-0.0.8.jar \
   --outdir=$PROJECT_DIR/tcm-output \
-  --config=$PROJECT_DIR/.ahub/tcchecker-tca/config.yaml \
+  --config=$PROJECT_DIR/src/.ahub/tcchecker-tca/config.yaml \
   --local=$PROJECT_DIR/src \
   --logfile=$PROJECT_DIR/tcm-output/tcm.log \
   --debug
