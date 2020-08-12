@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-#include "CircleExpContract.h"
-
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 #include <luci/UserSettings.h>
 
 #include <oops/InternalExn.h>
@@ -185,7 +184,7 @@ int entry(int argc, char **argv)
   // Export to output Circle file
   luci::CircleExporter exporter;
 
-  CircleExpContract contract(module.get(), output_path);
+  luci::CircleFileExpContract contract(module.get(), output_path);
 
   if (!exporter.invoke(&contract))
   {
