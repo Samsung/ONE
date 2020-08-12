@@ -35,6 +35,14 @@ AveragePool2D::AveragePool2D(const Tensor *input, Tensor *output, const Pool2DPa
 
 void AveragePool2D::configure()
 {
+  if (input()->element_type() != output()->element_type())
+  {
+    throw std::runtime_error("Input Tensor and Output Tensor Type must be same");
+  }
+  if (input()->shape().num_dims() != 4)
+  {
+    throw std::runtime_error("Input Tensor Shape must be 4-D");
+  }
   const Shape &input_shape = input()->shape();
 
   const int32_t batches = input_shape.dim(0);
@@ -51,7 +59,14 @@ void AveragePool2D::configure()
       computePadding(_params.stride_height, 1, input_height, _params.filter_height, output_height);
   _padding_width =
       computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
-
+  if (input()->element_type() == DataType::U8)
+  {
+    if (input()->scale() != output()->scale() || input()->zero_point() != output()->zero_point())
+    {
+      throw std::runtime_error(
+          "Quantization param for Input and output must be same(scale or zero-point)");
+    }
+  }
   output()->resize({batches, output_height, output_width, depth});
 }
 
