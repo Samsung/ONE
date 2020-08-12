@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_SUB_H__
-#define __ONERT_IR_OPERATION_SUB_H__
+#ifndef __ONERT_IR_OPERATION_BINARY_ARITHMETIC_H__
+#define __ONERT_IR_OPERATION_BINARY_ARITHMETIC_H__
 
 #include "ir/Operation.h"
 #include "ir/InternalType.h"
@@ -27,7 +27,7 @@ namespace ir
 namespace operation
 {
 
-class Sub : public Operation
+class BinaryArithmetic final : public Operation
 {
 public:
   enum Input
@@ -36,17 +36,28 @@ public:
     RHS
   };
 
+  enum class ArithmeticType
+  {
+    ADD,
+    SUB,
+    MUL,
+    DIV
+  };
+
   struct Param
   {
+    ArithmeticType arithmetic_type;
     Activation activation;
   };
 
 public:
-  Sub(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param);
+  BinaryArithmetic(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                   const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Sub; }
+  std::string name() const override;
+  OpCode opcode() const final { return OpCode::BinaryArithmetic; }
 
 public:
   const Param &param() const { return _param; }
@@ -59,4 +70,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_SUB_H__
+#endif // __ONERT_IR_OPERATION_BINARY_ARITHMETIC_H__

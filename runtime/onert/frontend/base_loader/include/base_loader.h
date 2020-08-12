@@ -117,10 +117,9 @@ protected:
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
-  void loadAdd(const Operator *op, ir::Graph &subg);
-  void loadSub(const Operator *op, ir::Graph &subg);
-  void loadMul(const Operator *op, ir::Graph &subg);
-  void loadDiv(const Operator *op, ir::Graph &subg);
+  template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
+  void loadBinaryArithmetic(const Operator *op, ir::Graph &subg);
+  void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadRelu(const Operator *op, ir::Graph &subg);
   void loadRelu6(const Operator *op, ir::Graph &subg);
@@ -704,70 +703,82 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Gr
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAdd(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Add::Param param;
-  const auto *options = op->builtin_options_as_AddOptions();
+  ir::operation::BinaryArithmetic::Param param;
+  param.arithmetic_type = ir::operation::BinaryArithmetic::ArithmeticType::ADD;
 
-  param.activation = convertActivation(options->fused_activation_function());
+  if (op->custom_options() == nullptr)
+  {
+    param.activation = ir::Activation::NONE;
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
+        attr_map["fused_activation_function"].AsInt8());
+    param.activation = convertActivation(fused_activation_func);
+  }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Add(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BinaryArithmetic(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSub(const Operator *op, ir::Graph &subg)
+template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operator *op,
+                                                                    ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Sub::Param param;
-  const auto *options = op->builtin_options_as_SubOptions();
+  ir::operation::BinaryArithmetic::Param param;
+  param.arithmetic_type = op_type;
+  switch (op_type)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+    {
+      const auto *add_options = op->builtin_options_as_AddOptions();
+      param.activation = convertActivation(add_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+    {
+      const auto *sub_options = op->builtin_options_as_SubOptions();
+      param.activation = convertActivation(sub_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+    {
+      const auto *mul_options = op->builtin_options_as_MulOptions();
+      param.activation = convertActivation(mul_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+    {
+      const auto *div_options = op->builtin_options_as_DivOptions();
+      param.activation = convertActivation(div_options->fused_activation_function());
+      break;
+    }
+    default:
+      assert(false &&
+             "The function 'loadBinaryArithmetic' supports only BinaryArithmetic operations");
+      break;
+  }
 
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Sub(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMul(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::Mul::Param param;
-  const auto *options = op->builtin_options_as_MulOptions();
-
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mul(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadDiv(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::Div::Param param;
-  const auto *options = op->builtin_options_as_DivOptions();
-
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Div(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BinaryArithmetic(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1204,7 +1215,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     switch (custom_op_id)
     {
       case BuiltinOP::AddV2:
-        loadAdd(op, subg);
+        loadAddV2(op, subg);
         break;
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
@@ -1848,16 +1859,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadFC(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ADD:
-      loadAdd(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::ADD>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUB:
-      loadSub(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::SUB>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MUL:
-      loadMul(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::MUL>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_DIV:
-      loadDiv(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::DIV>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PACK:
       loadPack(op, subg);

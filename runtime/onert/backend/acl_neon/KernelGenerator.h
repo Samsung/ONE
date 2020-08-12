@@ -39,6 +39,7 @@ public:
   void visit(const ir::operation::Abs &) override;
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
+  void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthToSpace &) override;
@@ -61,7 +62,6 @@ public:
   void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::LSTM &) override;
-  void visit(const ir::operation::Mul &) override;
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pad &) override;
@@ -83,14 +83,11 @@ public:
   void visit(const ir::operation::Split &) override;
   void visit(const ir::operation::SQRT &) override;
   void visit(const ir::operation::SquaredDifference &) override;
-  void visit(const ir::operation::Sub &) override;
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::TransposeConv &) override;
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::Unpack &) override;
-  void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Div &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Comparison &) override;

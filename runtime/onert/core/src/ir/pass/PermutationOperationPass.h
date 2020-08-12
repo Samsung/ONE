@@ -39,20 +39,17 @@ public:
   void callback(const OperationIndex &i, Operation &n) final;
 
 public:
-  void visit(const operation::Add &) final;
+  void visit(const operation::BinaryArithmetic &) final;
   void visit(const operation::Comparison &) final;
   void visit(const operation::Concat &) final;
-  void visit(const operation::Div &) final;
   void visit(const operation::LogicalAnd &) final;
   void visit(const operation::LogicalNot &) final;
   void visit(const operation::LogicalOr &) final;
   void visit(const operation::Max &) final;
   void visit(const operation::Min &) final;
-  void visit(const operation::Mul &) final;
   void visit(const operation::Pack &) final;
   void visit(const operation::PReLU &) final;
   void visit(const operation::SquaredDifference &) final;
-  void visit(const operation::Sub &) final;
   void visit(const operation::Unpack &) final;
   void visit(const operation::FullyConnected &) final;
   void visit(const operation::Gather &) final;

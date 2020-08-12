@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_MULLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_MULLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_BINARYARITHMETICLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_BINARYARITHMETICLAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
@@ -31,21 +31,25 @@ namespace cpu
 namespace ops
 {
 
-class MulLayer : public ::onert::exec::IFunction
+enum class ArithmeticType
+{
+  kAdd,
+  kSub,
+  kMul,
+  kDiv,
+};
+
+class BinaryArithmeticLayer : public ::onert::exec::IFunction
 {
 public:
-  MulLayer() : _lhs(nullptr), _rhs(nullptr), _output(nullptr)
+  BinaryArithmeticLayer() : _lhs(nullptr), _rhs(nullptr), _output(nullptr)
   {
     // DO NOTHING
   }
 
 public:
-  void mulFloat32();
-
-  void mulQuant8();
-
-  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
-                 const ir::Activation activation, IPortableTensor *output);
+  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                 const ir::Activation activation, const ArithmeticType arithmetic_type);
 
   void run() override;
 
@@ -55,6 +59,7 @@ private:
   IPortableTensor *_output;
 
   ir::Activation _activation{ir::Activation::NONE};
+  ArithmeticType _arithmetic_type{ArithmeticType::kAdd};
 };
 
 } // namespace ops
@@ -62,4 +67,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_MULLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_BINARYARITHMETICLAYER_H__

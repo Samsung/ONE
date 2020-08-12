@@ -227,13 +227,14 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::Add &node) { applyExpandRanks(node); }
+void PermutationOperationPass::visit(const operation::BinaryArithmetic &node)
+{
+  applyExpandRanks(node);
+}
 
 void PermutationOperationPass::visit(const operation::Concat &node) { applyExpandRanks(node); }
 
 void PermutationOperationPass::visit(const operation::Comparison &node) { applyExpandRanks(node); }
-
-void PermutationOperationPass::visit(const operation::Div &node) { applyExpandRanks(node); }
 
 void PermutationOperationPass::visit(const operation::FullyConnected &node)
 {
@@ -273,8 +274,6 @@ void PermutationOperationPass::visit(const operation::Max &node) { applyExpandRa
 
 void PermutationOperationPass::visit(const operation::Min &node) { applyExpandRanks(node); }
 
-void PermutationOperationPass::visit(const operation::Mul &node) { applyExpandRanks(node); }
-
 void PermutationOperationPass::visit(const operation::Pack &node)
 {
   const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
@@ -313,8 +312,6 @@ void PermutationOperationPass::visit(const operation::SquaredDifference &node)
 {
   applyExpandRanks(node);
 }
-
-void PermutationOperationPass::visit(const operation::Sub &node) { applyExpandRanks(node); }
 
 void PermutationOperationPass::visit(const operation::Unpack &node)
 {

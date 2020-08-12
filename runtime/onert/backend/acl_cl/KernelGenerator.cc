@@ -92,6 +92,73 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
+
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
+
+  const auto act_info = acl_common::asActivationLayerInfo(activation);
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  switch (node.param().arithmetic_type)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+    {
+      auto l = std::make_unique<::arm_compute::CLArithmeticAddition>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
+                   arm_compute::ConvertPolicy::SATURATE, act_info);
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+    {
+      auto l = std::make_unique<::arm_compute::CLArithmeticSubtraction>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
+                   arm_compute::ConvertPolicy::SATURATE, act_info);
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+    {
+      auto l = std::make_unique<::arm_compute::CLPixelWiseMultiplication>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
+                   arm_compute::ConvertPolicy::SATURATE,
+                   arm_compute::RoundingPolicy::TO_NEAREST_EVEN, act_info);
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+    {
+      auto l = std::make_unique<::arm_compute::CLArithmeticDivision>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), act_info);
+
+      fn = std::move(l);
+      break;
+    }
+    default:
+      assert(false && "The BinaryArithmetic operation supports only binary arithmetic operations");
+      break;
+  }
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Cast &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -290,28 +357,6 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
       node, _ctx, _tensor_builder, _current_op_seq_layout);
   _return_fn = std::make_unique<exec::FunctionSequence>(
       std::move(fn), ActivationBuilder::generate(activation, output_tensor->handle()));
-}
-
-void KernelGenerator::visit(const ir::operation::Mul &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Mul::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Mul::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLPixelWiseMultiplication>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
-                arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN);
-
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Reduce &node)
@@ -632,71 +677,6 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   auto acl_fn = asAclClFunction(std::move(fn));
 
   _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Add &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Add::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Add::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLArithmeticAddition>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
-                arm_compute::ConvertPolicy::SATURATE);
-
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
-void KernelGenerator::visit(const ir::operation::Sub &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Sub::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Sub::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLArithmeticSubtraction>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
-                arm_compute::ConvertPolicy::SATURATE);
-
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
-void KernelGenerator::visit(const ir::operation::Div &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Div::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Div::Input::RHS)};
-
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLArithmeticDivision>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclClFunction(std::move(fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Exp &node)

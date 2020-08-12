@@ -22,9 +22,7 @@
 #include <ir/TypeInfo.h>
 #include <ir/DataType.h>
 
-#include <ir/operation/Add.h>
-#include <ir/operation/Sub.h>
-#include <ir/operation/Mul.h>
+#include <ir/operation/BinaryArithmetic.h>
 #include <ir/operation/FullyConnected.h>
 
 #include <gtest/gtest.h>
@@ -209,8 +207,7 @@ using OIS = OperandIndexSequence;
 template <typename NodeT, typename... Types>
 OperationIndex create(std::shared_ptr<Graph> graph, Types &&... args)
 {
-  typename NodeT::Param op_params{Activation::NONE};
-  auto op = std::make_unique<NodeT>(std::forward<Types>(args)..., op_params);
+  auto op = std::make_unique<NodeT>(std::forward<Types>(args)...);
   auto op_idx = graph->addOperation(std::move(op));
   // For now in scheduler test all operations in tested graphs has same size (for simplicity)
   assert(calcOpSize(graph, op_idx) == OPERATION_SIZE);
@@ -227,17 +224,20 @@ std::shared_ptr<Graph> createStraightGraph()
   auto add_lhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto add_rhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto add_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Add>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx});
+  BinaryArithmetic::Param add_op_params{BinaryArithmetic::ArithmeticType::ADD, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx}, add_op_params);
 
   // Create sub node
   auto sub_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto sub_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Sub>(graph, OIS{add_out_idx, sub_const_idx}, OIS{sub_out_idx});
+  BinaryArithmetic::Param sub_op_params{BinaryArithmetic::ArithmeticType::SUB, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{add_out_idx, sub_const_idx}, OIS{sub_out_idx}, sub_op_params);
 
   // Create mul node
   auto mul_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto mul_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Mul>(graph, OIS{sub_out_idx, mul_const_idx}, OIS{mul_out_idx});
+  BinaryArithmetic::Param mul_op_params{BinaryArithmetic::ArithmeticType::MUL, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{sub_out_idx, mul_const_idx}, OIS{mul_out_idx}, mul_op_params);
 
   graph->finishBuilding();
   return graph;
@@ -261,31 +261,39 @@ std::shared_ptr<Graph> createBranchedGraph()
   auto add_lhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto add_rhs_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto add_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Add>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx});
+  BinaryArithmetic::Param add_op_params{BinaryArithmetic::ArithmeticType::ADD, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{add_lhs_idx, add_rhs_idx}, OIS{add_out_idx}, add_op_params);
 
   // Create mul1 node
   auto mul1_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto mul1_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Mul>(graph, OIS{add_out_idx, mul1_const_idx}, OIS{mul1_out_idx});
+  BinaryArithmetic::Param mul1_op_params{BinaryArithmetic::ArithmeticType::MUL, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{add_out_idx, mul1_const_idx}, OIS{mul1_out_idx},
+                           mul1_op_params);
 
   // Create mul2 node
   auto mul2_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto mul2_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Mul>(graph, OIS{mul1_out_idx, mul2_const_idx}, OIS{mul2_out_idx});
+  BinaryArithmetic::Param mul2_op_params{BinaryArithmetic::ArithmeticType::MUL, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{mul1_out_idx, mul2_const_idx}, OIS{mul2_out_idx},
+                           mul2_op_params);
 
   // Create fc1 node
   auto fc1_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto fc1_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<FullyConnected>(graph, OIS{add_out_idx, fc1_const_idx}, OIS{fc1_out_idx});
+  FullyConnected::Param fc1_op_params{Activation::NONE};
+  create<FullyConnected>(graph, OIS{add_out_idx, fc1_const_idx}, OIS{fc1_out_idx}, fc1_op_params);
 
   // Create fc2 node
   auto fc2_const_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
   auto fc2_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<FullyConnected>(graph, OIS{fc1_out_idx, fc2_const_idx}, OIS{fc2_out_idx});
+  FullyConnected::Param fc2_op_params{Activation::NONE};
+  create<FullyConnected>(graph, OIS{fc1_out_idx, fc2_const_idx}, OIS{fc2_out_idx}, fc2_op_params);
 
-  // Create add2 node
+  // Create sub node
   auto sub_out_idx = graph->addOperand(ir::Shape{OPERAND_ELEMS}, float_op);
-  create<Sub>(graph, OIS{mul2_out_idx, fc2_out_idx}, OIS{sub_out_idx});
+  BinaryArithmetic::Param sub_op_params{BinaryArithmetic::ArithmeticType::SUB, Activation::NONE};
+  create<BinaryArithmetic>(graph, OIS{mul2_out_idx, fc2_out_idx}, OIS{sub_out_idx}, sub_op_params);
 
   graph->finishBuilding();
   return graph;
