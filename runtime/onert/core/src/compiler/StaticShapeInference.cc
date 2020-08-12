@@ -25,6 +25,64 @@ namespace onert
 namespace compiler
 {
 
+bool StaticShapeInferer::infer(const ir::OpSequence &op_seq)
+{
+  bool has_dynamic_tensor = false;
+
+  for (const auto &operation_idx : op_seq.operations())
+  {
+    auto &op = _operations.at(operation_idx);
+    auto opcode = op.opcode();
+
+    _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
+
+    // IF: need shape inference for then, else
+    // While: need shape inference for condition, body
+    if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
+    {
+      op.accept(*this);
+    }
+    else
+    {
+      _return_has_dynamic_tensor = checkDynamicInput(op);
+
+      if (_return_has_dynamic_tensor)
+      {
+        setDynamicOutput(op);
+      }
+      else
+      {
+        op.accept(*this);
+      }
+    }
+
+    has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
+  }
+
+  return has_dynamic_tensor;
+}
+
+bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
+{
+  for (auto input_idx : op.getInputs())
+  {
+    if (_operands.at(input_idx).info().isDynamic())
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+void StaticShapeInferer::setDynamicOutput(const ir::Operation &op)
+{
+  for (auto output_idx : op.getOutputs())
+  {
+    _operands.at(output_idx).info().setDynamic();
+  }
+}
+
 void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                                   const ir::OperandIndex lhs_idx,
                                                   const ir::OperandIndex rhs_idx)
@@ -34,13 +92,6 @@ void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
 
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferEltwiseShape(lhs.info().shape(), rhs.info().shape());
@@ -55,14 +106,6 @@ void StaticShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // re-sizing output shape
   ir::Shape new_shape = input.info().shape();
@@ -118,15 +161,6 @@ void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   const auto rank = input.info().shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
@@ -145,34 +179,15 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   const auto lhs = _operands.at(lhs_index);
   const auto rhs = _operands.at(rhs_index);
   auto &output = _operands.at(output_index);
-
-  if (lhs.info().isDynamic() || rhs.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs.shape(), rhs.shape(), op.param());
   output.info().shape(new_shape);
 }
 
 void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
 {
-  const auto input_idx{op.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
-
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic.
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   const auto shape_idx{op.getInputs().at(ir::operation::BroadcastTo::Input::SHAPE)};
   const auto &shape = _operands.at(shape_idx);
@@ -215,14 +230,6 @@ void StaticShapeInferer::visit(const ir::operation::Concat &op)
   {
     const auto input_idx{op.getInputs().at(i)};
     const auto &input = _operands.at(input_idx);
-
-    if (input.info().isDynamic())
-    {
-      output.info().setDynamic();
-      _return_has_dynamic_tensor = true;
-      return;
-    }
-
     input_shapes.emplace_back(input.shape());
   }
 
@@ -240,13 +247,6 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
   const auto &ker = _operands.at(ker_idx);
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (input.info().isDynamic() || ker.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // re-sizing output shape
   ir::Shape new_shape =
@@ -279,13 +279,6 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   if (!axis.isConstant())
   {
     output.info().setDynamic();
@@ -309,13 +302,6 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
   const auto &input = _operands.at(input_idx);
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   if (!input.isConstant())
   {
@@ -345,15 +331,6 @@ void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input or ker is dynamic, output also becomes dynamic
-  if (input.info().isDynamic() || ker.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   // re-sizing output shape
   ir::Shape new_shape =
       shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
@@ -376,15 +353,6 @@ void StaticShapeInferer::visit(const ir::operation::Gather &op)
 
   const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
   const auto &indices = _operands.at(indices_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic() || indices.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   const auto rank = input.info().shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
@@ -542,7 +510,7 @@ void StaticShapeInferer::visit(const ir::operation::OneHot &op)
   auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (indice.info().isDynamic() || depth.info().isDynamic() || !depth.isConstant())
+  if (!depth.isConstant())
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;
@@ -558,32 +526,12 @@ void StaticShapeInferer::visit(const ir::operation::OneHot &op)
 
 void StaticShapeInferer::visit(const ir::operation::Pack &op)
 {
-  bool is_any_of_inputs_dynamic = [&]() -> bool {
-    for (uint32_t i = 0; i < op.getInputs().size(); ++i)
-    {
-      const auto &input = _operands.at(op.getInputs().at(i));
-      if (input.info().isDynamic())
-      {
-        return true;
-      }
-    }
-    return false;
-  }();
-
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (is_any_of_inputs_dynamic)
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   const auto rank = input.shape().rank() + 1;
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
@@ -608,14 +556,6 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  // if input is dynamic or pad is dynamic, output also becomes dynamic
-  if (input.info().isDynamic() || pad.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   // if pad is not constant, output also becomes dynamic
   if (!pad.isConstant())
   {
@@ -637,13 +577,6 @@ void StaticShapeInferer::visit(const ir::operation::Permute &op)
   const auto &input = _operands.at(input_idx);
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // re-sizing output shape
   // Permute is a special operation that layouts of input/output may be different on backend
@@ -672,13 +605,6 @@ void StaticShapeInferer::visit(const ir::operation::Range &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-  // if any input is dynamic, output also becomes dynamic
-  if (start_op.info().isDynamic() || limit_op.info().isDynamic() || delta_op.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   ir::Shape new_shape;
   if (start_op.isConstant() && limit_op.isConstant() && delta_op.isConstant())
@@ -716,14 +642,6 @@ void StaticShapeInferer::visit(const ir::operation::Reduce &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   std::vector<int32_t> axes_vec;
   for (size_t i = 0; i < axes.shape().num_elements(); ++i)
   {
@@ -760,14 +678,6 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // New shape is given by second input tensor
   if (op.getInputs().size() == 2)
@@ -827,14 +737,6 @@ void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   // Shape inferencing logic based on Params
   ir::Shape new_shape = shape_inference::inferResizeBilinearShape(
       input.shape(), op.param().height_out, op.param().width_out);
@@ -876,14 +778,6 @@ void StaticShapeInferer::visit(const ir::operation::Select &op)
   auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (input_cond.info().isDynamic() || input_true.info().isDynamic() ||
-      input_false.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   // Select output shpae
   ir::Shape new_shape = shape_inference::inferSelectShape(
       input_cond.info().shape(), input_true.info().shape(), input_false.info().shape());
@@ -898,14 +792,6 @@ void StaticShapeInferer::visit(const ir::operation::Shape &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // re-sizing output shape
   ir::Shape output_shape;
@@ -929,13 +815,6 @@ void StaticShapeInferer::visit(const ir::operation::Slice &op)
   const auto &sizes = _operands.at(sizes_index);
   const auto output_index = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_index);
-
-  if (input.info().isDynamic() || begins.info().isDynamic() || sizes.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   // Whether input is constant or not does not affect whether output is dynamic or not
   if (!(begins.isConstant() && sizes.isConstant()))
@@ -970,13 +849,6 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
   const auto &block_shape = _operands.at(block_shape_idx);
   const auto &padding = _operands.at(padding_idx);
 
-  if (input.info().isDynamic() || block_shape.info().isDynamic() || padding.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   // Whether input is constant or not does not affect whether output is dynamic or not
   if (!(block_shape.isConstant() && padding.isConstant()))
   {
@@ -1005,18 +877,6 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
 
   const auto axis = op.param().axis;
   const auto num_splits = op.param().num_splits;
-
-  if (input.info().isDynamic())
-  {
-    for (int out_tensor_idx = 0; out_tensor_idx < num_splits; out_tensor_idx++)
-    {
-      const auto output_idx = op.getOutputs().at(out_tensor_idx);
-      ir::Operand &output = _operands.at(output_idx);
-      output.info().setDynamic();
-    }
-    _return_has_dynamic_tensor = true;
-    return;
-  }
 
   const auto rank = input.info().shape().rank();
   auto axis_resolved = axis < 0 ? axis + rank : axis;
@@ -1072,14 +932,6 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
   const auto output_index = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_index);
 
-  if (input.info().isDynamic() || starts.info().isDynamic() || ends.info().isDynamic() ||
-      strides.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   if (!(starts.isConstant() && ends.isConstant() && strides.isConstant()))
   {
     output.info().setDynamic();
@@ -1126,13 +978,6 @@ void StaticShapeInferer::visit(const ir::operation::Tile &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   if (!multiplier.isConstant())
   {
     output.info().setDynamic();
@@ -1158,13 +1003,7 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   ir::Operand &output = _operands.at(output_idx);
   const auto perm{op.param().perm};
   // const auto rank{op.param().rank};
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
-    return;
-  }
+
   // set output shape, based on input and params
   ir::Shape new_shape = shape_inference::inferTransposeShape(input.info().shape(), perm);
   output.info().shape(new_shape);
@@ -1175,20 +1014,6 @@ void StaticShapeInferer::visit(const ir::operation::Unpack &op)
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
   const auto num = op.param().num;
-
-  // if input is dynamic, output also becomes dynamic
-  if (input.info().isDynamic())
-  {
-    for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
-    {
-      const auto output_idx = op.getOutputs().at(out_tensor_idx);
-      ir::Operand &output = _operands.at(output_idx);
-      output.info().setDynamic();
-    }
-    _return_has_dynamic_tensor = true;
-    return;
-  }
-
   const auto rank = input.shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 

@@ -57,23 +57,13 @@ public:
    * @param op_seq sequence of operations
    * @return @c true if op_seq's input or output has any dynamic tensor; @c false otherwise.
    */
-  bool infer(const ir::OpSequence &op_seq)
-  {
-    bool has_dynamic_tensor = false;
-
-    _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
-
-    for (const auto &operation_idx : op_seq.operations())
-    {
-      _operations.at(operation_idx).accept(*this);
-
-      has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
-    }
-
-    return has_dynamic_tensor;
-  }
+  bool infer(const ir::OpSequence &op_seq);
 
   void dump();
+
+private:
+  bool checkDynamicInput(const ir::Operation &op);
+  void setDynamicOutput(const ir::Operation &op);
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
