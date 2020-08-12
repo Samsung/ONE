@@ -1,0 +1,52 @@
+operand {
+  name: "boxes"
+  type: FLOAT32
+  shape { dim: 10 dim: 4 }
+}
+operand {
+  name: "scores"
+  type: FLOAT32
+  shape { dim: 10 }
+}
+operand {
+  name: "max_output_size"
+  type: INT32
+  shape { }
+}
+operand {
+  name: "iou_threshold"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "score_threshold"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "selected_indices"
+  type: INT32
+  shape { }
+}
+operand {
+  name: "valid_outputs"
+  type: INT32
+  shape { }
+}
+operation {
+  type: "NonMaxSuppressionV4"
+  input: "boxes"
+  input: "scores"
+  input: "max_output_size"
+  input: "iou_threshold"
+  input: "score_threshold"
+  output: "selected_indices"
+  output: "valid_outputs"
+}
+input: "boxes"
+input: "scores"
+input: "max_output_size"
+input: "iou_threshold"
+input: "score_threshold"
+output: "selected_indices"
+output: "valid_outputs"
