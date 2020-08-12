@@ -1,8 +1,6 @@
 
 set(SRCS_EVAL_TESTER
       src/EvalTester.cpp
-      src/CircleExpContract.h
-      src/CircleExpContract.cpp
    )
 
 add_executable(luci_eval_tester ${SRCS_EVAL_TESTER})
