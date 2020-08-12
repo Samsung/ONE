@@ -28,6 +28,7 @@
 #include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
+#include "ops/ElementwiseBinaryLayer.h"
 #include "ops/ExpLayer.h"
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
@@ -35,10 +36,8 @@
 #include "ops/GatherLayer.h"
 #include "ops/LogLayer.h"
 #include "ops/LogisticLayer.h"
-#include "ops/MaxLayer.h"
 #include "ops/MaxPoolLayer.h"
 #include "ops/MeanLayer.h"
-#include "ops/MinLayer.h"
 #include "ops/NegLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
@@ -71,7 +70,6 @@
 #include "ops/LogicalNotLayer.h"
 #include "ops/ZerosLikeLayer.h"
 #include "ops/SquaredDiffLayer.h"
-#include "ops/LogicalOrLayer.h"
 #include "ops/L2NormLayer.h"
 #include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
@@ -112,6 +110,22 @@ convertArithmeticType(ir::operation::BinaryArithmetic::ArithmeticType arithmetic
       return ops::ArithmeticType::kMul;
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
       return ops::ArithmeticType::kDiv;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::ElementwiseBinaryType
+convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinaryType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
+      return ops::ElementwiseBinaryType::kLogicalOr;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
+      return ops::ElementwiseBinaryType::kMax;
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
+      return ops::ElementwiseBinaryType::kMin;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -622,6 +636,24 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+
+  auto fn = std::make_unique<ops::ElementwiseBinaryLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, output_tensor,
+                convertElementwiseBinaryType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Exp &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -754,40 +786,6 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   }
 
   fn->configure(input, output, pad_base, pad_rank, value);
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Max &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::MaxLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Min &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::MinLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor);
-
   _return_fn = std::move(fn);
 }
 
@@ -1171,23 +1169,6 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   auto fn = std::make_unique<ops::LogicalNotLayer>();
 
   fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::LogicalOr &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(0)};
-  const auto rhs_index{node.getInputs().at(1)};
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
-
-  auto fn = std::make_unique<ops::LogicalOrLayer>();
-
-  fn->configure(lhs_tensor, rhs_tensor, ofm_tensor);
 
   _return_fn = std::move(fn);
 }

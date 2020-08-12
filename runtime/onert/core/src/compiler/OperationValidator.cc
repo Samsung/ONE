@@ -353,6 +353,16 @@ void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
   OP_REQUIRES(input_shape.C * block_size * block_size == output_shape.C);
 }
 
+void OperationValidator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -822,30 +832,6 @@ void OperationValidator::visit(const ir::operation::Pad &node)
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
 }
 
-void OperationValidator::visit(const ir::operation::Min &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
-
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
-}
-
-void OperationValidator::visit(const ir::operation::Max &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
-
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
-}
-
 void OperationValidator::visit(const ir::operation::Select &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1025,16 +1011,6 @@ void OperationValidator::visit(const ir::operation::Tile &node)
   OP_REQUIRES(_ctx.at(multiple_index).shape().rank() == 1);
   OP_REQUIRES(_ctx.at(multiple_index).shape().dim(0) == _ctx.at(input_index).shape().rank());
   OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
-}
-
-void OperationValidator::visit(const ir::operation::LogicalOr &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(0)};
-  const auto rhs_index{node.getInputs().at(1)};
-
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
 void OperationValidator::visit(const ir::operation::Range &node)

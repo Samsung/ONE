@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_MINLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_MINLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__
 
 #include <backend/IPortableTensor.h>
 
@@ -30,20 +30,25 @@ namespace cpu
 namespace ops
 {
 
-class MinLayer : public ::onert::exec::IFunction
+enum class ElementwiseBinaryType
+{
+  kLogicalAnd,
+  kLogicalOr,
+  kMax,
+  kMin,
+};
+
+class ElementwiseBinaryLayer : public ::onert::exec::IFunction
 {
 public:
-  MinLayer() : _lhs(nullptr), _rhs(nullptr), _output(nullptr)
+  ElementwiseBinaryLayer() : _lhs(nullptr), _rhs(nullptr), _output(nullptr)
   {
     // DO NOTHING
   }
 
 public:
-  template <typename T> void minimum();
-
-  void minQuant8();
-
-  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output);
+  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                 const ElementwiseBinaryType op_type);
 
   void run() override;
 
@@ -51,6 +56,7 @@ private:
   const IPortableTensor *_lhs;
   const IPortableTensor *_rhs;
   IPortableTensor *_output;
+  ElementwiseBinaryType _op_type{ElementwiseBinaryType::kLogicalAnd};
 };
 
 } // namespace ops
@@ -58,4 +64,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_MINLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__

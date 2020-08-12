@@ -82,6 +82,28 @@ uint32_t getUint32Scalar(Operands &operands, const OperandIndex index)
   return static_cast<uint32_t>(int32_value);
 }
 
+OperationFactory::Generator getElementwiseBinaryGenerator(
+    const onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
+{
+  return [op_type](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 2);
+    assert(init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Lefthand side operand
+    //  1 -> Righthand side operand
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::ElementwiseBinary::Param param;
+    param.op_type = op_type;
+
+    return new operation::ElementwiseBinary{inputs, outputs, param};
+  };
+}
+
 OperationFactory::Generator
 getBinaryArithmeticGenerator(const onert::ir::operation::BinaryArithmetic::ArithmeticType op_type)
 {
@@ -829,7 +851,8 @@ OperationFactory::OperationFactory()
     return new operation::Comparison{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_LOGICAL_AND] = createSimpleBinaryOp<operation::LogicalAnd>;
+  _map[ANEURALNETWORKS_LOGICAL_AND] = getElementwiseBinaryGenerator(
+      operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
 
   // ANEURALNETWORKS_LOGICAL_AND_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_AND_EX
@@ -850,7 +873,10 @@ OperationFactory::OperationFactory()
     replaceDataType(operands, inputs.at(1), DataType::BOOL8);
     replaceDataType(operands, outputs.at(0), DataType::BOOL8);
 
-    return new operation::LogicalAnd{inputs, outputs};
+    operation::ElementwiseBinary::Param param;
+    param.op_type = operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND;
+
+    return new operation::ElementwiseBinary{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_RSQRT] = CreateSimpleUnaryOp<operation::RSQRT>;
@@ -1125,19 +1151,8 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_SQRT_EX
   _map[ANEURALNETWORKS_SQRT_EX] = _map[ANEURALNETWORKS_SQRT];
 
-  _map[ANEURALNETWORKS_LOGICAL_OR] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    return new operation::LogicalOr{inputs, outputs};
-  };
+  _map[ANEURALNETWORKS_LOGICAL_OR] = getElementwiseBinaryGenerator(
+      operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
 
   // ANEURALNETWORKS_LOGICAL_OR_EX is deprecated
   // TODO Remove ANEURALNETWORKS_LOGICAL_OR_EX
@@ -1158,7 +1173,10 @@ OperationFactory::OperationFactory()
     replaceDataType(operands, inputs.at(1), DataType::BOOL8);
     replaceDataType(operands, outputs.at(0), DataType::BOOL8);
 
-    return new operation::LogicalOr{inputs, outputs};
+    operation::ElementwiseBinary::Param param;
+    param.op_type = operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR;
+
+    return new operation::ElementwiseBinary{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_LOGICAL_NOT] = CreateSimpleUnaryOp<operation::LogicalNot>;
@@ -1552,9 +1570,11 @@ OperationFactory::OperationFactory()
 
   _map[ANEURALNETWORKS_PAD_V2] = _map[ANEURALNETWORKS_PAD];
 
-  _map[ANEURALNETWORKS_MINIMUM] = createSimpleBinaryOp<operation::Min>;
+  _map[ANEURALNETWORKS_MINIMUM] =
+      getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
 
-  _map[ANEURALNETWORKS_MAXIMUM] = createSimpleBinaryOp<operation::Max>;
+  _map[ANEURALNETWORKS_MAXIMUM] =
+      getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::MAX);
 
   _map[ANEURALNETWORKS_ONE_HOT_EX] = [](const OperationFactory::Param &init_param,
                                         Operands &operands) {

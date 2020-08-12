@@ -53,12 +53,12 @@ public:
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::Cast &) override;
+  void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::LogicalAnd &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Permute &) override;
@@ -78,7 +78,6 @@ public:
   void visit(const ir::operation::PReLU &) override;
   void visit(const ir::operation::TransposeConv &) override;
   void visit(const ir::operation::SQRT &) override;
-  void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::LogicalNot &) override;
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::TopKV2 &) override;
@@ -92,8 +91,6 @@ public:
   void visit(const ir::operation::Split &) override;
   void visit(const ir::operation::Unpack &) override;
   void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::Min &) override;
-  void visit(const ir::operation::Max &) override;
   void visit(const ir::operation::ConvertFp32ToFp16 &) override;
   void visit(const ir::operation::ConvertFp16ToFp32 &) override;
 

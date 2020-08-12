@@ -59,12 +59,11 @@ public:
   void visit(const ir::operation::Einsum &) override;
   void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Custom &node) override;
+  void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::Max &) override;
-  void visit(const ir::operation::Min &) override;
   void visit(const ir::operation::Tanh &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Unpack &) override;
@@ -94,7 +93,6 @@ public:
   void visit(const ir::operation::ZerosLike &) override;
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Tile &) override;
-  void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::Range &) override;
   void visit(const ir::operation::MatrixBandPart &) override;

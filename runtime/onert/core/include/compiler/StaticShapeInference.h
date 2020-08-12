@@ -77,6 +77,7 @@ private:
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
   void visit(const ir::operation::Cos &op) override;
+  void visit(const ir::operation::ElementwiseBinary &op) override;
   void visit(const ir::operation::Exp &op) override;
   void visit(const ir::operation::ExpandDims &op) override;
   void visit(const ir::operation::Fill &op) override;
@@ -86,12 +87,9 @@ private:
   void visit(const ir::operation::If &op) override;
   void visit(const ir::operation::Log &op) override;
   void visit(const ir::operation::LogicalNot &op) override;
-  void visit(const ir::operation::LogicalOr &op) override;
   void visit(const ir::operation::Logistic &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
-  void visit(const ir::operation::Max &op) override;
-  void visit(const ir::operation::Min &op) override;
   void visit(const ir::operation::Neg &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;

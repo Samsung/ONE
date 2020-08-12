@@ -48,6 +48,7 @@ public:
   void visit(const ir::operation::MaxPool2D &) override;
   void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
+  void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
   void visit(const ir::operation::Floor &) override;
   void visit(const ir::operation::FullyConnected &) override;
@@ -57,9 +58,7 @@ public:
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::L2Pool2D &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
-  void visit(const ir::operation::LogicalAnd &) override;
   void visit(const ir::operation::LogicalNot &) override;
-  void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::Neg &) override;
@@ -91,8 +90,6 @@ public:
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Min &) override;
-  void visit(const ir::operation::Max &) override;
   void visit(const ir::operation::OneHot &) override;
 
 private:

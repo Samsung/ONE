@@ -171,6 +171,14 @@ void OperationDumper::visit(const Dequantize &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ElementwiseBinary &node)
+{
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ElementwiseBinary::Input::LHS)
+               << ", " << node.getInputs().at(ElementwiseBinary::Input::RHS) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const EmbeddingLookup &node)
 {
   VERBOSE(LIR) << "* EmbeddingLookup" << std::endl;
@@ -307,27 +315,11 @@ void OperationDumper::visit(const Log &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const LogicalAnd &node)
-{
-  VERBOSE(LIR) << "* LogicalAnd" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalAnd::Input::INPUT0) << ", "
-               << node.getInputs().at(LogicalAnd::Input::INPUT1) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const LogicalNot &node)
 {
   VERBOSE(LIR) << "* LogicalNot" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalNot::Input::INPUT) << ")"
                << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const LogicalOr &node)
-{
-  VERBOSE(LIR) << "* LogicalOr" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalOr::Input::INPUT0) << ", "
-               << node.getInputs().at(LogicalOr::Input::INPUT1) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -690,22 +682,6 @@ void OperationDumper::visit(const Unpack &node)
       outputs += ", ";
   }
   VERBOSE(LIR) << "  - Outputs : Outputs(" << outputs << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Min &node)
-{
-  VERBOSE(LIR) << "* Min" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Min::Input::LHS) << ", "
-               << node.getInputs().at(Min::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Max &node)
-{
-  VERBOSE(LIR) << "* Max" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Max::Input::LHS) << ", "
-               << node.getInputs().at(Max::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const OneHot &node)
