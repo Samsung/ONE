@@ -50,6 +50,11 @@ void FunctionSequence::run()
       // run kernel
       function->run();
 
+      // if (_func_observer)
+      //   _func_observer->handleEnd(_dynamic_tensor_ctx->op_seq, function.get(), *op_seq_iter);
+      if (_func_observer)
+        _func_observer->handleEnd(&op, *function.get());
+
       // deallocate input tensors which is no longer used
       _dynamic_tensor_ctx->dynamic_tensor_manager->deallocInput(*op_seq_iter);
 
@@ -66,6 +71,10 @@ void FunctionSequence::run()
         sub_func_seq->enableDynamicShapeInferer(false);
       }
       function->run();
+
+      // TODO Add FuncObserver here
+      if (_func_observer)
+        _func_observer->handleEnd(nullptr, *function.get());
     }
   }
 }

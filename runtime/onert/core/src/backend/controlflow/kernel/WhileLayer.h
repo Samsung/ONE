@@ -45,6 +45,12 @@ public:
 public:
   void run() override;
 
+  const backend::ITensor *getOutput(int output_ind) const override
+  {
+    assert(static_cast<size_t>(output_ind) < _output_tensors.size());
+    return _output_tensors[output_ind].get();
+  }
+
 private:
   const ir::SubgraphIndex _cond_subg_index;
   const ir::SubgraphIndex _body_subg_index;

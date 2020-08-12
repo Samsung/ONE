@@ -42,6 +42,12 @@ public:
                  IPortableTensor *output);
   void run() override;
 
+  const backend::ITensor *getOutput(int output_ind = 0) const override
+  {
+    assert(output_ind == 0);
+    return _output;
+  }
+
 private:
   std::vector<const IPortableTensor *> _inputs;
   IPortableTensor *_output;

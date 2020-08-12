@@ -84,6 +84,13 @@ public:
   void has_dynamic_tensor(bool has_dynamic_tensor) { _has_dynamic_tensor = has_dynamic_tensor; }
   bool has_dynamic_tensor() const { return _has_dynamic_tensor; }
 
+  // public:
+  //   /**
+  //    * @brief Return unique id of this opSequence. This is useful to help debugging.
+  //    */
+  //   void op_seq_index(OpSequenceIndex ind) { _op_seq_index = ind; }
+  //   OpSequenceIndex op_seq_index() const { return _op_seq_index; }
+
 private:
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
@@ -92,6 +99,9 @@ private:
 private:
   Layout _layout;
   bool _has_dynamic_tensor;
+
+  // private:
+  //   OpSequenceIndex _op_seq_index;
 };
 
 std::string getStrFromOpSeq(const OpSequence &op_seq, const Operations &operations);

@@ -26,6 +26,12 @@
 #include "IODescription.h"
 #include "ir/OperationIndexMap.h"
 #include "backend/IDynamicTensorManager.h"
+#include "exec/IFunctionObserver.h"
+
+#define THROW_IF_NOT_OVERRIDEN                 \
+  {                                            \
+    throw std::runtime_error("Not supported"); \
+  }
 
 namespace onert
 {
@@ -65,6 +71,11 @@ struct IExecutor
    * @note      This method should be thread-safe
    */
   virtual void execute(const IODescription &desc) = 0;
+
+  // virtual void setOpOutputDumpingInfo(std::unique_ptr<util::OpOutputDumpingInfo>)
+  //   THROW_IF_NOT_OVERRIDEN;
+
+  virtual void setFuncObserver(IFunctionObserver *) THROW_IF_NOT_OVERRIDEN;
 };
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;

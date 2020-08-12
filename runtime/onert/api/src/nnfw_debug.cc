@@ -27,3 +27,8 @@ NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value,
 {
   return session->get_config(key, value, value_size);
 }
+
+NNFW_STATUS nnfw_enable_dump_op_output(nnfw_session *session, nnfw_dump_op_output callback)
+{
+  return session->enable_dump_op_output(callback);
+}

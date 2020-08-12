@@ -177,4 +177,78 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
   }
 };
 
+void TensorDumper::dumpTensor(const std::string &filename, const nnfw_output_tensor *tensor)
+{
+  try
+  {
+    std::string data_set_name = "0"; // this follow name convention of H5Formatter
+
+    // Turn off the automatic error printing.
+    H5::Exception::dontPrint();
+
+    H5::H5File file(filename, H5F_ACC_TRUNC);
+    auto value_group = file.createGroup(h5_value_grpname);
+
+    auto rank = tensor->type.rank;
+    std::vector<hsize_t> dims(rank);
+    for (uint32_t j = 0; j < rank; ++j)
+    {
+      auto dim = tensor->type.dims[j];
+      if (dim >= 0)
+        dims[j] = static_cast<hsize_t>(dim);
+      else
+      {
+        std::cerr << "Negative dimension in tensor" << std::endl;
+        exit(-1);
+      }
+    }
+
+    H5::DataSpace data_space(rank, dims.data());
+
+    switch (tensor->type.dtype)
+    {
+      case NNFW_TYPE_TENSOR_FLOAT32:
+      {
+        H5::DataSet data_set =
+            value_group.createDataSet(data_set_name, H5::PredType::IEEE_F32BE, data_space);
+        data_set.write(tensor->allocation, H5::PredType::NATIVE_FLOAT);
+        break;
+      }
+      case NNFW_TYPE_TENSOR_INT32:
+      {
+        H5::DataSet data_set =
+            value_group.createDataSet(data_set_name, H5::PredType::STD_I32LE, data_space);
+        data_set.write(tensor->allocation, H5::PredType::NATIVE_INT32);
+        break;
+      }
+      case NNFW_TYPE_TENSOR_INT64:
+      {
+        H5::DataSet data_set =
+            value_group.createDataSet(data_set_name, H5::PredType::STD_I64LE, data_space);
+        data_set.write(tensor->allocation, H5::PredType::NATIVE_INT64);
+        break;
+      }
+      case NNFW_TYPE_TENSOR_BOOL:
+      {
+        H5::DataSet data_set =
+            value_group.createDataSet(data_set_name, H5::PredType::STD_I8LE, data_space);
+        data_set.write(tensor->allocation, H5::PredType::NATIVE_INT8);
+        break;
+      }
+      default:
+        throw std::runtime_error("Not supported datatype");
+    }
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    std::exit(-1);
+  }
+  catch (const std::runtime_error &e)
+  {
+    std::cerr << "Error during writing tensor on nnpackage_run : " << e.what() << std::endl;
+    std::exit(-1);
+  }
+}
+
 } // end of namespace nnpkg_run

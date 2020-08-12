@@ -249,6 +249,19 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+    // for debugging
+    lowered_subg->op_seqs().iterate(
+        [&](const ir::OpSequenceIndex &op_seq_ind, const ir::OpSequence &op_seq) {
+          for (auto op_ind : op_seq.operations())
+          {
+            auto &op = lowered_subg->graph().operations().at(op_ind);
+            op.id.set(subg_index, op_seq_ind, op_ind);
+            std::cout << op.name() << ":" << op.id.subg_ind.value() << "/"
+                      << op.id.op_seq_ind.value() << "/" << op.id.op_ind.value() << std::endl;
+          }
+        });
+
     auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);

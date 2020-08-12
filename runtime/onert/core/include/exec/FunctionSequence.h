@@ -24,6 +24,7 @@
 
 #include "exec/IFunction.h"
 #include "exec/DynamicShapeInference.h"
+#include "exec/IFunctionObserver.h"
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
 #include "backend/IDynamicTensorManager.h"
@@ -107,6 +108,14 @@ public: // methods related to dynamic tensor
     _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer && enable;
   }
 
+  // void op_output_dumping_info(util::OpOutputDumpingInfo *info)
+  // {
+  //   assert(info);
+  //   _op_output_dumping_info = info;
+  // }
+
+  void setFuncObserver(IFunctionObserver *func_observer) { _func_observer = func_observer; }
+
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
 
@@ -114,6 +123,8 @@ protected:
   bool _enable_dynamic_shape_inferer = true;
 
   std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
+  // util::OpOutputDumpingInfo *_op_output_dumping_info;
+  IFunctionObserver *_func_observer = nullptr;
 };
 
 } // namespace exec

@@ -19,6 +19,7 @@
 #include "benchmark.h"
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 #include "h5formatter.h"
+#include "opOutputDumper.h"
 #endif
 #include "nnfw.h"
 #include "nnfw_util.h"
@@ -159,6 +160,11 @@ int main(const int argc, char **argv)
 
     // set input shape before compilation
     setTensorInfo(args.getShapeMapForPrepare());
+
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    if (args.getDumpOpOutputEnabled())
+      OpOutputDumper::registerDumpCallback(session);
+#endif
 
     // prepare execution
 

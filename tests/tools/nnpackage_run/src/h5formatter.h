@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "allocation.h"
+#include "nnfw_internal.h"
 
 struct nnfw_session;
 
@@ -36,6 +37,13 @@ public:
 private:
   nnfw_session *session_;
 };
+
+class TensorDumper
+{
+public:
+  void dumpTensor(const std::string &filename, const nnfw_output_tensor *tensor);
+};
+
 } // end of namespace
 
 #endif // __NNPACKAGE_RUN_H5FORMATTER_H__

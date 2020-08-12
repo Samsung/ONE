@@ -23,6 +23,7 @@
 
 #include "ir/Layout.h"
 #include "exec/IExecutor.h"
+#include "exec/IFunctionObserver.h"
 #include "IODescription.h"
 
 #include <thread>
@@ -142,6 +143,18 @@ public:
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 
+  void setOpOutputDumper(std::unique_ptr<exec::IFunctionObserver> func_observer)
+  {
+    _func_observer = std::move(func_observer);
+
+    auto executor_map = _executors.get();
+    for (auto &item : *executor_map)
+    {
+      auto &executor = item.second;
+      executor->setFuncObserver(_func_observer.get());
+    }
+  }
+
 private:
   const std::unique_ptr<IExecutor> &primary_executor() const
   {
@@ -154,6 +167,8 @@ private:
   IODescription _io_desc;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
+
+  std::unique_ptr<exec::IFunctionObserver> _func_observer;
 };
 
 } // namespace exec

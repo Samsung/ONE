@@ -18,6 +18,7 @@
 #define __ONERT_IR_OPERATION_H__
 
 #include <memory>
+#include <cassert>
 
 #include "ir/OpCode.h"
 #include "ir/Operand.h"
@@ -59,6 +60,28 @@ public:
   // It's for only input/output tensors but const data.
   void setInputs(const OperandIndexSequence &indexes);
   void setOutputs(const OperandIndexSequence &indexes);
+
+  struct UniqueID
+  {
+    SubgraphIndex subg_ind;
+    OpSequenceIndex op_seq_ind;
+    OperationIndex op_ind;
+
+    void set(SubgraphIndex subg, OpSequenceIndex op_seq, OperationIndex op)
+    {
+      subg_ind = subg;
+      op_seq_ind = op_seq;
+      op_ind = op;
+    }
+
+    bool isSame(SubgraphIndex subg, OpSequenceIndex op_seq, OperationIndex op)
+    {
+      assert(subg.valid() && op_seq.valid() && op.valid());
+      assert(subg_ind.valid() && op_seq_ind.valid() && op_ind.valid());
+      return subg == subg_ind && op_seq == op_seq_ind && op == op_ind;
+    }
+  };
+  UniqueID id;
 
 private:
   OperandConstraint _input_constr;

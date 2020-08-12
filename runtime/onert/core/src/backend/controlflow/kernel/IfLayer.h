@@ -43,6 +43,12 @@ public:
 public:
   void run() override;
 
+  const backend::ITensor *getOutput(int output_ind) const override
+  {
+    assert(static_cast<size_t>(output_ind) < _output_tensors.size());
+    return _output_tensors[output_ind].get();
+  }
+
 private:
   const std::shared_ptr<backend::ITensor> _cond_tensor;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;

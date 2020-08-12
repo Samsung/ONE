@@ -39,6 +39,7 @@ public:
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
   const std::string &getLoadFilename(void) const { return _load_filename; }
+  const bool getDumpOpOutputEnabled(void) const { return _dump_op_output_enabled; }
 #endif
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
@@ -64,6 +65,7 @@ private:
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;
   std::string _load_filename;
+  bool _dump_op_output_enabled = false;
 #endif
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;

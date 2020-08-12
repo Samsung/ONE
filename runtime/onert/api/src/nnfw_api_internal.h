@@ -19,6 +19,7 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
+#include "nnfw_internal.h"
 
 #include <util/GeneralConfigSource.h>
 
@@ -136,6 +137,8 @@ public:
 
   NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
 
+  NNFW_STATUS enable_dump_op_output(nnfw_dump_op_output callback);
+
 private:
   onert::ir::Graph *primary_subgraph();
   bool isStateInitialized();
@@ -151,6 +154,8 @@ private:
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::frontend::custom::KernelRegistry> _kernel_registry;
+
+  nnfw_dump_op_output _dump_op_output = nullptr;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

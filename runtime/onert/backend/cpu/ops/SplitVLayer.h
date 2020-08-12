@@ -44,6 +44,12 @@ public:
 
   void run() override;
 
+  const backend::ITensor *getOutput(int output_ind) const override
+  {
+    assert(static_cast<size_t>(output_ind) < _outputs.size());
+    return _outputs[output_ind];
+  }
+
 private:
   const IPortableTensor *_input;
   const IPortableTensor *_size_splits;

@@ -93,6 +93,11 @@ public:
 
   const DynAllocInfoMap &getInputsDynamicAllocInfo() const { return _input_to_dyn_alloc_info; }
 
+  void setFuncObserver(IFunctionObserver *func_observer) override
+  {
+    _func_observer = func_observer;
+  }
+
 protected:
   /**
    * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
@@ -110,6 +115,8 @@ protected:
   DynAllocInfoMap _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
+
+  IFunctionObserver *_func_observer;
 
 private:
   void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);

@@ -31,6 +31,8 @@
 #include <util/ConfigSource.h>
 #include <misc/string_helpers.h>
 
+#include "OpOutputDumper.h"
+
 /*
  * API does not accept string argument longer than max length below
  */
@@ -211,6 +213,9 @@ NNFW_STATUS nnfw_session::run()
 
   try
   {
+    if (_dump_op_output)
+      _execution->setOpOutputDumper(
+          std::make_unique<onert::frontend::OpOutputDumper>(_dump_op_output));
     _execution->execute();
   }
   catch (const std::exception &e)
@@ -839,4 +844,10 @@ bool nnfw_session::isStateFinishedRun()
 bool nnfw_session::isStatePreparedOrFinishedRun()
 {
   return isStatePrepared() || isStateFinishedRun();
+}
+
+NNFW_STATUS nnfw_session::enable_dump_op_output(nnfw_dump_op_output callback)
+{
+  _dump_op_output = callback;
+  return NNFW_STATUS_NO_ERROR;
 }

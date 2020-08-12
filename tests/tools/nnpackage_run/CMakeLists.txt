@@ -17,6 +17,7 @@ nnfw_find_package(HDF5 QUIET)
 
 if (HDF5_FOUND)
   list(APPEND NNPACKAGE_RUN_SRCS "src/h5formatter.cc")
+  list(APPEND NNPACKAGE_RUN_SRCS "src/opOutputDumper.cc")
 endif()
 
 add_executable(nnpackage_run ${NNPACKAGE_RUN_SRCS})

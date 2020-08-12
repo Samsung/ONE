@@ -35,4 +35,21 @@ NNFW_STATUS nnfw_get_config(nnfw_session *session, const char *key, char *value,
  */
 NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size);
 
+typedef struct
+{
+  nnfw_tensorinfo type;
+  void *allocation;
+} nnfw_output_tensor;
+
+/**
+ * @brief Callback function called after function->run()
+ */
+typedef void (*nnfw_dump_op_output)(const nnfw_output_tensor *tensor, uint32_t subgraph_ind,
+                                    uint32_t op_seq_ind, uint32_t op_ind, uint32_t output_ind);
+
+/**
+ * @brief Enable runtime to dump each op's output.
+ */
+NNFW_STATUS nnfw_enable_dump_op_output(nnfw_session *session, nnfw_dump_op_output callback);
+
 #endif // __NNFW_INTERNAL_H__

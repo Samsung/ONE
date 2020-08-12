@@ -69,6 +69,12 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   {
     const auto &node = _graph.operations().at(op_idx);
     node.accept(*this);
+
+    // for debug
+    _return_fn->id.set(node.id.subg_ind, node.id.op_seq_ind, node.id.op_ind);
+    _return_fn->name(node.name());
+    // for debug
+
     _return_fn_seq->append(releaseFunction());
   }
 }

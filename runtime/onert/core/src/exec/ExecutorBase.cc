@@ -31,7 +31,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
                            const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                            const compiler::TensorBuilders &tensor_builders)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()},
-      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
+      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex(),
+      _func_observer(nullptr)
 {
   // TODO Fix the way of knowing whether it is primary or not
   bool primary_executor = !(_input_tensors.empty() && _output_tensors.empty());

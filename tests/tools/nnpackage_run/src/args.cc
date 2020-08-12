@@ -16,6 +16,10 @@
 
 #include "args.h"
 
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+#include "opOutputDumper.h"
+#endif
+
 #include <functional>
 #include <iostream>
 #include <json/json.h>
@@ -175,6 +179,16 @@ void Args::Initialize(void)
     }
   };
 
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+  auto process_dump_op_output = [&](const std::string &dump_path) {
+    if (dump_path != "")
+    {
+      OpOutputDumper::setOutputDir(dump_path);
+      _dump_op_output_enabled = true;
+    }
+  };
+#endif
+
   // General options
   po::options_description general("General options", 100);
 
@@ -186,6 +200,8 @@ void Args::Initialize(void)
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     ("dump,d", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_filename = v; }), "Output filename")
     ("load,l", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _load_filename = v; }), "Input filename")
+    ("dump_op_output", po::value<std::string>()->default_value("")->notifier(process_dump_op_output),
+         "directory to save outputs of each op. One h5 file contains one output of an op.\n")
 #endif
     ("output_sizes", po::value<std::string>()->notifier(process_output_sizes),
         "The output buffer size in JSON 1D array\n"
