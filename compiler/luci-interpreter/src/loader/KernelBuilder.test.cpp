@@ -43,6 +43,7 @@
 #include <kernels/Split.h>
 #include <kernels/Squeeze.h>
 #include <kernels/StridedSlice.h>
+#include <kernels/Tanh.h>
 #include <kernels/Transpose.h>
 #include <kernels/TransposeConv.h>
 #include <kernels/Unpack.h>
@@ -654,6 +655,20 @@ TEST_F(KernelBuilderTest, StridedSlice)
   EXPECT_THAT(kernel->params().end_mask, Eq(op->end_mask()));
   EXPECT_THAT(kernel->params().new_axis_mask, Eq(op->new_axis_mask()));
   EXPECT_THAT(kernel->params().shrink_axis_mask, Eq(op->shrink_axis_mask()));
+}
+
+TEST_F(KernelBuilderTest, Tanh)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleTanh>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Tanh>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Transpose)

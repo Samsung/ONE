@@ -43,6 +43,7 @@
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
 #include "kernels/Squeeze.h"
+#include "kernels/Tanh.h"
 #include "kernels/Unpack.h"
 #include "kernels/Transpose.h"
 #include "kernels/TransposeConv.h"
@@ -515,6 +516,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleStridedSlice *nod
   params.shrink_axis_mask = node->shrink_axis_mask();
 
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTanh *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Tanh>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
