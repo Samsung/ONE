@@ -597,8 +597,12 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
   loco::DataType visit(const luci::CircleNonMaxSuppressionV5Out *node) final
   {
     (void)node;
-    assert(node->index() >= 0 || node->index() <= 2);
-    return loco::DataType::S32;
+    if (node->index() == 0 || node->index() == 2)
+    {
+      return loco::DataType::S32;
+    }
+    assert(node->index() == 1);
+    return loco::DataType::FLOAT32;
   }
 
   loco::DataType visit(const luci::CircleSplitOut *node) final

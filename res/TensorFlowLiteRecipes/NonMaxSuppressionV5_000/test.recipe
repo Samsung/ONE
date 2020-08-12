@@ -35,7 +35,7 @@ operand {
 }
 operand {
   name: "selected_scores"
-  type: INT32
+  type: FLOAT32
   shape { }
 }
 operand {
