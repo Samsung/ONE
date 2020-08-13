@@ -17,6 +17,7 @@
 #include "DynamicTensorManager.h"
 
 #include "util/logging.h"
+#include "ir/DataType.h"
 
 namespace onert
 {
@@ -25,10 +26,8 @@ namespace backend
 namespace controlflow
 {
 
-DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
-                                           const std::shared_ptr<UserTensorRegistry> &user_reg)
-    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{reg},
-      _user_tensors{user_reg}
+DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &tensors)
+    : _dynamic_mem_mgr{new cpu_common::DynamicMemoryManager()}, _tensors{tensors}
 {
   // DO NOTHING
 }
@@ -36,7 +35,7 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<cpu_common::Ten
 void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
 {
   // NOTE Handle user tensors first
-  auto user_tensor = _user_tensors->getNativeTensor(ind);
+  auto user_tensor = _tensors->getNativeUserTensor(ind);
   if (user_tensor)
   {
     // User tensors cannot be reallocated.
@@ -48,8 +47,8 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     return;
   }
 
-  // NOTE Then handle native tensors
-  auto tensor = _tensors->getNativeTensor(ind);
+  // NOTE Then handle own tensors
+  auto tensor = _tensors->getNativeOwnTensor(ind);
   assert(tensor);
 
   bool previously_dynamic = tensor->is_dynamic();
@@ -102,9 +101,8 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  assert(_tensors->getNativeTensor(ind) == nullptr);
   auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout, this);
-  _tensors->setNativeTensor(ind, tensor);
+  _tensors->setNativeOwnTensor(ind, tensor);
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)

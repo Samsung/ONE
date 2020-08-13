@@ -28,9 +28,9 @@ namespace controlflow
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()}, _user_tensor_reg{new UserTensorRegistry()},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg)},
-      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg, _user_tensor_reg)}
+    : _tensor_reg{new TensorRegistry()},
+      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg->base_reg())},
+      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
 {
   /* empty */
 }
@@ -54,10 +54,13 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
-  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
+  // TODO Enhance the way of checking user tensors
+  if (_tensor_info_map.find(ind) == _tensor_info_map.end()) // Do not proceed for user tensors
+    return;
+
   const auto tensor_info = _tensor_info_map.at(ind);
 
-  if (!at(ind)->is_dynamic())
+  if (!nativeOwnTensorAt(ind)->is_dynamic())
   {
     const auto size = tensor_info.total_size();
     _static_tensor_mgr->claimPlan(ind, size);
@@ -66,7 +69,11 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  if (!at(ind)->is_dynamic())
+  // TODO Enhance the way of checking user tensors
+  if (_tensor_info_map.find(ind) == _tensor_info_map.end()) // Do not proceed for user tensors
+    return;
+
+  if (!nativeOwnTensorAt(ind)->is_dynamic())
   {
     _static_tensor_mgr->releasePlan(ind);
   }
@@ -74,6 +81,11 @@ void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 
 bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 {
+  // User tensors are not registered in _tensor_info_map but objects for them are exist
+  // in the tensor registry.
+  // TODO Enhance the way of checking user tensors
+  if (_tensor_reg->getITensor(ind))
+    return true;
   return _tensor_info_map.find(ind) != _tensor_info_map.end();
 }
 
@@ -91,23 +103,14 @@ void TensorBuilder::allocate()
 
 std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
 {
-  // NOTE Find from User Tensor Registry first
-  // FIXME There may be both user tensor and native tensor for a `ind` which is a waste
-  auto user_tensor = _user_tensor_reg->getITensor(ind);
-  auto tensor = _tensor_reg->getITensor(ind);
-  if (user_tensor)
-  {
-    return user_tensor;
-  }
-  else
-    return tensor;
+  return _tensor_reg->getITensor(ind);
 }
 
 void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
+std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
-  return _tensor_reg->getNativeTensor(ind);
+  return _tensor_reg->getNativeOwnTensor(ind);
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
@@ -120,10 +123,10 @@ std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
   return std::move(_dynamic_tensor_mgr);
 }
 
-void TensorBuilder::setUserTensor(const ir::OperandIndex &ind,
-                                  const std::shared_ptr<UserTensor> &tensor)
+void TensorBuilder::setNativeUserTensor(const ir::OperandIndex &ind,
+                                        const std::shared_ptr<UserTensor> &tensor)
 {
-  _user_tensor_reg->setNativeTensor(ind, tensor);
+  _tensor_reg->setNativeUserTensor(ind, tensor);
 }
 
 } // namespace controlflow
