@@ -59,8 +59,7 @@ uint32_t CircleGen::addTensor(const TensorParams &params)
   return ind;
 }
 
-uint32_t CircleGen::setInputsAndOutputs(const std::vector<int> &inputs,
-                                        const std::vector<int> &outputs)
+void CircleGen::setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs)
 {
   _inputs = inputs;
   _outputs = outputs;
