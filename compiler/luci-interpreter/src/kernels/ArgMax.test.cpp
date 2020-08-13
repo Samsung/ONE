@@ -93,7 +93,7 @@ TYPED_TEST(ArgMaxTest, MultiDimensions)
                             /*dimension_data=*/{3}, /*output_data=*/{3, 1});
 }
 
-TEST(ArgMaxTest, UnsupportedType)
+TEST(ArgMaxTest, UnsupportedType_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4}, {
                                                                              1, 2, 7, 8, 1, 9, 7, 3,
