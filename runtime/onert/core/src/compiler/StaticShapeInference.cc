@@ -64,7 +64,7 @@ bool StaticShapeInferer::infer(const ir::OpSequence &op_seq)
 
 bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
 {
-  for (auto input_idx : op.getInputs())
+  for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     if (_operands.at(input_idx).info().isDynamic())
     {
