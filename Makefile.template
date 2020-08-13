@@ -154,7 +154,7 @@ runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
 	tar -zcf $(WORKSPACE)/nnfw-package.tar.gz -C $(INSTALL_PATH) lib
 	tar -zcf $(WORKSPACE)/nnfw-devel-package.tar.gz -C $(INSTALL_PATH) include/nnfw
 	tar -zcf $(WORKSPACE)/nnfw-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
-	tar -zcf $(WORKSPACE)/nnfw-test-package.tar.gz -C ${INSTALL_PATH} bin test unittest unittest_standalone
+	tar -zcf $(WORKSPACE)/nnfw-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
 acl_tar_internal: $(BUILD_FOLDER)
 	tar -zcf $(WORKSPACE)/nnfw-acl.tar.gz -C ${OVERLAY_FOLDER} lib
