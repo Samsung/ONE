@@ -78,7 +78,7 @@ public:
   }
   uint32_t addBuffer(const uint8_t *buf, size_t size);
   uint32_t addTensor(const TensorParams &params);
-  uint32_t setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
+  void setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
   CircleBuffer finish();
 
   // ===== Add Operator methods begin =====
