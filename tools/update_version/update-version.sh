@@ -12,10 +12,18 @@ usage() {
   echo ""
   echo "Options:"
   echo "    -h   show this help"
+  echo "    -v   show current version"
   echo ""
   echo "Examples:"
   echo "    $progname 1.6.0"
   exit 1
+}
+
+show_version() {
+  version_line=$(cat ${nnfw_root}/packaging/nnfw.spec | grep "Version:")
+  echo ${version_line#"Version:"}
+
+  exit 0
 }
 
 if [ $# -eq 0 ]; then
@@ -23,9 +31,10 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-while getopts "ho:" OPTION; do
+while getopts "hvo:" OPTION; do
 case "${OPTION}" in
     h) usage;;
+    v) show_version;;
     ?) exit 1;;
 esac
 done
