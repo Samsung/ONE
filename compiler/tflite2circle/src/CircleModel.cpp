@@ -119,6 +119,15 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       // is_variable
       bool is_variable = it->is_variable();
 
+      // shape signature
+      flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
+      if (it->shape_signature())
+      {
+        auto shape_signature_vec =
+            std::vector<int32_t>({it->shape_signature()->begin(), it->shape_signature()->end()});
+        shape_signature = fb->CreateVector(shape_signature_vec);
+      }
+
       circle::TensorBuilder tensor_builder{*fb};
       tensor_builder.add_shape(shape);
       tensor_builder.add_type(get_circle_tensortype(it->type()));
@@ -126,6 +135,7 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       tensor_builder.add_name(name);
       tensor_builder.add_quantization(quantization);
       tensor_builder.add_is_variable(is_variable);
+      tensor_builder.add_shape_signature(shape_signature);
       auto tensor = tensor_builder.Finish();
       tensor_vec.emplace_back(tensor);
     }
