@@ -67,8 +67,6 @@ public:
    */
   std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
 
-  void iterate(const IterateFunction &fn) override;
-
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }

@@ -101,8 +101,6 @@ bool TensorBuilder::setMigrantTensor(const ir::OperandIndex &ind,
   return _tensor_reg->setMigrantTensor(ind, tensor);
 }
 
-void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
-
 std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeTensor(ind);

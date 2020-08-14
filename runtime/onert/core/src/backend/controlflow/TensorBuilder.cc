@@ -106,8 +106,6 @@ std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
   return _tensor_reg->getITensor(ind);
 }
 
-void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
-
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeOwnTensor(ind);
