@@ -37,7 +37,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                                const T *input2_data, const Shape &output_shape, T *output_data,
                                const std::function<T(const T &, const T &)> &fn)
 {
-  const int32_t flat_size = MatchingFlatSize(input1_shape, input2_shape, output_shape);
+  const int32_t flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
   for (int i = 0; i < flat_size; ++i)
   {
     output_data[i] = ActivationFunctionWithMinMax(fn(input1_data[i], input2_data[i]),
@@ -53,7 +53,7 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                                float *output_data,
                                const std::function<float(const float &, const float &)> &fn)
 {
-  const int size = MatchingFlatSize(input1_shape, input2_shape, output_shape);
+  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
   for (int i = 0; i < size; i++)
   {
     output_data[i] =
