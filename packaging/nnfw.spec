@@ -203,10 +203,12 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
+%ifarch arm armv7l aarch64
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %{_bindir}/onert-minimal-app
+%endif
 
 %if %{test_build} == 1
 %files test
