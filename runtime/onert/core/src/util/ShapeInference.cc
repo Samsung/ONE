@@ -106,6 +106,37 @@ std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, c
   return {out_h, out_w};
 }
 
+std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
+                                               const int ker_w, const ir::Padding pad,
+                                               const ir::Stride stride, const ir::Dilation dilation)
+{
+  int32_t out_h = 0, out_w = 0;
+  int32_t effective_filter_w_size = (ker_w - 1) * dilation.width_factor + 1;
+  int32_t effective_filter_h_size = (ker_h - 1) * dilation.height_factor + 1;
+  switch (pad.type)
+  {
+    case ir::PaddingType::SAME:
+      out_h = ceil_div(in_h, stride.vertical);
+      out_w = ceil_div(in_w, stride.horizontal);
+      break;
+    case ir::PaddingType::VALID:
+      out_h = ceil_div(in_h - effective_filter_h_size + 1, stride.vertical);
+      out_w = ceil_div(in_w - effective_filter_w_size + 1, stride.horizontal);
+      break;
+    case ir::PaddingType::EXPLICIT:
+      out_h =
+          (in_h + pad.param.top + pad.param.bottom - effective_filter_h_size) / stride.vertical + 1;
+      out_w =
+          (in_w + pad.param.left + pad.param.right - effective_filter_w_size) / stride.horizontal +
+          1;
+      break;
+    default:
+      assert(false);
+  }
+
+  return {out_h, out_w};
+}
+
 ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape)
 {
   return broadcastShapes(lhs_shape, rhs_shape);
@@ -320,7 +351,7 @@ ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape
   assert(ifm_shape.C == kf_shape.C);
 
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride);
+                                                  param.padding, param.stride, param.dilation);
 
   return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N};
 }

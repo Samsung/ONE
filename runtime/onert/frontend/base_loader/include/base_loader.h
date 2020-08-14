@@ -527,7 +527,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConv2D(const Operator *op, ir
   const auto *options = op->builtin_options_as_Conv2DOptions();
   param.activation = convertActivation(options->fused_activation_function());
   loadStridesAndPaddings(param, options);
-  // Dilation h/w factor unused
+
+  param.dilation.width_factor = options->dilation_w_factor();
+  param.dilation.height_factor = options->dilation_h_factor();
+
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Conv2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }

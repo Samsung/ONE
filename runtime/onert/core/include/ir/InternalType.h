@@ -40,6 +40,12 @@ struct Stride
   uint32_t horizontal;
 };
 
+struct Dilation
+{
+  uint32_t width_factor;
+  uint32_t height_factor;
+};
+
 } // namespace ir
 } // namespace onert
 
