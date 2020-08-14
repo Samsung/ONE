@@ -96,22 +96,21 @@ TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
   }
 }
 
-TEST(ConcatenationTest, Unsupported_Execute_Type_NEG)
+TEST(ConcatenationTest, Invalid_Axis_NEG)
 {
-  std::vector<int16_t> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<int16_t> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor = makeInputTensor<DataType::S16>({2, 3}, input1_data);
-  Tensor input2_tensor = makeInputTensor<DataType::S16>({2, 3}, input2_data);
-  Tensor output_tensor = makeOutputTensor(DataType::S16);
+  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
+  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data);
+  Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
   // Try different 'axis' and expect different results.
   {
-    params.axis = -1;
+    params.axis = -3;
 
     Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    kernel.configure();
-    EXPECT_ANY_THROW(kernel.execute());
+    EXPECT_ANY_THROW(kernel.configure());
   }
 }
 

@@ -42,7 +42,10 @@ void Concatenation::configure()
   int axis = _params.axis;
   if (axis < 0)
     axis += t0->shape().num_dims();
-  assert(axis >= 0 && axis < t0->shape().num_dims());
+  if (axis < 0 || axis >= t0->shape().num_dims())
+  {
+    throw std::runtime_error("Axis value must be in range -(num_dims)<= axis < num_dims");
+  }
 
   int32_t sum_axis = t0->shape().dim(axis);
   for (int i = 1; i < num_inputs; ++i)
