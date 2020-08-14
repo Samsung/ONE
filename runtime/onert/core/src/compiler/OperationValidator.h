@@ -59,6 +59,7 @@ public:
   void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
   void visit(const ir::operation::SpaceToDepth &node) override;
+  void visit(const ir::operation::ElementwiseBinary &node) override;
   void visit(const ir::operation::EmbeddingLookup &node) override;
   void visit(const ir::operation::Exp &node) override;
   void visit(const ir::operation::ExpandDims &node) override;
@@ -73,8 +74,6 @@ public:
   void visit(const ir::operation::L2Normalization &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::Pad &node) override;
-  void visit(const ir::operation::Min &node) override;
-  void visit(const ir::operation::Max &node) override;
   void visit(const ir::operation::Select &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
   void visit(const ir::operation::Split &node) override;
@@ -91,7 +90,6 @@ public:
   void visit(const ir::operation::LogicalNot &node) override;
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::Tile &node) override;
-  void visit(const ir::operation::LogicalOr &node) override;
   void visit(const ir::operation::Range &node) override;
   void visit(const ir::operation::MatrixBandPart &node) override;
   void visit(const ir::operation::LogSoftmax &node) override;

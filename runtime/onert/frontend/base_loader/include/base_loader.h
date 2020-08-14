@@ -136,6 +136,8 @@ protected:
   void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
+  template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
+  void loadElementwiseBinary(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
   void loadExpandDims(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
@@ -150,8 +152,6 @@ protected:
   void loadSlice(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
-  void loadMinimum(const Operator *op, ir::Graph &subg);
-  void loadMaximum(const Operator *op, ir::Graph &subg);
   void loadCast(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
@@ -170,7 +170,6 @@ protected:
   void loadLogicalNot(const Operator *op, ir::Graph &subg);
   void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
-  void loadLogicalOr(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
@@ -1013,6 +1012,24 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogistic(const Operator *op, 
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Operator *op,
+                                                                     ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::ElementwiseBinary::Param param;
+  param.op_type = op_type;
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::ElementwiseBinary(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadExp(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1392,30 +1409,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMinimum(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Min(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMaximum(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Max(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCast(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1783,18 +1776,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalOr(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalOr(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1965,10 +1946,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadUnpack(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
-      loadMinimum(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MAXIMUM:
-      loadMaximum(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_CAST:
       loadCast(op, subg);
@@ -2024,7 +2005,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadLogicalNot(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
-      loadLogicalOr(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR>(
+          op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_FILL:
       loadFill(op, subg);

@@ -679,6 +679,70 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  switch (node.param().op_type)
+  {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
+    {
+      auto l = std::make_unique<::arm_compute::CLBinaryLogicalOp>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle(),
+                   arm_compute::BinaryLogicalOperation::AND);
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
+    {
+      auto l = std::make_unique<::arm_compute::CLBitwiseOr>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
+    {
+      auto l = std::make_unique<::arm_compute::CLElementwiseMax>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
+    {
+      auto l = std::make_unique<::arm_compute::CLElementwiseMin>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    default:
+    {
+      std::string err_msg("acl_cl KernelGenerator : " + node.name() +
+                          "is not elementwise-binary operations");
+      assert(false && err_msg.c_str());
+      break;
+    }
+  }
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::Exp &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -751,26 +815,6 @@ void KernelGenerator::visit(const ir::operation::Logistic &node)
   auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
 
   fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::LogicalAnd &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input0_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT0)};
-  const auto input1_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT1)};
-
-  auto output_tensor = _tensor_builder->at(output_index).get();
-  auto input0_tensor = _tensor_builder->at(input0_index).get();
-  auto input1_tensor = _tensor_builder->at(input1_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLBinaryLogicalOp>();
-
-  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
-                ::arm_compute::BinaryLogicalOperation::AND);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -1275,25 +1319,6 @@ void KernelGenerator::visit(const ir::operation::SQRT &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::LogicalOr &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input0_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT0)};
-  const auto input1_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT1)};
-
-  auto output_tensor = _tensor_builder->at(output_index).get();
-  auto input0_tensor = _tensor_builder->at(input0_index).get();
-  auto input1_tensor = _tensor_builder->at(input1_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLBitwiseOr>();
-
-  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::LogicalNot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1684,44 +1709,6 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   // It would produce a mistach of result
 
   _return_fn = asAclClFunction(std::move(fn));
-}
-
-void KernelGenerator::visit(const ir::operation::Min &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLElementwiseMin>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Max &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLElementwiseMax>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
 }
 
 void KernelGenerator::visit(const ir::operation::ConvertFp32ToFp16 &node)

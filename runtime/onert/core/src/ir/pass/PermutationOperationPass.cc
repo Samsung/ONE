@@ -236,6 +236,11 @@ void PermutationOperationPass::visit(const operation::Concat &node) { applyExpan
 
 void PermutationOperationPass::visit(const operation::Comparison &node) { applyExpandRanks(node); }
 
+void PermutationOperationPass::visit(const operation::ElementwiseBinary &node)
+{
+  applyExpandRanks(node);
+}
+
 void PermutationOperationPass::visit(const operation::FullyConnected &node)
 {
   const auto &input_ind = node.getInputs().at(operation::FullyConnected::Input::INPUT);
@@ -264,15 +269,7 @@ void PermutationOperationPass::visit(const operation::Gather &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::LogicalAnd &node) { applyExpandRanks(node); }
-
 void PermutationOperationPass::visit(const operation::LogicalNot &node) { applyExpandRanks(node); }
-
-void PermutationOperationPass::visit(const operation::LogicalOr &node) { applyExpandRanks(node); }
-
-void PermutationOperationPass::visit(const operation::Max &node) { applyExpandRanks(node); }
-
-void PermutationOperationPass::visit(const operation::Min &node) { applyExpandRanks(node); }
 
 void PermutationOperationPass::visit(const operation::Pack &node)
 {

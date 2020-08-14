@@ -47,6 +47,7 @@ public:
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::Dequantize &) override;
+  void visit(const operation::ElementwiseBinary &) override;
   void visit(const operation::EmbeddingLookup &) override;
   void visit(const operation::Exp &) override;
   void visit(const operation::ExpandDims &) override;
@@ -59,9 +60,7 @@ public:
   void visit(const operation::L2Pool2D &) override;
   void visit(const operation::LocalResponseNormalization &) override;
   void visit(const operation::Log &) override;
-  void visit(const operation::LogicalAnd &) override;
   void visit(const operation::LogicalNot &) override;
-  void visit(const operation::LogicalOr &) override;
   void visit(const operation::Logistic &) override;
   void visit(const operation::LSTM &) override;
   void visit(const operation::MaxPool2D &node) override;
@@ -101,8 +100,6 @@ public:
   void visit(const operation::TransposeConv &) override;
   void visit(const operation::Transpose &) override;
   void visit(const operation::Unpack &) override;
-  void visit(const operation::Min &) override;
-  void visit(const operation::Max &) override;
   void visit(const operation::OneHot &) override;
   void visit(const operation::If &) override;
   void visit(const operation::While &) override;

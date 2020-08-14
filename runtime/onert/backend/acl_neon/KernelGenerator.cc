@@ -428,6 +428,69 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  auto output_tensor = _tensor_builder->at(output_index).get();
+  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
+  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  switch (node.param().op_type)
+  {
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
+    {
+      auto l = std::make_unique<::arm_compute::NELogicalAnd>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
+    {
+      auto l = std::make_unique<::arm_compute::NELogicalOr>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
+    {
+      auto l = std::make_unique<::arm_compute::NEElementwiseMax>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
+    {
+      auto l = std::make_unique<::arm_compute::NEElementwiseMin>();
+
+      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
+
+      fn = std::move(l);
+      break;
+    }
+    default:
+    {
+      std::string err_msg("acl_neon KernelGenerator : " + node.name() +
+                          "is not elementwise-binary operations");
+      assert(false && err_msg.c_str());
+      break;
+    }
+  }
+
+  auto acl_fn = asAclFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -665,25 +728,6 @@ void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &nod
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::LogicalAnd &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input0_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT0)};
-  const auto input1_index{node.getInputs().at(ir::operation::LogicalAnd::Input::INPUT1)};
-
-  auto output_tensor = _tensor_builder->at(output_index).get();
-  auto input0_tensor = _tensor_builder->at(input0_index).get();
-  auto input1_tensor = _tensor_builder->at(input1_index).get();
-
-  auto fn = std::make_unique<::arm_compute::NELogicalAnd>();
-
-  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::LogicalNot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -695,25 +739,6 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   auto fn = std::make_unique<::arm_compute::NEBitwiseNot>();
 
   fn->configure(input_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::LogicalOr &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input0_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT0)};
-  const auto input1_index{node.getInputs().at(ir::operation::LogicalOr::Input::INPUT1)};
-
-  auto output_tensor = _tensor_builder->at(output_index).get();
-  auto input0_tensor = _tensor_builder->at(input0_index).get();
-  auto input1_tensor = _tensor_builder->at(input1_index).get();
-
-  auto fn = std::make_unique<::arm_compute::NELogicalOr>();
-
-  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclFunction(std::move(fn));
 
@@ -1652,44 +1677,6 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
 
   fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
                 (arm_compute::ComparisonOperation)comparison_type);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Min &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Min::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Min::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::NEElementwiseMin>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Max &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto lhs_index{node.getInputs().at(ir::operation::Max::Input::LHS)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Max::Input::RHS)};
-
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->at(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->at(rhs_index).get();
-
-  auto fn = std::make_unique<::arm_compute::NEElementwiseMax>();
-
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
   auto acl_fn = asAclFunction(std::move(fn));
 

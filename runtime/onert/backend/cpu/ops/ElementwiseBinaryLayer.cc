@@ -1,0 +1,149 @@
+/*
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "ElementwiseBinaryLayer.h"
+
+#include "OperationUtils.h"
+
+#include <cker/operation/LogicalOr.h>
+#include <cker/operation/MaxMin.h>
+
+namespace onert
+{
+namespace backend
+{
+namespace cpu
+{
+namespace ops
+{
+
+namespace
+{
+template <typename T>
+void logicalOrGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                      IPortableTensor *output)
+{
+  if (!HaveSameShapes(lhs, rhs))
+  {
+    nnfw::cker::LogicalOrBroadcast<T>(
+        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()), getTensorShape(rhs),
+        reinterpret_cast<const T *>(rhs->buffer()), getTensorShape(output),
+        reinterpret_cast<T *>(output->buffer()));
+  }
+  else
+  {
+    nnfw::cker::LogicalOrElementwise<T>(
+        getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+        reinterpret_cast<const T *>(rhs->buffer()), reinterpret_cast<T *>(output->buffer()));
+  }
+}
+
+template <typename T>
+void maximumGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
+{
+  nnfw::cker::Max<T>(getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                     getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
+}
+
+template <typename T>
+void minimumGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output)
+{
+  nnfw::cker::Min<T>(getTensorShape(lhs), reinterpret_cast<const T *>(lhs->buffer()),
+                     getTensorShape(rhs), reinterpret_cast<const T *>(rhs->buffer()),
+                     getTensorShape(output), reinterpret_cast<T *>(output->buffer()));
+}
+
+bool haveSameQauntInfo(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                       const IPortableTensor *output)
+{
+  return (lhs->data_scale() == rhs->data_scale() && lhs->data_scale() == output->data_scale()) &&
+         (lhs->data_offset() == rhs->data_offset() && lhs->data_offset() == output->data_offset());
+}
+} // namespace
+
+void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                                       IPortableTensor *output, const ElementwiseBinaryType op_type)
+{
+  assert(lhs != nullptr);
+  assert(rhs != nullptr);
+  assert(output != nullptr);
+
+  _lhs = lhs;
+  _rhs = rhs;
+  _output = output;
+  _op_type = op_type;
+}
+
+void ElementwiseBinaryLayer::run()
+{
+  switch (_op_type)
+  {
+    case ElementwiseBinaryType::kLogicalOr:
+      if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
+      {
+        logicalOrGeneric<bool>(_lhs, _rhs, _output);
+      }
+      else
+      {
+        throw std::runtime_error{"LogicalOr: Unsupported data type"};
+      }
+      break;
+    case ElementwiseBinaryType::kMax:
+      if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
+      {
+        if (!haveSameQauntInfo(_lhs, _rhs, _output))
+        {
+          throw std::runtime_error("Max NYI for quantized");
+        }
+        maximumGeneric<uint8_t>(_lhs, _rhs, _output);
+      }
+      else if (_lhs->data_type() == OperandType::FLOAT32)
+      {
+        maximumGeneric<float>(_lhs, _rhs, _output);
+      }
+      else
+      {
+        throw std::runtime_error{"Max: unsupported data type"};
+      }
+      break;
+    case ElementwiseBinaryType::kMin:
+      if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
+      {
+        if (!haveSameQauntInfo(_lhs, _rhs, _output))
+        {
+          throw std::runtime_error("Min NYI for quantized");
+        }
+        minimumGeneric<uint8_t>(_lhs, _rhs, _output);
+      }
+      else if (_lhs->data_type() == OperandType::FLOAT32)
+      {
+        minimumGeneric<float>(_lhs, _rhs, _output);
+      }
+      else
+      {
+        throw std::runtime_error{"Min: unsupported data type"};
+      }
+      break;
+    default:
+      throw std::runtime_error{"ElementwiseBinary: Unsupported ElementwiseBinary type"};
+  }
+}
+
+} // namespace ops
+} // namespace cpu
+} // namespace backend
+} // namespace onert

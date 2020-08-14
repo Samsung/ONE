@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_MIN_H__
-#define __ONERT_IR_OPERATION_MIN_H__
+#ifndef __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__
+#define __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__
 
 #include "ir/Operation.h"
 
@@ -26,7 +26,7 @@ namespace ir
 namespace operation
 {
 
-class Min : public Operation
+class ElementwiseBinary : public Operation
 {
 public:
   enum Input
@@ -35,16 +35,37 @@ public:
     RHS
   };
 
+  enum class ElementwiseBinaryType
+  {
+    LOGICAL_AND,
+    LOGICAL_OR,
+    MAX,
+    MIN
+  };
+
+  struct Param
+  {
+    ElementwiseBinaryType op_type;
+  };
+
 public:
-  Min(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
+  ElementwiseBinary(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                    const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Min; }
+  std::string name() const override;
+  OpCode opcode() const final { return OpCode::ElementwiseBinary; }
+
+public:
+  const Param &param() const { return _param; }
+
+private:
+  Param _param;
 };
 
 } // namespace operation
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_MIN_H__
+#endif // __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__

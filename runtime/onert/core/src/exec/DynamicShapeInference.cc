@@ -297,6 +297,12 @@ void DynamicShapeInferer::visit(const ir::operation::Cos &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
+void DynamicShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
+{
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS),
+                           op.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS));
+}
+
 void DynamicShapeInferer::visit(const ir::operation::Exp &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Exp::Input::INPUT));
@@ -434,12 +440,6 @@ void DynamicShapeInferer::visit(const ir::operation::LogicalNot &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::LogicalOr &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::LogicalOr::Input::INPUT0),
-                           op.getInputs().at(ir::operation::LogicalOr::Input::INPUT1));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::Logistic &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::INPUT));
@@ -453,18 +453,6 @@ void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
 void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Max &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Max::Input::LHS),
-                           op.getInputs().at(ir::operation::Max::Input::RHS));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Min &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
-                           op.getInputs().at(ir::operation::Min::Input::RHS));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Neg &op)
