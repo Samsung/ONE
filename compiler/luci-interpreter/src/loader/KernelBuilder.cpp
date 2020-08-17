@@ -42,6 +42,7 @@
 #include "kernels/SpaceToDepth.h"
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
+#include "kernels/Sqrt.h"
 #include "kernels/Squeeze.h"
 #include "kernels/Tanh.h"
 #include "kernels/Unpack.h"
@@ -482,6 +483,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSplit *node)
 
   // NOTE 'num_splits' attribute is ignored.
   return std::make_unique<kernels::Split>(axis, input, std::move(outputs));
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqrt *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Sqrt>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSqueeze *node)
