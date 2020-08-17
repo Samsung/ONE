@@ -1126,9 +1126,14 @@ public:
     const loco::DataType S32 = loco::DataType::S32;
 
     auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+    auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
 
-    // TODO support non-const case
+    if (!paddings)
+    {
+      auto node_shape = own_shape(node);
+      return loco::NodeShape{node_shape};
+    }
+
     // TODO support other data type
     LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
     LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
