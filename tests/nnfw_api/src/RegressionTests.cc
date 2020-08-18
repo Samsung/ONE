@@ -17,6 +17,10 @@
 #include "fixtures.h"
 #include "NNPackages.h"
 
+#include <nnfw_internal.h>
+
+#include "CircleGen.h"
+
 TEST_F(RegressionTest, github_1535)
 {
   auto package_path = NNPackages::get().getModelAbsolutePath(NNPackages::ADD);
@@ -35,4 +39,24 @@ TEST_F(RegressionTest, github_1535)
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session1));
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session2));
+}
+
+TEST_F(RegressionTest, neg_github_3826)
+{
+  // Model is not important
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+  auto cbuf = cgen.finish();
+
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+  // To test when there is no backends loaded for the session
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "unavailable_backend"));
+  ASSERT_EQ(nnfw_prepare(session), NNFW_STATUS_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }
