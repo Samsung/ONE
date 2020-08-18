@@ -1,27 +1,27 @@
 operand {
   name: "ifm1"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
 }
 operand {
   name: "ifm2"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
 }
 operand {
   name: "ofm_add"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
 }
 operand {
   name: "ofm_sub"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
 }
 operand {
   name: "ofm_mul"
   type: FLOAT32
-  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
 }
 
 operation {
