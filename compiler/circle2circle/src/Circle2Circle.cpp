@@ -176,8 +176,13 @@ int entry(int argc, char **argv)
 
     if (!luci::validate(graph))
     {
-      std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
-      return 255;
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+        std::cerr << "WARNING: Optimized graph is invalid" << std::endl;
+      else
+      {
+        std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
+        return 255;
+      }
     }
   }
 
