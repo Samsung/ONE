@@ -1,0 +1,64 @@
+operand {
+  name: "ifm1"
+  type: UINT8
+  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.5 zero_point: 0 }
+}
+operand {
+  name: "ifm2"
+  type: UINT8
+  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.5 zero_point: 0 }
+}
+operand {
+  name: "ofm_add"
+  type: UINT8
+  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.5 zero_point: 0 }
+}
+operand {
+  name: "ofm_sub"
+  type: UINT8
+  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.5 zero_point: 0 }
+}
+operand {
+  name: "ofm_mul"
+  type: UINT8
+  shape { dim: 1 dim: 64 dim: 48 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.5 zero_point: 0 }
+}
+
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sub"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_mul"
+  mul_options {
+    activation: NONE
+  }
+}
+
+input: "ifm1"
+input: "ifm2"
+output: "ofm_add"
+output: "ofm_sub"
+output: "ofm_mul"

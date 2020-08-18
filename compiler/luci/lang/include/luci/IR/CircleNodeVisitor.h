@@ -50,7 +50,7 @@ template <typename T> struct CircleNodeVisitor : public CircleNodeVisitorBase<T>
 #undef CIRCLE_NODE
 
   /// @brief Default fallback
-  virtual T visit(const CircleNode *) { INTERNAL_EXN("CircleNodeVisitor: NYI node"); }
+  virtual T visit(const CircleNode *node) { INTERNAL_EXN("CircleNodeVisitor: NYI node " + node->name()); }
 };
 
 /**
