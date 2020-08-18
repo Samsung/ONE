@@ -77,7 +77,7 @@ private:
 private:
   std::mutex _mu;
   // TODO: Allow user to control write_format
-  WriteFormat _write_format{WriteFormat::MD_TABLE};
+  WriteFormat _write_format{WriteFormat::SNPE_BENCHMARK};
   std::vector<DurationEvent> _duration_events;
   std::vector<CounterEvent> _counter_events;
 };
