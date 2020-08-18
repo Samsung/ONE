@@ -547,6 +547,8 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *no
   const Tensor *filter = getInputTensor(node->filter());
   const Tensor *out_backprop = getInputTensor(node->outBackprop());
   const Tensor *bias = nullptr;
+  // TODO Add Bias node and after luci updated as arity 4.
+  // const Tensor *bias = getInputTensor(node->bias());
 
   Tensor *output = getOutputTensor(node);
 

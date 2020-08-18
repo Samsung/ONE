@@ -63,10 +63,9 @@ set(SOURCES
     TransposeConv.h
     TransposeConv.cpp
     Unpack.h
-    Unpack.cpp
-    ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+    Unpack.cpp)
 
-list(APPEND SOURCES Utils.h Utils.cpp)
+list(APPEND SOURCES Utils.h Utils.cpp ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
 
 add_library(luci_interpreter_kernels STATIC ${SOURCES})
 set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
