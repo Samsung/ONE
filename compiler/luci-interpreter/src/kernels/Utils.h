@@ -31,6 +31,11 @@ namespace luci_interpreter
 namespace kernels
 {
 
+#define throwIfConditionFalse(a)                                                      \
+  if (!(a))                                                                           \
+    throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + \
+                             " was not true.");
+
 inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_size,
                               int32_t filter_size, int32_t out_size)
 {
@@ -86,8 +91,6 @@ void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
 // Restricted to the case where the multiplier < 1 (and non-negative).
 void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
                                          int *left_shift);
-
-void throwIfConditionFalse(bool condition, const char *message);
 
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
 
