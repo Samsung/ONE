@@ -1,6 +1,7 @@
-nnas_find_package(TensorFlowSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.1.0 QUIET)
-nnas_find_package(TensorFlowEigenSource EXACT 2.1.0 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowEigenSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowRuySource EXACT 2.3.0 QUIET)
 
 if (NOT TensorFlowSource_FOUND)
   message(STATUS "Skipping luci-interpreter: TensorFlow not found")
@@ -14,6 +15,11 @@ endif ()
 
 if (NOT TensorFlowEigenSource_FOUND)
   message(STATUS "Skipping luci-interpreter: Eigen not found")
+  return()
+endif ()
+
+if (NOT TensorFlowRuySource_FOUND)
+  message(STATUS "Skipping luci-interpreter: Ruy not found")
   return()
 endif ()
 

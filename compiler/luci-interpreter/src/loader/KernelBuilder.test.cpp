@@ -693,6 +693,7 @@ TEST_F(KernelBuilderTest, TransposeConv)
   auto *output_shape = createInputNode();
   auto *filter = createInputNode();
   auto *input = createInputNode();
+  auto *bias = createInputNode();
 
   auto *op = createNode<luci::CircleTransposeConv>();
   op->inputSizes(output_shape);

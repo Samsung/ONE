@@ -29,11 +29,12 @@ class TransposeConv : public KernelWithParams<TransposeConvParams>
 {
 public:
   TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
-                Tensor *output, const TransposeConvParams &params);
+                const Tensor *bias, Tensor *output, const TransposeConvParams &params);
 
   const Tensor *output_shape() const { return _inputs[0]; }
   const Tensor *filter() const { return _inputs[1]; }
   const Tensor *input() const { return _inputs[2]; }
+  const Tensor *bias() const { return _inputs[3]; }
   Tensor *output() const { return _outputs[0]; }
 
   void configure() override;

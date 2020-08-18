@@ -41,9 +41,10 @@ private:
   void evalQuantized() const;
 
 private:
-  uint8_t _q_alpha = 0;
-  int32_t _output_multiplier = 0;
-  int _output_shift = 0;
+  int32_t _output_multiplier_alpha = 0;
+  int _output_shift_alpha = 0;
+  int32_t _output_multiplier_identity = 0;
+  int _output_shift_identity = 0;
 };
 
 } // namespace kernels
