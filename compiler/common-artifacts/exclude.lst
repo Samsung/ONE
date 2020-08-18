@@ -193,10 +193,10 @@ tcgenerate(YUV_TO_RGB_U8_000)
 tcgenerate(ZerosLike_000)
 tcgenerate(RT_Arithmetic)
 tcgenerate(RT_Arithmetic_U8)
-tcgenerate(RT_Unary_Eltwise)
-tcgenerate(RT_Unary_Eltwise_U8)
 tcgenerate(RT_Comparison)
 tcgenerate(RT_Comparison_U8)
+tcgenerate(RT_Unary)
+tcgenerate(RT_Unary_U8)
 
 ## CircleRecipes
 tcgenerate(BCQFullyConnected_000)

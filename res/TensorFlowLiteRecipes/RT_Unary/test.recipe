@@ -1,32 +1,43 @@
 operand {
   name: "input"
-  type: UINT8
+  type: FLOAT32
   shape { dim: 1 dim: 640 dim: 480 dim: 10 }
-  quant { min: 0 max: 2 scale: 0.0078125 zero_point: 128 }
 }
 operand {
   name: "output_l2_norm"
-  type: UINT8
+  type: FLOAT32
   shape { dim: 1 dim: 640 dim: 480 dim: 10 }
-  quant { min: 0 max: 2 scale: 0.0078125 zero_point: 128 }
 }
 operand {
   name: "output_log_softmax"
-  type: UINT8
+  type: FLOAT32
   shape { dim: 1 dim: 640 dim: 480 dim: 10 }
-  quant { min: 0 max: 2 scale: 0.0625 zero_point: 255 }
 }
 operand {
   name: "output_logistic"
-  type: UINT8
+  type: FLOAT32
   shape { dim: 1 dim: 640 dim: 480 dim: 10 }
-  quant { min: 0 max: 1 scale: 0.00390625 zero_point: 0 }
 }
 operand {
   name: "output_tanh"
-  type: UINT8
+  type: FLOAT32
   shape { dim: 1 dim: 640 dim: 480 dim: 10 }
-  quant { min: 0 max: 2 scale: 0.0078125 zero_point: 0 }
+}
+operand {
+  name: "output_reduce_mean"
+  type: FLOAT32
+  shape { dim: 1 dim: 10 }
+}
+operand {
+  name: "output_reduce_sum"
+  type: FLOAT32
+  shape { dim: 1 dim: 10 }
+}
+operand {
+  name: "reduction_indices"
+  type: INT32
+  shape { dim: 2 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
 }
 
 operation {
@@ -54,9 +65,29 @@ operation {
   input: "input"
   output: "output_tanh"
 }
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: false
+  }
+  input: "input"
+  input: "reduction_indices"
+  output: "output_reduce_mean"
+}
+operation {
+  type: "Sum"
+  sum_options {
+    keep_dims: false
+  }
+  input: "input"
+  input: "reduction_indices"
+  output: "output_reduce_sum"
+}
 
 input: "input"
 output: "output_l2_norm"
 output: "output_log_softmax"
 output: "output_logistic"
 output: "output_tanh"
+output: "output_reduce_mean"
+output: "output_reduce_sum"
