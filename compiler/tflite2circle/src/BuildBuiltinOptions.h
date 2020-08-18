@@ -63,6 +63,7 @@
 #include "BuildBuiltinOptions/MulOptions.h"
 #include "BuildBuiltinOptions/NegOptions.h"
 #include "BuildBuiltinOptions/NonMaxSuppressionV4Options.h"
+#include "BuildBuiltinOptions/NonMaxSuppressionV5Options.h"
 #include "BuildBuiltinOptions/NotEqualOptions.h"
 #include "BuildBuiltinOptions/OneHotOptions.h"
 #include "BuildBuiltinOptions/PackOptions.h"
