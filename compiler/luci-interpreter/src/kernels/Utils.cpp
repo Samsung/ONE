@@ -178,5 +178,14 @@ Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_
   return output_shape;
 }
 
+void throwIfConditionFalse(bool condition, const char *message)
+{
+  if (condition)
+  {
+    return;
+  }
+  throw std::runtime_error(message);
+}
+
 } // namespace kernels
 } // namespace luci_interpreter

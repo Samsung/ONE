@@ -47,21 +47,25 @@ void Conv2D::configure()
   // We only support (1) and (3) for now.
   if (input()->element_type() == DataType::FLOAT32 && filter()->element_type() == DataType::FLOAT32)
   {
-    assert(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
+    throwIfConditionFalse(bias() == nullptr || bias()->element_type() == DataType::FLOAT32,
+                          "Input and bias type must be (Float, Float) or (Uint8, Int32)");
   }
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
-    assert(bias() == nullptr || bias()->element_type() == DataType::S32);
+    throwIfConditionFalse(bias() == nullptr || bias()->element_type() == DataType::S32,
+                          "Input and bias type must be (Float, Float) or (Uint8, Int32)");
   }
   else
   {
     throw std::runtime_error("Unsupported type.");
   }
-  assert(output()->element_type() == input()->element_type());
+  throwIfConditionFalse(output()->element_type() == input()->element_type(),
+                        "input and output type mismatch");
 
   const Shape &input_shape = input()->shape();
   const Shape &filter_shape = filter()->shape();
-  assert(input_shape.num_dims() == 4 && filter_shape.num_dims() == 4);
+  throwIfConditionFalse(input_shape.num_dims() == 4 && filter_shape.num_dims() == 4,
+                        "Invalid dimension");
 
   const int32_t batches = input_shape.dim(0);
   const int32_t input_height = input_shape.dim(1);
@@ -69,10 +73,12 @@ void Conv2D::configure()
   const int32_t output_depth = filter_shape.dim(0);
   const int32_t filter_height = filter_shape.dim(1);
   const int32_t filter_width = filter_shape.dim(2);
-  assert(filter_shape.dim(3) == input_shape.dim(3));
+  throwIfConditionFalse(filter_shape.dim(3) == input_shape.dim(3),
+                        "dim[3] of input shape and filter shape must be same.");
 
-  assert(bias() == nullptr ||
-         (bias()->shape().num_dims() == 1 && bias()->shape().dim(0) == output_depth));
+  throwIfConditionFalse(bias() == nullptr || (bias()->shape().num_dims() == 1 &&
+                                              bias()->shape().dim(0) == output_depth),
+                        "Num_elements of Bias must same with dim[0] of filter shape");
 
   const int32_t output_height =
       computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,

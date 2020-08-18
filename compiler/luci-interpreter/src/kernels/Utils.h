@@ -87,6 +87,8 @@ void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
 void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
                                          int *left_shift);
 
+void throwIfConditionFalse(bool condition, const char *message);
+
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
 
 inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
