@@ -30,7 +30,7 @@ function get_result_of_benchmark_test()
         exit $RET
     fi
 
-    local RESULT=`grep -E '^- Mean:' $LOG_FILE | sed -e 's/ms//g' | awk '{print $3}'`
+    local RESULT=`grep -E '^- MEAN ' $LOG_FILE | awk '{print $4}'`
     echo "$RESULT"
 }
 
