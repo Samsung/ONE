@@ -146,6 +146,8 @@ struct MDContent
     // DO NOTHING
   }
 
+  virtual ~MDContent() = default;
+
   void updateRss(uint32_t rss)
   {
     if (min_rss == UINT32_MAX)
