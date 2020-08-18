@@ -100,7 +100,7 @@ int entry(int argc, char **argv)
       .nargs(0)
       .required(false)
       .default_value(false)
-      .help("This will turn off operator vaidations. May help input model investigation.");
+      .help("This will turn off operator validations. May help input model investigation.");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
