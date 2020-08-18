@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_MAXPOOLLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_MAXPOOLLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
@@ -31,22 +31,25 @@ namespace cpu
 namespace ops
 {
 
-class MaxPoolLayer : public ::onert::exec::IFunction
+enum class PoolType
+{
+  kAvg,
+  kL2,
+  kMax,
+};
+
+class PoolLayer : public ::onert::exec::IFunction
 {
 public:
-  MaxPoolLayer();
+  PoolLayer();
 
 public:
-  void maxPoolFloat32();
-
-  void maxPoolQuant8();
-
   void configure(const IPortableTensor *input, const uint32_t paddingLeft,
                  const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t kernelWidth,
                  const uint32_t kernelHeight, const ir::Activation activation,
-                 IPortableTensor *output);
+                 IPortableTensor *output, const PoolType op_type);
 
   void run() override;
 
@@ -65,6 +68,7 @@ private:
   uint32_t _kernelHeight;
 
   ir::Activation _activation;
+  PoolType _op_type;
 };
 
 } // namespace ops
@@ -72,4 +76,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_MAXPOOLLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__

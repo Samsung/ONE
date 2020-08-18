@@ -40,8 +40,6 @@ public:
   void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::MaxPool2D &) override;
-  void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Reduce &) override;
@@ -61,6 +59,7 @@ public:
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::Pack &) override;
+  void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::ReLU &) override;
@@ -71,7 +70,6 @@ public:
   void visit(const ir::operation::Floor &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::SpaceToDepth &) override;
-  void visit(const ir::operation::L2Pool2D &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::HashtableLookup &) override;

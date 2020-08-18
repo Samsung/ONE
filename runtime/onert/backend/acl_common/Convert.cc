@@ -265,6 +265,21 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
   }
 }
 
+arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir)
+{
+  switch (pool_type_ir)
+  {
+    case ir::operation::Pool2D::PoolType::AVG:
+      return arm_compute::PoolingType::AVG;
+    case ir::operation::Pool2D::PoolType::L2:
+      return arm_compute::PoolingType::L2;
+    case ir::operation::Pool2D::PoolType::MAX:
+      return arm_compute::PoolingType::MAX;
+    default:
+      throw std::runtime_error("convertPoolType: Not supported operation yet");
+  }
+}
+
 arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir)
 {
   switch (reduce_type_ir)

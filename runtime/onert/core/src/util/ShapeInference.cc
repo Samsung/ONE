@@ -18,8 +18,6 @@
 #include "util/Utils.h"
 #include "ir/InternalType.h"
 #include "ir/Shape.h"
-#include "ir/operation/AvgPool2D.h"
-#include "ir/operation/MaxPool2D.h"
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
@@ -124,17 +122,6 @@ ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank)
   }
 
   return out_shape;
-}
-
-ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
-                            const ir::Layout layout)
-{
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
-                                                  param.padding, param.stride);
-  // Pooling don't change number of channels and batch size
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
 ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> &axes,
@@ -411,17 +398,6 @@ ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indice
   return out_shape;
 }
 
-ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                            const ir::Layout layout)
-{
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
-                                                  param.padding, param.stride);
-  // Pooling don't change number of channels and batch size
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
-}
-
 ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis)
 {
   assert(depth >= 0);
@@ -484,6 +460,17 @@ ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const
   }
 
   return ret;
+}
+
+ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
+                         const ir::Layout layout)
+{
+  assert(layout == ir::Layout::NHWC);
+  auto ifm_shape = in_shape.asFeature(layout);
+  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
+                                                  param.padding, param.stride);
+  // Pooling don't change number of channels and batch size
+  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
 }
 
 ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t output_height,

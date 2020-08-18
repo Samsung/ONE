@@ -47,8 +47,9 @@ TEST(ShapeInference, Pool2DNodeSame)
   Stride stride{3, 7};
   Padding padding{PaddingType::SAME};
 
-  operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
+  operation::Pool2D::Param avg_pool_param{
+      operation::Pool2D::PoolType::AVG, 3, 6, stride, padding, Activation::NONE};
+  auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -56,8 +57,9 @@ TEST(ShapeInference, Pool2DNodeSame)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
-  operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
+  operation::Pool2D::Param max_pool_param{
+      operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
+  infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -72,8 +74,9 @@ TEST(ShapeInference, Pool2DNodeValid)
   Stride stride{3, 7};
   Padding padding{PaddingType::VALID};
 
-  operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
+  operation::Pool2D::Param avg_pool_param{
+      operation::Pool2D::PoolType::AVG, 3, 6, stride, padding, Activation::NONE};
+  auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -81,8 +84,9 @@ TEST(ShapeInference, Pool2DNodeValid)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
-  operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
+  operation::Pool2D::Param max_pool_param{
+      operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
+  infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -98,8 +102,9 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   Stride stride{3, 7};
   Padding padding{4, 3, 2, 1};
 
-  operation::AvgPool2D::Param avg_pool_param{3, 6, stride, padding, Activation::NONE};
-  auto infered_out_shape = onert::shape_inference::inferAvgPoolShape(in_shape, avg_pool_param);
+  operation::Pool2D::Param avg_pool_param{
+      operation::Pool2D::PoolType::AVG, 3, 6, stride, padding, Activation::NONE};
+  auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
@@ -107,8 +112,9 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 
-  operation::MaxPool2D::Param max_pool_param{3, 6, stride, padding, Activation::NONE};
-  infered_out_shape = onert::shape_inference::inferMaxPoolShape(in_shape, max_pool_param);
+  operation::Pool2D::Param max_pool_param{
+      operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
+  infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);

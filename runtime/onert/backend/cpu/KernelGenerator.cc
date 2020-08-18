@@ -18,7 +18,6 @@
 
 #include "ops/AbsLayer.h"
 #include "ops/ArgMinMaxLayer.h"
-#include "ops/AvgPoolLayer.h"
 #include "ops/BatchToSpaceNDLayer.h"
 #include "ops/BinaryArithmeticLayer.h"
 #include "ops/CastLayer.h"
@@ -36,13 +35,13 @@
 #include "ops/GatherLayer.h"
 #include "ops/LogLayer.h"
 #include "ops/LogisticLayer.h"
-#include "ops/MaxPoolLayer.h"
 #include "ops/MeanLayer.h"
 #include "ops/NegLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
 #include "ops/PackLayer.h"
 #include "ops/PadLayer.h"
+#include "ops/PoolLayer.h"
 #include "ops/PowLayer.h"
 #include "ops/RangeLayer.h"
 #include "ops/ReduceLayer.h"
@@ -126,6 +125,19 @@ convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinary
       return ops::ElementwiseBinaryType::kMax;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
       return ops::ElementwiseBinaryType::kMin;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Pool2D::PoolType::AVG:
+      return ops::PoolType::kAvg;
+    case ir::operation::Pool2D::PoolType::MAX:
+      return ops::PoolType::kMax;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -290,57 +302,6 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
                 padding.bottom, stride.horizontal, stride.vertical, multiplier, activation,
                 ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::MaxPool2D::Input::INPUT)};
-
-  const auto kh = node.param().kh;
-  const auto kw = node.param().kw;
-
-  const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-  const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
-
-  auto fn = std::make_unique<ops::MaxPoolLayer>();
-
-  fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
-                stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::AvgPool2D::Input::INPUT)};
-
-  const auto kh = node.param().kh;
-  const auto kw = node.param().kw;
-  const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
-  const auto padding =
-      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
-  const auto activation = node.param().activation;
-
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
-
-  auto fn = std::make_unique<ops::AvgPoolLayer>();
-
-  fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
-                stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -1107,6 +1068,32 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
   fn->configure(input_tensor, output_tensor, axis, /* is_arg_max */ true);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto stride = node.param().stride;
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_op_seq_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_op_seq_layout);
+  const auto padding =
+      ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
+  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+
+  auto fn = std::make_unique<ops::PoolLayer>();
+
+  fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
+                stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor,
+                convertPoolType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }

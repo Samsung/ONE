@@ -32,7 +32,16 @@ namespace cker
 {
 
 // TODO Change to apply neon for this function if it is faster
-inline void AveragePool(const PoolParams &params, const Shape &input_shape, const float *input_data,
+template <typename T>
+void AveragePool(const PoolParams &, const Shape &, const T *, const Shape &, T *)
+{
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "cker::MaxPool : This function supports only integer or floating point");
+  throw std::runtime_error("cker::AveragePool : Unsupported data type");
+}
+
+template <>
+void AveragePool<float>(const PoolParams &params, const Shape &input_shape, const float *input_data,
                         const Shape &output_shape, float *output_data)
 {
   assert(input_shape.DimensionsCount() == 4);
@@ -371,8 +380,10 @@ inline void AveragePool32(const PoolParams &params, const Shape &input_shape,
   }
 }
 
-inline void AveragePool(const PoolParams &params, const Shape &input_shape,
-                        const uint8_t *input_data, const Shape &output_shape, uint8_t *output_data)
+template <>
+void AveragePool<uint8_t>(const PoolParams &params, const Shape &input_shape,
+                          const uint8_t *input_data, const Shape &output_shape,
+                          uint8_t *output_data)
 {
   if (params.filter_height * params.filter_width > 16 * 16)
   {

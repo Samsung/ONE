@@ -70,17 +70,6 @@ void OperationValidator::operator()()
 
 void OperationValidator::visit(const ir::operation::Abs &node) { checkUnaryOp(node); }
 
-void OperationValidator::visit(const ir::operation::AvgPool2D &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
-    return;
-
-  const auto ifm_index{node.getInputs().at(ir::operation::AvgPool2D::Input::INPUT)};
-
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
-}
-
 void OperationValidator::visit(const ir::operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
@@ -175,6 +164,17 @@ void OperationValidator::visit(const ir::operation::InstanceNorm &node)
   OP_REQUIRES(_ctx.at(ifm_index).shape() == _ctx.at(ofm_index).shape());
   OP_REQUIRES(_ctx.at(gamma_index).shape().rank() == 1);
   OP_REQUIRES(_ctx.at(beta_index).shape().rank() == 1);
+}
+
+void OperationValidator::visit(const ir::operation::Pool2D &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (_ctx.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+
+  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
 }
 
 void OperationValidator::visit(const ir::operation::Permute &node)

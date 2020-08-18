@@ -31,7 +31,15 @@ namespace nnfw
 namespace cker
 {
 
-inline void MaxPool(const PoolParams &params, const Shape &input_shape, const float *input_data,
+template <typename T> void MaxPool(const PoolParams &, const Shape &, const T *, const Shape &, T *)
+{
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "cker::MaxPool : This function supports only integer or floating point");
+  throw std::runtime_error("cker::MaxPool : Unsupported data type");
+}
+
+template <>
+void MaxPool<float>(const PoolParams &params, const Shape &input_shape, const float *input_data,
                     const Shape &output_shape, float *output_data)
 {
   assert(input_shape.DimensionsCount() == 4);
@@ -86,8 +94,9 @@ inline void MaxPool(const PoolParams &params, const Shape &input_shape, const fl
   }
 }
 
-inline void MaxPool(const PoolParams &params, const Shape &input_shape, const uint8_t *input_data,
-                    const Shape &output_shape, uint8_t *output_data)
+template <>
+void MaxPool<uint8_t>(const PoolParams &params, const Shape &input_shape, const uint8_t *input_data,
+                      const Shape &output_shape, uint8_t *output_data)
 {
 
   // Here, and in other pooling ops, in order to maintain locality of reference,

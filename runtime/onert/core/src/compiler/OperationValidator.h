@@ -45,7 +45,6 @@ public:
 
 public:
   void visit(const ir::operation::Abs &node) override;
-  void visit(const ir::operation::AvgPool2D &node) override;
   void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::Cast &node) override;
@@ -53,6 +52,7 @@ public:
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;
   void visit(const ir::operation::Permute &node) override;
+  void visit(const ir::operation::Pool2D &node) override;
   void visit(const ir::operation::Reduce &node) override;
   void visit(const ir::operation::Transpose &node) override;
   void visit(const ir::operation::RNN &node) override;
