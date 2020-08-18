@@ -1,0 +1,126 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_eq"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_gt"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_ge"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_lt"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_le"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_ne"
+  type: BOOL
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_max"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "ofm_min"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+
+operation {
+  type: "Equal"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_eq"
+  equal_options {
+  }
+}
+operation {
+  type: "Greater"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_gt"
+  greater_options {
+  }
+}
+operation {
+  type: "GreaterEqual"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_ge"
+  greaterequal_options {
+  }
+}
+operation {
+  type: "Less"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_lt"
+  less_options {
+  }
+}
+operation {
+  type: "LessEqual"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_le"
+  lessequal_options {
+  }
+}
+operation {
+  type: "NotEqual"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_ne"
+  notequal_options {
+  }
+}
+operation {
+  type: "Maximum"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_max"
+  maximum_options {
+  }
+}
+operation {
+  type: "Minimum"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm_min"
+  minimum_options {
+  }
+}
+
+input: "ifm1"
+input: "ifm2"
+output: "ofm_eq"
+output: "ofm_gt"
+output: "ofm_ge"
+output: "ofm_lt"
+output: "ofm_le"
+output: "ofm_ne"
+output: "ofm_max"
+output: "ofm_min"

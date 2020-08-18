@@ -195,6 +195,8 @@ tcgenerate(RT_Arithmetic)
 tcgenerate(RT_Arithmetic_U8)
 tcgenerate(RT_Unary_Eltwise)
 tcgenerate(RT_Unary_Eltwise_U8)
+tcgenerate(RT_Comparison)
+tcgenerate(RT_Comparison_U8)
 
 ## CircleRecipes
 tcgenerate(BCQFullyConnected_000)
