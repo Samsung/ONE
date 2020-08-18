@@ -165,31 +165,24 @@ bool MemoryPoller::end(PhaseEnum phase)
     stop = (_phases.size() == 0);
   }
 
-  if (_rss_map[phase] == 0)
+  mem = getVmRSS();
+  if (_gpu_poll)
   {
-    uint32_t mem = getVmRSS();
-    if (_gpu_poll)
-    {
-      mem += getGpuMemory();
-    }
+    mem += getGpuMemory();
+  }
+  if (mem > _rss_map[phase])
     _rss_map[phase] = mem;
-  }
 
-  if (_hwm_map[phase] == 0)
+  mem = getVmHWM();
+  if (_gpu_poll)
   {
-    uint32_t mem = getVmHWM();
-    if (_gpu_poll)
-    {
-      mem += getGpuMemory();
-    }
-    _hwm_map[phase] = mem;
+    mem += getGpuMemory();
   }
+  _hwm_map[phase] = mem;
 
-  if (_pss_map[phase] == 0)
-  {
-    uint32_t mem = getPssSum();
+  mem = getPssSum();
+  if (mem > _pss_map[phase])
     _pss_map[phase] = mem;
-  }
 
   if (stop)
   {
