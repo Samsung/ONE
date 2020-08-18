@@ -166,6 +166,7 @@ protected:
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
   void loadL2Normalization(const Operator *op, ir::Graph &subg);
+  void loadPadV2(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1630,7 +1631,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operato
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operator *op,
+                                                                   ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1741,6 +1743,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadReverseV2(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PAD:
+    case BuiltinOperator::BuiltinOperator_PADV2:
+      loadPad(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_PADV2:
       loadPad(op, subg);
       return;

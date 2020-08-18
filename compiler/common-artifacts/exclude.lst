@@ -11,6 +11,8 @@ optimize(Unique_002)
 optimize(Unique_003)
 optimize(Unique_U8_000)
 optimize(Unique_U8_001)
+optimize(RT_Tensor)
+optimize(RT_Tensor_U8)
 
 ## CircleRecipes
 
@@ -195,6 +197,8 @@ tcgenerate(RT_Arithmetic)
 tcgenerate(RT_Arithmetic_U8)
 tcgenerate(RT_Comparison)
 tcgenerate(RT_Comparison_U8)
+tcgenerate(RT_Tensor)
+tcgenerate(RT_Tensor_U8)
 tcgenerate(RT_Unary)
 tcgenerate(RT_Unary_U8)
 

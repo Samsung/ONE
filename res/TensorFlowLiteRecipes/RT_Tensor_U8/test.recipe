@@ -1,0 +1,143 @@
+operand {
+  name: "input"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+
+operand {
+  name: "padding"
+  type: INT32
+  shape { dim: 4 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "1" arg: "1"
+    arg: "2" arg: "2"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "output_pad"
+  type: UINT8
+  shape { dim: 1 dim: 322 dim: 244 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operation {
+  type: "Pad"
+  input: "input"
+  input: "padding"
+  output: "output_pad"
+}
+
+operand {
+  name: "padding_value"
+  type: UINT8
+  shape { dim: 1 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+  filler {
+    tag: "explicit"
+    arg: "96"
+  }
+}
+operand {
+  name: "output_pad2"
+  type: UINT8
+  shape { dim: 1 dim: 322 dim: 244 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operation {
+  type: "PadV2"
+  input: "input"
+  input: "padding"
+  input: "padding_value"
+  output: "output_pad2"
+}
+
+operand {
+  name: "output_shape"
+  type: INT32
+  shape { dim: 4 }
+}
+operation {
+  type: "Shape"
+  shape_options {
+    out_type: INT32
+  }
+  input: "input"
+  output: "output_shape"
+}
+
+operand {
+  name: "split_dim"
+  type: INT32
+  shape { }
+  filler { tag: "explicit" arg: "2" }
+}
+operand {
+  name: "output_split1"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 60 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operand {
+  name: "output_split2"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 60 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operand {
+  name: "output_split3"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 60 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operand {
+  name: "output_split4"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 60 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operation {
+  type: "Split"
+  split_options {
+    num_splits: 4
+  }
+  input: "split_dim"
+  input: "input"
+  output: "output_split1"
+  output: "output_split2"
+  output: "output_split3"
+  output: "output_split4"
+}
+
+operand {
+  name: "perm"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "0" arg: "2" arg: "1" arg: "3" }
+}
+operand {
+  name: "output_transpose"
+  type: UINT8
+  shape { dim: 1 dim: 240 dim: 320 dim: 10 }
+  quant { min: 0 max: 255 scale: 0.025 zero_point: 64 }
+}
+operation {
+  type: "Transpose"
+  transpose_options {
+  }
+  input: "input"
+  input: "perm"
+  output: "output_transpose"
+}
+
+input: "input"
+output: "output_pad"
+output: "output_pad2"
+output: "output_shape"
+output: "output_split1"
+output: "output_split2"
+output: "output_split3"
+output: "output_split4"
+output: "output_transpose"
