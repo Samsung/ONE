@@ -123,13 +123,6 @@ public: // methods for static tensor allocation
   }
 
   /**
-   * @brief Iterate over tensors
-   *
-   * @param fn The function to be run
-   */
-  virtual void iterate(const IterateFunction &fn) = 0;
-
-  /**
    * @brief Release static @c ITensorManger object which was built
    *        Before calling this, @c allocate must have been called
    *
