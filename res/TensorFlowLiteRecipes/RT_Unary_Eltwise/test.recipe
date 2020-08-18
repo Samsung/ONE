@@ -1,0 +1,57 @@
+operand {
+  name: "input"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "output_l2_norm"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "output_log_softmax"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "output_logistic"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operand {
+  name: "output_tanh"
+  type: FLOAT32
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+
+operation {
+  type: "L2Normalize"
+  input: "input"
+  output: "output_l2_norm"
+  l2norm_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "LogSoftmax"
+  input: "input"
+  output: "output_log_softmax"
+  log_softmax_options {
+  }
+}
+operation {
+  type: "Logistic"
+  input: "input"
+  output: "output_logistic"
+}
+operation {
+  type: "Tanh"
+  input: "input"
+  output: "output_tanh"
+}
+
+input: "input"
+output: "output_l2_norm"
+output: "output_log_softmax"
+output: "output_logistic"
+output: "output_tanh"
