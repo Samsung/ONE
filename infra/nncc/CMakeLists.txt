@@ -89,6 +89,7 @@ option(BUILD_PROTOBUF "Locally build Protocol Buffer from the downloaded source"
 option(DOWNLOAD_EIGEN "Download Eigen source" ON)
 option(DOWNLOAD_FARMHASH "Download farmhash source" ON)
 option(DOWNLOAD_GEMMLOWP "Download GEMM low precesion library source" ON)
+option(DOWNLOAD_RUY "Download ruy source" ON)
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" ON)
 option(DOWNLOAD_GFLAGS "Download GFlags source" OFF)
 option(DOWNLOAD_FLATBUFFERS "Download FlatBuffers source" ON)
