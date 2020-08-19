@@ -178,16 +178,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
 std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  std::shared_ptr<backend::ITensor> ret;
-  for (auto tensor_builder : _tensor_builder_set)
-  {
-    auto tensor = tensor_builder->tensorAt(index);
-    if (tensor)
-    {
-      ret = tensor;
-      break;
-    }
-  }
+  std::shared_ptr<backend::ITensor> ret = _tensor_builder_set.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }

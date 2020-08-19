@@ -55,7 +55,7 @@ using InternalBufferManager = acl_common::AclInternalBufferManager<
 using TensorManager = acl_common::AclTensorManager<acl_neon::operand::INETensor, operand::NETensor,
                                                    operand::NESubTensor>;
 
-TensorManager *createTensorManager(bool is_linear_executor)
+inline TensorManager *createTensorManager(bool is_linear_executor)
 {
   if (is_linear_executor)
   {

@@ -102,15 +102,6 @@ public: // methods for static tensor allocation
    *        called.
    */
   virtual void postFunctionPrepare() = 0;
-
-  /**
-   * @brief Get the tensor object
-   *
-   * @param ind Index of the tensor
-   * @return std::shared_ptr<ITensor> The tensor object
-   */
-  virtual std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) = 0;
-
   /**
    * @brief Set the migrant tensor object
    *

@@ -31,10 +31,10 @@ namespace acl_common
 {
 
 template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
-          typename T_TensorBuilder>
-std::unique_ptr<exec::IFunction>
-kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
-              const std::shared_ptr<T_TensorBuilder> &tensor_builder)
+          typename T_TensorRegistry>
+std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
+                                               const ir::Operands &operands,
+                                               const std::shared_ptr<T_TensorRegistry> &tensor_reg)
 {
   // TODO Support dynamic rnn
   // TODO Fix subtle error in the case of non-CIFG, non-peephole and No Projection.
@@ -117,27 +117,30 @@ kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
   const auto projection_clip = projection_threshold;
   assert(cell_clip >= 0.f && projection_clip >= 0.f);
 
-  auto scratch_buffer_tensor = tensor_builder->at(scratch_buffer_index).get();
-  auto output_state_out_tensor = tensor_builder->at(output_state_out_index).get();
-  auto cell_state_out_tensor = tensor_builder->at(cell_state_out_index).get();
-  auto output_tensor = tensor_builder->at(output_index).get();
+  auto scratch_buffer_tensor = tensor_reg->getAclTensor(scratch_buffer_index).get();
+  auto output_state_out_tensor = tensor_reg->getAclTensor(output_state_out_index).get();
+  auto cell_state_out_tensor = tensor_reg->getAclTensor(cell_state_out_index).get();
+  auto output_tensor = tensor_reg->getAclTensor(output_index).get();
 
-  auto input_tensor = tensor_builder->at(input_index).get();
+  auto input_tensor = tensor_reg->getAclTensor(input_index).get();
 
-  auto input_to_forget_weights_tensor = tensor_builder->at(input_to_forget_weights_index).get();
-  auto input_to_cell_weights_tensor = tensor_builder->at(input_to_cell_weights_index).get();
-  auto input_to_output_weights_tensor = tensor_builder->at(input_to_output_weights_index).get();
+  auto input_to_forget_weights_tensor =
+      tensor_reg->getAclTensor(input_to_forget_weights_index).get();
+  auto input_to_cell_weights_tensor = tensor_reg->getAclTensor(input_to_cell_weights_index).get();
+  auto input_to_output_weights_tensor =
+      tensor_reg->getAclTensor(input_to_output_weights_index).get();
   auto recurrent_to_forget_weights_tensor =
-      tensor_builder->at(recurrent_to_forget_weights_index).get();
-  auto recurrent_to_cell_weights_tensor = tensor_builder->at(recurrent_to_cell_weights_index).get();
+      tensor_reg->getAclTensor(recurrent_to_forget_weights_index).get();
+  auto recurrent_to_cell_weights_tensor =
+      tensor_reg->getAclTensor(recurrent_to_cell_weights_index).get();
   auto recurrent_to_output_weights_tensor =
-      tensor_builder->at(recurrent_to_output_weights_index).get();
+      tensor_reg->getAclTensor(recurrent_to_output_weights_index).get();
 
-  auto forget_gate_bias_tensor = tensor_builder->at(forget_gate_bias_index).get();
-  auto cell_bias_tensor = tensor_builder->at(cell_bias_index).get();
-  auto output_gate_bias_tensor = tensor_builder->at(output_gate_bias_index).get();
-  auto output_state_in_tensor = tensor_builder->at(output_state_in_index).get();
-  auto cell_state_in_tensor = tensor_builder->at(cell_state_in_index).get();
+  auto forget_gate_bias_tensor = tensor_reg->getAclTensor(forget_gate_bias_index).get();
+  auto cell_bias_tensor = tensor_reg->getAclTensor(cell_bias_index).get();
+  auto output_gate_bias_tensor = tensor_reg->getAclTensor(output_gate_bias_index).get();
+  auto output_state_in_tensor = tensor_reg->getAclTensor(output_state_in_index).get();
+  auto cell_state_in_tensor = tensor_reg->getAclTensor(cell_state_in_index).get();
 
   auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
 
@@ -147,13 +150,13 @@ kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
   if (has_cifg_param)
   {
     auto input_to_input_weights_tensor =
-        tensor_builder->at(input_to_input_weights_index).get(); // optional
+        tensor_reg->getAclTensor(input_to_input_weights_index).get(); // optional
     auto recurrent_to_input_weights_tensor =
-        tensor_builder->at(recurrent_to_input_weights_index).get(); // optional
+        tensor_reg->getAclTensor(recurrent_to_input_weights_index).get(); // optional
     auto cell_to_input_weights_handle =
-        has_peephole_param ? tensor_builder->at(cell_to_input_weights_index).get()->handle()
+        has_peephole_param ? tensor_reg->getAclTensor(cell_to_input_weights_index).get()->handle()
                            : nullptr; // optional (non-cifg && peephole)
-    auto input_gate_bias_tensor = tensor_builder->at(input_gate_bias_index).get(); // optional
+    auto input_gate_bias_tensor = tensor_reg->getAclTensor(input_gate_bias_index).get(); // optional
     lstm_params.set_cifg_params(input_to_input_weights_tensor->handle(),
                                 recurrent_to_input_weights_tensor->handle(),
                                 cell_to_input_weights_handle, input_gate_bias_tensor->handle());
@@ -161,18 +164,19 @@ kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
   if (has_peephole_param)
   {
     auto cell_to_forget_weights_tensor =
-        tensor_builder->at(cell_to_forget_weights_index).get(); // optional
+        tensor_reg->getAclTensor(cell_to_forget_weights_index).get(); // optional
     auto cell_to_output_weights_tensor =
-        tensor_builder->at(cell_to_output_weights_index).get(); // optional
+        tensor_reg->getAclTensor(cell_to_output_weights_index).get(); // optional
     lstm_params.set_peephole_params(cell_to_forget_weights_tensor->handle(),
                                     cell_to_output_weights_tensor->handle());
   }
   if (has_projection_param)
   {
-    auto projection_weights_tensor = tensor_builder->at(projection_weights_index).get(); // optional
-    auto projection_bias_handle = has_projection_bias
-                                      ? tensor_builder->at(projection_bias_index).get()->handle()
-                                      : nullptr; // optional
+    auto projection_weights_tensor =
+        tensor_reg->getAclTensor(projection_weights_index).get(); // optional
+    auto projection_bias_handle =
+        has_projection_bias ? tensor_reg->getAclTensor(projection_bias_index).get()->handle()
+                            : nullptr; // optional
     lstm_params.set_projection_params(projection_weights_tensor->handle(), projection_bias_handle);
   }
 
@@ -191,10 +195,11 @@ kernelGenLSTM(const ir::operation::LSTM &node, const ir::Operands &operands,
 }
 
 template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
-          typename T_TensorBuilder>
+          typename T_TensorBuilder, typename T_TensorRegistry>
 std::unique_ptr<exec::IFunction>
 kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands,
-                        const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout)
+                        const std::shared_ptr<T_TensorBuilder> &tensor_builder,
+                        const std::shared_ptr<T_TensorRegistry> &tensor_reg, ir::Layout layout)
 {
   using ir::operation::FullyConnected;
 
@@ -236,10 +241,10 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
     reshape.dim(1) = input_size; /* W */
   }
 
-  auto output_tensor = tensor_builder->at(output_index).get();
-  const auto input_tensor = tensor_builder->at(input_index).get();
-  const auto weight_tensor = tensor_builder->at(weight_index).get();
-  const auto bias_tensor = tensor_builder->at(bias_index).get();
+  auto output_tensor = tensor_reg->getAclTensor(output_index).get();
+  const auto input_tensor = tensor_reg->getAclTensor(input_index).get();
+  const auto weight_tensor = tensor_reg->getAclTensor(weight_index).get();
+  const auto bias_tensor = tensor_reg->getAclTensor(bias_index).get();
   const auto frontend_layout = layout;
   const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
@@ -263,10 +268,10 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
 
-template <typename T_ACLLayer, typename T_PoolOp, typename T_TensorBuilder>
+template <typename T_ACLLayer, typename T_PoolOp, typename T_AclTensorRegistry>
 std::unique_ptr<::arm_compute::IFunction>
 kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
-                const std::shared_ptr<T_TensorBuilder> &tensor_builder, ir::Layout layout,
+                const std::shared_ptr<T_AclTensorRegistry> &tensor_reg, ir::Layout layout,
                 ::arm_compute::PoolingType pooling_type)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -294,8 +299,8 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   VERBOSE(Pool2DParam) << "PAD(L): " << padding.left << std::endl;
   VERBOSE(Pool2DParam) << "PAD(R): " << padding.right << std::endl;
 
-  auto ofm_tensor = tensor_builder->at(ofm_index).get();
-  auto ifm_tensor = tensor_builder->at(ifm_index).get();
+  auto ofm_tensor = tensor_reg->getAclTensor(ofm_index).get();
+  auto ifm_tensor = tensor_reg->getAclTensor(ifm_index).get();
 
   ::arm_compute::PoolingLayerInfo info{
       pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),

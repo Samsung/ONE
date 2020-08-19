@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __ONERT_BACKEND_ACL_COMMON_ACL_TENSOR_REGISTRY_H__
+#define __ONERT_BACKEND_ACL_COMMON_ACL_TENSOR_REGISTRY_H__
+
 #include "backend/ITensorRegistry.h"
 
 namespace onert
@@ -43,6 +46,8 @@ public:
     return getITensor(ind);
   }
 
+  auto getAclTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind); }
+
 private:
   T_AclTensorManager *_tensor_mgr;
 };
@@ -50,3 +55,5 @@ private:
 } // namespace acl_common
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_ACL_COMMON_ACL_TENSOR_REGISTRY_H__

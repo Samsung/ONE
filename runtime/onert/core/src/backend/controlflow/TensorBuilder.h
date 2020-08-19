@@ -61,13 +61,6 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  /**
-   * @brief Get tensor with a specific OperandIndex
-   *
-   * @return shared_ptr<ITensor> if a tensor with given OperandIndex exists. nullptr otherwise.
-   */
-  std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
-
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }

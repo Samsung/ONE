@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_CONTROLFLOW_CONSTANT_INITIALIZER_H__
 
-#include "TensorBuilder.h"
+#include "TensorRegistry.h"
 
 #include <backend/IConstantInitializer.h>
 #include <ir/Operands.h>
@@ -33,16 +33,16 @@ class ConstantInitializer : public IConstantInitializer
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
-                      const std::shared_ptr<TensorBuilder> &tensor_builder)
-      : IConstantInitializer{operands}, _tensor_builder{tensor_builder}
+                      const std::shared_ptr<ITensorRegistry> &tensor_reg)
+      : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
   {
   }
 
 private:
-  std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
+  std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
 
 private:
-  std::shared_ptr<TensorBuilder> _tensor_builder;
+  std::shared_ptr<ITensorRegistry> _tensor_reg;
 };
 
 } // namespace controlflow

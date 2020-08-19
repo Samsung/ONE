@@ -48,9 +48,10 @@ public:
     const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
     auto tb = std::make_shared<TensorBuilder>();
+    auto tr = std::dynamic_pointer_cast<cpu_common::TensorRegistry>(tb->tensorRegistry());
     context->tensor_builder = tb;
-    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, kb,
+    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr, kb,
                                                             context->external_context());
     context->tensor_register = nullptr;
     context->optimizer = nullptr;

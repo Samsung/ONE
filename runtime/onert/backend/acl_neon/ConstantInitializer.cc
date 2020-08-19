@@ -24,8 +24,8 @@ namespace acl_neon
 {
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
-                                         const std::shared_ptr<TensorBuilder> &tensor_builder)
-    : IConstantInitializer{operands}, _tensor_builder{tensor_builder}
+                                         const std::shared_ptr<ITensorRegistry> &tensor_reg)
+    : IConstantInitializer{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }
