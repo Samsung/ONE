@@ -104,16 +104,15 @@ protected:
   template <typename Param, typename OptionsType>
   void loadStridesAndPaddings(Param &param, const OptionsType *options);
   // Load Pool2D param
-  template <typename Param> void loadPool2D(Param &param, const Pool2DOptions *options);
+  template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
 
   // Operations
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
   void loadTransposeConv(const Operator *op, ir::Graph &subg);
-  void loadAvgPool2D(const Operator *op, ir::Graph &subg);
+  void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
   void loadReshape(const Operator *op, ir::Graph &subg);
   void loadSoftmax(const Operator *op, ir::Graph &subg);
-  void loadMaxPool2D(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
@@ -501,8 +500,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
 
 template <typename LoaderDomain, typename SpecificLoader>
 template <typename Param>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(Param &param,
-                                                          const Pool2DOptions *options)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
+                                                                 const Pool2DOptions *options)
 {
   // Strides and Paddings
   loadStridesAndPaddings(param, options);
@@ -568,19 +567,21 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTransposeConv(const Operator 
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAvgPool2D(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(const Operator *op, ir::Graph &subg,
+                                                          ir::operation::Pool2D::PoolType op_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::AvgPool2D::Param param;
+  ir::operation::Pool2D::Param param;
+  param.op_type = op_type;
   const auto *options = op->builtin_options_as_Pool2DOptions();
 
-  loadPool2D(param, options);
+  loadPool2DOptions(param, options);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::AvgPool2D(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pool2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -624,23 +625,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSoftmax(const Operator *op, i
   param.beta = options->beta();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Softmax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMaxPool2D(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::MaxPool2D::Param param;
-  const auto *options = op->builtin_options_as_Pool2DOptions();
-
-  loadPool2D(param, options);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::MaxPool2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1816,7 +1800,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadConv2D(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_AVERAGE_POOL_2D:
-      loadAvgPool2D(op, subg);
+      loadPool2D(op, subg, ir::operation::Pool2D::PoolType::AVG);
       return;
     case BuiltinOperator::BuiltinOperator_DEPTHWISE_CONV_2D:
       loadDepthwiseConv2D(op, subg);
@@ -1831,7 +1815,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSoftmax(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MAX_POOL_2D:
-      loadMaxPool2D(op, subg);
+      loadPool2D(op, subg, ir::operation::Pool2D::PoolType::MAX);
       return;
     case BuiltinOperator::BuiltinOperator_CONCATENATION:
       loadConcatenation(op, subg);

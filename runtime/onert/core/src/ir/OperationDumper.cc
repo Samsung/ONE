@@ -48,14 +48,6 @@ void OperationDumper::visit(const ArgMax &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const AvgPool2D &node)
-{
-  VERBOSE(LIR) << "* AvgPool2D(Implicit)" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(AvgPool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const BatchToSpaceND &node)
 {
   VERBOSE(LIR) << "* BatchToSpaceND" << std::endl;
@@ -257,14 +249,6 @@ void OperationDumper::visit(const L2Normalization &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const L2Pool2D &node)
-{
-  VERBOSE(LIR) << "* L2Pool2D" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(L2Pool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const LocalResponseNormalization &node)
 {
   VERBOSE(LIR) << "* LocalResponseNormalization" << std::endl;
@@ -331,16 +315,6 @@ void OperationDumper::visit(const Logistic &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const MaxPool2D &node)
-{
-  std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
-  VERBOSE(LIR) << "* MaxPool2D(" << padding_type << ")" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(MaxPool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Neg &node)
 {
   VERBOSE(LIR) << "* Neg" << std::endl;
@@ -391,6 +365,16 @@ void OperationDumper::visit(const Permute &node)
   VERBOSE(LIR) << "* Permute(" + permute_type + ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Pool2D &node)
+{
+  std::string padding_type =
+      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+  VERBOSE(LIR) << "* " << node.name() << "(" << padding_type << ")" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(Pool2D::Input::INPUT) << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const Pow &node)

@@ -33,7 +33,6 @@ public:
 public:
   void visit(const operation::Abs &) override;
   void visit(const operation::ArgMax &) override;
-  void visit(const operation::AvgPool2D &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::BroadcastTo &) override;
@@ -57,17 +56,16 @@ public:
   void visit(const operation::HashtableLookup &) override;
   void visit(const operation::InstanceNorm &) override;
   void visit(const operation::L2Normalization &) override;
-  void visit(const operation::L2Pool2D &) override;
   void visit(const operation::LocalResponseNormalization &) override;
   void visit(const operation::Log &) override;
   void visit(const operation::LogicalNot &) override;
   void visit(const operation::Logistic &) override;
   void visit(const operation::LSTM &) override;
-  void visit(const operation::MaxPool2D &node) override;
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Pad &) override;
   void visit(const operation::Permute &node) override;
+  void visit(const operation::Pool2D &node) override;
   void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::Range &) override;

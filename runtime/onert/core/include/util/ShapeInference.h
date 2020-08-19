@@ -19,11 +19,10 @@
 
 #include "Utils.h"
 
-#include "ir/operation/AvgPool2D.h"
 #include "ir/operation/Concat.h"
-#include "ir/operation/MaxPool2D.h"
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
+#include "ir/operation/Pool2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/RSQRT.h"
 #include "ir/operation/StridedSlice.h"
@@ -46,8 +45,6 @@ using Shapes = std::vector<ir::Shape>;
 
 ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
 
-ir::Shape inferAvgPoolShape(const ir::Shape &in_shape, const ir::operation::AvgPool2D::Param &param,
-                            ir::Layout layout = ir::Layout::NHWC);
 ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
                                 const ir::operation::BatchMatMul::Param &param);
 
@@ -74,14 +71,14 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                            int rank);
 
-ir::Shape inferMaxPoolShape(const ir::Shape &in_shape, const ir::operation::MaxPool2D::Param &param,
-                            ir::Layout layout = ir::Layout::NHWC);
-
 ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis);
 
 ir::Shape inferPackShape(const ir::Shape &input_shape, int axis, int rank, int num);
 
 ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const size_t num_pads);
+
+ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
+                         ir::Layout layout = ir::Layout::NHWC);
 
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
 

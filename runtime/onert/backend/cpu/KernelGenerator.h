@@ -46,8 +46,6 @@ public:
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::MaxPool2D &) override;
-  void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::Fill &) override;
   void visit(const ir::operation::FullyConnected &) override;
@@ -88,6 +86,7 @@ public:
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::Log &) override;
   void visit(const ir::operation::Round &) override;
+  void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Pow &) override;
   void visit(const ir::operation::LogicalNot &) override;
   void visit(const ir::operation::ZerosLike &) override;

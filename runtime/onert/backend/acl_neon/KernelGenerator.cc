@@ -353,32 +353,6 @@ void KernelGenerator::visit(const ir::operation::Dequantize &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::MaxPool2D &node)
-{
-  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::NEPoolingLayer>(
-      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::MAX);
-
-  const auto ofm_index{node.getOutputs().at(0)};
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  const auto activation = node.param().activation;
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclFunction(std::move(raw_fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
-void KernelGenerator::visit(const ir::operation::AvgPool2D &node)
-{
-  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::NEPoolingLayer>(
-      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::AVG);
-
-  const auto ofm_index{node.getOutputs().at(0)};
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  const auto activation = node.param().activation;
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclFunction(std::move(raw_fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
 void KernelGenerator::visit(const ir::operation::Concat &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -689,19 +663,6 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::L2Pool2D &node)
-{
-  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::NEPoolingLayer>(
-      node, _ctx, _tensor_builder, _current_op_seq_layout, ::arm_compute::PoolingType::L2);
-
-  const auto ofm_index{node.getOutputs().at(0)};
-  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
-  const auto activation = node.param().activation;
-  _return_fn = std::make_unique<exec::FunctionSequence>(
-      asAclFunction(std::move(raw_fn)),
-      ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
 void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -877,6 +838,20 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   fn->configure(input, output, padding_list, pixel_value);
 
   _return_fn = asAclFunction(std::move(fn));
+}
+
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
+{
+  auto raw_fn = acl_common::kernelGenPool2D<::arm_compute::NEPoolingLayer>(
+      node, _ctx, _tensor_builder, _current_op_seq_layout,
+      acl_common::convertPoolType(node.param().op_type));
+
+  const auto ofm_index{node.getOutputs().at(0)};
+  auto ofm_tensor = _tensor_builder->at(ofm_index).get();
+  const auto activation = node.param().activation;
+  _return_fn = std::make_unique<exec::FunctionSequence>(
+      asAclFunction(std::move(raw_fn)),
+      ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
 void KernelGenerator::visit(const ir::operation::Permute &node)
