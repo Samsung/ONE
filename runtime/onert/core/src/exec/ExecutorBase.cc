@@ -45,7 +45,12 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
         for (auto &tensor_builder : tensor_builders)
         {
           auto tensor_registry = tensor_builder->tensorRegistry();
-          assert(tensor_registry);
+          if (!tensor_registry)
+            throw std::runtime_error(
+                "tensor registry doesn't exist. "
+                "Possible reason: you may use backend only with tensor registry (e.g., cpu) "
+                "but you probably didn't provide BACKENDS option");
+
           tensor = tensor_registry->getNativeITensor(ind);
           if (tensor != nullptr)
           {
