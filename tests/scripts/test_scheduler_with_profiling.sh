@@ -37,7 +37,7 @@ function run_without_sched()
 
     print_with_dots "$EXECUTOR $BACKEND without scheduler"
 
-    RESULT=$(get_result_of_benchmark_test $RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
+    RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
 
     printf -v RESULT_INT '%d' $RESULT 2>/dev/null
     PERCENTAGE=$((100-RESULT_SCH_INT*100/RESULT_INT))
@@ -105,12 +105,12 @@ function run_benchmark_test()
         export GRAPH_DOT_DUMP=1
         print_with_dots "Parallel with scheduler"
 
-        RESULT=$(get_result_of_benchmark_test $RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
+        RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
         echo "$RESULT ms"
 
         printf -v RESULT_SCH_INT '%d' $RESULT 2>/dev/null
 
-        mv "after_lower.dot" $REPORT_MODEL_DIR/"after_lower_parallel.dot"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_parallel.dot"
 
 ##################################################################################
         # Run Linear executor with scheduler
@@ -120,7 +120,7 @@ function run_benchmark_test()
         export GRAPH_DOT_DUMP=1
         print_with_dots "Linear with scheduler"
 
-        RESULT=$(get_result_of_benchmark_test $RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
+        RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
 
         printf -v RESULT_INT '%d' $RESULT 2>/dev/null
         PERCENTAGE=$((100-RESULT_SCH_INT*100/RESULT_INT))
@@ -130,7 +130,7 @@ function run_benchmark_test()
         #   for operations with input&output sizes the same as the model
         mv "exec_time.json" $REPORT_MODEL_DIR
         # Save the dot graph
-        mv "after_lower.dot" $REPORT_MODEL_DIR/"after_lower_linear.dot"
+        mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_linear.dot"
         unset GRAPH_DOT_DUMP
 
 ##################################################################################

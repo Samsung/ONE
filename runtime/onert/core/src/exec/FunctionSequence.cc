@@ -28,7 +28,8 @@ namespace exec
 
 void FunctionSequence::run()
 {
-  if (_enable_dynamic_shape_inferer)
+  // TODO Find out when `_enable_dynamic_shape_inferer` is true but `_dynamic_tensor_ctx` is false
+  if (_enable_dynamic_shape_inferer && _dynamic_tensor_ctx)
   {
     if (_dynamic_tensor_ctx->op_seq->size() != _functions.size())
       throw std::runtime_error("operation and functions should be mapped one by one");
