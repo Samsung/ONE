@@ -57,7 +57,7 @@ if [ ! -e $1 ]; then
   exit 1
 fi
 
-if [ $name == "" ]; then
+if [ -z "$name" ]; then
   name=${modelfile%.*}
 fi
 extension=${modelfile##*.}
