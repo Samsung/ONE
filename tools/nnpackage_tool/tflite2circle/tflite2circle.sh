@@ -7,7 +7,7 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 nnfw_root="$( cd "${script_dir%*/*/*/*}" && pwd )"
 outdir="."
 flatc=${flatc:-"$nnfw_root/build/externals/FLATBUFFERS/build/flatc"}
-tflite_schema=${tflite_schema:-"$nnfw_root/externals/TENSORFLOW-1.12/tensorflow/contrib/lite/schema/schema.fbs"}
+tflite_schema=${tflite_schema:-"$nnfw_root/externals/TENSORFLOW-1.13.1/tensorflow/lite/schema/schema.fbs"}
 circle_schema=${circle_schema:-"$nnfw_root/nnpackage/schema/circle_schema.fbs"}
 
 if ! [ -x "$flatc" ]; then
@@ -73,7 +73,7 @@ name=${tflite_base%.*}
 # convert
 
 mkdir -p "${outdir}"
-${flatc} -o ${outdir} --defaults-json --strict-json -t ${tflite_schema} -- $1
+${flatc} -o ${outdir} --strict-json -t ${tflite_schema} -- $1
 ${script_dir}/tflitejson2circlejson.py "${outdir}/${name}.json" > "${outdir}/${name}.circle"
 ${flatc} -o ${outdir} -b ${circle_schema} "${outdir}/${name}.circle"
 rm -f ${outdir}/${name}.json

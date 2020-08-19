@@ -34,8 +34,6 @@ if __name__ == '__main__':
     with open(json_path, "r") as f:
         try:
             json_dict = json.load(f, object_pairs_hook=OrderedDict)
-            for subgraph in json_dict["subgraphs"]:
-                subgraph["data_format"] = "CHANNELS_LAST"
             json_dict["version"] = 0
             print(json.dumps(json_dict, indent=2))
         except KeyError:
