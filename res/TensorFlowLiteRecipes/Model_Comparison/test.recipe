@@ -1,52 +1,52 @@
 operand {
   name: "ifm1"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ifm2"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_eq"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_gt"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_ge"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_lt"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_le"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_ne"
   type: BOOL
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_max"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "ofm_min"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 
 operation {

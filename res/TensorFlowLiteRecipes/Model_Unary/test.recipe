@@ -1,27 +1,27 @@
 operand {
   name: "input"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "output_l2_norm"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "output_log_softmax"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "output_logistic"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "output_tanh"
   type: FLOAT32
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
 }
 operand {
   name: "output_reduce_mean"

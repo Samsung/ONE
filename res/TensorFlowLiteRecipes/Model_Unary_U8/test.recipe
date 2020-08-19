@@ -1,31 +1,31 @@
 operand {
   name: "input"
   type: UINT8
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
   quant { min: 0 max: 2 scale: 0.0078125 zero_point: 128 }
 }
 operand {
   name: "output_l2_norm"
   type: UINT8
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
   quant { min: 0 max: 2 scale: 0.0078125 zero_point: 128 }
 }
 operand {
   name: "output_log_softmax"
   type: UINT8
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
   quant { min: 0 max: 2 scale: 0.0625 zero_point: 255 }
 }
 operand {
   name: "output_logistic"
   type: UINT8
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
   quant { min: 0 max: 1 scale: 0.00390625 zero_point: 0 }
 }
 operand {
   name: "output_tanh"
   type: UINT8
-  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
   quant { min: 0 max: 2 scale: 0.0078125 zero_point: 0 }
 }
 operand {
