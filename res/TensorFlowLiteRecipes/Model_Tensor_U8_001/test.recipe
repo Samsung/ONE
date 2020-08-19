@@ -1,0 +1,171 @@
+operand {
+  name: "input"
+  type: UINT8
+  shape { dim: 4 dim: 160 dim: 120 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+
+operand {
+  name: "block_shape"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "2" arg: "2"
+  }
+}
+operand {
+  name: "crops"
+  type: INT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "output_batch_to_space_nd"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "BatchToSpaceND"
+  input: "input"
+  input: "block_shape"
+  input: "crops"
+  output: "output_batch_to_space_nd"
+}
+
+operand {
+  name: "input2"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 240 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "position"
+  type: INT32
+  shape { dim: 8 }
+  filler { tag: "explicit" arg: "0" arg: "33" arg: "66" arg: "99" arg: "132" arg: "165" arg: "198" arg: "231" }
+}
+operand {
+  name: "output_gather"
+  type: UINT8
+  shape { dim: 1 dim: 320 dim: 8 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Gather"
+  gather_options {
+    axis: 2
+  }
+  input: "input2"
+  input: "position"
+  output: "output_gather"
+}
+
+operand {
+  name: "resize"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "constant" arg: "640" arg: "480"
+  }
+}
+operand {
+  name: "output_resize_bilinear"
+  type: UINT8
+  shape { dim: 1 dim: 640 dim: 480 dim: 10 }
+}
+operation {
+  type: "ResizeBilinear"
+  input: "input2"
+  input: "resize"
+  output: "output_resize_bilinear"
+  resize_bilinear_options {
+    align_corners: false
+    half_pixel_centers: false
+  }
+}
+
+operand {
+  name: "begin_slice"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "160" arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "size_slice"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1"  arg: "80" arg: "120" arg: "10"
+  }
+}
+operand {
+  name: "output_slice"
+  type: UINT8
+  shape { dim: 1 dim: 80 dim: 120 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Slice"
+  input: "input2"
+  input: "begin_slice"
+  input: "size_slice"
+  output: "output_slice"
+}
+
+operand {
+  name: "paddings"
+  type: INT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "output_space_to_batch_nd"
+  type: UINT8
+  shape { dim: 4 dim: 160 dim: 120 dim: 10 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "SpaceToBatchND"
+  input: "input2"
+  input: "block_shape"
+  input: "paddings"
+  output: "output_space_to_batch_nd"
+}
+
+operand {
+  name: "output_space_to_depth"
+  type: UINT8
+  shape { dim: 1 dim: 160 dim: 120 dim: 40 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "SpaceToDepth"
+  space_to_depth_options {
+    block_size: 2
+  }
+  input: "input2"
+  output: "output_space_to_depth"
+}
+
+input: "input"
+input: "input2"
+output: "output_batch_to_space_nd"
+output: "output_gather"
+output: "output_resize_bilinear"
+output: "output_slice"
+output: "output_space_to_batch_nd"
+output: "output_space_to_depth"
