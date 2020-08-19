@@ -128,7 +128,8 @@ TEST(ShapeInference, Conv2D)
   Shape in_shape{10, 6, 12, 20};
   Shape ker_shape{30, 3, 6, 20};
 
-  operation::Conv2D::Param param{Stride{3, 7}, Padding{PaddingType::VALID}, Activation::NONE};
+  operation::Conv2D::Param param{Stride{3, 7}, Padding{PaddingType::VALID}, Activation::NONE,
+                                 Dilation{1, 1}};
   auto infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
@@ -137,7 +138,8 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 
-  param = operation::Conv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, Activation::NONE};
+  param = operation::Conv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, Activation::NONE,
+                                   Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
@@ -146,7 +148,8 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 
-  param = operation::Conv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, Activation::NONE};
+  param =
+      operation::Conv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, Activation::NONE, Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);

@@ -116,19 +116,106 @@ inline void ExtractPatchIntoBufferColumn(const Shape &input_shape, int w, int h,
   }
 }
 
+// Supports per-batch zero_byte for per-batch asymmetric quantized inputs.
+template <typename T>
+void DilatedIm2col(const ConvParams &params, const Shape &input_shape, const T *input_data,
+                   const Shape &filter_shape, const Shape &output_shape, T *im2col_data,
+                   const int32_t *zero_bytes, const int zero_bytes_len)
+{
+  const int stride_width = params.stride_width;
+  const int stride_height = params.stride_height;
+  const int dilation_width_factor = params.dilation_width_factor;
+  const int dilation_height_factor = params.dilation_height_factor;
+  const int pad_width = params.padding_values.width;
+  const int pad_height = params.padding_values.height;
+  assert(input_shape.DimensionsCount() == 4);
+  assert(filter_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 4);
+
+  // For dilated convolution, the input pixels are not contiguous therefore we
+  // can't use the same optimizations as Im2Col(). Though note this code would
+  // work fine for the non-dilated case too (though likely a bit slower).
+  assert(dilation_width_factor != 1 || dilation_height_factor != 1);
+  assert(im2col_data);
+  const int batches = MatchingDim(input_shape, 0, output_shape, 0);
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+  const int input_depth = MatchingDim(input_shape, 3, filter_shape, 3);
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int output_height = output_shape.Dims(1);
+  const int output_width = output_shape.Dims(2);
+  MatchingDim(output_shape, 3, filter_shape, 0);
+
+  // Construct the MxN sized im2col matrix.
+  // The rows M, are sub-ordered B x H x W
+  const Shape row_shape({1, batches, output_height, output_width});
+  // The columns, N, are sub-ordered Kh x Kw x Din
+  const Shape col_shape({1, filter_height, filter_width, input_depth});
+  // Use dimensions M and N to construct dims for indexing directly into im2col
+  const Shape im2col_shape({1, 1, row_shape.FlatSize(), col_shape.FlatSize()});
+
+  // Loop through the output rows (B x H x W)
+  for (int batch = 0; batch < batches; ++batch)
+  {
+    const T zero_byte =
+        zero_bytes_len > 1 ? static_cast<T>(zero_bytes[batch]) : static_cast<T>(zero_bytes[0]);
+    for (int out_y = 0; out_y < output_height; ++out_y)
+    {
+      for (int out_x = 0; out_x < output_width; ++out_x)
+      {
+        // Each im2col row is an output pixel. Arrange the input data in this
+        // row in an order we can conveniently multiply with the filter data.
+        int row_offset = Offset(row_shape, 0, batch, out_y, out_x);
+        const int in_x_origin = (out_x * stride_width) - pad_width;
+        const int in_y_origin = (out_y * stride_height) - pad_height;
+        // Loop through all the pixels of the filter (Kh x Kw)
+        for (int filter_y = 0; filter_y < filter_height; ++filter_y)
+        {
+          const int in_y = in_y_origin + dilation_height_factor * filter_y;
+          if ((in_y >= 0) && (in_y < input_height))
+          {
+            // Filter row is within the input data.
+            // Loop through all the filter pixels in this row.
+            for (int filter_x = 0; filter_x < filter_width; ++filter_x)
+            {
+              const int in_x = in_x_origin + dilation_width_factor * filter_x;
+              int col_offset = Offset(col_shape, 0, filter_y, filter_x, 0);
+              T *dst = im2col_data + Offset(im2col_shape, 0, 0, row_offset, col_offset);
+              if ((in_x >= 0) && (in_x < input_width))
+              {
+                // Filter pixel is within the input, copy the input data.
+                T const *src = input_data + Offset(input_shape, batch, in_y, in_x, 0);
+                memcpy(dst, src, input_depth * sizeof(T));
+              }
+              else
+              {
+                // Filter pixel is outside the input, zero it out.
+                memset(dst, zero_byte, input_depth * sizeof(T));
+              }
+            }
+          }
+          else
+          {
+            // Filter row is outside the input, zero out the entire filter row.
+            int col_offset = Offset(col_shape, 0, filter_y, 0, 0);
+            T *dst = im2col_data + Offset(im2col_shape, 0, 0, row_offset, col_offset);
+            memset(dst, zero_byte, filter_width * input_depth * sizeof(T));
+          }
+        }
+      }
+    }
+  }
+}
+
 template <typename T>
 void DilatedIm2col(const ConvParams &params, uint8_t zero_byte, const Shape &input_shape,
                    const T *input_data, const Shape &filter_shape, const Shape &output_shape,
                    T *im2col_data)
 {
-  (void)params;
-  (void)zero_byte;
-  (void)input_shape;
-  (void)input_data;
-  (void)filter_shape;
-  (void)output_shape;
-  (void)im2col_data;
-  throw std::runtime_error{"NYI: cker DilatedIm2col"};
+  const int32_t zero_point = static_cast<int32_t>(zero_byte);
+  DilatedIm2col<T>(params, input_shape, input_data, filter_shape, output_shape, im2col_data,
+                   &zero_point, 1);
 }
 
 template <typename T>
