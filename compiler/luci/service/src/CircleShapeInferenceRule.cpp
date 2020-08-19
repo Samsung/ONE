@@ -2229,15 +2229,21 @@ public:
 
   loco::NodeShape visit(const luci::CircleUniqueOut *node) final
   {
-    auto unique = dynamic_cast<const luci::CircleUnique *>(node->input());
-    if (unique == nullptr)
+    if (node->index() == 0)
     {
-      INTERNAL_EXN("CircleUnique IR is not configured correctly");
+      auto unique_shape = own_shape(node);
+      return loco::NodeShape{unique_shape};
     }
+    assert(node->index() == 1);
+    auto unique = loco::must_cast<luci::CircleUnique *>(node->input());
+    auto unique_shape = loco::shape_get(unique->input()).as<loco::TensorShape>();
 
-    auto unique_shape = loco::shape_get(unique).as<loco::TensorShape>();
+    assert(unique_shape.rank() == 1);
 
-    return loco::NodeShape{unique_shape};
+    loco::TensorShape shape_output;
+    shape_output.rank(1);
+    shape_output.dim(0) = unique_shape.dim(0);
+    return loco::NodeShape{shape_output};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final
