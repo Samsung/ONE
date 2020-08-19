@@ -6,7 +6,17 @@ ARG UBUNTU_MIRROR
 RUN apt-get update && apt-get -qqy install software-properties-common
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+RUN apt-get update && apt-get -qqy install build-essential scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+
+# Download cmake (`apt-get install cmake` installs version 3.10.2 but we need more recent version.
+# With 3.10.2, we will get some error, e.g., "Cannot find a target flatbuffer::flatbuffer"
+RUN apt-get -qqy install libssl-dev wget
+WORKDIR /tmp
+RUN wget -q https://cmake.org/files/v3.16/cmake-3.16.2.tar.gz
+RUN tar -xvzf cmake-3.16.2.tar.gz
+RUN cd cmake-3.16.2 && ./bootstrap --prefix=/usr/local && make && make install
+RUN ln -s /usr/local/bin/cmake /usr/bin/cmake
+RUN rm -rf cmake-3.16.2*
 
 # Install extra dependencies (Caffe, nnkit)
 RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoogle-glog-dev libatlas-base-dev libhdf5-dev
@@ -15,7 +25,7 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 
 # Additonal tools
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install doxygen graphviz wget unzip clang-format-3.9 python3 python3-pip python3-venv hdf5-tools pylint
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install doxygen graphviz unzip clang-format-3.9 python3 python3-pip python3-venv hdf5-tools pylint
 RUN pip3 install --upgrade pip
 RUN pip3 install yapf==0.22.0 numpy
 
