@@ -98,8 +98,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
     const auto output_tensor_builder = getTensorBuilder(output_index);
     if (output_tensor_builder->supportDynamicTensor())
     {
-      auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
-      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index, output_dyn_manager};
+      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
     }
   }
 
@@ -128,8 +127,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   assert(output_tensor_builder != nullptr);
   if (output_tensor_builder->supportDynamicTensor())
   {
-    outputs_dyn_alloc_info[output_tensors.at(0)] =
-        exec::DynAllocInfo{output_index, output_tensor_builder->dynamicTensorManager()};
+    outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
   }
 
   auto fn =
@@ -164,8 +162,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
     const auto output_tensor_builder = getTensorBuilder(output_index);
     if (output_tensor_builder->supportDynamicTensor())
     {
-      auto output_dyn_manager = output_tensor_builder->dynamicTensorManager();
-      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index, output_dyn_manager};
+      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
     }
   }
 

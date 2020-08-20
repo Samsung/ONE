@@ -51,7 +51,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           {
             if (tensor_builder->supportDynamicTensor())
             {
-              DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+              DynAllocInfo dyn_alloc_info{ind};
               _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
             }
             break;
@@ -76,7 +76,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           {
             if (tensor_builder->supportDynamicTensor())
             {
-              DynAllocInfo dyn_alloc_info{ind, tensor_builder->dynamicTensorManager()};
+              DynAllocInfo dyn_alloc_info{ind};
               _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
             }
             break;
@@ -102,14 +102,14 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
     {
       auto tensor = input_tensors[i];
       auto ind = _graph.getInputs().at(i);
-      DynAllocInfo dyn_alloc_info{ind, cf_dyn_tensor_builder->dynamicTensorManager()};
+      DynAllocInfo dyn_alloc_info{ind};
       _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
     }
     for (uint32_t i = 0; i < output_tensors.size(); i++)
     {
       auto tensor = output_tensors[i];
       auto ind = _graph.getOutputs().at(i);
-      DynAllocInfo dyn_alloc_info{ind, cf_dyn_tensor_builder->dynamicTensorManager()};
+      DynAllocInfo dyn_alloc_info{ind};
       _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
     }
   }
@@ -269,7 +269,9 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
     auto changed_input_shape = shape_sig_found->second;
     auto operand_ind = dyn_alloc_info->second.ind;
 
-    dyn_alloc_info->second.dyn_tensor_manager->applyShape(operand_ind, changed_input_shape);
+    auto dyn_tensor_manager = _input_tensors[io_ind.value()]->dynamic_tensor_manager();
+    assert(dyn_tensor_manager);
+    dyn_tensor_manager->applyShape(operand_ind, changed_input_shape);
   }
 }
 
