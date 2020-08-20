@@ -63,13 +63,6 @@ public:
    */
   OpSequenceIndex getOperation(const OperationIndex &operation_index) const;
   /**
-   * @brief Dump OpSequences
-   *
-   * @param msg Message that will be displayed
-   * @param graph Graph that has information used for dump
-   */
-  void dump(const std::string &msg, const Operations &operations) const;
-  /**
    * @brief Remove an operation from OpSequence
    *
    * @param operation_index Operation index to be removed
@@ -83,6 +76,14 @@ private:
   OpSequenceIndex findOperation(const OperationIndex &operation_index) const;
   mutable std::unordered_map<OperationIndex, OpSequenceIndex> _seq_indexes;
 };
+
+/**
+ * @brief Dump OpSequences
+ *
+ * @param op_seqs Operation Sequences
+ * @param operations Operation context
+ */
+void dumpOpSequences(const OpSequences &op_seqs, const Operations &operations);
 
 } // namespace ir
 } // namespace onert

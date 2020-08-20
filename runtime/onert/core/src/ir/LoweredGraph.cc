@@ -102,7 +102,8 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
       std::reverse(std::begin(op_seq.operations()), std::end(op_seq.operations()));
     });
 
-    _op_seqs.dump("merged and sorted operations without permutation", _graph.operations());
+    VERBOSE(OpSequences) << "dump without permutation" << std::endl;
+    dumpOpSequences(_op_seqs, _graph.operations());
 
     pass::ConstantInsertionPass ci_pass(*this);
     ci_pass.run();
@@ -127,7 +128,8 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     pass::PermutationEliminationPass pe_pass(*this);
     pe_pass.run();
 
-    _op_seqs.dump("merged and sorted operations with permutation", _graph.operations());
+    VERBOSE(OpSequences) << "dump with permutation" << std::endl;
+    dumpOpSequences(_op_seqs, _graph.operations());
   }
 
   // Graph verifications
