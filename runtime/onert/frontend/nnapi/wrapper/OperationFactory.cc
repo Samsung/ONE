@@ -82,6 +82,30 @@ uint32_t getUint32Scalar(Operands &operands, const OperandIndex index)
   return static_cast<uint32_t>(int32_value);
 }
 
+OperationFactory::Generator
+getElementwiseActivationGenerator(const onert::ir::operation::ElementwiseActivation::Type op_type,
+                                  float alpha = 0.f, float beta = 0.f)
+{
+  return [op_type, alpha, beta](const OperationFactory::Param &init_param, Operands &) {
+    assert(init_param.input_count == 1);
+    assert(init_param.output_count == 1);
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> Input Tensor Index
+
+    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    operation::ElementwiseActivation::Param param;
+    param.op_type = op_type;
+    param.alpha = alpha;
+    param.beta = beta;
+
+    return new operation::ElementwiseActivation{inputs, outputs, param};
+  };
+}
+
 OperationFactory::Generator getElementwiseBinaryGenerator(
     const onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
 {
@@ -712,11 +736,13 @@ OperationFactory::OperationFactory()
     return new operation::Squeeze{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_TANH] = CreateSimpleUnaryOp<operation::Tanh>;
+  _map[ANEURALNETWORKS_TANH] = getElementwiseActivationGenerator(
+      onert::ir::operation::ElementwiseActivation::Type::TANH, 1.f, 1.f);
 
   _map[ANEURALNETWORKS_LOG] = CreateSimpleUnaryOp<operation::Log>;
 
-  _map[ANEURALNETWORKS_LOGISTIC] = CreateSimpleUnaryOp<operation::Logistic>;
+  _map[ANEURALNETWORKS_LOGISTIC] = getElementwiseActivationGenerator(
+      onert::ir::operation::ElementwiseActivation::Type::LOGISTIC);
 
   _map[ANEURALNETWORKS_DIV] =
       getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::DIV);
@@ -963,7 +989,9 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_RSQRT_EX
   _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];
 
-  _map[ANEURALNETWORKS_RELU] = CreateSimpleUnaryOp<operation::ReLU>;
+  _map[ANEURALNETWORKS_RELU] =
+      getElementwiseActivationGenerator(onert::ir::operation::ElementwiseActivation::Type::RELU,
+                                        onert::ir::operation::ElementwiseActivation::infinity, 0);
 
   _map[ANEURALNETWORKS_RESIZE_BILINEAR] = [](const OperationFactory::Param &init_param,
                                              Operands &operands) {
@@ -986,9 +1014,11 @@ OperationFactory::OperationFactory()
     return new operation::ResizeBilinear{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_RELU1] = CreateSimpleUnaryOp<operation::ReLU1>;
+  _map[ANEURALNETWORKS_RELU1] = getElementwiseActivationGenerator(
+      onert::ir::operation::ElementwiseActivation::Type::RELU, 1.f, -1.f);
 
-  _map[ANEURALNETWORKS_RELU6] = CreateSimpleUnaryOp<operation::ReLU6>;
+  _map[ANEURALNETWORKS_RELU6] = getElementwiseActivationGenerator(
+      onert::ir::operation::ElementwiseActivation::Type::RELU, 6.f, 0.f);
 
   _map[ANEURALNETWORKS_REVERSE_EX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);

@@ -297,6 +297,11 @@ void DynamicShapeInferer::visit(const ir::operation::Cos &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
+void DynamicShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
+{
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::INPUT));
+}
+
 void DynamicShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS),
@@ -438,11 +443,6 @@ void DynamicShapeInferer::visit(const ir::operation::Log &op)
 void DynamicShapeInferer::visit(const ir::operation::LogicalNot &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Logistic &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
@@ -977,11 +977,6 @@ void DynamicShapeInferer::visit(const ir::operation::StridedSlice &op)
 
   dynamicTensorManagerOf(output)->applyShape(output_index, output_shape);
   assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Tanh &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Tile &op)

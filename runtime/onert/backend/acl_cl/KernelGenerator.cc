@@ -426,26 +426,6 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Tanh &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Tanh::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<arm_compute::CLActivationLayer>();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, 1.0f, 1.0f};
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::Softmax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -654,6 +634,26 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+
+  const ::arm_compute::ActivationLayerInfo act_info = acl_common::asActivationLayerInfo(
+      node.param().op_type, node.param().alpha, node.param().beta);
+
+  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
+
+  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
+
+  auto acl_fn = asAclClFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -774,26 +774,6 @@ void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
   _return_fn = std::make_unique<exec::FunctionSequence>(
       asAclClFunction(std::move(fn)),
       ActivationBuilder::generate(activation, ofm_tensor->handle()));
-}
-
-void KernelGenerator::visit(const ir::operation::Logistic &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Logistic::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
-
-  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
 }
 
 void KernelGenerator::visit(const ir::operation::LSTM &node)
@@ -954,26 +934,6 @@ void KernelGenerator::visit(const ir::operation::RSQRT &node)
   _return_fn = asAclClFunction(std::move(fn));
 }
 
-void KernelGenerator::visit(const ir::operation::ReLU &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReLU::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<arm_compute::CLActivationLayer>();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -988,46 +948,6 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   fn->configure(ifm_tensor->handle(), ofm_tensor->handle(),
                 ::arm_compute::InterpolationPolicy::BILINEAR, ::arm_compute::BorderMode::REPLICATE,
                 ::arm_compute::PixelValue(0.f), ::arm_compute::SamplingPolicy::TOP_LEFT);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU1 &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReLU1::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
-
-  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU6 &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReLU6::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.0f};
-
-  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
 
   auto acl_fn = asAclClFunction(std::move(fn));
 

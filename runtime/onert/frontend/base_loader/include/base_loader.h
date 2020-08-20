@@ -120,21 +120,20 @@ protected:
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg);
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
-  void loadRelu(const Operator *op, ir::Graph &subg);
-  void loadRelu6(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadRsqrt(const Operator *op, ir::Graph &subg);
   void loadSelect(const Operator *op, ir::Graph &subg);
   void loadSqrt(const Operator *op, ir::Graph &subg);
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
-  void loadTanh(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
   template <ir::operation::Reduce::ReduceType reduce_type>
   void loadReduce(const Operator *op, ir::Graph &subg);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
   void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
-  void loadLogistic(const Operator *op, ir::Graph &subg);
+  void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
+                                 ir::operation::ElementwiseActivation::Type op_type,
+                                 float alpha = 0.f, float beta = 0.f);
   template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
   void loadElementwiseBinary(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
@@ -787,26 +786,22 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPack(const Operator *op, ir::
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRelu(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseActivation(
+    const Operator *op, ir::Graph &subg, ir::operation::ElementwiseActivation::Type op_type,
+    float alpha, float beta)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReLU(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
+  ir::operation::ElementwiseActivation::Param param;
+  param.op_type = op_type;
+  param.alpha = alpha;
+  param.beta = beta;
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRelu6(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ReLU6(inputs, outputs));
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::ElementwiseActivation(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -883,18 +878,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSquaredDifference(const Opera
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::SquaredDifference(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTanh(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Tanh(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -983,18 +966,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::G
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Pad(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogistic(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Logistic(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1842,10 +1813,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadPack(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RELU:
-      loadRelu(op, subg);
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::RELU,
+                                ir::operation::ElementwiseActivation::infinity, 0.f);
+      return;
+    case BuiltinOperator::BuiltinOperator_RELU_N1_TO_1:
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::RELU, 1.f,
+                                -1.f);
       return;
     case BuiltinOperator::BuiltinOperator_RELU6:
-      loadRelu6(op, subg);
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::RELU, 6.f,
+                                0.f);
       return;
     case BuiltinOperator::BuiltinOperator_RESIZE_BILINEAR:
       loadResizeBilinear(op, subg);
@@ -1867,7 +1844,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSquaredDifference(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_TANH:
-      loadTanh(op, subg);
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::TANH, 1.f,
+                                1.f);
       return;
     case BuiltinOperator::BuiltinOperator_TRANSPOSE:
       loadTranspose(op, subg);
@@ -1888,7 +1866,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadPad(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGISTIC:
-      loadLogistic(op, subg);
+      loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LOGISTIC);
       return;
     case BuiltinOperator::BuiltinOperator_EXP:
       loadExp(op, subg);

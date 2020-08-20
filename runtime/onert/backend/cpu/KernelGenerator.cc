@@ -27,6 +27,7 @@
 #include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
+#include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
 #include "ops/ExpLayer.h"
 #include "ops/ExpandDimsLayer.h"
@@ -34,7 +35,6 @@
 #include "ops/FullyConnectedLayer.h"
 #include "ops/GatherLayer.h"
 #include "ops/LogLayer.h"
-#include "ops/LogisticLayer.h"
 #include "ops/MeanLayer.h"
 #include "ops/NegLayer.h"
 #include "ops/OneHotLayer.h"
@@ -45,8 +45,6 @@
 #include "ops/PowLayer.h"
 #include "ops/RangeLayer.h"
 #include "ops/ReduceLayer.h"
-#include "ops/ReLULayer.h"
-#include "ops/ReLU6Layer.h"
 #include "ops/ReshapeLayer.h"
 #include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
@@ -62,7 +60,6 @@
 #include "ops/SpaceToDepthLayer.h"
 #include "ops/SplitLayer.h"
 #include "ops/SplitVLayer.h"
-#include "ops/TanhLayer.h"
 #include "ops/TileLayer.h"
 #include "ops/TransposeLayer.h"
 #include "ops/UnpackLayer.h"
@@ -109,6 +106,22 @@ convertArithmeticType(ir::operation::BinaryArithmetic::ArithmeticType arithmetic
       return ops::ArithmeticType::kMul;
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
       return ops::ArithmeticType::kDiv;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::ElementwiseActivationType
+convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseActivation::Type::LOGISTIC:
+      return ops::ElementwiseActivationType::kLogistic;
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      return ops::ElementwiseActivationType::kReLU;
+    case ir::operation::ElementwiseActivation::Type::TANH:
+      return ops::ElementwiseActivationType::kTanh;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -600,6 +613,22 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+
+  auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
+
+  fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
+                convertElementwiseActivationType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -646,36 +675,6 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto fn = std::make_unique<ops::ExpandDimsLayer>();
 
   fn->configure(input_tensor, axis_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Logistic &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Logistic::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::LogisticLayer>();
-
-  fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Tanh &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Tanh::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::TanhLayer>();
-
-  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -811,36 +810,6 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
 
     _return_fn = std::move(fn);
   }
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::ReLULayer>();
-
-  fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU6 &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(0)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::ReLU6Layer>();
-
-  fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Select &node)

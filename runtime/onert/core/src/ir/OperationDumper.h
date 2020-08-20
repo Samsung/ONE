@@ -46,6 +46,7 @@ public:
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::Dequantize &) override;
+  void visit(const operation::ElementwiseActivation &) override;
   void visit(const operation::ElementwiseBinary &) override;
   void visit(const operation::EmbeddingLookup &) override;
   void visit(const operation::Exp &) override;
@@ -59,7 +60,6 @@ public:
   void visit(const operation::LocalResponseNormalization &) override;
   void visit(const operation::Log &) override;
   void visit(const operation::LogicalNot &) override;
-  void visit(const operation::Logistic &) override;
   void visit(const operation::LSTM &) override;
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
@@ -70,9 +70,6 @@ public:
   void visit(const operation::PReLU &) override;
   void visit(const operation::Range &) override;
   void visit(const operation::Reduce &) override;
-  void visit(const operation::ReLU &) override;
-  void visit(const operation::ReLU1 &) override;
-  void visit(const operation::ReLU6 &) override;
   void visit(const operation::Reshape &node) override;
   void visit(const operation::ResizeBilinear &) override;
   void visit(const operation::Reverse &) override;
@@ -92,7 +89,6 @@ public:
   void visit(const operation::Slice &) override;
   void visit(const operation::StridedSlice &) override;
   void visit(const operation::StatelessRandomUniform &) override;
-  void visit(const operation::Tanh &) override;
   void visit(const operation::Tile &) override;
   void visit(const operation::TopKV2 &) override;
   void visit(const operation::TransposeConv &) override;

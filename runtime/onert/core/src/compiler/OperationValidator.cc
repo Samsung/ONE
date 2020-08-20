@@ -353,6 +353,11 @@ void OperationValidator::visit(const ir::operation::SpaceToDepth &node)
   OP_REQUIRES(input_shape.C * block_size * block_size == output_shape.C);
 }
 
+void OperationValidator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  checkUnaryOp(node);
+}
+
 void OperationValidator::visit(const ir::operation::ElementwiseBinary &node)
 {
   const auto output_index{node.getOutputs().at(0)};

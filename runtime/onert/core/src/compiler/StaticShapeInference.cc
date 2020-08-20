@@ -259,6 +259,11 @@ void StaticShapeInferer::visit(const ir::operation::Cos &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
+void StaticShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
+{
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT));
+}
+
 void StaticShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS),
@@ -452,11 +457,6 @@ void StaticShapeInferer::visit(const ir::operation::Log &op)
 void StaticShapeInferer::visit(const ir::operation::LogicalNot &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
-}
-
-void StaticShapeInferer::visit(const ir::operation::Logistic &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
@@ -930,11 +930,6 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
   ir::Shape new_shape =
       shape_inference::inferStridedSliceShape(input.info().shape(), op_params, rank);
   output.info().shape(new_shape);
-}
-
-void StaticShapeInferer::visit(const ir::operation::Tanh &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Tanh::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::Tile &op)
