@@ -131,7 +131,7 @@ if [ ! -d "$TEST_ROOT_PATH" ]; then
 fi
 
 # Check test driver setting
-if [ ! command_exists $DRIVER_BIN ] && [ "$RUN_TEST" = "on" ]; then
+if ! command_exists $DRIVER_BIN && [ "$RUN_TEST" = "on" ]; then
     echo "Cannot find test driver" $DRIVER_BIN ": please set proper DRIVER_BIN"
     exit 1
 fi
