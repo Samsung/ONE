@@ -157,11 +157,11 @@ runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
 	tar -zcf $(WORKSPACE)/nnfw-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
 acl_tar_internal: $(BUILD_FOLDER)
-	tar -zcf $(WORKSPACE)/nnfw-acl.tar.gz -C ${OVERLAY_FOLDER} lib
+	tar -zcf $(WORKSPACE)/nnfw-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_core.so lib/libarm_compute_graph.so
 
 install_internal_acl:
 # Workaround to install acl for test (ignore error when there is no file to copy)
-	cp $(OVERLAY_FOLDER)/lib/* $(INSTALL_ALIAS)/lib || true
+	cp $(OVERLAY_FOLDER)/lib/libarm_compute* $(INSTALL_ALIAS)/lib || true
 
 build_test_suite: install_internal install_internal_acl
 	@echo "packaging test suite"
