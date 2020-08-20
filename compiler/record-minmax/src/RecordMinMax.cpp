@@ -83,6 +83,15 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   }
   std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
                                std::istreambuf_iterator<char>());
+
+  // Verify flatbuffers
+  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
+                                 model_data.size()};
+  if (!circle::VerifyModelBuffer(verifier))
+  {
+    throw std::runtime_error("ERROR: Failed to verify circle '" + input_model_path + "'");
+  }
+
   _module = luci::Importer().importModule(circle::GetModel(model_data.data()));
 
   if (_module == nullptr)
