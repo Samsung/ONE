@@ -45,6 +45,7 @@ public:
     Stride stride;
     Padding padding;
     Activation activation;
+    Dilation dilation;
   };
 
 public:

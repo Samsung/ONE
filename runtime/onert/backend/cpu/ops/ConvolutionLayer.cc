@@ -31,7 +31,8 @@ namespace ops
 ConvolutionLayer::ConvolutionLayer()
     : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
       _paddingType(ir::PaddingType::EXPLICIT), _paddingLeft(0), _paddingTop(0), _paddingRight(0),
-      _paddingBottom(0), _strideWidth(0), _strideHeight(0), _activation(ir::Activation::NONE),
+      _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),
+      _dilationHeightFactor(1), _activation(ir::Activation::NONE),
       _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
 {
   // DO NOTHING
@@ -50,8 +51,8 @@ void ConvolutionLayer::convFloat32()
   op_params.padding_values.height = _paddingTop;
   op_params.stride_width = _strideWidth;
   op_params.stride_height = _strideHeight;
-  op_params.dilation_width_factor = 1;
-  op_params.dilation_height_factor = 1;
+  op_params.dilation_width_factor = _dilationWidthFactor;
+  op_params.dilation_height_factor = _dilationHeightFactor;
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
@@ -78,8 +79,8 @@ void ConvolutionLayer::convQuant8()
   nnfw::cker::ConvParams op_params;
   op_params.stride_width = _strideWidth;
   op_params.stride_height = _strideHeight;
-  op_params.dilation_width_factor = 1;
-  op_params.dilation_height_factor = 1;
+  op_params.dilation_width_factor = _dilationWidthFactor;
+  op_params.dilation_height_factor = _dilationHeightFactor;
   op_params.padding_type = getPaddingType(_paddingType);
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
@@ -104,6 +105,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t paddingLeft, const uint32_t paddingRight,
                                  const uint32_t paddingTop, const uint32_t paddingBottom,
                                  const uint32_t strideWidth, const uint32_t strideHeight,
+                                 const uint32_t dilationWidthFactor,
+                                 const uint32_t dilationHeightFactor,
                                  const ir::Activation activation, IPortableTensor *output)
 {
   _input = input;
@@ -116,6 +119,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _paddingBottom = paddingBottom;
   _strideWidth = strideWidth;
   _strideHeight = strideHeight;
+  _dilationWidthFactor = dilationWidthFactor;
+  _dilationHeightFactor = dilationHeightFactor;
   _activation = activation;
   _output = output;
 }

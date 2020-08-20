@@ -465,7 +465,8 @@ OperationFactory::OperationFactory()
     // inputCount is either 7 or 10 acccording to NN API specification.
     //  - Padding is implicit when inputCount is 7
     //  - Padding is explicit when inputCount is 10
-    assert(init_param.input_count == 7 || init_param.input_count == 10);
+    assert(init_param.input_count == 7 || init_param.input_count == 10 ||
+           init_param.input_count == 13);
     assert(init_param.output_count == 1);
 
     //  0 -> IFM Tensor Index
@@ -476,7 +477,6 @@ OperationFactory::OperationFactory()
     OperandIndexSequence outputs{init_param.outputs[0]};
 
     Conv2D::Param param;
-
     if (init_param.input_count == 7) // support implicit padding
     {
       // Each input should be interpreted as follows:
@@ -494,6 +494,10 @@ OperationFactory::OperationFactory()
       param.padding.type =
           NNAPIConvert::getPaddingType(operands.at(padding_index).asScalar<PaddingCode>());
       param.stride = makeStride(operands, hstride_index, vstride_index);
+
+      param.dilation.width_factor = 1;
+      param.dilation.height_factor = 1;
+
       param.activation =
           NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
@@ -521,6 +525,48 @@ OperationFactory::OperationFactory()
       param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
                                                 padding_top_index, padding_bottom_index);
       param.stride = makeStride(operands, hstride_index, vstride_index);
+
+      param.dilation.width_factor = 1;
+      param.dilation.height_factor = 1;
+
+      param.activation =
+          NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
+    }
+    else if (init_param.input_count == 13) // support dilation
+    {
+      // Each input should be interpreted as follows:
+      //
+      //  3 -> Padding_left Index
+      //  4 -> Padding_right Index
+      //  5 -> Padding_top Index
+      //  6 -> Padding_bottom Index
+      //  7 -> Stride (width) Index
+      //  8 -> Stride (height) Index
+      //  9 -> Activation Index
+      //  11 -> Dilation (width_factor) Index
+      //  12 -> Dilation (height_factor) INdex
+
+      const auto padding_left_index = OperandIndex{init_param.inputs[3]};
+      const auto padding_right_index = OperandIndex{init_param.inputs[4]};
+      const auto padding_top_index = OperandIndex{init_param.inputs[5]};
+      const auto padding_bottom_index = OperandIndex{init_param.inputs[6]};
+      const auto hstride_index = OperandIndex{init_param.inputs[7]};
+      const auto vstride_index = OperandIndex{init_param.inputs[8]};
+      const auto activation_index = OperandIndex{init_param.inputs[9]};
+      const auto width_factor_index = OperandIndex{init_param.inputs[11]};
+      const auto height_factor_index = OperandIndex{init_param.inputs[12]};
+
+      param.padding.type = PaddingType::EXPLICIT;
+      param.padding.param = makeExplicitPadding(operands, padding_left_index, padding_right_index,
+                                                padding_top_index, padding_bottom_index);
+      param.stride = makeStride(operands, hstride_index, vstride_index);
+
+      auto width_factor = operands.at(width_factor_index).asScalar<int32_t>();
+      auto height_factor = operands.at(height_factor_index).asScalar<int32_t>();
+
+      param.dilation.width_factor = width_factor;
+      param.dilation.height_factor = height_factor;
+
       param.activation =
           NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
