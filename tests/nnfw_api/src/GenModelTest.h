@@ -18,6 +18,7 @@
 #include <nnfw_internal.h>
 
 #include <fstream>
+#include <string>
 
 #include "CircleGen.h"
 #include "fixtures.h"
@@ -34,15 +35,24 @@
 class GenModelTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session)); }
+  void SetUp() override
+  { // DO NOTHING
+  }
 
   void TearDown() override
   {
-    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, _cbuf.buffer(), _cbuf.size()));
-    NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
-
-    // In/Out buffer settings
+    for (std::string backend : _backends)
     {
+      // NOTE If we can prepare many times for one model loading on same session,
+      //      we can move nnfw_create_session to SetUp and
+      //      nnfw_load_circle_from_buffer to outside forloop
+      NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
+      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, _cbuf.buffer(), _cbuf.size()));
+
+      NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+      NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
+
+      // In/Out buffer settings
       uint32_t num_inputs;
       NNFW_ENSURE_SUCCESS(nnfw_input_size(_so.session, &num_inputs));
       _so.inputs.resize(num_inputs);
@@ -71,10 +81,8 @@ protected:
                                   sizeof(float) * output_elements),
                   NNFW_STATUS_NO_ERROR);
       }
-    }
 
-    // Set input values, run, and check output values
-    {
+      // Set input values, run, and check output values
       ASSERT_EQ(_so.inputs.size(), _ref_inputs.size());
       for (uint32_t i = 0; i < _so.inputs.size(); i++)
       {
@@ -82,7 +90,6 @@ protected:
         ASSERT_EQ(_so.inputs[i].size(), _ref_inputs[i].size());
         memcpy(_so.inputs[i].data(), _ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
       }
-
       NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
 
       ASSERT_EQ(_so.outputs.size(), _ref_outputs.size());
@@ -100,67 +107,27 @@ protected:
     NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
   }
 
+  void TestableBackends(const std::vector<std::string> &backends)
+  {
+    for (auto backend : backends)
+    {
+#ifdef TEST_ACL_BACKEND
+      if (backend.compare("acl_cl") == 0 || backend.compare("acl_neon") == 0)
+      {
+        _backends.push_back(backend);
+      }
+#endif
+      if (backend.compare("cpu") == 0)
+      {
+        _backends.push_back(backend);
+      }
+    }
+  }
+
 protected:
   SessionObject _so;
   CircleBuffer _cbuf;
   std::vector<std::vector<float>> _ref_inputs;
   std::vector<std::vector<float>> _ref_outputs;
+  std::vector<std::string> _backends;
 };
-
-TEST_F(GenModelTest, OneOp_Add_VarToConst)
-{
-  CircleGen cgen;
-  std::vector<float> rhs_data{5, 4, 7, 4};
-  uint32_t rhs_buf = cgen.addBuffer(rhs_data);
-  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
-  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({lhs}, {out});
-  _cbuf = cgen.finish();
-
-  _ref_inputs = {{1, 3, 2, 4}};
-  _ref_outputs = {{6, 7, 9, 8}};
-}
-
-TEST_F(GenModelTest, OneOp_Add_VarToVar)
-{
-  CircleGen cgen;
-  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({lhs, rhs}, {out});
-  _cbuf = cgen.finish();
-
-  _ref_inputs = {{1, 3, 2, 4}, {5, 4, 7, 4}};
-  _ref_outputs = {{6, 7, 9, 8}};
-}
-
-TEST_F(GenModelTest, OneOp_AvgPool2D)
-{
-  CircleGen cgen;
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
-                                circle::ActivationFunctionType_NONE);
-  cgen.setInputsAndOutputs({in}, {out});
-  _cbuf = cgen.finish();
-
-  _ref_inputs = {{1, 3, 2, 4}};
-  _ref_outputs = {{2.5}};
-}
-
-TEST_F(GenModelTest, OneOp_Cos)
-{
-  CircleGen cgen;
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorCos({{in}, {out}});
-  cgen.setInputsAndOutputs({in}, {out});
-  _cbuf = cgen.finish();
-
-  const float pi = 3.141592653589793;
-  _ref_inputs = {{0, pi / 2, pi, 7}};
-  _ref_outputs = {{1, 0, -1, 0.75390225434}};
-}

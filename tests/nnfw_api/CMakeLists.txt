@@ -14,6 +14,11 @@ file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_SRC "src/*.cc" "src/*.cpp")
 
 add_executable(${RUNTIME_NNFW_API_TEST} ${RUNTIME_NNFW_API_TEST_SRC})
 
+nnfw_find_package(ARMCompute QUIET)
+if(ARMCompute_FOUND)
+  target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_ACL_BACKEND)
+endif(ARMCompute_FOUND)
+
 set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include
                                   ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE})
