@@ -83,15 +83,6 @@ OpSequenceIndex OpSequences::getOperation(const OperationIndex &operation_index)
   return ret;
 }
 
-// TODO: Extract this into external helper function
-void OpSequences::dump(const std::string &msg, const Operations &operations) const
-{
-  VERBOSE(OpSequences) << "OpSequences(" << msg << ")" << std::endl;
-  iterate([&](const OpSequenceIndex &idx, const OpSequence &op_seq) {
-    VERBOSE(OpSequences) << idx.value() << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
-  });
-}
-
 void OpSequences::removeFromOpSequence(const OperationIndex &operation_index)
 {
   const auto op_seq_index = findOperation(operation_index);
@@ -120,6 +111,13 @@ OpSequenceIndex OpSequences::findOperation(const OperationIndex &operation_index
     }
   }
   throw std::runtime_error("Operation not found");
+}
+
+void dumpOpSequences(const OpSequences &op_seqs, const Operations &operations)
+{
+  op_seqs.iterate([&](const OpSequenceIndex &idx, const OpSequence &op_seq) {
+    VERBOSE(OpSequences) << idx.value() << "] " << getStrFromOpSeq(op_seq, operations) << std::endl;
+  });
 }
 
 } // namespace ir
