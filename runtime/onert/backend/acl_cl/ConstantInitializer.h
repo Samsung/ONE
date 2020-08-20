@@ -19,7 +19,8 @@
 
 #include <backend/IConstantInitializer.h>
 #include <ir/Operands.h>
-#include "TensorBuilder.h"
+#include "AclTensorRegistry.h"
+#include "TensorManager.h"
 
 namespace onert
 {
@@ -32,7 +33,7 @@ class ConstantInitializer : public IConstantInitializer
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
-                      const std::shared_ptr<TensorBuilder> &tensor_builder);
+                      const std::shared_ptr<ITensorRegistry> &tensor_reg);
 
 public:
   void visit(const ir::operation::BatchToSpaceND &) override;
@@ -48,12 +49,12 @@ public:
   void visit(const ir::operation::TransposeConv &) override;
 
 private:
-  std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
+  std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
   void copyInputInitialize(const ir::Operation &node, uint32_t index);
   void permuteInputInitialize(const ir::Operation &node, uint32_t index);
 
 private:
-  std::shared_ptr<TensorBuilder> _tensor_builder;
+  std::shared_ptr<ITensorRegistry> _tensor_reg;
 };
 
 } // namespace acl_cl

@@ -64,8 +64,9 @@ public:
     // TODO Remove TensorBuilder and ConstantInitializer
     // TODO Support Consecutive controflow operation's intermediate tensor
     auto tb = std::make_shared<TensorBuilder>();
+    auto tr = tb->tensorRegistry();
     context->tensor_builder = tb;
-    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
+    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;

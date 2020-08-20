@@ -1,8 +1,6 @@
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+set (SOURCES src/CircleQuantizer.cpp)
 
 add_executable(circle-quantizer "${SOURCES}")
-target_include_directories(circle-quantizer PRIVATE include)
-target_include_directories(circle-quantizer PRIVATE src)
 target_link_libraries(circle-quantizer foder)
 target_link_libraries(circle-quantizer safemain)
 target_link_libraries(circle-quantizer oops)

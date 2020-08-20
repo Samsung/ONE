@@ -53,7 +53,8 @@ public:
   enum class WriteFormat
   {
     CHROME_TRACING,
-    SNPE_BENCHMARK
+    SNPE_BENCHMARK,
+    MD_TABLE,
   };
 
 public:
@@ -71,6 +72,7 @@ public:
 private:
   void writeSNPEBenchmark(std::ostream &os);
   void writeChromeTrace(std::ostream &os);
+  void writeMDTable(std::ostream &os);
 
 private:
   std::mutex _mu;

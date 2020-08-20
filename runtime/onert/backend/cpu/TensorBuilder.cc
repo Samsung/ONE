@@ -57,7 +57,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
   const auto tensor_info = _tensor_info_map.at(ind);
 
-  if (!at(ind)->is_dynamic())
+  if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
   {
     const auto size = tensor_info.total_size();
     _static_tensor_mgr->claimPlan(ind, size);
@@ -66,7 +66,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 
 void TensorBuilder::notifyLastUse(const ir::OperandIndex &ind)
 {
-  if (!at(ind)->is_dynamic())
+  if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
   {
     _static_tensor_mgr->releasePlan(ind);
   }
@@ -85,27 +85,10 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
-{
-  return _tensor_reg->getITensor(ind);
-}
-
-std::shared_ptr<IPortableTensor> TensorBuilder::portableAt(const ir::OperandIndex &ind)
-{
-  return _tensor_reg->getPortableTensor(ind);
-}
-
 bool TensorBuilder::setMigrantTensor(const ir::OperandIndex &ind,
                                      const std::shared_ptr<IPortableTensor> &tensor)
 {
   return _tensor_reg->setMigrantTensor(ind, tensor);
-}
-
-void TensorBuilder::iterate(const IterateFunction &fn) { _static_tensor_mgr->iterate(fn); }
-
-std::shared_ptr<Tensor> TensorBuilder::at(const ir::OperandIndex &ind)
-{
-  return _tensor_reg->getNativeTensor(ind);
 }
 
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)

@@ -59,6 +59,8 @@ public:
   {
     for (auto &entry : backend_contexts)
     {
+      if (entry.first->config()->id() == backend::controlflow::Config::ID)
+        continue;
       _all_backends.push_back(entry.first);
     }
     _backend_resolver = std::make_unique<compiler::BackendResolver>();

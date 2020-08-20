@@ -56,7 +56,8 @@ public:
                  const IPortableTensor *bias, ir::PaddingType _paddingType,
                  const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideWidth,
-                 const uint32_t strideHeight, const ir::Activation activation,
+                 const uint32_t strideHeight, const uint32_t dilationWidthFactor,
+                 const uint32_t dilationHeightFactor, const ir::Activation activation,
                  IPortableTensor *output);
 
   void run() override;
@@ -77,6 +78,8 @@ private:
 
   uint32_t _strideWidth;
   uint32_t _strideHeight;
+  uint32_t _dilationWidthFactor;
+  uint32_t _dilationHeightFactor;
 
   ir::Activation _activation;
 

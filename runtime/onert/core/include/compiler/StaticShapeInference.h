@@ -68,16 +68,16 @@ private:
 private:
   // TODO Define visitors for operations. List them in alphabetic order.
   void visit(const ir::operation::Abs &op) override;
-  void visit(const ir::operation::Add &op) override;
   void visit(const ir::operation::ArgMax &op) override;
   void visit(const ir::operation::BatchMatMul &op) override;
+  void visit(const ir::operation::BinaryArithmetic &op) override;
   void visit(const ir::operation::BroadcastTo &op) override;
   void visit(const ir::operation::Cast &op) override;
   void visit(const ir::operation::Comparison &op) override;
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
   void visit(const ir::operation::Cos &op) override;
-  void visit(const ir::operation::Div &op) override;
+  void visit(const ir::operation::ElementwiseBinary &op) override;
   void visit(const ir::operation::Exp &op) override;
   void visit(const ir::operation::ExpandDims &op) override;
   void visit(const ir::operation::Fill &op) override;
@@ -87,13 +87,9 @@ private:
   void visit(const ir::operation::If &op) override;
   void visit(const ir::operation::Log &op) override;
   void visit(const ir::operation::LogicalNot &op) override;
-  void visit(const ir::operation::LogicalOr &op) override;
   void visit(const ir::operation::Logistic &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
-  void visit(const ir::operation::Max &op) override;
-  void visit(const ir::operation::Min &op) override;
-  void visit(const ir::operation::Mul &op) override;
   void visit(const ir::operation::Neg &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;
@@ -116,7 +112,6 @@ private:
   void visit(const ir::operation::Split &op) override;
   void visit(const ir::operation::Squeeze &op) override;
   void visit(const ir::operation::StridedSlice &op) override;
-  void visit(const ir::operation::Sub &op) override;
   void visit(const ir::operation::SquaredDifference &op) override;
   void visit(const ir::operation::Tanh &op) override;
   void visit(const ir::operation::Tile &op) override;

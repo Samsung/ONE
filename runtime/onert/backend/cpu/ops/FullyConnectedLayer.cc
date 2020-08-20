@@ -220,7 +220,7 @@ void FullyConnectedLayer::prepare()
     }
   }
 
-#if defined(__ARM_NEON__) && defined(USE_RUY_GEMV)
+#if (defined(__ARM_NEON__) || defined(__ARM_NEON)) && defined(USE_RUY_GEMV)
   // TODO This is workaround
   // The only fc hybrid will use ruy kernel
   if (_input->data_type() != OperandType::FLOAT32 ||

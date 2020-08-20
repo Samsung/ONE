@@ -32,10 +32,9 @@ public:
 
 public:
   void visit(const operation::Abs &) override;
-  void visit(const operation::Add &node) override;
   void visit(const operation::ArgMax &) override;
-  void visit(const operation::AvgPool2D &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
+  void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::BroadcastTo &) override;
   void visit(const operation::Cast &) override;
   void visit(const operation::Comparison &) override;
@@ -47,7 +46,7 @@ public:
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::Dequantize &) override;
-  void visit(const operation::Div &) override;
+  void visit(const operation::ElementwiseBinary &) override;
   void visit(const operation::EmbeddingLookup &) override;
   void visit(const operation::Exp &) override;
   void visit(const operation::ExpandDims &) override;
@@ -57,20 +56,16 @@ public:
   void visit(const operation::HashtableLookup &) override;
   void visit(const operation::InstanceNorm &) override;
   void visit(const operation::L2Normalization &) override;
-  void visit(const operation::L2Pool2D &) override;
   void visit(const operation::LocalResponseNormalization &) override;
   void visit(const operation::Log &) override;
-  void visit(const operation::LogicalAnd &) override;
   void visit(const operation::LogicalNot &) override;
-  void visit(const operation::LogicalOr &) override;
   void visit(const operation::Logistic &) override;
   void visit(const operation::LSTM &) override;
-  void visit(const operation::MaxPool2D &node) override;
-  void visit(const operation::Mul &) override;
   void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Pad &) override;
   void visit(const operation::Permute &node) override;
+  void visit(const operation::Pool2D &node) override;
   void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::Range &) override;
@@ -97,15 +92,12 @@ public:
   void visit(const operation::Slice &) override;
   void visit(const operation::StridedSlice &) override;
   void visit(const operation::StatelessRandomUniform &) override;
-  void visit(const operation::Sub &) override;
   void visit(const operation::Tanh &) override;
   void visit(const operation::Tile &) override;
   void visit(const operation::TopKV2 &) override;
   void visit(const operation::TransposeConv &) override;
   void visit(const operation::Transpose &) override;
   void visit(const operation::Unpack &) override;
-  void visit(const operation::Min &) override;
-  void visit(const operation::Max &) override;
   void visit(const operation::OneHot &) override;
   void visit(const operation::If &) override;
   void visit(const operation::While &) override;

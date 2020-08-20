@@ -64,7 +64,7 @@ bool StaticShapeInferer::infer(const ir::OpSequence &op_seq)
 
 bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
 {
-  for (auto input_idx : op.getInputs())
+  for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     if (_operands.at(input_idx).info().isDynamic())
     {
@@ -147,12 +147,6 @@ void StaticShapeInferer::visit(const ir::operation::Abs &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::Input::INPUT));
 }
 
-void StaticShapeInferer::visit(const ir::operation::Add &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Add::Input::LHS),
-                           op.getInputs().at(ir::operation::Add::Input::RHS));
-}
-
 void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
@@ -181,6 +175,12 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   auto &output = _operands.at(output_index);
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs.shape(), rhs.shape(), op.param());
   output.info().shape(new_shape);
+}
+
+void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
+{
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
+                           op.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS));
 }
 
 void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
@@ -259,10 +259,10 @@ void StaticShapeInferer::visit(const ir::operation::Cos &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
 }
 
-void StaticShapeInferer::visit(const ir::operation::Div &op)
+void StaticShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
 {
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Div::Input::LHS),
-                           op.getInputs().at(ir::operation::Div::Input::RHS));
+  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS),
+                           op.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS));
 }
 
 void StaticShapeInferer::visit(const ir::operation::Exp &op)
@@ -454,12 +454,6 @@ void StaticShapeInferer::visit(const ir::operation::LogicalNot &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
 }
 
-void StaticShapeInferer::visit(const ir::operation::LogicalOr &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::LogicalOr::Input::INPUT0),
-                           op.getInputs().at(ir::operation::LogicalOr::Input::INPUT1));
-}
-
 void StaticShapeInferer::visit(const ir::operation::Logistic &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Logistic::Input::INPUT));
@@ -473,24 +467,6 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
-}
-
-void StaticShapeInferer::visit(const ir::operation::Max &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Max::Input::LHS),
-                           op.getInputs().at(ir::operation::Max::Input::RHS));
-}
-
-void StaticShapeInferer::visit(const ir::operation::Min &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Min::Input::LHS),
-                           op.getInputs().at(ir::operation::Min::Input::RHS));
-}
-
-void StaticShapeInferer::visit(const ir::operation::Mul &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Mul::Input::LHS),
-                           op.getInputs().at(ir::operation::Mul::Input::RHS));
 }
 
 void StaticShapeInferer::visit(const ir::operation::Neg &op)
@@ -954,12 +930,6 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
   ir::Shape new_shape =
       shape_inference::inferStridedSliceShape(input.info().shape(), op_params, rank);
   output.info().shape(new_shape);
-}
-
-void StaticShapeInferer::visit(const ir::operation::Sub &op)
-{
-  handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Sub::Input::LHS),
-                           op.getInputs().at(ir::operation::Sub::Input::RHS));
 }
 
 void StaticShapeInferer::visit(const ir::operation::Tanh &op)

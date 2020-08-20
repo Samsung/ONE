@@ -13,7 +13,7 @@ function(_Boost_Build Boost_PREFIX)
                     RESULT_VARIABLE Boost_BUILD)
   endif()
 
-  set(BoostBuild_DIR ${BoostSource_DIR})
+  set(BoostBuild_DIR ${CMAKE_BINARY_DIR}/externals/boost)
   set(BoostInstall_DIR ${Boost_PREFIX})
 
   unset(Boost_Options)
@@ -55,18 +55,13 @@ if (NOT BUILD_BOOST)
   endif()
 endif()
 
-set(Boost_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(Boost_PREFIX ${EXT_OVERLAY_DIR})
 
 if(BUILD_BOOST)
   _Boost_Build("${Boost_PREFIX}")
 
-  # Let's use locally built boost to system-wide one so sub modules
-  # needing Boost library and header files can search for them
-  # in ${Boost_PREFIX} directory
-  list(APPEND CMAKE_PREFIX_PATH "${Boost_PREFIX}")
-
   # Without Boost_INCLUDE_DIR, it complains the variable is missing during find_package.
-  set(Boost_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+  set(Boost_INCLUDE_DIR ${Boost_PREFIX}/include)
 
   # 1) without static build, it will complain it cannot find libc++_shared.so.
   # 2) We uses static libraries for other libraries.

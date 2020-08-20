@@ -40,7 +40,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   const auto &manual_options = _options.manual_scheduler_options;
   auto backend_resolver = std::make_unique<compiler::BackendResolver>();
 
-  // This fallback will be used for unavailable backends
+  // This fallback will be used in case that `backend_for_all` is unavailable
   auto fallback = [&]() -> const backend::Backend * {
     for (auto backend_id : _options.backend_list)
     {
@@ -50,7 +50,8 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
     }
     return nullptr;
   }();
-  assert(fallback != nullptr); // There must be at least one fallback
+  if (fallback == nullptr)
+    throw std::runtime_error{"No loaded backends available."};
 
   // 1. Backend for All operations
   const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);
@@ -110,7 +111,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
                                                         const backend::Backend *fallback)
 {
-  // Ensure if the backend is available in the backend
+  // Ensure if the backend is available in the current backend context
   const backend::Backend *backend = BackendManager::get().get(id);
   if (!backend || _backend_contexts.find(backend) == _backend_contexts.end())
   {

@@ -41,7 +41,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Add; }
+  OpCode opcode() const final { return OpCode::Einsum; }
 
 public:
   const Param &param() const { return _param; }

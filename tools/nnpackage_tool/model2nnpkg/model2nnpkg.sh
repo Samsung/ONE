@@ -4,6 +4,7 @@ set -eu
 
 progname=$(basename "${BASH_SOURCE[0]}")
 outdir="."
+name=""
 
 usage() {
   echo "Usage: $progname [options] modelfile"
@@ -12,10 +13,12 @@ usage() {
   echo "Options:"
   echo "    -h   show this help"
   echo "    -o   set nnpackage output directory (default=$outdir)"
+  echo "    -p   set nnpackage output name (default=[modelfile name])"
   echo ""
   echo "Examples:"
-  echo "    $progname add.tflite        => create nnpackage in $outdir/"
-  echo "    $progname -o out add.tflite => create nnpackage in out/"
+  echo "    $progname add.tflite                  => create nnpackage 'add' in $outdir/"
+  echo "    $progname -o out add.tflite           => create nnpackage 'add' in out/"
+  echo "    $progname -o out -p addpkg add.tflite => create nnpackage 'addpkg' in out/"
   exit 1
 }
 
@@ -24,10 +27,11 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-while getopts "ho:" OPTION; do
+while getopts "ho:p:" OPTION; do
 case "${OPTION}" in
     h) usage;;
     o) outdir=$OPTARG;;
+    p) name=$OPTARG;;
     ?) exit 1;;
 esac
 done
@@ -53,7 +57,9 @@ if [ ! -e $1 ]; then
   exit 1
 fi
 
-name=${modelfile%.*}
+if [ -z "$name" ]; then
+  name=${modelfile%.*}
+fi
 extension=${modelfile##*.}
 
 echo "Generating nnpackage "$name" in "$outdir""
@@ -63,7 +69,7 @@ cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
   "major-version" : "1",
   "minor-version" : "0",
   "patch-version" : "0",
-  "models"      : [ "$name.$extension" ],
+  "models"      : [ "$modelfile" ],
   "model-types" : [ "$extension" ]
 }
 EOF

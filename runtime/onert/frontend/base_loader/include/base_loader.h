@@ -104,23 +104,21 @@ protected:
   template <typename Param, typename OptionsType>
   void loadStridesAndPaddings(Param &param, const OptionsType *options);
   // Load Pool2D param
-  template <typename Param> void loadPool2D(Param &param, const Pool2DOptions *options);
+  template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
 
   // Operations
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
   void loadTransposeConv(const Operator *op, ir::Graph &subg);
-  void loadAvgPool2D(const Operator *op, ir::Graph &subg);
+  void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
   void loadReshape(const Operator *op, ir::Graph &subg);
   void loadSoftmax(const Operator *op, ir::Graph &subg);
-  void loadMaxPool2D(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
-  void loadAdd(const Operator *op, ir::Graph &subg);
-  void loadSub(const Operator *op, ir::Graph &subg);
-  void loadMul(const Operator *op, ir::Graph &subg);
-  void loadDiv(const Operator *op, ir::Graph &subg);
+  template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
+  void loadBinaryArithmetic(const Operator *op, ir::Graph &subg);
+  void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadRelu(const Operator *op, ir::Graph &subg);
   void loadRelu6(const Operator *op, ir::Graph &subg);
@@ -131,12 +129,14 @@ protected:
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTanh(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
-  void loadReduce(const Operator *op, ir::Graph &subg,
-                  ir::operation::Reduce::ReduceType reduce_type);
+  template <ir::operation::Reduce::ReduceType reduce_type>
+  void loadReduce(const Operator *op, ir::Graph &subg);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
   void loadReverseV2(const Operator *op, ir::Graph &subg);
   void loadPad(const Operator *op, ir::Graph &subg);
   void loadLogistic(const Operator *op, ir::Graph &subg);
+  template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
+  void loadElementwiseBinary(const Operator *op, ir::Graph &subg);
   void loadExp(const Operator *op, ir::Graph &subg);
   void loadExpandDims(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
@@ -151,8 +151,6 @@ protected:
   void loadSlice(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
-  void loadMinimum(const Operator *op, ir::Graph &subg);
-  void loadMaximum(const Operator *op, ir::Graph &subg);
   void loadCast(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
@@ -171,7 +169,6 @@ protected:
   void loadLogicalNot(const Operator *op, ir::Graph &subg);
   void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
-  void loadLogicalOr(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
@@ -503,8 +500,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
 
 template <typename LoaderDomain, typename SpecificLoader>
 template <typename Param>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(Param &param,
-                                                          const Pool2DOptions *options)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
+                                                                 const Pool2DOptions *options)
 {
   // Strides and Paddings
   loadStridesAndPaddings(param, options);
@@ -528,7 +525,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConv2D(const Operator *op, ir
   const auto *options = op->builtin_options_as_Conv2DOptions();
   param.activation = convertActivation(options->fused_activation_function());
   loadStridesAndPaddings(param, options);
-  // Dilation h/w factor unused
+
+  param.dilation.width_factor = options->dilation_w_factor();
+  param.dilation.height_factor = options->dilation_h_factor();
+
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Conv2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
@@ -570,19 +570,21 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTransposeConv(const Operator 
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAvgPool2D(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(const Operator *op, ir::Graph &subg,
+                                                          ir::operation::Pool2D::PoolType op_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::AvgPool2D::Param param;
+  ir::operation::Pool2D::Param param;
+  param.op_type = op_type;
   const auto *options = op->builtin_options_as_Pool2DOptions();
 
-  loadPool2D(param, options);
+  loadPool2DOptions(param, options);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::AvgPool2D(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pool2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -626,23 +628,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSoftmax(const Operator *op, i
   param.beta = options->beta();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Softmax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMaxPool2D(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::MaxPool2D::Param param;
-  const auto *options = op->builtin_options_as_Pool2DOptions();
-
-  loadPool2D(param, options);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::MaxPool2D(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -704,70 +689,82 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Gr
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAdd(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Add::Param param;
-  const auto *options = op->builtin_options_as_AddOptions();
+  ir::operation::BinaryArithmetic::Param param;
+  param.arithmetic_type = ir::operation::BinaryArithmetic::ArithmeticType::ADD;
 
-  param.activation = convertActivation(options->fused_activation_function());
+  if (op->custom_options() == nullptr)
+  {
+    param.activation = ir::Activation::NONE;
+  }
+  else
+  {
+    size_t custom_op_data_size = op->custom_options()->size();
+    auto custom_op_data = op->custom_options()->Data();
+    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+    auto attr_map = data_root.AsMap();
+    const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
+        attr_map["fused_activation_function"].AsInt8());
+    param.activation = convertActivation(fused_activation_func);
+  }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Add(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BinaryArithmetic(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSub(const Operator *op, ir::Graph &subg)
+template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operator *op,
+                                                                    ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::Sub::Param param;
-  const auto *options = op->builtin_options_as_SubOptions();
+  ir::operation::BinaryArithmetic::Param param;
+  param.arithmetic_type = op_type;
+  switch (op_type)
+  {
+    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
+    {
+      const auto *add_options = op->builtin_options_as_AddOptions();
+      param.activation = convertActivation(add_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
+    {
+      const auto *sub_options = op->builtin_options_as_SubOptions();
+      param.activation = convertActivation(sub_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
+    {
+      const auto *mul_options = op->builtin_options_as_MulOptions();
+      param.activation = convertActivation(mul_options->fused_activation_function());
+      break;
+    }
+    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
+    {
+      const auto *div_options = op->builtin_options_as_DivOptions();
+      param.activation = convertActivation(div_options->fused_activation_function());
+      break;
+    }
+    default:
+      assert(false &&
+             "The function 'loadBinaryArithmetic' supports only BinaryArithmetic operations");
+      break;
+  }
 
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Sub(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMul(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::Mul::Param param;
-  const auto *options = op->builtin_options_as_MulOptions();
-
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Mul(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadDiv(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::Div::Param param;
-  const auto *options = op->builtin_options_as_DivOptions();
-
-  param.activation = convertActivation(options->fused_activation_function());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Div(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::BinaryArithmetic(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -922,8 +919,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(
-    const Operator *op, ir::Graph &subg, ir::operation::Reduce::ReduceType reduce_type)
+template <ir::operation::Reduce::ReduceType reduce_type>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -998,6 +995,24 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogistic(const Operator *op, 
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Logistic(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Operator *op,
+                                                                     ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::ElementwiseBinary::Param param;
+  param.op_type = op_type;
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::ElementwiseBinary(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1204,7 +1219,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     switch (custom_op_id)
     {
       case BuiltinOP::AddV2:
-        loadAdd(op, subg);
+        loadAddV2(op, subg);
         break;
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
@@ -1377,30 +1392,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir
   param.axis = options->axis();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Unpack(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMinimum(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Min(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMaximum(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Max(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1772,18 +1763,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalOr(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalOr(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1824,7 +1803,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadConv2D(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_AVERAGE_POOL_2D:
-      loadAvgPool2D(op, subg);
+      loadPool2D(op, subg, ir::operation::Pool2D::PoolType::AVG);
       return;
     case BuiltinOperator::BuiltinOperator_DEPTHWISE_CONV_2D:
       loadDepthwiseConv2D(op, subg);
@@ -1839,7 +1818,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSoftmax(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MAX_POOL_2D:
-      loadMaxPool2D(op, subg);
+      loadPool2D(op, subg, ir::operation::Pool2D::PoolType::MAX);
       return;
     case BuiltinOperator::BuiltinOperator_CONCATENATION:
       loadConcatenation(op, subg);
@@ -1848,16 +1827,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadFC(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ADD:
-      loadAdd(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::ADD>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUB:
-      loadSub(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::SUB>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MUL:
-      loadMul(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::MUL>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_DIV:
-      loadDiv(op, subg);
+      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::DIV>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PACK:
       loadPack(op, subg);
@@ -1894,13 +1873,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadTranspose(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
-      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MEAN);
+      loadReduce<ir::operation::Reduce::ReduceType::MEAN>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_ANY:
-      loadReduce(op, subg, ir::operation::Reduce::ReduceType::ANY);
+      loadReduce<ir::operation::Reduce::ReduceType::ANY>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
-      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MAX);
+      loadReduce<ir::operation::Reduce::ReduceType::MAX>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REVERSE_V2:
       loadReverseV2(op, subg);
@@ -1927,7 +1906,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadBatchToSpaceND(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUM:
-      loadReduce(op, subg, ir::operation::Reduce::ReduceType::SUM);
+      loadReduce<ir::operation::Reduce::ReduceType::SUM>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_CUSTOM:
       loadCustom(op, subg);
@@ -1954,10 +1933,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadUnpack(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
-      loadMinimum(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MAXIMUM:
-      loadMaximum(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_CAST:
       loadCast(op, subg);
@@ -1986,7 +1965,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadShape(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
-      loadReduce(op, subg, ir::operation::Reduce::ReduceType::PROD);
+      loadReduce<ir::operation::Reduce::ReduceType::PROD>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_IF:
       loadIf(op, subg);
@@ -2013,7 +1992,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadLogicalNot(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
-      loadLogicalOr(op, subg);
+      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR>(
+          op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_FILL:
       loadFill(op, subg);

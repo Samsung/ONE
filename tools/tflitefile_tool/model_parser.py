@@ -17,12 +17,6 @@
 import os
 import sys
 import numpy
-
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tflite'))
-flatbuffersPath = '../../externals/flatbuffers'
-sys.path.append(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), flatbuffersPath + '/python'))
-
 import flatbuffers
 import tflite.Model
 import tflite.SubGraph

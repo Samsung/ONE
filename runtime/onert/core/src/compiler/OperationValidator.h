@@ -45,7 +45,6 @@ public:
 
 public:
   void visit(const ir::operation::Abs &node) override;
-  void visit(const ir::operation::AvgPool2D &node) override;
   void visit(const ir::operation::BatchMatMul &node) override;
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::Cast &node) override;
@@ -53,12 +52,14 @@ public:
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;
   void visit(const ir::operation::Permute &node) override;
+  void visit(const ir::operation::Pool2D &node) override;
   void visit(const ir::operation::Reduce &node) override;
   void visit(const ir::operation::Transpose &node) override;
   void visit(const ir::operation::RNN &node) override;
   void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
   void visit(const ir::operation::SpaceToDepth &node) override;
+  void visit(const ir::operation::ElementwiseBinary &node) override;
   void visit(const ir::operation::EmbeddingLookup &node) override;
   void visit(const ir::operation::Exp &node) override;
   void visit(const ir::operation::ExpandDims &node) override;
@@ -73,8 +74,6 @@ public:
   void visit(const ir::operation::L2Normalization &node) override;
   void visit(const ir::operation::Unpack &node) override;
   void visit(const ir::operation::Pad &node) override;
-  void visit(const ir::operation::Min &node) override;
-  void visit(const ir::operation::Max &node) override;
   void visit(const ir::operation::Select &node) override;
   void visit(const ir::operation::StridedSlice &node) override;
   void visit(const ir::operation::Split &node) override;
@@ -91,7 +90,6 @@ public:
   void visit(const ir::operation::LogicalNot &node) override;
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::Tile &node) override;
-  void visit(const ir::operation::LogicalOr &node) override;
   void visit(const ir::operation::Range &node) override;
   void visit(const ir::operation::MatrixBandPart &node) override;
   void visit(const ir::operation::LogSoftmax &node) override;

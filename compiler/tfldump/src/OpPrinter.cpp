@@ -677,9 +677,11 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[tflite::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   // There is no Option for NON_MAX_SUPPRESSION_V4
+  // There is no Option for NON_MAX_SUPPRESSION_V5
   _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[tflite::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for PAD
+  // There is no Option for PADV2
   // There is no Option for PRELU
   // There is no Option for RELU
   // There is no Option for RELU6

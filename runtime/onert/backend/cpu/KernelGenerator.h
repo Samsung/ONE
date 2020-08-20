@@ -19,6 +19,7 @@
 
 #include "ExternalContext.h"
 #include "TensorBuilder.h"
+#include "backend/cpu_common/TensorRegistry.h"
 #include "Tensor.h"
 
 #include <backend/CustomKernelBuilder.h>
@@ -38,6 +39,7 @@ class KernelGenerator : public IKernelGenerator
 public:
   KernelGenerator(const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
                   const std::shared_ptr<TensorBuilder> &tensor_builder,
+                  const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
@@ -46,8 +48,6 @@ public:
   void visit(const ir::OpSequence &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::MaxPool2D &) override;
-  void visit(const ir::operation::AvgPool2D &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::Fill &) override;
   void visit(const ir::operation::FullyConnected &) override;
@@ -55,19 +55,15 @@ public:
   void visit(const ir::operation::Squeeze &) override;
   void visit(const ir::operation::Softmax &) override;
   void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Add &) override;
-  void visit(const ir::operation::Sub &) override;
-  void visit(const ir::operation::Mul &) override;
-  void visit(const ir::operation::Div &) override;
+  void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Einsum &) override;
   void visit(const ir::operation::Gather &) override;
   void visit(const ir::operation::Custom &node) override;
+  void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::Exp &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::Max &) override;
-  void visit(const ir::operation::Min &) override;
   void visit(const ir::operation::Tanh &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Unpack &) override;
@@ -92,12 +88,12 @@ public:
   void visit(const ir::operation::ArgMax &) override;
   void visit(const ir::operation::Log &) override;
   void visit(const ir::operation::Round &) override;
+  void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Pow &) override;
   void visit(const ir::operation::LogicalNot &) override;
   void visit(const ir::operation::ZerosLike &) override;
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::Tile &) override;
-  void visit(const ir::operation::LogicalOr &) override;
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::Range &) override;
   void visit(const ir::operation::MatrixBandPart &) override;
@@ -116,6 +112,7 @@ private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
   std::shared_ptr<TensorBuilder> _tensor_builder;
+  std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   ir::Layout _current_op_seq_layout;
   const std::shared_ptr<ExternalContext> _external_context;

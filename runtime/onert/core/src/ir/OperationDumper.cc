@@ -40,14 +40,6 @@ void OperationDumper::visit(const Abs &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Add &node)
-{
-  VERBOSE(LIR) << "* Add" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Add::Input::LHS) << ", "
-               << node.getInputs().at(Add::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const ArgMax &node)
 {
   VERBOSE(LIR) << "* ArgMax" << std::endl;
@@ -56,20 +48,20 @@ void OperationDumper::visit(const ArgMax &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const AvgPool2D &node)
-{
-  VERBOSE(LIR) << "* AvgPool2D(Implicit)" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(AvgPool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const BatchToSpaceND &node)
 {
   VERBOSE(LIR) << "* BatchToSpaceND" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(BatchToSpaceND::Input::INPUT) << ")"
                << " BlockSize(" << node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE) << ")"
                << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
+void OperationDumper::visit(const BinaryArithmetic &node)
+{
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(BinaryArithmetic::Input::LHS) << ", "
+               << node.getInputs().at(BinaryArithmetic::Input::RHS) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -171,11 +163,11 @@ void OperationDumper::visit(const Dequantize &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Div &node)
+void OperationDumper::visit(const ElementwiseBinary &node)
 {
-  VERBOSE(LIR) << "* Div" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Div::Input::LHS) << ", "
-               << node.getInputs().at(Div::Input::RHS) << ")" << std::endl;
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ElementwiseBinary::Input::LHS)
+               << ", " << node.getInputs().at(ElementwiseBinary::Input::RHS) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -257,14 +249,6 @@ void OperationDumper::visit(const L2Normalization &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const L2Pool2D &node)
-{
-  VERBOSE(LIR) << "* L2Pool2D" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(L2Pool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const LocalResponseNormalization &node)
 {
   VERBOSE(LIR) << "* LocalResponseNormalization" << std::endl;
@@ -315,14 +299,6 @@ void OperationDumper::visit(const Log &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const LogicalAnd &node)
-{
-  VERBOSE(LIR) << "* LogicalAnd" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalAnd::Input::INPUT0) << ", "
-               << node.getInputs().at(LogicalAnd::Input::INPUT1) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const LogicalNot &node)
 {
   VERBOSE(LIR) << "* LogicalNot" << std::endl;
@@ -331,37 +307,11 @@ void OperationDumper::visit(const LogicalNot &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const LogicalOr &node)
-{
-  VERBOSE(LIR) << "* LogicalOr" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalOr::Input::INPUT0) << ", "
-               << node.getInputs().at(LogicalOr::Input::INPUT1) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Logistic &node)
 {
   VERBOSE(LIR) << "* Logistic" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Logistic::Input::INPUT) << ")"
                << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const MaxPool2D &node)
-{
-  std::string padding_type =
-      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
-  VERBOSE(LIR) << "* MaxPool2D(" << padding_type << ")" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(MaxPool2D::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Mul &node)
-{
-  VERBOSE(LIR) << "* Mul" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Mul::Input::LHS) << ", "
-               << node.getInputs().at(Mul::Input::RHS) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -415,6 +365,16 @@ void OperationDumper::visit(const Permute &node)
   VERBOSE(LIR) << "* Permute(" + permute_type + ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
+void OperationDumper::visit(const Pool2D &node)
+{
+  std::string padding_type =
+      node.param().padding.type == PaddingType::EXPLICIT ? "Explicit" : "Implicit";
+  VERBOSE(LIR) << "* " << node.name() << "(" << padding_type << ")" << std::endl;
+  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(Pool2D::Input::INPUT) << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const Pow &node)
@@ -646,14 +606,6 @@ void OperationDumper::visit(const StridedSlice &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Sub &node)
-{
-  VERBOSE(LIR) << "* Sub" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Sub::Input::LHS) << ", "
-               << node.getInputs().at(Sub::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Tanh &node)
 {
   VERBOSE(LIR) << "* TanH" << std::endl;
@@ -714,22 +666,6 @@ void OperationDumper::visit(const Unpack &node)
       outputs += ", ";
   }
   VERBOSE(LIR) << "  - Outputs : Outputs(" << outputs << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Min &node)
-{
-  VERBOSE(LIR) << "* Min" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Min::Input::LHS) << ", "
-               << node.getInputs().at(Min::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Max &node)
-{
-  VERBOSE(LIR) << "* Max" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Max::Input::LHS) << ", "
-               << node.getInputs().at(Max::Input::RHS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const OneHot &node)

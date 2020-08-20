@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_CONTROLFLOW_DYNAMICTENSOR_MANAGER_H__
 
-#include "UserTensorRegistry.h"
+#include "TensorRegistry.h"
+#include "Tensor.h"
 
 #include <backend/IDynamicTensorManager.h>
 #include <backend/cpu_common/MemoryManager.h>
-#include <backend/cpu_common/TensorRegistry.h>
 #include <ir/OperandInfo.h>
 #include <ir/Operation.h>
 #include <ir/Index.h>
@@ -33,16 +33,13 @@ namespace backend
 namespace controlflow
 {
 
-// TODO Find optimized algorithm to manage memory.
-
 /**
  * @brief Class to manage dynamic tensor and its memory
  */
 class DynamicTensorManager : public backend::IDynamicTensorManager
 {
 public:
-  DynamicTensorManager(const std::shared_ptr<cpu_common::TensorRegistry> &reg,
-                       const std::shared_ptr<UserTensorRegistry> &user_reg);
+  DynamicTensorManager(const std::shared_ptr<TensorRegistry> &tensors);
 
   virtual ~DynamicTensorManager() = default;
 
@@ -62,8 +59,7 @@ private:
    */
   std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
   // TODO Refactoring : Merge two TensorRegistries into one
-  const std::shared_ptr<cpu_common::TensorRegistry> _tensors;
-  const std::shared_ptr<UserTensorRegistry> _user_tensors;
+  const std::shared_ptr<TensorRegistry> _tensors;
 
   // contains list of dynamic tensor index, which can be deallocated after running operation
   // note: this map could contain static tensor index too. Careful use is required.

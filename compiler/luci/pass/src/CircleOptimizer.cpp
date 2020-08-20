@@ -21,6 +21,7 @@
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
+#include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 // TODO add more passes
@@ -194,6 +195,27 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
+  }
+
+  // Requantize
+  if (_options->query(Options::Algorithm::Requantize))
+  {
+    static const std::vector<std::string> rq_supported_input_dtype{"int8"};
+    static const std::vector<std::string> rq_supported_output_dtype{"uint8"};
+
+    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
+    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+
+    if (!in_array(to_lower_case(input_dtype), rq_supported_input_dtype))
+      throw std::runtime_error("Unsupported input type. List of supported input types: " +
+                               to_string(rq_supported_input_dtype));
+
+    if (!in_array(to_lower_case(output_dtype), rq_supported_output_dtype))
+      throw std::runtime_error("Unsupported output type. List of supported output types: " +
+                               to_string(rq_supported_output_dtype));
+
+    luci::RequantizePass requantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype));
+    requantizer.run(g);
   }
 
   logo::Phase phase;

@@ -1016,6 +1016,12 @@ public:
     return loco::NodeShape{boxes_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleNonMaxSuppressionV5 *node) final
+  {
+    const auto boxes_shape = loco::shape_get(node->boxes()).as<loco::TensorShape>();
+    return loco::NodeShape{boxes_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleNotEqual *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleOneHot *node) final
@@ -1101,6 +1107,45 @@ public:
     auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
 
     // TODO support non-const case
+    // TODO support other data type
+    LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+    LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
+
+    int32_t n = paddings->dim(0).value();
+    int32_t v = paddings->dim(1).value();
+
+    LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
+    LUCI_ASSERT(n == int32_t(input_shape.rank()),
+                "paddings [n, 2] should have same value of input rank");
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(input_shape.rank());
+    for (int32_t ni = 0; ni < n; ++ni)
+    {
+      int32_t idx = ni * 2;
+      int value = input_shape.dim(ni).value();
+      value += paddings->at<S32>(idx + 0); // left
+      value += paddings->at<S32>(idx + 1); // right
+      output_shape.dim(ni) = value;
+    }
+
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CirclePadV2 *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+    auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+
+    if (!paddings)
+    {
+      auto node_shape = own_shape(node);
+      return loco::NodeShape{node_shape};
+    }
+
     // TODO support other data type
     LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
     LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
@@ -2065,6 +2110,34 @@ public:
     return loco::TensorShape{max_output_size_value};
   }
 
+  loco::NodeShape visit(const luci::CircleNonMaxSuppressionV5Out *node) final
+  {
+    const loco::DataType S32 = loco::DataType::S32;
+
+    auto nmsv5 = dynamic_cast<const luci::CircleNonMaxSuppressionV5 *>(node->input());
+    if (nmsv5 == nullptr)
+      INTERNAL_EXN("CircleNonMaxSuppressionV5 IR is not configured correctly");
+
+    auto index = node->index();
+    if (index == 2)
+      return loco::TensorShape({0});
+
+    assert(index == 0 || index == 1);
+
+    auto unknown = loco::TensorShape{loco::Dimension()};
+    auto max_output_size = dynamic_cast<const luci::CircleConst *>(nmsv5->max_output_size());
+    if (max_output_size == nullptr)
+      return unknown; // we need CircleConst for max output size
+
+    LUCI_ASSERT(max_output_size->dtype() == S32, "Only support int32 for max_output_size");
+
+    if (max_output_size->size<S32>() < 1)
+      return unknown;
+
+    auto max_output_size_value = uint32_t(max_output_size->at<S32>(0));
+    return loco::TensorShape{max_output_size_value};
+  }
+
   loco::NodeShape visit(const luci::CircleSplitOut *node) final
   {
     const loco::DataType S32 = loco::DataType::S32;
@@ -2190,15 +2263,21 @@ public:
 
   loco::NodeShape visit(const luci::CircleUniqueOut *node) final
   {
-    auto unique = dynamic_cast<const luci::CircleUnique *>(node->input());
-    if (unique == nullptr)
+    if (node->index() == 0)
     {
-      INTERNAL_EXN("CircleUnique IR is not configured correctly");
+      auto unique_shape = own_shape(node);
+      return loco::NodeShape{unique_shape};
     }
+    assert(node->index() == 1);
+    auto unique = loco::must_cast<luci::CircleUnique *>(node->input());
+    auto unique_shape = loco::shape_get(unique->input()).as<loco::TensorShape>();
 
-    auto unique_shape = loco::shape_get(unique).as<loco::TensorShape>();
+    assert(unique_shape.rank() == 1);
 
-    return loco::NodeShape{unique_shape};
+    loco::TensorShape shape_output;
+    shape_output.rank(1);
+    shape_output.dim(0) = unique_shape.dim(0);
+    return loco::NodeShape{shape_output};
   }
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final

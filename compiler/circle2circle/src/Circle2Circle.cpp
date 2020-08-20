@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-#include "CircleExpContract.h"
-
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 #include <luci/UserSettings.h>
 
 #include <oops/InternalExn.h>
@@ -101,7 +100,7 @@ int entry(int argc, char **argv)
       .nargs(0)
       .required(false)
       .default_value(false)
-      .help("This will turn off operator vaidations. May help input model investigation.");
+      .help("This will turn off operator validations. May help input model investigation.");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
@@ -157,6 +156,14 @@ int entry(int argc, char **argv)
     std::cerr << err.what() << std::endl;
     return EXIT_FAILURE;
   }
+
+  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
+  if (!circle::VerifyModelBuffer(verifier))
+  {
+    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
   {
@@ -177,15 +184,20 @@ int entry(int argc, char **argv)
 
     if (!luci::validate(graph))
     {
-      std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
-      return 255;
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+        std::cerr << "WARNING: Optimized graph is invalid" << std::endl;
+      else
+      {
+        std::cerr << "ERROR: Optimized graph is invalid" << std::endl;
+        return 255;
+      }
     }
   }
 
   // Export to output Circle file
   luci::CircleExporter exporter;
 
-  CircleExpContract contract(module.get(), output_path);
+  luci::CircleFileExpContract contract(module.get(), output_path);
 
   if (!exporter.invoke(&contract))
   {

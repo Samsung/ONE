@@ -25,6 +25,7 @@
 #include "ir/OperandIndexMap.h"
 #include <ir/Operands.h>
 #include "AclTensorManager.h"
+#include "AclTensorRegistry.h"
 #include <memory>
 #include "ParentInfo.h"
 #include <util/Utils.h>
@@ -63,18 +64,13 @@ public:
   void notifyLastUse(const ir::OperandIndex &) override;
 
   bool isRegistered(const ir::OperandIndex &) const override;
-  std::shared_ptr<backend::ITensorRegistry> tensorRegistry() override { return nullptr; }
+  std::shared_ptr<backend::ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
   void prepare(void) override;
   void allocate() override;
   void postFunctionPrepare() override;
 
-  std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
-  void iterate(const IterateFunction &fn) override;
-
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
-  std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
 
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 
@@ -113,6 +109,7 @@ private:
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<T_AclTensorManager> _tensor_mgr;
+  std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> _tensor_reg;
 
   // for linear executor
   std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
@@ -142,7 +139,8 @@ namespace acl_common
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::Operands &operands,
                                                                      T_AclTensorManager *tensor_mgr)
-    : _operands{operands}, _tensor_mgr{tensor_mgr}
+    : _operands{operands}, _tensor_mgr{tensor_mgr},
+      _tensor_reg{new AclTensorRegistry<T_AclTensorManager>{_tensor_mgr.get()}}
 {
   assert(_tensor_mgr);
 }
@@ -307,28 +305,6 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::postFunctionPrepare(void)
 {
   _tensor_mgr->tryDeallocConstants();
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::shared_ptr<ITensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::tensorAt(const ir::OperandIndex &ind)
-{
-  return _tensor_mgr->at(ind);
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::iterate(const IterateFunction &fn)
-{
-  _tensor_mgr->iterate(fn);
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::shared_ptr<T_ITensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::at(const ir::OperandIndex &ind)
-{
-  auto ret = _tensor_mgr->at(ind);
-  assert(ret != nullptr);
-  return ret;
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>

@@ -6,7 +6,7 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { }
+  shape { dim: 0 }
 }
 operand {
   name: "ofm_idx"
