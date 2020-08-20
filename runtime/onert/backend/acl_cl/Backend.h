@@ -25,6 +25,7 @@
 #include "KernelGenerator.h"
 #include "TensorManager.h"
 #include "Optimizer.h"
+#include "AclTensorRegistry.h"
 
 namespace onert
 {
@@ -48,9 +49,11 @@ public:
     const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
     auto tb = std::make_shared<TensorBuilder>(operands, createTensorManager(is_linear_executor));
+    auto tr = std::dynamic_pointer_cast<acl_common::AclTensorRegistry<TensorManager>>(
+        tb->tensorRegistry());
     context->tensor_builder = tb;
-    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tb);
-    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb);
+    context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
+    context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr);
     context->tensor_register = nullptr;
     context->optimizer = std::make_shared<Optimizer>(context.get());
     return context;

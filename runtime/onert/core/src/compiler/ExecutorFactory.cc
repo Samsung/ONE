@@ -221,7 +221,7 @@ void ExecutorFactory::prepareExternalTensors(ir::LoweredGraph &lowered_graph,
           // If an OpSequence input/output tensor does not have a own tensor object,
           // it must be using external tensors, so find the tensor from other tensor builders and
           // set the tensor to this tensor builder if portable
-          if (!backend_ctx->tensor_builder->tensorAt(ind))
+          if (!backend_ctx->tensor_builder->tensorRegistry()->getITensor(ind))
           {
             auto tensor = tensor_builders.getITensor(ind);
             assert(tensor); // The tensor must have been created in one of TensorBuilders

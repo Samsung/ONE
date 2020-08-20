@@ -70,11 +70,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override;
 
-  std::shared_ptr<ITensor> tensorAt(const ir::OperandIndex &ind) override;
-
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
-  std::shared_ptr<T_ITensor> at(const ir::OperandIndex &ind);
 
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 
@@ -309,22 +305,6 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::postFunctionPrepare(void)
 {
   _tensor_mgr->tryDeallocConstants();
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::shared_ptr<ITensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::tensorAt(const ir::OperandIndex &ind)
-{
-  return _tensor_reg->getITensor(ind);
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::shared_ptr<T_ITensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::at(const ir::OperandIndex &ind)
-{
-  auto ret = _tensor_mgr->at(ind);
-  assert(ret != nullptr);
-  return ret;
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>

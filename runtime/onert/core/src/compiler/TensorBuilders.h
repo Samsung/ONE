@@ -71,7 +71,7 @@ public:
   {
     for (auto &tensor_builder : _tensor_builders)
     {
-      auto tensor = tensor_builder->tensorAt(ind);
+      auto tensor = tensor_builder->tensorRegistry()->getITensor(ind);
       if (tensor)
         return tensor;
     }

@@ -168,11 +168,12 @@ ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_
 KernelGenerator::KernelGenerator(
     const ir::Operands &operands_ctx, const ir::Operations &operations_ctx,
     const std::shared_ptr<TensorBuilder> &tensor_builder,
+    const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg,
     const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
     const std::shared_ptr<ExternalContext> &external_context)
     : _ctx(operands_ctx), _operations_ctx{operations_ctx}, _tensor_builder(tensor_builder),
-      _kernel_builder(kernel_builder), _current_op_seq_layout(ir::Layout::UNKNOWN),
-      _external_context(external_context)
+      _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
+      _current_op_seq_layout(ir::Layout::UNKNOWN), _external_context(external_context)
 {
   // DO NOTHING
 }
@@ -211,13 +212,13 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
 
     for (const auto &ind : (node.getInputs() | ir::Remove::UNDEFINED) + node.getOutputs())
     {
-      auto portable_tensor = _tensor_builder->portableAt(ind);
+      auto portable_tensor = _tensor_reg->getPortableTensor(ind);
       if (portable_tensor)
       {
         assert(portable_tensor->layout() == ir::Layout::NHWC);
       }
 
-      auto tensor = _tensor_builder->at(ind);
+      auto tensor = _tensor_reg->getNativeTensor(ind);
       if (tensor)
       {
         tensor->increase_ref();
@@ -235,10 +236,10 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(Conv2D::Input::BIAS)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
-  auto ker_tensor = _tensor_builder->portableAt(ker_index).get();
-  auto bias_tensor = _tensor_builder->portableAt(bias_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
+  auto ker_tensor = _tensor_reg->getPortableTensor(ker_index).get();
+  auto bias_tensor = _tensor_reg->getPortableTensor(bias_index).get();
 
   const auto stride = node.param().stride;
   const auto activation = node.param().activation;
@@ -294,10 +295,10 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
-  auto ker_tensor = _tensor_builder->portableAt(ker_index).get();
-  auto bias_tensor = _tensor_builder->portableAt(bias_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
+  auto ker_tensor = _tensor_reg->getPortableTensor(ker_index).get();
+  auto bias_tensor = _tensor_reg->getPortableTensor(bias_index).get();
 
   auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
 
@@ -315,11 +316,11 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   const auto rank = _ctx.at(ofm_index).shape().rank();
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
 
-  auto output_tensor = _tensor_builder->portableAt(ofm_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
 
   std::vector<const IPortableTensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_builder->portableAt(ifm_idx).get());
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx).get());
 
   auto fn = std::make_unique<ops::ConcatLayer>();
 
@@ -334,9 +335,9 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   const auto input_index{node.getInputs().at(ir::operation::BatchToSpaceND::INPUT)};
   const auto block_size_index{node.getInputs().at(ir::operation::BatchToSpaceND::BLOCK_SIZE)};
 
-  auto output_alloc = _tensor_builder->portableAt(output_index).get();
-  auto input_alloc = _tensor_builder->portableAt(input_index).get();
-  auto block_size_alloc = _tensor_builder->portableAt(block_size_index).get();
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_alloc = _tensor_reg->getPortableTensor(input_index).get();
+  auto block_size_alloc = _tensor_reg->getPortableTensor(block_size_index).get();
 
   auto fn = std::make_unique<ops::BatchToSpaceNDLayer>();
 
@@ -346,7 +347,7 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   if (node.getInputs().size() != NNApiInputs)
   {
     const auto crops_data_index{node.getInputs().at(ir::operation::BatchToSpaceND::CROPS_DATA)};
-    crops_alloc = _tensor_builder->portableAt(crops_data_index).get();
+    crops_alloc = _tensor_reg->getPortableTensor(crops_data_index).get();
   }
 
   fn->configure(input_alloc, output_alloc, block_size_alloc, crops_alloc);
@@ -360,9 +361,9 @@ void KernelGenerator::visit(const ir::operation::Fill &node)
   const auto input_index{node.getInputs().at(ir::operation::Fill::Input::INPUT)};
   const auto value_index{node.getInputs().at(ir::operation::Fill::Input::VALUE)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto value_tensor = _tensor_builder->portableAt(value_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto value_tensor = _tensor_reg->getPortableTensor(value_index).get();
 
   auto fn = std::make_unique<ops::FillLayer>();
 
@@ -381,11 +382,11 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
   const auto activation = node.param().activation;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto weight_tensor = _tensor_builder->portableAt(weight_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index).get();
   auto bias_tensor =
-      bias_index.undefined() ? nullptr : _tensor_builder->portableAt(bias_index).get();
+      bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index).get();
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
@@ -400,8 +401,8 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   // optional 2nd input
   IPortableTensor *shape_tensor = nullptr;
@@ -409,7 +410,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   if (node.getInputs().size() == 2)
   {
     const auto shape_index{node.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
-    shape_tensor = _tensor_builder->portableAt(shape_index).get();
+    shape_tensor = _tensor_reg->getPortableTensor(shape_index).get();
   }
 
   auto fn = std::make_unique<ops::ReshapeLayer>();
@@ -423,8 +424,8 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   // Squeeze can share same kernel with reshape
   auto fn = std::make_unique<ops::ReshapeLayer>();
@@ -441,8 +442,8 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
 
   const auto beta = node.param().beta;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::SoftMaxLayer>();
 
@@ -459,9 +460,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   auto fn = std::make_unique<ops::BinaryArithmeticLayer>();
 
@@ -477,9 +478,9 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
   const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   auto comparison_type = node.param().comparison_type;
 
@@ -496,9 +497,9 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   const auto input_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto indices_tensor = _tensor_builder->portableAt(indices_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto indices_tensor = _tensor_reg->getPortableTensor(indices_index).get();
 
   const auto backend_layout = output_tensor->layout();
   UNUSED_RELEASE(backend_layout);
@@ -537,11 +538,11 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
 
   const auto axis = node.param().axis;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto indices_tensor = _tensor_builder->portableAt(indices_index).get();
-  auto depth_tensor = _tensor_builder->portableAt(depth_index).get();
-  auto onvalue_tensor = _tensor_builder->portableAt(onvalue_index).get();
-  auto offvalue_tensor = _tensor_builder->portableAt(offvalue_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto indices_tensor = _tensor_reg->getPortableTensor(indices_index).get();
+  auto depth_tensor = _tensor_reg->getPortableTensor(depth_index).get();
+  auto onvalue_tensor = _tensor_reg->getPortableTensor(onvalue_index).get();
+  auto offvalue_tensor = _tensor_reg->getPortableTensor(offvalue_index).get();
 
   assert(indices_tensor->data_type() == OperandType::INT32);
   assert(axis <= static_cast<int>(indices_tensor->num_dimensions()));
@@ -557,10 +558,10 @@ void KernelGenerator::visit(const ir::operation::Einsum &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
 
-  auto output_tensor = _tensor_builder->portableAt(ofm_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
   std::vector<const IPortableTensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_builder->portableAt(ifm_idx).get());
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx).get());
 
   const auto equation = node.param().equation;
 
@@ -581,7 +582,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
       const auto &operand = _ctx.at(idx);
       // TODO make sure using `_current_op_seq_layout` is correct for custom operations
       types.emplace_back(custom::TypeInfo{operand.shape(), operand.typeInfo().type()});
-      auto in_tensor = _tensor_builder->portableAt(idx);
+      auto in_tensor = _tensor_reg->getPortableTensor(idx);
       tensors.emplace_back(in_tensor);
     }
   };
@@ -605,9 +606,9 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   auto fn = std::make_unique<ops::ElementwiseBinaryLayer>();
 
@@ -622,8 +623,8 @@ void KernelGenerator::visit(const ir::operation::Exp &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Exp::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ExpLayer>();
 
@@ -638,9 +639,9 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto axis_tensor = _tensor_builder->portableAt(axis_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index).get();
 
   auto fn = std::make_unique<ops::ExpandDimsLayer>();
 
@@ -654,8 +655,8 @@ void KernelGenerator::visit(const ir::operation::Logistic &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Logistic::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::LogisticLayer>();
 
@@ -669,8 +670,8 @@ void KernelGenerator::visit(const ir::operation::Tanh &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Tanh::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::TanhLayer>();
 
@@ -688,11 +689,11 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
 
   assert(-rank <= axis && axis < rank);
 
-  auto output_tensor = _tensor_builder->portableAt(ofm_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
 
   std::vector<const IPortableTensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_builder->portableAt(ifm_idx).get());
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx).get());
 
   auto fn = std::make_unique<ops::PackLayer>();
 
@@ -710,11 +711,11 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
 
   assert(rank == 0 || (-rank <= axis && axis < rank));
 
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   std::vector<IPortableTensor *> output_tensors;
   for (auto &output_idx : node.getOutputs())
-    output_tensors.emplace_back(_tensor_builder->portableAt(output_idx).get());
+    output_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx).get());
 
   auto fn = std::make_unique<ops::UnpackLayer>();
 
@@ -732,8 +733,8 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   const auto output_index{node.getOutputs().at(0)};
   assert(_ctx.at(pad_index).data());
 
-  auto input = _tensor_builder->portableAt(input_index).get();
-  auto output = _tensor_builder->portableAt(output_index).get();
+  auto input = _tensor_reg->getPortableTensor(input_index).get();
+  auto output = _tensor_reg->getPortableTensor(output_index).get();
   auto pad_rank = _ctx.at(pad_index).shape().dim(0);
   auto pad_base = reinterpret_cast<const int32_t *>(_ctx.at(pad_index).data()->base());
 
@@ -757,8 +758,8 @@ void KernelGenerator::visit(const ir::operation::Cast &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Cast::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::CastLayer>();
 
@@ -772,8 +773,8 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
@@ -789,9 +790,9 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
 
   const auto keep_dims = node.param().keep_dims;
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto axes_tensor = _tensor_builder->portableAt(axes_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto axes_tensor = _tensor_reg->getPortableTensor(axes_index).get();
 
   if (node.param().reduce_type == ir::operation::Reduce::ReduceType::MEAN)
   {
@@ -817,8 +818,8 @@ void KernelGenerator::visit(const ir::operation::ReLU &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ReLULayer>();
 
@@ -832,8 +833,8 @@ void KernelGenerator::visit(const ir::operation::ReLU6 &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ReLU6Layer>();
 
@@ -849,10 +850,10 @@ void KernelGenerator::visit(const ir::operation::Select &node)
   const auto true_index{node.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
   const auto false_index{node.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto condition_tensor = _tensor_builder->portableAt(condition_index).get();
-  auto true_tensor = _tensor_builder->portableAt(true_index).get();
-  auto false_tensor = _tensor_builder->portableAt(false_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto condition_tensor = _tensor_reg->getPortableTensor(condition_index).get();
+  auto true_tensor = _tensor_reg->getPortableTensor(true_index).get();
+  auto false_tensor = _tensor_reg->getPortableTensor(false_index).get();
 
   auto fn = std::make_unique<ops::SelectLayer>();
 
@@ -868,10 +869,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   const auto begins_index{node.getInputs().at(ir::operation::Slice::Input::BEGINS)};
   const auto sizes_index{node.getInputs().at(ir::operation::Slice::Input::SIZES)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto begins_tensor = _tensor_builder->portableAt(begins_index).get();
-  auto sizes_tensor = _tensor_builder->portableAt(sizes_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto begins_tensor = _tensor_reg->getPortableTensor(begins_index).get();
+  auto sizes_tensor = _tensor_reg->getPortableTensor(sizes_index).get();
 
   auto fn = std::make_unique<ops::SliceLayer>();
 
@@ -888,11 +889,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto starts_tensor = _tensor_builder->portableAt(starts_index).get();
-  auto ends_tensor = _tensor_builder->portableAt(ends_index).get();
-  auto strides_tensor = _tensor_builder->portableAt(strides_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto starts_tensor = _tensor_reg->getPortableTensor(starts_index).get();
+  auto ends_tensor = _tensor_reg->getPortableTensor(ends_index).get();
+  auto strides_tensor = _tensor_reg->getPortableTensor(strides_index).get();
 
   auto begin_mask = node.param().begin_mask;
   auto end_mask = node.param().end_mask;
@@ -916,11 +917,11 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
   auto axis_resolved = axis < 0 ? axis + rank : axis;
 
-  auto in_tensor = _tensor_builder->portableAt(input_idx).get();
+  auto in_tensor = _tensor_reg->getPortableTensor(input_idx).get();
 
   std::vector<IPortableTensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
-    out_tensors.emplace_back(_tensor_builder->portableAt(output_idx).get());
+    out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx).get());
 
   auto fn = std::make_unique<ops::SplitLayer>();
 
@@ -934,8 +935,8 @@ void KernelGenerator::visit(const ir::operation::Abs &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Abs::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::AbsLayer>();
 
@@ -949,8 +950,8 @@ void KernelGenerator::visit(const ir::operation::Sin &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Sin::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::SinLayer>();
 
@@ -964,8 +965,8 @@ void KernelGenerator::visit(const ir::operation::Cos &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Cos::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::CosLayer>();
 
@@ -979,8 +980,8 @@ void KernelGenerator::visit(const ir::operation::RSQRT &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::RSQRT::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::RsqrtLayer>();
 
@@ -994,8 +995,8 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Shape::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::ShapeLayer>();
 
@@ -1014,8 +1015,8 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   auto align_corners = node.param().align_corners;
   auto half_pixel_centers = node.param().half_pixel_centers;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ResizeBilinearLayer>();
 
@@ -1031,9 +1032,9 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   const auto input_index{node.getInputs().at(ir::operation::Reverse::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::Reverse::AXIS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto axis_tensor = _tensor_builder->portableAt(axis_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index).get();
 
   auto fn = std::make_unique<ops::ReverseLayer>();
 
@@ -1047,8 +1048,8 @@ void KernelGenerator::visit(const ir::operation::Neg &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Neg::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::NegLayer>();
 
@@ -1064,8 +1065,8 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   const auto axis = node.param().axis;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
@@ -1088,8 +1089,8 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
       ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::PoolLayer>();
 
@@ -1106,9 +1107,9 @@ void KernelGenerator::visit(const ir::operation::Pow &node)
   const auto lhs_index{node.getInputs().at(ir::operation::Pow::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::Pow::RHS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   auto fn = std::make_unique<ops::PowLayer>();
 
@@ -1122,8 +1123,8 @@ void KernelGenerator::visit(const ir::operation::Log &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Log::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto ifm_tensor = _tensor_builder->portableAt(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
 
   auto fn = std::make_unique<ops::LogLayer>();
 
@@ -1137,8 +1138,8 @@ void KernelGenerator::visit(const ir::operation::Round &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::RoundLayer>();
 
@@ -1152,8 +1153,8 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::LogicalNot::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::LogicalNotLayer>();
 
@@ -1167,8 +1168,8 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  auto output_alloc = _tensor_builder->portableAt(output_index).get();
-  auto input_alloc = _tensor_builder->portableAt(input_index).get();
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_alloc = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::L2NormLayer>();
 
@@ -1182,8 +1183,8 @@ void KernelGenerator::visit(const ir::operation::ZerosLike &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ZerosLike::INPUT)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::ZerosLikeLayer>();
 
@@ -1198,10 +1199,10 @@ void KernelGenerator::visit(const ir::operation::Range &node)
   const auto limit_index{node.getInputs().at(ir::operation::Range::LIMIT)};
   const auto delta_index{node.getInputs().at(ir::operation::Range::DELTA)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto start_tensor = _tensor_builder->portableAt(start_index).get();
-  auto limit_tensor = _tensor_builder->portableAt(limit_index).get();
-  auto delta_tensor = _tensor_builder->portableAt(delta_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto start_tensor = _tensor_reg->getPortableTensor(start_index).get();
+  auto limit_tensor = _tensor_reg->getPortableTensor(limit_index).get();
+  auto delta_tensor = _tensor_reg->getPortableTensor(delta_index).get();
 
   auto fn = std::make_unique<ops::RangeLayer>();
 
@@ -1215,9 +1216,9 @@ void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
 
-  auto ofm_tensor = _tensor_builder->portableAt(ofm_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   auto fn = std::make_unique<ops::SqDiffLayer>();
 
@@ -1231,9 +1232,9 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   const auto input_index{node.getInputs().at(ir::operation::Tile::INPUT)};
   const auto multiples_index{node.getInputs().at(ir::operation::Tile::MULTIPLES)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto multiples_tensor = _tensor_builder->portableAt(multiples_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto multiples_tensor = _tensor_reg->getPortableTensor(multiples_index).get();
 
   auto fn = std::make_unique<ops::TileLayer>();
 
@@ -1248,10 +1249,10 @@ void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
   const auto num_lower_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_LOWER_DIAG)};
   const auto num_upper_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_UPPER_DIAG)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto num_lower_tensor = _tensor_builder->portableAt(num_lower_index).get();
-  auto num_upper_tensor = _tensor_builder->portableAt(num_upper_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto num_lower_tensor = _tensor_reg->getPortableTensor(num_lower_index).get();
+  auto num_upper_tensor = _tensor_reg->getPortableTensor(num_upper_index).get();
 
   auto fn = std::make_unique<ops::MatrixBandPartLayer>();
 
@@ -1265,9 +1266,9 @@ void KernelGenerator::visit(const ir::operation::BatchMatMul &node)
   const auto lhs_index{node.getInputs().at(ir::operation::BatchMatMul::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::BatchMatMul::RHS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto lhs_tensor = _tensor_builder->portableAt(lhs_index).get();
-  auto rhs_tensor = _tensor_builder->portableAt(rhs_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index).get();
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index).get();
 
   const auto adj_x = node.param().adj_x;
   const auto adj_y = node.param().adj_y;
@@ -1284,9 +1285,9 @@ void KernelGenerator::visit(const ir::operation::BroadcastTo &node)
   const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::INPUT)};
   const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::SHAPE)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto shape_tensor = _tensor_builder->portableAt(shape_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto shape_tensor = _tensor_reg->getPortableTensor(shape_index).get();
 
   auto fn = std::make_unique<ops::BroadcastToLayer>();
 
@@ -1299,10 +1300,10 @@ void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
 
-  auto output_tensor = _tensor_builder->portableAt(ofm_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
   std::vector<const IPortableTensor *> input_tensors;
   for (auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_builder->portableAt(ifm_idx).get());
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx).get());
 
   const auto epsilon = node.param().epsilon;
   const auto is_training = node.param().is_training;
@@ -1323,8 +1324,8 @@ void KernelGenerator::visit(const ir::operation::LogSoftmax &node)
   const auto beta = node.param().beta;
   const auto axis = node.param().axis;
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
   auto fn = std::make_unique<ops::LogSoftMaxLayer>();
 
@@ -1340,10 +1341,10 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   const auto block_shape_index{node.getInputs().at(ir::operation::SpaceToBatchND::BLOCK_SIZE)};
   const auto padding_index{node.getInputs().at(ir::operation::SpaceToBatchND::PADDINGS)};
 
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto block_shape_tensor = _tensor_builder->portableAt(block_shape_index).get();
-  auto padding_tensor = _tensor_builder->portableAt(padding_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto block_shape_tensor = _tensor_reg->getPortableTensor(block_shape_index).get();
+  auto padding_tensor = _tensor_reg->getPortableTensor(padding_index).get();
 
   auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
 
@@ -1357,8 +1358,8 @@ void KernelGenerator::visit(const ir::operation::Quantize &node)
   const auto input_index{node.getInputs().at(ir::operation::Quantize::Input::INPUT)};
   const auto output_index{node.getOutputs().at(0)};
 
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
 
   auto fn = std::make_unique<ops::QuantizeLayer>();
 
@@ -1373,8 +1374,8 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
   const auto output_index{node.getOutputs().at(0)};
   auto block_size = node.param().block_size;
 
-  auto input_tensor = _tensor_builder->portableAt(input_index).get();
-  auto output_tensor = _tensor_builder->portableAt(output_index).get();
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
 
   auto fn = std::make_unique<ops::SpaceToDepthLayer>();
 
@@ -1388,9 +1389,9 @@ void KernelGenerator::visit(const ir::operation::StatelessRandomUniform &node)
   const auto shape_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SHAPE)};
   const auto seed_index{node.getInputs().at(ir::operation::StatelessRandomUniform::SEED)};
 
-  auto output_alloc = _tensor_builder->portableAt(output_index).get();
-  auto shape_alloc = _tensor_builder->portableAt(shape_index).get();
-  auto seed_alloc = _tensor_builder->portableAt(seed_index).get();
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index).get();
+  auto shape_alloc = _tensor_reg->getPortableTensor(shape_index).get();
+  auto seed_alloc = _tensor_reg->getPortableTensor(seed_index).get();
 
   auto fn = std::make_unique<ops::StatelessRandomUniformLayer>();
 
@@ -1407,13 +1408,13 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
   const auto size_splits{node.getInputs().at(ir::operation::SplitV::Input::SIZE_SPLITS)};
   const auto split_dim{node.getInputs().at(ir::operation::SplitV::Input::SPLIT_DIM)};
 
-  auto in_tensor = _tensor_builder->portableAt(input_idx).get();
-  auto in_size_splits = _tensor_builder->portableAt(size_splits).get();
-  auto in_split_dim = _tensor_builder->portableAt(split_dim).get();
+  auto in_tensor = _tensor_reg->getPortableTensor(input_idx).get();
+  auto in_size_splits = _tensor_reg->getPortableTensor(size_splits).get();
+  auto in_split_dim = _tensor_reg->getPortableTensor(split_dim).get();
 
   std::vector<IPortableTensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
-    out_tensors.emplace_back(_tensor_builder->portableAt(output_idx).get());
+    out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx).get());
 
   auto fn = std::make_unique<ops::SplitVLayer>();
 

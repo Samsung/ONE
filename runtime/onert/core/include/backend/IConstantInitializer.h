@@ -162,14 +162,14 @@ public:
 public:
   void run()
   {
-    assert(tensor_builder().get());
+    assert(tensor_registry());
     for (const auto &it : _init_map)
     {
       const auto &ind = it.first;
       const auto &fn = it.second;
 
       const auto &model_obj = _operands.at(ind);
-      auto tensor_obj = tensor_builder()->tensorAt(ind);
+      auto tensor_obj = tensor_registry()->getNativeITensor(ind);
       assert(tensor_obj != nullptr);
       fn(model_obj, *tensor_obj);
       VERBOSE(FillOperandData) << "Fill data for operand " << ind.value() << std::endl;
@@ -192,7 +192,7 @@ protected:
   using OperationVisitor::visit;
 
 protected:
-  virtual std::shared_ptr<ITensorBuilder> tensor_builder() const = 0;
+  virtual std::shared_ptr<ITensorRegistry> tensor_registry() const = 0;
 
 public:
   virtual void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj)

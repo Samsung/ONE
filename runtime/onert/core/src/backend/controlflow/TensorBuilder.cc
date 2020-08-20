@@ -101,11 +101,6 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-std::shared_ptr<ITensor> TensorBuilder::tensorAt(const ir::OperandIndex &ind)
-{
-  return _tensor_reg->getITensor(ind);
-}
-
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeOwnTensor(ind);

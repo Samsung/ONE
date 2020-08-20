@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_CPU_CONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_CPU_CONSTANT_INITIALIZER_H__
 
-#include "TensorBuilder.h"
+#include "backend/cpu_common/TensorRegistry.h"
 
 #include <backend/IConstantInitializer.h>
 #include <ir/Operands.h>
@@ -33,7 +33,7 @@ class ConstantInitializer : public IConstantInitializer
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
-                      const std::shared_ptr<TensorBuilder> &tensor_builder);
+                      const std::shared_ptr<ITensorRegistry> &tensor_reg);
 
 public:
   void registerDefaultInitializer(const ir::OperandIndex &index, const ir::Operand &obj) override;
@@ -50,10 +50,10 @@ public:
   void visit(const ir::operation::FullyConnected &) override;
 
 private:
-  std::shared_ptr<ITensorBuilder> tensor_builder() const override { return _tensor_builder; }
+  std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
 
 private:
-  std::shared_ptr<TensorBuilder> _tensor_builder;
+  std::shared_ptr<ITensorRegistry> _tensor_reg;
 };
 
 } // namespace cpu
