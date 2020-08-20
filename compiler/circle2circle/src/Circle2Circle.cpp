@@ -157,6 +157,14 @@ int entry(int argc, char **argv)
     std::cerr << err.what() << std::endl;
     return EXIT_FAILURE;
   }
+
+  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
+  if (!circle::VerifyModelBuffer(verifier))
+  {
+    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
   {
