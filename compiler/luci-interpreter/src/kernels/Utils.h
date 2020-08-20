@@ -31,8 +31,8 @@ namespace luci_interpreter
 namespace kernels
 {
 
-#define throwIfConditionFalse(a)                                                      \
-  if (!(a))                                                                           \
+#define THROW_IF_CONDITION_FALSE(cond)                                                \
+  if (!(cond))                                                                        \
     throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + \
                              " was not true.");
 
