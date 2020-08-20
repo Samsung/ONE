@@ -236,6 +236,14 @@ CircleModel::CircleModel(FlatBufBuilder &fb, TFLModel &model)
     : _version{0}, _description{fb->CreateString("nnpackage")}, _fb{fb}
 {
   const tflite::Model *tfl_model = model.load_model();
+  // verify flatbuffers
+  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model._data.data()),
+                                 model._data.size()};
+  if (!tflite::VerifyModelBuffer(verifier))
+  {
+    throw std::runtime_error("ERROR: Failed to verify tflite");
+  }
+
   _operator_codes_offset =
       std::make_unique<Offset<OperatorCodeLink>>(fb, tfl_model->operator_codes());
   _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(fb, tfl_model->subgraphs());
