@@ -182,11 +182,11 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
   assert(_tensor_builder->dynamicTensorManager());
-  assert(_tensor_builder->tensorRegistry());
+  assert(_tensor_reg);
 
   auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
-  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(
-      _ctx, dyn_tensor_manager, _tensor_builder->tensorRegistry());
+  auto dyn_shape_inferer =
+      std::make_shared<exec::DynamicShapeInferer>(_ctx, dyn_tensor_manager, _tensor_reg);
 
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
 
@@ -196,7 +196,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     dyn_ctx->op_seq = &op_seq;
     dyn_ctx->operations = &_operations_ctx;
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-    dyn_ctx->tensor_registry = _tensor_builder->tensorRegistry();
+    dyn_ctx->tensor_registry = _tensor_reg;
     dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
 
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
