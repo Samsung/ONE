@@ -10,7 +10,7 @@ function(_EigenSource_import)
   # NOTE TensorFlow 1.13.1 uses https://bitbucket.org/eigen/eigen/get/9f48e814419e.tar.gz
   #      but it has a issue https://eigen.tuxfamily.org/bz/show_bug.cgi?id=1643
   #      The following URL resolves above issue
-  envoption(EXTERNAL_DOWNLOAD_SERVER "https://bitbucket.org")
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://mirror.bazel.build/bitbucket.org")
   envoption(EIGEN_1_13_1_URL ${EXTERNAL_DOWNLOAD_SERVER}/eigen/eigen/get/88fc23324517.tar.gz)
 
   ExternalSource_Download(EIGEN
