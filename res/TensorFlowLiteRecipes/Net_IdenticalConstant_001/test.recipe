@@ -1,0 +1,145 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 5 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+operand {
+  name: "c1"
+  type: FLOAT32
+  shape { dim: 5 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "2.0"
+    arg: "3.0"
+    arg: "4.0"
+    arg: "5.0"
+  }
+}
+operand {
+  name: "c2"
+  type: FLOAT32
+  shape { dim: 5 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "2.0"
+    arg: "3.0"
+    arg: "4.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "c3"
+  type: FLOAT32
+  shape { dim: 5 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "2.0"
+    arg: "3.0"
+    arg: "4.0"
+    arg: "5.0"
+  }
+}
+operand {
+  name: "c4"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "2.0"
+    arg: "3.0"
+  }
+}
+operand {
+  name: "c5"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "2.0"
+    arg: "3.0"
+  }
+}
+operand {
+  name: "o1"
+  type: FLOAT32
+  shape { dim: 5 }
+}
+operand {
+  name: "o2"
+  type: FLOAT32
+  shape { dim: 5 }
+}
+operand {
+  name: "o3"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 5 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 3 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "c1"
+  output: "o1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "o1"
+  input: "c2"
+  output: "o2"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "o2"
+  input: "c3"
+  output: "ofm1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "ifm2"
+  input: "c4"
+  output: "o3"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "o3"
+  input: "c5"
+  output: "ofm2"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm1"
+output: "ofm2"
