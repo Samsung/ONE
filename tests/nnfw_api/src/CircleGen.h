@@ -36,8 +36,8 @@ public:
     _fbb.Finished(); // The build must have been finished, so check that here
   }
 
-  uint8_t *buffer() { return _fbb.GetBufferPointer(); }
-  size_t size() { return _fbb.GetSize(); }
+  uint8_t *buffer() const { return _fbb.GetBufferPointer(); }
+  size_t size() const { return _fbb.GetSize(); }
 
 private:
   flatbuffers::FlatBufferBuilder _fbb;
