@@ -719,7 +719,17 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
     # GreaterOptions: not supported
     # GreaterEqualOptions: not supported
     # LessEqualOptions: not supported
-    # SelectOptions: not supported
+
+    # SelectOptions
+    import tflite.SelectOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().SelectOptions:
+
+        select_option = tflite.SelectOptions.SelectOptions()
+        select_option.Init(selected_builtin_option.Bytes, selected_builtin_option.Pos)
+
+        tflite.SelectOptions.SelectOptionsStart(new_builder)
+        return tflite.SelectOptions.SelectOptionsEnd(new_builder)
+
     # SliceOptions: not supported
 
     # TransposeConvOptions
