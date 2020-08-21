@@ -221,11 +221,11 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   set(MODEL_FILE "${RECIPE}${OPT_FORMAT}.${MODEL_FORMAT}")
   set(MODEL_PATH "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_FILE}")
-  set(NNPKG_FILE "${RECIPE}${OPT_FORMAT}")
+  set(NNPKG_FILE "${RECIPE}")
   set(NNPKG_PATH "${CMAKE_CURRENT_BINARY_DIR}/${NNPKG_FILE}")
 
   add_custom_command(OUTPUT ${NNPKG_PATH}
-    COMMAND ${MODEL2NNPKG} ${MODEL_PATH}
+    COMMAND ${MODEL2NNPKG} -p ${RECIPE} ${MODEL_PATH}
     DEPENDS ${MODEL2NNPKG} ${MODEL_PATH}
     COMMENT "Generate ${RECIPE} nnpackage"
   )
@@ -233,10 +233,10 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   set(INPUT_HDF5_FILE "${RECIPE}${OPT_FORMAT}.input.h5")
   set(INPUT_BIN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${INPUT_HDF5_FILE}")
-  
+
   set(EXPECTED_HDF5_FILE "${RECIPE}${OPT_FORMAT}.expected.h5")
   set(EXPECTED_BIN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${EXPECTED_HDF5_FILE}")
-  
+
   if(NOT DEFINED NO_TCGEN_${RECIPE})
     # Generate input.h5, expected.h5
     add_custom_command(OUTPUT ${INPUT_BIN_PATH} ${EXPECTED_BIN_PATH}
@@ -244,7 +244,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       DEPENDS $<TARGET_FILE:testDataGenerator> ${MODEL_FILE}
       COMMENT "Generate ${INPUT_BIN_PATH} and ${EXPECTED_BIN_PATH}"
     )
-    
+
     # Generate test directory
     set(TC_DIRECTORY "${NNPKG_PATH}/metadata/tc")
     add_custom_command(OUTPUT ${TC_DIRECTORY}
@@ -252,7 +252,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       DEPENDS ${NNPKG_PATH}
       COMMENT "Generate ${RECIPE} nnpackage test directory"
     )
-    
+
     # Move input hdf5 file to test directory
     set(INPUT_NNPKG_PATH "${TC_DIRECTORY}/input.h5")
     add_custom_command(OUTPUT ${INPUT_NNPKG_PATH}
@@ -260,7 +260,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       DEPENDS ${INPUT_BIN_PATH} ${TC_DIRECTORY}
       COMMENT "Move ${INPUT_HDF5_FILE} to nnpackage"
     )
-    
+
     # Move expected hdf5 file to test directory
     set(EXPECTED_NNPKG_PATH "${TC_DIRECTORY}/expected.h5")
     add_custom_command(OUTPUT ${EXPECTED_NNPKG_PATH}
