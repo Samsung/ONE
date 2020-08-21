@@ -79,10 +79,12 @@ std::unique_ptr<locomotiv::NodeData> dw_filter_encode(const loco::DepthwiseFilte
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::DepthwiseFilterEncode *enc)
+using namespace locomotiv;
+
+void execute_node(loco::DepthwiseFilterEncode *enc)
 {
   auto input_data = annot_data(enc->input());
 
@@ -109,5 +111,12 @@ void NodeExecution::execute(loco::DepthwiseFilterEncode *enc)
   annot_data(enc, std::move(enc_data));
   annot_domain(enc, loco::Domain::DepthwiseFilter);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::DepthwiseFilterEncode *enc) { execute_node(enc); }
 
 } // namespace locomotiv
