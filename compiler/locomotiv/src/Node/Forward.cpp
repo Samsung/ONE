@@ -23,10 +23,12 @@
 #include <stdexcept>
 #include <cassert>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::Forward *forward)
+using namespace locomotiv;
+
+void execute_node(loco::Forward *forward)
 {
   auto input_data = annot_data(forward->input());
 
@@ -58,5 +60,12 @@ void NodeExecution::execute(loco::Forward *forward)
   annot_data(forward, std::move(forward_data));
   annot_domain(forward, annot_domain(forward->input()));
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::Forward *forward) { execute_node(forward); }
 
 } // namespace locomotiv

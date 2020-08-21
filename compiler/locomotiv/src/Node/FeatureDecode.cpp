@@ -72,10 +72,12 @@ std::unique_ptr<locomotiv::NodeData> feature_decode(const loco::FeatureDecode *n
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::FeatureDecode *dec)
+using namespace locomotiv;
+
+void execute_node(loco::FeatureDecode *dec)
 {
   auto input_data = annot_data(dec->input());
 
@@ -108,5 +110,12 @@ void NodeExecution::execute(loco::FeatureDecode *dec)
   annot_data(dec, std::move(dec_data));
   annot_domain(dec, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::FeatureDecode *dec) { execute_node(dec); }
 
 } // namespace locomotiv
