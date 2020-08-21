@@ -139,10 +139,12 @@ Buffer<RET_T> calc_conv2D(const loco::Conv2D *conv2d, const Buffer<IFM_T> *input
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::Conv2D *conv2d)
+using namespace locomotiv;
+
+void execute_node(loco::Conv2D *conv2d)
 {
   auto ifm_data = annot_data(conv2d->ifm());
   auto ker_data = annot_data(conv2d->ker());
@@ -175,5 +177,12 @@ void NodeExecution::execute(loco::Conv2D *conv2d)
   annot_data(conv2d, std::move(conv2d_result));
   annot_domain(conv2d, loco::Domain::Feature);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::Conv2D *conv2d) { execute_node(conv2d); }
 
 } // namespace locomotiv

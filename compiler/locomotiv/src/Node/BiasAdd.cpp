@@ -41,10 +41,12 @@ std::unique_ptr<NodeData> calc(const NodeData *input_data, const NodeData *bias_
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
+using namespace locomotiv;
+
+void execute_node(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
 {
   validate(bias_add, "BiasAdd is nullptr");
 
@@ -63,7 +65,7 @@ void NodeExecution::execute(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
   annot_domain(bias_add, annot_domain(bias_add->value()));
 }
 
-void NodeExecution::execute(loco::BiasAdd<loco::Domain::Feature> *bias_add)
+void execute_node(loco::BiasAdd<loco::Domain::Feature> *bias_add)
 {
   validate(bias_add, "BiasAdd is nullptr");
 
@@ -82,7 +84,7 @@ void NodeExecution::execute(loco::BiasAdd<loco::Domain::Feature> *bias_add)
   annot_domain(bias_add, loco::Domain::Feature);
 }
 
-} // namespace locomotiv
+} // namespace
 
 namespace
 {
@@ -123,3 +125,18 @@ std::unique_ptr<NodeData> calc(const NodeData *input_data, const NodeData *bias_
 }
 
 } // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::BiasAdd<loco::Domain::Tensor> *bias_add)
+{
+  execute_node(bias_add);
+}
+
+void NodeExecution::execute(loco::BiasAdd<loco::Domain::Feature> *bias_add)
+{
+  execute_node(bias_add);
+}
+
+} // namespace locomotiv
