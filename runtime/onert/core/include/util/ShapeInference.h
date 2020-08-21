@@ -24,7 +24,6 @@
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Pool2D.h"
 #include "ir/operation/Reshape.h"
-#include "ir/operation/RSQRT.h"
 #include "ir/operation/StridedSlice.h"
 #include "ir/LoweredGraph.h"
 #include "ir/Index.h"

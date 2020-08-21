@@ -51,29 +51,23 @@ public:
 public:
   // TODO Define visitors for operations. List them in alphabetic order.
   // Remove TODO when any op starting from the alphabet is added
-  void visit(const ir::operation::Abs &op) override;
   void visit(const ir::operation::ArgMax &op) override;
   void visit(const ir::operation::BatchMatMul &op) override;
   void visit(const ir::operation::BinaryArithmetic &op) override;
   void visit(const ir::operation::BroadcastTo &op) override;
-  void visit(const ir::operation::Cast &op) override;
   void visit(const ir::operation::Comparison &op) override;
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
-  void visit(const ir::operation::Cos &op) override;
   void visit(const ir::operation::ElementwiseActivation &op) override;
   void visit(const ir::operation::ElementwiseBinary &op) override;
-  void visit(const ir::operation::Exp &op) override;
+  void visit(const ir::operation::ElementwiseUnary &op) override;
   void visit(const ir::operation::ExpandDims &op) override;
   void visit(const ir::operation::Fill &op) override;
   void visit(const ir::operation::FullyConnected &op) override;
   void visit(const ir::operation::FusedBatchNorm &op) override;
   void visit(const ir::operation::Gather &op) override;
-  void visit(const ir::operation::Log &op) override;
-  void visit(const ir::operation::LogicalNot &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
-  void visit(const ir::operation::Neg &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;
   void visit(const ir::operation::Pad &op) override;
@@ -83,13 +77,10 @@ public:
   void visit(const ir::operation::Range &op) override;
   void visit(const ir::operation::Reduce &op) override;
   void visit(const ir::operation::Reshape &op) override;
-  void visit(const ir::operation::Round &op) override;
-  void visit(const ir::operation::RSQRT &op) override;
   void visit(const ir::operation::ResizeBilinear &op) override;
   void visit(const ir::operation::Reverse &op) override;
   void visit(const ir::operation::Select &op) override;
   void visit(const ir::operation::Shape &op) override;
-  void visit(const ir::operation::Sin &op) override;
   void visit(const ir::operation::Slice &op) override;
   void visit(const ir::operation::Softmax &op) override;
   void visit(const ir::operation::SpaceToBatchND &op) override;
@@ -101,7 +92,6 @@ public:
   void visit(const ir::operation::Transpose &op) override;
   void visit(const ir::operation::Unpack &op) override;
   // TODO write op starting from V
-  void visit(const ir::operation::ZerosLike &op) override;
 
 private:
   /**

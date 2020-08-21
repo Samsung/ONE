@@ -68,8 +68,6 @@ void OperationValidator::operator()()
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
-void OperationValidator::visit(const ir::operation::Abs &node) { checkUnaryOp(node); }
-
 void OperationValidator::visit(const ir::operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
@@ -112,17 +110,6 @@ void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
   OP_REQUIRES(_ctx.at(block_size_index).isConstant());
 
   OP_REQUIRES(input_shape.C == output_shape.C);
-}
-
-void OperationValidator::visit(const ir::operation::Cast &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-
-  const auto input_index{node.getInputs().at(0)};
-
-  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::Comparison &node)
@@ -298,8 +285,6 @@ void OperationValidator::visit(const ir::operation::RNN &node)
               num_units == _ctx.at(hidden_state_out_index).shape().dim(1));
 }
 
-void OperationValidator::visit(const ir::operation::Round &node) { checkUnaryOp(node); }
-
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -368,6 +353,36 @@ void OperationValidator::visit(const ir::operation::ElementwiseBinary &node)
   OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::ElementwiseUnary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
+
+  OP_REQUIRES(node.getInputs().size() == 1);
+  OP_REQUIRES(node.getOutputs().size() == 1);
+
+  // Check if I/O types match
+  if (node.param().op_type == ir::operation::ElementwiseUnary::Type::DEQUANTIZE)
+  {
+    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
+  }
+  else if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)
+  {
+    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32);
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+  }
+  else if (node.param().op_type != ir::operation::ElementwiseUnary::Type::CAST)
+  {
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  }
+
+  if (_ctx.at(output_index).info().isDynamic())
+    return;
+
+  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+}
+
 void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -404,8 +419,6 @@ void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
   }
 }
 
-void OperationValidator::visit(const ir::operation::Exp &node) { checkUnaryOp(node); }
-
 void OperationValidator::visit(const ir::operation::ExpandDims &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -419,8 +432,6 @@ void OperationValidator::visit(const ir::operation::ExpandDims &node)
     return;
   OP_REQUIRES(_ctx.at(axis_index).shape().rank() <= 1);
 }
-
-void OperationValidator::visit(const ir::operation::Floor &node) { checkUnaryOp(node); }
 
 void OperationValidator::visit(const ir::operation::HashtableLookup &node)
 {
@@ -508,21 +519,6 @@ void OperationValidator::visit(const ir::operation::Gather &node)
   OP_REQUIRES(ifm_shape.rank() <= 4);
   OP_REQUIRES(indices_shape.rank() <= 3);
   OP_REQUIRES(ofm_shape.rank() <= 4);
-}
-
-void OperationValidator::visit(const ir::operation::Dequantize &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-
-  const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
-
-  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
-
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() <= 4);
-  OP_REQUIRES(_ctx.at(input_index).shape() == _ctx.at(output_index).shape());
 }
 
 void OperationValidator::visit(const ir::operation::DepthToSpace &node)
@@ -890,12 +886,6 @@ void OperationValidator::visit(const ir::operation::Split &node)
   OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
-void OperationValidator::visit(const ir::operation::Cos &node) { checkUnaryOp(node); }
-
-void OperationValidator::visit(const ir::operation::Sin &node) { checkUnaryOp(node); }
-
-void OperationValidator::visit(const ir::operation::RSQRT &node) { checkUnaryOp(node); }
-
 void OperationValidator::visit(const ir::operation::Shape &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -951,12 +941,6 @@ void OperationValidator::visit(const ir::operation::While &node)
   OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
   // TODO Add to validate with subgraphs
 }
-
-void OperationValidator::visit(const ir::operation::Neg &node) { checkUnaryOp(node); }
-
-void OperationValidator::visit(const ir::operation::Log &node) { checkUnaryOp(node); }
-
-void OperationValidator::visit(const ir::operation::LogicalNot &node) { checkUnaryOp(node); }
 
 void OperationValidator::visit(const ir::operation::SquaredDifference &node)
 {
@@ -1065,24 +1049,5 @@ void OperationValidator::visit(const ir::operation::LogSoftmax &node)
   OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
 }
 
-void OperationValidator::visit(const ir::operation::Quantize &node)
-{
-  VERBOSE(Quantize) << "Configure Quantize operation" << std::endl;
-
-  OP_REQUIRES(node.getInputs().size() == 1);
-  OP_REQUIRES(node.getOutputs().size() == 1);
-
-  const auto input_index{node.getInputs().at(0)};
-  const auto output_index{node.getOutputs().at(0)};
-
-  OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32);
-
-  if (_ctx.at(output_index).info().isDynamic())
-    return;
-
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
-
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
-}
 } // namespace compiler
 } // namespace onert

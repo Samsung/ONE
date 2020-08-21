@@ -52,10 +52,9 @@ public:
   void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::StridedSlice &) override;
   void visit(const ir::operation::Transpose &) override;
-  void visit(const ir::operation::Cast &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::ElementwiseBinary &) override;
-  void visit(const ir::operation::Exp &) override;
+  void visit(const ir::operation::ElementwiseUnary &) override;
   void visit(const ir::operation::ExpandDims &) override;
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Comparison &) override;
@@ -63,10 +62,8 @@ public:
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Permute &) override;
-  void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::ResizeBilinear &) override;
   void visit(const ir::operation::RNN &) override;
-  void visit(const ir::operation::Floor &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::SpaceToDepth &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
@@ -74,15 +71,10 @@ public:
   void visit(const ir::operation::HashtableLookup &) override;
   void visit(const ir::operation::PReLU &) override;
   void visit(const ir::operation::TransposeConv &) override;
-  void visit(const ir::operation::SQRT &) override;
-  void visit(const ir::operation::LogicalNot &) override;
   void visit(const ir::operation::SquaredDifference &) override;
   void visit(const ir::operation::TopKV2 &) override;
   void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::Neg &) override;
-  void visit(const ir::operation::Abs &) override;
   void visit(const ir::operation::ArgMax &) override;
-  void visit(const ir::operation::Dequantize &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::Split &) override;

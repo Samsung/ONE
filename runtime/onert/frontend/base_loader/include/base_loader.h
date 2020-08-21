@@ -121,9 +121,7 @@ protected:
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
-  void loadRsqrt(const Operator *op, ir::Graph &subg);
   void loadSelect(const Operator *op, ir::Graph &subg);
-  void loadSqrt(const Operator *op, ir::Graph &subg);
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
   template <ir::operation::Reduce::ReduceType reduce_type>
@@ -136,7 +134,8 @@ protected:
                                  float alpha = 0.f, float beta = 0.f);
   template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
   void loadElementwiseBinary(const Operator *op, ir::Graph &subg);
-  void loadExp(const Operator *op, ir::Graph &subg);
+  void loadElementwiseUnary(const Operator *op, ir::Graph &subg,
+                            ir::operation::ElementwiseUnary::Type op_type);
   void loadExpandDims(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
@@ -150,30 +149,20 @@ protected:
   void loadSlice(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
-  void loadCast(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
-  void loadAbs(const Operator *op, ir::Graph &subg);
-  void loadCos(const Operator *op, ir::Graph &subg);
-  void loadSin(const Operator *op, ir::Graph &subg);
   void loadShape(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
-  void loadNeg(const Operator *op, ir::Graph &subg);
-  void loadLog(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
-  void loadRound(const Operator *op, ir::Graph &subg);
   void loadPow(const Operator *op, ir::Graph &subg);
-  void loadLogicalNot(const Operator *op, ir::Graph &subg);
-  void loadZerosLike(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
-  void loadQuantize(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
   void loadL2Normalization(const Operator *op, ir::Graph &subg);
@@ -834,18 +823,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRsqrt(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::RSQRT(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -854,18 +831,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Select(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSqrt(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::SQRT(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -989,14 +954,31 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Opera
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadExp(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseUnary(
+    const Operator *op, ir::Graph &subg, ir::operation::ElementwiseUnary::Type op_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Exp(inputs, outputs));
+  ir::operation::ElementwiseUnary::Param param;
+  param.op_type = op_type;
+
+  if (op_type == ir::operation::ElementwiseUnary::Type::CAST)
+  {
+    auto qasymm8ToUint8 = [](ir::Operand &operand) {
+      if (operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
+      {
+        operand.type(ir::DataType::UINT8);
+      }
+    };
+    qasymm8ToUint8(subg.operands().at(inputs.at(ir::operation::ElementwiseUnary::Input::INPUT)));
+    qasymm8ToUint8(subg.operands().at(outputs.at(0)));
+  }
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::ElementwiseUnary(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1368,27 +1350,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadCast(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  auto qasymm8ToUint8 = [](ir::Operand &operand) {
-    if (operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-    {
-      operand.type(ir::DataType::UINT8);
-    }
-  };
-  qasymm8ToUint8(subg.operands().at(inputs.at(ir::operation::Cast::Input::INPUT)));
-  qasymm8ToUint8(subg.operands().at(outputs.at(0)));
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Cast(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1510,42 +1471,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAbs(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Abs(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadCos(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Cos(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSin(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Sin(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1600,18 +1525,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir:
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadNeg(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Neg(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1645,30 +1558,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLog(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Log(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRound(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Round(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1677,31 +1566,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::G
   loadOperationIO(op, inputs, outputs);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Pow(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogicalNot(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogicalNot(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadZerosLike(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ZerosLike(inputs, outputs));
-
   subg.addOperation(std::move(new_op));
 }
 
@@ -1749,18 +1613,6 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op
   param.axis = -1;
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::LogSoftmax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadQuantize(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Quantize(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1842,7 +1694,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadResizeBilinear(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RSQRT:
-      loadRsqrt(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::RSQRT);
       return;
     case BuiltinOperator::BuiltinOperator_SELECT:
       loadSelect(op, subg);
@@ -1852,7 +1704,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSelect(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SQRT:
-      loadSqrt(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQRT);
       return;
     case BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:
       loadSquaredDifference(op, subg);
@@ -1884,7 +1736,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LOGISTIC);
       return;
     case BuiltinOperator::BuiltinOperator_EXP:
-      loadExp(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::EXP);
       return;
     case BuiltinOperator::BuiltinOperator_EXPAND_DIMS:
       loadExpandDims(op, subg);
@@ -1932,7 +1784,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_CAST:
-      loadCast(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::CAST);
       return;
     case BuiltinOperator::BuiltinOperator_EQUAL:
     case BuiltinOperator::BuiltinOperator_NOT_EQUAL:
@@ -1946,13 +1798,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadOneHot(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ABS:
-      loadAbs(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ABS);
       return;
     case BuiltinOperator::BuiltinOperator_COS:
-      loadCos(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::COS);
       return;
     case BuiltinOperator::BuiltinOperator_SIN:
-      loadSin(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SIN);
       return;
     case BuiltinOperator::BuiltinOperator_SHAPE:
       loadShape(op, subg);
@@ -1967,22 +1819,22 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadWhile(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_NEG:
-      loadNeg(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::NEG);
       return;
     case BuiltinOperator::BuiltinOperator_ARG_MAX:
       loadArgMax(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOG:
-      loadLog(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOG);
       return;
     case BuiltinOperator::BuiltinOperator_ROUND:
-      loadRound(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ROUND);
       return;
     case BuiltinOperator::BuiltinOperator_POW:
       loadPow(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
-      loadLogicalNot(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOGICAL_NOT);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
       loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR>(
@@ -1992,7 +1844,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadFill(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ZEROS_LIKE:
-      loadZerosLike(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ZEROS_LIKE);
       return;
     case BuiltinOperator::BuiltinOperator_TILE:
       loadTile(op, subg);
@@ -2007,7 +1859,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadLogSoftmax(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_QUANTIZE:
-      loadQuantize(op, subg);
+      loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::QUANTIZE);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:
       loadSpaceToDepth(op, subg);

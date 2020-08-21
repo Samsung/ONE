@@ -41,7 +41,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Abs; }
+  OpCode opcode() const final { return OpCode::Select; }
 };
 
 } // namespace operation
