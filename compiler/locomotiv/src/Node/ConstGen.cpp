@@ -53,10 +53,12 @@ inline uint32_t offset_by_index(const Shape &shape, const Index &index)
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::ConstGen *constgen)
+using namespace locomotiv;
+
+void execute_node(loco::ConstGen *constgen)
 {
   uint32_t volume = 1;
 
@@ -112,5 +114,12 @@ void NodeExecution::execute(loco::ConstGen *constgen)
   annot_data(constgen, std::move(data));
   annot_domain(constgen, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::ConstGen *constgen) { execute_node(constgen); }
 
 } // namespace locomotiv

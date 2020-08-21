@@ -143,10 +143,12 @@ Buffer<RET_T> calc_dw_conv2d(const loco::DepthwiseConv2D *dw_conv2d, const Buffe
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::DepthwiseConv2D *dw_conv2d)
+using namespace locomotiv;
+
+void execute_node(loco::DepthwiseConv2D *dw_conv2d)
 {
   auto ifm_data = annot_data(dw_conv2d->ifm());
   auto ker_data = annot_data(dw_conv2d->ker());
@@ -181,5 +183,12 @@ void NodeExecution::execute(loco::DepthwiseConv2D *dw_conv2d)
   annot_data(dw_conv2d, std::move(dw_conv2d_result));
   annot_domain(dw_conv2d, loco::Domain::Feature);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::DepthwiseConv2D *dw_conv2d) { execute_node(dw_conv2d); }
 
 } // namespace locomotiv

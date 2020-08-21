@@ -23,10 +23,12 @@
 #include <stdexcept>
 #include <cassert>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::BiasEncode *bias_enc)
+using namespace locomotiv;
+
+void execute_node(loco::BiasEncode *bias_enc)
 {
   auto input_data = annot_data(bias_enc->input());
 
@@ -59,5 +61,12 @@ void NodeExecution::execute(loco::BiasEncode *bias_enc)
   annot_data(bias_enc, std::move(bias_enc_data));
   annot_domain(bias_enc, loco::Domain::Bias);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::BiasEncode *bias_enc) { execute_node(bias_enc); }
 
 } // namespace locomotiv
