@@ -272,6 +272,10 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
                                                      conv2d_options.StrideW())
         tflite.Conv2DOptions.Conv2DOptionsAddStrideH(new_builder,
                                                      conv2d_options.StrideH())
+        tflite.Conv2DOptions.Conv2DOptionsAddDilationWFactor(
+            new_builder, conv2d_options.DilationWFactor())
+        tflite.Conv2DOptions.Conv2DOptionsAddDilationHFactor(
+            new_builder, conv2d_options.DilationHFactor())
         tflite.Conv2DOptions.Conv2DOptionsAddFusedActivationFunction(
             new_builder, conv2d_options.FusedActivationFunction())
         return tflite.Conv2DOptions.Conv2DOptionsEnd(new_builder)
