@@ -80,8 +80,6 @@ struct DynAllocInfo
 {
   /// @brief index of input tensor whose memory needs to be allocated at execution time
   ir::OperandIndex ind;
-  /// @brief dynamic tensor manager that can allocate memory when input tensor is dynamic
-  backend::IDynamicTensorManager *dyn_tensor_manager;
 };
 
 using DynAllocInfoMap = std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo>;
