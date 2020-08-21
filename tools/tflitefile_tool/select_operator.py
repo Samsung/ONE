@@ -909,7 +909,8 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
         return tflite.WhileOptions.WhileOptionsEnd(new_builder)
 
     # Cannot handle builtin option type yet
-    print("Cannot handle this option yet")
+    print("Cannot handle BuiltinOptions {} yet. See BuiltinOptions.py for op name".format(
+        builtin_option_type))
     exit(1)
 
 
