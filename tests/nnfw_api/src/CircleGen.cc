@@ -103,6 +103,27 @@ uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
                                 circle::BuiltinOptions_CosOptions, options);
 }
 
+uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
+{
+  auto options = circle::CreateL2NormOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_L2_NORMALIZATION,
+                                circle::BuiltinOptions_L2NormOptions, options);
+}
+
+uint32_t CircleGen::addOperatorPad(const OperatorParams &params)
+{
+  auto options = circle::CreatePadOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_PAD,
+                                circle::BuiltinOptions_PadOptions, options);
+}
+
+uint32_t CircleGen::addOperatorPadV2(const OperatorParams &params)
+{
+  auto options = circle::CreatePadOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_PADV2,
+                                circle::BuiltinOptions_PadV2Options, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction

@@ -164,3 +164,57 @@ TEST_F(GenModelTest, OneOp_Cos)
   _ref_inputs = {{0, pi / 2, pi, 7}};
   _ref_outputs = {{1, 0, -1, 0.75390225434}};
 }
+
+TEST_F(GenModelTest, OneOp_Pad)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPad({{in, padding}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  _cbuf = cgen.finish();
+
+  _ref_inputs = {{1, 2, 3, 4}};
+  _ref_outputs = {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}};
+}
+
+TEST_F(GenModelTest, OneOp_PadV2)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  std::vector<float> padding_value_data{3.0};
+  uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
+  int padding_value =
+      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPadV2({{in, padding, padding_value}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  _cbuf = cgen.finish();
+
+  _ref_inputs = {{1, 2, 3, 4}};
+  _ref_outputs = {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}};
+}
+
+TEST_F(GenModelTest, OneOp_L2Normalization)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorL2Normalization({{in}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  _cbuf = cgen.finish();
+
+  _ref_inputs = {{0, 3, 4, 0, 5, 12, 0, 8, 15, 0, 7, 24}};
+  _ref_outputs = {{0, 0.6, 0.8, 0, 0.38461539149284363, 0.92307698726654053, 0, 0.47058823704719543,
+                   0.88235294818878174, 0, 0.28, 0.96}};
+}

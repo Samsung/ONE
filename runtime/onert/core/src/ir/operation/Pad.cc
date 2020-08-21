@@ -27,8 +27,10 @@ namespace operation
 
 void Pad::accept(OperationVisitor &v) const { v.visit(*this); }
 
+// PAD: 2 inputs
+// PADV2: 3 inputs
 Pad::Pad(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
+    : Operation{OperandConstraint::createInRange(2u, 3u), inputs, outputs}
 {
 }
 
