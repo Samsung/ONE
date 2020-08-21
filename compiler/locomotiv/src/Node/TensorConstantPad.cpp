@@ -31,10 +31,12 @@ using nncc::core::ADT::tensor::IndexEnumerator;
 using nncc::core::ADT::tensor::LexicalLayout;
 using nncc::core::ADT::tensor::make_buffer;
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::TensorConstantPad *pad)
+using namespace locomotiv;
+
+void execute_node(loco::TensorConstantPad *pad)
 {
   validate(pad, "TensorConstantPad is nullptr");
 
@@ -111,5 +113,12 @@ void NodeExecution::execute(loco::TensorConstantPad *pad)
   annot_data(pad, std::move(pad_data));
   annot_domain(pad, annot_domain(pad->input()));
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::TensorConstantPad *pad) { execute_node(pad); }
 
 } // namespace locomotiv
