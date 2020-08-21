@@ -40,11 +40,6 @@ struct ITensorBuilder
   virtual ~ITensorBuilder(void) = default;
 
   /**
-   * @brief Returns true if this TensorBuilder support dynamic tensor
-   */
-  virtual bool supportDynamicTensor() = 0;
-
-  /**
    * @brief Register tensor information to allocate on backend
    *
    * @param ind Index
@@ -131,10 +126,7 @@ public: // methods for dynamic tensor allocation
    * @note   Since it is a pointer, its life time is from the cration of TensorBuilder
    *         to the end of execution
    */
-  virtual IDynamicTensorManager *dynamicTensorManager(void)
-  {
-    throw std::runtime_error("dynamicTensorManager(): NYI");
-  }
+  virtual IDynamicTensorManager *dynamicTensorManager(void) { return nullptr; }
 
   /**
    * @brief Release dynamic @c ITensorManger object which was built
@@ -142,10 +134,7 @@ public: // methods for dynamic tensor allocation
    *
    * @return std::unique_ptr<ITensorManager> Tensor Manager object
    */
-  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void)
-  {
-    throw std::runtime_error("releaseDynamicTensorManager() for this backend is not supported");
-  }
+  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) { return nullptr; }
 };
 
 } // namespace backend

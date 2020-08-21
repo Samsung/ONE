@@ -49,11 +49,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           tensor = tensor_registry->getNativeITensor(ind);
           if (tensor != nullptr)
           {
-            if (tensor_builder->supportDynamicTensor())
-            {
-              DynAllocInfo dyn_alloc_info{ind};
-              _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
-            }
+            DynAllocInfo dyn_alloc_info{ind};
+            _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
             break;
           }
         }
@@ -74,11 +71,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
           tensor = tensor_registry->getNativeITensor(ind);
           if (tensor != nullptr)
           {
-            if (tensor_builder->supportDynamicTensor())
-            {
-              DynAllocInfo dyn_alloc_info{ind};
-              _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
-            }
+            DynAllocInfo dyn_alloc_info{ind};
+            _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
             break;
           }
         }
@@ -121,12 +115,9 @@ ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
     if (s_tensor_manager != nullptr)
       _tensor_mgrs.insert(std::move(s_tensor_manager));
 
-    if (tensor_builder->supportDynamicTensor())
-    {
-      auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
-      if (d_tensor_manager != nullptr)
-        _tensor_mgrs.insert(std::move(d_tensor_manager));
-    }
+    auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
+    if (d_tensor_manager != nullptr)
+      _tensor_mgrs.insert(std::move(d_tensor_manager));
   }
 }
 

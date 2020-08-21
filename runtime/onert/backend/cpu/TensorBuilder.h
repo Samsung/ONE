@@ -40,8 +40,6 @@ class TensorBuilder : public ITensorBuilder
 public:
   TensorBuilder();
 
-  bool supportDynamicTensor() override { return true; }
-
   /**
    * @brief     Register tensor information to allocate on CPU backend
    * @param[in] ind    Operand index

@@ -96,10 +96,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
 
     output_tensors.emplace_back(output_tensor);
     const auto output_tensor_builder = getTensorBuilder(output_index);
-    if (output_tensor_builder->supportDynamicTensor())
-    {
-      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
-    }
+    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
@@ -125,10 +122,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto output_tensor_builder = getTensorBuilder(output_index);
   VERBOSE(PERMUTE_FIND_TB) << output_index << " -> " << output_tensor_builder.get() << std::endl;
   assert(output_tensor_builder != nullptr);
-  if (output_tensor_builder->supportDynamicTensor())
-  {
-    outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
-  }
+  outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
 
   auto fn =
       std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, outputs_dyn_alloc_info);
@@ -160,10 +154,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
     output_tensors.emplace_back(output_tensor);
 
     const auto output_tensor_builder = getTensorBuilder(output_index);
-    if (output_tensor_builder->supportDynamicTensor())
-    {
-      outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
-    }
+    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
