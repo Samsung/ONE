@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-#include "GenModelTests.h"
+#include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_Pad)
+TEST_F(GenModelTest, OneOp_PadV2)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
   uint32_t padding_buf = cgen.addBuffer(padding_data);
   int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  std::vector<float> padding_value_data{3.0};
+  uint32_t padding_value_buf = cgen.addBuffer(padding_value_data);
+  int padding_value =
+      cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, padding_value_buf});
+
   int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorPad({{in, padding}, {out}});
+  cgen.addOperatorPadV2({{in, padding, padding_value}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _cbuf = cgen.finish();
 
   _ref_inputs = {{1, 2, 3, 4}};
-  _ref_outputs = {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}};
+  _ref_outputs = {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}};
 }

@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-#include "GenModelTests.h"
+#include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_AvgPool2D)
+TEST_F(GenModelTest, OneOp_Pad)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
-                                circle::ActivationFunctionType_NONE);
+  std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPad({{in, padding}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _cbuf = cgen.finish();
 
-  _ref_inputs = {{1, 3, 2, 4}};
-  _ref_outputs = {{2.5}};
+  _ref_inputs = {{1, 2, 3, 4}};
+  _ref_outputs = {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}};
 }

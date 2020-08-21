@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "GenModelTests.h"
+#include "GenModelTest.h"
 
 TEST_F(GenModelTest, OneOp_Cos)
 {
