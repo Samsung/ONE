@@ -34,10 +34,12 @@ using nncc::core::ADT::tensor::Shape;
 #include <cassert>
 #include <stdexcept>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::TensorBroadcast *tensor_broadcast)
+using namespace locomotiv;
+
+void execute_node(loco::TensorBroadcast *tensor_broadcast)
 {
   auto input_data = annot_data(tensor_broadcast->input());
 
@@ -101,6 +103,16 @@ void NodeExecution::execute(loco::TensorBroadcast *tensor_broadcast)
   assert(output_data != nullptr);
   annot_data(tensor_broadcast, std::move(output_data));
   annot_domain(tensor_broadcast, loco::Domain::Tensor);
+}
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::TensorBroadcast *tensor_broadcast)
+{
+  execute_node(tensor_broadcast);
 }
 
 } // namespace locomotiv

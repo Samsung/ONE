@@ -35,10 +35,12 @@ using nncc::core::ADT::tensor::Shape;
 #include <cassert>
 #include <stdexcept>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::TensorConcat *tensor_concat)
+using namespace locomotiv;
+
+void execute_node(loco::TensorConcat *tensor_concat)
 {
   validate(tensor_concat, "TensorConcat is nullptr");
 
@@ -111,5 +113,12 @@ void NodeExecution::execute(loco::TensorConcat *tensor_concat)
   annot_data(tensor_concat, std::move(concat_data));
   annot_domain(tensor_concat, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::TensorConcat *tensor_concat) { execute_node(tensor_concat); }
 
 } // namespace locomotiv

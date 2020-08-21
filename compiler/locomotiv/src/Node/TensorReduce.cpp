@@ -115,10 +115,12 @@ void apply(Buffer<T> &lhs, const Buffer<T> &rhs, const loco::TensorReduce &node)
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::TensorReduce *node)
+using namespace locomotiv;
+
+void execute_node(loco::TensorReduce *node)
 {
   auto input_data = annot_data(node->input());
   validate(input_data, "Input not ready");
@@ -148,5 +150,12 @@ void NodeExecution::execute(loco::TensorReduce *node)
   annot_data(node, std::move(reduce_data));
   annot_domain(node, annot_domain(node->input()));
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::TensorReduce *node) { execute_node(node); }
 
 } // namespace locomotiv
