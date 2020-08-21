@@ -129,10 +129,12 @@ nncc::core::ADT::tensor::Buffer<T> maxPool2D(const loco::MaxPool2D *maxpool2d,
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::MaxPool2D *maxpool2d)
+using namespace locomotiv;
+
+void execute_node(loco::MaxPool2D *maxpool2d)
 {
   auto ifm_data = annot_data(maxpool2d->ifm());
 
@@ -163,5 +165,12 @@ void NodeExecution::execute(loco::MaxPool2D *maxpool2d)
   annot_data(maxpool2d, std::move(maxpool2d_data));
   annot_domain(maxpool2d, loco::Domain::Feature);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::MaxPool2D *maxpool2d) { execute_node(maxpool2d); }
 
 } // namespace locomotiv

@@ -24,10 +24,12 @@
 #include <cassert>
 #include <stdexcept>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::Pull *pull)
+using namespace locomotiv;
+
+void execute_node(loco::Pull *pull)
 {
 // TODO Remove deprecated code
 #if 0
@@ -68,5 +70,12 @@ void NodeExecution::execute(loco::Pull *pull)
   annot_data(pull, std::move(pull_data));
   annot_domain(pull, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::Pull *pull) { execute_node(pull); }
 
 } // namespace locomotiv
