@@ -156,7 +156,7 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
         case NNFW_TYPE_TENSOR_BOOL:
         {
           H5::DataSet data_set =
-              value_group.createDataSet(std::to_string(i), H5::PredType::STD_I8LE, data_space);
+              value_group.createDataSet(std::to_string(i), H5::PredType::STD_U8LE, data_space);
           data_set.write(outputs[i].data(), H5::PredType::NATIVE_INT8);
           break;
         }
