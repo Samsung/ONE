@@ -65,12 +65,13 @@ set(SOURCES
     Unpack.h
     Unpack.cpp)
 
-list(APPEND SOURCES Utils.h Utils.cpp)
+list(APPEND SOURCES Utils.h Utils.cpp ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
 
 add_library(luci_interpreter_kernels STATIC ${SOURCES})
 set_target_properties(luci_interpreter_kernels PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(luci_interpreter_kernels PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
 target_include_directories(luci_interpreter_kernels SYSTEM PRIVATE
+    "${TensorFlowRuySource_DIR}"
     "${TensorFlowGEMMLowpSource_DIR}"
     "${TensorFlowEigenSource_DIR}"
     "${TensorFlowSource_DIR}")

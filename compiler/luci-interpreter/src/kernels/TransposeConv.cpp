@@ -30,8 +30,8 @@ namespace kernels
 {
 
 TransposeConv::TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
-                             Tensor *output, const TransposeConvParams &params)
-    : KernelWithParams<TransposeConvParams>({output_shape, filter, input}, {output}, params)
+                             const Tensor *bias, Tensor *output, const TransposeConvParams &params)
+    : KernelWithParams<TransposeConvParams>({output_shape, filter, input, bias}, {output}, params)
 {
 }
 
@@ -106,8 +106,9 @@ void TransposeConv::evalFloat() const
   op_params.output_multiplier = _output_multiplier;
   tflite::reference_ops::TransposeConv(
       op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-      getTensorData<float>(filter()), getTensorShape(output()), getTensorData<float>(output()),
-      tflite::RuntimeShape(), (float *)nullptr);
+      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
+      getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(),
+      (float *)nullptr);
 }
 
 void TransposeConv::evalQuantized() const
@@ -145,8 +146,9 @@ void TransposeConv::evalQuantized() const
 
   tflite::reference_ops::TransposeConv(
       op_params, getTensorShape(input()), getTensorData<uint8>(input()), getTensorShape(filter()),
-      getTensorData<uint8>(filter()), getTensorShape(output()), getTensorData<uint8>(output()),
-      tflite::RuntimeShape(), (uint8 *)nullptr, getTensorData<int32_t>(_scratch_tensor.get()));
+      getTensorData<uint8>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
+      getTensorShape(output()), getTensorData<uint8>(output()), tflite::RuntimeShape(),
+      (uint8 *)nullptr, getTensorData<int32_t>(_scratch_tensor.get()));
 }
 
 } // namespace kernels

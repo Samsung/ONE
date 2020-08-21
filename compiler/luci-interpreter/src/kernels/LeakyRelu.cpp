@@ -39,12 +39,10 @@ void LeakyRelu::configure()
   assert(input()->element_type() == output()->element_type());
   if (input()->element_type() == DataType::U8)
   {
-    _q_alpha = static_cast<uint8_t>(std::max<float>(
-        std::numeric_limits<uint8_t>::min(),
-        std::min<float>(std::numeric_limits<uint8_t>::max(),
-                        std::round(input()->zero_point() + (params().alpha / input()->scale())))));
-    double real_multiplier = input()->scale() * input()->scale() / output()->scale();
-    quantizeMultiplierSmallerThanOneExp(real_multiplier, &_output_multiplier, &_output_shift);
+    double alpha_multiplier = input()->scale() * params().alpha / output()->scale();
+    quantizeMultiplier(alpha_multiplier, &_output_multiplier_alpha, &_output_shift_alpha);
+    double identity_multiplier = input()->scale() / output()->scale();
+    quantizeMultiplier(identity_multiplier, &_output_multiplier_identity, &_output_shift_identity);
   }
   output()->resize(input()->shape());
 }
@@ -77,15 +75,15 @@ void LeakyRelu::evalQuantized() const
 {
   tflite::LeakyReluParams op_params{};
   op_params.input_offset = input()->zero_point();
-  op_params.alpha_offset = input()->zero_point();
   op_params.output_offset = output()->zero_point();
-
-  op_params.output_multiplier = _output_multiplier;
-  op_params.output_shift = _output_shift;
+  op_params.output_multiplier_alpha = _output_multiplier_alpha;
+  op_params.output_shift_alpha = _output_shift_alpha;
+  op_params.output_multiplier_identity = _output_multiplier_identity;
+  op_params.output_shift_identity = _output_shift_identity;
 
   tflite::reference_ops::QuantizeLeakyRelu(
-      op_params, _q_alpha, getTensorShape(input()), getTensorData<uint8_t>(input()),
-      getTensorShape(output()), getTensorData<uint8_t>(output()));
+      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(output()),
+      getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels
