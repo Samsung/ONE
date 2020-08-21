@@ -52,8 +52,9 @@ void eval(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTenso
 }
 
 template <nnfw::cker::BinaryArithmeticOpType arithmetic_type>
-void arithmeticGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
-                       IPortableTensor *output, ir::Activation activation)
+std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)>
+generateKernelGeneric(const IPortableTensor *lhs, const ir::Activation activation,
+                      nnfw::cker::BinaryArithmeticOpParam op_params)
 {
   switch (lhs->data_type())
   {
@@ -61,20 +62,20 @@ void arithmeticGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
     {
       float output_activation_min = 0, output_activation_max = 0;
       CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
-      nnfw::cker::BinaryArithmeticOpParam op_params;
       op_params.float_activation_max = output_activation_max;
       op_params.float_activation_min = output_activation_min;
-      eval<arithmetic_type, float>(lhs, rhs, output, op_params);
+      return std::bind(&eval<arithmetic_type, float>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, op_params);
       break;
     }
     case OperandType::INT32:
     {
       int32_t output_activation_min = 0, output_activation_max = 0;
       CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
-      nnfw::cker::BinaryArithmeticOpParam op_params;
       op_params.quantized_activation_max = output_activation_max;
       op_params.quantized_activation_min = output_activation_min;
-      eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
+      return std::bind(eval<arithmetic_type, int32_t>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, op_params);
       break;
     }
     default:
@@ -146,53 +147,53 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
 
   _lhs = lhs;
   _rhs = rhs;
-  _activation = activation;
   _output = output;
-  _arithmetic_type = arithmetic_type;
-}
 
-void BinaryArithmeticLayer::run()
-{
-  switch (_arithmetic_type)
+  nnfw::cker::BinaryArithmeticOpParam op_params;
+  switch (arithmetic_type)
   {
     case ArithmeticType::kAdd:
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
-        nnfw::cker::BinaryArithmeticOpParam op_params;
-        setAddOrSubQuant8Params(_lhs, _rhs, _output, _activation, &op_params);
-        eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>(_lhs, _rhs, _output, op_params);
+        setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
+        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::ADD, uint8_t>,
+                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+                            op_params);
       }
       else
       {
-        arithmeticGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(_lhs, _rhs, _output,
-                                                                   _activation);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::ADD>(_lhs, activation,
+                                                                                 op_params);
       }
       break;
     case ArithmeticType::kSub:
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
-        nnfw::cker::BinaryArithmeticOpParam op_params;
-        setAddOrSubQuant8Params(_lhs, _rhs, _output, _activation, &op_params);
+        setAddOrSubQuant8Params(_lhs, _rhs, _output, activation, &op_params);
         op_params.input2_multiplier *= -1;
-        eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>(_lhs, _rhs, _output, op_params);
+        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::SUB, uint8_t>,
+                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+                            op_params);
       }
       else
       {
-        arithmeticGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(_lhs, _rhs, _output,
-                                                                   _activation);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::SUB>(_lhs, activation,
+                                                                                 op_params);
       }
       break;
     case ArithmeticType::kMul:
       if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
       {
         nnfw::cker::BinaryArithmeticOpParam op_params;
-        setMulQuant8Params(_lhs, _rhs, _output, _activation, &op_params);
-        eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>(_lhs, _rhs, _output, op_params);
+        setMulQuant8Params(_lhs, _rhs, _output, activation, &op_params);
+        _kernel = std::bind(&eval<nnfw::cker::BinaryArithmeticOpType::MUL, uint8_t>,
+                            std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+                            op_params);
       }
       else
       {
-        arithmeticGeneric<nnfw::cker::BinaryArithmeticOpType::MUL>(_lhs, _rhs, _output,
-                                                                   _activation);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::MUL>(_lhs, activation,
+                                                                                 op_params);
       }
       break;
     case ArithmeticType::kDiv:
@@ -207,14 +208,16 @@ void BinaryArithmeticLayer::run()
       }
       else
       {
-        arithmeticGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(_lhs, _rhs, _output,
-                                                                   _activation);
+        _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(_lhs, activation,
+                                                                                 op_params);
       }
       break;
     default:
       throw std::runtime_error{"BinaryArithmetic: Unsupported BinaryArithmetic type"};
   }
 }
+
+void BinaryArithmeticLayer::run() { _kernel(_lhs, _rhs, _output); }
 
 } // namespace ops
 } // namespace cpu

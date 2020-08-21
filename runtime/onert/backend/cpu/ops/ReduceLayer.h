@@ -65,10 +65,11 @@ private:
   const IPortableTensor *_input;
   const IPortableTensor *_axes;
   IPortableTensor *_output;
-  ReduceType _reduceType;
-  bool _keep_dims;
 
   std::unique_ptr<nnfw::cker::Reduce> _reduce_kernel;
+  std::function<void(const IPortableTensor *input, IPortableTensor *output,
+                     const std::vector<int> &axes)>
+      _kernel;
 };
 
 } // namespace ops

@@ -85,17 +85,13 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
   _lhs = lhs;
   _rhs = rhs;
   _output = output;
-  _op_type = op_type;
-}
 
-void ElementwiseBinaryLayer::run()
-{
-  switch (_op_type)
+  switch (op_type)
   {
     case ElementwiseBinaryType::kLogicalOr:
       if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
       {
-        logicalOrGeneric<bool>(_lhs, _rhs, _output);
+        _kernel = logicalOrGeneric<bool>;
       }
       else
       {
@@ -109,11 +105,11 @@ void ElementwiseBinaryLayer::run()
         {
           throw std::runtime_error("Max NYI for quantized");
         }
-        maximumGeneric<uint8_t>(_lhs, _rhs, _output);
+        _kernel = maximumGeneric<uint8_t>;
       }
       else if (_lhs->data_type() == OperandType::FLOAT32)
       {
-        maximumGeneric<float>(_lhs, _rhs, _output);
+        _kernel = maximumGeneric<float>;
       }
       else
       {
@@ -127,11 +123,11 @@ void ElementwiseBinaryLayer::run()
         {
           throw std::runtime_error("Min NYI for quantized");
         }
-        minimumGeneric<uint8_t>(_lhs, _rhs, _output);
+        _kernel = minimumGeneric<uint8_t>;
       }
       else if (_lhs->data_type() == OperandType::FLOAT32)
       {
-        minimumGeneric<float>(_lhs, _rhs, _output);
+        _kernel = minimumGeneric<float>;
       }
       else
       {
@@ -142,6 +138,8 @@ void ElementwiseBinaryLayer::run()
       throw std::runtime_error{"ElementwiseBinary: Unsupported ElementwiseBinary type"};
   }
 }
+
+void ElementwiseBinaryLayer::run() { _kernel(_lhs, _rhs, _output); }
 
 } // namespace ops
 } // namespace cpu
