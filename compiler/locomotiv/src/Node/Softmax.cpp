@@ -65,10 +65,12 @@ Shape reduce_shape(const Shape &shape, uint32_t axis)
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::TensorSoftmax *softmax)
+using namespace locomotiv;
+
+void execute_node(loco::TensorSoftmax *softmax)
 {
   auto input_data = annot_data(softmax->input());
 
@@ -118,5 +120,12 @@ void NodeExecution::execute(loco::TensorSoftmax *softmax)
   annot_data(softmax, std::move(softmax_data));
   annot_domain(softmax, annot_domain(softmax->input()));
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::TensorSoftmax *softmax) { execute_node(softmax); }
 
 } // namespace locomotiv

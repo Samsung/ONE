@@ -23,10 +23,12 @@
 #include <stdexcept>
 #include <cassert>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::Push *push)
+using namespace locomotiv;
+
+void execute_node(loco::Push *push)
 {
   auto from_data = annot_data(push->from());
 
@@ -57,5 +59,12 @@ void NodeExecution::execute(loco::Push *push)
   annot_data(push, std::move(push_data));
   annot_domain(push, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::Push *push) { execute_node(push); }
 
 } // namespace locomotiv

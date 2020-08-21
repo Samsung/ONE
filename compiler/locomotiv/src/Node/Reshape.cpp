@@ -36,10 +36,12 @@ using nncc::core::ADT::tensor::num_elements;
 #include <cstring>
 #include <vector>
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::Reshape<loco::ReshapeType::Fixed> *reshape)
+using namespace locomotiv;
+
+void execute_node(loco::Reshape<loco::ReshapeType::Fixed> *reshape)
 {
   auto input_data = annot_data(reshape->input());
 
@@ -85,6 +87,16 @@ void NodeExecution::execute(loco::Reshape<loco::ReshapeType::Fixed> *reshape)
   assert(reshape_data != nullptr);
   annot_data(reshape, std::move(reshape_data));
   annot_domain(reshape, annot_domain(reshape->input()));
+}
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::Reshape<loco::ReshapeType::Fixed> *reshape)
+{
+  execute_node(reshape);
 }
 
 } // namespace locomotiv
