@@ -82,10 +82,12 @@ template <typename T> Buffer<T> calc_mat_mul(const Buffer<T> *lhs_buf, const Buf
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::MatMul *mat_mul)
+using namespace locomotiv;
+
+void execute_node(loco::MatMul *mat_mul)
 {
   auto lhs_data = annot_data(mat_mul->lhs());
   auto rhs_data = annot_data(mat_mul->rhs());
@@ -129,5 +131,12 @@ void NodeExecution::execute(loco::MatMul *mat_mul)
   annot_data(mat_mul, std::move(mat_mul_result));
   annot_domain(mat_mul, loco::Domain::Matrix);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::MatMul *mat_mul) { execute_node(mat_mul); }
 
 } // namespace locomotiv

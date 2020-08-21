@@ -74,10 +74,12 @@ std::unique_ptr<locomotiv::NodeData> filter_encode(const loco::FilterEncode *nod
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::FilterEncode *enc)
+using namespace locomotiv;
+
+void execute_node(loco::FilterEncode *enc)
 {
   auto input_data = annot_data(enc->input());
 
@@ -110,5 +112,12 @@ void NodeExecution::execute(loco::FilterEncode *enc)
   annot_data(enc, std::move(enc_data));
   annot_domain(enc, loco::Domain::Filter);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::FilterEncode *enc) { execute_node(enc); }
 
 } // namespace locomotiv

@@ -68,10 +68,12 @@ std::unique_ptr<locomotiv::NodeData> matrix_decode(const loco::MatrixDecode *nod
 
 } // namespace
 
-namespace locomotiv
+namespace
 {
 
-void NodeExecution::execute(loco::MatrixDecode *matrix_dec)
+using namespace locomotiv;
+
+void execute_node(loco::MatrixDecode *matrix_dec)
 {
   auto input_data = annot_data(matrix_dec->input());
 
@@ -105,5 +107,12 @@ void NodeExecution::execute(loco::MatrixDecode *matrix_dec)
   annot_data(matrix_dec, std::move(matrix_dec_data));
   annot_domain(matrix_dec, loco::Domain::Tensor);
 }
+
+} // namespace
+
+namespace locomotiv
+{
+
+void NodeExecution::execute(loco::MatrixDecode *matrix_dec) { execute_node(matrix_dec); }
 
 } // namespace locomotiv
