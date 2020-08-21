@@ -21,6 +21,7 @@
 
 #include "ir/Index.h"
 #include "backend/ITensor.h"
+#include "backend/IPortableTensor.h"
 
 namespace onert
 {
@@ -51,13 +52,22 @@ struct ITensorRegistry
    * @note  Returned tensor cannot be used longer than dynamic tensor manager
    */
   virtual std::shared_ptr<ITensor> getNativeITensor(const ir::OperandIndex &) = 0;
+  /**
+   * @brief Set the Migrant Tensor which are from other backends
+   *
+   * @return true if supported
+   * @return false if not supported
+   */
+  virtual bool setMigrantTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
+  {
+    return false;
+  }
 };
 
 } // namespace backend
 } // namespace onert
 
 #include "ir/OperandIndexMap.h"
-#include "backend/IPortableTensor.h"
 
 namespace onert
 {
@@ -108,7 +118,8 @@ public:
     return nullptr;
   }
 
-  bool setMigrantTensor(const ir::OperandIndex &ind, const std::shared_ptr<IPortableTensor> &tensor)
+  bool setMigrantTensor(const ir::OperandIndex &ind,
+                        const std::shared_ptr<IPortableTensor> &tensor) override
   {
     assert(tensor != nullptr);
     auto itr = _native.find(ind);

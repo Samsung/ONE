@@ -85,12 +85,6 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-bool TensorBuilder::setMigrantTensor(const ir::OperandIndex &ind,
-                                     const std::shared_ptr<IPortableTensor> &tensor)
-{
-  return _tensor_reg->setMigrantTensor(ind, tensor);
-}
-
 std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
 {
   return std::move(_static_tensor_mgr);
