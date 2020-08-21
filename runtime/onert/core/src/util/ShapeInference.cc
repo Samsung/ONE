@@ -79,34 +79,8 @@ ir::Shape broadcastShapes(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape
 // Calculate output height and width of convolution-like operation
 std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
                                                const int ker_w, const ir::Padding pad,
-                                               const ir::Stride stride)
-{
-  int32_t out_h = 0, out_w = 0;
-
-  switch (pad.type)
-  {
-    case ir::PaddingType::SAME:
-      out_h = ceil_div(in_h, stride.vertical);
-      out_w = ceil_div(in_w, stride.horizontal);
-      break;
-    case ir::PaddingType::VALID:
-      out_h = ceil_div(in_h - ker_h + 1, stride.vertical);
-      out_w = ceil_div(in_w - ker_w + 1, stride.horizontal);
-      break;
-    case ir::PaddingType::EXPLICIT:
-      out_h = (in_h + pad.param.top + pad.param.bottom - ker_h) / stride.vertical + 1;
-      out_w = (in_w + pad.param.left + pad.param.right - ker_w) / stride.horizontal + 1;
-      break;
-    default:
-      assert(false);
-  }
-
-  return {out_h, out_w};
-}
-
-std::pair<int, int> calcConvLikeHeightAndWidth(const int in_h, const int in_w, const int ker_h,
-                                               const int ker_w, const ir::Padding pad,
-                                               const ir::Stride stride, const ir::Dilation dilation)
+                                               const ir::Stride stride,
+                                               const ir::Dilation dilation = {1, 1})
 {
   int32_t out_h = 0, out_w = 0;
   int32_t effective_filter_w_size = (ker_w - 1) * dilation.width_factor + 1;

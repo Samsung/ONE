@@ -278,7 +278,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto ker_width = ker_shape.dim(2);
 
   const auto padding =
-      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
+      ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
+                           dilation.width_factor, dilation.height_factor);
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,

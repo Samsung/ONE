@@ -50,7 +50,7 @@ inline ExplicitPadding validPadding(void)
 }
 
 inline ExplicitPadding samePaddingUsingIFM(const FeatureShape &ifm_shape, const Stride &stride,
-                                           uint32_t kw, uint32_t kh)
+                                           uint32_t kw, uint32_t kh, uint32_t dwf, uint32_t dhf)
 {
   ExplicitPadding padding;
 
@@ -61,14 +61,19 @@ inline ExplicitPadding samePaddingUsingIFM(const FeatureShape &ifm_shape, const 
   // padding_to_beginning = total_padding / 2
   // padding_to_end = (total_padding + 1)/2.
   //
+  const int32_t effective_filter_h_size = (kh - 1) * dhf + 1;
+  const int32_t effective_filter_w_size = (kw - 1) * dwf + 1;
+
   const int32_t vertical_expected_output = (ifm_shape.H + stride.vertical - 1) / stride.vertical;
   const int32_t horizontal_expected_output =
       (ifm_shape.W + stride.horizontal - 1) / stride.horizontal;
 
-  const int32_t vertical_needed_input = (vertical_expected_output - 1) * stride.vertical + kh;
+  const int32_t vertical_needed_input =
+      (vertical_expected_output - 1) * stride.vertical + effective_filter_h_size;
   const int32_t vertical_total_padding = std::max(0, vertical_needed_input - ifm_shape.H);
 
-  const int32_t horizontal_needed_input = (horizontal_expected_output - 1) * stride.horizontal + kw;
+  const int32_t horizontal_needed_input =
+      (horizontal_expected_output - 1) * stride.horizontal + effective_filter_w_size;
   const int32_t horizontal_total_padding = std::max(0, horizontal_needed_input - ifm_shape.W);
 
   padding.top = vertical_total_padding / 2;
@@ -80,7 +85,8 @@ inline ExplicitPadding samePaddingUsingIFM(const FeatureShape &ifm_shape, const 
 }
 
 inline ExplicitPadding samePadding(const FeatureShape &ifm_shape, const FeatureShape &ofm_shape,
-                                   const Stride &stride, uint32_t kw, uint32_t kh)
+                                   const Stride &stride, uint32_t kw, uint32_t kh, uint32_t dwf,
+                                   uint32_t dhf)
 {
   const int32_t vertical_expected_output = (ifm_shape.H + stride.vertical - 1) / stride.vertical;
   const int32_t horizontal_expected_output =
@@ -92,7 +98,7 @@ inline ExplicitPadding samePadding(const FeatureShape &ifm_shape, const FeatureS
   UNUSED_RELEASE(vertical_expected_output);
   UNUSED_RELEASE(horizontal_expected_output);
 
-  return samePaddingUsingIFM(ifm_shape, stride, kw, kh);
+  return samePaddingUsingIFM(ifm_shape, stride, kw, kh, dwf, dhf);
 }
 
 } // namespace
@@ -130,7 +136,7 @@ Padding::Padding(uint32_t left, uint32_t right, uint32_t top, uint32_t bottom)
 
 const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShape &ifm_shape,
                                        const FeatureShape &ofm_shape, const Stride &stride,
-                                       uint32_t kw, uint32_t kh)
+                                       uint32_t kw, uint32_t kh, uint32_t dwf, uint32_t dhf)
 {
   if (padding.type == PaddingType::EXPLICIT)
   {
@@ -138,7 +144,7 @@ const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShap
   }
   else if (padding.type == PaddingType::SAME)
   {
-    return samePadding(ifm_shape, ofm_shape, stride, kw, kh);
+    return samePadding(ifm_shape, ofm_shape, stride, kw, kh, dwf, dhf);
   }
   else if (padding.type == PaddingType::VALID)
   {

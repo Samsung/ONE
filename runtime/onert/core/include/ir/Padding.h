@@ -65,7 +65,8 @@ struct Padding
 // TODO Change to Padding struct's method
 const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShape &ifm_shape,
                                        const FeatureShape &ofm_shape, const Stride &stride,
-                                       uint32_t kw, uint32_t kh);
+                                       uint32_t kw, uint32_t kh, uint32_t dwf = 1,
+                                       uint32_t dhf = 1);
 
 } // namespace ir
 } // namespace onert
