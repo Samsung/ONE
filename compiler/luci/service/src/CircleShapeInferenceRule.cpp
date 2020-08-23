@@ -47,6 +47,99 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   return os;
 }
 
+loco::NodeShape infer_add_n(const luci::CircleAddN *node)
+{
+  auto shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
+
+  for (uint32_t idx = 1; idx < node->arity(); ++idx)
+  {
+    auto shape_idx = loco::shape_get(node->inputs(idx)).as<loco::TensorShape>();
+    if (!(shape == shape_idx))
+    {
+      INTERNAL_EXN_V("ADD_N shape not same as the first input: ", idx);
+    }
+  }
+  return loco::NodeShape{shape};
+}
+
+loco::NodeShape infer_arg_max(const luci::CircleArgMax *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto dimension_shape = loco::shape_get(node->dimension()).as<loco::TensorShape>();
+
+  int64_t select_axis = 0;
+  {
+    LUCI_ASSERT(node->dimension(), "2nd input dimension() should not be nullptr");
+
+    // Only support node's shape() is CircleConst with S32/S64
+    // Support S32 for now.
+    auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
+    LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
+                "Only support int32 CircleConst for CircleArgMax");
+
+    if (const_shape_node->rank() > 1)
+      INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
+                     oops::to_uint32(const_shape_node->rank()));
+
+    select_axis = const_shape_node->scalar<loco::DataType::S32>();
+  }
+  assert(select_axis < input_shape.rank());
+  assert(select_axis >= 0); // TODO support minus of this breaks
+
+  // NOTE select_axis is removed
+  loco::TensorShape shape_output;
+  uint32_t rank = input_shape.rank();
+  uint32_t shrink = static_cast<uint32_t>(select_axis);
+  assert(rank > 0);
+  shape_output.rank(rank - 1);
+  for (uint32_t r = 0, d = 0; r < rank; ++r)
+  {
+    if (r == shrink)
+      continue;
+    shape_output.dim(d++) = input_shape.dim(r);
+  }
+  return loco::NodeShape{shape_output};
+}
+
+loco::NodeShape infer_arg_min(const luci::CircleArgMin *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto dimension_shape = loco::shape_get(node->dimension()).as<loco::TensorShape>();
+
+  int64_t select_axis = 0;
+  {
+    LUCI_ASSERT(node->dimension(), "2nd input dimension() should not be nullptr");
+
+    // Only support node's shape() is CircleConst with S32/S64
+    // Support S32 for now.
+    auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
+    LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
+                "Only support int32 CircleConst for CircleArgMin");
+
+    if (const_shape_node->rank() > 1)
+      INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
+                     oops::to_uint32(const_shape_node->rank()));
+
+    select_axis = const_shape_node->scalar<loco::DataType::S32>();
+  }
+  assert(select_axis < input_shape.rank());
+  assert(select_axis >= 0); // TODO support minus of this breaks
+
+  // NOTE select_axis is removed
+  loco::TensorShape shape_output;
+  uint32_t rank = input_shape.rank();
+  uint32_t shrink = static_cast<uint32_t>(select_axis);
+  assert(rank > 0);
+  shape_output.rank(rank - 1);
+  for (uint32_t r = 0, d = 0; r < rank; ++r)
+  {
+    if (r == shrink)
+      continue;
+    shape_output.dim(d++) = input_shape.dim(r);
+  }
+  return loco::NodeShape{shape_output};
+}
+
 // Call this for CircleAvgPool2D and CircleMaxPool2D only
 template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType *node)
 {
@@ -90,6 +183,53 @@ template <class Pool2DType> loco::NodeShape infer_pool_2d_shape(const Pool2DType
   ofm_shape.dim(3) = ifm_shape.dim(3);
 
   return loco::NodeShape{ofm_shape};
+}
+
+loco::NodeShape infer_batch_to_space_nd(const luci::CircleBatchToSpaceND *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  // Support only input rank is 3 and 4
+  assert(input_shape.rank() == 3 || input_shape.rank() == 4);
+
+  // Only support block_shape() with S32 type CircleConst for now
+  auto const_block_shape = loco::must_cast<luci::CircleConst *>(node->block_shape());
+  LUCI_ASSERT(const_block_shape->dtype() == loco::DataType::S32, "Only support int32 block_shape");
+
+  // Only support crops() with S32 type CircleConst for now
+  auto const_crops = loco::must_cast<luci::CircleConst *>(node->crops());
+  LUCI_ASSERT(const_crops->dtype() == loco::DataType::S32, "Only support int32 crops");
+
+  auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
+  auto const_crops_shape = loco::shape_get(const_crops).as<loco::TensorShape>();
+  assert(const_block_shape_shape.rank() == 1);
+  assert(const_crops_shape.rank() == 2);
+
+  int32_t input_spatial_dim = input_shape.rank() - 2;
+  assert(const_block_shape_shape.dim(0) == input_spatial_dim);
+  assert(const_crops_shape.dim(0) == input_spatial_dim);
+  assert(const_crops_shape.dim(1) == 2);
+
+  loco::TensorShape shape_output;
+
+  shape_output.rank(input_shape.rank());
+
+  int32_t output_batch_size = input_shape.dim(0).value();
+  for (int32_t dim = 0; dim < input_spatial_dim; ++dim)
+  {
+    int dim_size = input_shape.dim(dim + 1).value() * const_block_shape->at<S32>(dim);
+    dim_size -= const_crops->at<S32>(dim * 2);
+    dim_size -= const_crops->at<S32>(dim * 2 + 1);
+    shape_output.dim(dim + 1) = dim_size;
+
+    assert(output_batch_size % const_block_shape->at<S32>(dim) == 0);
+    output_batch_size = output_batch_size / const_block_shape->at<S32>(dim);
+  }
+  shape_output.dim(0) = output_batch_size;
+  shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
+
+  return loco::NodeShape{shape_output};
 }
 
 struct OutputSize
@@ -283,6 +423,67 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   return loco::NodeShape{output_shape};
 }
 
+loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
+{
+  // TODO Support when CircleConcatenation has 0 input
+  assert(node->numValues() > 0);
+
+  auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
+  auto axis = node->axis();
+  if (axis < 0)
+    axis += first_shape.rank();
+
+  assert(0 <= axis);
+  assert(first_shape.rank() > static_cast<uint32_t>(axis));
+
+  loco::TensorShape output_shape;
+
+  output_shape.rank(first_shape.rank());
+  for (uint32_t i = 0; i < output_shape.rank(); ++i)
+    output_shape.dim(i) = first_shape.dim(i);
+
+  for (uint32_t i = 1; i < node->numValues(); ++i)
+  {
+    auto input_shape = loco::shape_get(node->values(i)).as<loco::TensorShape>();
+
+    for (uint32_t j = 0; j < output_shape.rank(); ++j)
+    {
+      if (j == static_cast<uint32_t>(axis))
+        output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
+      else
+        assert(output_shape.dim(j) == input_shape.dim(j));
+    }
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_conv2d(const luci::CircleConv2D *node)
+{
+  LOGGER(l);
+
+  auto ifm_shape = loco::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
+  auto ker_shape = loco::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
+
+  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
+          << ")" << std::endl;
+
+  assert(ifm_shape.rank() == 4);
+  assert(ker_shape.rank() == 4);
+  assert(ifm_shape.dim(3) == ker_shape.dim(3));
+
+  auto os = infer_conv2d_type(node);
+
+  loco::TensorShape ofm_shape;
+  ofm_shape.rank(4);
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(1) = os.height;
+  ofm_shape.dim(2) = os.width;
+  ofm_shape.dim(3) = ker_shape.dim(0);
+
+  return loco::NodeShape{ofm_shape};
+}
+
 loco::TensorShape own_shape(const luci::CircleNode *node)
 {
   loco::TensorShape shape;
@@ -400,99 +601,11 @@ public:
 
   loco::NodeShape visit(const luci::CircleAdd *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleAddN *node) final
-  {
-    auto shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CircleAddN *node) final { return infer_add_n(node); }
 
-    for (uint32_t idx = 1; idx < node->arity(); ++idx)
-    {
-      auto shape_idx = loco::shape_get(node->inputs(idx)).as<loco::TensorShape>();
-      if (!(shape == shape_idx))
-      {
-        INTERNAL_EXN_V("ADD_N shape not same as the first input: ", idx);
-      }
-    }
+  loco::NodeShape visit(const luci::CircleArgMax *node) final { return infer_arg_max(node); }
 
-    return loco::NodeShape{shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleArgMax *node) final
-  {
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto dimension_shape = loco::shape_get(node->dimension()).as<loco::TensorShape>();
-
-    int64_t select_axis = 0;
-    {
-      LUCI_ASSERT(node->dimension(), "2nd input dimension() should not be nullptr");
-
-      // Only support node's shape() is CircleConst with S32/S64
-      // Support S32 for now.
-      auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
-      LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
-                  "Only support int32 CircleConst for CircleArgMax");
-
-      if (const_shape_node->rank() > 1)
-        INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
-                       oops::to_uint32(const_shape_node->rank()));
-
-      select_axis = const_shape_node->scalar<loco::DataType::S32>();
-    }
-    assert(select_axis < input_shape.rank());
-    assert(select_axis >= 0); // TODO support minus of this breaks
-
-    // NOTE select_axis is removed
-    loco::TensorShape shape_output;
-    uint32_t rank = input_shape.rank();
-    uint32_t shrink = static_cast<uint32_t>(select_axis);
-    assert(rank > 0);
-    shape_output.rank(rank - 1);
-    for (uint32_t r = 0, d = 0; r < rank; ++r)
-    {
-      if (r == shrink)
-        continue;
-      shape_output.dim(d++) = input_shape.dim(r);
-    }
-    return loco::NodeShape{shape_output};
-  }
-
-  loco::NodeShape visit(const luci::CircleArgMin *node) final
-  {
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto dimension_shape = loco::shape_get(node->dimension()).as<loco::TensorShape>();
-
-    int64_t select_axis = 0;
-    {
-      LUCI_ASSERT(node->dimension(), "2nd input dimension() should not be nullptr");
-
-      // Only support node's shape() is CircleConst with S32/S64
-      // Support S32 for now.
-      auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
-      LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
-                  "Only support int32 CircleConst for CircleArgMin");
-
-      if (const_shape_node->rank() > 1)
-        INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
-                       oops::to_uint32(const_shape_node->rank()));
-
-      select_axis = const_shape_node->scalar<loco::DataType::S32>();
-    }
-    assert(select_axis < input_shape.rank());
-    assert(select_axis >= 0); // TODO support minus of this breaks
-
-    // NOTE select_axis is removed
-    loco::TensorShape shape_output;
-    uint32_t rank = input_shape.rank();
-    uint32_t shrink = static_cast<uint32_t>(select_axis);
-    assert(rank > 0);
-    shape_output.rank(rank - 1);
-    for (uint32_t r = 0, d = 0; r < rank; ++r)
-    {
-      if (r == shrink)
-        continue;
-      shape_output.dim(d++) = input_shape.dim(r);
-    }
-    return loco::NodeShape{shape_output};
-  }
+  loco::NodeShape visit(const luci::CircleArgMin *node) final { return infer_arg_min(node); }
 
   loco::NodeShape visit(const luci::CircleAveragePool2D *node) final
   {
@@ -509,50 +622,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
   {
-    const loco::DataType S32 = loco::DataType::S32;
-
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    // Support only input rank is 3 and 4
-    assert(input_shape.rank() == 3 || input_shape.rank() == 4);
-
-    // Only support block_shape() with S32 type CircleConst for now
-    auto const_block_shape = loco::must_cast<luci::CircleConst *>(node->block_shape());
-    LUCI_ASSERT(const_block_shape->dtype() == loco::DataType::S32,
-                "Only support int32 block_shape");
-
-    // Only support crops() with S32 type CircleConst for now
-    auto const_crops = loco::must_cast<luci::CircleConst *>(node->crops());
-    LUCI_ASSERT(const_crops->dtype() == loco::DataType::S32, "Only support int32 crops");
-
-    auto const_block_shape_shape = loco::shape_get(const_block_shape).as<loco::TensorShape>();
-    auto const_crops_shape = loco::shape_get(const_crops).as<loco::TensorShape>();
-    assert(const_block_shape_shape.rank() == 1);
-    assert(const_crops_shape.rank() == 2);
-
-    int32_t input_spatial_dim = input_shape.rank() - 2;
-    assert(const_block_shape_shape.dim(0) == input_spatial_dim);
-    assert(const_crops_shape.dim(0) == input_spatial_dim);
-    assert(const_crops_shape.dim(1) == 2);
-
-    loco::TensorShape shape_output;
-
-    shape_output.rank(input_shape.rank());
-
-    int32_t output_batch_size = input_shape.dim(0).value();
-    for (int32_t dim = 0; dim < input_spatial_dim; ++dim)
-    {
-      int dim_size = input_shape.dim(dim + 1).value() * const_block_shape->at<S32>(dim);
-      dim_size -= const_crops->at<S32>(dim * 2);
-      dim_size -= const_crops->at<S32>(dim * 2 + 1);
-      shape_output.dim(dim + 1) = dim_size;
-
-      assert(output_batch_size % const_block_shape->at<S32>(dim) == 0);
-      output_batch_size = output_batch_size / const_block_shape->at<S32>(dim);
-    }
-    shape_output.dim(0) = output_batch_size;
-    shape_output.dim(input_shape.rank() - 1) = input_shape.dim(input_shape.rank() - 1);
-
-    return loco::NodeShape{shape_output};
+    return infer_batch_to_space_nd(node);
   }
 
   loco::NodeShape visit(const luci::CircleCast *node) final { return use_x(node); }
@@ -561,66 +631,12 @@ public:
 
   loco::NodeShape visit(const luci::CircleConcatenation *node) final
   {
-    // TODO Support when CircleConcatenation has 0 input
-    assert(node->numValues() > 0);
-
-    auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
-    auto axis = node->axis();
-    if (axis < 0)
-      axis += first_shape.rank();
-
-    assert(0 <= axis);
-    assert(first_shape.rank() > static_cast<uint32_t>(axis));
-
-    loco::TensorShape output_shape;
-
-    output_shape.rank(first_shape.rank());
-    for (uint32_t i = 0; i < output_shape.rank(); ++i)
-      output_shape.dim(i) = first_shape.dim(i);
-
-    for (uint32_t i = 1; i < node->numValues(); ++i)
-    {
-      auto input_shape = loco::shape_get(node->values(i)).as<loco::TensorShape>();
-
-      for (uint32_t j = 0; j < output_shape.rank(); ++j)
-      {
-        if (j == static_cast<uint32_t>(axis))
-          output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
-        else
-          assert(output_shape.dim(j) == input_shape.dim(j));
-      }
-    }
-
-    return loco::NodeShape{output_shape};
+    return infer_concatenation(node);
   }
 
   loco::NodeShape visit(const luci::CircleConst *node) final { return use_own(node); }
 
-  loco::NodeShape visit(const luci::CircleConv2D *node) final
-  {
-    LOGGER(l);
-
-    auto ifm_shape = loco::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
-    auto ker_shape = loco::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
-
-    INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker("
-            << ker_shape.rank() << ")" << std::endl;
-
-    assert(ifm_shape.rank() == 4);
-    assert(ker_shape.rank() == 4);
-    assert(ifm_shape.dim(3) == ker_shape.dim(3));
-
-    auto os = infer_conv2d_type(node);
-
-    loco::TensorShape ofm_shape;
-    ofm_shape.rank(4);
-    ofm_shape.dim(0) = ifm_shape.dim(0);
-    ofm_shape.dim(1) = os.height;
-    ofm_shape.dim(2) = os.width;
-    ofm_shape.dim(3) = ker_shape.dim(0);
-
-    return loco::NodeShape{ofm_shape};
-  }
+  loco::NodeShape visit(const luci::CircleConv2D *node) final { return infer_conv2d(node); }
 
   loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
