@@ -725,6 +725,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_MIRROR_PAD] = make_unique<MirrorPadPrinter>();
   _op_map[circle::BuiltinOperator_MUL] = make_unique<MulPrinter>();
   // There is no Option for NON_MAX_SUPPRESSION_V4
+  // There is no Option for NON_MAX_SUPPRESSION_V5
   _op_map[circle::BuiltinOperator_ONE_HOT] = make_unique<OneHotPrinter>();
   _op_map[circle::BuiltinOperator_PACK] = make_unique<PackPrinter>();
   // There is no Option for PAD
