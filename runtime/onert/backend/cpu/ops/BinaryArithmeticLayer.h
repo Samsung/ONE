@@ -58,8 +58,7 @@ private:
   const IPortableTensor *_rhs;
   IPortableTensor *_output;
 
-  ir::Activation _activation{ir::Activation::NONE};
-  ArithmeticType _arithmetic_type{ArithmeticType::kAdd};
+  std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
 } // namespace ops

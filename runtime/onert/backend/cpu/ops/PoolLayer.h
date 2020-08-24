@@ -57,18 +57,7 @@ private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
 
-  uint32_t _paddingLeft;
-  uint32_t _paddingTop;
-  uint32_t _paddingRight;
-  uint32_t _paddingBottom;
-
-  uint32_t _strideWidth;
-  uint32_t _strideHeight;
-  uint32_t _kernelWidth;
-  uint32_t _kernelHeight;
-
-  ir::Activation _activation;
-  PoolType _op_type;
+  std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
 } // namespace ops

@@ -56,7 +56,7 @@ private:
   const IPortableTensor *_lhs;
   const IPortableTensor *_rhs;
   IPortableTensor *_output;
-  ElementwiseBinaryType _op_type{ElementwiseBinaryType::kLogicalAnd};
+  std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
 } // namespace ops

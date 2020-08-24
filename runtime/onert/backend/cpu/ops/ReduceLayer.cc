@@ -49,27 +49,31 @@ void evalLogic(const IPortableTensor *input, IPortableTensor *output, const std:
 }
 
 template <typename T>
-void evalType(const IPortableTensor *input, IPortableTensor *output, const std::vector<int> &axes,
-              bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
+std::function<void(const IPortableTensor *, IPortableTensor *, const std::vector<int> &)>
+evalType(bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
     case ReduceType::kSum:
-      return evalLogic<T>(input, output, axes, keep_dims, static_cast<T>(0), reduce_kernel,
-                          [](const T current, const T in) -> T { return in + current; });
+      return std::bind(&evalLogic<T>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, keep_dims, static_cast<T>(0), reduce_kernel,
+                       [](const T current, const T in) -> T { return in + current; });
       break;
     case ReduceType::kProd:
-      return evalLogic<T>(input, output, axes, keep_dims, static_cast<T>(1), reduce_kernel,
-                          [](const T current, const T in) -> T { return in * current; });
+      return std::bind(&evalLogic<T>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, keep_dims, static_cast<T>(1), reduce_kernel,
+                       [](const T current, const T in) -> T { return in * current; });
       break;
     case ReduceType::kMax:
-      return evalLogic<T>(
-          input, output, axes, keep_dims, std::numeric_limits<T>::lowest(), reduce_kernel,
+      return std::bind(
+          &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+          keep_dims, std::numeric_limits<T>::lowest(), reduce_kernel,
           [](const T current, const T in) -> T { return (in > current) ? in : current; });
       break;
     case ReduceType::kMin:
-      return evalLogic<T>(
-          input, output, axes, keep_dims, std::numeric_limits<T>::max(), reduce_kernel,
+      return std::bind(
+          &evalLogic<T>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+          keep_dims, std::numeric_limits<T>::max(), reduce_kernel,
           [](const T current, const T in) -> T { return (in < current) ? in : current; });
       break;
     default:
@@ -79,44 +83,44 @@ void evalType(const IPortableTensor *input, IPortableTensor *output, const std::
 
 // Template specialization for bool type
 template <>
-void evalType<bool>(const IPortableTensor *input, IPortableTensor *output,
-                    const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel,
-                    ReduceType reduce_type)
+std::function<void(const IPortableTensor *, IPortableTensor *, const std::vector<int> &)>
+evalType<bool>(bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (reduce_type)
   {
     case ReduceType::kAny:
-      return evalLogic<bool>(
-          input, output, axes, keep_dims, false, reduce_kernel,
-          [](const bool current, const bool in) -> bool { return in || current; });
+      return std::bind(&evalLogic<bool>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, keep_dims, false, reduce_kernel,
+                       [](const bool current, const bool in) -> bool { return in || current; });
       break;
     case ReduceType::kAll:
-      return evalLogic<bool>(
-          input, output, axes, keep_dims, true, reduce_kernel,
-          [](const bool current, const bool in) -> bool { return in && current; });
+      return std::bind(&evalLogic<bool>, std::placeholders::_1, std::placeholders::_2,
+                       std::placeholders::_3, keep_dims, true, reduce_kernel,
+                       [](const bool current, const bool in) -> bool { return in && current; });
       break;
     default:
       throw std::runtime_error{"Reduce: Unsupported reduce type"};
   }
 }
 
-template <ReduceType reduce_type>
-void evalGeneric(const IPortableTensor *input, IPortableTensor *output,
-                 const std::vector<int> &axes, bool keep_dims, nnfw::cker::Reduce &reduce_kernel)
+std::function<void(const IPortableTensor *, IPortableTensor *, const std::vector<int> &)>
+generateKernelGeneric(const IPortableTensor *input, bool keep_dims,
+                      nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
   switch (input->data_type())
   {
     case OperandType::FLOAT32:
-      return evalType<float>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
+      return evalType<float>(keep_dims, reduce_kernel, reduce_type);
     case OperandType::INT32:
-      return evalType<int32_t>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
+      return evalType<int32_t>(keep_dims, reduce_kernel, reduce_type);
     case OperandType::BOOL8:
-      return evalType<bool>(input, output, axes, keep_dims, reduce_kernel, reduce_type);
+      return evalType<bool>(keep_dims, reduce_kernel, reduce_type);
     default:
       throw std::runtime_error{"Reduce(generic): unsupported data type"};
   }
 }
 
+// TODO Refine this function
 void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
                       const std::vector<int> &axes, bool keep_dims,
                       nnfw::cker::Reduce &reduce_kernel)
@@ -146,14 +150,15 @@ void evalSumQuantized(const IPortableTensor *input, IPortableTensor *output,
     return;
   }
 
-  evalGeneric<ReduceType::kSum>(input, output, axes, keep_dims, reduce_kernel);
+  const auto kernel = generateKernelGeneric(input, keep_dims, reduce_kernel, ReduceType::kSum);
+  kernel(input, output, axes);
 }
 
 } // namespace
 
 ReduceLayer::ReduceLayer()
-    : _input(nullptr), _axes(nullptr), _output(nullptr), _reduceType(ReduceType::kAny),
-      _keep_dims(false), _reduce_kernel(new nnfw::cker::Reduce())
+    : _input(nullptr), _axes(nullptr), _output(nullptr), _reduce_kernel(new nnfw::cker::Reduce()),
+      _kernel()
 {
   // DO NOTHING
 }
@@ -166,41 +171,42 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
   _input = input;
   _axes = axes;
   _output = output;
-  _reduceType = reduceType;
-  _keep_dims = keep_dims;
+
+  switch (reduceType)
+  {
+    case ReduceType::kSum:
+      if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
+      {
+        _kernel = std::bind(&evalSumQuantized, std::placeholders::_1, std::placeholders::_2,
+                            std::placeholders::_3, keep_dims, *_reduce_kernel);
+        return;
+      }
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kSum);
+      break;
+    case ReduceType::kProd:
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kProd);
+      break;
+    case ReduceType::kMax:
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kMax);
+      break;
+    case ReduceType::kMin:
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kMin);
+      break;
+    case ReduceType::kAny:
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kAny);
+      break;
+    case ReduceType::kAll:
+      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, ReduceType::kAll);
+      break;
+    default:
+      throw std::runtime_error{"ReduceSum: Unsupported reduce type"};
+  }
 }
 
 void ReduceLayer::run()
 {
   const auto axes = getReducerAxes(_axes);
-  switch (_reduceType)
-  {
-    case ReduceType::kSum:
-      if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
-      {
-        evalSumQuantized(_input, _output, axes, _keep_dims, *_reduce_kernel);
-        return;
-      }
-      evalGeneric<ReduceType::kSum>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    case ReduceType::kProd:
-      evalGeneric<ReduceType::kProd>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    case ReduceType::kMax:
-      evalGeneric<ReduceType::kMax>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    case ReduceType::kMin:
-      evalGeneric<ReduceType::kMin>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    case ReduceType::kAny:
-      evalGeneric<ReduceType::kAny>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    case ReduceType::kAll:
-      evalGeneric<ReduceType::kAll>(_input, _output, axes, _keep_dims, *_reduce_kernel);
-      break;
-    default:
-      throw std::runtime_error{"ReduceSum: Unsupported reduce type"};
-  }
+  _kernel(_input, _output, axes);
 }
 
 } // namespace ops
