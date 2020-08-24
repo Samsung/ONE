@@ -281,6 +281,26 @@ Operation *createSimpleBinaryOp(const OperationFactory::Param &init_param, Opera
   return new T{inputs, outputs};
 }
 
+OperationFactory::Generator getComparisonGenerator(operation::Comparison::ComparisonType type)
+{
+  return [type](const OperationFactory::Param &init_param, Operands &) -> Operation * {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> input0 Tensor Index
+    //  1 -> input1 Tensor Index
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+
+    operation::Comparison::Param param;
+    param.comparison_type = type;
+
+    return new operation::Comparison{inputs, outputs, param};
+  };
+}
+
 } // namespace
 
 OperationFactory &OperationFactory::get()
@@ -758,39 +778,17 @@ OperationFactory::OperationFactory()
   //  1 -> Axis Tensor Index
   _map[ANEURALNETWORKS_EXPAND_DIMS] = createSimpleBinaryOp<operation::ExpandDims>;
 
-  _map[ANEURALNETWORKS_GREATER] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::Greater;
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_GREATER_EQUAL] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::GreaterEqual;
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_GREATER] =
+      getComparisonGenerator(operation::Comparison::ComparisonType::Greater);
+  _map[ANEURALNETWORKS_GREATER_EQUAL] =
+      getComparisonGenerator(operation::Comparison::ComparisonType::GreaterEqual);
+  _map[ANEURALNETWORKS_LESS] = getComparisonGenerator(operation::Comparison::ComparisonType::Less);
+  _map[ANEURALNETWORKS_LESS_EQUAL] =
+      getComparisonGenerator(operation::Comparison::ComparisonType::LessEqual);
+  _map[ANEURALNETWORKS_NOT_EQUAL] =
+      getComparisonGenerator(operation::Comparison::ComparisonType::NotEqual);
+  _map[ANEURALNETWORKS_EQUAL] =
+      getComparisonGenerator(operation::Comparison::ComparisonType::Equal);
 
   // ANEURALNETWORKS_GREATER_EQUAL_EX is deprecated
   // TODO Remove ANEURALNETWORKS_GREATER_EQUAL_EX
@@ -811,40 +809,6 @@ OperationFactory::OperationFactory()
 
     // Output operand type must be boolean
     replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_LESS] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::Less;
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_LESS_EQUAL] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::LessEqual;
 
     return new operation::Comparison{inputs, outputs, param};
   };
@@ -884,23 +848,6 @@ OperationFactory::OperationFactory()
   // ANEURALNETWORKS_REDUCE_MAX_EX is deprecated
   // TODO Remove ANEURALNETWORKS_REDUCE_MAX_EX
   _map[ANEURALNETWORKS_REDUCE_MAX_EX] = _map[ANEURALNETWORKS_REDUCE_MAX];
-
-  _map[ANEURALNETWORKS_NOT_EQUAL] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input1 Tensor Index
-    //  1 -> input2 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::NotEqual;
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
 
   // ANEURALNETWORKS_NOT_EQUAL_EX is deprecated
   // TODO Remove ANEURALNETWORKS_NOT_EQUAL_EX
@@ -1352,23 +1299,6 @@ OperationFactory::OperationFactory()
     param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
 
     return new operation::LSTM{inputs, outputs, param};
-  };
-
-  _map[ANEURALNETWORKS_EQUAL] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::Equal;
-
-    return new operation::Comparison{inputs, outputs, param};
   };
 
   // ANEURALNETWORKS_EQUAL_EX is deprecated
