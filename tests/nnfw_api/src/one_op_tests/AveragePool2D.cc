@@ -27,4 +27,5 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
 
   _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   _test_data->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
+  TestableBackends({"acl_cl", "acl_neon", "cpu"});
 }

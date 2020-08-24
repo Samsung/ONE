@@ -29,4 +29,5 @@ TEST_F(GenModelTest, OneOp_L2Normalization)
   _test_data->addTestCase({{{0, 3, 4, 0, 5, 12, 0, 8, 15, 0, 7, 24}},
                            {{0, 0.6, 0.8, 0, 0.38461539149284363, 0.92307698726654053, 0,
                              0.47058823704719543, 0.88235294818878174, 0, 0.28, 0.96}}});
+  TestableBackends({"acl_cl", "acl_neon", "cpu"});
 }
