@@ -61,11 +61,12 @@ public:
   }
 
   void prepare(const Shape &filter_shape, const float *filter_data, PaddingType padding_type,
-               bool &is_replaced_weights)
+               bool &is_replaced_weights, uint32_t dilationWidthFactor,
+               uint32_t dilationHeightFactor)
   {
     if (!_prepared)
     {
-      if (usableMultiThreaded(padding_type))
+      if (usableMultiThreaded(padding_type, dilationWidthFactor, dilationHeightFactor))
       {
         transposeFilter(filter_shape, filter_data, is_replaced_weights);
       }
@@ -87,7 +88,8 @@ public:
                   const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
                   const float *bias_data, const Shape &output_shape, float *output_data)
   {
-    if (usableMultiThreaded(params.padding_type))
+    if (usableMultiThreaded(params.padding_type, params.dilation_width_factor,
+                            params.dilation_height_factor))
     {
       bool transposed_in_execution = false;
       if (!_prepared)
@@ -125,9 +127,11 @@ public:
   }
 
 private:
-  bool usableMultiThreaded(PaddingType padding_type)
+  bool usableMultiThreaded(PaddingType padding_type, uint32_t dilation_width_factor,
+                           int32_t dilation_height_factor)
   {
-    return padding_type != PaddingType::kNone && std::thread::hardware_concurrency() > 1;
+    return padding_type != PaddingType::kNone && std::thread::hardware_concurrency() > 1 &&
+           dilation_width_factor == 1 && dilation_height_factor == 1;
   }
 
   void transposeFilter(const Shape &filter_shape, const float *filter_data,

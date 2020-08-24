@@ -150,7 +150,8 @@ void ConvolutionLayer::run()
     param_padding.param.bottom = _paddingBottom;
 
     const auto padding =
-        ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height);
+        ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,
+                             _dilationWidthFactor, _dilationHeightFactor);
 
     _paddingLeft = padding.left;
     _paddingRight = padding.right;
@@ -181,7 +182,8 @@ void ConvolutionLayer::prepare()
   {
     bool is_transposed = false;
     kernel.prepare(getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-                   getPaddingType(_paddingType), is_transposed);
+                   getPaddingType(_paddingType), is_transposed, _dilationWidthFactor,
+                   _dilationHeightFactor);
 
     // Decrease reference of _kernel(weights) only when _kernel is constant
     if (is_transposed)
