@@ -19,7 +19,7 @@
 #include "ParentInfo.h"
 
 #include <cassert>
-#include <ir/LoweredGraph.h>
+#include <compiler/LoweredGraph.h>
 #include <util/logging.h>
 #include "AclSubTensorAnalyzer.h"
 

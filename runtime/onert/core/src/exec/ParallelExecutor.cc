@@ -60,7 +60,7 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
 }
 
 ParallelExecutor::ParallelExecutor(
-    std::unique_ptr<ir::LoweredGraph> lowered_graph,
+    std::unique_ptr<compiler::LoweredGraph> lowered_graph,
     const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
     const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
     const compiler::TensorBuilders &tensor_builders, compiler::CodeMap &&code_map)

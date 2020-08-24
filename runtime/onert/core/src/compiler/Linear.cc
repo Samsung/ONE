@@ -29,7 +29,7 @@ namespace onert
 namespace compiler
 {
 
-std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lowered_graph)
+std::vector<ir::OpSequenceIndex> Linear::linearize(const compiler::LoweredGraph &lowered_graph)
 {
   std::vector<ir::OpSequenceIndex> order;
   lowered_graph.iterateTopolOpSeqs(
@@ -39,7 +39,7 @@ std::vector<ir::OpSequenceIndex> Linear::linearize(const ir::LoweredGraph &lower
   return order;
 }
 
-void Linear::dump(const ir::LoweredGraph &lowered_graph,
+void Linear::dump(const compiler::LoweredGraph &lowered_graph,
                   const std::vector<ir::OpSequenceIndex> &order)
 {
   {
@@ -62,7 +62,7 @@ void Linear::dump(const ir::LoweredGraph &lowered_graph,
   }
 }
 
-void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
+void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
                          const std::vector<ir::OpSequenceIndex> &order)
 {
   const auto &graph = lowered_graph.graph();

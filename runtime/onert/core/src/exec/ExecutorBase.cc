@@ -26,7 +26,7 @@ namespace onert
 namespace exec
 {
 
-ExecutorBase::ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
+ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
                            const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                            const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                            const compiler::TensorBuilders &tensor_builders)

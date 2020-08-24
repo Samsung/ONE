@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 
 #include <assert.h>
 #include <sstream>
@@ -25,7 +25,7 @@
 #include "compiler/pass/PermutationInsertionPass.h"
 #include "compiler/pass/PermutationEliminationPass.h"
 #include "ir/GraphIterator.h"
-#include "verifier/Verifier.h"
+#include "ir/verifier/Verifier.h"
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 #include "compiler/BackendResolver.h"
@@ -34,16 +34,15 @@
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 
-LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &options)
-    : _graph{graph}
+LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
 {
   bool linear_executor = (options.executor == "Linear");
 
   // Build backend contexts
-  auto &backend_manager = compiler::BackendManager::get();
+  auto &backend_manager = BackendManager::get();
 
   // Always create Controlflow backend context
   auto cf_backend = backend_manager.getControlflow();
@@ -73,31 +72,31 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
   // TODO Move "schedule" phase out of here
   // Schedule
-  std::unique_ptr<compiler::BackendResolver> backend_resolver;
+  std::unique_ptr<BackendResolver> backend_resolver;
   if (options.he_scheduler)
   {
-    auto scheduler = compiler::HEScheduler(_backend_contexts, options);
+    auto scheduler = HEScheduler(_backend_contexts, options);
     backend_resolver = scheduler.schedule(_graph);
     _indexed_ranks = scheduler.getIndexedRanks();
   }
   else
   {
-    auto scheduler = compiler::ManualScheduler(_backend_contexts, options);
+    auto scheduler = ManualScheduler(_backend_contexts, options);
     backend_resolver = scheduler.schedule(_graph);
   }
 
   {
     // operand::LowerInfo holder
-    OperandIndexMap<std::unique_ptr<operand::LowerInfo>> operands_lower_info;
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> operands_lower_info;
 
-    _graph.operands().iterate([&](const OperandIndex &index, const Operand &) {
-      operands_lower_info[index] = std::make_unique<operand::LowerInfo>();
+    _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
+      operands_lower_info[index] = std::make_unique<ir::operand::LowerInfo>();
     });
 
     // Make op_seqs while checking whether a node can be merged into a op_seq.
     makeOpSequences(operands_lower_info, options, *backend_resolver);
 
-    _op_seqs.iterate([&](const OpSequenceIndex &, OpSequence &op_seq) {
+    _op_seqs.iterate([&](const ir::OpSequenceIndex &, ir::OpSequence &op_seq) {
       assert(op_seq.operations().size() > 0);
       std::reverse(std::begin(op_seq.operations()), std::end(op_seq.operations()));
     });
@@ -105,10 +104,10 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     VERBOSE(OpSequences) << "dump without permutation" << std::endl;
     dumpOpSequences(_op_seqs, _graph.operations());
 
-    compiler::pass::ConstantInsertionPass ci_pass(*this);
+    pass::ConstantInsertionPass ci_pass(*this);
     ci_pass.run();
 
-    compiler::pass::ConstantLoweringPass cl_pass(*this);
+    pass::ConstantLoweringPass cl_pass(*this);
     cl_pass.run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
@@ -119,13 +118,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
   // Run Permutation Passes
   {
-    compiler::pass::PermutationOperationPass po_pass(*this);
+    pass::PermutationOperationPass po_pass(*this);
     po_pass.run();
 
-    compiler::pass::PermutationInsertionPass pi_pass(*this);
+    pass::PermutationInsertionPass pi_pass(*this);
     pi_pass.run();
 
-    compiler::pass::PermutationEliminationPass pe_pass(*this);
+    pass::PermutationEliminationPass pe_pass(*this);
     pe_pass.run();
 
     VERBOSE(OpSequences) << "dump with permutation" << std::endl;
@@ -134,12 +133,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
   // Graph verifications
   {
-    assert(verifier::DAGChecker().verify(_graph));
-    assert(verifier::EdgeConsistencyChecker().verify(_graph));
+    assert(ir::verifier::DAGChecker().verify(_graph));
+    assert(ir::verifier::EdgeConsistencyChecker().verify(_graph));
   }
 }
 
-const operation::LowerInfo *LoweredGraph::getLowerInfo(const OpSequenceIndex &op_seq_index) const
+const ir::operation::LowerInfo *
+LoweredGraph::getLowerInfo(const ir::OpSequenceIndex &op_seq_index) const
 {
   auto itr = _lower_info_map.op_seq.find(op_seq_index);
   if (itr == _lower_info_map.op_seq.end())
@@ -147,13 +147,13 @@ const operation::LowerInfo *LoweredGraph::getLowerInfo(const OpSequenceIndex &op
   return itr->second.get();
 }
 
-void LoweredGraph::setLowerInfo(const OpSequenceIndex &op_seq_index,
-                                std::unique_ptr<operation::LowerInfo> &&lower_info)
+void LoweredGraph::setLowerInfo(const ir::OpSequenceIndex &op_seq_index,
+                                std::unique_ptr<ir::operation::LowerInfo> &&lower_info)
 {
   _lower_info_map.op_seq.insert(std::make_pair(op_seq_index, std::move(lower_info)));
 }
 
-void LoweredGraph::removeLowerInfo(const OpSequenceIndex &op_seq_index)
+void LoweredGraph::removeLowerInfo(const ir::OpSequenceIndex &op_seq_index)
 {
   auto &op_seq_lower_info = _lower_info_map.op_seq;
   assert(op_seq_lower_info.find(op_seq_index) != op_seq_lower_info.end());
@@ -167,7 +167,7 @@ void LoweredGraph::removeLowerInfo(const OpSequenceIndex &op_seq_index)
   }
 }
 
-const operand::LowerInfo *LoweredGraph::getLowerInfo(const OperandIndex &index) const
+const ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index) const
 {
   auto itr = _lower_info_map.operand.find(index);
   if (itr == _lower_info_map.operand.end())
@@ -175,7 +175,7 @@ const operand::LowerInfo *LoweredGraph::getLowerInfo(const OperandIndex &index) 
   return itr->second.get();
 }
 
-operand::LowerInfo *LoweredGraph::getLowerInfo(const OperandIndex &index)
+ir::operand::LowerInfo *LoweredGraph::getLowerInfo(const ir::OperandIndex &index)
 {
   auto itr = _lower_info_map.operand.find(index);
   if (itr == _lower_info_map.operand.end())
@@ -183,25 +183,26 @@ operand::LowerInfo *LoweredGraph::getLowerInfo(const OperandIndex &index)
   return itr->second.get();
 }
 
-void LoweredGraph::setLowerInfo(const OperandIndex &index,
-                                std::unique_ptr<operand::LowerInfo> &&lower_info)
+void LoweredGraph::setLowerInfo(const ir::OperandIndex &index,
+                                std::unique_ptr<ir::operand::LowerInfo> &&lower_info)
 {
   _lower_info_map.operand.insert(std::make_pair(index, std::move(lower_info)));
 }
 
-void LoweredGraph::removeLowerInfo(const OperandIndex &index)
+void LoweredGraph::removeLowerInfo(const ir::OperandIndex &index)
 {
   _lower_info_map.operand.erase(index);
 }
 
 void LoweredGraph::iterateTopolOpSeqs(
-    const std::function<void(const OpSequenceIndex &, const OpSequence &)> &fn) const
+    const std::function<void(const ir::OpSequenceIndex &, const ir::OpSequence &)> &fn) const
 {
-  // Topological Sorting for OpSequences
-  std::vector<OpSequenceIndex> topol_sorted;
-  PostDfsIterator<true>{}.iterateOpSeqs(
-      *this,
-      [&](const OpSequenceIndex &index, const OpSequence &) { topol_sorted.emplace_back(index); });
+  // Topological Sorting for ir::OpSequences
+  std::vector<ir::OpSequenceIndex> topol_sorted;
+  ir::PostDfsIterator<true>{}.iterateOpSeqs(
+      *this, [&](const ir::OpSequenceIndex &index, const ir::OpSequence &) {
+        topol_sorted.emplace_back(index);
+      });
   std::reverse(topol_sorted.begin(), topol_sorted.end());
   for (const auto op_seq_idx : topol_sorted)
   {
@@ -211,12 +212,14 @@ void LoweredGraph::iterateTopolOpSeqs(
 }
 
 void LoweredGraph::iterateTopolOpSeqs(
-    const std::function<void(const OpSequenceIndex &, OpSequence &)> &fn)
+    const std::function<void(const ir::OpSequenceIndex &, ir::OpSequence &)> &fn)
 {
-  // Topological Sorting for OpSequences
-  std::vector<OpSequenceIndex> topol_sorted;
-  PostDfsIterator<false>{}.iterateOpSeqs(
-      *this, [&](const OpSequenceIndex &index, OpSequence &) { topol_sorted.emplace_back(index); });
+  // Topological Sorting for ir::OpSequences
+  std::vector<ir::OpSequenceIndex> topol_sorted;
+  ir::PostDfsIterator<false>{}.iterateOpSeqs(
+      *this, [&](const ir::OpSequenceIndex &index, ir::OpSequence &) {
+        topol_sorted.emplace_back(index);
+      });
   std::reverse(topol_sorted.begin(), topol_sorted.end());
   for (const auto op_seq_idx : topol_sorted)
   {
@@ -225,12 +228,12 @@ void LoweredGraph::iterateTopolOpSeqs(
   }
 }
 
-OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &node_index,
-                                                          const Operation &node)
+ir::OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const ir::OperationIndex &node_index,
+                                                              const ir::Operation &node)
 {
   // Create a fresh op_seq with one operation, and append it to op_seqs
   // Create a fresh op_seq
-  auto op_seq = std::make_unique<OpSequence>(_graph.layout());
+  auto op_seq = std::make_unique<ir::OpSequence>(_graph.layout());
 
   // Add an operation
   op_seq->appendOperation(node_index);
@@ -243,21 +246,21 @@ OpSequenceIndex LoweredGraph::appendFreshSingleOpSequence(const OperationIndex &
 }
 
 void LoweredGraph::makeOpSequences(
-    OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info,
-    const compiler::CompilerOptions &options, const compiler::BackendResolver &backend_resolver)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
+    const CompilerOptions &options, const BackendResolver &backend_resolver)
 {
   // if SUBG_MAX_NODE == 0, no limit on nodes of a op_seq
   const int op_seq_max_node = options.op_seq_max_node;
   assert(op_seq_max_node >= 0);
 
   bool is_profiling = options.he_profiling_mode;
-  OpSequence *op_seq = nullptr;
-  OpSequenceIndex op_seq_index;
+  ir::OpSequence *op_seq = nullptr;
+  ir::OpSequenceIndex op_seq_index;
 
   // NOTE: The below method appends nodes while making one op_seq if needed. If something better
   // ways, happy to update this code.
-  PostDfsConstIterator{}.iterate(
-      _graph, [&](const OperationIndex &node_index, const Operation &node) {
+  ir::PostDfsConstIterator{}.iterate(
+      _graph, [&](const ir::OperationIndex &node_index, const ir::Operation &node) {
         // LowerInfo for in/output operands
         auto backend = backend_resolver.getBackend(node_index);
 
@@ -271,12 +274,12 @@ void LoweredGraph::makeOpSequences(
         for (auto operand : node.getInputs() | ir::Remove::UNDEFINED)
         {
           auto &&lower_info = operands_lower_info.at(operand);
-          lower_info->addUsePermuteFactor(operand::PermuteFactor{backend, backend_layout});
+          lower_info->addUsePermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
         }
         for (auto operand : node.getOutputs())
         {
           auto &&lower_info = operands_lower_info.at(operand);
-          lower_info->addDefPermuteFactor(operand::PermuteFactor{backend, backend_layout});
+          lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{backend, backend_layout});
         }
 
         bool new_op_seq = (op_seq == nullptr ||
@@ -290,9 +293,9 @@ void LoweredGraph::makeOpSequences(
         {
           auto new_op_seq_index = appendFreshSingleOpSequence(node_index, node);
 
-          // OpSequence LowerInfo
+          // ir::OpSequence LowerInfo
           setLowerInfo(new_op_seq_index,
-                       std::make_unique<operation::LowerInfo>(backend, backend_layout));
+                       std::make_unique<ir::operation::LowerInfo>(backend, backend_layout));
 
           op_seq_index = new_op_seq_index;
           op_seq = &(_op_seqs.at(new_op_seq_index));
@@ -320,16 +323,17 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    OperandIndexMap<std::unique_ptr<operand::LowerInfo>> &operands_lower_info, bool is_primary)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
+    bool is_primary)
 {
-  const auto controlflow_backend = compiler::BackendManager::get().getControlflow();
+  const auto controlflow_backend = BackendManager::get().getControlflow();
 
   // TODO Rather than handling primary graph specially,
   //      let the permute inserted and remove it later
   if (is_primary)
   {
     // TODO Rather than using NHWC Get frontend layout of this node from IR
-    auto factor = operand::PermuteFactor{controlflow_backend, Layout::NHWC};
+    auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};
     for (auto index : _graph.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &&lower_info = operands_lower_info.at(index);
@@ -357,9 +361,9 @@ void LoweredGraph::manipulateLowerInfo(
       else
       {
         // In case of that an operand is Graph's input and not input or output of any operation
-        lower_info->addDefPermuteFactor(operand::PermuteFactor{
+        lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
             controlflow_backend,
-            Layout::NHWC // TODO Get frontend layout of this node from IR
+            ir::Layout::NHWC // TODO Get frontend layout of this node from IR
         });
       }
     }
@@ -370,15 +374,15 @@ void LoweredGraph::manipulateLowerInfo(
     if (lower_info->def_factors().size() == 0)
     {
       // In case of that an operand is Graph's output and not input or output of any operation
-      lower_info->addDefPermuteFactor(operand::PermuteFactor{
+      lower_info->addDefPermuteFactor(ir::operand::PermuteFactor{
           controlflow_backend,
-          Layout::NHWC // TODO Get frontend layout of this node from IR
+          ir::Layout::NHWC // TODO Get frontend layout of this node from IR
       });
     }
   }
 
   // Set LowerInfo for each operand from the operand::LowerInfo holder
-  _graph.operands().iterate([&](const OperandIndex &index, Operand &) {
+  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &) {
     setLowerInfo(index, std::move(operands_lower_info[index]));
   });
 }
@@ -390,11 +394,11 @@ void LoweredGraph::dumpLowerInfo()
 
   std::map<uint32_t, std::string> dumps;
 
-  _graph.operands().iterate([&](const OperandIndex &index, Operand &object) {
+  _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &object) {
     std::stringstream sstream;
     if (!getLowerInfo(index)->def_factors().empty() || !getLowerInfo(index)->use_factors().empty())
     {
-      auto factors_to_string = [](const operand::PermuteFactorSet &factors) {
+      auto factors_to_string = [](const ir::operand::PermuteFactorSet &factors) {
         std::string str;
         for (auto factor : factors)
         {
@@ -405,7 +409,7 @@ void LoweredGraph::dumpLowerInfo()
         return "{ " + str + "}";
       };
 
-      auto operation_index_to_string = [](const OperationIndexSet &operations) {
+      auto operation_index_to_string = [](const ir::OperationIndexSet &operations) {
         std::string str;
         for (auto op : operations)
         {
@@ -429,8 +433,8 @@ void LoweredGraph::dumpLowerInfo()
         sstream << (shape.dim(i)) << " ";
       }
       sstream << "}" << std::endl;
-      sstream << "  - Def Operations  : " << def_ops << std::endl;
-      sstream << "  - Use Operations  : " << use_ops << std::endl;
+      sstream << "  - Def ir::Operations  : " << def_ops << std::endl;
+      sstream << "  - Use ir::Operations  : " << use_ops << std::endl;
       sstream << "  - Lower Info" << std::endl;
       sstream << "    - Def Backends    : " << def_layouts << std::endl;
       sstream << "    - Use Backends    : " << use_layouts << std::endl;
@@ -447,8 +451,9 @@ void LoweredGraph::dumpLowerInfo()
   }
 }
 
-bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const OperationIndex &node_index,
-                             Layout layout, const compiler::BackendResolver &backend_resolver)
+bool LoweredGraph::mergeable(const ir::OpSequenceIndex &op_seq_index,
+                             const ir::OperationIndex &node_index, ir::Layout layout,
+                             const BackendResolver &backend_resolver)
 {
   // Are they mergeable?
   // 1. the same backend id and layout?
@@ -472,10 +477,10 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
 
   // Branched?
   {
-    std::unordered_set<OperationIndex> branched_set;
+    std::unordered_set<ir::OperationIndex> branched_set;
 
     // Check for branching up
-    for (const auto &input : op_seq.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &input : op_seq.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       const auto &input_obj = _graph.operands().at(input);
       auto def = input_obj.getDef();
@@ -491,7 +496,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     branched_set.clear();
 
     // Check for branching down
-    for (const auto &output : node.getOutputs() | Remove::DUPLICATED)
+    for (const auto &output : node.getOutputs() | ir::Remove::DUPLICATED)
     {
       // TODO Fix this workaround for the case of model outputs that are used by another operation
       //      This is needed since the branching is decided by operation, but for model outputs,
@@ -518,7 +523,7 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
     const auto &node_outputs = node.getOutputs();
 
     // op_seq's operations are in order so that we just check the first and the last
-    std::vector<OperationIndex> op_seq_ops{op_seq.operations()[0]};
+    std::vector<ir::OperationIndex> op_seq_ops{op_seq.operations()[0]};
     if (op_seq.operations().size() > 1)
       op_seq_ops.emplace_back(op_seq.operations()[op_seq.operations().size() - 1]);
 
@@ -558,5 +563,5 @@ bool LoweredGraph::mergeable(const OpSequenceIndex &op_seq_index, const Operatio
   return false;
 }
 
-} // namespace ir
+} // namespace compiler
 } // namespace onert

@@ -25,7 +25,7 @@
 #include "Sink.h"
 #include "ShapeConverter.h"
 #include "exec/IExecutor.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 #include "ir/LowerInfoMap.h"
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
@@ -51,7 +51,7 @@ public:
    * @param graph Graph object
    * @param tensor_builders Tensor builders that are currently used
    */
-  ExecutorBase(std::unique_ptr<ir::LoweredGraph> &&lowered_graph,
+  ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
                const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                const compiler::TensorBuilders &tensor_builders);
@@ -102,7 +102,7 @@ protected:
 protected:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
-  std::unique_ptr<ir::LoweredGraph> _lowered_graph;
+  std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   const ir::Graph &_graph;
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;

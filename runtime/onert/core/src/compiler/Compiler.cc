@@ -181,14 +181,14 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
 
   // Lower: Assign backend
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> lowered_subgs;
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
     _options.is_primary_subgraph = (index == ir::SubgraphIndex{0});
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
-    lowered_subgs[index] = std::make_unique<ir::LoweredGraph>(subg, _options);
+    lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
 
     // Check backend(s) for subgraph support FP16
     bool backends_support_fp16 = true;

@@ -25,7 +25,7 @@
 #include "ir/operation/Pool2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/StridedSlice.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"

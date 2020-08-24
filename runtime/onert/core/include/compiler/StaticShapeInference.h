@@ -19,7 +19,7 @@
 
 #include "ir/OperationVisitor.h"
 #include "ir/OpSequence.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 #include "ir/Index.h"
 
 #include <memory>
@@ -41,7 +41,8 @@ class StaticShapeInferer : public ir::OperationVisitor
 public:
   StaticShapeInferer(
       const ir::SubgraphIndex &subg_idx,
-      const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &lowered_subgs)
+      const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
+          &lowered_subgs)
       : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
         _operations(lowered_subgs.at(subg_idx)->graph().operations()),
         _return_has_dynamic_tensor(false)
@@ -123,7 +124,8 @@ private:
   void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
-  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<ir::LoweredGraph>> &_lowered_subgs;
+  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
+      &_lowered_subgs;
   // _operands and _operations can be changed by controlflow operation
   ir::Operands &_operands;     // operands of current subgraph
   ir::Operations &_operations; // operations of current subgraph
