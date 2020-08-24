@@ -180,11 +180,9 @@ void Linear::planTensors(const ir::LoweredGraph &lowered_graph,
           tensor_builder_map[ind]->notifyLastUse(ind);
 
           // plan for deallocation of dynamic tensor
-          if (tensor_builder_map[ind]->supportDynamicTensor())
-          {
-            assert(tensor_builder_map[ind]->dynamicTensorManager());
-            tensor_builder_map[ind]->dynamicTensorManager()->planDealloc(op_idx, ind);
-          }
+          auto dyn_tensor_manager = tensor_builder_map[ind]->dynamicTensorManager();
+          if (dyn_tensor_manager)
+            dyn_tensor_manager->planDealloc(op_idx, ind);
         }
       }
     }
