@@ -23,7 +23,7 @@
  * @brief A helper class to find NN Packages for testing
  *        To add a nnpackage for your test, please do the followings:
  *          0. Prerequisite: the actual file must be uploaded on the server
- *                           Add `config.sh` file to `tests/scripts/nnfw_api_gtest_models`
+ *                           Add `config.sh` file to `tests/scripts/models/nnfw_api_gtest`
  *          1. Append an enum value to @c NNPackages::TestPackages
  *          2. Append a string literal to @c TEST_PACKAGE_NAMES in the source file
  */
