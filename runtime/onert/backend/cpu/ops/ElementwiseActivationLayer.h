@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_TANHLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_TANHLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_ElementwiseActivationLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_ElementwiseActivationLAYER_H__
 
 #include <backend/IPortableTensor.h>
 
@@ -30,26 +30,33 @@ namespace cpu
 namespace ops
 {
 
-class TanhLayer : public ::onert::exec::IFunction
+enum class ElementwiseActivationType
+{
+  kLogistic,
+  kReLU,
+  kTanh
+};
+
+class ElementwiseActivationLayer : public ::onert::exec::IFunction
 {
 public:
-  TanhLayer();
+  ElementwiseActivationLayer();
 
 public:
-  void tanhFloat32();
-
-  void tanhQuant8();
-
-  void configure(const IPortableTensor *input, IPortableTensor *output);
+  void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta,
+                 const ElementwiseActivationType op_type);
 
   void run() override;
 
-  void PopulateLookupTable();
+  void PopulateLookupTable(const ElementwiseActivationType op_type);
+
+  void EvalUsingLookupTable(const IPortableTensor *input, IPortableTensor *output);
 
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
   uint8_t _table[256];
+  std::function<void(const IPortableTensor *input, IPortableTensor *output)> _kernel;
 };
 
 } // namespace ops
@@ -57,4 +64,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_TANHLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_ElementwiseActivationLAYER_H__

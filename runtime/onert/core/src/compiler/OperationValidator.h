@@ -59,6 +59,7 @@ public:
   void visit(const ir::operation::Round &node) override;
   void visit(const ir::operation::SpaceToBatchND &node) override;
   void visit(const ir::operation::SpaceToDepth &node) override;
+  void visit(const ir::operation::ElementwiseActivation &node) override;
   void visit(const ir::operation::ElementwiseBinary &node) override;
   void visit(const ir::operation::EmbeddingLookup &node) override;
   void visit(const ir::operation::Exp &node) override;

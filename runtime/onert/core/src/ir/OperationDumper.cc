@@ -163,6 +163,20 @@ void OperationDumper::visit(const Dequantize &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ElementwiseActivation &node)
+{
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ElementwiseActivation::Input::INPUT)
+               << ")";
+  if (node.param().op_type == ElementwiseActivation::Type::RELU)
+  {
+    VERBOSE(LIR) << " lower value(" << node.param().alpha << ") upper value(" << node.param().beta
+                 << ")";
+  }
+  VERBOSE(LIR) << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const ElementwiseBinary &node)
 {
   VERBOSE(LIR) << "* " + node.name() << std::endl;
@@ -307,14 +321,6 @@ void OperationDumper::visit(const LogicalNot &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Logistic &node)
-{
-  VERBOSE(LIR) << "* Logistic" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Logistic::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Neg &node)
 {
   VERBOSE(LIR) << "* Neg" << std::endl;
@@ -397,30 +403,6 @@ void OperationDumper::visit(const Reduce &node)
 {
   VERBOSE(LIR) << "* " + node.name() << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Reduce::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReLU &node)
-{
-  VERBOSE(LIR) << "* ReLU" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReLU::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReLU1 &node)
-{
-  VERBOSE(LIR) << "* ReLU1" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReLU1::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ReLU6 &node)
-{
-  VERBOSE(LIR) << "* ReLU6" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ReLU6::Input::INPUT) << ")"
                << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
@@ -602,14 +584,6 @@ void OperationDumper::visit(const StridedSlice &node)
 {
   VERBOSE(LIR) << "* StridedSlice" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(StridedSlice::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Tanh &node)
-{
-  VERBOSE(LIR) << "* TanH" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Tanh::Input::INPUT) << ")"
                << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }

@@ -18,6 +18,7 @@
 
 #include "Swizzle.h"
 #include "ir/DataType.h"
+#include "ir/operation/ElementwiseActivation.h"
 #include <memory>
 
 namespace
@@ -171,6 +172,47 @@ namespace acl_common
       //      If ACL support non-sigmoid logistic, should fix param values.
       return ::arm_compute::ActivationLayerInfo{
           ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC, 0.0f, 0.0f};
+    default:
+      throw std::runtime_error{"Not supported, yet"};
+      break;
+  }
+}
+
+::arm_compute::ActivationLayerInfo
+asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, float alpha,
+                      float beta)
+{
+  switch (op_type)
+  {
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      if (beta == 0.f)
+      {
+        if (alpha == ir::operation::ElementwiseActivation::infinity)
+        {
+          return ::arm_compute::ActivationLayerInfo{
+              ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
+        }
+        else
+        {
+          return ::arm_compute::ActivationLayerInfo{
+              ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, alpha};
+        }
+      }
+      else
+      {
+        return ::arm_compute::ActivationLayerInfo{
+            ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, alpha, beta};
+      }
+    case ir::operation::ElementwiseActivation::Type::TANH:
+      return ::arm_compute::ActivationLayerInfo{
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, alpha, beta};
+    case ir::operation::ElementwiseActivation::Type::LOGISTIC:
+      // NOTE The sigmoid function is a special case of the Logistic function when L=1, k=1, x0=0.
+      // TODO In ACL and nnapi sepc, currently, Logistic's L always is 1, k always is 1, x0 always
+      // 0(always sigmoid) regardless of values of the parameter.
+      //      If ACL support non-sigmoid logistic, should fix param values.
+      return ::arm_compute::ActivationLayerInfo{
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
     default:
       throw std::runtime_error{"Not supported, yet"};
       break;

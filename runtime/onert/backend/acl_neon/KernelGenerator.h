@@ -49,6 +49,7 @@ public:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::Dequantize &) override;
   void visit(const ir::operation::Concat &) override;
+  void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::EmbeddingLookup &) override;
   void visit(const ir::operation::Floor &) override;
@@ -59,7 +60,6 @@ public:
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::LogicalNot &) override;
-  void visit(const ir::operation::Logistic &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::Neg &) override;
   void visit(const ir::operation::Pack &) override;
@@ -68,15 +68,11 @@ public:
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::PReLU &) override;
   void visit(const ir::operation::Reduce &) override;
-  void visit(const ir::operation::ReLU &) override;
-  void visit(const ir::operation::ReLU1 &) override;
-  void visit(const ir::operation::ReLU6 &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::ResizeBilinear &) override;
   void visit(const ir::operation::RNN &) override;
   void visit(const ir::operation::RSQRT &) override;
   void visit(const ir::operation::Squeeze &) override;
-  void visit(const ir::operation::Tanh &) override;
   void visit(const ir::operation::Softmax &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::SpaceToDepth &) override;

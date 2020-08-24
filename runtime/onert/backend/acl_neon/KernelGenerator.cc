@@ -403,6 +403,44 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   _return_fn = std::move(acl_fn);
 }
 
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+
+  const ::arm_compute::ActivationLayerInfo act_info = acl_common::asActivationLayerInfo(
+      node.param().op_type, node.param().alpha, node.param().beta);
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  if (node.param().op_type == ir::operation::ElementwiseActivation::Type::LOGISTIC)
+  {
+    // NOTE NEActivationLayer can generate produce erroneous results. it were caused by
+    // 'vexpq_f32()'.
+    // The neon function returns a value outside of the limit of representation in float as 'NaN'
+    // instead of 'INF', and then the result of this op will be errors due to the 'NaN'.
+    auto l = std::make_unique<::arm_compute::NEActivationLayerEx>();
+
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
+
+    fn = std::move(l);
+  }
+  else
+  {
+    auto l = std::make_unique<::arm_compute::NEActivationLayer>();
+
+    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
+
+    fn = std::move(l);
+  }
+
+  auto acl_fn = asAclFunction(std::move(fn));
+
+  _return_fn = std::move(acl_fn);
+}
+
 void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -707,29 +745,6 @@ void KernelGenerator::visit(const ir::operation::LogicalNot &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Logistic &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Logistic::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
-
-  // NOTE NEActivationLayer can generate produce erroneous results. it were caused by 'vexpq_f32()'.
-  // The neon function returns a value outside of the limit of representation in float as 'NaN'
-  // instead of 'INF', and then the result of this op will be errors due to the 'NaN'.
-  auto fn = std::make_unique<::arm_compute::NEActivationLayerEx>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::LSTM &node)
 {
   _return_fn = acl_common::kernelGenLSTM<acl_common::AclFunction, ::arm_compute::ITensor,
@@ -977,66 +992,6 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::ReLU &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ReLU::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<arm_compute::NEActivationLayer>();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::RELU};
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU1 &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReLU1::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::LU_BOUNDED_RELU, 1.0f, -1.0f};
-
-  auto fn = std::make_unique<::arm_compute::NEActivationLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ReLU6 &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::ReLU6::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.0f};
-
-  auto fn = std::make_unique<::arm_compute::NEActivationLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::Reshape &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1152,26 +1107,6 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   auto fn = std::make_unique<arm_compute::NEReshapeLayer>();
   fn->configure(input_tensor->handle(), output_tensor->handle());
   auto acl_fn = asAclFunction(std::move(fn));
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Tanh &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Tanh::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<arm_compute::NEActivationLayer>();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::TANH, 1.0f, 1.0f};
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
   _return_fn = std::move(acl_fn);
 }
 

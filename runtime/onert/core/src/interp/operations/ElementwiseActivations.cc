@@ -20,10 +20,11 @@
 
 #include "interp/Registration.h"
 
-#include "ir/operation/ReLU.h"
-#include "ir/operation/ReLU1.h"
-#include "ir/operation/ReLU6.h"
-#include "ir/operation/Tanh.h"
+#include "ir/operation/ElementwiseActivation.h"
+
+#include <misc/polymorphic_downcast.h>
+#include <cker/operation/Logistic.h>
+#include <cker/operation/Tanh.h>
 
 namespace onert
 {
@@ -34,9 +35,8 @@ namespace
 
 enum class ActivationType
 {
+  Logistic,
   ReLU,
-  ReLU1,
-  ReLU6,
   Tanh
 };
 
@@ -65,30 +65,25 @@ void prepare(ExecEnv *env, const ir::Operation &node)
   // TODO Util function to compare TensorInfo
   if (input_tensor->data_type() != output_tensor->data_type())
   {
-    throw std::runtime_error{"Interp(Activations): Invalid output type"};
+    throw std::runtime_error{"Interp(ElementwiseActivation): Invalid output type"};
   }
 }
 
 template <ActivationType act_type>
-void evalFloat(const float *input_ptr, float *output_ptr, uint64_t num_elements)
+void evalFloat(const float *input_ptr, float *output_ptr, uint64_t num_elements, float alpha,
+               float beta)
 {
   std::function<float(const float &)> fn = [](const float &) { return std::nanf(""); };
   switch (act_type)
   {
     case ActivationType::ReLU:
-      fn = [](const float &in) { return std::max(0.f, in); };
-      break;
-    case ActivationType::ReLU1:
-      fn = [](const float &in) { return std::min(std::max(-1.f, in), 1.f); };
-      break;
-    case ActivationType::ReLU6:
-      fn = [](const float &in) { return std::min(std::max(0.f, in), 6.f); };
+      fn = [alpha, beta](const float &in) { return std::min(std::max(beta, in), alpha); };
       break;
     case ActivationType::Tanh:
       fn = [](const float &in) { return std::tanh(in); };
       break;
     default:
-      throw std::runtime_error{"Interp(Activations): NYI - Unsupported activation"};
+      throw std::runtime_error{"Interp(ElementwiseActivation): NYI - Unsupported activation"};
       break;
   }
 
@@ -114,38 +109,51 @@ template <ActivationType act_type> void invoke(const ExecEnv *env, const ir::Ope
     uint64_t elements = input_tensor->num_elements();
     const float *input_start = reinterpret_cast<const float *>(input_tensor->bufferRO());
     float *out = reinterpret_cast<float *>(output_tensor->buffer());
-
-    evalFloat<act_type>(input_start, out, elements);
+    if (act_type == ActivationType::Logistic)
+    {
+      const auto cker_input_shape = convertShape(input_tensor->tensorInfo().shape());
+      const auto cker_output_shape = convertShape(output_tensor->tensorInfo().shape());
+      nnfw::cker::Logistic(cker_input_shape, input_start, cker_output_shape, out);
+    }
+    else
+    {
+      const auto &act_node =
+          nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
+      evalFloat<act_type>(input_start, out, elements, act_node.param().alpha,
+                          act_node.param().beta);
+    }
   }
   else
   {
-    throw std::runtime_error{"Interp(ReLU6): NYI - Support float only"};
+    throw std::runtime_error{"Interp(" + node.name() + "): NYI - Support float only"};
+  }
+}
+
+void invokeElementwiseActivation(const ExecEnv *env, const ir::Operation &node)
+{
+  const auto &act_node =
+      nnfw::misc::polymorphic_downcast<const ir::operation::ElementwiseActivation &>(node);
+  switch (act_node.param().op_type)
+  {
+    case ir::operation::ElementwiseActivation::Type::LOGISTIC:
+      invoke<ActivationType::Logistic>(env, node);
+      break;
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      invoke<ActivationType::ReLU>(env, node);
+      break;
+    case ir::operation::ElementwiseActivation::Type::TANH:
+      invoke<ActivationType::Tanh>(env, node);
+      break;
+    default:
+      throw std::runtime_error("Interp(" + node.name() + "): NYI - Unsupported activation");
   }
 }
 
 } // namespace
 
-OpKernel *getReLU()
+OpKernel *getElementwiseActivation()
 {
-  static OpKernel kernel = {prepare, invoke<ActivationType::ReLU>};
-  return &kernel;
-}
-
-OpKernel *getReLU1()
-{
-  static OpKernel kernel = {prepare, invoke<ActivationType::ReLU1>};
-  return &kernel;
-}
-
-OpKernel *getReLU6()
-{
-  static OpKernel kernel = {prepare, invoke<ActivationType::ReLU6>};
-  return &kernel;
-}
-
-OpKernel *getTanh()
-{
-  static OpKernel kernel = {prepare, invoke<ActivationType::Tanh>};
+  static OpKernel kernel = {prepare, invokeElementwiseActivation};
   return &kernel;
 }
 

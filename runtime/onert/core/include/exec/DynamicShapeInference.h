@@ -61,6 +61,7 @@ public:
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
   void visit(const ir::operation::Cos &op) override;
+  void visit(const ir::operation::ElementwiseActivation &op) override;
   void visit(const ir::operation::ElementwiseBinary &op) override;
   void visit(const ir::operation::Exp &op) override;
   void visit(const ir::operation::ExpandDims &op) override;
@@ -70,7 +71,6 @@ public:
   void visit(const ir::operation::Gather &op) override;
   void visit(const ir::operation::Log &op) override;
   void visit(const ir::operation::LogicalNot &op) override;
-  void visit(const ir::operation::Logistic &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::Neg &op) override;
@@ -97,7 +97,6 @@ public:
   void visit(const ir::operation::Squeeze &op) override;
   void visit(const ir::operation::StridedSlice &op) override;
   void visit(const ir::operation::SquaredDifference &op) override;
-  void visit(const ir::operation::Tanh &op) override;
   void visit(const ir::operation::Tile &op) override;
   void visit(const ir::operation::Transpose &op) override;
   void visit(const ir::operation::Unpack &op) override;

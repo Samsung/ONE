@@ -27,6 +27,7 @@
 #include "ir/Operand.h"
 #include "ir/operation/Pool2D.h"
 #include "ir/operation/Reduce.h"
+#include "ir/operation/ElementwiseActivation.h"
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
 #include "ir/Coordinates.h"
@@ -60,6 +61,9 @@ namespace acl_common
                                              const ir::Stride &stride);
 
 ::arm_compute::ActivationLayerInfo asActivationLayerInfo(ir::Activation act_code);
+::arm_compute::ActivationLayerInfo
+asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, float alpha,
+                      float beta);
 
 arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank,
                                        ir::Layout frontend_layout, ir::Layout backend_layout);
