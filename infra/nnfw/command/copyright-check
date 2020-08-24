@@ -4,11 +4,16 @@ INVALID_EXIT=0
 
 check_copyright() {
   DIRECTORIES_NOT_TO_BE_TESTED=$1
-  CORRECT_COPYRIGHT="Copyright \(c\) [0-9]+ Samsung Electronics Co\., Ltd\. All Rights Reserved"
+  CORRECT_COPYRIGHT="Copyright \(c\) [0-9\-]+ Samsung Electronics Co\., Ltd\. All Rights Reserved"
 
   FILES_TO_CHECK=$(git ls-files -c --exclude-standard)
   FILES_TO_CHECK_COPYRIGHTS=()
   for f in ${FILES_TO_CHECK[@]}; do
+    # Manually ignore checking
+    if [[ ${f} == +(*/NeuralNetworks.h|*/NeuralNetworksExtensions.h) ]]; then
+      continue
+    fi
+
     # File extension to check
     if [[ ${f} == +(*.h|*.hpp|*.cpp|*.cc|*.c|*.cl) ]]; then
       FILES_TO_CHECK_COPYRIGHTS+=("${f}")
