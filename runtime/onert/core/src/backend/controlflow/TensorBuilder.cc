@@ -28,9 +28,9 @@ namespace controlflow
 {
 
 TensorBuilder::TensorBuilder()
-    : _tensor_reg{new TensorRegistry()},
-      _static_tensor_mgr{new cpu_common::StaticTensorManager(_tensor_reg->base_reg())},
-      _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)}
+    : _tensor_reg{new TensorRegistry()}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
+      _static_tensor_mgr{
+          new cpu_common::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
 {
   /* empty */
 }
