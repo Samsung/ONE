@@ -123,4 +123,75 @@ circle::MirrorPadMode get_circle_mirrorpad_mode(tflite::MirrorPadMode tfl_mode)
   }
 }
 
+circle::DimensionType get_circle_dimension_type(tflite::DimensionType tfl_dim_type)
+{
+  switch (tfl_dim_type)
+  {
+    case tflite::DimensionType_DENSE:
+      return circle::DimensionType_DENSE;
+    case tflite::DimensionType_SPARSE_CSR:
+      return circle::DimensionType_SPARSE_CSR;
+    default:
+      throw std::runtime_error("tflite2circle: wrong dimension type.");
+  }
+}
+
+flatbuffers::Offset<void>
+get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
+                               const tflite::DimensionMetadata *dm,
+                               const tflite::SparseIndexVector &tfl_sparse_index_vector_type)
+{
+  switch (tfl_sparse_index_vector_type)
+  {
+    case tflite::SparseIndexVector_Int32Vector:
+    {
+      auto values_vec_int32 =
+          std::vector<int32_t>{dm->array_segments_as_Int32Vector()->values()->begin(),
+                               dm->array_segments_as_Int32Vector()->values()->end()};
+      auto values_int32 = fb.CreateVector(values_vec_int32);
+      circle::Int32VectorBuilder int32_vector_builder{fb};
+      int32_vector_builder.add_values(values_int32);
+      return int32_vector_builder.Finish().Union();
+    }
+    case tflite::SparseIndexVector_Uint16Vector:
+    {
+      auto values_vec_uint16 =
+          std::vector<uint16_t>{dm->array_segments_as_Uint16Vector()->values()->begin(),
+                                dm->array_segments_as_Uint16Vector()->values()->end()};
+      auto values_uint16 = fb.CreateVector(values_vec_uint16);
+      circle::Uint16VectorBuilder uint16_vector_builder{fb};
+      uint16_vector_builder.add_values(values_uint16);
+      return uint16_vector_builder.Finish().Union();
+    }
+    case tflite::SparseIndexVector_Uint8Vector:
+    {
+      auto values_vec_uint8 =
+          std::vector<uint8_t>{dm->array_segments_as_Uint8Vector()->values()->begin(),
+                               dm->array_segments_as_Uint8Vector()->values()->end()};
+      auto values_uint8 = fb.CreateVector(values_vec_uint8);
+      circle::Uint8VectorBuilder uint8_vector_builder{fb};
+      uint8_vector_builder.add_values(values_uint8);
+      return uint8_vector_builder.Finish().Union();
+    }
+    default:
+      throw std::runtime_error("tflite2circle: wrong SparseIndexVector type.");
+  }
+}
+
+circle::SparseIndexVector
+get_circle_sparse_index_vector_type(const tflite::SparseIndexVector &tfl_sparse_index_vector_type)
+{
+  switch (tfl_sparse_index_vector_type)
+  {
+    case tflite::SparseIndexVector_Int32Vector:
+      return circle::SparseIndexVector_Int32Vector;
+    case tflite::SparseIndexVector_Uint16Vector:
+      return circle::SparseIndexVector_Uint16Vector;
+    case tflite::SparseIndexVector_Uint8Vector:
+      return circle::SparseIndexVector_Uint8Vector;
+    default:
+      throw std::runtime_error("tflite2circle: wrong SparseIndexVector type.");
+  }
+}
+
 } // namespace tflite2circle
