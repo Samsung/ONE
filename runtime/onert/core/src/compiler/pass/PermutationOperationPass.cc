@@ -23,10 +23,12 @@
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
+
+using namespace ir;
 
 void PermutationOperationPass::callback(const OperationIndex &, Operation &node)
 {
@@ -70,7 +72,7 @@ void PermutationOperationPass::applyExpandRanks(const Operation &node)
                                  "operand used in more than one node");
       // TODO remove const_cast later. For example, _ctx may need to be a non const variable or
       //      a node to extend shape may be inserted in front of this operation
-      const_cast<ir::Shape &>(operand.shape()).extendRank(expanded_rank);
+      const_cast<Shape &>(operand.shape()).extendRank(expanded_rank);
     }
   }
 }
@@ -134,7 +136,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
       const auto op_seq_li = _lowered_graph.getLowerInfo(op_seq_index);
       _lowered_graph.setLowerInfo(
           next_op_seq_index,
-          std::make_unique<operation::LowerInfo>(op_seq_li->backend(), op_seq_li->layout()));
+          std::make_unique<ir::operation::LowerInfo>(op_seq_li->backend(), op_seq_li->layout()));
     }
   }
 
@@ -164,8 +166,8 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     auto &new_op_seq = _lowered_graph.op_seqs().at(new_op_seq_index);
     new_op_seq.setInputs(node.getInputs());
     new_op_seq.setOutputs(node.getOutputs());
-    _lowered_graph.setLowerInfo(new_op_seq_index,
-                                std::make_unique<operation::LowerInfo>(backend, frontend_layout));
+    _lowered_graph.setLowerInfo(
+        new_op_seq_index, std::make_unique<ir::operation::LowerInfo>(backend, frontend_layout));
   }
 
   // Change PermuteFactors of operands of target node
@@ -175,7 +177,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
     const auto backend = op_seq_li->backend();
     const operand::PermuteFactor removed_factor{backend, backend_layout};
     const operand::PermuteFactor new_factor{backend, frontend_layout};
-    for (const auto &input : node.getInputs() | Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &input : node.getInputs() | Remove::DUPLICATED | Remove::UNDEFINED)
     {
       bool canRemove = true;
       for (const auto &use : _graph.operands().at(input).getUses())
@@ -227,28 +229,31 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::BinaryArithmetic &node)
+void PermutationOperationPass::visit(const ir::operation::BinaryArithmetic &node)
 {
   applyExpandRanks(node);
 }
 
-void PermutationOperationPass::visit(const operation::Concat &node) { applyExpandRanks(node); }
+void PermutationOperationPass::visit(const ir::operation::Concat &node) { applyExpandRanks(node); }
 
-void PermutationOperationPass::visit(const operation::Comparison &node) { applyExpandRanks(node); }
-
-void PermutationOperationPass::visit(const operation::ElementwiseBinary &node)
+void PermutationOperationPass::visit(const ir::operation::Comparison &node)
 {
   applyExpandRanks(node);
 }
 
-void PermutationOperationPass::visit(const operation::ElementwiseUnary &node)
+void PermutationOperationPass::visit(const ir::operation::ElementwiseBinary &node)
 {
   applyExpandRanks(node);
 }
 
-void PermutationOperationPass::visit(const operation::FullyConnected &node)
+void PermutationOperationPass::visit(const ir::operation::ElementwiseUnary &node)
 {
-  const auto &input_ind = node.getInputs().at(operation::FullyConnected::Input::INPUT);
+  applyExpandRanks(node);
+}
+
+void PermutationOperationPass::visit(const ir::operation::FullyConnected &node)
+{
+  const auto &input_ind = node.getInputs().at(ir::operation::FullyConnected::Input::INPUT);
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
@@ -258,9 +263,9 @@ void PermutationOperationPass::visit(const operation::FullyConnected &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::Gather &node)
+void PermutationOperationPass::visit(const ir::operation::Gather &node)
 {
-  const auto &input_ind = node.getInputs().at(operation::Gather::Input::INPUT);
+  const auto &input_ind = node.getInputs().at(ir::operation::Gather::Input::INPUT);
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
@@ -274,9 +279,9 @@ void PermutationOperationPass::visit(const operation::Gather &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::Pack &node)
+void PermutationOperationPass::visit(const ir::operation::Pack &node)
 {
-  const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
+  const auto &input_ind = node.getInputs().at(ir::operation::Reshape::Input::INPUT);
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
@@ -290,11 +295,11 @@ void PermutationOperationPass::visit(const operation::Pack &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::PReLU &node) { applyExpandRanks(node); }
+void PermutationOperationPass::visit(const ir::operation::PReLU &node) { applyExpandRanks(node); }
 
-void PermutationOperationPass::visit(const operation::Reshape &node)
+void PermutationOperationPass::visit(const ir::operation::Reshape &node)
 {
-  const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
+  const auto &input_ind = node.getInputs().at(ir::operation::Reshape::Input::INPUT);
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
@@ -308,14 +313,14 @@ void PermutationOperationPass::visit(const operation::Reshape &node)
   }
 }
 
-void PermutationOperationPass::visit(const operation::SquaredDifference &node)
+void PermutationOperationPass::visit(const ir::operation::SquaredDifference &node)
 {
   applyExpandRanks(node);
 }
 
-void PermutationOperationPass::visit(const operation::Unpack &node)
+void PermutationOperationPass::visit(const ir::operation::Unpack &node)
 {
-  const auto &input_ind = node.getInputs().at(operation::Reshape::Input::INPUT);
+  const auto &input_ind = node.getInputs().at(ir::operation::Reshape::Input::INPUT);
   const auto &input_obj = _graph.operands().at(input_ind);
   const auto &input_shape = input_obj.shape();
 
@@ -330,5 +335,5 @@ void PermutationOperationPass::visit(const operation::Unpack &node)
 }
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert

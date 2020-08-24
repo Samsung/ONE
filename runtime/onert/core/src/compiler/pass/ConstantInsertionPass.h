@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_CONSTANT_INSERTION_PASS_H__
-#define __ONERT_GRAPH_PASS_CONSTANT_INSERTION_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
+#define __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
 
 #include <ir/operand/PermuteFactor.h>
 #include <ir/Index.h>
@@ -25,7 +25,7 @@
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
@@ -39,13 +39,13 @@ public:
   std::string id() final { return "ConstantInsertionPass"; }
 
 public:
-  void callback(const OperationIndex &index, Operation &node) final;
+  void callback(const ir::OperationIndex &index, ir::Operation &node) final;
 
 private:
   struct ReplaceKey
   {
-    OperandIndex index;
-    operand::PermuteFactor factor;
+    ir::OperandIndex index;
+    ir::operand::PermuteFactor factor;
 
     bool operator==(const ReplaceKey &other) const
     {
@@ -61,15 +61,16 @@ private:
     std::size_t operator()(const ReplaceKey &key) const noexcept
     {
       using std::hash;
-      return hash<OperandIndex>()(key.index) ^ (hash<operand::PermuteFactor>()(key.factor) << 1);
+      return hash<ir::OperandIndex>()(key.index) ^
+             (hash<ir::operand::PermuteFactor>()(key.factor) << 1);
     }
   };
 
-  std::unordered_map<ReplaceKey, OperandIndex, KeyHasher> _replace_operands_map;
+  std::unordered_map<ReplaceKey, ir::OperandIndex, KeyHasher> _replace_operands_map;
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_CONSTANT_INSERTION_PASS_H__
+#endif // __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__

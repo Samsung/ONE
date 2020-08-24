@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_PASS_LOWERED_OPERAND_PASS_H__
-#define __ONERT_IR_PASS_LOWERED_OPERAND_PASS_H__
+#ifndef __ONERT_IR_PASS_LOWERED_OPERATION_PASS_H__
+#define __ONERT_IR_PASS_LOWERED_OPERATION_PASS_H__
 
-#include "OperandPass.h"
+#include "OperationPass.h"
 #include "ir/LoweredGraph.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-class LoweredOperandPass : public OperandPass
+class LoweredOperationPass : public OperationPass
 {
 public:
-  LoweredOperandPass(ir::LoweredGraph &lowered_graph)
-      : OperandPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
+  LoweredOperationPass(ir::LoweredGraph &lowered_graph)
+      : OperationPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
   {
     // DO NOTHING
   }
 
-  virtual ~LoweredOperandPass() = default;
+  virtual ~LoweredOperationPass() = default;
 
   std::string id() override = 0;
-  void callback(const OperandIndex &i, Operand &o) override = 0;
+  void callback(const ir::OperationIndex &i, ir::Operation &o) override = 0;
 
 protected:
   ir::LoweredGraph &_lowered_graph;
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_IR_PASS_LOWERED_OPERAND_PASS_H__
+#endif // __ONERT_IR_PASS_LOWERED_OPERATION_PASS_H__

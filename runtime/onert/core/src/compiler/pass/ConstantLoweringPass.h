@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,33 @@
  * limitations under the License.
  */
 
-#include "OperationPass.h"
+#ifndef __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__
+#define __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__
 
-#include "ir/Index.h"
-#include "ir/Operation.h"
-#include "ir/Graph.h"
+#include <ir/Index.h>
+#include "LoweredOperationPass.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-void OperationPass::run()
+class ConstantLoweringPass : public LoweredOperationPass
 {
-  _graph.operations().iterate(
-      [&](const OperationIndex &index, Operation &node) { callback(index, node); });
-}
+public:
+  using LoweredOperationPass::LoweredOperationPass;
+
+public:
+  std::string id() final { return "ConstantLoweringPass"; }
+
+public:
+  void callback(const ir::OperationIndex &index, ir::Operation &node) final;
+};
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
+
+#endif // __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__
