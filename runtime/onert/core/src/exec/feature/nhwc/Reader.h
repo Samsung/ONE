@@ -70,14 +70,6 @@ public:
   }
 
 public:
-  T at(uint32_t row, uint32_t col, uint32_t ch) const override
-  {
-    const auto offset = feature_index_to_byte_offset(0, row, col, ch);
-
-    const T *ptr = reinterpret_cast<const T *>(_ptr + offset);
-
-    return *ptr;
-  }
   T at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const override
   {
     const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
@@ -86,6 +78,7 @@ public:
 
     return *ptr;
   }
+  T at(uint32_t row, uint32_t col, uint32_t ch) const override { return at(0, row, col, ch); }
 
 private:
   size_t feature_index_to_byte_offset(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const

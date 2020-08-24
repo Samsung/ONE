@@ -68,40 +68,16 @@ public:
   }
 
 public:
-  T at(uint32_t ch, uint32_t row, uint32_t col) const override
+  T &at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col)
   {
-    const auto offset = feature_index_to_byte_offset(0, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
+    return getRef(batch, ch, row, col);
   }
   T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const override
   {
-    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
+    return getRef(batch, ch, row, col);
   }
-
-public:
-  T &at(uint32_t ch, uint32_t row, uint32_t col)
-  {
-    const auto offset = feature_index_to_byte_offset(0, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-  T &at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col)
-  {
-    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
+  T &at(uint32_t ch, uint32_t row, uint32_t col) { return getRef(0, ch, row, col); }
+  T at(uint32_t ch, uint32_t row, uint32_t col) const override { return getRef(0, ch, row, col); }
 
 private:
   size_t feature_index_to_byte_offset(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
@@ -118,6 +94,15 @@ private:
     res += col * _strides.W;
 
     return res;
+  }
+
+  T &getRef(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
+  {
+    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
+
+    T *ptr = reinterpret_cast<T *>(_ptr + offset);
+
+    return *ptr;
   }
 
 private:
