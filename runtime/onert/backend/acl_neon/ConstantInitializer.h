@@ -17,10 +17,7 @@
 #ifndef __ONERT_COMPILER_ACL_NEON_CONSTANT_INITIALIZER_H__
 #define __ONERT_COMPILER_ACL_NEON_CONSTANT_INITIALIZER_H__
 
-#include <backend/IConstantInitializer.h>
-#include <ir/Operands.h>
-#include "AclTensorRegistry.h"
-#include "TensorManager.h"
+#include "AclConstantInitializer.h"
 
 namespace onert
 {
@@ -29,29 +26,15 @@ namespace backend
 namespace acl_neon
 {
 
-class ConstantInitializer : public IConstantInitializer
+class ConstantInitializer : public acl_common::AclConstantInitializer
 {
 public:
   ConstantInitializer(const ir::Operands &operands,
                       const std::shared_ptr<ITensorRegistry> &tensor_reg);
 
 public:
-  void visit(const ir::operation::BatchToSpaceND &) override;
-  void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::LSTM &) override;
-  void visit(const ir::operation::RNN &) override;
-  void visit(const ir::operation::SpaceToBatchND &) override;
-  void visit(const ir::operation::TransposeConv &) override;
-
-private:
-  std::shared_ptr<ITensorRegistry> tensor_registry() const override { return _tensor_reg; }
-  void copyInputInitialize(const ir::Operation &node, uint32_t index);
-  void permuteInputInitialize(const ir::Operation &node, uint32_t index);
-
-private:
-  std::shared_ptr<ITensorRegistry> _tensor_reg;
+  using acl_common::AclConstantInitializer::visit;
+  void visit(const ir::operation::SpaceToBatchND &node) final;
 };
 
 } // namespace acl_neon

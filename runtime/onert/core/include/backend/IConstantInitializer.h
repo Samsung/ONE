@@ -189,9 +189,6 @@ public:
   void setLayout(ir::Layout layout) { _current_op_seq_layout = layout; }
 
 protected:
-  using OperationVisitor::visit;
-
-protected:
   virtual std::shared_ptr<ITensorRegistry> tensor_registry() const = 0;
 
 public:
