@@ -18,6 +18,7 @@
 #include <nnfw_internal.h>
 
 #include <fstream>
+#include <string>
 
 #include "CircleGen.h"
 #include "fixtures.h"
@@ -81,16 +82,24 @@ private:
 class GenModelTest : public ::testing::Test
 {
 protected:
-  void SetUp() override { NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session)); }
+  void SetUp() override
+  { // DO NOTHING
+  }
 
   void TearDown() override
   {
-    auto &cbuf = _test_data->cbuf();
-    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
-    NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
-
-    // In/Out buffer settings
+    for (std::string backend : _backends)
     {
+      // NOTE If we can prepare many times for one model loading on same session,
+      //      we can move nnfw_create_session to SetUp and
+      //      nnfw_load_circle_from_buffer to outside forloop
+      NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
+      auto &cbuf = _test_data->cbuf();
+      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
+      NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+      NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
+
+      // In/Out buffer settings
       uint32_t num_inputs;
       NNFW_ENSURE_SUCCESS(nnfw_input_size(_so.session, &num_inputs));
       _so.inputs.resize(num_inputs);
@@ -119,39 +128,62 @@ protected:
                                   sizeof(float) * output_elements),
                   NNFW_STATUS_NO_ERROR);
       }
-    }
 
-    // Set input values, run, and check output values
-    for (auto &test_case : _test_data->test_cases())
+      // Set input values, run, and check output values
+      for (auto &test_case : _test_data->test_cases())
+      {
+        auto &ref_inputs = test_case.inputs;
+        auto &ref_outputs = test_case.outputs;
+        ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
+        for (uint32_t i = 0; i < _so.inputs.size(); i++)
+        {
+          // Fill the values
+          ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
+          memcpy(_so.inputs[i].data(), ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
+        }
+
+        NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
+
+        ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
+        for (uint32_t i = 0; i < _so.outputs.size(); i++)
+        {
+          // Check output tensor values
+          auto &ref_output = ref_outputs[i];
+          auto &output = _so.outputs[i];
+          ASSERT_EQ(output.size(), ref_output.size());
+          for (uint32_t e = 0; e < ref_output.size(); e++)
+            EXPECT_NEAR(ref_output[e], output[e], 0.001); // TODO better way for handling FP error?
+        }
+      }
+
+      NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
+    }
+  }
+
+  /**
+   * @brief     Set testable backend
+   *
+   * @param[in] backends  Testable backends vector
+   */
+  void TestableBackends(const std::vector<std::string> &backends)
+  {
+    for (auto backend : backends)
     {
-      auto &ref_inputs = test_case.inputs;
-      auto &ref_outputs = test_case.outputs;
-      ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
-      for (uint32_t i = 0; i < _so.inputs.size(); i++)
+#ifdef TEST_ACL_BACKEND
+      if (backend.compare("acl_cl") == 0 || backend.compare("acl_neon") == 0)
       {
-        // Fill the values
-        ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
-        memcpy(_so.inputs[i].data(), ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
+        _backends.push_back(backend);
       }
-
-      NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
-
-      ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
-      for (uint32_t i = 0; i < _so.outputs.size(); i++)
+#endif
+      if (backend.compare("cpu") == 0)
       {
-        // Check output tensor values
-        auto &ref_output = ref_outputs[i];
-        auto &output = _so.outputs[i];
-        ASSERT_EQ(output.size(), ref_output.size());
-        for (uint32_t e = 0; e < ref_output.size(); e++)
-          EXPECT_NEAR(ref_output[e], output[e], 0.001); // TODO better way for handling FP error?
+        _backends.push_back(backend);
       }
     }
-
-    NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
   }
 
 protected:
   SessionObject _so;
   std::unique_ptr<GenModelTestData> _test_data;
+  std::vector<std::string> _backends{{"cpu"}};
 };

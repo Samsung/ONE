@@ -32,6 +32,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToConst)
   _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   _test_data->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
   _test_data->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
+  TestableBackends({"acl_cl", "acl_neon", "cpu"});
 }
 
 TEST_F(GenModelTest, OneOp_Add_VarToVar)
@@ -45,4 +46,5 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
 
   _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   _test_data->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
+  TestableBackends({"acl_cl", "acl_neon", "cpu"});
 }

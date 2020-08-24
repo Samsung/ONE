@@ -35,4 +35,5 @@ TEST_F(GenModelTest, OneOp_PadV2)
 
   _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   _test_data->addTestCase({{{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}});
+  TestableBackends({"cpu"});
 }

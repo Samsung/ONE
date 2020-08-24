@@ -29,4 +29,5 @@ TEST_F(GenModelTest, OneOp_Pad)
   cgen.setInputsAndOutputs({in}, {out});
   _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   _test_data->addTestCase({{{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}});
+  TestableBackends({"acl_cl", "acl_neon", "cpu"});
 }
