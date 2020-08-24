@@ -23,9 +23,8 @@ TEST_F(GenModelTest, OneOp_Cos)
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorCos({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
-  _cbuf = cgen.finish();
 
+  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
   const float pi = 3.141592653589793;
-  _ref_inputs = {{0, pi / 2, pi, 7}};
-  _ref_outputs = {{1, 0, -1, 0.75390225434}};
+  _test_data->addTestCase({{{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}});
 }

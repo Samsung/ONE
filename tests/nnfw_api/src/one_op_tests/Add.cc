@@ -16,6 +16,8 @@
 
 #include "GenModelTest.h"
 
+#include <memory>
+
 TEST_F(GenModelTest, OneOp_Add_VarToConst)
 {
   CircleGen cgen;
@@ -26,10 +28,10 @@ TEST_F(GenModelTest, OneOp_Add_VarToConst)
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs}, {out});
-  _cbuf = cgen.finish();
 
-  _ref_inputs = {{1, 3, 2, 4}};
-  _ref_outputs = {{6, 7, 9, 8}};
+  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
+  _test_data->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
+  _test_data->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
 }
 
 TEST_F(GenModelTest, OneOp_Add_VarToVar)
@@ -40,8 +42,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
-  _cbuf = cgen.finish();
 
-  _ref_inputs = {{1, 3, 2, 4}, {5, 4, 7, 4}};
-  _ref_outputs = {{6, 7, 9, 8}};
+  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
+  _test_data->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
 }

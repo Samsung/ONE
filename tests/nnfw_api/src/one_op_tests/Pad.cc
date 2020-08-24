@@ -27,8 +27,6 @@ TEST_F(GenModelTest, OneOp_Pad)
 
   cgen.addOperatorPad({{in, padding}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
-  _cbuf = cgen.finish();
-
-  _ref_inputs = {{1, 2, 3, 4}};
-  _ref_outputs = {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}};
+  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
+  _test_data->addTestCase({{{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}});
 }

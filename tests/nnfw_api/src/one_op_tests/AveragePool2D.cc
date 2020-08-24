@@ -24,8 +24,7 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
   cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
-  _cbuf = cgen.finish();
 
-  _ref_inputs = {{1, 3, 2, 4}};
-  _ref_outputs = {{2.5}};
+  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
+  _test_data->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
 }

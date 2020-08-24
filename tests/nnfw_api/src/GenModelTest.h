@@ -22,12 +22,59 @@
 #include "CircleGen.h"
 #include "fixtures.h"
 
+struct TestCaseData
+{
+  /**
+   * @brief A vector of input buffers
+   *
+   * @todo support other types as well as float
+   */
+  std::vector<std::vector<float>> inputs;
+  /**
+   * @brief A vector of output buffers
+   *
+   * @todo support other types as well as float
+   */
+  std::vector<std::vector<float>> outputs;
+};
+
+class GenModelTestData
+{
+public:
+  GenModelTestData(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)} {}
+
+  /**
+   * @brief  Return circle buffer
+   *
+   * @return CircleBuffer& the circle buffer
+   */
+  const CircleBuffer &cbuf() const { return _cbuf; }
+
+  /**
+   * @brief Return test cases
+   *
+   * @return std::vector<TestCaseData>& the test cases
+   */
+  const std::vector<TestCaseData> &test_cases() const { return _test_cases; }
+
+  /**
+   * @brief Add a test case
+   *
+   * @param tc the test case to be added
+   */
+  void addTestCase(const TestCaseData &tc) { _test_cases.emplace_back(tc); }
+
+private:
+  CircleBuffer _cbuf;
+  std::vector<TestCaseData> _test_cases;
+};
+
 /**
  * @brief Generated Model test fixture for a one time inference
  *
  * This fixture is for one-time inference test with variety of generated models.
- * It is the user's responsiblity to create @c _cbuf , @c _ref_inputs and @c _ref_outputs in the
- * test body, which are generated circle buffer, model input data and output data respectively.
+ * It is the test maker's responsiblity to create @c _test_data which contains
+ * test body, which are generated circle buffer, model input data and output data.
  * The rest(calling API functions for execution) is done by @c Setup and @c TearDown .
  *
  */
@@ -38,7 +85,8 @@ protected:
 
   void TearDown() override
   {
-    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, _cbuf.buffer(), _cbuf.size()));
+    auto &cbuf = _test_data->cbuf();
+    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
     NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
 
     // In/Out buffer settings
@@ -74,22 +122,25 @@ protected:
     }
 
     // Set input values, run, and check output values
+    for (auto &test_case : _test_data->test_cases())
     {
-      ASSERT_EQ(_so.inputs.size(), _ref_inputs.size());
+      auto &ref_inputs = test_case.inputs;
+      auto &ref_outputs = test_case.outputs;
+      ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
       for (uint32_t i = 0; i < _so.inputs.size(); i++)
       {
         // Fill the values
-        ASSERT_EQ(_so.inputs[i].size(), _ref_inputs[i].size());
-        memcpy(_so.inputs[i].data(), _ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
+        ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
+        memcpy(_so.inputs[i].data(), ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
       }
 
       NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
 
-      ASSERT_EQ(_so.outputs.size(), _ref_outputs.size());
+      ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
       for (uint32_t i = 0; i < _so.outputs.size(); i++)
       {
         // Check output tensor values
-        auto &ref_output = _ref_outputs[i];
+        auto &ref_output = ref_outputs[i];
         auto &output = _so.outputs[i];
         ASSERT_EQ(output.size(), ref_output.size());
         for (uint32_t e = 0; e < ref_output.size(); e++)
@@ -102,7 +153,5 @@ protected:
 
 protected:
   SessionObject _so;
-  CircleBuffer _cbuf;
-  std::vector<std::vector<float>> _ref_inputs;
-  std::vector<std::vector<float>> _ref_outputs;
+  std::unique_ptr<GenModelTestData> _test_data;
 };
