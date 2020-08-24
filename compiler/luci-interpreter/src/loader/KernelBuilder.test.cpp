@@ -41,6 +41,7 @@
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
+#include <kernels/Sqrt.h>
 #include <kernels/Squeeze.h>
 #include <kernels/StridedSlice.h>
 #include <kernels/Tanh.h>
@@ -604,6 +605,20 @@ TEST_F(KernelBuilderTest, Split)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(0), output1);
   checkTensor(kernel->output(1), output2);
+}
+
+TEST_F(KernelBuilderTest, Sqrt)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleSqrt>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Sqrt>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Squeeze)

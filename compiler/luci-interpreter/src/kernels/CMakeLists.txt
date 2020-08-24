@@ -54,6 +54,8 @@ set(SOURCES
     Split.cpp
     StridedSlice.h
     StridedSlice.cpp
+    Sqrt.h
+    Sqrt.cpp
     Squeeze.h
     Squeeze.cpp
     Tanh.h
@@ -107,6 +109,7 @@ set(TEST_SOURCES
     SpaceToDepth.test.cpp
     Split.test.cpp
     StridedSlice.test.cpp
+    Sqrt.test.cpp
     Squeeze.test.cpp
     Tanh.test.cpp
     Transpose.test.cpp
