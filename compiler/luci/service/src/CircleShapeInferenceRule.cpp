@@ -47,6 +47,156 @@ std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape
   return os;
 }
 
+loco::TensorShape own_shape(const luci::CircleNode *node)
+{
+  loco::TensorShape shape;
+  shape.rank(node->rank());
+  for (uint32_t r = 0; r < node->rank(); ++r)
+    shape.dim(r) = loco::Dimension(node->dim(r).value());
+  return shape;
+}
+
+loco::NodeShape use_own(const luci::CircleNode *node)
+{
+  loco::TensorShape shape = own_shape(node);
+  return loco::NodeShape{shape};
+}
+
+/**
+ * @brief Create a higher-rank TensorShape following NumPy broadcasting semantics
+ *
+ * HOW TO USE:
+ *
+ *   auto expanded_tensor_shape = expand(tensor_shape).to(N);
+ */
+class TensorShapeExpander
+{
+public:
+  TensorShapeExpander(const loco::TensorShape &shape) : _shape{shape}
+  {
+    // DO NOTHING
+  }
+
+public:
+  loco::TensorShape to(uint32_t output_rank)
+  {
+    auto const &input_shape = _shape;
+    uint32_t const input_rank = input_shape.rank();
+
+    assert(input_rank <= output_rank && "Cannot shrink rank");
+    uint32_t const axis_shift = output_rank - input_rank;
+
+    loco::TensorShape output_shape;
+
+    output_shape.rank(output_rank);
+    for (uint32_t axis = 0; axis < output_rank; ++axis)
+    {
+      output_shape.dim(axis) = (axis < axis_shift) ? 1 : input_shape.dim(axis - axis_shift);
+    }
+
+    return output_shape;
+  }
+
+private:
+  const loco::TensorShape _shape;
+};
+
+/**
+ * @breif  Expand shape x and y to same rank by align right and filling with 1
+ */
+void expand_rank(loco::TensorShape &x, loco::TensorShape &y)
+{
+  auto x_rank = x.rank();
+  auto y_rank = y.rank();
+
+  if (x_rank == y_rank)
+    return;
+
+  TensorShapeExpander x_exp(x);
+  TensorShapeExpander y_exp(y);
+
+  auto xy_rank = std::max(x_rank, y_rank);
+
+  x = x_rank > y_rank ? x : x_exp.to(xy_rank);
+  y = y_rank > x_rank ? y : y_exp.to(xy_rank);
+}
+
+/**
+ * @breif  Returns shape of expanded dimension of input x and y having same rank
+ */
+loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::TensorShape &y)
+{
+  assert(x.rank() == y.rank());
+
+  auto rank = x.rank();
+
+  loco::TensorShape output_shape;
+
+  output_shape.rank(rank);
+  for (uint32_t axis = 0; axis < rank; ++axis)
+  {
+    assert(x.dim(axis).known() && y.dim(axis).known());
+
+    auto x_dim = x.dim(axis).value();
+    auto y_dim = y.dim(axis).value();
+
+    // each dimension of x and y should be same or one must be 1 if different
+    if (!((x_dim == y_dim) || (x_dim == 1 || y_dim == 1)))
+      INTERNAL_EXN("Cannot produce expand_dimension of two shapes");
+
+    output_shape.dim(axis) = std::max(x_dim, y_dim);
+  }
+
+  return output_shape;
+}
+
+loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::TensorShape &y)
+{
+  auto x_match = x;
+  auto y_match = y;
+
+  expand_rank(x_match, y_match);
+
+  auto output_shape = expand_dimension(x_match, y_match);
+
+  return output_shape;
+}
+
+/**
+ * @brief vector_from_constant will return int64_t vector from CircleConst node
+ */
+template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::CircleConst *const_node)
+{
+  std::vector<int64_t> result;
+
+  for (uint32_t idx = 0; idx < const_node->size<T>(); ++idx)
+    result.push_back(const_node->at<T>(idx));
+
+  return result;
+}
+
+template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
+{
+  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
+  auto y_shape = loco::shape_get(node->y()).template as<loco::TensorShape>();
+
+  auto output_shape = broadcast_shape(x_shape, y_shape);
+
+  return loco::NodeShape{output_shape};
+}
+
+template <class CIRCLENODE> loco::NodeShape use_x(const CIRCLENODE *node)
+{
+  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
+  return loco::NodeShape{x_shape};
+}
+
+template <class CIRCLENODE> loco::NodeShape use_logits(const CIRCLENODE *node)
+{
+  auto shape = loco::shape_get(node->logits()).template as<loco::TensorShape>();
+  return loco::NodeShape{shape};
+}
+
 loco::NodeShape infer_add_n(const luci::CircleAddN *node)
 {
   auto shape = loco::shape_get(node->inputs(0)).as<loco::TensorShape>();
@@ -277,106 +427,6 @@ template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
   return os;
 }
 
-/**
- * @brief Create a higher-rank TensorShape following NumPy broadcasting semantics
- *
- * HOW TO USE:
- *
- *   auto expanded_tensor_shape = expand(tensor_shape).to(N);
- */
-class TensorShapeExpander
-{
-public:
-  TensorShapeExpander(const loco::TensorShape &shape) : _shape{shape}
-  {
-    // DO NOTHING
-  }
-
-public:
-  loco::TensorShape to(uint32_t output_rank)
-  {
-    auto const &input_shape = _shape;
-    uint32_t const input_rank = input_shape.rank();
-
-    assert(input_rank <= output_rank && "Cannot shrink rank");
-    uint32_t const axis_shift = output_rank - input_rank;
-
-    loco::TensorShape output_shape;
-
-    output_shape.rank(output_rank);
-    for (uint32_t axis = 0; axis < output_rank; ++axis)
-    {
-      output_shape.dim(axis) = (axis < axis_shift) ? 1 : input_shape.dim(axis - axis_shift);
-    }
-
-    return output_shape;
-  }
-
-private:
-  const loco::TensorShape _shape;
-};
-
-/**
- * @breif  Expand shape x and y to same rank by align right and filling with 1
- */
-void expand_rank(loco::TensorShape &x, loco::TensorShape &y)
-{
-  auto x_rank = x.rank();
-  auto y_rank = y.rank();
-
-  if (x_rank == y_rank)
-    return;
-
-  TensorShapeExpander x_exp(x);
-  TensorShapeExpander y_exp(y);
-
-  auto xy_rank = std::max(x_rank, y_rank);
-
-  x = x_rank > y_rank ? x : x_exp.to(xy_rank);
-  y = y_rank > x_rank ? y : y_exp.to(xy_rank);
-}
-
-/**
- * @breif  Returns shape of expanded dimension of input x and y having same rank
- */
-loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::TensorShape &y)
-{
-  assert(x.rank() == y.rank());
-
-  auto rank = x.rank();
-
-  loco::TensorShape output_shape;
-
-  output_shape.rank(rank);
-  for (uint32_t axis = 0; axis < rank; ++axis)
-  {
-    assert(x.dim(axis).known() && y.dim(axis).known());
-
-    auto x_dim = x.dim(axis).value();
-    auto y_dim = y.dim(axis).value();
-
-    // each dimension of x and y should be same or one must be 1 if different
-    if (!((x_dim == y_dim) || (x_dim == 1 || y_dim == 1)))
-      INTERNAL_EXN("Cannot produce expand_dimension of two shapes");
-
-    output_shape.dim(axis) = std::max(x_dim, y_dim);
-  }
-
-  return output_shape;
-}
-
-loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::TensorShape &y)
-{
-  auto x_match = x;
-  auto y_match = y;
-
-  expand_rank(x_match, y_match);
-
-  auto output_shape = expand_dimension(x_match, y_match);
-
-  return output_shape;
-}
-
 // BatchMatMulV2 supports broadcasting in the batch dimensions(BatchMatMul doesn't)
 // TODO Distinguish BatchMatMul and BatchMatMulV2
 loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
@@ -484,15 +534,6 @@ loco::NodeShape infer_conv2d(const luci::CircleConv2D *node)
   return loco::NodeShape{ofm_shape};
 }
 
-loco::TensorShape own_shape(const luci::CircleNode *node)
-{
-  loco::TensorShape shape;
-  shape.rank(node->rank());
-  for (uint32_t r = 0; r < node->rank(); ++r)
-    shape.dim(r) = loco::Dimension(node->dim(r).value());
-  return shape;
-}
-
 loco::TensorShape infer_reducer(const loco::Node *input, const loco::Node *indices, bool keep_dims)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -546,47 +587,6 @@ loco::TensorShape infer_reducer(const loco::Node *input, const loco::Node *indic
   }
 
   return output_shape;
-}
-
-/**
- * @brief vector_from_constant will return int64_t vector from CircleConst node
- */
-template <loco::DataType T> std::vector<int64_t> vector_from_constant(luci::CircleConst *const_node)
-{
-  std::vector<int64_t> result;
-
-  for (uint32_t idx = 0; idx < const_node->size<T>(); ++idx)
-    result.push_back(const_node->at<T>(idx));
-
-  return result;
-}
-
-template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
-{
-  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
-  auto y_shape = loco::shape_get(node->y()).template as<loco::TensorShape>();
-
-  auto output_shape = broadcast_shape(x_shape, y_shape);
-
-  return loco::NodeShape{output_shape};
-}
-
-template <class CIRCLENODE> loco::NodeShape use_x(const CIRCLENODE *node)
-{
-  auto x_shape = loco::shape_get(node->x()).template as<loco::TensorShape>();
-  return loco::NodeShape{x_shape};
-}
-
-template <class CIRCLENODE> loco::NodeShape use_logits(const CIRCLENODE *node)
-{
-  auto shape = loco::shape_get(node->logits()).template as<loco::TensorShape>();
-  return loco::NodeShape{shape};
-}
-
-loco::NodeShape use_own(const luci::CircleNode *node)
-{
-  loco::TensorShape shape = own_shape(node);
-  return loco::NodeShape{shape};
 }
 
 /**
