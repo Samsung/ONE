@@ -18,33 +18,14 @@
 
 #include <luci/IR/Nodes/CircleReduceMin.h>
 
+#include "ValidateHelpers.h"
+
 namespace luci
 {
 
 bool CircleReduceMinGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-
-  if (inputs.size() != 2)
-    return false;
-
-  if (outputs.size() != 1)
-    return false;
-
-  const auto &tensors = args.reader.tensors();
-  const auto &tensor_axis = tensors.at(inputs.at(1));
-
-  switch (tensor_axis->type)
-  {
-    case circle::TensorType_INT32:
-    case circle::TensorType_INT64:
-      break;
-    default:
-      return false;
-  }
-
-  return true;
+  return validate_reduce_minmax(args);
 }
 
 CircleNode *CircleReduceMinGraphBuilder::build_node(const circle::OperatorT &op,

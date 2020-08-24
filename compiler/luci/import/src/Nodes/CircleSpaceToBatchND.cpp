@@ -18,49 +18,16 @@
 
 #include <luci/IR/Nodes/CircleSpaceToBatchND.h>
 
-#include <loco.h>
+#include "ValidateHelpers.h"
 
-#include <cassert>
+#include <loco.h>
 
 namespace luci
 {
 
 bool CircleSpaceToBatchNDGraphBuilder::validate(const ValidateArgs &args) const
 {
-  const auto &inputs = args.op.inputs;
-  if (inputs.size() != 3)
-    return false;
-
-  // input 1 and 2 should have INT32/INT64 type
-  const auto &tensors = args.reader.tensors();
-  const auto &tensor_1 = tensors.at(inputs.at(1));
-  switch (tensor_1->type)
-  {
-    case circle::TensorType_INT32:
-    case circle::TensorType_INT64:
-      break;
-    default:
-      return false;
-  }
-  const auto &tensor_2 = tensors.at(inputs.at(2));
-  switch (tensor_2->type)
-  {
-    case circle::TensorType_INT32:
-    case circle::TensorType_INT64:
-      break;
-    default:
-      return false;
-  }
-
-  // Only support input shape dimension 3 and 4 only
-  const auto &tensor_0 = tensors.at(inputs.at(0));
-  const auto t_0_s = tensor_0->shape.size();
-  if (t_0_s != 3 && t_0_s != 4)
-    return false;
-
-  // TODO check input shape
-
-  return true;
+  return validate_batch_space_nd(args);
 }
 
 CircleNode *CircleSpaceToBatchNDGraphBuilder::build_node(const circle::OperatorT &,
