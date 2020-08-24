@@ -36,6 +36,7 @@
 #include "ProgressReporter.h"
 #include "CircleOptimizerUtils.h"
 
+#include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>
 
 #include <memory>
@@ -168,6 +169,14 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     if (!in_array(to_lower_case(granularity), fakeq_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(fakeq_supported_granularity));
+
+    // Clear existing quantparams before doing fake quantization
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      if (circle_node->quantparam() != nullptr)
+        circle_node->quantparam(std::unique_ptr<luci::CircleQuantParam>{});
+    }
 
     luci::QuantizeDequantizeWeightsPass fake_quantizer(
         str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
