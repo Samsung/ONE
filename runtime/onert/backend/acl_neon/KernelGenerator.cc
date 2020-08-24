@@ -92,14 +92,11 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   const auto fixed_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
 
-  auto fn = std::make_unique<::arm_compute::NEArgMinMaxLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NEArgMinMaxLayer>(
+      ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(),
+      arm_compute::ReductionOperation::ARG_IDX_MAX);
 
-  fn->configure(ifm_tensor->handle(), fixed_axis, ofm_tensor->handle(),
-                arm_compute::ReductionOperation::ARG_IDX_MAX);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
@@ -115,13 +112,10 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 
   assert(_ctx.at(block_size_index).data());
 
-  auto fn = std::make_unique<::arm_compute::NEBatchToSpaceLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NEBatchToSpaceLayer>(
+      ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
 
-  fn->configure(ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
@@ -141,42 +135,30 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   {
     case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
     {
-      auto l = std::make_unique<::arm_compute::NEArithmeticAddition>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
-                   arm_compute::ConvertPolicy::SATURATE);
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEArithmeticAddition>(
+          lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
+          arm_compute::ConvertPolicy::SATURATE);
       break;
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
     {
-      auto l = std::make_unique<::arm_compute::NEArithmeticSubtraction>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
-                   arm_compute::ConvertPolicy::SATURATE);
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEArithmeticSubtraction>(
+          lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
+          arm_compute::ConvertPolicy::SATURATE);
       break;
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
     {
-      auto l = std::make_unique<::arm_compute::NEPixelWiseMultiplication>();
-
       // RoundingPolicy for scale:1.0 is only allowed RoundingPolicy::TO_ZERO
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
-                   arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_ZERO);
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEPixelWiseMultiplication>(
+          lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
+          arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_ZERO);
       break;
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
     {
-      auto l = std::make_unique<::arm_compute::NEElementwiseDivision>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEElementwiseDivision>(
+          lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
       break;
     }
     default:
@@ -216,12 +198,10 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
 
-  auto fn = std::make_unique<::arm_compute::NEConvolutionLayer>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
-  fn->configure(ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(),
-                ofm_tensor->handle(), conv_info, ::arm_compute::WeightsInfo(),
-                ::arm_compute::Size2D(1U, 1U), act_info);
+  auto fn = acl_common::generateLayer<arm_compute::NEConvolutionLayer>(
+      _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), ifm_tensor->handle(),
+      ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(), conv_info,
+      ::arm_compute::WeightsInfo(), ::arm_compute::Size2D(1U, 1U), act_info);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -237,13 +217,10 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
   auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEDepthToSpaceLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NEDepthToSpaceLayer>(
+      input_tensor->handle(), output_tensor->handle(), block_size);
 
-  fn->configure(input_tensor->handle(), output_tensor->handle(), block_size);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
@@ -277,10 +254,9 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto act_info = acl_common::asActivationLayerInfo(activation);
 
   {
-    auto fn = std::make_unique<::arm_compute::NEDepthwiseConvolutionLayer>();
-
-    fn->configure(ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(),
-                  ofm_tensor->handle(), conv_info, multiplier, act_info);
+    auto fn = acl_common::generateLayer<arm_compute::NEDepthwiseConvolutionLayer>(
+        ifm_tensor->handle(), ker_tensor->handle(), bias_tensor->handle(), ofm_tensor->handle(),
+        conv_info, multiplier, act_info);
 
     _return_fn = asAclFunction(std::move(fn));
   }
@@ -314,25 +290,21 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   std::unique_ptr<::arm_compute::IFunction> fn;
   if (input_indexes.size() < 2)
   {
-    auto l = std::make_unique<::arm_compute::NECopy>();
-    l->configure(input_tensors.at(0), output_tensor->handle());
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NECopy>(input_tensors.at(0),
+                                                        output_tensor->handle());
   }
   else
   {
-    auto l = std::make_unique<::arm_compute::NEConcatenateLayer>();
     const auto rank = _ctx.at(ofm_index).shape().rank();
     const auto frontend_layout = _current_op_seq_layout;
     const auto backend_layout = output_tensor->layout();
     const auto fixed_axis =
         acl_common::ToARMComputeAxis(rank, axis, frontend_layout, backend_layout).value();
-    l->configure(input_tensors, output_tensor->handle(), fixed_axis);
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEConcatenateLayer>(
+        input_tensors, output_tensor->handle(), fixed_axis);
   }
 
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
@@ -353,24 +325,16 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
     // 'vexpq_f32()'.
     // The neon function returns a value outside of the limit of representation in float as 'NaN'
     // instead of 'INF', and then the result of this op will be errors due to the 'NaN'.
-    auto l = std::make_unique<::arm_compute::NEActivationLayerEx>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEActivationLayerEx>(
+        ifm_tensor->handle(), ofm_tensor->handle(), act_info);
   }
   else
   {
-    auto l = std::make_unique<::arm_compute::NEActivationLayer>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), act_info);
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEActivationLayer>(ifm_tensor->handle(),
+                                                                   ofm_tensor->handle(), act_info);
   }
 
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
@@ -388,38 +352,26 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   {
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
     {
-      auto l = std::make_unique<::arm_compute::NELogicalAnd>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NELogicalAnd>(
+          lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
     {
-      auto l = std::make_unique<::arm_compute::NELogicalOr>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NELogicalOr>(
+          lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX:
     {
-      auto l = std::make_unique<::arm_compute::NEElementwiseMax>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEElementwiseMax>(
+          lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
     {
-      auto l = std::make_unique<::arm_compute::NEElementwiseMin>();
-
-      l->configure(lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
-
-      fn = std::move(l);
+      fn = acl_common::generateLayer<arm_compute::NEElementwiseMin>(
+          lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
     default:
@@ -430,10 +382,7 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
       break;
     }
   }
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
@@ -462,7 +411,6 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
       {
         fn = acl_common::generateLayer<arm_compute::NECopy>(input_tensor->handle(),
                                                             output_tensor->handle());
-        ;
       }
       else
       {
@@ -523,10 +471,7 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
       break;
     }
   }
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
@@ -539,13 +484,10 @@ void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
   auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index).get();
   auto values_tensor = _tensor_reg->getAclTensor(values_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEEmbeddingLookup>();
+  auto fn = acl_common::generateLayer<arm_compute::NEEmbeddingLookup>(
+      values_tensor->handle(), output_tensor->handle(), lookups_tensor->handle());
 
-  fn->configure(values_tensor->handle(), output_tensor->handle(), lookups_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::FullyConnected &node)
@@ -577,14 +519,11 @@ void KernelGenerator::visit(const ir::operation::HashtableLookup &node)
   auto keys_tensor = _tensor_reg->getAclTensor(keys_index).get();
   auto values_tensor = _tensor_reg->getAclTensor(values_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEHashtableLookup>();
+  auto fn = acl_common::generateLayer<arm_compute::NEHashtableLookup>(
+      lookups_tensor->handle(), keys_tensor->handle(), values_tensor->handle(),
+      output_tensor->handle(), hits_tensor->handle());
 
-  fn->configure(lookups_tensor->handle(), keys_tensor->handle(), values_tensor->handle(),
-                output_tensor->handle(), hits_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Gather &node)
@@ -618,8 +557,6 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   assert(backend_layout == indices_tensor->layout());
   assert(ifm_rank < 4 || _current_op_seq_layout == backend_layout);
 
-  auto fn = std::make_unique<::arm_compute::NEGatherEx>();
-
   // input is n-D, indices k-D, output is (n + k - 1)-D
   size_t n = ifm_rank;
   assert(n == ifm_tensor->num_dimensions());
@@ -642,15 +579,14 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
         acl_common::asTensorShape(indices.shape(), _current_op_seq_layout, backend_layout, false));
   }
 
-  fn->configure(ifm_tensor->handle(), indices_tensor->handle(), ofm_tensor->handle(), axis);
+  auto fn = acl_common::generateLayer<arm_compute::NEGatherEx>(
+      ifm_tensor->handle(), indices_tensor->handle(), ofm_tensor->handle(), axis);
 
   // acl_neon doesn't not revert disabling applied dim_correction because acl_neon's kernels would
   // use arm_compute::TensorInfo::offset_element_in_bytes()
   // It would create an error when the kernel accesses high dimension that its value is 1
 
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
@@ -667,10 +603,9 @@ void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
   auto epsilon = node.param().epsilon;
   auto activation = node.param().activation;
 
-  auto fn = std::make_unique<::arm_compute::NEInstanceNormalizationLayerEx>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), gamma_tensor->handle(),
-                beta_tensor->handle(), epsilon);
+  auto fn = acl_common::generateLayer<arm_compute::NEInstanceNormalizationLayerEx>(
+      ifm_tensor->handle(), ofm_tensor->handle(), gamma_tensor->handle(), beta_tensor->handle(),
+      epsilon);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
       asAclFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_tensor->handle()));
@@ -701,13 +636,10 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(::arm_compute::NormType::CROSS_MAP,
                                                                radius, alpha, beta, bias, false);
 
-  auto fn = std::make_unique<::arm_compute::NENormalizationLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NENormalizationLayer>(
+      ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &node)
@@ -727,13 +659,10 @@ void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &nod
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(
       ::arm_compute::NormType::CROSS_MAP, radius * 2 + 1, alpha, beta, bias, false);
 
-  auto fn = std::make_unique<::arm_compute::NENormalizationLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NENormalizationLayer>(
+      ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), norm_info);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::LSTM &node)
@@ -765,8 +694,6 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
     axis += output_rank;
   axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
 
-  auto fn = std::make_unique<::arm_compute::NEStackLayer>();
-
   // Disable applied dim_correction
   for (const auto &input_index : input_indexes)
   {
@@ -781,7 +708,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
     }
   }
 
-  fn->configure(inputs, axis, output);
+  auto fn = acl_common::generateLayer<arm_compute::NEStackLayer>(inputs, axis, output);
 
   // acl_neon doesn't not revert disabling applied dim_correction because acl_neon's kernels would
   // use arm_compute::TensorInfo::offset_element_in_bytes()
@@ -824,8 +751,8 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   const auto pixel_value =
       ::arm_compute::PixelValue(0, input->info()->data_type(), input->info()->quantization_info());
 
-  auto fn = std::make_unique<::arm_compute::NEPadLayer>();
-  fn->configure(input, output, padding_list, pixel_value);
+  auto fn =
+      acl_common::generateLayer<arm_compute::NEPadLayer>(input, output, padding_list, pixel_value);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -861,35 +788,22 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
     // WHCN -> CWHN
     pv = arm_compute::PermutationVector{2, 0, 1};
 
-    auto l = std::make_unique<::arm_compute::NEPermute>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), pv);
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEPermute>(ifm_tensor->handle(),
+                                                           ofm_tensor->handle(), pv);
   }
   else if (permute_type == ir::operation::Permute::Type::NHWC_TO_NCHW && rank == 4)
   {
     // CWHN -> WHCN
     pv = arm_compute::PermutationVector{1, 2, 0};
 
-    auto l = std::make_unique<::arm_compute::NEPermute>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), pv);
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEPermute>(ifm_tensor->handle(),
+                                                           ofm_tensor->handle(), pv);
   }
   else
   {
-    auto l = std::make_unique<::arm_compute::NECopy>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NECopy>(ifm_tensor->handle(), ofm_tensor->handle());
   }
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::PReLU &node)
@@ -902,17 +816,10 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
   auto alpha_tensor = _tensor_reg->getAclTensor(alpha_index).get();
 
-  std::unique_ptr<::arm_compute::IFunction> fn;
+  auto fn = acl_common::generateLayer<arm_compute::NEPReluLayer>(
+      ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
 
-  auto l = std::make_unique<::arm_compute::NEPReluLayer>();
-
-  l->configure(ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
-
-  fn = std::move(l);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Reduce &node)
@@ -937,33 +844,21 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   std::unique_ptr<::arm_compute::IFunction> fn;
   if (reduce_type == ir::operation::Reduce::ReduceType::MEAN)
   {
-    auto l = std::make_unique<::arm_compute::NEReduceMean>();
-
-    l->configure(input_tensor->handle(), reduce_axes, keep_dims, output_tensor->handle());
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEReduceMean>(input_tensor->handle(), reduce_axes,
+                                                              keep_dims, output_tensor->handle());
   }
   else if (reduce_type == ir::operation::Reduce::ReduceType::SUM)
   {
-    auto l = std::make_unique<::arm_compute::NEReduceSum>();
-
-    l->configure(input_tensor->handle(), reduce_axes, keep_dims, output_tensor->handle());
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEReduceSum>(input_tensor->handle(), reduce_axes,
+                                                             keep_dims, output_tensor->handle());
   }
   else
   {
-    auto l = std::make_unique<::arm_compute::NEReduceOperation>();
-
-    l->configure(input_tensor->handle(), reduce_axes, keep_dims, output_tensor->handle(),
-                 acl_common::convertReduceType(reduce_type));
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEReduceOperation>(
+        input_tensor->handle(), reduce_axes, keep_dims, output_tensor->handle(),
+        acl_common::convertReduceType(reduce_type));
   }
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Reshape &node)
@@ -983,13 +878,10 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   UNUSED_RELEASE(frontend_layout);
   UNUSED_RELEASE(backend_layout);
 
-  auto fn = std::make_unique<arm_compute::NEReshapeLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NEReshapeLayer>(input_tensor->handle(),
+                                                                   output_tensor->handle());
 
-  fn->configure(input_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
@@ -1001,15 +893,12 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEScale>();
+  auto fn = acl_common::generateLayer<arm_compute::NEScale>(
+      ifm_tensor->handle(), ofm_tensor->handle(), ::arm_compute::InterpolationPolicy::BILINEAR,
+      ::arm_compute::BorderMode::REPLICATE, ::arm_compute::PixelValue(0.f),
+      ::arm_compute::SamplingPolicy::TOP_LEFT);
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(),
-                ::arm_compute::InterpolationPolicy::BILINEAR, ::arm_compute::BorderMode::REPLICATE,
-                ::arm_compute::PixelValue(0.f), ::arm_compute::SamplingPolicy::TOP_LEFT);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::RNN &node)
@@ -1037,15 +926,14 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
   auto hidden_state_in_tensor = _tensor_reg->getAclTensor(hidden_state_in_index).get();
   auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
 
-  auto copy_layer = std::make_unique<::arm_compute::NECopy>();
-  copy_layer->configure(hidden_state_in_tensor->handle(), hidden_state_out_tensor->handle());
+  auto copy_layer = acl_common::generateLayer<arm_compute::NECopy>(
+      hidden_state_in_tensor->handle(), hidden_state_out_tensor->handle());
   _return_fn = asAclFunction(std::move(copy_layer));
 
-  auto fn = std::make_unique<::arm_compute::NERNNLayer>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-  fn->configure(input_tensor->handle(), weights_tensor->handle(),
-                recurrent_weights_tensor->handle(), bias_tensor->handle(),
-                hidden_state_out_tensor->handle(), output_tensor->handle(), act_info);
+  auto fn = acl_common::generateLayer<arm_compute::NERNNLayer>(
+      _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
+      weights_tensor->handle(), recurrent_weights_tensor->handle(), bias_tensor->handle(),
+      hidden_state_out_tensor->handle(), output_tensor->handle(), act_info);
   _return_fn = asAclFunction(std::move(fn));
 }
 
@@ -1063,10 +951,9 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
 
   auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
   auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-  auto fn = std::make_unique<arm_compute::NEReshapeLayer>();
-  fn->configure(input_tensor->handle(), output_tensor->handle());
-  auto acl_fn = asAclFunction(std::move(fn));
-  _return_fn = std::move(acl_fn);
+  auto fn = acl_common::generateLayer<arm_compute::NEReshapeLayer>(input_tensor->handle(),
+                                                                   output_tensor->handle());
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Softmax &node)
@@ -1090,14 +977,11 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
         acl_common::asTensorShape(input.shape(), frontend_layout, backend_layout, false));
   }
 
-  auto fn = std::make_unique<::arm_compute::NESoftmaxLayer>(
-      _tensor_builder->acl_tensor_manager()->internal_buffer_manager());
+  auto fn = acl_common::generateLayer<arm_compute::NESoftmaxLayer>(
+      _tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
+      output_tensor->handle(), beta);
 
-  fn->configure(input_tensor->handle(), output_tensor->handle(), beta);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
@@ -1116,14 +1000,11 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   assert(_ctx.at(block_size_index).data());
   assert(_ctx.at(paddings_index).data());
 
-  auto fn = std::make_unique<::arm_compute::NESpaceToBatchLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NESpaceToBatchLayer>(
+      ifm_tensor->handle(), block_size_tensor->handle(), paddings_tensor->handle(),
+      ofm_tensor->handle());
 
-  fn->configure(ifm_tensor->handle(), block_size_tensor->handle(), paddings_tensor->handle(),
-                ofm_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
@@ -1136,13 +1017,10 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NESpaceToDepthLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NESpaceToDepthLayer>(
+      ifm_tensor->handle(), ofm_tensor->handle(), block_size);
 
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), block_size);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Split &node)
@@ -1169,9 +1047,8 @@ void KernelGenerator::visit(const ir::operation::Split &node)
     axis += ifm_rank;
   axis = acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value();
 
-  auto fn = std::make_unique<::arm_compute::NESplit>();
-
-  fn->configure(ifm_tensor->handle(), output_tensors, axis);
+  auto fn =
+      acl_common::generateLayer<arm_compute::NESplit>(ifm_tensor->handle(), output_tensors, axis);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -1186,13 +1063,10 @@ void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
   auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index).get();
   auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEElementwiseSquaredDiff>();
+  auto fn = acl_common::generateLayer<arm_compute::NEElementwiseSquaredDiff>(
+      lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
 
-  fn->configure(lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Slice &node)
@@ -1253,13 +1127,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
     ends_set.set(i, ends[i]);
   }
 
-  auto fn = std::make_unique<::arm_compute::NESlice>();
+  auto fn = acl_common::generateLayer<arm_compute::NESlice>(
+      inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set);
 
-  fn->configure(inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::StridedSlice &node)
@@ -1340,14 +1211,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     strides_set.set(i, strides[i]);
   }
 
-  auto fn = std::make_unique<::arm_compute::NEStridedSlice>();
+  auto fn = acl_common::generateLayer<arm_compute::NEStridedSlice>(
+      inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set, strides_set,
+      begin_mask, end_mask, shrink_axis_mask);
 
-  fn->configure(inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set,
-                strides_set, begin_mask, end_mask, shrink_axis_mask);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::TransposeConv &node)
@@ -1382,14 +1250,11 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
 
   const auto tconv_info = acl_common::asPadStrideInfo(padding, stride);
 
-  auto fn = std::make_unique<::arm_compute::NETransposeConvLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NETransposeConvLayer>(
+      ifm_tensor->handle(), ker_tensor->handle(), nullptr, ofm_tensor->handle(), tconv_info,
+      invalid_horizontal, invalid_vertical);
 
-  fn->configure(ifm_tensor->handle(), ker_tensor->handle(), nullptr, ofm_tensor->handle(),
-                tconv_info, invalid_horizontal, invalid_vertical);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Transpose &node)
@@ -1409,27 +1274,17 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
       rank, pv, frontend_layout, backend_layout);
 
   std::unique_ptr<::arm_compute::IFunction> fn;
-
   if (ifm_tensor->num_dimensions() <= 2 && ofm_tensor->num_dimensions() <= 2)
   {
-    auto l = std::make_unique<::arm_compute::NETranspose>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NETranspose>(ifm_tensor->handle(),
+                                                             ofm_tensor->handle());
   }
   else
   {
-    auto l = std::make_unique<::arm_compute::NEPermute>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), backend_pv);
-
-    fn = std::move(l);
+    fn = acl_common::generateLayer<arm_compute::NEPermute>(ifm_tensor->handle(),
+                                                           ofm_tensor->handle(), backend_pv);
   }
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Unpack &node)
@@ -1454,8 +1309,6 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
     axis += input_rank;
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
 
-  auto fn = std::make_unique<::arm_compute::NEUnstack>();
-
   // Disable applied dim_correction
   std::vector<arm_compute::TensorShape> orig_outputs_acl_tensor_shapes;
   for (const auto &output_index : output_indexes)
@@ -1472,7 +1325,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
     }
   }
 
-  fn->configure(input, outputs, axis);
+  auto fn = acl_common::generateLayer<arm_compute::NEUnstack>(input, outputs, axis);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -1485,13 +1338,10 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
   auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEReshapeLayer>();
+  auto fn = acl_common::generateLayer<arm_compute::NEReshapeLayer>(input_tensor->handle(),
+                                                                   output_tensor->handle());
 
-  fn->configure(input_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::Comparison &node)
@@ -1506,14 +1356,11 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
   auto input0_tensor = _tensor_reg->getAclTensor(input0_index).get();
   auto input1_tensor = _tensor_reg->getAclTensor(input1_index).get();
 
-  auto fn = std::make_unique<::arm_compute::NEElementwiseComparison>();
+  auto fn = acl_common::generateLayer<arm_compute::NEElementwiseComparison>(
+      input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
+      (arm_compute::ComparisonOperation)comparison_type);
 
-  fn->configure(input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
-                (arm_compute::ComparisonOperation)comparison_type);
-
-  auto acl_fn = asAclFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 void KernelGenerator::visit(const ir::operation::OneHot &node)
@@ -1531,11 +1378,10 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx).get();
   auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx).get();
 
-  auto fn = std::make_unique<::arm_compute::CPPOneHotEx>();
-  fn->configure(indices_tensor->handle(), depth_tensor->handle(), onvalue_tensor->handle(),
-                offvalue_tensor->handle(), output_tensor->handle(), axis);
-  auto acl_fn = asAclFunction(std::move(fn));
-  _return_fn = std::move(acl_fn);
+  auto fn = acl_common::generateLayer<arm_compute::CPPOneHotEx>(
+      indices_tensor->handle(), depth_tensor->handle(), onvalue_tensor->handle(),
+      offvalue_tensor->handle(), output_tensor->handle(), axis);
+  _return_fn = asAclFunction(std::move(fn));
 }
 
 } // namespace acl_neon

@@ -40,6 +40,17 @@ std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&... args)
   return l;
 }
 
+template <typename Layer, typename... Args>
+std::unique_ptr<arm_compute::IFunction>
+generateLayer(std::shared_ptr<arm_compute::IMemoryManager> memory_manager, Args &&... args)
+{
+  auto l = std::make_unique<Layer>(memory_manager);
+
+  l->configure(std::forward<Args>(args)...);
+
+  return l;
+}
+
 template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
           typename T_TensorRegistry>
 std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
@@ -152,9 +163,7 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   auto output_state_in_tensor = tensor_reg->getAclTensor(output_state_in_index).get();
   auto cell_state_in_tensor = tensor_reg->getAclTensor(cell_state_in_index).get();
 
-  auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
-
-  auto fn = std::make_unique<T_ACLLayer>();
+  auto act_info = asActivationLayerInfo(activation);
 
   ::arm_compute::LSTMParams<T_Tensor> lstm_params{};
   if (has_cifg_param)
@@ -190,16 +199,16 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
     lstm_params.set_projection_params(projection_weights_tensor->handle(), projection_bias_handle);
   }
 
-  fn->configure(input_tensor->handle(), input_to_forget_weights_tensor->handle(),
-                input_to_cell_weights_tensor->handle(), input_to_output_weights_tensor->handle(),
-                recurrent_to_forget_weights_tensor->handle(),
-                recurrent_to_cell_weights_tensor->handle(),
-                recurrent_to_output_weights_tensor->handle(), forget_gate_bias_tensor->handle(),
-                cell_bias_tensor->handle(), output_gate_bias_tensor->handle(),
-                output_state_in_tensor->handle(), cell_state_in_tensor->handle(),
-                scratch_buffer_tensor->handle(), output_state_out_tensor->handle(),
-                cell_state_out_tensor->handle(), output_tensor->handle(), lstm_params, act_info,
-                cell_clip, projection_clip);
+  auto fn = generateLayer<T_ACLLayer>(
+      input_tensor->handle(), input_to_forget_weights_tensor->handle(),
+      input_to_cell_weights_tensor->handle(), input_to_output_weights_tensor->handle(),
+      recurrent_to_forget_weights_tensor->handle(), recurrent_to_cell_weights_tensor->handle(),
+      recurrent_to_output_weights_tensor->handle(), forget_gate_bias_tensor->handle(),
+      cell_bias_tensor->handle(), output_gate_bias_tensor->handle(),
+      output_state_in_tensor->handle(), cell_state_in_tensor->handle(),
+      scratch_buffer_tensor->handle(), output_state_out_tensor->handle(),
+      cell_state_out_tensor->handle(), output_tensor->handle(), lstm_params, act_info, cell_clip,
+      projection_clip);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
@@ -258,9 +267,6 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto frontend_layout = layout;
   const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
-  auto fn =
-      std::make_unique<T_ACLLayer>(tensor_builder->acl_tensor_manager()->internal_buffer_manager());
-
   typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
   if (operands.at(weight_index).isConstant())
   {
@@ -268,12 +274,10 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
     assert(operands.at(weight_index).data());
   }
 
-  fn->configure(
-      input_tensor->handle(), weight_tensor->handle(), bias_tensor->handle(),
-      output_tensor->handle(), needs_reshape,
-      ::onert::backend::acl_common::asTensorShape(
-          reshape, frontend_layout, ::onert::backend::acl_common::asRuntimeLayout(acl_layout)),
-      kernel_type);
+  auto fn = generateLayer<T_ACLLayer>(
+      tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
+      weight_tensor->handle(), bias_tensor->handle(), output_tensor->handle(), needs_reshape,
+      asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
@@ -314,11 +318,9 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
 
   ::arm_compute::PoolingLayerInfo info{
       pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),
-      acl_common::asPadStrideInfo(padding, stride), true /* exclude_padding */};
+      asPadStrideInfo(padding, stride), true /* exclude_padding */};
 
-  auto fn = std::make_unique<T_ACLLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle(), info);
+  auto fn = generateLayer<T_ACLLayer>(ifm_tensor->handle(), ofm_tensor->handle(), info);
 
   return fn;
 }
