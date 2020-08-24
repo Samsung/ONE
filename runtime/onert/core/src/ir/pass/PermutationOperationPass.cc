@@ -241,6 +241,11 @@ void PermutationOperationPass::visit(const operation::ElementwiseBinary &node)
   applyExpandRanks(node);
 }
 
+void PermutationOperationPass::visit(const operation::ElementwiseUnary &node)
+{
+  applyExpandRanks(node);
+}
+
 void PermutationOperationPass::visit(const operation::FullyConnected &node)
 {
   const auto &input_ind = node.getInputs().at(operation::FullyConnected::Input::INPUT);
@@ -268,8 +273,6 @@ void PermutationOperationPass::visit(const operation::Gather &node)
     changeToKeepLayout(node);
   }
 }
-
-void PermutationOperationPass::visit(const operation::LogicalNot &node) { applyExpandRanks(node); }
 
 void PermutationOperationPass::visit(const operation::Pack &node)
 {

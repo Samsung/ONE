@@ -42,7 +42,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Cast; }
+  OpCode opcode() const final { return OpCode::BroadcastTo; }
 };
 
 } // namespace operation

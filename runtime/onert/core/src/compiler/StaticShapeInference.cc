@@ -142,11 +142,6 @@ void StaticShapeInferer::dump()
   }
 }
 
-void StaticShapeInferer::visit(const ir::operation::Abs &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
@@ -207,11 +202,6 @@ void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
   output.info().shape(new_shape);
 }
 
-void StaticShapeInferer::visit(const ir::operation::Cast &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cast::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::Comparison &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Comparison::Input::INPUT0),
@@ -254,11 +244,6 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
   output.info().shape(new_shape);
 }
 
-void StaticShapeInferer::visit(const ir::operation::Cos &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT));
@@ -270,9 +255,9 @@ void StaticShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
                            op.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS));
 }
 
-void StaticShapeInferer::visit(const ir::operation::Exp &op)
+void StaticShapeInferer::visit(const ir::operation::ElementwiseUnary &op)
 {
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Exp::Input::INPUT));
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
@@ -449,16 +434,6 @@ void StaticShapeInferer::visit(const ir::operation::If &op)
   }
 }
 
-void StaticShapeInferer::visit(const ir::operation::Log &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Log::Input::INPUT));
-}
-
-void StaticShapeInferer::visit(const ir::operation::LogicalNot &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
@@ -467,11 +442,6 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
 void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
-}
-
-void StaticShapeInferer::visit(const ir::operation::Neg &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Neg::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::OneHot &op)
@@ -730,16 +700,6 @@ void StaticShapeInferer::visit(const ir::operation::Reverse &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Reverse::Input::INPUT));
 }
 
-void StaticShapeInferer::visit(const ir::operation::Round &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Round::Input::INPUT));
-}
-
-void StaticShapeInferer::visit(const ir::operation::RSQRT &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::RSQRT::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::Select &op)
 {
   const auto input_cond_idx{op.getInputs().at(ir::operation::Select::Input::CONDITION)};
@@ -774,11 +734,6 @@ void StaticShapeInferer::visit(const ir::operation::Shape &op)
   output_shape.append(input.info().shape().rank());
 
   output.info().shape(output_shape);
-}
-
-void StaticShapeInferer::visit(const ir::operation::Sin &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::Slice &op)
@@ -1134,11 +1089,6 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
       output.info().shape(new_shape);
     }
   }
-}
-
-void StaticShapeInferer::visit(const ir::operation::ZerosLike &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ZerosLike::Input::INPUT));
 }
 
 } // namespace compiler

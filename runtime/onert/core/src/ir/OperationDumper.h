@@ -31,37 +31,29 @@ public:
   OperationDumper(const std::string &start_msg);
 
 public:
-  void visit(const operation::Abs &) override;
   void visit(const operation::ArgMax &) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
   void visit(const operation::BroadcastTo &) override;
-  void visit(const operation::Cast &) override;
   void visit(const operation::Comparison &) override;
   void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;
   void visit(const operation::ConvertFp16ToFp32 &node) override;
   void visit(const operation::ConvertFp32ToFp16 &node) override;
-  void visit(const operation::Cos &node) override;
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
-  void visit(const operation::Dequantize &) override;
   void visit(const operation::ElementwiseActivation &) override;
   void visit(const operation::ElementwiseBinary &) override;
+  void visit(const operation::ElementwiseUnary &) override;
   void visit(const operation::EmbeddingLookup &) override;
-  void visit(const operation::Exp &) override;
   void visit(const operation::ExpandDims &) override;
-  void visit(const operation::Floor &) override;
   void visit(const operation::FullyConnected &node) override;
   void visit(const operation::Gather &) override;
   void visit(const operation::HashtableLookup &) override;
   void visit(const operation::InstanceNorm &) override;
   void visit(const operation::L2Normalization &) override;
   void visit(const operation::LocalResponseNormalization &) override;
-  void visit(const operation::Log &) override;
-  void visit(const operation::LogicalNot &) override;
   void visit(const operation::LSTM &) override;
-  void visit(const operation::Neg &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Pad &) override;
   void visit(const operation::Permute &node) override;
@@ -74,16 +66,12 @@ public:
   void visit(const operation::ResizeBilinear &) override;
   void visit(const operation::Reverse &) override;
   void visit(const operation::RNN &) override;
-  void visit(const operation::Round &) override;
-  void visit(const operation::RSQRT &) override;
   void visit(const operation::Select &node) override;
   void visit(const operation::Shape &node) override;
-  void visit(const operation::Sin &node) override;
   void visit(const operation::Softmax &node) override;
   void visit(const operation::SpaceToBatchND &) override;
   void visit(const operation::SpaceToDepth &) override;
   void visit(const operation::Split &) override;
-  void visit(const operation::SQRT &) override;
   void visit(const operation::SquaredDifference &) override;
   void visit(const operation::Squeeze &) override;
   void visit(const operation::Slice &) override;
@@ -97,7 +85,6 @@ public:
   void visit(const operation::OneHot &) override;
   void visit(const operation::If &) override;
   void visit(const operation::While &) override;
-  void visit(const operation::ZerosLike &) override;
 };
 
 } // namespace ir

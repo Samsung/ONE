@@ -43,7 +43,7 @@ public:
   void visit(const operation::Comparison &) final;
   void visit(const operation::Concat &) final;
   void visit(const operation::ElementwiseBinary &) final;
-  void visit(const operation::LogicalNot &) final;
+  void visit(const operation::ElementwiseUnary &) final;
   void visit(const operation::Pack &) final;
   void visit(const operation::PReLU &) final;
   void visit(const operation::SquaredDifference &) final;

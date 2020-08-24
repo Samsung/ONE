@@ -7,15 +7,15 @@
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in riting, software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_ZEROS_LIKE_LAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_ZEROS_LIKE_LAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_ELEMENTWISEUNARYLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_ELEMENTWISEUNARYLAYER_H__
 
 #include <backend/IPortableTensor.h>
 
@@ -29,18 +29,41 @@ namespace cpu
 {
 namespace ops
 {
-class ZerosLikeLayer : public ::onert::exec::IFunction
+
+enum class ElementwiseUnaryType
+{
+  kAbs,
+  kCast,
+  kCos,
+  kExp,
+  kLog,
+  kLogicalNot,
+  kNeg,
+  kQuantize,
+  kRound,
+  kRSqrt,
+  kSin,
+  kZerosLike
+};
+
+class ElementwiseUnaryLayer : public ::onert::exec::IFunction
 {
 public:
-  ZerosLikeLayer();
+  ElementwiseUnaryLayer() : _input(nullptr), _output(nullptr), _kernel()
+  {
+    // DO NOTHING
+  }
 
-  void configure(const IPortableTensor *input, IPortableTensor *output);
+public:
+  void configure(const IPortableTensor *input, IPortableTensor *output,
+                 const ElementwiseUnaryType op_type);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
+  std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
 } // namespace ops
@@ -48,4 +71,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_ZEROS_LIKE_LAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_ELEMENTWISEUNARYLAYER_H__

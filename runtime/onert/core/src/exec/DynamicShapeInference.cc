@@ -100,11 +100,6 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Abs &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Abs::INPUT));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
@@ -177,11 +172,6 @@ void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
   // set output shape and output buffer
   dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Cast &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cast::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Comparison &op)
@@ -292,11 +282,6 @@ void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Cos &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Cos::Input::INPUT));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::INPUT));
@@ -308,9 +293,9 @@ void DynamicShapeInferer::visit(const ir::operation::ElementwiseBinary &op)
                            op.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Exp &op)
+void DynamicShapeInferer::visit(const ir::operation::ElementwiseUnary &op)
 {
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Exp::Input::INPUT));
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
@@ -435,16 +420,6 @@ void DynamicShapeInferer::visit(const ir::operation::Gather &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Log &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Log::Input::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::LogicalNot &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::LogicalNot::Input::INPUT));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::INPUT));
@@ -453,11 +428,6 @@ void DynamicShapeInferer::visit(const ir::operation::L2Normalization &op)
 void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Neg &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Neg::Input::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::OneHot &op)
@@ -752,16 +722,6 @@ void DynamicShapeInferer::visit(const ir::operation::Reverse &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Reverse::INPUT));
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Round &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Round::Input::INPUT));
-}
-
-void DynamicShapeInferer::visit(const ir::operation::RSQRT &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::RSQRT::INPUT));
-}
-
 void DynamicShapeInferer::visit(const ir::operation::Select &op)
 {
   const auto input_cond_idx = op.getInputs().at(ir::operation::Select::Input::CONDITION);
@@ -810,11 +770,6 @@ void DynamicShapeInferer::visit(const ir::operation::Shape &op)
 
   dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
   assert(output->buffer() != nullptr);
-}
-
-void DynamicShapeInferer::visit(const ir::operation::Sin &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::Sin::Input::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Slice &op)
@@ -1054,11 +1009,6 @@ void DynamicShapeInferer::visit(const ir::operation::Unpack &op)
 
     assert(output->buffer() != nullptr);
   }
-}
-
-void DynamicShapeInferer::visit(const ir::operation::ZerosLike &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ZerosLike::INPUT));
 }
 
 } // namespace exec

@@ -32,14 +32,6 @@ OperationDumper::OperationDumper(const std::string &start_msg)
   VERBOSE(LIR) << start_msg << std::endl;
 }
 
-void OperationDumper::visit(const Abs &node)
-{
-  VERBOSE(LIR) << "* Abs" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Abs::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const ArgMax &node)
 {
   VERBOSE(LIR) << "* ArgMax" << std::endl;
@@ -70,14 +62,6 @@ void OperationDumper::visit(const operation::BroadcastTo &node)
   VERBOSE(LIR) << "* BroadcastTo" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(BroadcastTo::Input::INPUT) << ", "
                << node.getInputs().at(BroadcastTo::Input::SHAPE) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Cast &node)
-{
-  VERBOSE(LIR) << "* Cast" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Cast::Input::INPUT) << ")"
-               << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -128,14 +112,6 @@ void OperationDumper::visit(const ConvertFp32ToFp16 &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Cos &node)
-{
-  VERBOSE(LIR) << "* Cos" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Cos::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const DepthToSpace &node)
 {
   VERBOSE(LIR) << "* DepthToSpace" << std::endl;
@@ -153,14 +129,6 @@ void OperationDumper::visit(const DepthwiseConv2D &node)
                << ") Kernel(" << node.getInputs().at(DepthwiseConv2D::Input::KERNEL) << ") Bias("
                << node.getInputs().at(DepthwiseConv2D::Input::BIAS) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Dequantize &node)
-{
-  VERBOSE(LIR) << "* Dequantize" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Dequantize::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const ElementwiseActivation &node)
@@ -185,6 +153,14 @@ void OperationDumper::visit(const ElementwiseBinary &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ElementwiseUnary &node)
+{
+  VERBOSE(LIR) << "* " + node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ElementwiseUnary::Input::INPUT)
+               << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const EmbeddingLookup &node)
 {
   VERBOSE(LIR) << "* EmbeddingLookup" << std::endl;
@@ -194,27 +170,11 @@ void OperationDumper::visit(const EmbeddingLookup &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Exp &node)
-{
-  VERBOSE(LIR) << "* Exp" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Exp::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const ExpandDims &node)
 {
   VERBOSE(LIR) << "* ExpandDims" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ExpandDims::Input::INPUT)
                << ") AXIS(" << node.getInputs().at(ExpandDims::Input::AXIS) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Floor &node)
-{
-  VERBOSE(LIR) << "* Floor" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Floor::Input::INPUT) << ")"
-               << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -303,30 +263,6 @@ void OperationDumper::visit(const LSTM &node)
                << node.getInputs().at(LSTM::Output::OUTPUT_STATE_OUT) << ") Cell State Out("
                << node.getInputs().at(LSTM::Output::CELL_STATE_OUT) << ") Output("
                << node.getInputs().at(LSTM::Output::OUTPUT) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Log &node)
-{
-  VERBOSE(LIR) << "* Log" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Log::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const LogicalNot &node)
-{
-  VERBOSE(LIR) << "* LogicalNot" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(LogicalNot::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Neg &node)
-{
-  VERBOSE(LIR) << "* Neg" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Neg::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const Pack &node)
@@ -454,28 +390,12 @@ void OperationDumper::visit(const RNN &node)
                << std::endl;
 }
 
-void OperationDumper::visit(const Round &node)
-{
-  VERBOSE(LIR) << "* Round" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Round::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
 void OperationDumper::visit(const Range &node)
 {
   VERBOSE(LIR) << "* Range" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Range::Input::START) << ")"
                << " Limit(" << node.getInputs().at(Range::Input::LIMIT) << ")"
                << " Delta(" << node.getInputs().at(Range::Input::DELTA) << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const RSQRT &node)
-{
-  VERBOSE(LIR) << "* RSQRT" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(RSQRT::Input::INPUT) << ")"
-               << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -494,14 +414,6 @@ void OperationDumper::visit(const ir::operation::Shape &node)
   VERBOSE(LIR) << "* Shape" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ir::operation::Shape::Input::INPUT)
                << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const Sin &node)
-{
-  VERBOSE(LIR) << "* Sin" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Sin::Input::INPUT) << ")"
-               << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -535,14 +447,6 @@ void OperationDumper::visit(const Split &node)
 {
   VERBOSE(LIR) << "* Split" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Split::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void OperationDumper::visit(const SQRT &node)
-{
-  VERBOSE(LIR) << "* SQRT" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(SQRT::Input::INPUT) << ")"
                << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
@@ -698,14 +602,6 @@ void OperationDumper::visit(const While &node)
       outputs += ", ";
   }
   VERBOSE(LIR) << "  - Output : Outputs(" << outputs << ")" << std::endl;
-}
-
-void OperationDumper::visit(const ZerosLike &node)
-{
-  VERBOSE(LIR) << "* RoZerosLike" << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ZerosLike::Input::INPUT) << ")"
-               << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 } // namespace ir

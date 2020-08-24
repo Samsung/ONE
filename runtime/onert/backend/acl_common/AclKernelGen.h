@@ -30,6 +30,16 @@ namespace backend
 namespace acl_common
 {
 
+template <typename Layer, typename... Args>
+std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&... args)
+{
+  auto l = std::make_unique<Layer>();
+
+  l->configure(std::forward<Args>(args)...);
+
+  return l;
+}
+
 template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
           typename T_TensorRegistry>
 std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,

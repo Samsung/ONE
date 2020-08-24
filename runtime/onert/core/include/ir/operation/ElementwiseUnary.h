@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_QUANTIZE_H__
-#define __ONERT_IR_OPERATION_QUANTIZE_H__
+#ifndef __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__
+#define __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__
 
 #include "ir/Operation.h"
 
@@ -26,24 +26,57 @@ namespace ir
 namespace operation
 {
 
-class Quantize : public Operation
+class ElementwiseUnary : public Operation
 {
 public:
   enum Input
   {
-    INPUT = 0,
+    INPUT = 0
+  };
+
+  enum class Type
+  {
+    ABS,
+    CAST,
+    COS,
+    DEQUANTIZE,
+    EXP,
+    FLOOR,
+    LOG,
+    LOGICAL_NOT,
+    NEG,
+    QUANTIZE,
+    ROUND,
+    RSQRT,
+    SIN,
+    SQRT,
+    SQURE,
+    ZEROS_LIKE
+  };
+
+  struct Param
+  {
+    Type op_type;
   };
 
 public:
-  Quantize(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
+  ElementwiseUnary(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+                   const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Quantize; }
+  std::string name() const override;
+  OpCode opcode() const final { return OpCode::ElementwiseUnary; }
+
+public:
+  const Param &param() const { return _param; }
+
+private:
+  Param _param;
 };
 
 } // namespace operation
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_QUANTIZE_H__
+#endif // __ONERT_IR_OPERATION_ELEMENTWISEUNARY_H__

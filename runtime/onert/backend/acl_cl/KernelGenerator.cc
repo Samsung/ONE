@@ -160,38 +160,6 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Cast &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Cast::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  std::unique_ptr<::arm_compute::IFunction> fn;
-  if (ifm_tensor->data_type() == ofm_tensor->data_type())
-  {
-    auto l = std::make_unique<::arm_compute::CLCopy>();
-
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-    fn = std::move(l);
-  }
-  else
-  {
-    auto l = std::make_unique<::arm_compute::CLCast>();
-
-    // TODO Support converting float to int32 as round down
-    l->configure(ifm_tensor->handle(), ofm_tensor->handle(), arm_compute::ConvertPolicy::SATURATE);
-
-    fn = std::move(l);
-  }
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::Conv2D &node)
 {
   using ir::operation::Conv2D;
@@ -718,17 +686,93 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Exp &node)
+void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Exp::Input::INPUT)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
 
   auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
   auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
 
-  auto fn = std::make_unique<::arm_compute::CLExpLayer>();
+  std::unique_ptr<arm_compute::IFunction> fn;
+  switch (node.param().op_type)
+  {
+    case ir::operation::ElementwiseUnary::Type::ABS:
+    {
+      const ::arm_compute::ActivationLayerInfo act_info{
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::ABS};
 
-  fn->configure(input_tensor->handle(), output_tensor->handle());
+      fn = acl_common::generateLayer<arm_compute::CLActivationLayer>(
+          input_tensor->handle(), output_tensor->handle(), act_info);
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::CAST:
+    {
+      if (input_tensor->data_type() == output_tensor->data_type())
+      {
+        fn = acl_common::generateLayer<arm_compute::CLCopy>(input_tensor->handle(),
+                                                            output_tensor->handle());
+        ;
+      }
+      else
+      {
+        // TODO Support converting float to int32 as round down
+        fn = acl_common::generateLayer<arm_compute::CLCast>(
+            input_tensor->handle(), output_tensor->handle(), arm_compute::ConvertPolicy::SATURATE);
+      }
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::DEQUANTIZE:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLDequantizationLayer>(input_tensor->handle(),
+                                                                         output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::EXP:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLExpLayer>(input_tensor->handle(),
+                                                              output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::FLOOR:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLFloor>(input_tensor->handle(),
+                                                           output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::LOGICAL_NOT:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLBitwiseNot>(input_tensor->handle(),
+                                                                output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::NEG:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLNeg>(input_tensor->handle(),
+                                                         output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::RSQRT:
+    {
+      fn = acl_common::generateLayer<arm_compute::CLRsqrtLayer>(input_tensor->handle(),
+                                                                output_tensor->handle());
+      break;
+    }
+    case ir::operation::ElementwiseUnary::Type::SQRT:
+    {
+      const ::arm_compute::ActivationLayerInfo act_info{
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::SQRT};
+
+      fn = acl_common::generateLayer<arm_compute::CLActivationLayer>(
+          input_tensor->handle(), output_tensor->handle(), act_info);
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("acl_cl KernelGenerator : " + node.name() + "is not supported yet");
+      break;
+    }
+  }
 
   auto acl_fn = asAclClFunction(std::move(fn));
 
@@ -919,21 +963,6 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::RSQRT &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::RSQRT::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLRsqrtLayer>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-  _return_fn = asAclClFunction(std::move(fn));
-}
-
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -989,23 +1018,6 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
                 recurrent_weights_tensor->handle(), bias_tensor->handle(),
                 hidden_state_out_tensor->handle(), output_tensor->handle(), act_info);
   _return_fn = asAclClFunction(std::move(fn));
-}
-
-void KernelGenerator::visit(const ir::operation::Floor &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Floor::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLFloor>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
 }
 
 void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
@@ -1195,43 +1207,6 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::SQRT &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::SQRT::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::SQRT};
-
-  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::LogicalNot &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::LogicalNot::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLBitwiseNot>();
-
-  fn->configure(input_tensor->handle(), output_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1345,43 +1320,6 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   _return_fn = std::move(acl_fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Neg &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Neg::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLNeg>();
-
-  fn->configure(ifm_tensor->handle(), ofm_tensor->handle());
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Abs &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Abs::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  const ::arm_compute::ActivationLayerInfo act_info{
-      ::arm_compute::ActivationLayerInfo::ActivationFunction::ABS};
-
-  auto fn = std::make_unique<::arm_compute::CLActivationLayer>();
-
-  fn->configure(input_tensor->handle(), output_tensor->handle(), act_info);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
 void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1411,23 +1349,6 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   fn->configure(ifm_tensor->handle(), acl_axis, ofm_tensor->handle(),
                 ::arm_compute::ReductionOperation::ARG_IDX_MAX);
-
-  auto acl_fn = asAclClFunction(std::move(fn));
-
-  _return_fn = std::move(acl_fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Dequantize &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Dequantize::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-
-  auto fn = std::make_unique<::arm_compute::CLDequantizationLayer>();
-
-  fn->configure(input_tensor->handle(), output_tensor->handle());
 
   auto acl_fn = asAclClFunction(std::move(fn));
 

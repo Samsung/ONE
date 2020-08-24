@@ -16,27 +16,22 @@
 
 #include "KernelGenerator.h"
 
-#include "ops/AbsLayer.h"
 #include "ops/ArgMinMaxLayer.h"
 #include "ops/BatchToSpaceNDLayer.h"
 #include "ops/BinaryArithmeticLayer.h"
-#include "ops/CastLayer.h"
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
-#include "ops/CosLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
-#include "ops/ExpLayer.h"
+#include "ops/ElementwiseUnaryLayer.h"
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/GatherLayer.h"
-#include "ops/LogLayer.h"
 #include "ops/MeanLayer.h"
-#include "ops/NegLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
 #include "ops/PackLayer.h"
@@ -48,11 +43,8 @@
 #include "ops/ReshapeLayer.h"
 #include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
-#include "ops/RoundLayer.h"
-#include "ops/RsqrtLayer.h"
 #include "ops/SelectLayer.h"
 #include "ops/ShapeLayer.h"
-#include "ops/SinLayer.h"
 #include "ops/SliceLayer.h"
 #include "ops/SoftMaxLayer.h"
 #include "ops/StridedSliceLayer.h"
@@ -63,8 +55,6 @@
 #include "ops/TileLayer.h"
 #include "ops/TransposeLayer.h"
 #include "ops/UnpackLayer.h"
-#include "ops/LogicalNotLayer.h"
-#include "ops/ZerosLikeLayer.h"
 #include "ops/SquaredDiffLayer.h"
 #include "ops/L2NormLayer.h"
 #include "ops/MatrixBandPartLayer.h"
@@ -72,7 +62,6 @@
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
-#include "ops/QuantizeLayer.h"
 #include "ops/StatelessRandomUniformLayer.h"
 
 #include <backend/Backend.h>
@@ -138,6 +127,39 @@ convertElementwiseBinaryType(ir::operation::ElementwiseBinary::ElementwiseBinary
       return ops::ElementwiseBinaryType::kMax;
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN:
       return ops::ElementwiseBinaryType::kMin;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::ElementwiseUnary::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseUnary::Type::ABS:
+      return ops::ElementwiseUnaryType::kAbs;
+    case ir::operation::ElementwiseUnary::Type::CAST:
+      return ops::ElementwiseUnaryType::kCast;
+    case ir::operation::ElementwiseUnary::Type::COS:
+      return ops::ElementwiseUnaryType::kCos;
+    case ir::operation::ElementwiseUnary::Type::EXP:
+      return ops::ElementwiseUnaryType::kExp;
+    case ir::operation::ElementwiseUnary::Type::LOG:
+      return ops::ElementwiseUnaryType::kLog;
+    case ir::operation::ElementwiseUnary::Type::LOGICAL_NOT:
+      return ops::ElementwiseUnaryType::kLogicalNot;
+    case ir::operation::ElementwiseUnary::Type::NEG:
+      return ops::ElementwiseUnaryType::kNeg;
+    case ir::operation::ElementwiseUnary::Type::QUANTIZE:
+      return ops::ElementwiseUnaryType::kQuantize;
+    case ir::operation::ElementwiseUnary::Type::ROUND:
+      return ops::ElementwiseUnaryType::kRound;
+    case ir::operation::ElementwiseUnary::Type::RSQRT:
+      return ops::ElementwiseUnaryType::kRSqrt;
+    case ir::operation::ElementwiseUnary::Type::SIN:
+      return ops::ElementwiseUnaryType::kSin;
+    case ir::operation::ElementwiseUnary::Type::ZEROS_LIKE:
+      return ops::ElementwiseUnaryType::kZerosLike;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -648,17 +670,17 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Exp &node)
+void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Exp::Input::INPUT)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
 
-  auto fn = std::make_unique<ops::ExpLayer>();
+  auto fn = std::make_unique<ops::ElementwiseUnaryLayer>();
 
-  fn->configure(input_tensor, output_tensor);
+  fn->configure(input_tensor, output_tensor, convertElementwiseUnaryType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }
@@ -750,21 +772,6 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   }
 
   fn->configure(input, output, pad_base, pad_rank, value);
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Cast &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Cast::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::CastLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
   _return_fn = std::move(fn);
 }
 
@@ -900,66 +907,6 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Abs &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Abs::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::AbsLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Sin &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Sin::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::SinLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Cos &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Cos::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::CosLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::RSQRT &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::RSQRT::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::RsqrtLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::Shape &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1009,21 +956,6 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   auto fn = std::make_unique<ops::ReverseLayer>();
 
   fn->configure(input_tensor, axis_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Neg &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Neg::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::NegLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -1088,51 +1020,6 @@ void KernelGenerator::visit(const ir::operation::Pow &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Log &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Log::Input::INPUT)};
-
-  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
-
-  auto fn = std::make_unique<ops::LogLayer>();
-
-  fn->configure(ifm_tensor, ofm_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Round &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Round::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::RoundLayer>();
-
-  fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::LogicalNot &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::LogicalNot::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::LogicalNotLayer>();
-
-  fn->configure(input_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::L2Normalization &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -1145,20 +1032,6 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
 
   fn->configure(input_alloc, output_alloc);
 
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::ZerosLike &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::ZerosLike::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-
-  auto fn = std::make_unique<ops::ZerosLikeLayer>();
-
-  fn->configure(input_tensor, output_tensor);
   _return_fn = std::move(fn);
 }
 
@@ -1319,21 +1192,6 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
   auto fn = std::make_unique<ops::SpaceToBatchNDLayer>();
 
   fn->configure(input_tensor, block_shape_tensor, padding_tensor, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Quantize &node)
-{
-  const auto input_index{node.getInputs().at(ir::operation::Quantize::Input::INPUT)};
-  const auto output_index{node.getOutputs().at(0)};
-
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
-
-  auto fn = std::make_unique<ops::QuantizeLayer>();
-
-  fn->configure(input_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }
