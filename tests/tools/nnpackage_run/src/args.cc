@@ -55,8 +55,8 @@ std::unordered_map<uint32_t, Json::Value> argArrayToMap(const Json::Value &jsonv
   return ret;
 }
 
-// param shape_str is a form of, e.g., "[1, [2, 3], 3, []]"
-void handleShapeParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &shape_str)
+// param shape_str is a form of, e.g., "[1, [2, 3], 3, []]" or "h5"
+void handleShapeJsonParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &shape_str)
 {
   Json::Value root;
   Json::Reader reader;
@@ -152,9 +152,16 @@ void Args::Initialize(void)
   };
 
   auto process_shape_prepare = [&](const std::string &shape_str) {
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    if (shape_str == "H5" || shape_str == "h5")
+    {
+      _when_to_use_h5_shape = WhenToUseH5Shape::PREPARE;
+      return;
+    }
+#endif
     try
     {
-      handleShapeParam(_shape_prepare, shape_str);
+      handleShapeJsonParam(_shape_prepare, shape_str);
     }
     catch (const std::exception &e)
     {
@@ -164,9 +171,16 @@ void Args::Initialize(void)
   };
 
   auto process_shape_run = [&](const std::string &shape_str) {
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    if (shape_str == "H5" || shape_str == "h5")
+    {
+      _when_to_use_h5_shape = WhenToUseH5Shape::RUN;
+      return;
+    }
+#endif
     try
     {
-      handleShapeParam(_shape_run, shape_str);
+      handleShapeJsonParam(_shape_run, shape_str);
     }
     catch (const std::exception &e)
     {
@@ -202,11 +216,13 @@ void Args::Initialize(void)
          "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
          "{nnpkg} name may be changed to realpath if you use symbolic-link.")
     ("shape_prepare", po::value<std::string>()->default_value("[]")->notifier(process_shape_prepare),
-         "set shape of specified tensor before compilation\n"
-         "e.g. '[0, [1, 2], 2, []]' to set 0th tensor to [1, 2] and 2nd tensor to [].\n")
+         "set shape of specified tensor before compilation (before calling nnfw_prepare()).\n"
+         "'h5': read shape(s) from H5 input file. '--load' should also be provided.\n"
+         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [].")
     ("shape_run", po::value<std::string>()->default_value("[]")->notifier(process_shape_run),
-         "set shape of specified tensor right before running\n"
-         "e.g. '[1, [1, 2]]` to set 1st tensor to [1, 2].\n")
+         "set shape of specified tensor before running (before calling nnfw_run()).\n"
+         "'h5': read shape(s) from H5 input file. '--load' should also be provided.\n"
+         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [].")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"

@@ -61,6 +61,13 @@ NNFW_STATUS resolve_op_backend(nnfw_session *session)
   return NNFW_STATUS_NO_ERROR;
 }
 
+void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
+                       std::vector<nnpkg_run::TensorShape> shapes)
+{
+  for (uint32_t i = 0; i < shapes.size(); i++)
+    shape_map[i] = shapes[i];
+}
+
 int main(const int argc, char **argv)
 {
   using namespace nnpkg_run;
@@ -157,7 +164,14 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    // set input shape before compilation
+// set input shape before compilation
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::PREPARE)
+    {
+      auto shapes = H5Formatter(session).readTensorShapes(args.getLoadFilename());
+      overwriteShapeMap(args.getShapeMapForPrepare(), shapes);
+    }
+#endif
     setTensorInfo(args.getShapeMapForPrepare());
 
     // prepare execution
@@ -167,7 +181,14 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_prepare(session));
     });
 
-    // set input shape after compilation and before execution
+// set input shape after compilation and before execution
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::RUN)
+    {
+      auto shapes = H5Formatter(session).readTensorShapes(args.getLoadFilename());
+      overwriteShapeMap(args.getShapeMapForRun(), shapes);
+    }
+#endif
     setTensorInfo(args.getShapeMapForRun());
 
     // prepare input

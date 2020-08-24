@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 
+#include "types.h"
 #include "allocation.h"
 
 struct nnfw_session;
@@ -30,6 +31,7 @@ class H5Formatter
 {
 public:
   H5Formatter(nnfw_session *sess) : session_(sess) {}
+  std::vector<TensorShape> readTensorShapes(const std::string &filename);
   void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
   void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs);
 
