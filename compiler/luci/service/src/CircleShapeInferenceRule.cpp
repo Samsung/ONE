@@ -849,6 +849,373 @@ loco::TensorShape infer_reducer(const loco::Node *input, const loco::Node *indic
   return output_shape;
 }
 
+loco::NodeShape infer_mirror_pad(const luci::CircleMirrorPad *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+
+  // TODO support non-const case
+  // TODO support other data type
+  LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+  LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
+
+  int32_t n = paddings->dim(0).value();
+  int32_t v = paddings->dim(1).value();
+
+  LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
+  LUCI_ASSERT(n == int32_t(input_shape.rank()),
+              "paddings [n, 2] should have same value of input rank");
+
+  loco::TensorShape output_shape;
+
+  output_shape.rank(input_shape.rank());
+  for (int32_t ni = 0; ni < n; ++ni)
+  {
+    int32_t idx = ni * 2;
+    int value = input_shape.dim(ni).value();
+    value += paddings->at<S32>(idx + 0); // left
+    value += paddings->at<S32>(idx + 1); // right
+    output_shape.dim(ni) = value;
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_one_hot(const luci::CircleOneHot *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+  auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
+  // Only support OneHot node's depth() is CircleConst with type S32
+  // TODO support depth with other types
+  auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
+  LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
+  if (depth->rank() != 0)
+    INTERNAL_EXN_V("Only support rank 0 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
+  loco::TensorShape output_shape;
+  output_shape.rank(indices_shape.rank() + 1);
+  auto axis = node->axis();
+  if (axis < 0)
+    axis += indices_shape.rank() + 1;
+  LUCI_ASSERT(0 <= axis, "Axis is out of range");
+  LUCI_ASSERT(static_cast<uint32_t>(axis) <= indices_shape.rank(), "Axis is out of range");
+  uint32_t j = 0;
+  for (uint32_t i = 0; i < output_shape.rank(); i++)
+  {
+    if (i == static_cast<uint32_t>(axis))
+    {
+      output_shape.dim(i) = depth->at<S32>(0);
+    }
+    else
+    {
+      output_shape.dim(i) = indices_shape.dim(j++);
+    }
+  }
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_pack(const luci::CirclePack *node)
+{
+  LUCI_ASSERT(node->values_count() > 0, "Only support one or more inputs");
+
+  auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
+  // Make sure all inputs have the same shape.
+  for (uint32_t i = 1; i < node->values_count(); ++i)
+  {
+    auto in_shape = loco::shape_get(node->values(i)).as<loco::TensorShape>();
+    LUCI_ASSERT(loco::NodeShape{first_shape} == loco::NodeShape{in_shape},
+                "All inputs must have the same shape");
+  }
+
+  // Checking shape capability for pack layer
+  // Input: tensors [D1, D2, ... Dn]
+  // Axis: K
+  // Output: [D1, D2, ... , D_K-1, n, D_K+1, ... Dn]
+  auto axis = node->axis();
+  if (axis < 0)
+    axis += first_shape.rank() + 1;
+
+  LUCI_ASSERT(0 <= axis, "Axis is out of range");
+  LUCI_ASSERT(static_cast<uint32_t>(axis) <= first_shape.rank(), "Axis is out of range");
+
+  loco::TensorShape output_shape;
+  output_shape.rank(first_shape.rank() + 1);
+
+  uint32_t j = 0;
+  for (uint32_t i = 0; i < output_shape.rank(); ++i)
+  {
+    if (i == static_cast<uint32_t>(axis))
+    {
+      output_shape.dim(i) = node->values_count();
+    }
+    else
+    {
+      output_shape.dim(i) = first_shape.dim(j++);
+    }
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_pad(const luci::CirclePad *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+
+  // TODO support non-const case
+  // TODO support other data type
+  LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+  LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
+
+  int32_t n = paddings->dim(0).value();
+  int32_t v = paddings->dim(1).value();
+
+  LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
+  LUCI_ASSERT(n == int32_t(input_shape.rank()),
+              "paddings [n, 2] should have same value of input rank");
+
+  loco::TensorShape output_shape;
+
+  output_shape.rank(input_shape.rank());
+  for (int32_t ni = 0; ni < n; ++ni)
+  {
+    int32_t idx = ni * 2;
+    int value = input_shape.dim(ni).value();
+    value += paddings->at<S32>(idx + 0); // left
+    value += paddings->at<S32>(idx + 1); // right
+    output_shape.dim(ni) = value;
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_pad_v2(const luci::CirclePadV2 *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
+
+  if (!paddings)
+  {
+    auto node_shape = own_shape(node);
+    return loco::NodeShape{node_shape};
+  }
+
+  // TODO support other data type
+  LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+  LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
+
+  int32_t n = paddings->dim(0).value();
+  int32_t v = paddings->dim(1).value();
+
+  LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
+  LUCI_ASSERT(n == int32_t(input_shape.rank()),
+              "paddings [n, 2] should have same value of input rank");
+
+  loco::TensorShape output_shape;
+
+  output_shape.rank(input_shape.rank());
+  for (int32_t ni = 0; ni < n; ++ni)
+  {
+    int32_t idx = ni * 2;
+    int value = input_shape.dim(ni).value();
+    value += paddings->at<S32>(idx + 0); // left
+    value += paddings->at<S32>(idx + 1); // right
+    output_shape.dim(ni) = value;
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_p_relu(const luci::CirclePRelu *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto alpha_shape = loco::shape_get(node->alpha()).as<loco::TensorShape>();
+
+  auto output_shape = broadcast_shape(input_shape, alpha_shape);
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_range(const luci::CircleRange *node)
+{
+  loco::TensorShape output_shape;
+  output_shape.rank(1);
+
+  auto start_node = dynamic_cast<luci::CircleConst *>(node->start());
+  auto limit_node = dynamic_cast<luci::CircleConst *>(node->limit());
+  auto delta_node = dynamic_cast<luci::CircleConst *>(node->delta());
+
+  if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
+  {
+    return use_own(node);
+  }
+
+  double start = 0, limit = 0, delta = 0;
+
+#define GET_RANGE_PARAM(DT)         \
+  start = start_node->scalar<DT>(); \
+  limit = limit_node->scalar<DT>(); \
+  delta = delta_node->scalar<DT>();
+
+  switch (start_node->dtype())
+  {
+    case loco::DataType::FLOAT32:
+      GET_RANGE_PARAM(loco::DataType::FLOAT32)
+      break;
+    case loco::DataType::S32:
+      GET_RANGE_PARAM(loco::DataType::S32)
+      break;
+    default:
+      INTERNAL_EXN("Range data type not supported");
+  }
+
+#undef GET_RANGE_PARAM
+
+  if (delta == 0)
+    INTERNAL_EXN("Delta can not be zero");
+
+  output_shape.dim(0) = ceil((limit - start) / delta);
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_reshape(const luci::CircleReshape *node)
+{
+  LOGGER(l);
+
+  const loco::DataType S32 = loco::DataType::S32;
+
+  loco::TensorShape shape_by_input;
+  {
+    LUCI_ASSERT(node->shape(), "2nd input shape() should not be nullptr");
+
+    // Only support node's shape() is CircleConst with S32
+    // TODO support other node with other types
+    auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
+    if (const_shape_node != nullptr)
+    {
+      LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
+
+      shape_by_input.rank(const_shape_node->size<S32>());
+
+      for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+      {
+        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+      }
+    }
+    else
+    {
+      // We use shape from the node itself
+      shape_by_input = own_shape(node);
+    }
+  }
+
+  loco::TensorShape shape_by_attr;
+  {
+    shape_by_attr.rank(node->newShape()->rank());
+
+    for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
+    {
+      shape_by_attr.dim(axis) = node->newShape()->dim(axis);
+    }
+  }
+
+  if (!(shape_by_input == shape_by_attr))
+  {
+    INFO(l) << "CircleReshape: Two new shape information mismatched : " << std::endl;
+    INFO(l) << "   shape_by_input : " << shape_by_input << std::endl;
+    INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
+  }
+
+  loco::TensorShape output_shape = shape_by_input;
+
+  // One of the dimensions can have special value -1, meaning its actual value should be inferred.
+  const auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
+  const uint32_t input_element_count = loco::element_count(&input_shape);
+  uint32_t output_element_count = 1;
+  uint32_t unknown_dim_index = UINT32_MAX;
+  for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
+  {
+    const uint32_t dim_value = output_shape.dim(dim_index).value();
+    if (static_cast<int>(dim_value) == -1)
+    {
+      LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
+      unknown_dim_index = dim_index;
+    }
+    else
+    {
+      output_element_count *= dim_value;
+    }
+  }
+  if (unknown_dim_index != UINT32_MAX)
+  {
+    output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
+  }
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_resize_bilinear(const luci::CircleResizeBilinear *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+  if (input_shape.rank() != 4)
+    INTERNAL_EXN("Expected ResizeBilinear input to have rank 4");
+
+  auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
+
+  if (const_node->dtype() != loco::DataType::S32)
+    INTERNAL_EXN("Only S32 datatype is supported for ResizeBilinear size");
+
+  if (const_node->rank() != 1)
+    INTERNAL_EXN("Expected size tensor of rank 1");
+
+  if (const_node->dim(0).value() != 2)
+    INTERNAL_EXN("Expected size tensor with shape [2]");
+
+  loco::TensorShape output_shape;
+  output_shape.rank(4);
+  output_shape.dim(0) = input_shape.dim(0);
+  output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
+  output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
+  output_shape.dim(3) = input_shape.dim(3);
+
+  return loco::NodeShape{output_shape};
+}
+
+loco::NodeShape infer_resize_nearest_neighbor(const luci::CircleResizeNearestNeighbor *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+
+  if (input_shape.rank() != 4)
+    INTERNAL_EXN("Expected ResizeNearesNeighbor input to have rank 4");
+
+  auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
+
+  if (const_node->dtype() != loco::DataType::S32)
+    INTERNAL_EXN("Only S32 datatype is supported for ResizeNearesNeighbor size");
+
+  if (const_node->rank() != 1)
+    INTERNAL_EXN("Expected size tensor of rank 1");
+
+  if (const_node->dim(0).value() != 2)
+    INTERNAL_EXN("Expected size tensor with shape [2]");
+
+  loco::TensorShape output_shape;
+  output_shape.rank(4);
+  output_shape.dim(0) = input_shape.dim(0);
+  output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
+  output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
+  output_shape.dim(3) = input_shape.dim(3);
+
+  return loco::NodeShape{output_shape};
+}
+
 // Virtual
 loco::NodeShape infer_input(const luci::CircleInput *node)
 {
@@ -1328,39 +1695,7 @@ public:
 
   loco::NodeShape visit(const luci::CircleMinimum *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleMirrorPad *node) final
-  {
-    const loco::DataType S32 = loco::DataType::S32;
-
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
-
-    // TODO support non-const case
-    // TODO support other data type
-    LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
-    LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
-
-    int32_t n = paddings->dim(0).value();
-    int32_t v = paddings->dim(1).value();
-
-    LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
-    LUCI_ASSERT(n == int32_t(input_shape.rank()),
-                "paddings [n, 2] should have same value of input rank");
-
-    loco::TensorShape output_shape;
-
-    output_shape.rank(input_shape.rank());
-    for (int32_t ni = 0; ni < n; ++ni)
-    {
-      int32_t idx = ni * 2;
-      int value = input_shape.dim(ni).value();
-      value += paddings->at<S32>(idx + 0); // left
-      value += paddings->at<S32>(idx + 1); // right
-      output_shape.dim(ni) = value;
-    }
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleMirrorPad *node) final { return infer_mirror_pad(node); }
 
   loco::NodeShape visit(const luci::CircleMul *node) final { return broadcast_xy(node); }
 
@@ -1380,208 +1715,19 @@ public:
 
   loco::NodeShape visit(const luci::CircleNotEqual *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleOneHot *node) final
-  {
-    const loco::DataType S32 = loco::DataType::S32;
-    auto indices_shape = loco::shape_get(node->indices()).as<loco::TensorShape>();
-    // Only support OneHot node's depth() is CircleConst with type S32
-    // TODO support depth with other types
-    auto depth = loco::must_cast<luci::CircleConst *>(node->depth());
-    LUCI_ASSERT(depth->dtype() == S32, "Only support int32 CircleConst");
-    if (depth->rank() != 0)
-      INTERNAL_EXN_V("Only support rank 0 CircleOneHot in Depth", oops::to_uint32(depth->rank()));
-    loco::TensorShape output_shape;
-    output_shape.rank(indices_shape.rank() + 1);
-    auto axis = node->axis();
-    if (axis < 0)
-      axis += indices_shape.rank() + 1;
-    LUCI_ASSERT(0 <= axis, "Axis is out of range");
-    LUCI_ASSERT(static_cast<uint32_t>(axis) <= indices_shape.rank(), "Axis is out of range");
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < output_shape.rank(); i++)
-    {
-      if (i == static_cast<uint32_t>(axis))
-      {
-        output_shape.dim(i) = depth->at<S32>(0);
-      }
-      else
-      {
-        output_shape.dim(i) = indices_shape.dim(j++);
-      }
-    }
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleOneHot *node) final { return infer_one_hot(node); }
 
-  loco::NodeShape visit(const luci::CirclePack *node) final
-  {
-    LUCI_ASSERT(node->values_count() > 0, "Only support one or more inputs");
+  loco::NodeShape visit(const luci::CirclePack *node) final { return infer_pack(node); }
 
-    auto first_shape = loco::shape_get(node->values(0)).as<loco::TensorShape>();
-    // Make sure all inputs have the same shape.
-    for (uint32_t i = 1; i < node->values_count(); ++i)
-    {
-      auto in_shape = loco::shape_get(node->values(i)).as<loco::TensorShape>();
-      LUCI_ASSERT(loco::NodeShape{first_shape} == loco::NodeShape{in_shape},
-                  "All inputs must have the same shape");
-    }
+  loco::NodeShape visit(const luci::CirclePad *node) final { return infer_pad(node); }
 
-    // Checking shape capability for pack layer
-    // Input: tensors [D1, D2, ... Dn]
-    // Axis: K
-    // Output: [D1, D2, ... , D_K-1, n, D_K+1, ... Dn]
-    auto axis = node->axis();
-    if (axis < 0)
-      axis += first_shape.rank() + 1;
-
-    LUCI_ASSERT(0 <= axis, "Axis is out of range");
-    LUCI_ASSERT(static_cast<uint32_t>(axis) <= first_shape.rank(), "Axis is out of range");
-
-    loco::TensorShape output_shape;
-    output_shape.rank(first_shape.rank() + 1);
-
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < output_shape.rank(); ++i)
-    {
-      if (i == static_cast<uint32_t>(axis))
-      {
-        output_shape.dim(i) = node->values_count();
-      }
-      else
-      {
-        output_shape.dim(i) = first_shape.dim(j++);
-      }
-    }
-
-    return loco::NodeShape{output_shape};
-  }
-
-  loco::NodeShape visit(const luci::CirclePad *node) final
-  {
-    const loco::DataType S32 = loco::DataType::S32;
-
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
-
-    // TODO support non-const case
-    // TODO support other data type
-    LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
-    LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
-
-    int32_t n = paddings->dim(0).value();
-    int32_t v = paddings->dim(1).value();
-
-    LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
-    LUCI_ASSERT(n == int32_t(input_shape.rank()),
-                "paddings [n, 2] should have same value of input rank");
-
-    loco::TensorShape output_shape;
-
-    output_shape.rank(input_shape.rank());
-    for (int32_t ni = 0; ni < n; ++ni)
-    {
-      int32_t idx = ni * 2;
-      int value = input_shape.dim(ni).value();
-      value += paddings->at<S32>(idx + 0); // left
-      value += paddings->at<S32>(idx + 1); // right
-      output_shape.dim(ni) = value;
-    }
-
-    return loco::NodeShape{output_shape};
-  }
-
-  loco::NodeShape visit(const luci::CirclePadV2 *node) final
-  {
-    const loco::DataType S32 = loco::DataType::S32;
-
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto paddings = dynamic_cast<luci::CircleConst *>(node->paddings());
-
-    if (!paddings)
-    {
-      auto node_shape = own_shape(node);
-      return loco::NodeShape{node_shape};
-    }
-
-    // TODO support other data type
-    LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
-    LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
-
-    int32_t n = paddings->dim(0).value();
-    int32_t v = paddings->dim(1).value();
-
-    LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
-    LUCI_ASSERT(n == int32_t(input_shape.rank()),
-                "paddings [n, 2] should have same value of input rank");
-
-    loco::TensorShape output_shape;
-
-    output_shape.rank(input_shape.rank());
-    for (int32_t ni = 0; ni < n; ++ni)
-    {
-      int32_t idx = ni * 2;
-      int value = input_shape.dim(ni).value();
-      value += paddings->at<S32>(idx + 0); // left
-      value += paddings->at<S32>(idx + 1); // right
-      output_shape.dim(ni) = value;
-    }
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CirclePadV2 *node) final { return infer_pad_v2(node); }
 
   loco::NodeShape visit(const luci::CirclePow *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CirclePRelu *node) final
-  {
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-    auto alpha_shape = loco::shape_get(node->alpha()).as<loco::TensorShape>();
+  loco::NodeShape visit(const luci::CirclePRelu *node) final { return infer_p_relu(node); }
 
-    auto output_shape = broadcast_shape(input_shape, alpha_shape);
-
-    return loco::NodeShape{output_shape};
-  }
-
-  loco::NodeShape visit(const luci::CircleRange *node) final
-  {
-    loco::TensorShape output_shape;
-    output_shape.rank(1);
-
-    auto start_node = dynamic_cast<luci::CircleConst *>(node->start());
-    auto limit_node = dynamic_cast<luci::CircleConst *>(node->limit());
-    auto delta_node = dynamic_cast<luci::CircleConst *>(node->delta());
-
-    if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
-    {
-      return use_own(node);
-    }
-
-    double start = 0, limit = 0, delta = 0;
-
-#define GET_RANGE_PARAM(DT)         \
-  start = start_node->scalar<DT>(); \
-  limit = limit_node->scalar<DT>(); \
-  delta = delta_node->scalar<DT>();
-
-    switch (start_node->dtype())
-    {
-      case loco::DataType::FLOAT32:
-        GET_RANGE_PARAM(loco::DataType::FLOAT32)
-        break;
-      case loco::DataType::S32:
-        GET_RANGE_PARAM(loco::DataType::S32)
-        break;
-      default:
-        INTERNAL_EXN("Range data type not supported");
-    }
-
-#undef GET_RANGE_PARAM
-
-    if (delta == 0)
-      INTERNAL_EXN("Delta can not be zero");
-
-    output_shape.dim(0) = ceil((limit - start) / delta);
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleRange *node) final { return infer_range(node); }
 
   loco::NodeShape visit(const luci::CircleRank *) final
   {
@@ -1643,136 +1789,16 @@ public:
    *
    * TODO Change this policy when not appropriate
    */
-  loco::NodeShape visit(const luci::CircleReshape *node) final
-  {
-    LOGGER(l);
-
-    const loco::DataType S32 = loco::DataType::S32;
-
-    loco::TensorShape shape_by_input;
-    {
-      LUCI_ASSERT(node->shape(), "2nd input shape() should not be nullptr");
-
-      // Only support node's shape() is CircleConst with S32
-      // TODO support other node with other types
-      auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
-      if (const_shape_node != nullptr)
-      {
-        LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
-
-        shape_by_input.rank(const_shape_node->size<S32>());
-
-        for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
-        {
-          shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
-        }
-      }
-      else
-      {
-        // We use shape from the node itself
-        shape_by_input = own_shape(node);
-      }
-    }
-
-    loco::TensorShape shape_by_attr;
-    {
-      shape_by_attr.rank(node->newShape()->rank());
-
-      for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
-      {
-        shape_by_attr.dim(axis) = node->newShape()->dim(axis);
-      }
-    }
-
-    if (!(shape_by_input == shape_by_attr))
-    {
-      INFO(l) << "CircleReshape: Two new shape information mismatched : " << std::endl;
-      INFO(l) << "   shape_by_input : " << shape_by_input << std::endl;
-      INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
-    }
-
-    loco::TensorShape output_shape = shape_by_input;
-
-    // One of the dimensions can have special value -1, meaning its actual value should be inferred.
-    const auto input_shape = loco::shape_get(node->tensor()).as<loco::TensorShape>();
-    const uint32_t input_element_count = loco::element_count(&input_shape);
-    uint32_t output_element_count = 1;
-    uint32_t unknown_dim_index = UINT32_MAX;
-    for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
-    {
-      const uint32_t dim_value = output_shape.dim(dim_index).value();
-      if (static_cast<int>(dim_value) == -1)
-      {
-        LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
-        unknown_dim_index = dim_index;
-      }
-      else
-      {
-        output_element_count *= dim_value;
-      }
-    }
-    if (unknown_dim_index != UINT32_MAX)
-    {
-      output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
-    }
-
-    return loco::NodeShape{output_shape};
-  }
+  loco::NodeShape visit(const luci::CircleReshape *node) final { return infer_reshape(node); }
 
   loco::NodeShape visit(const luci::CircleResizeBilinear *node) final
   {
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-
-    if (input_shape.rank() != 4)
-      INTERNAL_EXN("Expected ResizeBilinear input to have rank 4");
-
-    auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
-
-    if (const_node->dtype() != loco::DataType::S32)
-      INTERNAL_EXN("Only S32 datatype is supported for ResizeBilinear size");
-
-    if (const_node->rank() != 1)
-      INTERNAL_EXN("Expected size tensor of rank 1");
-
-    if (const_node->dim(0).value() != 2)
-      INTERNAL_EXN("Expected size tensor with shape [2]");
-
-    loco::TensorShape output_shape;
-    output_shape.rank(4);
-    output_shape.dim(0) = input_shape.dim(0);
-    output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
-    output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
-    output_shape.dim(3) = input_shape.dim(3);
-
-    return loco::NodeShape{output_shape};
+    return infer_resize_bilinear(node);
   }
 
   loco::NodeShape visit(const luci::CircleResizeNearestNeighbor *node) final
   {
-    auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
-
-    if (input_shape.rank() != 4)
-      INTERNAL_EXN("Expected ResizeNearesNeighbor input to have rank 4");
-
-    auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
-
-    if (const_node->dtype() != loco::DataType::S32)
-      INTERNAL_EXN("Only S32 datatype is supported for ResizeNearesNeighbor size");
-
-    if (const_node->rank() != 1)
-      INTERNAL_EXN("Expected size tensor of rank 1");
-
-    if (const_node->dim(0).value() != 2)
-      INTERNAL_EXN("Expected size tensor with shape [2]");
-
-    loco::TensorShape output_shape;
-    output_shape.rank(4);
-    output_shape.dim(0) = input_shape.dim(0);
-    output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
-    output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
-    output_shape.dim(3) = input_shape.dim(3);
-
-    return loco::NodeShape{output_shape};
+    return infer_resize_nearest_neighbor(node);
   }
 
   loco::NodeShape visit(const luci::CircleReverseSequence *node) final
