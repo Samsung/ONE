@@ -32,7 +32,7 @@
 
 #include "CircleGen.h"
 
-CircleGen::CircleGen()
+CircleGen::CircleGen() : _subgraph_contexts(1) // Create primary subgraph
 {
   // 0th buffer is always the empty buffer for non-const tensors
   addBuffer(nullptr, 0);
@@ -54,21 +54,29 @@ uint32_t CircleGen::addBuffer(const uint8_t *buf, size_t size)
 
 uint32_t CircleGen::addTensor(const TensorParams &params)
 {
-  int ind = _tensors.size();
-  _tensors.emplace_back(buildTensor(params));
+  int ind = curSubgCtx().tensors.size();
+  curSubgCtx().tensors.emplace_back(buildTensor(params));
   return ind;
 }
 
 void CircleGen::setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs)
 {
-  _inputs = inputs;
-  _outputs = outputs;
+  curSubgCtx().inputs = inputs;
+  curSubgCtx().outputs = outputs;
+}
+
+uint32_t CircleGen::nextSubgraph()
+{
+  uint32_t ind = _subgraph_contexts.size();
+  _subgraph_contexts.push_back({});
+  return ind;
 }
 
 CircleBuffer CircleGen::finish()
 {
-  // TODO Support multiple subgraphs, for now only single subgraph model is supported.
-  std::vector<flatbuffers::Offset<circle::SubGraph>> subgraphs{buildSubGraph()};
+  std::vector<flatbuffers::Offset<circle::SubGraph>> subgraphs;
+  for (auto &ctx : _subgraph_contexts)
+    subgraphs.push_back(buildSubGraph(ctx));
   auto model =
       circle::CreateModelDirect(_fbb, 3, &_opcodes, &subgraphs, "CircleGen generated", &_buffers);
   _fbb.Finish(model);
@@ -124,6 +132,21 @@ uint32_t CircleGen::addOperatorPadV2(const OperatorParams &params)
                                 circle::BuiltinOptions_PadV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
+{
+  auto options = circle::CreateLessOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LESS,
+                                circle::BuiltinOptions_LessOptions, options);
+}
+
+uint32_t CircleGen::addOperatorWhile(const OperatorParams &params, uint32_t cond_subg,
+                                     uint32_t body_subg)
+{
+  auto options = circle::CreateWhileOptions(_fbb, cond_subg, body_subg).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_WHILE,
+                                circle::BuiltinOptions_WhileOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction
@@ -144,8 +167,8 @@ uint32_t CircleGen::addOperatorWithOptions(const OperatorParams &params,
   auto op = circle::CreateOperatorDirect(_fbb, opcode_ind, &params.inputs, &params.outputs,
                                          options_type, options);
 
-  uint32_t ind = _operators.size();
-  _operators.emplace_back(op);
+  uint32_t ind = curSubgCtx().operators.size();
+  curSubgCtx().operators.emplace_back(op);
   return ind;
 }
 
@@ -174,7 +197,8 @@ flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &p
                               0 /* shape_signature */);
 }
 
-flatbuffers::Offset<circle::SubGraph> CircleGen::buildSubGraph()
+flatbuffers::Offset<circle::SubGraph> CircleGen::buildSubGraph(const SubgraphContext &ctx)
 {
-  return circle::CreateSubGraphDirect(_fbb, &_tensors, &_inputs, &_outputs, &_operators, nullptr);
+  return circle::CreateSubGraphDirect(_fbb, &ctx.tensors, &ctx.inputs, &ctx.outputs, &ctx.operators,
+                                      nullptr);
 }
