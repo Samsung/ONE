@@ -38,6 +38,79 @@ namespace
 
 using namespace luci;
 
+// TODO fix OperationExporter to use ExportContext
+struct ExportContext
+{
+  FlatBufferBuilder &builder;
+  SerializedModelData &md;
+  SerializedGraphData &gd;
+};
+
+/**
+ * @brief Exports CircleMaxPool2D or CircleAveragePool2D
+ *
+ * @note  CirclePool2D should be one of CircleMaxPool2D or CircleAveragePool2D
+ */
+template <class CirclePool2D>
+void export_pool_2d(ExportContext &ctx, CirclePool2D *node, circle::BuiltinOperator builtin_op)
+{
+  LUCI_ASSERT(builtin_op == circle::BuiltinOperator_MAX_POOL_2D ||
+                  builtin_op == circle::BuiltinOperator_L2_POOL_2D ||
+                  builtin_op == circle::BuiltinOperator_AVERAGE_POOL_2D,
+              "Should be L2Pool, MaxPool or AvgPool");
+  LUCI_ASSERT(node->padding() != luci::Padding::UNDEFINED, "Padding is not set");
+
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(builtin_op, node->op_version());
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+
+  circle::Padding padding = getOpPadding(node->padding());
+
+  auto options = CreatePool2DOptions(ctx.builder, padding, node->stride()->w(), node->stride()->h(),
+                                     node->filter()->w(), node->filter()->h(),
+                                     to_circle_actfunc(node->fusedActivationFunction()));
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_Pool2DOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+/**
+ * @brief export simple nodes
+ */
+void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator bop,
+                 circle::BuiltinOptions bot, flatbuffers::Offset<void> options_offset)
+{
+  uint32_t op_idx =
+      ctx.md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->arg(i)));
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs, bot, options_offset);
+  ctx.gd._operators.push_back(op_offset);
+}
+
+/**
+ * @brief export simple nodes having void options
+ */
+void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator bop)
+{
+  uint32_t op_idx =
+      ctx.md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->arg(i)));
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs);
+  ctx.gd._operators.push_back(op_offset);
+}
+
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
                                 public loco::CanonicalNodeMutableVisitor<void>
 {
@@ -180,14 +253,6 @@ public:
 
 private:
   /**
-   * @brief Exports CircleMaxPool2D or CircleAveragePool2D
-   *
-   * @note  CirclePool2D should be one of CircleMaxPool2D or CircleAveragePool2D
-   */
-  template <class CirclePool2D>
-  void export_pool_2d(CirclePool2D *node, circle::BuiltinOperator builtin_op);
-
-  /**
    * @brief export simple nodes
    */
   void export_simple(loco::Node *node, circle::BuiltinOperator bop, circle::BuiltinOptions bot,
@@ -204,59 +269,18 @@ private:
   SerializedGraphData &gd;
 };
 
-template <class CirclePool2D>
-void OperationExporter::export_pool_2d(CirclePool2D *node, circle::BuiltinOperator builtin_op)
-{
-  LUCI_ASSERT(builtin_op == circle::BuiltinOperator_MAX_POOL_2D ||
-                  builtin_op == circle::BuiltinOperator_L2_POOL_2D ||
-                  builtin_op == circle::BuiltinOperator_AVERAGE_POOL_2D,
-              "Should be L2Pool, MaxPool or AvgPool");
-  LUCI_ASSERT(node->padding() != luci::Padding::UNDEFINED, "Padding is not set");
-
-  uint32_t op_idx = md.registerBuiltinOpcode(builtin_op, node->op_version());
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->value())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-
-  circle::Padding padding = getOpPadding(node->padding());
-
-  auto options = CreatePool2DOptions(builder, padding, node->stride()->w(), node->stride()->h(),
-                                     node->filter()->w(), node->filter()->h(),
-                                     to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_Pool2DOptions, options.Union());
-  gd._operators.push_back(op_offset);
-}
-
 void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop,
                                       circle::BuiltinOptions bot,
                                       flatbuffers::Offset<void> options_offset)
 {
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec{get_tensor_index(node)};
-  for (uint32_t i = 0; i < node->arity(); ++i)
-    inputs_vec.push_back(get_tensor_index(node->arg(i)));
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, bot, options_offset);
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node, bop, bot, options_offset);
 }
 
 void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop)
 {
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(bop, loco::must_cast<luci::CircleNode *>(node)->op_version());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  for (uint32_t i = 0; i < node->arity(); ++i)
-    inputs_vec.push_back(get_tensor_index(node->arg(i)));
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs);
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node, bop);
 }
 
 void OperationExporter::visit(luci::CircleAbs *node)
@@ -303,7 +327,8 @@ void OperationExporter::visit(luci::CircleArgMin *node)
 
 void OperationExporter::visit(luci::CircleAveragePool2D *node)
 {
-  export_pool_2d<luci::CircleAveragePool2D>(node, circle::BuiltinOperator_AVERAGE_POOL_2D);
+  ExportContext ctx{builder, md, gd};
+  export_pool_2d<luci::CircleAveragePool2D>(ctx, node, circle::BuiltinOperator_AVERAGE_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleBatchMatMul *node)
@@ -581,7 +606,8 @@ void OperationExporter::visit(luci::CircleL2Normalize *node)
 
 void OperationExporter::visit(luci::CircleL2Pool2D *node)
 {
-  export_pool_2d<luci::CircleL2Pool2D>(node, circle::BuiltinOperator_L2_POOL_2D);
+  ExportContext ctx{builder, md, gd};
+  export_pool_2d<luci::CircleL2Pool2D>(ctx, node, circle::BuiltinOperator_L2_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleLeakyRelu *node)
@@ -666,7 +692,8 @@ void OperationExporter::visit(luci::CircleMaximum *node)
 
 void OperationExporter::visit(luci::CircleMaxPool2D *node)
 {
-  export_pool_2d<luci::CircleMaxPool2D>(node, circle::BuiltinOperator_MAX_POOL_2D);
+  ExportContext ctx{builder, md, gd};
+  export_pool_2d<luci::CircleMaxPool2D>(ctx, node, circle::BuiltinOperator_MAX_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleMean *node)
