@@ -26,8 +26,10 @@ namespace backend
 namespace cpu_common
 {
 
-StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg)
-    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg}
+StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
+                                         IDynamicTensorManager *dynamic_tensor_manager)
+    : _const_mgr{new DynamicMemoryManager()}, _nonconst_mgr{new MemoryManager()}, _tensors{reg},
+      _dynamic_tensor_manager{dynamic_tensor_manager}
 {
   // DO NOTHING
 }
@@ -78,7 +80,7 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       bool as_const)
 {
   assert(!_tensors->getNativeTensor(ind));
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, nullptr);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, _dynamic_tensor_manager);
   _tensors->setNativeTensor(ind, tensor);
   _as_constants[ind] = as_const;
 }
