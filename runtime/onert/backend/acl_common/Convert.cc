@@ -213,6 +213,9 @@ asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, 
       //      If ACL support non-sigmoid logistic, should fix param values.
       return ::arm_compute::ActivationLayerInfo{
           ::arm_compute::ActivationLayerInfo::ActivationFunction::LOGISTIC};
+    case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
+      return ::arm_compute::ActivationLayerInfo{
+          ::arm_compute::ActivationLayerInfo::ActivationFunction::LEAKY_RELU, alpha};
     default:
       throw std::runtime_error{"Not supported, yet"};
       break;

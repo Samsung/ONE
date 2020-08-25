@@ -39,7 +39,8 @@ public:
     ELU,
     LOGISTIC,
     RELU,
-    TANH
+    TANH,
+    LEAKY_RELU
   };
 
   struct Param

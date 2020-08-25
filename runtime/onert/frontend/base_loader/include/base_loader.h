@@ -166,6 +166,7 @@ protected:
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
   void loadL2Normalization(const Operator *op, ir::Graph &subg);
+  void loadLeakyRelu(const Operator *op, ir::Graph &subg);
 
 protected:
   // Base address for mapped region for loading (if needed)
@@ -1630,6 +1631,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operato
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadLeakyRelu(const Operator *op, ir::Graph &subg)
+{
+  float alpha = op->builtin_options_as_LeakyReluOptions()->alpha();
+  loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LEAKY_RELU, alpha,
+                            1.f);
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1866,6 +1875,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:
       loadL2Normalization(op, subg);
+      break;
+    case BuiltinOperator::BuiltinOperator_LEAKY_RELU:
+      loadLeakyRelu(op, subg);
       return;
     default:
       throw std::runtime_error(
