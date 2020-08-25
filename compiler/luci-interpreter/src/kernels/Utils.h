@@ -31,6 +31,11 @@ namespace luci_interpreter
 namespace kernels
 {
 
+#define LUCI_INTERPRETER_CHECK(cond)                                                         \
+  if (!(cond))                                                                               \
+    throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + +"(" + \
+                             std::string(#cond) + ") was not true.");
+
 inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_size,
                               int32_t filter_size, int32_t out_size)
 {
