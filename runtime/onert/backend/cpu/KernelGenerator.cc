@@ -219,9 +219,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
 
-  auto dyn_tensor_manager = _tensor_builder->dynamicTensorManager();
-  auto dyn_shape_inferer =
-      std::make_shared<exec::DynamicShapeInferer>(_ctx, dyn_tensor_manager, _tensor_reg);
+  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
 
   _return_fn_seq = std::make_unique<exec::FunctionSequence>();
 

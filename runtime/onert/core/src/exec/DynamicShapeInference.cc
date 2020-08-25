@@ -712,7 +712,7 @@ void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
   if (output_shape != output->getShape() || output->buffer() == nullptr)
   {
     // change on output shape
-    _dynamic_tensor_manager->applyShape(output_ind, output_shape);
+    dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
   }
   assert(output->buffer() != nullptr);
 }
