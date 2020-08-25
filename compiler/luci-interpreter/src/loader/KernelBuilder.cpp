@@ -552,14 +552,12 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTranspose *node)
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleTransposeConv *node)
 {
-  assert(node->arity() == 3 || node->arity() == 4);
+  assert(node->arity() == 4);
 
   const Tensor *input_sizes = getInputTensor(node->inputSizes());
   const Tensor *filter = getInputTensor(node->filter());
   const Tensor *out_backprop = getInputTensor(node->outBackprop());
-  const Tensor *bias = nullptr;
-  // TODO Add Bias node and after luci updated as arity 4.
-  // const Tensor *bias = getInputTensor(node->bias());
+  const Tensor *bias = getOptionalInputTensor(node->bias());
 
   Tensor *output = getOutputTensor(node);
 
