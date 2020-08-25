@@ -38,13 +38,11 @@ namespace exec
 class DynamicShapeInferer : public ir::OperationVisitor
 {
 public:
-  DynamicShapeInferer(const ir::Operands &operands, backend::IDynamicTensorManager *tensor_manager,
+  DynamicShapeInferer(const ir::Operands &operands,
                       const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
-      : _operands(operands), _dynamic_tensor_manager(tensor_manager),
-        _tensor_registry(tensor_registry)
+      : _operands(operands), _tensor_registry(tensor_registry)
   {
     UNUSED_RELEASE(_operands);
-    UNUSED_RELEASE(_dynamic_tensor_manager);
     UNUSED_RELEASE(_tensor_registry);
   }
 
@@ -110,11 +108,6 @@ private:
    * @brief To get operand-level info, e.g., ir::Operand::isConstant()
    */
   const ir::Operands &_operands;
-  /**
-   * @brief To allocate memory for output tensor if needed
-   */
-  // TODO Remove this, as it is no longer used
-  backend::IDynamicTensorManager *_dynamic_tensor_manager;
   /**
    * @brief To get tensor object and access tensor-level info, e.g., ITensor::buffer()
    */
