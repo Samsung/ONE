@@ -95,17 +95,7 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
 {
-  auto find = _dealloc_tensor_map.find(op_ind);
-  if (find != _dealloc_tensor_map.end())
-  {
-    auto &input_set = find->second;
-    input_set.emplace(operand_ind);
-  }
-  else
-  {
-    _dealloc_tensor_map.emplace(
-        std::make_pair(op_ind, std::unordered_set<ir::OperandIndex>{operand_ind}));
-  }
+  _dealloc_tensor_map[op_ind].emplace(operand_ind);
 }
 
 void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
