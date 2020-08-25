@@ -37,6 +37,7 @@
 #include <kernels/Pad.h>
 #include <kernels/Reshape.h>
 #include <kernels/Reverse.h>
+#include <kernels/Rsqrt.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
@@ -528,6 +529,20 @@ TEST_F(KernelBuilderTest, ReverseV2)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Rsqrt)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRsqrt>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Rsqrt>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
 }
 
