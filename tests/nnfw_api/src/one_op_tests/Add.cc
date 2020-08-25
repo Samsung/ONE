@@ -29,10 +29,10 @@ TEST_F(GenModelTest, OneOp_Add_VarToConst)
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs}, {out});
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
-  _test_data->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
-  _test_data->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
-  TestableBackends({"acl_cl", "acl_neon", "cpu"});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
+  _context->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 }
 
 TEST_F(GenModelTest, OneOp_Add_VarToVar)
@@ -44,7 +44,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
   cgen.addOperatorAdd({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
-  _test_data->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
-  TestableBackends({"acl_cl", "acl_neon", "cpu"});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 }

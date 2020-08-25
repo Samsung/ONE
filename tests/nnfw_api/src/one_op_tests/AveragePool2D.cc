@@ -25,7 +25,7 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
                                 circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
-  _test_data->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
-  TestableBackends({"acl_cl", "acl_neon", "cpu"});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 }
