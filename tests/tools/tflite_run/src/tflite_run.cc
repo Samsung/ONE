@@ -220,13 +220,16 @@ int main(const int argc, char **argv)
         // Generate unsigned 8-bit integer input
         auto tensor_view = nnfw::tflite::TensorView<uint8_t>::make(*interpreter, o);
 
-        uint8_t value = 0;
+        auto fp = static_cast<uint8_t (nnfw::misc::RandomGenerator::*)(
+            const ::nnfw::misc::tensor::Shape &, const ::nnfw::misc::tensor::Index &)>(
+            &nnfw::misc::RandomGenerator::generate<uint8_t>);
+        const nnfw::misc::tensor::Object<uint8_t> data(tensor_view.shape(),
+                                                       std::bind(fp, randgen, _1, _2));
 
         nnfw::misc::tensor::iterate(tensor_view.shape())
             << [&](const nnfw::misc::tensor::Index &ind) {
-                 // TODO Generate random values
+                 const auto value = data.at(ind);
                  tensor_view.at(ind) = value;
-                 value = (value + 1) & 0xFF;
                };
       }
       else if (tensor->type == kTfLiteBool)
