@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_PASS_H__
-#define __ONERT_GRAPH_PASS_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_PASS_H__
+#define __ONERT_COMPILER_PASS_PASS_H__
 
 #include <string>
 
@@ -24,12 +24,12 @@ namespace onert
 namespace ir
 {
 class Graph;
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
@@ -37,7 +37,7 @@ namespace pass
 class Pass
 {
 public:
-  Pass(Graph &graph) : _graph{graph} {}
+  Pass(ir::Graph &graph) : _graph{graph} {}
   virtual ~Pass() = default;
 
 public:
@@ -45,11 +45,11 @@ public:
   virtual void run() = 0;
 
 protected:
-  Graph &_graph;
+  ir::Graph &_graph;
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_PASS_H__
+#endif // __ONERT_COMPILER_PASS_PASS_H__

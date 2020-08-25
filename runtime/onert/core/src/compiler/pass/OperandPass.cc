@@ -14,41 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_OPERAND_PASS_H__
-#define __ONERT_GRAPH_PASS_OPERAND_PASS_H__
+#include "OperandPass.h"
 
-#include "Pass.h"
-#include "ir/Index.h"
+#include "ir/Graph.h"
 
 namespace onert
 {
-namespace ir
-{
-class Operand;
-} // namespace ir
-} // namespace onert
-
-namespace onert
-{
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-class OperandPass : public Pass
+void OperandPass::run()
 {
-public:
-  using Pass::Pass;
-  virtual ~OperandPass() = default;
-
-public:
-  std::string id() override = 0;
-  void run() override final;
-  virtual void callback(const OperandIndex &i, Operand &o) = 0;
-};
+  _graph.operands().iterate(
+      [&](const ir::OperandIndex &index, ir::Operand &object) { callback(index, object); });
+}
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
-
-#endif // __ONERT_GRAPH_PASS_OPERAND_PASS_H__

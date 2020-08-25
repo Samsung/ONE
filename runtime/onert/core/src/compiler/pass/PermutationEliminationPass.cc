@@ -21,18 +21,18 @@
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-void PermutationEliminationPass::callback(const OperationIndex &ind, Operation &node)
+void PermutationEliminationPass::callback(const ir::OperationIndex &ind, ir::Operation &node)
 {
   _op_ind = ind;
   node.accept(*this);
 };
 
-void PermutationEliminationPass::visit(const operation::Permute &node)
+void PermutationEliminationPass::visit(const ir::operation::Permute &node)
 {
   auto in_operand = node.getInputs().at(0);
   auto out_operand = node.getOutputs().at(0);
@@ -65,7 +65,7 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
       if (!op_seq.getOutputs().contains(in_operand))
         return;
 
-      // Update OpSequence/Operation edges and Operand edges
+      // Update OpSequence/ir::Operation edges and ir::Operand edges
       op_seq.replaceOutputs(in_operand, out_operand);
       for (auto op : op_seq.operations())
       {
@@ -106,8 +106,8 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
     });
 
     VERBOSE(removePermute) << "Permute Op removed, node index : " << _op_ind << std::endl;
-    VERBOSE(removePermute) << "  - Input (removed) Operand : " << in_operand << std::endl;
-    VERBOSE(removePermute) << "  - Output(kept)    Operand : " << out_operand << std::endl;
+    VERBOSE(removePermute) << "  - Input (removed) ir::Operand : " << in_operand << std::endl;
+    VERBOSE(removePermute) << "  - Output(kept)    ir::Operand : " << out_operand << std::endl;
   }
   else
   {
@@ -145,11 +145,11 @@ void PermutationEliminationPass::visit(const operation::Permute &node)
     }
 
     VERBOSE(removePermute) << "Permute Op removed, node index : " << _op_ind << std::endl;
-    VERBOSE(removePermute) << "  - Input (kept)    Operand : " << in_operand << std::endl;
-    VERBOSE(removePermute) << "  - Output(removed) Operand : " << out_operand << std::endl;
+    VERBOSE(removePermute) << "  - Input (kept)    ir::Operand : " << in_operand << std::endl;
+    VERBOSE(removePermute) << "  - Output(removed) ir::Operand : " << out_operand << std::endl;
   }
 }
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert

@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-#include "OperandPass.h"
+#include "OperationPass.h"
 
+#include "ir/Index.h"
+#include "ir/Operation.h"
 #include "ir/Graph.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-void OperandPass::run()
+void OperationPass::run()
 {
-  _graph.operands().iterate(
-      [&](const OperandIndex &index, Operand &object) { callback(index, object); });
+  _graph.operations().iterate(
+      [&](const ir::OperationIndex &index, ir::Operation &node) { callback(index, node); });
 }
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert

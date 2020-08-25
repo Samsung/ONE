@@ -19,11 +19,11 @@
 #include <assert.h>
 #include <sstream>
 #include "util/logging.h"
-#include "pass/ConstantInsertionPass.h"
-#include "pass/ConstantLoweringPass.h"
-#include "pass/PermutationOperationPass.h"
-#include "pass/PermutationInsertionPass.h"
-#include "pass/PermutationEliminationPass.h"
+#include "compiler/pass/ConstantInsertionPass.h"
+#include "compiler/pass/ConstantLoweringPass.h"
+#include "compiler/pass/PermutationOperationPass.h"
+#include "compiler/pass/PermutationInsertionPass.h"
+#include "compiler/pass/PermutationEliminationPass.h"
 #include "ir/GraphIterator.h"
 #include "verifier/Verifier.h"
 #include "backend/Backend.h"
@@ -105,10 +105,10 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
     VERBOSE(OpSequences) << "dump without permutation" << std::endl;
     dumpOpSequences(_op_seqs, _graph.operations());
 
-    pass::ConstantInsertionPass ci_pass(*this);
+    compiler::pass::ConstantInsertionPass ci_pass(*this);
     ci_pass.run();
 
-    pass::ConstantLoweringPass cl_pass(*this);
+    compiler::pass::ConstantLoweringPass cl_pass(*this);
     cl_pass.run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
@@ -119,13 +119,13 @@ LoweredGraph::LoweredGraph(const Graph &graph, const compiler::CompilerOptions &
 
   // Run Permutation Passes
   {
-    pass::PermutationOperationPass po_pass(*this);
+    compiler::pass::PermutationOperationPass po_pass(*this);
     po_pass.run();
 
-    pass::PermutationInsertionPass pi_pass(*this);
+    compiler::pass::PermutationInsertionPass pi_pass(*this);
     pi_pass.run();
 
-    pass::PermutationEliminationPass pe_pass(*this);
+    compiler::pass::PermutationEliminationPass pe_pass(*this);
     pe_pass.run();
 
     VERBOSE(OpSequences) << "dump with permutation" << std::endl;

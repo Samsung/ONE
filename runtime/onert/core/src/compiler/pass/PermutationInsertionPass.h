@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_PERMUTATION_INSERTION_PASS_H__
-#define __ONERT_GRAPH_PASS_PERMUTATION_INSERTION_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_PERMUTATION_INSERTION_PASS_H__
+#define __ONERT_COMPILER_PASS_PERMUTATION_INSERTION_PASS_H__
 
 #include "LoweredOperandPass.h"
 #include "compiler/BackendManager.h"
-#include "ir/Operand.h" //for OperationIndex
+#include "ir/Operand.h"
 #include "ir/operand/PermuteFactor.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
@@ -36,7 +36,7 @@ public:
 
 public:
   std::string id() override { return "PermutationInsertionPass"; }
-  void callback(const OperandIndex &index, Operand &object) override;
+  void callback(const ir::OperandIndex &index, ir::Operand &object) override;
 
 private:
   /**
@@ -45,14 +45,14 @@ private:
    * @param operand_index is the target operand index for the insertion
    * @param factor is the output operand's backend type and layout
    *
-   * @return OperationIndex
+   * @return ir::OperationIndex
    */
-  OperationIndex insertPermute(const OperandIndex &operand_index,
-                               const operand::PermuteFactor &factor);
+  ir::OperationIndex insertPermute(const ir::OperandIndex &operand_index,
+                                   const ir::operand::PermuteFactor &factor);
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_PERMUTATION_INSERTION_PASS_H__
+#endif // __ONERT_COMPILER_PASS_PERMUTATION_INSERTION_PASS_H__

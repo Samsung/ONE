@@ -19,8 +19,8 @@
  * @brief This file contains OperationPass class
  */
 
-#ifndef __ONERT_GRAPH_PASS_OPERATION_PASS_H__
-#define __ONERT_GRAPH_PASS_OPERATION_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_OPERATION_PASS_H__
+#define __ONERT_COMPILER_PASS_OPERATION_PASS_H__
 
 #include "Pass.h"
 #include "ir/Index.h"
@@ -35,7 +35,7 @@ class Operation;
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
@@ -62,7 +62,7 @@ public:
    * @param index is the index of a node in graph
    * @param node is the node in graph
    */
-  virtual void callback(const OperationIndex &index, Operation &node) = 0;
+  virtual void callback(const ir::OperationIndex &index, ir::Operation &node) = 0;
 
   /**
    * @brief Run the pass
@@ -71,7 +71,7 @@ public:
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_OPERATION_PASS_H__
+#endif // __ONERT_COMPILER_PASS_OPERATION_PASS_H__

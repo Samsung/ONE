@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,41 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_CONSTANT_LOWERING_PASS_H__
-#define __ONERT_GRAPH_PASS_CONSTANT_LOWERING_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_OPERAND_PASS_H__
+#define __ONERT_COMPILER_PASS_OPERAND_PASS_H__
 
-#include <ir/Index.h>
-#include "LoweredOperationPass.h"
+#include "Pass.h"
+#include "ir/Index.h"
 
 namespace onert
 {
 namespace ir
 {
-namespace pass
-{
-
-class ConstantLoweringPass : public LoweredOperationPass
-{
-public:
-  using LoweredOperationPass::LoweredOperationPass;
-
-public:
-  std::string id() final { return "ConstantLoweringPass"; }
-
-public:
-  void callback(const OperationIndex &index, Operation &node) final;
-};
-
-} // namespace pass
+class Operand;
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_CONSTANT_LOWERING_PASS_H__
+namespace onert
+{
+namespace compiler
+{
+namespace pass
+{
+
+class OperandPass : public Pass
+{
+public:
+  using Pass::Pass;
+  virtual ~OperandPass() = default;
+
+public:
+  std::string id() override = 0;
+  void run() override final;
+  virtual void callback(const ir::OperandIndex &i, ir::Operand &o) = 0;
+};
+
+} // namespace pass
+} // namespace compiler
+} // namespace onert
+
+#endif // __ONERT_COMPILER_PASS_OPERAND_PASS_H__

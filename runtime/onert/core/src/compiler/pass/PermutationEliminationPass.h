@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_GRAPH_PASS_PERMUTATION_ELIMINATION_PASS_H__
-#define __ONERT_GRAPH_PASS_PERMUTATION_ELIMINATION_PASS_H__
+#ifndef __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__
+#define __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__
 
 #include "ir/OperationVisitor.h"
 #include "LoweredOperationPass.h"
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
@@ -40,7 +40,7 @@ namespace pass
  * @note This is an optimization pass which means that everything should work fine even if this pass
  *       was skipped.
  */
-class PermutationEliminationPass : public LoweredOperationPass, public OperationVisitor
+class PermutationEliminationPass : public LoweredOperationPass, public ir::OperationVisitor
 {
 public:
   using LoweredOperationPass::LoweredOperationPass;
@@ -49,17 +49,17 @@ public:
   std::string id() final { return "PermutationEliminationPass"; }
 
 public:
-  void callback(const OperationIndex &i, Operation &n) final;
+  void callback(const ir::OperationIndex &i, ir::Operation &n) final;
 
 private:
-  void visit(const operation::Permute &) final;
+  void visit(const ir::operation::Permute &) final;
 
 private:
   ir::OperationIndex _op_ind;
 };
 
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_GRAPH_PASS_PERMUTATION_ELIMINATION_PASS_H__
+#endif // __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__

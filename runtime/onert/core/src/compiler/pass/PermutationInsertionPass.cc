@@ -31,12 +31,12 @@
 
 namespace onert
 {
-namespace ir
+namespace compiler
 {
 namespace pass
 {
 
-void PermutationInsertionPass::callback(const OperandIndex &index, Operand &object)
+void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Operand &object)
 {
   auto &&operand_li = _lowered_graph.getLowerInfo(index);
   assert(operand_li);
@@ -48,10 +48,10 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
     return;
   }
 
-  std::list<OperationIndex> permute_indexes;
+  std::list<ir::OperationIndex> permute_indexes;
 
   // Build a map for all necessary type of operands
-  std::unordered_map<operand::PermuteFactor, OperandIndex> factor_to_index;
+  std::unordered_map<ir::operand::PermuteFactor, ir::OperandIndex> factor_to_index;
   {
     assert(operand_li->def_factors().size() == 1);
     for (auto factor : operand_li->def_factors())
@@ -72,7 +72,7 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
 
   // Update operations' input that uses this operand
   {
-    std::list<OperationIndex> remove_list;
+    std::list<ir::OperationIndex> remove_list;
 
     auto uses = object.getUses();
     for (auto use : uses)
@@ -121,8 +121,8 @@ void PermutationInsertionPass::callback(const OperandIndex &index, Operand &obje
   }
 }
 
-OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &operand_index,
-                                                       const operand::PermuteFactor &factor)
+ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandIndex &operand_index,
+                                                           const ir::operand::PermuteFactor &factor)
 {
   assert(!_graph.isBuildingPhase());
 
@@ -143,14 +143,14 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   auto output_backend = factor.backend();
   // NOTE Permute may not have specific layout because the layout of input and output may be
   // different.
-  const auto permute_node_layout = Layout::UNKNOWN;
+  const auto permute_node_layout = ir::Layout::UNKNOWN;
   // NOTE If one backend supports several layout, the backend must support Permute operation
   const backend::Backend *permute_node_backend = compiler::BackendManager::get().getControlflow();
   if (input_backend == output_backend)
   {
     permute_node_backend = input_backend;
   }
-  const operand::PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
+  const ir::operand::PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
 
   // Update LowerInfo of input operand
   auto operand_lower_info = _lowered_graph.getLowerInfo(operand_index);
@@ -158,7 +158,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   operand_lower_info->addUsePermuteFactor(permute_node_factor);
 
   // Update LowerInfo of output operand
-  auto out_operand_li = std::make_unique<operand::LowerInfo>();
+  auto out_operand_li = std::make_unique<ir::operand::LowerInfo>();
 
   // The input and output factors of all nodes will be the same except Permute. So Tensor's
   // allocators allocates memory using only the information of def permutation factor now.
@@ -170,13 +170,13 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   // Insert permute operation to the graph
   const auto input_layout = input_factor.layout();
   const auto output_layout = factor.layout();
-  using Permute = operation::Permute;
+  using Permute = ir::operation::Permute;
   const auto permute_type = [&]() {
-    if (input_layout == Layout::NHWC && output_layout == Layout::NCHW)
+    if (input_layout == ir::Layout::NHWC && output_layout == ir::Layout::NCHW)
     {
       return Permute::Type::NHWC_TO_NCHW;
     }
-    else if (input_layout == Layout::NCHW && output_layout == Layout::NHWC)
+    else if (input_layout == ir::Layout::NCHW && output_layout == ir::Layout::NHWC)
     {
       return Permute::Type::NCHW_TO_NHWC;
     }
@@ -200,7 +200,7 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
     auto &op_seq = _lowered_graph.op_seqs().at(op_seq_index);
     op_seq.setInputs(node.getInputs());
     op_seq.setOutputs(node.getOutputs());
-    _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<operation::LowerInfo>(
+    _lowered_graph.setLowerInfo(op_seq_index, std::make_unique<ir::operation::LowerInfo>(
                                                   permute_node_backend, permute_node_layout));
   }
 
@@ -212,5 +212,5 @@ OperationIndex PermutationInsertionPass::insertPermute(const OperandIndex &opera
   return node_index;
 }
 } // namespace pass
-} // namespace ir
+} // namespace compiler
 } // namespace onert
