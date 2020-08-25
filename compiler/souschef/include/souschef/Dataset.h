@@ -19,6 +19,8 @@
 
 #include <vector>
 
+#include <google/protobuf/repeated_field.h>
+
 namespace souschef
 {
 
@@ -56,6 +58,21 @@ public:
 private:
   std::vector<T> _vec;
 };
+
+template <typename T> std::vector<T> as_vector(const ::google::protobuf::RepeatedPtrField<T> &field)
+{
+  std::vector<T> res;
+  for (const auto &elem : field)
+  {
+    res.emplace_back(elem);
+  }
+  return res;
+}
+
+template <typename T> Dataset<T> as_dataset(const ::google::protobuf::RepeatedPtrField<T> &field)
+{
+  return Dataset<T>(as_vector<T>(field));
+}
 
 } // namespace souschef
 
