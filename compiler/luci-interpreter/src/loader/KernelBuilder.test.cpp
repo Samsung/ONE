@@ -705,17 +705,16 @@ TEST_F(KernelBuilderTest, Transpose)
 
 TEST_F(KernelBuilderTest, TransposeConv)
 {
-  // TODO Add Bias node and after luci updated as arity 4.
   auto *output_shape = createInputNode();
   auto *filter = createInputNode();
   auto *input = createInputNode();
-  // auto *bias = createInputNode();
+  auto *bias = createInputNode();
 
   auto *op = createNode<luci::CircleTransposeConv>();
   op->inputSizes(output_shape);
   op->filter(filter);
   op->outBackprop(input);
-  // op->bias(bias);
+  op->bias(bias);
 
   op->padding(luci::Padding::SAME);
   op->stride()->h(11);
@@ -728,7 +727,7 @@ TEST_F(KernelBuilderTest, TransposeConv)
   checkTensor(kernel->filter(), filter);
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
-  // checkTensor(kernel->bias(), bias);
+  checkTensor(kernel->bias(), bias);
   EXPECT_THAT(kernel->params().padding, Eq(op->padding()));
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
