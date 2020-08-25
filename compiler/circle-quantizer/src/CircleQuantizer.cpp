@@ -36,6 +36,14 @@ using OptionHook = std::function<int(const char **)>;
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
 
+void print_exclusive_options(void)
+{
+  std::cout << "Use only one of the 3 options below." << std::endl;
+  std::cout << "    --quantize_dequantize_weights" << std::endl;
+  std::cout << "    --quantize_with_minmax" << std::endl;
+  std::cout << "    --requantize" << std::endl;
+}
+
 void print_version(void)
 {
   std::cout << "circle-quantizer version " << vconone::get_string() << std::endl;
@@ -103,6 +111,11 @@ int entry(int argc, char **argv)
 
   if (arser[qdqw])
   {
+    if (arser[qwmm] || arser[rq])
+    {
+      print_exclusive_options();
+      return 255;
+    }
     auto values = arser.get<std::vector<std::string>>(qdqw);
     if (values.size() != 3)
     {
@@ -118,6 +131,11 @@ int entry(int argc, char **argv)
 
   if (arser[qwmm])
   {
+    if (arser[qdqw] || arser[rq])
+    {
+      print_exclusive_options();
+      return 255;
+    }
     auto values = arser.get<std::vector<std::string>>(qwmm);
     if (values.size() != 3)
     {
@@ -133,6 +151,11 @@ int entry(int argc, char **argv)
 
   if (arser[rq])
   {
+    if (arser[qwmm] || arser[qdqw])
+    {
+      print_exclusive_options();
+      return 255;
+    }
     auto values = arser.get<std::vector<std::string>>(rq);
     if (values.size() != 2)
     {
