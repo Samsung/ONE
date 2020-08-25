@@ -22,7 +22,7 @@ MaxPool2D_000.opt
 Mean_000.opt
 Mean_001.opt
 Mul_000.opt
-Net_TConv_BN_000.opt
+#Net_TConv_BN_000.opt
 Net_UnpackAdd_001.opt
 Pad_000.opt
 Quantization_000.opt
@@ -33,8 +33,8 @@ Reshape_002.opt
 SpaceToDepth_U8_000.opt
 Split_000.opt
 #Tanh_U8_000.opt
-TransposeConv_000.opt
-TransposeConv_001.opt
+#TransposeConv_000.opt
+#TransposeConv_001.opt
 Transpose_000.opt
 Unpack_000.opt
 Unpack_001.opt
