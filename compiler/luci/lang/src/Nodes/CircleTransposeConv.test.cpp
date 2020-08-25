@@ -69,8 +69,8 @@ TEST(CircleTransposeConvTest, arity_NEG)
 {
   luci::CircleTransposeConv trc_node;
 
-  ASSERT_NO_THROW(trc_node.arg(2));
-  ASSERT_THROW(trc_node.arg(3), std::out_of_range);
+  ASSERT_NO_THROW(trc_node.arg(3));
+  ASSERT_THROW(trc_node.arg(4), std::out_of_range);
 }
 
 TEST(CircleTransposeConvTest, visit_mutable_NEG)
