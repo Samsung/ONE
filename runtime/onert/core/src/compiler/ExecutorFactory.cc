@@ -87,14 +87,14 @@ ExecutorFactory::ExecutorFactory()
                                std::placeholders::_3, true);
 }
 
-exec::IExecutor *ExecutorFactory::create(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                          const compiler::CompilerOptions &options,
                                          const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
   return _map.at(options.executor)(std::move(lowered_graph), options, executor_map);
 }
 
-void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
+void ExecutorFactory::initializeBackendContext(compiler::LoweredGraph *lowered_graph)
 {
   struct Entry
   {
@@ -132,7 +132,7 @@ void ExecutorFactory::initializeBackendContext(ir::LoweredGraph *lowered_graph)
   }
 }
 
-void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
+void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_graph,
                                             const std::vector<ir::OpSequenceIndex> &order)
 {
   for (const auto index : order)
@@ -183,7 +183,7 @@ void ExecutorFactory::runTensorRegistration(ir::LoweredGraph *lowered_graph,
 }
 
 std::vector<std::shared_ptr<backend::ITensor>>
-ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
+ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
                                           const ir::OperandIndexSequence &indices)
 {
   std::vector<std::shared_ptr<backend::ITensor>> ret;
@@ -208,7 +208,7 @@ ExecutorFactory::initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
   return ret;
 }
 
-void ExecutorFactory::prepareExternalTensors(ir::LoweredGraph &lowered_graph,
+void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_graph,
                                              TensorBuilders &tensor_builders)
 {
   lowered_graph.op_seqs().iterate(
@@ -234,7 +234,7 @@ void ExecutorFactory::prepareExternalTensors(ir::LoweredGraph &lowered_graph,
 }
 
 exec::IExecutor *
-ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                       const compiler::CompilerOptions &options,
                                       const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
@@ -352,7 +352,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_
 }
 
 exec::IExecutor *ExecutorFactory::createDataflowExecutor(
-    std::unique_ptr<ir::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
+    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const compiler::CompilerOptions &options,
     const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel)
 {
   const auto &backend_contexts = lowered_graph->backend_contexts();

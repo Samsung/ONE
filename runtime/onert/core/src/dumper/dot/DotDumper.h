@@ -15,7 +15,7 @@
  */
 
 #include "ir/Graph.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 #define __ONERT_DUMPER_DOT_DOT_DUMPER_H__
@@ -42,7 +42,7 @@ public:
       : _lowered_graph{nullptr}, _graph(graph), _level{level}
   {
   }
-  DotDumper(const ir::LoweredGraph *lowered_graph, Level level)
+  DotDumper(const compiler::LoweredGraph *lowered_graph, Level level)
       : _lowered_graph{lowered_graph}, _graph(_lowered_graph->graph()), _level{level}
   {
   }
@@ -57,7 +57,7 @@ public:
   void dump(const std::string &tag);
 
 private:
-  const ir::LoweredGraph *_lowered_graph;
+  const compiler::LoweredGraph *_lowered_graph;
   const ir::Graph &_graph;
   Level _level;
 };

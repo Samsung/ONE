@@ -46,7 +46,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    * @param code_map OpSequence and its code map
    */
-  LinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+  LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                  const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                  const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
                  const compiler::TensorBuilders &tensor_builders, compiler::CodeMap &&code_map,

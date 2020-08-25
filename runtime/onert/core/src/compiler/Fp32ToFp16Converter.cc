@@ -44,7 +44,7 @@ namespace onert
 namespace compiler
 {
 
-Fp32ToFp16Converter::Fp32ToFp16Converter(ir::LoweredGraph &lowered_graph)
+Fp32ToFp16Converter::Fp32ToFp16Converter(compiler::LoweredGraph &lowered_graph)
     : _lowered_graph{lowered_graph}
 {
   VERBOSE(Fp32ToFp16Converter) << "Fp16 Enable on" << std::endl;

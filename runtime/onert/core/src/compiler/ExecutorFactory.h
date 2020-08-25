@@ -21,7 +21,7 @@
 
 #include "backend/ITensor.h"
 #include "exec/IExecutor.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 #include "TensorBuilders.h"
 
 namespace onert
@@ -35,7 +35,7 @@ public:
   static ExecutorFactory &get();
 
 public:
-  exec::IExecutor *create(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+  exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                           const compiler::CompilerOptions &options,
                           const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
@@ -43,28 +43,28 @@ private:
   ExecutorFactory();
 
 private:
-  static void initializeBackendContext(ir::LoweredGraph *lowered_graph);
-  static void runTensorRegistration(ir::LoweredGraph *lowered_graph,
+  static void initializeBackendContext(compiler::LoweredGraph *lowered_graph);
+  static void runTensorRegistration(compiler::LoweredGraph *lowered_graph,
                                     const std::vector<ir::OpSequenceIndex> &order);
   static std::vector<std::shared_ptr<backend::ITensor>>
-  initializeModelIOTensors(ir::LoweredGraph &lowered_graph,
+  initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
                            const ir::OperandIndexSequence &indices);
-  static void prepareExternalTensors(ir::LoweredGraph &lowered_graph,
+  static void prepareExternalTensors(compiler::LoweredGraph &lowered_graph,
                                      TensorBuilders &tensor_builders);
   static exec::IExecutor *
-  createLinearExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+  createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,
                        const std::shared_ptr<exec::ExecutorMap> &executor_map);
   static exec::IExecutor *
-  createDataflowExecutor(std::unique_ptr<ir::LoweredGraph> lowered_graph,
+  createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const compiler::CompilerOptions &options,
                          const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel);
 
 private:
-  std::unordered_map<
-      std::string, std::function<exec::IExecutor *(
-                       std::unique_ptr<ir::LoweredGraph>, const compiler::CompilerOptions &options,
-                       const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
+  std::unordered_map<std::string, std::function<exec::IExecutor *(
+                                      std::unique_ptr<compiler::LoweredGraph>,
+                                      const compiler::CompilerOptions &options,
+                                      const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
       _map;
 };
 

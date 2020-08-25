@@ -17,7 +17,7 @@
 #include "GraphIterator.h"
 
 #include "ir/OperationIndexMap.h"
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 
 namespace onert
 {

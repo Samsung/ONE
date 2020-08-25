@@ -17,7 +17,7 @@
 #ifndef __ONERT_COMPILER_FP32_TO_FP16_CONVERTER_H__
 #define __ONERT_COMPILER_FP32_TO_FP16_CONVERTER_H__
 
-#include "ir/LoweredGraph.h"
+#include "compiler/LoweredGraph.h"
 
 namespace onert
 {
@@ -28,7 +28,7 @@ namespace compiler
 class Fp32ToFp16Converter
 {
 public:
-  Fp32ToFp16Converter(ir::LoweredGraph &lowered_graph);
+  Fp32ToFp16Converter(compiler::LoweredGraph &lowered_graph);
 
 public:
   void run();
@@ -89,7 +89,7 @@ private:
   void convertOperandsOfOpSequence(ir::OpSequence &op_seq);
 
 private:
-  ir::LoweredGraph &_lowered_graph;
+  compiler::LoweredGraph &_lowered_graph;
   OpSeqIndexList _list_fp32_to_fp16;
   OpSeqIndexList _list_fp16_to_fp32;
 };
