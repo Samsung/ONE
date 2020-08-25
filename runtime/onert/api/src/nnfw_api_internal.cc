@@ -18,6 +18,7 @@
 #include "CustomKernelRegistry.h"
 #include "compiler/Compiler.h"
 #include "util/ConfigSource.h"
+#include "util/Exceptions.h"
 #include "exec/Execution.h"
 #include "circle_loader.h"
 #include "tflite_loader.h"
@@ -239,6 +240,12 @@ NNFW_STATUS nnfw_session::run()
   try
   {
     _execution->execute();
+  }
+  catch (const onert::InsufficientBufferSizeException &e)
+  {
+    // Currently insufficient buffer always means output buffer.
+    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
   }
   catch (const std::exception &e)
   {
