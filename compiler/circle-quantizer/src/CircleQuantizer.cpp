@@ -52,6 +52,7 @@ int entry(int argc, char **argv)
 
   const std::string qdqw = "--quantize_dequantize_weights";
   const std::string qwmm = "--quantize_with_minmax";
+  const std::string rq = "--requantize";
 
   arser::Arser arser("circle-quantizer provides circle model quantization");
 
@@ -77,6 +78,14 @@ int entry(int argc, char **argv)
       .help("Quantize with min/max values. "
             "Three arguments required: input_dtype(float32) "
             "output_dtype(uint8) granularity(layer, channel)");
+
+  arser.add_argument(rq)
+      .nargs(2)
+      .type(arser::DataType::STR_VEC)
+      .required(false)
+      .help("Requantize a quantized model. "
+            "Two arguments required: input_dtype(int8) "
+            "output_dtype(uint8)");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
@@ -120,6 +129,20 @@ int entry(int argc, char **argv)
     options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
+  }
+
+  if (arser[rq])
+  {
+    auto values = arser.get<std::vector<std::string>>(rq);
+    if (values.size() != 2)
+    {
+      std::cerr << arser;
+      return 255;
+    }
+    options->enable(Algorithms::Requantize);
+
+    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
   }
 
   std::string input_path = arser.get<std::string>("input");
