@@ -111,6 +111,249 @@ void export_node(ExportContext &ctx, loco::Node *node, circle::BuiltinOperator b
   ctx.gd._operators.push_back(op_offset);
 }
 
+void export_node(ExportContext &ctx, luci::CircleAddN *node)
+{
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_ADD_N, node->op_version());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  for (uint32_t i = 0; i < node->arity(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->inputs(i)));
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateAddNOptions(ctx.builder);
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_AddNOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleCast *node)
+{
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_CAST, node->op_version());
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+
+  flatbuffers::Offset<Operator> op_offset;
+  if (node->out_data_type() != loco::DataType::Unknown)
+  {
+    auto options = CreateCastOptions(ctx.builder, to_circle_tensortype(node->in_data_type()),
+                                     to_circle_tensortype(node->out_data_type()));
+    op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                               circle::BuiltinOptions_CastOptions, options.Union());
+  }
+  else
+  {
+    op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs);
+  }
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleConcatenation *node)
+{
+  uint32_t op_idx =
+      ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_CONCATENATION, node->op_version());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+
+  for (uint32_t i = 0; i < node->numValues(); ++i)
+    inputs_vec.push_back(get_tensor_index(node->values(i)));
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateConcatenationOptions(ctx.builder, node->axis(),
+                                            to_circle_actfunc(node->fusedActivationFunction()));
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ConcatenationOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleCustom *node)
+{
+  auto custom_outputs = loco::succs(node);
+
+  uint32_t op_idx = ctx.md.registerCustomOpcode(node->custom_code());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t index = 0; index < node->numInputs(); index++)
+  {
+    inputs_vec.push_back(get_tensor_index(node->inputs(index)));
+  }
+  for (uint32_t index = 0; index < custom_outputs.size(); index++)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : custom_outputs)
+    {
+      auto custom_out = loco::must_cast<luci::CircleCustomOut *>(out);
+      if (custom_out->index() == static_cast<int32_t>(index))
+      {
+        outputs_vec.push_back(get_tensor_index(custom_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid Custom output");
+    }
+  }
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
+  std::vector<uint8_t> custom_options_vec{node->custom_options().begin(),
+                                          node->custom_options().end()};
+  circle_custom_options = ctx.builder.CreateVector(custom_options_vec);
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE,
+                                  flatbuffers::Offset<void>(), circle_custom_options);
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleIf *node)
+{
+  auto if_outs = loco::succs(node);
+  assert(if_outs.size() == node->output_count());
+
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_IF, node->op_version());
+  std::vector<int32_t> inputs_vec;
+  std::vector<int32_t> outputs_vec;
+
+  inputs_vec.push_back(get_tensor_index(node->cond()));
+  for (uint32_t idx = 0; idx < node->input_count(); ++idx)
+    inputs_vec.push_back(get_tensor_index(node->input(idx)));
+
+  for (uint32_t idx = 0; idx < node->output_count(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : if_outs)
+    {
+      auto if_out = loco::must_cast<luci::CircleIfOut *>(out);
+      if (if_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(if_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid CircleIf output");
+    }
+  }
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateIfOptions(ctx.builder, node->then_branch(), node->else_branch());
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_IfOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleNonMaxSuppressionV4 *node)
+{
+  auto nms_outs = loco::succs(node);
+  assert(nms_outs.size() == 2);
+
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_NON_MAX_SUPPRESSION_V4,
+                                                 node->op_version());
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->boxes()),           get_tensor_index(node->scores()),
+      get_tensor_index(node->max_output_size()), get_tensor_index(node->iou_threshold()),
+      get_tensor_index(node->score_threshold()),
+  };
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < nms_outs.size(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : nms_outs)
+    {
+      auto nms_out = loco::must_cast<luci::CircleNonMaxSuppressionV4Out *>(out);
+      if (nms_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(nms_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid NonMaxSuppressionV4 output");
+    }
+  }
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateNonMaxSuppressionV4Options(ctx.builder);
+  auto op_offset =
+      CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_NonMaxSuppressionV4Options, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleNonMaxSuppressionV5 *node)
+{
+  auto nms_outs = loco::succs(node);
+  assert(nms_outs.size() == 3);
+
+  uint32_t op_idx = ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_NON_MAX_SUPPRESSION_V5,
+                                                 node->op_version());
+  std::vector<int32_t> inputs_vec{
+      get_tensor_index(node->boxes()),           get_tensor_index(node->scores()),
+      get_tensor_index(node->max_output_size()), get_tensor_index(node->iou_threshold()),
+      get_tensor_index(node->score_threshold()), get_tensor_index(node->soft_nms_sigma()),
+  };
+  std::vector<int32_t> outputs_vec;
+
+  for (uint32_t idx = 0; idx < nms_outs.size(); ++idx)
+  {
+    // store in order of index
+    bool found = false;
+    for (auto out : nms_outs)
+    {
+      auto nms_out = loco::must_cast<luci::CircleNonMaxSuppressionV5Out *>(out);
+      if (nms_out->index() == static_cast<int32_t>(idx))
+      {
+        outputs_vec.push_back(get_tensor_index(nms_out));
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      INTERNAL_EXN("Invalid NonMaxSuppressionV5 output");
+    }
+  }
+
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateNonMaxSuppressionV5Options(ctx.builder);
+  auto op_offset =
+      CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                     circle::BuiltinOptions_NonMaxSuppressionV5Options, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
+void export_node(ExportContext &ctx, luci::CircleReverseV2 *node)
+{
+  uint32_t op_idx =
+      ctx.md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2, node->op_version());
+  std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()), get_tensor_index(node->axis())};
+  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
+  auto inputs = ctx.builder.CreateVector(inputs_vec);
+  auto outputs = ctx.builder.CreateVector(outputs_vec);
+  auto options = CreateReverseV2Options(ctx.builder);
+  auto op_offset = CreateOperator(ctx.builder, op_idx, inputs, outputs,
+                                  circle::BuiltinOptions_ReverseSequenceOptions, options.Union());
+  ctx.gd._operators.push_back(op_offset);
+}
+
 class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
                                 public loco::CanonicalNodeMutableVisitor<void>
 {
@@ -298,19 +541,8 @@ void OperationExporter::visit(luci::CircleAdd *node)
 
 void OperationExporter::visit(luci::CircleAddN *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_ADD_N, node->op_version());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-
-  for (uint32_t i = 0; i < node->arity(); ++i)
-    inputs_vec.push_back(get_tensor_index(node->inputs(i)));
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateAddNOptions(builder);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_AddNOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleArgMax *node)
@@ -340,25 +572,8 @@ void OperationExporter::visit(luci::CircleBatchMatMul *node)
 
 void OperationExporter::visit(luci::CircleCast *node)
 {
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_CAST, node->op_version());
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->x())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-
-  flatbuffers::Offset<Operator> op_offset;
-  if (node->out_data_type() != loco::DataType::Unknown)
-  {
-    auto options = CreateCastOptions(builder, to_circle_tensortype(node->in_data_type()),
-                                     to_circle_tensortype(node->out_data_type()));
-    op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_CastOptions,
-                               options.Union());
-  }
-  else
-  {
-    op_offset = CreateOperator(builder, op_idx, inputs, outputs);
-  }
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleCeil *node)
@@ -368,21 +583,8 @@ void OperationExporter::visit(luci::CircleCeil *node)
 
 void OperationExporter::visit(luci::CircleConcatenation *node)
 {
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(circle::BuiltinOperator_CONCATENATION, node->op_version());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-
-  for (uint32_t i = 0; i < node->numValues(); ++i)
-    inputs_vec.push_back(get_tensor_index(node->values(i)));
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateConcatenationOptions(builder, node->axis(),
-                                            to_circle_actfunc(node->fusedActivationFunction()));
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ConcatenationOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleBatchToSpaceND *node)
@@ -410,45 +612,8 @@ void OperationExporter::visit(luci::CircleCos *node)
 
 void OperationExporter::visit(luci::CircleCustom *node)
 {
-  auto custom_outputs = loco::succs(node);
-
-  uint32_t op_idx = md.registerCustomOpcode(node->custom_code());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec;
-
-  for (uint32_t index = 0; index < node->numInputs(); index++)
-  {
-    inputs_vec.push_back(get_tensor_index(node->inputs(index)));
-  }
-  for (uint32_t index = 0; index < custom_outputs.size(); index++)
-  {
-    // store in order of index
-    bool found = false;
-    for (auto out : custom_outputs)
-    {
-      auto custom_out = loco::must_cast<luci::CircleCustomOut *>(out);
-      if (custom_out->index() == static_cast<int32_t>(index))
-      {
-        outputs_vec.push_back(get_tensor_index(custom_out));
-        found = true;
-        break;
-      }
-    }
-    if (!found)
-    {
-      INTERNAL_EXN("Invalid Custom output");
-    }
-  }
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
-  std::vector<uint8_t> custom_options_vec{node->custom_options().begin(),
-                                          node->custom_options().end()};
-  circle_custom_options = builder.CreateVector(custom_options_vec);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs, circle::BuiltinOptions_NONE,
-                                  flatbuffers::Offset<void>(), circle_custom_options);
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleDepthToSpace *node)
@@ -558,43 +723,8 @@ void OperationExporter::visit(luci::CircleGreaterEqual *node)
 
 void OperationExporter::visit(luci::CircleIf *node)
 {
-  auto if_outs = loco::succs(node);
-  assert(if_outs.size() == node->output_count());
-
-  uint32_t op_idx = md.registerBuiltinOpcode(circle::BuiltinOperator_IF, node->op_version());
-  std::vector<int32_t> inputs_vec;
-  std::vector<int32_t> outputs_vec;
-
-  inputs_vec.push_back(get_tensor_index(node->cond()));
-  for (uint32_t idx = 0; idx < node->input_count(); ++idx)
-    inputs_vec.push_back(get_tensor_index(node->input(idx)));
-
-  for (uint32_t idx = 0; idx < node->output_count(); ++idx)
-  {
-    // store in order of index
-    bool found = false;
-    for (auto out : if_outs)
-    {
-      auto if_out = loco::must_cast<luci::CircleIfOut *>(out);
-      if (if_out->index() == static_cast<int32_t>(idx))
-      {
-        outputs_vec.push_back(get_tensor_index(if_out));
-        found = true;
-        break;
-      }
-    }
-    if (!found)
-    {
-      INTERNAL_EXN("Invalid CircleIf output");
-    }
-  }
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateIfOptions(builder, node->then_branch(), node->else_branch());
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_IfOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleL2Normalize *node)
@@ -729,88 +859,14 @@ void OperationExporter::visit(luci::CircleNeg *node)
 
 void OperationExporter::visit(luci::CircleNonMaxSuppressionV4 *node)
 {
-  auto nms_outs = loco::succs(node);
-  assert(nms_outs.size() == 2);
-
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(circle::BuiltinOperator_NON_MAX_SUPPRESSION_V4, node->op_version());
-  std::vector<int32_t> inputs_vec{
-      get_tensor_index(node->boxes()),           get_tensor_index(node->scores()),
-      get_tensor_index(node->max_output_size()), get_tensor_index(node->iou_threshold()),
-      get_tensor_index(node->score_threshold()),
-  };
-  std::vector<int32_t> outputs_vec;
-
-  for (uint32_t idx = 0; idx < nms_outs.size(); ++idx)
-  {
-    // store in order of index
-    bool found = false;
-    for (auto out : nms_outs)
-    {
-      auto nms_out = loco::must_cast<luci::CircleNonMaxSuppressionV4Out *>(out);
-      if (nms_out->index() == static_cast<int32_t>(idx))
-      {
-        outputs_vec.push_back(get_tensor_index(nms_out));
-        found = true;
-        break;
-      }
-    }
-    if (!found)
-    {
-      INTERNAL_EXN("Invalid NonMaxSuppressionV4 output");
-    }
-  }
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateNonMaxSuppressionV4Options(builder);
-  auto op_offset =
-      CreateOperator(builder, op_idx, inputs, outputs,
-                     circle::BuiltinOptions_NonMaxSuppressionV4Options, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleNonMaxSuppressionV5 *node)
 {
-  auto nms_outs = loco::succs(node);
-  assert(nms_outs.size() == 3);
-
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(circle::BuiltinOperator_NON_MAX_SUPPRESSION_V5, node->op_version());
-  std::vector<int32_t> inputs_vec{
-      get_tensor_index(node->boxes()),           get_tensor_index(node->scores()),
-      get_tensor_index(node->max_output_size()), get_tensor_index(node->iou_threshold()),
-      get_tensor_index(node->score_threshold()), get_tensor_index(node->soft_nms_sigma()),
-  };
-  std::vector<int32_t> outputs_vec;
-
-  for (uint32_t idx = 0; idx < nms_outs.size(); ++idx)
-  {
-    // store in order of index
-    bool found = false;
-    for (auto out : nms_outs)
-    {
-      auto nms_out = loco::must_cast<luci::CircleNonMaxSuppressionV5Out *>(out);
-      if (nms_out->index() == static_cast<int32_t>(idx))
-      {
-        outputs_vec.push_back(get_tensor_index(nms_out));
-        found = true;
-        break;
-      }
-    }
-    if (!found)
-    {
-      INTERNAL_EXN("Invalid NonMaxSuppressionV5 output");
-    }
-  }
-
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateNonMaxSuppressionV5Options(builder);
-  auto op_offset =
-      CreateOperator(builder, op_idx, inputs, outputs,
-                     circle::BuiltinOptions_NonMaxSuppressionV5Options, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleNotEqual *node)
@@ -938,16 +994,8 @@ void OperationExporter::visit(luci::CircleReverseSequence *node)
 
 void OperationExporter::visit(luci::CircleReverseV2 *node)
 {
-  uint32_t op_idx =
-      md.registerBuiltinOpcode(circle::BuiltinOperator_REVERSE_V2, node->op_version());
-  std::vector<int32_t> inputs_vec{get_tensor_index(node->tensor()), get_tensor_index(node->axis())};
-  std::vector<int32_t> outputs_vec{get_tensor_index(static_cast<loco::Node *>(node))};
-  auto inputs = builder.CreateVector(inputs_vec);
-  auto outputs = builder.CreateVector(outputs_vec);
-  auto options = CreateReverseV2Options(builder);
-  auto op_offset = CreateOperator(builder, op_idx, inputs, outputs,
-                                  circle::BuiltinOptions_ReverseSequenceOptions, options.Union());
-  gd._operators.push_back(op_offset);
+  ExportContext ctx{builder, md, gd};
+  export_node(ctx, node);
 }
 
 void OperationExporter::visit(luci::CircleRound *node)
