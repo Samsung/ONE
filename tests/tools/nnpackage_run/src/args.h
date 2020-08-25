@@ -22,12 +22,23 @@
 #include <vector>
 #include <boost/program_options.hpp>
 
+#include "types.h"
+
 namespace po = boost::program_options;
 
 namespace nnpkg_run
 {
 
-using TensorShapeMap = std::unordered_map<uint32_t, std::vector<int>>;
+using TensorShapeMap = std::unordered_map<uint32_t, TensorShape>;
+
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+enum class WhenToUseH5Shape
+{
+  DO_NOT_USE, // don't use shapes in h5 file
+  PREPARE,    // read shapes in h5 file and set them as inputs' shape before calling nnfw_prepare()
+  RUN,        // read shapes in h5 file and set them as inputs' shape before calling nnfw_run()
+};
+#endif
 
 class Args
 {
@@ -39,6 +50,7 @@ public:
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
   const std::string &getLoadFilename(void) const { return _load_filename; }
+  WhenToUseH5Shape getWhenToUseH5Shape(void) const { return _when_to_use_h5_shape; }
 #endif
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
@@ -48,8 +60,8 @@ public:
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
   const bool printVersion(void) const { return _print_version; }
-  const TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
-  const TensorShapeMap &getShapeMapForRun() { return _shape_run; }
+  TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
+  TensorShapeMap &getShapeMapForRun() { return _shape_run; }
   const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
@@ -64,6 +76,7 @@ private:
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;
   std::string _load_filename;
+  WhenToUseH5Shape _when_to_use_h5_shape = WhenToUseH5Shape::DO_NOT_USE;
 #endif
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;

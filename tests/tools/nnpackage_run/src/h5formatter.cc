@@ -22,9 +22,67 @@
 #include <stdexcept>
 #include <H5Cpp.h>
 
+namespace
+{
+nnpkg_run::TensorShape getShape(H5::DataSet &data_set)
+{
+  std::vector<hsize_t> h5_shape; // hsize_t is unsigned long long
+  H5::DataSpace data_space = data_set.getSpace();
+  int rank = data_space.getSimpleExtentNdims();
+  h5_shape.resize(rank);
+
+  // read shape info from H5 file
+  data_space.getSimpleExtentDims(h5_shape.data(), NULL);
+
+  nnpkg_run::TensorShape shape;
+  for (auto dim : h5_shape)
+    shape.emplace_back(static_cast<int>(dim));
+
+  return shape;
+}
+} // namespace
+
 namespace nnpkg_run
 {
 static const char *h5_value_grpname = "value";
+
+std::vector<TensorShape> H5Formatter::readTensorShapes(const std::string &filename)
+{
+  uint32_t num_inputs;
+  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
+  std::vector<TensorShape> tensor_shapes;
+
+  try
+  {
+    H5::Exception::dontPrint();
+
+    H5::H5File file(filename, H5F_ACC_RDONLY);
+    H5::Group value_group = file.openGroup(h5_value_grpname);
+
+    // Constraints: if there are n data set names, they should be unique and
+    //              one of [ "0", "1", .. , "n-1" ]
+    for (uint32_t i = 0; i < num_inputs; ++i)
+    {
+      H5::DataSet data_set = value_group.openDataSet(std::to_string(i));
+      H5::DataType type = data_set.getDataType();
+      auto shape = getShape(data_set);
+
+      tensor_shapes.emplace_back(shape);
+    }
+
+    return tensor_shapes;
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    std::exit(-1);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << e.what() << std::endl;
+    std::exit(-1);
+  }
+}
 
 void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
 {
@@ -41,6 +99,9 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
+
+      // TODO Add Assert(nnfw shape, h5 file shape size)
+
       // allocate memory for data
       auto bufsz = bufsize_for(&ti);
       inputs[i].alloc(bufsz);
