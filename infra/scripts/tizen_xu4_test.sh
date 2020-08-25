@@ -12,10 +12,12 @@ function Usage()
     echo "Usage: ./tizen_xu4_test.sh --rpm-dir=path/to/rpm-dir"
     echo "Usage: ./tizen_xu4_test.sh --test-suite-path=path/to/test-suite.tar.gz"
     echo "Usage: ./tizen_xu4_test.sh --skip-install-model"
+    echo "Usage: ./tizen_xu4_test.sh --rpm-dir=path/to/rpm-dir --skip-test"
     echo ""
     echo "--rpm-dir <dir>           : directory containing nnfw.rpm and nnfw-test.rpm"
     echo "--test-suite-path <dir>   : filepath to test-suite.tar.gz"
     echo "--skip-install-model      : skip install downloaded model"
+    echo "--skip-test               : skip running test"
     echo "--gcov-dir <dir>          : directory to save gcov files"
 }
 
@@ -74,6 +76,7 @@ function prepare_suite_test()
 }
 
 INSTALL_MODEL="1"
+RUN_TEST="1"
 # Parse command argv
 for i in "$@"
 do
@@ -101,6 +104,9 @@ do
             ;;
         --gcov-dir=*)
             GCOV_DIR=${i#*=}
+            ;;
+        --skip-test)
+            RUN_TEST="0"
             ;;
     esac
     shift
@@ -146,6 +152,11 @@ if [ $INSTALL_MODEL = "1" ]; then
     install_model
 else
     echo "======= Skip install model ======="
+fi
+
+if [ $RUN_TEST = "0" ]; then
+    echo "======= Skip test ======="
+    exit 0
 fi
 
 if [ -z "${GCOV_DIR}" ]; then
