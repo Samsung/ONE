@@ -469,8 +469,7 @@ TEST_F(TestWhileDynamicModelLoaded, neg_run_verify)
 
   set_input_output(_session, while_dynamic_input0, actual_output0);
 
-  // TODO Change error code NNFW_STATUS_ERROR -> NNFW_INSUFFICIENT_OUTPUT_SIZE
-  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE);
 }
 
 using TestIfDynamicModelLoaded = ValidationTestModelLoaded<NNPackages::IF_DYNAMIC>;

@@ -103,6 +103,8 @@ typedef enum {
   NNFW_STATUS_INVALID_STATE = 3,
   /** When it is out of memory */
   NNFW_STATUS_OUT_OF_MEMORY = 4,
+  /** When it was given an insufficient output buffer */
+  NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE = 5,
 } NNFW_STATUS;
 
 /**

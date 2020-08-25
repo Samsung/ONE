@@ -17,6 +17,7 @@
 #include "DynamicTensorManager.h"
 
 #include "util/logging.h"
+#include "util/Exceptions.h"
 #include "ir/DataType.h"
 
 namespace onert
@@ -42,7 +43,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     auto buffer_size = user_tensor->total_size();
     auto new_size = new_shape.num_elements() * sizeOfDataType(user_tensor->data_type());
     if (buffer_size < new_size)
-      throw std::runtime_error{"ExecutorBase: output buffer size is less than output tensor size"};
+      throw InsufficientBufferSizeException{"Output buffer size is less than output tensor size"};
     user_tensor->setShape(new_shape);
     return;
   }
