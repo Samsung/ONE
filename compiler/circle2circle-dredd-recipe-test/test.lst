@@ -10,6 +10,7 @@
 
 ## TFLITE RECIPE
 
+Add(Net_TConv_BN_000 PASS fuse_batchnorm_with_tconv)
 Add(Net_InstanceNorm_001 PASS fuse_instnorm)
 Add(Net_InstanceNorm_002 PASS fuse_instnorm)
 Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
