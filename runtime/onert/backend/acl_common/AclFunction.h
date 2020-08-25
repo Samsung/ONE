@@ -47,12 +47,6 @@ private:
   std::unique_ptr<::arm_compute::IFunction> _func;
 };
 
-class AclClFunction : public AclFunction
-{
-public:
-  using AclFunction::AclFunction;
-};
-
 } // namespace acl_common
 } // namespace backend
 } // namespace onert
