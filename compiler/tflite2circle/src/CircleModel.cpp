@@ -119,6 +119,66 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       // is_variable
       bool is_variable = it->is_variable();
 
+      flatbuffers::Offset<circle::SparsityParameters> sparsity;
+      // sparsity
+      if (it->sparsity())
+      {
+        flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order;
+        flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map;
+        flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
+            dim_metadata;
+
+        // traversal_order
+        if (it->sparsity()->traversal_order())
+        {
+          auto traversal_order_vec = std::vector<int32_t>{
+              it->sparsity()->traversal_order()->begin(), it->sparsity()->traversal_order()->end()};
+          traversal_order = fb->CreateVector(traversal_order_vec);
+        }
+
+        // block_map
+        if (it->sparsity()->block_map())
+        {
+          auto block_map_vec = std::vector<int32_t>{it->sparsity()->block_map()->begin(),
+                                                    it->sparsity()->block_map()->end()};
+          block_map = fb->CreateVector(block_map_vec);
+        }
+
+        // dim_metadata
+        std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
+        auto tflite_dim_metadata = it->sparsity()->dim_metadata();
+        for (auto it : *tflite_dim_metadata)
+        {
+          // array_segments
+          auto tflite_array_segments_type = it->array_segments_type();
+          auto circle_array_segments =
+              get_circle_sparse_index_vector(*fb, it, tflite_array_segments_type);
+          auto circle_array_segments_type =
+              get_circle_sparse_index_vector_type(tflite_array_segments_type);
+
+          // array_indices
+          auto tflite_array_indices_type = it->array_indices_type();
+          auto circle_array_indices =
+              get_circle_sparse_index_vector(*fb, it, tflite_array_indices_type);
+          auto circle_array_indices_type =
+              get_circle_sparse_index_vector_type(tflite_array_indices_type);
+
+          auto circle_dim_metadata_builder = circle::DimensionMetadataBuilder{*fb};
+
+          circle_dim_metadata_builder.add_format(get_circle_dimension_type(it->format()));
+          circle_dim_metadata_builder.add_dense_size(it->dense_size());
+          circle_dim_metadata_builder.add_array_segments(circle_array_segments);
+          circle_dim_metadata_builder.add_array_segments_type(circle_array_segments_type);
+          circle_dim_metadata_builder.add_array_indices(circle_array_indices);
+          circle_dim_metadata_builder.add_array_indices_type(circle_array_indices_type);
+          auto dim_metadata = circle_dim_metadata_builder.Finish();
+          dim_metadata_vec.emplace_back(dim_metadata);
+        }
+        dim_metadata = fb->CreateVector(dim_metadata_vec);
+
+        sparsity = circle::CreateSparsityParameters(*fb, traversal_order, block_map, dim_metadata);
+      }
+
       // shape signature
       flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
       if (it->shape_signature())
@@ -135,6 +195,7 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
       tensor_builder.add_name(name);
       tensor_builder.add_quantization(quantization);
       tensor_builder.add_is_variable(is_variable);
+      tensor_builder.add_sparsity(sparsity);
       tensor_builder.add_shape_signature(shape_signature);
       auto tensor = tensor_builder.Finish();
       tensor_vec.emplace_back(tensor);

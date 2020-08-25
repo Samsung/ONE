@@ -76,6 +76,25 @@ circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *o
 */
 circle::MirrorPadMode get_circle_mirrorpad_mode(tflite::MirrorPadMode tfl_mode);
 
+/**
+ * @brief Returns circle DimensionType according to tflite.
+*/
+circle::DimensionType get_circle_dimension_type(tflite::DimensionType tfl_dim_type);
+
+/**
+ * @brief Returns circle SparseIndexVector according to tflite.
+*/
+flatbuffers::Offset<void>
+get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
+                               const tflite::DimensionMetadata *dm,
+                               const tflite::SparseIndexVector &tfl_sparse_index_vector_type);
+
+/**
+ * @brief Returns circle SparseIndexVector type according to tflite.
+*/
+circle::SparseIndexVector
+get_circle_sparse_index_vector_type(const tflite::SparseIndexVector &tfl_sparse_index_vector_type);
+
 } // namespace tflite2circle
 
 #endif // __DATA_LOOKUP_H__
