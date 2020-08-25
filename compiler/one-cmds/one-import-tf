@@ -84,10 +84,7 @@ while [ "$#" -ne 0 ]; do
 done
 
 if [ -n ${INPUT_SHAPES} ] && [ ${TF_INTERFACE} = "--v2" ]; then
-  echo "Error: shape cannot be assigned to dynamic shape in v2 version."
-  echo ""
-  usage
-  exit 2
+  echo "Warning: if --v2 option is used, shape will be ignored"
 fi
 
 if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
