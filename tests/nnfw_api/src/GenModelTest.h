@@ -39,10 +39,10 @@ struct TestCaseData
   std::vector<std::vector<float>> outputs;
 };
 
-class GenModelTestData
+class GenModelTestContext
 {
 public:
-  GenModelTestData(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)} {}
+  GenModelTestContext(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
 
   /**
    * @brief  Return circle buffer
@@ -59,23 +59,54 @@ public:
   const std::vector<TestCaseData> &test_cases() const { return _test_cases; }
 
   /**
+   * @brief Return backends
+   *
+   * @return const std::vector<std::string>& the backends to be tested
+   */
+  const std::vector<std::string> &backends() const { return _backends; }
+
+  /**
    * @brief Add a test case
    *
    * @param tc the test case to be added
    */
   void addTestCase(const TestCaseData &tc) { _test_cases.emplace_back(tc); }
 
+  /**
+   * @brief Add a test case
+   *
+   * @param tc the test case to be added
+   */
+  void setBackends(const std::vector<std::string> &backends)
+  {
+    for (auto backend : backends)
+    {
+#ifdef TEST_ACL_BACKEND
+      if (backend == "acl_cl" || backend == "acl_neon")
+      {
+        _backends.push_back(backend);
+      }
+#endif
+      if (backend == "cpu")
+      {
+        _backends.push_back(backend);
+      }
+    }
+  }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
+  std::vector<std::string> _backends;
 };
 
 /**
  * @brief Generated Model test fixture for a one time inference
  *
  * This fixture is for one-time inference test with variety of generated models.
- * It is the test maker's responsiblity to create @c _test_data which contains
- * test body, which are generated circle buffer, model input data and output data.
+ * It is the test maker's responsiblity to create @c _context which contains
+ * test body, which are generated circle buffer, model input data and output data and
+ * backend list to be tested.
  * The rest(calling API functions for execution) is done by @c Setup and @c TearDown .
  *
  */
@@ -88,13 +119,13 @@ protected:
 
   void TearDown() override
   {
-    for (std::string backend : _backends)
+    for (std::string backend : _context->backends())
     {
       // NOTE If we can prepare many times for one model loading on same session,
       //      we can move nnfw_create_session to SetUp and
       //      nnfw_load_circle_from_buffer to outside forloop
       NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
-      auto &cbuf = _test_data->cbuf();
+      auto &cbuf = _context->cbuf();
       NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
       NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
@@ -130,7 +161,7 @@ protected:
       }
 
       // Set input values, run, and check output values
-      for (auto &test_case : _test_data->test_cases())
+      for (auto &test_case : _context->test_cases())
       {
         auto &ref_inputs = test_case.inputs;
         auto &ref_outputs = test_case.outputs;
@@ -160,30 +191,7 @@ protected:
     }
   }
 
-  /**
-   * @brief     Set testable backend
-   *
-   * @param[in] backends  Testable backends vector
-   */
-  void TestableBackends(const std::vector<std::string> &backends)
-  {
-    for (auto backend : backends)
-    {
-#ifdef TEST_ACL_BACKEND
-      if (backend.compare("acl_cl") == 0 || backend.compare("acl_neon") == 0)
-      {
-        _backends.push_back(backend);
-      }
-#endif
-      if (backend.compare("cpu") == 0)
-      {
-        _backends.push_back(backend);
-      }
-    }
-  }
-
 protected:
   SessionObject _so;
-  std::unique_ptr<GenModelTestData> _test_data;
-  std::vector<std::string> _backends{{"cpu"}};
+  std::unique_ptr<GenModelTestContext> _context;
 };

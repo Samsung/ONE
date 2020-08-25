@@ -24,8 +24,8 @@ TEST_F(GenModelTest, OneOp_Cos)
   cgen.addOperatorCos({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
   const float pi = 3.141592653589793;
-  _test_data->addTestCase({{{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}});
-  TestableBackends({"cpu"});
+  _context->addTestCase({{{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}});
+  _context->setBackends({"cpu"});
 }

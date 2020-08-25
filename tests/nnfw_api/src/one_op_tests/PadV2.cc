@@ -33,7 +33,7 @@ TEST_F(GenModelTest, OneOp_PadV2)
   cgen.addOperatorPadV2({{in, padding, padding_value}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
-  _test_data->addTestCase({{{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}});
-  TestableBackends({"cpu"});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase({{{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}});
+  _context->setBackends({"cpu"});
 }

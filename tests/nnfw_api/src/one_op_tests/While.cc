@@ -65,8 +65,9 @@ TEST_F(GenModelTest, OneOp_While)
     cgen.setInputsAndOutputs({x_in}, {x_out});
   }
 
-  _test_data = std::make_unique<GenModelTestData>(cgen.finish());
-  _test_data->addTestCase({{{0}}, {{100}}});
-  _test_data->addTestCase({{{2}}, {{102}}});
-  _test_data->addTestCase({{{22}}, {{102}}});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase({{{0}}, {{100}}});
+  _context->addTestCase({{{2}}, {{102}}});
+  _context->addTestCase({{{22}}, {{102}}});
+  _context->setBackends({"cpu"});
 }
