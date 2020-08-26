@@ -1,5 +1,15 @@
 #[[ circlize : Exclude from tflite-to-circle conversion(tflite2circle) ]]
 ## TensorFlowLiteRecipes
+circlize(Model_Arithmetic)
+circlize(Model_Arithmetic_U8)
+circlize(Model_Comparison)
+circlize(Model_Comparison_U8)
+circlize(Model_Tensor_000)
+circlize(Model_Tensor_001)
+circlize(Model_Tensor_U8_000)
+circlize(Model_Tensor_U8_001)
+circlize(Model_Unary)
+circlize(Model_Unary_U8)
 
 ## CircleRecipes
 
@@ -11,10 +21,16 @@ optimize(Unique_002)
 optimize(Unique_003)
 optimize(Unique_U8_000)
 optimize(Unique_U8_001)
+optimize(Model_Arithmetic)
+optimize(Model_Arithmetic_U8)
+optimize(Model_Comparison)
+optimize(Model_Comparison_U8)
 optimize(Model_Tensor_000)
 optimize(Model_Tensor_001)
 optimize(Model_Tensor_U8_000)
 optimize(Model_Tensor_U8_001)
+optimize(Model_Unary)
+optimize(Model_Unary_U8)
 
 ## CircleRecipes
 
