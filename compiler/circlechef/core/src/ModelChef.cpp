@@ -26,6 +26,7 @@
 #include "OpChefs.h"
 
 #include <souschef/Dataset.h>
+#include <souschef/Dims.h>
 
 #include "Log.h"
 
@@ -41,51 +42,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace
-{
-
 using namespace souschef;
-
-template <typename T> std::vector<T> as_vector(const ::google::protobuf::RepeatedPtrField<T> &field)
-{
-  std::vector<T> res;
-  for (const auto &elem : field)
-  {
-    res.emplace_back(elem);
-  }
-  return res;
-}
-
-template <typename T> Dataset<T> as_dataset(const ::google::protobuf::RepeatedPtrField<T> &field)
-{
-  return Dataset<T>(as_vector<T>(field));
-}
-
-} // namespace
-
-namespace
-{
-
-template <typename T> using Dims = std::vector<T>;
-
-Dims<int32_t> as_dims(const circlechef::TensorShape &shape)
-{
-  std::vector<int32_t> res;
-
-  for (auto &dim : shape.dim())
-  {
-    res.emplace_back(static_cast<int32_t>(dim));
-  }
-
-  return res;
-}
-
-int32_t element_count(const Dims<int32_t> &dims)
-{
-  return std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<int32_t>());
-}
-
-} // namespace
 
 namespace
 {
