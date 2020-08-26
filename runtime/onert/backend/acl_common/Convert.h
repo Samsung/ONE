@@ -72,7 +72,6 @@ std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank, ir::Layout fr
                          ir::Layout backend_layout);
 
 std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunction> &&layer);
-std::unique_ptr<AclClFunction> asAclClFunction(std::unique_ptr<::arm_compute::IFunction> &&layer);
 
 template <typename T_Function>
 std::unique_ptr<T_Function> asFunction(std::unique_ptr<::arm_compute::IFunction> &&fn)
