@@ -38,7 +38,6 @@ namespace
 
 using namespace luci;
 
-// TODO fix OperationExporter to use ExportContext
 struct ExportContext
 {
   FlatBufferBuilder &builder;
@@ -610,8 +609,7 @@ class OperationExporter final : public luci::CircleNodeMutableVisitor<void>,
                                 public loco::CanonicalNodeMutableVisitor<void>
 {
 public:
-  OperationExporter(FlatBufferBuilder &fbb, SerializedModelData &m, SerializedGraphData &g)
-      : builder{fbb}, md{m}, gd{g}
+  OperationExporter(ExportContext &ctx) : _ctx{ctx}
   {
     // DO NOTHING
   }
@@ -759,98 +757,83 @@ private:
   void export_simple(loco::Node *node, circle::BuiltinOperator bop);
 
 private:
-  FlatBufferBuilder &builder;
-  SerializedModelData &md;
-  SerializedGraphData &gd;
+  ExportContext &_ctx;
 };
 
 void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop,
                                       circle::BuiltinOptions bot,
                                       flatbuffers::Offset<void> options_offset)
 {
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node, bop, bot, options_offset);
+  export_node(_ctx, node, bop, bot, options_offset);
 }
 
 void OperationExporter::export_simple(loco::Node *node, circle::BuiltinOperator bop)
 {
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node, bop);
+  export_node(_ctx, node, bop);
 }
 
 void OperationExporter::visit(luci::CircleAbs *node)
 {
   export_simple(node, circle::BuiltinOperator_ABS, circle::BuiltinOptions_AbsOptions,
-                CreateAbsOptions(builder).Union());
+                CreateAbsOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleAdd *node)
 {
   export_simple(
       node, circle::BuiltinOperator_ADD, circle::BuiltinOptions_AddOptions,
-      CreateAddOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
+      CreateAddOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
-void OperationExporter::visit(luci::CircleAddN *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleAddN *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleArgMax *node)
 {
-  export_simple(node, circle::BuiltinOperator_ARG_MAX, circle::BuiltinOptions_ArgMaxOptions,
-                CreateArgMaxOptions(builder, to_circle_tensortype(node->output_type())).Union());
+  export_simple(
+      node, circle::BuiltinOperator_ARG_MAX, circle::BuiltinOptions_ArgMaxOptions,
+      CreateArgMaxOptions(_ctx.builder, to_circle_tensortype(node->output_type())).Union());
 }
 
 void OperationExporter::visit(luci::CircleArgMin *node)
 {
-  export_simple(node, circle::BuiltinOperator_ARG_MIN, circle::BuiltinOptions_ArgMinOptions,
-                CreateArgMinOptions(builder, to_circle_tensortype(node->output_type())).Union());
+  export_simple(
+      node, circle::BuiltinOperator_ARG_MIN, circle::BuiltinOptions_ArgMinOptions,
+      CreateArgMinOptions(_ctx.builder, to_circle_tensortype(node->output_type())).Union());
 }
 
 void OperationExporter::visit(luci::CircleAveragePool2D *node)
 {
-  ExportContext ctx{builder, md, gd};
-  export_pool_2d<luci::CircleAveragePool2D>(ctx, node, circle::BuiltinOperator_AVERAGE_POOL_2D);
+  export_pool_2d<luci::CircleAveragePool2D>(_ctx, node, circle::BuiltinOperator_AVERAGE_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleBatchMatMul *node)
 {
   export_simple(node, circle::BuiltinOperator_BATCH_MATMUL,
                 circle::BuiltinOptions_BatchMatMulOptions,
-                CreateBatchMatMulOptions(builder, node->adj_x(), node->adj_y()).Union());
+                CreateBatchMatMulOptions(_ctx.builder, node->adj_x(), node->adj_y()).Union());
 }
 
-void OperationExporter::visit(luci::CircleCast *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleCast *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleCeil *node)
 {
   export_simple(node, circle::BuiltinOperator_CEIL);
 }
 
-void OperationExporter::visit(luci::CircleConcatenation *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleConcatenation *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleBatchToSpaceND *node)
 {
   export_simple(node, circle::BuiltinOperator_BATCH_TO_SPACE_ND,
                 circle::BuiltinOptions_BatchToSpaceNDOptions,
-                CreateBatchToSpaceNDOptions(builder).Union());
+                CreateBatchToSpaceNDOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleConv2D *node)
 {
   export_simple(node, circle::BuiltinOperator_CONV_2D, circle::BuiltinOptions_Conv2DOptions,
-                CreateConv2DOptions(builder, getOpPadding(node->padding()), node->stride()->w(),
-                                    node->stride()->h(),
+                CreateConv2DOptions(_ctx.builder, getOpPadding(node->padding()),
+                                    node->stride()->w(), node->stride()->h(),
                                     to_circle_actfunc(node->fusedActivationFunction()),
                                     node->dilation()->w(), node->dilation()->h())
                     .Union());
@@ -859,27 +842,23 @@ void OperationExporter::visit(luci::CircleConv2D *node)
 void OperationExporter::visit(luci::CircleCos *node)
 {
   export_simple(node, circle::BuiltinOperator_COS, circle::BuiltinOptions_CosOptions,
-                CreateCosOptions(builder).Union());
+                CreateCosOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleCustom *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleCustom *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleDepthToSpace *node)
 {
   export_simple(node, circle::BuiltinOperator_DEPTH_TO_SPACE,
                 circle::BuiltinOptions_DepthToSpaceOptions,
-                CreateDepthToSpaceOptions(builder, node->block_size()).Union());
+                CreateDepthToSpaceOptions(_ctx.builder, node->block_size()).Union());
 }
 
 void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
 {
   export_simple(node, circle::BuiltinOperator_DEPTHWISE_CONV_2D,
                 circle::BuiltinOptions_DepthwiseConv2DOptions,
-                CreateDepthwiseConv2DOptions(builder, getOpPadding(node->padding()),
+                CreateDepthwiseConv2DOptions(_ctx.builder, getOpPadding(node->padding()),
                                              node->stride()->w(), node->stride()->h(),
                                              node->depthMultiplier(),
                                              to_circle_actfunc(node->fusedActivationFunction()),
@@ -891,7 +870,7 @@ void OperationExporter::visit(luci::CircleDiv *node)
 {
   export_simple(
       node, circle::BuiltinOperator_DIV, circle::BuiltinOptions_DivOptions,
-      CreateDivOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
+      CreateDivOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
 void OperationExporter::visit(luci::CircleElu *node)
@@ -902,25 +881,25 @@ void OperationExporter::visit(luci::CircleElu *node)
 void OperationExporter::visit(luci::CircleEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_EQUAL, circle::BuiltinOptions_EqualOptions,
-                CreateEqualOptions(builder).Union());
+                CreateEqualOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleExp *node)
 {
   export_simple(node, circle::BuiltinOperator_EXP, circle::BuiltinOptions_ExpOptions,
-                CreateExpOptions(builder).Union());
+                CreateExpOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleExpandDims *node)
 {
   export_simple(node, circle::BuiltinOperator_EXPAND_DIMS, circle::BuiltinOptions_ExpandDimsOptions,
-                CreateExpandDimsOptions(builder).Union());
+                CreateExpandDimsOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleFill *node)
 {
   export_simple(node, circle::BuiltinOperator_FILL, circle::BuiltinOptions_FillOptions,
-                CreateFillOptions(builder).Union());
+                CreateFillOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleFloor *node)
@@ -931,90 +910,86 @@ void OperationExporter::visit(luci::CircleFloor *node)
 void OperationExporter::visit(luci::CircleFloorDiv *node)
 {
   export_simple(node, circle::BuiltinOperator_FLOOR_DIV, circle::BuiltinOptions_FloorDivOptions,
-                CreateFloorDivOptions(builder).Union());
+                CreateFloorDivOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleFloorMod *node)
 {
   export_simple(node, circle::BuiltinOperator_FLOOR_MOD, circle::BuiltinOptions_FloorModOptions,
-                CreateFloorModOptions(builder).Union());
+                CreateFloorModOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleFullyConnected *node)
 {
   export_simple(
       node, circle::BuiltinOperator_FULLY_CONNECTED, circle::BuiltinOptions_FullyConnectedOptions,
-      CreateFullyConnectedOptions(builder, to_circle_actfunc(node->fusedActivationFunction()))
+      CreateFullyConnectedOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()))
           .Union());
 }
 
 void OperationExporter::visit(luci::CircleGather *node)
 {
   export_simple(node, circle::BuiltinOperator_GATHER, circle::BuiltinOptions_GatherOptions,
-                CreateGatherOptions(builder, node->axis()).Union());
+                CreateGatherOptions(_ctx.builder, node->axis()).Union());
 }
 
 void OperationExporter::visit(luci::CircleGatherNd *node)
 {
   export_simple(node, circle::BuiltinOperator_GATHER_ND, circle::BuiltinOptions_GatherNdOptions,
-                CreateGatherNdOptions(builder).Union());
+                CreateGatherNdOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleGreater *node)
 {
   export_simple(node, circle::BuiltinOperator_GREATER, circle::BuiltinOptions_GreaterOptions,
-                CreateGreaterOptions(builder).Union());
+                CreateGreaterOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleGreaterEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_GREATER_EQUAL,
                 circle::BuiltinOptions_GreaterEqualOptions,
-                CreateGreaterEqualOptions(builder).Union());
+                CreateGreaterEqualOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleIf *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleIf *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleL2Normalize *node)
 {
   export_simple(
       node, circle::BuiltinOperator_L2_NORMALIZATION, circle::BuiltinOptions_L2NormOptions,
-      CreateL2NormOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
+      CreateL2NormOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction()))
+          .Union());
 }
 
 void OperationExporter::visit(luci::CircleL2Pool2D *node)
 {
-  ExportContext ctx{builder, md, gd};
-  export_pool_2d<luci::CircleL2Pool2D>(ctx, node, circle::BuiltinOperator_L2_POOL_2D);
+  export_pool_2d<luci::CircleL2Pool2D>(_ctx, node, circle::BuiltinOperator_L2_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleLeakyRelu *node)
 {
   export_simple(node, circle::BuiltinOperator_LEAKY_RELU, circle::BuiltinOptions_LeakyReluOptions,
-                CreateLeakyReluOptions(builder, node->alpha()).Union());
+                CreateLeakyReluOptions(_ctx.builder, node->alpha()).Union());
 }
 
 void OperationExporter::visit(luci::CircleLess *node)
 {
   export_simple(node, circle::BuiltinOperator_LESS, circle::BuiltinOptions_LessOptions,
-                CreateLessOptions(builder).Union());
+                CreateLessOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleLessEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_LESS_EQUAL, circle::BuiltinOptions_LessEqualOptions,
-                CreateLessEqualOptions(builder).Union());
+                CreateLessEqualOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleLocalResponseNormalization *node)
 {
   export_simple(node, circle::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION,
                 circle::BuiltinOptions_LocalResponseNormalizationOptions,
-                CreateLocalResponseNormalizationOptions(builder, node->radius(), node->bias(),
+                CreateLocalResponseNormalizationOptions(_ctx.builder, node->radius(), node->bias(),
                                                         node->alpha(), node->beta())
                     .Union());
 }
@@ -1027,19 +1002,19 @@ void OperationExporter::visit(luci::CircleLog *node)
 void OperationExporter::visit(luci::CircleLogicalAnd *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_AND, circle::BuiltinOptions_LogicalAndOptions,
-                CreateLogicalAndOptions(builder).Union());
+                CreateLogicalAndOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleLogicalNot *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_NOT, circle::BuiltinOptions_LogicalNotOptions,
-                CreateLogicalNotOptions(builder).Union());
+                CreateLogicalNotOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleLogicalOr *node)
 {
   export_simple(node, circle::BuiltinOperator_LOGICAL_OR, circle::BuiltinOptions_LogicalOrOptions,
-                CreateLogicalOrOptions(builder).Union());
+                CreateLogicalOrOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleLogistic *node)
@@ -1050,111 +1025,103 @@ void OperationExporter::visit(luci::CircleLogistic *node)
 void OperationExporter::visit(luci::CircleLogSoftmax *node)
 {
   export_simple(node, circle::BuiltinOperator_LOG_SOFTMAX, circle::BuiltinOptions_LogSoftmaxOptions,
-                CreateLogSoftmaxOptions(builder).Union());
+                CreateLogSoftmaxOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMatrixDiag *node)
 {
   export_simple(node, circle::BuiltinOperator_MATRIX_DIAG, circle::BuiltinOptions_MatrixDiagOptions,
-                CreateMatrixDiagOptions(builder).Union());
+                CreateMatrixDiagOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMatrixSetDiag *node)
 {
   export_simple(node, circle::BuiltinOperator_MATRIX_SET_DIAG,
                 circle::BuiltinOptions_MatrixSetDiagOptions,
-                CreateMatrixSetDiagOptions(builder).Union());
+                CreateMatrixSetDiagOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMaximum *node)
 {
   export_simple(node, circle::BuiltinOperator_MAXIMUM, circle::BuiltinOptions_MaximumMinimumOptions,
-                CreateMaximumMinimumOptions(builder).Union());
+                CreateMaximumMinimumOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMaxPool2D *node)
 {
-  ExportContext ctx{builder, md, gd};
-  export_pool_2d<luci::CircleMaxPool2D>(ctx, node, circle::BuiltinOperator_MAX_POOL_2D);
+  export_pool_2d<luci::CircleMaxPool2D>(_ctx, node, circle::BuiltinOperator_MAX_POOL_2D);
 }
 
 void OperationExporter::visit(luci::CircleMean *node)
 {
   export_simple(node, circle::BuiltinOperator_MEAN, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleMinimum *node)
 {
   export_simple(node, circle::BuiltinOperator_MINIMUM, circle::BuiltinOptions_MaximumMinimumOptions,
-                CreateMaximumMinimumOptions(builder).Union());
+                CreateMaximumMinimumOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleMirrorPad *node)
 {
-  export_simple(node, circle::BuiltinOperator_MIRROR_PAD, circle::BuiltinOptions_MirrorPadOptions,
-                CreateMirrorPadOptions(builder, to_circle_mirrorpadmode(node->mode())).Union());
+  export_simple(
+      node, circle::BuiltinOperator_MIRROR_PAD, circle::BuiltinOptions_MirrorPadOptions,
+      CreateMirrorPadOptions(_ctx.builder, to_circle_mirrorpadmode(node->mode())).Union());
 }
 
 void OperationExporter::visit(luci::CircleMul *node)
 {
   export_simple(
       node, circle::BuiltinOperator_MUL, circle::BuiltinOptions_MulOptions,
-      CreateMulOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
+      CreateMulOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
 void OperationExporter::visit(luci::CircleNeg *node)
 {
   export_simple(node, circle::BuiltinOperator_NEG, circle::BuiltinOptions_NegOptions,
-                CreateNegOptions(builder).Union());
+                CreateNegOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleNonMaxSuppressionV4 *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleNonMaxSuppressionV4 *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleNonMaxSuppressionV5 *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleNonMaxSuppressionV5 *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleNotEqual *node)
 {
   export_simple(node, circle::BuiltinOperator_NOT_EQUAL, circle::BuiltinOptions_NotEqualOptions,
-                CreateNotEqualOptions(builder).Union());
+                CreateNotEqualOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleOneHot *node)
 {
   export_simple(node, circle::BuiltinOperator_ONE_HOT, circle::BuiltinOptions_OneHotOptions,
-                CreateOneHotOptions(builder, node->axis()).Union());
+                CreateOneHotOptions(_ctx.builder, node->axis()).Union());
 }
 
 void OperationExporter::visit(luci::CirclePack *node)
 {
   export_simple(node, circle::BuiltinOperator_PACK, circle::BuiltinOptions_PackOptions,
-                CreatePackOptions(builder, node->values_count(), node->axis()).Union());
+                CreatePackOptions(_ctx.builder, node->values_count(), node->axis()).Union());
 }
 
 void OperationExporter::visit(luci::CirclePad *node)
 {
   export_simple(node, circle::BuiltinOperator_PAD, circle::BuiltinOptions_PadOptions,
-                CreatePadOptions(builder).Union());
+                CreatePadOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CirclePadV2 *node)
 {
   export_simple(node, circle::BuiltinOperator_PADV2, circle::BuiltinOptions_PadV2Options,
-                CreatePadV2Options(builder).Union());
+                CreatePadV2Options(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CirclePow *node)
 {
   export_simple(node, circle::BuiltinOperator_POW, circle::BuiltinOptions_PowOptions,
-                CreatePowOptions(builder).Union());
+                CreatePowOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CirclePRelu *node)
@@ -1165,37 +1132,37 @@ void OperationExporter::visit(luci::CirclePRelu *node)
 void OperationExporter::visit(luci::CircleRange *node)
 {
   export_simple(node, circle::BuiltinOperator_RANGE, circle::BuiltinOptions_RangeOptions,
-                CreateRangeOptions(builder).Union());
+                CreateRangeOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleRank *node)
 {
   export_simple(node, circle::BuiltinOperator_RANK, circle::BuiltinOptions_RankOptions,
-                CreateRankOptions(builder).Union());
+                CreateRankOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleReduceAny *node)
 {
   export_simple(node, circle::BuiltinOperator_REDUCE_ANY, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleReduceMax *node)
 {
   export_simple(node, circle::BuiltinOperator_REDUCE_MAX, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleReduceMin *node)
 {
   export_simple(node, circle::BuiltinOperator_REDUCE_MIN, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleReduceProd *node)
 {
   export_simple(node, circle::BuiltinOperator_REDUCE_PROD, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleRelu *node)
@@ -1215,18 +1182,18 @@ void OperationExporter::visit(luci::CircleReluN1To1 *node)
 
 void OperationExporter::visit(luci::CircleReshape *node)
 {
-  auto new_shape = builder.CreateVector<int32_t>(
+  auto new_shape = _ctx.builder.CreateVector<int32_t>(
       node->newShape()->rank(), [node](size_t i) { return node->newShape()->dim(i); });
 
   export_simple(node, circle::BuiltinOperator_RESHAPE, circle::BuiltinOptions_ReshapeOptions,
-                CreateReshapeOptions(builder, new_shape).Union());
+                CreateReshapeOptions(_ctx.builder, new_shape).Union());
 }
 
 void OperationExporter::visit(luci::CircleResizeBilinear *node)
 {
   export_simple(
       node, circle::BuiltinOperator_RESIZE_BILINEAR, circle::BuiltinOptions_ResizeBilinearOptions,
-      CreateResizeBilinearOptions(builder, node->align_corners(), node->half_pixel_centers())
+      CreateResizeBilinearOptions(_ctx.builder, node->align_corners(), node->half_pixel_centers())
           .Union());
 }
 
@@ -1234,21 +1201,17 @@ void OperationExporter::visit(luci::CircleResizeNearestNeighbor *node)
 {
   export_simple(node, circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR,
                 circle::BuiltinOptions_ResizeNearestNeighborOptions,
-                CreateResizeNearestNeighborOptions(builder, node->align_corners()).Union());
+                CreateResizeNearestNeighborOptions(_ctx.builder, node->align_corners()).Union());
 }
 
 void OperationExporter::visit(luci::CircleReverseSequence *node)
 {
   export_simple(
       node, circle::BuiltinOperator_REVERSE_SEQUENCE, circle::BuiltinOptions_ReverseSequenceOptions,
-      CreateReverseSequenceOptions(builder, node->seq_axis(), node->batch_axis()).Union());
+      CreateReverseSequenceOptions(_ctx.builder, node->seq_axis(), node->batch_axis()).Union());
 }
 
-void OperationExporter::visit(luci::CircleReverseV2 *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleReverseV2 *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleRound *node)
 {
@@ -1263,31 +1226,31 @@ void OperationExporter::visit(luci::CircleRsqrt *node)
 void OperationExporter::visit(luci::CircleScatterNd *node)
 {
   export_simple(node, circle::BuiltinOperator_SCATTER_ND, circle::BuiltinOptions_ScatterNdOptions,
-                CreateScatterNdOptions(builder).Union());
+                CreateScatterNdOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSegmentSum *node)
 {
   export_simple(node, circle::BuiltinOperator_SEGMENT_SUM, circle::BuiltinOptions_SegmentSumOptions,
-                CreateSegmentSumOptions(builder).Union());
+                CreateSegmentSumOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSelect *node)
 {
   export_simple(node, circle::BuiltinOperator_SELECT, circle::BuiltinOptions_SelectOptions,
-                CreateSelectOptions(builder).Union());
+                CreateSelectOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSelectV2 *node)
 {
   export_simple(node, circle::BuiltinOperator_SELECT_V2, circle::BuiltinOptions_SelectV2Options,
-                CreateSelectV2Options(builder).Union());
+                CreateSelectV2Options(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleShape *node)
 {
   export_simple(node, circle::BuiltinOperator_SHAPE, circle::BuiltinOptions_ShapeOptions,
-                CreateShapeOptions(builder, to_circle_tensortype(node->out_type())).Union());
+                CreateShapeOptions(_ctx.builder, to_circle_tensortype(node->out_type())).Union());
 }
 
 void OperationExporter::visit(luci::CircleSin *node)
@@ -1298,47 +1261,39 @@ void OperationExporter::visit(luci::CircleSin *node)
 void OperationExporter::visit(luci::CircleSlice *node)
 {
   export_simple(node, circle::BuiltinOperator_SLICE, circle::BuiltinOptions_SliceOptions,
-                CreateSliceOptions(builder).Union());
+                CreateSliceOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSoftmax *node)
 {
   export_simple(node, circle::BuiltinOperator_SOFTMAX, circle::BuiltinOptions_SoftmaxOptions,
-                CreateSoftmaxOptions(builder, node->beta()).Union());
+                CreateSoftmaxOptions(_ctx.builder, node->beta()).Union());
 }
 
 void OperationExporter::visit(luci::CircleSpaceToBatchND *node)
 {
   export_simple(node, circle::BuiltinOperator_SPACE_TO_BATCH_ND,
                 circle::BuiltinOptions_SpaceToBatchNDOptions,
-                CreateSpaceToBatchNDOptions(builder).Union());
+                CreateSpaceToBatchNDOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSpaceToDepth *node)
 {
   export_simple(node, circle::BuiltinOperator_SPACE_TO_DEPTH,
                 circle::BuiltinOptions_SpaceToDepthOptions,
-                CreateSpaceToDepthOptions(builder, node->block_size()).Union());
+                CreateSpaceToDepthOptions(_ctx.builder, node->block_size()).Union());
 }
 
 void OperationExporter::visit(luci::CircleSparseToDense *node)
 {
   export_simple(node, circle::BuiltinOperator_SPARSE_TO_DENSE,
                 circle::BuiltinOptions_SparseToDenseOptions,
-                CreateSparseToDenseOptions(builder, node->validate_indices()).Union());
+                CreateSparseToDenseOptions(_ctx.builder, node->validate_indices()).Union());
 }
 
-void OperationExporter::visit(luci::CircleSplit *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleSplit *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleSplitV *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleSplitV *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleSqrt *node)
 {
@@ -1348,28 +1303,28 @@ void OperationExporter::visit(luci::CircleSqrt *node)
 void OperationExporter::visit(luci::CircleSquare *node)
 {
   export_simple(node, circle::BuiltinOperator_SQUARE, circle::BuiltinOptions_SquareOptions,
-                CreateSquareOptions(builder).Union());
+                CreateSquareOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSquaredDifference *node)
 {
   export_simple(node, circle::BuiltinOperator_SQUARED_DIFFERENCE,
                 circle::BuiltinOptions_SquaredDifferenceOptions,
-                CreateSquaredDifferenceOptions(builder).Union());
+                CreateSquaredDifferenceOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleSqueeze *node)
 {
-  auto squeeze_dims = builder.CreateVector<int32_t>(node->squeeze_dims());
+  auto squeeze_dims = _ctx.builder.CreateVector<int32_t>(node->squeeze_dims());
   export_simple(node, circle::BuiltinOperator_SQUEEZE, circle::BuiltinOptions_SqueezeOptions,
-                CreateSqueezeOptions(builder, squeeze_dims).Union());
+                CreateSqueezeOptions(_ctx.builder, squeeze_dims).Union());
 }
 
 void OperationExporter::visit(luci::CircleStridedSlice *node)
 {
   export_simple(node, circle::BuiltinOperator_STRIDED_SLICE,
                 circle::BuiltinOptions_StridedSliceOptions,
-                CreateStridedSliceOptions(builder, node->begin_mask(), node->end_mask(),
+                CreateStridedSliceOptions(_ctx.builder, node->begin_mask(), node->end_mask(),
                                           node->ellipsis_mask(), node->new_axis_mask(),
                                           node->shrink_axis_mask())
                     .Union());
@@ -1379,13 +1334,13 @@ void OperationExporter::visit(luci::CircleSub *node)
 {
   export_simple(
       node, circle::BuiltinOperator_SUB, circle::BuiltinOptions_SubOptions,
-      CreateSubOptions(builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
+      CreateSubOptions(_ctx.builder, to_circle_actfunc(node->fusedActivationFunction())).Union());
 }
 
 void OperationExporter::visit(luci::CircleSum *node)
 {
   export_simple(node, circle::BuiltinOperator_SUM, circle::BuiltinOptions_ReducerOptions,
-                CreateReducerOptions(builder, node->keep_dims()).Union());
+                CreateReducerOptions(_ctx.builder, node->keep_dims()).Union());
 }
 
 void OperationExporter::visit(luci::CircleTanh *node)
@@ -1396,80 +1351,65 @@ void OperationExporter::visit(luci::CircleTanh *node)
 void OperationExporter::visit(luci::CircleTile *node)
 {
   export_simple(node, circle::BuiltinOperator_TILE, circle::BuiltinOptions_TileOptions,
-                CreateTileOptions(builder).Union());
+                CreateTileOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleTopKV2 *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleTopKV2 *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleTranspose *node)
 {
   export_simple(node, circle::BuiltinOperator_TRANSPOSE, circle::BuiltinOptions_TransposeOptions,
-                CreateTransposeOptions(builder).Union());
+                CreateTransposeOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleTransposeConv *node)
 {
   export_simple(node, circle::BuiltinOperator_TRANSPOSE_CONV,
                 circle::BuiltinOptions_TransposeConvOptions,
-                CreateTransposeConvOptions(builder, getOpPadding(node->padding()),
+                CreateTransposeConvOptions(_ctx.builder, getOpPadding(node->padding()),
                                            node->stride()->w(), node->stride()->h())
                     .Union());
 }
 
-void OperationExporter::visit(luci::CircleUnique *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleUnique *node) { export_node(_ctx, node); }
 
-void OperationExporter::visit(luci::CircleUnpack *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleUnpack *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleWhere *node)
 {
   export_simple(node, circle::BuiltinOperator_WHERE, circle::BuiltinOptions_WhereOptions,
-                CreateWhereOptions(builder).Union());
+                CreateWhereOptions(_ctx.builder).Union());
 }
 
-void OperationExporter::visit(luci::CircleWhile *node)
-{
-  ExportContext ctx{builder, md, gd};
-  export_node(ctx, node);
-}
+void OperationExporter::visit(luci::CircleWhile *node) { export_node(_ctx, node); }
 
 void OperationExporter::visit(luci::CircleZerosLike *node)
 {
   export_simple(node, circle::BuiltinOperator_ZEROS_LIKE, circle::BuiltinOptions_ZerosLikeOptions,
-                CreateZerosLikeOptions(builder).Union());
+                CreateZerosLikeOptions(_ctx.builder).Union());
 }
 
 void OperationExporter::visit(luci::CircleBCQFullyConnected *node)
 {
   export_simple(node, circle::BuiltinOperator_BCQ_FULLY_CONNECTED,
                 circle::BuiltinOptions_BCQFullyConnectedOptions,
-                CreateBCQFullyConnectedOptions(builder, node->weights_hidden_size(),
+                CreateBCQFullyConnectedOptions(_ctx.builder, node->weights_hidden_size(),
                                                to_circle_actfunc(node->fusedActivationFunction()))
                     .Union());
 }
 
 void OperationExporter::visit(luci::CircleBCQGather *node)
 {
-  export_simple(node, circle::BuiltinOperator_BCQ_GATHER, circle::BuiltinOptions_BCQGatherOptions,
-                CreateBCQGatherOptions(builder, node->input_hidden_size(), node->axis()).Union());
+  export_simple(
+      node, circle::BuiltinOperator_BCQ_GATHER, circle::BuiltinOptions_BCQGatherOptions,
+      CreateBCQGatherOptions(_ctx.builder, node->input_hidden_size(), node->axis()).Union());
 }
 
 void OperationExporter::visit(luci::CircleInstanceNorm *node)
 {
   export_simple(node, circle::BuiltinOperator_INSTANCE_NORM,
                 circle::BuiltinOptions_InstanceNormOptions,
-                CreateInstanceNormOptions(builder, node->epsilon(),
+                CreateInstanceNormOptions(_ctx.builder, node->epsilon(),
                                           to_circle_actfunc(node->fusedActivationFunction()))
                     .Union());
 }
@@ -1479,7 +1419,8 @@ void exportNode(loco::Node *node, flatbuffers::FlatBufferBuilder &builder, Seria
 {
   if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
   {
-    OperationExporter exporter{builder, md, gd};
+    ExportContext ctx{builder, md, gd};
+    OperationExporter exporter{ctx};
     circle_node->accept(&exporter);
   }
   else
