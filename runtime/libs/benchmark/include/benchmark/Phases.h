@@ -47,7 +47,7 @@ public:
   }
 
   const PhaseOption &option() const { return _option; }
-  const MemoryPoller &mem_poll() const { return _mem_poll; }
+  const MemoryPoller &mem_poll() const { return *_mem_poll; }
   const Phase &at(const std::string &tag) const { return _phases.at(tag); }
 
 private:
@@ -57,7 +57,7 @@ private:
 private:
   const PhaseOption _option;
   std::unordered_map<std::string, Phase> _phases;
-  MemoryPoller _mem_poll;
+  std::unique_ptr<MemoryPoller> _mem_poll;
 };
 
 } // namespace benchmark

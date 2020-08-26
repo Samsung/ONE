@@ -46,11 +46,13 @@ void SleepForMicros(uint64_t micros)
 namespace benchmark
 {
 
-Phases::Phases(const PhaseOption &option)
-    : _option(option),
-      _mem_poll(std::chrono::milliseconds(option.memory_interval), option.memory_gpu)
+Phases::Phases(const PhaseOption &option) : _option(option)
 {
-  // DO NOTHING
+  if (_option.memory)
+  {
+    _mem_poll = std::make_unique<MemoryPoller>(std::chrono::milliseconds(option.memory_interval),
+                                               option.memory_gpu);
+  }
 }
 
 void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc *post,
@@ -61,7 +63,7 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
   for (uint32_t i = 0; i < loop_num; ++i)
   {
     if (!option_disable && _option.memory)
-      _mem_poll.start(p);
+      _mem_poll->start(p);
 
     uint64_t t = 0u;
     t = nowMicros();
@@ -71,15 +73,15 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
     t = nowMicros() - t;
 
     if (!option_disable && _option.memory)
-      _mem_poll.end(p);
+      _mem_poll->end(p);
 
     phase.time.emplace_back(t);
 
     if (!option_disable && _option.memory)
     {
-      phase.memory[MemoryType::RSS].emplace_back(_mem_poll.getRssMap().at(p));
-      phase.memory[MemoryType::HWM].emplace_back(_mem_poll.getHwmMap().at(p));
-      phase.memory[MemoryType::PSS].emplace_back(_mem_poll.getPssMap().at(p));
+      phase.memory[MemoryType::RSS].emplace_back(_mem_poll->getRssMap().at(p));
+      phase.memory[MemoryType::HWM].emplace_back(_mem_poll->getHwmMap().at(p));
+      phase.memory[MemoryType::PSS].emplace_back(_mem_poll->getPssMap().at(p));
     }
 
     if (post)
