@@ -58,7 +58,6 @@ private:
    * @todo  DynamicMemoryManager is not optimized. Optimized one is needed
    */
   std::shared_ptr<cpu_common::DynamicMemoryManager> _dynamic_mem_mgr;
-  // TODO Refactoring : Merge two TensorRegistries into one
   const std::shared_ptr<TensorRegistry> _tensors;
 
   // contains list of dynamic tensor index, which can be deallocated after running operation
