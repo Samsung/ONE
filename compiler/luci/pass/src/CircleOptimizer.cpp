@@ -175,7 +175,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     {
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       if (circle_node->quantparam() != nullptr)
-        circle_node->quantparam(std::unique_ptr<luci::CircleQuantParam>{});
+        circle_node->quantparam(nullptr);
     }
 
     luci::QuantizeDequantizeWeightsPass fake_quantizer(
