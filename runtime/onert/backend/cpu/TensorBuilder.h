@@ -64,9 +64,6 @@ public:
 
   std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
-  bool setMigrantTensor(const ir::OperandIndex &ind,
-                        const std::shared_ptr<IPortableTensor> &tensor) override;
-
   std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:

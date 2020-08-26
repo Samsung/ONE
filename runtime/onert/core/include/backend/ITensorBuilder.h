@@ -97,16 +97,6 @@ public: // methods for static tensor allocation
    *        called.
    */
   virtual void postFunctionPrepare() = 0;
-  /**
-   * @brief Set the migrant tensor object
-   *
-   * @return true if succeeded
-   * @return false if failed or unsupported
-   */
-  virtual bool setMigrantTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
-  {
-    return false;
-  }
 
   /**
    * @brief Release static @c ITensorManger object which was built

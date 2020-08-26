@@ -93,7 +93,8 @@ public:
     return nullptr;
   }
 
-  bool setMigrantTensor(ir::OperandIndex ind, const std::shared_ptr<IPortableTensor> &tensor)
+  bool setMigrantTensor(const ir::OperandIndex &ind,
+                        const std::shared_ptr<IPortableTensor> &tensor) override
   {
     assert(tensor);
     assert(!getITensor(ind)); // For the ind, tensor is not registered yet

@@ -188,10 +188,24 @@ ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
 {
   std::vector<std::shared_ptr<backend::ITensor>> ret;
 
-  TensorBuilders tensor_builders{lowered_graph.backend_contexts(), false};
-  std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder =
-      tensor_builders.getControlflowTensorBuilder();
+  // TODO Store controlflow backend in BackendContext
+  std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
+  std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
+  for (const auto &e : lowered_graph.backend_contexts())
+  {
+    auto tensor_reg = e.second->tensor_builder->tensorRegistry();
+    auto backend = e.first;
+    auto &context = e.second;
+    if (backend->config()->id() == backend::controlflow::Config::ID)
+    {
+      cf_tensor_builder =
+          std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
+      cf_tensor_reg = std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(
+          cf_tensor_builder->tensorRegistry());
+    }
+  }
   assert(cf_tensor_builder);
+  assert(cf_tensor_reg);
 
   for (auto ind : indices)
   {
@@ -202,15 +216,16 @@ ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
         cf_tensor_builder->dynamicTensorManager());
 
     // Add tensor to controlflow TensorRegistry.
-    cf_tensor_builder->setNativeUserTensor(ind, tensor);
+    cf_tensor_reg->setNativeUserTensor(ind, tensor);
     ret.push_back(tensor);
   }
   return ret;
 }
 
-void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_graph,
-                                             TensorBuilders &tensor_builders)
+void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_graph)
 {
+  TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
+
   lowered_graph.op_seqs().iterate(
       [&](const ir::OpSequenceIndex &op_seq_index, const ir::OpSequence &op_seq) {
         auto lower_info = lowered_graph.getLowerInfo(op_seq_index);
@@ -223,11 +238,11 @@ void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_gra
           // set the tensor to this tensor builder if portable
           if (!backend_ctx->tensor_builder->tensorRegistry()->getITensor(ind))
           {
-            auto tensor = tensor_builders.getITensor(ind);
-            assert(tensor); // The tensor must have been created in one of TensorBuilders
+            auto tensor = tensor_regs.getITensor(ind);
+            assert(tensor); // The tensor must have been registered
             auto ptensor = std::dynamic_pointer_cast<backend::IPortableTensor>(tensor);
             if (ptensor)
-              backend_ctx->tensor_builder->setMigrantTensor(ind, ptensor);
+              backend_ctx->tensor_builder->tensorRegistry()->setMigrantTensor(ind, ptensor);
           }
         }
       });
@@ -285,7 +300,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph, tensor_builders);
+  prepareExternalTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 
@@ -389,7 +404,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph, tensor_builders);
+  prepareExternalTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 
