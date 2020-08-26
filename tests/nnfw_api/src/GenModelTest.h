@@ -79,6 +79,8 @@ public:
    */
   void setBackends(const std::vector<std::string> &backends)
   {
+    _backends.clear();
+
     for (auto backend : backends)
     {
 #ifdef TEST_ACL_BACKEND

@@ -118,6 +118,10 @@ void OperationDumper::visit(const ElementwiseActivation &node)
     params = " lower value(" + std::to_string(node.param().alpha) + ") upper value(" +
              std::to_string(node.param().beta) + ")";
   }
+  else if (node.param().op_type == ElementwiseActivation::Type::LEAKY_RELU)
+  {
+    params = " alpha value(" + std::to_string(node.param().alpha) + ")";
+  }
   dumpUnaryInputOp(node, params);
 }
 

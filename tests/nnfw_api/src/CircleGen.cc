@@ -118,6 +118,13 @@ uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
                                 circle::BuiltinOptions_L2NormOptions, options);
 }
 
+uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alpha)
+{
+  auto options = circle::CreateLeakyReluOptions(_fbb, alpha).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LEAKY_RELU,
+                                circle::BuiltinOptions_LeakyReluOptions, options);
+}
+
 uint32_t CircleGen::addOperatorPad(const OperatorParams &params)
 {
   auto options = circle::CreatePadOptions(_fbb).Union();
