@@ -18,7 +18,7 @@
 MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 NNFW_HOME="$(dirname $(dirname $(dirname ${MY_PATH})))"
 CACHE_ROOT_PATH=$MY_PATH/"cache"
-TEST_ROOT_PATH=$MY_PATH/"config"
+TEST_ROOT_PATH=$MY_PATH/"tflite"
 REPORT_DIR="report"
 
 RUN_DISABLED="true"
