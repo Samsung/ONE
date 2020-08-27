@@ -148,9 +148,73 @@ inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
                                  uint8_t *output_data)
 {
   int i = 0;
+
+#ifdef USE_NEON
+  const uint8x8_t output_activation_min_vector = vdup_n_u8(params.quantized_activation_min);
+  const uint8x8_t output_activation_max_vector = vdup_n_u8(params.quantized_activation_max);
+  for (; i <= size - 8; i += 8)
+  {
+    const uint8x8_t input1_val_original = vld1_u8(input1_data + i);
+    const uint8x8_t input2_val_original = vld1_u8(input2_data + i);
+    const int16x8_t input1_val_s16 = vreinterpretq_s16_u16(vmovl_u8(input1_val_original));
+    const int16x8_t input2_val_s16 = vreinterpretq_s16_u16(vmovl_u8(input2_val_original));
+    const int16x8_t input1_val = vaddq_s16(input1_val_s16, vdupq_n_s16(params.input1_offset));
+    const int16x8_t input2_val = vaddq_s16(input2_val_s16, vdupq_n_s16(params.input2_offset));
+    const int16x4_t input1_val_high = vget_high_s16(input1_val);
+    const int16x4_t input1_val_low = vget_low_s16(input1_val);
+    const int16x4_t input2_val_high = vget_high_s16(input2_val);
+    const int16x4_t input2_val_low = vget_low_s16(input2_val);
+    int32x4_t x11 = vmovl_s16(input1_val_low);
+    int32x4_t x12 = vmovl_s16(input1_val_high);
+    int32x4_t x21 = vmovl_s16(input2_val_low);
+    int32x4_t x22 = vmovl_s16(input2_val_high);
+    const int32x4_t left_shift_dup = vdupq_n_s32(params.left_shift);
+    x11 = vshlq_s32(x11, left_shift_dup);
+    x12 = vshlq_s32(x12, left_shift_dup);
+    x21 = vshlq_s32(x21, left_shift_dup);
+    x22 = vshlq_s32(x22, left_shift_dup);
+    x11 = vqrdmulhq_n_s32(x11, params.input1_multiplier);
+    x12 = vqrdmulhq_n_s32(x12, params.input1_multiplier);
+    x21 = vqrdmulhq_n_s32(x21, params.input2_multiplier);
+    x22 = vqrdmulhq_n_s32(x22, params.input2_multiplier);
+    const int32x4_t input1_shift_dup = vdupq_n_s32(params.input1_shift);
+    const int32x4_t input2_shift_dup = vdupq_n_s32(params.input2_shift);
+    x11 = vshlq_s32(x11, input1_shift_dup);
+    x12 = vshlq_s32(x12, input1_shift_dup);
+    x21 = vshlq_s32(x21, input2_shift_dup);
+    x22 = vshlq_s32(x22, input2_shift_dup);
+    int32x4_t s1 = vaddq_s32(x11, x21);
+    int32x4_t s2 = vaddq_s32(x12, x22);
+    s1 = vqrdmulhq_n_s32(s1, params.output_multiplier);
+    s2 = vqrdmulhq_n_s32(s2, params.output_multiplier);
+    using gemmlowp::RoundingDivideByPOT;
+    s1 = RoundingDivideByPOT(s1, -params.output_shift);
+    s2 = RoundingDivideByPOT(s2, -params.output_shift);
+    const int16x4_t s1_narrowed = vmovn_s32(s1);
+    const int16x4_t s2_narrowed = vmovn_s32(s2);
+    const int16x8_t s =
+        vaddq_s16(vcombine_s16(s1_narrowed, s2_narrowed), vdupq_n_s16(params.output_offset));
+    const uint8x8_t clamped = vmax_u8(output_activation_min_vector,
+                                      vmin_u8(output_activation_max_vector, vqmovun_s16(s)));
+    vst1_u8(output_data + i, clamped);
+  }
+#endif // NEON
   for (; i < size; ++i)
   {
-    int32_t clamped_output = quant8_sum(params, input1_data[i], input2_data[i]);
+    const int32_t input1_val = params.input1_offset + input1_data[i];
+    const int32_t input2_val = params.input2_offset + input2_data[i];
+    const int32_t shifted_input1_val = input1_val * (1 << params.left_shift);
+    const int32_t shifted_input2_val = input2_val * (1 << params.left_shift);
+    const int32_t scaled_input1_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
+        shifted_input1_val, params.input1_multiplier, params.input1_shift);
+    const int32_t scaled_input2_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
+        shifted_input2_val, params.input2_multiplier, params.input2_shift);
+    const int32_t raw_sum = scaled_input1_val + scaled_input2_val;
+    const int32_t raw_output = MultiplyByQuantizedMultiplierSmallerThanOneExp(
+                                   raw_sum, params.output_multiplier, params.output_shift) +
+                               params.output_offset;
+    const int32_t clamped_output = std::min(params.quantized_activation_max,
+                                            std::max(params.quantized_activation_min, raw_output));
     output_data[i] = static_cast<uint8_t>(clamped_output);
   }
 }
@@ -392,10 +456,62 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
                                  uint8_t *output_data)
 {
   int i = 0;
-  int32_t clamped_output;
-  for (; i < size; i++)
+
+#ifdef USE_NEON
+  const auto input1_offset_vector = vdupq_n_s16(params.input1_offset);
+  const auto input2_offset_vector = vdupq_n_s16(params.input2_offset);
+  const auto output_offset_vector = vdupq_n_s16(params.output_offset);
+  const auto output_activation_min_vector = vdup_n_u8(params.quantized_activation_min);
+  const auto output_activation_max_vector = vdup_n_u8(params.quantized_activation_max);
+  const int left_shift = std::max(0, params.output_shift);
+  const int right_shift = std::max(0, -params.output_shift);
+  const int32x4_t left_shift_vec = vdupq_n_s32(left_shift);
+  for (; i <= size - 8; i += 8)
   {
-    clamped_output = quant8_mul(params, input1_data[i], input2_data[i]);
+    // We load / store 8 at a time, multiplying as two sets of 4 int32s.
+    const auto input1_val_original = vld1_u8(input1_data + i);
+    const auto input2_val_original = vld1_u8(input2_data + i);
+    const auto input1_val_s16 = vreinterpretq_s16_u16(vmovl_u8(input1_val_original));
+    const auto input2_val_s16 = vreinterpretq_s16_u16(vmovl_u8(input2_val_original));
+    const auto input1_val = vaddq_s16(input1_val_s16, input1_offset_vector);
+    const auto input2_val = vaddq_s16(input2_val_s16, input2_offset_vector);
+
+    const auto input1_val_low = vget_low_s16(input1_val);
+    const auto input1_val_high = vget_high_s16(input1_val);
+    const auto input2_val_low = vget_low_s16(input2_val);
+    const auto input2_val_high = vget_high_s16(input2_val);
+
+    auto p1 = vmull_s16(input2_val_low, input1_val_low);
+    auto p2 = vmull_s16(input2_val_high, input1_val_high);
+
+    p1 = vshlq_s32(p1, left_shift_vec);
+    p2 = vshlq_s32(p2, left_shift_vec);
+    p1 = vqrdmulhq_n_s32(p1, params.output_multiplier);
+    p2 = vqrdmulhq_n_s32(p2, params.output_multiplier);
+    using gemmlowp::RoundingDivideByPOT;
+    p1 = RoundingDivideByPOT(p1, right_shift);
+    p2 = RoundingDivideByPOT(p2, right_shift);
+
+    const auto p1_narrowed = vqmovn_s32(p1);
+    const auto p2_narrowed = vqmovn_s32(p2);
+    const auto p = vaddq_s16(vcombine_s16(p1_narrowed, p2_narrowed), output_offset_vector);
+    const auto clamped = vmax_u8(output_activation_min_vector,
+                                 vmin_u8(output_activation_max_vector, vqmovun_s16(p)));
+    vst1_u8(output_data + i, clamped);
+  }
+#endif // NEON
+
+  for (; i < size; ++i)
+  {
+    const int32_t input1_val = params.input1_offset + input1_data[i];
+    const int32_t input2_val = params.input2_offset + input2_data[i];
+    const int32_t unclamped_result =
+        params.output_offset + MultiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                             params.output_multiplier,
+                                                             params.output_shift);
+    const int32_t clamped_output =
+        std::min(params.quantized_activation_max,
+                 std::max(params.quantized_activation_min, unclamped_result));
     output_data[i] = static_cast<uint8_t>(clamped_output);
   }
 }
