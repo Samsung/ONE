@@ -32,6 +32,8 @@ set(SOURCES
     LocalResponseNormalization.cpp
     Logistic.h
     Logistic.cpp
+    LogSoftmax.h
+    LogSoftmax.cpp
     MaxPool2D.h
     MaxPool2D.cpp
     Mean.h
@@ -100,6 +102,7 @@ set(TEST_SOURCES
     LeakyRelu.test.cpp
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
+    LogSoftmax.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
     Mul.test.cpp
