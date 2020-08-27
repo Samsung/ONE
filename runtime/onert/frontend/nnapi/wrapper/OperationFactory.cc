@@ -630,6 +630,10 @@ OperationFactory::OperationFactory()
       param.activation =
           NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     }
+    else
+    {
+      throw std::runtime_error{"Conv2D: unsupported input operand count"};
+    }
 
     return new Conv2D{inputs, outputs, param};
   };
@@ -1415,6 +1419,8 @@ OperationFactory::OperationFactory()
 
     operation::ArgMax::Param param;
     param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
+    // NNAPI ARGMAX output type is always int32
+    param.output_type = DataType::INT32;
 
     return new operation::ArgMax{inputs, outputs, param};
   };
