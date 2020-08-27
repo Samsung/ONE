@@ -55,6 +55,57 @@ TYPED_TEST(DepthToSpaceTest, SimpleCase)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
+TEST(DepthToSpaceTest, Invalid_Input_Data_NEG)
+{
+  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
+  Shape input_shape{1, 2, 4};
+  std::vector<float> output_data{1, 2, 5, 6, 3, 4, 7, 8};
+  std::vector<int32_t> output_shape{1, 2, 4, 1};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  DepthToSpaceParams params{};
+  params.block_size = 2;
+
+  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(DepthToSpaceTest, In_Out_Type_NEG)
+{
+  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
+  Shape input_shape{1, 1, 2, 4};
+  std::vector<uint8_t> output_data{1, 2, 5, 6, 3, 4, 7, 8};
+  std::vector<int32_t> output_shape{1, 2, 4, 1};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  DepthToSpaceParams params{};
+  params.block_size = 2;
+
+  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(DepthToSpaceTest, Block_Size_NEG)
+{
+  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
+  Shape input_shape{1, 1, 2, 4};
+  std::vector<float> output_data{1, 2, 5, 6, 3, 4, 7, 8};
+  std::vector<int32_t> output_shape{1, 2, 4, 1};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  DepthToSpaceParams params{};
+  params.block_size = 3;
+
+  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
