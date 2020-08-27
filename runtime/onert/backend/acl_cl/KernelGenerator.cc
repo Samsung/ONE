@@ -1298,6 +1298,56 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
+void KernelGenerator::visit(const ir::operation::SplitV &node)
+{
+  const auto ifm_index{node.getInputs().at(ir::operation::SplitV::Input::INPUT)};
+  const auto size_split_index{node.getInputs().at(ir::operation::SplitV::Input::SIZE_SPLITS)};
+  const auto split_dim_index{node.getInputs().at(ir::operation::SplitV::Input::SPLIT_DIM)};
+
+  assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
+
+  const size_t ifm_rank = _ctx.at(ifm_index).shape().rank();
+  std::vector<ir::OperandIndex> output_indexes;
+  for (const auto &output : node.getOutputs())
+    output_indexes.emplace_back(output);
+
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto size_split_tensor = _tensor_reg->getAclTensor(size_split_index).get();
+
+  std::vector<arm_compute::ICLTensor *> output_tensors;
+  for (const auto &ofm_ind : output_indexes)
+    output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind).get()->handle());
+
+  auto fn = std::make_unique<arm_compute::CLSplitVEx>();
+  const auto split_dim_op = _ctx.at(split_dim_index);
+  if (split_dim_op.isConstant())
+  {
+    int32_t split_dim = split_dim_op.asScalar<int32_t>();
+    uint32_t split_dim_revised = (split_dim < 0) ? (split_dim + ifm_rank) : split_dim;
+    const auto frontend_layout = _current_op_seq_layout;
+    const auto backend_layout = ifm_tensor->layout();
+
+    if (ifm_rank != ifm_tensor->info()->num_dimensions())
+    {
+      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+      ifm_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
+          _ctx.at(ifm_index).shape(), _current_op_seq_layout, backend_layout, false));
+    }
+
+    split_dim_revised =
+        acl_common::ToARMComputeAxis(ifm_rank, split_dim_revised, frontend_layout, backend_layout)
+            .value();
+    fn->configure(ifm_tensor->handle(), size_split_tensor->handle(), split_dim_revised,
+                  output_tensors, node.param().num_splits);
+  }
+  else
+  {
+    throw std::runtime_error("Non-constant split_dim NYI for acl_cl backend");
+  }
+
+  _return_fn = asAclFunction(std::move(fn));
+}
+
 void KernelGenerator::visit(const ir::operation::Unpack &node)
 {
   const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
