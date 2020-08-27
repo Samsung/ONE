@@ -183,8 +183,8 @@ void ExecutorBase::execute(const IODescription &desc)
     // TODO Remove dynamic_cast
     auto tensor = std::dynamic_pointer_cast<backend::controlflow::UserTensor>(_input_tensors[i]);
     assert(tensor);
-    auto input_shape = desc.input_shape_signature.find(ir::IOIndex{i});
-    if (input_shape != desc.input_shape_signature.end())
+    auto input_shape = desc.dynamic_input_shapes.find(ir::IOIndex{i});
+    if (input_shape != desc.dynamic_input_shapes.end())
     {
       tensor->set_dynamic();
       tensor->setShape(input_shape->second);
@@ -249,8 +249,8 @@ void ExecutorBase::execute(const IODescription &desc)
  */
 void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescription &desc)
 {
-  auto shape_sig_found = desc.input_shape_signature.find(io_ind);
-  if (shape_sig_found != desc.input_shape_signature.end())
+  auto shape_sig_found = desc.dynamic_input_shapes.find(io_ind);
+  if (shape_sig_found != desc.dynamic_input_shapes.end())
   {
     auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[io_ind.value()]);
     if (dyn_alloc_info == _input_to_dyn_alloc_info.end())

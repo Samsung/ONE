@@ -62,8 +62,8 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
-  // Contains shape of input set by set_input_tensorinfo
-  std::unordered_map<ir::IOIndex, ir::Shape> input_shape_signature;
+  // Contains shape of input set by nnfw_set_input_tensorinfo(..)
+  std::unordered_map<ir::IOIndex, ir::Shape> dynamic_input_shapes;
 };
 
 } // namespace exec
