@@ -33,7 +33,7 @@ namespace feature
 namespace nchw
 {
 
-template <typename T> class Reader final : public feature::Reader<T>
+template <typename T> class Reader : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
@@ -68,7 +68,14 @@ public:
   }
 
 public:
-  T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const override
+  T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const final
+  {
+    return getRef(batch, ch, row, col);
+  }
+  T at(uint32_t ch, uint32_t row, uint32_t col) const final { return getRef(0, ch, row, col); }
+
+protected:
+  const T &getRef(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
   {
     const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
 
@@ -76,7 +83,6 @@ public:
 
     return *ptr;
   }
-  T at(uint32_t ch, uint32_t row, uint32_t col) const override { return at(0, ch, row, col); }
 
 private:
   size_t feature_index_to_byte_offset(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const

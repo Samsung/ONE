@@ -17,7 +17,7 @@
 #ifndef __ONERT_EXEC_FEATURE_NCHW_VIEW_H__
 #define __ONERT_EXEC_FEATURE_NCHW_VIEW_H__
 
-#include "../Reader.h"
+#include "Reader.h"
 
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
@@ -34,84 +34,31 @@ namespace feature
 namespace nchw
 {
 
-template <typename T> class View final : public feature::Reader<T>
+template <typename T> class View final : public Reader<T>
 {
 public:
   // Construct for buffer of model inputs
-  View(const ir::FeatureShape &shape, T *ptr, size_t len)
-      : _shape{shape}, _ptr{reinterpret_cast<uint8_t *>(ptr)}, _len{len}
+  View(const ir::FeatureShape &shape, T *ptr, size_t len) : Reader<T>{shape, ptr, len}
   {
-    assert(shape.N * shape.C * shape.H * shape.W * sizeof(T) == len);
-
-    _strides.W = sizeof(T);
-    _strides.H = shape.W * sizeof(T);
-    _strides.C = shape.W * shape.H * sizeof(T);
-    _strides.N = shape.W * shape.H * shape.C * sizeof(T);
+    // DO NOTHING
   }
 
   // Construct for backend tensor
-  View(::onert::backend::ITensor *tensor)
-      : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
+  View(::onert::backend::ITensor *tensor) : Reader<T>{tensor}
   {
-    assert(tensor->layout() == ir::Layout::NCHW);
-
-    const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
-    _strides.W = tensor->dimension(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
-    _strides.H = tensor->dimension(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
-    _strides.C = tensor->dimension(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
-    _strides.N = tensor->dimension(0) == 1 ? 0 : tensor->calcOffset({1, 0, 0, 0}) - start_offset;
-
-    _shape.W = tensor->dimension(3);
-    _shape.H = tensor->dimension(2);
-    _shape.C = tensor->dimension(1);
-    _shape.N = tensor->dimension(0);
+    // DO NOTHING
   }
 
 public:
+  using Reader<T>::at;
   T &at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col)
   {
-    return getRef(batch, ch, row, col);
+    return const_cast<T &>(Reader<T>::getRef(batch, ch, row, col));
   }
-  T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const override
+  T &at(uint32_t ch, uint32_t row, uint32_t col)
   {
-    return getRef(batch, ch, row, col);
+    return const_cast<T &>(Reader<T>::getRef(0, ch, row, col));
   }
-  T &at(uint32_t ch, uint32_t row, uint32_t col) { return getRef(0, ch, row, col); }
-  T at(uint32_t ch, uint32_t row, uint32_t col) const override { return getRef(0, ch, row, col); }
-
-private:
-  size_t feature_index_to_byte_offset(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
-  {
-    assert(1u * _shape.N > batch); // shape.N > batch
-    assert(1u * _shape.C > ch);    // shape.C > ch
-    assert(1u * _shape.H > row);   // shape.H > row
-    assert(1u * _shape.W > col);   // shape.W > col
-
-    uint32_t res = 0;
-    res += batch * _strides.N;
-    res += ch * _strides.C;
-    res += row * _strides.H;
-    res += col * _strides.W;
-
-    return res;
-  }
-
-  T &getRef(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const
-  {
-    const auto offset = feature_index_to_byte_offset(batch, ch, row, col);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-
-private:
-  // TODO Remove _shape
-  ir::FeatureShape _shape;
-  using Strides = ir::FeatureShape;
-  Strides _strides;
-  uint8_t *_ptr;
-  size_t _len;
 };
 
 } // namespace nchw

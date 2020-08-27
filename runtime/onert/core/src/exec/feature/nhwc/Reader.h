@@ -34,7 +34,7 @@ namespace feature
 namespace nhwc
 {
 
-template <typename T> class Reader final : public feature::Reader<T>
+template <typename T> class Reader : public feature::Reader<T>
 {
 public:
   // Construct for buffer of model inputs
@@ -70,7 +70,14 @@ public:
   }
 
 public:
-  T at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const override
+  T at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const final
+  {
+    return getRef(batch, row, col, ch);
+  }
+  T at(uint32_t row, uint32_t col, uint32_t ch) const final { return getRef(0, row, col, ch); }
+
+protected:
+  const T &getRef(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
   {
     const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
 
@@ -78,7 +85,6 @@ public:
 
     return *ptr;
   }
-  T at(uint32_t row, uint32_t col, uint32_t ch) const override { return at(0, row, col, ch); }
 
 private:
   size_t feature_index_to_byte_offset(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
