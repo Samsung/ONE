@@ -31,8 +31,8 @@ TEST(LogSoftmaxTest, Float)
 {
   Shape input_shape{2, 4};
   std::vector<float> input_data{
-      0, -6, 2, 4,   //
-      3, -2, 10, 1,  //
+      0, -6, 2,  4, //
+      3, -2, 10, 1, //
   };
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
@@ -42,8 +42,8 @@ TEST(LogSoftmaxTest, Float)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      -4.14297, -10.14297, -2.14297, -.142971,    //
-      -7.00104, -12.00104, -.00104087, -9.00104,  //
+      -4.14297, -10.14297, -2.14297,   -.142971, //
+      -7.00104, -12.00104, -.00104087, -9.00104, //
   };
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
@@ -53,16 +53,14 @@ TEST(LogSoftmaxTest, Uint8)
 {
   float kMin = -10;
   float kMax = 10;
-  float kLogSoftmaxQuantizedTolerance = (kMax - kMin) / 255.0;;
+  float kLogSoftmaxQuantizedTolerance = (kMax - kMin) / 255.0;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
   std::vector<float> input_data{
-      0, -6, 2, 4,   //
-      3, -2, 10, 1,  //
+      0, -6, 2,  4, //
+      3, -2, 10, 1, //
   };
-  Tensor input_tensor{
-      DataType::U8, {2, 4}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor output_tensor =
-      makeOutputTensor(DataType::U8, 16. / 256, 255);
+  Tensor input_tensor{DataType::U8, {2, 4}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 16. / 256, 255);
   std::vector<uint8_t> quantize_input =
       quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
   input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
@@ -72,8 +70,8 @@ TEST(LogSoftmaxTest, Uint8)
   kernel.execute();
 
   std::vector<float> ref_output_data{
-      -4.14297, -10.14297, -2.14297, -.142971,    //
-      -7.00104, -12.00104, -.00104087, -9.00104,  //
+      -4.14297, -10.14297, -2.14297,   -.142971, //
+      -7.00104, -12.00104, -.00104087, -9.00104, //
   };
   std::vector<int32_t> ref_output_shape{2, 4};
   EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),

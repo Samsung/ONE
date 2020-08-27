@@ -74,7 +74,8 @@ void LogSoftmax::evalQuantized() const
   params.beta = 1.0;
 
   tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
-  tflite::optimized_ops::LogSoftmax(params, input_scale, input_shape, input_data, output_shape, output_data);
+  tflite::optimized_ops::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
+                                    output_data);
 }
 
 } // namespace kernels
