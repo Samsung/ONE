@@ -26,17 +26,35 @@ namespace
 
 using namespace testing;
 
-TEST(SoftmaxTest, Float)
+template <typename T>
+void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Shape input_shape{2, 1, 2, 3};
-  std::vector<float> input_data{
-      5,  -9, 8,  //
-      -7, 2,  -4, //
-      1,  -2, 9,  //
-      3,  -6, -1, //
-  };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  float kQuantizedTolerance = getTolerance(std::min<float>(std::min<float>(output_data), 0.f),
+                                           std::max<float>(std::max<float>(output_data), 0.f), 255);
+  std::pair<float, int32_t> input_quant_param =
+      quantizationParams<T>(std::min<float>(std::min<float>(input_data), 0.f),
+                            std::max<float>(std::max<float>(input_data), 0.f));
+  std::pair<float, int32_t> output_quant_param =
+      quantizationParams<T>(std::min<float>(std::min<float>(output_data), 0.f),
+                            std::max<float>(std::max<float>(output_data), 0.f));
+  Tensor input_tensor{getElementType<T>(),
+                      input_shape,
+                      {{input_quant_param.first}, {input_quant_param.second}},
+                      ""};
+  if (std::is_floating_point<T>::value)
+  {
+    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  }
+  else
+  {
+    std::vector<T> quantized_input_value =
+        quantize<T>(input_data, input_quant_param.first, input_quant_param.second);
+    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
+  }
+
+  Tensor output_tensor =
+      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
 
   SoftmaxParams params{};
   params.beta = 0.1;
@@ -45,14 +63,41 @@ TEST(SoftmaxTest, Float)
   kernel.configure();
   kernel.execute();
 
-  std::vector<float> ref_output_data{
-      0.38514, 0.09497, 0.51989, //
-      0.20792, 0.51141, 0.28067, //
-      0.25212, 0.18678, 0.56110, //
-      0.48149, 0.19576, 0.32275, //
-  };
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  if (std::is_floating_point<T>::value)
+  {
+    EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+  }
+  else
+  {
+    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
+                              output_tensor.zero_point()),
+                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
+  }
+  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
+}
+
+template <typename T> class SoftmaxTest : public ::testing::Test
+{
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(SoftmaxTest, DataTypes);
+
+TYPED_TEST(SoftmaxTest, Simple)
+{
+  Check<TypeParam>({2, 1, 2, 3}, {2, 1, 2, 3},
+                   {
+                       5, -9, 8,  //
+                       -7, 2, -4, //
+                       1, -2, 9,  //
+                       3, -6, -1, //
+                   },
+                   {
+                       0.38514, 0.09497, 0.51989, //
+                       0.20792, 0.51141, 0.28067, //
+                       0.25212, 0.18678, 0.56110, //
+                       0.48149, 0.19576, 0.32275, //
+                   });
 }
 
 } // namespace

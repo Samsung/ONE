@@ -19,6 +19,7 @@
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/softmax.h>
+#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
 
 #include <stdexcept>
 
@@ -35,7 +36,8 @@ Softmax::Softmax(const Tensor *input, Tensor *output, const SoftmaxParams &param
 
 void Softmax::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= 1);
   output()->resize(input()->shape());
 }
 
@@ -45,6 +47,12 @@ void Softmax::execute() const
   {
     case DataType::FLOAT32:
       evalFloat();
+      break;
+    case DataType::S8:
+      evalQuantized<int8_t>();
+      break;
+    case DataType::U8:
+      evalQuantized<uint8_t>();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -58,6 +66,18 @@ void Softmax::evalFloat() const
 
   tflite::reference_ops::Softmax(params, getTensorShape(input()), getTensorData<float>(input()),
                                  getTensorShape(output()), getTensorData<float>(output()));
+}
+
+template <typename T> void Softmax::evalQuantized() const
+{
+  tflite::SoftmaxParams params{};
+  // params.beta = _params.beta;
+  params.table = new float[256];
+  params.zero_point = output()->zero_point();
+  params.scale = output()->scale();
+  tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
+  tflite::optimized_ops::Softmax(params, getTensorShape(input()), getTensorData<T>(input()),
+                                 getTensorShape(output()), getTensorData<T>(output()));
 }
 
 } // namespace kernels
