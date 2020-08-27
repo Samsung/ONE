@@ -83,6 +83,10 @@ while [ "$#" -ne 0 ]; do
   esac
 done
 
+if [ -n ${INPUT_SHAPES} ] && [ ${TF_INTERFACE} = "--v2" ]; then
+  echo "Warning: if --v2 option is used, shape will be ignored"
+fi
+
 if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
@@ -117,16 +121,18 @@ show_err_onexit()
 trap show_err_onexit ERR
 
 # generate temporary tflite file
-echo "python" "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${INPUT_PATH} \
---input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
---output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
---output_arrays ${OUTPUT_ARRAYS} > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
+CONVERT_SCRIPT+="--input_path ${INPUT_PATH} "
+CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
+CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
+CONVERT_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS} "
+if [ ! -z ${INPUT_SHAPES} ]; then
+  CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
+fi
 
-python "${DRIVER_PATH}/tf2tfliteV2.py" ${TF_INTERFACE} --input_path ${INPUT_PATH} \
---input_arrays ${INPUT_ARRAYS} --input_shapes ${INPUT_SHAPES} \
---output_path "${TMPDIR}/${MODEL_NAME}.tflite" \
---output_arrays ${OUTPUT_ARRAYS} >> "${OUTPUT_PATH}.log" 2>&1
+echo ${CONVERT_SCRIPT} > "${OUTPUT_PATH}.log"
+echo "" >> "${OUTPUT_PATH}.log"
+$CONVERT_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
 # convert .tflite to .circle
 echo " " >> "${OUTPUT_PATH}.log"
