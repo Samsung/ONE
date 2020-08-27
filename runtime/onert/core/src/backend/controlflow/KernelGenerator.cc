@@ -94,7 +94,6 @@ void KernelGenerator::visit(const ir::operation::If &node)
     auto output_tensor = getTensor(output_index);
 
     output_tensors.emplace_back(output_tensor);
-    const auto output_tensor_builder = getTensorBuilder(output_index);
     outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
@@ -118,9 +117,6 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
   std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
-  const auto output_tensor_builder = getTensorBuilder(output_index);
-  VERBOSE(PERMUTE_FIND_TB) << output_index << " -> " << output_tensor_builder.get() << std::endl;
-  assert(output_tensor_builder != nullptr);
   outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
 
   auto fn =
@@ -152,7 +148,6 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
     output_tensors.emplace_back(output_tensor);
 
-    const auto output_tensor_builder = getTensorBuilder(output_index);
     outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
@@ -168,24 +163,6 @@ void KernelGenerator::visit(const ir::operation::While &node)
 std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
   std::shared_ptr<backend::ITensor> ret = _tensor_builder_set.getITensor(index);
-  assert(ret != nullptr);
-  return ret;
-}
-
-std::shared_ptr<backend::ITensorBuilder>
-KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
-{
-  std::shared_ptr<backend::ITensorBuilder> ret;
-  for (auto tensor_builder : _tensor_builder_set)
-  {
-    auto reg = tensor_builder->tensorRegistry();
-    auto tensor = reg->getITensor(index);
-    if (tensor)
-    {
-      ret = tensor_builder;
-      break;
-    }
-  }
   assert(ret != nullptr);
   return ret;
 }
