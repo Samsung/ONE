@@ -41,6 +41,7 @@ public:
 
 private:
   void evalFloat() const;
+  void evalQuantized() const;
 };
 
 } // namespace kernels

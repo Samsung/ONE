@@ -36,27 +36,53 @@ FullyConnected::FullyConnected(const Tensor *input, const Tensor *weights, const
 
 void FullyConnected::configure()
 {
-  if (weights()->element_type() != DataType::FLOAT32)
-    throw std::runtime_error("Unsupported type.");
-
-  assert(input()->element_type() == DataType::FLOAT32);
-  assert(weights()->element_type() == DataType::FLOAT32);
-  assert(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
+  if (weights()->element_type() == DataType::U8 || weights()->element_type() == DataType::S8)
+  {
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::U8 ||
+                           input()->element_type() == DataType::S8);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::U8 ||
+                           output()->element_type() == DataType::S8);
+    LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::S32 ||
+                           bias()->element_type() == DataType::S64)
+  }
+  else
+  {
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::FLOAT32)
+  }
 
   const Shape &input_shape = input()->shape();
   const Shape &weights_shape = weights()->shape();
 
-  assert(weights_shape.num_dims() == 2);
-  assert(bias() == nullptr || bias()->shape().num_elements() == weights_shape.dim(0));
+  LUCI_INTERPRETER_CHECK(weights_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(bias() == nullptr ||
+                         bias()->shape().num_elements() == weights_shape.dim(0));
 
-  assert(input_shape.num_elements() % weights_shape.dim(1) == 0);
+  LUCI_INTERPRETER_CHECK(input_shape.num_elements() % weights_shape.dim(1) == 0);
   const int32_t batch_size = input_shape.num_elements() / weights_shape.dim(1);
   const int32_t num_units = weights_shape.dim(0);
+
+  if (bias())
+    LUCI_INTERPRETER_CHECK(bias()->shape().num_elements() == weights()->shape().dim(0));
 
   output()->resize({batch_size, num_units});
 }
 
-void FullyConnected::execute() const { evalFloat(); }
+void FullyConnected::execute() const
+{
+  switch (input()->element_type())
+  {
+    case DataType::U8:
+      evalQuantized();
+      break;
+    case DataType::FLOAT32:
+      evalFloat();
+      break;
+    default:
+      throw std::runtime_error("Unsupported type.");
+  }
+}
 
 void FullyConnected::evalFloat() const
 {
@@ -73,6 +99,41 @@ void FullyConnected::evalFloat() const
       params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(weights()),
       getTensorData<float>(weights()), getTensorShape(bias()), getTensorData<float>(bias()),
       getTensorShape(output()), getTensorData<float>(output()));
+}
+
+void FullyConnected::evalQuantized() const
+{
+  double real_multiplier = 0.0;
+  int output_shift;
+  int32_t output_activation_min;
+  int32_t output_activation_max;
+  int32_t output_multiplier;
+  getQuantizedConvolutionMultipler(input()->scale(), weights()->scale(), output()->scale(),
+                                   &real_multiplier);
+  quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
+  calculateActivationRangeQuantized(params().activation, output(), &output_activation_min,
+                                    &output_activation_max);
+
+  int32_t input_offset = -input()->zero_point();
+  int32_t filter_offset = -weights()->zero_point();
+  int32_t output_offset = output()->zero_point();
+
+  tflite::FullyConnectedParams op_params{};
+  op_params.input_offset = input_offset;
+  op_params.weights_offset = filter_offset;
+  op_params.output_offset = output_offset;
+  op_params.output_multiplier = output_multiplier;
+  op_params.output_shift = output_shift;
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.quantized_activation_max = output_activation_max;
+  // op_params.lhs_cacheable = IsConstantTensor(filter);
+  // op_params.rhs_cacheable = IsConstantTensor(input);
+  op_params.lhs_cacheable = false;
+  op_params.rhs_cacheable = false;
+  tflite::reference_ops::FullyConnected(
+      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
+      getTensorShape(weights()), getTensorData<uint8_t>(weights()), getTensorShape(bias()),
+      getTensorData<int32_t>(bias()), getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 } // namespace kernels
