@@ -22,7 +22,6 @@
 #include "backend/ITensor.h"
 #include "exec/IExecutor.h"
 #include "compiler/LoweredGraph.h"
-#include "TensorBuilders.h"
 #include "TensorRegistries.h"
 
 namespace onert

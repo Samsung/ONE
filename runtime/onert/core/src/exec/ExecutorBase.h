@@ -33,9 +33,8 @@
 #include "exec/IFunction.h"
 #include "backend/IDynamicTensorManager.h"
 #include "backend/ITensorManager.h"
-#include "backend/ITensorBuilder.h"
 #include "exec/ExecutionObservee.h"
-#include "compiler/TensorBuilders.h"
+#include "compiler/TensorRegistries.h"
 #include <list>
 
 namespace onert
@@ -54,7 +53,8 @@ public:
   ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
                const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
-               const compiler::TensorBuilders &tensor_builders);
+               const compiler::TensorRegistries &tensor_regs,
+               backend::TensorManagerSet &&tensor_mgrs);
 
   virtual ~ExecutorBase() = default;
 
