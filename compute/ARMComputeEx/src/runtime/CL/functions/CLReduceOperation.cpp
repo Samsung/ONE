@@ -59,6 +59,8 @@ Status CLReduceOperation::validate(const ITensorInfo *input, const ITensorInfo *
   const size_t num_of_kernels = axis.size();
   const size_t num_of_interm_tensors = num_of_kernels - (keep_dims ? 1 : 0);
 
+  ARM_COMPUTE_RETURN_ERROR_ON(num_of_kernels < 1);
+
   // Create temporary tensor infos
   auto interm_tensors = support::cpp14::make_unique<TensorInfo[]>(num_of_interm_tensors);
 
