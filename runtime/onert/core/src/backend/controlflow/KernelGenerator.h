@@ -35,7 +35,7 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
                   const std::shared_ptr<TensorRegistry> &tensor_reg);
 
   void setTensorBuilderSet(const compiler::TensorBuilders &tensor_builder_set)
@@ -60,7 +60,7 @@ private:
 
 private:
   const ir::Graph &_graph;
-  std::shared_ptr<TensorBuilder> _tensor_builder;
+  IDynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorBuilders _tensor_builder_set;
   exec::ExecutorMap *_executor_map;
