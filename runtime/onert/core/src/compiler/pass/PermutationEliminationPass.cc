@@ -37,19 +37,17 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
   auto in_operand = node.getInputs().at(0);
   auto out_operand = node.getOutputs().at(0);
 
-  // Check if two tensors are both portable
-  // TODO Make this general, this is just a workaround to check two tensors are portable
+  // Check if two tensors are both portable if not, we can't eliminate the node
   {
     auto in_def_factor = _lowered_graph.getLowerInfo(in_operand)->def_factors().getOnlyElement();
     auto out_def_factor = _lowered_graph.getLowerInfo(out_operand)->def_factors().getOnlyElement();
 
-    auto in_backend_id = in_def_factor.backend()->config()->id();
-    auto out_backend_id = out_def_factor.backend()->config()->id();
+    auto in_config = in_def_factor.backend()->config();
+    auto out_config = out_def_factor.backend()->config();
 
-    // TODO Fix this workaround that removes only Permute between cpu and controlflow backend.
-    //      This should be general.
-    if (!((in_backend_id == backend::controlflow::Config::ID && out_backend_id == "cpu") ||
-          (in_backend_id == "cpu" && out_backend_id == backend::controlflow::Config::ID)))
+    // FIXME Supporting dynamic tensor does not exactly mean those are portable.
+    //       It may need to have another config option for checking if each uses `IPortableTensor`.
+    if (!(in_config->supportDynamicTensor() && out_config->supportDynamicTensor()))
       return;
   }
 
