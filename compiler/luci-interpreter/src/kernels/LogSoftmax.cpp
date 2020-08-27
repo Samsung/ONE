@@ -62,7 +62,6 @@ void LogSoftmax::evalQuantized() const
   const auto input_shape = getTensorShape(input());
   const auto output_shape = getTensorShape(output());
   const auto input_scale = input()->scale();
-  const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
   uint8_t *output_data = getTensorData<uint8_t>(output());
   const uint8_t *input_data = getTensorData<uint8_t>(input());
 
