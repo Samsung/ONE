@@ -118,6 +118,13 @@ uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
                                 circle::BuiltinOptions_L2NormOptions, options);
 }
 
+uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
+{
+  auto options = circle::CreateLessOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LESS,
+                                circle::BuiltinOptions_LessOptions, options);
+}
+
 uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alpha)
 {
   auto options = circle::CreateLeakyReluOptions(_fbb, alpha).Union();
@@ -139,18 +146,18 @@ uint32_t CircleGen::addOperatorPadV2(const OperatorParams &params)
                                 circle::BuiltinOptions_PadV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorRank(const OperatorParams &params)
+{
+  auto options = circle::CreateRankOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RANK,
+                                circle::BuiltinOptions_RankOptions, options);
+}
+
 uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &params)
 {
   auto options = circle::CreateResizeNearestNeighborOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR,
                                 circle::BuiltinOptions_ResizeNearestNeighborOptions, options);
-}
-
-uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
-{
-  auto options = circle::CreateLessOptions(_fbb).Union();
-  return addOperatorWithOptions(params, circle::BuiltinOperator_LESS,
-                                circle::BuiltinOptions_LessOptions, options);
 }
 
 uint32_t CircleGen::addOperatorWhile(const OperatorParams &params, uint32_t cond_subg,
