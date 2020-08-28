@@ -38,6 +38,13 @@ void Softmax::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= 1);
+  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S8)
+  {
+    tflite::SoftmaxParams params{};
+    // params.beta = _params.beta;
+    params.table = _table;
+    tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
+  }
   output()->resize(input()->shape());
 }
 
@@ -72,11 +79,10 @@ template <typename T> void Softmax::evalQuantized() const
 {
   tflite::SoftmaxParams params{};
   // params.beta = _params.beta;
-  float intermediate[256];
-  params.table = intermediate;
+  params.table = const_cast<float *>(_table);
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
-  tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
+
   tflite::optimized_ops::Softmax(params, getTensorShape(input()), getTensorData<T>(input()),
                                  getTensorShape(output()), getTensorData<T>(output()));
 }
