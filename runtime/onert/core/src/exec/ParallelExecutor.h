@@ -53,7 +53,8 @@ public:
   ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                    const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                    const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
-                   const compiler::TensorBuilders &tensor_builders, compiler::CodeMap &&code_map);
+                   const compiler::TensorRegistries &tensor_regs,
+                   backend::TensorManagerSet &&tensor_mgrs, compiler::CodeMap &&code_map);
 
   void executeImpl() override;
 
