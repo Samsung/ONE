@@ -29,6 +29,7 @@ class Backend;
 class IConstantInitializer;
 class IKernelGenerator;
 class ITensorRegister;
+struct ITensorRegistry;
 struct ITensorBuilder;
 struct IOptimizer;
 
@@ -45,14 +46,15 @@ public:
 
 public:
   BackendContext(const Backend *backend, const ir::Graph *graph,
+                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<ITensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<IConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<IKernelGenerator> kernel_gen = nullptr,
                  std::shared_ptr<ITensorRegister> tensor_register = nullptr,
                  std::shared_ptr<IOptimizer> optimizer = nullptr)
-      : _backend{backend}, _graph{graph}, tensor_builder{tensor_builder},
-        constant_initializer{constant_initializer}, kernel_gen{kernel_gen},
-        tensor_register{tensor_register}, optimizer{optimizer}
+      : _backend{backend}, _graph{graph}, tensor_registry{tensor_registry},
+        tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+        kernel_gen{kernel_gen}, tensor_register{tensor_register}, optimizer{optimizer}
   {
   }
 
@@ -74,6 +76,7 @@ private:
   std::vector<ir::OperandIndex> _operand_list;
 
 public:
+  std::shared_ptr<ITensorRegistry> tensor_registry;
   std::shared_ptr<ITensorBuilder> tensor_builder;
   std::shared_ptr<IConstantInitializer> constant_initializer;
   std::shared_ptr<IKernelGenerator> kernel_gen;

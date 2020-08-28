@@ -27,8 +27,8 @@ namespace backend
 namespace cpu
 {
 
-TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()},
+TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
+    : _tensor_reg{tensor_reg},
       _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
       _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {

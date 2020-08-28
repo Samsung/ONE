@@ -39,7 +39,7 @@ namespace controlflow
 class TensorBuilder : public ITensorBuilder
 {
 public:
-  TensorBuilder();
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -73,8 +73,6 @@ public:
    */
   std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
   void setNativeUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
-
-  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;
