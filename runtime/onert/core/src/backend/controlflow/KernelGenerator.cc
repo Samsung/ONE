@@ -31,10 +31,9 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph,
-                                 const std::shared_ptr<TensorBuilder> &tensor_builder,
+KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg)
-    : _graph{graph}, _tensor_builder{tensor_builder}, _tensor_reg{tensor_reg},
+    : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
       _tensor_builder_set{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
@@ -45,7 +44,7 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph,
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
-  assert(_tensor_builder->dynamicTensorManager());
+  assert(_dyn_tensor_manager);
   assert(_tensor_reg);
 
   auto dyn_shape_inferer =
@@ -60,7 +59,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     dyn_ctx->operations = &_graph.operations();
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
     dyn_ctx->tensor_registry = _tensor_reg;
-    dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
+    dyn_ctx->dynamic_tensor_manager = _dyn_tensor_manager;
 
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }

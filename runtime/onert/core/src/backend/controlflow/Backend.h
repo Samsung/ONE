@@ -69,7 +69,7 @@ public:
     auto tr = std::dynamic_pointer_cast<TensorRegistry>(tb->tensorRegistry());
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr);
+    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;
