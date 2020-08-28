@@ -47,6 +47,18 @@ public:
   loco::Node *outBackprop(void) const { return at(2)->node(); }
   void outBackprop(Node *node) { at(2)->node(node); }
 
+  /**
+   * @note  "bias" is optional. When this node has no conceptual bias, "bias()"
+   *        expected to be `luci::CircleOutputExclude` type.
+   *
+   * <Comment on tflite TRANSPOSE_CONV>
+   *
+   * (Circle node has no dependency on tflite, but just for information on converting)
+   * Before TF v2.3.0, tflite TRANSPOSE_CONV didn't support fused bias as argument.
+   * From TF v2.3.0, tflite TRANSPOSE_CONV supports bias as optional 4th argument.
+   *
+   * Ref: https://github.com/tensorflow/tensorflow/commit/43b8f6e710
+   */
   loco::Node *bias(void) const override { return at(3)->node(); }
   void bias(loco::Node *node) override { at(3)->node(node); }
 
