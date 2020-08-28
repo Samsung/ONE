@@ -41,7 +41,6 @@ void Softmax::configure()
   if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S8)
   {
     tflite::SoftmaxParams params{};
-    // params.beta = _params.beta;
     params.table = _table;
     tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
   }
@@ -78,7 +77,6 @@ void Softmax::evalFloat() const
 template <typename T> void Softmax::evalQuantized() const
 {
   tflite::SoftmaxParams params{};
-  // params.beta = _params.beta;
   params.table = const_cast<float *>(_table);
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
