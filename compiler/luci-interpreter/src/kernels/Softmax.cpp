@@ -72,7 +72,8 @@ template <typename T> void Softmax::evalQuantized() const
 {
   tflite::SoftmaxParams params{};
   // params.beta = _params.beta;
-  params.table = new float[256];
+  float intermediate[256];
+  params.table = intermediate;
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
   tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
