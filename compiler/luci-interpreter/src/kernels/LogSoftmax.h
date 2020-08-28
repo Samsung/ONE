@@ -38,9 +38,6 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
-
-private:
-  uint8_t _table[256]{};
 };
 
 } // namespace kernels

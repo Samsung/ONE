@@ -31,7 +31,7 @@ LogSoftmax::LogSoftmax(const Tensor *input, Tensor *output) : Kernel({input}, {o
 
 void LogSoftmax::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   output()->resize(input()->shape());
 }
 
@@ -67,7 +67,8 @@ void LogSoftmax::evalQuantized() const
 
   tflite::SoftmaxParams params{};
 
-  params.table = new float[256];
+  float intermediate[256];
+  params.table = intermediate;
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
   params.beta = 1.0;
