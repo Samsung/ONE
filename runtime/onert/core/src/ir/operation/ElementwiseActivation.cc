@@ -60,7 +60,8 @@ std::string ElementwiseActivation::name() const
       {ElementwiseActivationType::ELU, "ELU"},
       {ElementwiseActivationType::LOGISTIC, "Logistic"},
       {ElementwiseActivationType::RELU, "ReLU"},
-      {ElementwiseActivationType::TANH, "Tanh"}};
+      {ElementwiseActivationType::TANH, "Tanh"},
+      {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
   return name_map.at(_param.op_type);
 }
 
