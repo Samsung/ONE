@@ -38,7 +38,7 @@ namespace onert
 namespace base_loader
 {
 
-template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
+template <typename LoaderDomain> class BaseLoader
 {
 protected:
   using Verifier = typename LoaderDomain::Verifier;
@@ -107,6 +107,8 @@ protected:
   // Load Pool2D param
   template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
 
+private:
+  virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
@@ -188,8 +190,8 @@ protected:
   std::unique_ptr<Verifier> _verifier;
 };
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
 {
   _fd = open(file_path, O_RDONLY);
   if (_fd < 0)
@@ -220,18 +222,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   close(_fd);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromBuffer(uint8_t *buffer,
-                                                                          size_t size)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_t size)
 {
   _base = buffer;
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
   loadModel();
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::Activation BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::convertActivation(
-    const ActivationFunctionType type)
+template <typename LoaderDomain>
+ir::Activation
+BaseLoader<LoaderDomain>::BaseLoader::convertActivation(const ActivationFunctionType type)
 {
   switch (type)
   {
@@ -251,9 +252,8 @@ ir::Activation BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::convertActi
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::DataType
-BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const TensorType type)
+template <typename LoaderDomain>
+ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const TensorType type)
 {
   switch (type)
   {
@@ -275,16 +275,14 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::OperandIndex
-BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
+template <typename LoaderDomain>
+ir::OperandIndex BaseLoader<LoaderDomain>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::deallocateMmappedArea(uint8_t *ptr,
-                                                                                 size_t size)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::deallocateMmappedArea(uint8_t *ptr, size_t size)
 {
   // Calculate offset from base address of mapped region
   ptrdiff_t unaligned_offset_start = ptr - _base;
@@ -324,9 +322,8 @@ template <typename T> bool Copy(const T *data_ptr, std::vector<uint16_t> &arr)
   return true;
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Tensor *tensor,
-                                                                       ir::Graph &subg)
+template <typename LoaderDomain>
+ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir::Graph &subg)
 {
   ir::Shape shape;
   // Shape
@@ -465,10 +462,9 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   return operand_index;
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *op,
-                                                               ir::OperandIndexSequence &inputs,
-                                                               ir::OperandIndexSequence &outputs)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
+                                               ir::OperandIndexSequence &outputs)
 {
   for (const std::int32_t idx : *op->inputs())
   {
@@ -490,10 +486,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <typename Param, typename OptionsType>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &param,
-                                                                      const OptionsType *options)
+void BaseLoader<LoaderDomain>::loadStridesAndPaddings(Param &param, const OptionsType *options)
 {
   // Strides
   param.stride.vertical = options->stride_h();
@@ -506,10 +501,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
   // param paddings indexes unused
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <typename Param>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
-                                                                 const Pool2DOptions *options)
+void BaseLoader<LoaderDomain>::loadPool2DOptions(Param &param, const Pool2DOptions *options)
 {
   // Strides and Paddings
   loadStridesAndPaddings(param, options);
@@ -521,8 +515,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
   param.activation = convertActivation(options->fused_activation_function());
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadConv2D(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadConv2D(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -541,9 +535,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConv2D(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadDepthwiseConv2D(const Operator *op,
-                                                                   ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -561,9 +554,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadDepthwiseConv2D(const Operato
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTransposeConv(const Operator *op,
-                                                                 ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTransposeConv(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -577,9 +569,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTransposeConv(const Operator 
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(const Operator *op, ir::Graph &subg,
-                                                          ir::operation::Pool2D::PoolType op_type)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPool2D(const Operator *op, ir::Graph &subg,
+                                          ir::operation::Pool2D::PoolType op_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -596,8 +588,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReshape(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -622,8 +614,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, i
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSoftmax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSoftmax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -639,9 +631,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSoftmax(const Operator *op, i
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadConcatenation(const Operator *op,
-                                                                 ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadConcatenation(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -658,8 +649,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadConcatenation(const Operator 
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFill(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadFill(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -670,8 +661,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFill(const Operator *op, ir::
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -696,8 +687,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Gr
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -727,10 +718,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operator *op,
-                                                                    ir::Graph &subg)
+void BaseLoader<LoaderDomain>::loadBinaryArithmetic(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -776,8 +766,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operat
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPack(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPack(const Operator *op, ir::Graph &subg)
 {
   // This runtime_error will be removed if the one of backend supports this operation
   ir::OperandIndexSequence inputs;
@@ -794,8 +784,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPack(const Operator *op, ir::
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseActivation(
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadElementwiseActivation(
     const Operator *op, ir::Graph &subg, ir::operation::ElementwiseActivation::Type op_type,
     float alpha, float beta)
 {
@@ -814,9 +804,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseActivation(
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -841,8 +830,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const Operator *op,
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op,
                                                                          ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -852,6 +841,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const O
   auto input = inputs.at(0);
   auto size = inputs.at(1);
 
+  // FIXME Handle ResizeNearestNeighborOptions.
   if (!subg.operands().at(size).isConstant())
     throw std::runtime_error("ResizeNearestNeighbor: non-constant 'size' is not supported.");
 
@@ -867,8 +857,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const O
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSelect(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -879,9 +869,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSquaredDifference(const Operator *op,
-                                                                     ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSquaredDifference(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -892,8 +881,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSquaredDifference(const Opera
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTranspose(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -912,9 +901,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <ir::operation::Reduce::ReduceType reduce_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(const Operator *op, ir::Graph &subg)
+void BaseLoader<LoaderDomain>::loadReduce(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -929,8 +918,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -956,8 +945,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReverseV2(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReverseV2(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -968,8 +957,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReverseV2(const Operator *op,
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPad(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -980,10 +969,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::G
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Operator *op,
-                                                                     ir::Graph &subg)
+void BaseLoader<LoaderDomain>::loadElementwiseBinary(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -998,9 +986,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Opera
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseUnary(
-    const Operator *op, ir::Graph &subg, ir::operation::ElementwiseUnary::Type op_type)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadElementwiseUnary(const Operator *op, ir::Graph &subg,
+                                                    ir::operation::ElementwiseUnary::Type op_type)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1027,8 +1015,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseUnary(
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadExpandDims(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadExpandDims(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1039,8 +1027,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadExpandDims(const Operator *op
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadGather(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1053,9 +1041,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadGather(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToBatchND(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSpaceToBatchND(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1066,8 +1053,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToBatchND(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1109,9 +1096,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *o
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBatchToSpaceND(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1122,9 +1108,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadMatrixBandPart(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1135,8 +1120,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBroadcastTo(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1146,8 +1131,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *o
   std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
   subg.addOperation(std::move(new_op));
 }
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1163,9 +1148,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const Operator *op,
-                                                                          ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadStatelessRandomUniform(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1175,8 +1159,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const 
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRank(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadRank(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1186,8 +1170,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadRank(const Operator *op, ir::
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1280,8 +1264,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSqueeze(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1304,8 +1288,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSqueeze(const Operator *op, i
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPrelu(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPrelu(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1316,8 +1300,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPrelu(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSplit(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1340,8 +1324,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSplitV(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSplitV(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1357,8 +1341,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplitV(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSlice(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSlice(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1369,8 +1353,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSlice(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStridedSlice(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadStridedSlice(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1388,8 +1372,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridedSlice(const Operator *
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadUnpack(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1405,8 +1389,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1446,8 +1430,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadEinsum(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1476,9 +1460,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir
   std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
   subg.addOperation(std::move(new_op));
 }
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1510,8 +1493,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOneHot(const Operator *op, ir::Graph &subg)
 {
   if (op->inputs()->size() != 4 || op->outputs()->size() != 1)
     throw std::runtime_error("OneHot Op has wrong number of input or output tensors.");
@@ -1526,8 +1509,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadShape(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1542,8 +1525,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1561,8 +1544,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Gr
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1580,8 +1563,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1613,8 +1596,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPow(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1625,8 +1608,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::G
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRange(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadRange(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1637,8 +1620,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadRange(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTile(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1654,8 +1637,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1672,9 +1655,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operator *op,
-                                                                   ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadL2Normalization(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1685,16 +1667,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operato
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLeakyRelu(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadLeakyRelu(const Operator *op, ir::Graph &subg)
 {
   float alpha = op->builtin_options_as_LeakyReluOptions()->alpha();
   loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LEAKY_RELU, alpha,
                             1.f);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
 
@@ -1946,8 +1928,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
+template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
   _model = LoaderDomain::GetModel(_base);
@@ -1962,8 +1943,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
-    auto subg =
-        static_cast<SpecificLoader *>(this)->loadSubgraph((*_model->subgraphs())[subgraph_index]);
+    auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);
     subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
   _subgraphs = std::move(subgraphs);

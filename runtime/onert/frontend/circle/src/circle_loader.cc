@@ -69,7 +69,7 @@ struct LoaderDomain
   static bool VerifyModelBuffer(Verifier &verifier) { return circle::VerifyModelBuffer(verifier); }
 };
 
-class CircleLoader final : public base_loader::BaseLoader<LoaderDomain, CircleLoader>
+class CircleLoader final : public base_loader::BaseLoader<LoaderDomain>
 {
 protected:
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
@@ -91,7 +91,8 @@ public:
     }
   }
 
-  std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg)
+private:
+  std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg) override
   {
     auto subg = std::make_unique<ir::Graph>();
     // Load tensors
