@@ -61,6 +61,7 @@ public:
   void visit(const operation::Pow &node) override;
   void visit(const operation::PReLU &) override;
   void visit(const operation::Range &) override;
+  void visit(const operation::Rank &) override;
   void visit(const operation::Reduce &) override;
   void visit(const operation::Reshape &node) override;
   void visit(const operation::ResizeBilinear &) override;

@@ -265,6 +265,8 @@ void OperationDumper::visit(const PReLU &node)
   dumpUnaryInputOp(node, alpha);
 }
 
+void OperationDumper::visit(const Rank &node) { dumpUnaryInputOp(node); }
+
 void OperationDumper::visit(const Reduce &node) { dumpUnaryInputOp(node); }
 
 void OperationDumper::visit(const Reshape &node)

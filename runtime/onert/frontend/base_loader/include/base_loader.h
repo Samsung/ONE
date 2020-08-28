@@ -161,6 +161,7 @@ protected:
   void loadPow(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
   void loadRange(const Operator *op, ir::Graph &subg);
+  void loadRank(const Operator *op, ir::Graph &subg);
   void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
   void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
@@ -1175,6 +1176,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const 
 }
 
 template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadRank(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Rank(inputs, outputs));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
 void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
@@ -1924,6 +1936,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       break;
     case BuiltinOperator::BuiltinOperator_LEAKY_RELU:
       loadLeakyRelu(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_RANK:
+      loadRank(op, subg);
       return;
     default:
       throw std::runtime_error(

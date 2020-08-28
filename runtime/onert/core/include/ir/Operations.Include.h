@@ -74,6 +74,7 @@
 #include "ir/operation/Pow.h"
 #include "ir/operation/Tile.h"
 #include "ir/operation/Range.h"
+#include "ir/operation/Rank.h"
 #include "ir/operation/BCQFullyConnected.h"
 #include "ir/operation/BCQGather.h"
 #include "ir/operation/MatrixBandPart.h"

@@ -39,6 +39,7 @@
 #include "ops/PoolLayer.h"
 #include "ops/PowLayer.h"
 #include "ops/RangeLayer.h"
+#include "ops/RankLayer.h"
 #include "ops/ReduceLayer.h"
 #include "ops/ReshapeLayer.h"
 #include "ops/ResizeBilinearLayer.h"
@@ -1048,6 +1049,21 @@ void KernelGenerator::visit(const ir::operation::Range &node)
   auto fn = std::make_unique<ops::RangeLayer>();
 
   fn->configure(start_tensor, limit_tensor, delta_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Rank &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Shape::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index).get();
+
+  auto fn = std::make_unique<ops::RankLayer>();
+
+  fn->configure(ifm_tensor, ofm_tensor);
+
   _return_fn = std::move(fn);
 }
 
