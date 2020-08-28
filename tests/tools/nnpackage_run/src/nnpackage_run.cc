@@ -37,29 +37,7 @@
 #include <unordered_map>
 #include <vector>
 
-static const char *default_backend_cand = "acl_cl";
-
-NNFW_STATUS resolve_op_backend(nnfw_session *session)
-{
-  static std::unordered_map<std::string, std::string> operation_map = {
-      {"TRANSPOSE_CONV", "OP_BACKEND_TransposeConv"},      {"CONV_2D", "OP_BACKEND_Conv2D"},
-      {"DEPTHWISE_CONV_2D", "OP_BACKEND_DepthwiseConv2D"}, {"MEAN", "OP_BACKEND_Mean"},
-      {"AVERAGE_POOL_2D", "OP_BACKEND_AvgPool2D"},         {"MAX_POOL_2D", "OP_BACKEND_MaxPool2D"},
-      {"INSTANCE_NORM", "OP_BACKEND_InstanceNorm"},        {"ADD", "OP_BACKEND_Add"}};
-
-  for (auto i : operation_map)
-  {
-    char *default_backend = std::getenv(i.second.c_str());
-    if (default_backend)
-    {
-      NNFW_STATUS return_result = nnfw_set_op_backend(session, i.first.c_str(), default_backend);
-      if (return_result == NNFW_STATUS_ERROR)
-        return return_result;
-    }
-  }
-
-  return NNFW_STATUS_NO_ERROR;
-}
+static const char *default_backend_cand = "cpu";
 
 void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
                        std::vector<nnpkg_run::TensorShape> shapes)
@@ -105,7 +83,6 @@ int main(const int argc, char **argv)
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
-    NNPR_ENSURE_STATUS(resolve_op_backend(session));
 
     uint32_t num_inputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
