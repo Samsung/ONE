@@ -32,7 +32,7 @@ LogSoftmax::LogSoftmax(const Tensor *input, Tensor *output) : Kernel({input}, {o
 void LogSoftmax::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  if(input()->element_type() == DataType::U8)
+  if (input()->element_type() == DataType::U8)
   {
     LUCI_INTERPRETER_CHECK(output()->scale() == 16. / 256);
     LUCI_INTERPRETER_CHECK(output()->zero_point() == 255);
