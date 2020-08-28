@@ -42,6 +42,9 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   // Note that 'compiled' model will not be updated with new_shape
   // but new_shape will change model input shape while 'running' the model
   _io_desc.dynamic_input_shapes[index] = new_shape;
+
+  VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
+                     << "(index: " << index.value() << ")" << std::endl;
 }
 
 // TODO Remove default parameter
