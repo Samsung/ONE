@@ -36,6 +36,13 @@ void LogSoftmax::configure()
   {
     LUCI_INTERPRETER_CHECK(output()->scale() == 16. / 256);
     LUCI_INTERPRETER_CHECK(output()->zero_point() == 255);
+
+    tflite::SoftmaxParams params{};
+
+    params.table = _table;
+    params.beta = 1.0;
+
+    tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
   }
   output()->resize(input()->shape());
 }
@@ -72,13 +79,11 @@ void LogSoftmax::evalQuantized() const
 
   tflite::SoftmaxParams params{};
 
-  float intermediate[256];
-  params.table = intermediate;
+  params.table = const_cast<float *>(_table);
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
   params.beta = 1.0;
 
-  tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
   tflite::optimized_ops::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
                                     output_data);
 }
