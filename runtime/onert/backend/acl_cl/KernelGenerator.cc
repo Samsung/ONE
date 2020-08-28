@@ -893,6 +893,23 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
+void KernelGenerator::visit(const ir::operation::ResizeNearestNeighbor &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+
+  const auto ifm_index{node.getInputs().at(ir::operation::ResizeNearestNeighbor::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+
+  auto fn = acl_common::generateLayer<arm_compute::CLScale>(
+      ifm_tensor->handle(), ofm_tensor->handle(),
+      ::arm_compute::InterpolationPolicy::NEAREST_NEIGHBOR, ::arm_compute::BorderMode::REPLICATE,
+      ::arm_compute::PixelValue(0.f), ::arm_compute::SamplingPolicy::TOP_LEFT);
+
+  _return_fn = asAclFunction(std::move(fn));
+}
+
 void KernelGenerator::visit(const ir::operation::RNN &node)
 {
   const auto output_index{node.getOutputs().at(ir::operation::RNN::Output::OUTPUT)};

@@ -101,6 +101,7 @@ public:
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
+  uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorLess(const OperatorParams &params);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
 

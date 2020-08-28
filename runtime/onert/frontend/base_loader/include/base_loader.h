@@ -121,6 +121,7 @@ protected:
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
+  void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
   void loadSelect(const Operator *op, ir::Graph &subg);
   void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
@@ -820,6 +821,32 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
   param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ResizeBilinear({input}, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+template <typename LoaderDomain, typename SpecificLoader>
+void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const Operator *op,
+                                                                         ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+  auto input = inputs.at(0);
+  auto size = inputs.at(1);
+
+  if (!subg.operands().at(size).isConstant())
+    throw std::runtime_error("ResizeNearestNeighbor: non-constant 'size' is not supported.");
+
+  std::vector<std::int32_t> size_v = subg.operands().at(size).template asVector<std::int32_t>();
+
+  ir::operation::ResizeNearestNeighbor::Param param;
+  param.height_out = size_v[0];
+  param.width_out = size_v[1];
+  param.align_corners = op->builtin_options_as_ResizeNearestNeighborOptions()->align_corners();
+
+  std::unique_ptr<ir::Operation> new_op(
+      new ir::operation::ResizeNearestNeighbor({input}, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1701,6 +1728,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       return;
     case BuiltinOperator::BuiltinOperator_RESIZE_BILINEAR:
       loadResizeBilinear(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR:
+      loadResizeNearestNeighbor(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RSQRT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::RSQRT);

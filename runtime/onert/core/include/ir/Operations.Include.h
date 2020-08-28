@@ -40,6 +40,7 @@
 #include "ir/operation/Comparison.h"
 #include "ir/operation/LSTM.h"
 #include "ir/operation/ResizeBilinear.h"
+#include "ir/operation/ResizeNearestNeighbor.h"
 #include "ir/operation/Reverse.h"
 #include "ir/operation/RNN.h"
 #include "ir/operation/SpaceToBatchND.h"

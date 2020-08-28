@@ -139,6 +139,13 @@ uint32_t CircleGen::addOperatorPadV2(const OperatorParams &params)
                                 circle::BuiltinOptions_PadV2Options, options);
 }
 
+uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &params)
+{
+  auto options = circle::CreateResizeNearestNeighborOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR,
+                                circle::BuiltinOptions_ResizeNearestNeighborOptions, options);
+}
+
 uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
 {
   auto options = circle::CreateLessOptions(_fbb).Union();
