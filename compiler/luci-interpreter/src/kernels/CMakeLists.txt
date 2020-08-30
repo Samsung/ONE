@@ -44,6 +44,8 @@ set(SOURCES
     Reshape.cpp
     Reverse.h
     Reverse.cpp
+    Rsqrt.h
+    Rsqrt.cpp
     Slice.h
     Slice.cpp
     Softmax.h
@@ -104,6 +106,7 @@ set(TEST_SOURCES
     Pad.test.cpp
     Reshape.test.cpp
     Reverse.test.cpp
+    Rsqrt.test.cpp
     Slice.test.cpp
     Softmax.test.cpp
     SpaceToDepth.test.cpp
