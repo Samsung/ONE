@@ -70,13 +70,13 @@ Unfortunately, the debug build on the x86_64 architecture currently has an error
 
 ```
 $ export BUILD_TYPE=release
-$ make f Makefile.template install
+$ make -f Makefile.template install
 ```
 
 Or you can simply do something like this:
 
 ```
-$ BUILD_TYPE=release make f Makefile.template install
+$ BUILD_TYPE=release make -f Makefile.template install
 ```
 
 The build method described here is a `native build` in which the build environment and execution environment are same. So, this command creates a runtime binary targeting the current build architecture, probably x86_64, as the execution environment. You can find the build output in the ./Product folder as follows:
