@@ -48,9 +48,10 @@ public:
     const auto &operands = graph.operands();
     const auto &operations = graph.operations();
     auto context = std::make_unique<BackendContext>(this, &graph);
-    auto tb = std::make_shared<TensorBuilder>(operands, createTensorManager(is_linear_executor));
-    auto tr = std::dynamic_pointer_cast<acl_common::AclTensorRegistry<TensorManager>>(
-        tb->tensorRegistry());
+    auto tm = createTensorManager(is_linear_executor);
+    auto tr = std::make_shared<acl_common::AclTensorRegistry<TensorManager>>(tm);
+    auto tb = std::make_shared<TensorBuilder>(operands, tm, tr);
+    context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
     context->kernel_gen = std::make_shared<KernelGenerator>(operands, operations, tb, tr);

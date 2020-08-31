@@ -40,7 +40,7 @@ public:
   {
     for (const auto &e : backend_contexts)
     {
-      auto tensor_reg = e.second->tensor_builder->tensorRegistry();
+      auto tensor_reg = e.second->tensor_registry;
       if (e.first->config()->id() == backend::controlflow::Config::ID)
       {
         _cf_tensor_reg =

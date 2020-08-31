@@ -34,10 +34,10 @@ namespace controlflow
 KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg)
     : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
-      _tensor_builder_set{}, _executor_map{nullptr}
+      _tensor_registries{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
-  UNUSED_RELEASE(_tensor_builder_set);
+  UNUSED_RELEASE(_tensor_registries);
   UNUSED_RELEASE(_executor_map);
 }
 
@@ -161,7 +161,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
 std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  std::shared_ptr<backend::ITensor> ret = _tensor_builder_set.getITensor(index);
+  std::shared_ptr<backend::ITensor> ret = _tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }

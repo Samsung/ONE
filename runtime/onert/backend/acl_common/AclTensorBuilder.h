@@ -49,7 +49,8 @@ class AclTensorBuilder : public ITensorBuilder
 public:
   using T_AclTensorManager = AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>;
 
-  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr);
+  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
+                   const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -64,7 +65,6 @@ public:
   void notifyLastUse(const ir::OperandIndex &) override;
 
   bool isRegistered(const ir::OperandIndex &) const override;
-  std::shared_ptr<backend::ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
   void prepare(void) override;
   void allocate() override;
@@ -135,10 +135,10 @@ namespace acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::Operands &operands,
-                                                                     T_AclTensorManager *tensor_mgr)
-    : _operands{operands}, _tensor_mgr{tensor_mgr},
-      _tensor_reg{new AclTensorRegistry<T_AclTensorManager>{_tensor_mgr.get()}}
+AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(
+    const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
+    const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg)
+    : _operands{operands}, _tensor_mgr{tensor_mgr}, _tensor_reg{tensor_reg}
 {
   assert(_tensor_mgr);
 }

@@ -58,15 +58,6 @@ struct ITensorBuilder
    */
   virtual bool isRegistered(const ir::OperandIndex &) const = 0;
 
-  /**
-   * @brief Get tensor registry
-   *
-   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
-   *
-   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
-   */
-  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry() = 0;
-
 public: // methods for static tensor allocation
   /**
    * @brief Let the tensor builder know first use(start of lifetime) of a tensor
