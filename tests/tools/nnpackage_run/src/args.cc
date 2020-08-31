@@ -227,6 +227,7 @@ void Args::Initialize(void)
          "if '--load' option is provided but '--shape_prepare' or '--shape_run' is not provided,\n"
          "'--shape_run h5' will be used by default.\n"
 #endif
+         "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n"
          )
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
