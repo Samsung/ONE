@@ -35,6 +35,7 @@ enum class ElementwiseUnaryType
   kAbs,
   kCast,
   kCos,
+  kErf,
   kExp,
   kLog,
   kLogicalNot,

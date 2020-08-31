@@ -40,6 +40,7 @@ public:
     CAST,
     COS,
     DEQUANTIZE,
+    ERF,
     EXP,
     FLOOR,
     LOG,

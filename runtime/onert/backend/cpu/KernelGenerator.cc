@@ -143,6 +143,8 @@ ops::ElementwiseUnaryType convertElementwiseUnaryType(ir::operation::Elementwise
       return ops::ElementwiseUnaryType::kCast;
     case ir::operation::ElementwiseUnary::Type::COS:
       return ops::ElementwiseUnaryType::kCos;
+    case ir::operation::ElementwiseUnary::Type::ERF:
+      return ops::ElementwiseUnaryType::kErf;
     case ir::operation::ElementwiseUnary::Type::EXP:
       return ops::ElementwiseUnaryType::kExp;
     case ir::operation::ElementwiseUnary::Type::LOG:

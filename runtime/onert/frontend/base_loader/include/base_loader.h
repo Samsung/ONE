@@ -1207,7 +1207,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
     Einsum,
     BroadcastTo,
     FusedBatchNorm,
-    StatelessRandomUniform
+    StatelessRandomUniform,
+    Erf
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1220,6 +1221,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
       {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
       {"BroadcastTo", BuiltinOP::BroadcastTo},
       {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
+      {"Erf", BuiltinOP::Erf},
   };
 
   try
@@ -1251,6 +1253,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         break;
       case BuiltinOP::StatelessRandomUniform:
         loadStatelessRandomUniform(op, subg);
+        break;
+      case BuiltinOP::Erf:
+        loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ERF);
         break;
       default:
         throw std::runtime_error{
