@@ -38,9 +38,9 @@ const std::string node_name_prefix(luci::NodeName node_name)
 {
   std::string prefix = node_name;
 
-  if (prefix.find("ReadVariableOp/resource/") != std::string::npos)
+  if (prefix.find("/ReadVariableOp/resource") != std::string::npos)
   {
-    const auto start_index = prefix.find("ReadVariableOp/resource/");
+    const auto start_index = prefix.find("/ReadVariableOp/resource");
 
     const auto left_prefix = prefix.substr(0, start_index);
     const auto right_prefix = prefix.substr(start_index + 24);
