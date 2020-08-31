@@ -35,6 +35,7 @@
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
+#include "kernels/Prelu.h"
 #include "kernels/Reshape.h"
 #include "kernels/Reverse.h"
 #include "kernels/Rsqrt.h"
@@ -408,6 +409,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Pad>(input, paddings, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePRelu *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *alpha = getInputTensor(node->alpha());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Prelu>(input, alpha, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)

@@ -40,6 +40,8 @@ set(SOURCES
     Mul.cpp
     Pad.h
     Pad.cpp
+    Prelu.h
+    Prelu.cpp
     Reshape.h
     Reshape.cpp
     Reverse.h
@@ -104,6 +106,7 @@ set(TEST_SOURCES
     Mean.test.cpp
     Mul.test.cpp
     Pad.test.cpp
+    Prelu.test.cpp
     Reshape.test.cpp
     Reverse.test.cpp
     Rsqrt.test.cpp
