@@ -87,13 +87,10 @@ TEST(ConcatenationTest, Unsupported_Configure_Type_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::S8);
   ConcatenationParams params{};
 
-  // Try different 'axis' and expect different results.
-  {
-    params.axis = -1;
+  params.axis = -1;
 
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    EXPECT_ANY_THROW(kernel.configure());
-  }
+  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
 }
 
 TEST(ConcatenationTest, Invalid_Axis_NEG)
@@ -105,13 +102,10 @@ TEST(ConcatenationTest, Invalid_Axis_NEG)
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
   ConcatenationParams params{};
 
-  // Try different 'axis' and expect different results.
-  {
-    params.axis = -3;
+  params.axis = -3;
 
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    EXPECT_ANY_THROW(kernel.configure());
-  }
+  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
 }
 
 } // namespace
