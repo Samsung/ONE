@@ -176,6 +176,63 @@ void Dumper::visit(const Select &node)
 }
 ```
 
+5. Add code for shape inference
+- ONE runtime tries to calculate shapes and allocate memory during compilation time. For some calculations of output shapes that cannot be done during compilation time, ONE runtime will calculate shapes and allocate memory during execution time.
+- Calculation of shapes during compilation time is called _static shape inference_ and calculation of shapes during execution time is called _dynamic shape inference_.
+- [`StaticShapeInference.h`](`/runtime/onert/compiler/StaticShapeInference.h`)
+
+```CPP
+  void visit(const ir::operation::Select &op) override;
+```
+- [`StaticShapeInference.cc`](/runtime/onert/core/src/compiler/StaticShapeInference.cc)
+```CPP
+void StaticShapeInferer::visit(const ir::operation::Select &op)
+{
+  const auto input_cond_idx{op.getInputs().at(ir::operation::Select::Input::CONDITION)};
+  const auto &input_cond = _operands.at(input_cond_idx);
+
+  const auto &input_true = ...
+  const auto &input_false = ...
+  ir::Operand &output = ...
+
+  // Select output shpae
+  ir::Shape new_shape = shape_inference::inferSelectShape(
+      input_cond.info().shape(), input_true.info().shape(), input_false.info().shape());
+  output.info().shape(new_shape);
+}
+```
+- [`DynamicShapeInference.h`](/runtime/onert/core/include/exec/DynamicShapeInference.h)
+```CPP
+  void visit(const ir::operation::Select &op) override;
+```
+- [`DynamicShapeInference.cc`](/runtime/onert/core/src/exec/DynamicShapeInference.cc)
+```CPP
+void DynamicShapeInferer::visit(const ir::operation::Select &op)
+{
+  const auto input_cond_idx = op.getInputs().at(ir::operation::Select::Input::CONDITION);
+  const auto &input_cond = _tensor_registry->getITensor(input_cond_idx);
+
+  const auto &input_true = ...
+  const auto &input_false = ...
+  auto output = ...
+
+  if ((!input_cond->is_dynamic()) && (!input_true->is_dynamic()) && (!input_false->is_dynamic()))
+  {
+    return;
+  }
+
+  auto input_cond_shape = input_cond->getShape();
+  auto input_true_shape = input_true->getShape();
+  auto input_false_shape = input_false->getShape();
+
+  // Select output shpae
+  ir::Shape new_shape =
+      shape_inference::inferSelectShape(input_cond_shape, input_true_shape, input_false_shape);
+
+  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+}
+```
+
 ## Frontend
 
 This module generates IR from a model. There are two kinds of frontend: Loader and NNAPI. First, Loader loads a model file and generates IR from it. Second, NNAPI generates IR from a model set via [Neural Networks API of android](https://developer.android.com/ndk/guides/neuralnetworks)
