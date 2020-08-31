@@ -472,7 +472,12 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
         if (granularity == QuantizationGranularity::ChannelWise)
         {
           auto quantparam = circle_node->quantparam();
-          assert(quantparam != nullptr);
+          if (quantparam == nullptr)
+          {
+            assert(false && "quantparam is nullptr");
+            return false;
+          }
+
           auto min = quantparam->min;
           auto scaling_factor = quantparam->scale;
           int32_t channel_dim_index = 0;
