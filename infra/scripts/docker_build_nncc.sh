@@ -57,9 +57,11 @@ mkdir -p ${NNCC_INSTALL_PREFIX}
 # create python virtual environment
 ./nncc docker-run python3 -m venv "${NNCC_INSTALL_PREFIX}/bin/venv"
 
+# TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
+# NOTE adding version is for temporary hotfix of setuptools 50.x.y version
 ./nncc docker-run "${NNCC_INSTALL_PREFIX}/bin/venv/bin/python" \
   -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install -U pip setuptools
+  install -U pip==20.2.1 setuptools==49.3.0
 ./nncc docker-run "${NNCC_INSTALL_PREFIX}/bin/venv/bin/python" \
   -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install tensorflow-cpu==2.3.0
