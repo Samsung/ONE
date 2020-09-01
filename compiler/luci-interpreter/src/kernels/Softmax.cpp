@@ -40,9 +40,10 @@ void Softmax::configure()
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= 1);
   if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S8)
   {
-    tflite::SoftmaxParams params{};
-    params.table = _table;
-    tflite::optimized_ops::PopulateSoftmaxLookupTable(&params, input()->scale(), _params.beta);
+    LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
+    tflite::SoftmaxParams op_params{};
+    op_params.table = _table;
+    tflite::optimized_ops::PopulateSoftmaxLookupTable(&op_params, input()->scale(), params().beta);
   }
   output()->resize(input()->shape());
 }
@@ -67,21 +68,21 @@ void Softmax::execute() const
 
 void Softmax::evalFloat() const
 {
-  tflite::SoftmaxParams params{};
-  params.beta = _params.beta;
+  tflite::SoftmaxParams op_params{};
+  op_params.beta = params().beta;
 
-  tflite::reference_ops::Softmax(params, getTensorShape(input()), getTensorData<float>(input()),
+  tflite::reference_ops::Softmax(op_params, getTensorShape(input()), getTensorData<float>(input()),
                                  getTensorShape(output()), getTensorData<float>(output()));
 }
 
 template <typename T> void Softmax::evalQuantized() const
 {
-  tflite::SoftmaxParams params{};
-  params.table = const_cast<float *>(_table);
-  params.zero_point = output()->zero_point();
-  params.scale = output()->scale();
+  tflite::SoftmaxParams op_params{};
+  op_params.table = const_cast<float *>(_table);
+  op_params.zero_point = output()->zero_point();
+  op_params.scale = output()->scale();
 
-  tflite::optimized_ops::Softmax(params, getTensorShape(input()), getTensorData<T>(input()),
+  tflite::optimized_ops::Softmax(op_params, getTensorShape(input()), getTensorData<T>(input()),
                                  getTensorShape(output()), getTensorData<T>(output()));
 }
 
