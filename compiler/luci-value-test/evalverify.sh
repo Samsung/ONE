@@ -43,6 +43,8 @@ for TESTCASE in "$@"; do
     fi
   )
 
+  cat "${TEST_RESULT_FILE}.log"
+
   if [[ -f "${PASSED_TAG}" ]]; then
     PASSED+=("${TESTCASE}")
   else
