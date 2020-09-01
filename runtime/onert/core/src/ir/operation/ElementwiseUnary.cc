@@ -44,6 +44,7 @@ std::string ElementwiseUnary::name() const
       {ElementwiseUnaryType::CAST, std::string{"Cast"}},
       {ElementwiseUnaryType::COS, std::string{"Cos"}},
       {ElementwiseUnaryType::DEQUANTIZE, std::string{"Dequantize"}},
+      {ElementwiseUnaryType::ERF, std::string{"Erf"}},
       {ElementwiseUnaryType::EXP, std::string{"Exp"}},
       {ElementwiseUnaryType::FLOOR, std::string{"Floor"}},
       {ElementwiseUnaryType::LOG, std::string{"Log"}},
