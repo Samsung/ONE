@@ -47,6 +47,7 @@ for TESTCASE in "$@"; do
     PASSED+=("${TESTCASE}")
   else
     FAILED+=("${TESTCASE}")
+    cat ${TEST_RESULT_FILE}.log
   fi
 done
 

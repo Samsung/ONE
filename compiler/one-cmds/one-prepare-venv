@@ -47,6 +47,6 @@ python3 -m venv "${DRIVER_PATH}/venv"
 source "${VENV_ACTIVATE}"
 
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install -U pip setuptools
+  install pip==20.2.1 setuptools==49.3.0
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install tensorflow-cpu==2.3.0
