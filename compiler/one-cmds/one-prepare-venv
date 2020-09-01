@@ -46,7 +46,9 @@ python3 -m venv "${DRIVER_PATH}/venv"
 # Install tensorflow
 source "${VENV_ACTIVATE}"
 
+# TODO remove version number of 'pip==20.2.1 setuptools==49.3.0'
+# NOTE adding version is for temporary hotfix of setuptools 50.x.y version
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
-  install -U pip setuptools
+  install -U pip==20.2.1 setuptools==49.3.0
 python -m pip --default-timeout=1000 --trusted-host pypi.org --trusted-host files.pythonhost.org \
   install tensorflow-cpu==2.3.0
