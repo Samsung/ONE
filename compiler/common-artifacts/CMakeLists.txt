@@ -38,7 +38,7 @@ set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0 "${VIRTUALENV_OVERLAY_TF_2_3_0}/${REQUIRE
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==49.3.0
+  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==46.1.3
   COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2}
 )
@@ -48,7 +48,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.3.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==49.3.0
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==46.1.3
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_3_0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0}
 )
