@@ -1420,7 +1420,7 @@ loco::NodeShape infer_sparse_to_dense(const luci::CircleSparseToDense *node)
         INTERNAL_EXN_V("Only support rank 1 CircleConst",
                        oops::to_uint32(output_shape_node->rank()));
 
-      shape.rank(output_shape_node->dim(0).value());
+      shape.rank(output_shape_node->size<loco::DataType::S32>());
 
       for (uint32_t axis = 0; axis < shape.rank(); ++axis)
       {
