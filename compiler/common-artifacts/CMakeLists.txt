@@ -18,6 +18,9 @@ set(VIRTUALENV_OVERLAY_TF_1_13_2 "${NNCC_OVERLAY_DIR}/venv_1_13_2")
 # Create python virtual environment with tensorflow 2.3.0
 set(VIRTUALENV_OVERLAY_TF_2_3_0 "${NNCC_OVERLAY_DIR}/venv_2_3_0")
 
+# Create python virtual environment with tf-nightly 2.4.0-dev
+set(VIRTUALENV_OVERLAY_TF_2_4_0 "${NNCC_OVERLAY_DIR}/venv_2_4_0")
+
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY_TF_1_13_2}
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_1_13_2}
@@ -28,10 +31,16 @@ add_custom_command(
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_3_0}
 )
 
+add_custom_command(
+  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_4_0}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_4_0}
+)
+
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_1_13_2 "${VIRTUALENV_OVERLAY_TF_1_13_2}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_3_0 "${VIRTUALENV_OVERLAY_TF_2_3_0}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH_TF_2_4_0 "${VIRTUALENV_OVERLAY_TF_2_4_0}/${REQUIREMENTS_FILE}")
 
 # TODO remove version number of '--upgrade pip==20.2.1 setuptools==49.3.0'
 # NOTE adding version is for temporary hotfix of setuptools 50.x.y version
@@ -53,8 +62,17 @@ add_custom_command(
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_3_0}
 )
 
+add_custom_command(
+  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_4_0}
+  COMMAND ${CMAKE_COMMAND} -E echo "tf-nightly-cpu==2.4.0.dev20200829" > ${REQUIREMENTS_OVERLAY_PATH_TF_2_4_0}
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_4_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==49.3.0
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_4_0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_4_0} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_4_0}
+)
+
 add_custom_target(common_artifacts_python_deps ALL
   DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2} ${VIRTUALENV_OVERLAY_TF_2_3_0} ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} ${REQUIREMENTS_OVERLAY_PATH_TF_2_3_0}
+          ${REQUIREMENTS_OVERLAY_PATH_TF_2_4_0}
 )
 
 #[[ Generate common resources ]]
