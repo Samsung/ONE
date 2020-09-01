@@ -40,13 +40,14 @@ public:
 
   void transposeQuant8();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output,
-                 const std::vector<int> &perm);
+  void configure(const IPortableTensor *input, const IPortableTensor *perm_tensor,
+                 IPortableTensor *output, const std::vector<int> &perm);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
+  const IPortableTensor *_perm_tensor;
   IPortableTensor *_output;
   std::vector<int> _perm;
 };

@@ -38,13 +38,14 @@ public:
 public:
   template <typename T> void split(void);
 
-  void configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
-                 std::vector<IPortableTensor *> &outputs);
+  void configure(const IPortableTensor *input, const IPortableTensor *axis_tensor,
+                 uint16_t num_splits, int16_t axis, std::vector<IPortableTensor *> &outputs);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
+  const IPortableTensor *_axis_tensor;
   uint16_t _num_splits;
   int16_t _axis;
   std::vector<IPortableTensor *> _outputs;

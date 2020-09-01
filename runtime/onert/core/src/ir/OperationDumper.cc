@@ -336,7 +336,18 @@ void OperationDumper::visit(const SpaceToBatchND &node)
 
 void OperationDumper::visit(const SpaceToDepth &node) { dumpUnaryInputOp(node); }
 
-void OperationDumper::visit(const Split &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Split &node)
+{
+  if (node.param().use_input_axis)
+  {
+    VERBOSE(LIR) << "* Split" << std::endl;
+    VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Split::Input::INPUT) << " Axis("
+                 << node.getInputs().at(Split::Input::AXIS) << ")" << std::endl;
+    VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+  }
+  else
+    dumpUnaryInputOp(node);
+}
 
 void OperationDumper::visit(const SquaredDifference &node) { dumpBinaryInputOp(node); }
 
@@ -384,7 +395,18 @@ void OperationDumper::visit(const TransposeConv &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Transpose &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Transpose &node)
+{
+  if (node.param().perm.size() == 0)
+    dumpUnaryInputOp(node);
+  else
+  {
+    VERBOSE(LIR) << "* Transpose" << std::endl;
+    VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Transpose::Input::INPUT) << ")"
+                 << " Perm(" << node.getInputs().at(Transpose::Input::PERM) << ")" << std::endl;
+    VERBOSE(LIR) << "  - Outputs : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+  }
+}
 
 void OperationDumper::visit(const Unpack &node)
 {

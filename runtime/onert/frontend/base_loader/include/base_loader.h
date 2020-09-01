@@ -899,16 +899,15 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
   auto perm = inputs.at(1);
 
-  if (!subg.operands().at(perm).isConstant())
-    throw std::runtime_error("Transpose: non-constant 'perm' is not supported.");
-
   ir::operation::Transpose::Param param;
-  param.perm = subg.operands().at(perm).template asVector<int>();
+  if (subg.operands().at(perm).isConstant())
+  {
+    param.perm = subg.operands().at(perm).template asVector<int>();
+  }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -1327,16 +1326,22 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
   auto input = inputs.at(1);
   auto axis = inputs.at(0);
 
-  // FIXME Handle SplitOptions.
-  if (!subg.operands().at(axis).isConstant())
-    throw std::runtime_error("Split: non-constant 'axis' is not supported.");
-
   ir::operation::Split::Param param{};
-  param.axis = subg.operands().at(axis).template asScalar<int>();
+
   const auto *options = op->builtin_options_as_SplitOptions();
   param.num_splits = options->num_splits();
+  // FIXME Handle SplitOptions.
+  if (!subg.operands().at(axis).isConstant())
+  {
+    param.use_input_axis = true;
+  }
+  else
+  {
+    param.axis = subg.operands().at(axis).template asScalar<int32_t>();
+    param.use_input_axis = false;
+  }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Split({input}, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Split({input, axis}, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 

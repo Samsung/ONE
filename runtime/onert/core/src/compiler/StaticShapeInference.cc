@@ -805,6 +805,18 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
 {
   const auto input_idx{op.getInputs().at(0)};
   const auto &input = _operands.at(input_idx);
+  auto output_tensors = op.getOutputs();
+
+  if (op.param().use_input_axis)
+  {
+    for (auto output_idx : output_tensors)
+    {
+      ir::Operand &output = _operands.at(output_idx);
+      output.info().setDynamic();
+    }
+    _return_has_dynamic_tensor = true;
+    return;
+  }
 
   const auto axis = op.param().axis;
   const auto num_splits = op.param().num_splits;
@@ -816,7 +828,6 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
 
   ir::Shape new_shape =
       shape_inference::inferSplitShape(input.info().shape(), axis_resolved, num_splits);
-  auto output_tensors = op.getOutputs();
   for (auto output_idx : output_tensors)
   {
     ir::Operand &output = _operands.at(output_idx);

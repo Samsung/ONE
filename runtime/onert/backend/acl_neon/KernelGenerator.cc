@@ -1030,6 +1030,12 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
 
+  if (node.param().use_input_axis)
+  {
+    std::runtime_error("acl_cl KernelGenerator : " + node.name() +
+                       "is not supported non-const axis");
+  }
+
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   std::vector<ir::OperandIndex> output_indexes;
   for (const auto &output : node.getOutputs())
@@ -1262,6 +1268,12 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &perm{node.param().perm};
+
+  if (perm.size() == 0)
+  {
+    std::runtime_error("acl_neon KernelGenerator : " + node.name() +
+                       "is not supported non-const perm");
+  }
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx).get();
   const auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx).get();

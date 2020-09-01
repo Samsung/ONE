@@ -233,12 +233,21 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERM)};
   const auto &perm{node.param().perm};
 
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto &input_shape = _ctx.at(input_index).shape();
 
-  OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
+  if (perm.size() != 0)
+  {
+    OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
+  }
+  else
+  {
+    const auto &perm_shape = _ctx.at(perm_index).shape();
+    OP_REQUIRES(input_shape.rank() == perm_shape.dim(0));
+  }
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 
@@ -877,13 +886,16 @@ void OperationValidator::visit(const ir::operation::Split &node)
 
   const auto num_splits = node.param().num_splits;
   const auto input_rank = _ctx.at(input_index).shape().rank();
-  const auto axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
 
   OP_REQUIRES(num_splits > 0 && num_splits <= 0xFFFF);
-  OP_REQUIRES(axis >= 0 && axis < input_rank);
   OP_REQUIRES(node.getOutputs().size() == static_cast<uint32_t>(num_splits));
 
-  OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
+  if (!node.param().use_input_axis)
+  {
+    const auto axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
+    OP_REQUIRES(axis >= 0 && axis < input_rank);
+    OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
+  }
 }
 
 void OperationValidator::visit(const ir::operation::Shape &node)

@@ -34,6 +34,7 @@ public:
   enum Input
   {
     INPUT = 0, // for an n-D tensor, specifying the tensor to be transposed.
+    PERM = 1,  // if Param.perm size is zero, use Input tensor
   };
 
   struct Param

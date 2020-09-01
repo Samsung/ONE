@@ -778,13 +778,20 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERM)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  IPortableTensor *perm_tensor = nullptr;
+
+  if (node.param().perm.size() == 0)
+  {
+    perm_tensor = _tensor_reg->getPortableTensor(perm_index).get();
+  }
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
-  fn->configure(input_tensor, output_tensor, node.param().perm);
+  fn->configure(input_tensor, perm_tensor, output_tensor, node.param().perm);
 
   _return_fn = std::move(fn);
 }
@@ -890,10 +897,21 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto rank = _ctx.at(input_idx).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
-  auto axis_resolved = axis < 0 ? axis + rank : axis;
 
   auto in_tensor = _tensor_reg->getPortableTensor(input_idx).get();
+
+  auto axis_resolved = 0;
+  IPortableTensor *axis_tensor = nullptr;
+  if (node.param().use_input_axis)
+  {
+    const auto axis_idx{node.getInputs().at(ir::operation::Split::Input::AXIS)};
+    axis_tensor = _tensor_reg->getPortableTensor(axis_idx).get();
+  }
+  else
+  {
+    const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
+    axis_resolved = axis < 0 ? axis + rank : axis;
+  }
 
   std::vector<IPortableTensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
@@ -901,7 +919,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   auto fn = std::make_unique<ops::SplitLayer>();
 
-  fn->configure(in_tensor, num_splits, axis_resolved, out_tensors);
+  fn->configure(in_tensor, axis_tensor, num_splits, axis_resolved, out_tensors);
 
   _return_fn = std::move(fn);
 }

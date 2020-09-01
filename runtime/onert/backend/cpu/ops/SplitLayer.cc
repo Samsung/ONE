@@ -29,7 +29,8 @@ namespace cpu
 namespace ops
 {
 
-SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
+SplitLayer::SplitLayer()
+    : _input(nullptr), _axis_tensor(nullptr), _num_splits(0), _axis(0), _outputs()
 {
   // DO NOTHING
 }
@@ -37,8 +38,18 @@ SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
 template <typename T> void SplitLayer::split(void)
 {
   nnfw::cker::SplitParams op_params;
-  op_params.axis = _axis;
   op_params.num_split = _num_splits;
+
+  if (_axis_tensor == nullptr)
+  {
+    op_params.axis = _axis;
+  }
+  else
+  {
+    int32_t axis = reinterpret_cast<int32_t *>(_axis_tensor->buffer())[0];
+    auto rank = _input->num_dimensions();
+    op_params.axis = axis < 0 ? axis + rank : axis;
+  }
 
   std::vector<T *> outputPtrs;
 
@@ -53,13 +64,15 @@ template <typename T> void SplitLayer::split(void)
                        getTensorShape(_outputs[0]), outputPtrs.data());
 }
 
-void SplitLayer::configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
+void SplitLayer::configure(const IPortableTensor *input, const IPortableTensor *axis_tensor,
+                           uint16_t num_splits, int16_t axis,
                            std::vector<IPortableTensor *> &outputs)
 {
   assert(input != nullptr);
 
   _num_splits = num_splits;
   _input = input;
+  _axis_tensor = axis_tensor;
   _axis = axis;
   _outputs = outputs;
 }
