@@ -34,10 +34,12 @@ public:
   enum Input
   {
     INPUT = 0,
+    SIZE = 1,
   };
 
   struct Param
   {
+    // If the input SIZE exists in inputs, height_out and width_out are not set. Ignore these params
     int32_t height_out;
     int32_t width_out;
     bool align_corners;

@@ -72,7 +72,7 @@ OperationDumper::OperationDumper(const std::string &start_msg)
   VERBOSE(LIR) << start_msg << std::endl;
 }
 
-void OperationDumper::visit(const ArgMax &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ArgMax &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const BatchToSpaceND &node)
 {
@@ -279,7 +279,21 @@ void OperationDumper::visit(const Reshape &node)
   dumpUnaryInputOp(node, shape);
 }
 
-void OperationDumper::visit(const ResizeBilinear &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ResizeBilinear &node)
+{
+  if (node.getInputs().size() == 1)
+  {
+    dumpUnaryInputOp(node);
+  }
+  else if (node.getInputs().size() == 2)
+  {
+    dumpBinaryInputOp(node);
+  }
+  else
+  {
+    VERBOSE(LIR) << "* " << node.name() << " is set wrong" << std::endl;
+  }
+}
 
 void OperationDumper::visit(const Reverse &node)
 {
@@ -336,7 +350,7 @@ void OperationDumper::visit(const SpaceToBatchND &node)
 
 void OperationDumper::visit(const SpaceToDepth &node) { dumpUnaryInputOp(node); }
 
-void OperationDumper::visit(const Split &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Split &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const SquaredDifference &node) { dumpBinaryInputOp(node); }
 

@@ -126,7 +126,6 @@ private:
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
-  void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadReduce(const Operator *op, ir::Graph &subg,
                   ir::operation::Reduce::ReduceType reduce_type);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
@@ -151,7 +150,6 @@ private:
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
-  void loadTile(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
@@ -723,74 +721,21 @@ void BaseLoader<LoaderDomain>::loadElementwiseActivation(
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto size = inputs.at(1);
-
-  // FIXME Handle ResizeBilinearOptions.
-  if (!subg.operands().at(size).isConstant())
-    throw std::runtime_error("ResizeBilinear: non-constant 'size' is not supported.");
-
-  std::vector<std::int32_t> size_v = subg.operands().at(size).template asVector<std::int32_t>();
-
   ir::operation::ResizeBilinear::Param param;
-  param.height_out = size_v[0];
-  param.width_out = size_v[1];
-  param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
-  param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
+  const auto *options = op->builtin_options_as_ResizeBilinearOptions();
+  param.align_corners = options->align_corners();
+  param.half_pixel_centers = options->half_pixel_centers();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ResizeBilinear({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ResizeBilinear>(op, subg, param);
 }
 
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto size = inputs.at(1);
-
-  // FIXME Handle ResizeNearestNeighborOptions.
-  if (!subg.operands().at(size).isConstant())
-    throw std::runtime_error("ResizeNearestNeighbor: non-constant 'size' is not supported.");
-
-  std::vector<std::int32_t> size_v = subg.operands().at(size).template asVector<std::int32_t>();
-
   ir::operation::ResizeNearestNeighbor::Param param;
-  param.height_out = size_v[0];
-  param.width_out = size_v[1];
   param.align_corners = op->builtin_options_as_ResizeNearestNeighborOptions()->align_corners();
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::ResizeNearestNeighbor({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadTranspose(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto perm = inputs.at(1);
-
-  // FIXME Handle TransposeOptions.
-  if (!subg.operands().at(perm).isConstant())
-    throw std::runtime_error("Transpose: non-constant 'perm' is not supported.");
-
-  ir::operation::Transpose::Param param;
-  param.perm = subg.operands().at(perm).template asVector<int>();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ResizeNearestNeighbor>(op, subg, param);
 }
 
 template <typename LoaderDomain>
@@ -1035,25 +980,11 @@ void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadSplit(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  // Notice : input order is strange for tflite split
-  auto input = inputs.at(1);
-  auto axis = inputs.at(0);
-
-  // FIXME Handle SplitOptions.
-  if (!subg.operands().at(axis).isConstant())
-    throw std::runtime_error("Split: non-constant 'axis' is not supported.");
-
   ir::operation::Split::Param param;
-  param.axis = subg.operands().at(axis).template asScalar<int>();
   const auto *options = op->builtin_options_as_SplitOptions();
   param.num_splits = options->num_splits();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Split({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Split>(op, subg, param);
 }
 
 template <typename LoaderDomain>
@@ -1215,23 +1146,7 @@ void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  auto inputOperand = subg.operands().at(inputs.at(0));
-  auto axisOperand = subg.operands().at(inputs.at(1));
-
-  // FIXME Handle ArgMaxOptions.
-  if (!axisOperand.isConstant())
-    throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
-  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
-                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
-    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
-
   ir::operation::ArgMax::Param param;
-  param.axis = axisOperand.template asVector<int>()[0];
   const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
   switch (output_type)
   {
@@ -1242,26 +1157,14 @@ void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
     default:
       throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
   }
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ArgMax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
 
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadTile(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
+  auto am = loadOperationTo<ir::operation::ArgMax>(op, subg, param);
 
-  loadOperationIO(op, inputs, outputs);
+  auto axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
 
-  auto multiples = inputs.at(ir::operation::Tile::MULTIPLES);
-
-  // FIXME Handle TileOptions
-  if (!subg.operands().at(multiples).isConstant())
-    throw std::runtime_error("Tile: non-constant 'multiples' is not supported.");
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Tile(inputs, outputs));
-  subg.addOperation(std::move(new_op));
+  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
+                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
+    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
 }
 
 template <typename LoaderDomain>
@@ -1368,7 +1271,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
                                 1.f);
       return;
     case BuiltinOperator::BuiltinOperator_TRANSPOSE:
-      loadTranspose(op, subg);
+      loadOperationTo<ir::operation::Transpose>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::MEAN);
@@ -1501,7 +1404,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ZEROS_LIKE);
       return;
     case BuiltinOperator::BuiltinOperator_TILE:
-      loadTile(op, subg);
+      loadOperationTo<ir::operation::Tile>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadOperationTo<ir::operation::Range>(op, subg);

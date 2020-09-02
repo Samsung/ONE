@@ -961,17 +961,16 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier)
   return new_Shape;
 }
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm)
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm, const int32_t rank)
 {
-  if (static_cast<int>(perm.size()) > in_shape.rank())
+  if (rank > in_shape.rank())
   {
-    throw std::runtime_error("inferTransposeShape failed, bad rank size: " +
-                             std::to_string(static_cast<int>(perm.size())));
+    throw std::runtime_error("inferTransposeShape failed, bad rank size: " + std::to_string(rank));
   }
-  ir::Shape out_shape(static_cast<int>(perm.size()));
-  for (int idx = 0; idx < static_cast<int>(perm.size()); idx++)
+  ir::Shape out_shape(rank);
+  for (int idx = 0; idx < rank; idx++)
   {
-    if (perm[idx] < 0 || perm[idx] >= static_cast<int>(perm.size()))
+    if (perm[idx] < 0 || perm[idx] >= rank)
     {
       throw std::runtime_error("inferTransposeShape failed, bad perm value: " +
                                std::to_string(perm[idx]));

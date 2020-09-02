@@ -780,13 +780,15 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto perm_tensor = _tensor_reg->getPortableTensor(perm_index).get();
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
-  fn->configure(input_tensor, output_tensor, node.param().perm);
+  fn->configure(input_tensor, output_tensor, perm_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -891,11 +893,10 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   assert(num_splits == static_cast<int>(node.getOutputs().size()));
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
-  const auto rank = _ctx.at(input_idx).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
-  auto axis_resolved = axis < 0 ? axis + rank : axis;
+  const auto axis_idx{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   auto in_tensor = _tensor_reg->getPortableTensor(input_idx).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_idx).get();
 
   std::vector<IPortableTensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
@@ -903,7 +904,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   auto fn = std::make_unique<ops::SplitLayer>();
 
-  fn->configure(in_tensor, num_splits, axis_resolved, out_tensors);
+  fn->configure(in_tensor, axis_tensor, num_splits, out_tensors);
 
   _return_fn = std::move(fn);
 }
@@ -928,8 +929,6 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::INPUT)};
 
-  auto output_height = node.param().height_out;
-  auto output_width = node.param().width_out;
   auto align_corners = node.param().align_corners;
   auto half_pixel_centers = node.param().half_pixel_centers;
 
@@ -938,8 +937,29 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 
   auto fn = std::make_unique<ops::ResizeBilinearLayer>();
 
-  fn->configure(input_tensor, output_tensor, output_height, output_width, align_corners,
-                half_pixel_centers);
+  if (node.getInputs().size() == 1)
+  {
+    fn->configure(input_tensor, output_tensor, node.param().height_out, node.param().width_out,
+                  align_corners, half_pixel_centers);
+  }
+  else
+  {
+    assert(node.getInputs().size() == 2);
+    const auto size_index{node.getInputs().at(ir::operation::ResizeBilinear::SIZE)};
+    auto size_tensor = _tensor_reg->getPortableTensor(size_index).get();
+    if (size_tensor->is_constant())
+    {
+      auto size_vec = _ctx.at(size_index).asVector<int32_t>();
+      const auto height_out = size_vec[0];
+      const auto width_out = size_vec[0];
+      fn->configure(input_tensor, output_tensor, height_out, width_out, align_corners,
+                    half_pixel_centers);
+    }
+    else
+    {
+      fn->configure(input_tensor, output_tensor, size_tensor, align_corners, half_pixel_centers);
+    }
+  }
 
   _return_fn = std::move(fn);
 }
@@ -965,15 +985,15 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
-
-  const auto axis = node.param().axis;
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::AXIS)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index).get();
 
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
-  fn->configure(input_tensor, output_tensor, axis, /* is_arg_max */ true);
+  fn->configure(input_tensor, output_tensor, axis_tensor, /* is_arg_max */ true);
 
   _return_fn = std::move(fn);
 }

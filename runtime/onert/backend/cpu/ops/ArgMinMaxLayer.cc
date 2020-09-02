@@ -44,24 +44,29 @@ template <typename T> std::function<bool(T, T)> GetComparefunction(bool is_arg_m
 }
 }
 
-void ArgMinMaxLayer::configure(const IPortableTensor *input, IPortableTensor *output, int32_t axis,
-                               bool is_arg_max)
+void ArgMinMaxLayer::configure(const IPortableTensor *input, IPortableTensor *output,
+                               const IPortableTensor *axis, bool is_arg_max)
 {
   _input = input;
   _output = output;
-  if (axis < 0)
-  {
-    axis += input->num_dimensions();
-  }
   _axis = axis;
   _is_arg_max = is_arg_max;
 }
 
 void ArgMinMaxLayer::run()
 {
-#define TF_LITE_ARG_MIN_MAX(input_type, axis_type, output_type)                                 \
-  ArgMinMax(getTensorShape(_input), reinterpret_cast<const input_type *>(_input->buffer()),     \
-            getTensorShape(_output), reinterpret_cast<output_type *>(_output->buffer()), _axis, \
+  if (_axis->total_size() != sizeof(int32_t))
+  {
+    throw std::runtime_error("ArgMinMax: wrong shape of axis");
+  }
+  auto axis = *reinterpret_cast<const int32_t *>(_axis->buffer());
+  if (axis < 0)
+  {
+    axis += _input->num_dimensions();
+  }
+#define TF_LITE_ARG_MIN_MAX(input_type, axis_type, output_type)                                \
+  ArgMinMax(getTensorShape(_input), reinterpret_cast<const input_type *>(_input->buffer()),    \
+            getTensorShape(_output), reinterpret_cast<output_type *>(_output->buffer()), axis, \
             GetComparefunction<input_type>(_is_arg_max));
   if (_output->data_type() == ir::DataType::INT32)
   {

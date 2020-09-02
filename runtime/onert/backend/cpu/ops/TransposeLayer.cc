@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 
-TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm()
+TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm(nullptr)
 {
   // DO NOTHING
 }
@@ -37,10 +37,11 @@ TransposeLayer::TransposeLayer() : _input(nullptr), _output(nullptr), _perm()
 template <typename T> void TransposeLayer::transpose()
 {
   nnfw::cker::TransposeParams param;
-  param.perm_count = _perm.size();
-  for (size_t i = 0; i < _perm.size(); i++)
+  assert(_perm->num_dimensions() == 1);
+  param.perm_count = _perm->dimension(0);
+  for (auto i = 0; i < param.perm_count; i++)
   {
-    param.perm[i] = _perm[i];
+    param.perm[i] = *(reinterpret_cast<const int32_t *>(_perm->buffer() + _perm->calcOffset({i})));
   }
 
   nnfw::cker::Transpose(param, getTensorShape(_input),
@@ -64,7 +65,7 @@ void TransposeLayer::transposeQuant8()
 }
 
 void TransposeLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                               const std::vector<int> &perm)
+                               const IPortableTensor *perm)
 {
   _input = input;
   _perm = perm;

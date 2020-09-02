@@ -29,12 +29,12 @@ class Split : public Operation
 public:
   enum Input
   {
-    INPUT = 0
+    INPUT = 0,
+    AXIS = 1,
   };
 
   struct Param
   {
-    int axis;
     int num_splits;
   };
 

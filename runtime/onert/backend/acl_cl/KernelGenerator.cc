@@ -534,7 +534,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto &perm{node.param().perm};
+  const auto perm_idx{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
   const auto rank = _ctx.at(ifm_idx).shape().rank();
 
@@ -543,7 +543,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
 
-  std::vector<std::int32_t> pv(perm.cbegin(), perm.cend());
+  const auto pv = _ctx.at(perm_idx).asVector<int32_t>();
   // Reversed
   auto backend_pv = ::onert::backend::acl_common::getARMComputePermutationVector(
       rank, pv, frontend_layout, backend_layout);
@@ -1218,6 +1218,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
 
   auto ifm_shape = _ctx.at(ifm_index).shape();
   auto ofm_shape = _ctx.at(ofm_index).shape();
@@ -1230,7 +1231,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto frontend_layout = _current_op_seq_layout;
   auto backend_layout = ifm_tensor->layout();
 
-  int axis_value = node.param().axis;
+  int axis_value = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis_value < 0)
   {
     axis_value += ifm_rank;
@@ -1289,6 +1290,7 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
 void KernelGenerator::visit(const ir::operation::Split &node)
 {
   const auto ifm_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
 
@@ -1304,7 +1306,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
-  auto axis = node.param().axis;
+  auto axis = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis < 0)
     axis += ifm_rank;
   axis = acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value();
