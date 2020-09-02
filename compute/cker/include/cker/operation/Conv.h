@@ -23,6 +23,7 @@
 #include "cker/Utils.h"
 #include "cker/operation/reference/Conv.h"
 #include "cker/operation/optimized/Conv.h"
+#include <iostream>
 #include <vector>
 
 namespace nnfw
@@ -118,9 +119,20 @@ public:
     }
 
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 1;
-    uint8_t im2col_data[im2col_size];
-    optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
-                    bias_data, output_shape, output_data, _im2col_shape, im2col_data);
+
+    // Use heap if size is larger than 8MB
+    if (im2col_size > 8 * 1024 * 1024)
+    {
+      std::unique_ptr<uint8_t[]> im2col_data = std::make_unique<uint8_t[]>(im2col_size);
+      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                      bias_data, output_shape, output_data, _im2col_shape, im2col_data.get());
+    }
+    else
+    {
+      uint8_t im2col_data[im2col_size];
+      optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
+                      bias_data, output_shape, output_data, _im2col_shape, im2col_data);
+    }
   }
 
 private:
