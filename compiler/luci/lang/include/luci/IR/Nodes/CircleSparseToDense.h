@@ -49,7 +49,7 @@ public:
   void validate_indices(bool validate_indices) { _validate_indices = validate_indices; }
 
 private:
-  bool _validate_indices{true};
+  bool _validate_indices{false};
 };
 
 } // namespace luci
