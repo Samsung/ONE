@@ -42,7 +42,8 @@ CircleNode *CircleSparseToDenseGraphBuilder::build_node(const circle::OperatorT 
   node->default_value(inputs.at(3));
 
   const auto *options = op.builtin_options.AsSparseToDenseOptions();
-  node->validate_indices(options->validate_indices);
+  if (options)
+    node->validate_indices(options->validate_indices);
 
   return node;
 }
