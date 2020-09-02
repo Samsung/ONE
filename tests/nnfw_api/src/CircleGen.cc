@@ -104,6 +104,14 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorConcatenation(const OperatorParams &params, int axis,
+                                             circle::ActivationFunctionType actfn)
+{
+  auto options = circle::CreateConcatenationOptions(_fbb, axis, actfn).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CONCATENATION,
+                                circle::BuiltinOptions_ConcatenationOptions, options);
+}
+
 uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
 {
   auto options = circle::CreateCosOptions(_fbb).Union();
@@ -130,6 +138,13 @@ uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alp
   auto options = circle::CreateLeakyReluOptions(_fbb, alpha).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_LEAKY_RELU,
                                 circle::BuiltinOptions_LeakyReluOptions, options);
+}
+
+uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
+{
+  auto options = circle::CreatePadOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_NEG,
+                                circle::BuiltinOptions_NegOptions, options);
 }
 
 uint32_t CircleGen::addOperatorPad(const OperatorParams &params)
