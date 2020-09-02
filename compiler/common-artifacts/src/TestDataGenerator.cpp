@@ -15,10 +15,8 @@
  */
 
 #include <arser/arser.h>
-#include <foder/FileLoader.h>
 #include <luci/Importer.h>
 #include <luci_interpreter/Interpreter.h>
-#include <mio/circle/schema_generated.h>
 
 #include <H5Cpp.h>
 
@@ -112,18 +110,8 @@ int entry(int argc, char **argv)
   size_t last_dot_index = circle_file.find_last_of(".");
   std::string prefix = circle_file.substr(0, last_dot_index);
 
-  // load circle file
-  foder::FileLoader file_loader{circle_file};
-  std::vector<char> model_data = file_loader.load();
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << circle_file << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
   // load luci module
-  std::unique_ptr<luci::Module> module = luci::Importer().importModule(circle_model);
+  auto module = luci::Importer().import(circle_file);
   luci_interpreter::Interpreter interpreter(module.get());
 
   /**
@@ -156,7 +144,7 @@ int entry(int argc, char **argv)
 
   std::random_device rd; // used to obtain a seed for the random number engine
   uint32_t input_index = 0;
-  for (uint32_t g = 0; g < circle_model->subgraphs()->size(); g++)
+  for (size_t g = 0; g < module->size(); g++)
   {
     const auto input_nodes = loco::input_nodes(module->graph(g));
     for (const auto &node : input_nodes)
@@ -210,7 +198,7 @@ int entry(int argc, char **argv)
 
   // dump output data into hdf5 file
   uint32_t output_index = 0;
-  for (uint32_t g = 0; g < circle_model->subgraphs()->size(); g++)
+  for (size_t g = 0; g < module->size(); g++)
   {
     const auto output_nodes = loco::output_nodes(module->graph(g));
     for (const auto &node : output_nodes)

@@ -41,7 +41,9 @@ public:
     // DO NOTHING
   }
 
-public:
+  std::unique_ptr<Module> import(const std::string &file_path) const;
+
+private:
   std::unique_ptr<loco::Graph> import(const circle::Model *model) const;
   std::unique_ptr<Module> importModule(const circle::Model *model) const;
 

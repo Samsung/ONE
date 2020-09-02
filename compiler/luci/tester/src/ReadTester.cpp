@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-#include <foder/FileLoader.h>
-
 #include <luci/Importer.h>
 #include <luci/Service/Validate.h>
 #include <luci/Pass/ShapeInferencePass.h>
 #include <luci/Pass/TypeInferencePass.h>
 
 #include <iostream>
-#include <map>
 #include <string>
 
 namespace
@@ -66,17 +63,7 @@ int entry(int argc, char **argv)
   std::cout << "[INFO] Circle is '" << input_path << "'" << std::endl;
 
   // Load model from the file
-  foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data = file_loader.load();
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
+  auto module = luci::Importer().import(input_path);
   assert(module->size() > 0);
 
   for (size_t g = 0; g < module->size(); ++g)

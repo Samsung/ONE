@@ -1,7 +1,6 @@
 set (SOURCES src/CircleQuantizer.cpp)
 
 add_executable(circle-quantizer "${SOURCES}")
-target_link_libraries(circle-quantizer foder)
 target_link_libraries(circle-quantizer safemain)
 target_link_libraries(circle-quantizer oops)
 target_link_libraries(circle-quantizer loco)

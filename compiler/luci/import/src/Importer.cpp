@@ -31,7 +31,9 @@
 #include <oops/InternalExn.h>
 #include <oops/UserExn.h>
 
+#include <fstream>
 #include <memory>
+#include <foder/FileLoader.h>
 
 namespace
 {
@@ -289,6 +291,18 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   post_import_graph(module.get(), reader);
 
   return module;
+}
+
+std::unique_ptr<Module> Importer::import(const std::string &file_path) const
+{
+  foder::FileLoader file_loader(file_path);
+  std::vector<char> model_data = file_loader.load();
+
+  flatbuffers::Verifier verifier(reinterpret_cast<uint8_t *>(model_data.data()), model_data.size());
+  if (!circle::VerifyModelBuffer(verifier))
+    throw oops::UserExn("Model file has wrong format", file_path);
+
+  return importModule(circle::GetModel(model_data.data()));
 }
 
 } // namespace luci
