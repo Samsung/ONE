@@ -36,20 +36,21 @@ FullyConnected::FullyConnected(const Tensor *input, const Tensor *weights, const
 
 void FullyConnected::configure()
 {
-  if (weights()->element_type() == DataType::U8 || weights()->element_type() == DataType::S8)
+  if (weights()->element_type() == DataType::U8)
   {
-    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::U8 ||
-                           input()->element_type() == DataType::S8);
-    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::U8 ||
-                           output()->element_type() == DataType::S8);
-    LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::S32 ||
-                           bias()->element_type() == DataType::S64)
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::U8);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::U8);
+    LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::S32)
   }
-  else
+  else if (weights()->element_type() == DataType::FLOAT32)
   {
     LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
     LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
     LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::FLOAT32)
+  }
+  else
+  {
+    throw std::runtime_error("Unsupported type.");
   }
 
   const Shape &input_shape = input()->shape();
@@ -126,8 +127,6 @@ void FullyConnected::evalQuantized() const
   op_params.output_shift = output_shift;
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
-  // op_params.lhs_cacheable = IsConstantTensor(filter);
-  // op_params.rhs_cacheable = IsConstantTensor(input);
   op_params.lhs_cacheable = false;
   op_params.rhs_cacheable = false;
   tflite::reference_ops::FullyConnected(

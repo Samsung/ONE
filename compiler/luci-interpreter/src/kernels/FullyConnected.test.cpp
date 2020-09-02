@@ -26,14 +26,12 @@ namespace
 
 using namespace testing;
 
-// Returns the corresponding Bias DataType given the type T.
+// Returns the corresponding Bias DataType given the type T(Input Tensor Type).
 template <typename T> constexpr DataType getBiasType()
 {
   if (std::is_same<T, float>::value)
     return DataType::FLOAT32;
   if (std::is_same<T, uint8_t>::value)
-    return DataType::S32;
-  if (std::is_same<T, int8_t>::value)
     return DataType::S32;
   return DataType::Unknown;
 }
