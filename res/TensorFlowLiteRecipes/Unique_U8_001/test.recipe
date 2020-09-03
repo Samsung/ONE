@@ -7,7 +7,7 @@ operand {
 operand {
   name: "ofm"
   type: UINT8
-  shape { dim: 0 }
+  shape { }
 }
 operand {
   name: "ofm_idx"

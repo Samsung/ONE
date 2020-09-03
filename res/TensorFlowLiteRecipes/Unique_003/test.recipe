@@ -6,7 +6,7 @@ operand {
 operand {
   name: "ofm"
   type: INT32
-  shape { dim: 0 }
+  shape { }
 }
 operand {
   name: "ofm_idx"
