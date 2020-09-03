@@ -53,7 +53,7 @@ TEST(LogSoftmaxTest, Uint8)
 {
   float kMin = -10;
   float kMax = 10;
-  float kLogSoftmaxQuantizedTolerance = (kMax - kMin) / 255.0;
+  float kLogSoftmaxQuantizedTolerance = 16. / 256;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
   std::vector<float> input_data{
       0, -6, 2,  4, //
@@ -78,6 +78,8 @@ TEST(LogSoftmaxTest, Uint8)
                                   output_tensor.zero_point()),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kLogSoftmaxQuantizedTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
+              ::testing::ElementsAreArray({189, 93, 221, 253, 142, 63, 255, 111}));
 }
 
 } // namespace

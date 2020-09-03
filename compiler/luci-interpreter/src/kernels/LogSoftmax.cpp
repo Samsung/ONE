@@ -82,7 +82,6 @@ void LogSoftmax::evalQuantized() const
   params.table = const_cast<float *>(_table);
   params.zero_point = output()->zero_point();
   params.scale = output()->scale();
-  params.beta = 1.0;
 
   tflite::optimized_ops::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
                                     output_data);
