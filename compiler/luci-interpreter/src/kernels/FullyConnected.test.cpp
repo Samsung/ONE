@@ -43,12 +43,18 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
   float kQuantizedTolerance = getTolerance(-127, 128, 255);
-  std::pair<float, int32_t> quant_param = quantizationParams<T>(-127, 128);
-  Tensor input_tensor{
-      getElementType<T>(), input_shape, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor weights_tensor{
-      getElementType<T>(), weights_shape, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor bias_tensor{getBiasType<T>(), bias_shape, {}, ""};
+  std::pair<float, int32_t> input_quant_param = quantizationParams<T>(-63.5, 64);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<T>(-127, 128);
+  Tensor input_tensor{getElementType<T>(),
+                      input_shape,
+                      {{input_quant_param.first}, {input_quant_param.second}},
+                      ""};
+  Tensor weights_tensor{getElementType<T>(),
+                        weights_shape,
+                        {{input_quant_param.first}, {input_quant_param.second}},
+                        ""};
+  Tensor bias_tensor{
+      getBiasType<T>(), bias_shape, {{input_quant_param.first * input_quant_param.first}, {0}}, ""};
   if (std::is_floating_point<T>::value)
   {
     input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
@@ -57,23 +63,21 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   }
   else
   {
-    std::vector<int32_t> converted_bias_data;
-    for (size_t i = 0; i < bias_data.size(); i++)
-    {
-      converted_bias_data.push_back(static_cast<int32_t>(*(bias_data.begin() + i)));
-    }
-    bias_tensor.writeData(converted_bias_data.data(), converted_bias_data.size() * sizeof(int32_t));
     std::vector<T> quantized_input_value =
-        quantize<T>(input_data, quant_param.first, quant_param.second);
+        quantize<T>(input_data, input_quant_param.first, input_quant_param.second);
     std::vector<T> quantized_weights_value =
-        quantize<T>(weights_data, quant_param.first, quant_param.second);
+        quantize<T>(weights_data, input_quant_param.first, input_quant_param.second);
+    std::vector<int32_t> quantized_bias_value =
+        quantize<int32_t>(bias_data, bias_tensor.scale(), bias_tensor.zero_point());
     input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
     weights_tensor.writeData(quantized_weights_value.data(),
                              quantized_weights_value.size() * sizeof(T));
+    bias_tensor.writeData(quantized_bias_value.data(),
+                          quantized_bias_value.size() * sizeof(int32_t));
   }
 
   Tensor output_tensor =
-      makeOutputTensor(getElementType<T>(), quant_param.first, quant_param.second);
+      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
 
   FullyConnectedParams params{};
   params.activation = Activation::RELU;
