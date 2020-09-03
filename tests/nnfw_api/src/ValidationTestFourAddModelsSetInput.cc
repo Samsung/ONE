@@ -23,6 +23,8 @@ TEST_F(ValidationTestFourAddModelsSetInput, run_001)
 {
   NNFW_ENSURE_SUCCESS(nnfw_run(_objects[0].session));
   NNFW_ENSURE_SUCCESS(nnfw_run(_objects[1].session));
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_002)
@@ -33,6 +35,8 @@ TEST_F(ValidationTestFourAddModelsSetInput, run_002)
     for (auto obj : _objects)
       NNFW_ENSURE_SUCCESS(nnfw_run(obj.session));
   }
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestFourAddModelsSetInput, run_async)
@@ -41,4 +45,6 @@ TEST_F(ValidationTestFourAddModelsSetInput, run_async)
     NNFW_ENSURE_SUCCESS(nnfw_run_async(obj.session));
   for (auto obj : _objects)
     NNFW_ENSURE_SUCCESS(nnfw_await(obj.session));
+
+  SUCCEED();
 }

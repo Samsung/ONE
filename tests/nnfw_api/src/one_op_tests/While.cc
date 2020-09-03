@@ -70,4 +70,6 @@ TEST_F(GenModelTest, OneOp_While)
   _context->addTestCase({{{2}}, {{102}}});
   _context->addTestCase({{{22}}, {{102}}});
   _context->setBackends({"cpu"});
+
+  SUCCEED();
 }

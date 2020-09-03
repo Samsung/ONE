@@ -30,4 +30,6 @@ TEST_F(GenModelTest, OneOp_L2Normalization)
                          {{0, 0.6, 0.8, 0, 0.38461539149284363, 0.92307698726654053, 0,
                            0.47058823704719543, 0.88235294818878174, 0, 0.28, 0.96}}});
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
 }
