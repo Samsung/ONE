@@ -38,7 +38,7 @@ namespace onert
 namespace base_loader
 {
 
-template <typename LoaderDomain, typename SpecificLoader> class BaseLoader
+template <typename LoaderDomain> class BaseLoader
 {
 protected:
   using Verifier = typename LoaderDomain::Verifier;
@@ -107,7 +107,11 @@ protected:
   // Load Pool2D param
   template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
 
+private:
+  virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
+  template <typename OpIR, typename... Args>
+  const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
   void loadTransposeConv(const Operator *op, ir::Graph &subg);
@@ -115,60 +119,42 @@ protected:
   void loadReshape(const Operator *op, ir::Graph &subg);
   void loadSoftmax(const Operator *op, ir::Graph &subg);
   void loadConcatenation(const Operator *op, ir::Graph &subg);
-  void loadFill(const Operator *op, ir::Graph &subg);
   void loadFC(const Operator *op, ir::Graph &subg);
-  template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
-  void loadBinaryArithmetic(const Operator *op, ir::Graph &subg);
+  void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
+                            ir::operation::BinaryArithmetic::ArithmeticType op_type);
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
-  void loadSelect(const Operator *op, ir::Graph &subg);
-  void loadSquaredDifference(const Operator *op, ir::Graph &subg);
   void loadTranspose(const Operator *op, ir::Graph &subg);
-  template <ir::operation::Reduce::ReduceType reduce_type>
-  void loadReduce(const Operator *op, ir::Graph &subg);
+  void loadReduce(const Operator *op, ir::Graph &subg,
+                  ir::operation::Reduce::ReduceType reduce_type);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
-  void loadReverseV2(const Operator *op, ir::Graph &subg);
-  void loadPad(const Operator *op, ir::Graph &subg);
   void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
                                  ir::operation::ElementwiseActivation::Type op_type,
                                  float alpha = 0.f, float beta = 0.f);
-  template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
-  void loadElementwiseBinary(const Operator *op, ir::Graph &subg);
+  void loadElementwiseBinary(const Operator *op, ir::Graph &subg,
+                             ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type);
   void loadElementwiseUnary(const Operator *op, ir::Graph &subg,
                             ir::operation::ElementwiseUnary::Type op_type);
-  void loadExpandDims(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
-  void loadSpaceToBatchND(const Operator *op, ir::Graph &subg);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
-  void loadBatchToSpaceND(const Operator *op, ir::Graph &subg);
   void loadSqueeze(const Operator *op, ir::Graph &subg);
-  void loadPrelu(const Operator *op, ir::Graph &subg);
   void loadSplit(const Operator *op, ir::Graph &subg);
   void loadSplitV(const Operator *op, ir::Graph &subg);
-  void loadSlice(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
   void loadComparison(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadOneHot(const Operator *op, ir::Graph &subg);
-  void loadShape(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
-  void loadPow(const Operator *op, ir::Graph &subg);
   void loadTile(const Operator *op, ir::Graph &subg);
-  void loadRange(const Operator *op, ir::Graph &subg);
-  void loadRank(const Operator *op, ir::Graph &subg);
-  void loadMatrixBandPart(const Operator *op, ir::Graph &subg);
-  void loadBroadcastTo(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
-  void loadStatelessRandomUniform(const Operator *op, ir::Graph &subg);
-  void loadL2Normalization(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
 
 protected:
@@ -188,8 +174,8 @@ protected:
   std::unique_ptr<Verifier> _verifier;
 };
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const char *file_path)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
 {
   _fd = open(file_path, O_RDONLY);
   if (_fd < 0)
@@ -220,18 +206,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromFile(const ch
   close(_fd);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::loadFromBuffer(uint8_t *buffer,
-                                                                          size_t size)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_t size)
 {
   _base = buffer;
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
   loadModel();
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::Activation BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::convertActivation(
-    const ActivationFunctionType type)
+template <typename LoaderDomain>
+ir::Activation
+BaseLoader<LoaderDomain>::BaseLoader::convertActivation(const ActivationFunctionType type)
 {
   switch (type)
   {
@@ -251,9 +236,8 @@ ir::Activation BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::convertActi
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::DataType
-BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const TensorType type)
+template <typename LoaderDomain>
+ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const TensorType type)
 {
   switch (type)
   {
@@ -275,16 +259,14 @@ BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorTypeToDataType(const
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::OperandIndex
-BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
+template <typename LoaderDomain>
+ir::OperandIndex BaseLoader<LoaderDomain>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::BaseLoader::deallocateMmappedArea(uint8_t *ptr,
-                                                                                 size_t size)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::deallocateMmappedArea(uint8_t *ptr, size_t size)
 {
   // Calculate offset from base address of mapped region
   ptrdiff_t unaligned_offset_start = ptr - _base;
@@ -324,9 +306,8 @@ template <typename T> bool Copy(const T *data_ptr, std::vector<uint16_t> &arr)
   return true;
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Tensor *tensor,
-                                                                       ir::Graph &subg)
+template <typename LoaderDomain>
+ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir::Graph &subg)
 {
   ir::Shape shape;
   // Shape
@@ -465,10 +446,9 @@ ir::OperandIndex BaseLoader<LoaderDomain, SpecificLoader>::loadOperand(const Ten
   return operand_index;
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *op,
-                                                               ir::OperandIndexSequence &inputs,
-                                                               ir::OperandIndexSequence &outputs)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
+                                               ir::OperandIndexSequence &outputs)
 {
   for (const std::int32_t idx : *op->inputs())
   {
@@ -490,10 +470,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperationIO(const Operator *o
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <typename Param, typename OptionsType>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &param,
-                                                                      const OptionsType *options)
+void BaseLoader<LoaderDomain>::loadStridesAndPaddings(Param &param, const OptionsType *options)
 {
   // Strides
   param.stride.vertical = options->stride_h();
@@ -506,10 +485,9 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadStridesAndPaddings(Param &par
   // param paddings indexes unused
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
+template <typename LoaderDomain>
 template <typename Param>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
-                                                                 const Pool2DOptions *options)
+void BaseLoader<LoaderDomain>::loadPool2DOptions(Param &param, const Pool2DOptions *options)
 {
   // Strides and Paddings
   loadStridesAndPaddings(param, options);
@@ -521,89 +499,76 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2DOptions(Param &param,
   param.activation = convertActivation(options->fused_activation_function());
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadConv2D(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+template <typename OpIR, typename... Args>
+const OpIR *BaseLoader<LoaderDomain>::loadOperationTo(const Operator *op, ir::Graph &subg,
+                                                      Args &&... args)
 {
+  static_assert(sizeof...(args) <= 1, "You can't have more than 1 arguments!");
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
 
   loadOperationIO(op, inputs, outputs);
 
+  std::unique_ptr<OpIR> new_op(new OpIR(inputs, outputs, std::forward<Args>(args)...));
+  auto ret = new_op.get();
+  subg.addOperation(std::move(new_op));
+
+  return ret;
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadConv2D(const Operator *op, ir::Graph &subg)
+{
   ir::operation::Conv2D::Param param;
   const auto *options = op->builtin_options_as_Conv2DOptions();
   param.activation = convertActivation(options->fused_activation_function());
   loadStridesAndPaddings(param, options);
-
   param.dilation.width_factor = options->dilation_w_factor();
   param.dilation.height_factor = options->dilation_h_factor();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Conv2D(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Conv2D>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadDepthwiseConv2D(const Operator *op,
-                                                                   ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::DepthwiseConv2D::Param param;
   const auto *options = op->builtin_options_as_DepthwiseConv2DOptions();
   param.activation = convertActivation(options->fused_activation_function());
   loadStridesAndPaddings(param, options);
-  // Multiplier
   param.multiplier = options->depth_multiplier();
   // Dilation h/w factor unused
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::DepthwiseConv2D(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+
+  loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTransposeConv(const Operator *op,
-                                                                 ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTransposeConv(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::TransposeConv::Param param;
   const auto *options = op->builtin_options_as_TransposeConvOptions();
   loadStridesAndPaddings(param, options);
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::TransposeConv(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+
+  loadOperationTo<ir::operation::TransposeConv>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPool2D(const Operator *op, ir::Graph &subg,
-                                                          ir::operation::Pool2D::PoolType op_type)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPool2D(const Operator *op, ir::Graph &subg,
+                                          ir::operation::Pool2D::PoolType op_type)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Pool2D::Param param;
   param.op_type = op_type;
   const auto *options = op->builtin_options_as_Pool2DOptions();
 
   loadPool2DOptions(param, options);
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pool2D(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Pool2D>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReshape(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Reshape::Param param{};
   const auto *options = op->builtin_options_as_ReshapeOptions();
   if (options != nullptr)
@@ -618,92 +583,57 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReshape(const Operator *op, i
     }
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reshape(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Reshape>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSoftmax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSoftmax(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Softmax::Param param;
   const auto *options = op->builtin_options_as_SoftmaxOptions();
   // Beta
   param.beta = options->beta();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Softmax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Softmax>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadConcatenation(const Operator *op,
-                                                                 ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadConcatenation(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Concat::Param param;
   const auto *options = op->builtin_options_as_ConcatenationOptions();
   // Axis
   param.axis = options->axis();
   // activation unused
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Concat(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Concat>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFill(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Fill(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFC(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  const auto &input_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::INPUT));
-  auto &weights_operand = subg.operands().at(inputs.at(ir::operation::FullyConnected::WEIGHT));
-  if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
-      weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
-  {
-    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
-  }
-
   ir::operation::FullyConnected::Param param;
   const auto *options = op->builtin_options_as_FullyConnectedOptions();
 
   param.activation = convertActivation(options->fused_activation_function());
   // weights_format unused
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::FullyConnected(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  const auto fc = loadOperationTo<ir::operation::FullyConnected>(op, subg, param);
+
+  const auto &input_operand =
+      subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::INPUT));
+  auto &weights_operand =
+      subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::WEIGHT));
+  if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
+      weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM)
+  {
+    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
+  }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::BinaryArithmetic::Param param;
   param.arithmetic_type = ir::operation::BinaryArithmetic::ArithmeticType::ADD;
 
@@ -722,21 +652,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadAddV2(const Operator *op, ir:
     param.activation = convertActivation(fused_activation_func);
   }
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::BinaryArithmetic(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::BinaryArithmetic>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-template <ir::operation::BinaryArithmetic::ArithmeticType op_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operator *op,
-                                                                    ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBinaryArithmetic(
+    const Operator *op, ir::Graph &subg, ir::operation::BinaryArithmetic::ArithmeticType op_type)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::BinaryArithmetic::Param param;
   param.arithmetic_type = op_type;
   switch (op_type)
@@ -771,52 +693,35 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBinaryArithmetic(const Operat
       break;
   }
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::BinaryArithmetic(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::BinaryArithmetic>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPack(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadPack(const Operator *op, ir::Graph &subg)
 {
-  // This runtime_error will be removed if the one of backend supports this operation
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Pack::Param param;
   const auto *options = op->builtin_options_as_PackOptions();
   param.num = options->values_count();
   param.axis = options->axis();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pack(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Pack>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseActivation(
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadElementwiseActivation(
     const Operator *op, ir::Graph &subg, ir::operation::ElementwiseActivation::Type op_type,
     float alpha, float beta)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::ElementwiseActivation::Param param;
   param.op_type = op_type;
   param.alpha = alpha;
   param.beta = beta;
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::ElementwiseActivation(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ElementwiseActivation>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -841,9 +746,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeBilinear(const Operator
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const Operator *op,
-                                                                         ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -852,6 +756,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const O
   auto input = inputs.at(0);
   auto size = inputs.at(1);
 
+  // FIXME Handle ResizeNearestNeighborOptions.
   if (!subg.operands().at(size).isConstant())
     throw std::runtime_error("ResizeNearestNeighbor: non-constant 'size' is not supported.");
 
@@ -867,33 +772,8 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadResizeNearestNeighbor(const O
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSelect(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Select(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSquaredDifference(const Operator *op,
-                                                                     ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::SquaredDifference(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTranspose(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -902,6 +782,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
   auto input = inputs.at(0);
   auto perm = inputs.at(1);
 
+  // FIXME Handle TransposeOptions.
   if (!subg.operands().at(perm).isConstant())
     throw std::runtime_error("Transpose: non-constant 'perm' is not supported.");
 
@@ -912,31 +793,20 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTranspose(const Operator *op,
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-template <ir::operation::Reduce::ReduceType reduce_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduce(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReduce(const Operator *op, ir::Graph &subg,
+                                          ir::operation::Reduce::ReduceType reduce_type)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Reduce::Param param;
   param.reduce_type = reduce_type;
   param.keep_dims = op->builtin_options_as_ReducerOptions()->keep_dims();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reduce(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Reduce>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Reduce::Param param;
   param.reduce_type = ir::operation::Reduce::ReduceType::ALL;
   if (op->custom_options() == nullptr)
@@ -952,64 +822,28 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadReduceAll(const Operator *op,
     param.keep_dims = attr_map["keep_dims"].AsBool();
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reduce(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Reduce>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadReverseV2(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadElementwiseBinary(
+    const Operator *op, ir::Graph &subg,
+    ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Reverse(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPad(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pad(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-template <ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseBinary(const Operator *op,
-                                                                     ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::ElementwiseBinary::Param param;
   param.op_type = op_type;
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::ElementwiseBinary(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ElementwiseBinary>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseUnary(
-    const Operator *op, ir::Graph &subg, ir::operation::ElementwiseUnary::Type op_type)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadElementwiseUnary(const Operator *op, ir::Graph &subg,
+                                                    ir::operation::ElementwiseUnary::Type op_type)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::ElementwiseUnary::Param param;
   param.op_type = op_type;
 
+  const auto eu = loadOperationTo<ir::operation::ElementwiseUnary>(op, subg, param);
   if (op_type == ir::operation::ElementwiseUnary::Type::CAST)
   {
     auto qasymm8ToUint8 = [](ir::Operand &operand) {
@@ -1018,61 +852,24 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadElementwiseUnary(
         operand.type(ir::DataType::UINT8);
       }
     };
-    qasymm8ToUint8(subg.operands().at(inputs.at(ir::operation::ElementwiseUnary::Input::INPUT)));
-    qasymm8ToUint8(subg.operands().at(outputs.at(0)));
+    qasymm8ToUint8(
+        subg.operands().at(eu->getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)));
+    qasymm8ToUint8(subg.operands().at(eu->getOutputs().at(0)));
   }
-
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::ElementwiseUnary(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadExpandDims(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ExpandDims(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadGather(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
   ir::operation::Gather::Param param;
   param.axis = op->builtin_options_as_GatherOptions()->axis();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Gather(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Gather>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToBatchND(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::SpaceToBatchND{inputs, outputs}};
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
   ir::operation::BatchMatMul::Param param;
 
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
@@ -1105,89 +902,21 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchMatMul(const Operator *o
           " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
   }
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchMatMul{inputs, outputs, param}};
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::BatchMatMul>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBatchToSpaceND(const Operator *op,
-                                                                  ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::BatchToSpaceND{inputs, outputs}};
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadMatrixBandPart(const Operator *op,
-                                                                  ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::MatrixBandPart(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadBroadcastTo(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::BroadcastTo(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
   ir::operation::SpaceToDepth::Param param;
-
   const auto *options = op->builtin_options_as_SpaceToDepthOptions();
-
   param.block_size = options->block_size();
 
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::SpaceToDepth(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::SpaceToDepth>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStatelessRandomUniform(const Operator *op,
-                                                                          ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::StatelessRandomUniform(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRank(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Rank(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1237,7 +966,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         loadReduceAll(op, subg);
         break;
       case BuiltinOP::MatrixBandPart:
-        loadMatrixBandPart(op, subg);
+        loadOperationTo<ir::operation::MatrixBandPart>(op, subg);
         break;
       case BuiltinOP::BatchMatMul:
         loadBatchMatMul(op, subg);
@@ -1246,13 +975,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
         loadEinsum(op, subg);
         break;
       case BuiltinOP::BroadcastTo:
-        loadBroadcastTo(op, subg);
+        loadOperationTo<ir::operation::BroadcastTo>(op, subg);
         break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
         break;
       case BuiltinOP::StatelessRandomUniform:
-        loadStatelessRandomUniform(op, subg);
+        loadOperationTo<ir::operation::StatelessRandomUniform>(op, subg);
         break;
       case BuiltinOP::Erf:
         loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ERF);
@@ -1285,15 +1014,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadCustom(const Operator *op, ir
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSqueeze(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::Squeeze::Param param{};
+  ir::operation::Squeeze::Param param;
   const auto *options = op->builtin_options_as_SqueezeOptions();
   const auto *dims = options->squeeze_dims();
   if (dims)
@@ -1305,24 +1029,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSqueeze(const Operator *op, i
       param.dims[i] = dims->Get(i);
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Squeeze(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Squeeze>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPrelu(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::PReLU(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSplit(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1336,7 +1047,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
   if (!subg.operands().at(axis).isConstant())
     throw std::runtime_error("Split: non-constant 'axis' is not supported.");
 
-  ir::operation::Split::Param param{};
+  ir::operation::Split::Param param;
   param.axis = subg.operands().at(axis).template asScalar<int>();
   const auto *options = op->builtin_options_as_SplitOptions();
   param.num_splits = options->num_splits();
@@ -1345,81 +1056,43 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadSplit(const Operator *op, ir:
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSplitV(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSplitV(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  ir::operation::SplitV::Param param{};
-
+  ir::operation::SplitV::Param param;
   const auto *options = op->builtin_options_as_SplitVOptions();
   param.num_splits = options->num_splits();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::SplitV(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::SplitV>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadSlice(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadStridedSlice(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::Slice{inputs, outputs}};
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadStridedSlice(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::StridedSlice::Param param;
-
   const auto *options = op->builtin_options_as_StridedSliceOptions();
   param.begin_mask = options->begin_mask();
   param.end_mask = options->end_mask();
   param.shrink_axis_mask = options->shrink_axis_mask();
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::StridedSlice{inputs, outputs, param}};
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::StridedSlice>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadUnpack(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadUnpack(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Unpack::Param param;
   const auto *options = op->builtin_options_as_UnpackOptions();
   param.num = options->num();
   param.axis = options->axis();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Unpack(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Unpack>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::Comparison::Param param;
-
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
 
   switch (builtin_op)
@@ -1447,24 +1120,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadComparison(const Operator *op
           std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
   }
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Comparison(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Comparison>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadEinsum(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
   ir::operation::Einsum::Param param;
-
-  if (inputs.size() != 2)
-  {
-    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
-  }
-
   if (op->custom_options() == nullptr)
   {
     throw std::runtime_error{"Einsum: empty equation"};
@@ -1478,24 +1140,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadEinsum(const Operator *op, ir
     param.equation = attr_map["equation"].ToString();
   }
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::Einsum{inputs, outputs, param}};
-  subg.addOperation(std::move(new_op));
-}
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator *op,
-                                                                  ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  ir::operation::FusedBatchNorm::Param param;
-
-  if (inputs.size() != 5)
+  const auto es = loadOperationTo<ir::operation::Einsum>(op, subg, param);
+  if (es->getInputs().size() != 2)
   {
-    throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
   }
-
+}
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::FusedBatchNorm::Param param;
   if (op->custom_options() == nullptr)
   {
     throw std::runtime_error{"FusedBatchNorm: empty option"};
@@ -1511,50 +1165,30 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadFusedBatchNorm(const Operator
     param.data_format = attr_map["data_format"].ToString();
   }
 
-  std::unique_ptr<ir::Operation> new_op{new ir::operation::FusedBatchNorm{inputs, outputs, param}};
-  subg.addOperation(std::move(new_op));
+  const auto fbn = loadOperationTo<ir::operation::FusedBatchNorm>(op, subg, param);
+
+  if (fbn->getInputs().size() != 5)
+  {
+    throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+  }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOneHot(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOneHot(const Operator *op, ir::Graph &subg)
 {
   if (op->inputs()->size() != 4 || op->outputs()->size() != 1)
     throw std::runtime_error("OneHot Op has wrong number of input or output tensors.");
 
-  // Set input and output tensors
-  ir::OperandIndexSequence inputs, outputs;
-  loadOperationIO(op, inputs, outputs);
-
   // Set parameter
-  const auto axis = op->builtin_options_as_OneHotOptions()->axis();
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::OneHot(inputs, outputs, {axis}));
-  subg.addOperation(std::move(new_op));
+  ir::operation::OneHot::Param param;
+  param.axis = op->builtin_options_as_OneHotOptions()->axis();
+
+  loadOperationTo<ir::operation::OneHot>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadShape(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  // ir::operation::Shape::Param param;
-  // const auto *options = op->builtin_options_as_ShapeOptions();
-  // param.out_type = tensorTypeToDataType(options->out_type());
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Shape(inputs, outputs /*, param*/));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::If::Param param;
   const auto *options = op->builtin_options_as_IfOptions();
   const uint32_t then_index = options->then_subgraph_index();
@@ -1562,18 +1196,12 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadIf(const Operator *op, ir::Gr
   param.then_subg_index = ir::SubgraphIndex{then_index};
   param.else_subg_index = ir::SubgraphIndex{else_index};
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::If(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::If>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::While::Param param;
   const auto *options = op->builtin_options_as_WhileOptions();
   const uint32_t cond_index = options->cond_subgraph_index();
@@ -1581,12 +1209,11 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadWhile(const Operator *op, ir:
   param.cond_subg_index = ir::SubgraphIndex{cond_index};
   param.body_subg_index = ir::SubgraphIndex{body_index};
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::While(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::While>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1596,6 +1223,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
   auto inputOperand = subg.operands().at(inputs.at(0));
   auto axisOperand = subg.operands().at(inputs.at(1));
 
+  // FIXME Handle ArgMaxOptions.
   if (!axisOperand.isConstant())
     throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
   if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
@@ -1609,41 +1237,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadArgMax(const Operator *op, ir
   {
     case TensorType::TensorType_INT32:
     case TensorType::TensorType_INT64:
+      param.output_type = tensorTypeToDataType(output_type);
       break;
     default:
       throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
   }
-  param.output_type = tensorTypeToDataType(output_type);
   std::unique_ptr<ir::Operation> new_op(new ir::operation::ArgMax(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadPow(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Pow(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadRange(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Range(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTile(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -1652,6 +1256,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
 
   auto multiples = inputs.at(ir::operation::Tile::MULTIPLES);
 
+  // FIXME Handle TileOptions
   if (!subg.operands().at(multiples).isConstant())
     throw std::runtime_error("Tile: non-constant 'multiples' is not supported.");
 
@@ -1659,47 +1264,27 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadTile(const Operator *op, ir::
   subg.addOperation(std::move(new_op));
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
   ir::operation::LogSoftmax::Param param;
-
   // In tflite, beta is fixed to 1.0 and axis is fixed to -1.
   param.beta = 1.0f;
   param.axis = -1;
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::LogSoftmax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::LogSoftmax>(op, subg, param);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadL2Normalization(const Operator *op,
-                                                                   ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::L2Normalization(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadLeakyRelu(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadLeakyRelu(const Operator *op, ir::Graph &subg)
 {
   float alpha = op->builtin_options_as_LeakyReluOptions()->alpha();
   loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LEAKY_RELU, alpha,
                             1.f);
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op, ir::Graph &subg)
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg)
 {
   const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
 
@@ -1733,16 +1318,16 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadFC(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ADD:
-      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::ADD>(op, subg);
+      loadBinaryArithmetic(op, subg, ir::operation::BinaryArithmetic::ArithmeticType::ADD);
       return;
     case BuiltinOperator::BuiltinOperator_SUB:
-      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::SUB>(op, subg);
+      loadBinaryArithmetic(op, subg, ir::operation::BinaryArithmetic::ArithmeticType::SUB);
       return;
     case BuiltinOperator::BuiltinOperator_MUL:
-      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::MUL>(op, subg);
+      loadBinaryArithmetic(op, subg, ir::operation::BinaryArithmetic::ArithmeticType::MUL);
       return;
     case BuiltinOperator::BuiltinOperator_DIV:
-      loadBinaryArithmetic<ir::operation::BinaryArithmetic::ArithmeticType::DIV>(op, subg);
+      loadBinaryArithmetic(op, subg, ir::operation::BinaryArithmetic::ArithmeticType::DIV);
       return;
     case BuiltinOperator::BuiltinOperator_PACK:
       loadPack(op, subg);
@@ -1769,17 +1354,14 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::RSQRT);
       return;
     case BuiltinOperator::BuiltinOperator_SELECT:
-      loadSelect(op, subg);
-      return;
     case BuiltinOperator::BuiltinOperator_SELECT_V2:
-      // Use same loader with BuiltinOperator_SELECT
-      loadSelect(op, subg);
+      loadOperationTo<ir::operation::Select>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SQRT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SQRT);
       return;
     case BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:
-      loadSquaredDifference(op, subg);
+      loadOperationTo<ir::operation::SquaredDifference>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_TANH:
       loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::TANH, 1.f,
@@ -1789,20 +1371,20 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadTranspose(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
-      loadReduce<ir::operation::Reduce::ReduceType::MEAN>(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MEAN);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_ANY:
-      loadReduce<ir::operation::Reduce::ReduceType::ANY>(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::ANY);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
-      loadReduce<ir::operation::Reduce::ReduceType::MAX>(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::MAX);
       return;
     case BuiltinOperator::BuiltinOperator_REVERSE_V2:
-      loadReverseV2(op, subg);
+      loadOperationTo<ir::operation::Reverse>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PAD:
     case BuiltinOperator::BuiltinOperator_PADV2:
-      loadPad(op, subg);
+      loadOperationTo<ir::operation::Pad>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGISTIC:
       loadElementwiseActivation(op, subg, ir::operation::ElementwiseActivation::Type::LOGISTIC);
@@ -1811,19 +1393,19 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::EXP);
       return;
     case BuiltinOperator::BuiltinOperator_EXPAND_DIMS:
-      loadExpandDims(op, subg);
+      loadOperationTo<ir::operation::ExpandDims>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_GATHER:
       loadGather(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:
-      loadSpaceToBatchND(op, subg);
+      loadOperationTo<ir::operation::SpaceToBatchND>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_BATCH_TO_SPACE_ND:
-      loadBatchToSpaceND(op, subg);
+      loadOperationTo<ir::operation::BatchToSpaceND>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUM:
-      loadReduce<ir::operation::Reduce::ReduceType::SUM>(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::SUM);
       return;
     case BuiltinOperator::BuiltinOperator_CUSTOM:
       loadCustom(op, subg);
@@ -1832,7 +1414,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSqueeze(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_PRELU:
-      loadPrelu(op, subg);
+      loadOperationTo<ir::operation::PReLU>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SPLIT:
       loadSplit(op, subg);
@@ -1841,7 +1423,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSplitV(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SLICE:
-      loadSlice(op, subg);
+      loadOperationTo<ir::operation::Slice>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_STRIDED_SLICE:
       loadStridedSlice(op, subg);
@@ -1850,10 +1432,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadUnpack(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
-      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN>(op, subg);
+      loadElementwiseBinary(op, subg, ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
       return;
     case BuiltinOperator::BuiltinOperator_MAXIMUM:
-      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX>(op, subg);
+      loadElementwiseBinary(op, subg, ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX);
       return;
     case BuiltinOperator::BuiltinOperator_CAST:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::CAST);
@@ -1879,10 +1461,10 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::SIN);
       return;
     case BuiltinOperator::BuiltinOperator_SHAPE:
-      loadShape(op, subg);
+      loadOperationTo<ir::operation::Shape>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_PROD:
-      loadReduce<ir::operation::Reduce::ReduceType::PROD>(op, subg);
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::PROD);
       return;
     case BuiltinOperator::BuiltinOperator_IF:
       loadIf(op, subg);
@@ -1903,17 +1485,17 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ROUND);
       return;
     case BuiltinOperator::BuiltinOperator_POW:
-      loadPow(op, subg);
+      loadOperationTo<ir::operation::Pow>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_NOT:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::LOGICAL_NOT);
       return;
     case BuiltinOperator::BuiltinOperator_LOGICAL_OR:
-      loadElementwiseBinary<ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR>(
-          op, subg);
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
       return;
     case BuiltinOperator::BuiltinOperator_FILL:
-      loadFill(op, subg);
+      loadOperationTo<ir::operation::Fill>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_ZEROS_LIKE:
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ZEROS_LIKE);
@@ -1922,7 +1504,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadTile(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RANGE:
-      loadRange(op, subg);
+      loadOperationTo<ir::operation::Range>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
       loadBatchMatMul(op, subg);
@@ -1937,13 +1519,13 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
       loadSpaceToDepth(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:
-      loadL2Normalization(op, subg);
+      loadOperationTo<ir::operation::L2Normalization>(op, subg);
       break;
     case BuiltinOperator::BuiltinOperator_LEAKY_RELU:
       loadLeakyRelu(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RANK:
-      loadRank(op, subg);
+      loadOperationTo<ir::operation::Rank>(op, subg);
       return;
     default:
       throw std::runtime_error(
@@ -1951,8 +1533,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadOperation(const Operator *op,
   }
 }
 
-template <typename LoaderDomain, typename SpecificLoader>
-void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
+template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
   _model = LoaderDomain::GetModel(_base);
@@ -1967,8 +1548,7 @@ void BaseLoader<LoaderDomain, SpecificLoader>::loadModel()
   auto subgraphs = std::make_unique<ir::Subgraphs>();
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
-    auto subg =
-        static_cast<SpecificLoader *>(this)->loadSubgraph((*_model->subgraphs())[subgraph_index]);
+    auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);
     subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
   _subgraphs = std::move(subgraphs);
