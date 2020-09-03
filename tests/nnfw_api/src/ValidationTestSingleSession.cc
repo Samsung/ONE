@@ -21,12 +21,16 @@ TEST_F(ValidationTestSingleSession, create_001)
 {
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
   NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestSingleSession, query_info_u32)
 {
   uint32_t val = 0;
   NNFW_ENSURE_SUCCESS(nnfw_query_info_u32(nullptr, NNFW_INFO_ID_VERSION, &val));
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestSingleSession, neg_create_001)

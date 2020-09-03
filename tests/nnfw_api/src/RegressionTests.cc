@@ -39,6 +39,8 @@ TEST_F(RegressionTest, github_1535)
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session1));
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session2));
+
+  SUCCEED();
 }
 
 TEST_F(RegressionTest, neg_github_3826)
