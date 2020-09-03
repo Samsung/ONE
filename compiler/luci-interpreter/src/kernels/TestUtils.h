@@ -101,11 +101,11 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
     return {1.0f, 0};
   }
   int32_t zero_point = 0;
-  double scale = 0;
+  float scale = 0;
   const T qmin = std::numeric_limits<T>::lowest();
   const T qmax = std::numeric_limits<T>::max();
-  const double qmin_double = qmin;
-  const double qmax_double = qmax;
+  const float qmin_double = qmin;
+  const float qmax_double = qmax;
   // 0 should always be a representable value. Let's assume that the initial
   // min,max range contains 0.
   assert(f_max >= 0);
@@ -131,16 +131,16 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   // The arithmetic error on the zero point computed from either pair
   // will be roughly machine_epsilon * (sum of absolute values of terms)
   // so we want to use the variant that adds the smaller terms.
-  const double zero_point_from_min = qmin_double - f_min / scale;
-  const double zero_point_from_max = qmax_double - f_max / scale;
+  const float zero_point_from_min = qmin_double - f_min / scale;
+  const float zero_point_from_max = qmax_double - f_max / scale;
 
-  const double zero_point_from_min_error = std::abs(qmin_double) + std::abs(f_min / scale);
+  const float zero_point_from_min_error = std::abs(qmin_double) + std::abs(f_min / scale);
 
-  const double zero_point_from_max_error = std::abs(qmax_double) + std::abs(f_max / scale);
+  const float zero_point_from_max_error = std::abs(qmax_double) + std::abs(f_max / scale);
 
-  const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
-                                       ? zero_point_from_min
-                                       : zero_point_from_max;
+  const float zero_point_double = zero_point_from_min_error < zero_point_from_max_error
+                                      ? zero_point_from_min
+                                      : zero_point_from_max;
 
   // Now we need to nudge the zero point to be an integer
   // (our zero points are integer, and this is motivated by the requirement
@@ -168,7 +168,7 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   assert(qmin <= nudged_zero_point);
   zero_point = nudged_zero_point;
   // finally, return the values
-  return {static_cast<float>(scale), zero_point};
+  return {scale, zero_point};
 }
 
 inline float getTolerance(float min, float max, int quantize_steps)
