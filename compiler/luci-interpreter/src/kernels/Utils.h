@@ -95,7 +95,7 @@ void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quan
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
 
 inline double getQuantizedConvolutionMultipler(float input_scale, float filter_scale,
-                                             float output_scale)
+                                               float output_scale)
 {
   const double input_product_scale = static_cast<double>(input_scale * filter_scale);
   LUCI_INTERPRETER_CHECK(input_product_scale >= 0);
