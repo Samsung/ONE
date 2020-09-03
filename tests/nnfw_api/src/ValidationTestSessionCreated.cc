@@ -29,6 +29,8 @@ TEST_F(ValidationTestSessionCreated, close_and_create_again)
 {
   NNFW_ENSURE_SUCCESS(nnfw_close_session(_session));
   NNFW_ENSURE_SUCCESS(nnfw_create_session(&_session));
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestSessionCreated, neg_load_session_1)

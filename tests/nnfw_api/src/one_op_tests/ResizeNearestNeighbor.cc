@@ -33,4 +33,6 @@ TEST_F(GenModelTest, OneOp_ResizeNearestNeighbor)
   _context->addTestCase({{{3, 4, 6, 10, 9, 10, 12, 16}},
                          {{3, 4, 3, 4, 6, 10, 3, 4, 3, 4, 6, 10, 9, 10, 9, 10, 12, 16}}});
   _context->setBackends({"acl_cl"});
+
+  SUCCEED();
 }

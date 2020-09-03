@@ -28,6 +28,8 @@ TEST_F(GenModelTest, OneOp_Cos)
   const float pi = 3.141592653589793;
   _context->addTestCase({{{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}});
   _context->setBackends({"cpu"});
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_Cos_TwoOperand)
@@ -43,4 +45,6 @@ TEST_F(GenModelTest, neg_OneOp_Cos_TwoOperand)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
   _context->setCompileFail();
+
+  SUCCEED();
 }

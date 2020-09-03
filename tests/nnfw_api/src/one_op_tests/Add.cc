@@ -33,6 +33,8 @@ TEST_F(GenModelTest, OneOp_Add_VarToConst)
   _context->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
   _context->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, OneOp_Add_VarToVar)
@@ -61,6 +63,8 @@ TEST_F(GenModelTest, neg_OneOp_Add_InvalidShape)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->setCompileFail();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_Add_InvalidShapeConst)
@@ -77,6 +81,8 @@ TEST_F(GenModelTest, neg_OneOp_Add_InvalidShapeConst)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->setCompileFail();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_Add_OneOperand)
@@ -90,4 +96,6 @@ TEST_F(GenModelTest, neg_OneOp_Add_OneOperand)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->setCompileFail();
+
+  SUCCEED();
 }

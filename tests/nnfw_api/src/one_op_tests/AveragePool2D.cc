@@ -28,6 +28,8 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_AvgPool2D)
@@ -42,4 +44,6 @@ TEST_F(GenModelTest, neg_OneOp_AvgPool2D)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->setCompileFail();
+
+  SUCCEED();
 }
