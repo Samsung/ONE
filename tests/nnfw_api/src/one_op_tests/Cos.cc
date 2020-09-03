@@ -29,3 +29,18 @@ TEST_F(GenModelTest, OneOp_Cos)
   _context->addTestCase({{{0, pi / 2, pi, 7}}, {{1, 0, -1, 0.75390225434}}});
   _context->setBackends({"cpu"});
 }
+
+TEST_F(GenModelTest, neg_OneOp_Cos_TwoOperand)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorCos({{lhs, rhs}, {out1, out2}});
+  cgen.setInputsAndOutputs({lhs, rhs}, {out1, out2});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->setCompileFail();
+}
