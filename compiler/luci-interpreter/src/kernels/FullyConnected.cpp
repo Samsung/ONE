@@ -109,8 +109,7 @@ void FullyConnected::evalQuantized() const
   int32_t output_activation_min;
   int32_t output_activation_max;
   int32_t output_multiplier;
-  getQuantizedConvolutionMultipler(input()->scale(), weights()->scale(), output()->scale(),
-                                   &real_multiplier);
+  real_multiplier = getQuantizedConvolutionMultipler(input()->scale(), weights()->scale(), output()->scale());
   quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
   calculateActivationRangeQuantized(params().activation, output(), &output_activation_min,
                                     &output_activation_max);
