@@ -183,7 +183,7 @@ RELEASE_URL=$(curl -s --request GET --header "Authorization: token ${USER_TOKEN}
 https://${HOST_NAME}/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG_NAME} | \
 jq -r '.url')
 
-if [ $RELEASE_URL != null ]; then
+if [ "$RELEASE_URL" != null ]; then
   echo "[ERROR] The tag name you specified already exists."
   exit 2
 fi
