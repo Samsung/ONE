@@ -66,6 +66,13 @@ public:
   const std::vector<std::string> &backends() const { return _backends; }
 
   /**
+   * @brief Return test is defined to fail on compile
+   *
+   * @return bool test is defined to fail on compile
+   */
+  const bool fail_compile() const { return _fail_compile; }
+
+  /**
    * @brief Add a test case
    *
    * @param tc the test case to be added
@@ -96,10 +103,16 @@ public:
     }
   }
 
+  /**
+   * @brief Set the Test Fail
+   */
+  void setCompileFail() { _fail_compile = true; }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
+  bool _fail_compile{false};
 };
 
 /**
@@ -130,6 +143,14 @@ protected:
       auto &cbuf = _context->cbuf();
       NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+
+      if (_context->fail_compile())
+      {
+        ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
+
+        NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
+        continue;
+      }
       NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
 
       // In/Out buffer settings

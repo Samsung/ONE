@@ -28,4 +28,22 @@ TEST_F(GenModelTest, OneOp_AvgPool2D)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase({{{1, 3, 2, 4}}, {{2.5}}});
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_AvgPool2D)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAveragePool2D({{in}, {out}}, circle::Padding_SAME, 2, 2, 2, 2,
+                                circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setCompileFail();
+
+  SUCCEED();
 }
