@@ -28,16 +28,29 @@ namespace ops
 {
 
 ResizeBilinearLayer::ResizeBilinearLayer()
-    : _input(nullptr), _output(nullptr), _output_height(0), _output_width(0), _align_corners(false),
-      _half_pixel_centers(false)
+    : _input(nullptr), _output(nullptr), _size(nullptr), _output_height(0), _output_width(0),
+      _align_corners(false), _half_pixel_centers(false)
 {
   // DO NOTHING
+}
+
+void ResizeBilinearLayer::configure(const IPortableTensor *input, IPortableTensor *output,
+                                    const IPortableTensor *size, bool align_corners,
+                                    bool half_pixel_centers)
+{
+  assert(!size->is_constant());
+  _input = input;
+  _output = output;
+  _size = size;
+  _align_corners = align_corners;
+  _half_pixel_centers = half_pixel_centers;
 }
 
 void ResizeBilinearLayer::configure(const IPortableTensor *input, IPortableTensor *output,
                                     int32_t output_height, int32_t output_width, bool align_corners,
                                     bool half_pixel_centers)
 {
+  assert(_size == nullptr);
   _input = input;
   _output = output;
   _output_height = output_height;
@@ -49,10 +62,19 @@ void ResizeBilinearLayer::configure(const IPortableTensor *input, IPortableTenso
 void ResizeBilinearLayer::run()
 {
   nnfw::cker::ResizeBilinearParams params;
+  if (_size == nullptr)
+  {
+    params.output_height = _output_height;
+    params.output_width = _output_width;
+  }
+  else
+  {
+    const auto size_buf = reinterpret_cast<const int32_t *>(_size->buffer());
+    params.output_height = size_buf[0];
+    params.output_width = size_buf[1];
+  }
   params.align_corners = _align_corners;
   params.half_pixel_centers = _half_pixel_centers;
-  params.output_height = _output_height;
-  params.output_width = _output_width;
 
   switch (_input->data_type())
   {

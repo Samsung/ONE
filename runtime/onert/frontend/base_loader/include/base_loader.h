@@ -723,27 +723,11 @@ void BaseLoader<LoaderDomain>::loadElementwiseActivation(
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto size = inputs.at(1);
-
-  // FIXME Handle ResizeBilinearOptions.
-  if (!subg.operands().at(size).isConstant())
-    throw std::runtime_error("ResizeBilinear: non-constant 'size' is not supported.");
-
-  std::vector<std::int32_t> size_v = subg.operands().at(size).template asVector<std::int32_t>();
-
   ir::operation::ResizeBilinear::Param param;
-  param.height_out = size_v[0];
-  param.width_out = size_v[1];
   param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
   param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ResizeBilinear({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ResizeBilinear>(op, subg, param);
 }
 
 template <typename LoaderDomain>
