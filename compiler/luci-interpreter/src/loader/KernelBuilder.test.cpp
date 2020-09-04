@@ -35,6 +35,7 @@
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
 #include <kernels/Pad.h>
+#include <kernels/Prelu.h>
 #include <kernels/Reshape.h>
 #include <kernels/Reverse.h>
 #include <kernels/Rsqrt.h>
@@ -495,6 +496,23 @@ TEST_F(KernelBuilderTest, Pad)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->paddings(), paddings);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Prelu)
+{
+  auto *input = createInputNode();
+  auto *alpha = createInputNode();
+
+  auto *op = createNode<luci::CirclePRelu>();
+  op->input(input);
+  op->alpha(alpha);
+
+  auto kernel = buildKernel<kernels::Prelu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->alpha(), alpha);
   checkTensor(kernel->output(), op);
 }
 
