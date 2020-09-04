@@ -50,6 +50,26 @@ void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *t
   target_qparam->quantized_dimension = concat_qparam->quantized_dimension;
 }
 
+void quantize_const(luci::CircleConst *const_node, float scaling_factor, float zerop)
+{
+  uint32_t size = const_node->size<loco::DataType::FLOAT32>();
+
+  const float scaling_factor_inv = 1.0 / scaling_factor;
+  std::vector<int32_t> quantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    auto data = const_node->at<loco::DataType::FLOAT32>(i);
+    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
+  }
+
+  const_node->dtype(loco::DataType::U8);      // change the type of tensor
+  const_node->size<loco::DataType::U8>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    const_node->at<loco::DataType::U8>(i) = std::min(255, std::max(0, quantized_values[i]));
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -89,28 +109,12 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
       if (const_node->dtype() != loco::DataType::FLOAT32)
         throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
 
-      uint32_t size = const_node->size<loco::DataType::FLOAT32>();
-
       const auto concat_qparam = concat->quantparam();
       assert(concat_qparam->scale.size() == 1);
-
       const auto scaling_factor = concat_qparam->scale[0];
       const auto zerop = concat_qparam->zerop[0];
 
-      const float scaling_factor_inv = 1.0 / scaling_factor;
-      std::vector<int32_t> quantized_values(size);
-      for (uint32_t i = 0; i < size; ++i)
-      {
-        auto data = const_node->at<loco::DataType::FLOAT32>(i);
-        quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
-      }
-
-      const_node->dtype(loco::DataType::U8);      // change the type of tensor
-      const_node->size<loco::DataType::U8>(size); // resize tensor
-      for (uint32_t i = 0; i < size; ++i)
-      {
-        const_node->at<loco::DataType::U8>(i) = std::min(255, std::max(0, quantized_values[i]));
-      }
+      quantize_const(const_node, scaling_factor, zerop);
     }
     else
     {
