@@ -147,16 +147,27 @@ void StaticShapeInferer::visit(const ir::operation::ArgMax &op)
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
 
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto &axis = _operands.at(axis_idx);
+
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
-  const auto rank = input.info().shape().rank();
-  const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
-  assert(0 <= axis && axis < rank);
+  if (!axis.isConstant())
+  {
+    output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
+  const auto rank = input.info().shape().rank();
+  auto axis_value = axis.asScalar<int32_t>();
+  axis_value = axis_value < 0 ? axis_value + rank : axis_value;
+  assert(0 <= axis_value && axis_value < rank);
 
   // re-sizing output shape
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input.info().shape(), axis, rank);
+  ir::Shape new_shape = shape_inference::inferArgMaxShape(input.info().shape(), axis_value, rank);
   output.info().shape(new_shape);
 }
 

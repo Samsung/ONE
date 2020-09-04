@@ -75,6 +75,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
 
@@ -83,7 +84,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto frontend_layout = _current_op_seq_layout;
   auto backend_layout = ifm_tensor->layout();
 
-  int axis_value = node.param().axis;
+  int axis_value = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis_value < 0)
   {
     axis_value += ifm_rank;

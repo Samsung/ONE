@@ -1406,7 +1406,7 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_ABS_EX
   _map[ANEURALNETWORKS_ABS_EX] = _map[ANEURALNETWORKS_ABS];
 
-  _map[ANEURALNETWORKS_ARGMAX] = [](const OperationFactory::Param &init_param, Operands &operands) {
+  _map[ANEURALNETWORKS_ARGMAX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
 
     OperandIndexSequence outputs{init_param.outputs[0]};
@@ -1415,10 +1415,9 @@ OperationFactory::OperationFactory()
     //
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ArgMax::Param param;
-    param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
     // NNAPI ARGMAX output type is always int32
     param.output_type = DataType::INT32;
 

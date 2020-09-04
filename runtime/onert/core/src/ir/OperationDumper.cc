@@ -72,7 +72,7 @@ OperationDumper::OperationDumper(const std::string &start_msg)
   VERBOSE(LIR) << start_msg << std::endl;
 }
 
-void OperationDumper::visit(const ArgMax &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ArgMax &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const BatchToSpaceND &node)
 {

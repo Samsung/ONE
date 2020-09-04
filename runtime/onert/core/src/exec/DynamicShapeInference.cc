@@ -104,20 +104,23 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
-  auto input_shape = input->getShape();
 
-  if (!input->is_dynamic())
-    return;
-
-  const auto rank = input_shape.rank();
-  const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
-
-  assert(0 <= axis && axis < rank);
+  const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
+  const auto &axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis, rank);
+  if (!input->is_dynamic())
+    return;
+
+  auto input_shape = input->getShape();
+  auto axis_value = *reinterpret_cast<const int32_t *>(axis->buffer());
+  const auto rank = input_shape.rank();
+  axis_value = axis < 0 ? axis_value + rank : axis_value;
+  assert(0 <= axis_value && axis_value < rank);
+
+  ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis_value, rank);
 
   dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
