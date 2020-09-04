@@ -175,7 +175,9 @@ void WhileLayer::run()
   permute_body_output_to_body_input->prepare();
   permute_body_output_to_op_output->prepare();
 
+  VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
   cond_exec->execute(_input_tensors, permute_op_input_to_cond_input);
+  VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
 
   assert(cond_exec->getOutputTensors().size() == 1);
   auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
