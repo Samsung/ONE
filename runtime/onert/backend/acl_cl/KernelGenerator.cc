@@ -1289,6 +1289,7 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
 void KernelGenerator::visit(const ir::operation::Split &node)
 {
   const auto ifm_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
 
@@ -1304,7 +1305,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
-  auto axis = node.param().axis;
+  auto axis = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis < 0)
     axis += ifm_rank;
   axis = acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value();

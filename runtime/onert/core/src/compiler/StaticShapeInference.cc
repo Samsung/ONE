@@ -803,21 +803,35 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
 
 void StaticShapeInferer::visit(const ir::operation::Split &op)
 {
-  const auto input_idx{op.getInputs().at(0)};
+  const auto input_idx{op.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
 
-  const auto axis = op.param().axis;
+  const auto axis_idx{op.getInputs().at(ir::operation::Split::Input::AXIS)};
+  const auto &axis = _operands.at(axis_idx);
+
+  auto outputs = op.getOutputs();
+  if (input.info().isDynamic() || !axis.isConstant())
+  {
+    for (auto output_idx : outputs)
+    {
+      ir::Operand &output = _operands.at(output_idx);
+      output.info().setDynamic();
+    }
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
   const auto num_splits = op.param().num_splits;
 
   const auto rank = input.info().shape().rank();
-  auto axis_resolved = axis < 0 ? axis + rank : axis;
+  auto axis_value = axis.asScalar<int32_t>();
+  axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
-  assert(0 <= axis_resolved && axis_resolved < rank);
+  assert(0 <= axis_value && axis_value < rank);
 
   ir::Shape new_shape =
-      shape_inference::inferSplitShape(input.info().shape(), axis_resolved, num_splits);
-  auto output_tensors = op.getOutputs();
-  for (auto output_idx : output_tensors)
+      shape_inference::inferSplitShape(input.info().shape(), axis_value, num_splits);
+  for (auto output_idx : outputs)
   {
     ir::Operand &output = _operands.at(output_idx);
     output.info().shape(new_shape);

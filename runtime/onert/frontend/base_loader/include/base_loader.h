@@ -1035,25 +1035,11 @@ void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadSplit(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  // Notice : input order is strange for tflite split
-  auto input = inputs.at(1);
-  auto axis = inputs.at(0);
-
-  // FIXME Handle SplitOptions.
-  if (!subg.operands().at(axis).isConstant())
-    throw std::runtime_error("Split: non-constant 'axis' is not supported.");
-
   ir::operation::Split::Param param;
-  param.axis = subg.operands().at(axis).template asScalar<int>();
   const auto *options = op->builtin_options_as_SplitOptions();
   param.num_splits = options->num_splits();
 
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Split({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::Split>(op, subg, param);
 }
 
 template <typename LoaderDomain>

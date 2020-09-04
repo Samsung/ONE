@@ -1517,7 +1517,7 @@ OperationFactory::OperationFactory()
     assert(init_param.input_count == 3);
     assert(init_param.output_count >= 1); // At least one output tensor and axis
 
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
     OperandIndexSequence outputs;
     for (uint32_t n = 0; n < init_param.output_count; ++n)
     {
@@ -1525,7 +1525,6 @@ OperationFactory::OperationFactory()
     }
 
     operation::Split::Param param;
-    param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
     param.num_splits = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<std::int32_t>();
 
     return new operation::Split{inputs, outputs, param};

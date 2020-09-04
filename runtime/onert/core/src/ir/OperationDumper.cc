@@ -336,7 +336,7 @@ void OperationDumper::visit(const SpaceToBatchND &node)
 
 void OperationDumper::visit(const SpaceToDepth &node) { dumpUnaryInputOp(node); }
 
-void OperationDumper::visit(const Split &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Split &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const SquaredDifference &node) { dumpBinaryInputOp(node); }
 
