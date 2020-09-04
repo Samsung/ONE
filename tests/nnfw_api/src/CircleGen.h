@@ -108,6 +108,7 @@ public:
   uint32_t addOperatorRank(const OperatorParams &params);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
+  uint32_t addOperatorIf(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
 
   // NOTE Please add addOperator functions ABOVE this lie
   // ===== Add Operator methods end =====
