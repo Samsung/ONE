@@ -49,6 +49,8 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_Add_InvalidShape)
