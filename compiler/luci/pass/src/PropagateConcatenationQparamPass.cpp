@@ -22,6 +22,8 @@
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/Log.h>
 
+#include <math.h>
+
 namespace
 {
 
@@ -66,15 +68,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
   const auto num_inputs = concat->numValues();
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    auto node = static_cast<luci::CircleNode *>(concat->arg(i));
-
-    // Skip if this input is not uint8-quantized
-    if (!is_uint8_quantized(node))
-      continue;
-
-    // Skip if concat and node have different quantized_dimension
-    if (node->quantparam()->quantized_dimension != concat->quantparam()->quantized_dimension)
-      continue;
+    auto node = loco::must_cast<luci::CircleNode *>(concat->arg(i));
 
     // Skip if this input is CONCAT Op
     if (node->opcode() == luci::CircleOpcode::CONCATENATION)
@@ -86,6 +80,43 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
       continue;
 
     assert(succs.find(concat) != succs.end());
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      assert(const_node->dtype() == loco::DataType::FLOAT32);
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
+
+      uint32_t size = const_node->size<loco::DataType::FLOAT32>();
+
+      const auto concat_qparam = concat->quantparam();
+      assert(concat_qparam->scale.size() == 1);
+
+      const auto scaling_factor = concat_qparam->scale[0];
+      const auto zerop = concat_qparam->zerop[0];
+
+      const float scaling_factor_inv = 1.0 / scaling_factor;
+      std::vector<int32_t> quantized_values(size);
+      for (uint32_t i = 0; i < size; ++i)
+      {
+        auto data = const_node->at<loco::DataType::FLOAT32>(i);
+        quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
+      }
+
+      const_node->dtype(loco::DataType::U8);      // change the type of tensor
+      const_node->size<loco::DataType::U8>(size); // resize tensor
+      for (uint32_t i = 0; i < size; ++i)
+      {
+        const_node->at<loco::DataType::U8>(i) = std::min(255, std::max(0, quantized_values[i]));
+      }
+    }
+    else
+    {
+      // Non-const input should be uint8-quantized
+      assert(is_uint8_quantized(node));
+    }
 
     overwrite_quantparam(concat, node);
   }
@@ -119,9 +150,8 @@ bool PropagateConcatenationQparamPass::run(loco::Graph *g)
     // Propagate qparam of concat to its inputs if
     // (1) concat is uint8-quantized
     // (2) concat has no fused activation function
-    // (3) the input is uint8-quantized
-    // (4) the input is not concatenation Op
-    // (5) the input is not produced to Ops other than concat
+    // (3) the input is not concatenation Op
+    // (4) the input is not produced to Ops other than concat
     propagate_concat_quantparam(concat);
   }
 
