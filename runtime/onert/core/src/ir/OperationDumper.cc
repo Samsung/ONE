@@ -281,6 +281,22 @@ void OperationDumper::visit(const Reshape &node)
 
 void OperationDumper::visit(const ResizeBilinear &node) { dumpUnaryInputOp(node); }
 
+void OperationDumper::visit(const ResizeNearestNeighbor &node)
+{
+  if (node.getInputs().size() == 1)
+  {
+    dumpUnaryInputOp(node);
+  }
+  else if (node.getInputs().size() == 2)
+  {
+    dumpBinaryInputOp(node);
+  }
+  else
+  {
+    VERBOSE(LIR) << "* " << node.name() << " is set wrong" << std::endl;
+  }
+}
+
 void OperationDumper::visit(const Reverse &node)
 {
   std::string axis =

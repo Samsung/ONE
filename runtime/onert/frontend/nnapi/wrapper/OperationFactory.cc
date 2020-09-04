@@ -982,6 +982,28 @@ OperationFactory::OperationFactory()
     return new operation::ResizeBilinear{inputs, outputs, param};
   };
 
+  _map[ANEURALNETWORKS_RESIZE_NEAREST_NEIGHBOR] = [](const OperationFactory::Param &init_param,
+                                                     Operands &operands) {
+    assert((init_param.input_count == 3 || init_param.input_count == 4) &&
+           init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> IFM Index
+    //  1 -> Height Index
+    //  2 -> Width Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+
+    operation::ResizeNearestNeighbor::Param param;
+    param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
+    param.width_out = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>();
+    param.align_corners = false;
+    // The layout input is not supported yet
+    return new operation::ResizeNearestNeighbor{inputs, outputs, param};
+  };
+
   _map[ANEURALNETWORKS_RELU1] = getElementwiseActivationGenerator(
       onert::ir::operation::ElementwiseActivation::Type::RELU, 1.f, -1.f);
 
