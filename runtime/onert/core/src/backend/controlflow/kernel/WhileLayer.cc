@@ -186,16 +186,22 @@ void WhileLayer::run()
   };
 
   const auto body_execute_with_op_inputs = [&]() {
+    VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
     body_exec->execute(_input_tensors, permute_op_input_to_body_input);
+    VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   const auto body_execute_with_body_outputs = [&]() {
+    VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
     body_exec->execute(body_exec->getOutputTensors(), permute_body_output_to_body_input);
+    VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   std::function<void()> body_execute = body_execute_with_op_inputs;
   const auto cond_execute = [&]() {
+    VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
     cond_exec->execute(body_exec->getOutputTensors(), permute_body_output_to_cond_input);
+    VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
   };
   auto permute_to_outputs_fn = permute_op_input_to_op_output;
 
