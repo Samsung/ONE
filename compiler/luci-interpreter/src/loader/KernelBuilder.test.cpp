@@ -31,6 +31,7 @@
 #include <kernels/LeakyRelu.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/Logistic.h>
+#include <kernels/LogSoftmax.h>
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
@@ -409,6 +410,20 @@ TEST_F(KernelBuilderTest, Logistic)
   op->x(input);
 
   auto kernel = buildKernel<kernels::Logistic>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LogSoftmax)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogSoftmax>();
+  op->logits(input);
+
+  auto kernel = buildKernel<kernels::LogSoftmax>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);

@@ -31,6 +31,7 @@
 #include "kernels/LeakyRelu.h"
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
+#include "kernels/LogSoftmax.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
@@ -347,6 +348,18 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Logistic>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->logits());
+  Tensor *output = getOutputTensor(node);
+
+  SoftmaxParams params{};
+
+  return std::make_unique<kernels::LogSoftmax>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
