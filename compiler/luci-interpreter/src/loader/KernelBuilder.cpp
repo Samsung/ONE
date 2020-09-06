@@ -357,8 +357,6 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
   const Tensor *input = getInputTensor(node->logits());
   Tensor *output = getOutputTensor(node);
 
-  SoftmaxParams params{};
-
   return std::make_unique<kernels::LogSoftmax>(input, output);
 }
 
