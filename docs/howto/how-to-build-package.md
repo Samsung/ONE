@@ -11,7 +11,7 @@ Steps of building a Package:
 1. Optionally, optimize and quantize circle
 1. Create package from circle
 
-NOTE: Examples and options of each commands shown are from the version of
+NOTE: Examples and options of each command shown below are from the version of
 writing this document. They may differ from latest version of commands.
 Please fire an issue or post a PR to correct them if anything needs update.
 
@@ -25,7 +25,7 @@ To import a model, use `one-import` with a model framework key and arguments.
 $ one-import FRAMEWORK [arguments]
 ```
 
-Execute `one-import` without any key will show possible frameworks.
+Execute `one-import` without any key will show the list of supported frameworks.
 
 Example of `one-import` command:
 ```
@@ -83,7 +83,7 @@ TBD
 
 ## Optimize circle model
 
-circle model can be optimized to run faster and make the model smaller.
+circle model can be optimized for better performance and smaller size.
 Typical optimization algorithm for this is to fuse some patterns of operators
 to one fused operator.
 
@@ -113,7 +113,7 @@ Usage: one-optimize
 
 ## Quantize circle model
 
-circle model can be quantized to run faster and make smaller, by reducing data
+Floating-point circle model can be quantized to lower-precision format (e.g., uint8 or int16) for faster inference speed and smaller model size, by reducing the number of bits that represent weights and activations.
 bits representing weight values to 8 or 16bits.
 
 This is an example to quantize circle model:
