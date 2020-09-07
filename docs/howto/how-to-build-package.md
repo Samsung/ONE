@@ -67,7 +67,7 @@ This is an example to import TensorFlow lite model:
 $ one-import tflite --input_path mymodel.tflite --output_path mymodel.circle
 ```
 
-As like, run with `--help` will show current required/optional arguments:
+Likewise, running with `--help` will show current required/optional arguments:
 ```
 $ one-import tflite --help
 Convert TensorFlow lite model to circle.
