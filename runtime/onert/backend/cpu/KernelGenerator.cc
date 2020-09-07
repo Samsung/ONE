@@ -928,8 +928,6 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::INPUT)};
 
-  auto output_height = node.param().height_out;
-  auto output_width = node.param().width_out;
   auto align_corners = node.param().align_corners;
   auto half_pixel_centers = node.param().half_pixel_centers;
 
@@ -938,8 +936,29 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 
   auto fn = std::make_unique<ops::ResizeBilinearLayer>();
 
-  fn->configure(input_tensor, output_tensor, output_height, output_width, align_corners,
-                half_pixel_centers);
+  if (node.getInputs().size() == 1)
+  {
+    fn->configure(input_tensor, output_tensor, node.param().height_out, node.param().width_out,
+                  align_corners, half_pixel_centers);
+  }
+  else
+  {
+    assert(node.getInputs().size() == 2);
+    const auto size_index{node.getInputs().at(ir::operation::ResizeBilinear::SIZE)};
+    auto size_tensor = _tensor_reg->getPortableTensor(size_index).get();
+    if (size_tensor->is_constant())
+    {
+      auto size_vec = _ctx.at(size_index).asVector<int32_t>();
+      const auto height_out = size_vec[0];
+      const auto width_out = size_vec[1];
+      fn->configure(input_tensor, output_tensor, height_out, width_out, align_corners,
+                    half_pixel_centers);
+    }
+    else
+    {
+      fn->configure(input_tensor, output_tensor, size_tensor, align_corners, half_pixel_centers);
+    }
+  }
 
   _return_fn = std::move(fn);
 }

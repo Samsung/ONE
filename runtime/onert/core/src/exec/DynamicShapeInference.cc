@@ -708,8 +708,29 @@ void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
     return;
 
   // getting output shape from input shape and Params
-  auto output_shape = shape_inference::inferResizeBilinearShape(
-      input->getShape(), op.param().height_out, op.param().width_out);
+  int32_t height_out, width_out;
+  if (op.getInputs().size() == 2)
+  {
+    auto size_ind = op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE);
+    auto size = _tensor_registry->getITensor(size_ind);
+    if (size->data_type() == ir::DataType::INT32)
+    {
+      auto size_buf = reinterpret_cast<const int32_t *>(size->buffer());
+      height_out = size_buf[0];
+      width_out = size_buf[1];
+    }
+    else
+    {
+      throw std::runtime_error("DynamicShapeInferer ResizeBilinear : Unsupported data type");
+    }
+  }
+  else
+  {
+    height_out = op.param().height_out;
+    width_out = op.param().width_out;
+  }
+  auto output_shape =
+      shape_inference::inferResizeBilinearShape(input->getShape(), height_out, width_out);
 
   // if shape is changed, change output shape and reallocate output tensor memory
   if (output_shape != output->getShape() || output->buffer() == nullptr)

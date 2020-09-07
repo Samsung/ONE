@@ -694,9 +694,29 @@ void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = _operands.at(output_idx);
 
+  int32_t height_out, width_out;
+  if (op.getInputs().size() == 2)
+  {
+    auto size = _operands.at(op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE));
+    if (!size.isConstant())
+    {
+      output.info().setDynamic();
+      _return_has_dynamic_tensor = true;
+      return;
+    }
+    const auto size_v = size.asVector<std::int32_t>();
+    height_out = size_v[0];
+    width_out = size_v[1];
+  }
+  else
+  {
+    height_out = op.param().height_out;
+    width_out = op.param().width_out;
+  }
+
   // Shape inferencing logic based on Params
-  ir::Shape new_shape = shape_inference::inferResizeBilinearShape(
-      input.shape(), op.param().height_out, op.param().width_out);
+  ir::Shape new_shape =
+      shape_inference::inferResizeBilinearShape(input.shape(), height_out, width_out);
 
   // if size_op is from Const, TFLC put the shape of output into tensor
   if (new_shape != output.shape())

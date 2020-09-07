@@ -879,7 +879,6 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-
   const auto ifm_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
