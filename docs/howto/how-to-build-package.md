@@ -154,7 +154,7 @@ nnpackage
 └── mymodel
     ├── metadata
     │   └── MANIFEST
-    └── mymodel.circless
+    └── mymodel.circle
 ```
 
 Likewise, `--help` will show current package options:
