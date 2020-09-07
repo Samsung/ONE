@@ -37,6 +37,7 @@
 #include "kernels/Pad.h"
 #include "kernels/Prelu.h"
 #include "kernels/Reshape.h"
+#include "kernels/ResizeNearestNeighbor.h"
 #include "kernels/Reverse.h"
 #include "kernels/Rsqrt.h"
 #include "kernels/Slice.h"
@@ -432,6 +433,25 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
 
   // NOTE 'newShape' attribute is ignored.
   return std::make_unique<kernels::Reshape>(input, shape, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeNearestNeighbor *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *size = getInputTensor(node->size());
+  Tensor *output = getOutputTensor(node);
+
+  ResizeNearestNeighborParams params{};
+  params.align_corners = node->align_corners();
+  // TODO update half_pixel_centers after CircleResizeNearestNeighbor updated
+  // Current CircleResizeNearestNeighbor don't have half_pixel_centers.
+  // default value on current is false.
+  // it need to be updated when CircleResizeNearestNeighbor updated.
+  params.half_pixel_centers = false;
+
+  return std::make_unique<kernels::ResizeNearestNeighbor>(input, size, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)

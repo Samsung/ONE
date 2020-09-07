@@ -37,6 +37,7 @@
 #include <kernels/Pad.h>
 #include <kernels/Prelu.h>
 #include <kernels/Reshape.h>
+#include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/Reverse.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Slice.h>
@@ -514,6 +515,27 @@ TEST_F(KernelBuilderTest, Prelu)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->alpha(), alpha);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, ResizeNearestNeighbor)
+{
+  auto *input = createInputNode();
+  auto *size = createInputNode();
+
+  auto *op = createNode<luci::CircleResizeNearestNeighbor>();
+  op->input(input);
+  op->size(size);
+  op->align_corners(true);
+
+  auto kernel = buildKernel<kernels::ResizeNearestNeighbor>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size(), size);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().align_corners, Eq(op->align_corners()));
+  // TODO currently half_pixel_centers are not implemented on CircleResizeNearestNeighbor
+  // after adding, need to be updated.
 }
 
 TEST_F(KernelBuilderTest, Reshape)
