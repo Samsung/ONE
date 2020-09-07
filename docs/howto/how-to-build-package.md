@@ -157,7 +157,7 @@ nnpackage
     └── mymodel.circless
 ```
 
-Like wise, `--help` will show current package options:
+Likewise, `--help` will show current package options:
 
 ```
 $ one-pack --help
