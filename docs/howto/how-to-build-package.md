@@ -83,7 +83,7 @@ TBD
 
 ## Optimize circle model
 
-circle model can be optimized to run faster and make the model smaller.
+circle model can be optimized for better performance and smaller size.
 Typical optimization algorithm for this is to fuse some patterns of operators
 to one fused operator.
 
