@@ -576,7 +576,7 @@ void BaseLoader<LoaderDomain>::loadReshape(const Operator *op, ir::Graph &subg)
     const auto *new_shape = options->new_shape();
     if (new_shape)
     {
-      for (uint i = 0; i < new_shape->Length(); ++i)
+      for (uint i = 0; i < new_shape->size(); ++i)
       {
         param.new_shape.push_back(new_shape->Get(i));
       }
@@ -1022,9 +1022,9 @@ void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
   const auto *dims = options->squeeze_dims();
   if (dims)
   {
-    if (dims->Length() > sizeof(param.dims) / sizeof(param.dims[0]))
+    if (dims->size() > sizeof(param.dims) / sizeof(param.dims[0]))
       throw std::runtime_error("Squeeze: 'param.ndims' is out of range.");
-    param.ndim = dims->Length();
+    param.ndim = dims->size();
     for (int i = 0; i < param.ndim; ++i)
       param.dims[i] = dims->Get(i);
   }
