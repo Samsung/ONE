@@ -180,8 +180,6 @@ TEST(PreluTest, Uint8Broadcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray(ref_quant_output_data));
-
-  SUCCEED();
 }
 
 TEST(PreluTest, Input_Output_Type_NEG)
