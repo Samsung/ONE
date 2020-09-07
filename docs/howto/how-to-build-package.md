@@ -113,7 +113,7 @@ Usage: one-optimize
 
 ## Quantize circle model
 
-circle model can be quantized to run faster and make smaller, by reducing data
+Floating-point circle model can be quantized to lower-precision format (e.g., uint8 or int16) for faster inference speed and smaller model size, by reducing the number of bits that represent weights and activations.
 bits representing weight values to 8 or 16bits.
 
 This is an example to quantize circle model:
