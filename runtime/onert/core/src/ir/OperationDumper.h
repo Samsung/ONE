@@ -65,6 +65,7 @@ public:
   void visit(const operation::Reduce &) override;
   void visit(const operation::Reshape &node) override;
   void visit(const operation::ResizeBilinear &) override;
+  void visit(const operation::ResizeNearestNeighbor &) override;
   void visit(const operation::Reverse &) override;
   void visit(const operation::RNN &) override;
   void visit(const operation::Select &node) override;

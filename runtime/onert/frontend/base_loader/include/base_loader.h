@@ -734,27 +734,10 @@ void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph 
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto size = inputs.at(1);
-
-  // FIXME Handle ResizeNearestNeighborOptions.
-  if (!subg.operands().at(size).isConstant())
-    throw std::runtime_error("ResizeNearestNeighbor: non-constant 'size' is not supported.");
-
-  std::vector<std::int32_t> size_v = subg.operands().at(size).template asVector<std::int32_t>();
-
   ir::operation::ResizeNearestNeighbor::Param param;
-  param.height_out = size_v[0];
-  param.width_out = size_v[1];
   param.align_corners = op->builtin_options_as_ResizeNearestNeighborOptions()->align_corners();
 
-  std::unique_ptr<ir::Operation> new_op(
-      new ir::operation::ResizeNearestNeighbor({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
+  loadOperationTo<ir::operation::ResizeNearestNeighbor>(op, subg, param);
 }
 
 template <typename LoaderDomain>
