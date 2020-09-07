@@ -87,7 +87,7 @@ circle model can be optimized to run faster and make the model smaller.
 Typical optimization algorithm for this is to fuse some patterns of operators
 to one fused operator.
 
-This is an expample to optimize circle model:
+This is an example to optimize circle model:
 ```
 $ one-optimize --all --input_path mymodel.circle --output_path optmodel.circle
 ```
