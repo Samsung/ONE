@@ -28,7 +28,7 @@ target_include_directories(ruy SYSTEM PUBLIC ${RUY_INCLUDES})
 target_compile_options(ruy PRIVATE -O3)
 
 target_include_directories(ruy PRIVATE ${CpuInfoSource_DIR})
-target_link_libraries(ruy cpuinfo log)
+target_link_libraries(ruy PRIVATE cpuinfo)
 target_compile_definitions(ruy PRIVATE RUY_HAVE_CPUINFO)
 
 add_library(ruy_instrumentation ${RUY_INSTRUMENTATION_SRCS})

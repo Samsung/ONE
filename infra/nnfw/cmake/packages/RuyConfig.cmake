@@ -17,7 +17,6 @@ function(_Ruy_import)
     set(CPUINFO_BUILD_UNIT_TESTS OFF CACHE BOOL "")
     set(CPUINFO_BUILD_MOCK_TESTS OFF CACHE BOOL "")
     add_extdirectory("${CpuInfoSource_DIR}" cpuinfo)
-
     add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Ruy" ruy)
   endif(BUILD_RUY)
 
