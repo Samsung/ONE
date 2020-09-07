@@ -18,25 +18,37 @@
 #include <nnfw_internal.h>
 
 #include "fixtures.h"
-#include "NNPackages.h"
 #include "common.h"
-
-using TestInputReshapingAddModelLoaded = ValidationTestModelLoaded<NNPackages::INPUT_RESHAPING_ADD>;
+#include "CircleGen.h"
 
 /**
  * @brief Testing the following model:
  *       #1 = placeholder (shape = [2, 2], dtype=float)
  *       #2 = placeholder (shape = [2], dtype=float)
  *       #3 = add(#1, #2)
- *
- * @note Run this test with "cpu" backend and "linear" executor
  */
-TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
+auto build_model_add_input_reshaping()
 {
-  NNFW_STATUS res = NNFW_STATUS_ERROR;
+  // Model is not important
+  CircleGen cgen;
+  auto f32 = circle::TensorType::TensorType_FLOAT32;
+  int in1 = cgen.addTensor({{2, 2}, f32}); // consider this [None, None]
+  int in2 = cgen.addTensor({{2}, f32});
+  int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
+  cgen.addOperatorAdd({{in1, in2}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in1, in2}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
 
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "EXECUTOR", "Linear"));
+TEST(TestDynamicTensor, input_reshaping)
+{
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  const auto model_buf = build_model_add_input_reshaping();
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   // input and output values
   const std::vector<float> input1 = {0, 1, 2, 3, 4, 5, 6, 7}; // of changed shape [4, 2]
@@ -53,36 +65,31 @@ TEST_F(TestInputReshapingAddModelLoaded, reshaping_2x2_to_4x2)
 
   // input reshaping from [2, 2] to [4, 2]
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {4, 2}};
-  res = nnfw_set_input_tensorinfo(_session, 0, &ti);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti));
 
-  res = nnfw_prepare(_session);
-  NNFW_ENSURE_SUCCESS(res);
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
   nnfw_tensorinfo ti_input = {}; // Static inference result will be stored
-  nnfw_input_tensorinfo(_session, 0, &ti_input);
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &ti_input));
   ASSERT_TRUE(tensorInfoEqual(ti, ti_input));
 
   nnfw_tensorinfo ti_output = {}; // Static inference result will be stored
-  nnfw_output_tensorinfo(_session, 0, &ti_output);
+  NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(session, 0, &ti_output));
   ASSERT_TRUE(tensorInfoEqual(ti, ti_output)); // input/output shapes are same with for this model
 
-  res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                       sizeof(float) * input1.size());
-  NNFW_ENSURE_SUCCESS(res);
-  res = nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
-                       sizeof(float) * input2.size());
-  NNFW_ENSURE_SUCCESS(res);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
+                                     sizeof(float) * input1.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
+                                     sizeof(float) * input2.size()));
 
   uint64_t output_num_elements = tensorInfoNumElements(ti_output);
   ASSERT_EQ(output_num_elements, expected.size());
   std::vector<float> actual_output(output_num_elements);
-  res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
-                        sizeof(float) * actual_output.size());
-  NNFW_ENSURE_SUCCESS(res);
+  NNFW_ENSURE_SUCCESS(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
+                                      sizeof(float) * actual_output.size()));
 
   // Do inference
-  res = nnfw_run(_session);
-  NNFW_ENSURE_SUCCESS(res);
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
   // compare
   for (int i = 0; i < expected.size(); ++i)
