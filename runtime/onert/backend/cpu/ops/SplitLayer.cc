@@ -29,7 +29,7 @@ namespace cpu
 namespace ops
 {
 
-SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
+SplitLayer::SplitLayer() : _input(nullptr), _axis(nullptr), _num_splits(0), _outputs()
 {
   // DO NOTHING
 }
@@ -37,7 +37,16 @@ SplitLayer::SplitLayer() : _input(nullptr), _num_splits(0), _axis(0), _outputs()
 template <typename T> void SplitLayer::split(void)
 {
   nnfw::cker::SplitParams op_params;
-  op_params.axis = _axis;
+  if (_axis->total_size() != sizeof(int32_t))
+  {
+    throw std::runtime_error("ArgMinMax: wrong shape of axis");
+  }
+  auto axis = *reinterpret_cast<const int32_t *>(_axis->buffer());
+  if (axis < 0)
+  {
+    axis += _input->num_dimensions();
+  }
+  op_params.axis = axis;
   op_params.num_split = _num_splits;
 
   std::vector<T *> outputPtrs;
@@ -53,8 +62,8 @@ template <typename T> void SplitLayer::split(void)
                        getTensorShape(_outputs[0]), outputPtrs.data());
 }
 
-void SplitLayer::configure(const IPortableTensor *input, uint16_t num_splits, int16_t axis,
-                           std::vector<IPortableTensor *> &outputs)
+void SplitLayer::configure(const IPortableTensor *input, const IPortableTensor *axis,
+                           uint16_t num_splits, std::vector<IPortableTensor *> &outputs)
 {
   assert(input != nullptr);
 

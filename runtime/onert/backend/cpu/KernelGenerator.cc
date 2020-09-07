@@ -891,11 +891,10 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   assert(num_splits == static_cast<int>(node.getOutputs().size()));
 
   const auto input_idx{node.getInputs().at(ir::operation::Split::Input::INPUT)};
-  const auto rank = _ctx.at(input_idx).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_op_seq_layout);
-  auto axis_resolved = axis < 0 ? axis + rank : axis;
+  const auto axis_idx{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   auto in_tensor = _tensor_reg->getPortableTensor(input_idx).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_idx).get();
 
   std::vector<IPortableTensor *> out_tensors;
   for (auto &output_idx : node.getOutputs())
@@ -903,7 +902,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   auto fn = std::make_unique<ops::SplitLayer>();
 
-  fn->configure(in_tensor, num_splits, axis_resolved, out_tensors);
+  fn->configure(in_tensor, axis_tensor, num_splits, out_tensors);
 
   _return_fn = std::move(fn);
 }

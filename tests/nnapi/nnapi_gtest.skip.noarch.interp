@@ -585,6 +585,7 @@ GeneratedTests.split_float_2
 GeneratedTests.split_float_3
 GeneratedTests.split_float_4
 GeneratedTests.split_float_5
+GeneratedTests.split_float_5_axis_as_input_nnfw
 GeneratedTests.split_int32_1
 GeneratedTests.split_int32_1_relaxed
 GeneratedTests.split_int32_2

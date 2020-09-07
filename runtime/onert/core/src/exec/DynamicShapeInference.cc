@@ -864,21 +864,31 @@ void DynamicShapeInferer::visit(const ir::operation::Split &op)
   const auto input_idx{op.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto &input = _tensor_registry->getITensor(input_idx);
 
-  if (!input->is_dynamic())
+  // Return if all tensors are not dynamic
+  bool has_dynamic = false;
+  for (const auto output_idx : op.getOutputs())
+  {
+    auto output = _tensor_registry->getITensor(output_idx);
+    has_dynamic |= output->is_dynamic();
+  }
+  if (!input->is_dynamic() && !has_dynamic)
   {
     return;
   }
 
   auto input_shape = input->getShape();
 
-  const auto axis = op.param().axis;
+  const auto axis_idx{op.getInputs().at(ir::operation::Split::Input::AXIS)};
+  const auto &axis = _tensor_registry->getITensor(axis_idx);
+
+  auto axis_value = *reinterpret_cast<const int32_t *>(axis->buffer());
   const auto num_splits = op.param().num_splits;
   const auto rank = input_shape.rank();
-  auto axis_resolved = axis < 0 ? axis + rank : axis;
+  axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
-  assert(0 <= axis_resolved && axis_resolved < rank);
+  assert(0 <= axis_value && axis_value < rank);
 
-  ir::Shape new_shape = shape_inference::inferSplitShape(input_shape, axis_resolved, num_splits);
+  ir::Shape new_shape = shape_inference::inferSplitShape(input_shape, axis_value, num_splits);
   for (int out_tensor_idx = 0; out_tensor_idx < num_splits; out_tensor_idx++)
   {
     auto output_ind = op.getOutputs().at(out_tensor_idx);
