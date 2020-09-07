@@ -102,7 +102,7 @@ will build debug version in `build/debug` folder, and
 NNCC_WORKSPACE=build/release ./nncc configure -DCMAKE_BUILD_TYPE=Release
 ./nncc build
 ```
-will build release version in `build/releae` folder.
+will build release version in `build/release` folder.
 
 ### Trouble shooting
 
