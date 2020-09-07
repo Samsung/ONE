@@ -606,7 +606,6 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
       luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
-      assert(const_node->dtype() == loco::DataType::FLOAT32);
       if (const_node->dtype() != loco::DataType::FLOAT32)
         throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
 
