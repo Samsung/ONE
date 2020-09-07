@@ -143,11 +143,15 @@ int main(const int argc, char **argv)
 
 // set input shape before compilation
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+
+    auto fill_shape_from_h5 = [&session](const std::string &h5_file, TensorShapeMap &shape_map) {
+      assert(!h5_file.empty());
+      auto shapes = H5Formatter(session).readTensorShapes(h5_file);
+      overwriteShapeMap(shape_map, shapes);
+    };
+
     if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::PREPARE)
-    {
-      auto shapes = H5Formatter(session).readTensorShapes(args.getLoadFilename());
-      overwriteShapeMap(args.getShapeMapForPrepare(), shapes);
-    }
+      fill_shape_from_h5(args.getLoadFilename(), args.getShapeMapForPrepare());
 #endif
     setTensorInfo(args.getShapeMapForPrepare());
 
@@ -160,11 +164,9 @@ int main(const int argc, char **argv)
 
 // set input shape after compilation and before execution
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
-    if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::RUN)
-    {
-      auto shapes = H5Formatter(session).readTensorShapes(args.getLoadFilename());
-      overwriteShapeMap(args.getShapeMapForRun(), shapes);
-    }
+    if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::RUN ||
+        (!args.getLoadFilename().empty() && !args.shapeParamProvided()))
+      fill_shape_from_h5(args.getLoadFilename(), args.getShapeMapForRun());
 #endif
     setTensorInfo(args.getShapeMapForRun());
 

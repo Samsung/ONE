@@ -34,9 +34,9 @@ using TensorShapeMap = std::unordered_map<uint32_t, TensorShape>;
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 enum class WhenToUseH5Shape
 {
-  DO_NOT_USE, // don't use shapes in h5 file
-  PREPARE,    // read shapes in h5 file and set them as inputs' shape before calling nnfw_prepare()
-  RUN,        // read shapes in h5 file and set them as inputs' shape before calling nnfw_run()
+  NOT_PROVIDED, // Param not provided
+  PREPARE, // read shapes in h5 file and set them as inputs' shape before calling nnfw_prepare()
+  RUN,     // read shapes in h5 file and set them as inputs' shape before calling nnfw_run()
 };
 #endif
 
@@ -62,6 +62,8 @@ public:
   const bool printVersion(void) const { return _print_version; }
   TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
   TensorShapeMap &getShapeMapForRun() { return _shape_run; }
+  /// @brief Return true if "--shape_run" or "--shape_prepare" is provided
+  bool shapeParamProvided();
   const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
@@ -76,7 +78,7 @@ private:
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;
   std::string _load_filename;
-  WhenToUseH5Shape _when_to_use_h5_shape = WhenToUseH5Shape::DO_NOT_USE;
+  WhenToUseH5Shape _when_to_use_h5_shape = WhenToUseH5Shape::NOT_PROVIDED;
 #endif
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;
