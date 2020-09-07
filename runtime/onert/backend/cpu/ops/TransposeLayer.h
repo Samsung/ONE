@@ -40,15 +40,15 @@ public:
 
   void transposeQuant8();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output,
-                 const std::vector<int> &perm);
+  void configure(const IPortableTensor *input, const IPortableTensor *perm,
+                 IPortableTensor *output);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
+  const IPortableTensor *_perm;
   IPortableTensor *_output;
-  std::vector<int> _perm;
 };
 
 } // namespace ops

@@ -961,19 +961,21 @@ ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier)
   return new_Shape;
 }
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm)
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
+                              const int32_t perm_size)
 {
-  if (static_cast<int>(perm.size()) > in_shape.rank())
+  const auto rank = in_shape.rank();
+  if (perm_size > rank)
   {
-    throw std::runtime_error("inferTransposeShape failed, bad rank size: " +
-                             std::to_string(static_cast<int>(perm.size())));
+    throw std::runtime_error("inferTransposeShape failed, bad permutation size: " +
+                             std::to_string(perm_size));
   }
-  ir::Shape out_shape(static_cast<int>(perm.size()));
-  for (int idx = 0; idx < static_cast<int>(perm.size()); idx++)
+  ir::Shape out_shape(rank);
+  for (int idx = 0; idx < perm_size; idx++)
   {
-    if (perm[idx] < 0 || perm[idx] >= static_cast<int>(perm.size()))
+    if (perm[idx] < 0 || perm[idx] >= rank)
     {
-      throw std::runtime_error("inferTransposeShape failed, bad perm value: " +
+      throw std::runtime_error("inferTransposeShape failed, bad permutation value: " +
                                std::to_string(perm[idx]));
     }
     out_shape.dim(idx) = in_shape.dim(perm[idx]);

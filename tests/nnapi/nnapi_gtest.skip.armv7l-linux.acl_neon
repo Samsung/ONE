@@ -268,6 +268,7 @@ GeneratedTests.topk_v2_4
 GeneratedTests.topk_v2_5
 GeneratedTests.topk_v2_6
 GeneratedTests.transpose_dynamic_nnfw
+GeneratedTests.transpose_float_1_perms_as_input_nnfw
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8
 GeneratedTests.transpose_v1_2_zero_sized

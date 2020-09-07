@@ -780,13 +780,15 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto perm_tensor = _tensor_reg->getPortableTensor(perm_index).get();
 
   auto fn = std::make_unique<ops::TransposeLayer>();
 
-  fn->configure(input_tensor, output_tensor, node.param().perm);
+  fn->configure(input_tensor, perm_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }

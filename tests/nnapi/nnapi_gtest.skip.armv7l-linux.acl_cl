@@ -252,6 +252,7 @@ GeneratedTests.tile_3_float16
 GeneratedTests.tile_3_int32
 GeneratedTests.tile_3_quant8
 GeneratedTests.transpose_dynamic_nnfw
+GeneratedTests.transpose_float_1_perms_as_input_nnfw
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8
 GeneratedTests.transpose_v1_2_zero_sized

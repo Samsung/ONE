@@ -626,6 +626,7 @@ GeneratedTests.transpose_2D_nnfw
 GeneratedTests.transpose_3D_nnfw
 GeneratedTests.transpose_dynamic_nnfw
 GeneratedTests.transpose_float_1
+GeneratedTests.transpose_float_1_perms_as_input_nnfw
 GeneratedTests.transpose_quant8_1
 GeneratedTests.transpose_v1_2
 GeneratedTests.transpose_v1_2_quant8

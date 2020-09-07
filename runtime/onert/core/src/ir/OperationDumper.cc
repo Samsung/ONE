@@ -384,7 +384,7 @@ void OperationDumper::visit(const TransposeConv &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Transpose &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Transpose &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const Unpack &node)
 {

@@ -708,31 +708,7 @@ OperationFactory::OperationFactory()
     return new operation::StridedSlice{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_TRANSPOSE] = [](const OperationFactory::Param &init_param,
-                                       Operands &operands) {
-    // TODO make this work with init_param.input_count == 1 (when permutation vector is optional)
-
-    // Inputs
-    // 0: An n-D tensor, specifying the tensor to be transposed.
-    // 1: An optional 1-D Tensor of {@link ANEURALNETWORKS_TENSOR_INT32},
-    //    the permutation of the dimensions of the input tensor.
-    //    The returned tensor's dimension i corresponds to the input dimension
-    //    perm[i]. If perm is not given, it is set to (n-1...0), where n is the
-    //    rank of the input tensor. Hence by default, this operation performs a
-    //    regular matrix transpose on 2-D input Tensors.
-    assert(init_param.input_count == 2);
-    assert(init_param.output_count == 1);
-
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-    std::vector<std::int32_t> perm =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
-
-    operation::Transpose::Param param;
-    param.perm.assign(perm.cbegin(), perm.cend());
-
-    return new operation::Transpose{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_TRANSPOSE] = createSimpleBinaryOp<operation::Transpose>;
 
   _map[ANEURALNETWORKS_MUL] =
       getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::MUL);

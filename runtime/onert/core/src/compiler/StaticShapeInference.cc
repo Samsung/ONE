@@ -929,14 +929,30 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   const auto input_idx{op.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto &input = _operands.at(input_idx);
 
+  const auto perm_idx{op.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
+  const auto &perm = _operands.at(perm_idx);
+
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
-  const auto perm{op.param().perm};
-  // const auto rank{op.param().rank};
+  auto &output = _operands.at(output_idx);
+  if (!perm.isConstant())
+  {
+    output.info().setDynamic();
+    _return_has_dynamic_tensor = true;
+    return;
+  }
+
+  // Check rank
+  if (input.info().shape().rank() != static_cast<int>(perm.info().shape().num_elements()))
+  {
+    throw std::runtime_error("StaticShapeInferer failed, bad rank size: " +
+                             std::to_string(perm.info().shape().num_elements()));
+  }
 
   // set output shape, based on input and params
-  ir::Shape new_shape = shape_inference::inferTransposeShape(input.info().shape(), perm);
+  const auto perm_buf = reinterpret_cast<const int32_t *>(perm.data()->base());
+  ir::Shape new_shape = shape_inference::inferTransposeShape(input.info().shape(), perm_buf,
+                                                             perm.shape().num_elements());
   output.info().shape(new_shape);
 }
 

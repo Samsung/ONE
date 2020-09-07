@@ -970,15 +970,38 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
 
   // from op, access the buffer of second input to read new shape
   auto input_ind = op.getInputs().at(ir::operation::Transpose::Input::INPUT);
-  auto input_tensor = _tensor_registry->getITensor(input_ind);
-  auto input_shape = input_tensor->getShape();
+  auto input = _tensor_registry->getITensor(input_ind);
+  auto input_shape = input->getShape();
 
-  if (!input_tensor->is_dynamic())
+  /*
+    Here, the state after compilation (static shape inference) could be one of the following:
+
+              input       perms             output     execution-time shape inf required
+              ------------------------------------     --------------------------------
+      case 1) static         const          static       X
+      case 2) static       non-const        dynamic      O
+      case 3) dynamic        const          dynamic      O
+      case 4) dynamic      non-const        dynamic      O
+
+    So, only when both input1 and ouput are static, we can skip dynamic shape inference.
+  */
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  const auto perm{op.param().perm};
+  auto perm_ind = op.getInputs().at(ir::operation::Transpose::Input::PERMUTATION);
+  auto perm = _tensor_registry->getITensor(perm_ind);
+
+  // Check rank
+  if (input->num_dimensions() != perm->getShape().num_elements())
+  {
+    throw std::runtime_error("DynamicShapeInferer failed, bad rank size: " +
+                             std::to_string(perm->getShape().num_elements()));
+  }
+
   // set output shape, based on input and params
-  ir::Shape new_shape = shape_inference::inferTransposeShape(input_shape, perm);
+  const auto perm_buffer = reinterpret_cast<const int32_t *>(perm->buffer());
+  ir::Shape new_shape =
+      shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->dimension(0));
 
   dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
