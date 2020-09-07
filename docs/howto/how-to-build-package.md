@@ -74,7 +74,7 @@ Convert TensorFlow lite model to circle.
 Usage: one-import-tflite
     --version Show version information and exit
     --input_path <path/to/tflitemodel>
-    --output_path <path/to/circle
+    --output_path <path/to/circle>
 ```
 
 ### Example for TensorFlow BCQ model
