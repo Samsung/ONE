@@ -61,7 +61,7 @@ $ pip install yapf==0.22.0 numpy
 
 ## Build for Ubuntu
 
-In a typical linux development environment, including Ubuntu, you can build the runtime with a
+In a typical linux development environment, including Ubuntu, you can build the compiler with a
 simple command like this:
 
 ```
