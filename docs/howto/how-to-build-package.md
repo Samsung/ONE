@@ -8,7 +8,7 @@ package through command line tools.
 
 Steps of building a Package:
 1. Import model and convert to circle
-2. Optionally, optimize and quantize circle
+1. Optionally, optimize and quantize circle
 3. Create package from circle
 
 NOTE: Examples and options of each commands shown are from the version of
