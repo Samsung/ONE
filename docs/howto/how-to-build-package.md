@@ -46,7 +46,7 @@ $ one-import tf --input_path mymodel.pb --output_path mymodel.circle \
 --output_arrays output
 ```
 
-Run with `--help` will show current required/optional arguments:
+Running with `--help` will show current required/optional arguments:
 ```
 $ one-import tf --help
 Convert TensorFlow model to circle.
