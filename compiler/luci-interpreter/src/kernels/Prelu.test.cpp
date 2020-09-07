@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +73,30 @@ TEST(PreluTest, FloatSimple)
   SUCCEED();
 }
 
+TEST(PreluTest, FloatBroadcast)
+{
+  Check<float>(/*input_shape=*/{1, 2, 2, 3}, /*alpha_shape=*/{1, 1, 3},
+               /*output_shape=*/{1, 2, 2, 3}, /*input_data=*/
+               {
+                   0.0f, 0.0f, 0.0f,    // Row 1, Column 1
+                   1.0f, 1.0f, 1.0f,    // Row 1, Column 2
+                   -1.0f, -1.0f, -1.0f, // Row 2, Column 1
+                   -2.0f, -2.0f, -2.0f, // Row 2, Column 2
+               },
+               /*alpha_data=*/
+               {0.0f, 1.0f, 2.0f},
+               /*output_data=*/
+               {
+                   0.0f, 0.0f, 0.0f,   // Row 1, Column 1
+                   1.0f, 1.0f, 1.0f,   // Row 1, Column 2
+                   0.0f, -1.0f, -2.0f, // Row 2, Column 1
+                   0.0f, -2.0f, -4.0f, // Row 2, Column 2
+               },
+               getElementType<float>());
+
+  SUCCEED();
+}
+
 float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(PreluTest, Uint8Simple)
@@ -103,6 +128,58 @@ TEST(PreluTest, Uint8Simple)
                          output_tensor.zero_point()),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 3, 1}));
+
+  SUCCEED();
+}
+
+TEST(PreluTest, Uint8Broadcast)
+{
+  std::vector<float> input_data{
+      0.0f,   0.0f,   0.0f,   // Row 1, Column 1
+      0.5f,   0.5f,   0.5f,   // Row 1, Column 2
+      -1.0f,  -1.0f,  -1.0f,  // Row 2, Column 1
+      -0.25f, -0.25f, -0.25f, // Row 2, Column 2
+  };
+  std::vector<float> alpha_data{0.0f, 0.5f, -0.5f};
+  std::vector<float> ref_output_data{
+      0.0f, 0.0f,    0.0f,  // Row 1, Column 1
+      0.5f, 0.5f,    0.5f,  // Row 1, Column 2
+      0.0f, -0.5f,   0.5f,  // Row 2, Column 1
+      0.0f, -0.125f, 0.125f // Row 2, Column 2
+  };
+  std::vector<float> ref_quant_output_data{
+      128, 128, 128, // Row 1, Column 1
+      192, 192, 192, // Row 1, Column 2
+      128, 64,  192, // Row 2, Column 1
+      128, 112, 144  // Row 2, Column 2
+  };
+  float kQuantizedTolerance = 2 * (1. / 256);
+  const float kMin = -1;
+  const float kMax = 127.f / 128.f;
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
+
+  Tensor input_tensor{DataType::U8, {1, 2, 2, 3}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor alpha_tensor{DataType::U8, {1, 1, 3}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+
+  std::vector<uint8_t> quantize_input =
+      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
+  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  std::vector<uint8_t> quantize_alpha =
+      quantize<uint8_t>(alpha_data, quant_param.first, quant_param.second);
+  alpha_tensor.writeData(quantize_alpha.data(), quantize_alpha.size() * sizeof(uint8_t));
+
+  Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
+  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
+              ::testing::ElementsAreArray(ref_quant_output_data));
 
   SUCCEED();
 }
