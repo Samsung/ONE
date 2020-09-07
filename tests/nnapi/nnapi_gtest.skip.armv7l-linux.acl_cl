@@ -110,6 +110,7 @@ GeneratedTests.matrix_band_part_ex_4D_float
 GeneratedTests.matrix_band_part_ex_dynamic_nnfw
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
+GeneratedTests.minimum_int32
 GeneratedTests.mul_dynamic_nnfw
 GeneratedTests.neg
 GeneratedTests.neg_dynamic_nnfw

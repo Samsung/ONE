@@ -67,6 +67,7 @@ GeneratedTests.lstm_state2
 GeneratedTests.maximum_broadcast_quant8
 GeneratedTests.maximum_overflow
 GeneratedTests.maximum_simple_quant8
+GeneratedTests.minimum_int32
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant8
