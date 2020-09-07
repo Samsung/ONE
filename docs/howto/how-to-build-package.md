@@ -25,7 +25,7 @@ To import a model, use `one-import` with a model framework key and arguments.
 $ one-import FRAMEWORK [arguments]
 ```
 
-Execute `one-import` without any key will show possible frameworks.
+Execute `one-import` without any key will show the list of supported frameworks.
 
 Example of `one-import` command:
 ```
