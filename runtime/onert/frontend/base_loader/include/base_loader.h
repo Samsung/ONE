@@ -1215,23 +1215,7 @@ void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 {
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  auto inputOperand = subg.operands().at(inputs.at(0));
-  auto axisOperand = subg.operands().at(inputs.at(1));
-
-  // FIXME Handle ArgMaxOptions.
-  if (!axisOperand.isConstant())
-    throw std::runtime_error("ArgMax: non-constant 'axis' is not supported.");
-  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
-                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
-    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
-
   ir::operation::ArgMax::Param param;
-  param.axis = axisOperand.template asVector<int>()[0];
   const auto output_type = op->builtin_options_as_ArgMaxOptions()->output_type();
   switch (output_type)
   {
@@ -1242,8 +1226,12 @@ void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
     default:
       throw std::runtime_error("ArgMax: `output_type` must be either int32 or int64.");
   }
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::ArgMax(inputs, outputs, param));
-  subg.addOperation(std::move(new_op));
+  auto am = loadOperationTo<ir::operation::ArgMax>(op, subg, param);
+
+  auto axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
+  if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
+                                           axisOperand.typeInfo().type() == ir::DataType::INT64)))
+    throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
 }
 
 template <typename LoaderDomain>

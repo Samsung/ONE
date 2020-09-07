@@ -965,15 +965,15 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ArgMax::INPUT)};
-
-  const auto axis = node.param().axis;
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::AXIS)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index).get();
   auto input_tensor = _tensor_reg->getPortableTensor(input_index).get();
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index).get();
 
   auto fn = std::make_unique<ops::ArgMinMaxLayer>();
 
-  fn->configure(input_tensor, output_tensor, axis, /* is_arg_max */ true);
+  fn->configure(input_tensor, output_tensor, axis_tensor, /* is_arg_max */ true);
 
   _return_fn = std::move(fn);
 }

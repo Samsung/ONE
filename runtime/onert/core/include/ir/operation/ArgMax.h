@@ -31,12 +31,12 @@ class ArgMax : public Operation
 public:
   enum Input
   {
-    INPUT
+    INPUT = 0,
+    AXIS = 1
   };
 
   struct Param
   {
-    int axis;
     DataType output_type;
   };
 
