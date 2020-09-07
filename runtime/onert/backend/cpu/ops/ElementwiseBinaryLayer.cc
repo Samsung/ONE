@@ -125,6 +125,10 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
         }
         _kernel = minimumGeneric<uint8_t>;
       }
+      else if (_lhs->data_type() == OperandType::INT32)
+      {
+        _kernel = minimumGeneric<int32_t>;
+      }
       else if (_lhs->data_type() == OperandType::FLOAT32)
       {
         _kernel = minimumGeneric<float>;
