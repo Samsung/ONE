@@ -61,8 +61,14 @@ public:
 
     for (const auto &ind : inputs)
     {
-      // NOTE Not support the case that concat's input is a constant or a input of model
-      if (_graph.operands().at(ind).isConstant() || _graph.getInputs().contains(ind))
+      /**
+       * NOTE Not support below cases.
+       * 1. concat's input is a constant.
+       * 2. concat's input is a input of model.
+       * 3. concat's input already becomes a subtensor of another concat.
+       */
+      if (_graph.operands().at(ind).isConstant() || _graph.getInputs().contains(ind) ||
+          _parent_map.find(ind) != _parent_map.end())
       {
         return;
       }
