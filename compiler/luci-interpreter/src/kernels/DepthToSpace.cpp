@@ -43,12 +43,8 @@ void DepthToSpace::configure()
   int32_t output_width = input_width * block_size;
   int32_t output_channels = input_channels / block_size / block_size;
 
-  LUCI_INTERPRETER_CHECK(input_height ==
-                         output_height /
-                             block_size); // This will not make Exception, but TFlite have also.
-  LUCI_INTERPRETER_CHECK(input_width ==
-                         output_width /
-                             block_size); // This will not make Exception, but TFlite have also.
+  LUCI_INTERPRETER_CHECK(input_height == output_height / block_size);
+  LUCI_INTERPRETER_CHECK(input_width == output_width / block_size);
   LUCI_INTERPRETER_CHECK(input_channels == output_channels * block_size * block_size);
 
   Shape output_shape(4);
