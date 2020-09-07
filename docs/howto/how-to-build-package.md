@@ -12,7 +12,7 @@ Steps of building a Package:
 1. Create package from circle
 
 NOTE: Examples and options of each command shown below are from the version of
-writing this document. They may differ from latest version of commands.
+writing this document. They may differ from latest version of commands, 1.9.0.
 Please fire an issue or post a PR to correct them if anything needs update.
 
 ## Import model
