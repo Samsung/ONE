@@ -19,7 +19,6 @@
 #include "luci/Pass/FuseBatchNormWithTConv.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
-#include "luci/Pass/PropagateConcatenationQparamPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -210,9 +209,6 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
                                            str_to_granularity(granularity));
     quantizer.run(g);
-
-    luci::PropagateConcatenationQparamPass propagator;
-    propagator.run(g);
   }
 
   // Requantize

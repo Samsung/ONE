@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "PropagateConcatenationQparamPassInternal.h"
+#include "QuantizationUtils.h"
 
 #include <luci/IR/CircleQuantParam.h>
 
@@ -135,7 +135,7 @@ public:
 
 } // namespace
 
-TEST(PropagateConcatenationQparamPass, propagate_concat_quantparam)
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
 {
   // Check cases where qparam of concat_node is propagated
   // (1) normal case: qparam is propagated to input_1 and input_2
@@ -192,7 +192,7 @@ TEST(PropagateConcatenationQparamPass, propagate_concat_quantparam)
   EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(4), 30);
 }
 
-TEST(PropagateConcatenationQparamPass, propagate_concat_quantparam_NEG)
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
 {
   // Check negative cases where qparam is not propagated
   // (1) concat is not uint8-quantized
