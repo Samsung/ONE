@@ -11,7 +11,7 @@ Steps of building a Package:
 1. Optionally, optimize and quantize circle
 1. Create package from circle
 
-NOTE: Examples and options of each commands shown are from the version of
+NOTE: Examples and options of each command shown below are from the version of
 writing this document. They may differ from latest version of commands.
 Please fire an issue or post a PR to correct them if anything needs update.
 
