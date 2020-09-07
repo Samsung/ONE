@@ -93,7 +93,7 @@ Build target folder can be customized by `NNCC_WORKSPACE` environment, as we may
 debug and release builds.
 
 ```
-NNCC_WORKSPACE=build/debug ./nncc configure
+$ NNCC_WORKSPACE=build/debug ./nncc configure
 ./nncc build
 ```
 will build debug version in `build/debug` folder, and
