@@ -13,12 +13,10 @@ function(_Ruy_import)
   endif(NOT RuySource_FOUND)
 
   if(BUILD_RUY)
-    nnas_include(ExternalBuildTools)
-    message(STATUS "CPUINFO dir : ${CpuInfoSource_DIR}")
-    ExternalBuild_CMake(CMAKE_DIR   ${CpuInfoSource_DIR}
-                        BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/cpuinfo/build
-                        INSTALL_DIR ${EXT_OVERLAY_DIR}
-                        PKG_NAME    "CPUINFO")
+    set(CPUINFO_BUILD_BENCHMARKS OFF CACHE BOOL "")
+    set(CPUINFO_BUILD_UNIT_TESTS OFF CACHE BOOL "")
+    set(CPUINFO_BUILD_MOCK_TESTS OFF CACHE BOOL "")
+    add_extdirectory("${CpuInfoSource_DIR}" cpuinfo)
 
     add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Ruy" ruy)
   endif(BUILD_RUY)

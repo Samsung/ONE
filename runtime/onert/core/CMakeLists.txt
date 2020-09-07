@@ -13,6 +13,7 @@ target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 target_link_libraries(onert_core PRIVATE jsoncpp)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
+target_link_libraries(onert_core INTERFACE log)
 
 if(ENVVAR_ONERT_CONFIG)
   target_compile_definitions(onert_core PRIVATE ENVVAR_FOR_DEFAULT_CONFIG)
