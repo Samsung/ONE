@@ -78,7 +78,7 @@ $ ./nncc test
 ```
 
 Above steps will build all the modules in the compiler folder. There are modules that are currently
-not active. To buld only as of now active modules of the compiler, we provide a preset of modules
+not active. To build only as of now active modules of the compiler, we provide a preset of modules
 to build with below command:
 ```
 $ ./nnas create-package --prefix $HOME/.local
