@@ -965,9 +965,15 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
   return out_shape;
 }
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier)
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
+                         const int32_t multiplier_size)
 {
-  // assert(in_shape.rank() == multiplier.rank());
+  if (multiplier_size != in_shape.rank())
+  {
+    throw std::runtime_error("inferTileShape failed, input rank: " +
+                             std::to_string(in_shape.rank()) + ", bad multipliers size: " +
+                             std::to_string(multiplier_size) + "");
+  }
   ir::Shape new_Shape(in_shape.rank());
 
   for (int i = 0; i < in_shape.rank(); ++i)

@@ -977,7 +977,8 @@ void DynamicShapeInferer::visit(const ir::operation::Tile &op)
   auto multiplier_buffer = reinterpret_cast<const int32_t *>(multiplier->buffer());
   assert(multiplier_buffer);
 
-  auto output_shape = shape_inference::inferTileShape(input_shape, multiplier_buffer);
+  auto output_shape =
+      shape_inference::inferTileShape(input_shape, multiplier_buffer, multiplier->dimension(0));
 
   // set output shape and output buffer
   output->applyShape(output_shape);
