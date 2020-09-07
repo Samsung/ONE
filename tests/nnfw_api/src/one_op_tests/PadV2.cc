@@ -34,7 +34,8 @@ TEST_F(GenModelTest, OneOp_PadV2)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}});
+  _context->addTestCase(
+      uniformTCD<float>({{1, 2, 3, 4}}, {{3, 3, 3, 3, 3, 1, 2, 3, 3, 3, 4, 3, 3, 3, 3, 3}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

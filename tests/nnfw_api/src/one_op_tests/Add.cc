@@ -30,8 +30,8 @@ TEST_F(GenModelTest, OneOp_Add_VarToConst)
   cgen.setInputsAndOutputs({lhs}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{1, 3, 2, 4}}, {{6, 7, 9, 8}}});
-  _context->addTestCase({{{0, 1, 2, 3}}, {{5, 5, 9, 7}}});
+  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}}, {{6, 7, 9, 8}}));
+  _context->addTestCase(uniformTCD<float>({{0, 1, 2, 3}}, {{5, 5, 9, 7}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
@@ -47,7 +47,7 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}});
+  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

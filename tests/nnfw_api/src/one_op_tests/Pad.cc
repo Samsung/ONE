@@ -28,7 +28,8 @@ TEST_F(GenModelTest, OneOp_Pad)
   cgen.addOperatorPad({{in, padding}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}});
+  _context->addTestCase(
+      uniformTCD<float>({{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

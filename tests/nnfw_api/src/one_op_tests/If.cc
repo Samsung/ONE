@@ -68,8 +68,8 @@ TEST_F(GenModelTest, OneOp_If)
   }
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{-1.0}}, {{-100.0}}});
-  _context->addTestCase({{{1.0}}, {{100.0}}});
+  _context->addTestCase(uniformTCD<float>({{-1.0}}, {{-100.0}}));
+  _context->addTestCase(uniformTCD<float>({{1.0}}, {{100.0}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();

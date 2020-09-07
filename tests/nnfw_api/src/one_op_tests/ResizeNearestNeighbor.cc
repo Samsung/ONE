@@ -30,8 +30,9 @@ TEST_F(GenModelTest, OneOp_ResizeNearestNeighbor)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{3, 4, 6, 10, 9, 10, 12, 16}},
-                         {{3, 4, 3, 4, 6, 10, 3, 4, 3, 4, 6, 10, 9, 10, 9, 10, 12, 16}}});
+  _context->addTestCase(
+      uniformTCD<float>({{3, 4, 6, 10, 9, 10, 12, 16}},
+                        {{3, 4, 3, 4, 6, 10, 3, 4, 3, 4, 6, 10, 9, 10, 9, 10, 12, 16}}));
   _context->setBackends({"acl_cl"});
 
   SUCCEED();
