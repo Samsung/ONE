@@ -94,7 +94,7 @@ debug and release builds.
 
 ```
 $ NNCC_WORKSPACE=build/debug ./nncc configure
-./nncc build
+$ ./nncc build
 ```
 will build debug version in `build/debug` folder, and
 
