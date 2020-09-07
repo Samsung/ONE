@@ -1,4 +1,5 @@
 /*
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -289,7 +290,7 @@ void BaseLoader<LoaderDomain>::BaseLoader::deallocateMmappedArea(uint8_t *ptr, s
   }
 }
 
-/* Copied from tensorflow lite. Need to append copyright */
+/* Copy is copied from tensorflow lite */
 template <typename T> bool Copy(const T *data_ptr, std::vector<uint16_t> &arr)
 {
   if (data_ptr->values() == nullptr)
