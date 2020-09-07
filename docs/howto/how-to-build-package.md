@@ -41,7 +41,7 @@ Available FRAMEWORK drivers:
 
 This is an example to import TensorFlow model:
 ```
-$ one-import tf --input_path mymodel.pb --output_path mymode.circle \
+$ one-import tf --input_path mymodel.pb --output_path mymodel.circle \
 --input_arrays input1,input2 --input_shapes "1,224,224,3:1000" \
 --output_arrays output
 ```
