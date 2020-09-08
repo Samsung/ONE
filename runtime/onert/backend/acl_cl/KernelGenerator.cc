@@ -523,9 +523,22 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     strides_set.set(i, strides[i]);
   }
 
+  // Disable applied dim_correction
+  const auto orig_input_shape = inputData_tensor->info()->tensor_shape();
+  if (starts_set.num_dimensions() != inputData_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and input tensor is applied dim_correction
+    const auto input = _ctx.at(input_index);
+    inputData_tensor->info()->set_tensor_shape(
+        acl_common::asTensorShape(input.shape(), _current_op_seq_layout, backend_layout, false));
+  }
+
   auto fn = acl_common::generateLayer<arm_compute::CLStridedSlice>(
       inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set, strides_set,
       begin_mask, end_mask, shrink_axis_mask);
+
+  // Revert disabling applied dim_correction
+  inputData_tensor->info()->set_tensor_shape(orig_input_shape);
 
   _return_fn = asAclFunction(std::move(fn));
 }
