@@ -31,6 +31,36 @@ uint8_t fp32_to_uint8_cast(float f)
   return static_cast<uint8_t>(f);
 }
 
+void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
+                                             float &scaling_factor, int64_t &zp, float &nudged_min,
+                                             float &nudged_max)
+{
+
+  const int32_t kMinScale = 0;
+  const int32_t kMaxScale = 255;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  const float scaling_factor_inv = 1.0 / scaling_factor;
+  std::vector<int32_t> quantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    // clipping
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    data = data < nudged_min ? nudged_min : data;
+    data = data > nudged_max ? nudged_max : data;
+    quantized_values[i] =
+        static_cast<int32_t>(std::round((data - nudged_min) * scaling_factor_inv));
+  }
+
+  node->dtype(loco::DataType::U8);      // change the type of tensor
+  node->size<loco::DataType::U8>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
 void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                           float &nudged_min, float &nudged_max)
 {
