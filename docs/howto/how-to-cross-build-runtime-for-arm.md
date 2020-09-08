@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch` architecutre for now
-- supports `xenial`(default) `trusty`, and `bionic` release
+- supports `xenial`(default) `trusty`, `bionic`, and `focal` release
 
 To see the options,
 ```
@@ -73,10 +73,10 @@ $ echo 'export PATH=~/your/path/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueab
 ```
 
 - On Ubuntu 18.04 LTS, you can install using `apt-get`.
-Choose g++ version whatever you prefer: 6, 7 or 8.
+Choose g++ version whatever you prefer: 6, 7, 8 or 9.
 
 ```
-$ sudo apt-get install g++-{6,7,8}-arm-linux-gnueabihf
+$ sudo apt-get install g++-{6,7,8,9}-arm-linux-gnueabihf
 ```
 
 Make sure you get `libstdc++.so` updated on your target with your new toolchain's corresponding one.
