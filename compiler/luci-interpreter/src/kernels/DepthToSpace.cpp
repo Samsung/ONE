@@ -30,20 +30,10 @@ DepthToSpace::DepthToSpace(const Tensor *input, Tensor *output, const DepthToSpa
 
 void DepthToSpace::configure()
 {
-  if (input()->shape().num_dims() != 4)
-  {
-    throw std::runtime_error("Invalid input num_dims.");
-  }
-  if (output()->element_type() != DataType::FLOAT32 && output()->element_type() != DataType::U8 &&
-      output()->element_type() != DataType::S8 && output()->element_type() != DataType::S32 &&
-      output()->element_type() != DataType::S64)
-  {
-    throw std::runtime_error("Invalid output type");
-  }
-  if (input()->element_type() != output()->element_type())
-  {
-    throw std::runtime_error("Type mismatch on input and output.");
-  }
+  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
+  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32 ||
+                         output()->element_type() == DataType::U8)
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type())
   const int block_size = params().block_size;
   const int32_t input_height = input()->shape().dim(1);
   const int32_t input_width = input()->shape().dim(2);
@@ -52,9 +42,9 @@ void DepthToSpace::configure()
   int32_t output_width = input_width * block_size;
   int32_t output_channels = input_channels / block_size / block_size;
 
-  assert(input_height == output_height / block_size);
-  assert(input_width == output_width / block_size);
-  assert(input_channels == output_channels * block_size * block_size);
+  LUCI_INTERPRETER_CHECK(input_height == output_height / block_size);
+  LUCI_INTERPRETER_CHECK(input_width == output_width / block_size);
+  LUCI_INTERPRETER_CHECK(input_channels == output_channels * block_size * block_size);
 
   Shape output_shape(4);
   output_shape.dim(0) = input()->shape().dim(0);
