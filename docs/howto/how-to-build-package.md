@@ -77,9 +77,27 @@ Usage: one-import-tflite
     --output_path <path/to/circle>
 ```
 
-### Example for TensorFlow BCQ model
+### Example for TensorFlow Model Including BCQ Information
 
-TBD
+This is an example to import TensorFlow model which includes BCQ information.
+As a result of this command, BCQ information nodes will be preserved.
+```
+$ one-import bcq --input_path bcqmodel.pb --output_path bcqmodel.circle
+```
+
+Likewise, running with `--help` will show current required/optional arguments:
+```
+$ one-import bcq --help
+Convert TensorFlow model with BCQ to circle.
+Usage: one-import-bcq
+    --version Show version information and exit
+    --input_path <path/to/tfmodel/with/BCQ>
+    --output_path <path/to/circle>
+    --input_arrays <names of the input arrays, comma-separated>
+    --input_shapes <input shapes, colon-separated>
+    --output_arrays <names of the output arrays, comma-separated>
+    --v2 Use TensorFlow 2.x interface (default is 1.x interface)
+```
 
 ## Optimize circle model
 
