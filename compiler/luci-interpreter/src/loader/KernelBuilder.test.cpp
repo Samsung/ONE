@@ -38,6 +38,7 @@
 #include <kernels/Pad.h>
 #include <kernels/Prelu.h>
 #include <kernels/Reshape.h>
+#include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/Reverse.h>
 #include <kernels/Rsqrt.h>
@@ -532,6 +533,44 @@ TEST_F(KernelBuilderTest, Prelu)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, Reshape)
+{
+  auto *input = createInputNode();
+  auto *shape = createInputNode();
+
+  auto *op = createNode<luci::CircleReshape>();
+  op->tensor(input);
+  op->shape(shape);
+
+  auto kernel = buildKernel<kernels::Reshape>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->shape(), shape);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, ResizeBilinear)
+{
+  auto *input = createInputNode();
+  auto *size = createInputNode();
+
+  auto *op = createNode<luci::CircleResizeBilinear>();
+  op->input(input);
+  op->size(size);
+  op->align_corners(true);
+  op->half_pixel_centers(true);
+
+  auto kernel = buildKernel<kernels::ResizeBilinear>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size(), size);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().align_corners, Eq(op->align_corners()));
+  EXPECT_THAT(kernel->params().half_pixel_centers, Eq(op->half_pixel_centers()));
+}
+
 TEST_F(KernelBuilderTest, ResizeNearestNeighbor)
 {
   auto *input = createInputNode();
@@ -551,23 +590,6 @@ TEST_F(KernelBuilderTest, ResizeNearestNeighbor)
   EXPECT_THAT(kernel->params().align_corners, Eq(op->align_corners()));
   // TODO currently half_pixel_centers are not implemented on CircleResizeNearestNeighbor
   // after adding, need to be updated.
-}
-
-TEST_F(KernelBuilderTest, Reshape)
-{
-  auto *input = createInputNode();
-  auto *shape = createInputNode();
-
-  auto *op = createNode<luci::CircleReshape>();
-  op->tensor(input);
-  op->shape(shape);
-
-  auto kernel = buildKernel<kernels::Reshape>(op);
-  ASSERT_THAT(kernel, NotNull());
-
-  checkTensor(kernel->input(), input);
-  checkTensor(kernel->shape(), shape);
-  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, ReverseV2)
