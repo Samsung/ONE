@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +102,48 @@ TYPED_TEST(ResizeNearestNeighborTest, SimpleTest)
                        10, 10, 16, //
                    },
                    false, false);
+}
+
+TYPED_TEST(ResizeNearestNeighborTest, AlignCenterTest)
+{
+  Check<TypeParam>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
+                   {
+                       3, 6,  //
+                       9, 12, //
+                       4, 10, //
+                       10, 16 //
+                   },
+                   {3, 3},
+                   {
+                       3, 6, 6,    //
+                       9, 12, 12,  //
+                       9, 12, 12,  //
+                       4, 10, 10,  //
+                       10, 16, 16, //
+                       10, 16, 16, //
+                   },
+                   true, false);
+}
+
+TYPED_TEST(ResizeNearestNeighborTest, HalfPixelCenterTest)
+{
+  Check<TypeParam>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
+                   {
+                       3, 6,  //
+                       9, 12, //
+                       4, 10, //
+                       10, 16 //
+                   },
+                   {3, 3},
+                   {
+                       3, 6, 6,    //
+                       9, 12, 12,  //
+                       9, 12, 12,  //
+                       4, 10, 10,  //
+                       10, 16, 16, //
+                       10, 16, 16, //
+                   },
+                   false, true);
 }
 
 TEST(ResizeNearestNeighborTest, InputShapeInvalid_NEG)

@@ -57,13 +57,14 @@ void ResizeNearestNeighbor::execute() const
   {
     case DataType::FLOAT32:
       tflite::reference_ops::ResizeNearestNeighbor(
-          op_params, getTensorShape(input()), getTensorData<int32>(input()), getTensorShape(size()),
-          getTensorData<int32>(size()), getTensorShape(output()), getTensorData<int32>(output()));
+          op_params, getTensorShape(input()), getTensorData<int32_t>(input()),
+          getTensorShape(size()), getTensorData<int32_t>(size()), getTensorShape(output()),
+          getTensorData<int32_t>(output()));
       break;
     case DataType::U8:
       tflite::optimized_ops::ResizeNearestNeighbor(
           op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-          getTensorShape(size()), getTensorData<int32>(size()), getTensorShape(output()),
+          getTensorShape(size()), getTensorData<int32_t>(size()), getTensorShape(output()),
           getTensorData<uint8_t>(output()));
       break;
     default:
