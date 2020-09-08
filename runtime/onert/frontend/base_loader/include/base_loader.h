@@ -425,7 +425,8 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
     };
     if (ParseSparseIndexVector() == false)
       throw std::runtime_error("Error during parsing sparsity index information");
-    type_info.sparse2DMetadata(std::move(w1_segments), std::move(w1_indices));
+    type_info.sparsity(
+        std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices)));
   }
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);

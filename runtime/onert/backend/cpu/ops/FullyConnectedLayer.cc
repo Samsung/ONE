@@ -159,8 +159,8 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   op_params.activation = convertActivationType(_activation);
 
   int w0_size = getTensorShape(_weights).Dims(0);
-  const uint16_t *w1_segments = _weights->w1_segments();
-  const uint16_t *w1_indices = _weights->w1_indices();
+  const uint16_t *w1_segments = _weights->sparsity()->w1_segments();
+  const uint16_t *w1_indices = _weights->sparsity()->w1_indices();
 
   nnfw::cker::FullyConnectedSparseWeight(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
@@ -191,7 +191,7 @@ void FullyConnectedLayer::run()
   {
     fullyConnectedHybrid();
   }
-  else if (_weights->is_sparse())
+  else if (_weights->sparsity())
   {
     fullyConnectedSparseWeight();
   }
