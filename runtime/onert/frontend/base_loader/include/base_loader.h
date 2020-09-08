@@ -377,18 +377,34 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
           throw std::runtime_error("traversal_order [0, 1, ..., n-1] is only supported.");
       }
     }
-    // ignore block_map
+    // check block_map
+    int block_rank = 0;
+    if (src_sparsity->block_map())
+    {
+      block_rank = src_sparsity->block_map()->size();
+      for (int i = 0; i < block_rank; ++i)
+      {
+        if (i != src_sparsity->block_map()->Get(i))
+          throw std::runtime_error("block_map [0, 1, ..., n-1] is only supported.");
+      }
+    }
     // load metadata
-    const size_t dim_metadata_size = src_sparsity->dim_metadata()->size();
-    if (dim_metadata_size != 2)
-      throw std::runtime_error("sparse tensor is supported only for 2D");
+    const int dim_metadata_size = src_sparsity->dim_metadata()->size();
+    auto dense_rank = shape.rank();
+    if (dense_rank + block_rank != dim_metadata_size)
+      throw std::runtime_error("sparsity dim_metadata length is wrong.");
+    bool random_sparsity = dim_metadata_size == 2 && block_rank == 0;
+    bool block2D_sparsity = dim_metadata_size == 4 && block_rank == 2;
+    if (dim_metadata_size != !random_sparsity && !block2D_sparsity)
+      throw std::runtime_error(
+          "sparsity is supported only for 2D tensor with random or 16x1 block sparsity.");
+
     const auto *src_metadata = src_sparsity->dim_metadata()->Get(0);
     if (src_metadata->format() != DimensionType::DimensionType_DENSE)
       throw std::runtime_error("sparse tensor dim[0] is not DENSE");
     src_metadata = src_sparsity->dim_metadata()->Get(1);
     if (src_metadata->format() != DimensionType::DimensionType_SPARSE_CSR)
       throw std::runtime_error("sparse tensor dim[0] is not SPARSE_CSR");
-
     auto ParseSparseIndexVector = [src_metadata, &w1_segments, &w1_indices]() {
       if (src_metadata->array_segments() == nullptr || src_metadata->array_indices() == nullptr)
         return false;
@@ -424,8 +440,17 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
     };
     if (ParseSparseIndexVector() == false)
       throw std::runtime_error("Error during parsing sparsity index information");
-    type_info.sparsity(
-        std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices)));
+    // Get block size
+    std::vector<int32_t> block_size;
+    for (int i = 0; i < block_rank; ++i)
+    {
+      auto block_metadata = src_sparsity->dim_metadata()->Get(dense_rank + i);
+      if (block_metadata->format() != DimensionType::DimensionType_DENSE)
+        throw std::runtime_error("block dimension must be DENSE.");
+      block_size.push_back(block_metadata->dense_size());
+    }
+    type_info.sparsity(std::make_shared<ir::Sparsity>(std::move(w1_segments), std::move(w1_indices),
+                                                      std::move(block_size)));
   }
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
