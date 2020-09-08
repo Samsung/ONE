@@ -107,6 +107,7 @@ public:
   uint32_t addOperatorPadV2(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
+  uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
 
