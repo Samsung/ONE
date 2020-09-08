@@ -29,4 +29,4 @@ Once you have done the above steps, please register it in the test source code t
 
 ### Installation
 
-You must install the test nnpackages before running the tests. They must be in the same directory with the test executable, under `nnfw_api_gtest_models/`. Istallation is done by command `onert-test prepare-model`. It only runs correctly on CI, since the nnpackage file server is not public.
+You must install the test nnpackages before running the tests. They must be in the same directory with the test executable, under `nnfw_api_gtest_models/`. Installation is done by command `onert-test prepare-model`. It only runs correctly on CI, since the nnpackage file server is not public.
