@@ -51,6 +51,16 @@ void ResizeBilinearLayer::configure(const IPortableTensor *input, IPortableTenso
                                     bool half_pixel_centers)
 {
   assert(_size == nullptr);
+  if (output_height < 0)
+  {
+    throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_height = " +
+                             std::to_string(output_height)};
+  }
+  if (output_width < 0)
+  {
+    throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_width = " +
+                             std::to_string(output_width)};
+  }
   _input = input;
   _output = output;
   _output_height = output_height;
