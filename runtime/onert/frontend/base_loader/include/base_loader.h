@@ -368,7 +368,17 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   {
     std::vector<uint16_t> w1_segments;
     std::vector<uint16_t> w1_indices;
-    // ignore traversal_order, block_map
+    // check traversal_order
+    if (src_sparsity->traversal_order())
+    {
+      const int traversal_order_size = src_sparsity->traversal_order()->size();
+      for (int i = 0; i < traversal_order_size; ++i)
+      {
+        if (i != src_sparsity->traversal_order()->Get(i))
+          throw std::runtime_error("traversal_order [0, 1, ..., n-1] is only supported.");
+      }
+    }
+    // ignore block_map
     // load metadata
     const size_t dim_metadata_size = src_sparsity->dim_metadata()->size();
     if (dim_metadata_size != 2)
