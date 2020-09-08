@@ -44,6 +44,8 @@ set(SOURCES
     Pad.cpp
     Prelu.h
     Prelu.cpp
+    Relu.h
+    Relu.cpp
     Reshape.h
     Reshape.cpp
     ResizeBilinear.h
@@ -114,6 +116,7 @@ set(TEST_SOURCES
     Mul.test.cpp
     Pad.test.cpp
     Prelu.test.cpp
+    Relu.test.cpp
     Reshape.test.cpp
     ResizeBilinear.test.cpp
     ResizeNearestNeighbor.test.cpp
