@@ -32,8 +32,7 @@ void DepthToSpace::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
   LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32 ||
-                         output()->element_type() ==
-                             DataType::U8) // only execute will float32, uint8.
+                         output()->element_type() == DataType::U8)
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type())
   const int block_size = params().block_size;
   const int32_t input_height = input()->shape().dim(1);

@@ -55,7 +55,7 @@ TYPED_TEST(DepthToSpaceTest, SimpleCase)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
-TEST(DepthToSpaceTest, Invalid_Input_Shape_NEG)
+TEST(DepthToSpaceTest, InvalidInputShape_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 2, 4};
@@ -70,7 +70,7 @@ TEST(DepthToSpaceTest, Invalid_Input_Shape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthToSpaceTest, In_Out_Type_Mismatch_NEG)
+TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
@@ -85,7 +85,7 @@ TEST(DepthToSpaceTest, In_Out_Type_Mismatch_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(DepthToSpaceTest, Block_Size_NEG)
+TEST(DepthToSpaceTest, InvalidBlockSize_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
   Shape input_shape{1, 1, 2, 4};
