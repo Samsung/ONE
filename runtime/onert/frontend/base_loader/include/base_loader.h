@@ -127,7 +127,6 @@ private:
   void loadPack(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
-  void loadTranspose(const Operator *op, ir::Graph &subg);
   void loadReduce(const Operator *op, ir::Graph &subg,
                   ir::operation::Reduce::ReduceType reduce_type);
   void loadReduceAll(const Operator *op, ir::Graph &subg);
@@ -752,27 +751,6 @@ void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir:
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadTranspose(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-  auto input = inputs.at(0);
-  auto perm = inputs.at(1);
-
-  // FIXME Handle TransposeOptions.
-  if (!subg.operands().at(perm).isConstant())
-    throw std::runtime_error("Transpose: non-constant 'perm' is not supported.");
-
-  ir::operation::Transpose::Param param;
-  param.perm = subg.operands().at(perm).template asVector<int>();
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Transpose({input}, outputs, param));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadReduce(const Operator *op, ir::Graph &subg,
                                           ir::operation::Reduce::ReduceType reduce_type)
 {
@@ -1321,7 +1299,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
                                 1.f);
       return;
     case BuiltinOperator::BuiltinOperator_TRANSPOSE:
-      loadTranspose(op, subg);
+      loadOperationTo<ir::operation::Transpose>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_MEAN:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::MEAN);
