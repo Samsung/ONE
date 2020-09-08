@@ -116,6 +116,11 @@ ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_sha
 
 ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank)
 {
+  if (axis < 0 || axis >= rank)
+  {
+    throw std::runtime_error("ArgMax shape inference: Wrong axis value " + std::to_string(axis));
+  }
+
   ir::Shape out_shape;
   for (int idx = 0; idx < rank; ++idx)
   {
