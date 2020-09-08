@@ -27,8 +27,9 @@ __Apt=""
 __UbuntuPackages="build-essential"
 
 # other development supports
-__UbuntuPackages+=" libboost-all-dev ocl-icd-opencl-dev"
+__UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
+__UbuntuBoostPackages=" llibboost-all-dev"
 
 # symlinks fixer
 __UbuntuPackages+=" symlinks"
@@ -77,6 +78,10 @@ for i in "$@" ; do
         bionic)
             __LinuxCodeName=bionic
             ;;
+        focal)
+            __LinuxCodeName=focal
+            __UbuntuBoostPackages=" libboost1.67-all-dev"
+            ;;
         --setproxy*)
             proxyip="${i#*=}"
             __Apt="Acquire::http::proxy \"http://$proxyip/\";\n"
@@ -92,6 +97,9 @@ for i in "$@" ; do
             ;;
     esac
 done
+
+# Current runtime build system supports boost version under 1.70
+__UbuntuPackages+="$__UbuntuBoostPackages"
 
 __RootfsDir="$__CrossDir/rootfs/$__BuildArch"
 
