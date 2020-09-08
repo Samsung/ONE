@@ -1281,20 +1281,37 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx).get();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
-
   const auto rank = _ctx.at(ifm_idx).shape().rank();
-  const auto pv = _ctx.at(perm_idx).asVector<int32_t>();
-  auto backend_pv = ::onert::backend::acl_common::getARMComputePermutationVector(
-      rank, pv, frontend_layout, backend_layout);
 
-  std::unique_ptr<::arm_compute::IFunction> fn;
-  if (ifm_tensor->num_dimensions() <= 2 && ofm_tensor->num_dimensions() <= 2)
+  const auto perms = _ctx.at(perm_idx);
+  std::vector<int32_t> pv;
+  if (perms.shape() == ir::Shape{0})
   {
+    pv.resize(rank);
+    std::iota(pv.begin(), pv.end(), 0);
+    std::reverse(pv.begin(), pv.end());
+  }
+  else
+  {
+    pv = _ctx.at(perm_idx).asVector<int32_t>();
+  }
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  if (rank == 1)
+  {
+    fn = acl_common::generateLayer<arm_compute::NECopy>(ifm_tensor->handle(), ofm_tensor->handle());
+  }
+  else if (rank == 2)
+  {
+    assert(pv.size() == 2 && pv.at(0) == 1 && pv.at(1) == 0);
     fn = acl_common::generateLayer<arm_compute::NETranspose>(ifm_tensor->handle(),
                                                              ofm_tensor->handle());
   }
   else
   {
+    auto backend_pv =
+        acl_common::getARMComputePermutationVector(rank, pv, frontend_layout, backend_layout);
+
     fn = acl_common::generateLayer<arm_compute::NEPermute>(ifm_tensor->handle(),
                                                            ofm_tensor->handle(), backend_pv);
   }

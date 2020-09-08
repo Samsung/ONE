@@ -198,6 +198,13 @@ uint32_t CircleGen::addOperatorIf(const OperatorParams &params, uint32_t then_su
                                 circle::BuiltinOptions_IfOptions, options);
 }
 
+uint32_t CircleGen::addOperatorTranspose(const OperatorParams &params)
+{
+  auto options = circle::CreateTransposeOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_TRANSPOSE,
+                                circle::BuiltinOptions_TransposeOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction
