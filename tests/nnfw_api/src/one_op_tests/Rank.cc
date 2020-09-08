@@ -17,26 +17,19 @@
 #include "GenModelTest.h"
 
 // WORKAROUND Handle int32_t type input/output
-union float_int {
-  int32_t i;
-  float f;
-};
-
 TEST_F(GenModelTest, OneOp_Rank)
 {
   CircleGen cgen;
   int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
 
-  // TODO handle many type in addTestCase
-  float_int output_data;
-  output_data.i = 4;
-
   cgen.addOperatorRank({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(
-      {{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}}, {{output_data.f}}});
+  TestCaseData tcd;
+  tcd.addInput(std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18});
+  tcd.addOutput(std::vector<int32_t>{4});
+  _context->addTestCase(tcd);
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -49,14 +42,11 @@ TEST_F(GenModelTest, OneOp_Rank_Int32)
   int out = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
 
   // TODO handle many type in addTestCase
-  float_int output_data;
-  output_data.i = 4;
-
   cgen.addOperatorRank({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(
-      {{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}}, {{output_data.f}}});
+  _context->addTestCase(uniformTCD<int32_t>(
+      {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}}, {{4}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
