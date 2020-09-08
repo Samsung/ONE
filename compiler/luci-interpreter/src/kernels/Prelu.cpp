@@ -44,7 +44,7 @@ void Prelu::configure()
     double identity_multiplier = input()->scale() / output()->scale();
     quantizeMultiplier(identity_multiplier, &_output_multiplier_identity, &_output_shift_identity);
   }
-  output()->resize(input()->shape());
+  output()->resize(calculateShapeForBroadcast(input()->shape(), alpha()->shape()));
 }
 
 void Prelu::execute() const
@@ -69,12 +69,24 @@ void Prelu::evalFloat() const
   const auto size = getTensorShape(input()).FlatSize();
   auto output_data = getTensorData<float>(output());
 
-  for (auto i = decltype(size){0}; i < size; ++i)
+  auto PreluFunc = [](float input, float alpha) { return input >= 0.0 ? input : input * alpha; };
+
+  if (input()->shape() != alpha()->shape())
   {
-    if (input_data[i] >= 0)
-      output_data[i] = input_data[i];
-    else
-      output_data[i] = input_data[i] * alpha_data[i];
+    tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
+        getTensorShape(input()), getTensorData<float>(input()), getTensorShape(alpha()),
+        getTensorData<float>(alpha()), getTensorShape(output()), getTensorData<float>(output()),
+        PreluFunc);
+  }
+  else
+  {
+    for (auto i = decltype(size){0}; i < size; ++i)
+    {
+      if (input_data[i] >= 0)
+        output_data[i] = input_data[i];
+      else
+        output_data[i] = input_data[i] * alpha_data[i];
+    }
   }
 }
 
@@ -90,9 +102,20 @@ void Prelu::evalQuantized() const
   op_params.output_shift_2 = _output_shift_alpha;
   op_params.output_multiplier_2 = _output_multiplier_alpha;
 
-  tflite::reference_ops::Prelu<uint8_t>(
-      op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(alpha()),
-      getTensorData<uint8_t>(alpha()), getTensorShape(output()), getTensorData<uint8_t>(output()));
+  if (input()->shape() != alpha()->shape())
+  {
+    tflite::reference_ops::BroadcastPrelu4DSlow(
+        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
+        getTensorShape(alpha()), getTensorData<uint8_t>(alpha()), getTensorShape(output()),
+        getTensorData<uint8_t>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Prelu<uint8_t>(op_params, getTensorShape(input()),
+                                          getTensorData<uint8_t>(input()), getTensorShape(alpha()),
+                                          getTensorData<uint8_t>(alpha()), getTensorShape(output()),
+                                          getTensorData<uint8_t>(output()));
+  }
 }
 
 } // namespace kernels
