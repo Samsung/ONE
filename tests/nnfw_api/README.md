@@ -16,6 +16,8 @@ This test framework consists of 3 kinds of tests:
 
 ## nnpackages for testing
 
+> NOTE It is not recommended adding a test this way, since you can make a Circle model with some code using `CircleGen` class. See also `GenModelTest`.
+
 To test *nnfw_api*, we almost always need some nnpackages. Those are stored in a web server so there is no nnpackage files in the repo.
 
 ### How to add nnpackages for test
@@ -27,4 +29,4 @@ Once you have done the above steps, please register it in the test source code t
 
 ### Installation
 
-You must install the test nnpackages before running the tests. They must be in the same directory with the test executable, under `nnfw_api_gtest_models/`. There is an installation script `tests/scripts/nnfw_api_gtest/install_nnfw_api_gtest_nnpackages.sh`, however the nnpackage file server is not public so it will fail.
+You must install the test nnpackages before running the tests. They must be in the same directory with the test executable, under `nnfw_api_gtest_models/`. Istallation is done by command `onert-test prepare-model`. It only runs correctly on CI, since the nnpackage file server is not public.
