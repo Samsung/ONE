@@ -73,21 +73,6 @@ TEST(EluTest, InOutTypeMismatch_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(EluTest, InvalidType_NEG)
-{
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<uint8_t> input_data{
-      0, 6, 2,  4, //
-      3, 2, 10, 1, //
-  };
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_data);
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  Elu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  EXPECT_ANY_THROW(kernel.execute());
-}
-
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
