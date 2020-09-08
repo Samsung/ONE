@@ -237,6 +237,9 @@ protected:
         NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_so.session, ind, &ti));
         uint64_t input_elements = num_elems(&ti);
         _so.inputs[ind].resize(input_elements * sizeOfNnfwType(ti.dtype));
+        // TODO : Support optional inputs
+        ASSERT_GT(_so.inputs[ind].size(), 0)
+            << "Please make sure TC input is non-empty. Optional input is not supported yet.";
         ASSERT_EQ(nnfw_set_input(_so.session, ind, ti.dtype, _so.inputs[ind].data(),
                                  _so.inputs[ind].size()),
                   NNFW_STATUS_NO_ERROR);
@@ -251,6 +254,7 @@ protected:
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
         uint64_t output_elements = num_elems(&ti);
         _so.outputs[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
+        ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
                                   _so.outputs[ind].size()),
                   NNFW_STATUS_NO_ERROR);
