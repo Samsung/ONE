@@ -70,13 +70,13 @@ Unfortunately, the debug build on the x86_64 architecture currently has an error
 
 ```
 $ export BUILD_TYPE=release
-$ make install
+$ make -f Makefile.template install
 ```
 
 Or you can simply do something like this:
 
 ```
-$ BUILD_TYPE=release make install
+$ BUILD_TYPE=release make -f Makefile.template install
 ```
 
 The build method described here is a `native build` in which the build environment and execution environment are same. So, this command creates a runtime binary targeting the current build architecture, probably x86_64, as the execution environment. You can find the build output in the ./Product folder as follows:
@@ -84,9 +84,9 @@ The build method described here is a `native build` in which the build environme
 ```
 $ tree -L 2 ./Product
 ./Product
-├── obj -> /home/sjlee/star/one/Product/x86_64-linux.debug/obj
-├── out -> /home/sjlee/star/one/Product/x86_64-linux.debug/out
-└── x86_64-linux.debug
+├── obj -> /home/sjlee/star/one/Product/x86_64-linux.release/obj
+├── out -> /home/sjlee/star/one/Product/x86_64-linux.release/out
+└── x86_64-linux.release
     ├── BUILD
     ├── CONFIGURE
     ├── INSTALL
@@ -104,56 +104,68 @@ $ tree -L 3 ./Product/out
 │   └── tflite_run
 ├── include
 │   ├── nnfw
+│   │   ├── NeuralNetworks.h
 │   │   ├── NeuralNetworksEx.h
 │   │   ├── NeuralNetworksExtensions.h
-│   │   ├── NeuralNetworks.h
-│   │   ├── nnfw_experimental.h
-│   │   └── nnfw.h
+│   │   ├── nnfw.h
+│   │   └── nnfw_experimental.h
 │   └── onert
 │       ├── backend
 │       ├── compiler
 │       ├── exec
 │       ├── ir
-│       ├── misc
 │       └── util
 ├── lib
 │   ├── libbackend_cpu.so
 │   ├── libcircle_loader.so
 │   ├── libneuralnetworks.so
 │   ├── libnnfw-dev.so
-│   ├── libnnfw_lib_benchmark.so
-│   ├── libnnfw_lib_misc.a
 │   ├── libonert_core.so
 │   └── libtflite_loader.so
-├── tests
+├── test
 │   ├── FillFrom_runner
+│   ├── command
+│   │   ├── nnpkg-test
+│   │   ├── prepare-model
+│   │   ├── unittest
+│   │   └── verify-tflite
+│   ├── list
+│   │   ├── benchmark_nnpkg_model_list.txt
+│   │   ├── frameworktest_list.aarch64.acl_cl.txt
+│   │   ├── frameworktest_list.aarch64.acl_neon.txt
+│   │   ├── frameworktest_list.aarch64.cpu.txt
+│   │   ├── frameworktest_list.armv7l.acl_cl.txt
+│   │   ├── frameworktest_list.armv7l.acl_neon.txt
+│   │   ├── frameworktest_list.armv7l.cpu.txt
+│   │   ├── frameworktest_list.noarch.interp.txt
+│   │   ├── frameworktest_list.x86_64.cpu.txt
+│   │   ├── nnpkg_test_list.armv7l-linux.acl_cl
+│   │   ├── nnpkg_test_list.armv7l-linux.acl_neon
+│   │   ├── nnpkg_test_list.armv7l-linux.cpu
+│   │   ├── nnpkg_test_list.noarch.interp
+│   │   ├── tflite_loader_list.aarch64.txt
+│   │   └── tflite_loader_list.armv7l.txt
+│   ├── models
+│   │   ├── nnfw_api_gtest
+│   │   ├── run_test.sh
+│   │   └── tflite
 │   ├── nnpkgs
 │   │   └── FillFrom
-│   └── scripts
-│       ├── benchmark_nnapi.sh
-│       ├── benchmark_nnpkg.sh
-│       ├── common.sh
-│       ├── framework
-│       ├── list
-│       ├── print_to_json.sh
-│       ├── test-driver.sh
-│       ├── test_framework.sh
-│       ├── test_scheduler_with_profiling.sh
-│       └── unittest.sh
+│   └── onert-test
 ├── unittest
 │   ├── nnapi_gtest
 │   ├── nnapi_gtest.skip
 │   ├── nnapi_gtest.skip.noarch.interp
-│   ├── nnapi_gtest.skip.x86_64-linux.cpu
-│   ├── test_compute
-│   ├── test_onert
-│   ├── test_onert_backend_cpu_common
-│   ├── test_onert_frontend_nnapi
-│   └── tflite_test
+│   └── nnapi_gtest.skip.x86_64-linux.cpu
 └── unittest_standalone
-    └── nnfw_api_gtest
+    ├── nnfw_api_gtest
+    ├── test_compute
+    ├── test_onert
+    ├── test_onert_backend_cpu_common
+    ├── test_onert_frontend_nnapi
+    └── tflite_test
 
-19 directories, 36 files
+20 directories, 47 files
 
 ```
 
@@ -173,25 +185,23 @@ inception_v3.tflite
 The result of running the inception_v3 model using runtime is as follows. Please consider that this is a test that simply checks execution latency without considering the accuracy of the model.
 
 ```
-$ USE_NNAPI=1 LD_LIBRARY_PATH="./Product/out/lib/:$LD_LIBRARY_PATH" ./Product/out
-/bin/tflite_run ./inception_v3.tflite
-nnapi function 'ANeuralNetworksModel_create' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperand' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_setOperandValue' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperation' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_identifyInputsAndOutputs' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_finish' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_create' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_finish' is loaded from './Product/out/lib/libneuralnetworks.so'
+$ USE_NNAPI=1 ./Product/out/bin/tflite_run ./inception_v3.tflite
+nnapi function 'ANeuralNetworksModel_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_addOperand' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_setOperandValue' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_addOperation' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_identifyInputsAndOutputs' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksCompilation_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksCompilation_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
 input tensor indices = [317,]
-nnapi function 'ANeuralNetworksExecution_create' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setInput' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setOutput' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_startCompute' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_wait' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_free' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_free' is loaded from './Product/out/lib/libneuralnetworks.so'
-... run 1 takes 183.895 ms
+nnapi function 'ANeuralNetworksExecution_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksExecution_setInput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksExecution_setOutput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksExecution_startCompute' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksEvent_wait' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksEvent_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksExecution_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
 output tensor indices = [316(max:905),]
 ===================================
 MODEL_LOAD   takes 1.108 ms
@@ -202,10 +212,10 @@ EXECUTE      takes 183.895 ms
 - MIN      :  183.895 ms
 - GEOMEAN  :  183.895 ms
 ===================================
-nnapi function 'ANeuralNetworksCompilation_free' is loaded from './Product/out/lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_free' is loaded from './Product/out/lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksCompilation_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+nnapi function 'ANeuralNetworksModel_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
 ```
-Here, `USE_NNAPI=1` means that **ONE** runtime is used for model inference. If omitted, the model will be executed using Tensorflow lite, the basic framework for verification. `LD_LIBRARY_PATH="./Product/out/lib/:$LD_LIBRARY_PATH"` specifies the location of the runtime library to be used for testing. From the previous build result, you can see that it is the path to the directory where `libneuralnetworks.so` and `libonert_core.so` are located.
+Here, `USE_NNAPI=1` means that **ONE** runtime is used for model inference. If omitted, the model will be executed using Tensorflow lite, the basic framework for verification. From the previous build result, you can see that it is the path to the directory where `libneuralnetworks.so` and `libonert_core.so` are located.
 
 If you come here without any problems, you have all of the basic environments for runtime development.
 
