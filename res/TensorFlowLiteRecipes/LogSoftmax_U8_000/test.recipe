@@ -1,0 +1,21 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  quant { min: -4.952 max: 4.939 scale: 0.0388 zero_point: 128 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  quant { min: -15.9375 max: 0 scale: 0.0625 zero_point: 255 }
+}
+operation {
+  type: "LogSoftmax"
+  log_softmax_options {
+  }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
