@@ -59,11 +59,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
-
-  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
   /**
    * @brief Get tensor with a specific OperandIndex.

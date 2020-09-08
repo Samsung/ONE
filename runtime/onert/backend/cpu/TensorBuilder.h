@@ -58,11 +58,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
-
-  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
 private:
   const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;

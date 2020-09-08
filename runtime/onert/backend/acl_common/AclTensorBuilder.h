@@ -70,8 +70,6 @@ public:
   void allocate() override;
   void postFunctionPrepare() override;
 
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 
   void setUsesCount(const ir::OperandIndex &index, size_t num_uses)
@@ -303,13 +301,6 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::postFunctionPrepare(void)
 {
   _tensor_mgr->tryDeallocConstants();
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::unique_ptr<ITensorManager>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseStaticTensorManager(void)
-{
-  return std::move(_tensor_mgr);
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>

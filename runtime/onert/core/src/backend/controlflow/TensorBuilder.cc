@@ -106,16 +106,6 @@ std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::O
   return _tensor_reg->getNativeOwnTensor(ind);
 }
 
-std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
-{
-  return std::move(_static_tensor_mgr);
-}
-
-std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
-{
-  return std::move(_dynamic_tensor_mgr);
-}
-
 void TensorBuilder::setNativeUserTensor(const ir::OperandIndex &ind,
                                         const std::shared_ptr<UserTensor> &tensor)
 {

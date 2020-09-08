@@ -89,14 +89,6 @@ public: // methods for static tensor allocation
    */
   virtual void postFunctionPrepare() = 0;
 
-  /**
-   * @brief Release static @c ITensorManger object which was built
-   *        Before calling this, @c allocate must have been called
-   *
-   * @return std::unique_ptr<ITensorManager> Tensor Manager object
-   */
-  virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
-
 public: // methods for dynamic tensor allocation
   /**
    * @brief Get dynamicTensorManager. If a backend does not support dynamic tensor, exception
@@ -108,14 +100,6 @@ public: // methods for dynamic tensor allocation
    *         to the end of execution
    */
   virtual IDynamicTensorManager *dynamicTensorManager(void) { return nullptr; }
-
-  /**
-   * @brief Release dynamic @c ITensorManger object which was built
-   *        Before calling this, @c allocate must have been called
-   *
-   * @return std::unique_ptr<ITensorManager> Tensor Manager object
-   */
-  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) { return nullptr; }
 };
 
 } // namespace backend

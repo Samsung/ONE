@@ -81,10 +81,8 @@ DataflowExecutor::DataflowExecutor(
     std::unique_ptr<compiler::LoweredGraph> lowered_graph,
     const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
     const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
-    const compiler::TensorRegistries &tensor_regs, backend::TensorManagerSet &&tensor_mgrs,
-    compiler::CodeMap &&code_map)
-    : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs,
-                   std::move(tensor_mgrs)},
+    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map)
+    : ExecutorBase{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs},
       _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;

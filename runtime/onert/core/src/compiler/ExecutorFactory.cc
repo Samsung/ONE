@@ -65,23 +65,6 @@ private:
   std::shared_ptr<backend::IConfig> _config;
 };
 
-// TODO Think of a better way to manage TensorManagers
-backend::TensorManagerSet createTensorManagerSet(const compiler::TensorBuilders &tensor_builders)
-{
-  backend::TensorManagerSet tensor_mgrs;
-  for (auto &tensor_builder : tensor_builders)
-  {
-    auto s_tensor_manager = tensor_builder->releaseStaticTensorManager();
-    if (s_tensor_manager != nullptr)
-      tensor_mgrs.insert(std::move(s_tensor_manager));
-
-    auto d_tensor_manager = tensor_builder->releaseDynamicTensorManager();
-    if (d_tensor_manager != nullptr)
-      tensor_mgrs.insert(std::move(d_tensor_manager));
-  }
-  return tensor_mgrs;
-}
-
 } // namespace
 } // namespace onert
 
@@ -370,10 +353,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     });
   }
 
-  backend::TensorManagerSet tensor_mgrs = createTensorManagerSet(tensor_builders);
-  auto exec = new exec::LinearExecutor{
-      std::move(lowered_graph), input_tensors,       output_tensors, tensor_regs,
-      std::move(tensor_mgrs),   std::move(code_map), order};
+  auto exec =
+      new exec::LinearExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs,
+                               std::move(code_map),      order};
 
   if (!options.trace_filepath.empty())
   {
@@ -477,20 +459,16 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     });
   }
 
-  backend::TensorManagerSet tensor_mgrs = createTensorManagerSet(tensor_builders);
-
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), input_tensors,
-                                      output_tensors,           tensor_regs,
-                                      std::move(tensor_mgrs),   std::move(code_map)};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), input_tensors, output_tensors,
+                                      tensor_regs, std::move(code_map)};
   }
   else
   {
-    auto dataflow_exec = new exec::DataflowExecutor{std::move(lowered_graph), input_tensors,
-                                                    output_tensors,           tensor_regs,
-                                                    std::move(tensor_mgrs),   std::move(code_map)};
+    auto dataflow_exec = new exec::DataflowExecutor{
+        std::move(lowered_graph), input_tensors, output_tensors, tensor_regs, std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
