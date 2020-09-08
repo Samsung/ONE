@@ -29,8 +29,8 @@ class Split : public Operation
 public:
   enum Input
   {
-    INPUT = 0,
-    AXIS = 1
+    AXIS = 0,
+    INPUT = 1,
   };
 
   struct Param

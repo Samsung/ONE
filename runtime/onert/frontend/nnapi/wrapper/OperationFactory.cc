@@ -1538,7 +1538,7 @@ OperationFactory::OperationFactory()
     assert(init_param.input_count == 3);
     assert(init_param.output_count >= 1); // At least one output tensor and axis
 
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence inputs{init_param.inputs[1], init_param.inputs[0]};
     OperandIndexSequence outputs;
     for (uint32_t n = 0; n < init_param.output_count; ++n)
     {
