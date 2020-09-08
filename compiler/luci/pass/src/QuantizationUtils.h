@@ -33,6 +33,8 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension, int 
 
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
+void propagate_concat_quantparam(luci::CircleConcatenation *concat);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__
