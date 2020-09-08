@@ -73,10 +73,34 @@ std::ostream &operator<<(std::ostream &os, const std::vector<int32_t> &vect)
   return os;
 }
 
-template <typename T> void dump_fbvect(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
+template <typename T>
+void dump_fbvect(std::ostream &os, const flatbuffers::Vector<T> *fbvect, uint32_t size)
+{
+  for (uint32_t q = 0; q < size; q++)
+  {
+    if (q)
+      os << ", ";
+    os << fbvect->Get(q);
+  }
+}
+
+template <>
+void dump_fbvect(std::ostream &os, const flatbuffers::Vector<uint8_t> *fbvect, uint32_t size)
+{
+  assert(fbvect);
+  for (uint32_t q = 0; q < size; q++)
+  {
+    if (q)
+      os << ", ";
+    os << static_cast<uint32_t>(fbvect->Get(q));
+  }
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
 {
   if (fbvect == nullptr)
-    return;
+    return os;
 
   bool ellipsis = (fbvect->size() > 4);
   auto limit_size = ellipsis ? 4 : fbvect->size();
@@ -85,22 +109,14 @@ template <typename T> void dump_fbvect(std::ostream &os, const flatbuffers::Vect
   {
     os << "(" << fbvect->size() << ") ";
   }
-  for (uint32_t q = 0; q < limit_size; q++)
-  {
-    if (q)
-      os << ", ";
-    os << fbvect->Get(q);
-  }
+
+  dump_fbvect(os, fbvect, limit_size);
+
   if (ellipsis)
   {
     os << " ... ";
   }
-}
 
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
-{
-  dump_fbvect(os, fbvect);
   return os;
 }
 
