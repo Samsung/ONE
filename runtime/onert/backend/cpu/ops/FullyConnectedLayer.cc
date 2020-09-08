@@ -161,12 +161,22 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   const uint16_t *w1_segments = _weights->sparsity()->w1_segments();
   const uint16_t *w1_indices = _weights->sparsity()->w1_indices();
 
-  nnfw::cker::FullyConnectedSparseWeightRandom(
-      op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-      getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
-      getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w1_segments,
-      w1_indices);
+  auto block_size = _weights->sparsity()->block_size();
+  if (block_size.size() == 0)
+  {
+    nnfw::cker::FullyConnectedSparseWeightRandom(
+        op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+        getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w1_segments,
+        w1_indices);
+  }
+  else if (block_size.size() == 2 && block_size[0] == 16 && block_size[1] == 1)
+  {
+    throw std::runtime_error{"FullyConnectedSparseWeight16x` is not supported yet"};
+  }
+  else
+    throw std::runtime_error{"FullyConnected: unsupported sparsity"};
 }
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
