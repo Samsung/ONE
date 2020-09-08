@@ -115,6 +115,12 @@ struct ReducerParams
   bool keep_dims;
 };
 
+struct ResizeNearestNeighborParams
+{
+  bool align_corners;
+  bool half_pixel_centers;
+};
+
 struct SpaceToDepthParams
 {
   int block_size;

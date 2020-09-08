@@ -46,6 +46,8 @@ set(SOURCES
     Prelu.cpp
     Reshape.h
     Reshape.cpp
+    ResizeNearestNeighbor.h
+    ResizeNearestNeighbor.cpp
     Reverse.h
     Reverse.cpp
     Rsqrt.h
@@ -111,6 +113,7 @@ set(TEST_SOURCES
     Pad.test.cpp
     Prelu.test.cpp
     Reshape.test.cpp
+    ResizeNearestNeighbor.test.cpp
     Reverse.test.cpp
     Rsqrt.test.cpp
     Slice.test.cpp
