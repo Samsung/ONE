@@ -106,9 +106,7 @@ public:
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
   IDynamicTensorManager *dynamic_tensor_manager() override { return _dynamic_tensor_manager; }
-  bool is_sparse() const override { return _info.typeInfo().sparse(); }
-  virtual const uint16_t *w1_segments() const override { return _info.typeInfo().w1_segments(); }
-  virtual const uint16_t *w1_indices() const override { return _info.typeInfo().w1_indices(); }
+  const ir::Sparsity *sparsity() const override { return _info.typeInfo().sparsity(); }
 
   virtual void increase_ref()
   {

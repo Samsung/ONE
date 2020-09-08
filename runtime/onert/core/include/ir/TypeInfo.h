@@ -18,9 +18,11 @@
 #define __ONERT_IR_TYPEINFO_H__
 
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "ir/DataType.h"
+#include "ir/Sparsity.h"
 
 namespace onert
 {
@@ -33,7 +35,7 @@ public:
   TypeInfo() = delete;
 
   explicit TypeInfo(DataType type, float scale = 0, int32_t offset = 0)
-      : _type(type), _scale(scale), _offset(offset), _sparse(false)
+      : _type(type), _scale(scale), _offset(offset), _sparsity(nullptr)
   {
   }
 
@@ -41,18 +43,11 @@ public:
   DataType type() const { return _type; }
   float scale() const { return _scale; }
   int32_t offset() const { return _offset; }
-  bool sparse() const { return _sparse; }
-  const uint16_t *w1_segments() const { return _w1_segments.data(); }
-  const uint16_t *w1_indices() const { return _w1_indices.data(); }
+  const ir::Sparsity *sparsity() const { return _sparsity.get(); }
+  void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = sparsity; }
 
 public:
   void type(const DataType type) { _type = type; }
-  void sparse2DMetadata(std::vector<uint16_t> &&w1_segments, std::vector<uint16_t> &&w1_indices)
-  {
-    _sparse = true;
-    _w1_segments = w1_segments;
-    _w1_indices = w1_indices;
-  }
 
 private:
   DataType _type;
@@ -60,9 +55,7 @@ private:
   float _scale;
   int32_t _offset;
   // for sparsity
-  bool _sparse;
-  std::vector<uint16_t> _w1_segments;
-  std::vector<uint16_t> _w1_indices;
+  std::shared_ptr<ir::Sparsity> _sparsity;
 };
 
 bool operator==(const TypeInfo &lhs, const TypeInfo &rhs);
