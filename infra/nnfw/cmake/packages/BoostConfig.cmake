@@ -25,6 +25,17 @@ function(_Boost_Build Boost_PREFIX)
   list(APPEND Boost_Options --with-system)
   list(APPEND Boost_Options --with-filesystem)
 
+  if(DEFINED EXTERNALS_BUILD_THREADS)
+    set(N ${EXTERNALS_BUILD_THREADS})
+  else(DEFINED EXTERNALS_BUILD_THREADS)
+    include(ProcessorCount)
+    ProcessorCount(N)
+  endif(DEFINED EXTERNALS_BUILD_THREADS)
+
+  if((NOT N EQUAL 0) AND BUILD_EXT_MULTITHREAD)
+    list(APPEND Boost_Options -j${N})
+  endif()
+
   set(JAM_FILENAME ${BoostBuild_DIR}/user-config.jam)
 
   if(ANDROID)
