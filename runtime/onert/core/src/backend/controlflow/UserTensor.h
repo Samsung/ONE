@@ -73,7 +73,7 @@ public:
   ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
   bool is_constant() const override { return false; }
-  IDynamicTensorManager *dynamic_tensor_manager() override { return _dynamic_tensor_manager; }
+  bool applyShape(const ir::Shape &) override;
 
 private:
   ir::OperandInfo _info;

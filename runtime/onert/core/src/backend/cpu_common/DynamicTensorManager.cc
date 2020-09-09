@@ -31,65 +31,12 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
   // DO NOTHING
 }
 
-void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
-{
-  VERBOSE_F() << ind << std::endl;
-
-  auto tensor = _tensors->getNativeTensor(ind);
-  assert(tensor);
-
-  bool previously_dynamic = tensor->is_dynamic();
-
-  auto allocTensorMem = [&](bool overwrite = false) {
-    auto capacity = tensor->total_size();
-    auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
-
-    if (overwrite)
-      tensor->overwriteBuffer(alloc);
-    else
-      tensor->setBuffer(alloc);
-  };
-
-  if (!previously_dynamic)
-  {
-    // TODO deallocate tensor->buffer()
-    // issue is that staticTensorManager might have allocate this memory
-    tensor->setShape(new_shape);
-    tensor->set_dynamic();
-    allocTensorMem(true);
-  }
-  else if (tensor->buffer() == nullptr)
-  {
-    tensor->setShape(new_shape);
-    tensor->set_dynamic();
-    allocTensorMem();
-  }
-  // when buffer was already allocated and new_shape requires different size
-  else
-  {
-    auto previous_size = tensor->total_size();
-    auto new_size = new_shape.num_elements() * sizeOfDataType(tensor->data_type());
-    if (previous_size != new_size)
-    {
-      _dynamic_mem_mgr->deallocate(ind);
-
-      tensor->setShape(new_shape);
-      tensor->set_dynamic();
-      allocTensorMem(true);
-    }
-    else
-    { // when buffer with same size was already allocated, shape could differ
-      tensor->setShape(new_shape);
-    }
-  }
-}
-
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
   assert(_tensors->getNativeTensor(ind) == nullptr);
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, this);
+  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
   _tensors->setNativeTensor(ind, tensor);
 }
 
@@ -111,7 +58,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
     if (!tensor->is_dynamic())
       continue;
 
-    _dynamic_mem_mgr->deallocate(input_ind);
+    _dynamic_mem_mgr->deallocate(getRawITensor(input_ind));
     tensor->resetBuffer();
 
     VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
@@ -125,11 +72,18 @@ void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
   if (!tensor->is_dynamic())
     return;
 
-  _dynamic_mem_mgr->deallocate(output_ind);
+  _dynamic_mem_mgr->deallocate(getRawITensor(output_ind));
   tensor->resetBuffer();
 
   VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
                                 << " (output of a subgraph)" << std::endl;
+}
+
+const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
+{
+  auto ptr = _tensors->getITensor(ind).get();
+  assert(ptr);
+  return ptr;
 }
 
 } // namespace cpu_common

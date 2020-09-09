@@ -29,8 +29,8 @@ namespace controlflow
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
     : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
-      _static_tensor_mgr{
-          new cpu_common::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
+      _static_tensor_mgr{new cpu_common::StaticTensorManager(
+          _tensor_reg->base_reg(), _dynamic_tensor_mgr->dynamic_mem_mgr().get())}
 {
   /* empty */
 }
@@ -99,6 +99,11 @@ void TensorBuilder::allocate()
 {
   // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
+}
+
+IDynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
+{
+  return _dynamic_tensor_mgr.get();
 }
 
 std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)

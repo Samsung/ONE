@@ -29,6 +29,8 @@ namespace backend
 namespace cpu_common
 {
 
+class DynamicMemoryManager;
+
 class Tensor : public IPortableTensor
 {
 public:
@@ -36,9 +38,9 @@ public:
 
 public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout,
-         IDynamicTensorManager *dynamic_tensor_manager)
+         DynamicMemoryManager *dynamic_mem_mgr)
       : _info(info), _layout(layout), _buffer(nullptr), _num_references(0),
-        _dynamic_tensor_manager(dynamic_tensor_manager), _allocator(nullptr)
+        _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -105,7 +107,7 @@ public:
   bool is_constant() const override { return _info.isConstant(); }
   bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
-  IDynamicTensorManager *dynamic_tensor_manager() override { return _dynamic_tensor_manager; }
+  bool applyShape(const ir::Shape &new_shape) override;
   bool is_sparse() const override { return _info.typeInfo().sparse(); }
   virtual const uint16_t *w1_segments() const override { return _info.typeInfo().w1_segments(); }
   virtual const uint16_t *w1_indices() const override { return _info.typeInfo().w1_indices(); }
@@ -143,7 +145,7 @@ protected:
   ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
-  IDynamicTensorManager *_dynamic_tensor_manager;
+  DynamicMemoryManager *_dynamic_mem_mgr;
 
 private:
   /**

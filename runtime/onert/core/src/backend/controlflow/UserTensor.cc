@@ -16,6 +16,9 @@
 
 #include "UserTensor.h"
 
+#include "util/Exceptions.h"
+#include "ir/DataType.h"
+
 namespace onert
 {
 namespace backend
@@ -33,6 +36,16 @@ size_t UserTensor::calcOffset(const ir::Coordinates &coords) const
   }
   offset *= sizeOfDataType(data_type());
   return offset;
+}
+
+bool UserTensor::applyShape(const ir::Shape &new_shape)
+{
+  // User tensors cannot be reallocated.
+  auto new_size = new_shape.num_elements() * ir::sizeOfDataType(data_type());
+  if (total_size() < new_size)
+    throw InsufficientBufferSizeException{"User given buffer size is too small."};
+  setShape(new_shape);
+  return true;
 }
 
 } // namespace controlflow

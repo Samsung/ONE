@@ -61,7 +61,7 @@ public:
 
   std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
-  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
+  IDynamicTensorManager *dynamicTensorManager(void) override;
 
   std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 

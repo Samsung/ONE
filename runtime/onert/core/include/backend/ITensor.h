@@ -51,15 +51,7 @@ public:
   virtual int32_t data_offset() const = 0;
   virtual bool has_padding() const = 0;
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
-
-  /**
-   * @brief Return the dynamic tensor manager
-   *
-   * If dynamic tensors are not supported, it returns @c nullptr .
-   *
-   * @return IDynamicTensorManager* DynamicTensorManager
-   */
-  virtual IDynamicTensorManager *dynamic_tensor_manager() { return nullptr; }
+  virtual bool applyShape(const ir::Shape &) { return false; }
 
   /**
    * @brief Return true if the tensor is constant

@@ -16,6 +16,9 @@
 
 #include "backend/cpu_common/Tensor.h"
 
+#include "ir/DataType.h"
+#include "backend/cpu_common/MemoryManager.h"
+
 namespace onert
 {
 namespace backend
@@ -37,6 +40,55 @@ size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 }
 
 void Tensor::setShape(const ir::Shape &new_shape) { _info.shape(new_shape); }
+
+bool Tensor::applyShape(const ir::Shape &new_shape)
+{
+  bool previously_dynamic = is_dynamic();
+
+  auto allocTensorMem = [&](bool overwrite = false) {
+    auto capacity = total_size();
+    auto alloc = _dynamic_mem_mgr->allocate(this, capacity);
+
+    if (overwrite)
+      overwriteBuffer(alloc);
+    else
+      setBuffer(alloc);
+  };
+
+  if (!previously_dynamic)
+  {
+    // TODO deallocate tensor->buffer()
+    // issue is that staticTensorManager might have allocate this memory
+    setShape(new_shape);
+    set_dynamic();
+    allocTensorMem(true);
+  }
+  else if (buffer() == nullptr)
+  {
+    setShape(new_shape);
+    set_dynamic();
+    allocTensorMem();
+  }
+  // when buffer was already allocated and new_shape requires different size
+  else
+  {
+    auto previous_size = total_size();
+    auto new_size = new_shape.num_elements() * ir::sizeOfDataType(data_type());
+    if (previous_size != new_size)
+    {
+      _dynamic_mem_mgr->deallocate(this);
+
+      setShape(new_shape);
+      set_dynamic();
+      allocTensorMem(true);
+    }
+    else
+    { // when buffer with same size was already allocated, shape could differ
+      setShape(new_shape);
+    }
+  }
+  return true;
+}
 
 } // namespace cpu_common
 } // namespace backend

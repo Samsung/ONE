@@ -20,12 +20,14 @@
 #include "Allocator.h"
 #include "backend/IMemoryManager.h"
 #include "IMemoryPlanner.h"
-#include "ir/OperandIndexMap.h"
 
 namespace onert
 {
 namespace backend
 {
+
+class ITensor;
+
 namespace cpu_common
 {
 
@@ -59,12 +61,12 @@ public:
   DynamicMemoryManager() = default;
   virtual ~DynamicMemoryManager() = default;
 
-  std::shared_ptr<Allocator> allocate(const ir::OperandIndex &ind, uint32_t capacity);
-  void deallocate(const ir::OperandIndex &ind);
+  std::shared_ptr<Allocator> allocate(const ITensor *tensor, uint32_t capacity);
+  void deallocate(const ITensor *tensor);
   void deallocate(void);
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<Allocator>> _mem_alloc_map;
+  std::unordered_map<const ITensor *, std::shared_ptr<Allocator>> _mem_alloc_map;
 };
 
 } // namespace cpu_common

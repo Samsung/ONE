@@ -229,7 +229,7 @@ void DynamicShapeInferer::visit(const ir::operation::Select &op)
   ir::Shape new_shape =
       shape_inference::inferSelectShape(input_cond_shape, input_true_shape, input_false_shape);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
 }
 ```
 
