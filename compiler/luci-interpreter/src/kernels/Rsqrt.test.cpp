@@ -29,9 +29,7 @@ using namespace testing;
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor{DataType::FLOAT32, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(float));
-
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Rsqrt kernel(&input_tensor, &output_tensor);

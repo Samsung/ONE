@@ -60,17 +60,14 @@ TEST(AveragePool2DTest, Float)
 
 TEST(AveragePool2DTest, Uint8_0)
 {
+  std::vector<float> input_data{
+      0,  -6, 12, 4, //
+      -3, -2, 10, 7, //
+  };
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  std::vector<uint8_t> quant_input = quantize<uint8_t>(
-      {
-          0, -6, 12, 4,  //
-          -3, -2, 10, 7, //
-      },
-      quant_param.first, quant_param.second);
-  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -92,17 +89,15 @@ TEST(AveragePool2DTest, Uint8_0)
 
 TEST(AveragePool2DTest, Uint8_1)
 {
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  std::vector<float> input_data{
+      0, 6, 12, 4, //
+      3, 2, 10, 7, //
+  };
 
-  std::vector<uint8_t> quant_input = quantize<uint8_t>(
-      {
-          0, 6, 12, 4, //
-          3, 2, 10, 7, //
-      },
-      quant_param.first, quant_param.second);
-  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Pool2DParams params{};
   params.padding = Padding::VALID;
@@ -170,19 +165,16 @@ TEST(AveragePool2DTest, In_Out_Type_NEG)
 
 TEST(AveragePool2DTest, Quant_Param_NEG)
 {
+  std::vector<float> input_data{
+      0,  -6, 12, 4, //
+      -3, -2, 10, 7, //
+  };
+
   std::pair<float, int32_t> quant_param1 = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
   std::pair<float, int32_t> quant_param2 = quantizationParams<uint8_t>(-7.875f, 7.875f);
-  Tensor input_tensor{
-      DataType::U8, {1, 2, 4, 1}, {{quant_param1.first}, {quant_param1.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param1.first,
+                                                      quant_param1.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param2.first, quant_param2.second);
-
-  std::vector<uint8_t> quant_input = quantize<uint8_t>(
-      {
-          0, -6, 12, 4,  //
-          -3, -2, 10, 7, //
-      },
-      quant_param1.first, quant_param1.second);
-  input_tensor.writeData(quant_input.data(), quant_input.size() * sizeof(uint8_t));
 
   Pool2DParams params{};
   params.padding = Padding::VALID;

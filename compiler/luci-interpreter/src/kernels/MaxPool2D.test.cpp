@@ -66,11 +66,9 @@ TEST(MaxPool2DTest, Uint8)
       0,  -6, 12, 4, //
       -3, -2, 10, 7, //
   };
-  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   Pool2DParams params{};
   params.padding = Padding::VALID;

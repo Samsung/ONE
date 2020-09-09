@@ -30,15 +30,11 @@ using namespace testing;
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> alpha_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
-           std::initializer_list<T> alpha_data, std::initializer_list<T> output_data,
-           DataType element_type)
+           std::initializer_list<T> alpha_data, std::initializer_list<T> output_data)
 {
-  Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
-
-  Tensor alpha_tensor{element_type, alpha_shape, {}, ""};
-  alpha_tensor.writeData(alpha_data.begin(), alpha_data.size() * sizeof(T));
-
+  constexpr DataType element_type = getElementType<T>();
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor alpha_tensor = makeInputTensor<element_type>(alpha_shape, alpha_data);
   Tensor output_tensor = makeOutputTensor(element_type);
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
@@ -53,7 +49,8 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 TEST(PreluTest, FloatSimple)
 {
   Check<float>(/*input_shape=*/{2, 3}, /*alpha_shape=*/{2, 3},
-               /*output_shape=*/{2, 3}, /*input_data=*/
+               /*output_shape=*/{2, 3},
+               /*input_data=*/
                {
                    0.0f, 1.0f, 3.0f,   // Row 1
                    1.0f, -1.0f, -2.0f, // Row 2
@@ -67,8 +64,7 @@ TEST(PreluTest, FloatSimple)
                {
                    0.0f, 1.0f, 3.0f,   // Row 1
                    1.0f, -0.5f, -0.2f, // Row 2
-               },
-               getElementType<float>());
+               });
 
   SUCCEED();
 }
@@ -76,7 +72,8 @@ TEST(PreluTest, FloatSimple)
 TEST(PreluTest, FloatBroadcast)
 {
   Check<float>(/*input_shape=*/{1, 2, 2, 3}, /*alpha_shape=*/{1, 1, 3},
-               /*output_shape=*/{1, 2, 2, 3}, /*input_data=*/
+               /*output_shape=*/{1, 2, 2, 3},
+               /*input_data=*/
                {
                    0.0f, 0.0f, 0.0f,    // Row 1, Column 1
                    1.0f, 1.0f, 1.0f,    // Row 1, Column 2
@@ -91,8 +88,7 @@ TEST(PreluTest, FloatBroadcast)
                    1.0f, 1.0f, 1.0f,   // Row 1, Column 2
                    0.0f, -1.0f, -2.0f, // Row 2, Column 1
                    0.0f, -2.0f, -4.0f, // Row 2, Column 2
-               },
-               getElementType<float>());
+               });
 
   SUCCEED();
 }
@@ -108,17 +104,11 @@ TEST(PreluTest, Uint8Simple)
   float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
-  Tensor input_tensor{DataType::U8, {1, 2, 3, 1}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor alpha_tensor{DataType::U8, {1, 2, 3, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
+  Tensor alpha_tensor = makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first,
+                                                      quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
-
-  std::vector<uint8_t> quantize_alpha =
-      quantize<uint8_t>(alpha_data, quant_param.first, quant_param.second);
-  alpha_tensor.writeData(quantize_alpha.data(), quantize_alpha.size() * sizeof(uint8_t));
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();
@@ -158,17 +148,11 @@ TEST(PreluTest, Uint8Broadcast)
   const float kMax = 127.f / 128.f;
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
 
-  Tensor input_tensor{DataType::U8, {1, 2, 2, 3}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor alpha_tensor{DataType::U8, {1, 1, 3}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 2, 3}, quant_param.first,
+                                                      quant_param.second, input_data);
+  Tensor alpha_tensor =
+      makeInputTensor<DataType::U8>({1, 1, 3}, quant_param.first, quant_param.second, alpha_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
-
-  std::vector<uint8_t> quantize_alpha =
-      quantize<uint8_t>(alpha_data, quant_param.first, quant_param.second);
-  alpha_tensor.writeData(quantize_alpha.data(), quantize_alpha.size() * sizeof(uint8_t));
 
   Prelu kernel(&input_tensor, &alpha_tensor, &output_tensor);
   kernel.configure();

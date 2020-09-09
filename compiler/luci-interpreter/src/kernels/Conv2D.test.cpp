@@ -121,39 +121,32 @@ TEST(Conv2DTest, FloatCheck)
 
 TEST(Conv2DTest, Uint8)
 {
+  std::vector<float> input_data{
+      // First batch
+      1, 1, 1, 1, // row = 1
+      2, 2, 2, 2, // row = 2
+                  // Second batch
+      1, 2, 3, 4, // row = 1
+      1, 2, 3, 4, // row = 2
+  };
+  std::vector<float> filter_data{
+      1,  2,  3,  4, // first 2x2 filter
+      -1, 1,  -1, 1, // second 2x2 filter
+      -1, -1, 1,  1, // third 2x2 filter
+  };
+  std::vector<float> bias_data{1, 2, 3};
+
   std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
   std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
-  Shape bias_shape = {3};
-  Tensor input_tensor{
-      DataType::U8, {2, 2, 4, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
-  Tensor filter_tensor{
-      DataType::U8, {3, 2, 2, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
-  Tensor bias_tensor{
-      DataType::S32, bias_shape, {{input_quant_param.first * input_quant_param.first}, {0}}, ""};
+
+  Tensor input_tensor = makeInputTensor<DataType::U8>({2, 2, 4, 1}, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
+  Tensor filter_tensor = makeInputTensor<DataType::U8>({3, 2, 2, 1}, input_quant_param.first,
+                                                       input_quant_param.second, filter_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(
+      {3}, input_quant_param.first * input_quant_param.first, 0, bias_data);
   Tensor output_tensor =
       makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
-  std::vector<uint8_t> quantized_input = quantize<uint8_t>(
-      {
-          // First batch
-          1, 1, 1, 1, // row = 1
-          2, 2, 2, 2, // row = 2
-          // Second batch
-          1, 2, 3, 4, // row = 1
-          1, 2, 3, 4, // row = 2
-      },
-      input_quant_param.first, input_quant_param.second);
-  std::vector<uint8_t> quantized_filter = quantize<uint8_t>(
-      {
-          1, 2, 3, 4,   // first 2x2 filter
-          -1, 1, -1, 1, // second 2x2 filter
-          -1, -1, 1, 1, // third 2x2 filter
-      },
-      input_quant_param.first, input_quant_param.second);
-  std::vector<int32_t> bias_data =
-      quantize<int32_t>({1, 2, 3}, input_quant_param.first * input_quant_param.first, 0);
-  input_tensor.writeData(quantized_input.data(), quantized_input.size() * sizeof(uint8_t));
-  filter_tensor.writeData(quantized_filter.data(), quantized_filter.size() * sizeof(uint8_t));
-  bias_tensor.writeData(bias_data.data(), bias_data.size() * sizeof(int32_t));
 
   Conv2DParams params{};
   params.padding = Padding::VALID;

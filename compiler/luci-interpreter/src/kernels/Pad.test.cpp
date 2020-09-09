@@ -34,12 +34,10 @@ TEST(Pad, Uint8)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
   std::vector<float> input_data{-0.8, 0.2, 0.9, 0.7, 0.1, -0.3};
   std::vector<int32_t> paddings_data{0, 0, 0, 2, 1, 3, 0, 0};
-  Tensor input_tensor{DataType::U8, {1, 2, 3, 1}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
   Tensor paddings_tensor = makeInputTensor<DataType::S32>({4, 2}, paddings_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   Pad kernel(&input_tensor, &paddings_tensor, &output_tensor);
   kernel.configure();

@@ -109,12 +109,10 @@ TEST(MeanTest, Uint8KeepDims)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
   std::vector<int32_t> axis_data{1};
-  Tensor input_tensor{DataType::U8, {3, 2}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>({3, 2}, quant_param.first, quant_param.second, input_data);
   Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   ReducerParams params{};
   params.keep_dims = true;
@@ -138,12 +136,10 @@ TEST(MeanTest, Uint8NotKeepDims)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
 
   std::vector<int32_t> axis_data{1};
-  Tensor input_tensor{DataType::U8, {1, 3, 2}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>({1, 3, 2}, quant_param.first, quant_param.second, input_data);
   Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   ReducerParams params{};
   params.keep_dims = false;

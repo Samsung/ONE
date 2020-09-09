@@ -29,17 +29,14 @@ using namespace testing;
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<T> input_data, std::initializer_list<T> output_data,
-           DataType element_type, std::vector<int32_t> squeeze_dims)
+           std::initializer_list<int32_t> squeeze_dims)
 {
-  Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  constexpr DataType element_type = getElementType<T>();
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(element_type);
 
   SqueezeParams params{};
-  for (size_t i = 0; i < squeeze_dims.size(); i++)
-  {
-    params.squeeze_dims.push_back(squeeze_dims.at(i));
-  }
+  params.squeeze_dims = squeeze_dims;
 
   Squeeze kernel(&input_tensor, &output_tensor, params);
   kernel.configure();
@@ -64,7 +61,7 @@ TYPED_TEST(SqueezeTest, TotalTest)
                       13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
       /*output_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
                        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
-      getElementType<TypeParam>(), {-1, 0});
+      {-1, 0});
 }
 
 } // namespace
