@@ -38,6 +38,7 @@ public:
   void visit(const ir::operation::Gather &) final;
   void visit(const ir::operation::HashtableLookup &) final;
   void visit(const ir::operation::SpaceToBatchND &) final;
+  void visit(const ir::operation::Reverse &) final;
 };
 
 } // namespace acl_cl
