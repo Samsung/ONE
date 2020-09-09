@@ -173,7 +173,12 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   }
   else if (block_size.size() == 2 && block_size[0] == 16 && block_size[1] == 1)
   {
-    throw std::runtime_error{"FullyConnectedSparseWeight16x1 is not supported yet"};
+    nnfw::cker::FullyConnectedSparseWeight16x1(
+        op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+        getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w1_segments,
+        w1_indices);
   }
   else
     throw std::runtime_error{"FullyConnected: unsupported sparsity"};
