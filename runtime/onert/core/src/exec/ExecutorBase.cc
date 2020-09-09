@@ -29,11 +29,9 @@ namespace exec
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
                            const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
                            const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
-                           const compiler::TensorRegistries &tensor_regs,
-                           backend::TensorManagerSet &&tensor_mgrs)
+                           const compiler::TensorRegistries &tensor_regs)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()},
-      _input_tensors{input_tensors}, _output_tensors{output_tensors},
-      _tensor_mgrs{std::move(tensor_mgrs)}, _mutex()
+      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
 {
   // TODO Fix the way of knowing whether it is primary or not
   bool primary_executor = !(_input_tensors.empty() && _output_tensors.empty());

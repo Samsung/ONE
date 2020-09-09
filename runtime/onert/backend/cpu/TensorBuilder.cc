@@ -85,16 +85,6 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
-{
-  return std::move(_static_tensor_mgr);
-}
-
-std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
-{
-  return std::move(_dynamic_tensor_mgr);
-}
-
 } // namespace cpu
 } // namespace backend
 } // namespace onert
