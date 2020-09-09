@@ -1,7 +1,7 @@
 function(_ARMCompute_Import)
   include(FindPackageHandleStandardArgs)
 
-  list(APPEND ARMCompute_LIB_SEARCH_PATHS ${ARMCompute_PREFIX})
+  list(APPEND ARMCompute_LIB_SEARCH_PATHS ${ARMCompute_PREFIX}/lib)
 
   find_path(INCLUDE_DIR NAMES arm_compute/core/ITensor.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
 
@@ -62,34 +62,19 @@ function(_ARMCompute_Import)
   set(ARMCompute_FOUND TRUE PARENT_SCOPE)
 endfunction(_ARMCompute_Import)
 
-### Check whether library exists
-function(_ARMCompute_Check VAR LIBDIR)
-  set(FOUND TRUE)
-
-  if(NOT EXISTS "${LIBDIR}/libarm_compute_core.so")
-    set(FOUND FALSE)
-  endif()
-
-  if(NOT EXISTS "${LIBDIR}/libarm_compute.so")
-    set(FOUND FALSE)
-  endif()
-
-  if(NOT EXISTS "${LIBDIR}/libarm_compute_graph.so")
-    set(FOUND FALSE)
-  endif()
-
-  set(${VAR} ${FOUND} PARENT_SCOPE)
-endfunction(_ARMCompute_Check)
-
 # Let's build and install ARMCompute libraries
-# NOTE This function silently returns on error
-function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
-  ### Check whether library exists
-  _ARMCompute_Check(ARMCompute_FOUND ${ARMCompute_INSTALL_PREFIX})
+function(_ARMCompute_Build ARMComputeInstall_DIR)
+  set(PKG_NAME "ARMCOMPUTE")
+  set(PKG_IDENTIFIER "20.05")
+  set(INSTALL_STAMP_PATH "${ARMComputeInstall_DIR}/${PKG_NAME}.stamp")
+  set(ARMComputeBuild_DIR "${CMAKE_BINARY_DIR}/externals/armcompute")
 
-  if(ARMCompute_FOUND)
-    return()
-  endif(ARMCompute_FOUND)
+  if(EXISTS ${INSTALL_STAMP_PATH})
+    file(READ ${INSTALL_STAMP_PATH} READ_IDENTIFIER)
+    if("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
+      return()
+    endif("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
+  endif(EXISTS ${INSTALL_STAMP_PATH})
 
   ### Let's build with SCONS
   nnas_find_package(ARMComputeSource QUIET)
@@ -112,6 +97,9 @@ function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
   endif(CMAKE_BUILD_TYPE)
 
   #### Architecture-specific configurations
+
+  #### BUILD_DIR is in source tree to reduce CI build overhead
+  #### TODO Change BUILD_DIR to ${ARMComputeBuild_DIR}
   if(TARGET_ARCH STREQUAL "armv7l")
     set(BUILD_ARCH "armv7a")
     set(BUILD_DIR "${BUILD_ARCH}-${TARGET_OS}.${SCON_BUILD_TYPE}")
@@ -155,26 +143,25 @@ function(_ARMCompute_Build ARMCompute_INSTALL_PREFIX)
     list(APPEND SCONS_OPTIONS "build_dir=${BUILD_DIR}")
   endif(DEFINED BUILD_DIR)
 
+  list(APPEND SCONS_OPTIONS "install_dir=${ARMComputeInstall_DIR}")
+
   message(STATUS "Build ARMCompute with ${SCONS_PATH} ('${SCONS_OPTIONS}'")
 
   # Build ARMCompute libraries with SCONS
-  # NOTE ARMCompute SConstruct unconditioanlly appends "arm-linux-gnueabihf-" prefix for linux
+  # NOTE ARMCompute build process don't allow logging by using OUTPUT_FILE and ERROR_FILE option
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMComputeInstall_DIR}")
   execute_process(COMMAND /usr/bin/env CC=gcc CXX=g++ "${SCONS_PATH}" ${SCONS_OPTIONS}
                   WORKING_DIRECTORY ${ARMComputeSource_DIR}
-                  RESULT_VARIABLE ARMCompute_BUILD)
+                  RESULT_VARIABLE BUILD_EXITCODE)
 
-  # Install ARMCompute libraries to overlay
-  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMCompute_INSTALL_PREFIX}"
-                  WORKING_DIRECTORY ${ARMComputeSource_DIR}
-                  RESULT_VARIABLE ARMCompute_BUILD)
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy "build/${BUILD_DIR}/libarm_compute_core.so" "${ARMCompute_INSTALL_PREFIX}"
-                  COMMAND ${CMAKE_COMMAND} -E copy "build/${BUILD_DIR}/libarm_compute.so" "${ARMCompute_INSTALL_PREFIX}"
-                  COMMAND ${CMAKE_COMMAND} -E copy "build/${BUILD_DIR}/libarm_compute_graph.so" "${ARMCompute_INSTALL_PREFIX}"
-                  WORKING_DIRECTORY ${ARMComputeSource_DIR}
-                  RESULT_VARIABLE ARMCompute_BUILD)
+  if(NOT BUILD_EXITCODE EQUAL 0)
+    message(FATAL_ERROR "${PKG_NAME} Package: Build and install failed (check '${BUILD_LOG_PATH}' for details)")
+  endif(NOT BUILD_EXITCODE EQUAL 0)
+
+  file(WRITE "${INSTALL_STAMP_PATH}" "${PKG_IDENTIFIER}")
 endfunction(_ARMCompute_Build)
 
-set(ARMCompute_PREFIX ${EXT_OVERLAY_DIR}/lib)
+set(ARMCompute_PREFIX ${EXT_OVERLAY_DIR})
 if(BUILD_ARMCOMPUTE)
   _ARMCompute_Build("${ARMCompute_PREFIX}")
 endif(BUILD_ARMCOMPUTE)
