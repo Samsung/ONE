@@ -33,6 +33,7 @@ class Tensor : public IPortableTensor
 {
 public:
   Tensor() = delete;
+  virtual ~Tensor();
 
 public:
   Tensor(const ir::OperandInfo &info, const ir::Layout layout,
