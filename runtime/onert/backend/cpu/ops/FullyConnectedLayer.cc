@@ -158,15 +158,14 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   op_params.float_activation_max = output_activation_max;
   op_params.activation = convertActivationType(_activation);
 
-  int w0_size = getTensorShape(_weights).Dims(0);
   const uint16_t *w1_segments = _weights->sparsity()->w1_segments();
   const uint16_t *w1_indices = _weights->sparsity()->w1_indices();
 
-  nnfw::cker::FullyConnectedSparseWeight(
+  nnfw::cker::FullyConnectedSparseWeightRandom(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
       getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
       getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
-      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w0_size, w1_segments,
+      getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w1_segments,
       w1_indices);
 }
 
