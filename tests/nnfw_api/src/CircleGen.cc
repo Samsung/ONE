@@ -168,6 +168,13 @@ uint32_t CircleGen::addOperatorRank(const OperatorParams &params)
                                 circle::BuiltinOptions_RankOptions, options);
 }
 
+uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape &new_shape)
+{
+  auto options = circle::CreateReshapeOptionsDirect(_fbb, &new_shape).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RESHAPE,
+                                circle::BuiltinOptions_ReshapeOptions, options);
+}
+
 uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &params)
 {
   auto options = circle::CreateResizeNearestNeighborOptions(_fbb).Union();
