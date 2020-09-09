@@ -167,7 +167,7 @@ $ sudo mount /dev/sdj2 j2
 ```
 As like above, please update `/dev/sdj2` to your configuration.
 
-Add a new file
+(5-2) Add a new file
 ```
 $ vi j2/etc/systemd/system/ip.service
 ```
@@ -184,7 +184,7 @@ ExecStart=/bin/sh /bin/ip.sh
 WantedBy=multi-user.target
 ```
 
-Add a new file
+(5-3) Add a new file
 ```
 $ vi j2/bin/ip.sh
 ```
@@ -194,14 +194,14 @@ ifconfig eth0 192.168.x.y netmask 255.255.255.0 up
 ```
 where you should update `192.168.x.y` part to your actual IP address.
 
-
-Add a symbolic link
+(5-4) Add a symbolic link
 ```
 $ pushd j2/etc/systemd/system/multi-user.target.wants/
 $ sudo ln -s ../../system/ip.service .
 $ popd
 ```
-Now that every thing is ready, unmount and unplug your memory card and plug into
+
+(5-5) Now that every thing is ready, unmount and unplug your memory card and plug into
 RPi4, turn on the power.
 ```
 $ sync
