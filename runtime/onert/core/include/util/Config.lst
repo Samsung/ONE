@@ -35,6 +35,7 @@ CONFIG(OP_SEQ_MAX_NODE         , int          , "0")
 CONFIG(TRACE_FILEPATH          , std::string  , "")
 CONFIG(FP16_ENABLE             , bool         , "0")
 CONFIG(RUY_THREADS             , int          , "-1")
+CONFIG(USE_MMAPED_DATA         , bool         , "0")
 
 // Auto-generate all operations
 

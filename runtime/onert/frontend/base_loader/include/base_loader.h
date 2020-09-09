@@ -70,6 +70,7 @@ public:
   explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
       : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr}
   {
+    _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);
   }
 
   /**
@@ -172,6 +173,8 @@ protected:
   std::unordered_map<ir::OperandIndex, std::string> _tensor_names;
   // Verifier
   std::unique_ptr<Verifier> _verifier;
+  // Boolean flag to use MMAPED_DATA
+  bool _use_mmaped_data = false;
 };
 
 template <typename LoaderDomain>
@@ -202,6 +205,8 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const char *file_path)
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
+  if (_use_mmaped_data)
+    munmap(_base, size);
 
   close(_fd);
 }
@@ -440,7 +445,21 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
     {
       data_obj = std::make_unique<ir::ExternalData>(data->data(), data->size());
     }
-    else // Model is loaded(mmap'd) from a file
+    else if (_use_mmaped_data) // Model is loaded(mmap'd) from a file
+    {
+      size_t data_size = data->size();
+      ptrdiff_t unaligned_offset_start = data->data() - _base;
+      ptrdiff_t offset_end = unaligned_offset_start + data_size;
+
+      // Calculated aligned offset from base address of mapped region
+      // munmap accepts memory address which is a multiple of the pagesize
+      ptrdiff_t aligned_offset_start = (unaligned_offset_start / _pagesize) * _pagesize;
+      size_t mmap_size = offset_end - aligned_offset_start;
+
+      data_obj = std::make_unique<ir::MMapedData>(_fd, aligned_offset_start, mmap_size,
+                                                  unaligned_offset_start, data_size);
+    }
+    else
     {
       data_obj = std::make_unique<ir::CachedData>(data->data(), data->size());
       deallocateMmappedArea(const_cast<uint8_t *>(data->data()), data->size());
