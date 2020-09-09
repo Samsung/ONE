@@ -45,7 +45,8 @@ def load_graph(frozen_graph_filename):
 
 def preserve_bcq_info(flags):
     """
-    Generate unique dummy value from -1500000001 to -N.
+    Generate unique dummy value from -1500000001 to -1500000002,
+    -1500000003, ..., etc.
 
     We use negative values to preserve BCQ information because
     positive values may cause some confusion with real BCQ information values.
