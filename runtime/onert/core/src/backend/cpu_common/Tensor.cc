@@ -23,6 +23,8 @@ namespace backend
 namespace cpu_common
 {
 
+Tensor::~Tensor() = default;
+
 size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 {
   size_t rank = num_dimensions();
