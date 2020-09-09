@@ -78,6 +78,13 @@ struct TestCaseData
    */
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
+  /**
+   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
+   *        this test case; set @c False otherwise.
+   */
+  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
+  bool expect_error_on_run() const { return _expect_error_on_run; }
+
 private:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
@@ -87,6 +94,7 @@ private:
     dest.back().resize(size);
     std::memcpy(dest.back().data(), data.data(), size);
   }
+  bool _expect_error_on_run = false;
 };
 
 /**
@@ -194,7 +202,7 @@ public:
   }
 
   /**
-   * @brief Set the Test Fail
+   * @brief Set the Test Fail while compiling
    */
   void setCompileFail() { _fail_compile = true; }
 
@@ -203,6 +211,7 @@ private:
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
   std::unordered_map<uint32_t, size_t> _output_sizes;
+  std::unordered_map<uint32_t, CircleGen::Shape> _input_shapes_for_prepare, _input_shapes_for_run;
   bool _fail_compile{false};
 };
 
@@ -288,7 +297,6 @@ protected:
           }
           _so.outputs[ind].resize(size);
         }
-
         ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
                                   _so.outputs[ind].size()),
@@ -306,6 +314,12 @@ protected:
           // Fill the values
           ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
+        }
+
+        if (test_case.expect_error_on_run())
+        {
+          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          continue;
         }
 
         NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));

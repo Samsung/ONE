@@ -18,6 +18,7 @@
 #define __NNFW_API_TEST_FIXTURES_H__
 
 #include <array>
+#include <vector>
 #include <gtest/gtest.h>
 #include <nnfw_experimental.h>
 
@@ -31,6 +32,16 @@ inline uint64_t num_elems(const nnfw_tensorinfo *ti)
   for (uint32_t i = 0; i < ti->rank; ++i)
   {
     n *= ti->dims[i];
+  }
+  return n;
+}
+
+inline uint64_t num_elems(const std::vector<int32_t> &shape)
+{
+  uint64_t n = 1;
+  for (uint32_t i = 0; i < shape.size(); ++i)
+  {
+    n *= shape[i];
   }
   return n;
 }
