@@ -79,6 +79,7 @@ public:
   void visit(const ir::operation::LocalResponseNormalization &) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::Split &) override;
+  void visit(const ir::operation::SplitV &) override;
   void visit(const ir::operation::Unpack &) override;
   void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::ConvertFp32ToFp16 &) override;
