@@ -16,6 +16,18 @@ function(_Boost_Build Boost_PREFIX)
   set(BoostBuild_DIR ${CMAKE_BINARY_DIR}/externals/boost)
   set(BoostInstall_DIR ${Boost_PREFIX})
 
+  set(INSTALL_STAMP_PATH "${BoostInstall_DIR}/BOOST.stamp")
+  set(BUILD_LOG_PATH "${BoostBuild_DIR}/BOOST.log")
+  set(PKG_NAME "BOOST")
+  set(PKG_IDENTIFIER "1.58.0")
+
+  if(EXISTS ${INSTALL_STAMP_PATH})
+    file(READ ${INSTALL_STAMP_PATH} READ_IDENTIFIER)
+    if("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
+      return()
+    endif("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
+  endif(EXISTS ${INSTALL_STAMP_PATH})
+
   unset(Boost_Options)
 
   list(APPEND Boost_Options --build-dir=${BoostBuild_DIR})
@@ -52,7 +64,15 @@ function(_Boost_Build Boost_PREFIX)
   # Install Boost libraries
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${BoostInstall_DIR}")
   execute_process(COMMAND /usr/bin/env BOOST_BUILD_PATH="${BoostBuild_DIR}" ${BoostSource_DIR}/b2 install ${Boost_Options}
-                  WORKING_DIRECTORY ${BoostSource_DIR})
+                  WORKING_DIRECTORY ${BoostSource_DIR}
+                  OUTPUT_FILE ${BUILD_LOG_PATH}
+                  RESULT_VARIABLE BUILD_EXITCODE)
+
+  if(NOT BUILD_EXITCODE EQUAL 0)
+    message(FATAL_ERROR "${PKG_NAME} Package: Build and install failed (check '${BUILD_LOG_PATH}' for details)")
+  endif(NOT BUILD_EXITCODE EQUAL 0)
+
+  file(WRITE "${INSTALL_STAMP_PATH}" "${PKG_IDENTIFIER}")
 
 endfunction(_Boost_Build)
 
