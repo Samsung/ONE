@@ -134,7 +134,7 @@ Device     Boot    Start      End  Sectors  Size Id Type
 Please visit http://download.tizen.org/snapshots/tizen/unified/latest/images/standard/iot-boot-arm64-rpi4/
 and http://download.tizen.org/snapshots/tizen/unified/latest/images/standard/iot-headed-3parts-aarch64-rpi.
 
-Pleae Visit `iot-boot-armv7l-rpi4` folder for ARM32 images.
+Please visit `iot-boot-armv7l-rpi4` folder for ARM32 images.
 
 Get latest file. As of writing this document, name has `20200908.3`.
 ```
