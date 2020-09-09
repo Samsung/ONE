@@ -50,7 +50,7 @@ def preserve_bcq_info(flags):
 
     We use negative values to preserve BCQ information because
     positive values may cause some confusion with real BCQ information values.
-    In addition, the unique value is started from -1500000001(prime number) to
+    In addition, the unique value is started from -1500000001 to
     prevent another duplication. For example, if we start from -1 and if
     new_shape attribute of Reshape operation is [1, -1], it can be duplicated.
     """
