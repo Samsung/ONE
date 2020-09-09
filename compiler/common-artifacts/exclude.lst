@@ -11,6 +11,7 @@ optimize(Unique_002)
 optimize(Unique_003)
 optimize(Unique_U8_000)
 optimize(Unique_U8_001)
+optimize(UnidirectionalSequenceLSTM_000)
 
 ## CircleRecipes
 
@@ -160,6 +161,7 @@ tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
 tcgenerate(TopKV2_001)
+tcgenerate(UnidirectionalSequenceLSTM_000)
 tcgenerate(Unique_000)
 tcgenerate(Unique_001)
 tcgenerate(Unique_002)

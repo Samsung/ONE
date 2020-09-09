@@ -104,6 +104,7 @@
 #include "BuildBuiltinOptions/TopKV2Options.h"
 #include "BuildBuiltinOptions/TransposeOptions.h"
 #include "BuildBuiltinOptions/TransposeConvOptions.h"
+#include "BuildBuiltinOptions/UnidirectionalSequenceLSTMOptions.h"
 #include "BuildBuiltinOptions/UniqueOptions.h"
 #include "BuildBuiltinOptions/UnpackOptions.h"
 #include "BuildBuiltinOptions/WhereOptions.h"
