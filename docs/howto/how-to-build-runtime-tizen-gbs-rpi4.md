@@ -1,7 +1,7 @@
 # How to Build Runtime with GBS for Tizen/RPi4
 
 This document describes how to build runtime with GBS for Tizen AARCH64.
-As a real example, we'll aslo describe how to prepare Tizen on Raspberry Pi 4
+As a real example, we'll also describe how to prepare Tizen on Raspberry Pi 4
 and show you how to run our test package runner `nnpackage_run`.
 
 For ARM32, there would be not much difference with some changes.
