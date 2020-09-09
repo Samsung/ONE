@@ -1589,6 +1589,22 @@ void KernelGenerator::visit(const ir::operation::ConvertFp16ToFp32 &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
+void KernelGenerator::visit(const ir::operation::Reverse &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
+
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto axis_tensor = _tensor_reg->getAclTensor(axis_index);
+
+  auto fn = acl_common::generateLayer<arm_compute::CLReverse>(
+      ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle());
+
+  _return_fn = asAclFunction(std::move(fn));
+}
+
 } // namespace acl_cl
 } // namespace backend
 } // namespace onert

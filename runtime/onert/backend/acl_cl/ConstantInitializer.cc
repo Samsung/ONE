@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+#include <AclActivationBuilder.h>
+#include <AclFunction.h>
+#include <Convert.h>
+#include <Swizzle.h>
+
 #include "ConstantInitializer.h"
 
 namespace onert
@@ -91,6 +96,45 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
             *into = value;
           }
         }
+      });
+    };
+  }
+}
+
+void ConstantInitializer::visit(const ir::operation::Reverse &node)
+{
+  const auto &output_index = node.getOutputs().at(0);
+
+  const auto &input_index = node.getInputs().at(ir::operation::Reverse::Input::INPUT);
+  const auto &input_obj = _operands.at(input_index);
+
+  const auto &axis_index = node.getInputs().at(ir::operation::Reverse::Input::AXIS);
+  const auto &axis_obj = _operands.at(axis_index);
+
+  const auto ifm_rank = input_obj.shape().rank();
+  const auto frontend_layout = this->_current_op_seq_layout;
+
+  auto output_tensor = this->_tensor_reg->getITensor(output_index);
+  const auto backend_layout = output_tensor->layout();
+
+  if (axis_obj.isConstant())
+  {
+    _init_map[axis_index] = [&](const ir::Operand &operand, backend::ITensor &obj) {
+      assert(operand.data());
+
+      const auto axis_value = *(reinterpret_cast<const int32_t *>(operand.data()->base()));
+      int32_t axis_tmp = axis_value;
+      if (axis_tmp < 0)
+      {
+        axis_tmp = axis_tmp + ifm_rank;
+      }
+
+      auto axis =
+          acl_common::ToARMComputeAxis(ifm_rank, axis_tmp, frontend_layout, backend_layout).value();
+
+      obj.access([&](ITensor &tensor) {
+        int32_t *into = reinterpret_cast<int32_t *>(tensor.buffer());
+        *into = (int32_t)axis;
       });
     };
   }
