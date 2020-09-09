@@ -87,13 +87,10 @@ void KernelGenerator::visit(const ir::operation::If &node)
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
-  exec::DynAllocInfoMap outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
     auto output_tensor = getTensor(output_index);
-
     output_tensors.emplace_back(output_tensor);
-    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
@@ -101,8 +98,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
-      then_subg_index, else_subg_index, _executor_map);
+      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, then_subg_index,
+      else_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
@@ -115,12 +112,8 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   // Add PermuteLayer
   std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
-  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
-  outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
 
-  auto fn =
-      std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, outputs_dyn_alloc_info);
-
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors);
   _return_fn = std::move(fn);
 }
 
@@ -140,21 +133,17 @@ void KernelGenerator::visit(const ir::operation::While &node)
   }
 
   std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
-  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
   for (const auto output_index : node.getOutputs())
   {
     auto output_tensor = getTensor(output_index);
-
     output_tensors.emplace_back(output_tensor);
-
-    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
-      cond_subg_index, body_subg_index, _executor_map);
+      input_tensors, output_tensors, node.getOutputs(), _graph, cond_subg_index, body_subg_index,
+      _executor_map);
 
   _return_fn = std::move(fn);
 }

@@ -38,7 +38,6 @@ public:
   WhileLayer(const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
              const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
              const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
-             const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
              exec::ExecutorMap *executor_map);
 
@@ -52,7 +51,6 @@ private:
   const ir::Graph &_graph;
   const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
-  const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
   exec::ExecutorMap *_executor_map;
 };
 

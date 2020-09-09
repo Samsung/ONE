@@ -91,8 +91,6 @@ public:
     return _output_tensors;
   }
 
-  const DynAllocInfoMap &getInputsDynamicAllocInfo() const { return _input_to_dyn_alloc_info; }
-
 protected:
   /**
    * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
@@ -106,8 +104,6 @@ protected:
   const ir::Graph &_graph;
   std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
   std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
-  DynAllocInfoMap _input_to_dyn_alloc_info;
-  DynAllocInfoMap _output_to_dyn_alloc_info;
   backend::TensorManagerSet _tensor_mgrs;
   std::mutex _mutex;
 

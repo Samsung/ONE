@@ -45,8 +45,6 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
       {
         std::shared_ptr<backend::ITensor> tensor = tensor_regs.getITensor(ind);
         assert(tensor != nullptr);
-        DynAllocInfo dyn_alloc_info{ind};
-        _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
         list.push_back(tensor);
       }
       return list;
@@ -57,33 +55,12 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
       {
         std::shared_ptr<backend::ITensor> tensor = tensor_regs.getITensor(ind);
         assert(tensor != nullptr);
-        DynAllocInfo dyn_alloc_info{ind};
-        _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
         list.push_back(tensor);
       }
       return list;
     };
     _input_tensors = build_input_tensor_list(_graph.getInputs());
     _output_tensors = build_output_tensor_list(_graph.getOutputs());
-  }
-  else
-  {
-    assert(input_tensors.size() == _graph.getInputs().size());
-    assert(output_tensors.size() == _graph.getOutputs().size());
-    for (uint32_t i = 0; i < input_tensors.size(); i++)
-    {
-      auto tensor = input_tensors[i];
-      auto ind = _graph.getInputs().at(i);
-      DynAllocInfo dyn_alloc_info{ind};
-      _input_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
-    }
-    for (uint32_t i = 0; i < output_tensors.size(); i++)
-    {
-      auto tensor = output_tensors[i];
-      auto ind = _graph.getOutputs().at(i);
-      DynAllocInfo dyn_alloc_info{ind};
-      _output_to_dyn_alloc_info.emplace(tensor, dyn_alloc_info);
-    }
   }
 }
 
@@ -108,22 +85,12 @@ void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> 
     // If src_tensor or input_tensor is nullptr, pre_fn does not copy the tensors
     if (src_tensor != nullptr && input_tensor != nullptr)
     {
-      auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[n]);
       const auto orig_input_shape = input_tensor->getShape();
       const auto changed_input_shape =
           convertShape(src_tensor->getShape(), src_tensor->layout(), input_tensor->layout());
       if (orig_input_shape != changed_input_shape)
       {
-        if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
-        {
-          // The input_tensor is a dynamic tensor of backend that doesn't support dynamic tensor
-          throw std::runtime_error("Unknown dim is found at execution time for a backend that "
-                                   "does not support dynamic tensor");
-        }
-        else
-        {
-          input_tensor->set_dynamic();
-        }
+        input_tensor->set_dynamic();
       }
     }
   }
@@ -218,11 +185,6 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
   auto shape_sig_found = desc.dynamic_input_shapes.find(io_ind);
   if (shape_sig_found != desc.dynamic_input_shapes.end())
   {
-    auto dyn_alloc_info = _input_to_dyn_alloc_info.find(_input_tensors[io_ind.value()]);
-    if (dyn_alloc_info == _input_to_dyn_alloc_info.end())
-      throw std::runtime_error("Unknown dim is found at execution time for a backend that "
-                               "does not support dynamic tensor");
-
     auto changed_input_shape = shape_sig_found->second;
     _input_tensors[io_ind.value()]->applyShape(changed_input_shape);
   }
