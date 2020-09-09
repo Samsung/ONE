@@ -208,12 +208,13 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   return;
 }
 
-inline void FullyConnectedSparseWeight(const FullyConnectedParams &params, const Shape &input_shape,
-                                       const float *input_data, const Shape &weights_shape,
-                                       const float *weights_data, const Shape &bias_shape,
-                                       const float *bias_data, const Shape &output_shape,
-                                       float *output_data, int w0_size, const uint16_t *w1_segments,
-                                       const uint16_t *w1_indices)
+inline void FullyConnectedSparseWeightRandom(const FullyConnectedParams &params,
+                                             const Shape &input_shape, const float *input_data,
+                                             const Shape &weights_shape, const float *weights_data,
+                                             const Shape &bias_shape, const float *bias_data,
+                                             const Shape &output_shape, float *output_data,
+                                             const uint16_t *w1_segments,
+                                             const uint16_t *w1_indices)
 {
   UNUSED_RELEASE(params);
   UNUSED_RELEASE(input_shape);
@@ -239,7 +240,7 @@ inline void FullyConnectedSparseWeight(const FullyConnectedParams &params, const
   }
   for (int b = 0; b < batches; ++b)
   {
-    for (int idx_0 = 0; idx_0 < w0_size; ++idx_0)
+    for (int idx_0 = 0; idx_0 < output_depth; ++idx_0)
     {
       for (int pw1 = w1_segments[idx_0]; pw1 < w1_segments[idx_0 + 1]; ++pw1)
       {
