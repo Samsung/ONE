@@ -17,8 +17,6 @@
 #include "DynamicTensorManager.h"
 
 #include "util/logging.h"
-#include "util/Exceptions.h"
-#include "ir/DataType.h"
 
 namespace onert
 {
@@ -33,76 +31,12 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
   // DO NOTHING
 }
 
-void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape)
-{
-  // NOTE Handle user tensors first
-  auto user_tensor = _tensors->getNativeUserTensor(ind);
-  if (user_tensor)
-  {
-    // User tensors cannot be reallocated.
-    auto buffer_size = user_tensor->total_size();
-    auto new_size = new_shape.num_elements() * sizeOfDataType(user_tensor->data_type());
-    if (buffer_size < new_size)
-      throw InsufficientBufferSizeException{"Output buffer size is less than output tensor size"};
-    user_tensor->setShape(new_shape);
-    return;
-  }
-
-  // NOTE Then handle own tensors
-  auto tensor = _tensors->getNativeOwnTensor(ind);
-  assert(tensor);
-
-  bool previously_dynamic = tensor->is_dynamic();
-
-  auto allocTensorMem = [&](bool overwrite = false) {
-    auto capacity = tensor->total_size();
-    auto alloc = _dynamic_mem_mgr->allocate(tensor.get(), capacity);
-
-    if (overwrite)
-      tensor->overwriteBuffer(alloc);
-    else
-      tensor->setBuffer(alloc);
-  };
-
-  if (!previously_dynamic)
-  {
-    // TODO deallocate tensor->buffer()
-    // issue is that staticTensorManager might have allocate this memory
-    tensor->setShape(new_shape);
-    tensor->set_dynamic();
-    allocTensorMem(true);
-  }
-  else if (tensor->buffer() == nullptr)
-  {
-    tensor->setShape(new_shape);
-    tensor->set_dynamic();
-    allocTensorMem();
-  }
-  // when buffer was already allocated and new_shape requires different size
-  else
-  {
-    auto previous_size = tensor->total_size();
-    auto new_size = new_shape.num_elements() * sizeOfDataType(tensor->data_type());
-    if (previous_size != new_size)
-    {
-      _dynamic_mem_mgr->deallocate(tensor.get());
-
-      tensor->setShape(new_shape);
-      tensor->set_dynamic();
-      allocTensorMem(true);
-    }
-    else
-    { // when buffer with same size was already allocated, shape could differ
-      tensor->setShape(new_shape);
-    }
-  }
-}
-
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        const ir::OperandInfo &tensor_info,
                                        ir::Layout backend_layout)
 {
-  auto tensor = std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout, this);
+  auto tensor =
+      std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
   _tensors->setNativeOwnTensor(ind, tensor);
 }
 

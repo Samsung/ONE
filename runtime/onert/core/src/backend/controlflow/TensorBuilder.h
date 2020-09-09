@@ -59,7 +59,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
+  IDynamicTensorManager *dynamicTensorManager(void) override;
 
   /**
    * @brief Get tensor with a specific OperandIndex.

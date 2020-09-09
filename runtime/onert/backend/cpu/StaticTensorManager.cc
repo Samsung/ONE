@@ -67,7 +67,8 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   }
   else
   {
-    auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, _dynamic_tensor_manager);
+    auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout,
+                                           _dynamic_tensor_manager->dynamic_mem_mgr().get());
     _tensors->setNativeTensor(ind, tensor);
   }
   _as_constants[ind] = as_const;

@@ -53,13 +53,19 @@ public:
   virtual void access(const std::function<void(ITensor &tensor)> &fn) = 0;
 
   /**
-   * @brief Return the dynamic tensor manager
+   * @brief Set the shape to @c shape and possibly re-allocate the buffer
    *
-   * If dynamic tensors are not supported, it returns @c nullptr .
+   * If a tensor is dynamic tensor and previously allocated memory exists,
+   * it will be deallocated.
+   * If a tensor is static tensor (with previously allocated memory by StaticTensorManager),
+   * @c buffer() will be overwriten
    *
-   * @return IDynamicTensorManager* DynamicTensorManager
+   * @param shape tensor's new shape. While allocating memory for this new_shape,
+   *              tensor's shape is set to new_shape
+   * @return true If applying shape is successful
+   * @return false If not applying shape is not supported (it throws for other errors)
    */
-  virtual IDynamicTensorManager *dynamic_tensor_manager() { return nullptr; }
+  virtual bool applyShape(const ir::Shape &) { return false; }
 
   /**
    * @brief Return true if the tensor is constant

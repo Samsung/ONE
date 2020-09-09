@@ -20,7 +20,6 @@
 #include "Allocator.h"
 #include "backend/IMemoryManager.h"
 #include "IMemoryPlanner.h"
-#include "ir/OperandIndexMap.h"
 
 namespace onert
 {
