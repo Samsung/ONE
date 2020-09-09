@@ -120,7 +120,10 @@ void CLReduceOperation::configure(ICLTensor *input, ICLTensor *output,
   const size_t num_of_kernels = axis.size();
   const size_t num_of_interm_tensors = num_of_kernels - (keep_dims ? 1 : 0);
 
-  ARM_COMPUTE_ERROR_ON(num_of_kernels < 1);
+  if (num_of_kernels < 1)
+  {
+    throw std::runtime_error("CLReduceOperation: there is no axis to reduce");
+  }
 
   _interm_tensors = support::cpp14::make_unique<CLTensor[]>(num_of_interm_tensors);
   _reduce_kernels = support::cpp14::make_unique<CLReduceOperationKernel[]>(num_of_kernels);
