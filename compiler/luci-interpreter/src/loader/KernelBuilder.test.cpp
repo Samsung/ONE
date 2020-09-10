@@ -38,6 +38,7 @@
 #include <kernels/Pad.h>
 #include <kernels/Prelu.h>
 #include <kernels/Relu.h>
+#include <kernels/Relu6.h>
 #include <kernels/Reshape.h>
 #include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
@@ -542,6 +543,20 @@ TEST_F(KernelBuilderTest, Relu)
   op->features(input);
 
   auto kernel = buildKernel<kernels::Relu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Relu6)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRelu6>();
+  op->features(input);
+
+  auto kernel = buildKernel<kernels::Relu6>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
