@@ -28,5 +28,10 @@ tflite::Padding as_tflite_padding(const tflchef::Padding &value);
 tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &value);
 tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value);
 tflite::MirrorPadMode as_tflite_mirrorpadmode(const tflchef::MirrorPadMode &value);
+tflite::DimensionType as_tflite_dimensiontype(const tflchef::DimensionType &value);
+tflite::SparseIndexVector as_tflite_sparse_idx_vec_type(const tflchef::SparseIndexVecType &value);
+flatbuffers::Offset<void>
+as_tflite_sparse_index_vec(flatbuffers::FlatBufferBuilder &fb,
+                           const ::tflchef::TensorSparsity_IndexVec &value);
 
 #endif // __CONVERT_H__

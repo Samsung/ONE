@@ -85,8 +85,7 @@ circle::DimensionType get_circle_dimension_type(tflite::DimensionType tfl_dim_ty
  * @brief Returns circle SparseIndexVector according to tflite.
 */
 flatbuffers::Offset<void>
-get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
-                               const tflite::DimensionMetadata *dm,
+get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb, const void *values,
                                const tflite::SparseIndexVector &tfl_sparse_index_vector_type);
 
 /**

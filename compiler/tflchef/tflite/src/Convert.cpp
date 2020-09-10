@@ -89,4 +89,34 @@ tflchef::MirrorPadMode as_tflchef_mirrorpadmode(const tflite::MirrorPadMode mode
   }
 }
 
+tflchef::DimensionType as_tflchef_sparse_dim_type(const tflite::DimensionType type)
+{
+  switch (type)
+  {
+    case tflite::DimensionType_DENSE:
+      return tflchef::DimensionType::DENSE;
+    case tflite::DimensionType_SPARSE_CSR:
+      return tflchef::DimensionType::SPARSE_CSR;
+    default:
+      throw std::runtime_error("unsupported sparse dimension type");
+  }
+}
+
+tflchef::SparseIndexVecType as_tflchef_sparse_idx_vec_type(const tflite::SparseIndexVector type)
+{
+  switch (type)
+  {
+    case tflite::SparseIndexVector_NONE:
+      return tflchef::SparseIndexVecType::SparseIdxVecType_NONE;
+    case tflite::SparseIndexVector_Int32Vector:
+      return tflchef::SparseIndexVecType::INT32VEC;
+    case tflite::SparseIndexVector_Uint16Vector:
+      return tflchef::SparseIndexVecType::UINT16VEC;
+    case tflite::SparseIndexVector_Uint8Vector:
+      return tflchef::SparseIndexVecType::UINT8VEC;
+    default:
+      throw std::runtime_error("unsupported sparse index vector type");
+  }
+}
+
 } // namespace tflchef

@@ -25,6 +25,7 @@
 #include "CircleOpcode.h"
 #include "CircleNodeVisitor.forward.h"
 #include "CircleQuantParam.h"
+#include "CircleSparsityParam.h"
 
 #include <memory>
 
@@ -54,6 +55,12 @@ struct CircleNode : public loco::Node,
     _quantparam = std::move(quantparam);
   }
 
+  CircleSparsityParam *sparsityparam(void) const { return _sparsityparam.get(); }
+  void sparsityparam(std::unique_ptr<CircleSparsityParam> &&sparsityparam)
+  {
+    _sparsityparam = std::move(sparsityparam);
+  }
+
   ShapeStatus shape_status(void) const { return _shape_status; }
   void shape_status(ShapeStatus ss) { _shape_status = ss; }
 
@@ -63,6 +70,7 @@ struct CircleNode : public loco::Node,
 private:
   NodeName _name;
   std::unique_ptr<CircleQuantParam> _quantparam;
+  std::unique_ptr<CircleSparsityParam> _sparsityparam;
   ShapeStatus _shape_status{ShapeStatus::UNDEFINED};
   int32_t _op_version = 1;
 };
