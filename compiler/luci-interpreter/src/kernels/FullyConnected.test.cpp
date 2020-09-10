@@ -124,6 +124,93 @@ TYPED_TEST(FullyConnectedTest, Simple)
                                  });
 }
 
+TEST(FullyConnectedTest, InvalidBiasType_NEG)
+{
+  Shape input_shape{3, 2, 2, 1};
+  std::vector<float> input_data{
+      -3, -5, 5,  4, 9,  -2, // batch = 0
+      -3, -2, -4, 9, -8, 1,  // batch = 1
+  };
+  Shape weights_shape{3, 6};
+  std::vector<float> weights_data{
+      -3, -7, 4, -4, -6, 4,  // unit = 0
+      3,  5,  2, 3,  -3, -8, // unit = 1
+      -3, 7,  4, 9,  0,  -5, // unit = 2
+  };
+  Shape bias_shape{3};
+  std::vector<int32_t> bias_data{-1, -5, -8};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(FullyConnectedTest, InvalidWeightShapeDim_NEG)
+{
+  Shape input_shape{3, 2, 2, 1};
+  std::vector<float> input_data{
+      -3, -5, 5,  4, 9,  -2, // batch = 0
+      -3, -2, -4, 9, -8, 1,  // batch = 1
+  };
+  Shape weights_shape{1, 3, 6};
+  std::vector<float> weights_data{
+      -3, -7, 4, -4, -6, 4,  // unit = 0
+      3,  5,  2, 3,  -3, -8, // unit = 1
+      -3, 7,  4, 9,  0,  -5, // unit = 2
+  };
+  Shape bias_shape{3};
+  std::vector<float> bias_data{-1, -5, -8};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(FullyConnectedTest, BiasElementNumWeightDimMismatch_NEG)
+{
+  Shape input_shape{3, 2, 2, 1};
+  std::vector<float> input_data{
+      -3, -5, 5,  4, 9,  -2, // batch = 0
+      -3, -2, -4, 9, -8, 1,  // batch = 1
+  };
+  Shape weights_shape{6, 3};
+  std::vector<float> weights_data{
+      -3, -7, 4,  // unit = 0
+      -4, -6, 4,  // unit = 1
+      3,  5,  2,  // unit = 2
+      3,  -3, -8, // unit = 3
+      -3, 7,  4,  // unit = 4
+      9,  0,  -5, // unit = 5
+  };
+  Shape bias_shape{3};
+  std::vector<float> bias_data{-1, -5, -8};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
