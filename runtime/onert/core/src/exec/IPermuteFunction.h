@@ -50,7 +50,7 @@ private:
 public:
   virtual void run() override
   {
-    assert(_src_tensors.size() > 0);
+    // TODO Optimization : Make control does not reach here? when (_src_tensors.size() == 0)
     assert(_src_tensors.size() == _dst_tensors.size());
     auto src_it = _src_tensors.begin();
     auto dst_it = _dst_tensors.begin();
