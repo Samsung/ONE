@@ -52,6 +52,8 @@ private:
 class CircleGen
 {
 public:
+  using Shape = std::vector<int32_t>;
+
   struct TensorParams
   {
     std::vector<int32_t> shape;
@@ -106,6 +108,7 @@ public:
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
+  uint32_t addOperatorReshape(const OperatorParams &params, const Shape &new_shape);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);

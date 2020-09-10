@@ -19,6 +19,7 @@
 
 #include <fstream>
 #include <string>
+#include <unordered_map>
 
 #include "CircleGen.h"
 #include "fixtures.h"
@@ -118,6 +119,8 @@ class GenModelTestContext
 public:
   GenModelTestContext(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
 
+  GenModelTestContext(CircleBuffer &cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
+
   /**
    * @brief  Return circle buffer
    *
@@ -145,6 +148,19 @@ public:
    * @return bool test is defined to fail on compile
    */
   const bool fail_compile() const { return _fail_compile; }
+
+  /**
+   * @brief Set the output buffer size of specified output tensor
+   *        Note that output tensor size of a model with dynamic tensor is calculated while running
+   *        the model. Therefore, before runniing the model, the sufficient size of buffer should
+   *        be prepared by calling this method.
+   *        The size does not need to be the exact size.
+   */
+  void output_sizes(uint32_t ind, size_t size) { _output_sizes[ind] = size; }
+
+  size_t output_sizes(uint32_t ind) const { return _output_sizes.at(ind); }
+
+  bool hasOutputSizes(uint32_t ind) const { return _output_sizes.find(ind) != _output_sizes.end(); }
 
   /**
    * @brief Add a test case
@@ -186,6 +202,7 @@ private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
+  std::unordered_map<uint32_t, size_t> _output_sizes;
   bool _fail_compile{false};
 };
 
@@ -257,8 +274,21 @@ protected:
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
-        uint64_t output_elements = num_elems(&ti);
-        _so.outputs[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
+
+        auto size = 0;
+        {
+          if (_context->hasOutputSizes(ind))
+          {
+            size = _context->output_sizes(ind);
+          }
+          else
+          {
+            uint64_t output_elements = num_elems(&ti);
+            size = output_elements * sizeOfNnfwType(ti.dtype);
+          }
+          _so.outputs[ind].resize(size);
+        }
+
         ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
                                   _so.outputs[ind].size()),
@@ -320,6 +350,7 @@ protected:
             default:
               throw std::runtime_error{"Invalid tensor type"};
           }
+          // TODO Add shape comparison
         }
       }
 

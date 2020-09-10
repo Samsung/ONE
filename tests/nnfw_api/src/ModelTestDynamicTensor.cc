@@ -21,6 +21,7 @@
 #include "fixtures.h"
 #include "NNPackages.h"
 #include "CircleGen.h"
+#include "GenModelTest.h"
 
 void set_input_output(nnfw_session *session, const std::vector<float> &input,
                       std::vector<float> &actual_output)
@@ -59,7 +60,27 @@ void set_input_output(nnfw_session *session, const std::vector<float> &input0,
  *
  * @note Run this test with "cpu" backend
  */
-// TODO Rewrite this with CircleGen
+auto build_dynamic_Reshape()
+{
+  CircleGen cgen;
+
+  auto f32 = circle::TensorType::TensorType_FLOAT32;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  std::vector<float> new_shape_data{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
+  uint32_t input_buf = cgen.addBuffer(new_shape_data); // shape = [2, 3]
+  int input = cgen.addTensor({{2, 3}, f32, input_buf});
+  int new_shape = cgen.addTensor({{2}, i32});
+  int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
+
+  CircleGen::Shape empty_new_shape;
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, empty_new_shape);
+  cgen.setInputsAndOutputs({new_shape}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
+
+// TODO deprecate this
 class TestDynamicTensorReshapeModelLoaded
     : public ValidationTestModelLoaded<NNPackages::DYNAMIC_TENSOR_RESHAPE>
 {
@@ -129,21 +150,24 @@ protected:
   }
 };
 
-TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_to_3x2)
+TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 {
-  const std::vector<int> new_shape = {3, 2};
-  const std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
-  std::vector<float> actual_output(expected.size());
+  auto model = build_dynamic_Reshape();
 
-  prepare_and_set_input_output(new_shape, expected.size(), &actual_output);
+  const std::vector<int> new_shape{3, 2};
+  const std::vector<float> expected{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
-  NNFW_ENSURE_SUCCESS(res);
-
-  // output value check
-  for (int i = 0; i < expected.size(); ++i)
-    ASSERT_EQ(expected[i], actual_output[i]);
+  _context = std::make_unique<GenModelTestContext>(model);
+  {
+    TestCaseData tcd;
+    tcd.addInput(new_shape);
+    tcd.addOutput(expected);
+    _context->addTestCase(tcd);
+    _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
+    _context->output_sizes(0, sizeof(float) * expected.size());
+  }
+  // GenModelTest::teardown() will do the rest
+  SUCCEED();
 }
 
 /**
