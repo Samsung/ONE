@@ -86,6 +86,39 @@ inline void FullyConnectedSparseWeight16x1(const FullyConnectedParams &params,
   {
     int depth_size = output_depth / 16;
     for (int idx_0 = 0; idx_0 < depth_size; ++idx_0)
+#ifdef USE_NEON
+    {
+      float *__restrict y;
+      y = &output_data[b * output_depth + idx_0 * 16];
+      /* keep y[0..15] in registers for duration of inner loop */
+      float32x4_t y0_3 = vld1q_f32(&y[0]);
+      float32x4_t y4_7 = vld1q_f32(&y[4]);
+      float32x4_t y8_11 = vld1q_f32(&y[8]);
+      float32x4_t y12_15 = vld1q_f32(&y[12]);
+      for (auto pw1 = w1_segments[idx_0]; pw1 < w1_segments[idx_0 + 1]; ++pw1)
+      {
+        auto idx_1 = w1_indices[pw1];
+        float32x4_t xj = vld1q_dup_f32(&input_data[b * accum_depth + idx_1]);
+        float32x4_t wvec;
+
+        wvec = vld1q_f32(&weights_data[0]);
+        y0_3 = vmlaq_f32(y0_3, wvec, xj);
+        wvec = vld1q_f32(&weights_data[4]);
+        y4_7 = vmlaq_f32(y4_7, wvec, xj);
+        wvec = vld1q_f32(&weights_data[8]);
+        y8_11 = vmlaq_f32(y8_11, wvec, xj);
+        wvec = vld1q_f32(&weights_data[12]);
+        y12_15 = vmlaq_f32(y12_15, wvec, xj);
+
+        weights_data += 16;
+      }
+      /* save y[0..15] back to memory */
+      vst1q_f32(&y[0], y0_3);
+      vst1q_f32(&y[4], y4_7);
+      vst1q_f32(&y[8], y8_11);
+      vst1q_f32(&y[12], y12_15);
+    }
+#else
     {
       for (auto pw1 = w1_segments[idx_0]; pw1 < w1_segments[idx_0 + 1]; ++pw1)
       {
@@ -113,6 +146,7 @@ inline void FullyConnectedSparseWeight16x1(const FullyConnectedParams &params,
         weights_data += 16;
       }
     }
+#endif
   }
   if (params.activation != FusedActivationFunctionType::kNone)
   {
