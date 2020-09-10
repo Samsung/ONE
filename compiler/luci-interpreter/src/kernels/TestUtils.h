@@ -32,11 +32,25 @@ namespace kernels
 namespace testing
 {
 
+template <typename T>
+std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point);
+
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data)
 {
   Tensor tensor(DT, shape, {}, "");
   tensor.writeData(data.data(), data.size() * sizeof(typename DataTypeImpl<DT>::Type));
+  return tensor;
+}
+
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
+                       const std::vector<float> &data)
+{
+  using NativeT = typename DataTypeImpl<DT>::Type;
+  Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
+  std::vector<NativeT> quantized_data = quantize<NativeT>(data, scale, zero_point);
+  tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }
 
@@ -69,7 +83,7 @@ std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T>
-inline std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
+std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
   assert(!std::is_floating_point<T>::value);
   std::vector<T> q;
@@ -83,7 +97,7 @@ inline std::vector<T> quantize(const std::vector<float> &data, float scale, int3
 }
 
 template <typename T>
-inline std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
+std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
 {
   assert(!std::is_floating_point<T>::value);
   std::vector<float> f;

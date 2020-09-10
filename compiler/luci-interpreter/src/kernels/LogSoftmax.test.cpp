@@ -59,11 +59,9 @@ TEST(LogSoftmaxTest, Uint8)
       0, -6, 2,  4, //
       3, -2, 10, 1, //
   };
-  Tensor input_tensor{DataType::U8, {2, 4}, {{quant_param.first}, {quant_param.second}}, ""};
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>({2, 4}, quant_param.first, quant_param.second, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::U8, 16. / 256, 255);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   LogSoftmax kernel(&input_tensor, &output_tensor);
   kernel.configure();

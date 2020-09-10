@@ -35,13 +35,13 @@ TYPED_TEST_CASE(SpaceToDepthTest, DataTypes);
 
 TYPED_TEST(SpaceToDepthTest, SimpleCase)
 {
+  constexpr DataType element_type = getElementType<TypeParam>();
   std::vector<TypeParam> input_data{1, 5, 6, 7, 2, 3, 4, 8};
   Shape input_shape{1, 2, 2, 2};
-  Tensor input_tensor{getElementType<TypeParam>(), input_shape, {{}, {}}, ""};
-  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(TypeParam));
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
   std::vector<TypeParam> output_data{1, 5, 6, 7, 2, 3, 4, 8};
   std::vector<int32_t> output_shape{1, 1, 1, 8};
-  Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
+  Tensor output_tensor = makeOutputTensor(element_type);
 
   SpaceToDepthParams params{};
   params.block_size = 2;

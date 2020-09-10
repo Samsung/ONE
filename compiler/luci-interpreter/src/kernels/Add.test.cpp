@@ -57,18 +57,10 @@ TEST(AddTest, Uint8)
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-3.f, 3.f);
   for (int i = 0; i < output_data.size(); i++)
   {
-    Tensor input1_tensor{
-        getElementType<uint8_t>(), base_shape, {{quant_param.first}, {quant_param.second}}, ""};
-    Tensor input2_tensor{
-        getElementType<uint8_t>(), test_shapes[i], {{quant_param.first}, {quant_param.second}}, ""};
-    std::vector<uint8_t> quantized_input1_value =
-        quantize<uint8_t>(base_data, quant_param.first, quant_param.second);
-    std::vector<uint8_t> quantized_input2_value =
-        quantize<uint8_t>(test_data, quant_param.first, quant_param.second);
-    input1_tensor.writeData(quantized_input1_value.data(),
-                            quantized_input1_value.size() * sizeof(uint8_t));
-    input2_tensor.writeData(quantized_input2_value.data(),
-                            quantized_input2_value.size() * sizeof(uint8_t));
+    Tensor input1_tensor =
+        makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
+    Tensor input2_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
+                                                         quant_param.second, test_data);
     Tensor output_tensor =
         makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
@@ -87,18 +79,10 @@ TEST(AddTest, Uint8)
   // Re-run with exchanged inputs.
   for (int i = 0; i < output_data.size(); i++)
   {
-    Tensor input1_tensor{
-        getElementType<uint8_t>(), test_shapes[i], {{quant_param.first}, {quant_param.second}}, ""};
-    Tensor input2_tensor{
-        getElementType<uint8_t>(), base_shape, {{quant_param.first}, {quant_param.second}}, ""};
-    std::vector<uint8_t> quantized_input1_value =
-        quantize<uint8_t>(test_data, quant_param.first, quant_param.second);
-    std::vector<uint8_t> quantized_input2_value =
-        quantize<uint8_t>(base_data, quant_param.first, quant_param.second);
-    input1_tensor.writeData(quantized_input1_value.data(),
-                            quantized_input1_value.size() * sizeof(uint8_t));
-    input2_tensor.writeData(quantized_input2_value.data(),
-                            quantized_input2_value.size() * sizeof(uint8_t));
+    Tensor input1_tensor = makeInputTensor<DataType::U8>(test_shapes[i], quant_param.first,
+                                                         quant_param.second, test_data);
+    Tensor input2_tensor =
+        makeInputTensor<DataType::U8>(base_shape, quant_param.first, quant_param.second, base_data);
     Tensor output_tensor =
         makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
