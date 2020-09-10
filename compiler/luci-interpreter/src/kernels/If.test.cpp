@@ -106,6 +106,36 @@ TEST(IfTest, CondFalse)
   EXPECT_THAT(extractTensorData<float>(output), ElementsAreArray(ArrayFloatNear({5, 14})));
 }
 
+TEST(IfTest, InvalidCondType_NEG)
+{
+  Tensor cond = makeInputTensor<DataType::FLOAT32>({1}, {1});
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor output = makeOutputTensor(DataType::FLOAT32);
+
+  RuntimeModule module(nullptr);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module);
+  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+
+  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(IfTest, InvalidCondElementNum_NEG)
+{
+  Tensor cond = makeInputTensor<DataType::BOOL>({2}, {false, true});
+  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7});
+  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2});
+  Tensor output = makeOutputTensor(DataType::FLOAT32);
+
+  RuntimeModule module(nullptr);
+  RuntimeGraph *then_graph = buildAddSubgraph(&module);
+  RuntimeGraph *else_graph = buildMulSubgraph(&module);
+
+  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

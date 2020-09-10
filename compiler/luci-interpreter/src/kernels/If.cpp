@@ -15,6 +15,7 @@
  */
 
 #include "kernels/If.h"
+#include "kernels/Utils.h"
 
 #include <cstring>
 
@@ -40,14 +41,14 @@ If::If(const Tensor *cond, const std::vector<const Tensor *> &inputs, std::vecto
 
 void If::configure()
 {
-  assert(cond()->element_type() == DataType::BOOL);
-  assert(cond()->shape().num_elements() == 1);
+  LUCI_INTERPRETER_CHECK(cond()->element_type() == DataType::BOOL);
+  LUCI_INTERPRETER_CHECK(cond()->shape().num_elements() == 1);
 
   for (RuntimeGraph *graph : {_then_graph, _else_graph})
   {
     (void)graph;
-    assert(graph->getInputTensors().size() == getInputTensors().size() - 1);
-    assert(graph->getOutputTensors().size() == getOutputTensors().size());
+    LUCI_INTERPRETER_CHECK(graph->getInputTensors().size() == getInputTensors().size() - 1);
+    LUCI_INTERPRETER_CHECK(graph->getOutputTensors().size() == getOutputTensors().size());
   }
 }
 
@@ -62,7 +63,7 @@ void If::execute() const
   // Copy kernel inputs to active graph inputs.
   for (size_t i = 0; i < getInputTensors().size() - 1; ++i)
   {
-    assert(graph_inputs[i]->element_type() == input(i)->element_type());
+    LUCI_INTERPRETER_CHECK(graph_inputs[i]->element_type() == input(i)->element_type());
     graph_inputs[i]->resize(input(i)->shape());
 
     const int32_t num_elements = input(i)->shape().num_elements();
@@ -75,7 +76,7 @@ void If::execute() const
   // Copy graph outputs to kernel outputs.
   for (size_t i = 0; i < getOutputTensors().size(); ++i)
   {
-    assert(graph_outputs[i]->element_type() == output(i)->element_type());
+    LUCI_INTERPRETER_CHECK(graph_outputs[i]->element_type() == output(i)->element_type());
     output(i)->resize(graph_outputs[i]->shape());
 
     const int32_t num_elements = output(i)->shape().num_elements();
