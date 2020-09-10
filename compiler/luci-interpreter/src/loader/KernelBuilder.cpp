@@ -38,6 +38,7 @@
 #include "kernels/Pad.h"
 #include "kernels/Prelu.h"
 #include "kernels/Reshape.h"
+#include "kernels/ResizeBilinear.h"
 #include "kernels/ResizeNearestNeighbor.h"
 #include "kernels/Reverse.h"
 #include "kernels/Rsqrt.h"
@@ -444,6 +445,21 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
 
   // NOTE 'newShape' attribute is ignored.
   return std::make_unique<kernels::Reshape>(input, shape, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeBilinear *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *size = getInputTensor(node->size());
+  Tensor *output = getOutputTensor(node);
+
+  ResizeBilinearParams params{};
+  params.align_corners = node->align_corners();
+  params.half_pixel_centers = node->half_pixel_centers();
+
+  return std::make_unique<kernels::ResizeBilinear>(input, size, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeNearestNeighbor *node)
