@@ -95,6 +95,8 @@ public:
   // ===== Add Operator methods begin =====
 
   uint32_t addOperatorAdd(const OperatorParams &params, circle::ActivationFunctionType actfn);
+  uint32_t addOperatorArgMax(const OperatorParams &params,
+                             circle::TensorType output_type = circle::TensorType::TensorType_INT32);
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
                                     int stride_w, int stride_h, int filter_w, int filter_h,
                                     circle::ActivationFunctionType actfn);

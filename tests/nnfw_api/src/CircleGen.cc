@@ -93,6 +93,13 @@ uint32_t CircleGen::addOperatorAdd(const OperatorParams &params,
                                 circle::BuiltinOptions_AddOptions, options);
 }
 
+uint32_t CircleGen::addOperatorArgMax(const OperatorParams &params, circle::TensorType output_type)
+{
+  auto options = circle::CreateArgMaxOptions(_fbb, output_type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ARG_MAX,
+                                circle::BuiltinOptions_ArgMaxOptions, options);
+}
+
 uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
                                              int stride_w, int stride_h, int filter_w, int filter_h,
                                              circle::ActivationFunctionType actfn)
