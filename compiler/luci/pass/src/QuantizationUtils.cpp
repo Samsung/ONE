@@ -36,7 +36,6 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
                                              float &scaling_factor, int64_t &zp, float &nudged_min,
                                              float &nudged_max)
 {
-
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = 255;
 
