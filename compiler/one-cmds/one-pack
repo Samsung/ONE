@@ -34,6 +34,20 @@ version()
   exit 255
 }
 
+input_not_set()
+{
+  echo "Error: input path not set"
+  echo ""
+  usage
+}
+
+output_not_set()
+{
+  echo "Error: output path not set"
+  echo ""
+  usage
+}
+
 # Parse command-line arguments
 #
 while [ "$#" -ne 0 ]; do
@@ -51,10 +65,16 @@ while [ "$#" -ne 0 ]; do
       ;;
     '-i')
       export INPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        input_not_set
+      fi
       shift 2
       ;;
     '-o')
       export OUTPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        output_not_set
+      fi
       shift 2
       ;;
     *)
@@ -68,6 +88,10 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo "Error: input model not found"
   echo ""
   usage
+fi
+
+if [ -z ${OUTPUT_PATH} ]; then
+  output_not_set
 fi
 
 INPUT_FILE=$(basename "${INPUT_PATH}")
