@@ -966,27 +966,40 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
   const auto perm_idx{op.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
   const auto &perm = _operands.at(perm_idx);
 
+  // perm.shape() != ir::Shape{0} means that perm is (n-1...0)
+  // TODO This condition changes to perm.num_elements() == 0
+  const auto is_regular_transpose = perm.shape() == ir::Shape{0};
+
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   auto &output = _operands.at(output_idx);
-  if (!perm.isConstant())
+  if ((!perm.isConstant() && !is_regular_transpose) || input.info().isDynamic())
   {
     output.info().setDynamic();
     _return_has_dynamic_tensor = true;
     return;
   }
 
-  // Check rank
-  if (input.info().shape().rank() != static_cast<int>(perm.info().shape().num_elements()))
+  ir::Shape new_shape;
+  if (is_regular_transpose)
   {
-    throw std::runtime_error("StaticShapeInferer failed, bad rank size: " +
-                             std::to_string(perm.info().shape().num_elements()));
+    // Call by (n-1...0)
+    new_shape = shape_inference::inferTransposeShape(input.info().shape(), nullptr, 0);
   }
+  else
+  {
+    // Check rank
+    if (input.info().shape().rank() != static_cast<int>(perm.info().shape().num_elements()))
+    {
+      throw std::runtime_error("StaticShapeInferer failed, bad rank size: " +
+                               std::to_string(perm.info().shape().num_elements()));
+    }
 
-  // set output shape, based on input and params
-  const auto perm_buf = reinterpret_cast<const int32_t *>(perm.data()->base());
-  ir::Shape new_shape = shape_inference::inferTransposeShape(input.info().shape(), perm_buf,
-                                                             perm.shape().num_elements());
+    // set output shape, based on input and params
+    const auto perm_buf = reinterpret_cast<const int32_t *>(perm.data()->base());
+    new_shape = shape_inference::inferTransposeShape(input.info().shape(), perm_buf,
+                                                     perm.shape().num_elements());
+  }
   output.info().shape(new_shape);
 }
 

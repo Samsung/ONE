@@ -238,7 +238,8 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto &input_shape = _ctx.at(input_index).shape();
 
-  OP_REQUIRES(input_shape.rank() == static_cast<int>(_ctx.at(perm_index).shape().num_elements()));
+  OP_REQUIRES(_ctx.at(perm_index).shape().num_elements() == 0 ||
+              input_shape.rank() == static_cast<int>(_ctx.at(perm_index).shape().num_elements()));
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 

@@ -1022,18 +1022,26 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
   auto perm_ind = op.getInputs().at(ir::operation::Transpose::Input::PERMUTATION);
   auto perm = _tensor_registry->getITensor(perm_ind);
 
-  // Check rank
-  if (input->num_dimensions() != perm->getShape().num_elements())
+  ir::Shape new_shape;
+  // TODO Change perm->dimension(0) == 0 to perm->num_elements() == 0
+  if (perm->dimension(0) == 0) // This condition means that perm is (n-1...0)
   {
-    throw std::runtime_error("DynamicShapeInferer failed, bad rank size: " +
-                             std::to_string(perm->getShape().num_elements()));
+    // Call by (n-1...0)
+    new_shape = shape_inference::inferTransposeShape(input_shape, nullptr, 0);
   }
+  else
+  {
+    // Check rank
+    if (input->num_dimensions() != perm->getShape().num_elements())
+    {
+      throw std::runtime_error("DynamicShapeInferer failed, bad rank size: " +
+                               std::to_string(perm->getShape().num_elements()));
+    }
 
-  // set output shape, based on input and params
-  const auto perm_buffer = reinterpret_cast<const int32_t *>(perm->buffer());
-  ir::Shape new_shape =
-      shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->dimension(0));
-
+    // set output shape, based on input and params
+    const auto perm_buffer = reinterpret_cast<const int32_t *>(perm->buffer());
+    new_shape = shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->dimension(0));
+  }
   dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
   assert(output->buffer() != nullptr);
 }

@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Transpose.h>
+#include <numeric>
 
 namespace onert
 {
@@ -38,10 +39,22 @@ template <typename T> void TransposeLayer::transpose()
 {
   nnfw::cker::TransposeParams param;
   assert(_perm->num_dimensions() == 1);
-  param.perm_count = _perm->dimension(0);
-  for (auto i = 0; i < param.perm_count; i++)
+
+  param.perm_count = _input->num_dimensions();
+  if (_perm->dimension(0) == 0) // This means _perm is (n-1...0)
   {
-    param.perm[i] = *(reinterpret_cast<const int32_t *>(_perm->buffer()) + i);
+    const auto begin = param.perm;
+    const auto end = param.perm + _input->num_dimensions() - 1;
+    std::iota(begin, end, 0);
+    std::reverse(begin, end);
+  }
+  else
+  {
+    assert(param.perm_count == static_cast<int>(_perm->dimension(0)));
+    for (auto i = 0; i < param.perm_count; i++)
+    {
+      param.perm[i] = *(reinterpret_cast<const int32_t *>(_perm->buffer()) + i);
+    }
   }
 
   nnfw::cker::Transpose(param, getTensorShape(_input),

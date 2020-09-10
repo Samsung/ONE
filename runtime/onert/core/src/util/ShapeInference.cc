@@ -22,6 +22,7 @@
 #include "util/logging.h"
 
 #include <cassert>
+#include <numeric>
 #include <sstream>
 #include <cmath>
 
@@ -970,15 +971,43 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm,
     throw std::runtime_error("inferTransposeShape failed, bad permutation size: " +
                              std::to_string(perm_size));
   }
-  ir::Shape out_shape(rank);
-  for (int idx = 0; idx < perm_size; idx++)
+
+  const int32_t *perm_data = perm;
+  std::vector<int32_t> regular_perm_vec;
+  if (perm_size == 0)
   {
-    if (perm[idx] < 0 || perm[idx] >= rank)
+    // perm_data will be set to (n-1...0)
+    regular_perm_vec.resize(rank);
+    std::iota(regular_perm_vec.begin(), regular_perm_vec.end(), 0);
+    std::reverse(regular_perm_vec.begin(), regular_perm_vec.end());
+    perm_data = regular_perm_vec.data();
+  }
+  else
+  {
+    assert(rank == perm_size);
+  }
+
+  ir::Shape out_shape(rank);
+  std::vector<bool> visit_perms(rank, false);
+  for (int idx = 0; idx < rank; idx++)
+  {
+    const auto perm_val = perm_data[idx];
+    // Check invalid permutation value
+    if (perm_val < 0 || perm_val >= rank)
     {
       throw std::runtime_error("inferTransposeShape failed, bad permutation value: " +
-                               std::to_string(perm[idx]));
+                               std::to_string(perm_val));
     }
-    out_shape.dim(idx) = in_shape.dim(perm[idx]);
+
+    // Check duplicated permutation value
+    if (visit_perms.at(perm_val))
+    {
+      throw std::runtime_error("inferTransposeShape failed, duplicated permutation value: " +
+                               std::to_string(perm_val));
+    }
+    visit_perms.at(perm_val) = true;
+
+    out_shape.dim(idx) = in_shape.dim(perm_val);
   }
   return out_shape;
 }
