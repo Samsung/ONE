@@ -14,6 +14,7 @@ How To
   ./how-to-build-compiler.md
   ./how-to-build-package.md
   ./how-to-build-runtime.md
+  ./how-to-build-runtime-tizen-gbs-rpi4.md
   ./how-to-build-runtime-using-prebuilt-docker-image.md
   ./how-to-cross-build-runtime-for-arm.md
   ./how-to-cross-build-runtime-for-aarch64.md
