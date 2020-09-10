@@ -42,7 +42,7 @@ void StaticTensorManager::allocateConsts(void)
     auto tensor = pair.second;
     if (_as_constants[ind])
     {
-      auto mem_alloc = _const_mgr->allocate(ind, tensor->total_size());
+      auto mem_alloc = _const_mgr->allocate(tensor.get(), tensor->total_size());
       tensor->setBuffer(mem_alloc);
       auto buffer = mem_alloc->base();
       VERBOSE(CPU_COMMON_StaticTensorManager) << "CONSTANT TENSOR(#" << ind.value()

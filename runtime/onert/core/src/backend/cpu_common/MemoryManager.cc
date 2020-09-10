@@ -70,20 +70,20 @@ uint8_t *MemoryManager::getBuffer(const ir::OperandIndex &ind) const
   return _mem_alloc->base() + mem_blk.offset;
 }
 
-std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ir::OperandIndex &ind,
+std::shared_ptr<cpu_common::Allocator> DynamicMemoryManager::allocate(const ITensor *tensor,
                                                                       uint32_t capacity)
 {
-  auto find = _mem_alloc_map.find(ind);
+  auto find = _mem_alloc_map.find(tensor);
   if (find != _mem_alloc_map.end())
     throw std::runtime_error("Cannot allocate memory for a tensor. It was already allocated.");
 
-  _mem_alloc_map[ind] = std::make_shared<cpu_common::Allocator>(capacity);
-  return _mem_alloc_map[ind];
+  _mem_alloc_map[tensor] = std::make_shared<cpu_common::Allocator>(capacity);
+  return _mem_alloc_map[tensor];
 }
 
-void DynamicMemoryManager::deallocate(const ir::OperandIndex &ind)
+void DynamicMemoryManager::deallocate(const ITensor *tensor)
 {
-  auto find = _mem_alloc_map.find(ind);
+  auto find = _mem_alloc_map.find(tensor);
   if (find == _mem_alloc_map.end())
     throw std::runtime_error("Cannot find Allocator for the requested index");
 
