@@ -145,7 +145,7 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
 fi
 
 if [ -z ${INPUT_ARRAYS} ]; then
-  output_arrays_not_set
+  input_arrays_not_set
 fi
 
 # INPUT_SHAPES is optional
