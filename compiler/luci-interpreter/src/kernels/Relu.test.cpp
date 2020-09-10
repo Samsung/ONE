@@ -39,9 +39,7 @@ TEST(ReluTest, FloatSimple)
       1.0f, 0.0f, 0.0f, // Row 2
   };
 
-  Tensor input_tensor{DataType::FLOAT32, {2, 3}, {}, ""};
-  input_tensor.writeData(input_data.data(), input_data.size() * sizeof(float));
-
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Relu kernel(&input_tensor, &output_tensor);
@@ -53,80 +51,63 @@ TEST(ReluTest, FloatSimple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
 }
 
-float GetTolerance(float min, float max) { return (max - min) / 255.0; }
-
-TEST(ReluTest, Uint8Dequantized)
-{
-  std::vector<float> input_data{-0.8f, 0.2f, 0.9f, 0.7f, 0.1f, -0.4f};
-  std::vector<float> ref_output_data{0.0f, 0.2f, 0.9f, 0.7f, 0.1f, 0.0f};
-
-  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
-
-  Tensor input_tensor{DataType::U8, {1, 2, 3, 1}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, quant_param.first, quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
-
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  kernel.execute();
-
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 3, 1}));
-}
-
 TEST(ReluTest, Uint8Quantized)
 {
-  const float kMin = -1.f;
-  const float kMax = 1.f;
-
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(kMin, kMax);
-  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  std::vector<uint8_t> quantize_input{
-      127, 67, 160, 192, //
-      176, 85, 240, 144, //
+  std::vector<float> input_data{
+      0, -6, 2, 4, //
+      3, -2, 7, 1, //
   };
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+  // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
+  const float f_min = (-128.0 / 128.0) * 8;
+  const float f_max = (127.0 / 128.0) * 8;
+
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(f_min, f_max);
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first,
+                                                      quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Relu kernel(&input_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray({127, 127, 160, 192, 176, 127, 240, 144}));
+              ::testing::ElementsAreArray({128, 128, 160, 192, 176, 128, 240, 144}));
+  EXPECT_THAT(
+      dequantize(extractTensorData<uint8_t>(output_tensor), quant_param.first, quant_param.second),
+      ElementsAreArray(ArrayFloatNear({0, 0, 2, 4, 3, 0, 7, 1})));
 }
 
 TEST(ReluTest, Uint8Requantized)
 {
-  const float kMin = -1.f;
-  const float kMinOut = 0.f;
-  const float kMax = 1.f;
-
-  std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(kMin, kMax);
-  Tensor input_tensor{DataType::U8, {1, 2, 4, 1}, {{quant_input.first}, {quant_input.second}}, ""};
-
-  std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(kMinOut, kMax);
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);
-
-  std::vector<uint8_t> quantize_input{
-      127, 67, 160, 192, //
-      176, 85, 240, 255, //
+  std::vector<float> input_data{
+      0, -6, 2, 4, //
+      3, -2, 7, 1, //
   };
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
+
+  // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
+  const float in_min = (-128.0 / 128.0) * 8;
+  const float in_max = (127.0 / 128.0) * 8;
+  const float out_min = (0.0 / 256.0) * 8;
+  const float out_max = (255.0 / 256.0) * 8;
+
+  std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(in_min, in_max);
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first,
+                                                      quant_input.second, input_data);
+
+  std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(out_min, out_max);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);
 
   Relu kernel(&input_tensor, &output_tensor);
   kernel.configure();
   kernel.execute();
 
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray({0, 0, 66, 130, 98, 0, 226, 255}));
+              ::testing::ElementsAreArray({0, 0, 64, 128, 96, 0, 224, 32}));
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), quant_output.first,
+                         quant_output.second),
+              ElementsAreArray(ArrayFloatNear({0, 0, 2, 4, 3, 0, 7, 1})));
 }
 
 TEST(ReluTest, Input_Output_Type_NEG)
