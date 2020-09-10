@@ -26,58 +26,16 @@ namespace
 
 using namespace testing;
 
-// Returns the corresponding Bias DataType given the type T(Input Tensor Type).
-template <typename T> constexpr DataType getBiasType()
-{
-  if (std::is_same<T, float>::value)
-    return DataType::FLOAT32;
-  if (std::is_same<T, uint8_t>::value)
-    return DataType::S32;
-  return DataType::Unknown;
-}
-
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
            std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
            std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
 {
-  float kQuantizedTolerance = getTolerance(-127, 128, 255);
-  std::pair<float, int32_t> input_quant_param = quantizationParams<T>(-63.5, 64);
-  std::pair<float, int32_t> output_quant_param = quantizationParams<T>(-127, 128);
-  Tensor input_tensor{getElementType<T>(),
-                      input_shape,
-                      {{input_quant_param.first}, {input_quant_param.second}},
-                      ""};
-  Tensor weights_tensor{getElementType<T>(),
-                        weights_shape,
-                        {{input_quant_param.first}, {input_quant_param.second}},
-                        ""};
-  Tensor bias_tensor{
-      getBiasType<T>(), bias_shape, {{input_quant_param.first * input_quant_param.first}, {0}}, ""};
-  if (std::is_floating_point<T>::value)
-  {
-    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
-    weights_tensor.writeData(weights_data.begin(), weights_data.size() * sizeof(T));
-    bias_tensor.writeData(bias_data.begin(), bias_data.size() * sizeof(T));
-  }
-  else
-  {
-    std::vector<T> quantized_input_value =
-        quantize<T>(input_data, input_quant_param.first, input_quant_param.second);
-    std::vector<T> quantized_weights_value =
-        quantize<T>(weights_data, input_quant_param.first, input_quant_param.second);
-    std::vector<int32_t> quantized_bias_value =
-        quantize<int32_t>(bias_data, bias_tensor.scale(), bias_tensor.zero_point());
-    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
-    weights_tensor.writeData(quantized_weights_value.data(),
-                             quantized_weights_value.size() * sizeof(T));
-    bias_tensor.writeData(quantized_bias_value.data(),
-                          quantized_bias_value.size() * sizeof(int32_t));
-  }
-
-  Tensor output_tensor =
-      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   FullyConnectedParams params{};
   params.activation = Activation::RELU;
@@ -86,17 +44,40 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  if (std::is_floating_point<T>::value)
-  {
-    EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
-  }
-  else
-  {
-    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
-                              output_tensor.zero_point()),
-                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
-  }
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+}
+
+template <>
+void Check<uint8_t>(
+    std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
+    std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
+    std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
+    std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
+{
+  const float quantized_tolerance = getTolerance(-127, 128, 255);
+  std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
+  std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
+  Tensor weights_tensor = makeInputTensor<DataType::U8>(weights_shape, input_quant_param.first,
+                                                        input_quant_param.second, weights_data);
+  Tensor bias_tensor = makeInputTensor<DataType::S32>(
+      bias_shape, input_quant_param.first * input_quant_param.first, 0, bias_data);
+  Tensor output_tensor =
+      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(output_data, quantized_tolerance)));
 }
 
 template <typename T> class FullyConnectedTest : public ::testing::Test
