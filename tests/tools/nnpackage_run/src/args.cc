@@ -255,6 +255,11 @@ void Args::Parse(const int argc, char **argv)
                                             "' cannot be given at once.");
       }
     };
+
+    // calling, e.g., "nnpackage_run .. -- shape_prepare .. --shape_run .." should theoretically
+    // work but allowing both options together on command line makes the usage and implemenation
+    // of nnpackage_run too complicated. Therefore let's not allow those option together.
+    conflicting_options("shape_prepare", "shape_run");
   }
 
   if (vm.count("help"))
