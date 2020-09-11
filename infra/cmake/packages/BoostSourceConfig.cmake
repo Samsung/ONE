@@ -13,7 +13,7 @@ function(_BoostSource_import)
   ExternalSource_Download(BOOST ${BOOST_URL})
 
   set(BoostSource_DIR ${BOOST_SOURCE_DIR} PARENT_SCOPE)
-  set(BoostSource_FOUND ${BOOST_SOURCE_GET} PARENT_SCOPE)
+  set(BoostSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_BoostSource_import)
 
 _BoostSource_import()

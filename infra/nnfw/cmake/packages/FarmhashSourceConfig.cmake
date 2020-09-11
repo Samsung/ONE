@@ -13,7 +13,7 @@ function(_FarmhashSource_import)
   ExternalSource_Download("farmhash" ${FARMHASH_URL})
 
   set(FarmhashSource_DIR ${farmhash_SOURCE_DIR} PARENT_SCOPE)
-  set(FarmhashSource_FOUND ${farmhash_SOURCE_GET} PARENT_SCOPE)
+  set(FarmhashSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_FarmhashSource_import)
 
 _FarmhashSource_import()
