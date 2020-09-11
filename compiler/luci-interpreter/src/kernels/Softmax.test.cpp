@@ -30,31 +30,8 @@ template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  float kQuantizedTolerance = getTolerance(std::min<float>(std::min<float>(output_data), 0.f),
-                                           std::max<float>(std::max<float>(output_data), 0.f), 255);
-  std::pair<float, int32_t> input_quant_param =
-      quantizationParams<T>(std::min<float>(std::min<float>(input_data), 0.f),
-                            std::max<float>(std::max<float>(input_data), 0.f));
-  std::pair<float, int32_t> output_quant_param =
-      quantizationParams<T>(std::min<float>(std::min<float>(output_data), 0.f),
-                            std::max<float>(std::max<float>(output_data), 0.f));
-  Tensor input_tensor{getElementType<T>(),
-                      input_shape,
-                      {{input_quant_param.first}, {input_quant_param.second}},
-                      ""};
-  if (std::is_floating_point<T>::value)
-  {
-    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
-  }
-  else
-  {
-    std::vector<T> quantized_input_value =
-        quantize<T>(input_data, input_quant_param.first, input_quant_param.second);
-    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
-  }
-
-  Tensor output_tensor =
-      makeOutputTensor(getElementType<T>(), output_quant_param.first, output_quant_param.second);
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   SoftmaxParams params{};
   params.beta = 0.1;
@@ -63,17 +40,38 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  if (std::is_floating_point<T>::value)
-  {
-    EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
-  }
-  else
-  {
-    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
-                              output_tensor.zero_point()),
-                ElementsAreArray(ArrayFloatNear(output_data, kQuantizedTolerance)));
-  }
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
   EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
+}
+
+template <>
+void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
+                    std::initializer_list<int32_t> output_shape,
+                    std::initializer_list<float> input_data,
+                    std::initializer_list<float> output_data)
+{
+  std::pair<float, int32_t> input_quant_param =
+      quantizationParams<uint8_t>(std::min<float>(std::min<float>(input_data), 0.f),
+                                  std::max<float>(std::max<float>(input_data), 0.f));
+  std::pair<float, int32_t> output_quant_param =
+      quantizationParams<uint8_t>(std::min<float>(std::min<float>(output_data), 0.f),
+                                  std::max<float>(std::max<float>(output_data), 0.f));
+  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
+  Tensor output_tensor =
+      makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
+
+  SoftmaxParams params{};
+  params.beta = 0.1;
+
+  Softmax kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
+                         output_tensor.zero_point()),
+              ElementsAreArray(ArrayFloatNear(output_data, output_tensor.scale())));
 }
 
 template <typename T> class SoftmaxTest : public ::testing::Test
