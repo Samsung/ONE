@@ -150,12 +150,20 @@ public:
   const bool fail_compile() const { return _fail_compile; }
 
   /**
-   * @brief Set the output buffer size of specified output tensor
-   *        Note that output tensor size of a model with dynamic tensor is calculated while running
-   *        the model. Therefore, before runniing the model, the sufficient size of buffer should
-   *        be prepared by calling this method.
-   *        The size does not need to be the exact size.
-   */
+ * @brief Return test is defined to fail on running
+ *
+ * @return bool test is defined to fail on running
+ */
+  const std::vector<int> &fail_run_counts() const { return _fail_run_counts; }
+
+  /**
+     * @brief Set the output buffer size of specified output tensor
+     *        Note that output tensor size of a model with dynamic tensor is calculated while
+     *        running the model.
+     *        Therefore, before runniing the model, the sufficient size of buffer should
+     *        be prepared by calling this method.
+     *        The size does not need to be the exact size.
+     */
   void output_sizes(uint32_t ind, size_t size) { _output_sizes[ind] = size; }
 
   size_t output_sizes(uint32_t ind) const { return _output_sizes.at(ind); }
@@ -194,9 +202,18 @@ public:
   }
 
   /**
-   * @brief Set the Test Fail
+   * @brief Set the Test Fail while compiling
    */
   void setCompileFail() { _fail_compile = true; }
+
+  /**
+   * @brief Set the Test Fail while running
+   *
+   * @param run_counts   Indicate when the running will fail.
+   *        For example, if the test runs nnfw_run() multiple time, run_run_counts == {0, 2} means
+   *        that 0th and 2nd call of nnfw_run() must return NNFW_STATUS_ERROR
+   */
+  void setRunFail(const std::vector<int> &&run_counts) { _fail_run_counts = run_counts; }
 
 private:
   CircleBuffer _cbuf;
@@ -204,6 +221,7 @@ private:
   std::vector<std::string> _backends;
   std::unordered_map<uint32_t, size_t> _output_sizes;
   bool _fail_compile{false};
+  std::vector<int> _fail_run_counts;
 };
 
 /**
@@ -296,8 +314,9 @@ protected:
       }
 
       // Set input values, run, and check output values
-      for (auto &test_case : _context->test_cases())
+      for (int tc_count = 0; tc_count < _context->test_cases().size(); ++tc_count)
       {
+        auto &test_case = _context->test_cases()[tc_count];
         auto &ref_inputs = test_case.inputs;
         auto &ref_outputs = test_case.outputs;
         ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
@@ -308,7 +327,17 @@ protected:
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
         }
 
-        NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
+        auto &fail_run_counts = _context->fail_run_counts();
+        auto it = std::find(fail_run_counts.begin(), fail_run_counts.end(), tc_count);
+        if (it == fail_run_counts.end())
+        {
+          NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
+        }
+        else
+        {
+          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          continue;
+        }
 
         ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
         for (uint32_t i = 0; i < _so.outputs.size(); i++)

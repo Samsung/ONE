@@ -29,7 +29,7 @@ const char *TEST_PACKAGE_NAMES[] = {
     "add", "add_no_manifest", "add_invalid_manifest",
 
     // for dynamic tensor test
-    "dynamic_tensor_reshape", "while_dynamic", "if_dynamic",
+    "while_dynamic", "if_dynamic",
 };
 
 NNPackages &NNPackages::get()
