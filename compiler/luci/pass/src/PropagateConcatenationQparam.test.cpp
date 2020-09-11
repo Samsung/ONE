@@ -37,7 +37,7 @@ void addQuantParam(luci::CircleNode &node, const std::vector<float> &scale,
   node.quantparam(std::move(quantparam));
 }
 
-int quantize(float f, luci::CircleQuantParam *qparam)
+int32_t quantize(float f, luci::CircleQuantParam *qparam)
 {
   float scale = qparam->scale[0];
   int64_t zp = qparam->zerop[0];
