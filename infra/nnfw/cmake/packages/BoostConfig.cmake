@@ -36,7 +36,6 @@ function(_Boost_Build Boost_PREFIX)
   list(APPEND Boost_Options --with-program_options)
   list(APPEND Boost_Options --with-system)
   list(APPEND Boost_Options --with-filesystem)
-  list(APPEND Boost_Options -j8)
 
   if(DEFINED EXTERNALS_BUILD_THREADS)
     set(N ${EXTERNALS_BUILD_THREADS})

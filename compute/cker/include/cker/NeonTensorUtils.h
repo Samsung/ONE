@@ -599,6 +599,7 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   ruy::Matrix<int8_t> ruy_lhs;
   ruy::Matrix<int8_t> ruy_rhs;
   ruy::Matrix<int32_t> ruy_dst;
+  // Note that cache is always enabled for input and weight tensors
   ruy_support::MakeRuyMatrix(lhs_params, input_to_gate_weights, &ruy_lhs, true);
   ruy_support::MakeRuyMatrix(rhs_params, input, &ruy_rhs, true);
   ruy_support::MakeRuyMatrix(dst_params, scratch, &ruy_dst);

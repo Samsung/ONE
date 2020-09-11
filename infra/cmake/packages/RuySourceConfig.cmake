@@ -7,9 +7,9 @@ function(_RuySource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE Downloads source from latest ruy library (2020-04-10)
+  # NOTE Downloads ruy source used by tensorflow v2.3.0
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/9ad26c734d59e8abb4c32089b12bb31f8c721f61.tar.gz)
+  envoption(RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/34ea9f4993955fa1ff4eb58e504421806b7f2e8f.tar.gz)
   ExternalSource_Download(RUY
     DIRNAME RUY
     URL ${RUY_URL})

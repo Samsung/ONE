@@ -401,7 +401,6 @@ template <typename Scalar> struct MatrixParams
   // some period of time. Defaults to false, but should be set to true
   // for unchanging data (e.g. weights buffers in many cases)
   CachePolicy cache_policy = CachePolicy::kNeverCache;
-  // bool cacheable = false;
 };
 
 // Enumeration of broad categories of Gemm.

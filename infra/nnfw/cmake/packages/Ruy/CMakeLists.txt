@@ -13,6 +13,8 @@ list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/example.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/example_advanced.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/tune_tool.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/pmu.cc")
+list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/create_trmul_params.cc")
+list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/prepare_packed_matrices.cc")
 
 list(APPEND RUY_INSTRUMENTATION_SRCS "${RUY_BASE}/profiler/instrumentation.cc")
 

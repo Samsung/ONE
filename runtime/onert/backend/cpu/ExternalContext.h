@@ -36,12 +36,9 @@ namespace cpu
 class ExternalContext : public IExternalContext
 {
 public:
-  ExternalContext() : _ruy_context(new ruy::Context), _use_caching(false)
+  ExternalContext() : _ruy_context(new ruy::Context)
   {
     setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
-#ifdef USE_RUY_GEMV
-    _use_caching = true;
-#endif
   }
 
   void setMaxNumThreads(int max_num_threads)
@@ -53,11 +50,8 @@ public:
 
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
 
-  bool use_caching() const { return _use_caching; }
-
 private:
   const std::unique_ptr<ruy::Context> _ruy_context;
-  bool _use_caching;
 };
 
 } // namespace cpu
