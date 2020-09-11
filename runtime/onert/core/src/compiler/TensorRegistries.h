@@ -40,7 +40,7 @@ public:
   {
     for (const auto &e : backend_contexts)
     {
-      auto tensor_reg = e.second->tensor_builder->tensorRegistry();
+      auto tensor_reg = e.second->tensor_registry;
       if (e.first->config()->id() == backend::controlflow::Config::ID)
       {
         _cf_tensor_reg =
@@ -69,7 +69,7 @@ public:
     return _cf_tensor_reg;
   }
 
-  std::shared_ptr<backend::ITensor> getITensor(ir::OperandIndex ind)
+  std::shared_ptr<backend::ITensor> getITensor(ir::OperandIndex ind) const
   {
     for (auto &tensor_reg : _tensor_regs)
     {

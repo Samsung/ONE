@@ -216,13 +216,19 @@ void Args::Initialize(void)
          "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
          "{nnpkg} name may be changed to realpath if you use symbolic-link.")
     ("shape_prepare", po::value<std::string>()->default_value("[]")->notifier(process_shape_prepare),
-         "set shape of specified tensor before compilation (before calling nnfw_prepare()).\n"
-         "'h5': read shape(s) from H5 input file. '--load' should also be provided.\n"
-         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [].")
+         "Please refer to the description of 'shape_run'")
     ("shape_run", po::value<std::string>()->default_value("[]")->notifier(process_shape_run),
-         "set shape of specified tensor before running (before calling nnfw_run()).\n"
+         "'--shape_prepare: set shape of tensors before compilation (before calling nnfw_prepare()).\n"
+         "'--shape_run: set shape of tensors before running (before calling nnfw_run()).\n"
+         "Allowed value:.\n"
+         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [] (scalar).\n"
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
          "'h5': read shape(s) from H5 input file. '--load' should also be provided.\n"
-         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [].")
+         "if '--load' option is provided but '--shape_prepare' or '--shape_run' is not provided,\n"
+         "'--shape_run h5' will be used by default.\n"
+#endif
+         "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n"
+         )
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
@@ -249,6 +255,11 @@ void Args::Parse(const int argc, char **argv)
                                             "' cannot be given at once.");
       }
     };
+
+    // calling, e.g., "nnpackage_run .. -- shape_prepare .. --shape_run .." should theoretically
+    // work but allowing both options together on command line makes the usage and implemenation
+    // of nnpackage_run too complicated. Therefore let's not allow those option together.
+    conflicting_options("shape_prepare", "shape_run");
   }
 
   if (vm.count("help"))
@@ -286,6 +297,20 @@ void Args::Parse(const int argc, char **argv)
       _warmup_runs = 1;
     }
   }
+}
+
+bool Args::shapeParamProvided()
+{
+  bool provided = false;
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+  // "--shape_run h5" or "--shape_prepare h5" was provided
+  provided = (getWhenToUseH5Shape() != WhenToUseH5Shape::NOT_PROVIDED);
+#endif
+  // specific shape was provided
+  // e.g., "--shape_run '[0, [10, 1]]'" or "--shape_prepare '[0, [10, 1]]'"
+  provided |= (!getShapeMapForPrepare().empty()) || (!getShapeMapForRun().empty());
+
+  return provided;
 }
 
 } // end of namespace nnpkg_run

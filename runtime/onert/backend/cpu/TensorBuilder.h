@@ -38,7 +38,7 @@ namespace cpu
 class TensorBuilder : public ITensorBuilder
 {
 public:
-  TensorBuilder();
+  TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -58,13 +58,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
-
-  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
-
-  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:
   const std::shared_ptr<cpu_common::TensorRegistry> _tensor_reg;

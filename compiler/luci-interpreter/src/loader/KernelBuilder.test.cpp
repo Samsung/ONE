@@ -31,12 +31,19 @@
 #include <kernels/LeakyRelu.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/Logistic.h>
+#include <kernels/LogSoftmax.h>
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
 #include <kernels/Pad.h>
+#include <kernels/Prelu.h>
+#include <kernels/Relu.h>
+#include <kernels/Relu6.h>
 #include <kernels/Reshape.h>
+#include <kernels/ResizeBilinear.h>
+#include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/Reverse.h>
+#include <kernels/Rsqrt.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
@@ -413,6 +420,20 @@ TEST_F(KernelBuilderTest, Logistic)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, LogSoftmax)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleLogSoftmax>();
+  op->logits(input);
+
+  auto kernel = buildKernel<kernels::LogSoftmax>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, MaxPool2D)
 {
   auto *input = createInputNode();
@@ -497,6 +518,51 @@ TEST_F(KernelBuilderTest, Pad)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, Prelu)
+{
+  auto *input = createInputNode();
+  auto *alpha = createInputNode();
+
+  auto *op = createNode<luci::CirclePRelu>();
+  op->input(input);
+  op->alpha(alpha);
+
+  auto kernel = buildKernel<kernels::Prelu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->alpha(), alpha);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Relu)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRelu>();
+  op->features(input);
+
+  auto kernel = buildKernel<kernels::Relu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Relu6)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRelu6>();
+  op->features(input);
+
+  auto kernel = buildKernel<kernels::Relu6>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, Reshape)
 {
   auto *input = createInputNode();
@@ -514,6 +580,48 @@ TEST_F(KernelBuilderTest, Reshape)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, ResizeBilinear)
+{
+  auto *input = createInputNode();
+  auto *size = createInputNode();
+
+  auto *op = createNode<luci::CircleResizeBilinear>();
+  op->input(input);
+  op->size(size);
+  op->align_corners(true);
+  op->half_pixel_centers(true);
+
+  auto kernel = buildKernel<kernels::ResizeBilinear>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size(), size);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().align_corners, Eq(op->align_corners()));
+  EXPECT_THAT(kernel->params().half_pixel_centers, Eq(op->half_pixel_centers()));
+}
+
+TEST_F(KernelBuilderTest, ResizeNearestNeighbor)
+{
+  auto *input = createInputNode();
+  auto *size = createInputNode();
+
+  auto *op = createNode<luci::CircleResizeNearestNeighbor>();
+  op->input(input);
+  op->size(size);
+  op->align_corners(true);
+
+  auto kernel = buildKernel<kernels::ResizeNearestNeighbor>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size(), size);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().align_corners, Eq(op->align_corners()));
+  // TODO currently half_pixel_centers are not implemented on CircleResizeNearestNeighbor
+  // after adding, need to be updated.
+}
+
 TEST_F(KernelBuilderTest, ReverseV2)
 {
   auto *input = createInputNode();
@@ -528,6 +636,20 @@ TEST_F(KernelBuilderTest, ReverseV2)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Rsqrt)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRsqrt>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Rsqrt>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
 }
 

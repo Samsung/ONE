@@ -143,6 +143,8 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
 {
   switch (tfl_sparse_index_vector_type)
   {
+    case tflite::SparseIndexVector_NONE:
+      return flatbuffers::Offset<void>();
     case tflite::SparseIndexVector_Int32Vector:
     {
       auto values_vec_int32 =
@@ -183,6 +185,8 @@ get_circle_sparse_index_vector_type(const tflite::SparseIndexVector &tfl_sparse_
 {
   switch (tfl_sparse_index_vector_type)
   {
+    case tflite::SparseIndexVector_NONE:
+      return circle::SparseIndexVector_NONE;
     case tflite::SparseIndexVector_Int32Vector:
       return circle::SparseIndexVector_Int32Vector;
     case tflite::SparseIndexVector_Uint16Vector:

@@ -31,12 +31,19 @@
 #include "kernels/LeakyRelu.h"
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
+#include "kernels/LogSoftmax.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
+#include "kernels/Prelu.h"
+#include "kernels/Relu.h"
+#include "kernels/Relu6.h"
 #include "kernels/Reshape.h"
+#include "kernels/ResizeBilinear.h"
+#include "kernels/ResizeNearestNeighbor.h"
 #include "kernels/Reverse.h"
+#include "kernels/Rsqrt.h"
 #include "kernels/Slice.h"
 #include "kernels/Softmax.h"
 #include "kernels/SpaceToDepth.h"
@@ -347,6 +354,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogistic *node)
   return std::make_unique<kernels::Logistic>(input, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLogSoftmax *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->logits());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::LogSoftmax>(input, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMaxPool2D *node)
 {
   assert(node->arity() == 1);
@@ -409,6 +426,37 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
   return std::make_unique<kernels::Pad>(input, paddings, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePRelu *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *alpha = getInputTensor(node->alpha());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Prelu>(input, alpha, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->features());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Relu>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu6 *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->features());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Relu6>(input, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
 {
   assert(node->arity() == 2);
@@ -421,6 +469,40 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
   return std::make_unique<kernels::Reshape>(input, shape, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeBilinear *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *size = getInputTensor(node->size());
+  Tensor *output = getOutputTensor(node);
+
+  ResizeBilinearParams params{};
+  params.align_corners = node->align_corners();
+  params.half_pixel_centers = node->half_pixel_centers();
+
+  return std::make_unique<kernels::ResizeBilinear>(input, size, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleResizeNearestNeighbor *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input = getInputTensor(node->input());
+  const Tensor *size = getInputTensor(node->size());
+  Tensor *output = getOutputTensor(node);
+
+  ResizeNearestNeighborParams params{};
+  params.align_corners = node->align_corners();
+  // TODO update half_pixel_centers after CircleResizeNearestNeighbor updated
+  // Current CircleResizeNearestNeighbor don't have half_pixel_centers.
+  // default value on current is false.
+  // it need to be updated when CircleResizeNearestNeighbor updated.
+  params.half_pixel_centers = false;
+
+  return std::make_unique<kernels::ResizeNearestNeighbor>(input, size, output, params);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
 {
   assert(node->arity() == 2);
@@ -430,6 +512,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReverseV2 *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Reverse>(input, axes, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRsqrt *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Rsqrt>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)

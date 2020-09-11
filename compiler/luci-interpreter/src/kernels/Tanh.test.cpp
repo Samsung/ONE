@@ -70,13 +70,10 @@ TEST(TanhTest, Uint8)
       0,  -6, 2, 4, //
       -4, -2, 8, 1, //
   };
-  Tensor input_tensor{
-      DataType::U8, {2, 6, 4, 1}, {{input_quant_param.first}, {input_quant_param.second}}, ""};
+  Tensor input_tensor = makeInputTensor<DataType::U8>({2, 6, 4, 1}, input_quant_param.first,
+                                                      input_quant_param.second, input_data);
   Tensor output_tensor =
       makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
-  std::vector<uint8_t> quantize_input =
-      quantize<uint8_t>(input_data, input_quant_param.first, input_quant_param.second);
-  input_tensor.writeData(quantize_input.data(), quantize_input.size() * sizeof(uint8_t));
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();

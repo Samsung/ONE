@@ -25,6 +25,7 @@
 #include "compiler/ExecutionBuilder.h"
 #include "exec/ExecTime.h"
 #include "compiler/Linear.h"
+#include "compiler/TensorBuilders.h"
 #include "backend/IConstantInitializer.h"
 #include "backend/IKernelGenerator.h"
 #include "backend/IOptimizer.h"
@@ -193,15 +194,14 @@ ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
   std::shared_ptr<backend::controlflow::TensorRegistry> cf_tensor_reg;
   for (const auto &e : lowered_graph.backend_contexts())
   {
-    auto tensor_reg = e.second->tensor_builder->tensorRegistry();
     auto backend = e.first;
     auto &context = e.second;
     if (backend->config()->id() == backend::controlflow::Config::ID)
     {
       cf_tensor_builder =
           std::dynamic_pointer_cast<backend::controlflow::TensorBuilder>(context->tensor_builder);
-      cf_tensor_reg = std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(
-          cf_tensor_builder->tensorRegistry());
+      cf_tensor_reg =
+          std::dynamic_pointer_cast<backend::controlflow::TensorRegistry>(context->tensor_registry);
     }
   }
   assert(cf_tensor_builder);
@@ -236,13 +236,13 @@ void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_gra
           // If an OpSequence input/output tensor does not have a own tensor object,
           // it must be using external tensors, so find the tensor from other tensor builders and
           // set the tensor to this tensor builder if portable
-          if (!backend_ctx->tensor_builder->tensorRegistry()->getITensor(ind))
+          if (!backend_ctx->tensor_registry->getITensor(ind))
           {
             auto tensor = tensor_regs.getITensor(ind);
             assert(tensor); // The tensor must have been registered
             auto ptensor = std::dynamic_pointer_cast<backend::IPortableTensor>(tensor);
             if (ptensor)
-              backend_ctx->tensor_builder->tensorRegistry()->setMigrantTensor(ind, ptensor);
+              backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
           }
         }
       });
@@ -294,6 +294,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   Linear::planTensors(*lowered_graph, order);
 
   TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
+  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
 
   for (auto &tensor_builder : tensor_builders)
   {
@@ -313,7 +314,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     auto cf_kernel_gen = dynamic_cast<backend::controlflow::KernelGenerator *>(kernel_gen.get());
     if (cf_kernel_gen != nullptr)
     {
-      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
@@ -353,8 +354,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   auto exec =
-      new exec::LinearExecutor{std::move(lowered_graph), input_tensors,       output_tensors,
-                               tensor_builders,          std::move(code_map), order};
+      new exec::LinearExecutor{std::move(lowered_graph), input_tensors, output_tensors, tensor_regs,
+                               std::move(code_map),      order};
 
   if (!options.trace_filepath.empty())
   {
@@ -386,6 +387,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   }
 
   TensorBuilders tensor_builders{lowered_graph->backend_contexts(), true};
+  TensorRegistries tensor_regs{lowered_graph->backend_contexts(), true};
 
   // To make tensors never be deallocated, this is a workaround to use static memory planner
   for (auto &tensor_builder : tensor_builders)
@@ -418,7 +420,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     if (cf_kernel_gen != nullptr)
     {
       assert(cf_kernel_gen != nullptr);
-      cf_kernel_gen->setTensorBuilderSet(tensor_builders);
+      cf_kernel_gen->setTensorRegistries(tensor_regs);
       cf_kernel_gen->setExecutorMap(executor_map);
     }
     auto fn_seq = kernel_gen->generate(op_seq);
@@ -461,13 +463,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   if (parallel)
   {
     exec = new exec::ParallelExecutor{std::move(lowered_graph), input_tensors, output_tensors,
-                                      tensor_builders, std::move(code_map)};
+                                      tensor_regs, std::move(code_map)};
   }
   else
   {
-    auto dataflow_exec =
-        new exec::DataflowExecutor{std::move(lowered_graph), input_tensors, output_tensors,
-                                   tensor_builders, std::move(code_map)};
+    auto dataflow_exec = new exec::DataflowExecutor{
+        std::move(lowered_graph), input_tensors, output_tensors, tensor_regs, std::move(code_map)};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

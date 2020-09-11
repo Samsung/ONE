@@ -218,41 +218,44 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
     std::vector<flatbuffers::Offset<circle::Operator>> operator_vec;
 
     auto tflite_operators = it_sg->operators();
-    for (auto it : *tflite_operators)
+    if (tflite_operators != nullptr)
     {
-      // inputs
-      std::vector<int32_t> input_vec{it->inputs()->begin(), it->inputs()->end()};
-      auto circle_inputs = fb->CreateVector(input_vec);
-      // outputs
-      std::vector<int32_t> output_vec{it->outputs()->begin(), it->outputs()->end()};
-      auto circle_outputs = fb->CreateVector(output_vec);
-      // builtin options
-      auto circle_builtin_options = get_circle_builtin_options(*fb, it);
-      auto circle_builtin_options_type = get_circle_builtin_options_type(it);
-      // custom options
-      flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
-      if (it->custom_options())
+      for (auto it : *tflite_operators)
       {
-        std::vector<uint8_t> custom_options_vec{it->custom_options()->begin(),
-                                                it->custom_options()->end()};
-        circle_custom_options = fb->CreateVector(custom_options_vec);
-      }
-      // custom options format
-      // TODO Make get_circle_custom_options_format
-      assert(it->custom_options_format() == tflite::CustomOptionsFormat_FLEXBUFFERS);
-      auto circle_custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS;
+        // inputs
+        std::vector<int32_t> input_vec{it->inputs()->begin(), it->inputs()->end()};
+        auto circle_inputs = fb->CreateVector(input_vec);
+        // outputs
+        std::vector<int32_t> output_vec{it->outputs()->begin(), it->outputs()->end()};
+        auto circle_outputs = fb->CreateVector(output_vec);
+        // builtin options
+        auto circle_builtin_options = get_circle_builtin_options(*fb, it);
+        auto circle_builtin_options_type = get_circle_builtin_options_type(it);
+        // custom options
+        flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
+        if (it->custom_options())
+        {
+          std::vector<uint8_t> custom_options_vec{it->custom_options()->begin(),
+                                                  it->custom_options()->end()};
+          circle_custom_options = fb->CreateVector(custom_options_vec);
+        }
+        // custom options format
+        // TODO Make get_circle_custom_options_format
+        assert(it->custom_options_format() == tflite::CustomOptionsFormat_FLEXBUFFERS);
+        auto circle_custom_options_format = circle::CustomOptionsFormat_FLEXBUFFERS;
 
-      circle::OperatorBuilder operator_builder{*fb};
-      operator_builder.add_opcode_index(it->opcode_index());
-      operator_builder.add_inputs(circle_inputs);
-      operator_builder.add_outputs(circle_outputs);
-      operator_builder.add_builtin_options(circle_builtin_options);
-      operator_builder.add_builtin_options_type(circle_builtin_options_type);
-      operator_builder.add_custom_options(circle_custom_options);
-      operator_builder.add_custom_options_format(circle_custom_options_format);
-      // TODO mutating_variable_inputs
-      auto opeartor = operator_builder.Finish();
-      operator_vec.emplace_back(opeartor);
+        circle::OperatorBuilder operator_builder{*fb};
+        operator_builder.add_opcode_index(it->opcode_index());
+        operator_builder.add_inputs(circle_inputs);
+        operator_builder.add_outputs(circle_outputs);
+        operator_builder.add_builtin_options(circle_builtin_options);
+        operator_builder.add_builtin_options_type(circle_builtin_options_type);
+        operator_builder.add_custom_options(circle_custom_options);
+        operator_builder.add_custom_options_format(circle_custom_options_format);
+        // TODO mutating_variable_inputs
+        auto opeartor = operator_builder.Finish();
+        operator_vec.emplace_back(opeartor);
+      }
     }
     auto circle_operators = fb->CreateVector(operator_vec);
 

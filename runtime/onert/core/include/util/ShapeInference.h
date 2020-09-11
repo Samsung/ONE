@@ -134,7 +134,7 @@ ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSlic
 
 ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier);
 
-ir::Shape inferTransposeShape(const ir::Shape &in_shape, const std::vector<int> &perm);
+ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm, const int32_t rank);
 
 ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank);
 

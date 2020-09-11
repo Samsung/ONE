@@ -38,7 +38,13 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   if (_io_desc.inputs.at(index.value()) != 0)
     throw std::runtime_error("Error in calling order");
 
-  _io_desc.input_shape_signature[index] = new_shape;
+  // This will be used later to set input tensor dynamic
+  // Note that 'compiled' model will not be updated with new_shape
+  // but new_shape will change model input shape while 'running' the model
+  _io_desc.dynamic_input_shapes[index] = new_shape;
+
+  VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
+                     << "(index: " << index.value() << ")" << std::endl;
 }
 
 // TODO Remove default parameter
@@ -54,8 +60,8 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   // if input_shape_sig is set, input_shape_sig overrides shape in info
   // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
   {
-    auto input_shape_sig = _io_desc.input_shape_signature.find(index);
-    auto size_required = (input_shape_sig != _io_desc.input_shape_signature.end())
+    auto input_shape_sig = _io_desc.dynamic_input_shapes.find(index);
+    auto size_required = (input_shape_sig != _io_desc.dynamic_input_shapes.end())
                              ? input_shape_sig->second.num_elements() *
                                    onert::ir::sizeOfDataType(info.typeInfo().type())
                              : info.total_size();
@@ -154,8 +160,8 @@ bool Execution::isFinished(void) const { return finished; }
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {
-  auto itr = _io_desc.input_shape_signature.find(ind);
-  if (itr == _io_desc.input_shape_signature.end())
+  auto itr = _io_desc.dynamic_input_shapes.find(ind);
+  if (itr == _io_desc.dynamic_input_shapes.end())
   {
     auto operand_idx = primary_subgraph().getInputs().at(ind.value());
     return primary_subgraph().operands().at(operand_idx).shape();

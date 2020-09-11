@@ -29,8 +29,7 @@ const char *TEST_PACKAGE_NAMES[] = {
     "add", "add_no_manifest", "add_invalid_manifest",
 
     // for dynamic tensor test
-    "input_reshaping_add", "dynamic_tensor_reshape", "unknown_dim_input_concat",
-    "add_unspecified_rank_inputs", "neg", "while_dynamic", "if_dynamic",
+    "dynamic_tensor_reshape", "while_dynamic", "if_dynamic",
 };
 
 NNPackages &NNPackages::get()

@@ -36,7 +36,10 @@ public:
   ResizeBilinearLayer();
 
 public:
-  void configure(const IPortableTensor *input1, IPortableTensor *output, int32_t output_height,
+  void configure(const IPortableTensor *input1, IPortableTensor *output,
+                 const IPortableTensor *size, bool align_corners, bool half_pixel_centers);
+
+  void configure(const IPortableTensor *input, IPortableTensor *output, int32_t output_height,
                  int32_t output_width, bool align_corners, bool half_pixel_centers);
 
   void run() override;
@@ -44,6 +47,7 @@ public:
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
+  const IPortableTensor *_size;
   int32_t _output_height;
   int32_t _output_width;
   bool _align_corners;

@@ -32,6 +32,76 @@ namespace luci
 namespace
 {
 
+bool is_uint8_quantized(luci::CircleNode *node)
+{
+  if (node->dtype() == loco::DataType::U8 && node->quantparam() != nullptr &&
+      node->quantparam()->scale.size() > 0 && node->quantparam()->zerop.size() > 0)
+    return true;
+
+  return false;
+}
+
+void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *target)
+{
+  auto concat_qparam = concat->quantparam();
+  assert(concat_qparam != nullptr);
+
+  auto target_qparam = target->quantparam();
+  assert(target_qparam != nullptr);
+  target_qparam->min = concat_qparam->min;
+  target_qparam->max = concat_qparam->max;
+  target_qparam->scale = concat_qparam->scale;
+  target_qparam->zerop = concat_qparam->zerop;
+  target_qparam->quantized_dimension = concat_qparam->quantized_dimension;
+}
+
+void quant_const_values(luci::CircleConst *const_node, float scaling_factor, float zerop)
+{
+  uint32_t size = const_node->size<loco::DataType::FLOAT32>();
+
+  const float scaling_factor_inv = 1.0 / scaling_factor;
+  std::vector<int32_t> quantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    auto data = const_node->at<loco::DataType::FLOAT32>(i);
+    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
+  }
+
+  const_node->dtype(loco::DataType::U8);      // change the type of tensor
+  const_node->size<loco::DataType::U8>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    const_node->at<loco::DataType::U8>(i) = std::min(255, std::max(0, quantized_values[i]));
+  }
+}
+
+void quant_const(CircleConst *node)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+
+  float min = std::numeric_limits<float>::max();
+  float max = std::numeric_limits<float>::lowest();
+  for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
+  {
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    min = data < min ? data : min;
+    max = data > max ? data : max;
+  }
+
+  float scaling_factor{0.0};
+  int64_t zp{0};
+  float nudged_min{0.0};
+  float nudged_max{0.0};
+
+  asymmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
+                                          nudged_max);
+
+  auto quantparam = std::make_unique<CircleQuantParam>();
+  quantparam->scale.push_back(scaling_factor);
+  quantparam->zerop.push_back(zp);
+  node->quantparam(std::move(quantparam));
+}
+
 // Check if the node is the bias of Conv2D, DepthwiseConv2D, or FullyConnected layer
 // If true, return <input, weight> pair of the successor node (used to quantize bias)
 // If flase, return <nullptr, nullptr>
@@ -472,7 +542,12 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
         if (granularity == QuantizationGranularity::ChannelWise)
         {
           auto quantparam = circle_node->quantparam();
-          assert(quantparam != nullptr);
+          if (quantparam == nullptr)
+          {
+            assert(false && "quantparam is nullptr");
+            return false;
+          }
+
           auto min = quantparam->min;
           auto scaling_factor = quantparam->scale;
           int32_t channel_dim_index = 0;
@@ -509,7 +584,170 @@ struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
   }
 };
 
+/**
+ * @brief Quantize const input tensors using min/max of const values
+ */
+void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
+{
+  auto opcode = node->opcode();
+  auto arity = node->arity();
+
+  loco::Node *input_node{nullptr};
+  luci::CircleConst *const_node{nullptr};
+
+  switch (opcode)
+  {
+    case luci::CircleOpcode::CONV_2D:
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    case luci::CircleOpcode::TRANSPOSE_CONV:
+      // Handled in QuantizeWeights and QuantizeBias
+      break;
+
+    case luci::CircleOpcode::CONCATENATION:
+      // Handled in propagate_concat_quantparam
+      break;
+
+    case luci::CircleOpcode::ARG_MAX:
+    case luci::CircleOpcode::ARG_MIN:
+    case luci::CircleOpcode::MEAN:
+    case luci::CircleOpcode::PAD:
+    case luci::CircleOpcode::REDUCE_ANY:
+    case luci::CircleOpcode::REDUCE_PROD:
+    case luci::CircleOpcode::REDUCE_MAX:
+    case luci::CircleOpcode::REDUCE_MIN:
+    case luci::CircleOpcode::RESHAPE:
+    case luci::CircleOpcode::SUM:
+      // The second input of these Ops should not be quantized
+      // Ex: axis, paddings
+      input_node = node->arg(0);
+      const_node = dynamic_cast<luci::CircleConst *>(input_node);
+      if (const_node != nullptr)
+      {
+        if (output_type == loco::DataType::U8)
+        {
+          quant_const(const_node);
+        }
+        else
+        {
+          throw std::runtime_error("NYI data type");
+        }
+      }
+      break;
+
+    case luci::CircleOpcode::ADD:
+    case luci::CircleOpcode::ADD_N:
+    case luci::CircleOpcode::DIV:
+    case luci::CircleOpcode::EQUAL:
+    case luci::CircleOpcode::GREATER:
+    case luci::CircleOpcode::GREATER_EQUAL:
+    case luci::CircleOpcode::LESS:
+    case luci::CircleOpcode::LESS_EQUAL:
+    case luci::CircleOpcode::MAXIMUM:
+    case luci::CircleOpcode::MINIMUM:
+    case luci::CircleOpcode::MUL:
+    case luci::CircleOpcode::NOT_EQUAL:
+    case luci::CircleOpcode::PRELU:
+    case luci::CircleOpcode::SUB:
+      // Quantize all const inputs using their values
+      for (uint32_t i = 0; i < arity; i++)
+      {
+        input_node = node->arg(i);
+        const_node = dynamic_cast<luci::CircleConst *>(input_node);
+        if (const_node != nullptr)
+        {
+          if (output_type == loco::DataType::U8)
+          {
+            quant_const(const_node);
+          }
+          else
+          {
+            throw std::runtime_error("NYI data type");
+          }
+        }
+      }
+      break;
+
+    default:
+      for (uint32_t i = 0; i < arity; i++)
+      {
+        input_node = node->arg(i);
+        const_node = dynamic_cast<luci::CircleConst *>(input_node);
+        if (const_node != nullptr)
+          throw std::runtime_error("Unsupported Op for const inputs");
+      }
+      break;
+  }
+}
+
 } // namespace
+
+/** BEFORE
+ *
+ *         [CircleNode]             [CircleNode]
+ *           (qparam1)                (qparam2)
+ *                   \                    /
+ *                    \                  /
+ *                    [CircleConcatenation]
+ *                          (qparam3)
+ *
+ *  AFTER
+ *         [CircleNode]             [CircleNode]
+ *           (qparam3)                (qparam3)
+ *                   \                    /
+ *                    \                  /
+ *                    [CircleConcatenation]
+ *                          (qparam3)
+ */
+void propagate_concat_quantparam(luci::CircleConcatenation *concat)
+{
+  // Check if concat is uint8-quantized
+  if (!is_uint8_quantized(concat))
+    return;
+
+  // Check if concat has no fused activation function
+  if (concat->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return;
+
+  const auto num_inputs = concat->numValues();
+  for (uint32_t i = 0; i < num_inputs; i++)
+  {
+    auto node = loco::must_cast<luci::CircleNode *>(concat->arg(i));
+
+    // Skip if this input is CONCAT Op
+    if (node->opcode() == luci::CircleOpcode::CONCATENATION)
+      continue;
+
+    // Skip if this input is used by other Ops
+    auto succs = loco::succs(node);
+    if (succs.size() != 1)
+      continue;
+
+    assert(succs.find(concat) != succs.end());
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
+
+      const auto concat_qparam = concat->quantparam();
+      assert(concat_qparam->scale.size() == 1);
+      const auto scaling_factor = concat_qparam->scale[0];
+      const auto zerop = concat_qparam->zerop[0];
+
+      quant_const_values(const_node, scaling_factor, zerop);
+    }
+    else
+    {
+      // Non-const input should be uint8-quantized
+      assert(is_uint8_quantized(node));
+    }
+
+    overwrite_quantparam(concat, node);
+  }
+}
 
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
@@ -538,6 +776,28 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qb);
+  }
+
+  // Quantize const inputs other than weights and bias
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    quantize_const_inputs(circle_node, _output_dtype);
+  }
+
+  // Propagate quantization parameters of concat Op
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto concat = dynamic_cast<luci::CircleConcatenation *>(node);
+    if (not concat)
+      continue;
+
+    // Propagate qparam of concat to its inputs if
+    // (1) concat is uint8-quantized
+    // (2) concat has no fused activation function
+    // (3) the input is not concatenation Op
+    // (4) the input is not produced to Ops other than concat
+    propagate_concat_quantparam(concat);
   }
 
   // Update output dtype

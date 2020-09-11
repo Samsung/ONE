@@ -233,12 +233,13 @@ void OperationValidator::visit(const ir::operation::Transpose &node)
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto &perm{node.param().perm};
+  const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
   const auto &output_shape = _ctx.at(output_index).shape();
   const auto &input_shape = _ctx.at(input_index).shape();
 
-  OP_REQUIRES(input_shape.rank() == static_cast<int>(perm.size()));
+  OP_REQUIRES(_ctx.at(perm_index).shape().num_elements() == 0 ||
+              input_shape.rank() == static_cast<int>(_ctx.at(perm_index).shape().num_elements()));
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 
@@ -870,14 +871,19 @@ void OperationValidator::visit(const ir::operation::StridedSlice &node)
 
 void OperationValidator::visit(const ir::operation::Split &node)
 {
-  const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
-
-  if (_ctx.at(input_index).info().isDynamic())
+  const auto output_index{node.getOutputs().at(0)};
+  if (_ctx.at(output_index).info().isDynamic())
     return;
+
+  const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
+
+  OP_REQUIRES(_ctx.at(axis_index).isConstant());
 
   const auto num_splits = node.param().num_splits;
   const auto input_rank = _ctx.at(input_index).shape().rank();
-  const auto axis = node.param().axis < 0 ? node.param().axis + input_rank : node.param().axis;
+  auto axis = *reinterpret_cast<const int32_t *>(_ctx.at(axis_index).data()->base());
+  axis = axis < 0 ? axis + input_rank : axis;
 
   OP_REQUIRES(num_splits > 0 && num_splits <= 0xFFFF);
   OP_REQUIRES(axis >= 0 && axis < input_rank);

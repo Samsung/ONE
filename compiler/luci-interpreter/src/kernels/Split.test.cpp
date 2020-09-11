@@ -30,11 +30,11 @@ using namespace testing;
 template <typename T>
 void Check(int axis, int num_splits, std::initializer_list<int32_t> input_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
-           std::vector<std::vector<T>> output_data, DataType element_type)
+           std::vector<std::vector<T>> output_data)
 {
+  constexpr DataType element_type = getElementType<T>();
   Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis});
-  Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
 
   std::vector<Tensor> output_tensors;
   output_tensors.reserve(num_splits);
@@ -74,51 +74,42 @@ TYPED_TEST(SplitTest, FourDimensional)
                    {
                        {1, 2, 3, 4, 5, 6, 7, 8},        //
                        {9, 10, 11, 12, 13, 14, 15, 16}, //
-                   },
-                   getElementType<TypeParam>());
+                   });
   Check<TypeParam>(
       /*axis=*/1, /*num_splits=*/2, {2, 2, 2, 2}, {2, 1, 2, 2},
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      {
-          {1, 2, 3, 4, 9, 10, 11, 12},  //
-          {5, 6, 7, 8, 13, 14, 15, 16}, //
-      },
-      getElementType<TypeParam>());
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, {
+                                                                   {1, 2, 3, 4, 9, 10, 11, 12},  //
+                                                                   {5, 6, 7, 8, 13, 14, 15, 16}, //
+                                                               });
   Check<TypeParam>(
       /*axis=*/2, /*num_splits=*/2, {2, 2, 2, 2}, {2, 2, 1, 2},
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      {
-          {1, 2, 5, 6, 9, 10, 13, 14},  //
-          {3, 4, 7, 8, 11, 12, 15, 16}, //
-      },
-      getElementType<TypeParam>());
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, {
+                                                                   {1, 2, 5, 6, 9, 10, 13, 14},  //
+                                                                   {3, 4, 7, 8, 11, 12, 15, 16}, //
+                                                               });
   Check<TypeParam>(
       /*axis=*/3, /*num_splits=*/2, {2, 2, 2, 2}, {2, 2, 2, 1},
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      {
-          {1, 3, 5, 7, 9, 11, 13, 15},  //
-          {2, 4, 6, 8, 10, 12, 14, 16}, //
-      },
-      getElementType<TypeParam>());
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, {
+                                                                   {1, 3, 5, 7, 9, 11, 13, 15},  //
+                                                                   {2, 4, 6, 8, 10, 12, 14, 16}, //
+                                                               });
 }
 
 TYPED_TEST(SplitTest, OneDimensional)
 {
   Check<TypeParam>(
       /*axis=*/0, /*num_splits=*/8, {8}, {1}, {1, 2, 3, 4, 5, 6, 7, 8},
-      {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}}, getElementType<TypeParam>());
+      {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}});
 }
 
 TYPED_TEST(SplitTest, NegativeAxis)
 {
   Check<TypeParam>(
       /*axis=*/-4, /*num_splits=*/2, {2, 2, 2, 2}, {1, 2, 2, 2},
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-      {
-          {1, 2, 3, 4, 5, 6, 7, 8}, //
-          {9, 10, 11, 12, 13, 14, 15, 16},
-      },
-      getElementType<TypeParam>());
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, {
+                                                                   {1, 2, 3, 4, 5, 6, 7, 8}, //
+                                                                   {9, 10, 11, 12, 13, 14, 15, 16},
+                                                               });
 }
 
 } // namespace

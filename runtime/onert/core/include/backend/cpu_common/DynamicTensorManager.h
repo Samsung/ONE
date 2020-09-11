@@ -54,6 +54,9 @@ public:
   void deallocSubgraphOutput(ir::OperandIndex ind) override;
 
 private:
+  const ITensor *getRawITensor(ir::OperandIndex ind);
+
+private:
   /**
    * @brief Memory manager for dynamic tensor.
    * @todo  DynamicMemoryManager is not optimized. Optimized one is needed

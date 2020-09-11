@@ -35,86 +35,31 @@ namespace feature
 namespace nhwc
 {
 
-template <typename T> class View final : public feature::Reader<T>
+template <typename T> class View final : public Reader<T>
 {
 public:
   // Construct for buffer of model inputs
-  View(const ir::FeatureShape &shape, T *ptr, size_t len)
-      : _shape{shape}, _ptr{reinterpret_cast<uint8_t *>(ptr)}, _len{len}
+  View(const ir::FeatureShape &shape, T *ptr, size_t len) : Reader<T>{shape, ptr, len}
   {
-    UNUSED_RELEASE(len); // Workaround for unused variable in release mode
-    assert(shape.N * shape.H * shape.W * shape.C * sizeof(T) == len);
-
-    // No padding
-    _strides.C = sizeof(T);
-    _strides.W = shape.C * sizeof(T);
-    _strides.H = shape.C * shape.W * sizeof(T);
-    _strides.N = shape.C * shape.W * shape.H * sizeof(T);
+    // DO NOTHING
   }
 
   // Construct for backend tensor
-  View(backend::ITensor *tensor)
-      : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
+  View(backend::ITensor *tensor) : Reader<T>{tensor}
   {
-    assert(tensor->layout() == ir::Layout::NHWC);
-
-    const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
-    _strides.C = tensor->dimension(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
-    _strides.W = tensor->dimension(2) == 1 ? 0 : tensor->calcOffset({0, 0, 1, 0}) - start_offset;
-    _strides.H = tensor->dimension(1) == 1 ? 0 : tensor->calcOffset({0, 1, 0, 0}) - start_offset;
-    _strides.N = tensor->dimension(0) == 1 ? 0 : tensor->calcOffset({1, 0, 0, 0}) - start_offset;
-
-    _shape.C = tensor->dimension(3);
-    _shape.W = tensor->dimension(2);
-    _shape.H = tensor->dimension(1);
-    _shape.N = tensor->dimension(0);
+    // DO NOTHING
   }
 
 public:
+  using Reader<T>::at;
   T &at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch)
   {
-    return getRef(batch, row, col, ch);
+    return const_cast<T &>(Reader<T>::getRef(batch, row, col, ch));
   }
-  T at(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const override
+  T &at(uint32_t row, uint32_t col, uint32_t ch)
   {
-    return getRef(batch, row, col, ch);
+    return const_cast<T &>(Reader<T>::getRef(0, row, col, ch));
   }
-  T &at(uint32_t row, uint32_t col, uint32_t ch) { return getRef(0, row, col, ch); }
-  T at(uint32_t row, uint32_t col, uint32_t ch) const override { return getRef(0, row, col, ch); }
-
-private:
-  size_t feature_index_to_byte_offset(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
-  {
-    assert(1u * _shape.N > batch); // shape.N > batch
-    assert(1u * _shape.H > row);   // shape.H > row
-    assert(1u * _shape.W > col);   // shape.W > col
-    assert(1u * _shape.C > ch);    // shape.C > ch
-
-    uint32_t res = 0;
-    res += batch * _strides.N;
-    res += row * _strides.H;
-    res += col * _strides.W;
-    res += ch * _strides.C;
-
-    return res;
-  }
-
-  T &getRef(uint32_t batch, uint32_t row, uint32_t col, uint32_t ch) const
-  {
-    const auto offset = feature_index_to_byte_offset(batch, row, col, ch);
-
-    T *ptr = reinterpret_cast<T *>(_ptr + offset);
-
-    return *ptr;
-  }
-
-private:
-  // TODO Remove _shape
-  ir::FeatureShape _shape;
-  using Strides = ir::FeatureShape;
-  Strides _strides;
-  uint8_t *_ptr;
-  size_t _len;
 };
 
 } // namespace nhwc

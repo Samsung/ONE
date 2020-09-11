@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_I_PORTABLE_TENSOR_H__
 
 #include "backend/ITensor.h"
+#include "ir/Sparsity.h"
 
 namespace onert
 {
@@ -37,9 +38,7 @@ class IPortableTensor : public ITensor
 {
 public:
   virtual ~IPortableTensor() = default;
-  virtual bool is_sparse() const { return false; }
-  virtual const uint16_t *w1_segments() const { return nullptr; }
-  virtual const uint16_t *w1_indices() const { return nullptr; }
+  virtual const ir::Sparsity *sparsity() const { return nullptr; }
 
 public:
   bool has_padding() const final { return false; }

@@ -32,6 +32,8 @@ set(SOURCES
     LocalResponseNormalization.cpp
     Logistic.h
     Logistic.cpp
+    LogSoftmax.h
+    LogSoftmax.cpp
     MaxPool2D.h
     MaxPool2D.cpp
     Mean.h
@@ -40,10 +42,22 @@ set(SOURCES
     Mul.cpp
     Pad.h
     Pad.cpp
+    Prelu.h
+    Prelu.cpp
+    Relu.h
+    Relu.cpp
+    Relu6.h
+    Relu6.cpp
     Reshape.h
     Reshape.cpp
+    ResizeBilinear.h
+    ResizeBilinear.cpp
+    ResizeNearestNeighbor.h
+    ResizeNearestNeighbor.cpp
     Reverse.h
     Reverse.cpp
+    Rsqrt.h
+    Rsqrt.cpp
     Slice.h
     Slice.cpp
     Softmax.h
@@ -98,12 +112,19 @@ set(TEST_SOURCES
     LeakyRelu.test.cpp
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
+    LogSoftmax.test.cpp
     MaxPool2D.test.cpp
     Mean.test.cpp
     Mul.test.cpp
     Pad.test.cpp
+    Prelu.test.cpp
+    Relu.test.cpp
+    Relu6.test.cpp
     Reshape.test.cpp
+    ResizeBilinear.test.cpp
+    ResizeNearestNeighbor.test.cpp
     Reverse.test.cpp
+    Rsqrt.test.cpp
     Slice.test.cpp
     Softmax.test.cpp
     SpaceToDepth.test.cpp

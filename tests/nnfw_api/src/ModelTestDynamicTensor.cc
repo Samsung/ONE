@@ -20,6 +20,8 @@
 #include "common.h"
 #include "fixtures.h"
 #include "NNPackages.h"
+#include "CircleGen.h"
+#include "GenModelTest.h"
 
 void set_input_output(nnfw_session *session, const std::vector<float> &input,
                       std::vector<float> &actual_output)
@@ -58,6 +60,27 @@ void set_input_output(nnfw_session *session, const std::vector<float> &input0,
  *
  * @note Run this test with "cpu" backend
  */
+auto build_dynamic_Reshape()
+{
+  CircleGen cgen;
+
+  auto f32 = circle::TensorType::TensorType_FLOAT32;
+  auto i32 = circle::TensorType::TensorType_INT32;
+
+  std::vector<float> new_shape_data{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
+  uint32_t input_buf = cgen.addBuffer(new_shape_data); // shape = [2, 3]
+  int input = cgen.addTensor({{2, 3}, f32, input_buf});
+  int new_shape = cgen.addTensor({{2}, i32});
+  int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
+
+  CircleGen::Shape empty_new_shape;
+  cgen.addOperatorReshape({{input, new_shape}, {out}}, empty_new_shape);
+  cgen.setInputsAndOutputs({new_shape}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
+
+// TODO deprecate this
 class TestDynamicTensorReshapeModelLoaded
     : public ValidationTestModelLoaded<NNPackages::DYNAMIC_TENSOR_RESHAPE>
 {
@@ -127,21 +150,24 @@ protected:
   }
 };
 
-TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_to_3x2)
+TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 {
-  const std::vector<int> new_shape = {3, 2};
-  const std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
-  std::vector<float> actual_output(expected.size());
+  auto model = build_dynamic_Reshape();
 
-  prepare_and_set_input_output(new_shape, expected.size(), &actual_output);
+  const std::vector<int> new_shape{3, 2};
+  const std::vector<float> expected{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
-  NNFW_ENSURE_SUCCESS(res);
-
-  // output value check
-  for (int i = 0; i < expected.size(); ++i)
-    ASSERT_EQ(expected[i], actual_output[i]);
+  _context = std::make_unique<GenModelTestContext>(model);
+  {
+    TestCaseData tcd;
+    tcd.addInput(new_shape);
+    tcd.addOutput(expected);
+    _context->addTestCase(tcd);
+    _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
+    _context->output_sizes(0, sizeof(float) * expected.size());
+  }
+  // GenModelTest::teardown() will do the rest
+  SUCCEED();
 }
 
 /**
@@ -209,30 +235,6 @@ TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_multiple_executions)
 //    Trying to set unknown dim to other value before calling nnfw_prepare()
 //
 
-class TestInputUnknownDimInputConcatModelLoaded
-    : public ValidationTestModelLoaded<NNPackages::UNKNOWN_DIM_INPUT_CONCAT>
-{
-protected:
-  void prepare_apply_set_input_output(const std::vector<float> &input0,
-                                      const std::vector<float> &input1,
-                                      std::vector<float> *actual_output, nnfw_tensorinfo input0_ti)
-  {
-    NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
-    NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
-
-    ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input0.data(),
-                             sizeof(float) * input0.size()),
-              NNFW_STATUS_NO_ERROR);
-    ASSERT_EQ(nnfw_set_input(_session, 1, NNFW_TYPE_TENSOR_FLOAT32, input1.data(),
-                             sizeof(float) * input1.size()),
-              NNFW_STATUS_NO_ERROR);
-
-    ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
-                              sizeof(float) * actual_output->size()),
-              NNFW_STATUS_NO_ERROR);
-  }
-};
-
 /**
  * @brief Testing the following model:
  *
@@ -248,9 +250,28 @@ protected:
  *
  * @note Run this test with "cpu" backend
  */
-TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
+auto build_model_buf_Concatenation_unknwon_dims()
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  // Model is not important
+  CircleGen cgen;
+  auto f32 = circle::TensorType::TensorType_FLOAT32;
+  int in1 = cgen.addTensor({{1, 1}, f32}); // consider this [None, None]
+  int in2 = cgen.addTensor({{2, 3}, f32});
+  int out = cgen.addTensor({{}, f32}); // scalar, meaning output shape is unspecified
+  cgen.addOperatorConcatenation({{in1, in2}, {out}}, 0, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in1, in2}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
+
+TEST(TestDynamicTensor, concat_unknown_dim_input0_to_2x3)
+{
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  const auto model_buf = build_model_buf_Concatenation_unknwon_dims();
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   const std::vector<float> input0 = {1, 2, 3};          // of shape [1, 3]
   const std::vector<float> input1 = {4, 5, 6, 7, 8, 9}; // of shape [2, 3]
@@ -260,13 +281,13 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
 
   // input reshaping to [1, 3]
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {1, 3}};
-  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
-  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
-  set_input_output(_session, input0, input1, actual_output);
+  set_input_output(session, input0, input1, actual_output);
 
   // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
+  NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
   // output value check
@@ -289,9 +310,14 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, concat_input0_to_2x3)
  *
  * @note Run this test with "cpu" backend and "linear" executor
  */
-TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_shape)
+TEST(TestDynamicTensor, neg_concat_input0_to_wrong_shape)
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  const auto model_buf = build_model_buf_Concatenation_unknwon_dims();
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   const std::vector<float> input0 = {1, 2, 3};          // of shape [3, 1], wrong shape
   const std::vector<float> input1 = {4, 5, 6, 7, 8, 9}; // of shape [2, 3]
@@ -300,9 +326,9 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
 
   // input reshaping to [3, 1]
   nnfw_tensorinfo ti = {NNFW_TYPE_TENSOR_FLOAT32, 2, {3, 1}};
-  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &ti));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &ti));
 
-  ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_ERROR);
+  ASSERT_EQ(nnfw_prepare(session), NNFW_STATUS_ERROR);
 }
 
 //
@@ -325,12 +351,30 @@ TEST_F(TestInputUnknownDimInputConcatModelLoaded, neg_concat_input0_to_wrong_sha
  *
  * @note Run this test with "cpu" backend
  */
-using TestDynamicTensorApplyTensorInfoBinaryOp =
-    ValidationTestModelLoaded<NNPackages::ADD_UNSPECIFIED_RANK_INPUTS>;
-
-TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_compilation_add)
+auto build_model_buf_Add_unspecified_rank()
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  // Model is not important
+  CircleGen cgen;
+  auto f32 = circle::TensorType::TensorType_FLOAT32;
+  int in1 = cgen.addTensor({{}, f32}); // scalar, meaning shape is unspecified
+  int in2 = cgen.addTensor({{1, 2, 3}, f32});
+  int op_out = cgen.addTensor({{}, f32}); // unspecified
+  int out = cgen.addTensor({{}, f32});    // unspecified
+  cgen.addOperatorAdd({{in1, in2}, {op_out}}, circle::ActivationFunctionType_NONE);
+  cgen.addOperatorAdd({{op_out, op_out}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in1, in2}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
+
+TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_add)
+{
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  const auto model_buf = build_model_buf_Add_unspecified_rank();
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   // input reshaping to [2, 2, 3]
   nnfw_tensorinfo input0_ti = {NNFW_TYPE_TENSOR_FLOAT32, 3, {2, 2, 3}};
@@ -341,14 +385,14 @@ TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_comp
   std::vector<float> expected_output = {1.1 * 2, 2.1 * 2, 3.1 * 2, 4.1 * 2,  5.1 * 2,  6.1 * 2,
                                         7.1 * 2, 8.1 * 2, 9.1 * 2, 10.1 * 2, 11.1 * 2, 12.1 * 2};
 
-  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
-  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &input0_ti));
 
-  set_input_output(_session, input0, input1, actual_output);
+  set_input_output(session, input0, input1, actual_output);
 
   // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
+  NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
   // output value check
@@ -370,11 +414,27 @@ TEST_F(TestDynamicTensorApplyTensorInfoBinaryOp, set_input_tensorinfo_after_comp
  *
  * @note Run this test with "cpu" backend
  */
-using TestDynamicTensorApplyTensorInfoUnaryOp = ValidationTestModelLoaded<NNPackages::NEG>;
 
-TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compilation_neg)
+auto build_model_buf_NEG()
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+  // Model is not important
+  CircleGen cgen;
+  int in = cgen.addTensor({{4, 4}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{4, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorNeg({{in}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+  auto cbuf = cgen.finish();
+  return cbuf;
+}
+
+TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_neg)
+{
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  const auto model_buf = build_model_buf_NEG();
+  nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size());
+
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   nnfw_tensorinfo input0_ti_original = {NNFW_TYPE_TENSOR_FLOAT32, 2, {4, 4}};
 
@@ -397,28 +457,28 @@ TEST_F(TestDynamicTensorApplyTensorInfoUnaryOp, set_input_tensorinfo_after_compi
     expected_output[i] = -1 * input0[i];
   }
 
-  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
   // input shape check
   {
     nnfw_tensorinfo ti = {};
-    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &ti));
+    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(input0_ti_original, ti));
   }
 
-  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, &input0_ti));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &input0_ti));
 
   // input shape check
   {
     nnfw_tensorinfo ti = {};
-    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_session, 0, &ti));
+    NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &ti));
     ASSERT_TRUE(tensorInfoEqual(input0_ti, ti));
   }
 
-  set_input_output(_session, input0, actual_output);
+  set_input_output(session, input0, actual_output);
 
   // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
+  NNFW_STATUS res = nnfw_run(session);
   NNFW_ENSURE_SUCCESS(res);
 
   // output value check

@@ -32,11 +32,25 @@ namespace kernels
 namespace testing
 {
 
+template <typename T>
+std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point);
+
 template <DataType DT>
 Tensor makeInputTensor(const Shape &shape, const std::vector<typename DataTypeImpl<DT>::Type> &data)
 {
   Tensor tensor(DT, shape, {}, "");
   tensor.writeData(data.data(), data.size() * sizeof(typename DataTypeImpl<DT>::Type));
+  return tensor;
+}
+
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
+                       const std::vector<float> &data)
+{
+  using NativeT = typename DataTypeImpl<DT>::Type;
+  Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
+  std::vector<NativeT> quantized_data = quantize<NativeT>(data, scale, zero_point);
+  tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(NativeT));
   return tensor;
 }
 
@@ -69,7 +83,7 @@ std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T>
-inline std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
+std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
   assert(!std::is_floating_point<T>::value);
   std::vector<T> q;
@@ -83,7 +97,7 @@ inline std::vector<T> quantize(const std::vector<float> &data, float scale, int3
 }
 
 template <typename T>
-inline std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
+std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
 {
   assert(!std::is_floating_point<T>::value);
   std::vector<float> f;
@@ -101,11 +115,11 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
     return {1.0f, 0};
   }
   int32_t zero_point = 0;
-  double scale = 0;
+  float scale = 0;
   const T qmin = std::numeric_limits<T>::lowest();
   const T qmax = std::numeric_limits<T>::max();
-  const double qmin_double = qmin;
-  const double qmax_double = qmax;
+  const float qmin_double = qmin;
+  const float qmax_double = qmax;
   // 0 should always be a representable value. Let's assume that the initial
   // min,max range contains 0.
   assert(f_max >= 0);
@@ -131,16 +145,16 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   // The arithmetic error on the zero point computed from either pair
   // will be roughly machine_epsilon * (sum of absolute values of terms)
   // so we want to use the variant that adds the smaller terms.
-  const double zero_point_from_min = qmin_double - f_min / scale;
-  const double zero_point_from_max = qmax_double - f_max / scale;
+  const float zero_point_from_min = qmin_double - f_min / scale;
+  const float zero_point_from_max = qmax_double - f_max / scale;
 
-  const double zero_point_from_min_error = std::abs(qmin_double) + std::abs(f_min / scale);
+  const float zero_point_from_min_error = std::abs(qmin_double) + std::abs(f_min / scale);
 
-  const double zero_point_from_max_error = std::abs(qmax_double) + std::abs(f_max / scale);
+  const float zero_point_from_max_error = std::abs(qmax_double) + std::abs(f_max / scale);
 
-  const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
-                                       ? zero_point_from_min
-                                       : zero_point_from_max;
+  const float zero_point_double = zero_point_from_min_error < zero_point_from_max_error
+                                      ? zero_point_from_min
+                                      : zero_point_from_max;
 
   // Now we need to nudge the zero point to be an integer
   // (our zero points are integer, and this is motivated by the requirement
@@ -168,7 +182,7 @@ template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, 
   assert(qmin <= nudged_zero_point);
   zero_point = nudged_zero_point;
   // finally, return the values
-  return {static_cast<float>(scale), zero_point};
+  return {scale, zero_point};
 }
 
 inline float getTolerance(float min, float max, int quantize_steps)

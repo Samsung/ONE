@@ -134,6 +134,12 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
         backend::controlflow::Config::ID;
   }
 
+  // FIXME This is a workaround for bcq operations, should remove it
+  {
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+  }
+
   {
     VERBOSE(Compiler) << std::boolalpha;
     VERBOSE(Compiler) << "==== Compiler Options ====" << std::endl;

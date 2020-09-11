@@ -67,17 +67,6 @@ public:
     return _cf_tensor_builder;
   }
 
-  std::shared_ptr<backend::ITensor> getITensor(ir::OperandIndex ind)
-  {
-    for (auto &tensor_builder : _tensor_builders)
-    {
-      auto tensor = tensor_builder->tensorRegistry()->getITensor(ind);
-      if (tensor)
-        return tensor;
-    }
-    return nullptr;
-  }
-
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorBuilder>> _tensor_builders;
   std::shared_ptr<backend::controlflow::TensorBuilder> _cf_tensor_builder;

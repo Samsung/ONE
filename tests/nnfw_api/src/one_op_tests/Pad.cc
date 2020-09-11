@@ -28,6 +28,66 @@ TEST_F(GenModelTest, OneOp_Pad)
   cgen.addOperatorPad({{in, padding}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase({{{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}});
+  _context->addTestCase(
+      uniformTCD<float>({{1, 2, 3, 4}}, {{0, 0, 0, 0, 0, 1, 2, 0, 0, 3, 4, 0, 0, 0, 0, 0}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Pad_InvalidPadRank)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{1, 1, 1, 1};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32, padding_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPad({{in, padding}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setCompileFail();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Pad_InvalidPadDim0)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{1, 1, 1, 1};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  int out = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPad({{in, padding}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setCompileFail();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Pad_InvalidPadDim1)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> padding_data{1, 1, 1, 1};
+  uint32_t padding_buf = cgen.addBuffer(padding_data);
+  int padding = cgen.addTensor({{4, 1}, circle::TensorType::TensorType_INT32, padding_buf});
+  int out = cgen.addTensor({{2, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorPad({{in, padding}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->setCompileFail();
+
+  SUCCEED();
 }

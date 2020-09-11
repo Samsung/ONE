@@ -63,13 +63,16 @@ void IfLayer::run()
   };
 
   exec::ExecutorBase *subg_exec = nullptr;
-  if (getResultCond(_cond_tensor.get()))
+  bool cond_result = getResultCond(_cond_tensor.get());
+  if (cond_result)
   {
+    VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
     subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
         _executor_map->at(_then_subg_index).get());
   }
   else
   {
+    VERBOSE(If) << "Call to $" << _else_subg_index << " (else)" << std::endl;
     subg_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
         _executor_map->at(_else_subg_index).get());
   }
@@ -120,6 +123,8 @@ void IfLayer::run()
   // Copy & run
   subg_exec->execute(_input_tensors, permute_op_input_to_subg_input);
   permute_subg_output_to_op_output->run();
+  VERBOSE(If) << "Return from $" << (cond_result ? _then_subg_index : _else_subg_index)
+              << std::endl;
 }
 
 } // namespace kernel

@@ -58,15 +58,6 @@ struct ITensorBuilder
    */
   virtual bool isRegistered(const ir::OperandIndex &) const = 0;
 
-  /**
-   * @brief Get tensor registry
-   *
-   * @return std::shared_ptr<backend::ITensorRegistry> tensor registry object
-   *
-   * @note   Backend should implement this when it has StaticTensorManager and DynamicTensorManager
-   */
-  virtual std::shared_ptr<backend::ITensorRegistry> tensorRegistry() = 0;
-
 public: // methods for static tensor allocation
   /**
    * @brief Let the tensor builder know first use(start of lifetime) of a tensor
@@ -98,14 +89,6 @@ public: // methods for static tensor allocation
    */
   virtual void postFunctionPrepare() = 0;
 
-  /**
-   * @brief Release static @c ITensorManger object which was built
-   *        Before calling this, @c allocate must have been called
-   *
-   * @return std::unique_ptr<ITensorManager> Tensor Manager object
-   */
-  virtual std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) = 0;
-
 public: // methods for dynamic tensor allocation
   /**
    * @brief Get dynamicTensorManager. If a backend does not support dynamic tensor, exception
@@ -117,14 +100,6 @@ public: // methods for dynamic tensor allocation
    *         to the end of execution
    */
   virtual IDynamicTensorManager *dynamicTensorManager(void) { return nullptr; }
-
-  /**
-   * @brief Release dynamic @c ITensorManger object which was built
-   *        Before calling this, @c allocate must have been called
-   *
-   * @return std::unique_ptr<ITensorManager> Tensor Manager object
-   */
-  virtual std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) { return nullptr; }
 };
 
 } // namespace backend

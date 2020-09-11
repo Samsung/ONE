@@ -65,6 +65,7 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"instance_normalization_ex", "instance_normalization_ex.cl"},
     {"multiply_scale_factor", "multiply_scale_factor.cl"},
     {"neg_tensor", "neg_tensor.cl"},
+    {"one_hot", "one_hot.cl"},
     {"quantization_symm8", "quantization_symm8.cl"},
     {"reduce_min_max", "reduce_operation.cl"},
     {"reduce_sum_mean", "reduce_operation.cl"},
@@ -121,6 +122,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
     {
         "neg_tensor.cl",
 #include "./cl_kernels/neg_tensor.clembed"
+    },
+    {
+        "one_hot.cl",
+#include "./cl_kernels/one_hot.clembed"
     },
     {
         "quantization_symm8.cl",

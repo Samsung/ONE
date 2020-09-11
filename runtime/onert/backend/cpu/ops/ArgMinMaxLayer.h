@@ -33,18 +33,18 @@ namespace ops
 class ArgMinMaxLayer : public ::onert::exec::IFunction
 {
 public:
-  ArgMinMaxLayer() : _input(nullptr), _output(nullptr), _axis(-1), _is_arg_max(true) {}
+  ArgMinMaxLayer() : _input(nullptr), _output(nullptr), _axis(nullptr), _is_arg_max(true) {}
 
 public:
-  void configure(const IPortableTensor *indices, IPortableTensor *output, int32_t axis,
-                 bool is_arg_max);
+  void configure(const IPortableTensor *indices, IPortableTensor *output,
+                 const IPortableTensor *axis, bool is_arg_max);
 
   void run() override;
 
 private:
   const IPortableTensor *_input;
   IPortableTensor *_output;
-  int32_t _axis;
+  const IPortableTensor *_axis;
   bool _is_arg_max;
 };
 

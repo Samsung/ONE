@@ -708,31 +708,7 @@ OperationFactory::OperationFactory()
     return new operation::StridedSlice{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_TRANSPOSE] = [](const OperationFactory::Param &init_param,
-                                       Operands &operands) {
-    // TODO make this work with init_param.input_count == 1 (when permutation vector is optional)
-
-    // Inputs
-    // 0: An n-D tensor, specifying the tensor to be transposed.
-    // 1: An optional 1-D Tensor of {@link ANEURALNETWORKS_TENSOR_INT32},
-    //    the permutation of the dimensions of the input tensor.
-    //    The returned tensor's dimension i corresponds to the input dimension
-    //    perm[i]. If perm is not given, it is set to (n-1...0), where n is the
-    //    rank of the input tensor. Hence by default, this operation performs a
-    //    regular matrix transpose on 2-D input Tensors.
-    assert(init_param.input_count == 2);
-    assert(init_param.output_count == 1);
-
-    OperandIndexSequence inputs{init_param.inputs[0]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-    std::vector<std::int32_t> perm =
-        operands.at(OperandIndex{init_param.inputs[1]}).asVector<std::int32_t>();
-
-    operation::Transpose::Param param;
-    param.perm.assign(perm.cbegin(), perm.cend());
-
-    return new operation::Transpose{inputs, outputs, param};
-  };
+  _map[ANEURALNETWORKS_TRANSPOSE] = createSimpleBinaryOp<operation::Transpose>;
 
   _map[ANEURALNETWORKS_MUL] =
       getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::MUL);
@@ -980,6 +956,28 @@ OperationFactory::OperationFactory()
     param.align_corners = false;
     param.half_pixel_centers = false;
     return new operation::ResizeBilinear{inputs, outputs, param};
+  };
+
+  _map[ANEURALNETWORKS_RESIZE_NEAREST_NEIGHBOR] = [](const OperationFactory::Param &init_param,
+                                                     Operands &operands) {
+    assert((init_param.input_count == 3 || init_param.input_count == 4) &&
+           init_param.output_count == 1);
+
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Each input should be interpreted as follows:
+    //
+    //  0 -> IFM Index
+    //  1 -> Height Index
+    //  2 -> Width Index
+    OperandIndexSequence inputs{init_param.inputs[0]};
+
+    operation::ResizeNearestNeighbor::Param param;
+    param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
+    param.width_out = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>();
+    param.align_corners = false;
+    // The layout input is not supported yet
+    return new operation::ResizeNearestNeighbor{inputs, outputs, param};
   };
 
   _map[ANEURALNETWORKS_RELU1] = getElementwiseActivationGenerator(
@@ -1406,7 +1404,7 @@ OperationFactory::OperationFactory()
   // TODO Remove ANEURALNETWORKS_ABS_EX
   _map[ANEURALNETWORKS_ABS_EX] = _map[ANEURALNETWORKS_ABS];
 
-  _map[ANEURALNETWORKS_ARGMAX] = [](const OperationFactory::Param &init_param, Operands &operands) {
+  _map[ANEURALNETWORKS_ARGMAX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
 
     OperandIndexSequence outputs{init_param.outputs[0]};
@@ -1415,10 +1413,9 @@ OperationFactory::OperationFactory()
     //
     //  0 -> Input Tensor Index
     //  1 -> Axis Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
 
     operation::ArgMax::Param param;
-    param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
     // NNAPI ARGMAX output type is always int32
     param.output_type = DataType::INT32;
 
@@ -1517,7 +1514,7 @@ OperationFactory::OperationFactory()
     assert(init_param.input_count == 3);
     assert(init_param.output_count >= 1); // At least one output tensor and axis
 
-    OperandIndexSequence inputs{init_param.inputs[0]};
+    OperandIndexSequence inputs{init_param.inputs[1], init_param.inputs[0]};
     OperandIndexSequence outputs;
     for (uint32_t n = 0; n < init_param.output_count; ++n)
     {
@@ -1525,7 +1522,6 @@ OperationFactory::OperationFactory()
     }
 
     operation::Split::Param param;
-    param.axis = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
     param.num_splits = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<std::int32_t>();
 
     return new operation::Split{inputs, outputs, param};

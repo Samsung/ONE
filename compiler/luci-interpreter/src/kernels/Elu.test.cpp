@@ -29,9 +29,7 @@ using namespace testing;
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
            std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  Tensor input_tensor{DataType::FLOAT32, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(float));
-
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Elu kernel(&input_tensor, &output_tensor);
@@ -57,6 +55,20 @@ TEST(EluTest, SimpleElu)
           0.0, -0.997521, 2.0, -0.981684,   //
           3.0, -0.864665, 10.0, -0.0951626, //
       });
+}
+
+TEST(EluTest, InOutTypeMismatch_NEG)
+{
+  Shape input_shape{1, 2, 4, 1};
+  std::vector<float> input_data{
+      0, -6, 2,  -4,   //
+      3, -2, 10, -0.1, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  Elu kernel(&input_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
 }
 
 } // namespace

@@ -29,14 +29,11 @@ using namespace testing;
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> perm_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T> input_data,
-           std::initializer_list<int32_t> perm_data, std::initializer_list<T> output_data,
-           DataType element_type)
+           std::initializer_list<int32_t> perm_data, std::initializer_list<T> output_data)
 {
-  Tensor input_tensor{element_type, input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
-
-  Tensor perm_tensor{DataType::S32, perm_shape, {}, ""};
-  perm_tensor.writeData(perm_data.begin(), perm_data.size() * sizeof(int32_t));
+  constexpr DataType element_type = getElementType<T>();
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor perm_tensor = makeInputTensor<DataType::S32>(perm_shape, perm_data);
   Tensor output_tensor = makeOutputTensor(element_type);
 
   Transpose kernel(&input_tensor, &perm_tensor, &output_tensor);
@@ -60,8 +57,7 @@ TYPED_TEST(TransposeTest, Small3D)
                                    12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
                    /*perm_data=*/{2, 0, 1},
                    /*output_data=*/{0, 4, 8,  12, 16, 20, 1, 5, 9,  13, 17, 21,
-                                    2, 6, 10, 14, 18, 22, 3, 7, 11, 15, 19, 23},
-                   getElementType<TypeParam>());
+                                    2, 6, 10, 14, 18, 22, 3, 7, 11, 15, 19, 23});
 }
 
 TYPED_TEST(TransposeTest, Large4D)
@@ -84,8 +80,7 @@ TYPED_TEST(TransposeTest, Large4D)
                        10, 11, 12, 13, 14, 30, 31, 32, 33, 34, 50,  51,  52,  53,  54,
                        70, 71, 72, 73, 74, 90, 91, 92, 93, 94, 110, 111, 112, 113, 114,
                        15, 16, 17, 18, 19, 35, 36, 37, 38, 39, 55,  56,  57,  58,  59,
-                       75, 76, 77, 78, 79, 95, 96, 97, 98, 99, 115, 116, 117, 118, 119},
-      getElementType<TypeParam>());
+                       75, 76, 77, 78, 79, 95, 96, 97, 98, 99, 115, 116, 117, 118, 119});
 }
 
 TYPED_TEST(TransposeTest, Large2D)
@@ -101,15 +96,13 @@ TYPED_TEST(TransposeTest, Large2D)
                       90,  91,  92,  93,  94,  95,  96,  97,  98,  99,  100, 101, 102, 103, 104,
                       105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119},
       /*perm_data=*/{1, 0},
-      /*output_data=*/{0,  12, 24, 36,  48,  60, 72, 84, 96,  108, 1,  13, 25, 37,  49,
-                       61, 73, 85, 97,  109, 2,  14, 26, 38,  50,  62, 74, 86, 98,  110,
-                       3,  15, 27, 39,  51,  63, 75, 87, 99,  111, 4,  16, 28, 40,  52,
-                       64, 76, 88, 100, 112, 5,  17, 29, 41,  53,  65, 77, 89, 101, 113,
-                       6,  18, 30, 42,  54,  66, 78, 90, 102, 114, 7,  19, 31, 43,  55,
-                       67, 79, 91, 103, 115, 8,  20, 32, 44,  56,  68, 80, 92, 104, 116,
-                       9,  21, 33, 45,  57,  69, 81, 93, 105, 117, 10, 22, 34, 46,  58,
-                       70, 82, 94, 106, 118, 11, 23, 35, 47,  59,  71, 83, 95, 107, 119},
-      getElementType<TypeParam>());
+      /*output_data=*/{
+          0,  12, 24, 36, 48, 60, 72, 84, 96,  108, 1,  13, 25, 37, 49, 61, 73, 85, 97,  109,
+          2,  14, 26, 38, 50, 62, 74, 86, 98,  110, 3,  15, 27, 39, 51, 63, 75, 87, 99,  111,
+          4,  16, 28, 40, 52, 64, 76, 88, 100, 112, 5,  17, 29, 41, 53, 65, 77, 89, 101, 113,
+          6,  18, 30, 42, 54, 66, 78, 90, 102, 114, 7,  19, 31, 43, 55, 67, 79, 91, 103, 115,
+          8,  20, 32, 44, 56, 68, 80, 92, 104, 116, 9,  21, 33, 45, 57, 69, 81, 93, 105, 117,
+          10, 22, 34, 46, 58, 70, 82, 94, 106, 118, 11, 23, 35, 47, 59, 71, 83, 95, 107, 119});
 }
 
 } // namespace

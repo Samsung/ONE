@@ -238,6 +238,36 @@ inline TensorShape compute_gather_shape_ex(const TensorShape &input_shape,
   return output_shape;
 }
 
+/** Calculate the gather output shape of a tensor
+ *
+ * @param[in] input_shape   Input tensor shape
+ * @param[in] indices_shape Indices tensor shape
+ * @param[in] actual_axis   The axis to be gathered
+ *
+ * @return the calculated shape
+ */
+inline TensorShape compute_onehot_shape_ex(const TensorShape &indices_shape, uint32_t depth,
+                                           uint32_t actual_axis)
+{
+  ARM_COMPUTE_ERROR_ON(indices_shape.num_dimensions() > 3);
+  ARM_COMPUTE_ERROR_ON(actual_axis > indices_shape.num_dimensions());
+
+  TensorShape output_shape;
+  output_shape.set(actual_axis, depth);
+
+  unsigned int i_shift = 0;
+  for (unsigned int i = 0; i < indices_shape.num_dimensions(); ++i)
+  {
+    if (i == actual_axis)
+    {
+      i_shift++;
+    }
+    output_shape.set(i + i_shift, indices_shape[i]);
+  }
+
+  return output_shape;
+}
+
 } // namespace shape_calculator
 } // namespace misc
 } // namespace arm_compute

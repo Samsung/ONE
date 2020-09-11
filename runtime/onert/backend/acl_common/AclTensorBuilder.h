@@ -49,7 +49,8 @@ class AclTensorBuilder : public ITensorBuilder
 public:
   using T_AclTensorManager = AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>;
 
-  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr);
+  AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
+                   const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -64,13 +65,10 @@ public:
   void notifyLastUse(const ir::OperandIndex &) override;
 
   bool isRegistered(const ir::OperandIndex &) const override;
-  std::shared_ptr<backend::ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
   void prepare(void) override;
   void allocate() override;
   void postFunctionPrepare() override;
-
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
 
   T_AclTensorManager *acl_tensor_manager(void) { return _tensor_mgr.get(); }
 
@@ -135,10 +133,10 @@ namespace acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::Operands &operands,
-                                                                     T_AclTensorManager *tensor_mgr)
-    : _operands{operands}, _tensor_mgr{tensor_mgr},
-      _tensor_reg{new AclTensorRegistry<T_AclTensorManager>{_tensor_mgr.get()}}
+AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(
+    const ir::Operands &operands, T_AclTensorManager *tensor_mgr,
+    const std::shared_ptr<AclTensorRegistry<T_AclTensorManager>> &tensor_reg)
+    : _operands{operands}, _tensor_mgr{tensor_mgr}, _tensor_reg{tensor_reg}
 {
   assert(_tensor_mgr);
 }
@@ -303,13 +301,6 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::postFunctionPrepare(void)
 {
   _tensor_mgr->tryDeallocConstants();
-}
-
-template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
-std::unique_ptr<ITensorManager>
-AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::releaseStaticTensorManager(void)
-{
-  return std::move(_tensor_mgr);
 }
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>

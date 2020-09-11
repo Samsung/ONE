@@ -36,20 +36,20 @@ Concatenation::Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
 void Concatenation::configure()
 {
   const int num_inputs = _inputs.size();
-  assert(num_inputs > 0);
+  LUCI_INTERPRETER_CHECK(num_inputs > 0);
   const Tensor *t0 = _inputs[0];
 
   int axis = _params.axis;
   if (axis < 0)
     axis += t0->shape().num_dims();
-  assert(axis >= 0 && axis < t0->shape().num_dims());
+  LUCI_INTERPRETER_CHECK(axis >= 0 && axis < t0->shape().num_dims());
 
   int32_t sum_axis = t0->shape().dim(axis);
   for (int i = 1; i < num_inputs; ++i)
   {
     const Tensor *tensor = _inputs[i];
-    assert(tensor->element_type() == t0->element_type());
-    assert(tensor->shape().num_dims() == t0->shape().num_dims());
+    LUCI_INTERPRETER_CHECK(tensor->element_type() == t0->element_type());
+    LUCI_INTERPRETER_CHECK(tensor->shape().num_dims() == t0->shape().num_dims());
     for (int d = 0; d < t0->shape().num_dims(); ++d)
     {
       if (d == axis)
@@ -58,7 +58,7 @@ void Concatenation::configure()
       }
       else
       {
-        assert(tensor->shape().dim(d) == t0->shape().dim(d));
+        LUCI_INTERPRETER_CHECK(tensor->shape().dim(d) == t0->shape().dim(d));
       }
     }
   }

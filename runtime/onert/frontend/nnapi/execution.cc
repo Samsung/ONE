@@ -94,10 +94,25 @@ int ANeuralNetworksExecution_setInput(ANeuralNetworksExecution *execution, int32
 
   // Omitted optional input
   // LSTM operation's some inputs can be optional input
+  // Transpose operation's permutation input can be optional input
   if ((buffer == nullptr) && (length == 0))
   {
+    uint32_t dims[1] = {0};
+    ANeuralNetworksOperandType compared_shape;
+    compared_shape.dimensionCount = 1;
+    compared_shape.dimensions = dims;
     if (execution->hasUnspecifiedDims(operand_index))
     {
+      return ANEURALNETWORKS_NO_ERROR;
+    }
+    // TODO Changes the condition to check zero sized
+    else if (execution->compareShape(&compared_shape, operand_index))
+    {
+      if (!execution->setInput(index, type, buffer, length))
+      {
+        VERBOSE(NNAPI::Execution) << "setInput: Fail to set input" << std::endl;
+        return ANEURALNETWORKS_BAD_DATA;
+      }
       return ANEURALNETWORKS_NO_ERROR;
     }
     else

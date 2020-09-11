@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Elementwise.h>
+#include <cker/operation/Erf.h>
 #include <cker/operation/Exp.h>
 #include <cker/operation/LogicalNot.h>
 #include <cker/operation/Quantize.h>
@@ -123,6 +124,12 @@ void expFloat32(const IPortableTensor *input, IPortableTensor *output)
                   getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
 }
 
+void erfFloat32(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Erf(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
+                  getTensorShape(output), reinterpret_cast<float *>(output->buffer()));
+}
+
 void logFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Log(getTensorShape(input), reinterpret_cast<const float *>(input->buffer()),
@@ -216,6 +223,16 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
       if ((input->data_type() == OperandType::FLOAT32))
       {
         _kernel = expFloat32;
+      }
+      else
+      {
+        throw std::runtime_error{"Exp: Unsupported data type"};
+      }
+      break;
+    case ElementwiseUnaryType::kErf:
+      if ((input->data_type() == OperandType::FLOAT32))
+      {
+        _kernel = erfFloat32;
       }
       else
       {

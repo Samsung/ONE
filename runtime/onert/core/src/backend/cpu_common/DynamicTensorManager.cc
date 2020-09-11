@@ -42,7 +42,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
 
   auto allocTensorMem = [&](bool overwrite = false) {
     auto capacity = tensor->total_size();
-    auto alloc = _dynamic_mem_mgr->allocate(ind, capacity);
+    auto alloc = _dynamic_mem_mgr->allocate(tensor.get(), capacity);
 
     if (overwrite)
       tensor->overwriteBuffer(alloc);
@@ -71,7 +71,7 @@ void DynamicTensorManager::applyShape(const ir::OperandIndex &ind, const ir::Sha
     auto new_size = new_shape.num_elements() * sizeOfDataType(tensor->data_type());
     if (previous_size != new_size)
     {
-      _dynamic_mem_mgr->deallocate(ind);
+      _dynamic_mem_mgr->deallocate(tensor.get());
 
       tensor->setShape(new_shape);
       tensor->set_dynamic();
@@ -111,7 +111,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
     if (!tensor->is_dynamic())
       continue;
 
-    _dynamic_mem_mgr->deallocate(input_ind);
+    _dynamic_mem_mgr->deallocate(getRawITensor(input_ind));
     tensor->resetBuffer();
 
     VERBOSE(DynamicTensorManager) << "Deallocating #" << input_ind.value()
@@ -125,11 +125,18 @@ void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
   if (!tensor->is_dynamic())
     return;
 
-  _dynamic_mem_mgr->deallocate(output_ind);
+  _dynamic_mem_mgr->deallocate(getRawITensor(output_ind));
   tensor->resetBuffer();
 
   VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
                                 << " (output of a subgraph)" << std::endl;
+}
+
+const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
+{
+  auto ptr = _tensors->getITensor(ind).get();
+  assert(ptr);
+  return ptr;
 }
 
 } // namespace cpu_common

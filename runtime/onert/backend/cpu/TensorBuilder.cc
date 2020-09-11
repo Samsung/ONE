@@ -27,8 +27,8 @@ namespace backend
 namespace cpu
 {
 
-TensorBuilder::TensorBuilder()
-    : _tensor_reg{new cpu_common::TensorRegistry()},
+TensorBuilder::TensorBuilder(const std::shared_ptr<cpu_common::TensorRegistry> &tensor_reg)
+    : _tensor_reg{tensor_reg},
       _dynamic_tensor_mgr{new cpu_common::DynamicTensorManager(_tensor_reg)},
       _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
 {
@@ -83,16 +83,6 @@ void TensorBuilder::allocate()
 {
   // NOTE For now nothing to do. Allocation is done in prepare stage, which is not appropriate
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
-}
-
-std::unique_ptr<ITensorManager> TensorBuilder::releaseStaticTensorManager(void)
-{
-  return std::move(_static_tensor_mgr);
-}
-
-std::unique_ptr<ITensorManager> TensorBuilder::releaseDynamicTensorManager(void)
-{
-  return std::move(_dynamic_tensor_mgr);
 }
 
 } // namespace cpu

@@ -39,7 +39,7 @@ namespace controlflow
 class TensorBuilder : public ITensorBuilder
 {
 public:
-  TensorBuilder();
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -59,11 +59,7 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  std::unique_ptr<ITensorManager> releaseStaticTensorManager(void) override;
-
   IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
-
-  std::unique_ptr<ITensorManager> releaseDynamicTensorManager(void) override;
 
   /**
    * @brief Get tensor with a specific OperandIndex.
@@ -73,8 +69,6 @@ public:
    */
   std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
   void setNativeUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
-
-  std::shared_ptr<ITensorRegistry> tensorRegistry() override { return _tensor_reg; }
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

@@ -22,7 +22,7 @@
 #include <exec/IExecutor.h>
 #include <ir/Graph.h>
 #include "TensorBuilder.h"
-#include "compiler/TensorBuilders.h"
+#include "compiler/TensorRegistries.h"
 #include "TensorRegistry.h"
 
 namespace onert
@@ -35,12 +35,12 @@ namespace controlflow
 class KernelGenerator : public IKernelGenerator
 {
 public:
-  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
+  KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
                   const std::shared_ptr<TensorRegistry> &tensor_reg);
 
-  void setTensorBuilderSet(const compiler::TensorBuilders &tensor_builder_set)
+  void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
   {
-    _tensor_builder_set = tensor_builder_set;
+    _tensor_registries = tensor_registries;
   }
   void setExecutorMap(const std::shared_ptr<exec::ExecutorMap> &executor_map)
   {
@@ -57,13 +57,12 @@ public:
 
 private:
   std::shared_ptr<backend::ITensor> getTensor(const ir::OperandIndex &index);
-  std::shared_ptr<backend::ITensorBuilder> getTensorBuilder(const ir::OperandIndex &index);
 
 private:
   const ir::Graph &_graph;
-  std::shared_ptr<TensorBuilder> _tensor_builder;
+  IDynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
-  compiler::TensorBuilders _tensor_builder_set;
+  compiler::TensorRegistries _tensor_registries;
   exec::ExecutorMap *_executor_map;
 };
 

@@ -48,33 +48,33 @@ void DepthwiseConv2D::configure()
   // We only support (1) and (3) for now.
   if (input()->element_type() == DataType::FLOAT32 && filter()->element_type() == DataType::FLOAT32)
   {
-    assert(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::FLOAT32);
   }
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
-    assert(bias() == nullptr || bias()->element_type() == DataType::S32);
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
   }
   else
   {
     throw std::runtime_error("Unsupported type.");
   }
-  assert(output()->element_type() == input()->element_type());
+  LUCI_INTERPRETER_CHECK(output()->element_type() == input()->element_type());
 
   const Shape &input_shape = input()->shape();
   const Shape &filter_shape = filter()->shape();
-  assert(input_shape.num_dims() == 4 && filter_shape.num_dims() == 4);
+  LUCI_INTERPRETER_CHECK(input_shape.num_dims() == 4 && filter_shape.num_dims() == 4);
 
   const int32_t batches = input_shape.dim(0);
   const int32_t input_height = input_shape.dim(1);
   const int32_t input_width = input_shape.dim(2);
   // Filter format: [1, H, W, O].
-  assert(filter_shape.dim(0) == 1);
+  LUCI_INTERPRETER_CHECK(filter_shape.dim(0) == 1);
   const int32_t filter_height = filter_shape.dim(1);
   const int32_t filter_width = filter_shape.dim(2);
   const int32_t channels_out = filter_shape.dim(3);
 
-  assert(bias() == nullptr ||
-         (bias()->shape().num_dims() == 1 && bias()->shape().dim(0) == channels_out));
+  LUCI_INTERPRETER_CHECK(bias() == nullptr || (bias()->shape().num_dims() == 1 &&
+                                               bias()->shape().dim(0) == channels_out));
 
   const int32_t output_height =
       computeOutputSize(_params.padding, input_height, filter_height, _params.stride_height,

@@ -31,21 +31,20 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph,
-                                 const std::shared_ptr<TensorBuilder> &tensor_builder,
+KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg)
-    : _graph{graph}, _tensor_builder{tensor_builder}, _tensor_reg{tensor_reg},
-      _tensor_builder_set{}, _executor_map{nullptr}
+    : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
+      _tensor_registries{}, _executor_map{nullptr}
 {
   UNUSED_RELEASE(_graph);
-  UNUSED_RELEASE(_tensor_builder_set);
+  UNUSED_RELEASE(_tensor_registries);
   UNUSED_RELEASE(_executor_map);
 }
 
 void KernelGenerator::visit(const ir::OpSequence &op_seq)
 {
   assert(!_return_fn_seq);
-  assert(_tensor_builder->dynamicTensorManager());
+  assert(_dyn_tensor_manager);
   assert(_tensor_reg);
 
   auto dyn_shape_inferer =
@@ -60,7 +59,7 @@ void KernelGenerator::visit(const ir::OpSequence &op_seq)
     dyn_ctx->operations = &_graph.operations();
     dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
     dyn_ctx->tensor_registry = _tensor_reg;
-    dyn_ctx->dynamic_tensor_manager = _tensor_builder->dynamicTensorManager();
+    dyn_ctx->dynamic_tensor_manager = _dyn_tensor_manager;
 
     _return_fn_seq->dynamic_tensor_ctx(dyn_ctx);
   }
@@ -94,7 +93,6 @@ void KernelGenerator::visit(const ir::operation::If &node)
     auto output_tensor = getTensor(output_index);
 
     output_tensors.emplace_back(output_tensor);
-    const auto output_tensor_builder = getTensorBuilder(output_index);
     outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
@@ -118,9 +116,6 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
   std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
   std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
-  const auto output_tensor_builder = getTensorBuilder(output_index);
-  VERBOSE(PERMUTE_FIND_TB) << output_index << " -> " << output_tensor_builder.get() << std::endl;
-  assert(output_tensor_builder != nullptr);
   outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
 
   auto fn =
@@ -152,7 +147,6 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
     output_tensors.emplace_back(output_tensor);
 
-    const auto output_tensor_builder = getTensorBuilder(output_index);
     outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
@@ -167,25 +161,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
 std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  std::shared_ptr<backend::ITensor> ret = _tensor_builder_set.getITensor(index);
-  assert(ret != nullptr);
-  return ret;
-}
-
-std::shared_ptr<backend::ITensorBuilder>
-KernelGenerator::getTensorBuilder(const ir::OperandIndex &index)
-{
-  std::shared_ptr<backend::ITensorBuilder> ret;
-  for (auto tensor_builder : _tensor_builder_set)
-  {
-    auto reg = tensor_builder->tensorRegistry();
-    auto tensor = reg->getITensor(index);
-    if (tensor)
-    {
-      ret = tensor_builder;
-      break;
-    }
-  }
+  std::shared_ptr<backend::ITensor> ret = _tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }

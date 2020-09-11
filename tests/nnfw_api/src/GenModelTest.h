@@ -19,30 +19,107 @@
 
 #include <fstream>
 #include <string>
+#include <unordered_map>
 
 #include "CircleGen.h"
 #include "fixtures.h"
+
+inline size_t sizeOfNnfwType(NNFW_TYPE type)
+{
+  switch (type)
+  {
+    case NNFW_TYPE_TENSOR_BOOL:
+    case NNFW_TYPE_TENSOR_UINT8:
+    case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+      return 1;
+    case NNFW_TYPE_TENSOR_FLOAT32:
+    case NNFW_TYPE_TENSOR_INT32:
+      return 4;
+    case NNFW_TYPE_TENSOR_INT64:
+      return 8;
+    default:
+      throw std::runtime_error{"Invalid tensor type"};
+  }
+}
+
+// TODO Unify this with `SessionObject` in `fixtures.h`
+struct SessionObjectGeneric
+{
+  nnfw_session *session = nullptr;
+  std::vector<std::vector<uint8_t>> inputs;
+  std::vector<std::vector<uint8_t>> outputs;
+};
 
 struct TestCaseData
 {
   /**
    * @brief A vector of input buffers
-   *
-   * @todo support other types as well as float
    */
-  std::vector<std::vector<float>> inputs;
+  std::vector<std::vector<uint8_t>> inputs;
+
   /**
    * @brief A vector of output buffers
-   *
-   * @todo support other types as well as float
    */
-  std::vector<std::vector<float>> outputs;
+  std::vector<std::vector<uint8_t>> outputs;
+
+  /**
+   * @brief Append vector data to inputs
+   *
+   * @tparam T Data type
+   * @param data vector data array
+   */
+  template <typename T> void addInput(const std::vector<T> &data) { addData(inputs, data); }
+
+  /**
+   * @brief Append vector data to inputs
+   *
+   * @tparam T Data type
+   * @param data vector data array
+   */
+  template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
+
+private:
+  template <typename T>
+  static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
+  {
+    size_t size = data.size() * sizeof(T);
+    dest.emplace_back();
+    dest.back().resize(size);
+    std::memcpy(dest.back().data(), data.data(), size);
+  }
 };
 
+/**
+ * @brief Create a TestCaseData with a uniform type
+ *
+ * A helper function for generating test cases that has the same data type for model inputs/outputs.
+ *
+ * @tparam T Uniform tensor type
+ * @param inputs Inputs tensor buffers
+ * @param outputs Output tensor buffers
+ * @return TestCaseData Generated test case data
+ */
+template <typename T>
+static TestCaseData uniformTCD(const std::vector<std::vector<T>> &inputs,
+                               const std::vector<std::vector<T>> &outputs)
+{
+  TestCaseData ret;
+  for (const auto &data : inputs)
+    ret.addInput(data);
+  for (const auto &data : outputs)
+    ret.addOutput(data);
+  return ret;
+}
+
+/**
+ * @brief A test configuration class
+ */
 class GenModelTestContext
 {
 public:
   GenModelTestContext(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
+
+  GenModelTestContext(CircleBuffer &cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
 
   /**
    * @brief  Return circle buffer
@@ -64,6 +141,26 @@ public:
    * @return const std::vector<std::string>& the backends to be tested
    */
   const std::vector<std::string> &backends() const { return _backends; }
+
+  /**
+   * @brief Return test is defined to fail on compile
+   *
+   * @return bool test is defined to fail on compile
+   */
+  const bool fail_compile() const { return _fail_compile; }
+
+  /**
+   * @brief Set the output buffer size of specified output tensor
+   *        Note that output tensor size of a model with dynamic tensor is calculated while running
+   *        the model. Therefore, before runniing the model, the sufficient size of buffer should
+   *        be prepared by calling this method.
+   *        The size does not need to be the exact size.
+   */
+  void output_sizes(uint32_t ind, size_t size) { _output_sizes[ind] = size; }
+
+  size_t output_sizes(uint32_t ind) const { return _output_sizes.at(ind); }
+
+  bool hasOutputSizes(uint32_t ind) const { return _output_sizes.find(ind) != _output_sizes.end(); }
 
   /**
    * @brief Add a test case
@@ -96,10 +193,17 @@ public:
     }
   }
 
+  /**
+   * @brief Set the Test Fail
+   */
+  void setCompileFail() { _fail_compile = true; }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
+  std::unordered_map<uint32_t, size_t> _output_sizes;
+  bool _fail_compile{false};
 };
 
 /**
@@ -130,6 +234,14 @@ protected:
       auto &cbuf = _context->cbuf();
       NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+
+      if (_context->fail_compile())
+      {
+        ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
+
+        NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
+        continue;
+      }
       NNFW_ENSURE_SUCCESS(nnfw_prepare(_so.session));
 
       // In/Out buffer settings
@@ -141,11 +253,18 @@ protected:
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_so.session, ind, &ti));
         uint64_t input_elements = num_elems(&ti);
-        _so.inputs[ind].resize(input_elements);
-
-        ASSERT_EQ(nnfw_set_input(_so.session, ind, ti.dtype, _so.inputs[ind].data(),
-                                 sizeof(float) * input_elements),
-                  NNFW_STATUS_NO_ERROR);
+        _so.inputs[ind].resize(input_elements * sizeOfNnfwType(ti.dtype));
+        if (_so.inputs[ind].size() == 0)
+        {
+          // Optional inputs
+          ASSERT_EQ(nnfw_set_input(_so.session, ind, ti.dtype, nullptr, 0), NNFW_STATUS_NO_ERROR);
+        }
+        else
+        {
+          ASSERT_EQ(nnfw_set_input(_so.session, ind, ti.dtype, _so.inputs[ind].data(),
+                                   _so.inputs[ind].size()),
+                    NNFW_STATUS_NO_ERROR);
+        }
       }
 
       uint32_t num_outputs;
@@ -155,10 +274,24 @@ protected:
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
-        uint64_t output_elements = num_elems(&ti);
-        _so.outputs[ind].resize(output_elements);
+
+        auto size = 0;
+        {
+          if (_context->hasOutputSizes(ind))
+          {
+            size = _context->output_sizes(ind);
+          }
+          else
+          {
+            uint64_t output_elements = num_elems(&ti);
+            size = output_elements * sizeOfNnfwType(ti.dtype);
+          }
+          _so.outputs[ind].resize(size);
+        }
+
+        ASSERT_GT(_so.outputs[ind].size(), 0) << "Please make sure TC output is non-empty.";
         ASSERT_EQ(nnfw_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(),
-                                  sizeof(float) * output_elements),
+                                  _so.outputs[ind].size()),
                   NNFW_STATUS_NO_ERROR);
       }
 
@@ -172,7 +305,7 @@ protected:
         {
           // Fill the values
           ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
-          memcpy(_so.inputs[i].data(), ref_inputs[i].data(), _so.inputs[i].size() * sizeof(float));
+          memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
         }
 
         NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
@@ -180,12 +313,44 @@ protected:
         ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
         for (uint32_t i = 0; i < _so.outputs.size(); i++)
         {
+          nnfw_tensorinfo ti;
+          NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, i, &ti));
+
           // Check output tensor values
           auto &ref_output = ref_outputs[i];
           auto &output = _so.outputs[i];
           ASSERT_EQ(output.size(), ref_output.size());
-          for (uint32_t e = 0; e < ref_output.size(); e++)
-            EXPECT_NEAR(ref_output[e], output[e], 0.001); // TODO better way for handling FP error?
+
+          switch (ti.dtype)
+          {
+            case NNFW_TYPE_TENSOR_BOOL:
+              // TODO Check if this comparison is correct
+              compareBuffersExact<bool>(ref_output, output);
+              break;
+            case NNFW_TYPE_TENSOR_UINT8:
+              compareBuffersExact<uint8_t>(ref_output, output);
+              break;
+            case NNFW_TYPE_TENSOR_INT32:
+              compareBuffersExact<int32_t>(ref_output, output);
+              break;
+            case NNFW_TYPE_TENSOR_FLOAT32:
+              // TODO better way for handling FP error?
+              for (uint32_t e = 0; e < ref_output.size() / sizeof(float); e++)
+              {
+                float refval = reinterpret_cast<const float *>(ref_output.data())[e];
+                float val = reinterpret_cast<const float *>(output.data())[e];
+                EXPECT_NEAR(refval, val, 0.001) << "e == " << e;
+              }
+              break;
+            case NNFW_TYPE_TENSOR_INT64:
+              compareBuffersExact<int64_t>(ref_output, output);
+              break;
+            case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
+              throw std::runtime_error{"NYI : comparison of tensors of QUANT8_ASYMM"};
+            default:
+              throw std::runtime_error{"Invalid tensor type"};
+          }
+          // TODO Add shape comparison
         }
       }
 
@@ -193,7 +358,19 @@ protected:
     }
   }
 
+private:
+  template <typename T>
+  void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf)
+  {
+    for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
+    {
+      float ref = reinterpret_cast<const T *>(ref_buf.data())[e];
+      float act = reinterpret_cast<const T *>(act_buf.data())[e];
+      EXPECT_EQ(ref, act) << "index == " << e;
+    }
+  }
+
 protected:
-  SessionObject _so;
+  SessionObjectGeneric _so;
   std::unique_ptr<GenModelTestContext> _context;
 };

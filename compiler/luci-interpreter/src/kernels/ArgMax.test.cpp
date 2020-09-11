@@ -32,12 +32,9 @@ void Check(std::initializer_list<int32_t> input_shape,
            std::initializer_list<int32_t> output_shape, std::initializer_list<T1> input_data,
            std::initializer_list<int32_t> dimension_data, std::initializer_list<T2> output_data)
 {
-
-  Tensor input_tensor{getElementType<T1>(), input_shape, {}, ""};
-  input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T1));
-  Tensor dimension_tensor{DataType::S32, dimension_shape, {}, ""};
-  dimension_tensor.writeData(dimension_data.begin(), dimension_data.size() * sizeof(int32_t));
-
+  constexpr DataType element_type = getElementType<T1>();
+  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor dimension_tensor = makeInputTensor<DataType::S32>(dimension_shape, dimension_data);
   Tensor output_tensor = makeOutputTensor(getElementType<T2>());
 
   ArgMaxParams params{};

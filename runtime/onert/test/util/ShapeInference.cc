@@ -328,7 +328,8 @@ TEST(ShapeInference, Transpose)
     // pre-conditions
     ASSERT_EQ(in_shape.rank(), perm.size());
     ASSERT_EQ(expected.rank(), perm.size());
-    auto inferred_out_shape = onert::shape_inference::inferTransposeShape(in_shape, perm);
+    auto inferred_out_shape =
+        onert::shape_inference::inferTransposeShape(in_shape, perm.data(), perm.size());
     // post-conditions
     ASSERT_EQ(inferred_out_shape.rank(), perm.size());
     for (int32_t dim = 0; dim < expected.rank(); dim++)
@@ -369,12 +370,14 @@ TEST(ShapeInference, neg_Transpose)
   {
     std::vector<int> perm = {2, 0, 1, 0};
     // int32_t rank = 3;
-    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm), std::runtime_error);
+    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm.data(), perm.size()),
+                 std::runtime_error);
   }
   // Invalid parameter value
   {
     std::vector<int> perm = {2, 0, 3};
     // int32_t rank = 3;
-    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm), std::runtime_error);
+    ASSERT_THROW(onert::shape_inference::inferTransposeShape(in_shape, perm.data(), perm.size()),
+                 std::runtime_error);
   }
 }

@@ -43,11 +43,7 @@ public:
     ADD_INVALID_MANIFEST, //< Contains "Add" model but the manifest file is broken JSON
 
     // for dynamic tensor test
-    INPUT_RESHAPING_ADD,
     DYNAMIC_TENSOR_RESHAPE,
-    UNKNOWN_DIM_INPUT_CONCAT,
-    ADD_UNSPECIFIED_RANK_INPUTS,
-    NEG,
     WHILE_DYNAMIC,
     IF_DYNAMIC,
 

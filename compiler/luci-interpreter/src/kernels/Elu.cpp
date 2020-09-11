@@ -31,7 +31,7 @@ Elu::Elu(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 
 void Elu::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   output()->resize(input()->shape());
 }
 

@@ -75,6 +75,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
 
@@ -83,7 +84,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto frontend_layout = _current_op_seq_layout;
   auto backend_layout = ifm_tensor->layout();
 
-  int axis_value = node.param().axis;
+  int axis_value = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis_value < 0)
   {
     axis_value += ifm_rank;
@@ -887,7 +888,6 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-
   const auto ifm_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
@@ -1027,6 +1027,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 {
   // TODO Support this op by SubTensor
   const auto ifm_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
 
@@ -1042,7 +1043,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
-  auto axis = node.param().axis;
+  auto axis = _ctx.at(axis_index).asScalar<int32_t>();
   if (axis < 0)
     axis += ifm_rank;
   axis = acl_common::ToARMComputeAxis(ifm_rank, axis, frontend_layout, backend_layout).value();
@@ -1211,9 +1212,22 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     strides_set.set(i, strides[i]);
   }
 
+  // Disable applied dim_correction
+  const auto orig_input_shape = inputData_tensor->info()->tensor_shape();
+  if (starts_set.num_dimensions() != inputData_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and input tensor is applied dim_correction
+    const auto input = _ctx.at(input_index);
+    inputData_tensor->info()->set_tensor_shape(
+        acl_common::asTensorShape(input.shape(), _current_op_seq_layout, backend_layout, false));
+  }
+
   auto fn = acl_common::generateLayer<arm_compute::NEStridedSlice>(
       inputData_tensor->handle(), outputData_tensor->handle(), starts_set, ends_set, strides_set,
       begin_mask, end_mask, shrink_axis_mask);
+
+  // Revert disabling applied dim_correction
+  inputData_tensor->info()->set_tensor_shape(orig_input_shape);
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -1261,26 +1275,43 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
 {
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto &perm{node.param().perm};
+  const auto perm_idx{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx).get();
   const auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx).get();
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
-
   const auto rank = _ctx.at(ifm_idx).shape().rank();
-  std::vector<std::int32_t> pv(perm.cbegin(), perm.cend());
-  auto backend_pv = ::onert::backend::acl_common::getARMComputePermutationVector(
-      rank, pv, frontend_layout, backend_layout);
 
-  std::unique_ptr<::arm_compute::IFunction> fn;
-  if (ifm_tensor->num_dimensions() <= 2 && ofm_tensor->num_dimensions() <= 2)
+  const auto perms = _ctx.at(perm_idx);
+  std::vector<int32_t> pv;
+  if (perms.shape() == ir::Shape{0})
   {
+    pv.resize(rank);
+    std::iota(pv.begin(), pv.end(), 0);
+    std::reverse(pv.begin(), pv.end());
+  }
+  else
+  {
+    pv = _ctx.at(perm_idx).asVector<int32_t>();
+  }
+
+  std::unique_ptr<arm_compute::IFunction> fn;
+  if (rank == 1)
+  {
+    fn = acl_common::generateLayer<arm_compute::NECopy>(ifm_tensor->handle(), ofm_tensor->handle());
+  }
+  else if (rank == 2)
+  {
+    assert(pv.size() == 2 && pv.at(0) == 1 && pv.at(1) == 0);
     fn = acl_common::generateLayer<arm_compute::NETranspose>(ifm_tensor->handle(),
                                                              ofm_tensor->handle());
   }
   else
   {
+    auto backend_pv =
+        acl_common::getARMComputePermutationVector(rank, pv, frontend_layout, backend_layout);
+
     fn = acl_common::generateLayer<arm_compute::NEPermute>(ifm_tensor->handle(),
                                                            ofm_tensor->handle(), backend_pv);
   }

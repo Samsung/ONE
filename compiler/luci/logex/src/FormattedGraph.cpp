@@ -980,6 +980,7 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleTransposeConv
   s.args().append("inputSizes", tbl->lookup(node->inputSizes()));
   s.args().append("filter", tbl->lookup(node->filter()));
   s.args().append("outBackprop", tbl->lookup(node->outBackprop()));
+  s.args().append("bias", tbl->lookup(node->bias()));
   s.args().append("stride(h,w)", to_str(node->stride()));
   s.args().append("padding", to_str(node->padding()));
   s.state(locop::NodeSummary::State::Complete);

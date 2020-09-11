@@ -64,12 +64,12 @@ public:
     //   there is no such case until now, let's support it later
     // TODO Remove TensorBuilder and ConstantInitializer
     // TODO Support Consecutive controflow operation's intermediate tensor
-    auto tb = std::make_shared<TensorBuilder>();
-    // TODO TensorRegistry will be generated here, not relying on TensorBuilder.
-    auto tr = std::dynamic_pointer_cast<TensorRegistry>(tb->tensorRegistry());
+    auto tr = std::make_shared<TensorRegistry>();
+    auto tb = std::make_shared<TensorBuilder>(tr);
+    context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->constant_initializer = std::make_shared<ConstantInitializer>(operands, tr);
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr);
+    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb->dynamicTensorManager(), tr);
     context->tensor_register = nullptr;
     context->optimizer = nullptr;
     return context;

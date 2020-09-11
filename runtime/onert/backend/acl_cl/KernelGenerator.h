@@ -59,10 +59,12 @@ public:
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::LSTM &) override;
+  void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::ResizeBilinear &) override;
+  void visit(const ir::operation::ResizeNearestNeighbor &) override;
   void visit(const ir::operation::RNN &) override;
   void visit(const ir::operation::SpaceToBatchND &) override;
   void visit(const ir::operation::SpaceToDepth &) override;

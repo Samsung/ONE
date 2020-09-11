@@ -19,11 +19,18 @@
 
 using ValidationTestAddModelLoaded = ValidationTestModelLoaded<NNPackages::ADD>;
 
-TEST_F(ValidationTestAddModelLoaded, prepare_001) { NNFW_ENSURE_SUCCESS(nnfw_prepare(_session)); }
+TEST_F(ValidationTestAddModelLoaded, prepare_001)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+
+  SUCCEED();
+}
 
 TEST_F(ValidationTestAddModelLoaded, set_available_backends_001)
 {
   NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
+
+  SUCCEED();
 }
 
 TEST_F(ValidationTestAddModelLoaded, get_input_size)

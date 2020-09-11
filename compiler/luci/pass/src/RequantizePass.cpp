@@ -56,7 +56,9 @@ bool is_bias(CircleConst *node)
     if (fc != nullptr && fc->bias() == node)
       return true;
 
-    // TODO: add TransposeConv when bias is supported in CircleTransposeConv
+    auto tconv = dynamic_cast<CircleTransposeConv *>(out);
+    if (tconv != nullptr && tconv->bias() == node)
+      return true;
   }
   return false;
 }

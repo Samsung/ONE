@@ -83,6 +83,7 @@ public:
   void visit(const ir::operation::Tile &) override;
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::Range &) override;
+  void visit(const ir::operation::Rank &) override;
   void visit(const ir::operation::MatrixBandPart &) override;
   void visit(const ir::operation::BatchMatMul &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;

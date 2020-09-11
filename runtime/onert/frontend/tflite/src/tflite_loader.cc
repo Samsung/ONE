@@ -62,7 +62,7 @@ struct LoaderDomain
   }
 };
 
-class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain, TFLiteLoader>
+class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain>
 {
 public:
   using BaseLoader::BaseLoader;
@@ -78,7 +78,8 @@ public:
     }
   }
 
-  std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg)
+private:
+  std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg) override
   {
     auto subg = std::make_unique<ir::Graph>();
     // Load tensors

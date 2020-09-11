@@ -1,0 +1,27 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "alpha"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "0.1" arg: "0.3" arg: "0.5"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "PRelu"
+  input: "ifm"
+  input: "alpha"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
