@@ -66,6 +66,7 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"multiply_scale_factor", "multiply_scale_factor.cl"},
     {"neg_tensor", "neg_tensor.cl"},
     {"one_hot", "one_hot.cl"},
+    {"one_hot_only_on_value", "one_hot.cl"},
     {"quantization_symm8", "quantization_symm8.cl"},
     {"reduce_min_max", "reduce_operation.cl"},
     {"reduce_sum_mean", "reduce_operation.cl"},

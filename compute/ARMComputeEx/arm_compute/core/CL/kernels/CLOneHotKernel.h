@@ -60,7 +60,7 @@ public:
   CLOneHotKernel &operator=(CLOneHotKernel &&) = default;
   /** Default destructor */
   ~CLOneHotKernel() = default;
-  /** Initialise the kernel's inputs and outputs
+  /** Initialise the kernel's inputs and output
    *
    * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
    * following types: U32/S32
@@ -75,6 +75,19 @@ public:
    */
   void configure(const ICLTensor *indices, const ICLTensor *on_value, const ICLTensor *off_value,
                  ICLTensor *output, int depth, int axis = -1);
+  /** Initialise the kernel's inputs and output already initialized to off_value
+   *
+   * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[out] output    Destination tensor. Data type supported: Same as @p on_value
+   * @param[in]  depth     The depth of the one hot dimension.
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * value must be in range [-indices.rank , indices.rank)
+   */
+  void configure(const ICLTensor *indices, const ICLTensor *on_value, ICLTensor *output, int depth,
+                 int axis = -1);
   /** Static function to check if given info will lead to a valid configuration of @ref
    * CLOneHotKernel
    *
@@ -94,14 +107,46 @@ public:
   static Status validate(const ITensorInfo *indices, const ITensorInfo *on_value,
                          const ITensorInfo *off_value, const ITensorInfo *output, int depth,
                          int axis = -1);
+  /** Static function to check if given info will lead to a valid configuration of @ref
+   * CLOneHotKernel without off_value
+   *
+   * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[in]  output    Destination tensor. Data type supported: Same as @p on_value
+   * @param[in]  depth     The depth of the one hot dimension.
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * value must be in range [-indices.rank , indices.rank)
+   *
+   * @return a status
+   */
+  static Status validate(const ITensorInfo *indices, const ITensorInfo *on_value,
+                         const ITensorInfo *output, int depth, int axis = -1);
   // Inherited methods overridden:
   void run(const Window &window, cl::CommandQueue &queue) override;
+
+private:
+  /** Initialise the kernel's inputs and outputs internally
+   *
+   * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[out] output    Destination tensor. Data type supported: Same as @p on_value
+   * @param[in]  depth     The depth of the one hot dimension.
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * value must be in range [-indices.rank , indices.rank)
+   */
+  void configure_common(const ICLTensor *indices, const ICLTensor *on_value, ICLTensor *output,
+                        int depth, int axis);
 
 private:
   const ICLTensor *_indices;   /**< Indices tensor */
   const ICLTensor *_on_value;  /**< On value tensor */
   const ICLTensor *_off_value; /**< Off value tensor */
   ICLTensor *_output;          /**< Destination tensor */
+  bool _is_off_value_memset;   /**< Whether off_value is zero */
 };
 } // namespace arm_compute
 #endif /*__ARM_COMPUTE_CLONEHOTKERNEL_H__ */

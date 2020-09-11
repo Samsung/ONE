@@ -826,7 +826,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto output_tensor = _tensor_reg->getAclTensor(output_idx).get();
   auto indices_tensor = _tensor_reg->getAclTensor(indices_idx).get();
   auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx).get();
-  auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx).get();
 
   const size_t output_rank = _ctx.at(output_idx).shape().rank();
   const auto frontend_layout = _current_op_seq_layout;
@@ -842,9 +841,21 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
         _ctx.at(output_idx).shape(), _current_op_seq_layout, backend_layout, false));
   }
 
-  auto fn = acl_common::generateLayer<arm_compute::CLOneHot>(
-      indices_tensor->handle(), onvalue_tensor->handle(), offvalue_tensor->handle(),
-      output_tensor->handle(), static_cast<uint32_t>(depth), axis);
+  std::unique_ptr<::arm_compute::IFunction> fn;
+  const auto offvalue = _ctx.at(offvalue_idx);
+  if (offvalue.isConstant())
+  {
+    fn = acl_common::generateLayer<arm_compute::CLOneHot>(
+        indices_tensor->handle(), onvalue_tensor->handle(), output_tensor->handle(),
+        acl_common::asPixelValue(offvalue), static_cast<uint32_t>(depth), axis);
+  }
+  else
+  {
+    auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx).get();
+    fn = acl_common::generateLayer<arm_compute::CLOneHot>(
+        indices_tensor->handle(), onvalue_tensor->handle(), offvalue_tensor->handle(),
+        output_tensor->handle(), static_cast<uint32_t>(depth), axis);
+  }
 
   output_tensor->info()->set_tensor_shape(orig_output_acl_tensor_shape);
 

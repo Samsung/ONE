@@ -321,6 +321,7 @@ GeneratedTests.not_equal_simple
 GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.one_hot_ex_float_1_nnfw
 GeneratedTests.one_hot_ex_float_2_nnfw
+GeneratedTests.one_hot_ex_float_off_value_constant_zero_nnfw
 GeneratedTests.pack_ex_2D_float_1
 GeneratedTests.pack_ex_2D_float_2
 GeneratedTests.pack_ex_2D_int_1

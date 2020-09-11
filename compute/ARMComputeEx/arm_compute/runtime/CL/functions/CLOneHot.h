@@ -39,14 +39,26 @@
  */
 #ifndef __ARM_COMPUTE_CLONEHOT_H__
 #define __ARM_COMPUTE_CLONEHOT_H__
-#include "arm_compute/runtime/CL/ICLSimpleFunction.h"
+#include "arm_compute/core/CL/kernels/CLMemsetKernel.h"
+#include "arm_compute/core/CL/kernels/CLOneHotKernel.h"
+#include "arm_compute/runtime/IFunction.h"
 namespace arm_compute
 {
 class ICLTensor;
 /** Basic function to run @ref CLOneHotKernel */
-class CLOneHot : public ICLSimpleFunction
+class CLOneHot : public IFunction
 {
 public:
+  /** Constructor */
+  CLOneHot();
+  /** Prevent instances of this class from being copied (As this class contains pointers) */
+  CLOneHot(const CLOneHot &) = delete;
+  /** Default move constructor */
+  CLOneHot(CLOneHot &&) = default;
+  /** Prevent instances of this class from being copied (As this class contains pointers) */
+  CLOneHot &operator=(const CLOneHot &) = delete;
+  /** Default move assignment operator */
+  CLOneHot &operator=(CLOneHot &&) = default;
   /** Initialise the kernel's inputs and outputs
    *
    * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
@@ -62,6 +74,20 @@ public:
    */
   void configure(const ICLTensor *indices, const ICLTensor *on_value, const ICLTensor *off_value,
                  ICLTensor *output, int depth, int axis = -1);
+  /** Initialise the kernel's inputs and outputs with off_value being constant
+   *
+   * @param[in]  indices   Indices tensor. Supported tensor rank: up to 3. Must be one of the
+   * following types: U32/S32
+   * @param[in]  on_value  On value tensor. Supported tensor rank: only 1. Data type supported:
+   * U8/S8/U16/S16/F16/U32/S32/F32
+   * @param[out] output    Destination tensor. Data type supported: Same as @p on_value
+   * @param[in]  off_value The PixelValue for off value. Data type supported: Same as @p on_value
+   * @param[in]  depth     The depth of the one hot dimension.
+   * @param[in]  axis      (Optional) The axis to fill. Negative values wrap around. Defaults to -1.
+   * value must be in range [-indices.rank , indices.rank)
+   */
+  void configure(const ICLTensor *indices, const ICLTensor *on_value, ICLTensor *output,
+                 PixelValue off_value, int depth, int axis = -1);
   /** Static function to check if given info will lead to a valid configuration of @ref
    * CLOneHotKernel
    *
@@ -81,6 +107,14 @@ public:
   static Status validate(const ITensorInfo *indices, const ITensorInfo *on_value,
                          const ITensorInfo *off_value, const ITensorInfo *output, int depth,
                          int axis = -1);
+
+  // Inherited methods overridden:
+  void run() override;
+
+private:
+  CLMemsetKernel _memset_kernel; /**< Memset kernel */
+  CLOneHotKernel _onehot_kernel; /**< OneHot kernel */
+  bool _has_to_memset;
 };
 } // namespace arm_compute
 #endif /* __ARM_COMPUTE_CLONEHOT_H__ */
