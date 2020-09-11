@@ -279,6 +279,18 @@ void PermutationOperationPass::visit(const ir::operation::Gather &node)
   }
 }
 
+void PermutationOperationPass::visit(const ir::operation::OneHot &node)
+{
+  const auto &output_ind = node.getOutputs().at(0);
+  const auto &output_obj = _graph.operands().at(output_ind);
+  const auto &output_shape = output_obj.shape();
+
+  if (output_shape.rank() >= 4)
+  {
+    changeToKeepLayout(node);
+  }
+}
+
 void PermutationOperationPass::visit(const ir::operation::Pack &node)
 {
   const auto &input_ind = node.getInputs().at(ir::operation::Reshape::Input::INPUT);

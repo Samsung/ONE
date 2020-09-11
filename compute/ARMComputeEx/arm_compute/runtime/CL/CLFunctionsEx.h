@@ -23,6 +23,7 @@
 #include <arm_compute/runtime/CL/functions/CLHashtableLookup.h>
 #include <arm_compute/runtime/CL/functions/CLInstanceNormalizationLayerEx.h>
 #include <arm_compute/runtime/CL/functions/CLNeg.h>
+#include <arm_compute/runtime/CL/functions/CLOneHot.h>
 #include <arm_compute/runtime/CL/functions/CLReduceOperation.h>
 #include <arm_compute/runtime/CL/functions/CLSplitVEx.h>
 #include <arm_compute/runtime/CL/functions/CLTopKV2.h>

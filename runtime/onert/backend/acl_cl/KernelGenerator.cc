@@ -813,6 +813,44 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
+void KernelGenerator::visit(const ir::operation::OneHot &node)
+{
+  const auto output_idx{node.getOutputs().at(0)};
+  const auto indices_idx{node.getInputs().at(ir::operation::OneHot::Input::INDICES)};
+  const auto depth_idx{node.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
+  const auto onvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::ON_VALUE)};
+  const auto offvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
+  const auto depth = _ctx.at(depth_idx).asScalar<int32_t>();
+  assert(depth > 0);
+
+  auto output_tensor = _tensor_reg->getAclTensor(output_idx).get();
+  auto indices_tensor = _tensor_reg->getAclTensor(indices_idx).get();
+  auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx).get();
+  auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx).get();
+
+  const size_t output_rank = _ctx.at(output_idx).shape().rank();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = output_tensor->layout();
+  int32_t axis = node.param().axis == -1 ? output_rank - 1 : node.param().axis;
+  axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
+
+  const auto orig_output_acl_tensor_shape = output_tensor->info()->tensor_shape();
+  if (output_rank != output_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+    output_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
+        _ctx.at(output_idx).shape(), _current_op_seq_layout, backend_layout, false));
+  }
+
+  auto fn = acl_common::generateLayer<arm_compute::CLOneHot>(
+      indices_tensor->handle(), onvalue_tensor->handle(), offvalue_tensor->handle(),
+      output_tensor->handle(), static_cast<uint32_t>(depth), axis);
+
+  output_tensor->info()->set_tensor_shape(orig_output_acl_tensor_shape);
+
+  _return_fn = asAclFunction(std::move(fn));
+}
+
 void KernelGenerator::visit(const ir::operation::Pack &node)
 {
   const auto output_index{node.getOutputs().at(0)};
