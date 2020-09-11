@@ -199,8 +199,9 @@ UPLOAD_URL=$(echo ${UPLOAD_URL} | cut -d "{" -f 1)?name=
 
 # Upload the assets
 for ASSET_PATH in "${ASSET_PATHS[@]}"; do
+  ASSET_BASENAME=$(basename ${ASSET_PATH})
   curl -s --request POST --header "Authorization: token ${USER_TOKEN}" \
   --header "Content-Type: $(file -b --mime-type ${ASSET_PATH})" \
   --data-binary @${ASSET_PATH} \
-  ${UPLOAD_URL}${ASSET_PATH} > /dev/null
+  ${UPLOAD_URL}${ASSET_BASENAME} > /dev/null
 done
