@@ -1,6 +1,5 @@
 # aarch64 android cmake options
 #
-option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 # NOTE BUILD_ANDROID_TFLITE(JNI lib) is disabled due to BuiltinOpResolver issue.
 # tensorflow-lite does not build BuiltinOpResolver but JNI lib need it
 # Related Issue : #1403

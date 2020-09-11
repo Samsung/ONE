@@ -145,12 +145,21 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
 
   list(APPEND SCONS_OPTIONS "install_dir=${ARMComputeInstall_DIR}")
 
+  set(SCONS_CC "gcc")
+  set(SCONS_CXX "g++")
+  if(ANDROID)
+    list(APPEND SCONS_OPTIONS "toolchain_prefix=${ANDROID_TOOLCHAIN_PREFIX}")
+    list(APPEND SCONS_OPTIONS "compiler_prefix=${ANDROID_TOOLCHAIN_ROOT}/bin/aarch64-linux-android${ANDROID_API_LEVEL}-")
+    set(SCONS_CC "clang")
+    set(SCONS_CXX "clang++")
+  endif(ANDROID)
+
   message(STATUS "Build ARMCompute with ${SCONS_PATH} ('${SCONS_OPTIONS}'")
 
   # Build ARMCompute libraries with SCONS
   # NOTE ARMCompute build process don't allow logging by using OUTPUT_FILE and ERROR_FILE option
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMComputeInstall_DIR}")
-  execute_process(COMMAND /usr/bin/env CC=gcc CXX=g++ "${SCONS_PATH}" ${SCONS_OPTIONS}
+  execute_process(COMMAND /usr/bin/env CC=${SCONS_CC} CXX=${SCONS_CXX} "${SCONS_PATH}" ${SCONS_OPTIONS}
                   WORKING_DIRECTORY ${ARMComputeSource_DIR}
                   RESULT_VARIABLE BUILD_EXITCODE)
 
