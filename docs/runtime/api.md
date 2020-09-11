@@ -28,8 +28,6 @@ For usage, refer to [Howto : NNFW API](../howto/how-to-use-nnfw-api.md).
 
 ## Backend API
 
-Backend API is defined by One Runtime.
-
-Backend API is about actual computation of operations and memory management for operands. In order to allow different kinds of computation units or computation libraries, One Runtime defines Backend API to support user defined operation kernels and memory manager. It contains a lot of C++ headers which are subject to change.
+We provide Backend API to allow anyone to implement so one can extend the runtime in terms of operation computation.
 
 For detailed descriptions, refer to [Backend API](../runtime/backend-api.md).
