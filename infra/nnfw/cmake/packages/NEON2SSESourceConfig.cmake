@@ -13,7 +13,7 @@ function(_NEON2SSESource_import)
   ExternalSource_Download("neon_2_sse" ${NEON2SSE_URL})
 
   set(NEON2SSESource_DIR ${neon_2_sse_SOURCE_DIR} PARENT_SCOPE)
-  set(NEON2SSESource_FOUND ${neon_2_sse_SOURCE_GET} PARENT_SCOPE)
+  set(NEON2SSESource_FOUND TRUE PARENT_SCOPE)
 endfunction(_NEON2SSESource_import)
 
 _NEON2SSESource_import()

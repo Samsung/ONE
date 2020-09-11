@@ -20,7 +20,7 @@ function(_NoniusSource_import)
   endif(BUILD_KBENCHMARK)
 
   set(NoniusSource_DIR ${NONIUS_SOURCE_DIR} PARENT_SCOPE)
-  set(NoniusSource_FOUND ${NONIUS_SOURCE_GET} PARENT_SCOPE)
+  set(NoniusSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_NoniusSource_import)
 
 _NoniusSource_import()

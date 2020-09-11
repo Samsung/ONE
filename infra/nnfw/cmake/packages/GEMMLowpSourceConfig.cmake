@@ -13,7 +13,7 @@ function(_GEMMLowpSource_import)
   ExternalSource_Download("gemmlowp" ${GEMMLOWP_URL})
 
   set(GEMMLowpSource_DIR ${gemmlowp_SOURCE_DIR} PARENT_SCOPE)
-  set(GEMMLowpSource_FOUND ${gemmlowp_SOURCE_GET} PARENT_SCOPE)
+  set(GEMMLowpSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_GEMMLowpSource_import)
 
 _GEMMLowpSource_import()

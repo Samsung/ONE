@@ -12,7 +12,7 @@ function(_ARMComputeSource_import)
   ExternalSource_Download(ARMCOMPUTE ${ARMCOMPUTE_URL})
 
   set(ARMComputeSource_DIR ${ARMCOMPUTE_SOURCE_DIR} PARENT_SCOPE)
-  set(ARMComputeSource_FOUND ${ARMCOMPUTE_SOURCE_GET} PARENT_SCOPE)
+  set(ARMComputeSource_FOUND TRUE PARENT_SCOPE)
 endfunction(_ARMComputeSource_import)
 
 _ARMComputeSource_import()
