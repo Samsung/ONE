@@ -109,6 +109,13 @@ fi
 # remove previous log
 rm -rf "${OUTPUT_PATH}.log"
 
+show_err_onexit()
+{
+  cat "${OUTPUT_PATH}.log"
+}
+
+trap show_err_onexit ERR
+
 # generate temporary preserved pb file
 echo "${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
 --output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb"  > "${OUTPUT_PATH}.log"
