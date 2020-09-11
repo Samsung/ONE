@@ -47,8 +47,7 @@ TEST(MeanTest, FloatKeepDims)
 
   std::vector<float> ref_output_data{10.5, 12.5, 14.5};
   std::initializer_list<int32_t> ref_output_shape{1, 3, 1};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -72,8 +71,7 @@ TEST(MeanTest, FloatKeepDims4DMean)
 
   std::vector<float> ref_output_data{6, 7, 18, 19};
   std::initializer_list<int32_t> ref_output_shape{2, 1, 1, 2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -97,8 +95,7 @@ TEST(MeanTest, FloatNotKeepDims)
 
   std::vector<float> ref_output_data{12, 13};
   std::initializer_list<int32_t> ref_output_shape{2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -124,7 +121,7 @@ TEST(MeanTest, Uint8KeepDims)
   std::vector<float> ref_output_data{0.3, 0.35, 0.55};
   std::initializer_list<int32_t> ref_output_shape{3, 1};
   EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -150,7 +147,7 @@ TEST(MeanTest, Uint8NotKeepDims)
   std::vector<float> ref_output_data{0.4, 0.4};
   std::initializer_list<int32_t> ref_output_shape{1, 2};
   EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 

@@ -45,7 +45,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<T>(output_tensor), FloatArrayNear(output_data));
 }
 
 template <>
@@ -76,7 +76,7 @@ void Check<uint8_t>(
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
   EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(output_data, quantized_tolerance)));
+              FloatArrayNear(output_data, quantized_tolerance));
 }
 
 template <typename T> class FullyConnectedTest : public ::testing::Test

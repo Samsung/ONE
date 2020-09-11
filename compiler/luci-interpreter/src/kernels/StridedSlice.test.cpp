@@ -56,8 +56,7 @@ TEST(StridedSliceTest, Float)
 
   std::vector<int32_t> output_shape{3, 2};
   std::vector<float> output_data{1, 2, 3, 4, 5, 6};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
@@ -91,7 +90,7 @@ TEST(StridedSliceTest, Uint8)
 
   std::vector<int32_t> output_shape{3, 2};
   std::vector<float> output_data{1, 2, 3, 4, 5, 6};
-  EXPECT_THAT(dequantizeTensorData(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 

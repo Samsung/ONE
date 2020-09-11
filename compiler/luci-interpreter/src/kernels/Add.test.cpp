@@ -72,7 +72,7 @@ TEST(AddTest, Uint8)
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
-                ElementsAreArray(ArrayFloatNear(output_data[i], kQuantizedTolerance)));
+                FloatArrayNear(output_data[i], kQuantizedTolerance));
     EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
   }
   // Re-run with exchanged inputs.
@@ -93,7 +93,7 @@ TEST(AddTest, Uint8)
     kernel.execute();
 
     EXPECT_THAT(dequantizeTensorData(output_tensor),
-                ElementsAreArray(ArrayFloatNear(output_data[i], kQuantizedTolerance)));
+                FloatArrayNear(output_data[i], kQuantizedTolerance));
     EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
   }
 }
@@ -127,8 +127,7 @@ TEST(AddTest, Float)
     kernel.configure();
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+    EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
         << "With shape number " << i;
   }
   // Re-run with exchanged inputs.
@@ -145,8 +144,7 @@ TEST(AddTest, Float)
     kernel.configure();
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+    EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
         << "With shape number " << i;
   }
 }

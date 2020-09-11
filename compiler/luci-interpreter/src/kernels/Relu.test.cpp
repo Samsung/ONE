@@ -73,8 +73,7 @@ TEST(ReluTest, Uint8Quantized)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray({128, 128, 160, 192, 176, 128, 240, 144}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear({0, 0, 2, 4, 3, 0, 7, 1})));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0, 0, 2, 4, 3, 0, 7, 1}));
 }
 
 TEST(ReluTest, Uint8Requantized)
@@ -104,8 +103,7 @@ TEST(ReluTest, Uint8Requantized)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray({0, 0, 64, 128, 96, 0, 224, 32}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear({0, 0, 2, 4, 3, 0, 7, 1})));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0, 0, 2, 4, 3, 0, 7, 1}));
 }
 
 TEST(ReluTest, Input_Output_Type_NEG)

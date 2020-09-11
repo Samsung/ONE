@@ -44,7 +44,7 @@ TEST(LocalResponseNormalizationTest, SameAsL2Norm)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear({-0.55, 0.3, 0.35, 0.6, -0.35, 0.05})));
+              FloatArrayNear({-0.55, 0.3, 0.35, 0.6, -0.35, 0.05}));
 }
 
 TEST(LocalResponseNormalizationTest, WithAlpha)
@@ -64,7 +64,7 @@ TEST(LocalResponseNormalizationTest, WithAlpha)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear({-0.275, 0.15, 0.175, 0.3, -0.175, 0.025})));
+              FloatArrayNear({-0.275, 0.15, 0.175, 0.3, -0.175, 0.025}));
 }
 
 TEST(LocalResponseNormalizationTest, WithBias)
@@ -84,7 +84,7 @@ TEST(LocalResponseNormalizationTest, WithBias)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear({-0.22, 0.12, 0.14, 0.24, -0.14, 0.02})));
+              FloatArrayNear({-0.22, 0.12, 0.14, 0.24, -0.14, 0.02}));
 }
 
 TEST(LocalResponseNormalizationTest, SmallRadius)
@@ -104,8 +104,7 @@ TEST(LocalResponseNormalizationTest, SmallRadius)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(
-                  ArrayFloatNear({-0.264926, 0.125109, 0.140112, 0.267261, -0.161788, 0.0244266})));
+              FloatArrayNear({-0.264926, 0.125109, 0.140112, 0.267261, -0.161788, 0.0244266}));
 }
 
 } // namespace

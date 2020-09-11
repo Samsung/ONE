@@ -44,8 +44,7 @@ TEST(LogisticTest, Float)
       0.5,      0.002473, 0.880797, 0.982014, //
       0.952574, 0.119203, 0.999955, 0.731059, //
   };
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 

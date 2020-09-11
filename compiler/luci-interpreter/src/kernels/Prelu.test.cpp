@@ -115,7 +115,7 @@ TEST(PreluTest, Uint8Simple)
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 3, 1}));
 
   SUCCEED();
@@ -158,7 +158,7 @@ TEST(PreluTest, Uint8Broadcast)
   kernel.execute();
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray(ref_quant_output_data));

@@ -81,7 +81,8 @@ template <typename T> std::vector<T> extractTensorData(const Tensor &tensor)
 
 std::vector<float> dequantizeTensorData(const Tensor &tensor);
 
-std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &values,
+// Array version of `::testing::FloatNear` matcher.
+::testing::Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values,
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T>
