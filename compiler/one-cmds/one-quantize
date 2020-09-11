@@ -41,6 +41,69 @@ version()
   exit 255
 }
 
+input_not_set()
+{
+  echo "Error: input_path not set"
+  echo ""
+  usage
+}
+
+output_not_set()
+{
+  echo "Error: output_path not set"
+  echo ""
+  usage
+}
+
+input_data_not_set()
+{
+  echo "Error: input_data not set"
+  echo ""
+  usage
+}
+
+input_dtype_not_set()
+{
+  echo "Error: input_dtype not set"
+  echo ""
+  usage
+}
+
+quantized_dtype_not_set()
+{
+  echo "Error: quantized_dtype not set"
+  echo ""
+  usage
+}
+
+granularity_not_set()
+{
+  echo "Error: granularity not set"
+  echo ""
+  usage
+}
+
+min_percentile_not_set()
+{
+  echo "Error: min_percentile not set"
+  echo ""
+  usage
+}
+
+max_percentile_not_set()
+{
+  echo "Error: max_percentile not set"
+  echo ""
+  usage
+}
+
+mode_not_set()
+{
+  echo "Error: mode not set"
+  echo ""
+  usage
+}
+
 INPUT_DTYPE=float32
 QUANTIZED_DTYPE=uint8
 GRANULARITY=layer
@@ -63,39 +126,66 @@ while [ "$#" -ne 0 ]; do
 
     '--input_dtype')
       INPUT_DTYPE="$2"
+      if [ $# -lt 2 ]; then
+        input_dtype_not_set
+      fi
       shift 2
       ;;
     '--quantized_dtype')
       QUANTIZED_DTYPE="$2"
+      if [ $# -lt 2 ]; then
+        quantized_dtype_not_set
+      fi
       shift 2
       ;;
     '--granularity')
       GRANULARITY="$2"
+      if [ $# -lt 2 ]; then
+        granularity_not_set
+      fi
       shift 2
       ;;
     '--min_percentile')
       MIN_PERCENTILE="$2"
+      if [ $# -lt 2 ]; then
+        min_percentile_not_set
+      fi
       shift 2
       ;;
     '--max_percentile')
       MAX_PERCENTILE="$2"
+      if [ $# -lt 2 ]; then
+        max_percentile_not_set
+      fi
       shift 2
       ;;
     '--mode')
       MODE="$2"
+      if [ $# -lt 2 ]; then
+        mode_not_set
+      fi
       shift 2
       ;;
 
     '--input_path')
       INPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        input_not_set
+      fi
       shift 2
       ;;
     '--input_data')
       INPUT_DATA="$2"
+      if [ $# -lt 2 ]; then
+        input_data_not_set
+      fi
       shift 2
       ;;
     '--output_path')
       OUTPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        output_not_set
+      fi
       shift 2
       ;;
 
@@ -115,6 +205,9 @@ if [ -z ${INPUT_DATA} ] || [ ! -e ${INPUT_DATA} ]; then
   echo "Error: input data not found"
   echo ""
   usage
+fi
+if [ -z ${OUTPUT_PATH} ]; then
+  output_not_set
 fi
 
 FILE_BASE=$(basename ${OUTPUT_PATH})
