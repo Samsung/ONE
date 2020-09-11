@@ -54,12 +54,9 @@ void PermuteLayer::run()
 
       try
       {
-        const auto dst_index = _dst_dyn_alloc_info_map.at(dst_tensor).ind;
-        auto dyn_tensor_manager = dst_tensor->dynamic_tensor_manager();
-        if (!dyn_tensor_manager)
+        if (!dst_tensor->applyShape(new_shape))
           throw std::runtime_error{
               "Error: PermuteLayer: output's TensorManager does not support dynamic tensor"};
-        dyn_tensor_manager->applyShape(dst_index, new_shape);
         assert(dst_tensor->buffer() != nullptr);
       }
       catch (const std::out_of_range &e)

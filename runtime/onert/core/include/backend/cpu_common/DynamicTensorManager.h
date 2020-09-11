@@ -44,14 +44,14 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
-  void applyShape(const ir::OperandIndex &ind, const ir::Shape &new_shape) override;
-
   void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
                    ir::Layout backend_layout);
 
   void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) override;
   void deallocInput(ir::OperationIndex op_ind) override;
   void deallocSubgraphOutput(ir::OperandIndex ind) override;
+
+  std::shared_ptr<DynamicMemoryManager> dynamic_mem_mgr() { return _dynamic_mem_mgr; }
 
 private:
   const ITensor *getRawITensor(ir::OperandIndex ind);

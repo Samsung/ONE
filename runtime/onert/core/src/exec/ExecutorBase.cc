@@ -222,11 +222,7 @@ void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescript
                                "does not support dynamic tensor");
 
     auto changed_input_shape = shape_sig_found->second;
-    auto operand_ind = dyn_alloc_info->second.ind;
-
-    auto dyn_tensor_manager = _input_tensors[io_ind.value()]->dynamic_tensor_manager();
-    assert(dyn_tensor_manager);
-    dyn_tensor_manager->applyShape(operand_ind, changed_input_shape);
+    _input_tensors[io_ind.value()]->applyShape(changed_input_shape);
   }
 }
 
