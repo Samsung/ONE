@@ -616,6 +616,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::REDUCE_PROD:
     case luci::CircleOpcode::REDUCE_MAX:
     case luci::CircleOpcode::REDUCE_MIN:
+    case luci::CircleOpcode::RESHAPE:
     case luci::CircleOpcode::SUM:
       // The second input of these Ops should not be quantized
       // Ex: axis, paddings
