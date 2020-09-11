@@ -38,6 +38,7 @@
 #include "kernels/Pad.h"
 #include "kernels/Prelu.h"
 #include "kernels/Relu.h"
+#include "kernels/Relu6.h"
 #include "kernels/Reshape.h"
 #include "kernels/ResizeBilinear.h"
 #include "kernels/ResizeNearestNeighbor.h"
@@ -444,6 +445,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Relu>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRelu6 *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->features());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Relu6>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleReshape *node)
