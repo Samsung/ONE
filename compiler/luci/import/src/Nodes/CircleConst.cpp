@@ -61,9 +61,6 @@ static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_element
   }
 }
 
-//
-// circleconst_from_tensor() ?
-//
 CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_index)
 {
   LOGGER(l);
@@ -77,7 +74,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {
-    // unknown shape tensor
+    // unknown shape tensor and scalar tensor
     return nullptr;
   }
 
