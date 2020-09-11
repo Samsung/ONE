@@ -44,6 +44,7 @@ public:
   void visit(const ir::operation::Concat &) final;
   void visit(const ir::operation::ElementwiseBinary &) final;
   void visit(const ir::operation::ElementwiseUnary &) final;
+  void visit(const ir::operation::OneHot &) final;
   void visit(const ir::operation::Pack &) final;
   void visit(const ir::operation::PReLU &) final;
   void visit(const ir::operation::SquaredDifference &) final;

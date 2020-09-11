@@ -59,6 +59,7 @@ public:
   void visit(const ir::operation::InstanceNorm &) override;
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::LSTM &) override;
+  void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Permute &) override;
