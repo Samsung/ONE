@@ -33,8 +33,9 @@ struct Sparsity
 {
 public:
   Sparsity() = default;
-  Sparsity(std::vector<uint16_t> &&w1_segments, std::vector<uint16_t> &&w1_indices)
-      : _w1_segments(w1_segments), _w1_indices(w1_indices)
+  Sparsity(std::vector<uint16_t> &&w1_segments, std::vector<uint16_t> &&w1_indices,
+           std::vector<int32_t> &&block_size)
+      : _w1_segments(w1_segments), _w1_indices(w1_indices), _block_size(block_size)
   {
   }
 
@@ -46,10 +47,15 @@ public:
    * @brief Returns indices array. See compressed sparse row format.
    */
   const uint16_t *w1_indices() const { return _w1_indices.data(); }
+  /**
+   * @brief Returns block size which is used for block sparsity
+   */
+  const std::vector<int32_t> &block_size() const { return _block_size; }
 
 private:
   std::vector<uint16_t> _w1_segments;
   std::vector<uint16_t> _w1_indices;
+  std::vector<int32_t> _block_size;
 };
 
 } // namespace ir
