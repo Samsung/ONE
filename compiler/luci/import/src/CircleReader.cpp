@@ -251,7 +251,7 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
   if (sparsity != nullptr)
   {
     auto sparsityparam = luci_sparsityparam(sparsity);
-    if (sparsity)
+    if (sparsityparam)
       node->sparsityparam(std::move(sparsityparam));
   }
 }
