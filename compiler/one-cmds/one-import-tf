@@ -38,6 +38,41 @@ version()
   exit 255
 }
 
+input_not_set()
+{
+  echo "Error: input_path not set"
+  echo ""
+  usage
+}
+
+output_not_set()
+{
+  echo "Error: output_path not set"
+  echo ""
+  usage
+}
+
+input_arrays_not_set()
+{
+  echo "Error: input_arrays not set"
+  echo ""
+  usage
+}
+
+input_shapes_not_set()
+{
+  echo "Error: input_shapes not set"
+  echo ""
+  usage
+}
+
+output_arrays_not_set()
+{
+  echo "Error: output_arrays not set"
+  echo ""
+  usage
+}
+
 TF_INTERFACE="--v1"
 
 # Parse command-line arguments
@@ -54,22 +89,37 @@ while [ "$#" -ne 0 ]; do
       ;;
     '--input_path')
       export INPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        input_not_set
+      fi
       shift 2
       ;;
     '--output_path')
       export OUTPUT_PATH="$2"
+      if [ $# -lt 2 ]; then
+        output_not_set
+      fi
       shift 2
       ;;
     '--input_arrays')
       export INPUT_ARRAYS="$2"
+      if [ $# -lt 2 ]; then
+        input_arrays_not_set
+      fi
       shift 2
       ;;
     '--input_shapes')
       export INPUT_SHAPES="$2"
+      if [ $# -lt 2 ]; then
+        input_shapes_not_set
+      fi
       shift 2
       ;;
     '--output_arrays')
       export OUTPUT_ARRAYS="$2"
+      if [ $# -lt 2 ]; then
+        output_arrays_not_set
+      fi
       shift 2
       ;;
     '--v2')
@@ -92,6 +142,20 @@ if [ -z ${INPUT_PATH} ] || [ ! -e ${INPUT_PATH} ]; then
   echo ""
   usage
   exit 2
+fi
+
+if [ -z ${INPUT_ARRAYS} ]; then
+  input_arrays_not_set
+fi
+
+# INPUT_SHAPES is optional
+
+if [ -z ${OUTPUT_PATH} ]; then
+  output_not_set
+fi
+
+if [ -z ${OUTPUT_ARRAYS} ]; then
+  output_arrays_not_set
 fi
 
 FILE_BASE=$(basename ${OUTPUT_PATH})
