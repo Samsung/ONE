@@ -94,8 +94,7 @@ TEST(TanhTest, Uint8)
       -0.999329, -0.96402,  0.99999,  0.76159,  //
   };
   std::vector<int32_t> ref_output_shape{2, 6, 4, 1};
-  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                                  output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kTanhTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }

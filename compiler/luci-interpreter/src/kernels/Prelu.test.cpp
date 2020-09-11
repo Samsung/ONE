@@ -114,8 +114,7 @@ TEST(PreluTest, Uint8Simple)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 3, 1}));
 
@@ -158,8 +157,7 @@ TEST(PreluTest, Uint8Broadcast)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 3}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),

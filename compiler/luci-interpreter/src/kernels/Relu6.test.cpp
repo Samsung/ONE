@@ -75,9 +75,8 @@ TEST(Relu6Test, Uint8Quantized)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray({128, 128, 154, 205, 128, 166, 205, 141}));
-  EXPECT_THAT(
-      dequantize(extractTensorData<uint8_t>(output_tensor), quant_param.first, quant_param.second),
-      ElementsAreArray(ArrayFloatNear({0, 0, 2, 6, 0, 3, 6, 1}, tolerance)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              ElementsAreArray(ArrayFloatNear({0, 0, 2, 6, 0, 3, 6, 1}, tolerance)));
 }
 
 TEST(Relu6Test, Uint8Requantized)
@@ -108,8 +107,7 @@ TEST(Relu6Test, Uint8Requantized)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
               ::testing::ElementsAreArray({0, 0, 87, 255, 0, 127, 255, 43}));
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), quant_output.first,
-                         quant_output.second),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear({0, 0, 2, 6, 0, 3, 6, 1}, tolerance)));
 }
 
