@@ -39,6 +39,7 @@ for i in range(num_data):
 
     for j in range(len(input_details)):
         input_detail = input_details[j]
+        # Generate random input [-5, 5)
         input_data = np.array(10 * np.random.random_sample(input_detail["shape"]) - 5,
                               input_detail["dtype"])
         sample.create_dataset(str(j), data=input_data)
