@@ -34,6 +34,9 @@ namespace
 
 bool is_uint8_quantized(luci::CircleNode *node)
 {
+  // To suppress warning
+  (void)is_uint8_quantized;
+
   if (node->dtype() == loco::DataType::U8 && node->quantparam() != nullptr &&
       node->quantparam()->scale.size() > 0 && node->quantparam()->zerop.size() > 0)
     return true;
@@ -47,7 +50,12 @@ void overwrite_quantparam(luci::CircleConcatenation *concat, luci::CircleNode *t
   assert(concat_qparam != nullptr);
 
   auto target_qparam = target->quantparam();
-  assert(target_qparam != nullptr);
+  if (target_qparam == nullptr)
+  {
+    auto quantparam = std::make_unique<CircleQuantParam>();
+    target->quantparam(std::move(quantparam));
+    target_qparam = target->quantparam();
+  }
   target_qparam->min = concat_qparam->min;
   target_qparam->max = concat_qparam->max;
   target_qparam->scale = concat_qparam->scale;
@@ -684,32 +692,40 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
 
 /** BEFORE
  *
- *         [CircleNode]             [CircleNode]
- *           (qparam1)                (qparam2)
+ *         [CircleNode]             [CircleConst]
+ *         (U8 qparam1)                 (FP32)
  *                   \                    /
  *                    \                  /
  *                    [CircleConcatenation]
- *                          (qparam3)
+ *                        (U8 qparam2)
  *
  *  AFTER
- *         [CircleNode]             [CircleNode]
- *           (qparam3)                (qparam3)
+ *         [CircleNode]             [CircleConst]
+ *         (U8 qparam2)             (U8 qparam2)
  *                   \                    /
  *                    \                  /
  *                    [CircleConcatenation]
- *                          (qparam3)
+ *                        (U8 qparam2)
  */
 void propagate_concat_quantparam(luci::CircleConcatenation *concat)
 {
-  // Check if concat is uint8-quantized
-  if (!is_uint8_quantized(concat))
-    return;
-
-  // Check if concat has no fused activation function
-  if (concat->fusedActivationFunction() != luci::FusedActFunc::NONE)
-    return;
+  assert(is_uint8_quantized(concat));
 
   const auto num_inputs = concat->numValues();
+
+  // Quantize const inputs using their values if concat has fused act function
+  if (concat->fusedActivationFunction() != luci::FusedActFunc::NONE)
+  {
+    for (uint32_t i = 0; i < num_inputs; i++)
+    {
+      auto node = concat->arg(i);
+      auto const_node = dynamic_cast<luci::CircleConst *>(node);
+      if (const_node != nullptr)
+        quant_const(const_node);
+    }
+    return;
+  }
+
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     auto node = loco::must_cast<luci::CircleNode *>(concat->arg(i));
@@ -721,7 +737,14 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
     // Skip if this input is used by other Ops
     auto succs = loco::succs(node);
     if (succs.size() != 1)
+    {
+      if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+      {
+        luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+        quant_const(const_node);
+      }
       continue;
+    }
 
     assert(succs.find(concat) != succs.end());
 
