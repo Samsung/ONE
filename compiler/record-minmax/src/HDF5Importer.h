@@ -39,9 +39,12 @@ namespace record_minmax
 class HDF5Importer
 {
 public:
-  explicit HDF5Importer(const std::string &path) : _file{path, H5F_ACC_RDONLY}
+  explicit HDF5Importer(const std::string &path)
   {
-    // Do nothing
+    if (_file.isHdf5(path) == false)
+      throw std::runtime_error("Error: Given data file is not HDF5");
+
+    _file = H5::H5File(path, H5F_ACC_RDONLY);
   }
 
 public:
