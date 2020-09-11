@@ -1,0 +1,32 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 3 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "2" arg: "-3" arg: "-4"
+    arg: "-5" arg: "6" arg: "-7" arg: "8"
+    arg: "4" arg: "-2" arg: "3" arg: "-1"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 3 }
+}
+operation {
+  type: "Mul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "ifm1"
+output: "ofm"
