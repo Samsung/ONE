@@ -5,7 +5,7 @@ function(_Ruy_import)
     return()
   endif(TARGET ruy)
 
-  nnfw_find_package(RuySource QUIET)
+  nnas_find_package(RuySource QUIET)
 
   if(NOT RuySource_FOUND)
     set(Ruy_FOUND FALSE PARENT_SCOPE)
