@@ -149,6 +149,37 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   return MirrorPadMode::UNDEFINED;
 }
 
+DimensionType luci_dim_type(const circle::DimensionType dim_type)
+{
+  switch (dim_type)
+  {
+    case circle::DimensionType_DENSE:
+      return DimensionType::DENSE;
+    case circle::DimensionType_SPARSE_CSR:
+      return DimensionType::SPARSE_CSR;
+    default:
+      throw std::runtime_error("Invalid DimensionType");
+  }
+}
+
+SparseIndexVectorType
+luci_sparse_index_vector_type(const circle::SparseIndexVector index_vector_type)
+{
+  switch (index_vector_type)
+  {
+    case circle::SparseIndexVector_NONE:
+      return SparseIndexVectorType::NONE;
+    case circle::SparseIndexVector_Int32Vector:
+      return SparseIndexVectorType::I32;
+    case circle::SparseIndexVector_Uint16Vector:
+      return SparseIndexVectorType::U16;
+    case circle::SparseIndexVector_Uint8Vector:
+      return SparseIndexVectorType::U8;
+    default:
+      throw std::runtime_error("Invalid SparseIndexVector type");
+  }
+}
+
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParametersT *quantization)
 {
@@ -174,6 +205,28 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
   return nullptr;
 }
 
+std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParametersT *sparsity)
+{
+  const auto &traversal_order = sparsity->traversal_order;
+  const auto &block_map = sparsity->block_map;
+  const auto &dim_metadata = sparsity->dim_metadata;
+
+  // TODO find a condition that should return nullptr
+  auto sparsityparam = std::make_unique<SparsityParam>();
+
+  sparsityparam->traversal_order = traversal_order;
+  sparsityparam->block_map = block_map;
+  for (const auto &dm : dim_metadata)
+  {
+    sparsityparam->dim_metadata.emplace_back(
+        luci_dim_type(dm->format), dm->dense_size,
+        luci_sparse_index_vector_type(dm->array_segments.type), dm->array_segments.value,
+        luci_sparse_index_vector_type(dm->array_indices.type), dm->array_indices.value);
+  }
+
+  return sparsityparam;
+}
+
 void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
 {
   node->name(tensor_name(tensor));
@@ -192,6 +245,14 @@ void copy_tensor_attributes(const circle::TensorT &tensor, CircleNode *node)
     auto quantparam = luci_quantparam(quantization);
     if (quantparam)
       node->quantparam(std::move(quantparam));
+  }
+
+  const auto *sparsity = tensor.sparsity.get();
+  if (sparsity != nullptr)
+  {
+    auto sparsityparam = luci_sparsityparam(sparsity);
+    if (sparsityparam)
+      node->sparsityparam(std::move(sparsityparam));
   }
 }
 
