@@ -26,11 +26,11 @@ namespace
 
 using namespace testing;
 
-TEST(L2NormalizeTest, Float)
+template <typename T>
+void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
 {
-  std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
-
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   L2NormParams params{};
@@ -40,14 +40,77 @@ TEST(L2NormalizeTest, Float)
   kernel.configure();
   kernel.execute();
 
-  std::vector<float> ref_output_data{-0.55, 0.3, 0.35, 0.6, -0.35, 0.05};
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+              ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
-// TODO Uint8Quantized
-// Implement GetDequantizedOutput Function.
-// Create Test for Uint8 Case
+template <>
+void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
+                    std::initializer_list<int32_t> output_shape,
+                    std::initializer_list<float> input_data,
+                    std::initializer_list<float> output_data)
+{
+  std::pair<float, int32_t> quant_param =
+      quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
+                                  std::max(input_data) > 0 ? std::max(input_data) : 0.f);
+
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 128., 128);
+
+  L2NormParams params{};
+  params.activation = Activation::NONE;
+
+  L2Normalize kernel(&input_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              ElementsAreArray(ArrayFloatNear(output_data, output_tensor.scale())));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+}
+
+template <typename T> class L2NormalizeTest : public ::testing::Test
+{
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(L2NormalizeTest, DataTypes);
+
+TYPED_TEST(L2NormalizeTest, Simple)
+{
+  Check<TypeParam>({1, 1, 1, 6}, {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1},
+                   {-0.55, 0.3, 0.35, 0.6, -0.35, 0.05});
+}
+
+TEST(L2NormalizeTest, ActivationType_NEG)
+{
+  std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
+
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  L2NormParams params{};
+  params.activation = Activation::RELU6;
+
+  L2Normalize kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(L2NormalizeTest, InvalidOutputQuantParam_NEG)
+{
+  std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
+
+  Tensor input_tensor = makeInputTensor<DataType::U8>({1, 1, 1, 6}, 1. / 64., 127, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 64., 127);
+
+  L2NormParams params{};
+  params.activation = Activation::NONE;
+
+  L2Normalize kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
 
 } // namespace
 } // namespace kernels
