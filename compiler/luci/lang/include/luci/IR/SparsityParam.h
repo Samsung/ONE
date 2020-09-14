@@ -48,12 +48,12 @@ struct DimMetaData
   {
   }
 
-  DimensionType _format;
+  DimensionType _format{DimensionType::DENSE};
   int32_t _dense_size{0};
-  SparseIndexVectorType _array_segments_type;
-  void *_array_segments;
-  SparseIndexVectorType _array_indices_type;
-  void *_array_indices;
+  SparseIndexVectorType _array_segments_type{SparseIndexVectorType::NONE};
+  void *_array_segments{nullptr};
+  SparseIndexVectorType _array_indices_type{SparseIndexVectorType::NONE};
+  void *_array_indices{nullptr};
 };
 
 struct SparsityParam
