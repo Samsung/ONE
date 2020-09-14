@@ -33,7 +33,7 @@ TEST(CircleSparseToDenseTest, constructor)
   ASSERT_EQ(nullptr, stb_node.values());
   ASSERT_EQ(nullptr, stb_node.default_value());
 
-  ASSERT_EQ(false, stb_node.validate_indices());
+  ASSERT_FALSE(stb_node.validate_indices());
 }
 
 TEST(CircleSparseToDenseTest, input_NEG)
