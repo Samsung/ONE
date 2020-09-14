@@ -488,6 +488,17 @@ ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t outp
                                    const int32_t output_width)
 {
   assert(in_shape.rank() == 4);
+  if (output_height < 0)
+  {
+    throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_height = " +
+                             std::to_string(output_height)};
+  }
+  if (output_height < 0)
+  {
+    throw std::runtime_error{"ResizeBilinear: size value must be positive value, output_width = " +
+                             std::to_string(output_height)};
+  }
+
   ir::Shape ret(in_shape.rank());
 
   ret.dim(0) = in_shape.dim(0);

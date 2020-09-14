@@ -112,6 +112,8 @@ public:
   uint32_t addOperatorPadV2(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
   uint32_t addOperatorReshape(const OperatorParams &params, const Shape &new_shape);
+  uint32_t addOperatorResizeBilinear(const OperatorParams &params, bool align_corners = false,
+                                     bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorTranspose(const OperatorParams &params);

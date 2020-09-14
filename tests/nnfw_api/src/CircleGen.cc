@@ -182,6 +182,15 @@ uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape
                                 circle::BuiltinOptions_ReshapeOptions, options);
 }
 
+uint32_t CircleGen::addOperatorResizeBilinear(const OperatorParams &params, bool align_corners,
+                                              bool half_pixel_centers)
+{
+  auto options =
+      circle::CreateResizeBilinearOptions(_fbb, align_corners, half_pixel_centers).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RESIZE_BILINEAR,
+                                circle::BuiltinOptions_ResizeBilinearOptions, options);
+}
+
 uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &params)
 {
   auto options = circle::CreateResizeNearestNeighborOptions(_fbb).Union();
