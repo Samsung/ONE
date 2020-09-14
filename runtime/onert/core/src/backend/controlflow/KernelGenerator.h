@@ -56,7 +56,7 @@ public:
   void visit(const ir::operation::While &) override;
 
 private:
-  std::shared_ptr<backend::ITensor> getTensor(const ir::OperandIndex &index);
+  backend::ITensor *getTensor(const ir::OperandIndex &index);
 
 private:
   const ir::Graph &_graph;
