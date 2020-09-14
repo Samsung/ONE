@@ -99,9 +99,9 @@ public:
   void time_major(bool time_major) { _time_major = time_major; }
 
 private:
-  float _cell_clip = 0.0;
-  float _proj_clip = 0.0;
-  bool _time_major{false};
+  float _cell_clip = 0.0f;
+  float _proj_clip = 0.0f;
+  bool _time_major = false;
 };
 
 } // namespace luci

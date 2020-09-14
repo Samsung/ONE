@@ -59,11 +59,13 @@ CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
   node->forget_layer_norm_coefficients(inputs.at(21));
   node->cell_layer_norm_coefficients(inputs.at(22));
   node->output_layer_norm_coefficients(inputs.at(23));
+
   const auto *options = op.builtin_options.AsUnidirectionalSequenceLSTMOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->cell_clip(options->cell_clip);
   node->proj_clip(options->proj_clip);
   node->time_major(options->time_major);
+
   return node;
 }
 

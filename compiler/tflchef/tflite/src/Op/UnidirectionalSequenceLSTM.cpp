@@ -26,6 +26,7 @@ void TFliteOpUnidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFli
 {
   // Nothing to do with filler
 }
+
 tflchef::Operation *
 TFliteOpUnidirectionalSequenceLSTM::build(const tflite::Operator *op, TFliteImport *import,
                                           tflchef::ModelRecipe *model_recipe) const

@@ -55,7 +55,7 @@ TEST(CircleUnidirectionalSequenceLSTMTest, constructor_P)
   ASSERT_EQ(nullptr, trc_node.activation_state());
   ASSERT_EQ(nullptr, trc_node.cell_state());
 
-  ASSERT_EQ(nullptr, trc_node.input_layer_norm_coefficients);
+  ASSERT_EQ(nullptr, trc_node.input_layer_norm_coefficients());
   ASSERT_EQ(nullptr, trc_node.forget_layer_norm_coefficients());
   ASSERT_EQ(nullptr, trc_node.cell_layer_norm_coefficients());
   ASSERT_EQ(nullptr, trc_node.output_layer_norm_coefficients());
