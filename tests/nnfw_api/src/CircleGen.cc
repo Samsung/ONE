@@ -205,6 +205,13 @@ uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_s
                                 circle::BuiltinOptions_SplitOptions, options);
 }
 
+uint32_t CircleGen::addOperatorTile(const OperatorParams &params)
+{
+  auto options = circle::CreateTileOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_TILE,
+                                circle::BuiltinOptions_TileOptions, options);
+}
+
 uint32_t CircleGen::addOperatorWhile(const OperatorParams &params, uint32_t cond_subg,
                                      uint32_t body_subg)
 {

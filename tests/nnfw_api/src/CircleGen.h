@@ -116,6 +116,7 @@ public:
                                      bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
+  uint32_t addOperatorTile(const OperatorParams &params);
   uint32_t addOperatorTranspose(const OperatorParams &params);
   uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
 
