@@ -87,3 +87,72 @@ tflite::MirrorPadMode as_tflite_mirrorpadmode(const tflchef::MirrorPadMode &valu
 
   throw std::runtime_error{"Unknown mirrorpad mode"};
 }
+
+tflite::DimensionType as_tflite_dimensiontype(const tflchef::DimensionType &value)
+{
+  switch (value)
+  {
+    case tflchef::DimensionType::DENSE:
+      return tflite::DimensionType_DENSE;
+    case tflchef::DimensionType::SPARSE_CSR:
+      return tflite::DimensionType_SPARSE_CSR;
+    default:
+      break;
+  }
+
+  throw std::runtime_error("Unknown dimension type");
+}
+
+tflite::SparseIndexVector as_tflite_sparse_idx_vec_type(const tflchef::SparseIndexVecType &value)
+{
+  switch (value)
+  {
+    case tflchef::SparseIndexVecType::SparseIdxVecType_NONE:
+      return tflite::SparseIndexVector_NONE;
+    case tflchef::SparseIndexVecType::INT32VEC:
+      return tflite::SparseIndexVector_Int32Vector;
+    case tflchef::SparseIndexVecType::UINT16VEC:
+      return tflite::SparseIndexVector_Uint16Vector;
+    case tflchef::SparseIndexVecType::UINT8VEC:
+      return tflite::SparseIndexVector_Uint8Vector;
+    default:
+      break;
+  }
+
+  throw std::runtime_error("Unknown SparseIndexVector type");
+}
+
+flatbuffers::Offset<void>
+as_tflite_sparse_index_vec(flatbuffers::FlatBufferBuilder &fb,
+                           const ::tflchef::TensorSparsity_IndexVec &value)
+{
+  auto sparse_idx_type = value.type();
+
+  switch (sparse_idx_type)
+  {
+    case tflchef::SparseIndexVecType::SparseIdxVecType_NONE:
+      return flatbuffers::Offset<void>();
+    case tflchef::SparseIndexVecType::INT32VEC:
+    {
+      auto values_vec_int32 = std::vector<int32_t>{value.dim().begin(), value.dim().end()};
+      auto values_int32 = fb.CreateVector(values_vec_int32);
+      return tflite::CreateInt32Vector(fb, values_int32).Union();
+    }
+    case tflchef::SparseIndexVecType::UINT16VEC:
+    {
+      auto values_vec_uint16 = std::vector<uint16_t>{value.dim().begin(), value.dim().end()};
+      auto values_uint16 = fb.CreateVector(values_vec_uint16);
+      return tflite::CreateUint16Vector(fb, values_uint16).Union();
+    }
+    case tflchef::SparseIndexVecType::UINT8VEC:
+    {
+      auto values_vec_uint8 = std::vector<uint8_t>{value.dim().begin(), value.dim().end()};
+      auto values_uint8 = fb.CreateVector(values_vec_uint8);
+      return tflite::CreateUint8Vector(fb, values_uint8).Union();
+    }
+    default:
+      break;
+  }
+
+  throw std::runtime_error("Unknown SparseIndexVector type");
+}
