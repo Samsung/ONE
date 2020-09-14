@@ -198,8 +198,90 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
         os << std::endl;
       }
     }
+
+    if (const auto &s_params = tensor->sparsity())
+    {
+      std::string strsparsity = "    Sparsity: ";
+      std::string strsindent(strsparsity.size(), ' ');
+      os << strsparsity;
+
+      if (s_params->traversal_order())
+      {
+        os << "traversal_order(" << s_params->traversal_order() << ") ";
+        os << std::endl << strsindent;
+      }
+      if (s_params->block_map())
+      {
+        os << "block_map(" << s_params->block_map() << ") ";
+        os << std::endl << strsindent;
+      }
+      if (const auto &dim_metadata = s_params->dim_metadata())
+      {
+        uint32_t idx = 0;
+        for (const auto &dm : *dim_metadata)
+        {
+          std::string strdm = "dim_metadata[" + std::to_string(idx++) + "]: ";
+          std::string strdm_indent = strsindent + std::string(strdm.size(), ' ');
+          os << strdm;
+
+          os << "format(" << circle::EnumNameDimensionType(dm->format()) << ") ";
+          os << std::endl << strdm_indent;
+
+          os << "dense_size(" << dm->dense_size() << ") ";
+          os << std::endl << strdm_indent;
+
+          os << "array_segments_type("
+             << circle::EnumNameSparseIndexVector(dm->array_segments_type()) << ") ";
+          os << std::endl << strdm_indent;
+
+          os << "array_segments(";
+          switch (dm->array_segments_type())
+          {
+            case circle::SparseIndexVector_NONE:
+              // DO NOTHING
+              break;
+            case circle::SparseIndexVector_Int32Vector:
+              os << dm->array_segments_as_Int32Vector()->values();
+              break;
+            case circle::SparseIndexVector_Uint16Vector:
+              os << dm->array_segments_as_Uint16Vector()->values();
+              break;
+            case circle::SparseIndexVector_Uint8Vector:
+              os << dm->array_segments_as_Uint8Vector()->values();
+              break;
+            default:
+              throw std::runtime_error("Invalid SparseIndexVector type of array_segments");
+          }
+          os << ")" << std::endl << strdm_indent;
+
+          os << "array_indices_type(" << circle::EnumNameSparseIndexVector(dm->array_indices_type())
+             << ") ";
+          os << std::endl << strdm_indent;
+
+          os << "array_indices(";
+          switch (dm->array_indices_type())
+          {
+            case circle::SparseIndexVector_NONE:
+              // DO NOTHING
+              break;
+            case circle::SparseIndexVector_Int32Vector:
+              os << dm->array_indices_as_Int32Vector()->values();
+              break;
+            case circle::SparseIndexVector_Uint16Vector:
+              os << dm->array_indices_as_Uint16Vector()->values();
+              break;
+            case circle::SparseIndexVector_Uint8Vector:
+              os << dm->array_indices_as_Uint8Vector()->values();
+              break;
+            default:
+              throw std::runtime_error("Invalid SparseIndexVector type of array_indices");
+          }
+          os << ")" << std::endl << strsindent;
+        }
+      }
+    }
+    os << std::endl;
   }
-  os << std::endl;
 
   // dump operators
   os << "Operators: O(subgraph index : operator index) OpCodeName " << std::endl;
