@@ -13,7 +13,7 @@ function(_CpuInfoSource_import)
     DIRNAME CPUINFO
     URL ${CPUINFO_URL})
 
-  # Applying patch to cpuinfo (This patch comes from tflive v2.3)
+  # Applying patch to cpuinfo (This patch comes from tflite v2.3)
   execute_process(
     COMMAND patch -p1 --forward --ignore-whitespace
     WORKING_DIRECTORY ${CPUINFO_SOURCE_DIR}

@@ -1,12 +1,11 @@
 function(_Ruy_Build)
-  nnas_find_package(RuySource QUIET)
-
   # NOTE This line prevents multiple definitions of ruy target
   if(TARGET ruy)
     set(Ruy_FOUND TRUE PARENT_SCOPE)
     return()
   endif(TARGET ruy)
 
+  nnas_find_package(RuySource QUIET)
   nnfw_find_package(CpuInfo QUIET)
 
   if(NOT RuySource_FOUND)
