@@ -1,0 +1,31 @@
+function(_CpuInfo_Build)
+  nnas_find_package(CpuInfoSource QUIET)
+
+  # NOTE This line prevents multiple definitions of cpuinfo target
+  if(TARGET cpuinfo)
+    set(CpuInfoSource_DIR ${CpuInfoSource_DIR} PARENT_SCOPE)
+    set(CpuInfo_FOUND TRUE PARENT_SCOPE)
+    return()
+  endif(TARGET cpuinfo)
+
+  if(NOT CpuInfoSource_FOUND)
+    message(STATUS "CPUINFO: Source not found")
+    set(CpuInfo_FOUND FALSE PARENT_SCOPE)
+    return()
+  endif(NOT CpuInfoSource_FOUND)
+
+  set(CPUINFO_BUILD_TOOLS OFF CACHE BOOL "Build command-line tools")
+  set(CPUINFO_BUILD_BENCHMARKS OFF CACHE BOOL "Build cpuinfo unit tests")
+  set(CPUINFO_BUILD_UNIT_TESTS OFF CACHE BOOL "Build cpuinfo mock tests")
+  set(CPUINFO_BUILD_MOCK_TESTS OFF CACHE BOOL "Build cpuinfo micro-benchmarks")
+  add_extdirectory("${CpuInfoSource_DIR}" cpuinfo EXCLUDE_FROM_ALL)
+  set_target_properties(cpuinfo PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  set(CpuInfoSource_DIR ${CpuInfoSource_DIR} PARENT_SCOPE)
+  set(CpuInfo_FOUND TRUE PARENT_SCOPE)
+endfunction(_CpuInfo_Build)
+
+if(BUILD_CPUINFO)
+  _CpuInfo_Build()
+else(BUILD_CPUINFO)
+  set(CpuInfo_FOUND FALSE)
+endif(BUILD_CPUINFO)
