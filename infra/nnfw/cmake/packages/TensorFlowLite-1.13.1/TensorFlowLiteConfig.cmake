@@ -27,7 +27,7 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(TensorFlowSource_FOUND)
 
   # Optional packages
-  nnfw_find_package(NEON2SSESource QUIET)
+  nnas_find_package(NEON2SSESource QUIET)
 
   nnas_include(ExternalProjectTools)
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite)
