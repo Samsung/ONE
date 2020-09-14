@@ -187,6 +187,89 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
       tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
       chef_quant->set_quantized_dimension(quant->quantized_dimension());
     }
+
+    auto sparsity = tensor->sparsity();
+    if (sparsity != nullptr)
+    {
+      tflchef::TensorSparsity *chef_sparsity = operand->mutable_sparsity();
+      // traversal_order
+      auto chef_traversal_order = chef_sparsity->mutable_traversal_order();
+      for (const auto &to : *(sparsity->traversal_order()))
+      {
+        chef_traversal_order->add_dim(to);
+      }
+      // block_map
+      auto chef_block_map = chef_sparsity->mutable_block_map();
+      for (const auto &bm : *(sparsity->block_map()))
+      {
+        chef_block_map->add_dim(bm);
+      }
+      // dim_metadata
+      for (const auto &dm : *(sparsity->dim_metadata()))
+      {
+        auto chef_dm = chef_sparsity->add_dim_metadata();
+        // format
+        chef_dm->set_format(as_tflchef_sparse_dim_type(dm->format()));
+        // dense_size
+        chef_dm->set_dense_size(dm->dense_size());
+        // array_segments
+        auto chef_array_segments = chef_dm->mutable_array_segments();
+        switch (dm->array_segments_type())
+        {
+          case tflite::SparseIndexVector_NONE:
+            // DO NOTHING
+            break;
+          case tflite::SparseIndexVector_Int32Vector:
+            for (const auto &as : *(dm->array_segments_as_Int32Vector()->values()))
+            {
+              chef_array_segments->add_dim(as);
+            }
+            break;
+          case tflite::SparseIndexVector_Uint16Vector:
+            for (const auto &as : *(dm->array_segments_as_Uint16Vector()->values()))
+            {
+              chef_array_segments->add_dim(as);
+            }
+            break;
+          case tflite::SparseIndexVector_Uint8Vector:
+            for (const auto &as : *(dm->array_segments_as_Uint8Vector()->values()))
+            {
+              chef_array_segments->add_dim(as);
+            }
+            break;
+          default:
+            throw std::runtime_error("unsupported sparse index vector type");
+        }
+        // array_indices
+        auto chef_array_indices = chef_dm->mutable_array_indices();
+        switch (dm->array_indices_type())
+        {
+          case tflite::SparseIndexVector_NONE:
+            // DO NOTHING
+            break;
+          case tflite::SparseIndexVector_Int32Vector:
+            for (const auto &as : *(dm->array_indices_as_Int32Vector()->values()))
+            {
+              chef_array_indices->add_dim(as);
+            }
+            break;
+          case tflite::SparseIndexVector_Uint16Vector:
+            for (const auto &as : *(dm->array_indices_as_Uint16Vector()->values()))
+            {
+              chef_array_indices->add_dim(as);
+            }
+            break;
+          case tflite::SparseIndexVector_Uint8Vector:
+            for (const auto &as : *(dm->array_indices_as_Uint8Vector()->values()))
+            {
+              chef_array_indices->add_dim(as);
+            }
+            break;
+          default:
+            throw std::runtime_error("unsupported sparse index vector type");
+        }
+      }
+    }
   }
 
   // add all operators
