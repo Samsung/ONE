@@ -1,23 +1,19 @@
-if(${BUILD_GTEST})
-  nnas_include(ExternalSourceTools)
-  nnas_include(ExternalProjectTools)
-  nnas_include(OptionTools)
+if(${DOWNLOAD_GTEST})
+  nnas_find_package(GTestSource QUIET)
 
-  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  set(GTEST_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/googletest/archive/release-1.8.0.tar.gz)
-  ExternalSource_Download("gtest" ${GTEST_URL})
-
-  # gtest_SOURCE_DIR is used in gtest subdirectorty's cmake
-  set(sourcedir_gtest ${gtest_SOURCE_DIR})
-  unset(gtest_SOURCE_DIR)
+  if(NOT GTestSource_FOUND)
+    set(GTest_FOUND FALSE)
+    return()
+  endif(NOT GTestSource_FOUND)
 
   if(NOT TARGET gtest_main)
-    add_extdirectory(${sourcedir_gtest} gtest EXCLUDE_FROM_ALL)
+    nnas_include(ExternalProjectTools)
+    add_extdirectory(${GTestSource_DIR} gtest EXCLUDE_FROM_ALL)
   endif(NOT TARGET gtest_main)
 
   set(GTest_FOUND TRUE)
   return()
-endif(${BUILD_GTEST})
+endif(${DOWNLOAD_GTEST})
 
 ### Find and use pre-installed Google Test
 find_package(GTest)
