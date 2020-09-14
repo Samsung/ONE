@@ -51,6 +51,12 @@ static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_element
 {
   using T = typename loco::DataTypeImpl<DT>::Type;
 
+  // TODO calculate the exact buffer size of sparse tensor
+  if (const_node->sparsityparam())
+  {
+    num_elements = raw_data.size() / sizeof(T);
+  }
+
   assert(raw_data.size() == num_elements * sizeof(T));
   const auto *data = reinterpret_cast<const T *>(raw_data.data());
 
