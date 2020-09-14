@@ -79,8 +79,8 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   auto frontend_layout = _current_op_seq_layout;
   auto backend_layout = ifm_tensor->layout();
 
@@ -107,9 +107,9 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
   const auto block_size_index{
       node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
 
   assert(_ctx.at(block_size_index).data());
 
@@ -127,9 +127,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
 
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index).get();
-  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index);
 
   std::unique_ptr<arm_compute::IFunction> fn;
   switch (node.param().arithmetic_type)
@@ -191,10 +191,10 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
                                             ker_width, ker_height);
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto ker_tensor = _tensor_reg->getAclTensor(ker_index).get();
-  auto bias_tensor = _tensor_reg->getAclTensor(bias_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getAclTensor(ker_index);
+  auto bias_tensor = _tensor_reg->getAclTensor(bias_index);
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
@@ -215,8 +215,8 @@ void KernelGenerator::visit(const ir::operation::DepthToSpace &node)
   auto block_size = node.param().block_size;
   assert(block_size > 0);
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEDepthToSpaceLayer>(
       input_tensor->handle(), output_tensor->handle(), block_size);
@@ -246,10 +246,10 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto multiplier = node.param().multiplier;
   const auto activation = node.param().activation;
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto ker_tensor = _tensor_reg->getAclTensor(ker_index).get();
-  auto bias_tensor = _tensor_reg->getAclTensor(bias_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getAclTensor(ker_index);
+  auto bias_tensor = _tensor_reg->getAclTensor(bias_index);
 
   const auto conv_info = acl_common::asPadStrideInfo(padding, stride);
   const auto act_info = acl_common::asActivationLayerInfo(activation);
@@ -283,7 +283,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
     return;
   }
 
-  auto output_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(ofm_index);
   std::vector<::arm_compute::ITensor *> input_tensors;
   for (const auto &ifm_ind : input_indexes)
     input_tensors.emplace_back(_tensor_reg->getAclTensor(ifm_ind)->handle());
@@ -313,8 +313,8 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
 
   const ::arm_compute::ActivationLayerInfo act_info = acl_common::asActivationLayerInfo(
       node.param().op_type, node.param().alpha, node.param().beta);
@@ -344,9 +344,9 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index).get();
-  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index);
 
   std::unique_ptr<arm_compute::IFunction> fn;
   switch (node.param().op_type)
@@ -391,8 +391,8 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   std::unique_ptr<arm_compute::IFunction> fn;
   switch (node.param().op_type)
@@ -481,9 +481,9 @@ void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
   const auto lookups_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::LOOKUPS)};
   const auto values_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::VALUES)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index).get();
-  auto values_tensor = _tensor_reg->getAclTensor(values_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index);
+  auto values_tensor = _tensor_reg->getAclTensor(values_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEEmbeddingLookup>(
       values_tensor->handle(), output_tensor->handle(), lookups_tensor->handle());
@@ -494,7 +494,7 @@ void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
 void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 {
   const auto output_index{node.getOutputs().at(0)};
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
   const auto activation = node.param().activation;
 
   auto fn = acl_common::kernelGenFullyConnected<acl_common::AclFunction, ::arm_compute::ITensor,
@@ -513,12 +513,12 @@ void KernelGenerator::visit(const ir::operation::HashtableLookup &node)
   const auto keys_index{node.getInputs().at(ir::operation::HashtableLookup::Input::KEYS)};
   const auto values_index{node.getInputs().at(ir::operation::HashtableLookup::Input::VALUES)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto hits_tensor = _tensor_reg->getAclTensor(hits_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto hits_tensor = _tensor_reg->getAclTensor(hits_index);
 
-  auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index).get();
-  auto keys_tensor = _tensor_reg->getAclTensor(keys_index).get();
-  auto values_tensor = _tensor_reg->getAclTensor(values_index).get();
+  auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index);
+  auto keys_tensor = _tensor_reg->getAclTensor(keys_index);
+  auto values_tensor = _tensor_reg->getAclTensor(values_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEHashtableLookup>(
       lookups_tensor->handle(), keys_tensor->handle(), values_tensor->handle(),
@@ -540,9 +540,9 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   // Converting in reverse order
   const int axis = ::onert::backend::acl_common::ToARMComputeAxis(ifm_rank, axis_value).value();
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto indices_tensor = _tensor_reg->getAclTensor(indices_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto indices_tensor = _tensor_reg->getAclTensor(indices_index);
   const auto backend_layout = ofm_tensor->layout();
   UNUSED_RELEASE(backend_layout);
 
@@ -597,10 +597,10 @@ void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
   const auto gamma_index{node.getInputs().at(ir::operation::InstanceNorm::Input::GAMMA)};
   const auto beta_index{node.getInputs().at(ir::operation::InstanceNorm::Input::BETA)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto gamma_tensor = _tensor_reg->getAclTensor(gamma_index).get();
-  auto beta_tensor = _tensor_reg->getAclTensor(beta_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto gamma_tensor = _tensor_reg->getAclTensor(gamma_index);
+  auto beta_tensor = _tensor_reg->getAclTensor(beta_index);
   auto epsilon = node.param().epsilon;
   auto activation = node.param().activation;
 
@@ -631,8 +631,8 @@ void KernelGenerator::visit(const ir::operation::L2Normalization &node)
   float beta = 0.5f;                             // pow(reduction, -0.5) = 1 / sqrt(reduction)
   float bias = 0.0f;                             // Don't offset the reduction.
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
 
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(::arm_compute::NormType::CROSS_MAP,
                                                                radius, alpha, beta, bias, false);
@@ -654,8 +654,8 @@ void KernelGenerator::visit(const ir::operation::LocalResponseNormalization &nod
   auto beta = node.param().beta;
   auto bias = node.param().bias;
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
 
   const auto norm_info = ::arm_compute::NormalizationLayerInfo(
       ::arm_compute::NormType::CROSS_MAP, radius * 2 + 1, alpha, beta, bias, false);
@@ -683,13 +683,13 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   for (const auto &input_index : node.getInputs())
     input_indexes.emplace_back(input_index);
 
-  auto output = _tensor_reg->getAclTensor(output_index).get()->handle();
+  auto output = _tensor_reg->getAclTensor(output_index)->handle();
   std::vector<arm_compute::ITensor *> inputs;
   for (const auto &input_index : input_indexes)
     inputs.emplace_back(_tensor_reg->getAclTensor(input_index)->handle());
 
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = _tensor_reg->getAclTensor(output_index).get()->layout();
+  const auto backend_layout = _tensor_reg->getAclTensor(output_index)->layout();
 
   if (axis < 0)
     axis += output_rank;
@@ -728,8 +728,8 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   auto rank = _ctx.at(input_index).shape().rank();
   auto pad_base = _ctx.at(pad_index).data()->base();
 
-  auto input = _tensor_reg->getAclTensor(input_index).get()->handle();
-  auto output = _tensor_reg->getAclTensor(output_index).get()->handle();
+  auto input = _tensor_reg->getAclTensor(input_index)->handle();
+  auto output = _tensor_reg->getAclTensor(output_index)->handle();
 
   ::arm_compute::PaddingList padding_list;
   padding_list.resize(rank);
@@ -738,7 +738,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
     const int32_t *from = reinterpret_cast<const int32_t *>(pad_base) + (n * 2);
 
     const auto frontend_layout = _current_op_seq_layout;
-    const auto backend_layout = _tensor_reg->getAclTensor(input_index).get()->layout();
+    const auto backend_layout = _tensor_reg->getAclTensor(input_index)->layout();
     const auto axis =
         acl_common::ToARMComputeAxis(rank, n, frontend_layout, backend_layout).value();
     padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};
@@ -765,7 +765,7 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
       acl_common::convertPoolType(node.param().op_type));
 
   const auto ofm_index{node.getOutputs().at(0)};
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   const auto activation = node.param().activation;
   _return_fn = std::make_unique<exec::FunctionSequence>(
       asAclFunction(std::move(raw_fn)),
@@ -777,8 +777,8 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto ofm_idx{node.getOutputs().at(0)};
   const auto ifm_idx{node.getInputs().at(0)};
   const auto permute_type = node.getPermuteType();
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx);
   const auto rank = _ctx.at(ofm_idx).shape().rank();
   assert(_ctx.at(ifm_idx).shape().rank() == _ctx.at(ofm_idx).shape().rank());
 
@@ -813,9 +813,9 @@ void KernelGenerator::visit(const ir::operation::PReLU &node)
   const auto ifm_index{node.getInputs().at(ir::operation::PReLU::Input::INPUT)};
   const auto alpha_index{node.getInputs().at(ir::operation::PReLU::Input::ALPHA)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto alpha_tensor = _tensor_reg->getAclTensor(alpha_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto alpha_tensor = _tensor_reg->getAclTensor(alpha_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEPReluLayer>(
       ifm_tensor->handle(), alpha_tensor->handle(), ofm_tensor->handle());
@@ -829,8 +829,8 @@ void KernelGenerator::visit(const ir::operation::Reduce &node)
   const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
   const auto axes_index{node.getInputs().at(ir::operation::Reduce::Input::AXES)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   // Convert to ACL axes taking into account negative values and possible duplicates.
   const auto &axes = _ctx.at(axes_index);
@@ -867,8 +867,8 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   // NOTE This operation must not be changed the layout from frontend to backend
   //      So, PermutationOperationPass makes layouts of frontend and backend the same.
@@ -890,8 +890,8 @@ void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEScale>(
       ifm_tensor->handle(), ofm_tensor->handle(), ::arm_compute::InterpolationPolicy::BILINEAR,
@@ -916,14 +916,14 @@ void KernelGenerator::visit(const ir::operation::RNN &node)
 
   const auto activation = node.param().activation;
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto hidden_state_out_tensor = _tensor_reg->getAclTensor(hidden_state_out_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto hidden_state_out_tensor = _tensor_reg->getAclTensor(hidden_state_out_index);
 
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
-  auto weights_tensor = _tensor_reg->getAclTensor(weights_index).get();
-  auto recurrent_weights_tensor = _tensor_reg->getAclTensor(recurrent_weights_index).get();
-  auto bias_tensor = _tensor_reg->getAclTensor(bias_index).get();
-  auto hidden_state_in_tensor = _tensor_reg->getAclTensor(hidden_state_in_index).get();
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
+  auto weights_tensor = _tensor_reg->getAclTensor(weights_index);
+  auto recurrent_weights_tensor = _tensor_reg->getAclTensor(recurrent_weights_index);
+  auto bias_tensor = _tensor_reg->getAclTensor(bias_index);
+  auto hidden_state_in_tensor = _tensor_reg->getAclTensor(hidden_state_in_index);
   auto act_info = ::onert::backend::acl_common::asActivationLayerInfo(activation);
 
   auto copy_layer = acl_common::generateLayer<arm_compute::NECopy>(
@@ -949,8 +949,8 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   (void)dims;
   (void)ndim;
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
   auto fn = acl_common::generateLayer<arm_compute::NEReshapeLayer>(input_tensor->handle(),
                                                                    output_tensor->handle());
   _return_fn = asAclFunction(std::move(fn));
@@ -962,8 +962,8 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
   const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
   const auto beta = node.param().beta;
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = input_tensor->layout();
 
@@ -992,10 +992,10 @@ void KernelGenerator::visit(const ir::operation::SpaceToBatchND &node)
       node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index).get();
-  auto paddings_tensor = _tensor_reg->getAclTensor(paddings_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
+  auto paddings_tensor = _tensor_reg->getAclTensor(paddings_index);
 
   assert(_ctx.at(block_size_index).data());
   assert(_ctx.at(paddings_index).data());
@@ -1014,8 +1014,8 @@ void KernelGenerator::visit(const ir::operation::SpaceToDepth &node)
 
   auto block_size = node.param().block_size;
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NESpaceToDepthLayer>(
       ifm_tensor->handle(), ofm_tensor->handle(), block_size);
@@ -1036,10 +1036,10 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   for (const auto &output : node.getOutputs())
     output_indexes.emplace_back(output);
 
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   std::vector<arm_compute::ITensor *> output_tensors;
   for (const auto &ofm_ind : output_indexes)
-    output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind).get()->handle());
+    output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind)->handle());
 
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
@@ -1060,9 +1060,9 @@ void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index).get();
-  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto lhs_tensor = _tensor_reg->getAclTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getAclTensor(rhs_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEElementwiseSquaredDiff>(
       lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
@@ -1077,8 +1077,8 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   const auto begins_index{node.getInputs().at(ir::operation::Slice::Input::BEGINS)};
   const auto sizes_index{node.getInputs().at(ir::operation::Slice::Input::SIZES)};
 
-  auto outputData_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto inputData_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto outputData_tensor = _tensor_reg->getAclTensor(output_index);
+  auto inputData_tensor = _tensor_reg->getAclTensor(input_index);
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = inputData_tensor->layout();
 
@@ -1142,8 +1142,8 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   const auto ends_index{node.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
   const auto strides_index{node.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
 
-  auto outputData_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto inputData_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto outputData_tensor = _tensor_reg->getAclTensor(output_index);
+  auto inputData_tensor = _tensor_reg->getAclTensor(input_index);
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = inputData_tensor->layout();
 
@@ -1258,9 +1258,9 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
     invalid_vertical = ofm_shape.H - (1 + (ifm_shape.H - 1) * stride.vertical) - (ker_shape.H - 1);
   }
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index).get();
-  auto ker_tensor = _tensor_reg->getAclTensor(ker_index).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getAclTensor(ker_index);
 
   const auto tconv_info = acl_common::asPadStrideInfo(padding, stride);
 
@@ -1277,8 +1277,8 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto ifm_idx{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto perm_idx{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx).get();
-  const auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx).get();
+  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx);
+  const auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx);
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
   const auto rank = _ctx.at(ifm_idx).shape().rank();
@@ -1329,13 +1329,13 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   for (const auto &output_index : node.getOutputs())
     output_indexes.emplace_back(output_index);
 
-  auto input = _tensor_reg->getAclTensor(input_index).get()->handle();
+  auto input = _tensor_reg->getAclTensor(input_index)->handle();
   std::vector<arm_compute::ITensor *> outputs;
   for (const auto &output_index : output_indexes)
     outputs.emplace_back(_tensor_reg->getAclTensor(output_index)->handle());
 
   const auto frontend_layout = _current_op_seq_layout;
-  const auto backend_layout = _tensor_reg->getAclTensor(input_index).get()->layout();
+  const auto backend_layout = _tensor_reg->getAclTensor(input_index)->layout();
   if (axis < 0)
     axis += input_rank;
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
@@ -1366,8 +1366,8 @@ void KernelGenerator::visit(const ir::operation::ExpandDims &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input_tensor = _tensor_reg->getAclTensor(input_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEReshapeLayer>(input_tensor->handle(),
                                                                    output_tensor->handle());
@@ -1383,9 +1383,9 @@ void KernelGenerator::visit(const ir::operation::Comparison &node)
 
   const auto comparison_type = node.param().comparison_type;
 
-  auto output_tensor = _tensor_reg->getAclTensor(output_index).get();
-  auto input0_tensor = _tensor_reg->getAclTensor(input0_index).get();
-  auto input1_tensor = _tensor_reg->getAclTensor(input1_index).get();
+  auto output_tensor = _tensor_reg->getAclTensor(output_index);
+  auto input0_tensor = _tensor_reg->getAclTensor(input0_index);
+  auto input1_tensor = _tensor_reg->getAclTensor(input1_index);
 
   auto fn = acl_common::generateLayer<arm_compute::NEElementwiseComparison>(
       input0_tensor->handle(), input1_tensor->handle(), output_tensor->handle(),
@@ -1403,11 +1403,11 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   const auto offvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
   const auto axis = node.param().axis;
 
-  auto output_tensor = _tensor_reg->getAclTensor(out_idx).get();
-  auto indices_tensor = _tensor_reg->getAclTensor(indices_idx).get();
-  auto depth_tensor = _tensor_reg->getAclTensor(depth_idx).get();
-  auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx).get();
-  auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx).get();
+  auto output_tensor = _tensor_reg->getAclTensor(out_idx);
+  auto indices_tensor = _tensor_reg->getAclTensor(indices_idx);
+  auto depth_tensor = _tensor_reg->getAclTensor(depth_idx);
+  auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx);
+  auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx);
 
   auto fn = acl_common::generateLayer<arm_compute::CPPOneHotEx>(
       indices_tensor->handle(), depth_tensor->handle(), onvalue_tensor->handle(),

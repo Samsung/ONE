@@ -138,30 +138,27 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   const auto projection_clip = projection_threshold;
   assert(cell_clip >= 0.f && projection_clip >= 0.f);
 
-  auto scratch_buffer_tensor = tensor_reg->getAclTensor(scratch_buffer_index).get();
-  auto output_state_out_tensor = tensor_reg->getAclTensor(output_state_out_index).get();
-  auto cell_state_out_tensor = tensor_reg->getAclTensor(cell_state_out_index).get();
-  auto output_tensor = tensor_reg->getAclTensor(output_index).get();
+  auto scratch_buffer_tensor = tensor_reg->getAclTensor(scratch_buffer_index);
+  auto output_state_out_tensor = tensor_reg->getAclTensor(output_state_out_index);
+  auto cell_state_out_tensor = tensor_reg->getAclTensor(cell_state_out_index);
+  auto output_tensor = tensor_reg->getAclTensor(output_index);
 
-  auto input_tensor = tensor_reg->getAclTensor(input_index).get();
+  auto input_tensor = tensor_reg->getAclTensor(input_index);
 
-  auto input_to_forget_weights_tensor =
-      tensor_reg->getAclTensor(input_to_forget_weights_index).get();
-  auto input_to_cell_weights_tensor = tensor_reg->getAclTensor(input_to_cell_weights_index).get();
-  auto input_to_output_weights_tensor =
-      tensor_reg->getAclTensor(input_to_output_weights_index).get();
+  auto input_to_forget_weights_tensor = tensor_reg->getAclTensor(input_to_forget_weights_index);
+  auto input_to_cell_weights_tensor = tensor_reg->getAclTensor(input_to_cell_weights_index);
+  auto input_to_output_weights_tensor = tensor_reg->getAclTensor(input_to_output_weights_index);
   auto recurrent_to_forget_weights_tensor =
-      tensor_reg->getAclTensor(recurrent_to_forget_weights_index).get();
-  auto recurrent_to_cell_weights_tensor =
-      tensor_reg->getAclTensor(recurrent_to_cell_weights_index).get();
+      tensor_reg->getAclTensor(recurrent_to_forget_weights_index);
+  auto recurrent_to_cell_weights_tensor = tensor_reg->getAclTensor(recurrent_to_cell_weights_index);
   auto recurrent_to_output_weights_tensor =
-      tensor_reg->getAclTensor(recurrent_to_output_weights_index).get();
+      tensor_reg->getAclTensor(recurrent_to_output_weights_index);
 
-  auto forget_gate_bias_tensor = tensor_reg->getAclTensor(forget_gate_bias_index).get();
-  auto cell_bias_tensor = tensor_reg->getAclTensor(cell_bias_index).get();
-  auto output_gate_bias_tensor = tensor_reg->getAclTensor(output_gate_bias_index).get();
-  auto output_state_in_tensor = tensor_reg->getAclTensor(output_state_in_index).get();
-  auto cell_state_in_tensor = tensor_reg->getAclTensor(cell_state_in_index).get();
+  auto forget_gate_bias_tensor = tensor_reg->getAclTensor(forget_gate_bias_index);
+  auto cell_bias_tensor = tensor_reg->getAclTensor(cell_bias_index);
+  auto output_gate_bias_tensor = tensor_reg->getAclTensor(output_gate_bias_index);
+  auto output_state_in_tensor = tensor_reg->getAclTensor(output_state_in_index);
+  auto cell_state_in_tensor = tensor_reg->getAclTensor(cell_state_in_index);
 
   auto act_info = asActivationLayerInfo(activation);
 
@@ -169,13 +166,13 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   if (has_cifg_param)
   {
     auto input_to_input_weights_tensor =
-        tensor_reg->getAclTensor(input_to_input_weights_index).get(); // optional
+        tensor_reg->getAclTensor(input_to_input_weights_index); // optional
     auto recurrent_to_input_weights_tensor =
-        tensor_reg->getAclTensor(recurrent_to_input_weights_index).get(); // optional
+        tensor_reg->getAclTensor(recurrent_to_input_weights_index); // optional
     auto cell_to_input_weights_handle =
-        has_peephole_param ? tensor_reg->getAclTensor(cell_to_input_weights_index).get()->handle()
+        has_peephole_param ? tensor_reg->getAclTensor(cell_to_input_weights_index)->handle()
                            : nullptr; // optional (non-cifg && peephole)
-    auto input_gate_bias_tensor = tensor_reg->getAclTensor(input_gate_bias_index).get(); // optional
+    auto input_gate_bias_tensor = tensor_reg->getAclTensor(input_gate_bias_index); // optional
     lstm_params.set_cifg_params(input_to_input_weights_tensor->handle(),
                                 recurrent_to_input_weights_tensor->handle(),
                                 cell_to_input_weights_handle, input_gate_bias_tensor->handle());
@@ -183,19 +180,18 @@ std::unique_ptr<exec::IFunction> kernelGenLSTM(const ir::operation::LSTM &node,
   if (has_peephole_param)
   {
     auto cell_to_forget_weights_tensor =
-        tensor_reg->getAclTensor(cell_to_forget_weights_index).get(); // optional
+        tensor_reg->getAclTensor(cell_to_forget_weights_index); // optional
     auto cell_to_output_weights_tensor =
-        tensor_reg->getAclTensor(cell_to_output_weights_index).get(); // optional
+        tensor_reg->getAclTensor(cell_to_output_weights_index); // optional
     lstm_params.set_peephole_params(cell_to_forget_weights_tensor->handle(),
                                     cell_to_output_weights_tensor->handle());
   }
   if (has_projection_param)
   {
-    auto projection_weights_tensor =
-        tensor_reg->getAclTensor(projection_weights_index).get(); // optional
-    auto projection_bias_handle =
-        has_projection_bias ? tensor_reg->getAclTensor(projection_bias_index).get()->handle()
-                            : nullptr; // optional
+    auto projection_weights_tensor = tensor_reg->getAclTensor(projection_weights_index); // optional
+    auto projection_bias_handle = has_projection_bias
+                                      ? tensor_reg->getAclTensor(projection_bias_index)->handle()
+                                      : nullptr; // optional
     lstm_params.set_projection_params(projection_weights_tensor->handle(), projection_bias_handle);
   }
 
@@ -260,10 +256,10 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
     reshape.dim(1) = input_size; /* W */
   }
 
-  auto output_tensor = tensor_reg->getAclTensor(output_index).get();
-  const auto input_tensor = tensor_reg->getAclTensor(input_index).get();
-  const auto weight_tensor = tensor_reg->getAclTensor(weight_index).get();
-  const auto bias_tensor = tensor_reg->getAclTensor(bias_index).get();
+  auto output_tensor = tensor_reg->getAclTensor(output_index);
+  const auto input_tensor = tensor_reg->getAclTensor(input_index);
+  const auto weight_tensor = tensor_reg->getAclTensor(weight_index);
+  const auto bias_tensor = tensor_reg->getAclTensor(bias_index);
   const auto frontend_layout = layout;
   const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
@@ -313,8 +309,8 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   VERBOSE(Pool2DParam) << "PAD(L): " << padding.left << std::endl;
   VERBOSE(Pool2DParam) << "PAD(R): " << padding.right << std::endl;
 
-  auto ofm_tensor = tensor_reg->getAclTensor(ofm_index).get();
-  auto ifm_tensor = tensor_reg->getAclTensor(ifm_index).get();
+  auto ofm_tensor = tensor_reg->getAclTensor(ofm_index);
+  auto ifm_tensor = tensor_reg->getAclTensor(ifm_index);
 
   ::arm_compute::PoolingLayerInfo info{
       pooling_type, ::arm_compute::Size2D{kw, kh}, ifm_tensor->info()->data_layout(),

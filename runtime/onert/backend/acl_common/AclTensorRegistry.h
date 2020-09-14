@@ -36,17 +36,11 @@ template <typename T_AclTensorManager> class AclTensorRegistry : public ITensorR
 public:
   AclTensorRegistry(T_AclTensorManager *tensor_mgr) : _tensor_mgr{tensor_mgr} {}
 
-  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
-  {
-    return _tensor_mgr->at(ind);
-  }
+  ITensor *getITensor(const ir::OperandIndex &ind) override { return _tensor_mgr->at(ind).get(); }
 
-  std::shared_ptr<ITensor> getNativeITensor(const ir::OperandIndex &ind) override
-  {
-    return getITensor(ind);
-  }
+  ITensor *getNativeITensor(const ir::OperandIndex &ind) override { return getITensor(ind); }
 
-  auto getAclTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind); }
+  auto getAclTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind).get(); }
 
 private:
   T_AclTensorManager *_tensor_mgr;

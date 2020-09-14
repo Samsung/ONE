@@ -106,7 +106,7 @@ IDynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
   return _dynamic_tensor_mgr.get();
 }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
+cpu_common::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeOwnTensor(ind);
 }

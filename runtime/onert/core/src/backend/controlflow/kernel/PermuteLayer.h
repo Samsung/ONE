@@ -33,8 +33,7 @@ namespace kernel
 class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
-  PermuteLayer(const std::vector<std::shared_ptr<ITensor>> &src_tensors,
-               const std::vector<std::shared_ptr<ITensor>> &dst_tensors)
+  PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors)
   {
     assert(src_tensors.size() == dst_tensors.size());
     _src_tensors = src_tensors;
