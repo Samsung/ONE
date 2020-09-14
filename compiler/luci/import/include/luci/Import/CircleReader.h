@@ -23,7 +23,7 @@
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
-#include <luci/IR/CircleSparsityParam.h>
+#include <luci/IR/SparsityParam.h>
 
 #include <loco.h>
 

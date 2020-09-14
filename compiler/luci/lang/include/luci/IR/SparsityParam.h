@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IR_CIRCLESPARSITYPARAM_H__
-#define __LUCI_IR_CIRCLESPARSITYPARAM_H__
+#ifndef __LUCI_IR_SPARSITYPARAM_H__
+#define __LUCI_IR_SPARSITYPARAM_H__
 
 #include <cstdint>
 #include <vector>
@@ -23,13 +23,13 @@
 namespace luci
 {
 
-enum CircleDimType
+enum DimensionType
 {
   DENSE,
   SPARSE_CSR,
 };
 
-enum CircleSparseIndexVectorType
+enum SparseIndexVectorType
 {
   NONE,
   I32,
@@ -37,33 +37,32 @@ enum CircleSparseIndexVectorType
   U8,
 };
 
-struct CircleDimMetaData
+struct DimMetaData
 {
-  CircleDimMetaData() = delete;
-  CircleDimMetaData(CircleDimType format, int32_t dense_size,
-                    CircleSparseIndexVectorType array_segments_type, void *array_segments,
-                    CircleSparseIndexVectorType array_indices_type, void *array_indices)
+  DimMetaData() = delete;
+  DimMetaData(DimensionType format, int32_t dense_size, SparseIndexVectorType array_segments_type,
+              void *array_segments, SparseIndexVectorType array_indices_type, void *array_indices)
       : _format{format}, _dense_size{dense_size}, _array_segments_type{array_segments_type},
         _array_segments{array_segments}, _array_indices_type{array_indices_type},
         _array_indices{array_indices}
   {
   }
 
-  CircleDimType _format;
+  DimensionType _format;
   int32_t _dense_size{0};
-  CircleSparseIndexVectorType _array_segments_type;
-  CircleSparseIndexVectorType _array_indices_type;
+  SparseIndexVectorType _array_segments_type;
   void *_array_segments;
+  SparseIndexVectorType _array_indices_type;
   void *_array_indices;
 };
 
-struct CircleSparsityParam
+struct SparsityParam
 {
   std::vector<int32_t> traversal_order;
   std::vector<int32_t> block_map;
-  std::vector<CircleDimMetaData> dim_metadata;
+  std::vector<DimMetaData> dim_metadata;
 };
 
 } // namespace luci
 
-#endif // __LUCI_IR_CIRCLESPARSITYPARAM_H__
+#endif // __LUCI_IR_SPARSITYPARAM_H__
