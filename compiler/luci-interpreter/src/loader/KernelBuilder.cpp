@@ -27,6 +27,8 @@
 #include "kernels/Floor.h"
 #include "kernels/FloorDiv.h"
 #include "kernels/FullyConnected.h"
+#include "kernels/Greater.h"
+#include "kernels/GreaterEqual.h"
 #include "kernels/If.h"
 #include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
@@ -282,6 +284,28 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreater *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Greater>(x, y, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreaterEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::GreaterEqual>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)

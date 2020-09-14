@@ -28,6 +28,8 @@
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
 #include <kernels/FullyConnected.h>
+#include <kernels/Greater.h>
+#include <kernels/GreaterEqual.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
 #include <kernels/LeakyRelu.h>
@@ -354,6 +356,40 @@ TEST_F(KernelBuilderTest, FullyConnected)
   checkTensor(kernel->bias(), bias);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Greater)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleGreater>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::Greater>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, GreaterEqual)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleGreaterEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::GreaterEqual>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, L2Normalize)

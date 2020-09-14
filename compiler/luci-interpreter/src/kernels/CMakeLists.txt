@@ -24,6 +24,10 @@ set(SOURCES
     FloorDiv.cpp
     FullyConnected.h
     FullyConnected.cpp
+    Greater.h
+    Greater.cpp
+    GreaterEqual.h
+    GreaterEqual.cpp
     If.h
     If.cpp
     L2Normalize.h
@@ -114,6 +118,8 @@ set(TEST_SOURCES
     Floor.test.cpp
     FloorDiv.test.cpp
     FullyConnected.test.cpp
+    Greater.test.cpp
+    GreaterEqual.test.cpp
     If.test.cpp
     L2Normalize.test.cpp
     L2Pool2D.test.cpp
