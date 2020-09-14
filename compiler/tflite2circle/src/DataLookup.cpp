@@ -137,8 +137,7 @@ circle::DimensionType get_circle_dimension_type(tflite::DimensionType tfl_dim_ty
 }
 
 flatbuffers::Offset<void>
-get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
-                               const tflite::DimensionMetadata *dm,
+get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb, const void *v_array,
                                const tflite::SparseIndexVector &tfl_sparse_index_vector_type)
 {
   switch (tfl_sparse_index_vector_type)
@@ -147,9 +146,9 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
       return flatbuffers::Offset<void>();
     case tflite::SparseIndexVector_Int32Vector:
     {
+      const tflite::Int32Vector *i32_array = static_cast<const tflite::Int32Vector *>(v_array);
       auto values_vec_int32 =
-          std::vector<int32_t>{dm->array_segments_as_Int32Vector()->values()->begin(),
-                               dm->array_segments_as_Int32Vector()->values()->end()};
+          std::vector<int32_t>{i32_array->values()->begin(), i32_array->values()->end()};
       auto values_int32 = fb.CreateVector(values_vec_int32);
       circle::Int32VectorBuilder int32_vector_builder{fb};
       int32_vector_builder.add_values(values_int32);
@@ -157,9 +156,9 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
     }
     case tflite::SparseIndexVector_Uint16Vector:
     {
+      const tflite::Uint16Vector *u16_array = static_cast<const tflite::Uint16Vector *>(v_array);
       auto values_vec_uint16 =
-          std::vector<uint16_t>{dm->array_segments_as_Uint16Vector()->values()->begin(),
-                                dm->array_segments_as_Uint16Vector()->values()->end()};
+          std::vector<uint16_t>{u16_array->values()->begin(), u16_array->values()->end()};
       auto values_uint16 = fb.CreateVector(values_vec_uint16);
       circle::Uint16VectorBuilder uint16_vector_builder{fb};
       uint16_vector_builder.add_values(values_uint16);
@@ -167,9 +166,9 @@ get_circle_sparse_index_vector(flatbuffers::FlatBufferBuilder &fb,
     }
     case tflite::SparseIndexVector_Uint8Vector:
     {
+      const tflite::Uint8Vector *u8_array = static_cast<const tflite::Uint8Vector *>(v_array);
       auto values_vec_uint8 =
-          std::vector<uint8_t>{dm->array_segments_as_Uint8Vector()->values()->begin(),
-                               dm->array_segments_as_Uint8Vector()->values()->end()};
+          std::vector<uint8_t>{u8_array->values()->begin(), u8_array->values()->end()};
       auto values_uint8 = fb.CreateVector(values_vec_uint8);
       circle::Uint8VectorBuilder uint8_vector_builder{fb};
       uint8_vector_builder.add_values(values_uint8);
