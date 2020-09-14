@@ -78,6 +78,13 @@ struct TestCaseData
    */
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
+  /**
+   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
+   *        this test case; set @c False otherwise.
+   */
+  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
+  bool expect_error_on_run() const { return _expect_error_on_run; }
+
 private:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
@@ -87,6 +94,8 @@ private:
     dest.back().resize(size);
     std::memcpy(dest.back().data(), data.data(), size);
   }
+
+  bool _expect_error_on_run = false;
 };
 
 /**
@@ -150,20 +159,13 @@ public:
   const bool fail_compile() const { return _fail_compile; }
 
   /**
- * @brief Return test is defined to fail on running
- *
- * @return bool test is defined to fail on running
- */
-  const std::vector<int> &fail_run_counts() const { return _fail_run_counts; }
-
-  /**
-     * @brief Set the output buffer size of specified output tensor
-     *        Note that output tensor size of a model with dynamic tensor is calculated while
-     *        running the model.
-     *        Therefore, before runniing the model, the sufficient size of buffer should
-     *        be prepared by calling this method.
-     *        The size does not need to be the exact size.
-     */
+   * @brief Set the output buffer size of specified output tensor
+   *        Note that output tensor size of a model with dynamic tensor is calculated while
+   *        running the model.
+   *        Therefore, before runniing the model, the sufficient size of buffer should
+   *        be prepared by calling this method.
+   *        The size does not need to be the exact size.
+   */
   void output_sizes(uint32_t ind, size_t size) { _output_sizes[ind] = size; }
 
   size_t output_sizes(uint32_t ind) const { return _output_sizes.at(ind); }
@@ -206,22 +208,12 @@ public:
    */
   void setCompileFail() { _fail_compile = true; }
 
-  /**
-   * @brief Set the Test Fail while running
-   *
-   * @param run_counts   Indicate when the running will fail.
-   *        For example, if the test runs nnfw_run() multiple time, run_run_counts == {0, 2} means
-   *        that 0th and 2nd call of nnfw_run() must return NNFW_STATUS_ERROR
-   */
-  void setRunFail(const std::vector<int> &&run_counts) { _fail_run_counts = run_counts; }
-
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
   std::unordered_map<uint32_t, size_t> _output_sizes;
   bool _fail_compile{false};
-  std::vector<int> _fail_run_counts;
 };
 
 /**
@@ -314,9 +306,8 @@ protected:
       }
 
       // Set input values, run, and check output values
-      for (int tc_count = 0; tc_count < _context->test_cases().size(); ++tc_count)
+      for (auto &test_case : _context->test_cases())
       {
-        auto &test_case = _context->test_cases()[tc_count];
         auto &ref_inputs = test_case.inputs;
         auto &ref_outputs = test_case.outputs;
         ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
@@ -327,17 +318,13 @@ protected:
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
         }
 
-        auto &fail_run_counts = _context->fail_run_counts();
-        auto it = std::find(fail_run_counts.begin(), fail_run_counts.end(), tc_count);
-        if (it == fail_run_counts.end())
-        {
-          NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
-        }
-        else
+        if (test_case.expect_error_on_run())
         {
           ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
           continue;
         }
+
+        NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
 
         ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
         for (uint32_t i = 0; i < _so.outputs.size(); i++)

@@ -115,11 +115,11 @@ TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
     TestCaseData tcd;
     tcd.addInput(wrong_shape);
     tcd.addOutput(expected);
+    tcd.expect_error_on_run(true);
+
     _context->addTestCase(tcd);
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
-
-    _context->setRunFail({0});
   }
   // GenModelTest::teardown() will do the rest
   SUCCEED();
@@ -159,23 +159,25 @@ TEST_F(GenModelTest, neg_reshape_multiple_executions)
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  auto add_tcd = [&](const decltype(new_shape) &&new_shape) {
+  auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_error_on_run) {
     TestCaseData tcd;
     tcd.addInput(new_shape);
     tcd.addOutput(expected);
+    tcd.expect_error_on_run(expect_error_on_run);
     _context->addTestCase(tcd);
   };
 
   _context = std::make_unique<GenModelTestContext>(model);
   {
-    add_tcd({3, 2});
-    add_tcd({1, 100}); // 1th tcd. wrong shape
-    add_tcd({6, 1});
+    bool EXPECT_ERROR_ON_RUN = true;
+    bool EXPECT_SUCCESS_ON_RUN = !EXPECT_ERROR_ON_RUN;
+
+    add_tcd({3, 2}, EXPECT_SUCCESS_ON_RUN);
+    add_tcd({1, 100}, EXPECT_ERROR_ON_RUN); // 1th tcd. wrong shape
+    add_tcd({6, 1}, EXPECT_SUCCESS_ON_RUN);
 
     _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
     _context->output_sizes(0, sizeof(float) * expected.size());
-
-    _context->setRunFail({1});
   }
   // GenModelTest::teardown() will do the rest
   SUCCEED();
