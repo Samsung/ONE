@@ -75,8 +75,7 @@ void Check<uint8_t>(
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(output_data, quantized_tolerance)));
 }
 

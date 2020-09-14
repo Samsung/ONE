@@ -84,8 +84,7 @@ TEST(MaxPool2DTest, Uint8)
 
   std::vector<float> ref_output_data{0.0, 6.0};
   std::initializer_list<int32_t> ref_output_shape{1, 1, 2, 1};
-  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                                  output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }

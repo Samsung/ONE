@@ -34,6 +34,12 @@ Tensor makeOutputTensor(DataType element_type, float scale, int32_t zero_point)
   return Tensor(element_type, {}, {{scale}, {zero_point}}, "");
 }
 
+std::vector<float> dequantizeTensorData(const Tensor &tensor)
+{
+  assert(tensor.element_type() == DataType::U8);
+  return dequantize(extractTensorData<uint8_t>(tensor), tensor.scale(), tensor.zero_point());
+}
+
 std::vector<Matcher<float>> ArrayFloatNear(const std::vector<float> &values, float max_abs_error)
 {
   std::vector<Matcher<float>> matchers;

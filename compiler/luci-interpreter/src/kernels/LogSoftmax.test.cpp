@@ -72,8 +72,7 @@ TEST(LogSoftmaxTest, Uint8)
       -7.00104, -12.00104, -.00104087, -9.00104, //
   };
   std::vector<int32_t> ref_output_shape{2, 4};
-  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                                  output_tensor.zero_point()),
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
               ElementsAreArray(ArrayFloatNear(ref_output_data, kLogSoftmaxQuantizedTolerance)));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
   EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
