@@ -53,6 +53,12 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
 
   if (_graph.getOutputs().contains(out_operand))
   {
+    // If the input is a const, we cannot remove it since we cannot put the constant data in the
+    // output buffer during prepare phase.
+    auto permute_input = node.getInputs().at(0);
+    if (_graph.operands().at(permute_input).isConstant())
+      return;
+
     // Exceptional case : When the output operand is a model output
     // In this case we keep the output and remove the input
 

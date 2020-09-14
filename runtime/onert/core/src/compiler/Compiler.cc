@@ -27,8 +27,11 @@
 #include "compiler/ManualScheduler.h"
 #include "compiler/HEScheduler.h"
 #include "compiler/StaticShapeInference.h"
+#include "compiler/pass/ConstantOutputPass.h"
+#include "compiler/pass/PassRunner.h"
 #include "exec/ExecTime.h"
 #include "ir/operation/LowerInfo.h"
+#include "ir/verifier/Verifier.h"
 #include "dumper/dot/DotDumper.h"
 #include "compiler/Linear.h"
 #include "interp/InterpExecutor.h"
@@ -132,6 +135,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
         backend::controlflow::Config::ID;
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] =
         backend::controlflow::Config::ID;
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] =
+        backend::controlflow::Config::ID;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
@@ -158,6 +163,11 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl;
     VERBOSE(Compiler) << std::noboolalpha;
   }
+
+  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    // Mandatory passes
+    pass::PassRunner{}.append(std::make_unique<pass::ConstantOutputPass>(subg)).run();
+  });
 
   /***************************************************
    * Prepare compilation phase
