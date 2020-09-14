@@ -36,7 +36,6 @@ public:
           const std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
           const std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
           const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
-          const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
           const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
           exec::ExecutorMap *executor_map);
 
@@ -49,7 +48,6 @@ private:
   const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
   const ir::OperandIndexSequence &_output_indices;
   const ir::Graph &_graph;
-  const exec::DynAllocInfoMap _outputs_dyn_alloc_info;
   const ir::SubgraphIndex _then_subg_index;
   const ir::SubgraphIndex _else_subg_index;
   exec::ExecutorMap *_executor_map;

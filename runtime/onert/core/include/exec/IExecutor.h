@@ -69,21 +69,6 @@ struct IExecutor
 
 using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
 
-// TODO Move this structure to suitable place
-/**
- * @brief Dynamic allocation info for input tensors
- *        When user sets shape of input having unknown dims after compilation, memory for the input
- * should be allocated before executing kernels. This struct contains information to allocate
- * memory.
- */
-struct DynAllocInfo
-{
-  /// @brief index of input tensor whose memory needs to be allocated at execution time
-  ir::OperandIndex ind;
-};
-
-using DynAllocInfoMap = std::unordered_map<std::shared_ptr<backend::ITensor>, DynAllocInfo>;
-
 } // namespace exec
 } // namespace onert
 
