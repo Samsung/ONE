@@ -68,7 +68,6 @@ public:
    * @return shared_ptr<operand::Tensor>
    */
   std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
-  void setNativeUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

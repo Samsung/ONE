@@ -111,12 +111,6 @@ std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::O
   return _tensor_reg->getNativeOwnTensor(ind);
 }
 
-void TensorBuilder::setNativeUserTensor(const ir::OperandIndex &ind,
-                                        const std::shared_ptr<UserTensor> &tensor)
-{
-  _tensor_reg->setNativeUserTensor(ind, tensor);
-}
-
 } // namespace controlflow
 } // namespace backend
 } // namespace onert
