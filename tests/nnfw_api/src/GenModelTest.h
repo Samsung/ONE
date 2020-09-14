@@ -78,6 +78,13 @@ struct TestCaseData
    */
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
+  /**
+   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
+   *        this test case; set @c False otherwise.
+   */
+  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
+  bool expect_error_on_run() const { return _expect_error_on_run; }
+
 private:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
@@ -87,6 +94,8 @@ private:
     dest.back().resize(size);
     std::memcpy(dest.back().data(), data.data(), size);
   }
+
+  bool _expect_error_on_run = false;
 };
 
 /**
@@ -151,8 +160,9 @@ public:
 
   /**
    * @brief Set the output buffer size of specified output tensor
-   *        Note that output tensor size of a model with dynamic tensor is calculated while running
-   *        the model. Therefore, before runniing the model, the sufficient size of buffer should
+   *        Note that output tensor size of a model with dynamic tensor is calculated while
+   *        running the model.
+   *        Therefore, before runniing the model, the sufficient size of buffer should
    *        be prepared by calling this method.
    *        The size does not need to be the exact size.
    */
@@ -194,7 +204,7 @@ public:
   }
 
   /**
-   * @brief Set the Test Fail
+   * @brief Set the Test Fail while compiling
    */
   void setCompileFail() { _fail_compile = true; }
 
@@ -306,6 +316,12 @@ protected:
           // Fill the values
           ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
+        }
+
+        if (test_case.expect_error_on_run())
+        {
+          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          continue;
         }
 
         NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));
