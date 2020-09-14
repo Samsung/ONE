@@ -207,6 +207,7 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
 
 std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParametersT *sparsity)
 {
+  assert(sparsity);
   const auto &traversal_order = sparsity->traversal_order;
   const auto &block_map = sparsity->block_map;
   const auto &dim_metadata = sparsity->dim_metadata;
