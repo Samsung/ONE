@@ -109,7 +109,7 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
   auto input_shape = input->getShape();
   auto axis_value = *reinterpret_cast<const int32_t *>(axis->buffer());
   const auto rank = input_shape.rank();
-  axis_value = axis < 0 ? axis_value + rank : axis_value;
+  axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
   ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis_value, rank);
 
