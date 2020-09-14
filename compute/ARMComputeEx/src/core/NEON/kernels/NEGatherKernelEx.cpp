@@ -70,7 +70,10 @@ template <typename U> void validate_indices(const ITensor *indices)
 
 } // namespace
 
-NEGatherKernelEx::NEGatherKernelEx() : _input{}, _indices{}, _axis{}, _output{}, _func{} {}
+NEGatherKernelEx::NEGatherKernelEx()
+    : _input{}, _indices{}, _axis{}, _indices_rank{}, _output{}, _func{}
+{
+}
 
 template <typename U>
 inline void NEGatherKernelEx::gather_0_axis(const Window &window, const ThreadInfo &info)
@@ -85,10 +88,10 @@ inline void NEGatherKernelEx::gather_0_axis(const Window &window, const ThreadIn
       window,
       [&](const Coordinates &id) {
         Coordinates gather_id(id);
-        gather_id.collapse(_indices->info()->num_dimensions(), 0);
+        gather_id.collapse(_indices_rank);
 
         U new_index;
-        switch (_indices->info()->num_dimensions())
+        switch (_indices_rank)
         {
           case 1:
             new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[0]))));
@@ -130,10 +133,10 @@ void NEGatherKernelEx::gather_n_axis(const Window &window, const ThreadInfo &inf
       output_window,
       [&](const Coordinates &id) {
         Coordinates gather_id(id);
-        gather_id.collapse(_indices->info()->num_dimensions(), _axis);
+        gather_id.collapse(_indices_rank, _axis);
 
         U new_index;
-        switch (_indices->info()->num_dimensions())
+        switch (_indices_rank)
         {
           case 1:
             new_index = *(reinterpret_cast<U *>(_indices->ptr_to_element(Coordinates(id[_axis]))));
@@ -174,6 +177,7 @@ void NEGatherKernelEx::configure(const ITensor *input, const ITensor *indices, I
   _indices = indices;
   _output = output;
   _axis = axis;
+  _indices_rank = indices->info()->num_dimensions();
 
   if (_axis < 0)
   {

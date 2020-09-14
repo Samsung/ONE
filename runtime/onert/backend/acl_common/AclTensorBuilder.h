@@ -159,7 +159,6 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
   else
   {
     // SubTensors
-
     assert(!info.isConstant() && "Subtensors of constants are not supported yet.");
 
     // Update offset info and emplace

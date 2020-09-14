@@ -30,6 +30,20 @@ namespace backend
 namespace acl_common
 {
 
+void enableDimCorrection(IACLTensor *tensor)
+{
+  size_t input_rank = tensor->num_dimensions();
+  const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
+      .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), true);
+}
+
+void disableDimCorrection(IACLTensor *tensor)
+{
+  size_t input_rank = tensor->num_dimensions();
+  const_cast<arm_compute::TensorShape &>(tensor->info()->tensor_shape())
+      .set(input_rank - 1, tensor->info()->dimension(input_rank - 1), false);
+}
+
 template <typename Layer, typename... Args>
 std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&... args)
 {

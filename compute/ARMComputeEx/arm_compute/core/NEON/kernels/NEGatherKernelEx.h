@@ -126,6 +126,7 @@ private:
   const ITensor *_input;
   const ITensor *_indices;
   int _axis;
+  size_t _indices_rank;
   ITensor *_output;
   kernel_ptr _func;
 };
