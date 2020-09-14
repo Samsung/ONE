@@ -49,22 +49,18 @@ namespace arm_compute
 namespace
 {
 inline Status validate_arguments(const ITensorInfo *indices, const ITensorInfo *on_value,
-                                 const ITensorInfo *off_value, const ITensorInfo *output, int depth,
-                                 int axis)
+                                 const ITensorInfo *output, int depth, int axis)
 {
-  ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(indices, on_value, off_value, output);
+  ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(indices, on_value, output);
   const uint32_t actual_axis = wrap_around(axis, static_cast<int>(output->num_dimensions()));
   ARM_COMPUTE_RETURN_ERROR_ON(output->num_dimensions() > 4);
   ARM_COMPUTE_RETURN_ERROR_ON(on_value->tensor_shape().total_size() != 1);
-  ARM_COMPUTE_RETURN_ERROR_ON(off_value->tensor_shape().total_size() != 1);
   ARM_COMPUTE_RETURN_ERROR_ON(depth <= 0);
   ARM_COMPUTE_RETURN_ERROR_ON(actual_axis >= output->num_dimensions());
   ARM_COMPUTE_RETURN_ERROR_ON(on_value->data_type() == DataType::UNKNOWN);
   ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(on_value, 1, DataType::U8, DataType::S8,
                                                        DataType::U16, DataType::S16, DataType::F16,
                                                        DataType::U32, DataType::S32, DataType::F32);
-  ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(on_value, off_value);
-  ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_QUANTIZATION_INFO(on_value, off_value);
   if (output->total_size() != 0)
   {
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(on_value, output);
@@ -74,6 +70,7 @@ inline Status validate_arguments(const ITensorInfo *indices, const ITensorInfo *
   }
   return Status{};
 }
+
 std::pair<Status, Window> validate_and_configure_window(ITensorInfo *indices,
                                                         const ITensorInfo *on_value,
                                                         ITensorInfo *output, int depth, int axis)
@@ -91,42 +88,77 @@ std::pair<Status, Window> validate_and_configure_window(ITensorInfo *indices,
 }
 } // namespace
 CLOneHotKernel::CLOneHotKernel()
-    : _indices(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr)
+    : _indices(nullptr), _on_value(nullptr), _off_value(nullptr), _output(nullptr),
+      _is_off_value_memset(false)
 {
 }
 void CLOneHotKernel::configure(const ICLTensor *indices, const ICLTensor *on_value,
                                const ICLTensor *off_value, ICLTensor *output, int depth, int axis)
 {
+  _is_off_value_memset = false;
   ARM_COMPUTE_ERROR_ON_NULLPTR(indices, on_value, off_value, output);
-  ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(indices->info(), on_value->info(),
-                                                off_value->info(), output->info(), depth, axis));
+  ARM_COMPUTE_ERROR_ON_NULLPTR(off_value->info());
+  ARM_COMPUTE_ERROR_ON(off_value->info()->tensor_shape().total_size() != 1);
+  ARM_COMPUTE_ERROR_ON_MISMATCHING_DATA_TYPES(on_value, off_value);
+  _off_value = off_value;
+  configure_common(indices, on_value, output, depth, axis);
+}
+void CLOneHotKernel::configure(const ICLTensor *indices, const ICLTensor *on_value,
+                               ICLTensor *output, int depth, int axis)
+{
+  _is_off_value_memset = true;
+  ARM_COMPUTE_ERROR_ON_NULLPTR(indices, on_value, output);
+  configure_common(indices, on_value, output, depth, axis);
+}
+void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor *on_value,
+                                      ICLTensor *output, int depth, int axis)
+{
+  ARM_COMPUTE_ERROR_THROW_ON(
+      validate_arguments(indices->info(), on_value->info(), output->info(), depth, axis));
   // Configure kernel window
   auto win_config =
       validate_and_configure_window(indices->info(), on_value->info(), output->info(), depth, axis);
   ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
+  if (_is_off_value_memset)
+  {
+    // Replace window with calculated by infices info
+    win_config.second = calculate_max_window(*indices->info(), Steps());
+  }
   _indices = indices;
   _on_value = on_value;
-  _off_value = off_value;
   _output = output;
   const auto actual_axis = wrap_around(axis, static_cast<int>(output->info()->num_dimensions()));
   // Set build options
   CLBuildOptions build_opts;
   build_opts.add_option("-DDATA_TYPE=" + get_cl_unsigned_type_from_element_size(
                                              data_size_from_type(on_value->info()->data_type())));
+  build_opts.add_option("-DAXIS=" + support::cpp11::to_string(actual_axis));
   build_opts.add_option("-DOUTPUT_DIM_Z=" +
                         support::cpp11::to_string(output->info()->dimension(2)));
-  build_opts.add_option("-DAXIS=" + support::cpp11::to_string(actual_axis));
   // Create kernel
+  const std::string kernel_name = _is_off_value_memset ? "one_hot_only_on_value" : "one_hot";
   _kernel = static_cast<cl::Kernel>(
-      CLKernelLibraryEx::get().create_kernel("one_hot", build_opts.options()));
+      CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
   ICLKernel::configure_internal(win_config.second);
 }
 Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
                                 const ITensorInfo *off_value, const ITensorInfo *output, int depth,
                                 int axis)
 {
-  ARM_COMPUTE_RETURN_ON_ERROR(
-      validate_arguments(indices, on_value, off_value, output, depth, axis));
+  ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(off_value);
+  ARM_COMPUTE_RETURN_ERROR_ON(off_value->tensor_shape().total_size() != 1);
+  ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(on_value, off_value);
+  ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(indices, on_value, output, depth, axis));
+  ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(indices->clone().get(),
+                                                            on_value->clone().get(),
+                                                            output->clone().get(), depth, axis)
+                                  .first);
+  return Status{};
+}
+Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
+                                const ITensorInfo *output, int depth, int axis)
+{
+  ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(indices, on_value, output, depth, axis));
   ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(indices->clone().get(),
                                                             on_value->clone().get(),
                                                             output->clone().get(), depth, axis)
@@ -141,8 +173,12 @@ void CLOneHotKernel::run(const Window &window, cl::CommandQueue &queue)
   unsigned int idx = 0;
   add_3D_tensor_argument(idx, _indices, window_collapsed);
   add_1D_tensor_argument(idx, _on_value, window_collapsed);
-  add_1D_tensor_argument(idx, _off_value, window_collapsed);
+  if (!_is_off_value_memset)
+  {
+    add_1D_tensor_argument(idx, _off_value, window_collapsed);
+  }
   add_4D_tensor_argument(idx, _output, window_collapsed);
   enqueue(queue, *this, window_collapsed, lws_hint());
 }
+
 } // namespace arm_compute

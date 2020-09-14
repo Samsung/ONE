@@ -122,6 +122,7 @@ GeneratedTests.not_equal_dynamic_float_nnfw
 GeneratedTests.one_hot_ex_dynamic_nnfw
 GeneratedTests.one_hot_ex_float_1_nnfw
 GeneratedTests.one_hot_ex_float_2_nnfw
+GeneratedTests.one_hot_ex_float_off_value_constant_zero_nnfw
 GeneratedTests.pack_ex_dynamic_nnfw
 GeneratedTests.pad_dynamic_nnfw
 GeneratedTests.pad_v2_1_float

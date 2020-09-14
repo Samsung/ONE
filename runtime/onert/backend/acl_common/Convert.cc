@@ -335,6 +335,27 @@ arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType
   }
 }
 
+arm_compute::PixelValue asPixelValue(const ir::Operand &operand)
+{
+  assert(operand.isConstant());
+  assert(operand.shape().num_elements() == 1);
+  switch (operand.typeInfo().type())
+  {
+    case ir::DataType::INT32:
+      return arm_compute::PixelValue(operand.asScalar<int32_t>());
+    case ir::DataType::INT64:
+      return arm_compute::PixelValue(operand.asScalar<int64_t>());
+    case ir::DataType::UINT32:
+      return arm_compute::PixelValue(operand.asScalar<uint64_t>());
+    case ir::DataType::UINT8:
+      return arm_compute::PixelValue(operand.asScalar<uint8_t>());
+    case ir::DataType::FLOAT32:
+      return arm_compute::PixelValue(operand.asScalar<float>());
+    default:
+      throw std::runtime_error("asPixelValue : Not supported datatype yet");
+  }
+}
+
 } // namespace acl_common
 } // namespace backend
 } // namespace onert

@@ -40,20 +40,36 @@
 #include "arm_compute/runtime/CL/functions/CLOneHot.h"
 #include "arm_compute/core/CL/ICLTensor.h"
 #include "arm_compute/core/CL/kernels/CLOneHotKernel.h"
+#include "arm_compute/runtime/CL/CLScheduler.h"
 #include "support/MemorySupport.h"
 namespace arm_compute
 {
+CLOneHot::CLOneHot() : _memset_kernel(), _onehot_kernel(), _has_to_memset(false) {}
 void CLOneHot::configure(const ICLTensor *indices, const ICLTensor *on_value,
                          const ICLTensor *off_value, ICLTensor *output, int depth, int axis)
 {
-  auto k = arm_compute::support::cpp14::make_unique<CLOneHotKernel>();
-  k->configure(indices, on_value, off_value, output, depth, axis);
-  _kernel = std::move(k);
+  _onehot_kernel.configure(indices, on_value, off_value, output, depth, axis);
+}
+void CLOneHot::configure(const ICLTensor *indices, const ICLTensor *on_value, ICLTensor *output,
+                         PixelValue off_value, int depth, int axis)
+{
+  _has_to_memset = true;
+  _memset_kernel.configure(output, off_value);
+  _onehot_kernel.configure(indices, on_value, output, depth, axis);
 }
 Status CLOneHot::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
                           const ITensorInfo *off_value, const ITensorInfo *output, int depth,
                           int axis)
 {
   return CLOneHotKernel::validate(indices, on_value, off_value, output, depth, axis);
+}
+void CLOneHot::run()
+{
+  if (_has_to_memset)
+  {
+    CLScheduler::get().enqueue(_memset_kernel, true);
+  }
+
+  CLScheduler::get().enqueue(_onehot_kernel, false);
 }
 } // namespace arm_compute
