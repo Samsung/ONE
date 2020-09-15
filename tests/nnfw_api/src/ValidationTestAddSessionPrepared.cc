@@ -161,4 +161,12 @@ TEST_F(ValidationTestAddSessionPrepared, neg_prepare)
   ASSERT_EQ(nnfw_prepare(_session), NNFW_STATUS_INVALID_STATE);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, neg_run_without_set_output)
+{
+  uint8_t input[4];
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)));
+  // `nnfw_set_output()` is not called
+  ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting
