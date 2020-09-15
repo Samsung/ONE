@@ -27,7 +27,6 @@
 #include <unordered_map>
 
 #include "DynamicTensorManager.h"
-#include "UserTensorRegistry.h"
 
 namespace onert
 {
