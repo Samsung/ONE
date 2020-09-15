@@ -34,15 +34,16 @@ L2Normalize::L2Normalize(const Tensor *input, Tensor *output, const L2NormParams
 
 void L2Normalize::configure()
 {
-  assert(input()->shape().num_dims() <= 4);
-  assert(output()->element_type() == DataType::FLOAT32 || output()->element_type() == DataType::U8);
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() <= 4);
+  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32 ||
+                         output()->element_type() == DataType::U8);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   if (output()->element_type() == DataType::U8)
   {
-    assert(output()->scale() == (1. / 128.));
-    assert(output()->zero_point() == 128);
+    LUCI_INTERPRETER_CHECK(output()->scale() == (1. / 128.));
+    LUCI_INTERPRETER_CHECK(output()->zero_point() == 128);
   }
-  assert(params().activation == Activation::NONE);
+  LUCI_INTERPRETER_CHECK(params().activation == Activation::NONE);
   output()->resize(input()->shape());
 }
 
