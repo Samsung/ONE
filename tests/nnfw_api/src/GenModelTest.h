@@ -128,8 +128,6 @@ class GenModelTestContext
 public:
   GenModelTestContext(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
 
-  GenModelTestContext(CircleBuffer &cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
-
   /**
    * @brief  Return circle buffer
    *

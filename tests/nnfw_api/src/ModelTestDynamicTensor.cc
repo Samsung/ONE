@@ -81,12 +81,10 @@ auto build_dynamic_Reshape()
 
 TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 {
-  auto model = build_dynamic_Reshape();
-
   const std::vector<int> new_shape{3, 2};
   const std::vector<float> expected{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  _context = std::make_unique<GenModelTestContext>(model);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
     TestCaseData tcd;
     tcd.addInput(new_shape);
@@ -105,12 +103,10 @@ TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
  */
 TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
 {
-  auto model = build_dynamic_Reshape();
-
   const std::vector<int> wrong_shape{3, 3}; // wrong shape input
   const std::vector<float> expected{0};     // whatever
 
-  _context = std::make_unique<GenModelTestContext>(model);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
     TestCaseData tcd;
     tcd.addInput(wrong_shape);
@@ -127,8 +123,6 @@ TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
 
 TEST_F(GenModelTest, reshape_multiple_executions)
 {
-  auto model = build_dynamic_Reshape();
-
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
@@ -139,7 +133,7 @@ TEST_F(GenModelTest, reshape_multiple_executions)
     _context->addTestCase(tcd);
   };
 
-  _context = std::make_unique<GenModelTestContext>(model);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
     add_tcd({3, 2});
     add_tcd({1, 6});
@@ -154,8 +148,6 @@ TEST_F(GenModelTest, reshape_multiple_executions)
 
 TEST_F(GenModelTest, neg_reshape_multiple_executions)
 {
-  auto model = build_dynamic_Reshape();
-
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
@@ -167,7 +159,7 @@ TEST_F(GenModelTest, neg_reshape_multiple_executions)
     _context->addTestCase(tcd);
   };
 
-  _context = std::make_unique<GenModelTestContext>(model);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
     bool EXPECT_ERROR_ON_RUN = true;
     bool EXPECT_SUCCESS_ON_RUN = !EXPECT_ERROR_ON_RUN;
