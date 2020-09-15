@@ -38,6 +38,9 @@ public:
 
 private:
   void evalFloat() const;
+  template <typename T> void evalQuantized() const;
+
+  float _table[256];
 };
 
 } // namespace kernels
