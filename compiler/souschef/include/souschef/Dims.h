@@ -17,6 +17,7 @@
 #ifndef __SOUSCHEF_DIMS_H__
 #define __SOUSCHEF_DIMS_H__
 
+#include <cstdint>
 #include <functional>
 #include <numeric>
 #include <vector>
