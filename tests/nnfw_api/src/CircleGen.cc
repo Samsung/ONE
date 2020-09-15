@@ -131,6 +131,13 @@ uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alp
                                 circle::BuiltinOptions_LeakyReluOptions, options);
 }
 
+uint32_t CircleGen::addOperatorLogSoftmax(const OperatorParams &params)
+{
+  auto options = circle::CreateLogSoftmaxOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LOG_SOFTMAX,
+                                circle::BuiltinOptions_LogSoftmaxOptions, options);
+}
+
 uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
 {
   auto options = circle::CreatePadOptions(_fbb).Union();

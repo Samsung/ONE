@@ -107,6 +107,7 @@ public:
   uint32_t addOperatorL2Normalization(const OperatorParams &params);
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorLess(const OperatorParams &params);
+  uint32_t addOperatorLogSoftmax(const OperatorParams &params);
   uint32_t addOperatorNeg(const OperatorParams &params);
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
