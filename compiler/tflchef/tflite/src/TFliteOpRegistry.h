@@ -155,6 +155,7 @@ private:
     REG_TFL_OP(TOPK_V2, TFliteOpTopKV2);
     REG_TFL_OP(TRANSPOSE, TFliteOpTranspose);
     REG_TFL_OP(TRANSPOSE_CONV, TFliteOpTransposeConv);
+    REG_TFL_OP(UNIDIRECTIONAL_SEQUENCE_LSTM, TFliteOpUnidirectionalSequenceLSTM);
     REG_TFL_OP(UNIQUE, TFliteOpUnique);
     REG_TFL_OP(UNPACK, TFliteOpUnpack);
     REG_TFL_OP(WHERE, TFliteOpWhere);
