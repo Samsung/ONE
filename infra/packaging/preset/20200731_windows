@@ -29,7 +29,6 @@ function preset_configure()
   # TODO Use "nncc configure" and "nncc build"
   cmake \
     -G "MSYS Makefiles" \
-    -DTF2NNPKG_FOR_WINDOWS=ON \
     -DUSE_PROTOBUF_LEGACY_IMPORT=ON \
     -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition" \
     -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--allow-multiple-definition" \
