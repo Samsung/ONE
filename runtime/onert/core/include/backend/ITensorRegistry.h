@@ -88,9 +88,9 @@ public:
   std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
   {
     static_assert(std::is_base_of<ITensor, T_Tensor>::value, "T_Tensor must derive from ITensor.");
-    auto external_tensor = _migrant.find(ind);
-    if (external_tensor != _migrant.end())
-      return external_tensor->second;
+    auto _migrant_tensor = _migrant.find(ind);
+    if (_migrant_tensor != _migrant.end())
+      return _migrant_tensor->second;
     return getNativeTensor(ind);
   }
 
@@ -101,11 +101,11 @@ public:
 
   std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
   {
-    auto external_tensor = _migrant.find(ind);
-    if (external_tensor != _migrant.end())
+    auto _migrant_tensor = _migrant.find(ind);
+    if (_migrant_tensor != _migrant.end())
     {
-      if (external_tensor->second)
-        return external_tensor->second;
+      if (_migrant_tensor->second)
+        return _migrant_tensor->second;
     }
     return getNativeTensor(ind);
   }
