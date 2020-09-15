@@ -30,7 +30,7 @@ namespace operation
 void Fill::accept(OperationVisitor &v) const { v.visit(*this); }
 
 Fill::Fill(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}
+    : Operation{OperandConstraint::createExact(2u), inputs, outputs}
 {
 }
 
