@@ -224,7 +224,7 @@ ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
   return ret;
 }
 
-void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_graph)
+void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph)
 {
   TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
 
@@ -236,7 +236,7 @@ void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_gra
                             ir::Remove::UNDEFINED)
         {
           // If an OpSequence input/output tensor does not have a own tensor object,
-          // it must be using external tensors, so find the tensor from other tensor builders and
+          // it must be using migrant tensors, so find the tensor from other tensor builders and
           // set the tensor to this tensor builder if portable
           if (!backend_ctx->tensor_registry->getITensor(ind))
           {
@@ -303,7 +303,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 
@@ -408,7 +408,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 

@@ -49,7 +49,7 @@ private:
   static std::vector<backend::ITensor *>
   initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
                            const ir::OperandIndexSequence &indices);
-  static void prepareExternalTensors(compiler::LoweredGraph &lowered_graph);
+  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph);
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,
