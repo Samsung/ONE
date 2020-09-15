@@ -56,6 +56,7 @@ using namespace arm_compute;
 const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map = {
     // ARMComputeEx kernels
     {"binary_logical_op", "binary_logical_op.cl"},
+    {"cast_bool", "cast.cl"},
     {"embedding_lookup", "embedding_lookup.cl"},
     {"gather_ex", "gather_ex.cl"},
     {"gather_ex_1d", "gather_ex.cl"},
@@ -84,6 +85,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
+    {
+        "cast.cl",
+#include "./cl_kernels/cast.clembed"
+    },
     {
         "embedding_lookup.cl",
 #include "./cl_kernels/embedding_lookup.clembed"

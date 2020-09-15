@@ -685,7 +685,11 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
       {
         fn = acl_common::generateLayer<arm_compute::CLCopy>(input_tensor->handle(),
                                                             output_tensor->handle());
-        ;
+      }
+      else if (_ctx.at(input_index).typeInfo().type() == ir::DataType::BOOL8)
+      {
+        fn = acl_common::generateLayer<arm_compute::CLCastBool>(input_tensor->handle(),
+                                                                output_tensor->handle());
       }
       else
       {
