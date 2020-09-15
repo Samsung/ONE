@@ -76,7 +76,7 @@ private:
   static std::string opSequenceTag(const ir::OpSequence *op_seq, const ir::Operations &operations);
 
 private:
-  std::ofstream _ofs;
+  const std::string &_base_filepath;
   EventRecorder _recorder;
   EventCollector _collector;
   const ir::Graph &_graph;
