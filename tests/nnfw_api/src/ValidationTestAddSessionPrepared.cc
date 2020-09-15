@@ -39,6 +39,28 @@ TEST_F(ValidationTestAddSessionPrepared, run_twice)
   ASSERT_FLOAT_EQ(_output[0], 7.0);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, run_many_times_dynamic_input)
+{
+  for (int v = 1; v <= 5; v++) // 5 times with different shapes
+  {
+    nnfw_tensorinfo ti_input = {NNFW_TYPE_TENSOR_FLOAT32, 4, {1, 1, 1, v}};
+    SetInOutBuffersDynamic(&ti_input);
+
+    for (int i = 0; i < v; i++)
+      _input[i] = i * 10.0;
+
+    NNFW_ENSURE_SUCCESS(nnfw_run(_session));
+
+    // Check if the shape inference is correct
+    nnfw_tensorinfo ti_output;
+    ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
+    EXPECT_EQ(num_elems(&ti_input), num_elems(&ti_output));
+
+    for (int i = 0; i < v; i++)
+      ASSERT_FLOAT_EQ(_output[i], i * 10.0 + 2.0) << "i : " << i;
+  }
+}
+
 TEST_F(ValidationTestAddSessionPrepared, run_async)
 {
   SetInOutBuffers();
