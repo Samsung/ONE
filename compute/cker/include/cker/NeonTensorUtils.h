@@ -75,7 +75,6 @@ inline int32_t AccumulateNeonLane(const int32x4_t lane)
 
 } // namespace
 
-#ifdef __aarch64__
 // The implementation of dotprod detection is copied from ruy's internal
 // function DetectDotprod().
 // At the moment it's only implemented on Linux ARM64. Consider syncing again
@@ -106,6 +105,7 @@ bool HasSdotInstruction()
   return has_dotprod;
 }
 
+#ifdef __aarch64__
 // We interleave vector data to make the dot product logic more efficient.
 // Suppose that vectors is:
 //     a0 a1 a2 a3 a4 a5 ...
