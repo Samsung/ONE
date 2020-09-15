@@ -20,11 +20,13 @@
 
 #include <ruy/path.h>
 #include <ruy/ruy.h>
-#include <ruy/detect_arm.h>
 #include "cker/Types.h"
 #include "cker/neon/neon_check.h"
 #include "cker/ruy/RuySupport.h"
 #include "util/logging.h"
+#if defined __linux__ && defined __aarch64__
+#include <sys/auxv.h>
+#endif
 
 #include <cassert>
 #include <cmath>
@@ -74,10 +76,33 @@ inline int32_t AccumulateNeonLane(const int32x4_t lane)
 } // namespace
 
 #ifdef __aarch64__
+// The implementation of dotprod detection is copied from ruy's internal
+// function DetectDotprod().
+// At the moment it's only implemented on Linux ARM64. Consider syncing again
+// with ruy in the future to share improvements.
+#if defined __linux__ && defined __aarch64__
+bool DetectDotprodByLinuxAuxvMethod()
+{
+  // This is the value of HWCAP_ASIMDDP in sufficiently recent Linux headers,
+  // however we need to support building against older headers for the time
+  // being.
+  const int kLocalHwcapAsimddp = 1 << 20;
+  return getauxval(AT_HWCAP) & kLocalHwcapAsimddp;
+}
+#endif
+
+bool DetectArmNeonDotprod()
+{
+#if defined __linux__ && defined __aarch64__
+  return DetectDotprodByLinuxAuxvMethod();
+#endif
+
+  return false;
+}
 
 bool HasSdotInstruction()
 {
-  static const bool has_dotprod = ruy::DetectDotprod();
+  static const bool has_dotprod = DetectArmNeonDotprod();
   return has_dotprod;
 }
 
@@ -552,7 +577,7 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   lhs_params.order = Order::kRowMajor;
   lhs_params.rows = n_output;
   lhs_params.cols = n_input;
-  lhs_params.cacheable = true;
+  lhs_params.cache_policy = CachePolicy::kAlwaysCache;
 
   MatrixParams<int8_t> rhs_params;
   rhs_params.order = Order::kColMajor;
@@ -574,15 +599,15 @@ void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   ruy::Matrix<int8_t> ruy_lhs;
   ruy::Matrix<int8_t> ruy_rhs;
   ruy::Matrix<int32_t> ruy_dst;
-  ruy_support::MakeRuyMatrix(lhs_params, input_to_gate_weights, &ruy_lhs);
-  ruy_support::MakeRuyMatrix(rhs_params, input, &ruy_rhs);
+  // Note that cache is always enabled for input and weight tensors
+  ruy_support::MakeRuyMatrix(lhs_params, input_to_gate_weights, &ruy_lhs, true);
+  ruy_support::MakeRuyMatrix(rhs_params, input, &ruy_rhs, true);
   ruy_support::MakeRuyMatrix(dst_params, scratch, &ruy_dst);
 
-  ruy::BasicSpec<int32_t, int32_t> ruy_spec;
-  ruy_support::MakeRuySpec(gemm_params, &ruy_spec);
+  ruy::BasicSpec<int32_t, int32_t> ruy_mul_params;
+  ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
 
-  constexpr ruy::Path kRuyPath = ruy::kAllPaths;
-  ruy::Mul<kRuyPath>(ruy_lhs, ruy_rhs, ruy_spec, ruy_context, &ruy_dst);
+  ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);
 }
 
 void NeonSymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values,

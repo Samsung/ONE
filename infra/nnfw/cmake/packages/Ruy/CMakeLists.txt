@@ -13,6 +13,8 @@ list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/example.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/example_advanced.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/tune_tool.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/pmu.cc")
+list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/create_trmul_params.cc")
+list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/prepare_packed_matrices.cc")
 
 list(APPEND RUY_INSTRUMENTATION_SRCS "${RUY_BASE}/profiler/instrumentation.cc")
 
@@ -26,6 +28,10 @@ list(APPEND RUY_INCLUDES "${RuySource_DIR}")
 add_library(ruy STATIC ${RUY_SRCS})
 target_include_directories(ruy SYSTEM PUBLIC ${RUY_INCLUDES})
 target_compile_options(ruy PRIVATE -O3)
+
+target_include_directories(ruy PRIVATE ${CpuInfoSource_DIR})
+target_link_libraries(ruy PRIVATE cpuinfo)
+target_compile_definitions(ruy PRIVATE RUY_HAVE_CPUINFO)
 
 add_library(ruy_instrumentation ${RUY_INSTRUMENTATION_SRCS})
 target_include_directories(ruy_instrumentation SYSTEM PUBLIC ${RUY_INCLUDES})
