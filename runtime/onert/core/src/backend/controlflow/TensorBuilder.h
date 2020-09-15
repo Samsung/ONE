@@ -65,9 +65,9 @@ public:
    * @brief Get tensor with a specific OperandIndex.
    * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
    *        If not, program will crash with assert or exception.
-   * @return shared_ptr<operand::Tensor>
+   * @return operand::Tensor *
    */
-  std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
+  cpu_common::Tensor *nativeOwnTensorAt(const ir::OperandIndex &ind);
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

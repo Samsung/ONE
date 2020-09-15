@@ -27,8 +27,8 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
-                           const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
-                           const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+                           const std::vector<backend::ITensor *> &input_tensors,
+                           const std::vector<backend::ITensor *> &output_tensors,
                            const compiler::TensorRegistries &tensor_regs)
     : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()},
       _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
@@ -38,20 +38,20 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
   if (!primary_executor)
   {
     auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-      std::vector<std::shared_ptr<backend::ITensor>> list;
+      std::vector<backend::ITensor *> list;
       for (auto ind : ind_seq)
       {
-        std::shared_ptr<backend::ITensor> tensor = tensor_regs.getITensor(ind);
+        backend::ITensor *tensor = tensor_regs.getITensor(ind);
         assert(tensor != nullptr);
         list.push_back(tensor);
       }
       return list;
     };
     auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-      std::vector<std::shared_ptr<backend::ITensor>> list;
+      std::vector<backend::ITensor *> list;
       for (auto ind : ind_seq)
       {
-        std::shared_ptr<backend::ITensor> tensor = tensor_regs.getITensor(ind);
+        backend::ITensor *tensor = tensor_regs.getITensor(ind);
         assert(tensor != nullptr);
         list.push_back(tensor);
       }
@@ -62,7 +62,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
   }
 }
 
-void ExecutorBase::execute(const std::vector<std::shared_ptr<backend::ITensor>> &src_tensors,
+void ExecutorBase::execute(const std::vector<backend::ITensor *> &src_tensors,
                            const std::shared_ptr<IPermuteFunction> &pre_fn)
 {
   // For thread-safe, use mutex
@@ -112,7 +112,7 @@ void ExecutorBase::execute(const IODescription &desc)
   for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
     // TODO Remove dynamic_cast
-    auto tensor = std::dynamic_pointer_cast<backend::controlflow::UserTensor>(_input_tensors[i]);
+    auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_input_tensors[i]);
     assert(tensor);
     auto input_shape = desc.dynamic_input_shapes.find(ir::IOIndex{i});
     if (input_shape != desc.dynamic_input_shapes.end())
@@ -132,7 +132,7 @@ void ExecutorBase::execute(const IODescription &desc)
   for (uint32_t i = 0; i < _output_tensors.size(); ++i)
   {
     // TODO Remove dynamic_cast
-    auto tensor = std::dynamic_pointer_cast<backend::controlflow::UserTensor>(_output_tensors[i]);
+    auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_output_tensors[i]);
     assert(tensor);
     tensor->set_dynamic(); // It can't be resized but shape could change
     if (desc.outputs[i] == nullptr)

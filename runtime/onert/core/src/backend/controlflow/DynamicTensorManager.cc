@@ -36,8 +36,8 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        ir::Layout backend_layout)
 {
   auto tensor =
-      std::make_shared<cpu_common::Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
-  _tensors->setNativeOwnTensor(ind, tensor);
+      std::make_unique<cpu_common::Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
+  _tensors->setNativeOwnTensor(ind, std::move(tensor));
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
@@ -75,7 +75,7 @@ void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 
 const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
 {
-  auto ptr = _tensors->getITensor(ind).get();
+  auto ptr = _tensors->getITensor(ind);
   assert(ptr);
   return ptr;
 }

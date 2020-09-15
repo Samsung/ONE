@@ -30,9 +30,8 @@ namespace controlflow
 namespace kernel
 {
 
-IfLayer::IfLayer(const std::shared_ptr<backend::ITensor> &cond_tensor,
-                 const std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
-                 const std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+IfLayer::IfLayer(backend::ITensor *cond_tensor, const std::vector<backend::ITensor *> input_tensors,
+                 const std::vector<backend::ITensor *> output_tensors,
                  const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
                  exec::ExecutorMap *executor_map)
@@ -61,7 +60,7 @@ void IfLayer::run()
   };
 
   exec::ExecutorBase *subg_exec = nullptr;
-  bool cond_result = getResultCond(_cond_tensor.get());
+  bool cond_result = getResultCond(_cond_tensor);
   if (cond_result)
   {
     VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
@@ -77,8 +76,8 @@ void IfLayer::run()
 
   const auto &subg_graph = subg_exec->graph();
 
-  std::vector<std::shared_ptr<backend::ITensor>> src_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> dst_tensors;
+  std::vector<backend::ITensor *> src_tensors;
+  std::vector<backend::ITensor *> dst_tensors;
   // Add tensors used in subgraph or contained in outputs of subgraph
   assert(subg_graph.getInputs().size() == _input_tensors.size());
   assert(subg_graph.getInputs().size() == subg_exec->getInputTensors().size());

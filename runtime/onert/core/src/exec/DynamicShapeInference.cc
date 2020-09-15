@@ -95,10 +95,10 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
 void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
+  const auto input = _tensor_registry->getITensor(input_idx);
 
   const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
-  const auto &axis = _tensor_registry->getITensor(axis_idx);
+  const auto axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -230,7 +230,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
     for (auto input_ind : op.getInputs())
     {
       auto input = _tensor_registry->getITensor(input_ind);
-      if (input != first_input && !isConcatible(first_input.get(), input.get(), op.param().axis))
+      if (input != first_input && !isConcatible(first_input, input, op.param().axis))
         throw std::runtime_error("input shapes does not matched for concat");
     }
   }
@@ -348,7 +348,7 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  assert(input.get()->data_type() == ir::DataType::INT32);
+  assert(input->data_type() == ir::DataType::INT32);
 
   auto input_buf = reinterpret_cast<const int32_t *>(input->buffer());
   assert(input_buf);

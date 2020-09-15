@@ -35,8 +35,8 @@ namespace kernel
 class WhileLayer : public ::onert::exec::IFunction
 {
 public:
-  WhileLayer(const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
-             const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+  WhileLayer(const std::vector<backend::ITensor *> input_tensors,
+             const std::vector<backend::ITensor *> output_tensors,
              const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
              exec::ExecutorMap *executor_map);
@@ -49,8 +49,8 @@ private:
   const ir::SubgraphIndex _body_subg_index;
   const ir::OperandIndexSequence &_output_indices;
   const ir::Graph &_graph;
-  const std::vector<std::shared_ptr<backend::ITensor>> _input_tensors;
-  const std::vector<std::shared_ptr<backend::ITensor>> _output_tensors;
+  const std::vector<backend::ITensor *> _input_tensors;
+  const std::vector<backend::ITensor *> _output_tensors;
   exec::ExecutorMap *_executor_map;
 };
 

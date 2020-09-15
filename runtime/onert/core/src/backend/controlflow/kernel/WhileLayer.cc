@@ -30,8 +30,8 @@ namespace controlflow
 namespace kernel
 {
 
-WhileLayer::WhileLayer(const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
-                       const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+WhileLayer::WhileLayer(const std::vector<backend::ITensor *> input_tensors,
+                       const std::vector<backend::ITensor *> output_tensors,
                        const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                        const ir::SubgraphIndex &cond_subg_index,
                        const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map)
@@ -62,11 +62,11 @@ void WhileLayer::run()
   const auto &cond_graph = cond_exec->graph();
   const auto &body_graph = body_exec->graph();
 
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> cond_input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> body_input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> body_output_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::ITensor *> cond_input_tensors;
+  std::vector<backend::ITensor *> body_input_tensors;
+  std::vector<backend::ITensor *> body_output_tensors;
+  std::vector<backend::ITensor *> output_tensors;
 
   // Add only used tensors in cond subgraph
   assert(cond_graph.getInputs().size() == _input_tensors.size());
@@ -204,7 +204,7 @@ void WhileLayer::run()
   auto permute_to_outputs_fn = permute_op_input_to_op_output;
 
   // Loop while Cond subgraph's output is true
-  while (getResultCond(cond_output_tensor.get()))
+  while (getResultCond(cond_output_tensor))
   {
     body_execute();
     cond_execute();

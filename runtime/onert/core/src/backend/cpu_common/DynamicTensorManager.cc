@@ -36,8 +36,8 @@ void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
                                        ir::Layout backend_layout)
 {
   assert(_tensors->getNativeTensor(ind) == nullptr);
-  auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
-  _tensors->setNativeTensor(ind, tensor);
+  auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
+  _tensors->setNativeTensor(ind, std::move(tensor));
 }
 
 void DynamicTensorManager::planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind)
@@ -54,7 +54,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   auto &input_set = find->second;
   for (auto input_ind : input_set)
   {
-    auto *tensor = _tensors->getNativeTensor(input_ind).get();
+    auto *tensor = _tensors->getNativeTensor(input_ind);
     if (!tensor->is_dynamic())
       continue;
 
@@ -68,7 +68,7 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
 
 void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 {
-  auto *tensor = _tensors->getNativeTensor(output_ind).get();
+  auto *tensor = _tensors->getNativeTensor(output_ind);
   if (!tensor->is_dynamic())
     return;
 
@@ -81,7 +81,7 @@ void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
 
 const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
 {
-  auto ptr = _tensors->getITensor(ind).get();
+  auto ptr = _tensors->getITensor(ind);
   assert(ptr);
   return ptr;
 }

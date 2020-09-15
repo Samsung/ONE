@@ -48,7 +48,7 @@ class TensorRegistry : public ITensorRegistry
 public:
   TensorRegistry() : _base_reg{new cpu_common::TensorRegistry} {}
 
-  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
+  ITensor *getITensor(const ir::OperandIndex &ind) override
   {
     auto base_tensor = _base_reg->getITensor(ind);
     if (base_tensor)
@@ -56,7 +56,7 @@ public:
     return getNativeUserTensor(ind);
   }
 
-  std::shared_ptr<ITensor> getNativeITensor(const ir::OperandIndex &ind) override
+  ITensor *getNativeITensor(const ir::OperandIndex &ind) override
   {
     auto base_tensor = _base_reg->getNativeITensor(ind);
     if (base_tensor)
@@ -64,7 +64,7 @@ public:
     return getNativeUserTensor(ind);
   }
 
-  std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
+  IPortableTensor *getPortableTensor(const ir::OperandIndex &ind)
   {
     auto base_tensor = _base_reg->getPortableTensor(ind);
     if (base_tensor)
@@ -72,7 +72,7 @@ public:
     return getNativeUserTensor(ind);
   }
 
-  std::shared_ptr<IPortableTensor> getNativeTensor(const ir::OperandIndex &ind)
+  IPortableTensor *getNativeTensor(const ir::OperandIndex &ind)
   {
     auto base_tensor = _base_reg->getNativeTensor(ind);
     if (base_tensor)
@@ -80,21 +80,20 @@ public:
     return getNativeUserTensor(ind);
   }
 
-  std::shared_ptr<Tensor> getNativeOwnTensor(const ir::OperandIndex &ind)
+  Tensor *getNativeOwnTensor(const ir::OperandIndex &ind)
   {
     return _base_reg->getNativeTensor(ind);
   }
 
-  std::shared_ptr<UserTensor> getNativeUserTensor(const ir::OperandIndex &ind)
+  UserTensor *getNativeUserTensor(const ir::OperandIndex &ind)
   {
     auto tensor = _native_user_tensors.find(ind);
     if (tensor != _native_user_tensors.end())
-      return tensor->second;
+      return tensor->second.get();
     return nullptr;
   }
 
-  bool setMigrantTensor(const ir::OperandIndex &ind,
-                        const std::shared_ptr<IPortableTensor> &tensor) override
+  bool setMigrantTensor(const ir::OperandIndex &ind, IPortableTensor *tensor) override
   {
     assert(tensor);
     assert(!getITensor(ind)); // For the ind, tensor is not registered yet
@@ -102,21 +101,21 @@ public:
     return true;
   }
 
-  void setNativeOwnTensor(ir::OperandIndex ind, const std::shared_ptr<Tensor> &tensor)
+  void setNativeOwnTensor(ir::OperandIndex ind, std::unique_ptr<Tensor> &&tensor)
   {
     assert(tensor);
     assert(!getITensor(ind)); // For the ind, tensor is not registered yet
-    _base_reg->setNativeTensor(ind, tensor);
+    _base_reg->setNativeTensor(ind, std::move(tensor));
   }
 
-  void setNativeUserTensor(ir::OperandIndex ind, const std::shared_ptr<UserTensor> &tensor)
+  void setNativeUserTensor(ir::OperandIndex ind, std::unique_ptr<UserTensor> &&tensor)
   {
     assert(tensor);
     assert(!getITensor(ind)); // For the ind, tensor is not registered yet
-    _native_user_tensors[ind] = tensor;
+    _native_user_tensors[ind] = std::move(tensor);
   }
 
-  const ir::OperandIndexMap<std::shared_ptr<UserTensor>> &native_user_tensors()
+  const ir::OperandIndexMap<std::unique_ptr<UserTensor>> &native_user_tensors()
   {
     return _native_user_tensors;
   }
@@ -124,7 +123,7 @@ public:
 
 private:
   std::shared_ptr<cpu_common::TensorRegistry> _base_reg;
-  ir::OperandIndexMap<std::shared_ptr<UserTensor>> _native_user_tensors;
+  ir::OperandIndexMap<std::unique_ptr<UserTensor>> _native_user_tensors;
 };
 
 } // namespace controlflow
