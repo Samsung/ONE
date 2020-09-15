@@ -141,6 +141,12 @@ void printResultMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
   }
 }
 
+void printOverallMemory(uint32_t overall_memory)
+{
+  std::cout << "Overall Memory: " << overall_memory << " kb" << std::endl;
+  std::cout << "===================================" << std::endl;
+}
+
 } // namespace
 
 namespace benchmark
@@ -175,11 +181,14 @@ Result::Result(const Phases &phases)
       }
     }
   }
+  overall_memory = phases.overall_memory();
 }
 
 void printResult(const Result &result)
 {
   printResultTime(result.time);
+
+  printOverallMemory(result.overall_memory);
 
   if (result.print_memory == false)
     return;

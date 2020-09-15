@@ -50,6 +50,8 @@ public:
   const MemoryPoller &mem_poll() const { return *_mem_poll; }
   const Phase &at(const std::string &tag) const { return _phases.at(tag); }
 
+  uint32_t overall_memory() const { return _mem_after_run - _mem_before_init; }
+
 private:
   void run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc *post, uint32_t loop_num,
            bool option_disable);
@@ -58,6 +60,8 @@ private:
   const PhaseOption _option;
   std::unordered_map<std::string, Phase> _phases;
   std::unique_ptr<MemoryPoller> _mem_poll;
+  uint32_t _mem_before_init;
+  uint32_t _mem_after_run;
 };
 
 } // namespace benchmark
