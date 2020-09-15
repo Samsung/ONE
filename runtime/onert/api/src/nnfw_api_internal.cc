@@ -112,7 +112,16 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   if (size == 0)
     return NNFW_STATUS_ERROR;
 
-  _subgraphs = onert::circle_loader::loadModel(buffer, size);
+  try
+  {
+    _subgraphs = onert::circle_loader::loadModel(buffer, size);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during model loading : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs);
 
   _state = State::MODEL_LOADED;

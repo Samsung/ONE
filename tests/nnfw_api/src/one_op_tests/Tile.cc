@@ -70,7 +70,7 @@ TEST_F(GenModelTest, neg_OneOp_Tile)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
-  _context->setCompileFail();
+  _context->expectFailCompile();
 
   SUCCEED();
 }
