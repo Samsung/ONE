@@ -21,6 +21,7 @@
 #include "util/logging.h"
 #include "compiler/pass/ConstantInsertionPass.h"
 #include "compiler/pass/ConstantLoweringPass.h"
+#include "compiler/pass/PassRunner.h"
 #include "compiler/pass/PermutationOperationPass.h"
 #include "compiler/pass/PermutationInsertionPass.h"
 #include "compiler/pass/PermutationEliminationPass.h"
@@ -101,14 +102,14 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
       std::reverse(std::begin(op_seq.operations()), std::end(op_seq.operations()));
     });
 
-    VERBOSE(OpSequences) << "dump without permutation" << std::endl;
+    VERBOSE(OpSequences) << "dump before permutation insertion" << std::endl;
     dumpOpSequences(_op_seqs, _graph.operations());
 
-    pass::ConstantInsertionPass ci_pass(*this);
-    ci_pass.run();
-
-    pass::ConstantLoweringPass cl_pass(*this);
-    cl_pass.run();
+    // Mandatory passes
+    pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantInsertionPass>(*this))
+        .append(std::make_unique<pass::ConstantLoweringPass>(*this))
+        .run();
 
     // Set LowerInfo for each operand from the operand::LowerInfo holder
     manipulateLowerInfo(operands_lower_info, options.is_primary_subgraph);
@@ -116,20 +117,17 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
     dumpLowerInfo();
   }
 
-  // Run Permutation Passes
-  {
-    pass::PermutationOperationPass po_pass(*this);
-    po_pass.run();
+  // Mandatory passes
+  pass::PassRunner{}
+      .append(std::make_unique<pass::PermutationOperationPass>(*this))
+      .append(std::make_unique<pass::PermutationInsertionPass>(*this))
+      .run();
 
-    pass::PermutationInsertionPass pi_pass(*this);
-    pi_pass.run();
+  // Optimization passes
+  pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
-    pass::PermutationEliminationPass pe_pass(*this);
-    pe_pass.run();
-
-    VERBOSE(OpSequences) << "dump with permutation" << std::endl;
-    dumpOpSequences(_op_seqs, _graph.operations());
-  }
+  VERBOSE(OpSequences) << "Dump after permutation insertion" << std::endl;
+  dumpOpSequences(_op_seqs, _graph.operations());
 
   // Graph verifications
   {
