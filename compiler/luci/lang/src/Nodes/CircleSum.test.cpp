@@ -30,7 +30,7 @@ TEST(CircleSumTest, constructor_P)
 
   ASSERT_EQ(nullptr, sum_node.input());
   ASSERT_EQ(nullptr, sum_node.reduction_indices());
-  ASSERT_EQ(false, sum_node.keep_dims());
+  ASSERT_FALSE(sum_node.keep_dims());
 }
 
 TEST(CircleSumTest, input_NEG)
