@@ -120,5 +120,5 @@ $ NNAS_BUILD_PREFIX=build ./nnas create-package --preset 20200731_windows --pref
 ```
 
 - `NNAS_BUILD_PREFIX` is the path to directory where compiler-build-artifacts will be stored.
-- `--preset` is the one we've prepared to make building easier. You can see `infra/packaging/preset` for more details and getting latest version.
+- `--preset` is the one that specifies a version you will be install. You can see `infra/packaging/preset/` directory for more details and getting latest version.
 - `--prefix` is the install directory.
