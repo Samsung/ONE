@@ -98,6 +98,17 @@ private:
   bool _expect_error_on_run = false;
 };
 
+template <>
+inline void TestCaseData::addData<bool>(std::vector<std::vector<uint8_t>> &dest,
+                                        const std::vector<bool> &data)
+{
+  size_t size = data.size() * sizeof(uint8_t);
+  dest.emplace_back();
+  dest.back().resize(size);
+  std::transform(data.cbegin(), data.cend(), dest.back().data(),
+                 [](bool b) { return static_cast<uint8_t>(b); });
+}
+
 /**
  * @brief Create a TestCaseData with a uniform type
  *
