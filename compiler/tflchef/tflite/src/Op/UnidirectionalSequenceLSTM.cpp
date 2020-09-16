@@ -44,6 +44,7 @@ TFliteOpUnidirectionalSequenceLSTM::build(const tflite::Operator *op, TFliteImpo
   op_options->set_cell_clip(op_params->cell_clip());
   op_options->set_proj_clip(op_params->proj_clip());
   op_options->set_time_major(op_params->time_major());
+  op_options->set_asymmetric_quantize_inputs(op_params->asymmetric_quantize_inputs());
 
   return operation;
 }
