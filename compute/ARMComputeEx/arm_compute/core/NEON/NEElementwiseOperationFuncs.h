@@ -53,22 +53,6 @@ class QuantizationInfo;
 namespace arm_compute
 {
 
-float32x4x4_t load_quantized(const uint8_t *input1_ptr, const int32x4_t &offset,
-                             const float32x4_t &scale);
-
-void store_quantized(uint8_t *output_ptr, const float32x4x4_t &rf, const float32x4_t &offset,
-                     const float32x4_t &invscale);
-
-float32x4x4_t dup_quantized(uint8_t broadcast_value, int offset, float scale);
-
-void elementwise_op_quantized(
-    const ITensor *in1, const ITensor *in2, ITensor *out, const Window &window,
-    uint8_t (*scalar_func)(const float &, const float &, QuantizationInfo),
-    int (*broadcast_func)(int, int, int, const uint8_t *, float32x4x4_t, uint8_t *, int32x4_t,
-                          float32x4_t, float32x4_t, float32x4_t, const bool),
-    int (*neon_func)(int, int, int, const uint8_t *, const uint8_t *, uint8_t *, int32x4_t,
-                     int32x4_t, float32x4_t, float32x4_t, float32x4_t, float32x4_t));
-
 void elementwise_op(const ITensor *in1, const ITensor *in2, ITensor *out, const Window &window,
                     float (*scalar_func)(const float &, const float &),
                     int (*broadcast_func)(int, int, int, const float *, const float &, float *,
