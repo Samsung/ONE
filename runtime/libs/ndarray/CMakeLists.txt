@@ -13,7 +13,6 @@ if(${NDARRAY_INLINE_TEMPLATES})
 endif()
 
 target_link_libraries(ndarray PRIVATE nnfw_common)
-target_link_libraries(ndarray PRIVATE nnfw_coverage)
 
 add_subdirectory(test)
 add_subdirectory(example)
