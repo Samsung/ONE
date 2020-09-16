@@ -25,6 +25,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <stdexcept>
 
 namespace luci_interpreter
 {
