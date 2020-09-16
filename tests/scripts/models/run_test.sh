@@ -155,7 +155,7 @@ run_tests()
         # Test configure initialization
         ((i++))
         STATUS="enabled"
-        MODELFILE_SERVER_PATH=""
+        MODELFILE_URL_BASE=""
         MODELFILE_NAME=""
         source $TEST_ROOT_PATH/$TEST_NAME/config.sh
 
@@ -211,13 +211,13 @@ download_tests()
     for TEST_NAME in $SELECTED_TESTS; do
         # Test configure initialization
         ((i++))
-        MODELFILE_SERVER_PATH=""
+        MODELFILE_URL_BASE=""
         MODELFILE_NAME=""
         source $TEST_ROOT_PATH/$TEST_NAME/config.sh
 
         TEST_CACHE_PATH=$CACHE_ROOT_PATH/$TEST_NAME
         MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
-        MODELFILE_URL="$MODELFILE_SERVER/$MODELFILE_NAME"
+        MODELFILE_URL="$MODELFILE_URL_BASE/$MODELFILE_NAME"
         if [ -n  "$FIXED_MODELFILE_SERVER" ]; then
             MODELFILE_URL="$FIXED_MODELFILE_SERVER/$MODELFILE_NAME"
         fi
