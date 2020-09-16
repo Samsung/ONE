@@ -36,29 +36,36 @@ CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
 {
   auto *node = graph->nodes()->create<CircleUnidirectionalSequenceLSTM>();
   node->input(inputs.at(0));
-  node->input_to_input_weights(inputs.at(1));
+
+  node->input_to_input_weights(inputs.at(1)); // Optional
   node->input_to_cell_weights(inputs.at(2));
   node->input_to_forget_weights(inputs.at(3));
   node->input_to_output_weights(inputs.at(4));
-  node->recurrent_to_input_weights(inputs.at(5));
+
+  node->recurrent_to_input_weights(inputs.at(5)); // Optional
   node->recurrent_to_cell_weights(inputs.at(6));
   node->recurrent_to_forget_weights(inputs.at(7));
   node->recurrent_to_output_weights(inputs.at(8));
-  node->cell_to_input_weights(inputs.at(9));
-  node->cell_to_forget_weights(inputs.at(10));
-  node->cell_to_output_weights(inputs.at(11));
-  node->input_gate_bias(inputs.at(12));
+
+  node->cell_to_input_weights(inputs.at(9));   // Optional
+  node->cell_to_forget_weights(inputs.at(10)); // Optional
+  node->cell_to_output_weights(inputs.at(11)); // Optional
+
+  node->input_gate_bias(inputs.at(12)); // Optional
   node->forget_gate_bias(inputs.at(13));
   node->cell_gate_bias(inputs.at(14));
   node->output_gate_bias(inputs.at(15));
-  node->projection_weights(inputs.at(16));
-  node->projection_bias(inputs.at(17));
+
+  node->projection_weights(inputs.at(16)); // Optional
+  node->projection_bias(inputs.at(17));    // Optional
+
   node->activation_state(inputs.at(18));
   node->cell_state(inputs.at(19));
-  node->input_layer_norm_coefficients(inputs.at(20));
-  node->forget_layer_norm_coefficients(inputs.at(21));
-  node->cell_layer_norm_coefficients(inputs.at(22));
-  node->output_layer_norm_coefficients(inputs.at(23));
+
+  node->input_layer_norm_coefficients(inputs.at(20));  // Optional
+  node->forget_layer_norm_coefficients(inputs.at(21)); // Optional
+  node->cell_layer_norm_coefficients(inputs.at(22));   // Optional
+  node->output_layer_norm_coefficients(inputs.at(23)); // Optional
 
   const auto *options = op.builtin_options.AsUnidirectionalSequenceLSTMOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));

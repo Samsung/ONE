@@ -606,6 +606,7 @@ public:
       os << "cell_clip(" << params->cell_clip() << ") ";
       os << "proj_clip(" << params->proj_clip() << ") ";
       os << "time_major(" << params->time_major() << ") ";
+      os << "asymmetric_quantize_inputs(" << params->asymmetric_quantize_inputs() << ") ";
       os << std::endl;
     }
   }

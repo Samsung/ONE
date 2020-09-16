@@ -130,6 +130,7 @@ operation {
     cell_clip: 0.0
     proj_clip: 0.0
     time_major: false
+    asymmetric_quantize_inputs: false
   }
   input: "ifm"
   input: "input_to_input_weights"

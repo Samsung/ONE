@@ -64,6 +64,7 @@ TEST(CircleUnidirectionalSequenceLSTMTest, constructor_P)
   ASSERT_EQ(0.f, trc_node.cell_clip());
   ASSERT_EQ(0.f, trc_node.proj_clip());
   ASSERT_EQ(false, trc_node.time_major());
+  ASSERT_EQ(false, trc_node.asymmetric_quantize_inputs());
 }
 
 TEST(CircleUnidirectionalSequenceLSTMTest, arity_NEG)

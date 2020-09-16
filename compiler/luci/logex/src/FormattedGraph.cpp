@@ -1030,6 +1030,7 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleUnidirectiona
   s.args().append("cell_clip", to_str(node->cell_clip()));
   s.args().append("proj_clip", to_str(node->proj_clip()));
   s.args().append("time_major", to_str(node->time_major()));
+  s.args().append("asymmetric_quantize_inputs", to_str(node->asymmetric_quantize_inputs()));
 
   s.state(locop::NodeSummary::State::Complete);
   return true;

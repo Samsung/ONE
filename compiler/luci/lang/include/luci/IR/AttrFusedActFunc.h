@@ -28,7 +28,9 @@ enum class FusedActFunc
   NONE,
   RELU,
   RELU_N1_TO_1,
-  RELU6
+  RELU6,
+  TANH,
+  SIGN_BIT
 };
 
 } // namespace luci

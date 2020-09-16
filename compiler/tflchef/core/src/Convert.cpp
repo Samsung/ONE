@@ -45,6 +45,10 @@ tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &v
       return tflite::ActivationFunctionType_RELU_N1_TO_1;
     case tflchef::RELU6:
       return tflite::ActivationFunctionType_RELU6;
+    case tflchef::TANH:
+      return tflite::ActivationFunctionType_TANH;
+    case tflchef::SIGN_BIT:
+      return tflite::ActivationFunctionType_SIGN_BIT;
     default:
       break;
   }

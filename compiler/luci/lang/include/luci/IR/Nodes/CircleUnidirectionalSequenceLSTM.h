@@ -97,11 +97,17 @@ public:
   void proj_clip(float proj_clip) { _proj_clip = proj_clip; }
   bool time_major(void) const { return _time_major; }
   void time_major(bool time_major) { _time_major = time_major; }
+  bool asymmetric_quantize_inputs(void) const { return _asymmetric_quantize_inputs; }
+  void asymmetric_quantize_inputs(bool asymmetric_quantize_inputs)
+  {
+    _asymmetric_quantize_inputs = asymmetric_quantize_inputs;
+  }
 
 private:
   float _cell_clip = 0.0f;
   float _proj_clip = 0.0f;
   bool _time_major = false;
+  bool _asymmetric_quantize_inputs = false;
 };
 
 } // namespace luci

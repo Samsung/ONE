@@ -1378,7 +1378,8 @@ void OperationExporter::visit(luci::CircleUnidirectionalSequenceLSTM *node)
                 circle::BuiltinOptions_UnidirectionalSequenceLSTMOptions,
                 CreateUnidirectionalSequenceLSTMOptions(
                     _ctx.builder, to_circle_actfunc(node->fusedActivationFunction()),
-                    node->cell_clip(), node->proj_clip(), node->time_major())
+                    node->cell_clip(), node->proj_clip(), node->time_major(),
+                    node->asymmetric_quantize_inputs())
                     .Union());
 }
 
