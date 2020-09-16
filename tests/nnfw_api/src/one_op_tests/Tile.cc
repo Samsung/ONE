@@ -35,13 +35,55 @@ TEST_F(GenModelTest, OneOp_Tile_ConstMul)
   SUCCEED();
 }
 
-// Variable mul input is not supported yet
-TEST_F(GenModelTest, DISABLED_OneOp_Tile_VarMul)
+TEST_F(GenModelTest, OneOp_Tile_MulToConst)
 {
   CircleGen cgen;
-  int in = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_INT32});
+  std::vector<int32_t> multiplies_data{2, 3, 1};
+  uint32_t multiplies_buf = cgen.addBuffer(multiplies_data);
+  int multiplies = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, multiplies_buf});
+  int in = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2, 6, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorTile({{in, multiplies}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>(
+      {{11, 12, 13, 21, 22, 23}},
+      {{11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
+        11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_Tile_MulToVar)
+{
+  CircleGen cgen;
+  int multiplies = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32});
+  int in = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2, 6, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorTile({{in, multiplies}, {out}});
+  cgen.setInputsAndOutputs({in, multiplies}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  TestCaseData tcd;
+  tcd.addInput(std::vector<float>{11, 12, 13, 21, 22, 23});
+  tcd.addInput(std::vector<int32_t>{2, 3, 1});
+  tcd.addOutput(std::vector<float>{11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
+                                   11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23,
+                                   11, 12, 13, 21, 22, 23, 11, 12, 13, 21, 22, 23});
+  _context->addTestCase(tcd);
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_Tile_VarMul)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
   int mul = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
-  int out = cgen.addTensor({{2, 6}, circle::TensorType::TensorType_INT32});
+  int out = cgen.addTensor({{2, 6}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorTile({{in, mul}, {out}});
   cgen.setInputsAndOutputs({in, mul}, {out});
 
@@ -71,6 +113,24 @@ TEST_F(GenModelTest, neg_OneOp_Tile)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
   _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Tile_InvalidMulSize)
+{
+  CircleGen cgen;
+  std::vector<int32_t> multiplies_data{2, 6};
+  uint32_t multiplies_buf = cgen.addBuffer(multiplies_data);
+  int multiplies = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, multiplies_buf});
+  int in = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2, 6, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorTile({{in, multiplies}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->setCompileFail();
 
   SUCCEED();
 }

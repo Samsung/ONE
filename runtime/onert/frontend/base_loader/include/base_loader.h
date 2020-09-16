@@ -152,7 +152,6 @@ private:
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
   void loadArgMax(const Operator *op, ir::Graph &subg);
-  void loadTile(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
@@ -1222,24 +1221,6 @@ void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadTile(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  loadOperationIO(op, inputs, outputs);
-
-  auto multiples = inputs.at(ir::operation::Tile::MULTIPLES);
-
-  // FIXME Handle TileOptions
-  if (!subg.operands().at(multiples).isConstant())
-    throw std::runtime_error("Tile: non-constant 'multiples' is not supported.");
-
-  std::unique_ptr<ir::Operation> new_op(new ir::operation::Tile(inputs, outputs));
-  subg.addOperation(std::move(new_op));
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadLogSoftmax(const Operator *op, ir::Graph &subg)
 {
   ir::operation::LogSoftmax::Param param;
@@ -1476,7 +1457,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       loadElementwiseUnary(op, subg, ir::operation::ElementwiseUnary::Type::ZEROS_LIKE);
       return;
     case BuiltinOperator::BuiltinOperator_TILE:
-      loadTile(op, subg);
+      loadOperationTo<ir::operation::Tile>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadOperationTo<ir::operation::Range>(op, subg);
