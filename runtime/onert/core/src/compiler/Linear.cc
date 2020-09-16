@@ -182,7 +182,14 @@ void Linear::planTensors(const compiler::LoweredGraph &lowered_graph,
           // plan for deallocation of dynamic tensor
           auto dyn_tensor_manager = tensor_builder_map[ind]->dynamicTensorManager();
           if (dyn_tensor_manager)
-            dyn_tensor_manager->planDealloc(op_idx, ind);
+          {
+            const auto *backend =
+                lowered_graph.getLowerInfo(ind)->def_factors().getOnlyElement().backend();
+            auto &tensor_registry = lowered_graph.backend_contexts().at(backend)->tensor_registry;
+            auto *tensor = tensor_registry->getITensor(ind);
+            assert(tensor);
+            dyn_tensor_manager->planDealloc(op_idx, tensor);
+          }
         }
       }
     }

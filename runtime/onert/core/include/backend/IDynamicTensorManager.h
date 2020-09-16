@@ -41,10 +41,10 @@ public:
   /**
    * @brief Plan when to delete a tensor. Note this planning is done at compilation time.
    * @param op_ind        operation index
-   * @param operand_ind   operand index of input operand of first param op. Operand can be static
+   * @param tensor        candidate ITensor to dealloc. Tensor can be static
    *                      or dynamic since tensor type may not be clearly known at compilation time.
    */
-  virtual void planDealloc(ir::OperationIndex op_ind, ir::OperandIndex operand_ind) = 0;
+  virtual void planDealloc(ir::OperationIndex op_ind, backend::ITensor *tensor) = 0;
 
   /**
    * @brief Deallocate input tensors of op if an input tensor is a dynamic tensor and it won't
