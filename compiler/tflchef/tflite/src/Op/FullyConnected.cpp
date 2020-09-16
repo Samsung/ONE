@@ -24,7 +24,36 @@ namespace tflchef
 void TFliteOpFullyConnected::filler(const tflite::Operator *op, TFliteImport *import,
                                     tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const auto &inputs = *op->inputs();
+
+  for (uint32_t i = 1; i < inputs.size(); i++)
+  {
+    // optional input tensor idx has minus value.
+    if (inputs[i] >= 0)
+    {
+      const auto tensor = import->tensors()->Get(inputs[i]);
+      const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+      if (not buffer->data())
+        continue;
+      switch (tensor->type())
+      {
+        case tflite::TensorType::TensorType_FLOAT32:
+        {
+          auto data = extract_buffer<float>(buffer);
+          import->set_tensor_filler(inputs[i], data);
+          break;
+        }
+        case tflite::TensorType::TensorType_INT32:
+        {
+          auto data = extract_buffer<int32_t>(buffer);
+          import->set_tensor_filler(inputs[i], data);
+          break;
+        }
+        default:
+          import->set_tensor_filler(inputs[i]);
+      }
+    }
+  }
 }
 
 tflchef::Operation *TFliteOpFullyConnected::build(const tflite::Operator *op, TFliteImport *import,
