@@ -40,7 +40,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<T>(output_tensor), FloatArrayNear(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
 }
 
@@ -69,9 +69,8 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(output_data, output_tensor.scale())));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(output_data, output_tensor.scale()));
 }
 
 template <typename T> class SoftmaxTest : public ::testing::Test

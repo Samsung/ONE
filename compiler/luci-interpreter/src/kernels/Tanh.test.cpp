@@ -45,8 +45,7 @@ TEST(TanhTest, Float)
       0,          -0.9999877, 0.9640275, 0.999329,  //
       0.99505475, -0.9640275, 1,         0.7615941, //
   };
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
 
 TEST(TanhTest, Uint8)
@@ -94,8 +93,7 @@ TEST(TanhTest, Uint8)
       -0.999329, -0.96402,  0.99999,  0.76159,  //
   };
   std::vector<int32_t> ref_output_shape{2, 6, 4, 1};
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kTanhTolerance)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data, kTanhTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 

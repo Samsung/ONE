@@ -85,7 +85,7 @@ TEST(IfTest, CondTrue)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output), ElementsAreArray(ArrayFloatNear({6, 9})));
+  EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({6, 9}));
 }
 
 TEST(IfTest, CondFalse)
@@ -103,7 +103,7 @@ TEST(IfTest, CondFalse)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output), ElementsAreArray(ArrayFloatNear({5, 14})));
+  EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({5, 14}));
 }
 
 TEST(IfTest, InvalidCondType_NEG)

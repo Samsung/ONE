@@ -56,8 +56,7 @@ TEST(MulTest, Float)
     kernel.configure();
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+    EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
         << "With shape number " << i;
   }
   // Re-run with exchanged inputs.
@@ -74,8 +73,7 @@ TEST(MulTest, Float)
     kernel.configure();
     kernel.execute();
 
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ::testing::ElementsAreArray(ArrayFloatNear(test_outputs[i], 0.0001f)))
+    EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
         << "With shape number " << i;
   }
 }

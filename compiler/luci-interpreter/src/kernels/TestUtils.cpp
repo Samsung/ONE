@@ -40,7 +40,7 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
   return dequantize(extractTensorData<uint8_t>(tensor), tensor.scale(), tensor.zero_point());
 }
 
-std::vector<Matcher<float>> ArrayFloatNear(const std::vector<float> &values, float max_abs_error)
+Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values, float max_abs_error)
 {
   std::vector<Matcher<float>> matchers;
   matchers.reserve(values.size());
@@ -48,7 +48,7 @@ std::vector<Matcher<float>> ArrayFloatNear(const std::vector<float> &values, flo
   {
     matchers.emplace_back(FloatNear(v, max_abs_error));
   }
-  return matchers;
+  return ElementsAreArray(matchers);
 }
 
 std::vector<int32_t> extractTensorShape(const Tensor &tensor)

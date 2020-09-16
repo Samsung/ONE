@@ -44,7 +44,7 @@ TEST(ConcatenationTest, Float)
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ElementsAreArray(ArrayFloatNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})));
+                FloatArrayNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
   }
   {
     params.axis = -2; // Same as '0'.
@@ -54,7 +54,7 @@ TEST(ConcatenationTest, Float)
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ElementsAreArray(ArrayFloatNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})));
+                FloatArrayNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
   }
   {
     params.axis = 1;
@@ -64,7 +64,7 @@ TEST(ConcatenationTest, Float)
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ElementsAreArray(ArrayFloatNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12})));
+                FloatArrayNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12}));
   }
   {
     params.axis = -1; // Same as '1'.
@@ -74,7 +74,7 @@ TEST(ConcatenationTest, Float)
     kernel.execute();
 
     EXPECT_THAT(extractTensorData<float>(output_tensor),
-                ElementsAreArray(ArrayFloatNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12})));
+                FloatArrayNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12}));
   }
 }
 
