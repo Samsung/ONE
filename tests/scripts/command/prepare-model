@@ -50,6 +50,12 @@ do
     shift
 done
 
+# Default download server url
+if [[ -z "$MODELFILE_SERVER" ]]; then
+    export MODELFILE_SERVER="http://npu.mooo.com/archive/tflite_test_model/"
+fi
+echo "Download from $MODELFILE_SERVER"
+
 if [[ $DOWNLOAD_MODEL == "all" ]] || [[ $DOWNLOAD_MODEL == "tflite" ]]; then
     # Download tflite models
     $INSTALL_DIR/test/models/run_test.sh --download=on --run=off --md5=$MD5_CHECK
