@@ -248,8 +248,9 @@ int64_t HEScheduler::getPermuteTime(const backend::Backend *src_backend,
   if (time != _exec_time->NOT_FOUND)
     return time;
 
+  // FIXME permute time is not recorded so the control reaches here always
   // Makes the scheduler prefer keeping computations on one backend
-  return size / 200;
+  return size / 400;
 }
 
 int64_t HEScheduler::tryBackend(const ir::Operation &node, const backend::Backend *backend)
