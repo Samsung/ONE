@@ -71,7 +71,10 @@ void NNPackages::checkAll()
     DIR *dir = opendir(path.c_str());
     if (!dir)
     {
-      std::string msg = "missing nnpackage: " + package_name + ", path: " + path;
+      std::string msg =
+          "missing nnpackage: " + package_name + ", path: " + path +
+          "\nPlease run \'[install_dir]/test/onert-test prepare-model --nnpackage\' to "
+          "download nnpackage";
       throw std::runtime_error{msg};
     }
     closedir(dir);
