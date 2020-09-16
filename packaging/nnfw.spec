@@ -12,6 +12,7 @@ Source1002: gtest.tar.gz
 Source1003: eigen.tar.gz
 Source1004: gemmlowp.tar.gz
 Source1005: ruy.tar.gz
+Source1006: cpuinfo.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -114,6 +115,7 @@ tar -xf %{SOURCE1002} -C ./externals
 tar -xf %{SOURCE1003} -C ./externals
 tar -xf %{SOURCE1004} -C ./externals
 tar -xf %{SOURCE1005} -C ./externals
+tar -xf %{SOURCE1006} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64

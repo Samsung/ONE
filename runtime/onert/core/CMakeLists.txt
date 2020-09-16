@@ -13,6 +13,11 @@ target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 target_link_libraries(onert_core PRIVATE jsoncpp)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
+# NOTE Below line is added to remove warning for android build
+#      It will be removed after android build uses gold linker
+if (ANDROID)
+  target_link_libraries(onert_core INTERFACE log)
+endif (ANDROID)
 
 if(ENVVAR_ONERT_CONFIG)
   target_compile_definitions(onert_core PRIVATE ENVVAR_FOR_DEFAULT_CONFIG)

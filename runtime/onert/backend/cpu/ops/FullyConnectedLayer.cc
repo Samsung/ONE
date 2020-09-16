@@ -253,17 +253,11 @@ void FullyConnectedLayer::prepare()
   const int rows = getTensorShape(_weights).Dims(0);
   if (rows % 4 == 0)
   {
-    const int total_input_size = getTensorShape(_input).FlatSize();
-    const int input_size = getTensorShape(_weights).Dims(1);
-    const int batch_size = total_input_size / input_size;
-    if (batch_size <= 4)
-    {
-      // TODO If it's possible to extract precaching from ruy kernel,
-      // place this instead of below code
+    // TODO If it's possible to extract precaching from ruy kernel,
+    // place this instead of below code
 
-      // buffer will be used by ruy kernel as a cache key
-      _cached_weights = _weights->buffer();
-    }
+    // buffer will be used by ruy kernel as a cache key
+    _cached_weights = _weights->buffer();
   }
 #endif
 }
