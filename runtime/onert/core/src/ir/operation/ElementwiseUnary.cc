@@ -32,7 +32,9 @@ void ElementwiseUnary::accept(OperationVisitor &v) const { v.visit(*this); }
 
 ElementwiseUnary::ElementwiseUnary(const OperandIndexSequence &inputs,
                                    const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
+    : Operation{OperandConstraint::createExact(1u), inputs, outputs,
+                OperandConstraint::createExact(1u)},
+      _param{param}
 {
 }
 
