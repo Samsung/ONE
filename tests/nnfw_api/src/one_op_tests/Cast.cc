@@ -32,7 +32,7 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToFloat32)
   tcd.addInput(std::vector<bool>{true, false, true, true});
   tcd.addOutput(std::vector<float>{1, 0, 1, 1});
   _context->addTestCase(tcd);
-  _context->setBackends({"acl_cl", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
@@ -51,7 +51,7 @@ TEST_F(GenModelTest, OneOp_Cast_AfterEqual)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}, {2, 3, 1, 4}}, {{0, 1, 0, 1}}));
-  _context->setBackends({"acl_cl", "cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }

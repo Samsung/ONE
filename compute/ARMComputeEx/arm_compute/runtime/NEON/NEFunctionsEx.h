@@ -18,6 +18,7 @@
 
 #include <arm_compute/runtime/NEON/functions/NEActivationLayerEx.h>
 #include <arm_compute/runtime/NEON/functions/NEBinaryLogicalOperation.h>
+#include <arm_compute/runtime/NEON/functions/NECastBool.h>
 #include <arm_compute/runtime/NEON/functions/NEEmbeddingLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/NEON/functions/NEGatherEx.h>

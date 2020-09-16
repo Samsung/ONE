@@ -413,6 +413,11 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
         fn = acl_common::generateLayer<arm_compute::NECopy>(input_tensor->handle(),
                                                             output_tensor->handle());
       }
+      else if (_ctx.at(input_index).typeInfo().type() == ir::DataType::BOOL8)
+      {
+        fn = acl_common::generateLayer<arm_compute::NECastBool>(input_tensor->handle(),
+                                                                output_tensor->handle());
+      }
       else
       {
         fn = acl_common::generateLayer<arm_compute::NECast>(
