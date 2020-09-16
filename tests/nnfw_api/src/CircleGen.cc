@@ -95,6 +95,14 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
+                                    circle::TensorType output_type)
+{
+  auto options = circle::CreateCastOptions(_fbb, input_type, output_type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CAST,
+                                circle::BuiltinOptions_AddOptions, options);
+}
+
 uint32_t CircleGen::addOperatorConcatenation(const OperatorParams &params, int axis,
                                              circle::ActivationFunctionType actfn)
 {
@@ -108,6 +116,13 @@ uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
   auto options = circle::CreateCosOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_COS,
                                 circle::BuiltinOptions_CosOptions, options);
+}
+
+uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateEqualOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_EQUAL,
+                                circle::BuiltinOptions_EqualOptions, options);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
