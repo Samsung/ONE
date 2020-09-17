@@ -24,14 +24,17 @@ namespace ir
 {
 
 Operation::Operation(OperandConstraint input_constr, const OperandIndexSequence &inputs,
-                     const OperandIndexSequence &outputs)
-    : _input_constr{input_constr}
+                     const OperandIndexSequence &outputs, OperandConstraint output_constr)
+    : _input_constr{input_constr}, _output_constr{output_constr}
 {
   setInputs(inputs);
   setOutputs(outputs);
 }
 
-Operation::Operation(OperandConstraint input_constr) : _input_constr{input_constr} {}
+Operation::Operation(OperandConstraint input_constr, OperandConstraint output_constr)
+    : _input_constr{input_constr}, _output_constr{output_constr}
+{
+}
 
 Operation::~Operation() = default;
 
@@ -42,7 +45,12 @@ void Operation::setInputs(const OperandIndexSequence &indexes)
   _inputs = indexes;
 }
 
-void Operation::setOutputs(const OperandIndexSequence &indexes) { _outputs = indexes; }
+void Operation::setOutputs(const OperandIndexSequence &indexes)
+{
+  if (!_output_constr.check(indexes.size()))
+    throw std::runtime_error{"Invalid number of output tensors for this operation."};
+  _outputs = indexes;
+}
 
 void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {

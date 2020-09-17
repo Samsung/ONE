@@ -34,9 +34,12 @@ struct OperationVisitor;
 class Operation
 {
 public:
+  // TODO Remove default parameter
   Operation(OperandConstraint input_constr, const OperandIndexSequence &inputs,
-            const OperandIndexSequence &outputs);
-  explicit Operation(OperandConstraint input_constr);
+            const OperandIndexSequence &outputs,
+            OperandConstraint output_constr = OperandConstraint::createAny());
+  explicit Operation(OperandConstraint input_constr,
+                     OperandConstraint output_constr = OperandConstraint::createAny());
 
   Operation(const Operation &) = default;
   Operation(Operation &&) = default;
@@ -62,6 +65,7 @@ public:
 
 private:
   OperandConstraint _input_constr;
+  OperandConstraint _output_constr;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
 };
