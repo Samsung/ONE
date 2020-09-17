@@ -119,6 +119,7 @@ public:
 
     ++_num_references;
   }
+
   virtual void decrease_ref()
   {
     assert(_buffer != nullptr || _allocator != nullptr);
@@ -136,6 +137,27 @@ public:
       }
     }
   }
+
+  /**
+   * @brief Reset reference count to zero and release data
+   */
+  virtual void reset_ref()
+  {
+    assert(_buffer != nullptr || _allocator != nullptr);
+    assert(_num_references > 0);
+    _num_references = 0;
+
+    // Only constant tensor has allocator pointer
+    if (_buffer != nullptr)
+      _buffer = nullptr;
+    else
+    {
+      _allocator->release();
+      _allocator = nullptr;
+    }
+  }
+
+  virtual int32_t num_references() { return _num_references; }
 
   void setShape(const ir::Shape &new_shape) override;
 
