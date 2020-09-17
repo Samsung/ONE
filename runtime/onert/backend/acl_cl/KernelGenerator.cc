@@ -556,7 +556,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto frontend_layout = _current_op_seq_layout;
   const auto backend_layout = ifm_tensor->layout();
 
-  const auto perms = _ctx.at(perm_idx);
+  const auto &perms = _ctx.at(perm_idx);
   std::vector<int32_t> pv;
   if (perms.shape() == ir::Shape{0})
   {
@@ -844,7 +844,7 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   }
 
   std::unique_ptr<::arm_compute::IFunction> fn;
-  const auto offvalue = _ctx.at(offvalue_idx);
+  const auto &offvalue = _ctx.at(offvalue_idx);
   if (offvalue.isConstant())
   {
     fn = acl_common::generateLayer<arm_compute::CLOneHot>(
@@ -1426,7 +1426,7 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
     output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind)->handle());
 
   auto fn = std::make_unique<arm_compute::CLSplitVEx>();
-  const auto split_dim_op = _ctx.at(split_dim_index);
+  const auto &split_dim_op = _ctx.at(split_dim_index);
   if (split_dim_op.isConstant())
   {
     int32_t split_dim = split_dim_op.asScalar<int32_t>();

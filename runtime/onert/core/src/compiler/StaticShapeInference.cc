@@ -175,8 +175,8 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   const auto lhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::LHS);
   const auto rhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::RHS);
   const auto output_index = op.getOutputs().at(0);
-  const auto lhs = _operands.at(lhs_index);
-  const auto rhs = _operands.at(rhs_index);
+  const auto &lhs = _operands.at(lhs_index);
+  const auto &rhs = _operands.at(rhs_index);
   auto &output = _operands.at(output_index);
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs.shape(), rhs.shape(), op.param());
   output.info().shape(new_shape);
@@ -696,7 +696,7 @@ void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
   int32_t height_out, width_out;
   if (op.getInputs().size() == 2)
   {
-    auto size = _operands.at(op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE));
+    auto &size = _operands.at(op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE));
     if (!size.isConstant())
     {
       output.info().setDynamic();

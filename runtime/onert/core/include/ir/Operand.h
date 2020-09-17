@@ -40,6 +40,7 @@ public:
   {
     // DO NOTHING
   }
+  explicit Operand(const Operand &) = default;
 
 public:
   const Shape &shape(void) const { return _info.shape(); }

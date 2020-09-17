@@ -1294,7 +1294,7 @@ void KernelGenerator::visit(const ir::operation::Transpose &node)
   const auto backend_layout = ifm_tensor->layout();
   const auto rank = _ctx.at(ifm_idx).shape().rank();
 
-  const auto perms = _ctx.at(perm_idx);
+  const auto &perms = _ctx.at(perm_idx);
   std::vector<int32_t> pv;
   if (perms.shape() == ir::Shape{0})
   {
