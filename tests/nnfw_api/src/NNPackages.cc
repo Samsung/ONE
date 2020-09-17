@@ -29,7 +29,7 @@ const char *TEST_PACKAGE_NAMES[] = {
     "add", "add_no_manifest", "add_invalid_manifest",
 
     // for dynamic tensor test
-    "dynamic_tensor_reshape", "while_dynamic", "if_dynamic",
+    "while_dynamic", "if_dynamic",
 };
 
 NNPackages &NNPackages::get()
@@ -71,7 +71,10 @@ void NNPackages::checkAll()
     DIR *dir = opendir(path.c_str());
     if (!dir)
     {
-      std::string msg = "missing nnpackage: " + package_name + ", path: " + path;
+      std::string msg =
+          "missing nnpackage: " + package_name + ", path: " + path +
+          "\nPlease run \'[install_dir]/test/onert-test prepare-model --nnpackage\' to "
+          "download nnpackage";
       throw std::runtime_error{msg};
     }
     closedir(dir);

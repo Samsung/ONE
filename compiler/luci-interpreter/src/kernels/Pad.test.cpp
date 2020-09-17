@@ -45,9 +45,8 @@ TEST(Pad, Uint8)
 
   std::vector<float> ref_output_data{0, -0.8, 0.2, 0.9, 0, 0, 0, 0, 0.7, 0.1, -0.3, 0, 0, 0,
                                      0, 0,    0,   0,   0, 0, 0, 0, 0,   0,   0,    0, 0, 0};
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(ref_output_data, kQuantizedTolerance)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(ref_output_data, kQuantizedTolerance));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 7, 1}));
 }
 
@@ -67,8 +66,7 @@ TEST(Pad, Float)
                                      0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0, 0, 4, 5,
                                      6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   std::initializer_list<int32_t> ref_output_shape{2, 4, 6, 1};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 

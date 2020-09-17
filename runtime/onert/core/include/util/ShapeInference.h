@@ -132,7 +132,8 @@ StridedSliceParams buildStridedSliceParams(const T *begin, const T *end, const T
 ir::Shape inferStridedSliceShape(const ir::Shape &input_shape, const StridedSliceParams &op_params,
                                  uint32_t rank);
 
-ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier);
+ir::Shape inferTileShape(const ir::Shape &in_shape, const int32_t *multiplier,
+                         const int32_t multiplier_size);
 
 ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm, const int32_t rank);
 

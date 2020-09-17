@@ -33,27 +33,9 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
            bool align_corners, bool half_pixel_centers)
 {
-  std::pair<float, int32_t> quant_param =
-      quantizationParams<T>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
-                            std::max(input_data) > 0 ? std::max(input_data) : 0.f);
-  Tensor input_tensor{
-      getElementType<T>(), input_shape, {{quant_param.first}, {quant_param.second}}, ""};
-  Tensor size_tensor{DataType::S32, size_shape, {}, ""};
-
-  if (std::is_floating_point<T>::value)
-  {
-    input_tensor.writeData(input_data.begin(), input_data.size() * sizeof(T));
-  }
-  else
-  {
-    std::vector<T> quantized_input_value =
-        quantize<T>(input_data, quant_param.first, quant_param.second);
-    input_tensor.writeData(quantized_input_value.data(), quantized_input_value.size() * sizeof(T));
-  }
-  size_tensor.writeData(size_data.begin(), size_data.size() * sizeof(int32_t));
-
-  Tensor output_tensor =
-      makeOutputTensor(getElementType<T>(), quant_param.first, quant_param.first);
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   ResizeNearestNeighborParams params{};
   params.align_corners = align_corners;
@@ -63,17 +45,38 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  if (std::is_floating_point<T>::value)
-  {
-    EXPECT_THAT(extractTensorData<T>(output_tensor), ElementsAreArray(ArrayFloatNear(output_data)));
-  }
-  else
-  {
-    EXPECT_THAT(dequantize<T>(extractTensorData<T>(output_tensor), output_tensor.scale(),
-                              output_tensor.zero_point()),
-                ElementsAreArray(ArrayFloatNear(output_data, output_tensor.scale())));
-  }
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(extractTensorData<T>(output_tensor), FloatArrayNear(output_data));
+}
+
+template <>
+void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
+                    std::initializer_list<int32_t> size_shape,
+                    std::initializer_list<int32_t> output_shape,
+                    std::initializer_list<float> input_data,
+                    std::initializer_list<int32_t> size_data,
+                    std::initializer_list<float> output_data, bool align_corners,
+                    bool half_pixel_centers)
+{
+  std::pair<float, int32_t> quant_param =
+      quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
+                                  std::max(input_data) > 0 ? std::max(input_data) : 0.f);
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.first);
+
+  ResizeNearestNeighborParams params{};
+  params.align_corners = align_corners;
+  params.half_pixel_centers = half_pixel_centers;
+
+  ResizeNearestNeighbor kernel(&input_tensor, &size_tensor, &output_tensor, params);
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(output_data, output_tensor.scale()));
 }
 
 template <typename T> class ResizeNearestNeighborTest : public ::testing::Test

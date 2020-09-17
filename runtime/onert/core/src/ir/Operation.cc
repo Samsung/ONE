@@ -25,8 +25,10 @@ namespace ir
 
 Operation::Operation(OperandConstraint input_constr, const OperandIndexSequence &inputs,
                      const OperandIndexSequence &outputs)
-    : _input_constr{input_constr}, _inputs{inputs}, _outputs{outputs}
+    : _input_constr{input_constr}
 {
+  setInputs(inputs);
+  setOutputs(outputs);
 }
 
 Operation::Operation(OperandConstraint input_constr) : _input_constr{input_constr} {}
@@ -35,7 +37,8 @@ Operation::~Operation() = default;
 
 void Operation::setInputs(const OperandIndexSequence &indexes)
 {
-  assert(_input_constr.check(indexes.size()));
+  if (!_input_constr.check(indexes.size()))
+    throw std::runtime_error{"Invalid number of input tensors for this operation."};
   _inputs = indexes;
 }
 

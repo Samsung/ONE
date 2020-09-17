@@ -56,7 +56,7 @@ public:
     auto dst_it = _dst_tensors.begin();
     while (src_it != _src_tensors.end())
     {
-      const auto src_tensor = *src_it;
+      auto src_tensor = *src_it;
       auto dst_tensor = *dst_it;
       if (src_tensor != dst_tensor)
       {
@@ -101,9 +101,8 @@ public:
   virtual void optimize() = 0;
 
 private:
-  template <class T>
-  void permute(const std::shared_ptr<backend::ITensor> &src, std::shared_ptr<backend::ITensor> &dst,
-               size_t rank)
+  // TODO make src const by proving const access()
+  template <class T> void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank)
   {
     const auto permute_type = [&]() -> PermuteType {
       if (src->layout() == ir::Layout::NHWC && dst->layout() == ir::Layout::NCHW)
@@ -275,8 +274,8 @@ private:
   }
 
 protected:
-  std::vector<std::shared_ptr<backend::ITensor>> _src_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> _dst_tensors;
+  std::vector<backend::ITensor *> _src_tensors;
+  std::vector<backend::ITensor *> _dst_tensors;
   // TODO Remove this member if it is possible
   std::vector<size_t> _ranks;
 };

@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_CONVERT_H__
 #define __ONERT_BACKEND_ACL_COMMON_CONVERT_H__
 
+#include <arm_compute/core/PixelValue.h>
 #include <arm_compute/core/TensorInfo.h>
 #include <arm_compute/core/SubTensorInfo.h>
 #include <arm_compute/core/TensorShape.h>
@@ -84,6 +85,8 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
 
 arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir);
 arm_compute::ReduceOperation convertReduceType(ir::operation::Reduce::ReduceType reduce_type_ir);
+
+arm_compute::PixelValue asPixelValue(const ir::Operand &operand);
 
 } // namespace acl_common
 } // namespace backend

@@ -173,7 +173,12 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
   }
   else if (block_size.size() == 2 && block_size[0] == 16 && block_size[1] == 1)
   {
-    throw std::runtime_error{"FullyConnectedSparseWeight16x1 is not supported yet"};
+    nnfw::cker::FullyConnectedSparseWeight16x1(
+        op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_weights), reinterpret_cast<const float *>(_weights->buffer()),
+        getTensorShape(_bias), reinterpret_cast<const float *>(_bias ? _bias->buffer() : nullptr),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()), w1_segments,
+        w1_indices);
   }
   else
     throw std::runtime_error{"FullyConnected: unsupported sparsity"};
@@ -248,17 +253,11 @@ void FullyConnectedLayer::prepare()
   const int rows = getTensorShape(_weights).Dims(0);
   if (rows % 4 == 0)
   {
-    const int total_input_size = getTensorShape(_input).FlatSize();
-    const int input_size = getTensorShape(_weights).Dims(1);
-    const int batch_size = total_input_size / input_size;
-    if (batch_size <= 4)
-    {
-      // TODO If it's possible to extract precaching from ruy kernel,
-      // place this instead of below code
+    // TODO If it's possible to extract precaching from ruy kernel,
+    // place this instead of below code
 
-      // buffer will be used by ruy kernel as a cache key
-      _cached_weights = _weights->buffer();
-    }
+    // buffer will be used by ruy kernel as a cache key
+    _cached_weights = _weights->buffer();
   }
 #endif
 }

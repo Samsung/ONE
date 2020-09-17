@@ -30,16 +30,14 @@ namespace controlflow
 namespace kernel
 {
 
-WhileLayer::WhileLayer(const std::vector<std::shared_ptr<backend::ITensor>> &input_tensors,
-                       const std::vector<std::shared_ptr<backend::ITensor>> &output_tensors,
+WhileLayer::WhileLayer(const std::vector<backend::ITensor *> input_tensors,
+                       const std::vector<backend::ITensor *> output_tensors,
                        const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
-                       const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                        const ir::SubgraphIndex &cond_subg_index,
                        const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
       _output_indices{output_indices}, _graph{graph}, _input_tensors{input_tensors},
-      _output_tensors{output_tensors}, _outputs_dyn_alloc_info{outputs_dyn_alloc_info},
-      _executor_map{executor_map}
+      _output_tensors{output_tensors}, _executor_map{executor_map}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
 }
@@ -62,15 +60,13 @@ void WhileLayer::run()
       _executor_map->at(_body_subg_index).get());
 
   const auto &cond_graph = cond_exec->graph();
-  const auto &cond_inputs_dyn_alloc = cond_exec->getInputsDynamicAllocInfo();
   const auto &body_graph = body_exec->graph();
-  const auto &body_inputs_dyn_alloc = body_exec->getInputsDynamicAllocInfo();
 
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> cond_input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> body_input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> body_output_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::ITensor *> cond_input_tensors;
+  std::vector<backend::ITensor *> body_input_tensors;
+  std::vector<backend::ITensor *> body_output_tensors;
+  std::vector<backend::ITensor *> output_tensors;
 
   // Add only used tensors in cond subgraph
   assert(cond_graph.getInputs().size() == _input_tensors.size());
@@ -85,7 +81,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_op_input_to_cond_input =
-      std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
+      std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors);
 
   // Add only used tensors among outputs of while operation
   assert(_output_indices.size() == _input_tensors.size());
@@ -103,7 +99,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_op_input_to_op_output =
-      std::make_shared<PermuteLayer>(input_tensors, output_tensors, _outputs_dyn_alloc_info);
+      std::make_shared<PermuteLayer>(input_tensors, output_tensors);
 
   // Add all tensors with unused tensors in body subgraph because unused input tensors will be
   // copied output tensors in body subgraph
@@ -111,7 +107,7 @@ void WhileLayer::run()
   input_tensors = _input_tensors;
   body_input_tensors = body_exec->getInputTensors();
   const auto permute_op_input_to_body_input =
-      std::make_shared<PermuteLayer>(input_tensors, body_input_tensors, body_inputs_dyn_alloc);
+      std::make_shared<PermuteLayer>(input_tensors, body_input_tensors);
 
   // Add only used tensors in cond subgraph
   assert(cond_graph.getInputs().size() == body_exec->getOutputTensors().size());
@@ -127,8 +123,8 @@ void WhileLayer::run()
       cond_input_tensors.emplace_back(cond_exec->getInputTensors().at(i));
     }
   }
-  const auto permute_body_output_to_cond_input = std::make_shared<PermuteLayer>(
-      body_output_tensors, cond_input_tensors, cond_inputs_dyn_alloc);
+  const auto permute_body_output_to_cond_input =
+      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors);
 
   // Add only used tensors in body subgraph
   assert(body_graph.getInputs().size() == body_exec->getOutputTensors().size());
@@ -146,8 +142,8 @@ void WhileLayer::run()
       body_input_tensors.emplace_back(body_exec->getInputTensors().at(i));
     }
   }
-  const auto permute_body_output_to_body_input = std::make_shared<PermuteLayer>(
-      body_output_tensors, body_input_tensors, body_inputs_dyn_alloc);
+  const auto permute_body_output_to_body_input =
+      std::make_shared<PermuteLayer>(body_output_tensors, body_input_tensors);
 
   // Add only used tensors among outputs of while operation
   assert(_output_indices.size() == body_exec->getOutputTensors().size());
@@ -165,7 +161,7 @@ void WhileLayer::run()
     }
   }
   const auto permute_body_output_to_op_output =
-      std::make_shared<PermuteLayer>(body_output_tensors, output_tensors, _outputs_dyn_alloc_info);
+      std::make_shared<PermuteLayer>(body_output_tensors, output_tensors);
 
   // Remove copying of unused tensor
   permute_op_input_to_cond_input->prepare();
@@ -208,7 +204,7 @@ void WhileLayer::run()
   auto permute_to_outputs_fn = permute_op_input_to_op_output;
 
   // Loop while Cond subgraph's output is true
-  while (getResultCond(cond_output_tensor.get()))
+  while (getResultCond(cond_output_tensor))
   {
     body_execute();
     cond_execute();

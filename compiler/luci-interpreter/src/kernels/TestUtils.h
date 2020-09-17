@@ -79,13 +79,16 @@ template <typename T> std::vector<T> extractTensorData(const Tensor &tensor)
   return std::vector<T>(data_ptr, data_ptr + tensor.shape().num_elements());
 }
 
-std::vector<::testing::Matcher<float>> ArrayFloatNear(const std::vector<float> &values,
+std::vector<float> dequantizeTensorData(const Tensor &tensor);
+
+// Array version of `::testing::FloatNear` matcher.
+::testing::Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values,
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T>
 std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {
-  assert(!std::is_floating_point<T>::value);
+  static_assert(std::is_integral<T>::value, "Integral type expected.");
   std::vector<T> q;
   for (const auto &f : data)
   {
@@ -99,7 +102,7 @@ std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zer
 template <typename T>
 std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t zero_point)
 {
-  assert(!std::is_floating_point<T>::value);
+  static_assert(std::is_integral<T>::value, "Integral type expected.");
   std::vector<float> f;
   for (const T &q : data)
   {
@@ -110,10 +113,7 @@ std::vector<float> dequantize(const std::vector<T> &data, float scale, int32_t z
 
 template <typename T> std::pair<float, int32_t> quantizationParams(float f_min, float f_max)
 {
-  if (std::is_floating_point<T>::value)
-  {
-    return {1.0f, 0};
-  }
+  static_assert(std::is_integral<T>::value, "Integral type expected.");
   int32_t zero_point = 0;
   float scale = 0;
   const T qmin = std::numeric_limits<T>::lowest();

@@ -51,6 +51,12 @@ static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_element
 {
   using T = typename loco::DataTypeImpl<DT>::Type;
 
+  // TODO calculate the exact buffer size of sparse tensor
+  if (const_node->sparsityparam())
+  {
+    num_elements = raw_data.size() / sizeof(T);
+  }
+
   assert(raw_data.size() == num_elements * sizeof(T));
   const auto *data = reinterpret_cast<const T *>(raw_data.data());
 
@@ -61,9 +67,6 @@ static void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_element
   }
 }
 
-//
-// circleconst_from_tensor() ?
-//
 CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_index)
 {
   LOGGER(l);
@@ -77,7 +80,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
   std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {
-    // unknown shape tensor
+    // unknown shape tensor and scalar tensor
     return nullptr;
   }
 

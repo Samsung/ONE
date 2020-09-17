@@ -14,23 +14,32 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_REGISTRY__
-#define __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_REGISTRY__
-
-#include "backend/ITensorRegistry.h"
-#include "UserTensor.h"
+#include "PassRunner.h"
 
 namespace onert
 {
-namespace backend
+namespace compiler
 {
-namespace controlflow
+namespace pass
 {
 
-using UserTensorRegistry = PortableTensorRegistryTemplate<UserTensor>;
+PassRunner &PassRunner::append(std::unique_ptr<Pass> pass)
+{
+  _passes.emplace_back(std::move(pass));
+  return *this;
+}
 
-} // namespace controlflow
-} // namespace backend
+void PassRunner::run()
+{
+  for (auto &pass : _passes)
+  {
+    VERBOSE(PassRunner) << "Start running '" << pass->id() << "'" << std::endl;
+    pass->run();
+    VERBOSE(PassRunner) << "Finished running '" << pass->id() << "'" << std::endl;
+    // TODO Dump graph(LowerInfo, OpSequence, ...)?
+  }
+}
+
+} // namespace pass
+} // namespace compiler
 } // namespace onert
-
-#endif // __ONERT_BACKEND_CONTROLFLOW_USER_TENSOR_REGISTRY__

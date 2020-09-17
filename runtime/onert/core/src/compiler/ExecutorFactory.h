@@ -46,10 +46,10 @@ private:
   static void initializeBackendContext(compiler::LoweredGraph *lowered_graph);
   static void runTensorRegistration(compiler::LoweredGraph *lowered_graph,
                                     const std::vector<ir::OpSequenceIndex> &order);
-  static std::vector<std::shared_ptr<backend::ITensor>>
+  static std::vector<backend::ITensor *>
   initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
                            const ir::OperandIndexSequence &indices);
-  static void prepareExternalTensors(compiler::LoweredGraph &lowered_graph);
+  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph);
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,

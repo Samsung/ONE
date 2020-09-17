@@ -953,7 +953,8 @@ void StaticShapeInferer::visit(const ir::operation::Tile &op)
   assert(multiplier_buffer);
 
   // re-sizing output shape
-  auto new_shape = shape_inference::inferTileShape(input.info().shape(), multiplier_buffer);
+  auto new_shape = shape_inference::inferTileShape(input.info().shape(), multiplier_buffer,
+                                                   multiplier.shape().num_elements());
   output.info().shape(new_shape);
 }
 

@@ -50,8 +50,7 @@ TEST(L2Pool2DTest, FloatNone)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -78,8 +77,7 @@ TEST(L2Pool2DTest, FloatRelu)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.53553, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -106,8 +104,7 @@ TEST(L2Pool2DTest, FloatRelu1)
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 1.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -134,8 +131,7 @@ TEST(L2Pool2DTest, FloatRelu6)
   kernel.execute();
 
   std::vector<float> ref_output_data{0.353553, 6.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -162,8 +158,7 @@ TEST(L2Pool2DTest, FloatPaddingSame)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -190,8 +185,7 @@ TEST(L2Pool2DTest, FloatPaddingSameSlide1)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5, 5.70088, 2.54951, 7.2111, 8.63134, 7.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 
@@ -218,8 +212,7 @@ TEST(L2Pool2DTest, FloatPaddingValidSlide1)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
 }
 

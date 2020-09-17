@@ -53,8 +53,7 @@ TEST(AveragePool2DTest, Float)
       0, 1.5, //
       4.5, 6, //
   };
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
 }
 
@@ -81,9 +80,7 @@ TEST(AveragePool2DTest, Uint8_0)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear({0.0, 6.0})));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0.0, 6.0}));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
 }
 
@@ -111,9 +108,7 @@ TEST(AveragePool2DTest, Uint8_1)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear({2.75, 6.0})));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({2.75, 6.0}));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
 }
 

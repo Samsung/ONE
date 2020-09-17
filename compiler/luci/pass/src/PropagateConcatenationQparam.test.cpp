@@ -18,6 +18,7 @@
 
 #include <luci/IR/CircleQuantParam.h>
 
+#include <math.h>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -34,6 +35,14 @@ void addQuantParam(luci::CircleNode &node, const std::vector<float> &scale,
   quantparam->scale = scale;
   quantparam->zerop = zp;
   node.quantparam(std::move(quantparam));
+}
+
+int32_t quantize(float f, luci::CircleQuantParam *qparam)
+{
+  float scale = qparam->scale[0];
+  int64_t zp = qparam->zerop[0];
+
+  return std::round(f / scale) + zp;
 }
 
 class SimpleConcatGraph
@@ -117,7 +126,6 @@ public:
     concat_node.values(1, &input_2);
 
     addQuantParam(concat_node, {0.1}, {10});
-    addQuantParam(input_1, {1.0}, {1});
     addQuantParam(input_2, {2.0}, {2});
   }
 
@@ -195,21 +203,10 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
 TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
 {
   // Check negative cases where qparam is not propagated
-  // (1) concat is not uint8-quantized
-  // (2) concat has fused activation function
+  // (1) concat has fused activation function
+  // (2) concat has fused activation function and input is const
 
   SimpleConcatGraph g;
-
-  // concat is not uint8-quantized
-  g.concat_node.dtype(loco::DataType::S8);
-  luci::propagate_concat_quantparam(&g.concat_node);
-  EXPECT_FLOAT_EQ(g.concat_node.quantparam()->scale[0], 3.14);
-  EXPECT_EQ(g.concat_node.quantparam()->zerop[0], 77);
-  EXPECT_FLOAT_EQ(g.input_1.quantparam()->scale[0], 1.0);
-  EXPECT_EQ(g.input_1.quantparam()->zerop[0], 1);
-  EXPECT_FLOAT_EQ(g.input_2.quantparam()->scale[0], 2.0);
-  EXPECT_EQ(g.input_2.quantparam()->zerop[0], 2);
-  g.concat_node.dtype(loco::DataType::U8);
 
   // concat has fused activation function
   g.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
@@ -221,4 +218,22 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
   EXPECT_FLOAT_EQ(g.input_2.quantparam()->scale[0], 2.0);
   EXPECT_EQ(g.input_2.quantparam()->zerop[0], 2);
   g.concat_node.fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  // concat has fused activation function and input_1 is const.
+  // const values are quantized using its min/max
+  ConstInputConcatGraph cg;
+  cg.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  luci::propagate_concat_quantparam(&cg.concat_node);
+  EXPECT_FLOAT_EQ(cg.concat_node.quantparam()->scale[0], 0.1);
+  EXPECT_EQ(cg.concat_node.quantparam()->zerop[0], 10);
+  EXPECT_FLOAT_EQ(cg.input_1.quantparam()->scale[0], 0.015686275);
+  EXPECT_EQ(cg.input_1.quantparam()->zerop[0], 128);
+  EXPECT_FLOAT_EQ(cg.input_2.quantparam()->scale[0], 2.0);
+  EXPECT_EQ(cg.input_2.quantparam()->zerop[0], 2);
+  EXPECT_EQ(cg.input_1.dtype(), loco::DataType::U8);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(0), quantize(-2, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(1), quantize(-1, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(2), quantize(-0, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(3), quantize(1, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(4), quantize(2, cg.input_1.quantparam()));
 }

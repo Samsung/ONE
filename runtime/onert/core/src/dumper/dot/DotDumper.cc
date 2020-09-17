@@ -81,11 +81,8 @@ void DotDumper::dump(const std::string &tag)
     }
     else
     {
-      showing_cond = !object.isConstant();
-    }
-    if (object.isConstant() || _graph.getInputs().contains(index))
-    {
-      showing_cond = showing_cond && (object.getUses().size() > 0);
+      showing_cond =
+          !object.isConstant() || (_graph.getInputs() + _graph.getOutputs()).contains(index);
     }
     if (showing_cond)
     {

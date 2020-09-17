@@ -1,5 +1,5 @@
 function(_GEMMLowp_import)
-  nnfw_find_package(GEMMLowpSource QUIET)
+  nnas_find_package(GEMMLowpSource QUIET)
 
   if(NOT GEMMLowpSource_FOUND)
     set(GEMMLowp_FOUND FALSE PARENT_SCOPE)

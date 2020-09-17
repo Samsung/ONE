@@ -36,8 +36,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ArrayFloatNear(output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 

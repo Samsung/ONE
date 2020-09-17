@@ -66,8 +66,7 @@ TEST(Conv2DTest, Float)
       0,  40, 0, 44, // row = 1
   };
   std::vector<int32_t> ref_output_shape{1, 2, 2, 2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -114,8 +113,7 @@ TEST(Conv2DTest, FloatCheck)
       37, 4, 3, // second batch, right
   };
   std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
@@ -167,9 +165,7 @@ TEST(Conv2DTest, Uint8)
       37, 4, 3, // second batch, right
   };
   std::vector<int32_t> ref_output_shape{2, 1, 2, 3};
-  EXPECT_THAT(dequantize<uint8_t>(extractTensorData<uint8_t>(output_tensor),
-                                  output_quant_param.first, output_quant_param.second),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 

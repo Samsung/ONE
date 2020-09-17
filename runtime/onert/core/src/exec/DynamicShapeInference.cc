@@ -23,14 +23,6 @@ namespace onert
 namespace exec
 {
 
-inline backend::IDynamicTensorManager *
-dynamicTensorManagerOf(const std::shared_ptr<backend::ITensor> &tensor)
-{
-  if (!tensor->dynamic_tensor_manager())
-    throw std::runtime_error{"Dynamic Tensor Manager is not available for this tensor."};
-  return tensor->dynamic_tensor_manager();
-}
-
 void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                                    const ir::OperandIndex lhs_idx,
                                                    const ir::OperandIndex rhs_idx)
@@ -64,7 +56,7 @@ void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
 
   ir::Shape new_shape = shape_inference::inferEltwiseShape(lhs_shape, rhs_shape);
 
-  dynamicTensorManagerOf(output)->applyShape(output_idx, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -96,17 +88,17 @@ void DynamicShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
 void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
 {
   const auto input_idx{op.getInputs().at(ir::operation::ArgMax::Input::INPUT)};
-  const auto &input = _tensor_registry->getITensor(input_idx);
+  const auto input = _tensor_registry->getITensor(input_idx);
 
   const auto axis_idx{op.getInputs().at(ir::operation::ArgMax::Input::AXIS)};
-  const auto &axis = _tensor_registry->getITensor(axis_idx);
+  const auto axis = _tensor_registry->getITensor(axis_idx);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -117,11 +109,11 @@ void DynamicShapeInferer::visit(const ir::operation::ArgMax &op)
   auto input_shape = input->getShape();
   auto axis_value = *reinterpret_cast<const int32_t *>(axis->buffer());
   const auto rank = input_shape.rank();
-  axis_value = axis < 0 ? axis_value + rank : axis_value;
+  axis_value = axis_value < 0 ? axis_value + rank : axis_value;
 
   ir::Shape new_shape = shape_inference::inferArgMaxShape(input_shape, axis_value, rank);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -143,7 +135,7 @@ void DynamicShapeInferer::visit(const ir::operation::BatchMatMul &op)
   // TODO
 
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs_shape, rhs_shape, op.param());
-  dynamicTensorManagerOf(output)->applyShape(output_index, new_shape);
+  output->applyShape(new_shape);
 }
 
 void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
@@ -172,7 +164,7 @@ void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
       shape->getShape(), reinterpret_cast<const int32_t *>(shape->buffer()));
 
   // set output shape and output buffer
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -238,7 +230,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
     for (auto input_ind : op.getInputs())
     {
       auto input = _tensor_registry->getITensor(input_ind);
-      if (input != first_input && !isConcatible(first_input.get(), input.get(), op.param().axis))
+      if (input != first_input && !isConcatible(first_input, input, op.param().axis))
         throw std::runtime_error("input shapes does not matched for concat");
     }
   }
@@ -257,7 +249,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
   auto output = _tensor_registry->getITensor(output_ind);
   auto output_shape = shape_inference::inferConcatShape(in_shapes, op.param());
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
@@ -280,7 +272,7 @@ void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
 
   ir::Shape output_shape = shape_inference::inferConv2DShape(input_shape, ker_shape, op.param());
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -340,7 +332,7 @@ void DynamicShapeInferer::visit(const ir::operation::ExpandDims &op)
 
   auto output_shape = shape_inference::inferExpandDimsShape(input_shape, axis_buf[0]);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -356,14 +348,14 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
   if ((!input->is_dynamic()) && (!output->is_dynamic()))
     return;
 
-  assert(input.get()->data_type() == ir::DataType::INT32);
+  assert(input->data_type() == ir::DataType::INT32);
 
   auto input_buf = reinterpret_cast<const int32_t *>(input->buffer());
   assert(input_buf);
 
   auto output_shape = shape_inference::inferFillShape(input_shape, input_buf);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -386,7 +378,7 @@ void DynamicShapeInferer::visit(const ir::operation::FullyConnected &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -418,7 +410,7 @@ void DynamicShapeInferer::visit(const ir::operation::Gather &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -454,7 +446,7 @@ void DynamicShapeInferer::visit(const ir::operation::OneHot &op)
   const auto axis_val = op.param().axis;
 
   ir::Shape new_shape = shape_inference::inferOnehotShape(indices_shape, *depth_buf, axis_val);
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -490,7 +482,7 @@ void DynamicShapeInferer::visit(const ir::operation::Pack &op)
 
   ir::Shape new_shape = shape_inference::inferPackShape(input_shape, axis, rank, num);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -517,7 +509,7 @@ void DynamicShapeInferer::visit(const ir::operation::Pad &op)
       shape_inference::inferPadShape(input->getShape(), pad_buf, pad->getShape().num_elements());
 
   // change output shape and reallocate output tensor memory
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -569,7 +561,7 @@ void DynamicShapeInferer::visit(const ir::operation::Range &op)
         *reinterpret_cast<int32_t *>(limit_tensor->buffer()),
         *reinterpret_cast<int32_t *>(delta_tensor->buffer()));
   }
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -613,7 +605,7 @@ void DynamicShapeInferer::visit(const ir::operation::Reduce &op)
 
   ir::Shape new_shape = shape_inference::inferReduceShape(input_shape, axes_vec, keep_dims);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -667,7 +659,7 @@ void DynamicShapeInferer::visit(const ir::operation::Reshape &op)
     if (output_shape != output->getShape() || output->buffer() == nullptr)
     {
       // change on output shape
-      dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+      output->applyShape(output_shape);
     }
     assert(output->buffer() != nullptr);
   }
@@ -683,7 +675,7 @@ void DynamicShapeInferer::visit(const ir::operation::Reshape &op)
     if (output_shape != output->getShape() || output->buffer() == nullptr)
     {
       // change on output shape
-      dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+      output->applyShape(output_shape);
     }
     assert(output->buffer() != nullptr);
   }
@@ -735,7 +727,7 @@ void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
   if (output_shape != output->getShape() || output->buffer() == nullptr)
   {
     // change on output shape
-    dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+    output->applyShape(output_shape);
   }
   assert(output->buffer() != nullptr);
 }
@@ -772,7 +764,7 @@ void DynamicShapeInferer::visit(const ir::operation::Select &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -791,7 +783,7 @@ void DynamicShapeInferer::visit(const ir::operation::Shape &op)
   ir::Shape output_shape;
   output_shape.append(input_shape.rank());
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -817,7 +809,7 @@ void DynamicShapeInferer::visit(const ir::operation::Slice &op)
 
   ir::Shape new_shape = shape_inference::inferSliceShape(input_shape, begins_buf, sizes_buf);
 
-  dynamicTensorManagerOf(output)->applyShape(output_index, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -854,7 +846,7 @@ void DynamicShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
   ir::Shape new_shape = shape_inference::inferSpaceToBatchNDShape(
       input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);
 
-  dynamicTensorManagerOf(output)->applyShape(output_idx, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -893,7 +885,7 @@ void DynamicShapeInferer::visit(const ir::operation::Split &op)
     auto output_ind = op.getOutputs().at(out_tensor_idx);
     auto output = _tensor_registry->getITensor(output_ind);
 
-    dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+    output->applyShape(new_shape);
     assert(output->buffer() != nullptr);
   }
 }
@@ -922,7 +914,7 @@ void DynamicShapeInferer::visit(const ir::operation::Squeeze &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -963,7 +955,7 @@ void DynamicShapeInferer::visit(const ir::operation::StridedSlice &op)
   ir::Shape output_shape =
       onert::shape_inference::inferStridedSliceShape(input_shape, op_params, rank);
 
-  dynamicTensorManagerOf(output)->applyShape(output_index, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -985,10 +977,11 @@ void DynamicShapeInferer::visit(const ir::operation::Tile &op)
   auto multiplier_buffer = reinterpret_cast<const int32_t *>(multiplier->buffer());
   assert(multiplier_buffer);
 
-  auto output_shape = shape_inference::inferTileShape(input_shape, multiplier_buffer);
+  auto output_shape =
+      shape_inference::inferTileShape(input_shape, multiplier_buffer, multiplier->dimension(0));
 
   // set output shape and output buffer
-  dynamicTensorManagerOf(output)->applyShape(output_ind, output_shape);
+  output->applyShape(output_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -1041,7 +1034,7 @@ void DynamicShapeInferer::visit(const ir::operation::Transpose &op)
     const auto perm_buffer = reinterpret_cast<const int32_t *>(perm->buffer());
     new_shape = shape_inference::inferTransposeShape(input_shape, perm_buffer, perm->dimension(0));
   }
-  dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+  output->applyShape(new_shape);
   assert(output->buffer() != nullptr);
 }
 
@@ -1069,7 +1062,7 @@ void DynamicShapeInferer::visit(const ir::operation::Unpack &op)
     auto output_ind = op.getOutputs().at(out_tensor_idx);
     auto output = _tensor_registry->getITensor(output_ind);
 
-    dynamicTensorManagerOf(output)->applyShape(output_ind, new_shape);
+    output->applyShape(new_shape);
 
     assert(output->buffer() != nullptr);
   }

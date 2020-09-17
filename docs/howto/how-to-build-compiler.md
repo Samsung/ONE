@@ -109,6 +109,16 @@ will build release version in `build/release` folder.
 If you are using python3.8, as there is no TensorFlow1.13.2 package for python3.8, build may fail.
 Please install python3.7 or lower versions as default python3.
 
-## Build for windows
+## Build for Windows
 
-To be added.
+To build for Windows, we use MinGW(Minimalist GNU for Windows). [Here](https://github.com/git-for-windows/build-extra/releases) you can download a tool that includes it.
+
+```
+$ git clone https://github.com/Samsung/ONE.git one
+$ cd one
+$ NNAS_BUILD_PREFIX=build ./nnas create-package --preset 20200731_windows --prefix install
+```
+
+- `NNAS_BUILD_PREFIX` is the path to directory where compiler-build-artifacts will be stored.
+- `--preset` is the one that specifies a version you will install. You can see `infra/packaging/preset/` directory for more details and getting latest version.
+- `--prefix` is the install directory.

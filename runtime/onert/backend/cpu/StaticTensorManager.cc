@@ -41,7 +41,7 @@ void StaticTensorManager::allocateNonconsts(void)
   for (auto &pair : _tensors->native_tensors())
   {
     const auto &ind = pair.first;
-    auto tensor = pair.second;
+    auto tensor = pair.second.get();
     if (!_as_constants[ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(ind);
@@ -62,13 +62,14 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   assert(!_tensors->getITensor(ind));
   if (as_const)
   {
-    auto tensor = std::make_shared<ExternalTensor>(tensor_info, backend_layout);
-    _tensors->setNativeTensor(ind, tensor);
+    auto tensor = std::make_unique<ExternalTensor>(tensor_info, backend_layout);
+    _tensors->setNativeTensor(ind, std::move(tensor));
   }
   else
   {
-    auto tensor = std::make_shared<Tensor>(tensor_info, backend_layout, _dynamic_tensor_manager);
-    _tensors->setNativeTensor(ind, tensor);
+    auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout,
+                                           _dynamic_tensor_manager->dynamic_mem_mgr().get());
+    _tensors->setNativeTensor(ind, std::move(tensor));
   }
   _as_constants[ind] = as_const;
 }

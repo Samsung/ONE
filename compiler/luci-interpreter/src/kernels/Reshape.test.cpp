@@ -42,8 +42,7 @@ TEST(ReshapeTest, Regular)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(input_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));
 }
 
 TEST(ReshapeTest, UnknownDimension)
@@ -60,8 +59,7 @@ TEST(ReshapeTest, UnknownDimension)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(input_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(input_data));
 }
 
 } // namespace

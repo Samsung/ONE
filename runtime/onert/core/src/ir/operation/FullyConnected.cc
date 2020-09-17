@@ -31,7 +31,7 @@ void FullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
 
 FullyConnected::FullyConnected(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs, const Param &param)
-    : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
+    : Operation{OperandConstraint::createInRange(2u, 3u), inputs, outputs}, _param{param}
 {
 }
 

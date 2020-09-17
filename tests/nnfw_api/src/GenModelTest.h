@@ -78,6 +78,13 @@ struct TestCaseData
    */
   template <typename T> void addOutput(const std::vector<T> &data) { addData(outputs, data); }
 
+  /**
+   * @brief Set @c True if @c NNFW_STATUS_ERROR is expected after calling @c nnfw_run() with
+   *        this test case; set @c False otherwise.
+   */
+  void expect_error_on_run(bool expect_error_on_run) { _expect_error_on_run = expect_error_on_run; }
+  bool expect_error_on_run() const { return _expect_error_on_run; }
+
 private:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
@@ -87,7 +94,20 @@ private:
     dest.back().resize(size);
     std::memcpy(dest.back().data(), data.data(), size);
   }
+
+  bool _expect_error_on_run = false;
 };
+
+template <>
+inline void TestCaseData::addData<bool>(std::vector<std::vector<uint8_t>> &dest,
+                                        const std::vector<bool> &data)
+{
+  size_t size = data.size() * sizeof(uint8_t);
+  dest.emplace_back();
+  dest.back().resize(size);
+  std::transform(data.cbegin(), data.cend(), dest.back().data(),
+                 [](bool b) { return static_cast<uint8_t>(b); });
+}
 
 /**
  * @brief Create a TestCaseData with a uniform type
@@ -119,8 +139,6 @@ class GenModelTestContext
 public:
   GenModelTestContext(CircleBuffer &&cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
 
-  GenModelTestContext(CircleBuffer &cbuf) : _cbuf{std::move(cbuf)}, _backends{"cpu"} {}
-
   /**
    * @brief  Return circle buffer
    *
@@ -143,16 +161,24 @@ public:
   const std::vector<std::string> &backends() const { return _backends; }
 
   /**
+   * @brief Return test is defined to fail on model load
+   *
+   * @return bool test is defined to fail on model load
+   */
+  bool expected_expected_fail_model_load() const { return _expected_fail_model_load; }
+
+  /**
    * @brief Return test is defined to fail on compile
    *
    * @return bool test is defined to fail on compile
    */
-  const bool fail_compile() const { return _fail_compile; }
+  bool expected_expected_fail_compile() const { return _expected_fail_compile; }
 
   /**
    * @brief Set the output buffer size of specified output tensor
-   *        Note that output tensor size of a model with dynamic tensor is calculated while running
-   *        the model. Therefore, before runniing the model, the sufficient size of buffer should
+   *        Note that output tensor size of a model with dynamic tensor is calculated while
+   *        running the model.
+   *        Therefore, before runniing the model, the sufficient size of buffer should
    *        be prepared by calling this method.
    *        The size does not need to be the exact size.
    */
@@ -194,16 +220,22 @@ public:
   }
 
   /**
-   * @brief Set the Test Fail
+   * @brief Expect failure while model load
    */
-  void setCompileFail() { _fail_compile = true; }
+  void expectFailModelLoad() { _expected_fail_model_load = true; }
+
+  /**
+   * @brief Expect failure while compiling
+   */
+  void expectFailCompile() { _expected_fail_compile = true; }
 
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
   std::vector<std::string> _backends;
   std::unordered_map<uint32_t, size_t> _output_sizes;
-  bool _fail_compile{false};
+  bool _expected_fail_model_load{false};
+  bool _expected_fail_compile{false};
 };
 
 /**
@@ -232,10 +264,19 @@ protected:
       //      nnfw_load_circle_from_buffer to outside forloop
       NNFW_ENSURE_SUCCESS(nnfw_create_session(&_so.session));
       auto &cbuf = _context->cbuf();
-      NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size()));
+      auto model_load_result =
+          nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
+      if (_context->expected_expected_fail_model_load())
+      {
+        ASSERT_NE(model_load_result, NNFW_STATUS_NO_ERROR);
+        std::cerr << "Failed model loading as expected." << std::endl;
+        NNFW_ENSURE_SUCCESS(nnfw_close_session(_so.session));
+        continue;
+      }
+      NNFW_ENSURE_SUCCESS(model_load_result);
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
 
-      if (_context->fail_compile())
+      if (_context->expected_expected_fail_compile())
       {
         ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
 
@@ -306,6 +347,12 @@ protected:
           // Fill the values
           ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
           memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
+        }
+
+        if (test_case.expect_error_on_run())
+        {
+          ASSERT_EQ(nnfw_run(_so.session), NNFW_STATUS_ERROR);
+          continue;
         }
 
         NNFW_ENSURE_SUCCESS(nnfw_run(_so.session));

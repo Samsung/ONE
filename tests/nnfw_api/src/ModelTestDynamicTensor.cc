@@ -19,7 +19,6 @@
 
 #include "common.h"
 #include "fixtures.h"
-#include "NNPackages.h"
 #include "CircleGen.h"
 #include "GenModelTest.h"
 
@@ -80,84 +79,12 @@ auto build_dynamic_Reshape()
   return cbuf;
 }
 
-// TODO deprecate this
-class TestDynamicTensorReshapeModelLoaded
-    : public ValidationTestModelLoaded<NNPackages::DYNAMIC_TENSOR_RESHAPE>
-{
-protected:
-  void set_input_output(const std::vector<int> &new_shape, int actual_output_size,
-                        std::vector<float> *actual_output)
-  {
-    NNFW_STATUS res = nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_INT32, new_shape.data(),
-                                     sizeof(int) * new_shape.size());
-    NNFW_ENSURE_SUCCESS(res);
-
-    res = nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output->data(),
-                          sizeof(float) * actual_output_size);
-    NNFW_ENSURE_SUCCESS(res);
-  }
-
-  void prepare_and_set_input_output(const std::vector<int> &new_shape, int actual_output_size,
-                                    std::vector<float> *actual_output)
-  {
-    NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
-
-    NNFW_STATUS res = NNFW_STATUS_ERROR;
-
-    res = nnfw_prepare(_session);
-    NNFW_ENSURE_SUCCESS(res);
-
-    set_input_output(new_shape, actual_output_size, actual_output);
-    // real test case should start from calling nnfw_run()
-  }
-
-  // call this after calling nnfw_prepare()
-  void set_input_output_and_run(const std::vector<int> &new_shape,
-                                const std::vector<float> &expected_output, bool no_run_error = true)
-  {
-    int output_element_num = expected_output.size();
-    std::vector<float> actual_output(output_element_num);
-
-    set_input_output(new_shape, output_element_num, &actual_output);
-
-    // Do inference
-    NNFW_STATUS res = nnfw_run(_session);
-
-    if (no_run_error)
-    {
-      NNFW_ENSURE_SUCCESS(res);
-
-      // output shape check
-      nnfw_tensorinfo info;
-      NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_session, 0, &info));
-      ASSERT_EQ(info.rank, new_shape.size());
-      for (uint32_t d = 0; d < info.rank; ++d)
-        ASSERT_EQ(info.dims[d], new_shape[d]);
-
-      // output value check
-      for (int i = 0; i < expected_output.size(); ++i)
-        ASSERT_EQ(expected_output[i], actual_output[i]);
-    }
-    else
-    {
-      ASSERT_EQ(res, NNFW_STATUS_ERROR);
-    }
-  };
-
-  void TearDown() override
-  {
-    ValidationTestModelLoaded<NNPackages::DYNAMIC_TENSOR_RESHAPE>::TearDown();
-  }
-};
-
 TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
 {
-  auto model = build_dynamic_Reshape();
-
   const std::vector<int> new_shape{3, 2};
   const std::vector<float> expected{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  _context = std::make_unique<GenModelTestContext>(model);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
   {
     TestCaseData tcd;
     tcd.addInput(new_shape);
@@ -174,60 +101,78 @@ TEST_F(GenModelTest, dynamic_reshape_from_2x3_to_3x2)
  * @brief Negative test.
  *        Reshape's first input has 6 values but trying to reshaping to [3, 3]
  */
-TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_to_wrong_3x3)
+TEST_F(GenModelTest, neg_reshape_from_2x3_to_wrong_3x3)
 {
-  const std::vector<int> wrong_shape = {3, 3}; // wrong shape input
-  const int actual_element_num = 9;            // whatever number
-  std::vector<float> actual_output(9);         // whatever size
+  const std::vector<int> wrong_shape{3, 3}; // wrong shape input
+  const std::vector<float> expected{0};     // whatever
 
-  prepare_and_set_input_output(wrong_shape, actual_element_num, &actual_output);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
+  {
+    TestCaseData tcd;
+    tcd.addInput(wrong_shape);
+    tcd.addOutput(expected);
+    tcd.expect_error_on_run(true);
 
-  // Do inference
-  NNFW_STATUS res = nnfw_run(_session);
-  ASSERT_EQ(res, NNFW_STATUS_ERROR); // run should fail
+    _context->addTestCase(tcd);
+    _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
+    _context->output_sizes(0, sizeof(float) * expected.size());
+  }
+  // GenModelTest::teardown() will do the rest
+  SUCCEED();
 }
 
-TEST_F(TestDynamicTensorReshapeModelLoaded, reshape_multiple_executions)
+TEST_F(GenModelTest, reshape_multiple_executions)
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
-
-  NNFW_STATUS res = nnfw_prepare(_session);
-  NNFW_ENSURE_SUCCESS(res);
-
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  // let's call multiple times
-  new_shape = {3, 2};
-  set_input_output_and_run(new_shape, expected);
+  auto add_tcd = [&](const decltype(new_shape) &&new_shape) {
+    TestCaseData tcd;
+    tcd.addInput(new_shape);
+    tcd.addOutput(expected);
+    _context->addTestCase(tcd);
+  };
 
-  new_shape = {1, 6};
-  set_input_output_and_run(new_shape, expected);
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
+  {
+    add_tcd({3, 2});
+    add_tcd({1, 6});
+    add_tcd({6, 1});
 
-  new_shape = {6, 1};
-  set_input_output_and_run(new_shape, expected);
+    _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
+    _context->output_sizes(0, sizeof(float) * expected.size());
+  }
+  // GenModelTest::teardown() will do the rest
+  SUCCEED();
 }
 
-TEST_F(TestDynamicTensorReshapeModelLoaded, neg_reshape_multiple_executions)
+TEST_F(GenModelTest, neg_reshape_multiple_executions)
 {
-  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_session, "cpu"));
-
-  NNFW_STATUS res = nnfw_prepare(_session);
-  NNFW_ENSURE_SUCCESS(res);
-
   std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  // let's call multiple times including the second nnfw_run() to fail
-  new_shape = {3, 2};
-  set_input_output_and_run(new_shape, expected);
+  auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_error_on_run) {
+    TestCaseData tcd;
+    tcd.addInput(new_shape);
+    tcd.addOutput(expected);
+    tcd.expect_error_on_run(expect_error_on_run);
+    _context->addTestCase(tcd);
+  };
 
-  new_shape = {1, 100};                                 // wrong shape
-  set_input_output_and_run(new_shape, expected, false); // Run will fail
+  _context = std::make_unique<GenModelTestContext>(build_dynamic_Reshape());
+  {
+    bool EXPECT_ERROR_ON_RUN = true;
+    bool EXPECT_SUCCESS_ON_RUN = !EXPECT_ERROR_ON_RUN;
 
-  // next run should succeed
-  new_shape = {6, 1};
-  set_input_output_and_run(new_shape, expected);
+    add_tcd({3, 2}, EXPECT_SUCCESS_ON_RUN);
+    add_tcd({1, 100}, EXPECT_ERROR_ON_RUN); // 1th tcd. wrong shape
+    add_tcd({6, 1}, EXPECT_SUCCESS_ON_RUN);
+
+    _context->setBackends({"cpu"}); // Currently, dynamic tensor runs on "cpu" only
+    _context->output_sizes(0, sizeof(float) * expected.size());
+  }
+  // GenModelTest::teardown() will do the rest
+  SUCCEED();
 }
 
 //

@@ -27,7 +27,6 @@
 #include <unordered_map>
 
 #include "DynamicTensorManager.h"
-#include "UserTensorRegistry.h"
 
 namespace onert
 {
@@ -59,16 +58,15 @@ public:
   void allocate() override;
   void postFunctionPrepare() override { /* DO NOTHING */}
 
-  IDynamicTensorManager *dynamicTensorManager(void) override { return _dynamic_tensor_mgr.get(); }
+  IDynamicTensorManager *dynamicTensorManager(void) override;
 
   /**
    * @brief Get tensor with a specific OperandIndex.
    * @param ind OperandIndex for the tensor. There must exist a tensor with this ind.
    *        If not, program will crash with assert or exception.
-   * @return shared_ptr<operand::Tensor>
+   * @return operand::Tensor *
    */
-  std::shared_ptr<cpu_common::Tensor> nativeOwnTensorAt(const ir::OperandIndex &ind);
-  void setNativeUserTensor(const ir::OperandIndex &ind, const std::shared_ptr<UserTensor> &tensor);
+  cpu_common::Tensor *nativeOwnTensorAt(const ir::OperandIndex &ind);
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

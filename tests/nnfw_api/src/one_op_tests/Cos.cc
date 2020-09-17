@@ -44,7 +44,7 @@ TEST_F(GenModelTest, neg_OneOp_Cos_TwoOperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
-  _context->setCompileFail();
+  _context->expectFailModelLoad();
 
   SUCCEED();
 }

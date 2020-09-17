@@ -29,8 +29,8 @@ namespace controlflow
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
     : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
-      _static_tensor_mgr{
-          new cpu_common::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
+      _static_tensor_mgr{new cpu_common::StaticTensorManager(
+          _tensor_reg->base_reg(), _dynamic_tensor_mgr->dynamic_mem_mgr().get())}
 {
   /* empty */
 }
@@ -101,15 +101,14 @@ void TensorBuilder::allocate()
   //      This is because CPU kernels require `ITensor`s to be allocated before Kernel Generation.
 }
 
-std::shared_ptr<cpu_common::Tensor> TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
+IDynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
 {
-  return _tensor_reg->getNativeOwnTensor(ind);
+  return _dynamic_tensor_mgr.get();
 }
 
-void TensorBuilder::setNativeUserTensor(const ir::OperandIndex &ind,
-                                        const std::shared_ptr<UserTensor> &tensor)
+cpu_common::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
-  _tensor_reg->setNativeUserTensor(ind, tensor);
+  return _tensor_reg->getNativeOwnTensor(ind);
 }
 
 } // namespace controlflow

@@ -29,6 +29,7 @@
 #include "backend/IConstantInitializer.h"
 #include "backend/IKernelGenerator.h"
 #include "backend/IOptimizer.h"
+#include "backend/IPortableTensor.h"
 #include "backend/ITensorRegister.h"
 #include "backend/controlflow/Config.h"
 #include "backend/controlflow/KernelGenerator.h"
@@ -183,11 +184,11 @@ void ExecutorFactory::runTensorRegistration(compiler::LoweredGraph *lowered_grap
   }
 }
 
-std::vector<std::shared_ptr<backend::ITensor>>
+std::vector<backend::ITensor *>
 ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
                                           const ir::OperandIndexSequence &indices)
 {
-  std::vector<std::shared_ptr<backend::ITensor>> ret;
+  std::vector<backend::ITensor *> ret;
 
   // TODO Store controlflow backend in BackendContext
   std::shared_ptr<backend::controlflow::TensorBuilder> cf_tensor_builder;
@@ -210,19 +211,20 @@ ExecutorFactory::initializeModelIOTensors(compiler::LoweredGraph &lowered_graph,
   for (auto ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_shared<backend::controlflow::UserTensor>(
+    auto tensor = std::make_unique<backend::controlflow::UserTensor>(
         operand.info(),
-        ir::Layout::NHWC, /* FIXME find op_seq for this operand and use frontend_layout */
-        cf_tensor_builder->dynamicTensorManager());
+        ir::Layout::NHWC /* FIXME find op_seq for this operand and use frontend_layout */
+        );
 
     // Add tensor to controlflow TensorRegistry.
-    cf_tensor_reg->setNativeUserTensor(ind, tensor);
-    ret.push_back(tensor);
+    cf_tensor_reg->setNativeUserTensor(ind, std::move(tensor));
+    auto *itensor = cf_tensor_reg->getITensor(ind);
+    ret.push_back(itensor);
   }
   return ret;
 }
 
-void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_graph)
+void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph)
 {
   TensorRegistries tensor_regs{lowered_graph.backend_contexts(), true};
 
@@ -234,13 +236,13 @@ void ExecutorFactory::prepareExternalTensors(compiler::LoweredGraph &lowered_gra
                             ir::Remove::UNDEFINED)
         {
           // If an OpSequence input/output tensor does not have a own tensor object,
-          // it must be using external tensors, so find the tensor from other tensor builders and
+          // it must be using migrant tensors, so find the tensor from other tensor builders and
           // set the tensor to this tensor builder if portable
           if (!backend_ctx->tensor_registry->getITensor(ind))
           {
             auto tensor = tensor_regs.getITensor(ind);
             assert(tensor); // The tensor must have been registered
-            auto ptensor = std::dynamic_pointer_cast<backend::IPortableTensor>(tensor);
+            auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
             if (ptensor)
               backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
           }
@@ -282,8 +284,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::ITensor *> output_tensors;
   if (options.is_primary_subgraph)
   {
     input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
@@ -301,7 +303,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 
@@ -378,8 +380,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto order = Linear::linearize(*lowered_graph);
   runTensorRegistration(lowered_graph.get(), order);
 
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
+  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::ITensor *> output_tensors;
   if (options.is_primary_subgraph)
   {
     input_tensors = initializeModelIOTensors(*lowered_graph, lowered_graph->graph().getInputs());
@@ -406,7 +408,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     tensor_builder->prepare();
   }
 
-  prepareExternalTensors(*lowered_graph);
+  prepareMigrantTensors(*lowered_graph);
 
   ExecutionBuilder builder;
 

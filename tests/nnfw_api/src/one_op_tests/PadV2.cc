@@ -60,7 +60,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadRank)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-  _context->setCompileFail();
+  _context->expectFailCompile();
 
   SUCCEED();
 }
@@ -84,7 +84,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadDim0)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-  _context->setCompileFail();
+  _context->expectFailCompile();
 
   SUCCEED();
 }
@@ -108,7 +108,7 @@ TEST_F(GenModelTest, neg_OneOp_PadV2_InvalidPadDim1)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
-  _context->setCompileFail();
+  _context->expectFailCompile();
 
   SUCCEED();
 }

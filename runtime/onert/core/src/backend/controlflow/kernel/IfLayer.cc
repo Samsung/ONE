@@ -30,16 +30,13 @@ namespace controlflow
 namespace kernel
 {
 
-IfLayer::IfLayer(const std::shared_ptr<backend::ITensor> &cond_tensor,
-                 const std::vector<std::shared_ptr<backend::ITensor>> input_tensors,
-                 const std::vector<std::shared_ptr<backend::ITensor>> output_tensors,
+IfLayer::IfLayer(backend::ITensor *cond_tensor, const std::vector<backend::ITensor *> input_tensors,
+                 const std::vector<backend::ITensor *> output_tensors,
                  const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
-                 const exec::DynAllocInfoMap &outputs_dyn_alloc_info,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
                  exec::ExecutorMap *executor_map)
     : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
-      _output_indices{output_indices}, _graph{graph},
-      _outputs_dyn_alloc_info{outputs_dyn_alloc_info}, _then_subg_index{then_subg_index},
+      _output_indices{output_indices}, _graph{graph}, _then_subg_index{then_subg_index},
       _else_subg_index{else_subg_index}, _executor_map{executor_map}
 {
   // At this point, executor_map may not have executors of then subg and else subg
@@ -63,7 +60,7 @@ void IfLayer::run()
   };
 
   exec::ExecutorBase *subg_exec = nullptr;
-  bool cond_result = getResultCond(_cond_tensor.get());
+  bool cond_result = getResultCond(_cond_tensor);
   if (cond_result)
   {
     VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
@@ -79,8 +76,8 @@ void IfLayer::run()
 
   const auto &subg_graph = subg_exec->graph();
 
-  std::vector<std::shared_ptr<backend::ITensor>> src_tensors;
-  std::vector<std::shared_ptr<backend::ITensor>> dst_tensors;
+  std::vector<backend::ITensor *> src_tensors;
+  std::vector<backend::ITensor *> dst_tensors;
   // Add tensors used in subgraph or contained in outputs of subgraph
   assert(subg_graph.getInputs().size() == _input_tensors.size());
   assert(subg_graph.getInputs().size() == subg_exec->getInputTensors().size());
@@ -94,9 +91,8 @@ void IfLayer::run()
       dst_tensors.emplace_back(subg_exec->getInputTensors().at(i));
     }
   }
-  const auto &subg_inputs_dyn_alloc_info = subg_exec->getInputsDynamicAllocInfo();
   const auto permute_op_input_to_subg_input =
-      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, subg_inputs_dyn_alloc_info);
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors);
 
   // Add tensors used as output of operation or contained in outputs of operation
   src_tensors.clear();
@@ -114,7 +110,7 @@ void IfLayer::run()
     }
   }
   const auto permute_subg_output_to_op_output =
-      std::make_shared<PermuteLayer>(src_tensors, dst_tensors, _outputs_dyn_alloc_info);
+      std::make_shared<PermuteLayer>(src_tensors, dst_tensors);
 
   // Remove copying of unused tensor
   permute_op_input_to_subg_input->prepare();

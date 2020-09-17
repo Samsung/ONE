@@ -43,7 +43,7 @@ struct ITensorRegistry
    *
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
-  virtual std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &) = 0;
+  virtual ITensor *getITensor(const ir::OperandIndex &) = 0;
   /**
    * @brief Returns pointer of ITensor among native tensors
    *
@@ -51,17 +51,14 @@ struct ITensorRegistry
    *
    * @note  Returned tensor cannot be used longer than dynamic tensor manager
    */
-  virtual std::shared_ptr<ITensor> getNativeITensor(const ir::OperandIndex &) = 0;
+  virtual ITensor *getNativeITensor(const ir::OperandIndex &) = 0;
   /**
    * @brief Set the Migrant Tensor which are from other backends
    *
    * @return true if supported
    * @return false if not supported
    */
-  virtual bool setMigrantTensor(const ir::OperandIndex &, const std::shared_ptr<IPortableTensor> &)
-  {
-    return false;
-  }
+  virtual bool setMigrantTensor(const ir::OperandIndex &, IPortableTensor *) { return false; }
 };
 
 } // namespace backend
@@ -85,41 +82,37 @@ namespace backend
 template <typename T_Tensor> class PortableTensorRegistryTemplate : public ITensorRegistry
 {
 public:
-  std::shared_ptr<ITensor> getITensor(const ir::OperandIndex &ind) override
+  ITensor *getITensor(const ir::OperandIndex &ind) override
   {
     static_assert(std::is_base_of<ITensor, T_Tensor>::value, "T_Tensor must derive from ITensor.");
-    auto external_tensor = _migrant.find(ind);
-    if (external_tensor != _migrant.end())
-      return external_tensor->second;
+    auto _migrant_tensor = _migrant.find(ind);
+    if (_migrant_tensor != _migrant.end())
+      return _migrant_tensor->second;
     return getNativeTensor(ind);
   }
 
-  std::shared_ptr<ITensor> getNativeITensor(const ir::OperandIndex &ind) override
-  {
-    return getNativeTensor(ind);
-  }
+  ITensor *getNativeITensor(const ir::OperandIndex &ind) override { return getNativeTensor(ind); }
 
-  std::shared_ptr<IPortableTensor> getPortableTensor(const ir::OperandIndex &ind)
+  IPortableTensor *getPortableTensor(const ir::OperandIndex &ind)
   {
-    auto external_tensor = _migrant.find(ind);
-    if (external_tensor != _migrant.end())
+    auto _migrant_tensor = _migrant.find(ind);
+    if (_migrant_tensor != _migrant.end())
     {
-      if (external_tensor->second)
-        return external_tensor->second;
+      if (_migrant_tensor->second)
+        return _migrant_tensor->second;
     }
     return getNativeTensor(ind);
   }
 
-  std::shared_ptr<T_Tensor> getNativeTensor(const ir::OperandIndex &ind)
+  T_Tensor *getNativeTensor(const ir::OperandIndex &ind)
   {
     auto tensor = _native.find(ind);
     if (tensor != _native.end())
-      return tensor->second;
+      return tensor->second.get();
     return nullptr;
   }
 
-  bool setMigrantTensor(const ir::OperandIndex &ind,
-                        const std::shared_ptr<IPortableTensor> &tensor) override
+  bool setMigrantTensor(const ir::OperandIndex &ind, IPortableTensor *tensor) override
   {
     assert(tensor != nullptr);
     auto itr = _native.find(ind);
@@ -129,25 +122,22 @@ public:
     return true;
   }
 
-  void setNativeTensor(const ir::OperandIndex &ind, const std::shared_ptr<T_Tensor> &tensor)
+  void setNativeTensor(const ir::OperandIndex &ind, std::unique_ptr<T_Tensor> &&tensor)
   {
     assert(tensor != nullptr);
     auto itr = _migrant.find(ind);
     if (itr != _migrant.end())
       throw std::runtime_error{"Tried to set a native tensor but a migrant tensor already exists."};
-    _native[ind] = tensor;
+    _native[ind] = std::move(tensor);
   }
 
-  const ir::OperandIndexMap<std::shared_ptr<T_Tensor>> &native_tensors() { return _native; }
+  const ir::OperandIndexMap<std::unique_ptr<T_Tensor>> &native_tensors() { return _native; }
 
-  const ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> &migrant_tensors()
-  {
-    return _migrant;
-  }
+  const ir::OperandIndexMap<IPortableTensor *> &migrant_tensors() { return _migrant; }
 
 private:
-  ir::OperandIndexMap<std::shared_ptr<IPortableTensor>> _migrant;
-  ir::OperandIndexMap<std::shared_ptr<T_Tensor>> _native;
+  ir::OperandIndexMap<IPortableTensor *> _migrant;
+  ir::OperandIndexMap<std::unique_ptr<T_Tensor>> _native;
 };
 
 } // namespace backend

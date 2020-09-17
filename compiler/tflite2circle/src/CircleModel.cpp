@@ -152,14 +152,14 @@ Offset<SubGraphLink>::Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_fla
           // array_segments
           auto tflite_array_segments_type = it->array_segments_type();
           auto circle_array_segments =
-              get_circle_sparse_index_vector(*fb, it, tflite_array_segments_type);
+              get_circle_sparse_index_vector(*fb, it->array_segments(), tflite_array_segments_type);
           auto circle_array_segments_type =
               get_circle_sparse_index_vector_type(tflite_array_segments_type);
 
           // array_indices
           auto tflite_array_indices_type = it->array_indices_type();
           auto circle_array_indices =
-              get_circle_sparse_index_vector(*fb, it, tflite_array_indices_type);
+              get_circle_sparse_index_vector(*fb, it->array_indices(), tflite_array_indices_type);
           auto circle_array_indices_type =
               get_circle_sparse_index_vector_type(tflite_array_indices_type);
 

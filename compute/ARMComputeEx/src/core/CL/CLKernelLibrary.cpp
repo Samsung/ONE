@@ -60,6 +60,7 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
     {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
     {"binary_logical_op", "binary_logical_op.cl"},
+    {"cast_bool", "cast.cl"},
     {"embedding_lookup", "embedding_lookup.cl"},
     {"gather_ex", "gather_ex.cl"},
     {"gather_ex_1d", "gather_ex.cl"},
@@ -70,6 +71,7 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
     {"multiply_scale_factor", "multiply_scale_factor.cl"},
     {"neg_tensor", "neg_tensor.cl"},
     {"one_hot", "one_hot.cl"},
+    {"one_hot_only_on_value", "one_hot.cl"},
     {"quantization_symm8", "quantization_symm8.cl"},
     {"reduce_min_max", "reduce_operation.cl"},
     {"reduce_sum_mean", "reduce_operation.cl"},
@@ -90,6 +92,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
     {
         "arg_min_max_ex.cl",
 #include "./cl_kernels/arg_min_max_ex.clembed"
+    },
+    {
+        "cast.cl",
+#include "./cl_kernels/cast.clembed"
     },
     {
         "embedding_lookup.cl",

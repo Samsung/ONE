@@ -69,7 +69,7 @@ public:
     return _cf_tensor_reg;
   }
 
-  std::shared_ptr<backend::ITensor> getITensor(ir::OperandIndex ind) const
+  backend::ITensor *getITensor(ir::OperandIndex ind) const
   {
     for (auto &tensor_reg : _tensor_regs)
     {

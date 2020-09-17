@@ -14,22 +14,6 @@
  * limitations under the License.
  */
 
-/*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #include "CircleGen.h"
 
 CircleGen::CircleGen() : _subgraph_contexts(1) // Create primary subgraph
@@ -111,6 +95,14 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
+                                    circle::TensorType output_type)
+{
+  auto options = circle::CreateCastOptions(_fbb, input_type, output_type).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CAST,
+                                circle::BuiltinOptions_AddOptions, options);
+}
+
 uint32_t CircleGen::addOperatorConcatenation(const OperatorParams &params, int axis,
                                              circle::ActivationFunctionType actfn)
 {
@@ -124,6 +116,13 @@ uint32_t CircleGen::addOperatorCos(const OperatorParams &params)
   auto options = circle::CreateCosOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_COS,
                                 circle::BuiltinOptions_CosOptions, options);
+}
+
+uint32_t CircleGen::addOperatorEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateEqualOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_EQUAL,
+                                circle::BuiltinOptions_EqualOptions, options);
 }
 
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
@@ -145,6 +144,13 @@ uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alp
   auto options = circle::CreateLeakyReluOptions(_fbb, alpha).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_LEAKY_RELU,
                                 circle::BuiltinOptions_LeakyReluOptions, options);
+}
+
+uint32_t CircleGen::addOperatorLogSoftmax(const OperatorParams &params)
+{
+  auto options = circle::CreateLogSoftmaxOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LOG_SOFTMAX,
+                                circle::BuiltinOptions_LogSoftmaxOptions, options);
 }
 
 uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
@@ -182,6 +188,15 @@ uint32_t CircleGen::addOperatorReshape(const OperatorParams &params, const Shape
                                 circle::BuiltinOptions_ReshapeOptions, options);
 }
 
+uint32_t CircleGen::addOperatorResizeBilinear(const OperatorParams &params, bool align_corners,
+                                              bool half_pixel_centers)
+{
+  auto options =
+      circle::CreateResizeBilinearOptions(_fbb, align_corners, half_pixel_centers).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_RESIZE_BILINEAR,
+                                circle::BuiltinOptions_ResizeBilinearOptions, options);
+}
+
 uint32_t CircleGen::addOperatorResizeNearestNeighbor(const OperatorParams &params)
 {
   auto options = circle::CreateResizeNearestNeighborOptions(_fbb).Union();
@@ -194,6 +209,13 @@ uint32_t CircleGen::addOperatorSplit(const OperatorParams &params, int32_t num_s
   auto options = circle::CreateSplitOptions(_fbb, num_split).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_SPLIT,
                                 circle::BuiltinOptions_SplitOptions, options);
+}
+
+uint32_t CircleGen::addOperatorTile(const OperatorParams &params)
+{
+  auto options = circle::CreateTileOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_TILE,
+                                circle::BuiltinOptions_TileOptions, options);
 }
 
 uint32_t CircleGen::addOperatorWhile(const OperatorParams &params, uint32_t cond_subg,

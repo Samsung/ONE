@@ -78,7 +78,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto then_subg_index = node.param().then_subg_index;
   const auto else_subg_index = node.param().else_subg_index;
 
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  std::vector<backend::ITensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
     auto input_tensor = getTensor(input_index);
@@ -86,14 +86,11 @@ void KernelGenerator::visit(const ir::operation::If &node)
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
-  exec::DynAllocInfoMap outputs_dyn_alloc_info;
+  std::vector<backend::ITensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
     auto output_tensor = getTensor(output_index);
-
     output_tensors.emplace_back(output_tensor);
-    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
@@ -101,8 +98,8 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::IfLayer>(
-      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
-      then_subg_index, else_subg_index, _executor_map);
+      cond_tensor, input_tensors, output_tensors, node.getOutputs(), _graph, then_subg_index,
+      else_subg_index, _executor_map);
 
   _return_fn = std::move(fn);
 }
@@ -113,14 +110,10 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   const auto input_index{node.getInputs().at(0)};
 
   // Add PermuteLayer
-  std::vector<std::shared_ptr<ITensor>> output_tensors{getTensor(output_index)};
-  std::vector<std::shared_ptr<ITensor>> input_tensors{getTensor(input_index)};
-  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
-  outputs_dyn_alloc_info[output_tensors.at(0)] = exec::DynAllocInfo{output_index};
+  std::vector<ITensor *> output_tensors{getTensor(output_index)};
+  std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  auto fn =
-      std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, outputs_dyn_alloc_info);
-
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors);
   _return_fn = std::move(fn);
 }
 
@@ -131,7 +124,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
 
   // This op does not support input as a constant, because controlflow backend does not have
   // TensorBuilder
-  std::vector<std::shared_ptr<backend::ITensor>> input_tensors;
+  std::vector<backend::ITensor *> input_tensors;
   for (const auto input_index : node.getInputs())
   {
     auto input_tensor = getTensor(input_index);
@@ -139,29 +132,25 @@ void KernelGenerator::visit(const ir::operation::While &node)
     input_tensors.emplace_back(input_tensor);
   }
 
-  std::vector<std::shared_ptr<backend::ITensor>> output_tensors;
-  std::unordered_map<std::shared_ptr<ITensor>, exec::DynAllocInfo> outputs_dyn_alloc_info;
+  std::vector<backend::ITensor *> output_tensors;
   for (const auto output_index : node.getOutputs())
   {
     auto output_tensor = getTensor(output_index);
-
     output_tensors.emplace_back(output_tensor);
-
-    outputs_dyn_alloc_info[output_tensor] = exec::DynAllocInfo{output_index};
   }
 
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, node.getOutputs(), _graph, outputs_dyn_alloc_info,
-      cond_subg_index, body_subg_index, _executor_map);
+      input_tensors, output_tensors, node.getOutputs(), _graph, cond_subg_index, body_subg_index,
+      _executor_map);
 
   _return_fn = std::move(fn);
 }
 
-std::shared_ptr<backend::ITensor> KernelGenerator::getTensor(const ir::OperandIndex &index)
+backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  std::shared_ptr<backend::ITensor> ret = _tensor_registries.getITensor(index);
+  backend::ITensor *ret = _tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }

@@ -66,8 +66,7 @@ TEST(DepthwiseConv2DTest, Float)
       71,  0, 99,  0,  //
       167, 0, 227, 28, //
   };
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 4}));
 }
 
@@ -115,9 +114,7 @@ TEST(DepthwiseConv2DTest, Uint8)
       71, -34, 99,  -20, //
       91, -26, 127, -4,  //
   };
-  EXPECT_THAT(dequantize(extractTensorData<uint8_t>(output_tensor), output_tensor.scale(),
-                         output_tensor.zero_point()),
-              ElementsAreArray(ArrayFloatNear(ref_output_data)));
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 4}));
 }
 

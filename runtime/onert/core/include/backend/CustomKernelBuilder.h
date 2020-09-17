@@ -49,10 +49,10 @@ struct TypeInfo
 
 struct CustomKernelConfigParams
 {
-  std::vector<std::shared_ptr<backend::IPortableTensor>> input_tensors;
+  std::vector<backend::IPortableTensor *> input_tensors;
   std::vector<TypeInfo> input_types;
 
-  std::vector<std::shared_ptr<backend::IPortableTensor>> output_tensors;
+  std::vector<backend::IPortableTensor *> output_tensors;
   std::vector<TypeInfo> output_types;
 
   char *userdata;

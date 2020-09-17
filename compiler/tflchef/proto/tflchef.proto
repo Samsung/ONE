@@ -21,6 +21,18 @@ enum TensorType {
   BOOL = 6;
 }
 
+enum DimensionType {
+  DENSE = 0;
+  SPARSE_CSR = 1;
+}
+
+enum SparseIndexVecType {
+  SparseIdxVecType_NONE = 0;
+  INT32VEC = 1;
+  UINT16VEC = 2;
+  UINT8VEC = 3;
+}
+
 message TensorShape {
   repeated uint32 dim = 3;
 }
@@ -38,12 +50,36 @@ message TensorQuantization {
   optional int32 quantized_dimension = 5 [default = 0];
 }
 
+message TensorSparsity {
+  message TraversalOrder {
+    repeated int32 dim = 1;
+  }
+  message BlockMap {
+    repeated int32 dim = 1;
+  }
+  message IndexVec {
+    repeated int32 dim = 1;
+    optional SparseIndexVecType type = 2;
+  }
+  message DimMetaData {
+    optional DimensionType format = 1;
+    optional int32 dense_size = 2;
+    optional IndexVec array_segments = 3;
+    optional IndexVec array_indices = 4;
+  }
+
+  optional TraversalOrder traversal_order = 1;
+  optional BlockMap block_map = 2;
+  repeated DimMetaData dim_metadata = 3;
+}
+
 message Operand {
   optional string name = 1;
   optional TensorType type = 2;
   optional TensorShape shape = 3;
   optional TensorFiller filler = 4;
   optional TensorQuantization quant = 5;
+  optional TensorSparsity sparsity = 6;
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema

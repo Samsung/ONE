@@ -18,6 +18,7 @@
 
 #include <arm_compute/runtime/CL/functions/CLArgMinMaxLayerEx.h>
 #include <arm_compute/runtime/CL/functions/CLBinaryLogicalOp.h>
+#include <arm_compute/runtime/CL/functions/CLCastBool.h>
 #include <arm_compute/runtime/CL/functions/CLEmbeddingLookup.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/CL/functions/CLGatherEx.h>

@@ -92,7 +92,7 @@ public:
   uint32_t nextSubgraph();
   CircleBuffer finish();
 
-  // ===== Add Operator methods begin =====
+  // ===== Add Operator methods begin (SORTED IN ALPHABETICAL ORDER) =====
 
   uint32_t addOperatorAdd(const OperatorParams &params, circle::ActivationFunctionType actfn);
   uint32_t addOperatorArgMax(const OperatorParams &params,
@@ -100,24 +100,31 @@ public:
   uint32_t addOperatorAveragePool2D(const OperatorParams &params, circle::Padding padding,
                                     int stride_w, int stride_h, int filter_w, int filter_h,
                                     circle::ActivationFunctionType actfn);
+  uint32_t addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
+                           circle::TensorType output_type);
   uint32_t addOperatorConcatenation(const OperatorParams &params, int axis,
                                     circle::ActivationFunctionType actfn);
   uint32_t addOperatorCos(const OperatorParams &params);
+  uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorL2Normalization(const OperatorParams &params);
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorLess(const OperatorParams &params);
+  uint32_t addOperatorLogSoftmax(const OperatorParams &params);
   uint32_t addOperatorNeg(const OperatorParams &params);
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
   uint32_t addOperatorRank(const OperatorParams &params);
   uint32_t addOperatorReshape(const OperatorParams &params, const Shape &new_shape);
+  uint32_t addOperatorResizeBilinear(const OperatorParams &params, bool align_corners = false,
+                                     bool half_pixel_centers = false);
   uint32_t addOperatorResizeNearestNeighbor(const OperatorParams &params);
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
-  uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
-  uint32_t addOperatorIf(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
+  uint32_t addOperatorTile(const OperatorParams &params);
   uint32_t addOperatorTranspose(const OperatorParams &params);
+  uint32_t addOperatorWhile(const OperatorParams &params, uint32_t cond_subg, uint32_t body_subg);
 
-  // NOTE Please add addOperator functions ABOVE this lie
+  // NOTE Please add addOperator functions ABOVE this line in ALPHABETICAL ORDER
   // ===== Add Operator methods end =====
 
 private:

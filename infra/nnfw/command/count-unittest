@@ -69,6 +69,6 @@ TOTAL_NEG_TCS=$(echo "$TEST_LIST" | grep '^  neg_' | wc -l)
 TOTAL_POS_TCS=$(echo "$TEST_LIST" | grep '^  neg_' -v | wc -l)
 
 # Report stats
-echo "TOTAL NUMBER OF TEST CASES          : $TOTAL_TCS"
-echo "TOTAL NUMBER OF POSTIVE TEST CASES  : $TOTAL_NEG_TCS"
-echo "TOTAL NUMBER OF NEGATIVE TEST CASES : $TOTAL_POS_TCS"
+printf "TOTAL NUMBER OF TEST CASES          : %5d\n" $TOTAL_TCS
+printf "TOTAL NUMBER OF POSTIVE TEST CASES  : %5d\n" $TOTAL_POS_TCS
+printf "TOTAL NUMBER OF NEGATIVE TEST CASES : %5d\n" $TOTAL_NEG_TCS
