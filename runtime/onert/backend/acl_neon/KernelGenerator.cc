@@ -1417,7 +1417,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   const auto depth_idx{node.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
   const auto onvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::ON_VALUE)};
   const auto offvalue_idx{node.getInputs().at(ir::operation::OneHot::Input::OFF_VALUE)};
-  const auto axis = node.param().axis;
 
   auto output_tensor = _tensor_reg->getAclTensor(out_idx);
   auto indices_tensor = _tensor_reg->getAclTensor(indices_idx);
@@ -1425,7 +1424,13 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto onvalue_tensor = _tensor_reg->getAclTensor(onvalue_idx);
   auto offvalue_tensor = _tensor_reg->getAclTensor(offvalue_idx);
 
-  auto fn = acl_common::generateLayer<arm_compute::CPPOneHotEx>(
+  const size_t output_rank = _ctx.at(out_idx).shape().rank();
+  const auto frontend_layout = _current_op_seq_layout;
+  const auto backend_layout = output_tensor->layout();
+  int32_t axis = node.param().axis == -1 ? output_rank - 1 : node.param().axis;
+  axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
+
+  auto fn = acl_common::generateLayer<arm_compute::NEOneHot>(
       indices_tensor->handle(), depth_tensor->handle(), onvalue_tensor->handle(),
       offvalue_tensor->handle(), output_tensor->handle(), axis);
   _return_fn = asAclFunction(std::move(fn));
