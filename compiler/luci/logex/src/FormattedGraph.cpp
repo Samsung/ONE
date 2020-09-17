@@ -92,6 +92,10 @@ const char *to_str(luci::FusedActFunc fused)
       return "RELU_N1_TO_1";
     case luci::FusedActFunc::RELU6:
       return "RELU6";
+    case luci::FusedActFunc::TANH:
+      return "TANH";
+    case luci::FusedActFunc::SIGN_BIT:
+      return "SIGN_BIT";
     default:
       return "Error";
   }

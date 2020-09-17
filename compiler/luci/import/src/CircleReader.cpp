@@ -115,7 +115,9 @@ FusedActFunc luci_actfunc(const circle::ActivationFunctionType type)
     case circle::ActivationFunctionType::ActivationFunctionType_RELU6:
       return luci::FusedActFunc::RELU6;
     case circle::ActivationFunctionType::ActivationFunctionType_TANH:
-      break;
+      return luci::FusedActFunc::TANH;
+    case circle::ActivationFunctionType::ActivationFunctionType_SIGN_BIT:
+      return luci::FusedActFunc::SIGN_BIT;
     default:
       break;
   }
