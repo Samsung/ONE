@@ -55,9 +55,10 @@ tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType t
       return tflchef::RELU_N1_TO_1;
     case tflite::ActivationFunctionType_RELU6:
       return tflchef::RELU6;
-    // TODO handle other types
-    // ActivationFunctionType_TANH
-    // ActivationFunctionType_SIGN_BIT
+    case tflite::ActivationFunctionType_TANH:
+      return tflchef::TANH;
+    case tflite::ActivationFunctionType_SIGN_BIT:
+      return tflchef::SIGN_BIT;
     default:
       throw std::runtime_error{"unsupported activation type"};
   }
