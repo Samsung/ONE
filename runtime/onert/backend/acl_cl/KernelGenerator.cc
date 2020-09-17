@@ -524,13 +524,10 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   }
 
   // Disable applied dim_correction
-  const auto orig_input_shape = inputData_tensor->info()->tensor_shape();
-  if (starts_set.num_dimensions() != inputData_tensor->info()->num_dimensions())
+  if (inputData_tensor->num_dimensions() != inputData_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and input tensor is applied dim_correction
-    const auto input = _ctx.at(input_index);
-    inputData_tensor->info()->set_tensor_shape(
-        acl_common::asTensorShape(input.shape(), _current_op_seq_layout, backend_layout, false));
+    acl_common::disableDimCorrection(inputData_tensor);
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLStridedSlice>(
@@ -538,7 +535,10 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
       begin_mask, end_mask, shrink_axis_mask);
 
   // Revert disabling applied dim_correction
-  inputData_tensor->info()->set_tensor_shape(orig_input_shape);
+  if (inputData_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(inputData_tensor);
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -837,12 +837,10 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   int32_t axis = node.param().axis == -1 ? output_rank - 1 : node.param().axis;
   axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
 
-  const auto orig_output_acl_tensor_shape = output_tensor->info()->tensor_shape();
-  if (output_rank != output_tensor->info()->num_dimensions())
+  if (output_tensor->num_dimensions() != output_tensor->info()->num_dimensions())
   {
-    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-    output_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
-        _ctx.at(output_idx).shape(), _current_op_seq_layout, backend_layout, false));
+    // This means that high dimension's value is 1 and output_tensor is applied dim_correction
+    acl_common::disableDimCorrection(output_tensor);
   }
 
   std::unique_ptr<::arm_compute::IFunction> fn;
@@ -861,7 +859,10 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
         output_tensor->handle(), static_cast<uint32_t>(depth), axis);
   }
 
-  output_tensor->info()->set_tensor_shape(orig_output_acl_tensor_shape);
+  if (output_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(output_tensor);
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -890,28 +891,26 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   axis = acl_common::ToARMComputeAxis(output_rank, axis, frontend_layout, backend_layout).value();
 
   // Disable applied dim_correction
-  std::vector<arm_compute::TensorShape> orig_inputs_acl_tensor_shapes;
   for (const auto &input_index : input_indexes)
   {
-    size_t input_rank = _ctx.at(input_index).shape().rank();
     const auto &input_tensor = _tensor_reg->getAclTensor(input_index);
-    orig_inputs_acl_tensor_shapes.emplace_back(input_tensor->info()->tensor_shape());
-    assert(input_rank == input_tensor->num_dimensions());
-    if (input_rank != input_tensor->info()->num_dimensions())
+    if (input_tensor->num_dimensions() != input_tensor->info()->num_dimensions())
     {
-      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      input_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
-          _ctx.at(input_index).shape(), _current_op_seq_layout, backend_layout, false));
+      // This means that high dimension's value is 1 and input tensor is applied dim_correction
+      acl_common::disableDimCorrection(input_tensor);
     }
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLStackLayer>(inputs, axis, output);
 
   // Revert disabling applied dim_correction
-  assert(inputs.size() == orig_inputs_acl_tensor_shapes.size());
-  for (size_t i = 0; i < inputs.size(); ++i)
+  for (const auto &input_index : input_indexes)
   {
-    inputs.at(i)->info()->set_tensor_shape(orig_inputs_acl_tensor_shapes.at(i));
+    const auto &input_tensor = _tensor_reg->getAclTensor(input_index);
+    if (input_tensor->dimension(0) == 1)
+    {
+      acl_common::enableDimCorrection(input_tensor);
+    }
   }
 
   _return_fn = asAclFunction(std::move(fn));
@@ -1276,29 +1275,29 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   assert(k == indices_tensor->num_dimensions());
 
   // Disable applied dim_correction
-  const auto orig_ifm_acl_tensor_shape = ifm_tensor->info()->tensor_shape();
   if (n != ifm_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-    const auto ifm = _ctx.at(ifm_index);
-    ifm_tensor->info()->set_tensor_shape(
-        acl_common::asTensorShape(ifm.shape(), _current_op_seq_layout, backend_layout, false));
+    acl_common::disableDimCorrection(ifm_tensor);
   }
-  const auto orig_indice_acl_tensor_shape = indices_tensor->info()->tensor_shape();
   if (k != indices_tensor->info()->num_dimensions())
   {
     // This means that high dimension's value is 1 and indices tensor is applied dim_correction
-    const auto indices = _ctx.at(indices_index);
-    indices_tensor->info()->set_tensor_shape(
-        acl_common::asTensorShape(indices.shape(), _current_op_seq_layout, backend_layout, false));
+    acl_common::disableDimCorrection(indices_tensor);
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLGatherEx>(
       ifm_tensor->handle(), indices_tensor->handle(), ofm_tensor->handle(), axis);
 
   // Revert disabling applied dim_correction
-  ifm_tensor->info()->set_tensor_shape(orig_ifm_acl_tensor_shape);
-  indices_tensor->info()->set_tensor_shape(orig_indice_acl_tensor_shape);
+  if (ifm_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(ifm_tensor);
+  }
+  if (indices_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(indices_tensor);
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -1435,11 +1434,10 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
     const auto frontend_layout = _current_op_seq_layout;
     const auto backend_layout = ifm_tensor->layout();
 
-    if (ifm_rank != ifm_tensor->info()->num_dimensions())
+    if (ifm_tensor->num_dimensions() != ifm_tensor->info()->num_dimensions())
     {
       // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      ifm_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
-          _ctx.at(ifm_index).shape(), _current_op_seq_layout, backend_layout, false));
+      acl_common::disableDimCorrection(ifm_tensor);
     }
 
     split_dim_revised =
@@ -1447,6 +1445,11 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
             .value();
     fn->configure(ifm_tensor->handle(), size_split_tensor->handle(), split_dim_revised,
                   output_tensors, node.param().num_splits);
+
+    if (ifm_tensor->dimension(0) == 1)
+    {
+      acl_common::enableDimCorrection(ifm_tensor);
+    }
   }
   else
   {
@@ -1479,22 +1482,27 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
 
   // Disable applied dim_correction
-  std::vector<arm_compute::TensorShape> orig_outputs_acl_tensor_shapes;
   for (const auto &output_index : output_indexes)
   {
-    size_t output_rank = _ctx.at(output_index).shape().rank();
     const auto &output_tensor = _tensor_reg->getAclTensor(output_index);
-    orig_outputs_acl_tensor_shapes.emplace_back(output_tensor->info()->tensor_shape());
-    assert(output_rank == output_tensor->num_dimensions());
-    if (output_rank != output_tensor->info()->num_dimensions())
+    if (output_tensor->num_dimensions() != output_tensor->info()->num_dimensions())
     {
-      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      output_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
-          _ctx.at(output_index).shape(), _current_op_seq_layout, backend_layout, false));
+      // This means that high dimension's value is 1 and output tensor is applied dim_correction
+      acl_common::disableDimCorrection(output_tensor);
     }
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLUnstack>(input, outputs, axis);
+
+  // Revert disabling applied dim_correction
+  for (const auto &output_index : output_indexes)
+  {
+    const auto &output_tensor = _tensor_reg->getAclTensor(output_index);
+    if (output_tensor->dimension(0) == 1)
+    {
+      acl_common::enableDimCorrection(output_tensor);
+    }
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -1532,21 +1540,26 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   }
 
   // Disable applied dim_correction
-  size_t input_rank = _ctx.at(input_index).shape().rank();
   const auto &input_tensor = _tensor_reg->getAclTensor(input_index);
-  assert(input_rank == input_tensor->num_dimensions());
-  if (input_rank != input_tensor->info()->num_dimensions())
+  if (input_tensor->num_dimensions() != input_tensor->info()->num_dimensions())
   {
-    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-    input_tensor->info()->set_tensor_shape(acl_common::asTensorShape(
-        _ctx.at(input_index).shape(), frontend_layout, backend_layout, false));
+    // This means that high dimension's value is 1 and input tensor is applied dim_correction
+    acl_common::disableDimCorrection(input_tensor);
   }
 
   auto fn =
       acl_common::generateLayer<arm_compute::CLPadLayer>(input, output, padding_list, pixel_value);
 
-  // Do not revert disabling applied dim_correction CLPadKernel has cl kernel for 4-dimension
-  // It would produce a mistach of result
+  // NOTE Do not revert disabling applied dim_correction for 4D.
+  // It would produce a mistach of result by incorrect offset_first_element in
+  // ICLKernel::add_tensor_argument<3>().
+  // We have to disable applied dim_correction and not to revert enabling for the kernel that slices
+  // 4D to 3D because slicing arm_compute::Window can causes incorrect offset_first_element if the
+  // used tensor is 4D and the tensor's high dimention is 1
+  if (input_tensor->num_dimensions() < 4 && input_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(input_tensor);
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
