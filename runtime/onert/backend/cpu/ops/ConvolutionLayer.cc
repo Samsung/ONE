@@ -57,10 +57,16 @@ void ConvolutionLayer::convFloat32()
   op_params.float_activation_max = output_activation_max;
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
+
+  const float *kernel_data =
+      (kernel.is_transposed() == true)
+          ? nullptr // _kernel->buffer() is transformed into cker::Conv::_modified_filter_data
+          : reinterpret_cast<const float *>(_kernel->buffer());
+
   kernel(op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
-         getTensorShape(_kernel), reinterpret_cast<const float *>(_kernel->buffer()),
-         getTensorShape(_bias), reinterpret_cast<const float *>(_bias->buffer()),
-         getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
+         getTensorShape(_kernel), kernel_data, getTensorShape(_bias),
+         reinterpret_cast<const float *>(_bias->buffer()), getTensorShape(_output),
+         reinterpret_cast<float *>(_output->buffer()));
 }
 
 void ConvolutionLayer::convQuant8()

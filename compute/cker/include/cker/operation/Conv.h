@@ -55,7 +55,11 @@ inline void TransposeFloatTensor(const float *input_data, const nnfw::cker::Shap
 class Conv
 {
 public:
-  Conv() : _modified_filter_data(), _im2col_shape(4), _need_im2col(false), _prepared(false) {}
+  Conv()
+      : _modified_filter_data(), _im2col_shape(4), _need_im2col(false), _prepared(false),
+        _transposed(false)
+  {
+  }
 
   void prepare(const Shape &filter_shape, const float *filter_data, PaddingType padding_type,
                bool &is_replaced_weights, uint32_t dilationWidthFactor,
@@ -65,7 +69,8 @@ public:
     {
       if (usableMultiThreaded(padding_type, dilationWidthFactor, dilationHeightFactor))
       {
-        transposeFilter(filter_shape, filter_data, is_replaced_weights);
+        transposeFilter(filter_shape, filter_data);
+        is_replaced_weights = true;
       }
       _prepared = true;
     }
@@ -88,13 +93,12 @@ public:
     if (usableMultiThreaded(params.padding_type, params.dilation_width_factor,
                             params.dilation_height_factor))
     {
-      bool transposed_in_execution = false;
       if (!_prepared)
       {
         // This means that filter is not constant
         // TODO Apply optimized kernel if multithreaded kernel is slower than optimized kernel by
         // transposing filter data
-        transposeFilter(filter_shape, filter_data, transposed_in_execution);
+        transposeFilter(filter_shape, filter_data);
       }
       multithreaded::Conv(params, input_shape, input_data, filter_shape, &_modified_filter_data[0],
                           bias_shape, bias_data, output_shape, output_data);
@@ -135,6 +139,8 @@ public:
     }
   }
 
+  bool is_transposed() { return _transposed; }
+
 private:
   bool usableMultiThreaded(PaddingType padding_type, uint32_t dilation_width_factor,
                            int32_t dilation_height_factor)
@@ -143,14 +149,13 @@ private:
            dilation_width_factor == 1 && dilation_height_factor == 1;
   }
 
-  void transposeFilter(const Shape &filter_shape, const float *filter_data,
-                       bool &is_replaced_weights)
+  void transposeFilter(const Shape &filter_shape, const float *filter_data)
   {
     const auto output_depth = filter_shape.Dims(0);
     const Shape hwcn_filter_shape{filter_shape.FlatSize() / output_depth, output_depth};
     _modified_filter_data.resize(hwcn_filter_shape.FlatSize());
     TransposeFloatTensor(filter_data, hwcn_filter_shape, &_modified_filter_data[0]);
-    is_replaced_weights = true;
+    _transposed = true;
   }
 
   void IsRequiredIm2col(const Shape &input_shape, const Shape &kernel_shape,
@@ -172,6 +177,7 @@ private:
   Shape _im2col_shape;
   bool _need_im2col;
   bool _prepared;
+  bool _transposed; // true when filter(float) is transposed into _modified_filter_data
 };
 } // namespace cker
 } // namespace nnfw

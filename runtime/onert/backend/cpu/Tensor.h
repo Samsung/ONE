@@ -67,7 +67,15 @@ public:
   }
 
 public:
-  uint8_t *buffer() const override { return _buffer; }
+  uint8_t *buffer() const override
+  {
+    // buffer can either (1) be nullptr and zero references,
+    // or (2) has both data and non-zero num_references
+    assert((_buffer == nullptr && _num_references == 0) ||
+           (_buffer != nullptr && _num_references > 0));
+
+    return _buffer;
+  }
 
   bool is_constant() const override { return true; }
   bool is_dynamic() const override { return false; }
