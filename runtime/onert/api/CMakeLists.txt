@@ -9,7 +9,7 @@ add_library(${ONERT_DEV} SHARED ${API_SRC})
 set(NNFW_API_HEADERS include/nnfw.h include/nnfw_experimental.h)
 
 target_link_libraries(${ONERT_DEV} PUBLIC nnfw-nnapi-header)
-target_link_libraries(${ONERT_DEV} PUBLIC onert_core)
+target_link_libraries(${ONERT_DEV} PRIVATE onert_core)
 target_link_libraries(${ONERT_DEV} PRIVATE jsoncpp tflite_loader circle_loader ${LIB_PTHREAD})
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_common)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_coverage)
