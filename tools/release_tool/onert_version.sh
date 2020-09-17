@@ -5,6 +5,7 @@ set -eu
 progname=$(basename "${BASH_SOURCE[0]}")
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 nnfw_root="$( cd "${script_dir%*/*/*}" && pwd )"
+nightly=1
 
 usage() {
   echo "Usage: $progname version"
@@ -12,7 +13,8 @@ usage() {
   echo ""
   echo "Options:"
   echo "    -h   show this help"
-  echo "    -s   set onert  version"
+  echo "    -n   show current onert version with nightly suffix"
+  echo "    -s   set onert version"
   echo ""
   echo "Examples:"
   echo "    $progname           => show current onert version"
@@ -22,7 +24,17 @@ usage() {
 
 show_version() {
   version_line=$(cat ${nnfw_root}/packaging/nnfw.spec | grep "Version:")
-  echo ${version_line#"Version:"}
+  current_version=${version_line#"Version:"}
+
+  if [ $nightly -eq 0 ]; then
+    # Get head commit's date
+    pushd $nnfw_root > /dev/null
+    date=$(git log -1 --format=%ad --date=format:%y%m%d)
+    echo $current_version-nightly-$date
+    popd > /dev/null
+  else
+    echo $current_version
+  fi
 
   exit 0
 }
@@ -43,9 +55,10 @@ if [ $# -eq 0 ]; then
   show_version
 fi
 
-while getopts "hs:" OPTION; do
+while getopts "hns:" OPTION; do
 case "${OPTION}" in
     h) usage;;
+    n) nightly=0; show_version;;
     s) set_version "$OPTARG";;
     ?) exit 1;;
 esac
