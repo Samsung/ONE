@@ -34,7 +34,8 @@ public:
   double time[PhaseEnum::END_OF_PHASE][FigureType::END_OF_FIG_TYPE];
   uint32_t memory[PhaseEnum::END_OF_PHASE][MemoryType::END_OF_MEM_TYPE];
   bool print_memory = false;
-  uint32_t overall_memory = 0;
+  uint32_t init_memory = 0;
+  uint32_t peak_memory = 0;
 };
 
 // TODO Support not only stdout but also ostream

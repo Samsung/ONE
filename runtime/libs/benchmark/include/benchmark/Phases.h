@@ -50,7 +50,8 @@ public:
   const MemoryPoller &mem_poll() const { return *_mem_poll; }
   const Phase &at(const std::string &tag) const { return _phases.at(tag); }
 
-  uint32_t overall_memory() const { return _mem_after_run - _mem_before_init; }
+  uint32_t mem_before_init() const { return _mem_before_init; }
+  uint32_t mem_after_run() const { return _mem_after_run; }
 
 private:
   void run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc *post, uint32_t loop_num,
