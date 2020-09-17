@@ -17,6 +17,7 @@
 #include "FullyConnected.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -26,33 +27,11 @@ void TFliteOpFullyConnected::filler(const tflite::Operator *op, TFliteImport *im
 {
   const auto &inputs = *op->inputs();
 
-  for (uint32_t i = 1; i < inputs.size(); i++)
+  for (uint32_t idx = 1; idx < inputs.size(); idx++)
   {
     // optional input tensor idx has minus value.
-    if (inputs[i] >= 0)
-    {
-      const auto tensor = import->tensors()->Get(inputs[i]);
-      const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
-      if (not buffer->data())
-        continue;
-      switch (tensor->type())
-      {
-        case tflite::TensorType::TensorType_FLOAT32:
-        {
-          auto data = extract_buffer<float>(buffer);
-          import->set_tensor_filler(inputs[i], data);
-          break;
-        }
-        case tflite::TensorType::TensorType_INT32:
-        {
-          auto data = extract_buffer<int32_t>(buffer);
-          import->set_tensor_filler(inputs[i], data);
-          break;
-        }
-        default:
-          import->set_tensor_filler(inputs[i]);
-      }
-    }
+    if (inputs[idx] >= 0)
+      fill_tensor_to_import(inputs[idx], import);
   }
 }
 
