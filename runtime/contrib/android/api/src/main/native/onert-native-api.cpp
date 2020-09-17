@@ -121,8 +121,7 @@ JNIEXPORT jboolean JNICALL Java_com_samsung_onert_NativeSessionWrapper_nativeSet
 
   if (jni::setInput(handle, params) == false)
   {
-    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setOutput",
-                        __PRETTY_FUNCTION__);
+    __android_log_print(ANDROID_LOG_ERROR, JTAG, "%s] failed native setInput", __PRETTY_FUNCTION__);
     return JNI_FALSE;
   }
 
