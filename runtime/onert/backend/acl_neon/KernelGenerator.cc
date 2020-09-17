@@ -18,7 +18,6 @@
 
 #include <arm_compute/runtime/NEON/NEFunctions.h>   // Include all ARM Compute NEON functions
 #include <arm_compute/runtime/NEON/NEFunctionsEx.h> // Include all ARM Compute EX NEON functions
-#include <arm_compute/runtime/CPP/functions/CPPOneHotEx.h>
 
 #include <AclActivationBuilder.h>
 #include <AclFunction.h>
