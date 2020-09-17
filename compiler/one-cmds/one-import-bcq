@@ -180,30 +180,29 @@ show_err_onexit()
 
 trap show_err_onexit ERR
 
-# generate temporary preserved pb file
-echo "${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
---output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb"  > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
+# Generate BCQ information metadata
+# If model has no BCQ information or invalid information, pb file is not changed.
+"${ROOT}/bin/generate_bcq_metadata" \
+--input_path "${GRAPHDEF_FILE}" \
+--output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
+--output_arrays "${OUTPUT}"
 
-"${DRIVER_PATH}/preserve_bcq_info" --input_path ${INPUT_PATH} \
---output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" >> "${OUTPUT_PATH}.log" 2>&1
+# Generate BCQ information nodes as output_arrays
+# If model has no BCQ information, output_arrays would be empty.
+"${ROOT}/bin/generate_bcq_output_arrays" \
+--input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
+--output_path_metadata "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
+--output_path_arrays "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
 
-# generate output_arrays automatically
-echo "${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
---output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" > "${OUTPUT_PATH}.log"
-echo " " >> "${OUTPUT_PATH}.log"
-
-"${DRIVER_PATH}/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
---output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" >> "${OUTPUT_PATH}.log" 2>&1
-
-# generate temporary tflite file
-CONVERT_SCRIPT="python ${DRIVER_PATH}/tf2tfliteV2.py ${TF_INTERFACE} "
-CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_preserved.pb "
-CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
+# generate tflite file
+TF2TFLITE_CONVERT_SCRIPT="python ${ROOT}/bin/tf2tfliteV2.py ${TF_INTERFACE} "
+TF2TFLITE_CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
+CONVERT_SCRIPT+="--input_arrays ${INPUT} "
 CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
-CONVERT_SCRIPT+="--output_arrays ${OUTPUT_ARRAYS}$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
+CONVERT_SCRIPT+="--output_arrays "
+CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
+CONVERT_SCRIPT+="${OUTPUT}"
+CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
 if [ ! -z ${INPUT_SHAPES} ]; then
   CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
 fi

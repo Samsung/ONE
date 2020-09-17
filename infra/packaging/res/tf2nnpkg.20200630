@@ -92,23 +92,29 @@ OUTPUT=$(awk -F, '/^output/ { print $2 }' ${INFO_FILE} | cut -d: -f1 | tr -d ' '
 
 INPUT_SHAPES=$(grep ^input ${INFO_FILE} | cut -d "[" -f2 | cut -d "]" -f1 | tr -d ' ' | xargs | tr ' ' ':')
 
-# Preserve bcq information
-# If model has no BCQ information, original model is copied.
-"${ROOT}/bin/preserve_bcq_info" --input_path ${GRAPHDEF_FILE} \
---output_path "${TMPDIR}/${MODEL_NAME}_preserved.pb"
+# Generate BCQ information metadata
+# If model has no BCQ information or invalid information, pb file is not changed.
+"${ROOT}/bin/generate_bcq_metadata" \
+--input_path "${GRAPHDEF_FILE}" \
+--output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
+--output_arrays "${OUTPUT}"
 
 # Generate BCQ information nodes as output_arrays
 # If model has no BCQ information, output_arrays would be empty.
 "${ROOT}/bin/generate_bcq_output_arrays" \
---input_path "${TMPDIR}/${MODEL_NAME}_preserved.pb" \
---output_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
+--input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
+--output_path_metadata "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
+--output_path_arrays "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
 
 # generate tflite file
 TF2TFLITE_CONVERT_SCRIPT="python ${ROOT}/bin/tf2tfliteV2.py ${TF_INTERFACE} "
-TF2TFLITE_CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_preserved.pb "
+TF2TFLITE_CONVERT_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
 TF2TFLITE_CONVERT_SCRIPT+="--input_arrays ${INPUT} "
 TF2TFLITE_CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
-TF2TFLITE_CONVERT_SCRIPT+="--output_arrays ${OUTPUT}$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
+TF2TFLITE_CONVERT_SCRIPT+="--output_arrays "
+TF2TFLITE_CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
+TF2TFLITE_CONVERT_SCRIPT+="${OUTPUT}"
+TF2TFLITE_CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
 if [ ! -z ${INPUT_SHAPES} ]; then
   TF2TFLITE_CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
 fi

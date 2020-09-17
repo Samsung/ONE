@@ -109,6 +109,12 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   logo::Phase phase;
 
   /* TRANSFORM DECLARATION BEGIN */
+
+  // Shape inference is needed for newly added nodes during transformations
+  // and sometimes shape inference should be done before transformations.
+  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
+
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
@@ -138,9 +144,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
   }
 
-  // Shape inference is needed for added nodes doing above transformations
-  phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   /* TRANSFORM DECLARATION END */
 
