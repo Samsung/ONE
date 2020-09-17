@@ -36,6 +36,10 @@ circle::ActivationFunctionType to_circle_actfunc(luci::FusedActFunc func)
       return circle::ActivationFunctionType_RELU_N1_TO_1;
     case luci::FusedActFunc::RELU6:
       return circle::ActivationFunctionType_RELU6;
+    case luci::FusedActFunc::TANH:
+      return circle::ActivationFunctionType_TANH;
+    case luci::FusedActFunc::SIGN_BIT:
+      return circle::ActivationFunctionType_SIGN_BIT;
     default:
       INTERNAL_EXN_V("trying to convert unsupported luci::FusedActFunc", oops::to_uint32(func));
   }
