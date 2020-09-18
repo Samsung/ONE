@@ -107,6 +107,38 @@ TEST(LocalResponseNormalizationTest, SmallRadius)
               FloatArrayNear({-0.264926, 0.125109, 0.140112, 0.267261, -0.161788, 0.0244266}));
 }
 
+TEST(LocalResponseNormalizationTest, InvalidInputDimension_NEG)
+{
+  Tensor input_tensor =
+      makeInputTensor<DataType::FLOAT32>({1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  LocalResponseNormalizationParams params{};
+  params.radius = 20;
+  params.bias = 0.0;
+  params.alpha = 1.0;
+  params.beta = 0.5;
+
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(LocalResponseNormalizationTest, InvalidInputOutputType_NEG)
+{
+  Tensor input_tensor =
+      makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1});
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  LocalResponseNormalizationParams params{};
+  params.radius = 20;
+  params.bias = 0.0;
+  params.alpha = 1.0;
+  params.beta = 0.5;
+
+  LocalResponseNormalization kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

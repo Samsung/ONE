@@ -36,9 +36,9 @@ LocalResponseNormalization::LocalResponseNormalization(
 
 void LocalResponseNormalization::configure()
 {
-  assert(input()->shape().num_dims() == 4);
-  assert(output()->element_type() == DataType::FLOAT32);
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
+  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   output()->resize(input()->shape());
 }
 
