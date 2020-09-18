@@ -44,7 +44,7 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::O
       const auto key = ReplaceKey{input, factor};
       if (_replace_operands_map.count(key) == 0)
       {
-        auto new_object = object;
+        ir::Operand new_object(object);
         new_object.unsetDef();
         // TODO Remove const_case
         const_cast<ir::OperationIndexSet &>(new_object.getUses()).clear();

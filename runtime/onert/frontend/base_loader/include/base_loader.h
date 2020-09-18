@@ -1214,7 +1214,7 @@ void BaseLoader<LoaderDomain>::loadArgMax(const Operator *op, ir::Graph &subg)
   }
   auto am = loadOperationTo<ir::operation::ArgMax>(op, subg, param);
 
-  auto axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
+  auto &axisOperand = subg.operands().at(am->getInputs().at(ir::operation::ArgMax::Input::AXIS));
   if (!(axisOperand.operandSize() == 4 && (axisOperand.typeInfo().type() == ir::DataType::INT32 ||
                                            axisOperand.typeInfo().type() == ir::DataType::INT64)))
     throw std::runtime_error("ArgMax: `axis` with an int32 or int64 element is only supported.");
