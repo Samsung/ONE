@@ -13,6 +13,12 @@ target_link_libraries(${ONERT_DEV} PRIVATE onert_core)
 target_link_libraries(${ONERT_DEV} PRIVATE jsoncpp tflite_loader circle_loader ${LIB_PTHREAD})
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_common)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_coverage)
+# NOTE Below line is added to remove warning for android build
+#      It will be removed after android build uses gold linker
+if (ANDROID)
+  target_link_libraries(${ONERT_DEV} INTERFACE log)
+endif (ANDROID)
+
 target_include_directories(${ONERT_DEV} PUBLIC include)
 set_target_properties(${ONERT_DEV} PROPERTIES PUBLIC_HEADER "${NNFW_API_HEADERS}")
 
