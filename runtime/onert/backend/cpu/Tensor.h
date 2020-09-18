@@ -95,6 +95,21 @@ public:
     }
   }
 
+  /**
+   * @brief Reset reference count to zero and release data
+   */
+  void reset_ref() override
+  {
+    assert(_data != nullptr);
+    assert(_num_references > 0);
+    _num_references = 0;
+
+    _data.reset();
+    _buffer = nullptr;
+  }
+
+  int32_t num_references() override { return _num_references; }
+
 private:
   std::shared_ptr<const ir::Data> _data;
 };
