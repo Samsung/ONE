@@ -235,8 +235,8 @@ BaseLoader<LoaderDomain>::BaseLoader::convertActivation(const ActivationFunction
     case ActivationFunctionType::ActivationFunctionType_TANH:
       return ir::Activation::TANH;
     default:
-      throw std::runtime_error(std::string("Unsupported activation type: ")
-                                   .append(EnumNameActivationFunctionType(type)));
+      throw std::runtime_error(std::string("Unsupported or invalid activation type: ") +
+                               std::to_string(static_cast<int>(type)));
   }
 }
 

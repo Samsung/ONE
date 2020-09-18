@@ -53,6 +53,21 @@ TEST_F(GenModelTest, OneOp_Add_VarToVar)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Add_VarToVarSame)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{in, in}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}}, {{2, 6, 4, 8}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_Add_InvalidShape)
 {
   CircleGen cgen;
@@ -97,6 +112,54 @@ TEST_F(GenModelTest, neg_OneOp_Add_OneOperand)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Add_ThreeOperands)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{in, in, in}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Add_NoOutput)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{in}, {}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Add_InvalidActivation)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int rhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorAdd({{lhs, rhs}, {out}},
+                      static_cast<circle::ActivationFunctionType>(128) /* Invalid value*/);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}, {5, 4, 7, 4}}, {{6, 7, 9, 8}}));
+  _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
   SUCCEED();
