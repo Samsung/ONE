@@ -26,7 +26,7 @@ namespace backend
 namespace cpu_common
 {
 
-Tensor::~Tensor() = default;
+Tensor::~Tensor() {}
 
 size_t Tensor::calcOffset(const ir::Coordinates &coords) const
 {
