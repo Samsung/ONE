@@ -21,7 +21,6 @@
 #include <memory>
 #include <mutex>
 
-#include <ostream>
 #include <vector>
 
 struct Event
@@ -50,14 +49,6 @@ struct CounterEvent : public Event
 class EventRecorder
 {
 public:
-  enum class WriteFormat
-  {
-    CHROME_TRACING,
-    SNPE_BENCHMARK,
-    MD_TABLE,
-  };
-
-public:
   EventRecorder() = default;
 
 public:
@@ -66,18 +57,11 @@ public:
 
 public:
   bool empty() { return _duration_events.empty() && _counter_events.empty(); }
-  void writeToFile(std::ostream &os);
-  void setWriteFormat(WriteFormat write_format) { _write_format = write_format; }
-
-private:
-  void writeSNPEBenchmark(std::ostream &os);
-  void writeChromeTrace(std::ostream &os);
-  void writeMDTable(std::ostream &os);
+  const std::vector<DurationEvent> &duration_events() const { return _duration_events; }
+  const std::vector<CounterEvent> &counter_events() const { return _counter_events; }
 
 private:
   std::mutex _mu;
-  // TODO: Allow user to control write_format
-  WriteFormat _write_format{WriteFormat::SNPE_BENCHMARK};
   std::vector<DurationEvent> _duration_events;
   std::vector<CounterEvent> _counter_events;
 };

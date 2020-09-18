@@ -21,6 +21,7 @@
 #include <iostream>
 
 #include "util/ConfigSource.h"
+#include "util/EventWriter.h"
 
 namespace onert
 {
@@ -39,8 +40,8 @@ EventCollectorGlobal::~EventCollectorGlobal()
     try
     {
       // TODO Need better way for saved file path than the hardcoded path
-      std::ofstream ofs{"trace.global.json"};
-      _recorder.writeToFile(ofs);
+      EventWriter{_recorder}.writeToFile("trace.global.json",
+                                         EventWriter::WriteFormat::CHROME_TRACING);
     }
     catch (const std::exception &e)
     {

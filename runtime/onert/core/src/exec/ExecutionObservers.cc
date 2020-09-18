@@ -22,6 +22,7 @@
 #include "exec/IExecutor.h"
 #include "misc/polymorphic_downcast.h"
 #include "ir/OpSequence.h"
+#include "util/EventWriter.h"
 
 namespace onert
 {
@@ -70,7 +71,7 @@ void ProfileObserver::handleEnd(IExecutor *exec, const ir::OpSequence *op_seq,
 };
 
 ChromeTracingObserver::ChromeTracingObserver(const std::string &filepath, const ir::Graph &graph)
-    : _ofs{filepath, std::ofstream::out}, _recorder{}, _collector{&_recorder}, _graph{graph}
+    : _base_filepath(filepath), _recorder{}, _collector{&_recorder}, _graph{graph}
 {
 }
 
@@ -78,7 +79,7 @@ ChromeTracingObserver::~ChromeTracingObserver()
 {
   try
   {
-    _recorder.writeToFile(_ofs);
+    EventWriter{_recorder}.writeToFiles(_base_filepath);
   }
   catch (const std::exception &e)
   {
