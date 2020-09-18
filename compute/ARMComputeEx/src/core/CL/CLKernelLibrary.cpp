@@ -55,6 +55,10 @@ using namespace arm_compute;
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map = {
     // ARMComputeEx kernels
+    {"arg_min_max_ex_x", "arg_min_max_ex.cl"},
+    {"arg_min_max_ex_y", "arg_min_max_ex.cl"},
+    {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
+    {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
     {"binary_logical_op", "binary_logical_op.cl"},
     {"cast_bool", "cast.cl"},
     {"embedding_lookup", "embedding_lookup.cl"},
@@ -85,6 +89,10 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
+    {
+        "arg_min_max_ex.cl",
+#include "./cl_kernels/arg_min_max_ex.clembed"
+    },
     {
         "cast.cl",
 #include "./cl_kernels/cast.clembed"

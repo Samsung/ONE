@@ -1328,7 +1328,7 @@ void KernelGenerator::visit(const ir::operation::ArgMax &node)
   auto acl_axis =
       acl_common::ToARMComputeAxis(ifm_rank, axis_value, frontend_layout, backend_layout).value();
 
-  auto fn = acl_common::generateLayer<arm_compute::CLArgMinMaxLayer>(
+  auto fn = acl_common::generateLayer<arm_compute::CLArgMinMaxLayerEx>(
       ifm_tensor->handle(), acl_axis, ofm_tensor->handle(),
       ::arm_compute::ReductionOperation::ARG_IDX_MAX);
 
