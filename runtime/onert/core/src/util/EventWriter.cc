@@ -273,6 +273,8 @@ struct MDTableBuilder
                  const std::vector<CounterEvent> &counter_events)
       : _duration_events(duration_events), _counter_events(counter_events)
   {
+// when ready with low overhead in release build
+#ifdef DEBUG
     for (const auto &evt : _counter_events)
     {
       uint64_t ts = std::stoull(evt.ts);
@@ -298,6 +300,7 @@ struct MDTableBuilder
           values.second = std::stoul(val);
       }
     }
+#endif
   }
 
   MDTableBuilder &build()
@@ -353,17 +356,27 @@ struct MDTableBuilder
     OpSeq opseq;
     opseq.name = evt.name;
     opseq.begin_ts = std::stoull(evt.ts);
+    opseq.backend = evt.tid;
+#ifdef DEBUG
     opseq.updateRss(_ts_to_values.at(opseq.begin_ts).first);
     opseq.updateMinflt(_ts_to_values.at(opseq.begin_ts).second);
-    opseq.backend = evt.tid;
+#else
+    opseq.updateRss(0);
+    opseq.updateMinflt(0);
+#endif
     return opseq;
   }
 
   void updateOpSeq(OpSeq &opseq, const DurationEvent &evt)
   {
     opseq.end_ts = std::stoull(evt.ts);
+#ifdef DEBUG
     opseq.updateRss(_ts_to_values.at(opseq.end_ts).first);
     opseq.updateMinflt(_ts_to_values.at(opseq.end_ts).second);
+#else
+    opseq.updateRss(0);
+    opseq.updateMinflt(0);
+#endif
   }
 
   Graph makeGraph(size_t begin_idx, size_t end_idx,
@@ -372,12 +385,17 @@ struct MDTableBuilder
     Graph graph;
     graph.name = "Graph";
     graph.begin_ts = std::stoull(_duration_events[begin_idx].ts);
+    graph.end_ts = std::stoull(_duration_events[end_idx].ts);
+    graph.setOpSeqs(name_to_opseq);
+#ifdef DEBUG
     graph.updateRss(_ts_to_values.at(graph.begin_ts).first);
     graph.updateMinflt(_ts_to_values.at(graph.begin_ts).second);
-    graph.end_ts = std::stoull(_duration_events[end_idx].ts);
     graph.updateRss(_ts_to_values.at(graph.end_ts).first);
     graph.updateMinflt(_ts_to_values.at(graph.end_ts).second);
-    graph.setOpSeqs(name_to_opseq);
+#else
+    graph.updateRss(0);
+    graph.updateMinflt(0);
+#endif
     return graph;
   }
 
@@ -407,8 +425,9 @@ EventWriter::EventWriter(const EventRecorder &recorder) : _recorder(recorder)
 
 void EventWriter::writeToFiles(const std::string &base_filepath)
 {
+  // Note. According to an internal issue, let snpe json as just file name not '.snpe.json'
+  writeToFile(base_filepath, WriteFormat::SNPE_BENCHMARK);
   writeToFile(base_filepath + ".chrome.json", WriteFormat::CHROME_TRACING);
-  writeToFile(base_filepath + ".snpe.json", WriteFormat::SNPE_BENCHMARK);
   writeToFile(base_filepath + ".table.md", WriteFormat::MD_TABLE);
 }
 
