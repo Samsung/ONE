@@ -31,7 +31,7 @@ namespace backend
 namespace controlflow
 {
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph, IDynamicTensorManager *dyn_tensor_manager,
+KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg)
     : _graph{graph}, _dyn_tensor_manager{dyn_tensor_manager}, _tensor_reg{tensor_reg},
       _tensor_registries{}, _executor_map{nullptr}
@@ -126,7 +126,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
   for (const auto input_index : node.getInputs())
   {
     auto input_tensor = getTensor(input_index);
-
+    VERBOSE(WhileKernelgen) << input_index << " : " << input_tensor->getShape() << std::endl;
     input_tensors.emplace_back(input_tensor);
   }
 
@@ -140,8 +140,8 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::controlflow::kernel::WhileLayer>(
-      input_tensors, output_tensors, node.getOutputs(), _graph, cond_subg_index, body_subg_index,
-      _executor_map);
+      input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
+      _dyn_tensor_manager->dynamic_mem_mgr().get());
 
   _return_fn = std::move(fn);
 }

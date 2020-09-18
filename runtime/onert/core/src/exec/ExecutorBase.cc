@@ -20,6 +20,7 @@
 #include "backend/controlflow/UserTensor.h"
 #include "backend/cpu_common/Tensor.h"
 #include "util/logging.h"
+#include "misc/polymorphic_downcast.h"
 
 namespace onert
 {
@@ -27,43 +28,25 @@ namespace exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
-                           const std::vector<backend::ITensor *> &input_tensors,
-                           const std::vector<backend::ITensor *> &output_tensors,
                            const compiler::TensorRegistries &tensor_regs)
-    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()},
-      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _mutex()
+    : _lowered_graph{std::move(lowered_graph)}, _graph{_lowered_graph->graph()}, _mutex()
 {
-  // TODO Fix the way of knowing whether it is primary or not
-  bool primary_executor = !(_input_tensors.empty() && _output_tensors.empty());
-  if (!primary_executor)
-  {
-    auto build_input_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-      std::vector<backend::ITensor *> list;
-      for (auto ind : ind_seq)
-      {
-        backend::ITensor *tensor = tensor_regs.getITensor(ind);
-        assert(tensor != nullptr);
-        list.push_back(tensor);
-      }
-      return list;
-    };
-    auto build_output_tensor_list = [&](const onert::ir::OperandIndexSequence &ind_seq) {
-      std::vector<backend::ITensor *> list;
-      for (auto ind : ind_seq)
-      {
-        backend::ITensor *tensor = tensor_regs.getITensor(ind);
-        assert(tensor != nullptr);
-        list.push_back(tensor);
-      }
-      return list;
-    };
-    _input_tensors = build_input_tensor_list(_graph.getInputs());
-    _output_tensors = build_output_tensor_list(_graph.getOutputs());
-  }
+  auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
+    assert(tensors.empty());
+    for (auto ind : ind_seq)
+    {
+      backend::ITensor *tensor = tensor_regs.getITensor(ind);
+      assert(tensor != nullptr);
+      auto io_tensor = nnfw::misc::polymorphic_downcast<backend::controlflow::IOTensor *>(tensor);
+      tensors.push_back(io_tensor);
+    }
+  };
+  build_tensor_list(_graph.getInputs(), _input_tensors);
+  build_tensor_list(_graph.getOutputs(), _output_tensors);
 }
 
 void ExecutorBase::execute(const std::vector<backend::ITensor *> &src_tensors,
-                           const std::shared_ptr<IPermuteFunction> &pre_fn)
+                           const std::vector<backend::ITensor *> &dst_tensors)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -73,29 +56,36 @@ void ExecutorBase::execute(const std::vector<backend::ITensor *> &src_tensors,
 
   assert(src_tensors.size() == _graph.getInputs().size());
   assert(src_tensors.size() == _input_tensors.size());
-  for (uint32_t n = 0; n < _graph.getInputs().size(); ++n)
+  for (uint32_t n = 0; n < src_tensors.size(); ++n)
   {
     // when user changes input shape, the input tensor is dynamic and its memory is not allocated.
     // This code find the info to allocate dynamic tensor, and allocate memory based on the source
     // tensor's shape set by caller.
     const auto src_tensor = src_tensors[n];
+    assert(src_tensor->buffer() != nullptr);
     auto input_tensor = _input_tensors[n];
-    // If src_tensor or input_tensor is nullptr, pre_fn does not copy the tensors
-    if (src_tensor != nullptr && input_tensor != nullptr)
-    {
-      const auto orig_input_shape = input_tensor->getShape();
-      const auto changed_input_shape =
-          convertShape(src_tensor->getShape(), src_tensor->layout(), input_tensor->layout());
-      if (orig_input_shape != changed_input_shape)
-      {
-        input_tensor->set_dynamic();
-      }
-    }
+    assert(input_tensor != nullptr);
+    VERBOSE_F() << "XXXXXXXXXX Input  " << n << " " << input_tensor->getShape() << std::endl;
+    // if (input_tensor->orig_info().shape() != src_tensor->getShape())
+    input_tensor->set_dynamic();
+    input_tensor->setTensor(src_tensor);
   }
 
-  // TODO Move calling permute_fn.run() into executeImpl()
-  assert(pre_fn);
-  pre_fn->run();
+  // XXX Workaround!
+  if (!dst_tensors.empty())
+  {
+    assert(dst_tensors.size() == _graph.getOutputs().size());
+    assert(dst_tensors.size() == _output_tensors.size());
+    for (uint32_t n = 0; n < dst_tensors.size(); ++n)
+    {
+      const auto dst_tensor = dst_tensors[n];
+      // assert(dst_tensor->buffer() != nullptr);
+      auto output_tensor = _output_tensors[n];
+      assert(output_tensor != nullptr);
+      VERBOSE_F() << "XXXXXXXXXX Output " << n << std::endl;
+      output_tensor->setTensor(dst_tensor);
+    }
+  }
 
   executeImpl();
 }
@@ -111,19 +101,19 @@ void ExecutorBase::execute(const IODescription &desc)
   assert(_input_tensors.size() == desc.inputs.size());
   for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
-    // TODO Remove dynamic_cast
-    auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_input_tensors[i]);
-    assert(tensor);
+    auto tensor = _input_tensors[i];
+
+    // TODO Check if (desc.inputs[i] == nullptr)
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
+                          desc.inputs[i]->size);
+
     auto input_shape = desc.dynamic_input_shapes.find(ir::IOIndex{i});
     if (input_shape != desc.dynamic_input_shapes.end())
     {
       tensor->set_dynamic();
       tensor->setShape(input_shape->second);
     }
-    // TODO Check if (desc.inputs[i] == nullptr)
-    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
-    tensor->setBuffer(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
-                      desc.inputs[i]->size);
 
     handleDynamicInputTensor(ir::IOIndex{i}, desc);
   }
@@ -131,13 +121,12 @@ void ExecutorBase::execute(const IODescription &desc)
   assert(_output_tensors.size() == desc.outputs.size());
   for (uint32_t i = 0; i < _output_tensors.size(); ++i)
   {
-    // TODO Remove dynamic_cast
-    auto *tensor = dynamic_cast<backend::controlflow::UserTensor *>(_output_tensors[i]);
-    assert(tensor);
-    tensor->set_dynamic(); // It can't be resized but shape could change
+    auto tensor = _output_tensors[i];
+
     if (desc.outputs[i] == nullptr)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
-    tensor->setBuffer(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    tensor->set_dynamic(); // It can't be resized but shape could change
   }
 
   executeImpl();

@@ -47,6 +47,7 @@ void PermuteLayer::run()
     {
       // getting output shape
       auto src_shape = src_tensor->getShape();
+      VERBOSE(Permute) << "SRC SHAPE : " << src_shape << std::endl;
 
       // set output shape and output buffer
       ir::Shape new_shape =

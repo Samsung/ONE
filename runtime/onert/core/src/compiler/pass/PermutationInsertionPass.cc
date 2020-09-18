@@ -130,9 +130,11 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Generate output operand and permute operation
   auto out_operand_index = _graph.addOperand(operand.shape(), operand.typeInfo());
-  // change model output if operand_index is model output index
+  // change model output if operand_index is model output index and the out operand is controlflow
+  // backend
   auto &model_outputs = _graph.getOutputs();
-  if (model_outputs.contains(operand_index))
+  const backend::Backend *cf_backend = compiler::BackendManager::get().getControlflow();
+  if (model_outputs.contains(operand_index) && factor.backend() == cf_backend)
   {
     model_outputs.replace(operand_index, out_operand_index);
   }
@@ -191,8 +193,10 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   const auto &node = _graph.operations().at(node_index);
 
   VERBOSE_F() << "Permute Op inserted, node index : " << node_index << std::endl;
-  VERBOSE_F() << "  - Input (original) Operand : " << operand_index << std::endl;
-  VERBOSE_F() << "  - Output(inserted) Operand : " << out_operand_index << std::endl;
+  VERBOSE_F() << "  - Input (original) Operand : " << operand_index << "("
+              << input_factor.backend()->config()->id() << ")" << std::endl;
+  VERBOSE_F() << "  - Output(inserted) Operand : " << out_operand_index << "("
+              << factor.backend()->config()->id() << ")" << std::endl;
 
   // OpSequence
   {

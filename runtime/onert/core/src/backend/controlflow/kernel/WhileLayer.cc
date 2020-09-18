@@ -16,6 +16,7 @@
 
 #include "WhileLayer.h"
 
+#include <algorithm>
 #include <backend/ITensor.h>
 #include "exec/ExecutorBase.h"
 #include <misc/polymorphic_downcast.h>
@@ -32,18 +33,19 @@ namespace kernel
 
 WhileLayer::WhileLayer(const std::vector<backend::ITensor *> input_tensors,
                        const std::vector<backend::ITensor *> output_tensors,
-                       const ir::OperandIndexSequence &output_indices, const ir::Graph &graph,
                        const ir::SubgraphIndex &cond_subg_index,
-                       const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map)
+                       const ir::SubgraphIndex &body_subg_index, exec::ExecutorMap *executor_map,
+                       cpu_common::DynamicMemoryManager *dyn_memory_manager)
     : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
-      _output_indices{output_indices}, _graph{graph}, _input_tensors{input_tensors},
-      _output_tensors{output_tensors}, _executor_map{executor_map}
+      _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executor_map{executor_map},
+      _dyn_memory_manager{dyn_memory_manager}
 {
   // At this point, executor_map may not have executors of cond subg and body subg
 }
 
 void WhileLayer::run()
 {
+  VERBOSE(WHILE) << "WHILE LAYER ===========================" << std::endl;
   // Copy "_input_tensors" -> "cond subg inputs"
   // Run cond subg
   // Start loop while output of cond subg is ture
@@ -59,159 +61,81 @@ void WhileLayer::run()
   auto body_exec = nnfw::misc::polymorphic_downcast<exec::ExecutorBase *>(
       _executor_map->at(_body_subg_index).get());
 
-  const auto &cond_graph = cond_exec->graph();
-  const auto &body_graph = body_exec->graph();
-
-  std::vector<backend::ITensor *> input_tensors;
-  std::vector<backend::ITensor *> cond_input_tensors;
-  std::vector<backend::ITensor *> body_input_tensors;
-  std::vector<backend::ITensor *> body_output_tensors;
-  std::vector<backend::ITensor *> output_tensors;
-
-  // Add only used tensors in cond subgraph
-  assert(cond_graph.getInputs().size() == _input_tensors.size());
-  assert(cond_graph.getInputs().size() == cond_exec->getInputTensors().size());
-  for (uint32_t i = 0; i < cond_graph.getInputs().size(); ++i)
-  {
-    const auto &cond_input = cond_graph.operands().at(cond_graph.getInputs().at(i));
-    if (cond_input.getUses().size() > 0)
-    {
-      input_tensors.emplace_back(_input_tensors.at(i));
-      cond_input_tensors.emplace_back(cond_exec->getInputTensors().at(i));
-    }
-  }
-  const auto permute_op_input_to_cond_input =
-      std::make_shared<PermuteLayer>(input_tensors, cond_input_tensors);
-
-  // Add only used tensors among outputs of while operation
-  assert(_output_indices.size() == _input_tensors.size());
-  assert(_output_indices.size() == _output_tensors.size());
-  input_tensors.clear();
-  output_tensors.clear();
-  for (size_t i = 0; i < _output_indices.size(); ++i)
-  {
-    const auto &output_index = _output_indices.at(i);
-    const auto &output = _graph.operands().at(output_index);
-    if (output.getUses().size() > 0 || _graph.getOutputs().contains(output_index))
-    {
-      input_tensors.emplace_back(_input_tensors.at(i));
-      output_tensors.emplace_back(_output_tensors.at(i));
-    }
-  }
-  const auto permute_op_input_to_op_output =
-      std::make_shared<PermuteLayer>(input_tensors, output_tensors);
-
-  // Add all tensors with unused tensors in body subgraph because unused input tensors will be
-  // copied output tensors in body subgraph
-  assert(_input_tensors.size() == body_exec->getInputTensors().size());
-  input_tensors = _input_tensors;
-  body_input_tensors = body_exec->getInputTensors();
-  const auto permute_op_input_to_body_input =
-      std::make_shared<PermuteLayer>(input_tensors, body_input_tensors);
-
-  // Add only used tensors in cond subgraph
-  assert(cond_graph.getInputs().size() == body_exec->getOutputTensors().size());
-  assert(cond_graph.getInputs().size() == cond_exec->getInputTensors().size());
-  body_output_tensors.clear();
-  cond_input_tensors.clear();
-  for (uint32_t i = 0; i < cond_graph.getInputs().size(); ++i)
-  {
-    const auto &cond_input = cond_graph.operands().at(cond_graph.getInputs().at(i));
-    if (cond_input.getUses().size() > 0)
-    {
-      body_output_tensors.emplace_back(body_exec->getOutputTensors().at(i));
-      cond_input_tensors.emplace_back(cond_exec->getInputTensors().at(i));
-    }
-  }
-  const auto permute_body_output_to_cond_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, cond_input_tensors);
-
-  // Add only used tensors in body subgraph
-  assert(body_graph.getInputs().size() == body_exec->getOutputTensors().size());
-  assert(body_graph.getInputs().size() == body_exec->getInputTensors().size());
-  body_output_tensors.clear();
-  body_input_tensors.clear();
-  for (uint32_t i = 0; i < body_graph.getInputs().size(); ++i)
-  {
-    const auto &body_input_index = body_graph.getInputs().at(i);
-    const auto &body_input = body_graph.operands().at(body_input_index);
-    if (body_input.getUses().size() > 0 &&
-        !body_exec->graph().getOutputs().contains(body_input_index))
-    {
-      body_output_tensors.emplace_back(body_exec->getOutputTensors().at(i));
-      body_input_tensors.emplace_back(body_exec->getInputTensors().at(i));
-    }
-  }
-  const auto permute_body_output_to_body_input =
-      std::make_shared<PermuteLayer>(body_output_tensors, body_input_tensors);
-
-  // Add only used tensors among outputs of while operation
-  assert(_output_indices.size() == body_exec->getOutputTensors().size());
-  assert(_output_indices.size() == _output_tensors.size());
-  body_output_tensors.clear();
-  output_tensors.clear();
-  for (size_t i = 0; i < _output_indices.size(); ++i)
-  {
-    const auto &output_index = _output_indices.at(i);
-    const auto &output = _graph.operands().at(output_index);
-    if (output.getUses().size() > 0 || _graph.getOutputs().contains(output_index))
-    {
-      body_output_tensors.emplace_back(body_exec->getOutputTensors().at(i));
-      output_tensors.emplace_back(_output_tensors.at(i));
-    }
-  }
-  const auto permute_body_output_to_op_output =
-      std::make_shared<PermuteLayer>(body_output_tensors, output_tensors);
-
-  // Remove copying of unused tensor
-  permute_op_input_to_cond_input->prepare();
-  permute_op_input_to_op_output->prepare();
-  permute_op_input_to_body_input->prepare();
-  permute_body_output_to_cond_input->prepare();
-  permute_body_output_to_body_input->prepare();
-  permute_body_output_to_op_output->prepare();
-
-  VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-  cond_exec->execute(_input_tensors, permute_op_input_to_cond_input);
-  VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
-
   assert(cond_exec->getOutputTensors().size() == 1);
   auto &cond_output_tensor = cond_exec->getOutputTensors().at(0);
+  auto cond_output_tensor_size = std::max(cond_output_tensor->total_size(), static_cast<size_t>(1));
+  auto cond_buf = std::unique_ptr<uint8_t[]>{new uint8_t(cond_output_tensor_size)};
+
+  cond_output_tensor->setUserTensor(cond_buf.get(), cond_output_tensor_size);
+  VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
+  cond_exec->execute(_input_tensors, {}); // XXX output tensor is processed above
+  VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
+
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
     bool ret = false;
     tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
     return ret;
   };
 
+  // Copying body inputs to outputs when the loop body is never executed
+  if (!getResultCond(cond_output_tensor))
+  {
+    PermuteLayer copy_body_inputs_to_op_outputs{_input_tensors, _output_tensors};
+    copy_body_inputs_to_op_outputs.run();
+    // return;
+  }
+
+  // Need some temp tensors to hold the body subgraph output
+  std::vector<std::unique_ptr<Tensor>> temp_outputs_o;
+  std::vector<ITensor *> temp_outputs;
+  for (auto io_tensor : body_exec->getOutputTensors())
+  {
+    auto tensor = std::make_unique<Tensor>(io_tensor->orig_info(), io_tensor->orig_layout(),
+                                           _dyn_memory_manager);
+    tensor->set_dynamic();
+    tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
+    temp_outputs.push_back(tensor.get());
+    temp_outputs_o.push_back(std::move(tensor));
+  }
+
+  std::vector<ITensor *> body_outputs(body_exec->getOutputTensors().begin(),
+                                      body_exec->getOutputTensors().end());
+  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, _output_tensors};
+
   const auto body_execute_with_op_inputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
-    body_exec->execute(_input_tensors, permute_op_input_to_body_input);
+    body_exec->execute(_input_tensors, temp_outputs);
     VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   const auto body_execute_with_body_outputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
-    body_exec->execute(body_exec->getOutputTensors(), permute_body_output_to_body_input);
+    body_exec->execute(_output_tensors, temp_outputs);
     VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   std::function<void()> body_execute = body_execute_with_op_inputs;
   const auto cond_execute = [&]() {
+    cond_output_tensor->setUserTensor(cond_buf.get(), cond_output_tensor_size);
     VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-    cond_exec->execute(body_exec->getOutputTensors(), permute_body_output_to_cond_input);
+    cond_exec->execute(_output_tensors, {});
     VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
   };
-  auto permute_to_outputs_fn = permute_op_input_to_op_output;
 
   // Loop while Cond subgraph's output is true
   while (getResultCond(cond_output_tensor))
   {
     body_execute();
+    copy_body_outputs_to_op_outputs.run();
     cond_execute();
     body_execute = body_execute_with_body_outputs;
-    permute_to_outputs_fn = permute_body_output_to_op_output;
   }
-  permute_to_outputs_fn->run();
+
+  // Clean-up the temp tensors
+  for (auto tensor : temp_outputs)
+  {
+    _dyn_memory_manager->deallocate(tensor);
+  }
 }
 
 } // namespace kernel

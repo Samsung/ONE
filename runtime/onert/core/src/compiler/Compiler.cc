@@ -238,6 +238,14 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
   _subgraphs.reset();
 
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
+    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
+  }
+
   // Shape inference.
   {
     const auto primary_subg_idx = ir::SubgraphIndex{0};
@@ -276,10 +284,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
     _options.is_primary_subgraph = (subg_index == ir::SubgraphIndex{0});
 
-    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
-    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
-
-    ir::OperationDumper dumper("START SUBGRAPH " + std::to_string(subg_index.value()));
+    ir::OperationDumper dumper("Executor generation of Subgraph " +
+                               std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{

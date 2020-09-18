@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 namespace onert
 {
@@ -144,6 +145,15 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
 * \see https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type
 */
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
+
+inline std::ostream &operator<<(std::ostream &o, const Shape &shape)
+{
+  o << "{ ";
+  for (int i = 0; i < shape.rank(); i++)
+    o << shape.dim(i) << " ";
+  o << "}";
+  return o;
+}
 
 } // namespace ir
 } // namespace onert

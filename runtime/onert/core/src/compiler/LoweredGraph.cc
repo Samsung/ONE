@@ -126,7 +126,11 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   // Optimization passes
   pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
-  VERBOSE(OpSequences) << "Dump after permutation insertion" << std::endl;
+  VERBOSE(LoweredGraph) << "Dump after permutation insertion" << std::endl;
+  for (auto operand : _graph.getInputs())
+    VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;
+  for (auto operand : _graph.getOutputs())
+    VERBOSE(LoweredGraph) << "Graph Output : " << operand << std::endl;
   dumpOpSequences(_op_seqs, _graph.operations());
 
   // Graph verifications
@@ -321,14 +325,13 @@ void LoweredGraph::makeOpSequences(
 }
 
 void LoweredGraph::manipulateLowerInfo(
-    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info,
-    bool is_primary)
+    ir::OperandIndexMap<std::unique_ptr<ir::operand::LowerInfo>> &operands_lower_info, bool)
 {
   const auto controlflow_backend = BackendManager::get().getControlflow();
 
   // TODO Rather than handling primary graph specially,
   //      let the permute inserted and remove it later
-  if (is_primary)
+  if (true)
   {
     // TODO Rather than using NHWC Get frontend layout of this node from IR
     auto factor = ir::operand::PermuteFactor{controlflow_backend, ir::Layout::NHWC};

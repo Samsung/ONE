@@ -113,12 +113,11 @@ void IfLayer::run()
       std::make_shared<PermuteLayer>(src_tensors, dst_tensors);
 
   // Remove copying of unused tensor
-  permute_op_input_to_subg_input->prepare();
   permute_subg_output_to_op_output->prepare();
 
   // Copy & run
-  subg_exec->execute(_input_tensors, permute_op_input_to_subg_input);
-  permute_subg_output_to_op_output->run();
+  subg_exec->execute(_input_tensors, _output_tensors);
+  // permute_subg_output_to_op_output->run();
   VERBOSE(If) << "Return from $" << (cond_result ? _then_subg_index : _else_subg_index)
               << std::endl;
 }
