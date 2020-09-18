@@ -30,6 +30,8 @@ void TFliteOpUnidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFli
 
   for (int32_t i = 0; i < inputs.size(); i++)
   {
+    if (i == 0 || i == 17 || i == 18)
+      continue;
     if (inputs[i] != -1)
       fill_tensor_to_import(inputs[i], import);
   }
