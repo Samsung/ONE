@@ -36,7 +36,7 @@ LeakyRelu::LeakyRelu(const Tensor *input, Tensor *output, const LeakyReluParams 
 
 void LeakyRelu::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   if (input()->element_type() == DataType::U8)
   {
     double alpha_multiplier = input()->scale() * params().alpha / output()->scale();
