@@ -17,6 +17,7 @@
 #include "UnidirectionalSequenceLSTM.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -24,7 +25,14 @@ namespace tflchef
 void TFliteOpUnidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFliteImport *import,
                                                 tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+  assert(inputs.size() == 24);
+
+  for (int32_t i = 0; i < inputs.size(); i++)
+  {
+    if (inputs[i] != -1)
+      fill_tensor_to_import(inputs[i], import);
+  }
 }
 
 tflchef::Operation *
