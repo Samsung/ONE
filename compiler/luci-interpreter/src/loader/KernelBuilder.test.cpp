@@ -33,6 +33,7 @@
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
 #include <kernels/LeakyRelu.h>
+#include <kernels/Less.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
@@ -451,6 +452,23 @@ TEST_F(KernelBuilderTest, LeakyRelu)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().alpha, Eq(op->alpha()));
+}
+
+TEST_F(KernelBuilderTest, Less)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleLess>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::Less>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, LocalResponseNormalization)

@@ -33,6 +33,7 @@
 #include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
+#include "kernels/Less.h"
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
@@ -375,6 +376,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
   params.alpha = node->alpha();
 
   return std::make_unique<kernels::LeakyRelu>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLess *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Less>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNormalization *node)
