@@ -36,8 +36,8 @@ L2Pool2D::L2Pool2D(const Tensor *input, Tensor *output, const Pool2DParams &para
 
 void L2Pool2D::configure()
 {
-  assert(input()->shape().num_dims() == 4);
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
 
   int batches = input()->shape().dim(0);
   int height = input()->shape().dim(1);
@@ -55,7 +55,7 @@ void L2Pool2D::configure()
   _padding_height =
       computePadding(params().stride_height, 1, height, params().filter_height, out_height);
 
-  assert(input()->element_type() == DataType::FLOAT32);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
   output()->resize({batches, out_height, out_width, channels_out});
 }
 

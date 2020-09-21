@@ -162,7 +162,7 @@ TEST(L2Pool2DTest, FloatPaddingSame)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingSameSlide1)
+TEST(L2Pool2DTest, FloatPaddingSameStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
@@ -189,7 +189,7 @@ TEST(L2Pool2DTest, FloatPaddingSameSlide1)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingValidSlide1)
+TEST(L2Pool2DTest, FloatPaddingValidStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
@@ -214,6 +214,50 @@ TEST(L2Pool2DTest, FloatPaddingValidSlide1)
   std::vector<float> ref_output_data{3.5, 6.0, 6.5};
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   // TODO make a Shape checking of output_tensor.
+}
+
+TEST(L2Pool2DTest, InvalidInputShape_NEG)
+{
+  Shape input_shape{1, 2, 4};
+  std::vector<float> input_data{
+      0, 6, 2,  4, //
+      3, 2, 10, 7, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.activation = Activation::NONE;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 1;
+  params.stride_width = 1;
+
+  L2Pool2D kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(L2Pool2DTest, InvalidInputOutputType_NEG)
+{
+  Shape input_shape{1, 2, 4};
+  std::vector<float> input_data{
+      0, 6, 2,  4, //
+      3, 2, 10, 7, //
+  };
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  Pool2DParams params{};
+  params.padding = Padding::VALID;
+  params.activation = Activation::NONE;
+  params.filter_height = 2;
+  params.filter_width = 2;
+  params.stride_height = 1;
+  params.stride_width = 1;
+
+  L2Pool2D kernel(&input_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
 }
 
 } // namespace
