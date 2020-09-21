@@ -106,6 +106,7 @@ public:
                                     circle::ActivationFunctionType actfn);
   uint32_t addOperatorCos(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
+  uint32_t addOperatorFullyConnected(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorL2Normalization(const OperatorParams &params);
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
