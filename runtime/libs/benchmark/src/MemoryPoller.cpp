@@ -16,105 +16,12 @@
 
 #include "benchmark/MemoryPoller.h"
 #include "benchmark/Types.h"
+#include "benchmark/MemoryInfo.h"
 
 #include <vector>
-#include <fstream>
-#include <sstream>
 #include <stdexcept>
 #include <cassert>
 #include <iostream>
-
-namespace
-{
-
-const std::string proc_status_path("/proc/self/status");
-const std::string gpu_memory_path("/sys/kernel/debug/mali0/gpu_memory");
-const std::string proc_smaps_path("/proc/self/smaps");
-
-bool isStrNumber(const std::string &s)
-{
-  return !s.empty() &&
-         std::find_if(s.begin(), s.end(), [](char c) { return !std::isdigit(c); }) == s.end();
-}
-
-std::vector<std::string> splitLine(std::string line, std::string delimiters = " \n\t")
-{
-  std::vector<std::string> words;
-  size_t prev = 0, pos;
-
-  while ((pos = line.find_first_of(delimiters, prev)) != std::string::npos)
-  {
-    if (pos > prev)
-      words.emplace_back(line.substr(prev, pos - prev));
-    prev = pos + 1;
-  }
-
-  if (prev < line.length())
-    words.emplace_back(line.substr(prev, std::string::npos));
-
-  return words;
-}
-
-std::vector<std::string> getValueFromFileStatus(const std::string &file, const std::string &key)
-{
-  std::ifstream ifs(file);
-  assert(ifs.is_open());
-
-  std::string line;
-  std::vector<std::string> val;
-
-  bool found = false;
-  while (std::getline(ifs, line))
-  {
-    if (line.find(key) != std::string::npos)
-    {
-      found = true;
-      break;
-    }
-  }
-  ifs.close();
-
-  if (!found)
-  {
-    // NOTE. the process which uses gpu resources cannot be there yet at the model-load phase.
-    // At that time, just return empty.
-    return val;
-  }
-
-  val = splitLine(line);
-  return val;
-}
-
-// Because of smaps' structure, returns sum value as uint32_t
-uint32_t getSumValueFromFileSmaps(const std::string &file, const std::string &key)
-{
-  std::ifstream ifs(file);
-  assert(ifs.is_open());
-
-  std::string line;
-  uint32_t sum = 0;
-  while (std::getline(ifs, line))
-  {
-    if (line.find(key) != std::string::npos)
-    {
-      // an example by splitLine()
-      // `Pss:                   0 kB`
-      // val[0]: "Pss:", val[1]: "0" val[2]: "kB"
-      auto val = splitLine(line);
-      assert(val.size() != 0);
-      // SwapPss could show so that check where Pss is at the beginning
-      if (val[0].find("Pss") != 0)
-      {
-        continue;
-      }
-      sum += std::stoul(val[1]);
-    }
-  }
-
-  return sum;
-}
-
-} // namespace
 
 namespace benchmark
 {
@@ -168,7 +75,7 @@ bool MemoryPoller::end(PhaseEnum phase)
   mem = getVmRSS();
   if (_gpu_poll)
   {
-    mem += getGpuMemory();
+    mem += getGpuMemory(_process_name);
   }
   if (mem > _rss_map[phase])
     _rss_map[phase] = mem;
@@ -176,7 +83,7 @@ bool MemoryPoller::end(PhaseEnum phase)
   mem = getVmHWM();
   if (_gpu_poll)
   {
-    mem += getGpuMemory();
+    mem += getGpuMemory(_process_name);
   }
   _hwm_map[phase] = mem;
 
@@ -208,7 +115,7 @@ void MemoryPoller::process()
     uint32_t cur_hwm = getVmHWM();
     if (_gpu_poll)
     {
-      auto gpu_mem = getGpuMemory();
+      auto gpu_mem = getGpuMemory(_process_name);
       cur_rss += gpu_mem;
       cur_hwm += gpu_mem;
     }
@@ -236,77 +143,33 @@ void MemoryPoller::process()
 bool MemoryPoller::prepareMemoryPolling()
 {
   // VmRSS
+  if (!prepareVmRSS())
   {
-    std::ifstream ifs(proc_status_path);
-    if (!ifs.is_open())
-    {
-      std::cerr << "failed to open " << proc_status_path << std::endl;
-      return false;
-    }
-    ifs.close();
+    std::cerr << "failed to prepare parsing vmrss" << std::endl;
+    return false;
   }
 
   // (Additionally) GpuMemory
   if (_gpu_poll)
   {
-    std::ifstream ifs(gpu_memory_path);
-    if (!ifs.is_open())
+    if (!prepareGpuMemory())
     {
-      std::cerr << "failed to open " << gpu_memory_path << std::endl;
+      std::cerr << "failed to prepare parsing gpu memory" << std::endl;
       return false;
     }
-    ifs.close();
 
     // Needs process name
-    auto val = getValueFromFileStatus(proc_status_path, "Name");
-    assert(val.size() != 0);
-    _process_name = val[1];
+    _process_name = getProcessName();
   }
 
   // PSS
+  if (!preparePssSum())
   {
-    std::ifstream ifs(proc_smaps_path);
-    if (!ifs.is_open())
-    {
-      std::cerr << "failed to open " << proc_smaps_path << std::endl;
-      return false;
-    }
-    ifs.close();
+    std::cerr << "failed to prepare parsing pss sum" << std::endl;
+    return false;
   }
 
   return true;
 }
-
-uint32_t MemoryPoller::getVmRSS()
-{
-  auto val = getValueFromFileStatus(proc_status_path, "VmRSS");
-  if (val.size() == 0)
-    return 0;
-  assert(isStrNumber(val[1]));
-  return std::stoul(val[1]);
-}
-
-uint32_t MemoryPoller::getVmHWM()
-{
-  auto val = getValueFromFileStatus(proc_status_path, "VmHWM");
-  if (val.size() == 0)
-    return 0;
-  // key: value
-  assert(isStrNumber(val[1]));
-  return std::stoul(val[1]);
-}
-
-uint32_t MemoryPoller::getGpuMemory()
-{
-  assert(!_process_name.empty());
-  auto val = getValueFromFileStatus(gpu_memory_path, _process_name);
-  if (val.size() == 0)
-    return 0;
-  // process_name -> pid -> gpu_mem -> max_gpu_mem
-  assert(isStrNumber(val[2]));
-  return std::stoul(val[2]);
-}
-
-uint32_t MemoryPoller::getPssSum() { return getSumValueFromFileSmaps(proc_smaps_path, "Pss"); }
 
 } // namespace benchmark

@@ -17,6 +17,7 @@
 
 #include "benchmark/Phases.h"
 #include "benchmark/Types.h"
+#include "benchmark/MemoryInfo.h"
 
 #include <cassert>
 #include <chrono>
@@ -46,8 +47,11 @@ void SleepForMicros(uint64_t micros)
 namespace benchmark
 {
 
-Phases::Phases(const PhaseOption &option) : _option(option)
+Phases::Phases(const PhaseOption &option) : _option(option), _mem_before_init(0), _mem_after_run(0)
 {
+  assert(prepareVmRSS());
+  _mem_before_init = getVmHWM();
+
   if (_option.memory)
   {
     _mem_poll = std::make_unique<MemoryPoller>(std::chrono::milliseconds(option.memory_interval),
@@ -92,6 +96,8 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
       SleepForMicros(_option.run_delay);
     }
   }
+
+  _mem_after_run = getVmHWM();
 
   if (p == PhaseEnum::END_OF_PHASE)
   {

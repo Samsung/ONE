@@ -57,10 +57,6 @@ public:
 private:
   void process();
   bool prepareMemoryPolling();
-  uint32_t getVmRSS();
-  uint32_t getVmHWM();
-  uint32_t getGpuMemory();
-  uint32_t getPssSum();
 
 private:
   std::chrono::milliseconds _duration;

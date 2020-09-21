@@ -141,6 +141,15 @@ void printResultMemory(const uint32_t memory[benchmark::PhaseEnum::END_OF_PHASE]
   }
 }
 
+void printUsedPeakMemory(uint32_t init_memory, uint32_t peak_memory)
+{
+  uint32_t used_peak_memory = peak_memory - init_memory;
+  std::cout << "Used Peak Memory : " << used_peak_memory << " kb" << std::endl;
+  std::cout << "- HWM after run  : " << peak_memory << " kb" << std::endl;
+  std::cout << "- HWM before init: " << init_memory << " kb" << std::endl;
+  std::cout << "===================================" << std::endl;
+}
+
 } // namespace
 
 namespace benchmark
@@ -175,6 +184,8 @@ Result::Result(const Phases &phases)
       }
     }
   }
+  init_memory = phases.mem_before_init();
+  peak_memory = phases.mem_after_run();
 }
 
 void printResult(const Result &result)
@@ -185,6 +196,7 @@ void printResult(const Result &result)
     return;
 
   printResultMemory(result.memory);
+  printUsedPeakMemory(result.init_memory, result.peak_memory);
 }
 
 // TODO There are necessary for a kind of output data file so that it doesn't have to be csv file
