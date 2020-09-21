@@ -28,6 +28,6 @@ For usage, refer to [Howto : NNFW API](../howto/how-to-use-nnfw-api.md).
 
 ## Backend API
 
-We provide Backend API to allow anyone to implement so one can extend the runtime in terms of operation computation.
+Backend API enables anyone to extend the runtime in terms of operation computation and memory management.
 
 For detailed descriptions, refer to [Backend API](../runtime/backend-api.md).
