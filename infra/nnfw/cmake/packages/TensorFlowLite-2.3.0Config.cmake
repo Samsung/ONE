@@ -92,6 +92,13 @@ if(BUILD_TENSORFLOW_LITE_2_3_0)
   endif()
   return_unless(TFLiteVanillaRuySource_FOUND)
 
+  nnfw_find_package(CpuInfo QUIET)
+  if (NOT CpuInfo_FOUND)
+    message(STATUS "TFLiteVanillaRun: CPUINFO not found")
+    set(TensorFlowLite_2_3_0_FOUND FALSE PARENT_SCOPE)
+    return()
+  endif(NOT CpuInfo_FOUND)
+
   nnas_include(ExternalProjectTools)
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite-2.3.0" tflite-2.3.0)
 
