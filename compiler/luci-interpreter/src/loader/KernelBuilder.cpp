@@ -23,6 +23,7 @@
 #include "kernels/Conv2D.h"
 #include "kernels/DepthToSpace.h"
 #include "kernels/DepthwiseConv2D.h"
+#include "kernels/Div.h"
 #include "kernels/Elu.h"
 #include "kernels/Floor.h"
 #include "kernels/FloorDiv.h"
@@ -236,6 +237,19 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDepthwiseConv2D *
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleDiv *node)
+{
+  assert(node->arity() == 2);
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  DivParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::Div>(input1, input2, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)

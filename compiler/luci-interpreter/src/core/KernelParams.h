@@ -72,6 +72,11 @@ struct DepthwiseConv2DParams
   Activation activation;
 };
 
+struct DivParams
+{
+  Activation activation;
+};
+
 struct FullyConnectedParams
 {
   Activation activation;
