@@ -138,22 +138,37 @@ public:
           bcq_gather->indices(gather->indices());
           bcq_gather->input_clusters(packed_clusters(params));
 
-          // input_binary shape : [output_size, hidden_size]
-          const auto binary_hidden_size =
-              loco::must_cast<luci::CircleConst *>(bcq_gather->input_binary())->dim(1).value() * 32;
-          bcq_gather->input_hidden_size(binary_hidden_size);
-
           if (do_w_x(params))
           {
+            bcq_gather->input_hidden_size(params->dim(1).value());
             bcq_gather->axis(gather->axis());
+            loco::replace(gather).with(bcq_gather);
           }
           else
           {
+            bcq_gather->input_hidden_size(params->dim(0).value());
             const auto axis_transpose = (gather->axis() == 0) ? 1 : 0;
             bcq_gather->axis(axis_transpose);
-          }
 
-          loco::replace(gather).with(bcq_gather);
+            const auto indices_rank =
+                loco::must_cast<luci::CircleNode *>(gather->indices())->rank();
+
+            auto perm = g->nodes()->create<luci::CircleConst>();
+            perm->dtype(loco::DataType::S32);
+            perm->size<loco::DataType::S32>(1 + indices_rank);
+            perm->rank(1);
+            perm->dim(0) = 1 + indices_rank;
+            for (uint32_t idx = 0; idx < indices_rank; ++idx)
+              perm->at<loco::DataType::S32>(idx) = idx + 1;
+            perm->at<loco::DataType::S32>(indices_rank) = 0;
+            perm->shape_status(luci::ShapeStatus::VALID);
+
+            auto output_transpose = g->nodes()->create<luci::CircleTranspose>();
+            output_transpose->a(bcq_gather);
+            output_transpose->perm(perm);
+
+            loco::replace(gather).with(output_transpose);
+          }
 
           changed = true;
         }
@@ -206,21 +221,13 @@ public:
           // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
           if (do_w_x(weights))
           {
-            const auto binary_hidden_size =
-                loco::must_cast<luci::CircleNode *>(fully_connected->input())
-                    ->dim(batch_rank)
-                    .value();
-            bcq_fc->weights_hidden_size(binary_hidden_size);
+            bcq_fc->weights_hidden_size(weights->dim(0).value());
             bcq_fc->input(bcq_input);
             loco::replace(fully_connected).with(bcq_fc);
           }
           else
           {
-            const auto binary_hidden_size =
-                loco::must_cast<luci::CircleNode *>(fully_connected->input())
-                    ->dim(1 + batch_rank)
-                    .value();
-            bcq_fc->weights_hidden_size(binary_hidden_size);
+            bcq_fc->weights_hidden_size(weights->dim(1).value());
 
             auto perm = g->nodes()->create<luci::CircleConst>();
             perm->dtype(loco::DataType::S32);
@@ -245,6 +252,10 @@ public:
           }
 
           changed = true;
+        }
+        else
+        {
+          // TODO Is there any case that input() is constant, instead of weights()?
         }
       }
     }
