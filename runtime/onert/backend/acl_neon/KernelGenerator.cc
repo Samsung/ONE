@@ -1340,7 +1340,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   for (const auto &output_index : node.getOutputs())
     output_indexes.emplace_back(output_index);
 
-  auto input = _tensor_reg->getAclTensor(input_index)->handle();
+  auto input_tensor = _tensor_reg->getAclTensor(input_index);
   std::vector<arm_compute::ITensor *> outputs;
   for (const auto &output_index : output_indexes)
     outputs.emplace_back(_tensor_reg->getAclTensor(output_index)->handle());
@@ -1352,26 +1352,19 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   axis = acl_common::ToARMComputeAxis(input_rank, axis, frontend_layout, backend_layout).value();
 
   // Disable applied dim_correction
-  for (const auto &output_index : output_indexes)
+  if (input_tensor->num_dimensions() != input_tensor->info()->num_dimensions())
   {
-    const auto &output_tensor = _tensor_reg->getAclTensor(output_index);
-    if (output_tensor->num_dimensions() != output_tensor->info()->num_dimensions())
-    {
-      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      acl_common::disableDimCorrection(output_tensor);
-    }
+    // This means that high dimension's value is 1 and input tensor is applied dim_correction
+    acl_common::disableDimCorrection(input_tensor);
   }
 
-  auto fn = acl_common::generateLayer<arm_compute::NEUnstack>(input, outputs, axis);
+  auto fn =
+      acl_common::generateLayer<arm_compute::NEUnstack>(input_tensor->handle(), outputs, axis);
 
   // Revert disabling applied dim_correction
-  for (const auto &output_index : output_indexes)
+  if (input_tensor->dimension(0) == 1)
   {
-    const auto &output_tensor = _tensor_reg->getAclTensor(output_index);
-    if (output_tensor->dimension(0) == 1)
-    {
-      acl_common::enableDimCorrection(output_tensor);
-    }
+    acl_common::enableDimCorrection(input_tensor);
   }
 
   _return_fn = asAclFunction(std::move(fn));
