@@ -38,6 +38,8 @@ set(SOURCES
     LeakyRelu.cpp
     Less.h
     Less.cpp
+    LessEqual.h
+    LessEqual.cpp
     LocalResponseNormalization.h
     LocalResponseNormalization.cpp
     Logistic.h
@@ -127,6 +129,7 @@ set(TEST_SOURCES
     L2Pool2D.test.cpp
     LeakyRelu.test.cpp
     Less.test.cpp
+    LessEqual.test.cpp
     LocalResponseNormalization.test.cpp
     Logistic.test.cpp
     LogSoftmax.test.cpp

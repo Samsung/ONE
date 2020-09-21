@@ -58,6 +58,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleL2Pool2D *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLeakyRelu *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLess *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleLessEqual *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLocalResponseNormalization *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogistic *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleLogSoftmax *node) override;
