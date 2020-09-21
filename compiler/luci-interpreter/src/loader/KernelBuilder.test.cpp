@@ -42,6 +42,7 @@
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
+#include <kernels/NotEqual.h>
 #include <kernels/Pad.h>
 #include <kernels/Pow.h>
 #include <kernels/Prelu.h>
@@ -623,6 +624,23 @@ TEST_F(KernelBuilderTest, Mul)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, NotEqual)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleNotEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::NotEqual>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Pad)

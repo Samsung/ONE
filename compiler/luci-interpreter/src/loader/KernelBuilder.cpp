@@ -42,6 +42,7 @@
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
+#include "kernels/NotEqual.h"
 #include "kernels/Pad.h"
 #include "kernels/Pow.h"
 #include "kernels/Prelu.h"
@@ -492,6 +493,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Mul>(input1, input2, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNotEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::NotEqual>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
