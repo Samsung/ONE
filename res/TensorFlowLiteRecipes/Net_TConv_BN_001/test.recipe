@@ -1,0 +1,149 @@
+operand {
+  name: "Const_transposed"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 2
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "FusedBatchNormV3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "FusedBatchNormV3_add_param"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-2.04724"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "FusedBatchNormV3_mul_0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "FusedBatchNormV3_mul_0_param"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "2.00834"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "Hole"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 2
+    dim: 2
+    dim: 2
+  }
+  quant {
+    min: 0
+    max: 255
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "conv2d_transpose"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operand {
+  name: "conv2d_transpose/input_sizes"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "4"
+    arg: "4"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+}
+operation {
+  type: "TransposeConv"
+  input: "conv2d_transpose/input_sizes"
+  input: "Const_transposed"
+  input: "Hole"
+  output: "conv2d_transpose"
+  transpose_conv_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+}
+operation {
+  type: "Mul"
+  input: "conv2d_transpose"
+  input: "FusedBatchNormV3_mul_0_param"
+  output: "FusedBatchNormV3_mul_0"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "FusedBatchNormV3_mul_0"
+  input: "FusedBatchNormV3_add_param"
+  output: "FusedBatchNormV3"
+  add_options {
+    activation: NONE
+  }
+}
+input: "Hole"
+output: "FusedBatchNormV3"
