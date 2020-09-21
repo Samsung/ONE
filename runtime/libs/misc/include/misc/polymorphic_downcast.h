@@ -27,9 +27,7 @@ namespace misc
 
 template <typename DstType, typename SrcType> inline DstType polymorphic_downcast(SrcType *x)
 {
-#ifndef __ANDROID__
   assert(dynamic_cast<DstType>(x) == x);
-#endif
   return static_cast<DstType>(x);
 }
 
