@@ -29,10 +29,10 @@ Logistic::Logistic(const Tensor *input, Tensor *output) : Kernel({input}, {outpu
 
 void Logistic::configure()
 {
-  assert(input()->element_type() == output()->element_type());
+  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   if (input()->element_type() == DataType::U8)
   {
-    assert(output()->scale() == 1. / 256);
+    LUCI_INTERPRETER_CHECK(output()->scale() == 1. / 256);
     populateLookupTable();
   }
   output()->resize(input()->shape());
