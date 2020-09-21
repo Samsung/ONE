@@ -36,6 +36,7 @@
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
 #include "kernels/Pad.h"
+#include "kernels/Pow.h"
 #include "kernels/Prelu.h"
 #include "kernels/Relu.h"
 #include "kernels/Relu6.h"
@@ -424,6 +425,18 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePad *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Pad>(input, paddings, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePow *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Pow>(input1, input2, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CirclePRelu *node)
