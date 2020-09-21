@@ -31,7 +31,8 @@ void TFliteOpUnidirectionalSequenceLSTM::filler(const tflite::Operator *op, TFli
   for (int32_t i = 0; i < inputs.size(); i++)
   {
     // Except for Input 0, 17 and 18.
-    // Each Input mean  Input Tensor, OutputState Tensor and CellState Tensor.
+    // Each Input mean Input[0](=Input Tensor), Input[17](=OutputState Tensor) and
+    // Input[18](=CellState Tensor).
     // This could be updated from previous input or User Given data, so This could not be Const
     if (i == 0 || i == 17 || i == 18)
       continue;
