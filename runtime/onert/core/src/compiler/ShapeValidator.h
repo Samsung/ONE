@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_OPERATION_VALIDATOR_H__
-#define __ONERT_COMPILER_OPERATION_VALIDATOR_H__
+#ifndef __ONERT_COMPILER_SHAPE_VALIDATOR_H__
+#define __ONERT_COMPILER_SHAPE_VALIDATOR_H__
 
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
@@ -34,11 +34,11 @@ namespace onert
 namespace compiler
 {
 
-class OperationValidator : public ir::OperationVisitor
+class ShapeValidator : public ir::OperationVisitor
 {
 public:
-  OperationValidator(void) = delete;
-  OperationValidator(const ir::Graph &graph);
+  ShapeValidator(void) = delete;
+  ShapeValidator(const ir::Graph &graph);
 
 public:
   void operator()();
@@ -97,4 +97,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_OPERATION_VALIDATOR_H__
+#endif // __ONERT_COMPILER_SHAPE_VALIDATOR_H__

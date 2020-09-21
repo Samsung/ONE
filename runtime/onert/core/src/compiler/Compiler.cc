@@ -18,7 +18,7 @@
 
 #include "ParamChecker.h"
 #include "ExecutorFactory.h"
-#include "OperationValidator.h"
+#include "ShapeValidator.h"
 #include "Fp32ToFp16Converter.h"
 
 #include <backend/controlflow/Config.h>
@@ -229,16 +229,24 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     inferer.dump();
   }
 
-  /*************************************************************
-   *  Backend independent analysis & optimization phase finished
-   *************************************************************/
-
-  // operation validation
+  // Shape validation
+  // TODO Introduce operation validator to check shape independent operation feature
+  //      - Check shape independent operation feature as first compilation phase
+  //      - Move shape independent feature check from ShapeValidator to OperationValidator
+  // TODO Move ShapeValidator into shape inference
+  //      - Check input tensor shape validation
+  //      - Check parameter value validation which valid value is depend on input tensor shape
+  //      - Output tensor shape validation check is needless because
+  //        static/dynamic shape inferer will make valid output shape
   for (auto &pair : lowered_subgs)
   {
     auto &lowered_subg = pair.second;
-    compiler::OperationValidator{lowered_subg->graph()}();
+    compiler::ShapeValidator{lowered_subg->graph()}();
   }
+
+  /*************************************************************
+   *  Backend independent analysis & optimization phase finished
+   *************************************************************/
 
   executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
