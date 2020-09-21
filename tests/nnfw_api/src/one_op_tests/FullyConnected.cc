@@ -56,3 +56,35 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_FullyConnected16x1)
+{
+  CircleGen cgen;
+  // clang-format off
+  std::vector<float> weight_data{ 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
+                                  1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1, 1, -1, 2, 1};
+  std::vector<float> bias_data{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int input = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
+  CircleGen::SparsityParams sp{
+      {0, 1, 2, 3},
+      {0, 1},
+      {{CircleGen::SparseDimensionType::DimensionType_DENSE, 1},
+       {CircleGen::SparseDimensionType::DimensionType_SPARSE_CSR, {0, 2}, {0, 3}},
+       {CircleGen::SparseDimensionType::DimensionType_DENSE, 16},
+       {CircleGen::SparseDimensionType::DimensionType_DENSE, 1}}};
+  int weight = cgen.addTensor({{16, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf}, sp);
+  int bias = cgen.addTensor({{16}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int output = cgen.addTensor({{1, 16}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorFullyConnected({{input, weight, bias}, {output}});
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+      uniformTCD<float>({{1, 3, 2, 1}}, {{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
