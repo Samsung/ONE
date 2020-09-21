@@ -28,7 +28,8 @@ using namespace testing;
 
 template <typename T>
 void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<T> input_data, std::initializer_list<T> output_data, float alpha)
+           std::initializer_list<float> input_data, std::initializer_list<float> output_data,
+           float alpha)
 {
   constexpr DataType element_type = getElementType<T>();
   Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
@@ -42,31 +43,75 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   kernel.configure();
   kernel.execute();
 
-  (void)output_shape;
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
   EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
 }
 
-TEST(LeakReluTest, FloatSimple)
+template <>
+void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
+                    std::initializer_list<int32_t> output_shape,
+                    std::initializer_list<float> input_data,
+                    std::initializer_list<float> output_data, float alpha)
 {
-  Check<float>(/*input_shape=*/{2, 3}, /*output_shape=*/{2, 3},
-               /*input_data=*/
-               {
-                   0.0f, 1.0f, 3.0f,   // Row 1
-                   1.0f, -1.0f, -2.0f, // Row 2
-               },
-               /*output_data=*/
-               {
-                   0.0f, 1.0f, 3.0f,   // Row 1
-                   1.0f, -0.5f, -1.0f, // Row 2
-               },
-               /*alpha=*/0.5f);
+  const float quantized_tolerance = getTolerance(-8, 127.f / 16.f, 255);
+  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-8, 127.f / 16.f);
+  Tensor input_tensor =
+      makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+
+  LeakyReluParams params{};
+  params.alpha = alpha;
+
+  LeakyRelu kernel(&input_tensor, &output_tensor, params);
+
+  kernel.configure();
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(dequantizeTensorData(output_tensor),
+              FloatArrayNear(output_data, quantized_tolerance));
+}
+
+template <typename T> class LeakReluTest : public ::testing::Test
+{
+};
+
+using DataTypes = ::testing::Types<float, uint8_t>;
+TYPED_TEST_CASE(LeakReluTest, DataTypes);
+
+TYPED_TEST(LeakReluTest, Simple)
+{
+  Check<TypeParam>(/*input_shape=*/{2, 3}, /*output_shape=*/{2, 3},
+                   /*input_data=*/
+                   {
+                       0.0f, 1.0f, 3.0f,   // Row 1
+                       1.0f, -1.0f, -2.0f, // Row 2
+                   },
+                   /*output_data=*/
+                   {
+                       0.0f, 1.0f, 3.0f,   // Row 1
+                       1.0f, -0.5f, -1.0f, // Row 2
+                   },
+                   /*alpha=*/0.5f);
 
   SUCCEED();
 }
 
-// TODO Uint8Simple
-// Implement GetDequantizedOutput Function.
-// Create Test for Uint8 Case
+TEST(LeakReluTest, IvalidInputOutputType_NEG)
+{
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, {
+                                                                       0.0f, 1.0f, 3.0f,   // Row 1
+                                                                       1.0f, -1.0f, -2.0f, // Row 2
+                                                                   });
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  LeakyReluParams params{};
+  params.alpha = 0.5f;
+
+  LeakyRelu kernel(&input_tensor, &output_tensor, params);
+
+  EXPECT_ANY_THROW(kernel.configure());
+}
 
 } // namespace
 } // namespace kernels
