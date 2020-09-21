@@ -162,7 +162,7 @@ TEST(L2Pool2DTest, FloatPaddingSame)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingSameSlide)
+TEST(L2Pool2DTest, FloatPaddingSameStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
@@ -189,7 +189,7 @@ TEST(L2Pool2DTest, FloatPaddingSameSlide)
   // TODO make a Shape checking of output_tensor.
 }
 
-TEST(L2Pool2DTest, FloatPaddingValidSlide)
+TEST(L2Pool2DTest, FloatPaddingValidStride)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
