@@ -77,11 +77,11 @@ bool fused_batch_norm_with_tconv(luci::CircleTransposeConv *tconv)
   // scale dim(0) == tconv filter channel dim
   if (filter->rank() != 4)
     return false;
-  auto filter_channel_dim = filter->dim(3).value();
+  auto filter_out_dim = filter->dim(0).value();
   if (scale->rank() != 1)
     return false;
   auto scale_dim = scale->dim(0).value();
-  if (filter_channel_dim != scale_dim)
+  if (filter_out_dim != scale_dim)
     return false;
 
   // get shift of batchnorm
@@ -93,23 +93,23 @@ bool fused_batch_norm_with_tconv(luci::CircleTransposeConv *tconv)
   if (shift->rank() != 1)
     return false;
   auto shift_dim = shift->dim(0).value();
-  if (filter_channel_dim != shift_dim)
+  if (filter_out_dim != shift_dim)
     return false;
 
   // filter weight = filter weight * mul(scale) + add(shift)
-  uint32_t filter_batch_dim = filter->dim(0).value();
   uint32_t filter_height_dim = filter->dim(1).value();
   uint32_t filter_width_dim = filter->dim(2).value();
-  for (uint32_t c = 0; c < filter_channel_dim; c++)
+  uint32_t filter_in_dim = filter->dim(3).value();
+  for (uint32_t c = 0; c < filter_out_dim; c++)
   {
-    for (uint32_t n = 0; n < filter_batch_dim; n++)
+    for (uint32_t h = 0; h < filter_height_dim; h++)
     {
-      for (uint32_t h = 0; h < filter_height_dim; h++)
+      for (uint32_t w = 0; w < filter_width_dim; w++)
       {
-        for (uint32_t w = 0; w < filter_width_dim; w++)
+        for (uint32_t b = 0; b < filter_in_dim; b++)
         {
-          uint32_t offset = n * filter_height_dim * filter_width_dim * filter_channel_dim +
-                            h * filter_width_dim * filter_channel_dim + w * filter_channel_dim + c;
+          uint32_t offset = c * filter_height_dim * filter_width_dim * filter_in_dim +
+                            h * filter_width_dim * filter_in_dim + w * filter_in_dim + b;
           filter->at<loco::DataType::FLOAT32>(offset) *= scale->at<loco::DataType::FLOAT32>(c);
         }
       }
