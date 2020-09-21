@@ -37,7 +37,7 @@ namespace backend
 class IPortableTensor : public ITensor
 {
 public:
-  virtual ~IPortableTensor() = default;
+  virtual ~IPortableTensor();
   virtual const ir::Sparsity *sparsity() const { return nullptr; }
 
 public:

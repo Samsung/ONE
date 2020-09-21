@@ -41,6 +41,7 @@ class ExternalTensor : public Tensor
 {
 public:
   ExternalTensor() = delete;
+  virtual ~ExternalTensor();
 
 public:
   ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout)
