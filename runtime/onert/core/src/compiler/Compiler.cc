@@ -20,6 +20,7 @@
 #include "ExecutorFactory.h"
 #include "OperationValidator.h"
 #include "Fp32ToFp16Converter.h"
+#include "ShapeValidator.h"
 
 #include <backend/controlflow/Config.h>
 #include "compiler/BackendManager.h"
@@ -163,6 +164,13 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    * Prepare compilation phase
    ***************************************************/
 
+  // Operand data type validation check
+  assert(_subgraphs);
+  assert(_subgraphs->at(ir::SubgraphIndex{0}));
+  _subgraphs->iterate([](const onert::ir::SubgraphIndex &, const onert::ir::Graph &graph) {
+    OperationValidator{graph}();
+  });
+
   auto executors = std::make_shared<exec::ExecutorMap>();
 
   // Compilable check
@@ -233,11 +241,11 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  // operation validation
+  // shape validation
   for (auto &pair : lowered_subgs)
   {
     auto &lowered_subg = pair.second;
-    compiler::OperationValidator{lowered_subg->graph()}();
+    compiler::ShapeValidator{lowered_subg->graph()}();
   }
 
   executors = std::make_shared<exec::ExecutorMap>();
