@@ -457,6 +457,14 @@ message SegmentSumOptions {
   // NONE
 }
 
+message UnidirectionalSequenceLSTMOptions {
+  optional Activation activation = 1 [default = NONE];
+  optional float cell_clip = 2 [default = 0.0];
+  optional float proj_clip = 3 [default = 0.0];
+  optional bool time_major = 4 [default = false];
+  optional bool asymmetric_quantize_inputs = 5 [default = false];
+}
+
 message UniqueOptions {
   optional TensorType idx_out_type = 1 [default = INT32];
 }
@@ -568,7 +576,7 @@ message Operation {
   // FakeQuantOptions 178
   // BidirectionalSequenceLSTMOptions 179
   // BidirectionalSequenceRNNOptions 180
-  // UnidirectionalSequenceLSTMOptions 181
+  optional UnidirectionalSequenceLSTMOptions unidirectional_sequence_lstm_options = 181;
   optional RangeOptions range_options = 182;
   optional ResizeNearestNeighborOptions resize_nearest_neighbor_options = 183;
   optional LeakyReluOptions leaky_relu_options = 184;
