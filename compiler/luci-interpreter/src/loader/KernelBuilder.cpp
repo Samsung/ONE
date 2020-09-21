@@ -26,6 +26,7 @@
 #include "kernels/Elu.h"
 #include "kernels/Floor.h"
 #include "kernels/FloorDiv.h"
+#include "kernels/Equal.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/Greater.h"
 #include "kernels/GreaterEqual.h"
@@ -271,6 +272,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloorDiv *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::FloorDiv>(x, y, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Equal>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)

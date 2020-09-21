@@ -22,6 +22,8 @@ set(SOURCES
     Floor.cpp
     FloorDiv.h
     FloorDiv.cpp
+    Equal.h
+    Equal.cpp
     FullyConnected.h
     FullyConnected.cpp
     Greater.h
@@ -121,6 +123,7 @@ set(TEST_SOURCES
     Elu.test.cpp
     Floor.test.cpp
     FloorDiv.test.cpp
+    Equal.test.cpp
     FullyConnected.test.cpp
     Greater.test.cpp
     GreaterEqual.test.cpp
