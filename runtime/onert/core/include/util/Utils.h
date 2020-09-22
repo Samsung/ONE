@@ -22,10 +22,9 @@
 #ifndef __ONERT_UTIL_UTILS_H__
 #define __ONERT_UTIL_UTILS_H__
 
+#define UNUSED_RELEASE(a) (void)(a)
 #include "ir/Coordinates.h"
 #include "ir/Shape.h"
-
-#define UNUSED_RELEASE(a) (void)(a)
 
 template <size_t from, size_t to, typename Enable = void> struct ForEachDimension
 {
