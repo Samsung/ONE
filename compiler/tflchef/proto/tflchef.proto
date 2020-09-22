@@ -104,6 +104,15 @@ enum MirrorPadMode {
   SYMMETRIC = 1;
 }
 
+message BidirectionalSequenceLSTMOptions {
+  optional Activation activation = 1 [default = NONE];
+  optional float cell_clip = 2 [default = 0.0];
+  optional float proj_clip = 3 [default = 0.0];
+  optional bool time_major = 4 [default = false];
+  optional bool asymmetric_quantize_inputs = 5 [default = false];
+  optional bool merge_outputs = 6 [default = false];
+}
+
 message Conv2DOptions
 {
   optional Padding padding = 1 [default = VALID];
@@ -574,7 +583,7 @@ message Operation {
   optional PowOptions pow_options = 176;
   optional ArgMinOptions argmin_options = 177;
   // FakeQuantOptions 178
-  // BidirectionalSequenceLSTMOptions 179
+  optional BidirectionalSequenceLSTMOptions bidirectional_sequence_lstm_options = 179;
   // BidirectionalSequenceRNNOptions 180
   optional UnidirectionalSequenceLSTMOptions unidirectional_sequence_lstm_options = 181;
   optional RangeOptions range_options = 182;
