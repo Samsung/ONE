@@ -168,13 +168,12 @@ run_tests()
             continue
         fi
 
-        TEST_CACHE_PATH=$CACHE_ROOT_PATH/$TEST_NAME
-        MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
+        MODELFILE=$CACHE_ROOT_PATH/$MODELFILE_NAME
 
         # Find model file for downloaded by zip
         if [ "${MODELFILE_NAME##*.}" = "zip" ]; then
-            pushd $TEST_CACHE_PATH
-            MODELFILE=$TEST_CACHE_PATH/$(ls *.tflite)
+            pushd $CACHE_ROOT_PATH
+            MODELFILE=$CACHE_ROOT_PATH/$(ls ${MODELFILE_NAME%.zip}/*.tflite)
             popd
         fi
 
@@ -215,16 +214,15 @@ download_tests()
         MODELFILE_NAME=""
         source $TEST_ROOT_PATH/$TEST_NAME/config.sh
 
-        TEST_CACHE_PATH=$CACHE_ROOT_PATH/$TEST_NAME
-        MODELFILE=$TEST_CACHE_PATH/$MODELFILE_NAME
+        MODELFILE=$CACHE_ROOT_PATH/$MODELFILE_NAME
         MODELFILE_URL="$MODELFILE_URL_BASE/$MODELFILE_NAME"
         if [ -n  "$FIXED_MODELFILE_SERVER" ]; then
             MODELFILE_URL="$FIXED_MODELFILE_SERVER/$MODELFILE_NAME"
         fi
 
         # Download model file
-        if [ ! -e $TEST_CACHE_PATH ]; then
-            mkdir -p $TEST_CACHE_PATH
+        if [ ! -e $CACHE_ROOT_PATH ]; then
+            mkdir -p $CACHE_ROOT_PATH
         fi
 
         # Download unless we have it in cache (Also check md5sum)
@@ -234,10 +232,10 @@ download_tests()
             echo "======================"
 
             rm -f $MODELFILE # Remove invalid file if exists
-            pushd $TEST_CACHE_PATH
+            pushd $CACHE_ROOT_PATH
             wget -nv $MODELFILE_URL
             if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
-                unzip -o $MODELFILE_NAME
+                unzip -o $MODELFILE_NAME -d ${MODELFILE_NAME%.zip}
             fi
             popd
         fi
