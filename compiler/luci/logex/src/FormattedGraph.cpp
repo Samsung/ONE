@@ -214,6 +214,7 @@ private:
   IMPLEMENT(luci::CircleCustom)
   IMPLEMENT(luci::CircleDepthToSpace)
   IMPLEMENT(luci::CircleDepthwiseConv2D)
+  IMPLEMENT(luci::CircleDequantize)
   IMPLEMENT(luci::CircleDiv)
   IMPLEMENT(luci::CircleElu)
   IMPLEMENT(luci::CircleExp)
@@ -1228,6 +1229,12 @@ bool CircleNodeSummaryBuilder::summary(const luci::CircleDepthwiseConv2D *node,
                                        locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
+}
+
+bool CircleNodeSummaryBuilder::summary(const luci::CircleDequantize *node,
+                                       locop::NodeSummary &s) const
+{
+  return use_input(tbl(), node, s);
 }
 
 bool CircleNodeSummaryBuilder::summary(const luci::CircleDiv *node, locop::NodeSummary &s) const
