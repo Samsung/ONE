@@ -41,6 +41,7 @@ public:
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
       Requantize,
+      FoldDequantize,
     };
 
     enum AlgorithmParameters

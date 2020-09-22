@@ -632,6 +632,7 @@ public:
   void visit(luci::CircleCustom *) final;
   void visit(luci::CircleDepthToSpace *) final;
   void visit(luci::CircleDepthwiseConv2D *) final;
+  void visit(luci::CircleDequantize *) final;
   void visit(luci::CircleDiv *) final;
   void visit(luci::CircleElu *) final;
   void visit(luci::CircleEqual *) final;
@@ -864,6 +865,11 @@ void OperationExporter::visit(luci::CircleDepthwiseConv2D *node)
                                              to_circle_actfunc(node->fusedActivationFunction()),
                                              node->dilation()->w(), node->dilation()->h())
                     .Union());
+}
+
+void OperationExporter::visit(luci::CircleDequantize *node)
+{
+  export_simple(node, circle::BuiltinOperator_DEQUANTIZE);
 }
 
 void OperationExporter::visit(luci::CircleDiv *node)

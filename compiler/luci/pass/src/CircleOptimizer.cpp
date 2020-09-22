@@ -25,6 +25,7 @@
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/FoldDequantize.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -131,6 +132,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldDequantize))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
   }
 
   // Shape inference is needed for added nodes doing above transformations

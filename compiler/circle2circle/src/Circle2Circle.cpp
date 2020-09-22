@@ -96,6 +96,12 @@ int entry(int argc, char **argv)
       .default_value(false)
       .help("This will convert Custom(Matmul) to Matmul operator");
 
+  arser.add_argument("--fold_dequantize")
+      .nargs(0)
+      .required(false)
+      .default_value(true)
+      .help("This will fold dequantize op");
+
   arser.add_argument("--mute_warnings")
       .nargs(0)
       .required(false)
@@ -142,6 +148,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
   if (arser.get<bool>("--resolve_customop_matmul"))
     options->enable(Algorithms::ResolveCustomOpMatMul);
+  if (arser.get<bool>("--fold_dequantize"))
+    options->enable(Algorithms::FoldDequantize);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
