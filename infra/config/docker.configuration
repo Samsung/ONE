@@ -3,7 +3,7 @@
 # Don't run this script
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && echo "Please don't execute ${BASH_SOURCE[0]}" && exit 1
 
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnas}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/nnas}
 echo "Using docker image ${DOCKER_IMAGE_NAME}"
 
 if [ -z "`docker images ${DOCKER_IMAGE_NAME}`" ]; then
