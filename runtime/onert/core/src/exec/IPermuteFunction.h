@@ -39,7 +39,7 @@ namespace exec
 
 class IPermuteFunction : public IFunction
 {
-private:
+protected:
   enum class PermuteType
   {
     NHWC_TO_NCHW,
@@ -60,37 +60,8 @@ public:
       auto dst_tensor = *dst_it;
       if (src_tensor != dst_tensor)
       {
-        // TODO Change to permute in parallel
-        assert(underlying_type(src_tensor->data_type()) ==
-               underlying_type(dst_tensor->data_type()));
         const auto rank = src_tensor->num_dimensions();
-        switch (src_tensor->data_type())
-        {
-          case ir::DataType::FLOAT32:
-            permute<float>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::INT32:
-            permute<int32_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::UINT32:
-            permute<uint32_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::BOOL8:
-          case ir::DataType::QUANT_UINT8_ASYMM:
-          case ir::DataType::UINT8:
-            permute<uint8_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::QUANT_INT8_ASYMM:
-          case ir::DataType::QUANT_INT8_SYMM:
-            permute<int8_t>(src_tensor, dst_tensor, rank);
-            break;
-          case ir::DataType::INT64:
-            permute<int64_t>(src_tensor, dst_tensor, rank);
-            break;
-          default:
-            throw std::runtime_error("IPermuteFunction: Not supported data type");
-            break;
-        }
+        permute(src_tensor, dst_tensor, rank);
       }
       src_it++;
       dst_it++;
@@ -100,6 +71,40 @@ public:
   virtual void prepare() override { optimize(); }
 
   virtual void optimize() = 0;
+
+protected:
+  void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank)
+  {
+    assert(src_tensor != dst_tensor);
+    assert(underlying_type(src_tensor->data_type()) == underlying_type(dst_tensor->data_type()));
+    switch (src_tensor->data_type())
+    {
+      case ir::DataType::FLOAT32:
+        permute<float>(src_tensor, dst_tensor, rank);
+        break;
+      case ir::DataType::INT32:
+        permute<int32_t>(src_tensor, dst_tensor, rank);
+        break;
+      case ir::DataType::UINT32:
+        permute<uint32_t>(src_tensor, dst_tensor, rank);
+        break;
+      case ir::DataType::BOOL8:
+      case ir::DataType::QUANT_UINT8_ASYMM:
+      case ir::DataType::UINT8:
+        permute<uint8_t>(src_tensor, dst_tensor, rank);
+        break;
+      case ir::DataType::QUANT_INT8_ASYMM:
+      case ir::DataType::QUANT_INT8_SYMM:
+        permute<int8_t>(src_tensor, dst_tensor, rank);
+        break;
+      case ir::DataType::INT64:
+        permute<int64_t>(src_tensor, dst_tensor, rank);
+        break;
+      default:
+        throw std::runtime_error("IPermuteFunction: Not supported data type");
+        break;
+    }
+  }
 
 private:
   // TODO make src const by proving const access()
@@ -186,6 +191,7 @@ private:
     src->access(fn);
   }
 
+protected:
   // NOTE The typeid expression is lvalue expression which refers to an object with static storage
   //      duration, of the polymorphic type const std::type_info or of some type derived from it.
   //      So std::type_info is non-copyable
@@ -216,8 +222,6 @@ private:
 protected:
   std::vector<backend::ITensor *> _src_tensors;
   std::vector<backend::ITensor *> _dst_tensors;
-  // TODO Remove this member if it is possible
-  std::vector<size_t> _ranks;
 };
 
 } // namespace exec

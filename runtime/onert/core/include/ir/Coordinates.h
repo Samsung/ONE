@@ -62,6 +62,12 @@ public:
   {
     assert(init.size() <= num_max_dimensions);
   }
+  /**
+   * @brief     Construct a new Coordinates object with rank
+   * @param[in] rank The rank of coordinates
+   * @return
+   */
+  explicit Coordinates(int rank) : _coordinates(rank, 0) {}
 
 public:
   /**
