@@ -34,10 +34,7 @@ Pow::Pow(const Tensor *input1, const Tensor *input2, Tensor *output)
 
 void Pow::configure()
 {
-  if (input1()->element_type() != input2()->element_type())
-  {
-    throw std::runtime_error("Input Tensor Data Type Mismatch.");
-  }
+  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
 
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
