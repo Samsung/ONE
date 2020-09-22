@@ -62,7 +62,11 @@ void SoftMaxLayer::softmaxFloat32()
   }
   else
   {
-    throw std::runtime_error{"only 1D, 2D and 4D tensors supported"};
+    nnfw::cker::SoftmaxParams op_params;
+    op_params.beta = _beta;
+    nnfw::cker::reference::Softmax(
+        op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
+        getTensorShape(_output), reinterpret_cast<float *>(_output->buffer()));
   }
 }
 
