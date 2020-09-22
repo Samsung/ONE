@@ -117,6 +117,7 @@ public:
 
   MemAllocType memAllocType() const { return _alloc_type; }
   void setAsConstant() { _const = true; }
+  void setAsNonConst() { _const = false; }
   bool isConstant() const
   {
     // Impossible case: constant and dynamic operand
