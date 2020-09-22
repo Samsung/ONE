@@ -32,6 +32,7 @@ public:
   {
     enum Algorithm
     {
+      FuseAddWithTConv,
       FuseBatchNormWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
