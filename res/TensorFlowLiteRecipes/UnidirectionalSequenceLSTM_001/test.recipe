@@ -267,11 +267,17 @@ operand {
   name: "activation_state"
   type: FLOAT32
   shape { dim: 1 dim: 20 }
+  filler {
+    tag: "explicit"
+  }
 }
 operand {
   name: "cell_state"
   type: FLOAT32
   shape { dim: 1 dim: 20 }
+  filler {
+    tag: "explicit"
+  }
 }
 operand {
   name: "ofm"
