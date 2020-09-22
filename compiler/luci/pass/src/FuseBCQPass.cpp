@@ -188,7 +188,6 @@ public:
           bcq_fc->fusedActivationFunction(fully_connected->fusedActivationFunction());
 
           loco::Node *bcq_input = fully_connected->input();
-          int32_t batch_rank = 0;
 
           // If input of BCQFullyConnected has more than rank 2, we should reshape it as rank 2
           const auto original_input = loco::must_cast<luci::CircleNode *>(fully_connected->input());
@@ -215,7 +214,6 @@ public:
             reshape->shape(new_shape);
 
             bcq_input = reshape;
-            batch_rank = original_input->rank() - 2;
           }
 
           // If x_w formation, we should insert Transpose in front and back of BCQFullyConnected
