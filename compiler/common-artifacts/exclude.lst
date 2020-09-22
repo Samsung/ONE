@@ -5,6 +5,8 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(UnidirectionalSequenceLSTM_000)
+optimize(UnidirectionalSequenceLSTM_001)
 optimize(Unique_000)
 optimize(Unique_001)
 optimize(Unique_002)
@@ -160,6 +162,8 @@ tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
 tcgenerate(TopKV2_001)
+tcgenerate(UnidirectionalSequenceLSTM_000)
+tcgenerate(UnidirectionalSequenceLSTM_001)
 tcgenerate(Unique_000)
 tcgenerate(Unique_001)
 tcgenerate(Unique_002)
