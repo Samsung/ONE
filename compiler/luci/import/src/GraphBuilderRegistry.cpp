@@ -45,6 +45,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                                                 // 108
   CIRCLE_NODE(DEPTH_TO_SPACE, CircleDepthToSpaceGraphBuilder);                             // 5
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);                       // 4
+  CIRCLE_NODE(DEQUANTIZE, CircleDequantizeGraphBuilder);                                   // 6
   CIRCLE_NODE(DIV, CircleDivGraphBuilder);                                                 // 42
   CIRCLE_NODE(ELU, CircleEluGraphBuilder);                                                 // 111
   CIRCLE_NODE(EQUAL, CircleEqualGraphBuilder);                                             // 71
@@ -140,7 +141,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
 
 #undef CIRCLE_NODE
 
-  // BuiltinOperator_DEQUANTIZE = 6,
   // BuiltinOperator_EMBEDDING_LOOKUP = 7,
   // BuiltinOperator_HASHTABLE_LOOKUP = 10,
   // BuiltinOperator_LSH_PROJECTION = 15,
