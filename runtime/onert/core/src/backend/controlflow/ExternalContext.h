@@ -19,7 +19,13 @@
 
 #include <backend/IExternalContext.h>
 #include <util/ConfigSource.h>
+
+#ifdef USE_RUY_GEMV
 #include <ruy/context.h>
+#include <ruy/context_get_ctx.h>
+#include <ruy/ctx.h>
+#include <ruy/tune.h>
+#endif // USE_RUY_GEMV
 
 namespace
 {
@@ -36,10 +42,11 @@ namespace controlflow
 // TODO Unify this with cpu::ExternalContext
 class ExternalContext : public IExternalContext
 {
+#ifdef USE_RUY_GEMV
 public:
-  ExternalContext() : _ruy_context(nullptr)
+  ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
   {
-    // setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
   }
 
   void setMaxNumThreads(int max_num_threads)
@@ -49,10 +56,27 @@ public:
     _ruy_context->set_max_num_threads(target_num_threads);
   }
 
+  void initPerThreadState()
+  {
+    // Initialize per-thread state.
+    const int thread_count = _ruy_context->max_num_threads();
+    auto ctx = ruy::get_ctx(_ruy_context.get());
+    ctx->EnsureThreadSpecificResources(thread_count);
+    for (int i = 0; i < thread_count; i++)
+    {
+      ctx->GetThreadSpecificTuningResolver(i)->SetTuning(ctx->explicit_tuning());
+    }
+  }
+
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
 
 private:
   const std::unique_ptr<ruy::Context> _ruy_context;
+#else  // not USE_RUY_GEMV
+public:
+  void setMaxNumThreads(int) {}
+  void initPerThreadState() {}
+#endif // USE_RUY_GEMV
 };
 
 } // namespace controlflow

@@ -20,6 +20,11 @@
 #include "backend/ITensorBuilder.h"
 #include "exec/IPermuteFunction.h"
 #include "exec/IExecutor.h"
+#include "../ExternalContext.h"
+
+#ifdef USE_RUY_GEMV
+#include "ruy/thread_pool.h" // from @ruy
+#endif
 
 namespace onert
 {
@@ -33,34 +38,112 @@ namespace kernel
 class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
-  PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors)
-  {
-    assert(src_tensors.size() == dst_tensors.size());
-    _src_tensors = src_tensors;
-    _dst_tensors = dst_tensors;
-  }
+  PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
+               const std::shared_ptr<ExternalContext> &external_context);
 
-  void optimize() override
-  {
-    // Remove copying of tensor as nullptr
-    auto src_it = _src_tensors.begin();
-    auto dst_it = _dst_tensors.begin();
-    while (src_it != _src_tensors.end())
-    {
-      if ((*src_it == *dst_it) || (*src_it == nullptr || *dst_it == nullptr))
-      {
-        src_it = _src_tensors.erase(src_it);
-        dst_it = _dst_tensors.erase(dst_it);
-      }
-      else
-      {
-        ++src_it;
-        ++dst_it;
-      }
-    }
-  }
+  void optimize() override;
 
   void run() override;
+
+private:
+  std::shared_ptr<ExternalContext> _external_context;
+
+#ifdef USE_RUY_GEMV
+private:
+  void appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_tensor,
+                          const ir::Shape &loop_shape, size_t size);
+
+  struct PermuteWorkerTask : ruy::Task
+  {
+    using Strides = ir::Coordinates;
+
+    PermuteWorkerTask(const ITensor &src_tensor, ITensor &dst_tensor,
+                      const ir::Coordinates &start_coords, const ir::Shape &loop_shape, size_t size)
+        : _src_buffer{src_tensor.buffer()}, _dst_buffer{dst_tensor.buffer()},
+          _src_start_offset{src_tensor.calcOffset(start_coords)},
+          _dst_start_offset{dst_tensor.calcOffset(start_coords)}, _src_strides{}, _dst_strides{},
+          _loop_shape{loop_shape}, _size{size}, _src_layout{src_tensor.layout()},
+          _dst_layout{dst_tensor.layout()}, _is_permutation{true}
+    {
+      // Set strides
+      setStrides(src_tensor, &_src_strides);
+      setStrides(dst_tensor, &_dst_strides);
+
+      _is_permutation = (_src_layout != _dst_layout && loop_shape.rank() == 4);
+    }
+    // Constructor for a copy
+    PermuteWorkerTask(const uint8_t *src_buffer, uint8_t *dst_buffer, uint32_t src_start_offset,
+                      uint32_t dst_start_offset, size_t size)
+        : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
+          _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0}, _loop_shape{1},
+          _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
+    {
+      // DO NOTHING
+    }
+    void setBuffers(const uint8_t *src_buffer, uint8_t *dst_buffer)
+    {
+      _src_buffer = src_buffer;
+      _dst_buffer = dst_buffer;
+    }
+    void Run() override
+    {
+      ShapeLoop(_loop_shape, [&](const onert::ir::Coordinates &coords) {
+        size_t src_offset = _src_start_offset;
+        size_t dst_offset = _dst_start_offset;
+        assert(static_cast<size_t>(_loop_shape.rank()) == coords.size());
+        ir::Coordinates dst_coords = coords;
+        if (_is_permutation)
+        {
+          dst_coords = ir::convertCoordinates(coords, _src_layout, _dst_layout);
+        }
+        for (auto i = 0; i < _loop_shape.rank(); ++i)
+        {
+          assert(coords[i] >= 0 && dst_coords[i] >= 0);
+          src_offset += coords[i] * _src_strides[i];
+          dst_offset += dst_coords[i] * _dst_strides[i];
+        }
+        memcpy(_dst_buffer + dst_offset, _src_buffer + src_offset, _size);
+      });
+    }
+
+  private:
+    void setStrides(const ITensor &tensor, Strides *strides)
+    {
+      const size_t rank = tensor.num_dimensions();
+      for (size_t i = 0; i < rank; ++i)
+      {
+        ir::Coordinates no_step(rank), one_step(rank);
+        one_step.set(i, 1);
+        if (tensor.dimension(i) > 1)
+        {
+          strides->set(i, tensor.calcOffset(one_step) - tensor.calcOffset(no_step));
+        }
+        else
+        {
+          // If dimension value is 0 or 1, the stride of the dimension will be not used
+          // Do not call calcOffset() with coordinate value that is greater than dimension value
+          strides->set(i, 0);
+        }
+        assert((*strides)[i] >= 0);
+      }
+    }
+
+  private:
+    const uint8_t *_src_buffer;
+    uint8_t *_dst_buffer;
+    size_t _src_start_offset;
+    size_t _dst_start_offset;
+    Strides _src_strides;
+    Strides _dst_strides;
+    const ir::Shape _loop_shape;
+    const size_t _size;
+    const ir::Layout _src_layout;
+    const ir::Layout _dst_layout;
+    bool _is_permutation;
+  };
+
+  std::unordered_map<const ITensor *, std::vector<PermuteWorkerTask>> _tasks_map;
+#endif // USE_RUY_GEMV
 };
 
 } // namespace kernel
