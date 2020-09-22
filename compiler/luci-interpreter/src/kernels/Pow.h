@@ -35,6 +35,9 @@ public:
 
   void configure() override;
   void execute() const override;
+
+private:
+  template <typename T> void eval() const;
 };
 
 } // namespace kernels

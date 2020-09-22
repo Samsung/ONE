@@ -34,26 +34,48 @@ Pow::Pow(const Tensor *input1, const Tensor *input2, Tensor *output)
 
 void Pow::configure()
 {
-  if (input1()->shape() != input2()->shape())
-  {
-    throw std::runtime_error("Input Tensor Shape Mismatch.");
-  }
-
   if (input1()->element_type() != input2()->element_type())
   {
     throw std::runtime_error("Input Tensor Data Type Mismatch.");
   }
 
-  const Shape &output_shape = input1()->shape();
-
-  output()->resize(output_shape);
+  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
 void Pow::execute() const
 {
-  tflite::reference_ops::Pow(getTensorShape(input1()), getTensorData<float>(input1()),
-                             getTensorShape(input2()), getTensorData<float>(input2()),
-                             getTensorShape(output()), getTensorData<float>(output()));
+  switch (input1()->element_type())
+  {
+    case DataType::FLOAT32:
+      eval<float>();
+      break;
+    case DataType::S32:
+      eval<int32_t>();
+      break;
+    default:
+      throw std::runtime_error("Unsupported type.");
+  }
+}
+
+template <typename T> void Pow::eval() const
+{
+  tflite::ArithmeticParams params{};
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+      getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    tflite::reference_ops::BroadcastPow4DSlow(getTensorShape(input1()), getTensorData<T>(input1()),
+                                              getTensorShape(input2()), getTensorData<T>(input2()),
+                                              getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Pow(getTensorShape(input1()), getTensorData<T>(input1()),
+                               getTensorShape(input2()), getTensorData<T>(input2()),
+                               getTensorShape(output()), getTensorData<T>(output()));
+  }
 }
 
 } // namespace kernels
