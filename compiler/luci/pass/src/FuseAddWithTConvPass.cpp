@@ -59,7 +59,12 @@ bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
     return false;
 
   // get addition
-  auto addition = dynamic_cast<luci::CircleConst *>(add->y());
+  luci::CircleConst *addition = nullptr;
+  if (add->x() == tconv)
+    addition = dynamic_cast<luci::CircleConst *>(add->y());
+  else
+    addition = dynamic_cast<luci::CircleConst *>(add->x());
+
   if (not addition)
     return false;
 
@@ -105,7 +110,8 @@ bool FuseAddWithTConvPass::run(loco::Graph *g)
     if (not tconv)
       continue;
 
-    changed |= fuse_add_with_tconv(tconv);
+    if (fuse_add_with_tconv(tconv))
+      changed = true;
   }
 
   return changed;
