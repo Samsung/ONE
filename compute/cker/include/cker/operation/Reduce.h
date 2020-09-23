@@ -39,7 +39,7 @@ inline bool ReduceImpl(const In *input_data, const Shape &input_shape, const Sha
   const auto input_num_dims = input_shape.DimensionsCount();
 
   // Reset input iterator.
-  if (num_axis == 1 && (axis[0] == -1 || axis[0] == input_num_dims - 1))
+  if (num_axis == 1 && axis[0] == input_num_dims - 1)
   {
     int input_size = 1;
     int reduce_size = 0;
