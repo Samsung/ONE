@@ -19,6 +19,7 @@ enum TensorType {
   UINT8 = 3;
   INT64 = 4;
   BOOL = 6;
+  INT8 = 9;
 }
 
 enum DimensionType {
@@ -489,6 +490,10 @@ message MatrixSetDiagOptions {
   // NONE
 }
 
+message DequantizeOptions {
+  // NONE
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -564,7 +569,7 @@ message Operation {
   // SequenceRNNOptions 166
   optional TopKV2Options topk_v2_options = 167;
   optional LogSoftmaxOptions log_softmax_options = 168;
-  // DequantizeOptions 169
+  optional DequantizeOptions dequantize_options = 169;
   optional NegOptions neg_options = 170;
   optional PadV2Options padv2_options = 171;
   optional LessEqualOptions lessequal_options = 172;

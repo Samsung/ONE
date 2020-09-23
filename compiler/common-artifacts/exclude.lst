@@ -43,6 +43,7 @@ tcgenerate(DepthwiseConv2D_001) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_003) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_U8_000)
 tcgenerate(DepthwiseConv2D_U8_001)  # luci-interpreter doesn't support channel-wise quantization yet
+tcgenerate(Dequantize_000) # luci-interpreter and runtime doesn't support Dequantize Op
 tcgenerate(Div_000)
 tcgenerate(Equal_000)
 tcgenerate(Exp_000)
