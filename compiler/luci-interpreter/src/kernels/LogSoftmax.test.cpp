@@ -78,7 +78,7 @@ TEST(LogSoftmaxTest, Uint8)
               ::testing::ElementsAreArray({189, 93, 221, 253, 142, 63, 255, 111}));
 }
 
-TEST(LogSoftmaxTest, IvalidInputOutputType_NEG)
+TEST(LogSoftmaxTest, InvalidInputOutputType_NEG)
 {
   std::vector<float> input_data{
       0, -6, 2,  4, //
@@ -91,7 +91,7 @@ TEST(LogSoftmaxTest, IvalidInputOutputType_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(LogSoftmaxTest, IvalidOutputQuantParam_NEG)
+TEST(LogSoftmaxTest, InvalidOutputQuantParam_NEG)
 {
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-10, 10);
   std::vector<float> input_data{
