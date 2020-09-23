@@ -25,6 +25,7 @@
 #include <kernels/DepthToSpace.h>
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Elu.h>
+#include <kernels/Floor.h>
 #include <kernels/FullyConnected.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
@@ -293,6 +294,20 @@ TEST_F(KernelBuilderTest, Elu)
   op->features(input);
 
   auto kernel = buildKernel<kernels::Elu>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Floor)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleFloor>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Floor>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
