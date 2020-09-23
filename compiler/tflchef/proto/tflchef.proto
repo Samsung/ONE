@@ -80,6 +80,7 @@ message Operand {
   optional TensorFiller filler = 4;
   optional TensorQuantization quant = 5;
   optional TensorSparsity sparsity = 6;
+  optional bool is_variable = 7 [default = false];
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema
@@ -458,7 +459,7 @@ message SegmentSumOptions {
 }
 
 message UnidirectionalSequenceLSTMOptions {
-  optional Activation activation = 1 [default = NONE];
+  optional Activation activation = 1 [default = TANH];
   optional float cell_clip = 2 [default = 0.0];
   optional float proj_clip = 3 [default = 0.0];
   optional bool time_major = 4 [default = false];
