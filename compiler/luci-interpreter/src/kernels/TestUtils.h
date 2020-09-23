@@ -85,8 +85,6 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor);
 ::testing::Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values,
                                                       float max_abs_error = 1.0e-5f);
 
-::testing::Matcher<std::vector<int32_t>> IntArrayEq(const std::vector<int32_t> &values);
-
 template <typename T>
 std::vector<T> quantize(const std::vector<float> &data, float scale, int32_t zero_point)
 {

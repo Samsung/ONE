@@ -82,14 +82,12 @@ TEST(PowTest, IntPow)
   kernel.configure();
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<int32_t>(output_tensor), IntArrayEq(test_outputs));
+  EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ::testing::ElementsAreArray(test_outputs));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(base_shape));
 }
 
 TEST(PowTest, Input_Output_Type_NEG)
 {
-  std::initializer_list<int32_t> base_shape = {1, 1};
-
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.0f});
   Tensor input2_tensor = makeInputTensor<DataType::S32>({1}, {4});
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);

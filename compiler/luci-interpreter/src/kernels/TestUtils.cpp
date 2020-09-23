@@ -51,17 +51,6 @@ Matcher<std::vector<float>> FloatArrayNear(const std::vector<float> &values, flo
   return ElementsAreArray(matchers);
 }
 
-Matcher<std::vector<int32_t>> IntArrayEq(const std::vector<int32_t> &values)
-{
-  std::vector<Matcher<int32_t>> matchers;
-  matchers.reserve(values.size());
-  for (const int32_t v : values)
-  {
-    matchers.emplace_back(Matcher<int32_t>(v));
-  }
-  return ElementsAreArray(matchers);
-}
-
 std::vector<int32_t> extractTensorShape(const Tensor &tensor)
 {
   std::vector<int32_t> result;
