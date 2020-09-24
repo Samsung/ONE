@@ -372,13 +372,13 @@ protected:
           {
             case NNFW_TYPE_TENSOR_BOOL:
               // TODO Check if this comparison is correct
-              compareBuffersExact<bool>(ref_output, output);
+              compareBuffersExact<bool>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_UINT8:
-              compareBuffersExact<uint8_t>(ref_output, output);
+              compareBuffersExact<uint8_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_INT32:
-              compareBuffersExact<int32_t>(ref_output, output);
+              compareBuffersExact<int32_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_FLOAT32:
               // TODO better way for handling FP error?
@@ -386,11 +386,11 @@ protected:
               {
                 float refval = reinterpret_cast<const float *>(ref_output.data())[e];
                 float val = reinterpret_cast<const float *>(output.data())[e];
-                EXPECT_NEAR(refval, val, 0.001) << "e == " << e;
+                EXPECT_NEAR(refval, val, 0.001) << "index == " << i << ", element == " << e;
               }
               break;
             case NNFW_TYPE_TENSOR_INT64:
-              compareBuffersExact<int64_t>(ref_output, output);
+              compareBuffersExact<int64_t>(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
               throw std::runtime_error{"NYI : comparison of tensors of QUANT8_ASYMM"};
@@ -407,13 +407,14 @@ protected:
 
 private:
   template <typename T>
-  void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf)
+  void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf,
+                           uint32_t index)
   {
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
     {
       float ref = reinterpret_cast<const T *>(ref_buf.data())[e];
       float act = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(ref, act) << "index == " << e;
+      EXPECT_EQ(ref, act) << "ndex == " << index << ", element == " << e;
     }
   }
 
