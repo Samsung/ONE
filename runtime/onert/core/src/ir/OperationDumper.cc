@@ -40,7 +40,7 @@ void dumpUnaryInputOp(const Operation &node, const std::string &adding_input = "
 void dumpBinaryInputOp(const Operation &node, const std::string &adding_input = "")
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ", " << node.getInputs().at(0)
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ", " << node.getInputs().at(1)
                << ") " << adding_input << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
