@@ -24,6 +24,7 @@
 #include <arm_compute/runtime/NEON/functions/NEGatherEx.h>
 #include <arm_compute/runtime/NEON/functions/NEHashtableLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEInstanceNormalizationLayerEx.h>
+#include <arm_compute/runtime/NEON/functions/NEOneHot.h>
 #include <arm_compute/runtime/NEON/functions/NEReduceSum.h>
 #include <arm_compute/runtime/NEON/functions/NEReduceOperation.h>
 #include <arm_compute/runtime/NEON/functions/NETransposeConvLayer.h>

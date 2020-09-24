@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (c) 2017-2019 ARM Limited.
+ * Copyright (c) 2019-2020 Arm Limited.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -37,18 +37,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#include "arm_compute/runtime/CPP/functions/CPPOneHotEx.h"
-
-#include "arm_compute/core/CPP/kernels/CPPOneHotKernelEx.h"
+#include "arm_compute/runtime/NEON/functions/NEOneHot.h"
+#include "arm_compute/core/NEON/kernels/NEOneHotKernel.h"
 #include "support/MemorySupport.h"
-
-using namespace arm_compute;
-
-void CPPOneHotEx::configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
-                            const ITensor *off_value, ITensor *output, const int axis)
+#include <utility>
+namespace arm_compute
 {
-  auto k = support::cpp14::make_unique<CPPOneHotKernelEx>();
+void NEOneHot::configure(const ITensor *indices, const ITensor *depth, const ITensor *on_value,
+                         const ITensor *off_value, ITensor *output, int axis)
+{
+  auto k = arm_compute::support::cpp14::make_unique<NEOneHotKernel>();
   k->configure(indices, depth, on_value, off_value, output, axis);
   _kernel = std::move(k);
 }
+Status NEOneHot::validate(const ITensorInfo *indices, const ITensorInfo *depth,
+                          const ITensorInfo *on_value, const ITensorInfo *off_value,
+                          const ITensorInfo *output, int axis)
+{
+  return NEOneHotKernel::validate(indices, depth, on_value, off_value, output, axis);
+}
+} // namespace arm_compute
