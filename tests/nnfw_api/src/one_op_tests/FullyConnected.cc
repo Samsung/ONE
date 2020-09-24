@@ -44,7 +44,7 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int input = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{16, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{16, 1}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{16}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int output = cgen.addTensor({{1, 16}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorFullyConnected({{input, weight, bias}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
@@ -52,7 +52,7 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
       uniformTCD<float>({{1, 3, 2, 1}}, {{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}));
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_neon"});
 
   SUCCEED();
 }
