@@ -459,7 +459,7 @@ message SegmentSumOptions {
 }
 
 message UnidirectionalSequenceLSTMOptions {
-  optional Activation activation = 1 [default = TANH];
+  optional Activation activation = 1 [default = NONE];
   optional float cell_clip = 2 [default = 0.0];
   optional float proj_clip = 3 [default = 0.0];
   optional bool time_major = 4 [default = false];
