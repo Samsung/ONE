@@ -415,3 +415,16 @@ TEST(ShapeInference, neg_Transpose)
                  std::runtime_error);
   }
 }
+
+TEST(ShapeInference, BCQFullyConnected)
+{
+  Shape in_shape{512, 1};
+  Shape cluster_shape{3, 2};
+  std::vector<int> cluster = {1, 10, 2, 10, 3, 10};
+  auto infered_out_shape =
+      onert::shape_inference::inferBCQFullyConnectedShape(in_shape, cluster_shape, cluster.data());
+
+  ASSERT_EQ(infered_out_shape.rank(), 2);
+  ASSERT_EQ(infered_out_shape.dim(0), 30);
+  ASSERT_EQ(infered_out_shape.dim(1), 1);
+}

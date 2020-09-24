@@ -47,6 +47,9 @@ ir::Shape inferArgMaxShape(const ir::Shape &input_shape, int axis, int rank);
 ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape,
                                 const ir::operation::BatchMatMul::Param &param);
 
+ir::Shape inferBCQFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &cluster_shape,
+                                      const int32_t *cluster_buf);
+
 ir::Shape inferBroadcastToShape(const ir::Shape wshape, const int32_t *shape_buffer);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);

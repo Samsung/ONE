@@ -182,6 +182,27 @@ void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
+  const auto &input = _operands.at(input_idx);
+
+  const auto cluster_idx{
+      op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
+  const auto &cluster = _operands.at(cluster_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = _operands.at(output_idx);
+
+  auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
+  assert(cluster_buf);
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferBCQFullyConnectedShape(
+      input.info().shape(), cluster.info().shape(), cluster_buf);
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),
