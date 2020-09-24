@@ -1,6 +1,6 @@
 operand {
   name: "ifm"
-  type: INT32
+  type: INT8
   shape { dim: 4 }
   quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
 }

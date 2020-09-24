@@ -99,7 +99,7 @@ int entry(int argc, char **argv)
   arser.add_argument("--fold_dequantize")
       .nargs(0)
       .required(false)
-      .default_value(true)
+      .default_value(false)
       .help("This will fold dequantize op");
 
   arser.add_argument("--mute_warnings")
