@@ -46,9 +46,6 @@ void ShapeValidator::checkUnaryOp(const ir::Operation &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  // Check if I/O types match
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
-
   if (_ctx.at(output_index).info().isDynamic())
     return;
 
