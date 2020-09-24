@@ -39,7 +39,7 @@
  */
 #include "helpers.h"
 
-#if defined(DATA_TYPE) && defined(AXIS) && defined(OUTPUT_DIM_Z)
+#if defined(DATA_TYPE) && defined(AXIS) && defined(DEPTH) && defined(OUTPUT_DIM_Z)
 
 /** Performs the OneHot operation along the chosen axis
  * @note Datatype should be given as a preprocessor argument using -DDATA_TYPE=type. e.g.
@@ -201,6 +201,9 @@ __kernel void one_hot_only_on_value(TENSOR3D_DECLARATION(indices), VECTOR_DECLAR
 
   const int index = *(__global const int *)tensor3D_offset(&indices, px, py, pz);
 
+  if (index < 0 || index >= DEPTH)
+    return;
+
 #if AXIS == 0
   *(__global DATA_TYPE *)tensor4D_offset(&output, index, px, py, pz) =
       *((__global const DATA_TYPE *)on_value_ptr);
@@ -216,4 +219,4 @@ __kernel void one_hot_only_on_value(TENSOR3D_DECLARATION(indices), VECTOR_DECLAR
 #endif // AXIS
 }
 
-#endif // defined(DATA_TYPE) && defined(AXIS) && defined(OUTPUT_DIM_Z)
+#endif // defined(DATA_TYPE) && defined(AXIS) && defined(DEPTH) && defined(OUTPUT_DIM_Z)
