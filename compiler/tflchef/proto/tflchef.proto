@@ -80,6 +80,7 @@ message Operand {
   optional TensorFiller filler = 4;
   optional TensorQuantization quant = 5;
   optional TensorSparsity sparsity = 6;
+  optional bool is_variable = 7 [default = false];
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema
