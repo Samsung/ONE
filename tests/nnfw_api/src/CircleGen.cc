@@ -38,8 +38,15 @@ uint32_t CircleGen::addBuffer(const uint8_t *buf, size_t size)
 
 uint32_t CircleGen::addTensor(const TensorParams &params)
 {
-  int ind = curSubgCtx().tensors.size();
+  uint32_t ind = curSubgCtx().tensors.size();
   curSubgCtx().tensors.emplace_back(buildTensor(params));
+  return ind;
+}
+
+uint32_t CircleGen::addTensor(const TensorParams &params, const SparsityParams &sp)
+{
+  uint32_t ind = curSubgCtx().tensors.size();
+  curSubgCtx().tensors.emplace_back(buildTensor(params, sp));
   return ind;
 }
 
@@ -295,6 +302,43 @@ flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &p
   auto name = _fbb.CreateString(params.name);
   return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name,
                               0 /* QuantParam */, false /* is_variable */, 0 /* sparsity */,
+                              0 /* shape_signature */);
+}
+
+flatbuffers::Offset<circle::SparsityParameters>
+CircleGen::buildSparsityParameters(const SparsityParams &sp)
+{
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order;
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map;
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
+      dim_metadata;
+
+  traversal_order = _fbb.CreateVector(sp.traversal_order);
+  block_map = _fbb.CreateVector(sp.block_map);
+
+  std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
+  for (auto &it : sp.dim_metadata)
+  {
+    auto fb_array_segments = circle::CreateUint16VectorDirect(_fbb, &it._array_segments.u16);
+    auto fb_array_indices = circle::CreateUint16VectorDirect(_fbb, &it._array_indices.u16);
+    auto dim_metadata = circle::CreateDimensionMetadata(
+        _fbb, it._format, it._dense_size, it._array_segments_type, fb_array_segments.Union(),
+        it._array_indices_type, fb_array_indices.Union());
+    dim_metadata_vec.emplace_back(dim_metadata);
+  }
+  dim_metadata = _fbb.CreateVector(dim_metadata_vec);
+
+  return circle::CreateSparsityParameters(_fbb, traversal_order, block_map, dim_metadata);
+}
+
+flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &params,
+                                                           const SparsityParams &sp)
+{
+  auto shape = _fbb.CreateVector(params.shape);
+  auto name = _fbb.CreateString(params.name);
+  auto sparsity = buildSparsityParameters(sp);
+  return circle::CreateTensor(_fbb, shape, params.tensor_type, params.buffer, name,
+                              0 /* QuantParam */, false /* is_variable */, sparsity,
                               0 /* shape_signature */);
 }
 

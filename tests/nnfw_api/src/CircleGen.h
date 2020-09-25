@@ -54,6 +54,45 @@ class CircleGen
 public:
   using Shape = std::vector<int32_t>;
 
+  using SparseIndexVectorType = circle::SparseIndexVector;
+  using SparseDimensionType = circle::DimensionType;
+
+  struct SparseIndexVector
+  {
+    std::vector<uint16_t> u16;
+  };
+
+  struct DimMetaData
+  {
+    DimMetaData() = delete;
+    DimMetaData(SparseDimensionType format, std::vector<uint16_t> array_segments,
+                std::vector<uint16_t> array_indices)
+        : _format{format},
+          _array_segments_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector),
+          _array_indices_type(SparseIndexVectorType::SparseIndexVector_Uint16Vector)
+    {
+      _array_segments.u16 = array_segments;
+      _array_indices.u16 = array_indices;
+    }
+    DimMetaData(SparseDimensionType format, int32_t dense_size)
+        : _format{format}, _dense_size{dense_size}
+    {
+    }
+    SparseDimensionType _format{circle::DimensionType_DENSE};
+    int32_t _dense_size{0};
+    SparseIndexVectorType _array_segments_type{circle::SparseIndexVector_NONE};
+    SparseIndexVector _array_segments;
+    SparseIndexVectorType _array_indices_type{circle::SparseIndexVector_NONE};
+    SparseIndexVector _array_indices;
+  };
+
+  struct SparsityParams
+  {
+    std::vector<int32_t> traversal_order;
+    std::vector<int32_t> block_map;
+    std::vector<DimMetaData> dim_metadata;
+  };
+
   struct TensorParams
   {
     std::vector<int32_t> shape;
@@ -88,6 +127,7 @@ public:
   }
   uint32_t addBuffer(const uint8_t *buf, size_t size);
   uint32_t addTensor(const TensorParams &params);
+  uint32_t addTensor(const TensorParams &params, const SparsityParams &sp);
   void setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
   uint32_t nextSubgraph();
   CircleBuffer finish();
@@ -135,6 +175,9 @@ private:
   uint32_t addOperatorCode(circle::BuiltinOperator opcode);
   flatbuffers::Offset<circle::Buffer> buildBuffer(const uint8_t *buf, size_t size);
   flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params);
+  flatbuffers::Offset<circle::SparsityParameters> buildSparsityParameters(const SparsityParams &sp);
+  flatbuffers::Offset<circle::Tensor> buildTensor(const TensorParams &params,
+                                                  const SparsityParams &sp);
   flatbuffers::Offset<circle::SubGraph> buildSubGraph(const SubgraphContext &ctx);
 
   SubgraphContext &curSubgCtx() { return _subgraph_contexts.back(); }
