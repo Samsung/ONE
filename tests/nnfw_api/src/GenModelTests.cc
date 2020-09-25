@@ -58,3 +58,29 @@ TEST_F(GenModelTest, UnusedConstOutputAndAdd)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, UsedConstOutput)
+{
+  // (( Input 1 )) ---------\
+  //                         |=> [ Add ] -> (( Output 1 ))
+  // (( Const Output 2 )) --<
+  //                         |=> [ Add ] -> (( Output 0 ))
+  // (( Input 0 )) ---------/
+  CircleGen cgen;
+  uint32_t rhs_buf = cgen.addBuffer(std::vector<float>{6, 4, 8, 1});
+  int in0 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out0 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int const_out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
+  cgen.addOperatorAdd({{in0, const_out2}, {out0}}, circle::ActivationFunctionType_NONE);
+  cgen.addOperatorAdd({{const_out2, in1}, {out1}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in0, in1}, {out0, out1, const_out2});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 1, 1, 1}, {-1, -1, -1, -1}},
+                                          {{7, 5, 9, 2}, {5, 3, 7, 0}, {6, 4, 8, 1}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
