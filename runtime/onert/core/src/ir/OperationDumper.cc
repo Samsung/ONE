@@ -82,6 +82,20 @@ void OperationDumper::visit(const BatchToSpaceND &node)
   dumpUnaryInputOp(node, block_size);
 }
 
+void OperationDumper::visit(const BCQFullyConnected &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(BCQFullyConnected::Input::INPUT)
+               << ") WeightsBinary("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_BINARY)
+               << ") WeightsScales("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_SCALES)
+               << ") WeightsClusters("
+               << node.getInputs().at(BCQFullyConnected::Input::WEIGHTS_CLUSTERS) << ") Bias("
+               << node.getInputs().at(BCQFullyConnected::Input::BIAS) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const BinaryArithmetic &node) { dumpBinaryInputOp(node); }
 
 void OperationDumper::visit(const operation::BroadcastTo &node) { dumpBinaryInputOp(node); }
