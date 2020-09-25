@@ -43,6 +43,7 @@ public:
   void operator()();
 
 public:
+  void visit(const ir::operation::Comparison &node) override;
   void visit(const ir::operation::ElementwiseActivation &node) override;
 
 private:

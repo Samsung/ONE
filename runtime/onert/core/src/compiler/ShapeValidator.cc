@@ -109,16 +109,9 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
 
-void ShapeValidator::visit(const ir::operation::Comparison &node)
+void ShapeValidator::visit(const ir::operation::Comparison &)
 {
-  const auto output_index{node.getOutputs().at(0)};
-  // This validator does not check shape. So checking isDynamic() is skipped.
-
-  const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
-  const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
-
-  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
-  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::BOOL8);
+  // TODO Shape validation of comparison
 }
 
 void ShapeValidator::visit(const ir::operation::Softmax &node)

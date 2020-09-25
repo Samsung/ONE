@@ -43,6 +43,17 @@ void OperationValidator::operator()()
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
+void OperationValidator::visit(const ir::operation::Comparison &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+
+  const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
+  const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
+
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::BOOL8);
+}
+
 void OperationValidator::visit(const ir::operation::ElementwiseActivation &node)
 {
   const auto output_index{node.getOutputs().at(0)};
