@@ -58,19 +58,26 @@ void FloorDiv::evalFloat() const
     return std::floor(static_cast<double>(x) / static_cast<double>(y));
   };
 
+  const auto x_data = getTensorData<float>(x());
+  const auto y_data = getTensorData<float>(y());
+
+  // Check the denominator
+  for (int i = 0; i < getTensorShape(y()).FlatSize(); ++i)
+  {
+    LUCI_INTERPRETER_CHECK(y_data[i] != 0);
+  }
+
   if (x()->shape() != y()->shape())
   {
     tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
-        getTensorShape(x()), getTensorData<float>(x()), getTensorShape(y()),
-        getTensorData<float>(y()), getTensorShape(output()), getTensorData<float>(output()),
-        FloorDivFunc);
+        getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+        getTensorData<float>(output()), FloorDivFunc);
   }
   else
   {
     tflite::reference_ops::BinaryFunction<float, float, float>(
-        getTensorShape(x()), getTensorData<float>(x()), getTensorShape(y()),
-        getTensorData<float>(y()), getTensorShape(output()), getTensorData<float>(output()),
-        FloorDivFunc);
+        getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+        getTensorData<float>(output()), FloorDivFunc);
   }
 }
 

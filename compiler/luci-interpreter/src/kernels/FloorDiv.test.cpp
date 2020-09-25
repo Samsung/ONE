@@ -29,26 +29,23 @@ using namespace testing;
 
 TEST(FloorDivTest, FloatSimple)
 {
-  std::initializer_list<int32_t> x_shape{3, 3};
+  std::initializer_list<int32_t> x_shape{2, 3};
   std::vector<float> x_data{
       0.5, 2.4,  3.1,  // Row 1
       1.9, -1.9, -2.8, // Row 2
-      1.0, 1.0,  -1.0, // Row 3
   };
 
   std::initializer_list<int32_t> y_shape = x_shape;
   std::vector<float> y_data{
       2.0, 0.5,  3.0,  // Row 1
       1.0, -1.0, -2.0, // Row 2
-      0.0, 1.0,  0.0,  // Row 3
   };
 
   const auto INF = std::numeric_limits<float>::infinity();
   std::initializer_list<int32_t> ref_output_shape = x_shape;
   std::vector<float> ref_output_data{
-      0,   4, 1,    // Row 1
-      1,   1, 1,    // Row 2
-      INF, 1, -INF, // Row 3
+      0, 4, 1, // Row 1
+      1, 1, 1, // Row 2
   };
 
   Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data);
@@ -98,11 +95,11 @@ TEST(FloorDivTest, FloatBroadcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(FloorDivTest, FloatDivZeroByZero)
+TEST(FloorDivTest, DivByZero_NEG)
 {
-  std::initializer_list<int32_t> shape{1};
-  std::vector<float> x_data{0};
-  std::vector<float> y_data{0};
+  std::initializer_list<int32_t> shape{3};
+  std::vector<float> x_data{1, 0, -1};
+  std::vector<float> y_data{0, 0, 0};
 
   Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(shape, x_data);
   Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(shape, y_data);
@@ -110,12 +107,8 @@ TEST(FloorDivTest, FloatDivZeroByZero)
 
   FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
-  kernel.execute();
 
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(shape));
-
-  auto output_data = extractTensorData<float>(output_tensor);
-  EXPECT_THAT(output_data, ::testing::Not(::testing::ElementsAreArray(output_data)));
+  EXPECT_ANY_THROW(kernel.execute());
 }
 
 TEST(FloorDivTest, Input_Output_Type_Mismatch_NEG)
