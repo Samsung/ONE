@@ -36,7 +36,9 @@ float GetTolerance(float min, float max)
 
 TEST(DivTest, Float)
 {
-  std::initializer_list<int32_t> base_shape = {2, 3, 1, 1};
+  Shape base_shape = {2, 3, 1, 1};
+
+  std::vector<int32_t> output_shape = {2, 3, 1, 1};
 
   std::vector<float> input1_data{0.3f, 2.3f, 0.9f, 0.5f, 0.8f, 1.1f};
   std::vector<float> input2_data{0.2f, 1.6f, 0.5f, 0.4f, 1.6f, 0.4f};
@@ -55,12 +57,13 @@ TEST(DivTest, Float)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs, 0.0001f));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
 TEST(DivTest, FloatBroadcast)
 {
-  std::initializer_list<int32_t> input1_shape = {1, 3};
-  std::initializer_list<int32_t> input2_shape = {3, 1};
+  Shape input1_shape = {1, 3};
+  Shape input2_shape = {3, 1};
 
   std::vector<float> input1_data{0.3f, 2.3f, 0.9f};
   std::vector<float> input2_data{0.2f, 1.6f, 0.5f};
@@ -83,7 +86,9 @@ TEST(DivTest, FloatBroadcast)
 
 TEST(DivTest, Uint8)
 {
-  std::initializer_list<int32_t> base_shape = {1, 2, 2, 1};
+  Shape base_shape = {1, 2, 2, 1};
+
+  std::vector<int32_t> output_shape = {1, 2, 2, 1};
 
   std::vector<float> input1_data = {-0.8f, -0.2f, 0.3f, 0.7f};
   std::vector<float> input2_data = {-0.8f, 0.4f, 0.8f, 1.0f};
@@ -110,7 +115,7 @@ TEST(DivTest, Uint8)
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
               FloatArrayNear(test_outputs, kQuantizedTolerance));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(base_shape));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
 TEST(DivTest, Input_Output_Type_NEG)

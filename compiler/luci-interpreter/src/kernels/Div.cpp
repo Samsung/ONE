@@ -33,6 +33,7 @@ Div::Div(const Tensor *input1, const Tensor *input2, Tensor *output, const DivPa
 void Div::configure()
 {
   LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
+  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type());
 
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
@@ -97,8 +98,8 @@ void Div::evalQuantized() const
 
   tflite::ArithmeticParams params{};
 
-  params.input1_offset = -input1()->zero_point();
-  params.input2_offset = -input2()->zero_point();
+  params.input1_offset = -input1()->zero_point(); // Note the '-'.
+  params.input2_offset = -input2()->zero_point(); // Note the '-'.
   params.output_offset = output()->zero_point();
   params.output_multiplier = output_multiplier;
   params.output_shift = output_shift;
