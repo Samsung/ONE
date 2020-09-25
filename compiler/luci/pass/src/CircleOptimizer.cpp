@@ -110,10 +110,9 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 
   /* TRANSFORM DECLARATION BEGIN */
 
-  // Shape inference is needed for added nodes doing below transformations
+  // Shape and type inference is needed for doing below transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
 
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
@@ -143,6 +142,8 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
   }
+
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
 
   /* TRANSFORM DECLARATION END */
 
