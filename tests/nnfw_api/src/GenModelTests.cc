@@ -84,3 +84,35 @@ TEST_F(GenModelTest, UsedConstOutput)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, TensorBothInputOutput)
+{
+  // A single tensor which is an input and an output at the same time
+  CircleGen cgen;
+  int t = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.setInputsAndOutputs({t}, {t});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 3, 2, 4}}, {{1, 3, 2, 4}}));
+  _context->addTestCase(uniformTCD<float>({{100, 300, 200, 400}}, {{100, 300, 200, 400}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, TensorBothInputOutputCrossed)
+{
+  // Two tensors which are an input and an output at the same time
+  // But the order of inputs and outputs is changed.
+  CircleGen cgen;
+  int t1 = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  int t2 = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.setInputsAndOutputs({t1, t2}, {t2, t1});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1}, {2}}, {{2}, {1}}));
+  _context->addTestCase(uniformTCD<float>({{100}, {200}}, {{200}, {100}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
