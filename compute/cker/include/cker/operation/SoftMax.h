@@ -22,6 +22,8 @@
 #include "cker/Utils.h"
 #include "cker/Types.h"
 #include "cker/eigen/Utils.h"
+#include "cker/neon/neon_check.h"
+#include "cker/operation/Exp.h"
 
 #include <Eigen/Core>
 #include <fixedpoint/fixedpoint.h>
@@ -90,11 +92,35 @@ inline void Softmax(const float *in, const int input_size, const int batch_size,
 
     // Compute the normalized sum of exps.
     float exp_sum = 0.0;
+#ifdef USE_NEON
+    for (int i = 0; i < input_size; i++)
+    {
+      out[i] = (in[i] - max_coeff) * beta;
+    }
+    int k;
+    for (k = 0; k < input_size - 3; k += 4)
+    {
+      float32x4_t X, Y;
+      X = vld1q_f32(&out[k]);
+      Y = exp4_approx(X);
+      vst1q_f32(&out[k], Y);
+    }
+    for (; k < input_size; k++)
+    {
+      out[k] = celt_exp(out[k]);
+    }
+
+    for (int i = 0; i < input_size; i++)
+    {
+      exp_sum += out[i];
+    }
+#else
     for (int i = 0; i < input_size; i++)
     {
       out[i] = std::exp((in[i] - max_coeff) * beta);
       exp_sum += out[i];
     }
+#endif
 
     // Divide by the sum of exps.
     float reciprocal_sum_exp = 1.f / exp_sum;
