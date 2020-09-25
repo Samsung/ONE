@@ -18,6 +18,8 @@ set(SOURCES
     DepthwiseConv2D.cpp
     Elu.h
     Elu.cpp
+    Floor.h
+    Floor.cpp
     FullyConnected.h
     FullyConnected.cpp
     If.h
@@ -105,6 +107,7 @@ set(TEST_SOURCES
     DepthToSpace.test.cpp
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
+    Floor.test.cpp
     FullyConnected.test.cpp
     If.test.cpp
     L2Normalize.test.cpp

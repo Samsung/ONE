@@ -24,6 +24,7 @@
 #include "kernels/DepthToSpace.h"
 #include "kernels/DepthwiseConv2D.h"
 #include "kernels/Elu.h"
+#include "kernels/Floor.h"
 #include "kernels/FullyConnected.h"
 #include "kernels/If.h"
 #include "kernels/L2Normalize.h"
@@ -243,6 +244,16 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleElu *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Elu>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloor *node)
+{
+  assert(node->arity() == 1);
+
+  const Tensor *input = getInputTensor(node->x());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Floor>(input, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
