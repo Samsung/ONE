@@ -155,7 +155,7 @@ install_internal:
 runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
 	tar -zcf $(WORKSPACE)/onert-package.tar.gz -C $(INSTALL_PATH) lib
 	tar -zcf $(WORKSPACE)/onert-devel-package.tar.gz -C $(INSTALL_PATH) include/nnfw
-	tar -zcf $(WORKSPACE)/oenrt-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
+	tar -zcf $(WORKSPACE)/onert-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
 	tar -zcf $(WORKSPACE)/onert-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
 acl_tar_internal: $(BUILD_FOLDER)
