@@ -29,20 +29,19 @@ using namespace testing;
 
 TEST(FloorDivTest, FloatSimple)
 {
-  std::initializer_list<int32_t> x_shape{2, 3};
+  Shape x_shape{2, 3};
   std::vector<float> x_data{
       0.5, 2.4,  3.1,  // Row 1
       1.9, -1.9, -2.8, // Row 2
   };
 
-  std::initializer_list<int32_t> y_shape = x_shape;
+  Shape y_shape = x_shape;
   std::vector<float> y_data{
       2.0, 0.5,  3.0,  // Row 1
       1.0, -1.0, -2.0, // Row 2
   };
 
-  const auto INF = std::numeric_limits<float>::infinity();
-  std::initializer_list<int32_t> ref_output_shape = x_shape;
+  std::vector<int32_t> ref_output_shape{2, 3};
   std::vector<float> ref_output_data{
       0, 4, 1, // Row 1
       1, 1, 1, // Row 2
@@ -63,19 +62,19 @@ TEST(FloorDivTest, FloatSimple)
 
 TEST(FloorDivTest, FloatBroadcast)
 {
-  std::initializer_list<int32_t> x_shape{1, 3};
+  Shape x_shape{1, 3};
   std::vector<float> x_data{
       0.5, 2.4, -3.1, // Row 1
   };
 
-  std::initializer_list<int32_t> y_shape{3, 3};
+  Shape y_shape{3, 3};
   std::vector<float> y_data{
       1.0, 1.0,  1.0,  // Row 1
       2.0, -0.5, -2.0, // Row 2
       0.3, 0.7,  0.9,  // Row 3
   };
 
-  std::initializer_list<int32_t> ref_output_shape{3, 3};
+  std::vector<int32_t> ref_output_shape{3, 3};
   std::vector<float> ref_output_data{
       0, 2,  -4, // Row 1
       0, -5, 1,  // Row 2
@@ -97,7 +96,7 @@ TEST(FloorDivTest, FloatBroadcast)
 
 TEST(FloorDivTest, DivByZero_NEG)
 {
-  std::initializer_list<int32_t> shape{3};
+  Shape shape{3};
   std::vector<float> x_data{1, 0, -1};
   std::vector<float> y_data{0, 0, 0};
 
