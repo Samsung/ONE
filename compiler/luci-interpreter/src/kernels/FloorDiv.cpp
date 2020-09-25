@@ -19,7 +19,7 @@
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/binary_function.h>
-#include <math.h>
+#include <cmath>
 
 namespace luci_interpreter
 {
@@ -55,7 +55,7 @@ void FloorDiv::execute() const
 void FloorDiv::evalFloat() const
 {
   auto FloorDivFunc = [](float x, float y) -> float {
-    return std::floor(std::divides<double>()(static_cast<double>(x), static_cast<double>(y)));
+    return std::floor(static_cast<double>(x) / static_cast<double>(y));
   };
 
   if (x()->shape() != y()->shape())
