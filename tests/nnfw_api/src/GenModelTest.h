@@ -414,7 +414,7 @@ private:
     {
       float ref = reinterpret_cast<const T *>(ref_buf.data())[e];
       float act = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(ref, act) << "ndex == " << index << ", element == " << e;
+      EXPECT_EQ(ref, act) << "index == " << index << ", element == " << e;
     }
   }
 
