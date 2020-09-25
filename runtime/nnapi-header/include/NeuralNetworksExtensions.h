@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ANDROID_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
-#define ANDROID_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
+#ifndef ANDROID_FRAMEWORKS_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
+#define ANDROID_FRAMEWORKS_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
 
 #include "NeuralNetworks.h"
 
@@ -37,7 +37,7 @@
 
 __BEGIN_DECLS
 
-#if __ANDROID_API__ >= __ANDROID_API_Q__
+#if __ANDROID_API__ >= 29
 
 /**
  * Queries whether an extension is supported by the driver implementation of the specified device.
@@ -110,8 +110,8 @@ int ANeuralNetworksModel_setOperandExtensionData(ANeuralNetworksModel* model, in
                                                  const void* data, size_t length)
         __INTRODUCED_IN(29);
 
-#endif  // __ANDROID_API__ >= __ANDROID_API_Q__
+#endif  // __ANDROID_API__ >= 29
 
 __END_DECLS
 
-#endif  // ANDROID_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
+#endif  // ANDROID_FRAMEWORKS_ML_NN_RUNTIME_NEURAL_NETWORKS_EXTENSIONS_H
