@@ -36,8 +36,8 @@ void LessEqual::configure()
 
   if (x()->element_type() == DataType::U8)
   {
-    quantizeMultiplier(output()->scale() / x()->scale(), &_x_multiplier, &_x_shift);
-    quantizeMultiplier(output()->scale() / y()->scale(), &_y_multiplier, &_y_shift);
+    quantizeMultiplierSmallerThanOneExp(x()->scale(), &_x_multiplier, &_x_shift);
+    quantizeMultiplierSmallerThanOneExp(y()->scale(), &_y_multiplier, &_y_shift);
   }
   output()->resize(calculateShapeForBroadcast(x()->shape(), y()->shape()));
 }
@@ -88,10 +88,10 @@ void LessEqual::evalQuantized() const
   tflite::ComparisonParams op_params;
   op_params.left_shift = 8;
   op_params.input1_offset = -x()->zero_point(); // Note the '-'
-  op_params.input1_shift = -_x_shift;           // Note the '-'
+  op_params.input1_shift = _x_shift;
   op_params.input1_multiplier = _x_multiplier;
   op_params.input2_offset = -y()->zero_point(); // Note the '-'
-  op_params.input2_shift = -_y_shift;           // Note the '-'
+  op_params.input2_shift = _y_shift;
   op_params.input2_multiplier = _y_multiplier;
   op_params.is_broadcast = x()->shape() != y()->shape();
 

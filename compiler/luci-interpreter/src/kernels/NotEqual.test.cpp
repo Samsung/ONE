@@ -109,12 +109,15 @@ TEST(NotEqualTest, Uint8Quantized)
       true, false, false, true, // Row 2
   };
 
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
-  Tensor x_tensor =
-      makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, x_data);
-  Tensor y_tensor =
-      makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, y_data);
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL, quant_param.first, quant_param.second);
+  std::pair<float, int32_t> x_quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
+  Tensor x_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, x_quant_param.first,
+                                                  x_quant_param.second, x_data);
+
+  std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 2, F_MAX * 2);
+  Tensor y_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, y_quant_param.first,
+                                                  y_quant_param.second, y_data);
+
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();

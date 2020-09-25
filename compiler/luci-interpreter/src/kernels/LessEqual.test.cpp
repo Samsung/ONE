@@ -139,8 +139,8 @@ TEST(LessEqualTest, Uint8QuantizedRescale)
       false, true, false, true,  // Row 2
   };
 
-  std::pair<float, int32_t> x_quant_param = quantizationParams<uint8_t>(F_MIN * 1, F_MAX * 1);
-  std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 2, F_MAX * 2);
+  std::pair<float, int32_t> x_quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
+  std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 2, F_MAX * 3);
 
   Tensor x_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, x_quant_param.first,
                                                   x_quant_param.second, x_data);
