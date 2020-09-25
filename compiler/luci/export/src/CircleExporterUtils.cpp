@@ -110,18 +110,15 @@ flatbuffers::Offset<void> to_circle_sparse_index_vector(flatbuffers::FlatBufferB
       return flatbuffers::Offset<void>();
     case luci::SparseIndexVectorType::I32:
     {
-      auto i32_fb_vec = fb.CreateVector(*sparse_idx_vec.as_int32_vector());
-      return circle::CreateInt32Vector(fb, i32_fb_vec).Union();
+      return circle::CreateInt32VectorDirect(fb, sparse_idx_vec.as_int32_vector()).Union();
     }
     case luci::SparseIndexVectorType::U16:
     {
-      auto u16_fb_vec = fb.CreateVector(*sparse_idx_vec.as_uint16_vector());
-      return circle::CreateUint16Vector(fb, u16_fb_vec).Union();
+      return circle::CreateUint16VectorDirect(fb, sparse_idx_vec.as_uint16_vector()).Union();
     }
     case luci::SparseIndexVectorType::U8:
     {
-      auto u8_fb_vec = fb.CreateVector(*sparse_idx_vec.as_uint8_vector());
-      return circle::CreateUint8Vector(fb, u8_fb_vec).Union();
+      return circle::CreateUint8VectorDirect(fb, sparse_idx_vec.as_uint8_vector()).Union();
     }
     default:
       INTERNAL_EXN_V("trying to convert unsupported luci::SparseIndexVectorType",

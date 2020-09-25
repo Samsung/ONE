@@ -320,11 +320,6 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
 {
   if (sparsityparam == nullptr)
     return 0;
-  flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order =
-      builder.CreateVector(sparsityparam->traversal_order);
-  flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map =
-      builder.CreateVector(sparsityparam->block_map);
-  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<DimensionMetadata>>> dim_metadata;
 
   std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
   auto luci_dim_metadata = sparsityparam->dim_metadata;
@@ -338,21 +333,14 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
     // array_indices
     auto circle_array_indices = to_circle_sparse_index_vector(builder, it.array_indices());
     auto circle_array_indices_type = to_circle_sparse_index_vector_type(it.array_indices().type());
-
-    auto circle_dim_metadata_builder = circle::DimensionMetadataBuilder{builder};
-
-    circle_dim_metadata_builder.add_format(to_circle_dimensiontype(it.format()));
-    circle_dim_metadata_builder.add_dense_size(it.dense_size());
-    circle_dim_metadata_builder.add_array_segments(circle_array_segments);
-    circle_dim_metadata_builder.add_array_segments_type(circle_array_segments_type);
-    circle_dim_metadata_builder.add_array_indices(circle_array_indices);
-    circle_dim_metadata_builder.add_array_indices_type(circle_array_indices_type);
-    auto dim_metadata = circle_dim_metadata_builder.Finish();
+    auto dim_metadata = circle::CreateDimensionMetadata(
+        builder, to_circle_dimensiontype(it.format()), it.dense_size(), circle_array_segments_type,
+        circle_array_segments, circle_array_indices_type, circle_array_indices);
     dim_metadata_vec.emplace_back(dim_metadata);
   }
-  dim_metadata = builder.CreateVector(dim_metadata_vec);
 
-  return circle::CreateSparsityParameters(builder, traversal_order, block_map, dim_metadata);
+  return circle::CreateSparsityParametersDirect(builder, &sparsityparam->traversal_order,
+                                                &sparsityparam->block_map, &dim_metadata_vec);
 }
 
 void exportOpDefinedTensor(const CircleTensoInfo &info, FlatBufferBuilder &builder,
