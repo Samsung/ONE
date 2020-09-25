@@ -109,7 +109,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   logo::Phase phase;
 
   /* TRANSFORM DECLARATION BEGIN */
-  
+
   // Shape inference is needed for added nodes doing below transformations
   phase.emplace_back(std::make_unique<luci::ShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::TypeInferencePass>());
