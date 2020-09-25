@@ -29,35 +29,39 @@ namespace luci
 
 bool SparsifyTensorPass::sparsify_tensor(luci::CircleConst *cop)
 {
-  if (cop->name() != _tensor_name)
-    return false;
-  std::vector<int32_t> shape(cop->rank());
+  std::vector<int32_t> dense_tensor_shape(cop->rank());
   for (uint32_t d = 0; d < cop->rank(); d++)
   {
-    shape.at(d) = cop->dim(d).value();
+    dense_tensor_shape.at(d) = cop->dim(d).value();
   }
   switch (cop->dtype())
   {
     case loco::DataType::FLOAT32:
     {
-      Sparsifier<float> sparsifier(shape, _traversal_order, _format, _block_size, _block_map);
-      uint32_t dense_data_size = cop->size<loco::DataType::FLOAT32>();
-      std::vector<float> dense_data(dense_data_size);
-      for (uint32_t i = 0; i < dense_data_size; i++)
+      Sparsifier<float> sparsifier(dense_tensor_shape, _traversal_order, _format, _block_size,
+                                   _block_map);
+      // get dense tensor data
+      uint32_t dense_tensor_data_size = cop->size<loco::DataType::FLOAT32>();
+      std::vector<float> dense_tensor_data(dense_tensor_data_size);
+      for (uint32_t i = 0; i < dense_tensor_data_size; i++)
       {
-        dense_data.at(i) = cop->at<loco::DataType::FLOAT32>(i);
+        dense_tensor_data.at(i) = cop->at<loco::DataType::FLOAT32>(i);
       }
-      sparsifier.DenseToSparse(dense_data.data());
-      std::vector<float> sparse_data = sparsifier.GetData();
-      uint32_t sparse_data_size = sparse_data.size();
-      cop->size<loco::DataType::FLOAT32>(sparse_data_size);
-      for (uint32_t i = 0; i < sparse_data_size; i++)
+      // sparsify
+      sparsifier.DenseToSparse(dense_tensor_data.data());
+      // get sparse tensor data
+      std::vector<float> sparse_tensor_data = sparsifier.GetData();
+      uint32_t sparse_tensor_data_size = sparse_tensor_data.size();
+      cop->size<loco::DataType::FLOAT32>(sparse_tensor_data_size);
+      for (uint32_t i = 0; i < sparse_tensor_data_size; i++)
       {
-        cop->at<loco::DataType::FLOAT32>(i) = sparse_data.at(i);
+        cop->at<loco::DataType::FLOAT32>(i) = sparse_tensor_data.at(i);
       }
+      // make sparsity parameter
       auto sparsityparam = std::make_unique<SparsityParam>();
       sparsityparam->traversal_order = _traversal_order;
       sparsityparam->block_map = _block_map;
+      // get dimension meta data
       const auto dim_metadata = sparsifier.GetDimMetadata();
       for (uint32_t idx = 0; idx < _format.size(); idx++)
       {
@@ -66,12 +70,15 @@ bool SparsifyTensorPass::sparsify_tensor(luci::CircleConst *cop)
           sparsityparam->dim_metadata.emplace_back(DimensionType::DENSE,
                                                    dim_metadata.at(idx * 2).at(0));
         }
+        // TODO Set SparseIndexVectorType according to its data range
         else if (_format.at(idx) == DimensionType::SPARSE_CSR)
         {
           sparsityparam->dim_metadata.emplace_back(
               DimensionType::SPARSE_CSR, /* dense size */ 0,
-              SparseIndexVector{SparseIndexVectorType::U8, dim_metadata.at(idx * 2)},
-              SparseIndexVector{SparseIndexVectorType::U8, dim_metadata.at(idx * 2 + 1)});
+              /* array_segments */ SparseIndexVector{SparseIndexVectorType::U16,
+                                                     dim_metadata.at(idx * 2)},
+              /* array_indices */ SparseIndexVector{SparseIndexVectorType::U16,
+                                                    dim_metadata.at(idx * 2 + 1)});
         }
       }
       for (uint32_t i = 0; i < _block_size.size(); i++)
@@ -95,6 +102,9 @@ bool SparsifyTensorPass::run(loco::Graph *g)
   {
     auto cop = dynamic_cast<luci::CircleConst *>(node);
     if (not cop)
+      continue;
+
+    if (cop->name() != _tensor_name)
       continue;
 
     if (sparsify_tensor(cop))

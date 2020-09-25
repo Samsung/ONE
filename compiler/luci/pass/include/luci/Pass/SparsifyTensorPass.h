@@ -32,9 +32,9 @@ class CircleConst;
 struct SparsifyTensorPass final : public logo::Pass
 {
 public:
-  SparsifyTensorPass(std::string &tensor_name, std::vector<int32_t> &traversal_order,
-                     std::vector<DimensionType> &format, std::vector<int32_t> &block_size,
-                     std::vector<int32_t> &block_map)
+  SparsifyTensorPass(const std::string &tensor_name, const std::vector<int32_t> &traversal_order,
+                     const std::vector<DimensionType> &format,
+                     const std::vector<int32_t> &block_size, const std::vector<int32_t> &block_map)
       : _tensor_name{tensor_name}, _traversal_order{traversal_order}, _format{format},
         _block_size{block_size}, _block_map{block_map}
   {
@@ -49,6 +49,7 @@ public:
   bool sparsify_tensor(luci::CircleConst *cop);
 
 private:
+  // Tensor name that the pass will sparsify
   std::string _tensor_name;
   std::vector<int32_t> _traversal_order;
   std::vector<DimensionType> _format;

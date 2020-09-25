@@ -43,7 +43,7 @@ class SparseIndexVector
 {
 public:
   SparseIndexVector() = default;
-  SparseIndexVector(SparseIndexVectorType type, const std::vector<int32_t> &sparse_index_vec)
+  SparseIndexVector(const SparseIndexVectorType &type, const std::vector<int32_t> &sparse_index_vec)
       : _type{type}
   {
     switch (type)
@@ -81,7 +81,7 @@ public:
     }
   }
 
-  SparseIndexVector(SparseIndexVectorType type, void *sparse_index_vec) : _type{type}
+  SparseIndexVector(SparseIndexVectorType type, const void *sparse_index_vec) : _type{type}
   {
     switch (type)
     {
