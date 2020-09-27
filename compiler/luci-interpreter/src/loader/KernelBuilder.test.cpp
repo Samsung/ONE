@@ -37,6 +37,7 @@
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
 #include <kernels/Pad.h>
+#include <kernels/Pow.h>
 #include <kernels/Prelu.h>
 #include <kernels/Relu.h>
 #include <kernels/Relu6.h>
@@ -530,6 +531,23 @@ TEST_F(KernelBuilderTest, Pad)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->paddings(), paddings);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Pow)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CirclePow>();
+  op->x(input1);
+  op->y(input2);
+
+  auto kernel = buildKernel<kernels::Pow>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
 }
 

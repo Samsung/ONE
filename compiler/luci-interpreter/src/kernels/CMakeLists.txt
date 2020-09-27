@@ -44,6 +44,8 @@ set(SOURCES
     Mul.cpp
     Pad.h
     Pad.cpp
+    Pow.h
+    Pow.cpp
     Prelu.h
     Prelu.cpp
     Relu.h
@@ -120,6 +122,7 @@ set(TEST_SOURCES
     Mean.test.cpp
     Mul.test.cpp
     Pad.test.cpp
+    Pow.test.cpp
     Prelu.test.cpp
     Relu.test.cpp
     Relu6.test.cpp
