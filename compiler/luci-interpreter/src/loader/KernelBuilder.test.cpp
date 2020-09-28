@@ -24,6 +24,7 @@
 #include <kernels/Conv2D.h>
 #include <kernels/DepthToSpace.h>
 #include <kernels/DepthwiseConv2D.h>
+#include <kernels/Div.h>
 #include <kernels/Elu.h>
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
@@ -285,6 +286,26 @@ TEST_F(KernelBuilderTest, DepthwiseConv2D)
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
   EXPECT_THAT(kernel->params().dilation_height_factor, Eq(op->dilation()->h()));
   EXPECT_THAT(kernel->params().dilation_width_factor, Eq(op->dilation()->w()));
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Div)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleDiv>();
+  op->x(input1);
+  op->y(input2);
+
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::Div>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 

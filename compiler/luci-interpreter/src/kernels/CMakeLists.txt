@@ -16,6 +16,8 @@ set(SOURCES
     DepthToSpace.cpp
     DepthwiseConv2D.h
     DepthwiseConv2D.cpp
+    Div.h
+    Div.cpp
     Elu.h
     Elu.cpp
     Floor.h
@@ -110,6 +112,7 @@ set(TEST_SOURCES
     Conv2D.test.cpp
     DepthToSpace.test.cpp
     DepthwiseConv2D.test.cpp
+    Div.test.cpp
     Elu.test.cpp
     Floor.test.cpp
     FloorDiv.test.cpp
