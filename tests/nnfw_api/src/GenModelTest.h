@@ -385,7 +385,7 @@ protected:
               {
                 float refval = reinterpret_cast<const float *>(ref_output.data())[e];
                 float val = reinterpret_cast<const float *>(output.data())[e];
-                EXPECT_NEAR(refval, val, 0.001) << "index == " << i << ", element == " << e;
+                EXPECT_NEAR(refval, val, 0.001) << "Output #" << i << ", Element Index : " << e;
               }
               break;
             case NNFW_TYPE_TENSOR_INT64:
@@ -413,7 +413,7 @@ private:
     {
       T ref = reinterpret_cast<const T *>(ref_buf.data())[e];
       T act = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(ref, act) << "index == " << index << ", element == " << e;
+      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
     }
   }
 
@@ -426,7 +426,7 @@ private:
       bool ref = (ref_raw != 0 ? true : false);
       uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
       bool act = (act_raw != 0 ? true : false);
-      EXPECT_EQ(ref, act) << "index == " << index << ", element == " << e;
+      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
     }
   }
 
