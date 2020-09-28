@@ -60,6 +60,12 @@ int entry(int argc, char **argv)
   arser.add_argument("--all").nargs(0).required(false).default_value(false).help(
       "Enable all optimize options");
 
+  arser.add_argument("--fold_dequantize")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("This will fold dequantize op");
+
   arser.add_argument("--fuse_add_with_tconv")
       .nargs(0)
       .required(false)
@@ -136,6 +142,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
     options->enable(Algorithms::ResolveCustomOpMatMul);
   }
+  if (arser.get<bool>("--fold_dequantize"))
+    options->enable(Algorithms::FoldDequantize);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
