@@ -1,0 +1,18 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 4 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operation {
+  type: "Dequantize"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
