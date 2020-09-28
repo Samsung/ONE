@@ -26,6 +26,7 @@
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Elu.h>
 #include <kernels/Floor.h>
+#include <kernels/FloorDiv.h>
 #include <kernels/FullyConnected.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
@@ -312,6 +313,23 @@ TEST_F(KernelBuilderTest, Floor)
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, FloorDiv)
+{
+  auto *x = createInputNode();
+  auto *y = createInputNode();
+
+  auto *op = createNode<luci::CircleFloorDiv>();
+  op->x(x);
+  op->y(y);
+
+  auto kernel = buildKernel<kernels::FloorDiv>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x);
+  checkTensor(kernel->y(), y);
   checkTensor(kernel->output(), op);
 }
 

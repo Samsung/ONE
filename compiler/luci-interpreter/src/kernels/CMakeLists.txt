@@ -20,6 +20,8 @@ set(SOURCES
     Elu.cpp
     Floor.h
     Floor.cpp
+    FloorDiv.h
+    FloorDiv.cpp
     FullyConnected.h
     FullyConnected.cpp
     If.h
@@ -110,6 +112,7 @@ set(TEST_SOURCES
     DepthwiseConv2D.test.cpp
     Elu.test.cpp
     Floor.test.cpp
+    FloorDiv.test.cpp
     FullyConnected.test.cpp
     If.test.cpp
     L2Normalize.test.cpp
