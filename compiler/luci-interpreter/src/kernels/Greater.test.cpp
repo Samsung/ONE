@@ -112,7 +112,7 @@ TEST(GreaterTest, Uint8Quantized)
       makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, x_data);
   Tensor y_tensor =
       makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, y_data);
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL, quant_param.first, quant_param.second);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Greater kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
@@ -146,8 +146,7 @@ TEST(GreaterTest, Uint8QuantizedRescale)
                                                   x_quant_param.second, x_data);
   Tensor y_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, y_quant_param.first,
                                                   y_quant_param.second, y_data);
-  Tensor output_tensor =
-      makeOutputTensor(DataType::BOOL, y_quant_param.first, y_quant_param.second);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Greater kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
@@ -180,7 +179,7 @@ TEST(GreaterTest, Uint8QuantizedBroadcast)
       makeInputTensor<DataType::U8>({1, 3, 4, 1}, quant_param.first, quant_param.second, x_data);
   Tensor y_tensor =
       makeInputTensor<DataType::U8>({1, 1, 4, 1}, quant_param.first, quant_param.second, y_data);
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL, quant_param.first, quant_param.second);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Greater kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();

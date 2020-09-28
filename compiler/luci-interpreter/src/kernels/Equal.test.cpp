@@ -152,7 +152,7 @@ TEST(EqualTest, Uint8QuantizedBroadcast)
       makeInputTensor<DataType::U8>({1, 4, 4, 1}, quant_param.first, quant_param.second, x_data);
   Tensor y_tensor =
       makeInputTensor<DataType::U8>({1, 1, 4, 1}, quant_param.first, quant_param.second, y_data);
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL, quant_param.first, quant_param.second);
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   Equal kernel(&x_tensor, &y_tensor, &output_tensor);
   kernel.configure();
