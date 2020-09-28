@@ -95,7 +95,7 @@ generate_bcq_metadata \
 
 ### How it works
 
-First of all, metadata will be generated as following description.
+Metadata will be generated as following description.
 ```
 < Generated Metadata in BCQ version 1 >
 [0] Starting magic number                = {-2e9 + 27}
@@ -105,7 +105,7 @@ First of all, metadata will be generated as following description.
 [4] Ending magic number                  = {2e9 - 27}
 ```
 - BCQ version 1
-    - Two magic numbers, starting and ending magic number, are used for indicating that the node includes BCQ metadata. To decrease value duplication probability, prime number is used and the value is inserted not only at the beginning but also at the end.
+    - Two magic numbers, starting and ending magic number, are used for indicating that the model includes BCQ metadata. To decrease value duplication probability, prime number is used and the value is inserted not only at the beginning but also at the end.
     - The word **bundle** means that a set of BCQ information and BCQ applicable operation. If six BCQ information nodes are used for one operation, the six information nodes and the other one operation are packaged as **bundle**. Then, in this case, the bundle size will be 6 + 1 = 7.
 
 ### Caution

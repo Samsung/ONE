@@ -46,7 +46,7 @@ def _get_parser():
         help="Full filepath of the output file.",
         required=True)
     parser.add_argument(
-        "-a",
+        "-O",
         "--output_arrays",
         type=str,
         help="Original model output arrays",
@@ -161,7 +161,7 @@ def generate_bcq_metadata_v1(flags):
 
 def determine_bcq_version(flags):
     """
-    CAUTION : For now, BCQ has only version and thus always returns 1 when BCQ
+    CAUTION : For now, BCQ has only one version and thus always returns 1 when BCQ
     information nodes are included. If new BCQ version is introduced,
     this function must be updated accordingly.
 
