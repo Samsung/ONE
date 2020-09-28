@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseBCQPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Log.h>
 
 #include <cassert>
 #include <string>
@@ -107,6 +108,13 @@ template <int32_t V> class BCQFuser;
 
 template <> class BCQFuser<1>
 {
+public:
+  BCQFuser<1>(int32_t original_output_cnt, int32_t bundle_cnt)
+      : _original_output_cnt{original_output_cnt}, _bundle_cnt{bundle_cnt}
+  {
+    // Do nothing
+  }
+
 public:
   bool fuseBCQ(loco::Graph *g)
   {
@@ -434,6 +442,10 @@ private:
   std::map<std::string, luci::CircleConst *> _size_of_clusters;
   std::map<std::string, luci::CircleConst *> _qbits_of_clusters;
   std::map<std::string, luci::CircleConst *> _dequant_weight;
+
+private:
+  int32_t _original_output_cnt = 0;
+  int32_t _bundle_cnt = 0;
 };
 
 } // namespace
@@ -445,38 +457,72 @@ bool FuseBCQPass::run(loco::Graph *g)
 {
   bool changed = false;
 
-  // Find BCQ version information and check validity.
-  luci::CircleConst *version_node = nullptr;
-  for (auto node : loco::all_nodes(g))
-  {
-    if (auto circle_const = dynamic_cast<luci::CircleConst *>(node))
-    {
-      if (circle_const->name().find("/bcqinfo_version") != std::string::npos)
-      {
-        // There should be only one bcqinfo_version in the model
-        if (version_node != nullptr)
-        {
-          assert(false && "Multiple version information found");
-          return false;
-        }
+  const int32_t start_magicnum = -2e9 + 27;
+  const int32_t end_magicnum = 2e9 - 27;
 
-        version_node = circle_const;
-      }
+  luci::CircleConst *metadata_node = nullptr;
+  for (auto node : loco::output_nodes(g))
+  {
+    auto output_node = loco::must_cast<luci::CircleOutput *>(node);
+
+    // Metadata node should be first output
+    if (output_node->index() != 0)
+      continue;
+
+    // Metadata should be constant and dtype should be S32
+    auto const_node = dynamic_cast<luci::CircleConst *>(output_node->from());
+    if (const_node == nullptr || const_node->dtype() != loco::DataType::S32)
+      continue;
+
+    // Metadata has at least four elements
+    const auto element_cnt = const_node->size<loco::DataType::S32>();
+    if (element_cnt < 4)
+      continue;
+
+    // Metadata has magic numbers at first and at last
+    const auto start_value = const_node->at<loco::DataType::S32>(0);
+    const auto end_value = const_node->at<loco::DataType::S32>(element_cnt - 1);
+    if (start_value == start_magicnum && end_value == end_magicnum)
+    {
+      metadata_node = const_node;
+      break;
     }
   }
 
-  // If version node is not found, regard it as version 1.
-  int32_t bcq_version = (version_node != nullptr) ? version_node->at<loco::DataType::S32>(0) : 1;
-
-  if (bcq_version == 1)
-    changed = BCQFuser<1>().fuseBCQ(g);
-  else
-    assert(false && "Not supported BCQ version");
-
-  if (changed && version_node != nullptr)
+  if (metadata_node != nullptr)
   {
-    // If BCQ is applied and version node was found, remove the node.
-    loco::replace(version_node).with(createNoOp(version_node));
+    const auto bcq_version = metadata_node->at<loco::DataType::S32>(1);
+    const auto original_output_cnt = metadata_node->at<loco::DataType::S32>(2);
+
+    if (bcq_version == 1)
+    {
+      const auto bundle_cnt = metadata_node->at<loco::DataType::S32>(3);
+
+      BCQFuser<1> fuser{original_output_cnt, bundle_cnt};
+      if (fuser.fuseBCQ(g))
+        changed = true;
+    }
+    else
+    {
+      LOGGER(l);
+      WARN(l) << "Not supported BCQ version is found." << std::endl;
+    }
+
+    // Remove all of BCQ information nodes iff there is no change
+    if (changed == false)
+    {
+      for (auto node : loco::output_nodes(g))
+      {
+        auto output_node = loco::must_cast<luci::CircleOutput *>(node);
+        if (output_node->index() == 0 || (int)output_node->index() > original_output_cnt)
+        {
+          auto noOp = g->nodes()->create<luci::CircleOutputExclude>();
+          noOp->dtype(loco::DataType::FLOAT32); // TODO Remove this setting
+          output_node->from(noOp);
+          changed = true;
+        }
+      }
+    }
   }
 
   return changed;
