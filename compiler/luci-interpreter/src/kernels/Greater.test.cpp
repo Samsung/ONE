@@ -98,7 +98,7 @@ TEST(GreaterTest, Uint8Quantized)
   };
 
   std::vector<float> y_data{
-      0.9, 0.7,  0.6, 0.5, // Row 1
+      0.9, 0.6,  0.6, 0.5, // Row 1
       -1,  0.05, 0,   1,   // Row 2
   };
 
@@ -130,7 +130,7 @@ TEST(GreaterTest, Uint8QuantizedRescale)
   };
 
   std::vector<float> y_data{
-      0.9, 0.7,  0.6, 0.5, // Row 1
+      0.9, 0.6,  0.6, 0.5, // Row 1
       -1,  0.05, 0,   1,   // Row 2
   };
 

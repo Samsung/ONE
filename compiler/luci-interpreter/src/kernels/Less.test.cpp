@@ -130,17 +130,17 @@ TEST(LessTest, Uint8QuantizedRescale)
   };
 
   std::vector<float> y_data{
-      0.9, 0.7,  0.6, 0.5, // Row 1
+      0.9, 0.6,  0.6, 0.5, // Row 1
       -1,  0.05, 0,   1,   // Row 2
   };
 
   std::vector<bool> ref_output_data{
-      true,  true, false, false, // Row 1
-      false, true, false, true,  // Row 2
+      true,  false, false, false, // Row 1
+      false, true,  false, true,  // Row 2
   };
 
   std::pair<float, int32_t> x_quant_param = quantizationParams<uint8_t>(F_MIN, F_MAX);
-  std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 2, F_MAX * 3);
+  std::pair<float, int32_t> y_quant_param = quantizationParams<uint8_t>(F_MIN * 1.2, F_MAX * 1.5);
 
   Tensor x_tensor = makeInputTensor<DataType::U8>({1, 2, 4, 1}, x_quant_param.first,
                                                   x_quant_param.second, x_data);
