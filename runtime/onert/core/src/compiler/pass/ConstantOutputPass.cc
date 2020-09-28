@@ -47,6 +47,15 @@ void ConstantOutputPass::callback(const ir::OperandIndex &ind, ir::Operand &obj)
   permute_input_obj.insertUse(permute_ind);
   obj.setDef(permute_ind);
 
+  // Make the operations that uses this operand to use the generated operand
+  auto orig_uses = obj.getUses();
+  for (auto use : orig_uses)
+  {
+    permute_input_obj.insertUse(use);
+    obj.removeUse(use);
+    _graph.operations().at(use).replaceInputs(ind, permute_input_ind);
+  }
+
   VERBOSE(ConstantOutputPass) << "Permute Op inserted for a constant ouput, node index : "
                               << permute_ind << std::endl;
   VERBOSE(ConstantOutputPass) << "  - Input (inserted) Operand : " << permute_input_ind
