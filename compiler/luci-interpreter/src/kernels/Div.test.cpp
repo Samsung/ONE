@@ -65,9 +65,9 @@ TEST(DivTest, FloatBroadcast)
   Shape input1_shape = {1, 3};
   Shape input2_shape = {3, 1};
 
-  std::vector<float> input1_data{0.3f, 2.3f, 0.9f};
+  std::vector<float> input1_data{-0.3f, 2.3f, 0.9f};
   std::vector<float> input2_data{0.2f, 1.6f, 0.5f};
-  std::vector<float> test_outputs{1.5f, 11.5f, 4.5f, 0.1875f, 1.4375f, 0.5625f, 0.6f, 4.6f, 1.8f};
+  std::vector<float> test_outputs{0.f, 11.5f, 4.5f, 0.f, 1.4375f, 0.5625f, 0.f, 4.6f, 1.8f};
 
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>(input1_shape, input1_data);
   Tensor input2_tensor = makeInputTensor<DataType::FLOAT32>(input2_shape, input2_data);
@@ -92,7 +92,7 @@ TEST(DivTest, Uint8)
 
   std::vector<float> input1_data = {-0.8f, -0.2f, 0.3f, 0.7f};
   std::vector<float> input2_data = {-0.8f, 0.4f, 0.8f, 1.0f};
-  std::vector<float> test_outputs{1.0f, -0.5f, 0.375f, 0.7f};
+  std::vector<float> test_outputs{1.0f, 0.f, 0.375f, 0.7f};
 
   const float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
 
@@ -107,7 +107,7 @@ TEST(DivTest, Uint8)
       makeOutputTensor(getElementType<uint8_t>(), quant_param.first, quant_param.second);
 
   DivParams params{};
-  params.activation = Activation::NONE;
+  params.activation = Activation::RELU;
 
   Div kernel(&input1_tensor, &input2_tensor, &output_tensor, params);
   kernel.configure();
