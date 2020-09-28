@@ -48,7 +48,6 @@ public:
 
   void planDealloc(ir::OperationIndex op_ind, backend::ITensor *tensor) override;
   void deallocInput(ir::OperationIndex op_ind) override;
-  void deallocSubgraphOutput(ir::OperandIndex ind) override;
 
   std::shared_ptr<cpu_common::DynamicMemoryManager> dynamic_mem_mgr() { return _dynamic_mem_mgr; }
 
