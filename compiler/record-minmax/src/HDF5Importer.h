@@ -44,7 +44,7 @@ public:
   explicit HDF5Importer(const std::string &path)
   {
     if (_file.isHdf5(path) == false)
-      throw std::runtime_error("Error: Given data file is not HDF5");
+      throw std::runtime_error("Given data file is not HDF5");
 
     _file = H5::H5File(path, H5F_ACC_RDONLY);
   }
