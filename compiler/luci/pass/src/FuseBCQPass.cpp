@@ -499,7 +499,8 @@ bool FuseBCQPass::run(loco::Graph *g)
       const auto bundle_cnt = metadata_node->at<loco::DataType::S32>(3);
 
       BCQFuser<1> fuser{original_output_cnt, bundle_cnt};
-      changed |= fuser.fuseBCQ(g);
+      if (fuser.fuseBCQ(g))
+        changed = true;
     }
     else
     {
