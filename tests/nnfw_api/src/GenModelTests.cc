@@ -80,7 +80,7 @@ TEST_F(GenModelTest, UsedConstOutput)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1, 1, 1, 1}, {-1, -1, -1, -1}},
                                           {{7, 5, 9, 2}, {5, 3, 7, 0}, {6, 4, 8, 1}}));
-  _context->setBackends({"cpu"});
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
 }
