@@ -371,8 +371,7 @@ protected:
           switch (ti.dtype)
           {
             case NNFW_TYPE_TENSOR_BOOL:
-              // TODO Check if this comparison is correct
-              compareBuffersExact<bool>(ref_output, output, i);
+              compareBuffersExactBool(ref_output, output, i);
               break;
             case NNFW_TYPE_TENSOR_UINT8:
               compareBuffersExact<uint8_t>(ref_output, output, i);
@@ -412,8 +411,21 @@ private:
   {
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
     {
-      float ref = reinterpret_cast<const T *>(ref_buf.data())[e];
-      float act = reinterpret_cast<const T *>(act_buf.data())[e];
+      T ref = reinterpret_cast<const T *>(ref_buf.data())[e];
+      T act = reinterpret_cast<const T *>(act_buf.data())[e];
+      EXPECT_EQ(ref, act) << "index == " << index << ", element == " << e;
+    }
+  }
+
+  void compareBuffersExactBool(const std::vector<uint8_t> &ref_buf,
+                               const std::vector<uint8_t> &act_buf, uint32_t index)
+  {
+    for (uint32_t e = 0; e < ref_buf.size() / sizeof(uint8_t); e++)
+    {
+      uint8_t ref_raw = reinterpret_cast<const uint8_t *>(ref_buf.data())[e];
+      bool ref = (ref_raw != 0 ? true : false);
+      uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
+      bool act = (act_raw != 0 ? true : false);
       EXPECT_EQ(ref, act) << "index == " << index << ", element == " << e;
     }
   }
