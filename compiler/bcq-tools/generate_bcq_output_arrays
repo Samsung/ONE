@@ -41,6 +41,18 @@ def _get_parser():
         type=str,
         help="Full filepath of the output file.",
         required=True)
+    parser.add_argument(
+        "-m",
+        "--output_path_metadata",
+        type=str,
+        help="Full filepath of the output metadata file.",
+        required=True)
+    parser.add_argument(
+        "-O",
+        "--output_path_output_arrays",
+        type=str,
+        help="Full filepath of the output arrays file.",
+        required=True)
 
     return parser
 
@@ -83,7 +95,17 @@ def print_output_arrays(flags):
 
 
 def find_bcq_version(flags):
-    pass
+    """
+    If BCQ metadata exists, BCQ version is in the second element.
+    Return -1 when the metadata is not found.
+    """
+    graph = load_graph(flags.input_path)
+    graph_def = graph.as_graph_def()
+    for node in graph_def.node:
+        if node.op == "Const" and "one_compiler/bcqinfo_one_metadata" in node.name:
+            metadata_tensor = tf.make_ndarray(node.attr["value"].tensor)
+            return metadata_tensor[1]
+    return -1
 
 
 def print_bcqinfo_output_arrays_v1(flags):
@@ -95,8 +117,14 @@ def print_bcq_output_arrays(flags):
     
     if version == 1:
         print_bcqinfo_output_arrays_v1(flags)
+    elif version == -1:
+        # When BCQ information not found, print nothing.
+        f_metadata = open(flags.output_path_metadata, 'w')
+        f_arrays = open(flags.output_path_arrays, 'w')
+        f_metadata.close()
+        f_arrays.close()
     else:
-        pass
+        raise Exception("BCQ version is not supported yet")
 
 
 def main():
