@@ -192,11 +192,13 @@ def generate_bcq_metadata(flags):
     """
     version = determine_bcq_version(flags)
 
-    # When there is not BCQ information, do nothing
     if version == 1:
         result_graph_def = generate_bcq_metadata_v1(flags)
-    else:
+    elif version == -1:
+        # When there is no BCQ information, do nothing
         result_graph_def = load_graph(flags.input_path)
+    else:
+        raise Exception("BCQ version is not supported yet")
 
     tf.io.write_graph(result_graph_def, '.', flags.output_path, False)
 
