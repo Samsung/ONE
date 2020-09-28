@@ -34,7 +34,7 @@ namespace optimized
 {
 
 template <typename ElementwiseF, typename ScalarBroadcastF, typename T>
-inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params,
+inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params, bool switch_inputs,
                                     const Shape & /* unswitched_input1_shape */,
                                     const T *unswitched_input1_data,
                                     const Shape & /* unswitched_input2_shape */,
@@ -42,11 +42,8 @@ inline void BinaryBroadcastFiveFold(const BinaryArithmeticOpParam &params,
                                     const Shape & /* output_shape */, T *output_data,
                                     ElementwiseF elementwise_f, ScalarBroadcastF scalar_broadcast_f)
 {
-  const bool use_unswitched =
-      params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast;
-
-  const T *input1_data = use_unswitched ? unswitched_input1_data : unswitched_input2_data;
-  const T *input2_data = use_unswitched ? unswitched_input2_data : unswitched_input1_data;
+  const T *input1_data = switch_inputs ? unswitched_input2_data : unswitched_input1_data;
+  const T *input2_data = switch_inputs ? unswitched_input1_data : unswitched_input2_data;
 
   // Fivefold nested loops. The second input resets its position for each
   // iteration of the second loop. The first input resets its position at the
@@ -219,8 +216,64 @@ inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
   }
 }
 
-inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
-                           const float *input1_data, const float *input2_data, float *output_data)
+struct BinaryOpFuncAddFloat
+{
+#ifdef USE_NEON
+  static inline float32x4_t calculate(const float32x4_t &a, const float32x4_t &b)
+  {
+    return vaddq_f32(a, b);
+  }
+#endif // USE_NEON
+  static inline float calculate(const float a, const float b) { return a + b; }
+};
+
+struct BinaryOpFuncSubFloat
+{
+#ifdef USE_NEON
+  static inline float32x4_t calculate(const float32x4_t &a, const float32x4_t &b)
+  {
+    return vsubq_f32(a, b);
+  }
+#endif // USE_NEON
+  static inline float calculate(const float a, const float b) { return a - b; }
+};
+
+struct BinaryOpFuncMulFloat
+{
+#ifdef USE_NEON
+  static inline float32x4_t calculate(const float32x4_t &a, const float32x4_t &b)
+  {
+    return vmulq_f32(a, b);
+  }
+#endif // USE_NEON
+  static inline float calculate(const float a, const float b) { return a * b; }
+};
+
+struct BinaryOpFuncDivFloat
+{
+#ifdef USE_NEON
+#ifdef __aarch64__
+  static inline float32x4_t calculate(const float32x4_t &a, const float32x4_t &b)
+  {
+    return vdivq_f32(a, b);
+  }
+#endif // __aarch64__
+#endif // USE_NEON
+  static inline float calculate(const float a, const float b) { return a / b; }
+};
+
+template <class BASEOPERATOR> struct BinaryOpFuncSwapArgs
+{
+  template <typename T> static inline T calculate(const T &a, const T &b)
+  {
+    return BASEOPERATOR::calculate(b, a);
+  }
+};
+
+template <class OPERATOR>
+inline void BinaryOpElementwise(int size, const BinaryArithmeticOpParam &params,
+                                const float *input1_data, const float *input2_data,
+                                float *output_data)
 {
   int i = 0;
 
@@ -237,10 +290,10 @@ inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
     auto a21 = vld1q_f32(input2_data + i + 4);
     auto a22 = vld1q_f32(input2_data + i + 8);
     auto a23 = vld1q_f32(input2_data + i + 12);
-    auto x0 = vaddq_f32(a10, a20);
-    auto x1 = vaddq_f32(a11, a21);
-    auto x2 = vaddq_f32(a12, a22);
-    auto x3 = vaddq_f32(a13, a23);
+    auto x0 = OPERATOR::calculate(a10, a20);
+    auto x1 = OPERATOR::calculate(a11, a21);
+    auto x2 = OPERATOR::calculate(a12, a22);
+    auto x3 = OPERATOR::calculate(a13, a23);
     x0 = vmaxq_f32(activation_min, x0);
     x1 = vmaxq_f32(activation_min, x1);
     x2 = vmaxq_f32(activation_min, x2);
@@ -258,15 +311,15 @@ inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
   {
     auto a1 = vld1q_f32(input1_data + i);
     auto a2 = vld1q_f32(input2_data + i);
-    auto x = vaddq_f32(a1, a2);
+    auto x = OPERATOR::calculate(a1, a2); // vaddq
     x = vmaxq_f32(activation_min, x);
     x = vminq_f32(activation_max, x);
     vst1q_f32(output_data + i, x);
   }
-#endif // NEON
+#endif // USE_NEON
   for (; i < size; i++)
   {
-    auto x = input1_data[i] + input2_data[i];
+    auto x = OPERATOR::calculate(input1_data[i], input2_data[i]);
     output_data[i] = ActivationFunctionWithMinMax<float>(x, params.float_activation_min,
                                                          params.float_activation_max);
   }
@@ -285,7 +338,8 @@ inline void Add(const BinaryArithmeticOpParam &params, const Shape &input1_shape
                 const Shape &output_shape, float *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  AddElementwise(flat_size, params, input1_data, input2_data, output_data);
+  BinaryOpElementwise<BinaryOpFuncAddFloat>(flat_size, params, input1_data, input2_data,
+                                            output_data);
 }
 
 // Scalar-broadcast add that can be used for inner loop of more general
@@ -304,8 +358,13 @@ inline void AddScalarBroadcastQuant8(int size, const BinaryArithmeticOpParam &pa
   }
 }
 
-inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
-                               float broadcast_value, const float *input2_data, float *output_data)
+// Broadcast binary op template that can often be used for inner loop
+// This function will handle scalar_value (LHS) and vector_values (RHS).
+// Since it's a float function, input params does not matter here.
+template <class OPERATOR>
+inline void BinaryOpScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
+                                    float broadcast_value, const float *input2_data,
+                                    float *output_data)
 {
   int i = 0;
 #ifdef USE_NEON
@@ -316,7 +375,7 @@ inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
   {
     const float32x4_t input2_val_original = vld1q_f32(input2_data + i);
 
-    const float32x4_t output = vaddq_f32(input2_val_original, broadcast_value_dup);
+    const float32x4_t output = OPERATOR::calculate(broadcast_value_dup, input2_val_original);
 
     const float32x4_t clamped =
         vmaxq_f32(output_activation_min_vector, vminq_f32(output_activation_max_vector, output));
@@ -325,7 +384,7 @@ inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params,
 #endif // NEON
   for (; i < size; ++i)
   {
-    auto x = broadcast_value + input2_data[i];
+    auto x = OPERATOR::calculate(broadcast_value, input2_data[i]);
     output_data[i] = ActivationFunctionWithMinMax<float>(x, params.float_activation_min,
                                                          params.float_activation_max);
   }
@@ -350,7 +409,8 @@ inline void BroadcastAddDispatchQuant8(const BinaryArithmeticOpParam &params,
   else
   {
     BinaryBroadcastFiveFold(
-        params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+        params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+        input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
                              uint8_t *)>(AddElementwiseQuant8),
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
@@ -373,11 +433,12 @@ inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Sh
   else
   {
     BinaryBroadcastFiveFold(
-        params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+        params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+        input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
-                             float *)>(AddElementwise),
+                             float *)>(BinaryOpElementwise<BinaryOpFuncAddFloat>),
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
-            AddScalarBroadcast));
+            BinaryOpScalarBroadcast<BinaryOpFuncAddFloat>));
   }
 }
 
@@ -385,54 +446,42 @@ inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape
                 const float *input1_data, const Shape &input2_shape, const float *input2_data,
                 const Shape &output_shape, float *output_data)
 {
-  int i = 0;
-  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-#ifdef USE_NEON
-  const auto activation_min = vdupq_n_f32(params.float_activation_min);
-  const auto activation_max = vdupq_n_f32(params.float_activation_max);
-  for (; i <= size - 16; i += 16)
-  {
-    auto a10 = vld1q_f32(input1_data + i);
-    auto a11 = vld1q_f32(input1_data + i + 4);
-    auto a12 = vld1q_f32(input1_data + i + 8);
-    auto a13 = vld1q_f32(input1_data + i + 12);
-    auto a20 = vld1q_f32(input2_data + i);
-    auto a21 = vld1q_f32(input2_data + i + 4);
-    auto a22 = vld1q_f32(input2_data + i + 8);
-    auto a23 = vld1q_f32(input2_data + i + 12);
-    auto x0 = vsubq_f32(a10, a20);
-    auto x1 = vsubq_f32(a11, a21);
-    auto x2 = vsubq_f32(a12, a22);
-    auto x3 = vsubq_f32(a13, a23);
-    x0 = vmaxq_f32(activation_min, x0);
-    x1 = vmaxq_f32(activation_min, x1);
-    x2 = vmaxq_f32(activation_min, x2);
-    x3 = vmaxq_f32(activation_min, x3);
-    x0 = vminq_f32(activation_max, x0);
-    x1 = vminq_f32(activation_max, x1);
-    x2 = vminq_f32(activation_max, x2);
-    x3 = vminq_f32(activation_max, x3);
-    vst1q_f32(output_data + i, x0);
-    vst1q_f32(output_data + i + 4, x1);
-    vst1q_f32(output_data + i + 8, x2);
-    vst1q_f32(output_data + i + 12, x3);
-  }
-  for (; i <= size - 4; i += 4)
-  {
-    auto a1 = vld1q_f32(input1_data + i);
-    auto a2 = vld1q_f32(input2_data + i);
-    auto x = vsubq_f32(a1, a2);
-    x = vmaxq_f32(activation_min, x);
-    x = vminq_f32(activation_max, x);
-    vst1q_f32(output_data + i, x);
-  }
-#endif // NEON
+  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  BinaryOpElementwise<BinaryOpFuncSubFloat>(flat_size, params, input1_data, input2_data,
+                                            output_data);
+}
 
-  for (; i < size; i++)
+inline void BroadcastSubDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                 const float *input1_data, const Shape &input2_shape,
+                                 const float *input2_data, const Shape &output_shape,
+                                 float *output_data)
+{
+  if (params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast)
   {
-    auto x = input1_data[i] - input2_data[i];
-    output_data[i] =
-        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
+    BinaryBroadcastFiveFold(
+        params, false, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+        output_data,
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
+                             float *)>(BinaryOpElementwise<BinaryOpFuncSubFloat>),
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
+            BinaryOpScalarBroadcast<BinaryOpFuncSubFloat>));
+  }
+  else if (params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast)
+  {
+    BinaryBroadcastFiveFold(
+        params, true, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+        output_data, static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *,
+                                          const float *, float *)>(
+                         BinaryOpElementwise<BinaryOpFuncSwapArgs<BinaryOpFuncSubFloat>>),
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
+            BinaryOpScalarBroadcast<BinaryOpFuncSwapArgs<BinaryOpFuncSubFloat>>));
+  }
+  else
+  {
+    const std::function<float(const float &, const float &)> fn =
+        [](const float &a, const float &b) -> float { return a - b; };
+    reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
+                                               input2_data, output_shape, output_data, fn);
   }
 }
 
@@ -516,60 +565,6 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
   }
 }
 
-inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
-                           const float *input1_data, const float *input2_data, float *output_data)
-{
-  int i = 0;
-
-#ifdef USE_NEON
-  const auto activation_min = vdupq_n_f32(params.float_activation_min);
-  const auto activation_max = vdupq_n_f32(params.float_activation_max);
-  for (; i <= size - 16; i += 16)
-  {
-    auto a10 = vld1q_f32(input1_data + i);
-    auto a11 = vld1q_f32(input1_data + i + 4);
-    auto a12 = vld1q_f32(input1_data + i + 8);
-    auto a13 = vld1q_f32(input1_data + i + 12);
-    auto a20 = vld1q_f32(input2_data + i);
-    auto a21 = vld1q_f32(input2_data + i + 4);
-    auto a22 = vld1q_f32(input2_data + i + 8);
-    auto a23 = vld1q_f32(input2_data + i + 12);
-    auto x0 = vmulq_f32(a10, a20);
-    auto x1 = vmulq_f32(a11, a21);
-    auto x2 = vmulq_f32(a12, a22);
-    auto x3 = vmulq_f32(a13, a23);
-    x0 = vmaxq_f32(activation_min, x0);
-    x1 = vmaxq_f32(activation_min, x1);
-    x2 = vmaxq_f32(activation_min, x2);
-    x3 = vmaxq_f32(activation_min, x3);
-    x0 = vminq_f32(activation_max, x0);
-    x1 = vminq_f32(activation_max, x1);
-    x2 = vminq_f32(activation_max, x2);
-    x3 = vminq_f32(activation_max, x3);
-    vst1q_f32(output_data + i, x0);
-    vst1q_f32(output_data + i + 4, x1);
-    vst1q_f32(output_data + i + 8, x2);
-    vst1q_f32(output_data + i + 12, x3);
-  }
-  for (; i <= size - 4; i += 4)
-  {
-    auto a1 = vld1q_f32(input1_data + i);
-    auto a2 = vld1q_f32(input2_data + i);
-    auto x = vmulq_f32(a1, a2);
-    x = vmaxq_f32(activation_min, x);
-    x = vminq_f32(activation_max, x);
-    vst1q_f32(output_data + i, x);
-  }
-#endif // NEON
-
-  for (; i < size; i++)
-  {
-    auto x = input1_data[i] * input2_data[i];
-    output_data[i] =
-        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
-  }
-}
-
 inline void MulQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                       const uint8_t *input1_data, const Shape &input2_shape,
                       const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
@@ -583,7 +578,8 @@ inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape
                 const Shape &output_shape, float *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  MulElementwise(flat_size, params, input1_data, input2_data, output_data);
+  BinaryOpElementwise<BinaryOpFuncMulFloat>(flat_size, params, input1_data, input2_data,
+                                            output_data);
 }
 
 inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &params,
@@ -596,38 +592,6 @@ inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &pa
   {
     clamped_output = quant8_mul(params, broadcast_value, input2_data[i]);
     output_data[i] = static_cast<uint8_t>(clamped_output);
-  }
-}
-
-// Broadcast mul that can often be used for inner loop of broadcast Mul.
-// This function will handle scalar_value (LHS) * vector_values (RHS).
-// Since it's a float function, input params does not matter here.
-inline void MulSimpleBroadcast(int size, const BinaryArithmeticOpParam &params,
-                               const float broadcast_value, const float *input2_data,
-                               float *output_data)
-{
-  int i = 0;
-#ifdef USE_NEON
-  const float32x4_t output_activation_min_vector = vdupq_n_f32(params.float_activation_min);
-  const float32x4_t output_activation_max_vector = vdupq_n_f32(params.float_activation_max);
-  const float32x4_t broadcast_value_dup = vdupq_n_f32(broadcast_value);
-  for (; i <= size - 4; i += 4)
-  {
-    const float32x4_t input2_val_original = vld1q_f32(input2_data + i);
-
-    const float32x4_t output = vmulq_f32(input2_val_original, broadcast_value_dup);
-
-    const float32x4_t clamped =
-        vmaxq_f32(output_activation_min_vector, vminq_f32(output_activation_max_vector, output));
-    vst1q_f32(output_data + i, clamped);
-  }
-#endif // NEON
-
-  for (; i < size; ++i)
-  {
-    float x = broadcast_value * input2_data[i];
-    output_data[i] =
-        ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
   }
 }
 
@@ -649,7 +613,8 @@ inline void BroadcastMulDispatchQuant8(const BinaryArithmeticOpParam &params,
     return;
   }
   BinaryBroadcastFiveFold(
-      params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, const uint8_t *, const uint8_t *,
                            uint8_t *)>(MulElementwiseQuant8),
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, uint8_t, const uint8_t *,
@@ -671,11 +636,64 @@ inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Sh
     return;
   }
   BinaryBroadcastFiveFold(
-      params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
+      params, params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast,
+      input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
-                           float *)>(MulElementwise),
+                           float *)>(BinaryOpElementwise<BinaryOpFuncMulFloat>),
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
-          MulSimpleBroadcast));
+          BinaryOpScalarBroadcast<BinaryOpFuncMulFloat>));
+}
+
+inline void Div(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                const float *input1_data, const Shape &input2_shape, const float *input2_data,
+                const Shape &output_shape, float *output_data)
+{
+#ifdef __aarch64__
+  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  BinaryOpElementwise<BinaryOpFuncDivFloat>(flat_size, params, input1_data, input2_data,
+                                            output_data);
+#else
+  const std::function<float(const float &, const float &)> fn =
+      [](const float &a, const float &b) -> float { return a / b; };
+  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
+                                output_shape, output_data, fn);
+#endif // __aarch64__
+}
+
+inline void BroadcastDivDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                                 const float *input1_data, const Shape &input2_shape,
+                                 const float *input2_data, const Shape &output_shape,
+                                 float *output_data)
+{
+#ifdef __aarch64__
+  if (params.broadcast_category == BroadcastableOpCategory::kFirstInputBroadcastsFast)
+  {
+    BinaryBroadcastFiveFold(
+        params, false, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+        output_data,
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
+                             float *)>(BinaryOpElementwise<BinaryOpFuncDivFloat>),
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
+            BinaryOpScalarBroadcast<BinaryOpFuncDivFloat>));
+  }
+  else if (params.broadcast_category == BroadcastableOpCategory::kSecondInputBroadcastsFast)
+  {
+    BinaryBroadcastFiveFold(
+        params, true, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+        output_data, static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *,
+                                          const float *, float *)>(
+                         BinaryOpElementwise<BinaryOpFuncSwapArgs<BinaryOpFuncDivFloat>>),
+        static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
+            BinaryOpScalarBroadcast<BinaryOpFuncSwapArgs<BinaryOpFuncDivFloat>>));
+  }
+  else
+#endif // __aarch64__
+  {
+    const std::function<float(const float &, const float &)> fn =
+        [](const float &a, const float &b) -> float { return a / b; };
+    reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
+                                               input2_data, output_shape, output_data, fn);
+  }
 }
 
 } // namespace optimized
