@@ -81,8 +81,8 @@ const(value=[1, 2, 3, -3], name='const3')
 
 ### Purpose
 
-To apply BCQ, additional information which is not included in original model is needed.
-For example, without metadata, we cannot know from where to where BCQ related nodes are included. Metadata for BCQ is needed due to those reason and `generate_bcq_metadata` will generate metadata in the model according to each BCQ version.
+`generate_bcq_metadata` is for appending metadata as output of a model which includes BCQ information.
+The appended metadata is used for connecting BCQ related operations and constant nodes.
 
 ### How to use
 
