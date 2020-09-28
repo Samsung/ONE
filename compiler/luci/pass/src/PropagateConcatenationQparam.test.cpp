@@ -48,19 +48,28 @@ int32_t quantize(float f, luci::CircleQuantParam *qparam)
 class SimpleConcatGraph
 {
 public:
-  SimpleConcatGraph()
+  SimpleConcatGraph(loco::DataType quant_type)
   {
-    concat_node.dtype(loco::DataType::U8);
+    concat_node.dtype(quant_type);
     concat_node.fusedActivationFunction(luci::FusedActFunc::NONE);
-    input_1.dtype(loco::DataType::U8);
-    input_2.dtype(loco::DataType::U8);
+    input_1.dtype(quant_type);
+    input_2.dtype(quant_type);
 
     concat_node.values(0, &input_1);
     concat_node.values(1, &input_2);
 
-    addQuantParam(concat_node, {3.14}, {77});
-    addQuantParam(input_1, {1.0}, {1});
-    addQuantParam(input_2, {2.0}, {2});
+    if (quant_type == loco::DataType::U8)
+    {
+      addQuantParam(concat_node, {3.14}, {77});
+      addQuantParam(input_1, {1.0}, {1});
+      addQuantParam(input_2, {2.0}, {2});
+    }
+    else if (quant_type == loco::DataType::S16)
+    {
+      addQuantParam(concat_node, {3.14}, {0});
+      addQuantParam(input_1, {1.0}, {0});
+      addQuantParam(input_2, {2.0}, {0});
+    }
   }
 
   ~SimpleConcatGraph()
@@ -78,19 +87,28 @@ public:
 class SubsequentConcatGraph
 {
 public:
-  SubsequentConcatGraph()
+  SubsequentConcatGraph(loco::DataType quant_type)
   {
-    concat_node.dtype(loco::DataType::U8);
+    concat_node.dtype(quant_type);
     concat_node.fusedActivationFunction(luci::FusedActFunc::NONE);
-    input_1.dtype(loco::DataType::U8);
-    input_2.dtype(loco::DataType::U8);
+    input_1.dtype(quant_type);
+    input_2.dtype(quant_type);
 
     concat_node.values(0, &input_1);
     concat_node.values(1, &input_2);
 
-    addQuantParam(concat_node, {3.14}, {77});
-    addQuantParam(input_1, {1.0}, {1});
-    addQuantParam(input_2, {2.0}, {2});
+    if (quant_type == loco::DataType::U8)
+    {
+      addQuantParam(concat_node, {3.14}, {77});
+      addQuantParam(input_1, {1.0}, {1});
+      addQuantParam(input_2, {2.0}, {2});
+    }
+    else if (quant_type == loco::DataType::S16)
+    {
+      addQuantParam(concat_node, {3.14}, {0});
+      addQuantParam(input_1, {1.0}, {0});
+      addQuantParam(input_2, {2.0}, {0});
+    }
   }
 
   ~SubsequentConcatGraph()
@@ -108,9 +126,9 @@ public:
 class ConstInputConcatGraph
 {
 public:
-  ConstInputConcatGraph()
+  ConstInputConcatGraph(loco::DataType quant_type)
   {
-    concat_node.dtype(loco::DataType::U8);
+    concat_node.dtype(quant_type);
     concat_node.fusedActivationFunction(luci::FusedActFunc::NONE);
     input_1.dtype(loco::DataType::FLOAT32);
     input_1.size<loco::DataType::FLOAT32>(5);
@@ -120,13 +138,21 @@ public:
       input_1.at<loco::DataType::FLOAT32>(i) = i - 2.0;
     }
 
-    input_2.dtype(loco::DataType::U8);
+    input_2.dtype(quant_type);
 
     concat_node.values(0, &input_1);
     concat_node.values(1, &input_2);
 
-    addQuantParam(concat_node, {0.1}, {10});
-    addQuantParam(input_2, {2.0}, {2});
+    if (quant_type == loco::DataType::U8)
+    {
+      addQuantParam(concat_node, {0.1}, {10});
+      addQuantParam(input_2, {2.0}, {2});
+    }
+    else if (quant_type == loco::DataType::S16)
+    {
+      addQuantParam(concat_node, {0.1}, {0});
+      addQuantParam(input_2, {2.0}, {0});
+    }
   }
 
   ~ConstInputConcatGraph()
@@ -143,7 +169,7 @@ public:
 
 } // namespace
 
-TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam_u8)
 {
   // Check cases where qparam of concat_node is propagated
   // (1) normal case: qparam is propagated to input_1 and input_2
@@ -153,8 +179,8 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
   // (4) const input: input_1 is const. constant values are quantized
 
   // normal case: qparam of concat_node is propagated to input_1 and input_2
-  SimpleConcatGraph g;
-  luci::propagate_concat_quantparam(&g.concat_node);
+  SimpleConcatGraph g(loco::DataType::U8);
+  luci::propagate_concat_quantparam(&g.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(g.concat_node.quantparam()->scale[0], 3.14);
   EXPECT_EQ(g.concat_node.quantparam()->zerop[0], 77);
   EXPECT_FLOAT_EQ(g.input_1.quantparam()->scale[0], 3.14);
@@ -163,9 +189,9 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
   EXPECT_EQ(g.input_2.quantparam()->zerop[0], 77);
 
   // input_1 is an input of input_2. qparam is propagated only to input_2
-  SimpleConcatGraph g2;
+  SimpleConcatGraph g2(loco::DataType::U8);
   g2.input_2.input(&g2.input_1);
-  luci::propagate_concat_quantparam(&g2.concat_node);
+  luci::propagate_concat_quantparam(&g2.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(g2.concat_node.quantparam()->scale[0], 3.14);
   EXPECT_EQ(g2.concat_node.quantparam()->zerop[0], 77);
   EXPECT_FLOAT_EQ(g2.input_1.quantparam()->scale[0], 1.0);
@@ -174,8 +200,8 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
   EXPECT_EQ(g2.input_2.quantparam()->zerop[0], 77);
 
   // input_1 is concat. qparam is propagated only to input_2
-  SubsequentConcatGraph sg;
-  luci::propagate_concat_quantparam(&sg.concat_node);
+  SubsequentConcatGraph sg(loco::DataType::U8);
+  luci::propagate_concat_quantparam(&sg.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(sg.concat_node.quantparam()->scale[0], 3.14);
   EXPECT_EQ(sg.concat_node.quantparam()->zerop[0], 77);
   EXPECT_FLOAT_EQ(sg.input_1.quantparam()->scale[0], 1.0);
@@ -184,8 +210,8 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
   EXPECT_EQ(sg.input_2.quantparam()->zerop[0], 77);
 
   // input_1 is const. const values are quantized with the qparam of concat
-  ConstInputConcatGraph cg;
-  luci::propagate_concat_quantparam(&cg.concat_node);
+  ConstInputConcatGraph cg(loco::DataType::U8);
+  luci::propagate_concat_quantparam(&cg.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(cg.concat_node.quantparam()->scale[0], 0.1);
   EXPECT_EQ(cg.concat_node.quantparam()->zerop[0], 10);
   EXPECT_FLOAT_EQ(cg.input_1.quantparam()->scale[0], 0.1);
@@ -200,17 +226,17 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam)
   EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(4), 30);
 }
 
-TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam_u8_NEG)
 {
   // Check negative cases where qparam is not propagated
   // (1) concat has fused activation function
   // (2) concat has fused activation function and input is const
 
-  SimpleConcatGraph g;
+  SimpleConcatGraph g(loco::DataType::U8);
 
   // concat has fused activation function
   g.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
-  luci::propagate_concat_quantparam(&g.concat_node);
+  luci::propagate_concat_quantparam(&g.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(g.concat_node.quantparam()->scale[0], 3.14);
   EXPECT_EQ(g.concat_node.quantparam()->zerop[0], 77);
   EXPECT_FLOAT_EQ(g.input_1.quantparam()->scale[0], 1.0);
@@ -221,9 +247,9 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
 
   // concat has fused activation function and input_1 is const.
   // const values are quantized using its min/max
-  ConstInputConcatGraph cg;
+  ConstInputConcatGraph cg(loco::DataType::U8);
   cg.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
-  luci::propagate_concat_quantparam(&cg.concat_node);
+  luci::propagate_concat_quantparam(&cg.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(cg.concat_node.quantparam()->scale[0], 0.1);
   EXPECT_EQ(cg.concat_node.quantparam()->zerop[0], 10);
   EXPECT_FLOAT_EQ(cg.input_1.quantparam()->scale[0], 0.015686275);
@@ -236,4 +262,99 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_NEG)
   EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(2), quantize(-0, cg.input_1.quantparam()));
   EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(3), quantize(1, cg.input_1.quantparam()));
   EXPECT_EQ(cg.input_1.at<loco::DataType::U8>(4), quantize(2, cg.input_1.quantparam()));
+}
+
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam_i16)
+{
+  // Check cases where qparam of concat_node is propagated
+  // (1) normal case: qparam is propagated to input_1 and input_2
+  // (2) input used by other Op: input_1 is an input of input_2. qparam is propagated only to
+  // input_2
+  // (3) subsequent concat: input_1 is concat. qparam is propagated only to input_2
+  // (4) const input: input_1 is const. constant values are quantized
+
+  // normal case: qparam of concat_node is propagated to input_1 and input_2
+  SimpleConcatGraph g(loco::DataType::S16);
+  luci::propagate_concat_quantparam(&g.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(g.concat_node.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g.input_1.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g.input_2.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g.input_2.quantparam()->zerop[0], 0);
+
+  // input_1 is an input of input_2. qparam is propagated only to input_2
+  SimpleConcatGraph g2(loco::DataType::S16);
+  g2.input_2.input(&g2.input_1);
+  luci::propagate_concat_quantparam(&g2.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(g2.concat_node.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g2.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g2.input_1.quantparam()->scale[0], 1.0);
+  EXPECT_EQ(g2.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g2.input_2.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g2.input_2.quantparam()->zerop[0], 0);
+
+  // input_1 is concat. qparam is propagated only to input_2
+  SubsequentConcatGraph sg(loco::DataType::S16);
+  luci::propagate_concat_quantparam(&sg.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(sg.concat_node.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(sg.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(sg.input_1.quantparam()->scale[0], 1.0);
+  EXPECT_EQ(sg.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(sg.input_2.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(sg.input_2.quantparam()->zerop[0], 0);
+
+  // input_1 is const. const values are quantized with the qparam of concat
+  ConstInputConcatGraph cg(loco::DataType::S16);
+  luci::propagate_concat_quantparam(&cg.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(cg.concat_node.quantparam()->scale[0], 0.1);
+  EXPECT_EQ(cg.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(cg.input_1.quantparam()->scale[0], 0.1);
+  EXPECT_EQ(cg.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(cg.input_2.quantparam()->scale[0], 0.1);
+  EXPECT_EQ(cg.input_2.quantparam()->zerop[0], 0);
+  EXPECT_EQ(cg.input_1.dtype(), loco::DataType::S16);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(0), -20);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(1), -10);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(2), 0);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(3), 10);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(4), 20);
+}
+
+TEST(PropagateConcatenationQparam, propagate_concat_quantparam_i16_NEG)
+{
+  // Check negative cases where qparam is not propagated
+  // (1) concat has fused activation function
+  // (2) concat has fused activation function and input is const
+
+  SimpleConcatGraph g(loco::DataType::S16);
+
+  // concat has fused activation function
+  g.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  luci::propagate_concat_quantparam(&g.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(g.concat_node.quantparam()->scale[0], 3.14);
+  EXPECT_EQ(g.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g.input_1.quantparam()->scale[0], 1.0);
+  EXPECT_EQ(g.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(g.input_2.quantparam()->scale[0], 2.0);
+  EXPECT_EQ(g.input_2.quantparam()->zerop[0], 0);
+  g.concat_node.fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  // concat has fused activation function and input_1 is const.
+  // const values are quantized using its min/max
+  ConstInputConcatGraph cg(loco::DataType::S16);
+  cg.concat_node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  luci::propagate_concat_quantparam(&cg.concat_node, loco::DataType::S16);
+  EXPECT_FLOAT_EQ(cg.concat_node.quantparam()->scale[0], 0.1);
+  EXPECT_EQ(cg.concat_node.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(cg.input_1.quantparam()->scale[0], 0.000061037);
+  EXPECT_EQ(cg.input_1.quantparam()->zerop[0], 0);
+  EXPECT_FLOAT_EQ(cg.input_2.quantparam()->scale[0], 2.0);
+  EXPECT_EQ(cg.input_2.quantparam()->zerop[0], 0);
+  EXPECT_EQ(cg.input_1.dtype(), loco::DataType::S16);
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(0), quantize(-2, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(1), quantize(-1, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(2), quantize(-0, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(3), quantize(1, cg.input_1.quantparam()));
+  EXPECT_EQ(cg.input_1.at<loco::DataType::S16>(4), quantize(2, cg.input_1.quantparam()));
 }
