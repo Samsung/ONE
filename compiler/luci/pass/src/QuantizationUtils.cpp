@@ -61,6 +61,36 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
   }
 }
 
+// Per-layer quantization of weights (const tensor) using given min/max values
+void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
+                                            float &scaling_factor, int64_t &zp, float &nudged_min,
+                                            float &nudged_max)
+{
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  const float scaling_factor_inv = 1.0 / scaling_factor;
+  std::vector<int32_t> quantized_values(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    // clipping
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    data = data < nudged_min ? nudged_min : data;
+    data = data > nudged_max ? nudged_max : data;
+    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv));
+  }
+
+  node->dtype(loco::DataType::S16);      // change the type of tensor
+  node->size<loco::DataType::S16>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S16>(i) =
+        std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
 void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                           float &nudged_min, float &nudged_max)
 {

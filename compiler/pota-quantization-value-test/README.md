@@ -39,3 +39,15 @@ The expected output should include
  (1) scale, zero point of activations
  (2) scale, zero point, values of weights
  (3) scale, values (weights) of bias
+
+### How to generate golden data
+
+Run 'dalgona' with a target model (.circle), input dataset (.h5), and analysis code named GenGolden*.py (https://github.com/Samsung/ONE/pull/3501)
+
+(1) GenGoldenActBias.py: Generate golden data for uint8-quantized activation and bias
+
+(2) GenGoldenActBiasSym.py: Generate golden data for int16-quantized activation and bias
+
+(3) GenGoldenWeights.py: Generate golden data for uint8-quantized weights (includig const)
+
+(4) GenGoldenWeightsSym.py: Generate golden data for int16-quantized weights (including const)
