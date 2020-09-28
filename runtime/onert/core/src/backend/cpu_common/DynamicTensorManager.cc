@@ -68,19 +68,6 @@ void DynamicTensorManager::deallocInput(ir::OperationIndex op_ind)
   }
 }
 
-void DynamicTensorManager::deallocSubgraphOutput(ir::OperandIndex output_ind)
-{
-  auto *tensor = _tensors->getNativeTensor(output_ind);
-  if (!tensor->is_dynamic())
-    return;
-
-  _dynamic_mem_mgr->deallocate(getRawITensor(output_ind));
-  tensor->resetBuffer();
-
-  VERBOSE(DynamicTensorManager) << "Deallocating #" << output_ind.value()
-                                << " (output of a subgraph)" << std::endl;
-}
-
 const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
 {
   auto ptr = _tensors->getITensor(ind);
