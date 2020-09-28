@@ -17,6 +17,7 @@
 #include "luci/Pass/FuseBCQPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Log.h>
 
 #include <cassert>
 #include <string>
@@ -502,7 +503,8 @@ bool FuseBCQPass::run(loco::Graph *g)
     }
     else
     {
-      assert(false && "Not supported BCQ version");
+      LOGGER(l);
+      WARN(l) << "Not supported BCQ version is found." << std::endl;
     }
 
     // Remove all of BCQ information nodes iff there is no change
