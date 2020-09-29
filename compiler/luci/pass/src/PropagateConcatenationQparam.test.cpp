@@ -70,6 +70,10 @@ public:
       addQuantParam(input_1, {1.0}, {0});
       addQuantParam(input_2, {2.0}, {0});
     }
+    else
+    {
+      throw std::runtime_error("Wrong quantization type");
+    }
   }
 
   ~SimpleConcatGraph()
@@ -108,6 +112,10 @@ public:
       addQuantParam(concat_node, {3.14}, {0});
       addQuantParam(input_1, {1.0}, {0});
       addQuantParam(input_2, {2.0}, {0});
+    }
+    else
+    {
+      throw std::runtime_error("Wrong quantization type");
     }
   }
 
@@ -152,6 +160,10 @@ public:
     {
       addQuantParam(concat_node, {0.1}, {0});
       addQuantParam(input_2, {2.0}, {0});
+    }
+    else
+    {
+      throw std::runtime_error("Wrong quantization type");
     }
   }
 
