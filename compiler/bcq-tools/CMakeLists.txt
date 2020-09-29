@@ -1,4 +1,5 @@
 set(BCQ_TOOLS_FILES
+    generate_bcq_metadata
     generate_bcq_output_arrays
     preserve_bcq_info
 )
