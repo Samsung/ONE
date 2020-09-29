@@ -73,31 +73,6 @@ const std::string node_name_prefix(luci::NodeName node_name)
   return prefix;
 }
 
-/**
- * @brief Create CircleOutputExclude operation, which has same shape and dtype with
- *        original circle_node.
- */
-luci::CircleOutputExclude *createNoOp(luci::CircleNode *circle_node)
-{
-  auto graph = circle_node->graph();
-  auto noOp = graph->nodes()->create<luci::CircleOutputExclude>();
-
-  if (circle_node->shape_status() == luci::ShapeStatus::VALID)
-  {
-    noOp->dtype(circle_node->dtype());
-    noOp->rank(circle_node->rank());
-    for (uint32_t i = 0; i < circle_node->rank(); ++i)
-      noOp->dim(i) = circle_node->dim(i);
-  }
-  else
-  {
-    // For type inference
-    noOp->dtype(loco::DataType::FLOAT32);
-  }
-
-  return noOp;
-};
-
 } // namespace
 
 namespace
@@ -118,8 +93,6 @@ public:
 public:
   bool fuseBCQ(loco::Graph *g)
   {
-    bool changed = false;
-
     for (auto node : loco::all_nodes(g))
     {
       if (auto circle_const = dynamic_cast<luci::CircleConst *>(node))
@@ -135,8 +108,7 @@ public:
     {
       if (auto gather = dynamic_cast<luci::CircleGather *>(node))
       {
-        auto params = dynamic_cast<luci::CircleConst *>(gather->params());
-        if (params != nullptr && has_BCQ_info(params))
+        if (auto params = dynamic_cast<luci::CircleConst *>(gather->params()))
         {
           auto bcq_gather = g->nodes()->create<luci::CircleBCQGather>();
 
@@ -178,13 +150,12 @@ public:
             loco::replace(gather).with(output_transpose);
           }
 
-          changed = true;
+          return true;
         }
       }
       else if (auto fully_connected = dynamic_cast<luci::CircleFullyConnected *>(node))
       {
-        auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights());
-        if (weights != nullptr && has_BCQ_info(weights))
+        if (auto weights = dynamic_cast<luci::CircleConst *>(fully_connected->weights()))
         {
           auto bcq_fc = g->nodes()->create<luci::CircleBCQFullyConnected>();
 
@@ -257,7 +228,7 @@ public:
             loco::replace(fully_connected).with(output_transpose);
           }
 
-          changed = true;
+          return true;
         }
         else
         {
@@ -266,10 +237,7 @@ public:
       }
     }
 
-    if (changed)
-      clear_BCQ_nodes();
-
-    return changed;
+    return false;
   }
 
 private:
@@ -299,60 +267,6 @@ private:
       _qbits_of_clusters[prefix] = node;
     else if (node_name.find("bcqinfo_dequant_weight") != std::string::npos)
       _dequant_weight[prefix] = node;
-  }
-
-  bool has_BCQ_info(luci::CircleConst *node)
-  {
-    const auto prefix = node_name_prefix(node->name());
-    bool has_info = true;
-
-    has_info &= (_do_w_x.find(prefix) != _do_w_x.end());
-    has_info &= (_alpha.find(prefix) != _alpha.end());
-    has_info &= (_packed_binary_code.find(prefix) != _packed_binary_code.end());
-    has_info &= (_number_of_clusters.find(prefix) != _number_of_clusters.end());
-    has_info &= (_size_of_clusters.find(prefix) != _size_of_clusters.end());
-    has_info &= (_qbits_of_clusters.find(prefix) != _qbits_of_clusters.end());
-    // bcqinfo_dequant_weight is just for validation, so not always exists.
-
-    return has_info;
-  }
-
-  /**
-   * @brief Exclude BCQ information nodes which are used for fusing BCQ operations
-   *        from graph output by using CircleOutputExclude
-   */
-  void clear_BCQ_nodes()
-  {
-    auto clear_nodes = [](std::map<std::string, luci::CircleConst *> &nodes) {
-      for (auto &n : nodes)
-      {
-        auto node = n.second;
-
-        for (auto s : loco::succs(node))
-        {
-          if (auto outnode = dynamic_cast<luci::CircleOutput *>(s))
-          {
-            outnode->from(createNoOp(node));
-          }
-          else if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(s))
-          {
-            for (auto o : loco::succs(reshape_node))
-            {
-              auto circle_output = loco::must_cast<luci::CircleOutput *>(o);
-              circle_output->from(createNoOp(reshape_node));
-            }
-          }
-        }
-      }
-    };
-
-    clear_nodes(_do_w_x);
-    clear_nodes(_alpha);
-    clear_nodes(_packed_binary_code);
-    clear_nodes(_number_of_clusters);
-    clear_nodes(_size_of_clusters);
-    clear_nodes(_qbits_of_clusters);
-    clear_nodes(_dequant_weight);
   }
 
   bool is_bcqinfo_valid()
