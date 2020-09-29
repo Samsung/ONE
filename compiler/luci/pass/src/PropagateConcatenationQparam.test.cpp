@@ -72,7 +72,7 @@ public:
     }
     else
     {
-      throw std::runtime_error("Wrong quantization type");
+      throw std::runtime_error("Unsupported quantization type");
     }
   }
 
@@ -115,7 +115,7 @@ public:
     }
     else
     {
-      throw std::runtime_error("Wrong quantization type");
+      throw std::runtime_error("Unsupported quantization type");
     }
   }
 
@@ -163,7 +163,7 @@ public:
     }
     else
     {
-      throw std::runtime_error("Wrong quantization type");
+      throw std::runtime_error("Unsupported quantization type");
     }
   }
 
