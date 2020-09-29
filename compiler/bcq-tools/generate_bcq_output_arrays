@@ -113,18 +113,22 @@ def print_bcqinfo_output_arrays_v1(flags):
 
 
 def print_bcq_output_arrays(flags):
-    version = find_bcq_version(flags)
+    program_version = 1
+    model_version = find_bcq_version(flags)
     
-    if version == 1:
+    if model_version == 1:
         print_bcqinfo_output_arrays_v1(flags)
-    elif version == -1:
+    elif model_version == -1:
         # When BCQ information not found, print nothing.
         f_metadata = open(flags.output_path_metadata, 'w')
         f_arrays = open(flags.output_path_arrays, 'w')
         f_metadata.close()
         f_arrays.close()
     else:
-        raise Exception("BCQ version is not supported yet")
+        err_msg = "BCQ version of the model(v{}) ".format(model_version)
+        err_msg += "is higher than "
+        err_msg += "the version supported by this program(v{})".format(program_version)
+        raise SystemExit(err_msg)
 
 
 def main():
