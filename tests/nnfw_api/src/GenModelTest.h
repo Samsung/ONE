@@ -165,14 +165,14 @@ public:
    *
    * @return bool test is defined to fail on model load
    */
-  bool expected_expected_fail_model_load() const { return _expected_fail_model_load; }
+  bool expected_fail_model_load() const { return _expected_fail_model_load; }
 
   /**
    * @brief Return test is defined to fail on compile
    *
    * @return bool test is defined to fail on compile
    */
-  bool expected_expected_fail_compile() const { return _expected_fail_compile; }
+  bool expected_fail_compile() const { return _expected_fail_compile; }
 
   /**
    * @brief Set the output buffer size of specified output tensor
@@ -266,7 +266,7 @@ protected:
       auto &cbuf = _context->cbuf();
       auto model_load_result =
           nnfw_load_circle_from_buffer(_so.session, cbuf.buffer(), cbuf.size());
-      if (_context->expected_expected_fail_model_load())
+      if (_context->expected_fail_model_load())
       {
         ASSERT_NE(model_load_result, NNFW_STATUS_NO_ERROR);
         std::cerr << "Failed model loading as expected." << std::endl;
@@ -276,7 +276,7 @@ protected:
       NNFW_ENSURE_SUCCESS(model_load_result);
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
 
-      if (_context->expected_expected_fail_compile())
+      if (_context->expected_fail_compile())
       {
         ASSERT_EQ(nnfw_prepare(_so.session), NNFW_STATUS_ERROR);
 
