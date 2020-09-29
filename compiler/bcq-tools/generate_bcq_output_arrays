@@ -87,7 +87,154 @@ def find_bcq_version(flags):
 
 
 def print_bcqinfo_output_arrays_v1(flags):
-    pass
+    """
+    This function generates a file which includes output arrays of BCQ v1
+    information bundles. Each bundle is consisted with one of candidate
+    operations (BCQ may be applied) and BCQ constant nodes related with
+    the operation.
+    """
+    graph = load_graph(flags.input_path)
+    graph_def = graph.as_graph_def()
+    ops = graph.get_operations()
+
+    # If there is a constant node named PREFIX_1/bcqinfo_alpha,
+    # it is used for applying BCQ to constant node named PREFIX_1.
+    # Collected prefixes will be used for connecting
+    # bcqinfo nodes and prefix node user operations.
+    prefix_set = set()
+    has_dequant_weight = False
+    for op in ops:
+        if op.type == "Const" and "/bcqinfo_" in op.outputs[0].name:
+            # Metadata do not have prefix
+            if "one_compiler/bcqinfo_one_metadata" in op.outputs[0].name:
+                continue
+
+            prefix_index = op.outputs[0].name.index("/bcqinfo_")
+            prefix = op.outputs[0].name[:prefix_index]
+            prefix_set.add(prefix)
+
+            infoname = op.outputs[0].name[prefix_index + 1:-2]
+            if infoname == "bcqinfo_dequant_weight":
+                has_dequant_weight = True
+
+    # Ideal situation is that the users of BCQ applicable constant nodes
+    # are BCQ applicable operations such as MatMul, GatherV2, etc.
+    # However, operations which do not change original values such as
+    # Ideneity or Transpose can exist between them. In view of TensorFlow Lite,
+    # real users of BCQ applicable constant nodes must be found first.
+    # This work is done by BFS search with queue.
+
+    prefix_node_dict = {}  # key : prefix / value : list of candidates
+    matmul_node_prefix_dict = {}  # key : Name of MatMul node / value : prefix
+
+    queue_prefix = list(prefix_set)
+    queue_nodename = [queue_prefix[idx] + ":0" for idx in range(len(queue_prefix))]
+
+    while len(queue_prefix) > 0:
+        prefix = queue_prefix.pop(0)
+        nodename = queue_nodename.pop(0)
+        if prefix not in prefix_node_dict.keys():
+            prefix_node_dict[prefix] = []
+
+        for op in ops:
+            if op.type == "MatMul" and (op.inputs[0].name == nodename
+                                        or op.inputs[1].name == nodename):
+                prefix_node_dict[prefix].append(op.outputs[0].name[:-2])
+                matmul_node_prefix_dict[op.outputs[0].name[:-2]] = prefix
+            elif op.type == "Einsum" and (op.inputs[0].name == nodename
+                                          or op.inputs[1].name == nodename):
+                prefix_node_dict[prefix].append(op.outputs[0].name[:-2])
+            elif op.type == "GatherV2" and op.inputs[0].name == nodename:
+                prefix_node_dict[prefix].append(op.outputs[0].name[:-2])
+            elif len(op.outputs) == 1:
+                for i in range(len(op.inputs)):
+                    if op.inputs[i].name == nodename:
+                        queue_prefix.append(prefix)
+                        queue_nodename.append(op.outputs[0].name)
+                        break
+
+    # When TensorFlow model is converted to TensorFlow Lite model,
+    # more than one operation can be fused as one.
+    # For example, MatMul + BiasAdd + ReLU in TensorFlow can be fused as
+    # one FullyConnected in TensorFlow Lite.
+    # It means that even real users of BCQ applicable constant nodes
+    # in TensorFlow are found, they may be real users in TensorFlow Lite.
+    # Therefore additional candidates of real users should be found either.
+    # Finding additional candidates is done by BFS search with queue.
+
+    fuseop_prefix_dict = {}  # key : Candidate operation / Value : prefix
+
+    # These ops can be candidate. However other candidates may exists after these ops.
+    mark_type = ["Add", "AddV2", "BiasAdd", "Reshape", "Transpose"]
+
+    # These ops can be candidate. And no more candidates will be found after these ops.
+    mark_and_stop_type = ["Relu", "Relu6", "Tanh"]
+
+    # These ops cannot be candidates but other candidates may exists after these ops.
+    # NOTE : Some of following ops may be removed from the list but not sure.
+    pass_type = [
+        "BatchToSpaceND", "Cast", "DepthToSpace", "ExpandDims", "ResizeBilinear",
+        "ResizeNearestNeighbor", "ScatterNd", "SpaceToBatchND", "SpaceToDepth", "Squeeze",
+        "Identity", "Pack", "Unpack", "Stack"
+    ]
+
+    queue_prefix = list(matmul_node_prefix_dict.values())
+    queue_nodename = [queue_prefix[idx] + ":0" for idx in range(len(queue_prefix))]
+
+    visited_nodes = set(queue_nodename)
+    while len(queue_prefix) > 0:
+        prefix = queue_prefix.pop(0)
+        nodename = queue_nodename.pop(0)
+
+        for op in ops:
+            for i in range(len(op.inputs)):
+                if nodename == op.inputs[i].name:
+                    if op.type in mark_type:
+                        if op.outputs[0].name[:-2] not in fuseop_prefix_dict.keys():
+                            fuseop_prefix_dict[op.outputs[0].name[:-2]] = set()
+                        fuseop_prefix_dict[op.outputs[0].name[:-2]].add(prefix)
+                        if op.outputs[0].name not in visited_nodes:
+                            queue_prefix.append(prefix)
+                            queue_nodename.append(op.outputs[0].name)
+                            visited_nodes.add(op.outputs[0].name)
+                    elif op.type in mark_and_stop_type:
+                        if op.outputs[0].name[:-2] not in fuseop_prefix_dict.keys():
+                            fuseop_prefix_dict[op.outputs[0].name[:-2]] = set()
+                        fuseop_prefix_dict[op.outputs[0].name[:-2]].add(prefix)
+                    elif op.type in pass_type and op.outputs[0].name not in visited_nodes:
+                        queue_prefix.append(prefix)
+                        queue_nodename.append(op.outputs[0].name)
+                        visited_nodes.add(op.outputs[0].name)
+
+    # Write the name of metadata node
+    with open(flags.output_path_metadata, 'w') as f_metadata:
+        f_metadata.write("one_compiler/bcqinfo_one_metadata,")
+
+    # Write all pairs of candidate operations and related BCQ information nodes.
+    with open(flags.output_path_arrays, 'w') as f_arrays:
+        for prefix in prefix_set:
+            for fusable_op in prefix_node_dict[prefix]:
+                f_arrays.write("," + prefix + "/bcqinfo_do_w_x")
+                f_arrays.write("," + prefix + "/bcqinfo_alpha")
+                f_arrays.write("," + prefix + "/bcqinfo_packed_binary_code")
+                f_arrays.write("," + prefix + "/bcqinfo_number_of_clusters")
+                f_arrays.write("," + prefix + "/bcqinfo_size_of_clusters")
+                f_arrays.write("," + prefix + "/bcqinfo_qbits_of_clusters")
+                f_arrays.write("," + fusable_op)
+                if has_dequant_weight:
+                    f_arrays.write("," + prefix + "/bcqinfo_dequant_weight")
+        for fuseop in fuseop_prefix_dict.keys():
+            if len(fuseop_prefix_dict[fuseop]) == 1:
+                prefix = fuseop_prefix_dict[fuseop].pop()
+                f_arrays.write("," + prefix + "/bcqinfo_do_w_x")
+                f_arrays.write("," + prefix + "/bcqinfo_alpha")
+                f_arrays.write("," + prefix + "/bcqinfo_packed_binary_code")
+                f_arrays.write("," + prefix + "/bcqinfo_number_of_clusters")
+                f_arrays.write("," + prefix + "/bcqinfo_size_of_clusters")
+                f_arrays.write("," + prefix + "/bcqinfo_qbits_of_clusters")
+                f_arrays.write("," + fuseop)
+                if has_dequant_weight:
+                    f_arrays.write("," + prefix + "/bcqinfo_dequant_weight")
 
 
 def print_bcq_output_arrays(flags):
