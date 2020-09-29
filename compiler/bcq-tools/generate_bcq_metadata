@@ -190,15 +190,19 @@ def generate_bcq_metadata(flags):
         - Metadata based on each BCQ format
         - Magic number indicating end
     """
-    version = determine_bcq_version(flags)
+    program_version = 1
+    model_version = determine_bcq_version(flags)
 
-    if version == 1:
+    if model_version == 1:
         result_graph_def = generate_bcq_metadata_v1(flags)
-    elif version == -1:
+    elif model_version == -1:
         # When there is no BCQ information, do nothing
         result_graph_def = load_graph(flags.input_path)
     else:
-        raise Exception("BCQ version is not supported yet")
+        err_msg = "BCQ version of the model(v{}) ".format(model_version)
+        err_msg += "is higher than "
+        err_msg += "the version supported by this program(v{})".format(program_version)
+        raise Exception(err_msg)
 
     tf.io.write_graph(result_graph_def, '.', flags.output_path, False)
 
