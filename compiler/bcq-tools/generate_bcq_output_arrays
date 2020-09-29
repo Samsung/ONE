@@ -43,15 +43,15 @@ def _get_parser():
         required=True)
     parser.add_argument(
         "-m",
-        "--output_path_metadata",
+        "--metadata_path",
         type=str,
-        help="Full filepath of the output metadata file.",
+        help="Full filepath for the file that provides metadata.",
         required=True)
     parser.add_argument(
         "-O",
-        "--output_path_output_arrays",
+        "--output_arrays_path",
         type=str,
-        help="Full filepath of the output arrays file.",
+        help="Full filepath for the file that provides output arrays",
         required=True)
 
     return parser
