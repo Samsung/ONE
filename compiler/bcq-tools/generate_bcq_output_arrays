@@ -48,7 +48,7 @@ def _get_parser():
         help="Full filepath for the file that provides metadata.",
         required=True)
     parser.add_argument(
-        "-O",
+        "-A",
         "--output_arrays_path",
         type=str,
         help="Full filepath for the file that provides output arrays",
