@@ -532,10 +532,17 @@ void BaseLoader<LoaderDomain>::loadStridesAndPaddings(Param &param, const Option
   param.stride.vertical = options->stride_h();
   param.stride.horizontal = options->stride_w();
   // Paddings
-  if (options->padding() == Padding::Padding_SAME)
-    param.padding.type = ir::PaddingType::SAME;
-  if (options->padding() == Padding::Padding_VALID)
-    param.padding.type = ir::PaddingType::VALID;
+  switch (options->padding())
+  {
+    case Padding::Padding_SAME:
+      param.padding.type = ir::PaddingType::SAME;
+      break;
+    case Padding::Padding_VALID:
+      param.padding.type = ir::PaddingType::VALID;
+      break;
+    default:
+      throw std::runtime_error{"Invalid padding type"};
+  }
   // param paddings indexes unused
 }
 
@@ -544,9 +551,13 @@ template <typename Param>
 void BaseLoader<LoaderDomain>::loadPool2DOptions(Param &param, const Pool2DOptions *options)
 {
   // Strides and Paddings
+  if (options->stride_h() <= 0 || options->stride_w() <= 0)
+    throw std::runtime_error{"Invalid stride vertical or horizontal - both must be bigger than 0"};
   loadStridesAndPaddings(param, options);
   // Filter width and height
   // Strides
+  if (options->filter_width() <= 0 || options->filter_height() <= 0)
+    throw std::runtime_error{"Invalid filter width or height - both must be bigger than 0"};
   param.kw = options->filter_width();
   param.kh = options->filter_height();
   // Activation
