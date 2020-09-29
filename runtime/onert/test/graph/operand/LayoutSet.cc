@@ -21,7 +21,22 @@
 using onert::ir::Layout;
 using onert::ir::LayoutSet;
 
-TEST(graph_operand_LayoutSet, layout_set_operators)
+TEST(graph_operand_LayoutSet, neg_add_remove)
+{
+  LayoutSet set{Layout::NCHW};
+  set.remove(Layout::NHWC);
+  ASSERT_EQ(set.size(), 1);
+  set.add(Layout::NHWC);
+  ASSERT_EQ(set.size(), 2);
+  set.remove(Layout::NHWC);
+  ASSERT_EQ(set.size(), 1);
+  set.remove(Layout::NCHW);
+  ASSERT_EQ(set.size(), 0);
+  set.remove(Layout::NCHW);
+  ASSERT_EQ(set.size(), 0);
+}
+
+TEST(graph_operand_LayoutSet, set_operators)
 {
   LayoutSet set1{Layout::NCHW};
   LayoutSet set2{Layout::NHWC};

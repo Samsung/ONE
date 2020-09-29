@@ -31,7 +31,7 @@ using Mock = onert_test::ir::SimpleMock;
 
 } // namespace
 
-TEST(graph_operand_usedef, usedef_test)
+TEST(graph_operand_usedef, neg_usedef_test)
 {
   onert::ir::Graph graph;
   onert::ir::verifier::DAGChecker verifier;
@@ -62,7 +62,7 @@ TEST(graph_operand_usedef, usedef_test)
 
   graph.finishBuilding();
 
-  ASSERT_EQ(verifier.verify(graph), true);
+  ASSERT_TRUE(verifier.verify(graph));
 
   // Check def
   ASSERT_EQ(graph.operands().at(operand_index1).getDef(), mocknode_index1);
