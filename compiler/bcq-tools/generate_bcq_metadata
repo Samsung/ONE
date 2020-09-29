@@ -167,7 +167,6 @@ def determine_bcq_version(flags):
 
     When BCQ information does not exist, -1 is returned.
     """
-
     bcq_version = -1
 
     original_graph = load_graph(flags.input_path)
@@ -202,7 +201,7 @@ def generate_bcq_metadata(flags):
         err_msg = "BCQ version of the model(v{}) ".format(model_version)
         err_msg += "is higher than "
         err_msg += "the version supported by this program(v{})".format(program_version)
-        raise Exception(err_msg)
+        raise SystemExit(err_msg)
 
     tf.io.write_graph(result_graph_def, '.', flags.output_path, False)
 
