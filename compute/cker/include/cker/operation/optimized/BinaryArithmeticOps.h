@@ -219,8 +219,9 @@ inline void AddElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
   }
 }
 
-inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
-                           const float *input1_data, const float *input2_data, float *output_data)
+inline void AddElementwiseCapped(int size, const BinaryArithmeticOpParam &params,
+                                 const float *input1_data, const float *input2_data,
+                                 float *output_data)
 {
   int i = 0;
 
@@ -272,20 +273,49 @@ inline void AddElementwise(int size, const BinaryArithmeticOpParam &params,
   }
 }
 
+inline void AddElementwisePlain(int size, const float *input1_data, const float *input2_data,
+                                float *output_data)
+{
+  int i = 0;
+
+#ifdef USE_NEON
+  for (; i <= size - 16; i += 16)
+  {
+    auto a10 = vld1q_f32(input1_data + i);
+    auto a11 = vld1q_f32(input1_data + i + 4);
+    auto a12 = vld1q_f32(input1_data + i + 8);
+    auto a13 = vld1q_f32(input1_data + i + 12);
+    auto a20 = vld1q_f32(input2_data + i);
+    auto a21 = vld1q_f32(input2_data + i + 4);
+    auto a22 = vld1q_f32(input2_data + i + 8);
+    auto a23 = vld1q_f32(input2_data + i + 12);
+    auto x0 = vaddq_f32(a10, a20);
+    auto x1 = vaddq_f32(a11, a21);
+    auto x2 = vaddq_f32(a12, a22);
+    auto x3 = vaddq_f32(a13, a23);
+    vst1q_f32(output_data + i, x0);
+    vst1q_f32(output_data + i + 4, x1);
+    vst1q_f32(output_data + i + 8, x2);
+    vst1q_f32(output_data + i + 12, x3);
+  }
+  for (; i <= size - 4; i += 4)
+  {
+    auto a1 = vld1q_f32(input1_data + i);
+    auto a2 = vld1q_f32(input2_data + i);
+    auto x = vaddq_f32(a1, a2);
+    vst1q_f32(output_data + i, x);
+  }
+#endif // NEON
+  for (; i < size; i++)
+    output_data[i] = input1_data[i] + input2_data[i];
+}
+
 inline void AddQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                       const uint8_t *input1_data, const Shape &input2_shape,
                       const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
   AddElementwiseQuant8(flat_size, params, input1_data, input2_data, output_data);
-}
-
-inline void Add(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                const float *input1_data, const Shape &input2_shape, const float *input2_data,
-                const Shape &output_shape, float *output_data)
-{
-  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  AddElementwise(flat_size, params, input1_data, input2_data, output_data);
 }
 
 // Scalar-broadcast add that can be used for inner loop of more general
@@ -375,18 +405,17 @@ inline void BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Sh
     BinaryBroadcastFiveFold(
         params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
-                             float *)>(AddElementwise),
+                             float *)>(AddElementwiseCapped),
         static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
             AddScalarBroadcast));
   }
 }
 
-inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                const float *input1_data, const Shape &input2_shape, const float *input2_data,
-                const Shape &output_shape, float *output_data)
+inline void SubElementwiseCapped(int size, const BinaryArithmeticOpParam &params,
+                                 const float *input1_data, const float *input2_data,
+                                 float *output_data)
 {
   int i = 0;
-  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
 #ifdef USE_NEON
   const auto activation_min = vdupq_n_f32(params.float_activation_min);
   const auto activation_max = vdupq_n_f32(params.float_activation_max);
@@ -434,6 +463,43 @@ inline void Sub(const BinaryArithmeticOpParam &params, const Shape &input1_shape
     output_data[i] =
         ActivationFunctionWithMinMax(x, params.float_activation_min, params.float_activation_max);
   }
+}
+
+inline void SubElementwisePlain(int size, const float *input1_data, const float *input2_data,
+                                float *output_data)
+{
+  int i = 0;
+#ifdef USE_NEON
+  for (; i <= size - 16; i += 16)
+  {
+    auto a10 = vld1q_f32(input1_data + i);
+    auto a11 = vld1q_f32(input1_data + i + 4);
+    auto a12 = vld1q_f32(input1_data + i + 8);
+    auto a13 = vld1q_f32(input1_data + i + 12);
+    auto a20 = vld1q_f32(input2_data + i);
+    auto a21 = vld1q_f32(input2_data + i + 4);
+    auto a22 = vld1q_f32(input2_data + i + 8);
+    auto a23 = vld1q_f32(input2_data + i + 12);
+    auto x0 = vsubq_f32(a10, a20);
+    auto x1 = vsubq_f32(a11, a21);
+    auto x2 = vsubq_f32(a12, a22);
+    auto x3 = vsubq_f32(a13, a23);
+    vst1q_f32(output_data + i, x0);
+    vst1q_f32(output_data + i + 4, x1);
+    vst1q_f32(output_data + i + 8, x2);
+    vst1q_f32(output_data + i + 12, x3);
+  }
+  for (; i <= size - 4; i += 4)
+  {
+    auto a1 = vld1q_f32(input1_data + i);
+    auto a2 = vld1q_f32(input2_data + i);
+    auto x = vsubq_f32(a1, a2);
+    vst1q_f32(output_data + i, x);
+  }
+#endif // NEON
+
+  for (; i < size; i++)
+    output_data[i] = input1_data[i] - input2_data[i];
 }
 
 inline int32_t quant8_mul(const BinaryArithmeticOpParam &params, const uint8_t input1_data,
@@ -516,8 +582,9 @@ inline void MulElementwiseQuant8(int size, const BinaryArithmeticOpParam &params
   }
 }
 
-inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
-                           const float *input1_data, const float *input2_data, float *output_data)
+inline void MulElementwiseCapped(int size, const BinaryArithmeticOpParam &params,
+                                 const float *input1_data, const float *input2_data,
+                                 float *output_data)
 {
   int i = 0;
 
@@ -570,20 +637,50 @@ inline void MulElementwise(int size, const BinaryArithmeticOpParam &params,
   }
 }
 
+inline void MulElementwisePlain(int size, const float *input1_data, const float *input2_data,
+                                float *output_data)
+{
+  int i = 0;
+
+#ifdef USE_NEON
+  for (; i <= size - 16; i += 16)
+  {
+    auto a10 = vld1q_f32(input1_data + i);
+    auto a11 = vld1q_f32(input1_data + i + 4);
+    auto a12 = vld1q_f32(input1_data + i + 8);
+    auto a13 = vld1q_f32(input1_data + i + 12);
+    auto a20 = vld1q_f32(input2_data + i);
+    auto a21 = vld1q_f32(input2_data + i + 4);
+    auto a22 = vld1q_f32(input2_data + i + 8);
+    auto a23 = vld1q_f32(input2_data + i + 12);
+    auto x0 = vmulq_f32(a10, a20);
+    auto x1 = vmulq_f32(a11, a21);
+    auto x2 = vmulq_f32(a12, a22);
+    auto x3 = vmulq_f32(a13, a23);
+    vst1q_f32(output_data + i, x0);
+    vst1q_f32(output_data + i + 4, x1);
+    vst1q_f32(output_data + i + 8, x2);
+    vst1q_f32(output_data + i + 12, x3);
+  }
+  for (; i <= size - 4; i += 4)
+  {
+    auto a1 = vld1q_f32(input1_data + i);
+    auto a2 = vld1q_f32(input2_data + i);
+    auto x = vmulq_f32(a1, a2);
+    vst1q_f32(output_data + i, x);
+  }
+#endif // NEON
+
+  for (; i < size; i++)
+    output_data[i] = input1_data[i] * input2_data[i];
+}
+
 inline void MulQuant8(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                       const uint8_t *input1_data, const Shape &input2_shape,
                       const uint8_t *input2_data, const Shape &output_shape, uint8_t *output_data)
 {
   const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
   MulElementwiseQuant8(flat_size, params, input1_data, input2_data, output_data);
-}
-
-inline void Mul(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                const float *input1_data, const Shape &input2_shape, const float *input2_data,
-                const Shape &output_shape, float *output_data)
-{
-  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
-  MulElementwise(flat_size, params, input1_data, input2_data, output_data);
 }
 
 inline void MulSimpleBroadcastQuant8(int size, const BinaryArithmeticOpParam &params,
@@ -673,7 +770,7 @@ inline void BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Sh
   BinaryBroadcastFiveFold(
       params, input1_shape, input1_data, input2_shape, input2_data, output_shape, output_data,
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, const float *, const float *,
-                           float *)>(MulElementwise),
+                           float *)>(MulElementwiseCapped),
       static_cast<void (*)(int, const BinaryArithmeticOpParam &, float, const float *, float *)>(
           MulSimpleBroadcast));
 }

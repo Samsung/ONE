@@ -19,6 +19,7 @@
 #define __NNFW_CKER_BINARY_ARITHMETIC_OPS_H__
 
 #include <functional>
+#include <limits>
 #include "cker/operation/optimized/BinaryArithmeticOps.h"
 #include "cker/operation/reference/BinaryArithmeticOps.h"
 #include "cker/Shape.h"
@@ -231,28 +232,56 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
                                float *output_data)
 {
   // Supported type is only float now
-  switch (op_type)
+  const int flat_size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  constexpr float max_abs = std::numeric_limits<float>::max();
+  bool has_limits =
+      (params.float_activation_min != -max_abs) || (params.float_activation_max != max_abs);
+
+  if (has_limits)
   {
-    case nnfw::cker::BinaryArithmeticOpType::ADD:
-      optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                     output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                     output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::SUB:
-      optimized::Sub(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                     output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::DIV:
-      reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
-                                           input2_data, output_shape, output_data,
-                                           GetBinaryArtithmeticFn<op_type, float>());
-      break;
-    default:
-      assert(false);
-      break;
+    switch (op_type)
+    {
+      case nnfw::cker::BinaryArithmeticOpType::ADD:
+        optimized::AddElementwiseCapped(flat_size, params, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::MUL:
+        optimized::MulElementwiseCapped(flat_size, params, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::SUB:
+        optimized::SubElementwiseCapped(flat_size, params, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::DIV:
+        reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
+                                             input2_data, output_shape, output_data,
+                                             GetBinaryArtithmeticFn<op_type, float>());
+        break;
+      default:
+        assert(false);
+        break;
+    }
+  }
+  else
+  {
+    switch (op_type)
+    {
+      case nnfw::cker::BinaryArithmeticOpType::ADD:
+        optimized::AddElementwisePlain(flat_size, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::MUL:
+        optimized::MulElementwisePlain(flat_size, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::SUB:
+        optimized::SubElementwisePlain(flat_size, input1_data, input2_data, output_data);
+        break;
+      case nnfw::cker::BinaryArithmeticOpType::DIV:
+        reference::BinaryArithmeticOp<float>(params, input1_shape, input1_data, input2_shape,
+                                             input2_data, output_shape, output_data,
+                                             GetBinaryArtithmeticFn<op_type, float>());
+        break;
+      default:
+        assert(false);
+        break;
+    }
   }
 }
 
