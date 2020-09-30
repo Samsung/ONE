@@ -127,6 +127,11 @@ struct ResizeNearestNeighborParams
   bool half_pixel_centers;
 };
 
+struct SubParams
+{
+  Activation activation;
+};
+
 struct SpaceToDepthParams
 {
   int block_size;

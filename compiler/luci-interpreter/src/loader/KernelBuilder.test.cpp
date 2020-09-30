@@ -52,6 +52,7 @@
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
 #include <kernels/Sqrt.h>
+#include <kernels/Sub.h>
 #include <kernels/Squeeze.h>
 #include <kernels/StridedSlice.h>
 #include <kernels/Tanh.h>
@@ -792,6 +793,26 @@ TEST_F(KernelBuilderTest, Sqrt)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Sub)
+{
+  auto *input1 = createInputNode();
+  auto *input2 = createInputNode();
+
+  auto *op = createNode<luci::CircleSub>();
+  op->x(input1);
+  op->y(input2);
+
+  op->fusedActivationFunction(luci::FusedActFunc::RELU);
+
+  auto kernel = buildKernel<kernels::Sub>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input1(), input1);
+  checkTensor(kernel->input2(), input2);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, Squeeze)

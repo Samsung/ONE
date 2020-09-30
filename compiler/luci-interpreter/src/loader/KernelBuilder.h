@@ -73,6 +73,7 @@ public:
   std::unique_ptr<Kernel> visit(const luci::CircleResizeNearestNeighbor *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleReverseV2 *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleRsqrt *node) override;
+  std::unique_ptr<Kernel> visit(const luci::CircleSub *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSlice *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSoftmax *node) override;
   std::unique_ptr<Kernel> visit(const luci::CircleSpaceToDepth *node) override;
