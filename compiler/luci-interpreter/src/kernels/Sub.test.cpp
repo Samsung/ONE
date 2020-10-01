@@ -18,10 +18,7 @@
 #include "kernels/Sub.h"
 #include "kernels/TestUtils.h"
 
-#include <iostream>
-#include <fstream>
 #include <algorithm>
-#include <functional>
 
 namespace luci_interpreter
 {
