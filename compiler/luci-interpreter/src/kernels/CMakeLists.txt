@@ -64,8 +64,6 @@ set(SOURCES
     Reverse.cpp
     Rsqrt.h
     Rsqrt.cpp
-    Sub.cpp
-    Sub.h
     Slice.h
     Slice.cpp
     Softmax.h
@@ -80,6 +78,8 @@ set(SOURCES
     Sqrt.cpp
     Squeeze.h
     Squeeze.cpp
+    Sub.h
+    Sub.cpp
     Tanh.h
     Tanh.cpp
     Transpose.h
@@ -141,9 +141,9 @@ set(TEST_SOURCES
     SpaceToDepth.test.cpp
     Split.test.cpp
     StridedSlice.test.cpp
-    Sub.test.cpp
     Sqrt.test.cpp
     Squeeze.test.cpp
+    Sub.test.cpp
     Tanh.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp

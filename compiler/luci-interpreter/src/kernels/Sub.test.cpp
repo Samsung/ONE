@@ -42,14 +42,12 @@ float GetTolerance(float min, float max)
 
 TEST(SubTest, Uint8)
 {
-  initializer_list<int32_t> base_shape = {2, 3, 1, 2};
-  initializer_list<float> base_data = {-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
-                                       1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
-  initializer_list<int32_t> test_shapes[] = {
-      {1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
-  initializer_list<float> test_data = {0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
-  initializer_list<int32_t> output_shapes[] = {
-      {2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
+  Shape base_shape = {2, 3, 1, 2};
+  vector<float> base_data = {-0.3f, 2.3f, 0.9f,  0.5f, 0.8f, -1.1f,
+                             1.2f,  2.8f, -1.6f, 0.0f, 0.7f, -2.2f};
+  vector<Shape> test_shapes = {{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+  vector<float> test_data = {0.2f, 0.3f, -0.4f, 0.5f, 1.0f, 0.9f};
+  vector<vector<int32_t>> output_shapes = {{2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
   vector<vector<float>> output_data = {
       {-0.5f, 2.0f,  0.1f,  1.8f,  -1.3f, 1.4f,  0.7f, 0.2f,  1.3f, 0.0f,  -0.1f, -0.4f,
        0.6f,  -1.4f, 1.2f,  -1.6f, -0.2f, -2.0f, 1.0f, 2.5f,  1.6f, 2.3f,  0.2f,  1.9f,
@@ -84,10 +82,8 @@ TEST(SubTest, Uint8)
   }
 
   // Inversion step for output_data, because subtract is not commutative operation
-  auto multiply = [](vector<float> &i) {
-    float invers{-1.0};
-    transform(i.begin(), i.end(), i.begin(),
-              [invers](const float &value) { return value * invers; });
+  auto multiply = [](auto &i) {
+    transform(i.begin(), i.end(), i.begin(), [](auto &value) { return value * -1.0f; });
   };
   for_each(output_data.begin(), output_data.end(), multiply);
 
@@ -118,6 +114,7 @@ TEST(SubTest, Float)
 {
   Shape base_shape = {2, 3, 1, 2};
   vector<Shape> test_shapes{{1, 1, 3, 2}, {1, 3, 1, 2}, {2, 1, 3, 1}, {2, 3, 1, 1}};
+  vector<vector<int32_t>> output_shapes{{2, 3, 3, 2}, {2, 3, 1, 2}, {2, 3, 3, 2}, {2, 3, 1, 2}};
   vector<vector<float>> test_outputs = {
       {0.0f, 2.0f, 0.1f, 1.8f, 0.0f, 1.4f, 0.7f, 0.2f, 1.3f, 0.0f, 0.0f, 0.0f,
        0.6f, 0.0f, 1.2f, 0.0f, 0.0f, 0.0f, 1.0f, 2.5f, 1.6f, 2.3f, 0.2f, 1.9f,
@@ -146,6 +143,8 @@ TEST(SubTest, Float)
 
     EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(test_outputs[i], 0.0001f))
         << "With shape number " << i;
+
+    EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shapes[i]));
   }
 }
 
