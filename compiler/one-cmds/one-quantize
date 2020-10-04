@@ -24,7 +24,7 @@ usage()
   echo "Usage: one-quantize"
   echo "    --version         Show version information and exit"
   echo "    --input_dtype     Input data type (supported: float32, default=float32)"
-  echo "    --quantized_dtype Output quantized data type (supported: uint8, default=uint8)"
+  echo "    --quantized_dtype Output quantized data type (supported: uint8, int16, default=uint8)"
   echo "    --granularity     Quantize granularity (supported: layer, channel, default=layer)"
   echo "    --min_percentile  Minimum percentile (0.0~100.0, default=1.0)"
   echo "    --max_percentile  Maximum percentile (0.0~100.0, default=99.0)"
