@@ -28,16 +28,22 @@
 #include <kernels/Elu.h>
 #include <kernels/Floor.h>
 #include <kernels/FloorDiv.h>
+#include <kernels/Equal.h>
 #include <kernels/FullyConnected.h>
+#include <kernels/Greater.h>
+#include <kernels/GreaterEqual.h>
 #include <kernels/L2Normalize.h>
 #include <kernels/L2Pool2D.h>
 #include <kernels/LeakyRelu.h>
+#include <kernels/Less.h>
+#include <kernels/LessEqual.h>
 #include <kernels/LocalResponseNormalization.h>
 #include <kernels/Logistic.h>
 #include <kernels/LogSoftmax.h>
 #include <kernels/MaxPool2D.h>
 #include <kernels/Mean.h>
 #include <kernels/Mul.h>
+#include <kernels/NotEqual.h>
 #include <kernels/Pad.h>
 #include <kernels/Pow.h>
 #include <kernels/Prelu.h>
@@ -354,6 +360,23 @@ TEST_F(KernelBuilderTest, FloorDiv)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, Equal)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::Equal>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
+}
+
 TEST_F(KernelBuilderTest, FullyConnected)
 {
   auto *input = createInputNode();
@@ -375,6 +398,40 @@ TEST_F(KernelBuilderTest, FullyConnected)
   checkTensor(kernel->bias(), bias);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Greater)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleGreater>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::Greater>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, GreaterEqual)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleGreaterEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::GreaterEqual>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, L2Normalize)
@@ -436,6 +493,40 @@ TEST_F(KernelBuilderTest, LeakyRelu)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().alpha, Eq(op->alpha()));
+}
+
+TEST_F(KernelBuilderTest, Less)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleLess>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::Less>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, LessEqual)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleLessEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::LessEqual>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, LocalResponseNormalization)
@@ -554,6 +645,23 @@ TEST_F(KernelBuilderTest, Mul)
   checkTensor(kernel->input2(), input2);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, NotEqual)
+{
+  auto *x_input = createInputNode();
+  auto *y_input = createInputNode();
+
+  auto *op = createNode<luci::CircleNotEqual>();
+  op->x(x_input);
+  op->y(y_input);
+
+  auto kernel = buildKernel<kernels::NotEqual>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), x_input);
+  checkTensor(kernel->y(), y_input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Pad)

@@ -27,17 +27,23 @@
 #include "kernels/Elu.h"
 #include "kernels/Floor.h"
 #include "kernels/FloorDiv.h"
+#include "kernels/Equal.h"
 #include "kernels/FullyConnected.h"
+#include "kernels/Greater.h"
+#include "kernels/GreaterEqual.h"
 #include "kernels/If.h"
 #include "kernels/L2Normalize.h"
 #include "kernels/L2Pool2D.h"
 #include "kernels/LeakyRelu.h"
+#include "kernels/Less.h"
+#include "kernels/LessEqual.h"
 #include "kernels/LocalResponseNormalization.h"
 #include "kernels/Logistic.h"
 #include "kernels/LogSoftmax.h"
 #include "kernels/MaxPool2D.h"
 #include "kernels/Mean.h"
 #include "kernels/Mul.h"
+#include "kernels/NotEqual.h"
 #include "kernels/Pad.h"
 #include "kernels/Pow.h"
 #include "kernels/Prelu.h"
@@ -283,6 +289,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFloorDiv *node)
   return std::make_unique<kernels::FloorDiv>(x, y, output);
 }
 
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Equal>(x, y, output);
+}
+
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *node)
 {
   assert(node->arity() == 3);
@@ -296,6 +313,28 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleFullyConnected *n
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreater *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Greater>(x, y, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleGreaterEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::GreaterEqual>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleIf *node)
@@ -365,6 +404,28 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLeakyRelu *node)
   params.alpha = node->alpha();
 
   return std::make_unique<kernels::LeakyRelu>(input, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLess *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::Less>(x, y, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLessEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::LessEqual>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleLocalResponseNormalization *node)
@@ -446,6 +507,17 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleMul *node)
   params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::Mul>(input1, input2, output, params);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleNotEqual *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *x = getInputTensor(node->x());
+  const Tensor *y = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  return std::make_unique<kernels::NotEqual>(x, y, output);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleOutput *)
