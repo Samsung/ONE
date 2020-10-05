@@ -51,6 +51,8 @@ void FullyConnectedLayer::fullyConnectedFloat32()
   op_params.activation = convertActivationType(_activation);
   op_params.lhs_cacheable = _weights->is_constant();
   op_params.rhs_cacheable = _input->is_constant();
+  VERBOSE("FullyConnected(FP32)") << "LHS : " << op_params.lhs_cacheable << std::endl;
+  VERBOSE("FullyConnected(FP32)") << "RHS : " << op_params.rhs_cacheable << std::endl;
 
   nnfw::cker::FullyConnected(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),
