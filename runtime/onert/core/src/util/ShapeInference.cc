@@ -311,6 +311,9 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
                            const ir::operation::Conv2D::Param &param, ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"Conv2D: stride values must be positive"};
+
   auto ifm_shape = in_shape.asFeature(layout);
 
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
@@ -327,6 +330,9 @@ ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &
                                     const ir::operation::DepthwiseConv2D::Param &param,
                                     ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"DepthwiseConv2D: stride values must be positive"};
+
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
 
@@ -476,6 +482,9 @@ ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const
 ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
                          const ir::Layout layout)
 {
+  if (param.stride.horizontal == 0 || param.stride.vertical == 0)
+    throw std::runtime_error{"Pool2D: stride values must be positive"};
+
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
   const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
