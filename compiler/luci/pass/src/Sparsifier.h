@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_SPARSIFY_UTILS_H__
-#define __LUCI_SPARSIFY_UTILS_H__
+#ifndef __LUCI_SPARSIFIER_H__
+#define __LUCI_SPARSIFIER_H__
 
 #include <vector>
 
@@ -33,7 +33,7 @@ public:
    * @param shape             Shape of the dense tensor.
    * @param traversal_order   In what order to traverse all dimensions,
    *                          including block dimensions.
-   * @param format            Whether each dimension in the dense tensor is
+   * @param format            Whether each dimension in converted tensor is
    *                          dense or sparse (not in the traversal order).
    * @param block_size        Size of each block dimension.
    * @param block_map         Map from block dimension to original tensor
@@ -43,8 +43,8 @@ public:
              const std::vector<DimensionType> &format, const std::vector<int> &block_size = {},
              const std::vector<int> &block_map = {});
 
-  std::vector<T> GetData() { return data_; }
-  std::vector<std::vector<int>> GetDimMetadata() { return dim_metadata_; }
+  std::vector<T> GetData() { return _data; }
+  std::vector<std::vector<int>> GetDimMetadata() { return _dim_metadata; }
 
   void DenseToSparse(const T *src_data);
 
@@ -53,29 +53,29 @@ private:
   bool IsZero(const T val);
 
   // Shape of the conceptual dense tensor.
-  std::vector<int> dense_shape_;
+  std::vector<int> _dense_shape;
   // Shape of the dense tensor with inner blocks reduced. For example, a (4, 4)
   // tensor with (2, 2) block has blocked_shape (2, 2).
-  std::vector<int> blocked_shape_;
+  std::vector<int> _blocked_shape;
   // Total number of elements in the dense tensor.
-  uint64_t dense_size_;
+  uint64_t _dense_size;
   // Has n(original dimension)+k(block_dimension) elements.
-  std::vector<int> traversal_order_;
+  std::vector<int> _traversal_order;
   // Format of each dimension in the traversal order.
-  std::vector<DimensionType> format_;
+  std::vector<DimensionType> _format;
   // Size of each block dimension, in the same order as block map.
-  std::vector<int> block_size_;
+  std::vector<int> _block_size;
   // Map from block dimension to the original tensor dimension.
-  std::vector<int> block_map_;
+  std::vector<int> _block_map;
   // Metadata of each dimension in the traversal order.
   // Each dimension needs two vectors. For dense dimensions, the first vector
   // stores the size of that dimension, and the second vector is empty. For
   // sparse dimensions, the first vector stores the segments and the second one
   // stores the indices.
-  std::vector<std::vector<int>> dim_metadata_;
+  std::vector<std::vector<int>> _dim_metadata;
   // Actual buffer holding data after conversion. Could be sparse buffer or
   // dense buffer.
-  std::vector<T> data_;
+  std::vector<T> _data;
 };
 
 extern template class Sparsifier<int32_t>;
@@ -84,4 +84,4 @@ extern template class Sparsifier<float>;
 
 } // namespace luci
 
-#endif // __LUCI_SPARSIFY_UTILS_H__
+#endif // __LUCI_SPARSIFIER_H__
