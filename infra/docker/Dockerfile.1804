@@ -86,9 +86,13 @@ ENV ANDROID_HOME ${ANDROID_SDK_ROOT}
 
 # Install NDK
 RUN sdkmanager --install "ndk;20.0.5594570"
+RUN sdkmanager "platform-tools"
 
 # Env for ko encoding build
 ENV LC_ALL "C.UTF-8"
+
+# setup adb server
+EXPOSE 5037
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
