@@ -34,7 +34,7 @@ TEST(ShapeInference, Elementwise)
   ASSERT_EQ(infered_out_shape.dim(3), 3);
 }
 
-TEST(ShapeInference, IncorrectElementwise)
+TEST(ShapeInference, neg_Elementwise)
 {
   Shape lhs_shape{1, 299, 299, 3};
   Shape rhs_shape{5, 3};
@@ -123,6 +123,18 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
 }
 
+TEST(ShapeInference, neg_Pool2DNode_InvalidStride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Stride stride{0, 7};
+  Padding padding{PaddingType::SAME};
+
+  operation::Pool2D::Param avg_pool_param{
+      operation::Pool2D::PoolType::AVG, 3, 6, stride, padding, Activation::NONE};
+  ASSERT_THROW(onert::shape_inference::inferPoolShape(in_shape, avg_pool_param),
+               std::runtime_error);
+}
+
 TEST(ShapeInference, Conv2D)
 {
   Shape in_shape{10, 6, 12, 20};
@@ -159,6 +171,17 @@ TEST(ShapeInference, Conv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
 }
 
+TEST(ShapeInference, neg_Conv2D_InvalidStride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Shape ker_shape{30, 3, 6, 20};
+
+  operation::Conv2D::Param param{Stride{0, 0}, Padding{PaddingType::VALID}, Activation::NONE,
+                                 Dilation{1, 1}};
+  ASSERT_THROW(onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param),
+               std::runtime_error);
+}
+
 TEST(ShapeInference, DepthwiseConv2D)
 {
   Shape in_shape{10, 6, 12, 20};
@@ -193,6 +216,17 @@ TEST(ShapeInference, DepthwiseConv2D)
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 3);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
   ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
+}
+
+TEST(ShapeInference, neg_DepthwiseConv2D_InvalidSride)
+{
+  Shape in_shape{10, 6, 12, 20};
+  Shape ker_shape{1, 3, 6, 60};
+
+  operation::DepthwiseConv2D::Param param{Stride{3, 0}, Padding{PaddingType::VALID}, 3,
+                                          Activation::NONE};
+  ASSERT_THROW(onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param),
+               std::runtime_error);
 }
 
 TEST(ShapeInference, Concat)
