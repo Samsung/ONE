@@ -71,9 +71,6 @@ void ShapeValidator::visit(const ir::operation::BatchMatMul &node)
   const auto rhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::RHS));
   const auto out_index{node.getOutputs().at(0)};
 
-  // Constant lhs and rhs is not implemented yet
-  OP_REQUIRES(!_ctx.at(lhs_index).isConstant() && !_ctx.at(rhs_index).isConstant());
-
   if (_ctx.at(out_index).info().isDynamic())
     return;
 
@@ -103,8 +100,6 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
   OP_REQUIRES(_ctx.at(block_size_index).shape().rank() == 1);
 
   OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
-
-  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
 
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
@@ -300,9 +295,6 @@ void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
   OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
   OP_REQUIRES(_ctx.at(paddings_index).shape().dim(0) == 2);
   OP_REQUIRES(_ctx.at(paddings_index).shape().dim(1) == 2);
-
-  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
-  OP_REQUIRES(_ctx.at(paddings_index).isConstant());
 
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
@@ -864,8 +856,6 @@ void ShapeValidator::visit(const ir::operation::Split &node)
 
   const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
-
-  OP_REQUIRES(_ctx.at(axis_index).isConstant());
 
   const auto num_splits = node.param().num_splits;
   const auto input_rank = _ctx.at(input_index).shape().rank();

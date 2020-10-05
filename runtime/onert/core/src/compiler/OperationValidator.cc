@@ -43,6 +43,24 @@ void OperationValidator::operator()()
       [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
+void OperationValidator::visit(const ir::operation::BatchMatMul &node)
+{
+  const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
+  const auto rhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::RHS));
+
+  // Constant lhs and rhs is not implemented yet
+  OP_REQUIRES(!_ctx.at(lhs_index).isConstant() && !_ctx.at(rhs_index).isConstant());
+}
+
+void OperationValidator::visit(const ir::operation::BatchToSpaceND &node)
+{
+  const auto block_size_index{
+      node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
+
+  // Non-constant block_size is not implemented yet
+  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
+}
+
 void OperationValidator::visit(const ir::operation::Comparison &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -61,6 +79,17 @@ void OperationValidator::visit(const ir::operation::ElementwiseActivation &node)
 
   // Check if I/O types match
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+}
+
+void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
+{
+  const auto block_size_index{
+      node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
+  const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
+
+  // Non-constant block_size and padding is not implemented yet
+  OP_REQUIRES(_ctx.at(block_size_index).isConstant());
+  OP_REQUIRES(_ctx.at(paddings_index).isConstant());
 }
 
 } // namespace compiler

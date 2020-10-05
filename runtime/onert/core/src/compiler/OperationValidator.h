@@ -43,8 +43,11 @@ public:
   void operator()();
 
 public:
+  void visit(const ir::operation::BatchMatMul &node) override;
+  void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::Comparison &node) override;
   void visit(const ir::operation::ElementwiseActivation &node) override;
+  void visit(const ir::operation::SpaceToBatchND &node) override;
 
 private:
   // TODO Remove _ctx field
