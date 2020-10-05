@@ -18,6 +18,7 @@
 #ifndef __NNFW_CKER_FULLY_CONNECTED_H__
 #define __NNFW_CKER_FULLY_CONNECTED_H__
 
+#include <ruy/ruy.h>
 #include <ruy/context.h>
 #include "cker/operation/FullyConnectedSparse16x1.h"
 #include "cker/Shape.h"
@@ -85,6 +86,50 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
     // Apply activation function
     ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
   }
+}
+
+inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
+                           const float *input_data, const Shape &weights_shape,
+                           const float *weights_data, const Shape &,
+                           const float *optional_bias_data, const Shape &output_shape,
+                           float *output_data, ruy::Context *ruy_context)
+{
+  ruy::profiler::ScopeLabel label("FullyConnected");
+  const int dims_count = weights_shape.DimensionsCount();
+  const int input_rows = weights_shape.Dims(dims_count - 1);
+  MatrixParams<float> rhs_params;
+  rhs_params.order = Order::kColMajor;
+  rhs_params.rows = input_rows;
+  rhs_params.cols = input_shape.FlatSize() / input_rows;
+  rhs_params.cache_policy = CachePolicy::kNeverCache;
+  assert(input_shape.FlatSize() == (rhs_params.rows * rhs_params.cols));
+  MatrixParams<float> lhs_params;
+  lhs_params.order = Order::kRowMajor;
+  lhs_params.cols = weights_shape.Dims(dims_count - 1);
+  lhs_params.rows = FlatSizeSkipDim(weights_shape, dims_count - 1);
+  lhs_params.cache_policy = CachePolicy::kAlwaysCache;
+  MatrixParams<float> dst_params;
+  dst_params.order = Order::kColMajor;
+  dst_params.rows = output_shape.Dims(output_shape.DimensionsCount() - 1);
+  dst_params.cols = FlatSizeSkipDim(output_shape, output_shape.DimensionsCount() - 1);
+  GemmParams<float, float> gemm_params;
+  gemm_params.bias = optional_bias_data;
+  gemm_params.clamp_min = params.float_activation_min;
+  gemm_params.clamp_max = params.float_activation_max;
+
+  // Below code is from tflite::cpu_backend_gemm::detail::GemmImplUsingRuy
+  ruy::Matrix<float> ruy_lhs;
+  ruy::Matrix<float> ruy_rhs;
+  ruy::Matrix<float> ruy_dst;
+  // Note that cache is always enabled for input and weight tensors
+  ruy_support::MakeRuyMatrix(lhs_params, weights_data, &ruy_lhs, true);
+  ruy_support::MakeRuyMatrix(rhs_params, input_data, &ruy_rhs, true);
+  ruy_support::MakeRuyMatrix(dst_params, output_data, &ruy_dst);
+
+  ruy::BasicSpec<float, float> ruy_mul_params;
+  ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
+
+  ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);
 }
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
