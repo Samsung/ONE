@@ -21,7 +21,9 @@
 #define __NNFW_CKER_EXP_H__
 
 #include "cker/Shape.h"
+#if defined(USE_FAST_SOFTMAX)
 #include "cker/neon/neon_check.h"
+#endif
 
 #include <cmath>
 
@@ -30,7 +32,7 @@ namespace nnfw
 namespace cker
 {
 
-#ifdef USE_NEON
+#if defined(USE_FAST_SOFTMAX) && defined(USE_NEON)
 inline float32x4_t exp4_approx(float32x4_t x)
 {
   int32x4_t i;

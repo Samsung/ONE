@@ -22,8 +22,11 @@
 #include "cker/Utils.h"
 #include "cker/Types.h"
 #include "cker/eigen/Utils.h"
+
+#if defined(USE_FAST_SOFTMAX)
 #include "cker/neon/neon_check.h"
 #include "cker/operation/Exp.h"
+#endif
 
 #include <Eigen/Core>
 #include <fixedpoint/fixedpoint.h>
@@ -92,7 +95,7 @@ inline void Softmax(const float *in, const int input_size, const int batch_size,
 
     // Compute the normalized sum of exps.
     float exp_sum = 0.0;
-#ifdef USE_NEON
+#if defined(USE_FAST_SOFTMAX) && defined(USE_NEON)
     for (int i = 0; i < input_size; i++)
     {
       out[i] = (in[i] - max_coeff) * beta;

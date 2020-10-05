@@ -48,6 +48,11 @@ option(BUILD_TFLITE_TEST "Build tensorflow lite test" OFF)
 option(BUILD_TFLITE_CLASSIFY_APP "Build tflite_classify app" OFF)
 option(BUILD_UBEN "Build micro-benchmark (uben) suite" OFF)
 option(BUILD_MLAPSE "Build mlapse benchmark toolkit" OFF)
+option(BUILD_FAST_SOFTMAX "Build mlapse benchmark toolkit" OFF)
+if(BUILD_FAST_SOFTMAX)
+    ADD_DEFINITIONS("-DUSE_FAST_SOFTMAX")
+endif(BUILD_FAST_SOFTMAX)
+
 #
 # Default build configuration for tools
 #

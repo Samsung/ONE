@@ -21,6 +21,7 @@
 #include "cker/eigen/Utils.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
+
 #include <Eigen/Core>
 
 namespace nnfw
