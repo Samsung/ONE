@@ -62,7 +62,7 @@ TEST(graph_operation_setIO, operation_setIO_conv)
   ASSERT_EQ(conv->getInputs().at(Index{0}).value(), 8);
 }
 
-TEST(graph_operation_setIO, operation_setIO_concat)
+TEST(graph_operation_setIO, neg_operation_setIO_concat)
 {
   onert::ir::Graph graph;
 

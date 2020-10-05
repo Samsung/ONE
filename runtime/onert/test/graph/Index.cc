@@ -20,7 +20,7 @@
 
 using Index = ::onert::util::Index<uint32_t, struct TestTag>;
 
-TEST(Index, index_test)
+TEST(Index, neg_index_test)
 {
   Index idx1{1u};
   Index idx2{2u};
