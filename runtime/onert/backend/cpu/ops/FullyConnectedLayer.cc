@@ -49,6 +49,8 @@ void FullyConnectedLayer::fullyConnectedFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
   op_params.activation = convertActivationType(_activation);
+  op_params.lhs_cacheable = _weights->is_constant();
+  op_params.rhs_cacheable = _input->is_constant();
 
   nnfw::cker::FullyConnected(
       op_params, getTensorShape(_input), reinterpret_cast<const float *>(_input->buffer()),

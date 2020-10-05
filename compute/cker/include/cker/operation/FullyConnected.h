@@ -94,20 +94,20 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
                            const float *optional_bias_data, const Shape &output_shape,
                            float *output_data, ruy::Context *ruy_context)
 {
-  ruy::profiler::ScopeLabel label("FullyConnected");
+  ruy::profiler::ScopeLabel label("FullyConnected(FP32)");
   const int dims_count = weights_shape.DimensionsCount();
   const int input_rows = weights_shape.Dims(dims_count - 1);
   MatrixParams<float> rhs_params;
   rhs_params.order = Order::kColMajor;
   rhs_params.rows = input_rows;
   rhs_params.cols = input_shape.FlatSize() / input_rows;
-  rhs_params.cache_policy = CachePolicy::kNeverCache;
+  rhs_params.cache_policy = DefaultCachePolicy(params.rhs_cacheable);
   assert(input_shape.FlatSize() == (rhs_params.rows * rhs_params.cols));
   MatrixParams<float> lhs_params;
   lhs_params.order = Order::kRowMajor;
   lhs_params.cols = weights_shape.Dims(dims_count - 1);
   lhs_params.rows = FlatSizeSkipDim(weights_shape, dims_count - 1);
-  lhs_params.cache_policy = CachePolicy::kAlwaysCache;
+  lhs_params.cache_policy = DefaultCachePolicy(params.lhs_cacheable);
   MatrixParams<float> dst_params;
   dst_params.order = Order::kColMajor;
   dst_params.rows = output_shape.Dims(output_shape.DimensionsCount() - 1);

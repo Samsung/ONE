@@ -532,6 +532,11 @@ void ValidateGemmParams(const GemmParams<AccumScalar, DstScalar, quantization_fl
   UNUSED_RELEASE(params);
 }
 
+inline CachePolicy DefaultCachePolicy(bool is_constant_data)
+{
+  return is_constant_data ? CachePolicy::kAlwaysCache : CachePolicy::kNeverCache;
+}
+
 } // namespace cker
 } // namespace nnfw
 
