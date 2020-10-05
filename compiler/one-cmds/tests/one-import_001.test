@@ -28,7 +28,7 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 
-rm -rf $outputfile
+# Note: Do not remove output circle file as it's used for quantize tests
 
 # run test
 one-import tf \
