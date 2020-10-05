@@ -16,10 +16,10 @@
 
 #include <gtest/gtest.h>
 
-#include "wrapper/ANeuralNetworksModel.h"
+#include "ANeuralNetworksModel.h"
 
-TEST(MODEL, model_build)
+TEST(MODEL, neg_model_build)
 {
   ANeuralNetworksModel model;
-  ASSERT_EQ(model.isFinished(), false);
+  ASSERT_FALSE(model.isFinished());
 }
