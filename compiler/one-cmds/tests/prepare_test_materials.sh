@@ -45,3 +45,15 @@ if [[ ! -s "bcq.pb" ]]; then
     wget https://github.com/Samsung/ONE/files/5153842/bcq.pb.zip
     unzip bcq.pb.zip
 fi
+
+# prepare 'inception_v3.circle' file used for quantizatio test
+inputfile="./inception_v3.pb"
+outputfile="./inception_v3.circle"
+
+if [[ ! -s ${outputfile} ]]; then
+  ../bin/one-import-tf \
+  --input_path ${inputfile} \
+  --output_path ${outputfile} \
+  --input_arrays input --input_shapes "1,299,299,3" \
+  --output_arrays InceptionV3/Predictions/Reshape_1
+fi
