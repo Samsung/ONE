@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# this test should fail
+# negative usage improper input model
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
