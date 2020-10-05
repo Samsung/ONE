@@ -96,26 +96,14 @@ inline nnfw::cker::Shape getTensorShape(const IPortableTensor *tensor)
     return nnfw::cker::Shape();
 
   assert(tensor->layout() == ir::Layout::NHWC);
-  constexpr int kMaxSmallSize = 8;
-  int32_t raw_shape_small[kMaxSmallSize];
-  std::vector<int32_t> raw_shape_vec;
   auto rank = tensor->num_dimensions();
-  int32_t *data = nullptr;
-  if (rank > kMaxSmallSize)
-  {
-    raw_shape_vec.resize(rank);
-    data = raw_shape_vec.data();
-  }
-  else
-  {
-    data = raw_shape_small;
-  }
-
+  nnfw::cker::Shape ret(rank);
+  auto data = ret.DimsData();
   for (uint32_t i = 0; i < rank; ++i)
   {
     data[i] = tensor->dimension(i);
   }
-  return nnfw::cker::Shape(rank, data);
+  return ret;
 }
 
 inline nnfw::cker::FusedActivationFunctionType

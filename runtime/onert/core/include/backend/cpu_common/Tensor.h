@@ -97,7 +97,7 @@ public:
    *       W : dimension(2)
    *       C : dimension(3)
    */
-  size_t dimension(size_t index) const override { return _info.shape().dim(index); }
+  size_t dimension(size_t index) const final override { return _info.shape().dim(index); }
   size_t num_dimensions() const override { return _info.shape().rank(); }
   size_t total_size() const override { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override;
