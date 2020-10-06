@@ -27,6 +27,7 @@
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/SparsifyTensorPass.h"
 // TODO add more passes
 
 #include "luci/Pass/ShapeInferencePass.h"
@@ -42,9 +43,24 @@
 #include <logo/Phase.h>
 
 #include <memory>
+#include <sstream>
 
 namespace
 {
+
+std::vector<int> parseIntFromCommadelimitedStr(std::string str)
+{
+  std::vector<int> ret;
+  std::istringstream is(str);
+  for (uint32_t i; is >> i;)
+  {
+    assert(i != ',');
+    ret.push_back(i);
+    if (is.peek() == ',')
+      is.ignore();
+  }
+  return ret;
+}
 
 using namespace luci;
 
@@ -252,6 +268,43 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
+}
+
+void CircleOptimizer::sparsify(loco::Graph *g) const
+{
+  if (_options->query(Options::Algorithm::SparsifyTensorPass))
+  {
+    std::string tensor_name = _options->param(Options::AlgorithmParameters::Sparsify_tensor_name);
+    std::string str_tarversal_order =
+        _options->param(Options::AlgorithmParameters::Sparsify_traversal_order);
+    std::string str_format = _options->param(Options::AlgorithmParameters::Sparsify_format);
+    std::string str_block_size = _options->param(Options::AlgorithmParameters::Sparsify_block_size);
+    std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);
+
+    // traversal order
+    std::vector<int32_t> traversal_order = parseIntFromCommadelimitedStr(str_tarversal_order);
+    // format
+    std::vector<DimensionType> format;
+    std::istringstream is(str_format);
+    for (char c; is >> c;)
+    {
+      assert(c != ',');
+      if (c == 'd')
+        format.push_back(DimensionType::DENSE);
+      else if (c == 's')
+        format.push_back(DimensionType::SPARSE_CSR);
+      if (is.peek() == ',')
+        is.ignore();
+    }
+    // block size
+    std::vector<int32_t> block_size = parseIntFromCommadelimitedStr(str_block_size);
+    // block map
+    std::vector<int32_t> block_map = parseIntFromCommadelimitedStr(str_block_map);
+
+    luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
+                                        block_map};
+    sparsifier.run(g);
+  }
 }
 
 } // namespace luci
