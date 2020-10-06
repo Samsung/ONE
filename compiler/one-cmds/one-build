@@ -1,0 +1,165 @@
+#!/bin/bash
+
+# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This script puts all the ONE drivers in one place to provide better convenience to users.
+
+# test if getopt is enhanced version
+getopt --test > /dev/null
+if [ $? -ne 4 ]; then
+  echo "[ERROR] Your system doesn't have enhanced getopt"
+  exit 2
+fi
+
+# usage
+function Usage()
+{
+  echo "Usage: ./$(basename ${BASH_SOURCE[0]}) -c one-build.cfg [OPTIONS_TO_OVERWRITE]"
+  echo ""
+  echo "[CONFIGURATION FILE]"
+  echo "Before you run this program, you should write a configuration file."
+  echo "The configuration file must consist of options required by the ONE driver to be executed."
+  echo "See \"one-build.cfg\" for more details."
+  echo ""
+  echo "[OPTIONS TO OVERWRITE]"
+  echo "Sometimes you want to change certain options without touching the configuration file."
+  echo "If you pass the option directly to the command line, the option is processed prior to "
+  echo "the configuration file. A list of option names can be found in \"one-build.cfg\"."
+}
+
+# version
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+function Version()
+{
+  if [ -x "$DRIVER_PATH/one-version" ]; then
+    $DRIVER_PATH/one-version one-build
+  else
+    echo "[ERROR] one-version not found or not excutable"
+    exit 2
+  fi
+}
+
+# parse argument
+SHORT_OPTS="\
+h`# --help`\
+v:`# --version`\
+c:`# --config`"
+LONG_OPTS="\
+help,\
+version,\
+config:\
+`### configuration option ###`\
+input_path:,\
+output_path:,\
+`# one-import-tf, one-import-bcq`\
+use_one_import_tf:,\
+use_one_import_bcq:,\
+import_input_arrays:,\
+import_input_shapes:,\
+import_output_arrays:,\
+import_v2:,\
+import_tf_output_path:,\
+import_bcq_output_path:"
+# TO BE FILLED
+
+OPTS=$(getopt --options "$SHORT_OPTS" --longoptions "$LONG_OPTS" --name "$0" -- "$@")
+
+if [ $? != 0 ] ; then echo "[ERROR] Failed to parse options" ; exit 2 ; fi
+
+eval set -- "$OPTS"
+
+unset CONFIG_FILE
+
+while true ; do
+  case "$1" in
+    -h|--help)
+      Usage
+      exit 0
+      ;;
+    -v|--version)
+      Version
+      exit 0
+      ;;
+    -c|--config)
+      CONFIG_FILE="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      echo "[ERROR] getopt internal error"
+      exit 2
+      ;;
+  esac
+done
+
+# source configuration file
+if [ -e "$CONFIG_FILE" ]; then
+  source "$CONFIG_FILE"
+else
+  echo "[WARNING] configuration file not provided"
+fi
+
+# overide options
+
+# one-import-tf
+if [ "$use_one_import_tf" == true ]; then
+  if [ -z "$import_tf_output_path" ]; then
+    import_tf_output_path="$output_path"
+  fi
+  if [ -x "$DRIVER_PATH/one-import" ]; then
+    $DRIVER_PATH/one-import tf \
+    --input_path "$input_path" \
+    --output_path "$import_tf_output_path" \
+    --input_arrays "$import_input_arrays" \
+    --output_arrays "$import_output_arrays"
+    # shape
+  else
+    echo "[ERROR] one-import not found or not excutable"
+    exit 2
+  fi
+fi
+
+# one-import-bcq
+if [ "$use_one_import_bcq" == true ]; then
+  echo "TO BE FILLED"
+fi
+
+# one-import-tflite
+if [ "$use_one_import_tflite" == true ]; then
+  echo "TO BE FILLED"
+fi
+
+# one-optimize
+if [ "$use_one_optimize" == true ]; then
+  echo "TO BE FILLED"
+fi
+
+# one-quantize
+if [ "$use_one_quantize" == true ]; then
+  echo "TO BE FILLED"
+fi
+
+# one-pack
+if [ "$use_one_pack" == true ]; then
+  echo "TO BE FILLED"
+fi
+
+# one-codegen
+if [ "$use_one_codegen" == true ]; then
+  echo "TO BE FILLED"
+fi
