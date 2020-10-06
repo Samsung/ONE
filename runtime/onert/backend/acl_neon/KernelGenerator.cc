@@ -1042,7 +1042,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
   if (!_ctx.at(axis_index).isConstant())
   {
-    throw std::runtime_error("Non-constant axis_index NYI for acl_cl backend");
+    throw std::runtime_error("Non-constant axis_index NYI for acl_neon backend");
   }
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
