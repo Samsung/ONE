@@ -36,12 +36,6 @@ def _get_parser():
         help="Full filepath of the input file.",
         required=True)
     parser.add_argument(
-        "-o",
-        "--output_path",
-        type=str,
-        help="Full filepath of the output file.",
-        required=True)
-    parser.add_argument(
         "-m",
         "--metadata_path",
         type=str,
@@ -69,29 +63,6 @@ def load_graph(model_file):
         tf.import_graph_def(graph_def, name="")
 
     return graph
-
-
-def print_output_arrays(flags):
-    graph_model = load_graph(flags.input_path)
-    graph_model_def = graph_model.as_graph_def()
-    ops = graph_model.get_operations()
-
-    output_names = [op.outputs[0].name for op in ops 
-        if op.type == "Const" and "bcqinfo_" in op.outputs[0].name]
-
-    output_arrays = ""    
-    for output_name in output_names:
-        output_arrays += ","
-
-        colon_index = output_name.find(":")
-        if colon_index == -1:
-            output_arrays += output_name
-        else:
-            output_arrays += output_name[:colon_index]
-
-    f = open(flags.output_path, 'w')
-    f.write(output_arrays)
-    f.close()
 
 
 def find_bcq_version(flags):
@@ -289,7 +260,7 @@ def main():
     parser = _get_parser()
     flags = parser.parse_known_args(args=sys.argv[1:])
 
-    print_output_arrays(flags[0])
+    print_bcq_output_arrays(flags[0])
 
 
 if __name__ == "__main__":
