@@ -45,11 +45,18 @@ public:
     for (auto node : output_nodes)
     {
       auto output_node = loco::must_cast<luci::CircleOutput *>(node);
+
+      /**
+       * First output of model is metadata for BCQ. Please refer to following example.
+       *
+       * When original_output_cnt is 2,
+       * BCQ_METADATA, original_output_1, original_output_2, BCQ_INFO_1, ...
+       */
       if ((int)output_node->index() > _original_output_cnt)
       {
         const auto prefix = (output_node->index() - (_original_output_cnt + 1)) / (_bundle_cnt);
-        const MetadataType metadata_type =
-            (MetadataType)((output_node->index() - (_original_output_cnt + 1)) % (_bundle_cnt));
+        const MetadataType metadata_type = static_cast<MetadataType>(
+            (output_node->index() - (_original_output_cnt + 1)) % (_bundle_cnt));
         const auto circle_node = loco::must_cast<luci::CircleNode *>(output_node->from());
         add_BCQ_info_node(prefix, metadata_type, circle_node);
       }
