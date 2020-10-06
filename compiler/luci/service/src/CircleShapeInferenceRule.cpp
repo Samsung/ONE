@@ -1608,6 +1608,22 @@ loco::NodeShape infer_unpack(const luci::CircleUnpack *node)
   return loco::NodeShape{output_shape};
 }
 
+loco::NodeShape infer_unidirectionalsequencelstm(const luci::CircleUnidirectionalSequenceLSTM *node)
+{
+  auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
+  auto recurrent_to_output_weights =
+      loco::shape_get(node->recurrent_to_output_weights()).as<loco::TensorShape>();
+  auto rank = static_cast<int32_t>(input_shape.rank());
+  loco::TensorShape output_shape;
+  output_shape.rank(rank);
+  for (int32_t i = 0; i < rank - 1; i++)
+  {
+    output_shape.dim(i) = input_shape.dim(i);
+  }
+  output_shape.dim(rank - 1) = recurrent_to_output_weights.dim(1);
+  return loco::NodeShape{output_shape};
+}
+
 loco::NodeShape infer_unique(const luci::CircleUnique *node)
 {
   auto input_shape = loco::shape_get(node->input()).as<loco::TensorShape>();
@@ -2377,9 +2393,14 @@ public:
     return infer_transpose_conv(node);
   }
 
-  loco::NodeShape visit(const luci::CircleUnpack *node) final { return infer_unpack(node); }
+  loco::NodeShape visit(const luci::CircleUnidirectionalSequenceLSTM *node) final
+  {
+    return infer_unidirectionalsequencelstm(node);
+  }
 
   loco::NodeShape visit(const luci::CircleUnique *node) final { return infer_unique(node); }
+
+  loco::NodeShape visit(const luci::CircleUnpack *node) final { return infer_unpack(node); }
 
   loco::NodeShape visit(const luci::CircleWhere *node) final { return use_own(node); }
 
