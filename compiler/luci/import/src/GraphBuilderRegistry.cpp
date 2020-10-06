@@ -133,6 +133,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                                          // 48
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
   CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
+  CIRCLE_NODE(UNIDIRECTIONAL_SEQUENCE_LSTM, CircleUnidirectionalSequenceLSTMGraphBuilder); // 44
   CIRCLE_NODE(UNIQUE, CircleUniqueGraphBuilder);                                           // 103
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHERE, CircleWhereGraphBuilder);                                             // 109
@@ -152,7 +153,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_CALL = 31,
   // BuiltinOperator_EMBEDDING_LOOKUP_SPARSE = 33,
   // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_RNN = 35,
-  // BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM = 44,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM = 52,
