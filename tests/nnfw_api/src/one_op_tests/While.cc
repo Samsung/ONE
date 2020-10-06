@@ -69,6 +69,64 @@ TEST_F(GenModelTest, OneOp_While)
   _context->addTestCase(uniformTCD<float>({{0}}, {{100}}));
   _context->addTestCase(uniformTCD<float>({{2}}, {{102}}));
   _context->addTestCase(uniformTCD<float>({{22}}, {{102}}));
+  _context->addTestCase(uniformTCD<float>({{100}}, {{100}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_While_TwoInputs)
+{
+  // The model looks just like the below pseudocode
+  //
+  // function model(x, end)
+  // {
+  //   while (x < end)
+  //   {
+  //     x = x + 10.0
+  //   }
+  //   return x
+  // }
+
+  CircleGen cgen;
+  std::vector<float> incr_data{10};
+  uint32_t incr_buf = cgen.addBuffer(incr_data);
+
+  // primary subgraph
+  {
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorWhile({{x_in, end_in}, {x_out, end_out}}, 1, 2);
+    cgen.setInputsAndOutputs({x_in, end_in}, {x_out});
+  }
+
+  // cond subgraph
+  {
+    cgen.nextSubgraph();
+    int x = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int result = cgen.addTensor({{1}, circle::TensorType_BOOL});
+    cgen.addOperatorLess({{x, end}, {result}});
+    cgen.setInputsAndOutputs({x, end}, {result});
+  }
+
+  // body subgraph
+  {
+    cgen.nextSubgraph();
+    int x_in = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int incr = cgen.addTensor({{1}, circle::TensorType_FLOAT32, incr_buf});
+    int x_out = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    int end = cgen.addTensor({{1}, circle::TensorType_FLOAT32});
+    cgen.addOperatorAdd({{x_in, incr}, {x_out}}, circle::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({x_in, end}, {x_out, end});
+  }
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0}, {20}}, {{20}}));
+  _context->addTestCase(uniformTCD<float>({{5}, {30}}, {{35}}));
+  _context->addTestCase(uniformTCD<float>({{20}, {10}}, {{20}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
