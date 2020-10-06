@@ -18,13 +18,14 @@
 #ifndef __NNFW_CKER_FULLY_CONNECTED_H__
 #define __NNFW_CKER_FULLY_CONNECTED_H__
 
-#include <ruy/ruy.h>
-#include <ruy/context.h>
 #include "cker/operation/FullyConnectedSparse16x1.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
 #include "cker/TensorUtils.h"
+
+#include <ruy/ruy.h>
+#include <ruy/context.h>
 
 namespace nnfw
 {
