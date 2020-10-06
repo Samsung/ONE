@@ -81,6 +81,83 @@ void OperationValidator::visit(const ir::operation::ElementwiseActivation &node)
   OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 }
 
+void OperationValidator::visit(const ir::operation::ElementwiseBinary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::ElementwiseBinary::Input::RHS)};
+
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(output_index).typeInfo().type());
+}
+
+void OperationValidator::visit(const ir::operation::ElementwiseUnary &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
+
+  // Check if I/O types match
+  if (node.param().op_type == ir::operation::ElementwiseUnary::Type::DEQUANTIZE)
+  {
+    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::FLOAT32);
+  }
+  else if (node.param().op_type == ir::operation::ElementwiseUnary::Type::QUANTIZE)
+  {
+    OP_REQUIRES(_ctx.at(input_index).typeInfo().type() == ir::DataType::FLOAT32);
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+  }
+  else if (node.param().op_type != ir::operation::ElementwiseUnary::Type::CAST)
+  {
+    OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  }
+}
+
+void OperationValidator::visit(const ir::operation::EmbeddingLookup &node)
+{
+  const auto lookups_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::LOOKUPS)};
+
+  OP_REQUIRES(_ctx.at(lookups_index).typeInfo().type() == ir::DataType::INT32);
+}
+
+void OperationValidator::visit(const ir::operation::ExpandDims &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
+
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+}
+
+void OperationValidator::visit(const ir::operation::HashtableLookup &node)
+{
+  const auto hits_index{node.getOutputs().at(ir::operation::HashtableLookup::Output::HITS)};
+  const auto lookups_index{node.getInputs().at(ir::operation::HashtableLookup::Input::LOOKUPS)};
+  const auto keys_index{node.getInputs().at(ir::operation::HashtableLookup::Input::KEYS)};
+
+  OP_REQUIRES(_ctx.at(lookups_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(keys_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(hits_index).typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM);
+}
+
+void OperationValidator::visit(const ir::operation::Pad &node)
+{
+  const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
+
+  OP_REQUIRES(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
+}
+
+void OperationValidator::visit(const ir::operation::Reverse &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::Reverse::Input::AXIS)};
+
+  OP_REQUIRES(_ctx.at(axis_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
+}
+
 void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
 {
   const auto block_size_index{
@@ -90,6 +167,24 @@ void OperationValidator::visit(const ir::operation::SpaceToBatchND &node)
   // Non-constant block_size and padding is not implemented yet
   OP_REQUIRES(_ctx.at(block_size_index).isConstant());
   OP_REQUIRES(_ctx.at(paddings_index).isConstant());
+}
+
+void OperationValidator::visit(const ir::operation::SquaredDifference &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
+  const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
+
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(lhs_index).typeInfo().type());
+  OP_REQUIRES(_ctx.at(lhs_index).typeInfo().type() == _ctx.at(rhs_index).typeInfo().type());
+}
+
+void OperationValidator::visit(const ir::operation::StridedSlice &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
+
+  OP_REQUIRES(_ctx.at(output_index).typeInfo().type() == _ctx.at(input_index).typeInfo().type());
 }
 
 } // namespace compiler
