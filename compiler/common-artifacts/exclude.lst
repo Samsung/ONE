@@ -5,7 +5,6 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
-optimize(UnidirectionalSequenceLSTM_000) # This will be removed after all luci components done.
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
 
 ## CircleRecipes
