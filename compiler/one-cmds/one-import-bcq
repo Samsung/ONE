@@ -168,6 +168,10 @@ if [ -e ${VIRTUALENV_LINUX} ]; then
   source ${VIRTUALENV_LINUX}
 elif [ -e ${VIRTUALENV_WINDOWS} ]; then
   source ${VIRTUALENV_WINDOWS}
+else
+  echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command."
+  echo "If encounter any problems, please follow provided document in 'doc' folder."
+  exit 255
 fi
 
 # remove previous log
