@@ -186,26 +186,26 @@ trap show_err_onexit ERR
 
 # Generate BCQ information metadata
 # If model has no BCQ information or invalid information, pb file is not changed.
-echo "${DRIVER_PATH}/bin/generate_bcq_metadata" \
---input_path "${GRAPHDEF_FILE}" \
+echo "${DRIVER_PATH}/generate_bcq_metadata" \
+--input_path "${INPUT_PATH}" \
 --output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---output_arrays "${OUTPUT}" > "${OUTPUT_PATH}.log"
+--output_arrays "${OUTPUT_ARRAYS}" > "${OUTPUT_PATH}.log"
 echo " " >> "${OUTPUT_PATH}.log"
 
-"${DRIVER_PATH}/bin/generate_bcq_metadata" \
---input_path "${GRAPHDEF_FILE}" \
+"${DRIVER_PATH}/generate_bcq_metadata" \
+--input_path "${INPUT_PATH}" \
 --output_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
---output_arrays "${OUTPUT}"
+--output_arrays "${OUTPUT_ARRAYS}"
 
 # Generate BCQ information nodes as output_arrays
 # If model has no BCQ information, output_arrays would be empty.
-echo "${DRIVER_PATH}/bin/generate_bcq_output_arrays" \
+echo "${DRIVER_PATH}/generate_bcq_output_arrays" \
 --input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
 --metadata_path "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
 --output_arrays_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt" > "${OUTPUT_PATH}.log"
 echo " " >> "${OUTPUT_PATH}.log"
 
-"${DRIVER_PATH}/bin/generate_bcq_output_arrays" \
+"${DRIVER_PATH}/generate_bcq_output_arrays" \
 --input_path "${TMPDIR}/${MODEL_NAME}_withmeta.pb" \
 --metadata_path "${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt" \
 --output_arrays_path "${TMPDIR}/${MODEL_NAME}_output_arrays.txt"
@@ -217,7 +217,7 @@ CONVERT_SCRIPT+="--input_arrays ${INPUT_ARRAYS} "
 CONVERT_SCRIPT+="--output_path ${TMPDIR}/${MODEL_NAME}.tflite "
 CONVERT_SCRIPT+="--output_arrays "
 CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt)"
-CONVERT_SCRIPT+="${OUTPUT}"
+CONVERT_SCRIPT+="${OUTPUT_ARRAYS}"
 CONVERT_SCRIPT+="$(cat ${TMPDIR}/${MODEL_NAME}_output_arrays.txt) "
 if [ ! -z ${INPUT_SHAPES} ]; then
   CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
