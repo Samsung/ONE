@@ -92,6 +92,8 @@ set(SOURCES
     Sqrt.cpp
     Squeeze.h
     Squeeze.cpp
+    Sub.h
+    Sub.cpp
     Tanh.h
     Tanh.cpp
     Transpose.h
@@ -162,6 +164,7 @@ set(TEST_SOURCES
     StridedSlice.test.cpp
     Sqrt.test.cpp
     Squeeze.test.cpp
+    Sub.test.cpp
     Tanh.test.cpp
     Transpose.test.cpp
     TransposeConv.test.cpp

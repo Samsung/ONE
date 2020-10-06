@@ -60,6 +60,7 @@
 #include "kernels/Split.h"
 #include "kernels/StridedSlice.h"
 #include "kernels/Sqrt.h"
+#include "kernels/Sub.h"
 #include "kernels/Squeeze.h"
 #include "kernels/Tanh.h"
 #include "kernels/Unpack.h"
@@ -644,6 +645,20 @@ std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleRsqrt *node)
   Tensor *output = getOutputTensor(node);
 
   return std::make_unique<kernels::Rsqrt>(input, output);
+}
+
+std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSub *node)
+{
+  assert(node->arity() == 2);
+
+  const Tensor *input1 = getInputTensor(node->x());
+  const Tensor *input2 = getInputTensor(node->y());
+  Tensor *output = getOutputTensor(node);
+
+  SubParams params{};
+  params.activation = node->fusedActivationFunction();
+
+  return std::make_unique<kernels::Sub>(input1, input2, output, params);
 }
 
 std::unique_ptr<Kernel> KernelBuilder::visit(const luci::CircleSlice *node)
