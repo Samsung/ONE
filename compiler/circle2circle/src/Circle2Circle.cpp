@@ -214,6 +214,11 @@ int entry(int argc, char **argv)
     if (arser["--sparsify_block_size"])
       options->param(AlgorithmParameters::Sparsify_block_size,
                      arser.get<std::string>("--sparsify_block_size"));
+    else
+    {
+      std::cerr << "ERROR: Block size not provided" << std::endl;
+      return 255;
+    }
     options->param(AlgorithmParameters::Sparsify_block_map,
                    arser.get<std::string>("--sparsify_block_map"));
   }
