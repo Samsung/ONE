@@ -176,7 +176,7 @@ def print_bcqinfo_output_arrays_v1(flags):
     ]
 
     queue_prefix = list(matmul_node_prefix_dict.values())
-    queue_nodename = [queue_prefix[idx] + ":0" for idx in range(len(queue_prefix))]
+    queue_nodename = [matmul + ":0" for matmul in matmul_node_prefix_dict.keys()]
 
     visited_nodes = set(queue_nodename)
     while len(queue_prefix) > 0:
