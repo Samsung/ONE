@@ -1381,6 +1381,10 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
+  if (!_ctx.at(axis_index).isConstant())
+  {
+    throw std::runtime_error("Non-constant axis_index NYI for acl_cl backend");
+  }
 
   const auto ifm_rank = _ctx.at(ifm_index).shape().rank();
   std::vector<ir::OperandIndex> output_indexes;
