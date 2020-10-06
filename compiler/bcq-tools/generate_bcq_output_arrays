@@ -206,11 +206,11 @@ def print_bcqinfo_output_arrays_v1(flags):
                         visited_nodes.add(op.outputs[0].name)
 
     # Write the name of metadata node
-    with open(flags.output_path_metadata, 'w') as f_metadata:
+    with open(flags.metadata_path, 'w') as f_metadata:
         f_metadata.write("one_compiler/bcqinfo_one_metadata,")
 
     # Write all pairs of candidate operations and related BCQ information nodes.
-    with open(flags.output_path_arrays, 'w') as f_arrays:
+    with open(flags.output_arrays_path, 'w') as f_arrays:
         for prefix in prefix_set:
             for fusable_op in prefix_node_dict[prefix]:
                 f_arrays.write("," + prefix + "/bcqinfo_do_w_x")
@@ -244,8 +244,8 @@ def print_bcq_output_arrays(flags):
         print_bcqinfo_output_arrays_v1(flags)
     elif model_version == -1:
         # When BCQ information not found, print nothing.
-        f_metadata = open(flags.output_path_metadata, 'w')
-        f_arrays = open(flags.output_path_arrays, 'w')
+        f_metadata = open(flags.metadata_path, 'w')
+        f_arrays = open(flags.output_arrays_path, 'w')
         f_metadata.close()
         f_arrays.close()
     else:
