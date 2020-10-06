@@ -2393,14 +2393,14 @@ public:
     return infer_transpose_conv(node);
   }
 
+  loco::NodeShape visit(const luci::CircleUnpack *node) final { return infer_unpack(node); }
+
   loco::NodeShape visit(const luci::CircleUnidirectionalSequenceLSTM *node) final
   {
     return infer_unidirectionalsequencelstm(node);
   }
 
   loco::NodeShape visit(const luci::CircleUnique *node) final { return infer_unique(node); }
-
-  loco::NodeShape visit(const luci::CircleUnpack *node) final { return infer_unpack(node); }
 
   loco::NodeShape visit(const luci::CircleWhere *node) final { return use_own(node); }
 
