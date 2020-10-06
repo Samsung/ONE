@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 
 namespace onert
@@ -171,7 +172,9 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
   _input = input;
   _axes = axes;
   _output = output;
-
+#ifdef USE_NEON
+  _reduceType = reduceType;
+#endif // NEON
   switch (reduceType)
   {
     case ReduceType::kSum:
@@ -206,6 +209,16 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
 void ReduceLayer::run()
 {
   const auto axes = getReducerAxes(_axes);
+#ifdef USE_NEON
+  int32_t rank = _input->num_dimensions();
+  if (_input->data_type() == ir::DataType::FLOAT32 && _reduceType == ReduceType::kSum &&
+      axes.size() == 1 && (axes[0] == -1 || axes[0] == rank - 1))
+  {
+    OptimizedReduceSum(reinterpret_cast<const float *>(_input->buffer()), getTensorShape(_input),
+                       reinterpret_cast<float *>(_output->buffer()));
+    return;
+  }
+#endif // NEON
   _kernel(_input, _output, axes);
 }
 
