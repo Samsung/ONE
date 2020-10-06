@@ -100,7 +100,7 @@ def print_bcqinfo_output_arrays_v1(flags):
     # If there is a constant node named PREFIX_1/bcqinfo_alpha,
     # it is used for applying BCQ to constant node named PREFIX_1.
     # Collected prefixes will be used for connecting
-    # bcqinfo nodes and prefix node user operations.
+    # bcqinfo nodes and user operations of prefix nodes.
     prefix_set = set()
     has_dequant_weight = False
     for op in ops:
@@ -113,15 +113,17 @@ def print_bcqinfo_output_arrays_v1(flags):
             prefix = op.outputs[0].name[:prefix_index]
             prefix_set.add(prefix)
 
+            # Usually, output name of op is like "outputname:0"
+            # -2 is for removing ":0"
             infoname = op.outputs[0].name[prefix_index + 1:-2]
             if infoname == "bcqinfo_dequant_weight":
                 has_dequant_weight = True
 
-    # Ideal situation is that the users of BCQ applicable constant nodes
+    # Ideal situation is that the user nodes of BCQ applicable constant nodes
     # are BCQ applicable operations such as MatMul, GatherV2, etc.
     # However, operations which do not change original values such as
     # Ideneity or Transpose can exist between them. In view of TensorFlow Lite,
-    # real users of BCQ applicable constant nodes must be found first.
+    # real user nodes of BCQ applicable constant nodes must be found first.
     # This work is done by BFS search with queue.
 
     prefix_node_dict = {}  # key : prefix / value : list of candidates
@@ -136,6 +138,8 @@ def print_bcqinfo_output_arrays_v1(flags):
         if prefix not in prefix_node_dict.keys():
             prefix_node_dict[prefix] = []
 
+        # Usually, output name of op is like "outputname:0"
+        # -2 is for removing ":0"
         for op in ops:
             if op.type == "MatMul" and (op.inputs[0].name == nodename
                                         or op.inputs[1].name == nodename):
@@ -157,9 +161,9 @@ def print_bcqinfo_output_arrays_v1(flags):
     # more than one operation can be fused as one.
     # For example, MatMul + BiasAdd + ReLU in TensorFlow can be fused as
     # one FullyConnected in TensorFlow Lite.
-    # It means that even real users of BCQ applicable constant nodes
-    # in TensorFlow are found, they may be real users in TensorFlow Lite.
-    # Therefore additional candidates of real users should be found either.
+    # It means that even real user nodes of BCQ applicable constant nodes
+    # in TensorFlow are found, they may be real user nodes in TensorFlow Lite.
+    # Therefore additional candidates of real user nodes should be found either.
     # Finding additional candidates is done by BFS search with queue.
 
     fuseop_prefix_dict = {}  # key : Candidate operation / Value : prefix
@@ -171,7 +175,7 @@ def print_bcqinfo_output_arrays_v1(flags):
     mark_and_stop_type = ["Relu", "Relu6", "Tanh"]
 
     # These ops cannot be candidates but other candidates may exists after these ops.
-    # NOTE : Some of following ops may be removed from the list but not sure.
+    # NOTE : Some of following ops may be removed from the list but not sure for now.
     pass_type = [
         "BatchToSpaceND", "Cast", "DepthToSpace", "ExpandDims", "ResizeBilinear",
         "ResizeNearestNeighbor", "ScatterNd", "SpaceToBatchND", "SpaceToDepth", "Squeeze",
@@ -186,6 +190,8 @@ def print_bcqinfo_output_arrays_v1(flags):
         prefix = queue_prefix.pop(0)
         nodename = queue_nodename.pop(0)
 
+        # Usually, output name of op is like "outputname:0"
+        # -2 is for removing ":0"
         for op in ops:
             for i in range(len(op.inputs)):
                 if nodename == op.inputs[i].name:
