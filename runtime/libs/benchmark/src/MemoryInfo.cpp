@@ -103,7 +103,7 @@ uint32_t getSumValueFromFileSmaps(const std::string &file, const std::string &ke
       auto val = splitLine(line);
       assert(val.size() != 0);
       // SwapPss could show so that check where Pss is at the beginning
-      if (val[0].find("Pss") != 0)
+      if (val[0].find(key) != 0)
       {
         continue;
       }
@@ -119,7 +119,8 @@ uint32_t getSumValueFromFileSmaps(const std::string &file, const std::string &ke
 namespace benchmark
 {
 
-bool prepareVmRSS() { return std::ifstream(proc_status_path).is_open(); }
+//bool prepareVmRSS() { return std::ifstream(proc_status_path).is_open(); }
+bool prepareVmRSS() { return std::ifstream(proc_smaps_path).is_open(); }
 
 bool prepareVmHWM() { return std::ifstream(proc_status_path).is_open(); }
 
@@ -127,6 +128,7 @@ bool prepareGpuMemory() { return std::ifstream(gpu_memory_path).is_open(); }
 
 bool preparePssSum() { return std::ifstream(proc_smaps_path).is_open(); }
 
+/*
 uint32_t getVmRSS()
 {
   auto val = getValueFromFileStatus(proc_status_path, "VmRSS");
@@ -135,6 +137,8 @@ uint32_t getVmRSS()
   assert(isStrNumber(val[1]));
   return std::stoul(val[1]);
 }
+*/
+uint32_t getVmRSS() { return getSumValueFromFileSmaps(proc_smaps_path, "Rss"); }
 
 uint32_t getVmHWM()
 {
