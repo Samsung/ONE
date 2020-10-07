@@ -202,7 +202,7 @@ OUTARR_GEN_SCRIPT+="--input_path ${TMPDIR}/${MODEL_NAME}_withmeta.pb "
 OUTARR_GEN_SCRIPT+="--metadata_path ${TMPDIR}/${MODEL_NAME}_metadata_arrays.txt "
 OUTARR_GEN_SCRIPT+="--output_arrays_path ${TMPDIR}/${MODEL_NAME}_output_arrays.txt "
 
-echo ${OUTARR_GEN_SCRIPT} > "${OUTPUT_PATH}.log"
+echo ${OUTARR_GEN_SCRIPT} >> "${OUTPUT_PATH}.log"
 echo "" >> "${OUTPUT_PATH}.log"
 $OUTARR_GEN_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
@@ -219,7 +219,7 @@ if [ ! -z ${INPUT_SHAPES} ]; then
   CONVERT_SCRIPT+="--input_shapes ${INPUT_SHAPES} "
 fi
 
-echo ${CONVERT_SCRIPT} > "${OUTPUT_PATH}.log"
+echo ${CONVERT_SCRIPT} >> "${OUTPUT_PATH}.log"
 $CONVERT_SCRIPT >> "${OUTPUT_PATH}.log" 2>&1
 
 # convert .tflite to .circle
