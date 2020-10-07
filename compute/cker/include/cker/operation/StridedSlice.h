@@ -260,11 +260,39 @@ template <typename T>
 inline void StridedSlice(const StridedSliceParams &op_params, const Shape &unextended_input_shape,
                          const T *input_data, const Shape &unextended_output_shape, T *output_data)
 {
-  // Note that the output_shape is not used herein.
-  StridedSliceParams params_copy = op_params;
-
   assert(unextended_input_shape.DimensionsCount() <= 4);
   assert(unextended_output_shape.DimensionsCount() <= 4);
+
+  bool optimize = true;
+  int st_count = op_params.strides_count;
+  for (int idx = 0; idx < st_count - 1; idx++)
+  {
+    const int start = StartForAxis(op_params, unextended_input_shape, idx);
+    const int stop = StopForAxis(op_params, unextended_input_shape, 0, start);
+    if (start != 0 || stop != 0)
+    {
+      optimize = false;
+      break;
+    }
+  }
+
+  if (optimize)
+  {
+    if (op_params.strides[st_count - 1] == 1)
+    {
+      const int start = StartForAxis(op_params, unextended_input_shape, st_count - 1);
+      const int end = StopForAxis(op_params, unextended_input_shape, st_count - 1, start);
+
+      for (int idx = 0; idx < end - start; idx++)
+      {
+        output_data[idx] = input_data[idx + start];
+      }
+      return;
+    }
+  }
+
+  // Note that the output_shape is not used herein.
+  StridedSliceParams params_copy = op_params;
 
   const Shape input_shape = Shape::ExtendedShape(4, unextended_input_shape);
   const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
