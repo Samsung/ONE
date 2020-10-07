@@ -35,6 +35,8 @@ public:
 public:
   bool setInput(uint32_t index, const ANeuralNetworksOperandType *type, const void *buffer,
                 size_t length) noexcept;
+  bool setOptionalInput(uint32_t index, const ANeuralNetworksOperandType *type, const void *buffer,
+                        size_t length) noexcept;
   bool setOutput(uint32_t index, const ANeuralNetworksOperandType *type, void *buffer,
                  size_t length) noexcept;
   bool startExecute(void) noexcept;
@@ -46,6 +48,7 @@ public:
                        const onert::ir::OperandIndex index) noexcept;
   bool compareShape(const ANeuralNetworksOperandType *type,
                     const onert::ir::OperandIndex index) noexcept;
+  bool IsOptionalInput(const onert::ir::OperandIndex index) noexcept;
   bool hasUnspecifiedDims(const onert::ir::OperandIndex index) noexcept;
   size_t getOperandSize(const onert::ir::OperandIndex index) noexcept;
   const std::shared_ptr<onert::exec::Execution> instance(void) noexcept;

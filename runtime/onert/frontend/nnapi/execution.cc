@@ -105,6 +105,15 @@ int ANeuralNetworksExecution_setInput(ANeuralNetworksExecution *execution, int32
     {
       return ANEURALNETWORKS_NO_ERROR;
     }
+    else if (type == nullptr && execution->IsOptionalInput(operand_index))
+    {
+      if (!execution->setOptionalInput(index, type, buffer, length))
+      {
+        VERBOSE(NNAPI::Execution) << "setInput: Fail to set optional input" << std::endl;
+        return ANEURALNETWORKS_BAD_DATA;
+      }
+      return ANEURALNETWORKS_NO_ERROR;
+    }
     // TODO Changes the condition to check zero sized
     else if (execution->compareShape(&compared_shape, operand_index))
     {
