@@ -61,7 +61,7 @@ LONG_OPTS="\
 help,\
 version,\
 config:\
-`### configuration option ###`\
+`### configuration options ###`\
 input_path:,\
 output_path:,\
 `# one-import-tf, one-import-bcq`\
@@ -72,8 +72,28 @@ import_input_shapes:,\
 import_output_arrays:,\
 import_v2:,\
 import_tf_output_path:,\
-import_bcq_output_path:"
-# TO BE FILLED
+import_bcq_output_path:,\
+`# one-import-tflite`\
+import_tflite_output_path:,\
+`# one-optimize`\
+optimize_all:,\
+optimize_fuse_bcq:,\
+optimize_fuse_instnorm:,\
+optimize_resolve_customop_add:,\
+optimize_resolve_customop_batchmatmul:,\
+optimize_resolve_customop_matmul:,\
+optimize_output_path:,\
+`# one-quantize`\
+quantize_input_dtype:,\
+quantize_quantized_dtype:,\
+quantize_granularity:,\
+quantize_min_percentile:,\
+quantize_max_percentile:,\
+quantize_mode:,\
+quantize_input_data:,\
+quantize_output_path:,\
+`# one-pack`\
+pack_output_path:"
 
 OPTS=$(getopt --options "$SHORT_OPTS" --longoptions "$LONG_OPTS" --name "$0" -- "$@")
 
@@ -97,6 +117,114 @@ while true ; do
       CONFIG_FILE="$2"
       shift 2
       ;;
+    --input_path)
+      INPUT_PATH="$2"
+      shift 2
+      ;;
+    --output_path)
+      OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --use_one_import_tf)
+      USE_ONE_IMPORT_TF="$2"
+      shift 2
+      ;;
+    --use_one_import_bcq)
+      USE_ONE_IMPORT_BCQ="$2"
+      shift 2
+      ;;
+    --import_input_arrays)
+      IMPORT_INPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    --import_input_shapes)
+      IMPORT_INPUT_SHAPES="$2"
+      shift 2
+      ;;
+    --import_output_arrays)
+      IMPORT_OUTPUT_ARRAYS="$2"
+      shift 2
+      ;;
+    --import_v2)
+      IMPORT_V2="$2"
+      shift 2
+      ;;
+    --import_tf_output_path)
+      IMPORT_TF_OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --import_bcq_output_path)
+      IMPORT_BCQ_OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --import_tflite_output_path)
+      IMPORT_TFLITE_OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --optimize_all)
+      OPTIMIZE_ALL="$2"
+      shift 2
+      ;;
+    --optimize_fuse_bcq)
+      OPTIMIZE_FUSE_BCQ="$2"
+      shift 2
+      ;;
+    --optimize_fuse_instnorm)
+      OPTIMIZE_FUSE_INSTNORM="$2"
+      shift 2
+      ;;
+    --optimize_resolve_customop_add)
+      OPTIMIZE_RESOLVE_CUSTOMOP_ADD="$2"
+      shift 2
+      ;;
+    --optimize_resolve_customop_batchmatmul)
+      OPTIMIZE_RESOLVE_CUSTOMOP_BATCHMATMUL="$2"
+      shift 2
+      ;;
+    --optimize_resolve_customop_matmul)
+      OPTIMIZE_RESOLVE_CUSTOMOP_MATMUL="$2"
+      shift 2
+      ;;
+    --optimize_output_path)
+      OPTIMIZE_OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --quantize_input_dtype)
+      QUANTIZE_INPUT_DTYPE="$2"
+      shift 2
+      ;;
+    --quantize_quantized_dtype)
+      QUANTIZE_QUANTIZED_DTYPE="$2"
+      shift 2
+      ;;
+    --quantize_granularity)
+      QUANTIZE_GRANULARITY="$2"
+      shift 2
+      ;;
+    --quantize_min_percentile)
+      QUANTIZE_MIN_PERCENTILE="$2"
+      shift 2
+      ;;
+    --quantize_max_percentile)
+      QUANTIZE_MAX_PERCENTILE="$2"
+      shift 2
+      ;;
+    --quantize_mode)
+      QUANTIZE_MODE="$2"
+      shift 2
+      ;;
+    --quantize_input_data)
+      QUANTIZE_INPUT_DATA="$2"
+      shift 2
+      ;;
+    --quantize_output_path)
+      QUANTIZE_OUTPUT_PATH="$2"
+      shift 2
+      ;;
+    --pack_output_path)
+      PACK_OUTPUT_PATH="$2"
+      shift 2
+      ;;
     --)
       shift
       break
@@ -116,19 +244,119 @@ else
 fi
 
 # overide options
+if [ ! -z "$INPUT_PATH" ]; then
+  input_path="$INPUT_PATH"
+fi
+if [ ! -z "$OUTPUT_PATH" ]; then
+  output_path="$OUTPUT_PATH"
+fi
+if [ ! -z "$USE_ONE_IMPORT_TF" ]; then
+  use_one_import_tf="$USE_ONE_IMPORT_TF"
+fi
+if [ ! -z "$USE_ONE_IMPORT_BCQ" ]; then
+  use_one_import_bcq="$USE_ONE_IMPORT_BCQ"
+fi
+if [ ! -z "$IMPORT_INPUT_ARRAYS" ]; then
+  import_input_arrays="$IMPORT_INPUT_ARRAYS"
+fi
+if [ ! -z "$IMPORT_INPUT_SHAPES" ]; then
+  import_input_shapes="$IMPORT_INPUT_SHAPES"
+fi
+if [ ! -z "$IMPORT_OUTPUT_ARRAYS" ]; then
+  import_output_arrays="$IMPORT_OUTPUT_ARRAYS"
+fi
+if [ ! -z "$IMPORT_V2" ]; then
+  import_v2="$IMPORT_V2"
+fi
+if [ ! -z "$IMPORT_TF_OUTPUT_PATH" ]; then
+  import_tf_output_path="$IMPORT_TF_OUTPUT_PATH"
+fi
+if [ ! -z "$IMPORT_BCQ_OUTPUT_PATH" ]; then
+  import_bcq_output_path="$IMPORT_BCQ_OUTPUT_PATH"
+fi
+if [ ! -z "$IMPORT_TFLITE_OUTPUT_PATH" ]; then
+  import_tflite_output_path="$IMPORT_TFLITE_OUTPUT_PATH"
+fi
+if [ ! -z "$OPTIMIZE_ALL" ]; then
+  optimize_all="$OPTIMIZE_ALL"
+fi
+if [ ! -z "$OPTIMIZE_FUSE_BCQ" ]; then
+  optimize_fuse_bcq="$OPTIMIZE_FUSE_BCQ"
+fi
+if [ ! -z "$OPTIMIZE_FUSE_INSTNORM" ]; then
+  optimize_fuse_instnorm="$OPTIMIZE_FUSE_INSTNORM"
+fi
+if [ ! -z "$OPTIMIZE_RESOLVE_CUSTOMOP_ADD" ]; then
+  optimize_resolve_customop_add="$OPTIMIZE_RESOLVE_CUSTOMOP_ADD"
+fi
+if [ ! -z "$OPTIMIZE_RESOLVE_CUSTOMOP_BATCHMATMUL" ]; then
+  optimize_resolve_customop_batchmatmul="$OPTIMIZE_RESOLVE_CUSTOMOP_BATCHMATMUL"
+fi
+if [ ! -z "$OPTIMIZE_RESOLVE_CUSTOMOP_MATMUL" ]; then
+  optimize_resolve_customop_matmul="$OPTIMIZE_RESOLVE_CUSTOMOP_MATMUL"
+fi
+if [ ! -z "$OPTIMIZE_OUTPUT_PATH" ]; then
+  optimize_output_path="$OPTIMIZE_OUTPUT_PATH"
+fi
+if [ ! -z "$QUANTIZE_INPUT_DTYPE" ]; then
+  quantize_input_dtype="$QUANTIZE_INPUT_DTYPE"
+fi
+if [ ! -z "$QUANTIZE_QUANTIZED_DTYPE" ]; then
+  quantize_quantized_dtype="$QUANTIZE_QUANTIZED_DTYPE"
+fi
+if [ ! -z "$QUANTIZE_GRANULARITY" ]; then
+  quantize_granularity="$QUANTIZE_GRANULARITY"
+fi
+if [ ! -z "$QUANTIZE_MIN_PERCENTILE" ]; then
+  quantize_min_percentile="$QUANTIZE_MIN_PERCENTILE"
+fi
+if [ ! -z "$QUANTIZE_MAX_PERCENTILE" ]; then
+  quantize_max_percentile="$QUANTIZE_MAX_PERCENTILE"
+fi
+if [ ! -z "$QUANTIZE_MODE" ]; then
+  quantize_mode="$QUANTIZE_MODE"
+fi
+if [ ! -z "$QUANTIZE_INPUT_DATA" ]; then
+  quantize_input_data="$QUANTIZE_INPUT_DATA"
+fi
+if [ ! -z "$QUANTIZE_OUTPUT_PATH" ]; then
+  quantize_output_path="$QUANTIZE_OUTPUT_PATH"
+fi
+if [ ! -z "$PACK_OUTPUT_PATH" ]; then
+  pack_output_path="$PACK_OUTPUT_PATH"
+fi
 
+# check if options are valid
+if [ "$use_one_pack" == true ]; then
+  # one-pack output path must be provided
+  if [ -z "$pack_output_path" ]; then
+    echo "[ERROR] one-pack output path not provided"
+    exit 2
+  fi
+fi
+
+unset INTERMEDIATE
 # one-import-tf
 if [ "$use_one_import_tf" == true ]; then
+  # if `import_tf_output_path` not specified, use `output_path`
   if [ -z "$import_tf_output_path" ]; then
     import_tf_output_path="$output_path"
   fi
+
+  # make a command
+  IMPORT_TF_COMMANDS="${DRIVER_PATH}/one-import tf"
+  IMPORT_TF_COMMANDS+=" --input_path ${input_path}"
+  IMPORT_TF_COMMANDS+=" --output_path ${import_tf_output_path}"
+  IMPORT_TF_COMMANDS+=" --input_arrays ${import_input_arrays}"
+  IMPORT_TF_COMMANDS+=" --output_arrays ${import_output_arrays}"
+  if [ ! -z "$import_input_shapes" ]; then
+    IMPORT_TF_COMMANDS+=" --input_shapes ${import_input_shapes}"
+  fi
+
+  # run one-import-tf
   if [ -x "$DRIVER_PATH/one-import" ]; then
-    $DRIVER_PATH/one-import tf \
-    --input_path "$input_path" \
-    --output_path "$import_tf_output_path" \
-    --input_arrays "$import_input_arrays" \
-    --output_arrays "$import_output_arrays"
-    # shape
+    $IMPORT_TF_COMMANDS
+    INTERMEDIATE="$import_tf_output_path"
   else
     echo "[ERROR] one-import not found or not excutable"
     exit 2
@@ -137,30 +365,173 @@ fi
 
 # one-import-bcq
 if [ "$use_one_import_bcq" == true ]; then
-  echo "TO BE FILLED"
+  # if `import_bcq_output_path` not specified, use `output_path`
+  if [ -z "$import_bcq_output_path" ]; then
+    import_bcq_output_path="$output_path"
+  fi
+
+  # make a command
+  IMPORT_BCQ_COMMANDS="${DRIVER_PATH}/one-import bcq"
+  IMPORT_BCQ_COMMANDS+=" --input_path ${input_path}"
+  IMPORT_BCQ_COMMANDS+=" --output_path ${import_bcq_output_path}"
+  IMPORT_BCQ_COMMANDS+=" --input_arrays ${import_input_arrays}"
+  IMPORT_BCQ_COMMANDS+=" --output_arrays ${import_output_arrays}"
+  if [ ! -z "$import_input_shapes" ]; then
+    IMPORT_BCQ_COMMANDS+=" --input_shapes ${import_input_shapes}"
+  fi
+
+  # run one-import-bcq
+  if [ -x "$DRIVER_PATH/one-import" ]; then
+    $IMPORT_BCQ_COMMANDS
+    INTERMEDIATE="$import_tf_output_path"
+  else
+    echo "[ERROR] one-import not found or not excutable"
+    exit 2
+  fi
 fi
 
 # one-import-tflite
 if [ "$use_one_import_tflite" == true ]; then
-  echo "TO BE FILLED"
+  # if `import_tflite_output_path` not specified, use `output_path`
+  if [ -z "$import_tflite_output_path" ]; then
+    import_tflite_output_path="$output_path"
+  fi
+
+  # make a command
+  IMPORT_TFLITE_COMMANDS="${DRIVER_PATH}/one-import tflite"
+  IMPORT_TFLITE_COMMANDS+=" --input_path ${input_path}"
+  IMPORT_TFLITE_COMMANDS+=" --output_path ${import_tflite_output_path}"
+
+  # run one-import-tflite
+  if [ -x "$DRIVER_PATH/one-import" ]; then
+    $IMPORT_TFLITE_COMMANDS
+    INTERMEDIATE="$import_tf_output_path"
+  else
+    echo "[ERROR] one-import not found or not excutable"
+    exit 2
+  fi
 fi
 
 # one-optimize
 if [ "$use_one_optimize" == true ]; then
-  echo "TO BE FILLED"
+  # if intermediate file exists, use it as an input
+  if [ ! -z "$INTERMEDIATE" ]; then
+    optimize_input_path="$INTERMEDIATE"
+  else
+    optimize_input_path="$input_path"
+  fi
+
+  # if `optimize_output_path` not specified, use `output_path`
+  if [ -z "$optimize_output_path" ]; then
+    optimize_output_path="$output_path"
+  fi
+
+  # make a command
+  OPTIMIZE_COMMANDS="${DRIVER_PATH}/one-optimize"
+  OPTIMIZE_COMMANDS+=" --input_path ${optimize_input_path}"
+  OPTIMIZE_COMMANDS+=" --output_path ${optimize_output_path}"
+  if [ "$optimize_all" == true ]; then
+    OPTIMIZE_COMMANDS+=" --all"
+  fi
+  if [ "$optimize_fuse_bcq" == true ]; then
+    OPTIMIZE_COMMANDS+=" --fuse_bcq"
+  fi
+  if [ "$optimize_fuse_instnorm" == true ]; then
+    OPTIMIZE_COMMANDS+=" --fuse_instnorm"
+  fi
+  if [ "$optimize_resolve_customop_add" == true ]; then
+    OPTIMIZE_COMMANDS+=" --resolve_customop_add"
+  fi
+  if [ "$optimize_resolve_customop_batchmatmul" == true ]; then
+    OPTIMIZE_COMMANDS+=" --resolve_customop_batchmatmul"
+  fi
+  if [ "$optimize_resolve_customop_matmul" == true ]; then
+    OPTIMIZE_COMMANDS+=" --resolve_customop_matmul"
+  fi
+
+  # run one-optimize
+  if [ -x "$DRIVER_PATH/one-optimize" ]; then
+    $OPTIMIZE_COMMANDS
+    INTERMEDIATE="$optimize_output_path"
+  else
+    echo "[ERROR] one-optimize not found or not excutable"
+    exit 2
+  fi
 fi
 
 # one-quantize
 if [ "$use_one_quantize" == true ]; then
-  echo "TO BE FILLED"
+  # if intermediate file exists, use it as an input
+  if [ ! -z "$INTERMEDIATE" ]; then
+    quantize_input_path="$INTERMEDIATE"
+  else
+    quantize_input_path="$input_path"
+  fi
+
+  # if `quantize_output_path` not specified, use `output_path`
+  if [ -z "$quantize_output_path" ]; then
+    quantize_output_path="$output_path"
+  fi
+
+  # make a command
+  QUANTIZE_COMMANDS="${DRIVER_PATH}/one-quantize"
+  QUANTIZE_COMMANDS+=" --input_path ${quantize_input_path}"
+  QUANTIZE_COMMANDS+=" --input_data ${quantize_input_data}"
+  QUANTIZE_COMMANDS+=" --output_path ${quantize_output_path}"
+  if [ ! -z "$quantize_input_dtype" ]; then
+    QUANTIZE_COMMANDS+=" --input_dtype ${quantize_input_dtype}"
+  fi
+  if [ ! -z "$quantize_quantized_dtype" ]; then
+    QUANTIZE_COMMANDS+=" --quantized_dtype ${quantize_quantized_dtype}"
+  fi
+  if [ ! -z "$quantize_granularity" ]; then
+    QUANTIZE_COMMANDS+=" --granularity ${quantize_granularity}"
+  fi
+  if [ ! -z "$quantize_min_percentile" ]; then
+    QUANTIZE_COMMANDS+=" --min_percentile ${quantize_min_percentile}"
+  fi
+  if [ ! -z "$quantize_max_percentile" ]; then
+    QUANTIZE_COMMANDS+=" --max_percentile ${quantize_max_percentile}"
+  fi
+  if [ ! -z "$quantize_mode" ]; then
+    QUANTIZE_COMMANDS+=" --mode ${quantize_mode}"
+  fi
+
+  # run one-quantize
+  if [ -x "$DRIVER_PATH/one-quantize" ]; then
+    $QUANTIZE_COMMANDS
+    INTERMEDIATE="$quantize_output_path"
+  else
+    echo "[ERROR] one-quantize not found or not excutable"
+    exit 2
+  fi
 fi
 
 # one-pack
 if [ "$use_one_pack" == true ]; then
-  echo "TO BE FILLED"
+  # if intermediate file exists, use it as an input
+  if [ ! -z "$INTERMEDIATE" ]; then
+    pack_input_path="$INTERMEDIATE"
+  else
+    pack_input_path="$input_path"
+  fi
+
+  # make a command
+  PACK_COMMANDS="${DRIVER_PATH}/one-pack"
+  PACK_COMMANDS+=" -i ${pack_input_path}"
+  PACK_COMMANDS+=" -o ${pack_output_path}"
+
+  # run one-pack
+  if [ -x "$DRIVER_PATH/one-pack" ]; then
+    $PACK_COMMANDS
+    INTERMEDIATE="$output_path"
+  else
+    echo "[ERROR] one-pack not found or not excutable"
+    exit 2
+  fi
 fi
 
-# one-codegen
-if [ "$use_one_codegen" == true ]; then
-  echo "TO BE FILLED"
-fi
+# # one-codegen
+# if [ "$use_one_codegen" == true ]; then
+#   echo "TO BE FILLED"
+# fi
