@@ -18,6 +18,7 @@
 
 #include "kernels/Utils.h"
 
+#include <tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h>
 #include <tensorflow/lite/kernels/internal/reference/pooling.h>
 
 #include <stdexcept>
@@ -61,11 +62,13 @@ void AveragePool2D::configure()
       computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
   if (input()->element_type() == DataType::U8)
   {
-    if (input()->scale() != output()->scale() || input()->zero_point() != output()->zero_point())
-    {
-      throw std::runtime_error(
-          "Quantization param for Input and output must be same(scale or zero-point)");
-    }
+    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
+    LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
+  }
+  else if (input()->element_type() == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
+    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
   }
   output()->resize({batches, output_height, output_width, depth});
 }
@@ -79,6 +82,9 @@ void AveragePool2D::execute() const
       break;
     case DataType::U8:
       evalQuantized();
+      break;
+    case DataType::S16:
+      evalSInt16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -124,6 +130,27 @@ void AveragePool2D::evalQuantized() const
   tflite::reference_ops::AveragePool(params, getTensorShape(input()),
                                      getTensorData<uint8_t>(input()), getTensorShape(output()),
                                      getTensorData<uint8_t>(output()));
+}
+
+void AveragePool2D::evalSInt16() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::PoolParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.filter_height = _params.filter_height;
+  params.filter_width = _params.filter_width;
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  tflite::reference_integer_ops::AveragePool(
+      params, getTensorShape(input()), getTensorData<int16_t>(input()), //
+      getTensorShape(output()), getTensorData<int16_t>(output()));
 }
 
 } // namespace kernels
