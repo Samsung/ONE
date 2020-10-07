@@ -123,7 +123,7 @@ void quant_const(CircleConst *node, loco::DataType quant_type)
   node->quantparam(std::move(quantparam));
 }
 
-// Check if the node is the bias of Conv2D, DepthwiseConv2D, or FullyConnected layer
+// Check if the node is the bias of Conv2D, DepthwiseConv2D, FullyConnected, or TransposeConv layer
 // If true, return <input, weight> pair of the successor node (used to quantize bias)
 // If flase, return <nullptr, nullptr>
 std::pair<loco::Node *, loco::Node *> get_input_weight_of_bias(CircleNode *node)
@@ -158,6 +158,13 @@ std::pair<loco::Node *, loco::Node *> get_input_weight_of_bias(CircleNode *node)
       assert(fc->input() != nullptr);
       assert(fc->weights() != nullptr);
       return std::make_pair(fc->input(), fc->weights());
+    }
+    auto tconv = dynamic_cast<CircleTransposeConv *>(out);
+    if (tconv != nullptr && tconv->bias() == circle_const)
+    {
+      assert(tconv->outBackprop() != nullptr);
+      assert(tconv->filter() != nullptr);
+      return std::make_pair(tconv->outBackprop(), tconv->filter());
     }
   }
   return std::make_pair(nullptr, nullptr);
