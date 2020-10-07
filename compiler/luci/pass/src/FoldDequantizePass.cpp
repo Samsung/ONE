@@ -33,6 +33,9 @@ bool is_hybrid_kernel_supported(loco::Node *node)
 
 bool is_foldable_const(luci::CircleConst *node)
 {
+  if (node->quantparam() == nullptr)
+    return false;
+
   if (node->dtype() == loco::DataType::S8)
     return true;
   if (node->dtype() == loco::DataType::U8)
@@ -43,7 +46,10 @@ bool is_foldable_const(luci::CircleConst *node)
 
 luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
 {
-  assert(const_node->quantparam() != nullptr);
+  if (const_node->quantparam() == nullptr)
+  {
+    throw std::runtime_error("Given constant node cannot be dequantized");
+  }
 
   auto g = const_node->graph();
   auto new_const_node = g->nodes()->create<luci::CircleConst>();
@@ -168,7 +174,7 @@ bool FoldDequantizePass::run(loco::Graph *g)
     }
     else if (auto const_node = dynamic_cast<luci::CircleConst *>(node))
     {
-      if (const_node->quantparam() != nullptr && is_foldable_const(const_node))
+      if (is_foldable_const(const_node))
       {
         for (auto const_node_user : loco::succs(const_node))
         {
