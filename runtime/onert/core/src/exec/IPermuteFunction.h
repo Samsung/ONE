@@ -120,127 +120,65 @@ private:
     }();
     auto fn = [&](backend::ITensor &src_tensor) {
       dst->access([&](backend::ITensor &dst_tensor) {
-        auto src_buffer = src_tensor.buffer();
-        auto src_size = src_tensor.total_size();
-        auto dst_buffer = dst_tensor.buffer();
-        if (permute_type == PermuteType::COPY)
+        if (rank == 4 && permute_type != PermuteType::COPY)
         {
-          assert(src_tensor.layout() == dst_tensor.layout());
-          if (!src_tensor.has_padding() && !dst_tensor.has_padding())
+          switch (permute_type)
           {
-            assert(src_size <= dst_tensor.total_size());
-            memcpy(dst_buffer, src_buffer, src_size);
-            return;
+            case PermuteType::NHWC_TO_NCHW:
+            {
+              ir::FeatureShape shape;
+              shape.N = dst_tensor.dimension(0);
+              shape.C = dst_tensor.dimension(1);
+              shape.H = dst_tensor.dimension(2);
+              shape.W = dst_tensor.dimension(3);
+              const feature::nhwc::Reader<T> from(&src_tensor);
+              feature::nchw::View<T> into(&dst_tensor);
+              feature::iterate(shape)
+                  << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
+                       const auto value = from.at(batch, row, col, ch);
+                       into.at(batch, ch, row, col) = value;
+                     };
+              break;
+            }
+            case PermuteType::NCHW_TO_NHWC:
+            {
+              ir::FeatureShape shape;
+              shape.N = src_tensor.dimension(0);
+              shape.C = src_tensor.dimension(1);
+              shape.H = src_tensor.dimension(2);
+              shape.W = src_tensor.dimension(3);
+              const feature::nchw::Reader<T> from(&src_tensor);
+              feature::nhwc::View<T> into(&dst_tensor);
+              feature::iterate(shape)
+                  << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
+                       const auto value = from.at(batch, ch, row, col);
+                       into.at(batch, row, col, ch) = value;
+                     };
+              break;
+            }
+            default:
+            {
+              throw std::runtime_error("Unsupported Permutation");
+              break;
+            }
           }
         }
-        switch (rank)
+        else if (!src_tensor.has_padding() && !dst_tensor.has_padding())
         {
-          case 0:
-          case 1:
-          {
-            const int32_t copy_len = dst_tensor.dimension(0);
-
-            memcpy(dst_buffer, src_buffer, copy_len * sizeof(T));
-            break;
-          }
-          case 2:
-          {
-            const int32_t dim_0 = dst_tensor.dimension(0);
-            const int32_t copy_len = dst_tensor.dimension(1);
-
-            for (int32_t i = 0; i < dim_0; ++i)
-            {
-              ir::Coordinates coords{i, 0};
-              memcpy(dst_buffer + dst_tensor.calcOffset(coords),
-                     src_buffer + src_tensor.calcOffset(coords), copy_len * sizeof(T));
-            }
-            break;
-          }
-          case 3:
-          {
-            const int32_t dim_0 = dst_tensor.dimension(0);
-            const int32_t dim_1 = dst_tensor.dimension(1);
-            const int32_t copy_len = dst_tensor.dimension(2);
-
-            for (auto i = 0; i < dim_0; ++i)
-            {
-              for (auto j = 0; j < dim_1; ++j)
-              {
-                ir::Coordinates coords{i, j, 0};
-                memcpy(dst_buffer + dst_tensor.calcOffset(coords),
-                       src_buffer + src_tensor.calcOffset(coords), copy_len * sizeof(T));
-              }
-            }
-            break;
-          }
-          case 4:
-          {
-            switch (permute_type)
-            {
-              case PermuteType::NHWC_TO_NCHW:
-              {
-                ir::FeatureShape shape;
-                shape.N = dst_tensor.dimension(0);
-                shape.C = dst_tensor.dimension(1);
-                shape.H = dst_tensor.dimension(2);
-                shape.W = dst_tensor.dimension(3);
-                const feature::nhwc::Reader<T> from(&src_tensor);
-                feature::nchw::View<T> into(&dst_tensor);
-                feature::iterate(shape)
-                    << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
-                         const auto value = from.at(batch, row, col, ch);
-                         into.at(batch, ch, row, col) = value;
-                       };
-                break;
-              }
-              case PermuteType::NCHW_TO_NHWC:
-              {
-                ir::FeatureShape shape;
-                shape.N = src_tensor.dimension(0);
-                shape.C = src_tensor.dimension(1);
-                shape.H = src_tensor.dimension(2);
-                shape.W = src_tensor.dimension(3);
-                const feature::nchw::Reader<T> from(&src_tensor);
-                feature::nhwc::View<T> into(&dst_tensor);
-                feature::iterate(shape)
-                    << [&](uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) {
-                         const auto value = from.at(batch, ch, row, col);
-                         into.at(batch, row, col, ch) = value;
-                       };
-                break;
-              }
-              case PermuteType::COPY:
-              {
-                const int32_t dim_0 = dst_tensor.dimension(0);
-                const int32_t dim_1 = dst_tensor.dimension(1);
-                const int32_t dim_2 = dst_tensor.dimension(2);
-                const int32_t copy_len = dst_tensor.dimension(3);
-
-                for (auto i = 0; i < dim_0; ++i)
-                {
-                  for (auto j = 0; j < dim_1; ++j)
-                  {
-                    for (auto k = 0; k < dim_2; ++k)
-                    {
-                      ir::Coordinates coords{i, j, k, 0};
-                      memcpy(dst_buffer + dst_tensor.calcOffset(coords),
-                             src_buffer + src_tensor.calcOffset(coords), copy_len * sizeof(T));
-                    }
-                  }
-                }
-                break;
-              }
-              default:
-              {
-                throw std::runtime_error("Unsupported Permutation");
-                break;
-              }
-            }
-            break;
-          }
-          default:
-            throw std::runtime_error("Unsupported rank in permutation");
-            break;
+          auto src_size = src_tensor.total_size();
+          assert(src_size <= dst_tensor.total_size());
+          memcpy(dst_tensor.buffer(), src_tensor.buffer(), src_size);
+        }
+        else
+        {
+          auto loop_shape = src_tensor.getShape();
+          const auto copy_axis = loop_shape.rank() - 1;
+          const auto copy_len = loop_shape.dim(copy_axis) * sizeof(T);
+          loop_shape.dim(copy_axis) = 1;
+          ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+            memcpy(dst_tensor.buffer() + dst_tensor.calcOffset(coords),
+                   src_tensor.buffer() + src_tensor.calcOffset(coords), copy_len);
+          });
         }
       });
     };
